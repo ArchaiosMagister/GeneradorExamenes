@@ -11,7 +11,7 @@ Prototipo experimental de un generador de exámenes para **Latín de 4.º de ESO
 
 **La aplicación está diseñada para funcionar completamente sin Internet**: el archivo HTML incorpora el código y los datos que necesita el prototipo. Los cambios guardados en el almacenamiento del navegador pueden no trasladarse automáticamente a otros ordenadores o a otro origen web; usa las copias de seguridad JSON.
 
-## Funcionalidad actual (prototipo v17)
+## Funcionalidad actual (prototipo v18)
 
 - Cursos separados: Latín 4.º ESO, Latín I y Griego I.
 - Tres modelos de examen y bloques de preguntas configurables.
@@ -90,3 +90,11 @@ Para compilar localmente, instala Node.js, Rust y las dependencias de Tauri para
 - Evitada una generación duplicada al regresar desde el gestor de vocabulario.
 - Pruebas locales con Chromium: cambio de tema en los tres cursos, generación de DOCX válido por curso, sin errores JavaScript ni desbordamiento horizontal en móvil.
 - La compilación de macOS sigue configurada como **solo manual**; no se ha iniciado en esta revisión.
+
+### Motor inicial de morfología griega (v18)
+
+- Griego I vuelve a permitir seleccionar los bloques **Declinación y concordancia** y **Formas verbales**.
+- Se han incorporado tablas áticas explícitas de **10 sustantivos** (casos, singular y plural) y **3 verbos** (presente de indicativo activo, seis personas), con soluciones.
+- Solo se generan formas de lemas expresamente cubiertos por las tablas. Si las unidades seleccionadas no contienen entradas cubiertas, se muestra un aviso en lugar de inventar formas.
+- **Limitación importante:** esto no constituye un motor morfológico general. Siguen pendientes artículo, adjetivos, tercera declinación, verbos contractos, irregularidades y validación didáctica completa contra los materiales de clase.
+- Esta revisión no inicia ninguna compilación de macOS; el flujo permanece manual.
