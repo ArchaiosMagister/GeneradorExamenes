@@ -32,6 +32,9 @@ jobs:
         with:
           targets: aarch64-apple-darwin
 
+      - name: Verificar código de la interfaz
+        run: node scripts/check-web.mjs
+
       - name: Instalar herramientas y preparar interfaz
         run: |
           npm install --no-audit --no-fund
