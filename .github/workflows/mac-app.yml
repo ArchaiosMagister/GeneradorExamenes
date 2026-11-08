@@ -2,15 +2,6 @@ name: Compilar aplicación para Mac (Apple Silicon)
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - 'index.html'
-      - 'package.json'
-      - 'scripts/**'
-      - 'src-tauri/**'
-      - '.github/workflows/mac-app.yml'
-
 permissions:
   contents: read
 
