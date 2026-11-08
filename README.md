@@ -11,7 +11,7 @@ Prototipo experimental de un generador de exámenes para **Latín de 4.º de ESO
 
 **La aplicación está diseñada para funcionar completamente sin Internet**: el archivo HTML incorpora el código y los datos que necesita el prototipo. Los cambios guardados en el almacenamiento del navegador pueden no trasladarse automáticamente a otros ordenadores o a otro origen web; usa las copias de seguridad JSON.
 
-## Funcionalidad actual (prototipo v16)
+## Funcionalidad actual (prototipo v17)
 
 - Cursos separados: Latín 4.º ESO, Latín I y Griego I.
 - Tres modelos de examen y bloques de preguntas configurables.
@@ -82,3 +82,11 @@ Para compilar localmente, instala Node.js, Rust y las dependencias de Tauri para
 - Corregidos el texto de versión obsoleto y la descripción del origen del vocabulario en el pie de página.
 - Pruebas locales con Chromium: carga sin errores, tres modelos, botones rápidos, guardado/recuperación de borradores con almacenamiento simulado, descargas DOCX válidas y ausencia de desbordamiento horizontal móvil.
 - **La compilación macOS queda desactivada automáticamente** y solo se iniciará manualmente cuando se decida probarla.
+
+### Interfaz v17 — colores por asignatura
+
+- **Griego I:** azul griego; **Latín I:** ámbar/naranja; **Latín 4.º ESO:** amarillo dorado.
+- El tema se actualiza al cambiar de curso; la impresión y los DOCX mantienen su formato académico sin fondos cromáticos.
+- Evitada una generación duplicada al regresar desde el gestor de vocabulario.
+- Pruebas locales con Chromium: cambio de tema en los tres cursos, generación de DOCX válido por curso, sin errores JavaScript ni desbordamiento horizontal en móvil.
+- La compilación de macOS sigue configurada como **solo manual**; no se ha iniciado en esta revisión.
