@@ -11,7 +11,7 @@ Prototipo experimental de un generador de exámenes para **Latín de 4.º de ESO
 
 **La aplicación está diseñada para funcionar completamente sin Internet**: el archivo HTML incorpora el código y los datos que necesita el prototipo. Los cambios guardados en el almacenamiento del navegador pueden no trasladarse automáticamente a otros ordenadores o a otro origen web; usa las copias de seguridad JSON.
 
-## Funcionalidad actual (prototipo v13)
+## Funcionalidad actual (prototipo v14)
 
 - Cursos separados: Latín 4.º ESO, Latín I y Griego I.
 - Tres modelos de examen y bloques de preguntas configurables.
@@ -21,6 +21,7 @@ Prototipo experimental de un generador de exámenes para **Latín de 4.º de ESO
 - Gestor del vocabulario exigible por curso y unidad.
 - Regla para el vocabulario final: enunciado de cada lema utilizado, traducción solo si no pertenece al vocabulario exigible acumulado.
 - Cultura restringida a Latín 4.º ESO (pendiente de recibir los temas cerrados).
+- Guardado y recuperación local de borradores, deshacer la última generación y exportación/importación de borradores JSON.
 - Exportación experimental a Word (.docx), con plantilla de Palatino Linotype 10,5 pt, enunciados en cursiva y vocabulario final en dos columnas.
 
 ## Limitaciones y trabajo pendiente
