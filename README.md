@@ -11,7 +11,7 @@ Prototipo experimental de un generador de exámenes para **Latín de 4.º de ESO
 
 **La aplicación está diseñada para funcionar completamente sin Internet**: el archivo HTML incorpora el código y los datos que necesita el prototipo. Los cambios guardados en el almacenamiento del navegador pueden no trasladarse automáticamente a otros ordenadores o a otro origen web; usa las copias de seguridad JSON.
 
-## Funcionalidad actual (prototipo v15)
+## Funcionalidad actual (prototipo v16)
 
 - Cursos separados: Latín 4.º ESO, Latín I y Griego I.
 - Tres modelos de examen y bloques de preguntas configurables.
@@ -50,7 +50,7 @@ Se ha añadido un proyecto **Tauri 2 + Rust** para empaquetar la misma interfaz 
 4. Cuando termine correctamente, abre la ejecución y descarga el artefacto **GeneradorExamenes-Mac-AppleSilicon**.
 5. Descomprime el ZIP obtenido y mueve el archivo `.app` a **Aplicaciones**.
 
-La compilación también se intenta automáticamente al modificar archivos de la aplicación en `main`. Si GitHub Actions está deshabilitado en el repositorio privado, tendrás que habilitarlo en los ajustes del repositorio.
+La compilación solo se ejecuta al pulsar **Run workflow** manualmente. No se compila automáticamente al actualizar el código. Si GitHub Actions está deshabilitado en el repositorio privado, tendrás que habilitarlo en los ajustes del repositorio.
 
 **Advertencia:** la aplicación todavía no está firmada ni notarizada. macOS puede bloquear la primera apertura. Consulta la opción **Abrir igualmente** en Ajustes del Sistema → Privacidad y seguridad si confías en la compilación que has descargado. No desactives Gatekeeper globalmente.
 
@@ -73,3 +73,12 @@ Para compilar localmente, instala Node.js, Rust y las dependencias de Tauri para
 - Añadida una comprobación automática de sintaxis JavaScript y controles esenciales antes de compilar.
 - Probados en Chromium: carga de modelos, guardado/recuperación/deshacer borradores, exportación JSON y DOCX con y sin soluciones. El DOCX se ha renderizado para inspección visual.
 - **Pendiente:** verificar la compilación real de GitHub Actions y las descargas desde el WebView de macOS. No se debe considerar la aplicación lista para distribución hasta superar estas pruebas.
+
+### Revisión de interfaz v16 (sin compilación)
+
+- Diseño más legible y coherente; controles agrupados, botones con foco visible y mejor contraste.
+- Acciones rápidas de generar y descargar Word, accesibles al principio de la página.
+- Vista previa desplazable en pantallas grandes y diseño adaptativo para móviles.
+- Corregidos el texto de versión obsoleto y la descripción del origen del vocabulario en el pie de página.
+- Pruebas locales con Chromium: carga sin errores, tres modelos, botones rápidos, guardado/recuperación de borradores con almacenamiento simulado, descargas DOCX válidas y ausencia de desbordamiento horizontal móvil.
+- **La compilación macOS queda desactivada automáticamente** y solo se iniciará manualmente cuando se decida probarla.
