@@ -11,7 +11,7 @@ Prototipo experimental de un generador de exámenes para **Latín de 4.º de ESO
 
 **La aplicación está diseñada para funcionar completamente sin Internet**: el archivo HTML incorpora el código y los datos que necesita el prototipo. Los cambios guardados en el almacenamiento del navegador pueden no trasladarse automáticamente a otros ordenadores o a otro origen web; usa las copias de seguridad JSON.
 
-## Funcionalidad actual (prototipo v14)
+## Funcionalidad actual (prototipo v15)
 
 - Cursos separados: Latín 4.º ESO, Latín I y Griego I.
 - Tres modelos de examen y bloques de preguntas configurables.
@@ -64,3 +64,12 @@ La compilación también se intenta automáticamente al modificar archivos de la
 - `.github/workflows/mac-app.yml`: compilación automatizada y empaquetado ZIP.
 
 Para compilar localmente, instala Node.js, Rust y las dependencias de Tauri para macOS, y ejecuta `npm install` seguido de `npm run desktop:build`.
+
+### Revisión previa a la primera descarga (v15)
+
+- Corregida la cursiva de las instrucciones en la vista previa y en Word.
+- Ajustado el plazo de liberación de los archivos descargables para reducir fallos en WebKit.
+- Eliminadas las referencias a iconos de Tauri aún no suministrados; el icono definitivo está pendiente.
+- Añadida una comprobación automática de sintaxis JavaScript y controles esenciales antes de compilar.
+- Probados en Chromium: carga de modelos, guardado/recuperación/deshacer borradores, exportación JSON y DOCX con y sin soluciones. El DOCX se ha renderizado para inspección visual.
+- **Pendiente:** verificar la compilación real de GitHub Actions y las descargas desde el WebView de macOS. No se debe considerar la aplicación lista para distribución hasta superar estas pruebas.
