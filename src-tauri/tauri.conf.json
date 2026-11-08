@@ -31,6 +31,7 @@
     "shortDescription": "Generador offline de exámenes de Latín y Griego",
     "macOS": {
       "minimumSystemVersion": "11.0"
-    }
+    },
+    "icon": []
   }
 }
