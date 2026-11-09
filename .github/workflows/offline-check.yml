@@ -1,0 +1,39 @@
+name: Comprobar versión autónoma
+
+on:
+  pull_request:
+    paths:
+      - 'index.html'
+      - 'offline.html'
+      - 'data/unimorph/**'
+      - 'scripts/**'
+      - 'package.json'
+      - '.github/workflows/offline-check.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'offline.html'
+      - 'data/unimorph/**'
+      - 'scripts/**'
+      - 'package.json'
+      - '.github/workflows/offline-check.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  offline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verificar HTML autónomo
+        run: npm run offline:test
+      - name: Verificar preparación de escritorio
+        run: |
+          npm run desktop:prepare
+          test -s web/index.html
