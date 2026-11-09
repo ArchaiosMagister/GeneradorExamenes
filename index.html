@@ -266,33 +266,53 @@ function greekExercise(allowed,type){const pool=allowed.map(x=>({x,p:greekParadi
 if(typeof window!=='undefined')window.addEventListener('load',()=>{Promise.all(['lat','grc'].map(loadBundledMorphology)).then(()=>{if(currentCourse()==='latin1'&&$('model').value==='morf'&&$('paper')?.textContent.trim())generate();});});
 const APPENDIX_MORPHOLOGY_CURRICULUM={"latin":[{"unit":1,"morph":["Primera y segunda declinación","Conjugaciones","Presente de indicativo","Infinitivo"]},{"unit":2,"morph":["Adjetivos","Preposiciones","Imperfecto de indicativo"]},{"unit":3,"morph":["Pronombres personales","Sustantivación del adjetivo","Voz pasiva","Imperativo"]},{"unit":4,"morph":["Tercera declinación","Perfecto de indicativo","Pluscuamperfecto de indicativo"]},{"unit":5,"morph":["Adjetivos de la tercera declinación","Pronombre fórico","Complemento predicativo"]},{"unit":6,"morph":["Pronombres demostrativos","Oraciones de relativo"]},{"unit":7,"morph":["Cuarta y quinta declinación","Verbos deponentes","Futuro"]},{"unit":8,"morph":["Oraciones de infinitivo","Pronombres de identidad y enfático","Quod causal"]},{"unit":9,"morph":["Adjetivos comparativos y superlativos","Voz pasiva del perfectum","Semideponentes"]},{"unit":10,"morph":["Participios","Complemento de régimen verbal","Acusativo de extensión"]}],"greek":[{"unit":1,"morph":["Segunda declinación masculina","Presente de εἰμί"]},{"unit":2,"morph":["Segunda declinación neutra","Presente de indicativo activo"]},{"unit":3,"morph":["Primera declinación","El artículo"]},{"unit":4,"morph":["Preposiciones"]},{"unit":5,"morph":["Adjetivos 2–1–2 y 2–2","Adjetivos irregulares: πολύς y μέγας"]},{"unit":6,"morph":["Presente medio-pasivo","Infinitivos de presente activo y medio"]},{"unit":7,"morph":["Demostrativos, anafórico y personales"]},{"unit":8,"morph":["Interrogativos e indefinidos","Tercera declinación: consonantes"]},{"unit":9,"morph":["Pronombre relativo ὅς, ἥ, ὅ"]},{"unit":10,"morph":["Participios de presente activo y medio"]},{"unit":11,"morph":["Futuro e imperfecto activos"]},{"unit":12,"morph":["Aoristo sigmático y temático"]},{"unit":13,"morph":["Perfecto y pluscuamperfecto activos"]},{"unit":14,"morph":["Verbos contractos","Temas en silbante"]}]};
 function morphologySyllabus(language,unit){return APPENDIX_MORPHOLOGY_CURRICULUM[language].filter(x=>x.unit<=unit).flatMap(x=>x.morph)}
-/* Bundled UniMorph indices are optional: the page works while the initial build is pending. */
+/* Published, curriculum-tagged UniMorph data. Missing files never block the app. */
 const bundledMorphology={lat:null,grc:null};
+const bundledStatus={lat:'pendiente',grc:'pendiente'};
 async function loadBundledMorphology(lang){
  if(bundledMorphology[lang])return bundledMorphology[lang];
- const url='data/unimorph/'+lang+'-v.json';
- try{
-  const response=await fetch(url,{cache:'force-cache'});
-  if(!response.ok)throw Error('Índice aún no publicado');
-  const payload=await response.json();
-  if(!Array.isArray(payload.rows))throw Error('Formato de índice incorrecto');
-  bundledMorphology[lang]=payload.rows;
-  return payload.rows;
- }catch(error){return []}
+ const categories=['v','n','adj','pro'];
+ const result={v:[],n:[],adj:[],pro:[]};
+ let loaded=0;
+ await Promise.all(categories.map(async category=>{
+  try{
+   const response=await fetch('data/unimorph/'+lang+'-'+category+'.json',{cache:'force-cache'});
+   if(!response.ok)return;
+   const payload=await response.json();
+   if(!Array.isArray(payload.rows))return;
+   result[category]=payload.rows.filter(r=>Array.isArray(r)&&r.length>=5&&
+    typeof r[0]==='string'&&typeof r[1]==='string'&&typeof r[2]==='string'&&
+    Number.isInteger(r[3])&&r[3]>=1&&r[3]<=(lang==='lat'?10:14));
+   loaded++;
+  }catch(error){/* Keep existing verified corpus as fallback. */}
+ }));
+ bundledMorphology[lang]=result;
+ bundledStatus[lang]=loaded===4?'completo':loaded?'parcial':'sin publicar';
+ return result;
 }
 function unimorphAllowedLatinVerb(row,max){
  const [lemma,form,tags,min]=row;
  if(min>max||!lemma||!form||!tags)return false;
  const f=new Set(tags.split(';'));
- return f.has('V')&&!f.has('PTCP')&&!f.has('INF')&&!f.has('SBJV')&&!f.has('FUT')&&!f.has('PST')&&!f.has('PRF')&&!f.has('PFV')&&!f.has('COND')&&(!f.has('PASS')||max>=3);
+ return f.has('V')&&f.has('IND')&&!f.has('PTCP')&&!f.has('INF')&&
+  !f.has('SBJV')&&!f.has('OPT')&&!f.has('COND')&&!f.has('DU')&&
+  !f.has('IMP')&&!(f.has('PASS')&&f.has('PRF')&&max<9);
 }
 function unimorphVerbLabel(tags){
  const f=new Set(tags.split(';'));
  const person=f.has('1')?'1.ª':f.has('2')?'2.ª':f.has('3')?'3.ª':'';
  const number=f.has('SG')?'singular':f.has('PL')?'plural':'';
- const tense=f.has('PST')?'pasado':f.has('IPFV')?'imperfecto':'presente';
- const voice=f.has('PASS')?'pasiva':'activa';
+ const tense=f.has('FUT')?'futuro':f.has('PRF')?'perfecto':f.has('PST')&&f.has('IPFV')?'imperfecto':
+  f.has('PST')?'pasado':f.has('IPFV')?'imperfecto':f.has('PRS')?'presente':'tiempo no especificado';
+ const voice=f.has('PASS')?'pasiva':f.has('MID')?'media':'activa';
  return [person,number,tense,voice].filter(Boolean).join(' ');
+}
+function unimorphNominalLabel(row){
+ const f=new Set(row[2].split(';'));
+ const c=['NOM','VOC','ACC','GEN','DAT','ABL'].find(x=>f.has(x))||'';
+ const n=f.has('SG')?'singular':f.has('PL')?'plural':'';
+ const g=f.has('MASC')?'masculino':f.has('FEM')?'femenino':f.has('NEUT')?'neutro':'';
+ return [c,n,g,row[4]].filter(Boolean).join(', ');
 }
 function generateLatinMorphologyReference(){
  const chosen=selectedUnits(),allowed=unique(vocab.filter(x=>courseOf(x)===currentCourse()&&chosen.includes(x.unit)));
@@ -318,10 +338,15 @@ function generateLatinMorphologyReference(){
  const pairs=sample(pairPool,3),lang=$('lang').value,va=lang==='va';
  const rowNames=va?['Nominatiu','Vocatiu','Acusatiu','Genitiu','Datiu','Ablatiu']:['Nominativo','Vocativo','Acusativo','Genitivo','Dativo','Ablativo'];
  const paradigm=()=>'<table class="exam-paradigm exam-nouns reference-morph-table" data-col-widths="16,42,42"><thead><tr><th class="exam-corner"></th><th>Singular</th><th>Plural</th></tr></thead><tbody>'+rowNames.map(n=>'<tr><th>'+n+'</th><td></td><td></td></tr>').join('')+'</tbody></table>';
- const bankRows=(bundledMorphology.lat||[]).filter(row=>unimorphAllowedLatinVerb(row,unitLimit));
+ const bankRows=(bundledMorphology.lat?.v||[]).filter(row=>unimorphAllowedLatinVerb(row,unitLimit));
  const bankItems=sample(bankRows,Math.min(10,countFor('verb'))).map(([lemma,form,tags])=>({form,entry:lemma,label:unimorphVerbLabel(tags)}));
  const verbItems=bankItems.length?bankItems:verbs.map(({x,p})=>{const i=Math.floor(Math.random()*p.forms.length);return {form:p.forms[i],entry:x.entry,label:p.labels[i]}});
- const nomItems=nominal.map(({x,p})=>{const i=Math.floor(Math.random()*p.forms.length);return {form:p.forms[i],entry:x.entry,label:p.labels[i]}});
+ const nominalRows=['n','adj','pro'].flatMap(category=>bundledMorphology.lat?.[category]||[])
+  .filter(row=>row[3]<=unitLimit&&row[2].split(';').some(t=>['NOM','VOC','ACC','GEN','DAT','ABL'].includes(t)));
+ const verifiedNominals=sample(nominalRows,Math.min(10,countFor('decl'))).map(row=>({
+  form:row[1],entry:row[0],label:unimorphNominalLabel(row)}));
+ const nomItems=verifiedNominals.length?verifiedNominals:nominal.map(({x,p})=>{
+  const i=Math.floor(Math.random()*p.forms.length);return {form:p.forms[i],entry:x.entry,label:p.labels[i]}});
  const head='<div class="exam-header"><div class="exam-header-line"><span>'+(va?'Examen de morfologia':'Examen de morfología')+' – '+esc(chosen.join('–')||'—')+'</span><span>'+esc(courseName())+'</span></div><div class="exam-header-line"><span>'+(va?'Nom i cognoms':'Nombre y apellidos')+':</span><span>'+(va?'Data':'Fecha')+':</span></div></div>';
  const first='<p class="exam-question">1. '+(va?'Tria dos d’aquests tres sintagmes per declinar (2 p.):':'Elige dos de estos tres sintagmas para declinar (2 p.):')+'</p>'+
  pairs.map((p,i)=>'<p class="exam-item">'+String.fromCharCode(97+i)+'. <i>'+esc(p.text)+'</i></p>').join('')+
