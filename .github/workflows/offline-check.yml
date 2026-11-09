@@ -35,6 +35,12 @@ jobs:
         run: npm run offline:test
       - name: Comprobar estructura de exámenes
         run: node scripts/test-exam-models.cjs
+      - name: Preparar Chromium para pruebas visuales
+        run: |
+          npm install --no-save --ignore-scripts playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Probar las vistas previas de todos los modelos
+        run: node scripts/test-preview.cjs
       - name: Verificar preparación de escritorio
         run: |
           npm run desktop:prepare
