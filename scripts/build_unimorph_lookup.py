@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Publish searchable full UniMorph rows, separate from curricular exam filters.
 
-Each language is sharded by the first character of a diacritic-free query.
+Each language is sharded by the first two characters of a diacritic-free query.
 Both form and lemma indices retain all attested analyses, including ambiguous
 ones. No grammatical interpretation or curricular filtering is applied.
 """
@@ -24,8 +24,8 @@ def normalize(value):
 
 def shard(value):
     key = normalize(value)
-    first = key[:1]
-    return f"{ord(first):04x}" if first else "empty"
+    prefix = key[:2]
+    return "-".join(f"{ord(char):04x}" for char in prefix) if prefix else "empty"
 
 def build(language, url):
     forms = collections.defaultdict(list)
