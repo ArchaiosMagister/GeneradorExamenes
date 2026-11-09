@@ -297,7 +297,7 @@ function verb(x){
  else {if(!first.endsWith('io'))return null;stem=first.slice(0,-2);forms=[stem+'io',stem+'is',stem+'it',stem+'imus',stem+'itis',stem+'iunt']}
  return {entry:x.entry,forms,labels:['1.ª persona singular','2.ª persona singular','3.ª persona singular','1.ª persona plural','2.ª persona plural','3.ª persona plural']};
 }
-function countFor(id){return Math.max(1,Math.min(id==='sent'?15:30,Number($('count-'+id).value)||5))}
+function countFor(id){const input=$('count-'+id);const fallback=id==='forms'?6:5;return Math.max(1,Math.min(id==='sent'?15:30,Number(input?.value)||fallback))}
 let sentences=[{text:'Puella rosam amat.',sol:'La niña ama la rosa.',units:['UD1']},{text:'Servi in villa laborant.',sol:'Los esclavos trabajan en la finca.',units:['UD1','UD2']},{text:'Nauta terram videt.',sol:'El marinero ve la tierra.',units:['UD1','UD2']},{text:'Romani oppidum oppugnant.',sol:'Los romanos asedian la ciudad.',units:['UD2']},{text:'Magister discipulos laudat.',sol:'El maestro elogia a los alumnos.',units:['UD2']}];
 // Vocabulario exigible, separado del banco general y de la unidad de aparición del lema.
 let examRequired=[];
