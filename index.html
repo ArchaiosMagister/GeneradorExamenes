@@ -1151,7 +1151,7 @@ const fullLookupCache=new Map();
 async function fullUniMorphLookup(language,word,mode){
  const key=morphologyNormalize(word),first=[...key][0];
  if(!first)return {rows:[],available:false};
- const hex=first.codePointAt(0).toString(16).padStart(4,'0');
+ const hex=[...key].slice(0,2).map(char=>char.codePointAt(0).toString(16).padStart(4,'0')).join('-');
  const path='data/unimorph/lookup/'+language+'/'+(mode==='lemma'?'lemma':'form')+'-'+hex+'.json';
  let rows=fullLookupCache.get(path);
  if(!rows){
