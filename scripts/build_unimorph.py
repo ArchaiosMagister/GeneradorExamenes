@@ -1,63 +1,194 @@
 #!/usr/bin/env python3
-"""Build compact UniMorph indexes for GitHub Pages; source data is never loaded by browsers."""
-import json, pathlib, urllib.request, collections, re
-ROOT=pathlib.Path(__file__).resolve().parents[1]
-OUT=ROOT/'data'/'unimorph'
-OUT.mkdir(parents=True,exist_ok=True)
-SOURCES={'lat':'https://raw.githubusercontent.com/unimorph/lat/master/lat','grc':'https://raw.githubusercontent.com/unimorph/grc/master/grc'}
-# Conservative curriculum: categories/inflections appear only when explicitly taught.
-LAT={'N':1,'V':1,'ADJ':2,'PRO':3}
-GRC={'N':1,'V':2,'ADJ':5,'PRO':7}
-def min_unit(lang,features):
- f=set(features.split(';')); pos=next((x for x in ('N','V','ADJ','PRO') if x in f),None)
- if not pos:return None
- u=(LAT if lang=='lat' else GRC)[pos]
- if lang=='lat':
-  if 'N' in f:
-   if 'NOM' not in f and 'GEN' not in f and not (f&{'ACC','DAT','ABL','VOC'}):return None
-   # UniMorph does not encode declension reliably. The complete noun pool must be
-   # classified separately before it can be used as an exam source.
-   return None
-  if 'ADJ' in f:return None # adjective class not encoded reliably
-  if 'PRO' in f:return None # pronoun subclass not encoded reliably
-  if 'V' in f:
-   if 'PST' in f or 'PRF' in f or 'PSTP' in f:return None
-   if 'FUT' in f or 'SBJV' in f or 'COND' in f:return None
-   if 'PASS' in f:u=max(u,3)
-   if 'IMP' in f:u=max(u,3)
-   if 'IPFV' in f:u=max(u,2)
-   if 'PTCP' in f:return None
- else:
-  if 'N' in f:return None # Greek declension must be validated by class
-  if 'ADJ' in f:return None
-  if 'PRO' in f:return None
-  if 'V' in f:
-   if 'FUT' in f:u=max(u,11)
-   if 'PST' in f:u=max(u,11)
-   if 'PFV' in f:u=max(u,12)
-   if 'PRF' in f:u=max(u,13)
-   if 'MID' in f or 'PASS' in f:u=max(u,6)
-   if 'PTCP' in f:u=max(u,10)
-   if 'SBJV' in f or 'OPT' in f:return None
- return u
-def build(lang,url):
- groups=collections.defaultdict(list);total=0
- with urllib.request.urlopen(url,timeout=240) as resp:
-  for raw in resp:
-   try:lemma,form,tags=raw.decode('utf-8').strip().split('\t')[:3]
-   except ValueError:continue
-   total+=1
-   if not lemma or not form or len(form)>70:continue
-   u=min_unit(lang,tags)
-   if u is None:continue
-   # Preserve analyses; do not assert that an isolated form has one reading.
-   pos=next((p for p in ('V','N','ADJ','PRO') if p in tags.split(';')),None)
-   if not pos:continue
-   groups[pos].append([lemma,form,tags,u])
- for pos,rows in groups.items():
-  path=OUT/f'{lang}-{pos.lower()}.json'
-  path.write_text(json.dumps({'source':url,'language':lang,'pos':pos,'rows':rows},ensure_ascii=False,separators=(',',':')),encoding='utf-8')
- manifest={'source':url,'language':lang,'records':total,'files':{pos.lower():{'path':f'{lang}-{pos.lower()}.json','records':len(rows)} for pos,rows in groups.items()},'notice':'Only conservatively classified forms are eligible; remaining UniMorph records are excluded from exam selection.'}
- (OUT/f'{lang}-manifest.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2),encoding='utf-8')
- print(lang,total,{k:len(v) for k,v in groups.items()})
-for lang,url in SOURCES.items():build(lang,url)
+"""Classify UniMorph paradigms by the teacher's Latin I / Greek I curriculum.
+
+Only unambiguous inflection classes and supported UniMorph features enter exams.
+Other rows are counted as withheld; original sources remain upstream.
+"""
+import collections
+import json
+import pathlib
+import unicodedata
+import urllib.request
+
+ROOT = pathlib.Path(__file__).resolve().parents[1]
+OUT = ROOT / "data" / "unimorph"
+OUT.mkdir(parents=True, exist_ok=True)
+SOURCES = {
+    "lat": "https://raw.githubusercontent.com/unimorph/lat/master/lat",
+    "grc": "https://raw.githubusercontent.com/unimorph/grc/master/grc",
+}
+CASES = {"NOM", "GEN", "DAT", "ACC", "VOC", "ABL"}
+KNOWN = CASES | {"SG", "PL", "DU", "MASC", "FEM", "NEUT", "N", "V", "ADJ", "PRO",
+    "PRS", "PST", "FUT", "PRF", "IPFV", "PFV", "PSTP", "IND", "IMP", "INF",
+    "PTCP", "ACT", "PASS", "MID", "1", "2", "3", "POS", "CMPR", "SPRL"}
+UNSUPPORTED = {"SBJV", "OPT", "COND", "DU", "POT", "NEC", "FREQ", "CAUS"}
+def normalized(s):
+    return "".join(c for c in unicodedata.normalize("NFD", s.lower())
+                   if unicodedata.category(c) != "Mn").replace("ς", "σ")
+
+def declension(lang, lemma, paradigm):
+    """Require a nominative lemma and an attested singular genitive; fail closed."""
+    gen = {normalized(form) for form, tags in paradigm
+           if "GEN" in tags and "SG" in tags}
+    nom = normalized(lemma)
+    if not gen:
+        return None
+    if lang == "lat":
+        # A genitive suffix alone is not enough for 3rd/4th/5th declensions.
+        if nom.endswith("a") and any(x.endswith("ae") for x in gen):
+            return ("first", 1)
+        if (nom.endswith(("us", "um", "er", "ir")) and
+                any(x.endswith("i") for x in gen)):
+            return ("second", 1)
+        if any(x.endswith("ei") for x in gen) and nom.endswith(("es", "ies")):
+            return ("fifth", 7)
+        if any(x.endswith("us") for x in gen) and nom.endswith(("us", "u")):
+            return ("fourth", 7)
+        # Third declension: exclude nouns with potential second/fourth/fifth endings.
+        if (any(x.endswith("is") for x in gen) and
+                not nom.endswith(("a", "um", "us"))):
+            return ("third", 4)
+    else:
+        if nom.endswith("ον") and any(x.endswith("ου") for x in gen):
+            return ("second-neuter", 2)
+        if nom.endswith("οσ") and any(x.endswith("ου") for x in gen):
+            return ("second-masculine", 1)
+        if nom.endswith(("α", "η", "ασ", "ησ")) and any(
+                x.endswith(("ασ", "ησ", "ου")) for x in gen):
+            # -ου genitives of first-declension masculines require nominative -ας/-ης.
+            if nom.endswith(("ασ", "ησ")) or any(x.endswith(("ασ", "ησ")) for x in gen):
+                return ("first", 3)
+        if any(x.endswith(("οσ", "ωσ", "ουσ", "εωσ")) for x in gen):
+            # -ου is common in 2nd declension; never infer 3rd from -ου alone.
+            if all(not x.endswith("ου") for x in gen):
+                return ("third", 8)
+    return None
+
+def verb_unit(lang, tags):
+    f = set(tags)
+    if f & UNSUPPORTED:
+        return None
+    if "V" not in f:
+        return None
+    if "PTCP" in f:
+        if lang == "lat":
+            return 10
+        if "FUT" in f or "PRF" in f or "PST" in f:
+            return None
+        return 10
+    if "IMP" in f:
+        return 3 if lang == "lat" else None
+    if "INF" in f:
+        if lang == "lat":
+            if "PRF" in f or "PST" in f or "FUT" in f:
+                return 8
+            return 1 if "PASS" not in f else 3
+        if "PRF" in f or "PST" in f or "FUT" in f:
+            return None
+        return 6
+    if "IND" not in f:
+        return None
+    if lang == "lat":
+        if "FUT" in f:
+            unit = 7
+        elif "PRF" in f or "PSTP" in f:
+            unit = 4
+        elif "PST" in f and "IPFV" not in f:
+            unit = 4
+        elif "PST" in f or "IPFV" in f:
+            unit = 2
+        elif "PRS" in f:
+            unit = 1
+        else:
+            return None
+        if "PASS" in f:
+            unit = max(unit, 9 if "PRF" in f or "PSTP" in f else 3)
+        return unit
+    if "PRF" in f or "PSTP" in f:
+        unit = 13
+    elif "PFV" in f:
+        unit = 12
+    elif "FUT" in f:
+        unit = 11
+    elif "PST" in f:
+        unit = 11
+    elif "PRS" in f:
+        unit = 2
+    else:
+        return None
+    if "MID" in f or "PASS" in f:
+        unit = max(unit, 6)
+    return unit
+
+def classify(lang, lemma, tags, paradigms):
+    f = set(tags)
+    if f & UNSUPPORTED:
+        return None
+    pos = next((p for p in ("N", "ADJ", "PRO", "V") if p in f), None)
+    if pos == "V":
+        u = verb_unit(lang, f)
+        return ("v", "verb", u) if u is not None else None
+    if pos == "N":
+        if not (f & CASES):
+            return None
+        result = declension(lang, lemma, paradigms.get((lemma, pos), []))
+        return ("n", result[0], result[1]) if result else None
+    if pos == "ADJ":
+        # Degree and adjective class must both be known; do not guess from tags.
+        return None
+    if pos == "PRO":
+        # Personal, demonstrative, relative, reflexive etc. are not reliably
+        # distinguished by UniMorph POS alone. Keep out until lexicon reviewed.
+        return None
+    return None
+
+def build(lang, url):
+    records = []
+    paradigms = collections.defaultdict(list)
+    total = 0
+    with urllib.request.urlopen(url, timeout=240) as response:
+        for raw in response:
+            try:
+                lemma, form, tags = raw.decode("utf-8").strip().split("\t")[:3]
+            except (UnicodeDecodeError, ValueError):
+                continue
+            total += 1
+            if not lemma or not form or len(form) > 70:
+                continue
+            features = frozenset(tags.split(";"))
+            pos = next((p for p in ("N", "ADJ", "PRO", "V") if p in features), None)
+            if pos is None:
+                continue
+            records.append((lemma, form, tags, pos))
+            if pos == "N":
+                paradigms[(lemma, pos)].append((form, features))
+    groups = collections.defaultdict(list)
+    rejected = collections.Counter()
+    for lemma, form, tags, pos in records:
+        category = classify(lang, lemma, tags.split(";"), paradigms)
+        if category is None:
+            rejected[pos] += 1
+            continue
+        filename, subtype, unit = category
+        groups[filename].append([lemma, form, tags, unit, subtype])
+    files = {}
+    for category, rows in groups.items():
+        rows.sort(key=lambda r: (r[3], r[0], r[1], r[2]))
+        filename = f"{lang}-{category}.json"
+        (OUT / filename).write_text(json.dumps({
+            "source": url, "language": lang, "category": category,
+            "rows": rows}, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+        files[category] = {"path": filename, "records": len(rows)}
+    manifest = {
+        "language": lang, "source": url, "source_records": total,
+        "classified_records": sum(len(rows) for rows in groups.values()),
+        "excluded_by_pos": dict(rejected), "files": files,
+        "policy": "Conservative; unknown declensions, adjective classes, pronoun subclasses and unsupported features are withheld.",
+    }
+    (OUT / f"{lang}-manifest.json").write_text(
+        json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8")
+    print(lang, json.dumps(manifest, ensure_ascii=False))
+
+if __name__ == "__main__":
+    for language, source in SOURCES.items():
+        build(language, source)
