@@ -33,7 +33,7 @@ for filename in sys.argv[1:]:
         for table in body.findall('w:tbl', NS):
             grid = table.findall('w:tblGrid/w:gridCol', NS)
             if grid:
-                assert sum(int(attr(c, 'w')) for c in grid) == 8500, 'Table exceeds text area'
+                assert sum(int(attr(c, 'w')) for c in grid) == 8788, 'Table exceeds text area'
             spans = table.findall('w:tr/w:tc/w:tcPr/w:gridSpan', NS)
             if spans:
                 row = table.find('w:tr', NS)
@@ -42,5 +42,7 @@ for filename in sys.argv[1:]:
         footer = ET.fromstring(archive.read('word/footer1.xml'))
         fields = ''.join(footer.itertext())
         assert 'PAGE' in fields and 'NUMPAGES' in fields, 'Page fields missing'
-        assert doc.find('.//w:pgMar', NS).get('{'+NS['w']+'}left') == '1700'
+        margins = doc.find('.//w:pgMar', NS)
+        for side, value in {'left':'1701', 'top':'1417', 'right':'1417', 'bottom':'1417'}.items():
+            assert attr(margins, side) == value, 'Incorrect '+side+' margin'
     print('PASS:', Path(filename).name, 'bordered paragraphs, merged titles, widths, XML and page fields')

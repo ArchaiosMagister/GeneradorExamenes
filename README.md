@@ -131,3 +131,5 @@ Las tablas de declinación incorporan el artículo y el lema en una fila superio
 El formato se aplica a la vista previa, impresión/PDF y exportación DOCX de Griego I. Los documentos siguen siendo editables; el corpus y los criterios de selección de v20 se conservan. La extensión aumenta cuando se solicitan más ejercicios o unidades. La referencia UD3–4 se ha comprobado en dos páginas tanto desde el navegador como desde Word renderizado.
 
 Además de las pruebas de generación, `scripts/test-greek-ui.cjs` comprueba la estructura visual, imprime un PDF y exporta diez DOCX. `python3 scripts/check-greek-docx.py ARCHIVO.docx` verifica que la cabecera sean párrafos con bordes, las tablas tengan celdas combinadas sin sombreado y existan campos de numeración de página. Se han renderizado y revisado las tres modalidades con y sin soluciones. No se ha iniciado la compilación de macOS.
+
+Ajuste de márgenes: 3 cm a la izquierda y 2,5 cm arriba, derecha y abajo, en impresión y Word. Más espacio superior en la cabecera; tablas ajustadas al ancho disponible.

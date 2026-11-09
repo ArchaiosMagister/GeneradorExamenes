@@ -79,7 +79,7 @@ button:disabled{opacity:.55;cursor:not-allowed}
 </style><style id="greek-reference-layout">
 /* UD3–4 reference: Palatino 10.5 pt, bordered paragraphs and open-corner grids. */
 .paper .exam-sheet{font-family:"Palatino Linotype",Palatino,"Book Antiqua",serif;font-size:10.5pt;line-height:1.45;color:#000;overflow-wrap:normal}
-.paper .exam-header{border:.5pt solid #000;margin:0 -3pt 6pt;padding:0 6pt;break-inside:avoid}
+.paper .exam-header{border:.5pt solid #000;margin:0 -3pt 6pt;padding:3pt 6pt 0;break-inside:avoid}
 .paper .exam-header-line{display:grid;grid-template-columns:minmax(0,1fr) 25%;gap:8pt;min-height:19pt;align-items:center;margin:0;font-size:10.5pt;font-weight:bold;line-height:19pt}
 .paper .exam-question{margin:5pt 0 5pt 18pt;font-size:10.5pt;line-height:1.4;break-after:avoid}
 .paper .exam-q-number{display:inline-block;min-width:15pt}
@@ -96,7 +96,7 @@ button:disabled{opacity:.55;cursor:not-allowed}
 .paper .exam-table-gap{margin:0;height:7pt;line-height:7pt}
 .paper .exam-item{margin:0 0 0 36pt;padding-left:18pt;text-indent:-18pt;line-height:1.45;break-inside:avoid}
 .paper .exam-letter{display:inline-block;min-width:15pt;text-indent:0}
-.paper .exam-form{min-height:23pt}
+.paper .exam-form{min-height:22pt}
 .paper .exam-sentence{min-height:53pt;padding-bottom:25pt}
 .paper .exam-etymology{display:flex;flex-wrap:wrap;gap:12pt 34pt;margin:0 0 8pt 36pt;min-height:20pt}
 .paper .exam-etymology span{min-width:143pt}
@@ -106,6 +106,7 @@ button:disabled{opacity:.55;cursor:not-allowed}
 .paper .exam-grade{font-size:10.5pt;margin:12pt 0}
 .paper .exam-sheet #answerkey h2,.paper .exam-sheet #answerkey h3{font-size:10.5pt;text-align:left}
 @media(max-width:500px){.paper .exam-header-line{grid-template-columns:minmax(0,1fr) 30%;gap:4pt;line-height:1.4;padding:3pt 0}.paper .exam-sheet th,.paper .exam-sheet td{padding:0 2pt;font-size:9pt}.paper .exam-nouns tbody th{white-space:normal}.paper .exam-item{margin-left:12pt}.paper .exam-etymology{margin-left:12pt}.paper .exam-sheet .final-gloss{columns:1}}
+@page{size:A4;margin:25mm 25mm 25mm 30mm}
 @page greek-exam{size:A4;margin:25mm 25mm 25mm 30mm;@bottom-center{content:counter(page) " | " counter(pages);font-family:Palatino,"Palatino Linotype",serif;font-size:9pt;color:black}}
 @media print{.layout:has(.exam-sheet){margin:0!important}.exam-sheet{page:greek-exam}.paper .exam-header{margin:0 0 6pt;padding:5pt 3pt 0}.paper .exam-page-break{break-before:page}.paper .exam-paradigm,.paper .exam-pronouns{break-inside:avoid}.paper .exam-sheet p{color:#000}.paper .exam-sheet .final-gloss{columns:2}.paper .exam-header-line{grid-template-columns:minmax(0,1fr) 25%;line-height:19pt;padding:0}.paper .exam-sheet th,.paper .exam-sheet td{font-size:10.5pt}.paper .exam-item{margin-left:36pt}.paper .exam-etymology{margin-left:36pt}}
 </style><header class="top"><h1>Generador de exámenes · Latín y griego</h1><p>Versión 21 · Genera, revisa y exporta exámenes de Latín y Griego sin conexión · borradores recuperables</p></header><nav class="vocab-tabbar" aria-label="Secciones de la aplicación"><button id="vmShowExam" class="active" type="button">Generador de exámenes</button><button id="vmShowList" type="button">Vocabulario exigible por unidad</button></nav><div class="quick-actions no-print" aria-label="Acciones rápidas"><span class="quick-label">Examen</span><button type="button" id="quickGenerate">Generar</button><button type="button" id="quickWord" class="secondary">Descargar Word</button><button type="button" id="quickWordAnswers" class="secondary">Word con soluciones</button><span class="quick-tip">La vista previa se puede editar antes de exportar.</span></div>
@@ -253,8 +254,8 @@ function wordTable(table){
  if(table.classList.contains('exam-paradigm')||table.classList.contains('exam-pronouns'))return wordExamTable(table);
  const rows=[...table.querySelectorAll('tr')];
  if(!rows.length)return '';
- const cols=Math.max(...rows.map(r=>r.children.length),1),w=Math.floor(9300/cols);
- let out='<w:tbl><w:tblPr><w:tblW w:w="9300" w:type="dxa"/><w:tblBorders>'+
+ const cols=Math.max(...rows.map(r=>r.children.length),1),w=Math.floor(8788/cols);
+ let out='<w:tbl><w:tblPr><w:tblW w:w="8788" w:type="dxa"/><w:tblBorders>'+
  ['top','left','bottom','right','insideH','insideV'].map(x=>`<w:${x} w:val="single" w:sz="4" w:color="AAB4C0"/>`).join('')+
  '</w:tblBorders><w:tblCellMar><w:top w:w="75" w:type="dxa"/><w:bottom w:w="75" w:type="dxa"/><w:left w:w="100" w:type="dxa"/><w:right w:w="100" w:type="dxa"/></w:tblCellMar></w:tblPr>';
  for(const row of rows){out+='<w:tr>';
@@ -268,8 +269,8 @@ function wordGlossTable(el){
  if(el.closest('.exam-sheet'))return wordExamGloss(el);
  const items=[...el.children].filter(x=>x.classList.contains('gloss-item'));
  if(!items.length)return '';
- const half=Math.ceil(items.length/2),w=4650;
- let out='<w:tbl><w:tblPr><w:tblW w:w="9300" w:type="dxa"/><w:tblLayout w:type="fixed"/><w:tblCellMar><w:top w:w="25" w:type="dxa"/><w:bottom w:w="25" w:type="dxa"/><w:left w:w="65" w:type="dxa"/><w:right w:w="150" w:type="dxa"/></w:tblCellMar></w:tblPr><w:tblGrid><w:gridCol w:w="4650"/><w:gridCol w:w="4650"/></w:tblGrid>';
+ const half=Math.ceil(items.length/2),w=4394;
+ let out='<w:tbl><w:tblPr><w:tblW w:w="8788" w:type="dxa"/><w:tblLayout w:type="fixed"/><w:tblCellMar><w:top w:w="25" w:type="dxa"/><w:bottom w:w="25" w:type="dxa"/><w:left w:w="65" w:type="dxa"/><w:right w:w="150" w:type="dxa"/></w:tblCellMar></w:tblPr><w:tblGrid><w:gridCol w:w="4394"/><w:gridCol w:w="4394"/></w:tblGrid>';
  for(let i=0;i<half;i++){
   out+='<w:tr>';
   for(const item of [items[i],items[i+half]]){
@@ -305,7 +306,7 @@ function wordExamHeader(el){
  // Two adjacent, identically bordered paragraphs form one Word border group.
  // No layout table, text box, or raster image is used for the header.
  const border='<w:pBdr>'+['top','left','bottom','right'].map(side=>'<w:'+side+' w:val="single" w:sz="4" w:space="'+(side==='top'?5:side==='bottom'?2:4)+'" w:color="000000"/>').join('')+'</w:pBdr>';
- return [...el.children].map((p,i)=>'<w:p><w:pPr><w:keepNext/><w:keepLines/><w:tabs><w:tab w:val="left" w:pos="6360"/></w:tabs><w:ind w:left="45" w:right="45"/><w:spacing w:before="0" w:after="0" w:line="'+(i===0?390:380)+'" w:lineRule="exact"/>'+border+'</w:pPr>'+([...p.children].length===2?wordInline(p.children[0],true)+'<w:r><w:tab/></w:r>'+wordInline(p.children[1],true):wordInline(p,true))+'</w:p>').join('')+'<w:p><w:pPr><w:spacing w:before="0" w:after="0" w:line="50" w:lineRule="exact"/></w:pPr></w:p>';
+ return [...el.children].map((p,i)=>'<w:p><w:pPr><w:keepNext/><w:keepLines/><w:tabs><w:tab w:val="left" w:pos="6591"/></w:tabs><w:ind w:left="45" w:right="45"/><w:spacing w:before="0" w:after="0" w:line="'+(i===0?390:380)+'" w:lineRule="exact"/>'+border+'</w:pPr>'+([...p.children].length===2?wordInline(p.children[0],true)+'<w:r><w:tab/></w:r>'+wordInline(p.children[1],true):wordInline(p,true))+'</w:p>').join('')+'<w:p><w:pPr><w:spacing w:before="0" w:after="0" w:line="50" w:lineRule="exact"/></w:pPr></w:p>';
 }
 function wordExamParagraph(el){
  const cls=el.classList,props=['<w:keepLines/>'];let runs=wordInline(el);
@@ -329,8 +330,9 @@ function wordExamTable(table){
  const rows=[...table.rows],paradigm=table.classList.contains('exam-paradigm'),verb=table.classList.contains('exam-verbs');
  const raw=(table.dataset.colWidths||'').split(',').map(Number);
  const count=Math.max(...rows.map(r=>[...r.cells].reduce((n,c)=>n+(+c.colSpan||1),0)));
- const widths=raw.length===count&&raw.every(n=>Number.isFinite(n)&&n>0)?raw.map(n=>Math.round(n*8500/raw.reduce((a,b)=>a+b,0))):Array(count).fill(Math.floor(8500/count));
- let out='<w:tbl><w:tblPr><w:tblW w:w="8500" w:type="dxa"/><w:tblLayout w:type="fixed"/><w:tblCellMar><w:top w:w="0" w:type="dxa"/><w:bottom w:w="0" w:type="dxa"/><w:left w:w="80" w:type="dxa"/><w:right w:w="80" w:type="dxa"/></w:tblCellMar></w:tblPr><w:tblGrid>'+widths.map(w=>'<w:gridCol w:w="'+w+'"/>').join('')+'</w:tblGrid>';
+ const widths=raw.length===count&&raw.every(n=>Number.isFinite(n)&&n>0)?raw.map(n=>Math.round(n*8788/raw.reduce((a,b)=>a+b,0))):Array(count).fill(Math.floor(8788/count));
+ widths[widths.length-1]+=8788-widths.reduce((a,b)=>a+b,0);
+ let out='<w:tbl><w:tblPr><w:tblW w:w="8788" w:type="dxa"/><w:tblLayout w:type="fixed"/><w:tblCellMar><w:top w:w="0" w:type="dxa"/><w:bottom w:w="0" w:type="dxa"/><w:left w:w="80" w:type="dxa"/><w:right w:w="80" w:type="dxa"/></w:tblCellMar></w:tblPr><w:tblGrid>'+widths.map(w=>'<w:gridCol w:w="'+w+'"/>').join('')+'</w:tblGrid>';
  rows.forEach((row,ri)=>{
   const head=row.parentElement.tagName==='THEAD';let col=0;
   out+='<w:tr><w:trPr><w:cantSplit/><w:trHeight w:val="'+(verb?'452':'482')+'" w:hRule="atLeast"/>'+(head?'<w:tblHeader/>':'')+'</w:trPr>';
@@ -342,8 +344,8 @@ function wordExamTable(table){
 }
 function wordExamGloss(el){
  const items=[...el.children].filter(x=>x.classList.contains('gloss-item')),half=Math.ceil(items.length/2);
- if(!items.length)return '';let out='<w:tbl><w:tblPr><w:tblW w:w="8500" w:type="dxa"/><w:tblLayout w:type="fixed"/><w:tblCellMar><w:top w:w="0" w:type="dxa"/><w:bottom w:w="0" w:type="dxa"/><w:left w:w="0" w:type="dxa"/><w:right w:w="80" w:type="dxa"/></w:tblCellMar></w:tblPr><w:tblGrid><w:gridCol w:w="4600"/><w:gridCol w:w="3900"/></w:tblGrid>';
- for(let i=0;i<half;i++){out+='<w:tr><w:trPr><w:cantSplit/></w:trPr>';[items[i],items[i+half]].forEach((x,j)=>{out+='<w:tc><w:tcPr><w:tcW w:w="'+(j?3900:4600)+'" w:type="dxa"/></w:tcPr><w:p><w:pPr><w:spacing w:before="0" w:after="0" w:line="300" w:lineRule="atLeast"/></w:pPr>'+(x?wordInline(x):'')+'</w:p></w:tc>'});out+='</w:tr>'}return out+'</w:tbl>';
+ if(!items.length)return '';let out='<w:tbl><w:tblPr><w:tblW w:w="8788" w:type="dxa"/><w:tblLayout w:type="fixed"/><w:tblCellMar><w:top w:w="0" w:type="dxa"/><w:bottom w:w="0" w:type="dxa"/><w:left w:w="0" w:type="dxa"/><w:right w:w="80" w:type="dxa"/></w:tblCellMar></w:tblPr><w:tblGrid><w:gridCol w:w="4756"/><w:gridCol w:w="4032"/></w:tblGrid>';
+ for(let i=0;i<half;i++){out+='<w:tr><w:trPr><w:cantSplit/></w:trPr>';[items[i],items[i+half]].forEach((x,j)=>{out+='<w:tc><w:tcPr><w:tcW w:w="'+(j?4032:4756)+'" w:type="dxa"/></w:tcPr><w:p><w:pPr><w:spacing w:before="0" w:after="0" w:line="300" w:lineRule="atLeast"/></w:pPr>'+(x?wordInline(x):'')+'</w:p></w:tc>'});out+='</w:tr>'}return out+'</w:tbl>';
 }
 function exportWord(includeAnswers){
  const paper=$('paper');
