@@ -291,7 +291,7 @@ function buildFinalLexicon(chosen,chosenEntries,selectedSentences,selectedMorph,
  const manual=$('examExtra').value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
  for(const raw of manual){let key=examKey(raw),hit=all.find(x=>examKey(x.entry)===key);if(hit)add(hit);else unresolved.add(raw)}
  for(const sent of selectedSentences){for(const token of sent.text.match(/[\p{L}\p{M}]+/gu)||[]){let hit=findLemmaForForm(token,all);if(hit)add(hit);else unresolved.add(token)}}
- let rows=[...found.values()].filter(x=>glossAccept(x.entry,chosen)).sort((a,b)=>headLex(a.entry).localeCompare(headLex(b.entry),'es'));
+ let rows=[...found.values()].filter(x=>force||glossAccept(x.entry,chosen)).sort((a,b)=>headLex(a.entry).localeCompare(headLex(b.entry),'es'));
  if(!rows.length&&!unresolved.size)return '<h3>'+($('lang').value==='va'?'Vocabulari final':'Vocabulario final')+'</h3><p class="small">No se han identificado lemas para esta selección.</p>';
  let out='<h3>'+($('lang').value==='va'?'Vocabulari final':'Vocabulario final')+'</h3><div class="final-gloss">'+rows.map(x=>{const pos=lexPos(x.entry),entry=x.entry.replace(/\s*\((?:adv\.?|conj\.?|conjunción|adverbio)\)\s*/gi,' ').trim();const gloss=isRequired(x.entry,chosen)?'':': '+esc(quoteGloss(x.meaning||'[TRADUCCIÓN PENDIENTE]'));return '<div class="gloss-item"><i>'+esc(entry)+'</i>'+(pos?' <span class="lex-pos">('+esc(pos)+')</span>':'')+gloss+'</div>'}).join('')+'</div>';
  if(unresolved.size)out+='<p class="notice no-print"><strong>Revisión necesaria:</strong> '+esc([...unresolved].join(', '))+'. Añade sus lemas al campo adicional o corrige la vinculación. No se han asignado enunciados ni traducciones automáticamente a estas formas.</p>';
@@ -1153,7 +1153,7 @@ const greekMaterials={"syllabus": ["El griego como lengua indoeuropea. El alfabe
 const greekModes={
  complete:{es:'1 · Examen completo',va:'1 · Examen complet',points:[1,1,1,0,1,6]},
  morphology:{es:'2 · Examen de morfología',va:'2 · Examen de morfologia',points:[0,0,0,0,0,0]},
- translation:{es:'3 · Examen de traducción',va:'3 · Examen de traducció',points:[0,0,0,0,0,10]}
+ translation:{es:'3 · Examen de traducción',va:'3 · Examen de traducció',points:[0,0,2,0,1,7]}
 };
 const greekKinds=['declension','conjugation','forms','pronouns','etymology','sentences'];
 const greekKindNames={es:['Declinación','Conjugación','Análisis morfológico','Pronombres','Etimología','Análisis y traducción'],va:['Declinació','Conjugació','Anàlisi morfològica','Pronoms','Etimologia','Anàlisi i traducció']};
@@ -1532,7 +1532,7 @@ function generateGreekExam(){
  if($('model').value==='morphology')return generateGreekMorphologyFixed();
  const chosen=greekMarkedUnits(),max=greekLimit(),mode=greekModes[$('model').value]||greekModes.complete;
  const enabled=greekKinds.filter((k,i)=>mode.points[i]>0),pool=greekVerifiedCorpus.filter(x=>x.verified&&greekMorphologyEligible(x,max)&&enabled.includes(x.kind));
- const counts={declension:Math.min(2,countFor('decl')),conjugation:Math.min(2,countFor('verb')),forms:countFor('verb'),pronouns:15,etymology:Math.min(2,countFor('lex')),sentences:countFor('sent')};
+ const counts={declension:Math.min(2,countFor('decl')),conjugation:Math.min(2,countFor('verb')),forms:countFor('forms'),pronouns:15,etymology:Math.min(8,countFor('lex')),sentences:countFor('sent')};
  const result=greekSelectedItems(pool,chosen,counts),sections=[],answers=[];
 
  let total=0,index=0;
@@ -1551,9 +1551,9 @@ function generateGreekExam(){
  const missing=result.missing.map(u=>'UD'+u),notice=!chosen.length?'Selecciona al menos una unidad.':missing.length?'Sin material verificado para cubrir: '+missing.join(', ')+'. No se han inventado ejercicios.':'Cobertura verificada de todas las unidades seleccionadas.';
  const shortfalls=enabled.filter(k=>pool.filter(x=>x.kind===k).length<counts[k]).map(k=>greekKindNames[$('lang').value][greekKinds.indexOf(k)]+': '+pool.filter(x=>x.kind===k).length+' de '+counts[k]);
  $('greekCoverage').textContent=notice+' Gramática acumulativa'+(max>=0?' hasta UD'+max:'')+'.'+(chosen.length&&shortfalls.length?' Material disponible inferior al solicitado ('+shortfalls.join('; ')+'). Se utiliza únicamente el disponible.':'');
- const lemmas=[...new Map(result.items.flatMap(x=>x.lemmas).map(h=>{const x=greekLemma(h);return [examKey(x.entry),x]})).values()].sort((a,b)=>a.entry.localeCompare(b.entry));
- const visibleLemmas=lemmas.filter(x=>glossAccept(x.entry,chosen)&&!String(x.meaning).includes('[Traducción pendiente de revisión]'));
- const gloss=$('autoGloss').checked&&visibleLemmas.length?'<p class="exam-gloss-title"><strong>'+($('lang').value==='va'?'Vocabulari':'Vocabulario')+'</strong></p><div class="final-gloss">'+visibleLemmas.map(x=>'<div class="gloss-item">'+esc(x.entry)+':'+(isRequired(x.entry,chosen)?'':' ‘'+esc(x.meaning)+'’')+'</div>').join('')+'</div>':'';
+ const lemmas=[...new Map(result.items.filter(x=>x.kind==='sentences').flatMap(x=>x.lemmas).map(h=>{const x=greekLemma(h);return [examKey(x.entry),x]})).values()].sort((a,b)=>a.entry.localeCompare(b.entry));
+ const visibleLemmas=lemmas.filter(x=>!String(x.meaning).includes('[Traducción pendiente de revisión]'));
+ const gloss=visibleLemmas.length?'<p class="exam-gloss-title"><strong>'+($('lang').value==='va'?'Vocabulari':'Vocabulario')+' de las oraciones</strong></p><div class="final-gloss">'+visibleLemmas.map(x=>'<div class="gloss-item">'+esc(x.entry)+(isRequired(x.entry,chosen)?'':': ‘'+esc(x.meaning)+'’')+'</div>').join('')+'</div>':'';
  const grade='<p class="exam-grade">Nota sobre '+String(Number(total.toFixed(2))).replace('.',',')+': __________</p>';
  $('paper').innerHTML='<div class="exam-sheet">'+greekExamHeader(chosen,mode)+(chosen.length?sections.join(''):'<p>'+notice+'</p>')+grade+gloss+'<div id="answerkey" class="solutions"><h2>'+tr('key')+'</h2>'+answers.join('')+'</div></div>';
  $('paper').setAttribute('contenteditable','true');$('paper').setAttribute('spellcheck','false');$('solutions').textContent=tr('solutions');refreshManualMorphWords();greekExamControls();
