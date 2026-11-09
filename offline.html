@@ -641,7 +641,7 @@ function generate(){
   sections.push('<p class="exam-question"><strong><span class="exam-q-number">'+(++idx)+'.</span> '+esc(heading)+'</strong></p>'+html);
   answers.push('<li><strong>'+esc(heading)+'</strong>'+solution+'</li>');
  };
- const missing=message=>'<p class="small">'+esc(message)+'</p>';
+ const missing=message=>'<p class="small no-print">'+esc(message)+'</p>';
  const formsCount=countFor('forms');
  if(!translation){
   const nouns=sample(latinExamNominals(chosen),Math.min(3,countFor('decl')));
@@ -786,6 +786,7 @@ function wordGlossTable(el){
  return out+'</w:tbl>';
 }
 function wordBlock(el){
+ if(el.classList?.contains('no-print'))return '';
  if(el.classList?.contains('exam-header'))return wordExamHeader(el);
  if(['exam-question','exam-item','exam-etymology','exam-gloss-title','exam-table-gap','exam-grade'].some(c=>el.classList?.contains(c)))return wordExamParagraph(el);
  if(el.id==='answerkey')return '<w:p><w:pPr><w:pageBreakBefore/></w:pPr></w:p>'+[...el.children].map(wordBlock).join('');
@@ -793,7 +794,23 @@ function wordBlock(el){
  if(el.classList&&el.classList.contains('final-gloss'))return wordGlossTable(el);
  const tag=el.tagName.toLowerCase();
  if(tag==='table')return wordTable(el);
- if(tag==='ol'||tag==='ul')return [...el.children].filter(x=>x.tagName==='LI').map(li=>wordPara(li,'',tag==='ol'?'1':'2')+ [...li.children].filter(e=>e.tagName==='OL'||e.tagName==='UL').map(wordBlock).join('')).join('');
+ if(tag==='ol'||tag==='ul'){
+  const type=el.getAttribute('type')||'';
+  return [...el.children].filter(x=>x.tagName==='LI').map((li,i)=>{
+   const children=[...li.childNodes];
+   const inline=children.filter(n=>n.nodeType!==1||(
+    !['OL','UL'].includes(n.tagName)&&!n.classList?.contains('answer')))
+    .map(n=>wordInline(n)).join('');
+   const alphabetic=tag==='ol'&&['a','A'].includes(type);
+   const letter=alphabetic?String.fromCharCode((type==='a'?97:65)+(i%26))+'. ':'';
+   const pr=alphabetic?'<w:ind w:left="720" w:hanging="360"/>':
+    '<w:numPr><w:ilvl w:val="0"/><w:numId w:val="'+(tag==='ol'?'1':'2')+'"/></w:numPr>';
+   const para='<w:p><w:pPr>'+pr+'</w:pPr>'+(alphabetic?wordRun(letter):'')+inline+'</w:p>';
+   const extras=children.filter(n=>n.nodeType===1&&(
+    ['OL','UL'].includes(n.tagName)||n.classList?.contains('answer'))).map(n=>wordBlock(n)).join('');
+   return para+extras;
+  }).join('');
+ }
  if(tag==='h2')return wordPara(el,'Heading1');
  if(tag==='h3')return wordPara(el,'Heading2');
  if(tag==='h4')return wordPara(el,'Heading3');
