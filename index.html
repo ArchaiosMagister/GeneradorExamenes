@@ -574,21 +574,37 @@ function latinVocabularyExercises(chosen,countParts){
   !/\[TRADUCCI[ÓO]N PENDIENTE\]/i.test(x.meaning));
  const uniqueEntries=[...new Map(vocabWithMeaning.map(x=>[examKey(x.entry),x])).values()];
  const perPart=Math.min(8,countFor('lex'));
- const selected=sample(uniqueEntries,Math.min(perPart*countParts,uniqueEntries.length));
- const a=selected.slice(0,perPart),b=selected.slice(perPart,perPart*2),c=selected.slice(perPart*2,perPart*3);
+ const selected=sample(uniqueEntries,Math.min(perPart*2,uniqueEntries.length));
+ const a=selected.slice(0,perPart),b=selected.slice(perPart,perPart*2);
+ const taken=new Set(selected.map(x=>examKey(x.entry))),usedMeaning=new Set(),c=[];
+ if(countParts>=3)for(const x of uniqueEntries){
+  const meaning=x.meaning.trim().toLowerCase();
+  if(taken.has(examKey(x.entry))||usedMeaning.has(meaning))continue;
+  c.push(x);usedMeaning.add(meaning);if(c.length>=perPart)break;
+ }
  const block=(letter,prompt,rows,render,answer)=>{
-  const body=rows.length?'<ol class="task" type="1">'+rows.map(x=>'<li>'+render(x)+'<div class="answer"></div></li>').join('')+'</ol>':
+  const body=rows.length?'<ol class="task">'+rows.map(x=>'<li>'+render(x)+'<div class="answer"></div></li>').join('')+'</ol>':
    '<p class="notice">Falta vocabulario con significado para este ejercicio.</p>';
   return {html:'<p class="exam-lex-part"><strong>'+letter+'. '+prompt+'</strong></p>'+body,
    answers:rows.map(answer)};
  };
  const parts=[
-  block('a', 'Escribe el significado de los siguientes enunciados latinos.',a,x=>'<i>'+esc(x.entry)+'</i>',x=>x.entry+' — '+x.meaning),
-  block('b', 'Escribe el enunciado latino que corresponde a cada significado.',b,x=>esc(x.meaning),x=>x.meaning+' — '+x.entry),
-  block('c', 'Relaciona cada enunciado latino con su significado.',c,x=>'<i>'+esc(x.entry)+'</i>',x=>x.entry+' — '+x.meaning)
+  block('a','Escribe el significado de los siguientes enunciados latinos.',a,
+   x=>'<i>'+esc(x.entry)+'</i>',x=>x.entry+' — '+x.meaning),
+  block('b','Escribe el enunciado latino correspondiente a cada significado.',b,
+   x=>esc(x.meaning),x=>x.meaning+' — '+x.entry)
  ];
+ if(countParts>=3){
+  const options=[...c].reverse();
+  const body=c.length?
+   '<ol class="task">'+c.map(x=>'<li><i>'+esc(x.entry)+'</i> → ______</li>').join('')+'</ol>'+
+   '<p class="exam-item">Opciones: '+options.map((x,i)=>String.fromCharCode(65+i)+'. '+esc(x.meaning)).join(' · ')+'</p>':
+   '<p class="notice">No hay suficientes significados diferentes para completar las correspondencias.</p>';
+  parts.push({html:'<p class="exam-lex-part"><strong>c. Relaciona cada enunciado latino con su significado.</strong></p>'+body,
+   answers:c.map(x=>x.entry+' — '+String.fromCharCode(65+options.indexOf(x))+'. '+x.meaning)});
+ }
  return {body:parts.slice(0,countParts).map(x=>x.html).join(''),
-  answers:parts.slice(0,countParts).flatMap(x=>x.answers),used:selected};
+  answers:parts.slice(0,countParts).flatMap(x=>x.answers),used:[...a,...b,...c]};
 }
 function examCultureParts(chosen,count=4){
  const kind=$('cultureType').value;
