@@ -770,7 +770,7 @@ refreshCourse=function(){
  legacyRefreshCourse();
  if(greek){$('courseStatus').textContent='Griego I · Temario UD0–14. Ejercicios del corpus docente y paradigmas explícitos revisados. Las importaciones genéricas no habilitan ejercicios griegos automáticamente.';if(!greekMarkedUnits().length){document.querySelectorAll('.unit-choice').forEach(e=>e.checked=units[+e.value]==='UD1');generate()}}
 };
-$('model').onchange=()=>{if(currentCourse()==='greek1')greekApplyMode();else{for(const id of ['decl','verb','lex','sent'])$(id).checked=models[$('model').value].includes(id);generate()}};
+$('model').onchange=()=>{if(currentCourse()==='greek1')greekApplyMode();else{for(const id of ['decl','verb','lex','sent'])$(id).checked=models[$('model').value].includes(id);$('cultureOption').hidden=currentCourse()!=='latin4'||$('model').value!=='mixto';$('culture').disabled=$('cultureOption').hidden;if($('cultureOption').hidden)$('culture').checked=false;generate()}};
 $('course').onchange=()=>{document.querySelectorAll('.unit-choice').forEach(e=>e.checked=false);refreshCourse()};
 const legacyTranslateUI=translateUI;
 translateUI=function(){legacyTranslateUI();if(currentCourse()==='greek1')for(const o of $('model').options)o.textContent=greekModes[o.value][$('lang').value]};
