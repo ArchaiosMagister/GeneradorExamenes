@@ -607,49 +607,43 @@ function examCultureParts(chosen,count=4){
 }
 
 function generateLatinMorphologyReference(){
- const chosen=selectedUnits(),config=morphConfig(),allowed=latinSharedBank.vocabulary(currentCourse(),chosen);
- const unitLimit=Math.max(0,...chosen.map(u=>Number(String(u).replace(/\D/g,''))||0));
- const syllabus=morphologySyllabus('latin',unitLimit);
- const allowThird=syllabus.some(t=>/Tercera declinación/.test(t));
- const allowFourthFifth=syllabus.some(t=>/Cuarta y quinta declinación/.test(t));
- const allowPerfect=syllabus.some(t=>/Perfecto de indicativo/.test(t));
- const allowFuture=syllabus.some(t=>t==='Futuro');
- const allowParticiples=syllabus.some(t=>t==='Participios');
- const allowAdjectives=syllabus.some(t=>t==='Adjetivos');
- const nounPool=latinSharedBank.paradigms(currentCourse(),chosen,'noun').filter(y=>!isProperNounLemma(y.x.entry));
- const adjPool=allowAdjectives?latinSharedBank.paradigms(currentCourse(),chosen,'adjective'):[];
- const verbs=sample(latinSharedBank.paradigms(currentCourse(),chosen,'verb'),config.verbs);
- const nominal=sample(latinSharedBank.paradigms(currentCourse(),chosen,'nominal').filter(y=>($('morphCategory-'+(noun(y.x)?'n':'adj'))?.checked!==false)),config.words);
- const pairPool=[];
- for(const a of adjPool){for(const n of nounPool){
-  const adj=a.x.entry.split(',')[0].trim(),sub=n.x.entry.split(',')[0].trim();
-  if(!adj||!sub||a.x.entry===n.x.entry)continue;
-  // The adjective is supplied in its dictionary form, not as an inflected agreement.
-  pairPool.push({text:a.x.entry+' + '+n.x.entry,adj,noun:sub});
- }}
- const pairs=sample(pairPool,config.offer),lang=$('lang').value,va=lang==='va';
- const rowNames=va?['Nominatiu','Vocatiu','Acusatiu','Genitiu','Datiu','Ablatiu']:['Nominativo','Vocativo','Acusativo','Genitivo','Dativo','Ablativo'];
- const paradigm=()=>'<table class="exam-paradigm exam-nouns reference-morph-table" data-col-widths="16,42,42"><thead><tr><th class="exam-corner"></th><th>Singular</th><th>Plural</th></tr></thead><tbody>'+rowNames.map(n=>'<tr><th>'+n+'</th><td></td><td></td></tr>').join('')+'</tbody></table>';
- const bankRows=latinSharedBank.morphologyRows('verb',unitLimit);
- const bankItems=sample(bankRows,Math.min(10,countFor('verb'))).map(([lemma,form,tags])=>({form,entry:lemma,label:unimorphVerbLabel(tags)}));
- const verbItems=bankItems.length?bankItems:verbs.map(({x,p})=>{const valid=p.forms.map((form,i)=>({form,label:p.labels[i]})).filter(y=>!isProperNounLemma(x.entry)||/singular/i.test(y.label));const item=sample(valid,1)[0];return item?{form:item.form,entry:x.entry,label:item.label}:null}).filter(Boolean);
- const nominalRows=latinSharedBank.morphologyRows('nominal',unitLimit);
- const verifiedNominals=sample(nominalRows,Math.min(10,countFor('decl'))).map(row=>({
-  form:row[1],entry:row[0],label:unimorphNominalLabel(row)}));
- const nomItems=verifiedNominals.length?verifiedNominals:nominal.map(({x,p})=>{
-  const i=Math.floor(Math.random()*p.forms.length);return {form:p.forms[i],entry:x.entry,label:p.labels[i]}});
- const head=latinExamHeader(chosen);
- const first='<p class="exam-question">1. '+(va?'Tria '+config.decline+' de '+config.offer+' sintagmes per declinar (2 p.):':'Elige '+config.decline+' de '+config.offer+' sintagmas para declinar (2 p.):')+'</p>'+
- pairs.map((p,i)=>'<p class="exam-item">'+String.fromCharCode(97+i)+'. <i>'+esc(p.text)+'</i></p>').join('')+
- (pairs.length<config.offer?'<p class="exam-item">'+(va?'No hi ha prou parelles verificades en aquestes unitats.':'No hay suficientes parejas verificadas en estas unidades.')+'</p>':'')+paradigm()+paradigm();
- const italicLemma=(entry)=>{const cleaned=String(entry).trim().match(/^(.*?)(?:\s*\(([1-4]ª|mx\.)\))?$/);const lemma=cleaned?cleaned[1].trim():String(entry).trim();const conjugation=cleaned&&cleaned[2]?cleaned[2]:'';return '(<i>'+esc(lemma)+'</i>'+(conjugation?' '+esc(conjugation):'')+')'};
- const second='<p class="exam-question">2. '+(va?'Analitza morfològicament els verbs següents (1 p.):':'Analiza morfológicamente los siguientes verbos (1 p.):')+'</p>'+
- '<table class="exam-paradigm reference-morph-table reference-verb-table" data-col-widths="28,25,24,23"><thead><tr><th>'+(va?'Verb':'Verbo')+'</th><th>'+(va?'Persona i núm.':'Persona y nº')+'</th><th>'+(va?'Temps':'Tiempo')+'</th><th>'+(va?'Veu':'Voz')+'</th></tr></thead><tbody>'+
- verbItems.map(v=>'<tr><td><i>'+esc(v.form)+'</i> '+italicLemma(v.entry)+'</td><td></td><td></td><td></td></tr>').join('')+'</tbody></table>';
- const third='<p class="exam-question">3. '+(va?'Analitza morfològicament les paraules següents (1 p.):':'Analiza morfológicamente las siguientes palabras (1 p.):')+'</p>'+
- nomItems.map((v,i)=>'<p class="exam-item reference-analysis-item">'+String.fromCharCode(97+i)+'. <i>'+esc(v.form)+'</i> '+italicLemma(v.entry)+':<span class="reference-answer-line"></span></p>').join('');
- const answers='<div id="answerkey" class="solutions"><h2>'+(va?'Solucionari orientatiu':'Solucionario orientativo')+'</h2><p>'+(va?'Les declinacions s’han de revisar segons la concordança i el paradigma corresponent.':'Las declinaciones deben revisarse según la concordancia y el paradigma correspondiente.')+'</p><ol><li>'+pairs.map(x=>esc(x.text)).join('; ')+'</li><li>'+verbItems.map(v=>esc(v.form+' — '+v.label+'; '+v.entry)).join('<br>')+'</li><li>'+nomItems.map(v=>esc(v.form+' — '+v.label+'; '+v.entry)).join('<br>')+'</li></ol></div>';
- $('paper').innerHTML='<div class="exam-sheet reference-morph-exam">'+head+first+second+third+'<div class="exam-grade">'+(va?'Nota sobre 4':'Nota sobre 4')+'</div><div class="exam-grade">'+(va?'Nota sobre 10':'Nota sobre 10')+'</div>'+answers+'</div>';
+ const chosen=selectedUnits(),cfg=morphConfig(),va=$('lang').value==='va';
+ const nouns=latinDeclensionItems(chosen,cfg.offer);
+ const countTables=Math.min(cfg.decline,Math.max(nouns.length,0));
+ const first='<p class="exam-question">1. '+(va?'Tria '+cfg.decline+' de '+cfg.offer+' paraules per declinar (2 p.):':'Elige '+cfg.decline+' de '+cfg.offer+' palabras para declinar (2 p.):')+'</p>'+
+  nouns.map((x,i)=>'<p class="exam-item">'+String.fromCharCode(97+i)+'. <i>'+esc(x.entry)+'</i></p>').join('')+
+  (nouns.length<cfg.offer?'<p class="notice">No hay suficientes lemas declinables comprobados para estas unidades.</p>':'')+
+  Array.from({length:countTables},latinEmptyParadigm).join('');
+ const verbPool=latinSharedBank.paradigms(currentCourse(),chosen,'verb').flatMap(({x,p})=>
+  p.forms.map((form,i)=>({form,entry:x.entry,
+   label:p.labels[i]+'; presente de indicativo; voz activa'})).filter(x=>x.form));
+ const verbs=sample(verbPool,cfg.verbs);
+ const second='<p class="exam-question">2. '+(va?'Analitza morfològicament les formes verbals següents (1 p.):':'Analiza morfológicamente las siguientes formas verbales (1 p.):')+'</p>'+
+  '<table class="exam-paradigm reference-morph-table reference-verb-table" data-col-widths="28,25,24,23"><thead><tr><th>'+(va?'Forma verbal':'Forma verbal')+'</th><th>'+(va?'Persona i nombre':'Persona y número')+'</th><th>'+(va?'Temps':'Tiempo')+'</th><th>'+(va?'Veu':'Voz')+'</th></tr></thead><tbody>'+
+  verbs.map(x=>'<tr><td><i>'+esc(x.form)+'</i> ('+esc(x.entry)+')</td><td></td><td></td><td></td></tr>').join('')+'</tbody></table>'+
+  (verbs.length<cfg.verbs?'<p class="notice no-print">Faltan formas verbales documentadas para completar la cantidad solicitada.</p>':'');
+ const pronouns=sample(latinPronounsFor(chosen),Math.min(6,cfg.words));
+ const pronounTask=pronouns.length?
+  '<p class="exam-question">3. '+(va?'Analitza els pronoms: tipus, cas, gènere i nombre (1 p.):':'Analiza los pronombres: tipo, caso, género y número (1 p.):')+'</p>'+
+  '<table class="exam-paradigm reference-morph-table"><thead><tr><th>Forma</th><th>Tipo</th><th>Caso</th><th>Género</th><th>Número</th></tr></thead><tbody>'+
+  pronouns.map(x=>'<tr><td><i>'+esc(x.form)+'</i></td><td></td><td></td><td></td><td></td></tr>').join('')+'</tbody></table>':'';
+ const categories={sustantivo:$('morphCategory-n')?.checked!==false,adjetivo:$('morphCategory-adj')?.checked!==false,
+  verbo:true,pronombre:$('morphCategory-pro')?.checked!==false};
+ const words=latinVariableForms(chosen,cfg.words).filter(x=>categories[x.type]);
+ const questionNumber=pronouns.length?4:3;
+ const finalTask='<p class="exam-question">'+questionNumber+'. '+(va?'Analitza morfològicament les paraules variables següents (1 p.):':'Analiza morfológicamente las siguientes palabras variables (1 p.):')+'</p>'+
+  words.map((x,i)=>'<p class="exam-item reference-analysis-item">'+String.fromCharCode(97+i)+'. <i>'+esc(x.form)+'</i> ('+esc(x.entry)+'): <span class="reference-answer-line"></span></p>').join('')+
+  (words.length<cfg.words?'<p class="notice no-print">Hay menos formas comprobadas de las solicitadas para estas unidades.</p>':'');
+ const solved=[
+  '<li>'+nouns.map(x=>esc(latinParadigmSolution(x))).join('<p></p>')+'</li>',
+  '<li>'+verbs.map(x=>esc(x.form+' — '+x.label+'; '+x.entry)).join('<p></p>')+'</li>',
+  ...(pronouns.length?['<li>'+pronouns.map(x=>esc(x.form+' — '+x.type+'; '+x.case+'; '+x.gender+'; '+x.number)).join('<p></p>')+'</li>']:[]),
+  '<li>'+words.map(x=>esc(x.form+' — '+x.answer)).join('<p></p>')+'</li>'
+ ];
+ const answers='<div id="answerkey" class="solutions"><h2>'+tr('key')+'</h2><ol>'+solved.join('')+'</ol></div>';
+ const total=pronouns.length?5:4;
+ $('paper').innerHTML='<div class="exam-sheet reference-morph-exam">'+latinExamHeader(chosen)+first+second+pronounTask+finalTask+
+  '<p class="exam-grade">Nota sobre '+total+': __________</p><p class="exam-grade">Nota sobre 10: __________</p>'+answers+'</div>';
  $('paper').setAttribute('contenteditable','true');$('paper').setAttribute('spellcheck','false');
  $('solutions').textContent=tr('solutions');refreshManualMorphWords();
 }
