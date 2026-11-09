@@ -282,8 +282,8 @@ function lexPos(entry){let m=String(entry).match(/\((adv\.?|conj\.?|adverbio|con
 function quoteGloss(text){return '\u0027'+String(text).trim().replace(/^[\u0027\u2018\u2019]+|[\u0027\u2018\u2019]+$/g,'')+'\u0027'}
 function glossType(entry){const e=String(entry);if(/\((?:adv\.?|conj\.?|adverbio|conjunción|prep\.?)\)/i.test(e))return 'other';if(currentCourse()==='greek1'){if(/(?:ω|ομαι|μι)(?:\s|$|,)/u.test(e))return 'verbs';if(/(?:ος,\s*-[αη],\s*-ον|ος,\s*-ον|ύς,\s*εῖα,\s*ύ)/u.test(e))return 'adjectives';if(/,\s*[-–]/u.test(e))return 'nouns';return 'other'}if(mVerb(e)||verb({entry:e}))return 'verbs';if(mNoun(e)||noun({entry:e}))return 'nouns';if(adjective({entry:e}))return 'adjectives';return 'other'}
 function glossAccept(entry,chosen){const required=isRequired(entry,chosen),scope=$('glossScope').value;if(scope==='outside'&&required||scope==='required'&&!required)return false;return $('gloss'+({nouns:'Nouns',verbs:'Verbs',adjectives:'Adjectives',other:'Other'}[glossType(entry)])).checked}
-function buildFinalLexicon(chosen,chosenEntries,selectedSentences,selectedMorph,selectedLex){
- if(!$('autoGloss').checked)return '';
+function buildFinalLexicon(chosen,chosenEntries,selectedSentences,selectedMorph,selectedLex,force=false){
+ if(!$('autoGloss').checked&&!force)return '';
  const all=currentCourse()==='greek1'?vocab.filter(x=>courseOf(x)==='greek1'):latinSharedBank.vocabulary(currentCourse());let found=new Map(),unresolved=new Set();
  function add(x){if(!x)return;let k=examKey(x.entry);if(k&&!found.has(k))found.set(k,x)}
  for(const x of selectedMorph)add(x);
@@ -682,16 +682,68 @@ function latinExamHeader(chosen){
   '<p class="exam-header-line"><span>'+(va?'Nom i cognoms:':'Nombre y apellidos:')+'</span><span>'+(va?'Data:':'Fecha:')+'</span></p>'+
   '</div>';
 }
-function generate(){if(currentCourse()==='greek1')return generateGreekExam();if($('model').value==='morf')return generateLatinMorphologyReference();const onlyTranslation=$('model').value==='mixto';let chosen=selectedUnits(),allowed=latinSharedBank.vocabulary(currentCourse(),chosen),n=Math.max(1,Math.min(12,+$('amount').value||5)),sections=[],answers=[],idx=0,selectedMorph=[],selectedLex=[],selectedSentences=[];const add=(title,body,sol)=>{sections.push(`<p class="exam-question"><strong><span class="exam-q-number">${++idx}.</span> ${esc(title)}</strong></p>${body}`);answers.push(`<li><strong>${esc(title)}</strong><ol>${sol.map(t=>`<li>${esc(t)}</li>`).join('')}</ol></li>`)};
-if($('decl').checked&&!onlyTranslation&&currentCourse()!=='greek1'){let pool=latinSharedBank.paradigms(currentCourse(),chosen,'nominal');let selected=sample(pool,countFor('decl'));selectedMorph.push(...selected.map(y=>y.x));add(tr('declTitle'),`<p class="small">${tr('declHelp')}</p><div class="forms">${selected.map(({p})=>{let i=Math.floor(Math.random()*p.forms.length);p._i=i;return `<div><b>${esc(p.forms[i])}</b><div class="answer"></div></div>`}).join('')}</div>`,selected.map(({p})=>`${p.forms[p._i]} — ${p.labels[p._i]}; ${p.entry}`))}
-if($('verb').checked&&!onlyTranslation&&currentCourse()!=='greek1'){let pool=latinSharedBank.paradigms(currentCourse(),chosen,'verb');let selected=sample(pool,countFor('verb'));selectedMorph.push(...selected.map(y=>y.x));add(tr('verbTitle'),`<p class="small">${tr('verbHelp')}</p><div class="forms">${selected.map(({p})=>{let i=Math.floor(Math.random()*6);p._i=i;return `<div><b>${esc(p.forms[i])}</b><div class="answer"></div></div>`}).join('')}</div>`,selected.map(({p})=>`${p.forms[p._i]} — ${p.labels[p._i]}, ${tr('pres')}; ${p.entry}`))}
-if(currentCourse()==='greek1'&&$('decl').checked){const ex=greekExercise(allowed,'noun');selectedMorph.push(...ex.entries);add(ex.title,ex.body,ex.solutions)}
-if(currentCourse()==='greek1'&&$('verb').checked){const ex=greekExercise(allowed,'verb');selectedMorph.push(...ex.entries);add(ex.title,ex.body,ex.solutions)}
-if($('lex').checked&&!onlyTranslation){let selected=sample(allowed,countFor('lex'));selectedLex.push(...selected);add(tr('lexTitle'),`<ol class="task">${selected.map(x=>`<li>${esc(x.entry)}<div class="answer"></div></li>`).join('')}</ol>`,selected.map(x=>`${x.entry}: ${x.meaning}${$('lang').value==='va'?' (glossa original en castellà; traducció valenciana pendent de revisió)':''}`))}
-if($('sent').checked||onlyTranslation){let selected=sample(latinSharedBank.sentences(currentCourse(),chosen),countFor('sent'));selectedSentences.push(...selected);const heading=onlyTranslation?($('lang').value==='va'?'Tradueix les oracions següents':'Traduce las siguientes oraciones'):tr('sentTitle');const task=selected.length?`<ol class="task">${selected.map(x=>`<li><i>${esc(x.text)}</i><div class="answer"></div><div class="answer"></div></li>`).join('')}</ol>`:'<p class="small">No hay oraciones verificadas disponibles para las unidades seleccionadas.</p>';add(heading,task,selected.map(x=>`${x.text} — ${$('lang').value==='va'?'Traducció valenciana pendent de revisió':x.sol}`))}
-if($('culture').checked&&currentCourse()==='latin4'&&$('model').value==='tablas'){let kind=$('cultureType').value;let pool=culture.filter(x=>x.course==='latin4'&&x.units.some(u=>chosen.includes(u))&&(kind==='all'||kind===x.type));let selected=sample(pool,countFor('culture'));if(!selected.length){sections.push(`<p class="exam-question"><strong><span class="exam-q-number">${++idx}.</span> ${esc(tr('cultureTitle'))}</strong></p><p class="small">${$('lang').value==='va'?'No hi ha preguntes de cultura per a aquestes unitats i tipus. Importa preguntes al banc.':'No hay preguntas de cultura para estas unidades y tipo. Importa preguntas al banco.'}</p>`)}else add(tr('cultureTitle'),`<ol class="task">${selected.map(x=>{let q=$('lang').value==='va'&&x.question_va?x.question_va:x.question;let opts=x.type==='mc'&&x.options?.length?`<ol type="A">${x.options.map(o=>`<li>${esc(o)}</li>`).join('')}</ol>`:'';let tf=x.type==='tf'?` <span class="small">(${$('lang').value==='va'?'Vertader / Fals':'Verdadero / Falso'})</span>`:'';return `<li>${esc(q)}${tf}${opts}<div class="answer"></div>${x.type==='essay'?'<div class="answer"></div><div class="answer"></div>':''}</li>`}).join('')}</ol>`,selected.map(x=>`${x.question} — ${x.answer}${$('lang').value==='va'&&!x.answer_va?' (resposta en castellà pendent de revisió)':''}`))}
-$('paper').innerHTML=`<div class="exam-sheet latin-standard-exam${onlyTranslation?' latin-translation-exam':''}">${latinExamHeader(chosen)}${sections.join('')||`<p>${tr('empty')}</p>`}${buildFinalLexicon(chosen,allowed,selectedSentences,selectedMorph,selectedLex)}<p class="exam-grade">Nota: __________</p><div id="answerkey" class="solutions"><h2>${tr('key')}</h2><ol>${answers.join('')}</ol></div></div>`;
-$('paper').setAttribute('contenteditable','true');$('paper').setAttribute('spellcheck','false');$('solutions').textContent=tr('solutions');refreshManualMorphWords();}
+function generate(){
+ if(currentCourse()==='greek1')return generateGreekExam();
+ if($('model').value==='morf')return generateLatinMorphologyReference();
+ const course=currentCourse(),model=$('model').value,plan=examComposition(course,model);
+ const chosen=selectedUnits(),sections=[],answers=[],selectedSentences=[];
+ const va=$('lang').value==='va';
+ let index=0;
+ const add=(heading,body,solutions)=>{
+  sections.push('<p class="exam-question"><strong><span class="exam-q-number">'+(++index)+'.</span> '+esc(heading)+'</strong></p>'+body);
+  answers.push('<li><strong>'+esc(heading)+'</strong><ol>'+solutions.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ol></li>');
+ };
+ if(plan.declension){
+  const nouns=latinDeclensionItems(chosen,countFor('decl'));
+  add(va?'Declina les paraules següents.':'Declina las siguientes palabras.',
+   nouns.length?nouns.map(x=>'<p class="exam-item"><i>'+esc(x.entry)+'</i></p>'+latinEmptyParadigm()).join(''):
+   '<p class="notice">No hay paradigmas nominales comprobados para las unidades seleccionadas.</p>',
+   nouns.map(latinParadigmSolution));
+ }
+ if(plan.conjugation){
+  const verbs=sample(latinSharedBank.paradigms(course,chosen,'verb'),countFor('verb'));
+  const forms=verbs.map(({x})=>'<p class="exam-item"><i>'+esc(x.entry)+'</i></p>'+
+   '<table class="exam-paradigm exam-verbs reference-morph-table"><thead><tr><th>Persona</th><th>Singular</th><th>Plural</th></tr></thead><tbody>'+
+   [1,2,3].map(i=>'<tr><th>'+i+'.ª</th><td></td><td></td></tr>').join('')+'</tbody></table>').join('');
+  add(va?'Conjuga els verbs següents en present d’indicatiu.':'Conjuga los siguientes verbos en presente de indicativo.',
+   verbs.length?forms:'<p class="notice">No hay paradigmas verbales comprobados para las unidades seleccionadas.</p>',
+   verbs.map(({x,p})=>x.entry+' — '+p.forms.join('; ')));
+ }
+ if(plan.forms){
+  const items=latinVariableForms(chosen,Math.min(12,countFor('verb')));
+  add(va?'Analitza morfològicament les formes següents.':'Analiza morfológicamente las siguientes formas.',
+   examFormList(items),items.map(x=>x.form+' — '+x.answer));
+ }
+ if(plan.lexicalParts){
+  const lexical=latinVocabularyExercises(chosen,plan.lexicalParts);
+  add(va?'Lèxic.':'Léxico.',lexical.body,lexical.answers);
+ }
+ if(plan.cultureParts){
+  const cultureItems=examCultureParts(chosen,plan.cultureParts);
+  add(va?'Cultura clàssica.':'Cultura clásica.',cultureItems.body,cultureItems.answers);
+ }
+ if(plan.sentences){
+  const requested=Math.min(15,Math.max(1,countFor('sent')));
+  const sentences=sample(latinSharedBank.sentences(course,chosen).filter(x=>x.text&&x.sol),requested);
+  selectedSentences.push(...sentences);
+  const shortage=sentences.length<requested?
+   '<p class="notice no-print">Solo hay '+sentences.length+' de las '+requested+' oraciones solicitadas con solución verificada. Añade más oraciones al banco del curso.</p>':'';
+  const list=sentences.length?'<ol class="task">'+sentences.map(x=>'<li><i>'+esc(x.text)+'</i><div class="answer"></div><div class="answer"></div></li>').join('')+'</ol>':
+   '<p class="notice">No hay oraciones verificadas para estas unidades.</p>';
+  add(va?'Tradueix les oracions següents.':'Traduce las siguientes oraciones.',list+shortage,
+   sentences.map(x=>x.text+' — '+(va?'Traducció valenciana pendent de revisió':x.sol)));
+ }
+ const vocabulary=plan.glossary?buildFinalLexicon(chosen,[],selectedSentences,[],[],true):'';
+ $('paper').innerHTML='<div class="exam-sheet latin-standard-exam'+(model==='mixto'?' latin-translation-exam':'')+'">'+
+  latinExamHeader(chosen)+(sections.join('')||'<p>'+tr('empty')+'</p>')+
+  vocabulary+'<p class="exam-grade">Nota: __________</p>'+
+  '<div id="answerkey" class="solutions"><h2>'+tr('key')+'</h2><ol>'+answers.join('')+'</ol></div></div>';
+ $('paper').setAttribute('contenteditable','true');
+ $('paper').setAttribute('spellcheck','false');
+ $('solutions').textContent=tr('solutions');
+ refreshManualMorphWords();
+}
+
 let culture=[]; // Sin ejemplos genéricos: solo temario cerrado de Latín 4.º ESO.
 const initialCulture=culture.slice();
 // Bancos didácticos integrados desde los documentos aportados. Conservan las grafías originales.
