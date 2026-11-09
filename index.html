@@ -459,10 +459,10 @@ const latinSharedBank=(()=>{
   return sentences.filter(x=>courseOf(x)===course&&(!selected||!x.units||x.units.some(u=>selected.has(u))));
  };
  const morphologyRows=(kind,unitLimit)=>{
-  if(kind==='verb')return (bundledMorphology.lat?.v||[]).filter(row=>unimorphAllowedLatinVerb(row,unitLimit));
+  if(kind==='verb')return (bundledMorphology.lat?.v||[]).filter(row=>row.length>=5&&unimorphAllowedLatinVerb(row,unitLimit));
   if(kind==='nominal')return ['n','adj','pro'].filter(category=>$('morphCategory-'+category)?.checked!==false)
    .flatMap(category=>bundledMorphology.lat?.[category]||[])
-   .filter(row=>row[3]<=unitLimit&&allowedProperNounForm(row[0],row[2])&&row[2].split(';').some(t=>['NOM','VOC','ACC','GEN','DAT','ABL'].includes(t)));
+   .filter(row=>row.length>=5&&row[3]<=unitLimit&&allowedProperNounForm(row[0],row[2])&&row[2].split(';').some(t=>['NOM','VOC','ACC','GEN','DAT','ABL'].includes(t)));
   return [];
  };
  const exercises=(course,selectedUnits=null)=>[
