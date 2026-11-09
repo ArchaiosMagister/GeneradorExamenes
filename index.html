@@ -755,6 +755,32 @@ const greekModes={
 };
 const greekKinds=['declension','conjugation','forms','pronouns','etymology','sentences'];
 const greekKindNames={es:['Declinación','Conjugación','Análisis morfológico','Pronombres','Etimología','Análisis y traducción'],va:['Declinació','Conjugació','Anàlisi morfològica','Pronoms','Etimologia','Anàlisi i traducció']};
+// Programa de Griego I facilitado por el docente: fuente curricular prioritaria.
+const GREEK_I_SYLLABUS=[{"unit":1,"topics":["Segunda declinación","Verbo εἰμί","Oraciones copulativas"]},{"unit":2,"topics":["Segunda declinación: neutros","Presente de indicativo","Oraciones predicativas"]},{"unit":3,"topics":["Primera declinación","Artículo"]},{"unit":4,"topics":["Preposiciones","Complemento de régimen verbal"]},{"unit":5,"topics":["Adjetivo","Oraciones coordinadas"]},{"unit":6,"topics":["Voz media y pasiva","Infinitivo concertado"]},{"unit":7,"topics":["Pronombres"]},{"unit":8,"topics":["Oraciones interrogativas","Tercera declinación"]},{"unit":9,"topics":["Oración de relativo"]},{"unit":10,"topics":["Participios: apositivo y atributivo","Genitivo absoluto"]},{"unit":11,"topics":["Futuro","Imperfecto"]},{"unit":12,"topics":["Aoristo sigmático y temático"]},{"unit":13,"topics":["Perfecto","Pluscuamperfecto"]},{"unit":14,"topics":["Temas en silbante","Verbos contractos"]}];
+function greekCurriculumAt(unit){return GREEK_I_SYLLABUS.filter(x=>x.unit<=unit).flatMap(x=>x.topics)}
+function greekMorphologyEligible(item,limit){
+ if(item.minUnit>limit)return false;
+ // Only explicitly reviewed items in the existing corpus may be examined.
+ // No form is inferred from UniMorph until its declension/tense/class is validated.
+ if(item.kind==='pronouns'||item.id.startsWith('pf-'))return limit>=7;
+ if(item.kind==='forms'&&item.id.startsWith('f-')){
+  const n=Number(item.id.slice(2)),row=greekFormRows[n];
+  if(!row)return false;
+  const answer=row[4].toLowerCase(),form=row[0];
+  if(/artículo/.test(answer))return limit>=3;
+  if(/primera declinación/.test(answer))return limit>=3;
+  if(/segunda declinación/.test(answer)){
+   if(/neutr/.test(answer))return limit>=2;
+   return limit>=1;
+  }
+  if(/tercera declinación/.test(answer))return limit>=8;
+  if(/adjetivo/.test(answer))return limit>=5;
+  if(/demostrativo|pronombre|personal|anafórico/.test(answer))return limit>=7;
+  if(/medio|pasiv|deponente/.test(answer))return limit>=6;
+  return item.minUnit<=limit;
+ }
+ return true;
+}
 const greekFormRows=[
  // Form, minimum grammar unit, specific content unit(s), lemma, all valid readings.
  ['νεανίας',3,[3],'νεανίας, –ου','Nominativo singular o acusativo plural, masculino, primera declinación.'],
@@ -868,7 +894,7 @@ function greekQuestionLabel(kind){return ({es:{declension:'Declina',conjugation:
 function greekPoints(kind){const v=Number($('greek-points-'+kind).value);return Number.isFinite(v)?Math.max(0,Math.min(100,v)):0}
 function generateGreekExam(){
  const chosen=greekMarkedUnits(),max=greekLimit(),mode=greekModes[$('model').value]||greekModes.complete;
- const enabled=greekKinds.filter((k,i)=>mode.points[i]>0),pool=greekVerifiedCorpus.filter(x=>x.verified&&x.minUnit<=max&&enabled.includes(x.kind));
+ const enabled=greekKinds.filter((k,i)=>mode.points[i]>0),pool=greekVerifiedCorpus.filter(x=>x.verified&&greekMorphologyEligible(x,max)&&enabled.includes(x.kind));
  const counts={declension:Math.min(2,countFor('decl')),conjugation:Math.min(2,countFor('verb')),forms:countFor('verb'),pronouns:15,etymology:Math.min(2,countFor('lex')),sentences:countFor('sent')};
  const result=greekSelect(pool,chosen.map(examUnitNumber),counts),sections=[],answers=[];
  let total=0,index=0;
