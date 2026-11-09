@@ -945,7 +945,37 @@ const greekSentenceRows=[
  ['αὐτοί μέν ἡμᾶς διαφθείρειν βούλονται, ἡμεῖς δὲ τήν αὐτῶν πόλιν διαφθείρειν βουλόμεθα.',8,[6,7,8],'Ellos quieren destruirnos, y nosotros queremos destruir su ciudad.','αὐτοί y ἡμεῖς: sujetos; βούλονται y βουλόμεθα: núcleos verbales; διαφθείρειν: infinitivo concertado; ἡμᾶς y τήν αὐτῶν πόλιν: objetos directos del infinitivo; αὐτῶν: genitivo posesivo.',['μέν… δέ','διαφθείρω','βούλομαι','πόλις']]
 ];
 const greekExtraLemmas=[['ἄδικος, –ον','injusto/a'],['βία, –ας','fuerza'],['ἀγρός, –ου','campo'],['λύκος, –ου','lobo'],['παύω','parar'],['ὁ, ἡ, τό','artículo determinado'],['εἰμί','ser, estar, haber']];
-const greekEtymology=[['περί',4,[4],'perímetro, periscopio'],['ὑπό',4,[4],'hipotermia, hipoglucemia'],['δήμος',1,[1],'democracia, demografía'],['διά',4,[4],'diámetro, diagonal']];
+/* Programa de etimología de Griego I por unidades. Una entrada sin dos
+   derivados no se convierte en ejercicio corregible. */
+const greekEtymologyUnits=[[["ἄνθρωπος","antropología, antropomorfo"],["βιβλίον","biblioteca, bibliografía"],["γράφω | γράμμα","grafología, gramática"],["δήμος","democracia, demografía"],["ζῷον","zoología, zoológico"],["θέος","teología, teocracia"],["κράτος","aristocracia, democracia"],["λόγος","logopedia, filología"]],[["βιβλίον","biblioteca, bibliografía"],["ζῷον","zoología, zoológico"],["ἔργον","ergonomía, energía"],["δῶρον",""],["χρόνος","cronómetro, cronología"],["ξύλον","xilófono, xilografía"],["σοφός | σοφία","filosofía, sofista"],["διδάσκω","didáctica, didascalia"],["ἵππος","hipódromo, hipopótamo"],["βίος","biografía, biología"]],[["δόξα","ortodoxia, doxología"],["δίκη",""],["οἰκία","economía, ecología"],["νόμος","autonomía, astronomía"],["ψυχή","psicología, psiquiatría"],["ἀρχή | ἄρχω","monarquía, anarquía"],["δεσπότης","déspota, despotismo"],["φωνή","fonética, teléfono"]],[["ἀμφί","anfibio, anfiteatro"],["ἀνά","anáfora, anacronismo"],["ἀντί","antídoto, antibiótico"],["ἀπό","apogeo, apóstrofo"],["διά","diámetro, diagonal"],["ἐκ | ἐξ","éxodo, exorcismo"],["ἐν","enciclopedia, entusiasmo"],["κατά","catástrofe, catálogo"],["μετά","metáfora, metástasis"],["παρά","paradoja, paráfrasis"],["περί","perímetro, periscopio"],["πρό","prólogo, pronóstico"],["πρός",""],["ὑπέρ","hipérbole, hipertensión"],["ὑπό","hipotermia, hipótesis"]],[["λέγω | λόγος","lógica, logopedia"],["μέγας","megalomanía, megáfono"],["μικρός","microscopio, microbio"],["μακρός","macroeconomía, macrobiótico"],["πολύς","políglota, polígono"],["καλός","caligrafía, calidoscopio"],["κακός","cacofonía, cacografía"],["θάνατος","tanatología, eutanasia"]],[["φέρω","metáfora, periferia"],["ἄγω","pedagogía, demagogia"],["ἀγγέλλω | ἄγγελλος","ángel, evangelio"],["πόλις","política, metrópoli"],["ὕδωρ","hidrógeno, hidroterapia"],["φίλος","filantropía, filosofía"],["στρατηγός","estrategia, estratégico"],["πράττω | πράγμα","pragmático, pragmatismo"],["φόβος","fobia, claustrofobia"],["γῆ","geografía, geología"]],[["αὐτός","autonomía, automóvil"],["δένδρον","dendrita, dendrología"],["θάλαττα (−σσα)","talasoterapia, talasocracia"],["παιδίον",""],["ἡμέρα","efeméride, hemeroteca"],["ὁδός","método, éxodo"],["ἥλιος","heliocentrismo, heliópolis"]],[["παῖς, παιδός","pediatría, pedagogía"],["πλοῦτος, −ου","plutocracia, plutócrata"],["χρήμα, −ματος","crematística, crematístico"],["δέρμα, −ματος","dermatología, epidermis"],["εἰκών, −ονος","icono, iconografía"],["ῥήτωρ, −ορος","retórica, rétor"],["σῶμα, −ματος","somático, cromosoma"],["γέρων, −οντος","geriatría, gerontología"],["πνεῦμα, −ματος","neumático, neumología"],["ἀνήρ, ἀνδρός","androcentrismo, andrógino"],["πόλις, −έως","política, metrópoli"],["γυνή, γυναικός","ginecología, misógino"]],[["αἷμα, −ματος","hematología, anemia"],["γάστηρ, −τρός","gastritis, gastroenteritis"],["ἧπαρ, ἥπατος","hepatitis, hepático"],["καρδία","cardiología, taquicardia"],["κεφαλή","cefalea, encéfalo"],["λάρυγξ, −υγγος","laringitis, laringología"],["ὀστέον","osteología, osteoporosis"],["ὀφθαλμός","oftalmología, oftálmico"],["πούς, ποδός","podología, podómetro"],["ῥίς, ῥινός","rinoplastia, rinitis"],["χείρ, χειρός","quiromancia, quirófano"]],[["ἀτέλο−",""],["βλέφαρον","blefaritis, blefaroplastia"],["γένειον","genioplastia"],["γυνή, γυναικός","ginecología, ginecólogo"],["−ῖτις","artritis, dermatitis"],["οὖς, ὠτός","otitis, otorrinolaringología"],["πλαστός","plástico, plastilina"],["πρόκτος","proctología, proctitis"],["τομή","anatomía, tomografía"]],[["μανία","megalomanía, cleptomanía"],["λόγος","logopedia, filología"],["μισέω","misógino, misántropo"],["φιλία","filosofía, filantropía"],["φοβός","fobia, claustrofobia"],["ψευδός","seudónimo, seudociencia"]],[["ἄλγος","analgesia, neuralgia"],["γλῶττα","políglota, glosario"],["ἴσος","isósceles, isobara"],["κρύπτω","criptografía, cripta"],["μόνος","monólogo, monarquía"],["ὁμοῖος","homeopatía, homeostasis"],["πρῶτος","prototipo, protocolo"],["πῦρ, πυρός","piromanía, pirómano"],["σκοπέω","microscopio, telescopio"],["ταχύς, −εια, −υ","taquicardia, taquígrafo"],["χρῶμα","cromático, cromosoma"],["κόσμος","cosmología, cosmopolita"],["ὅρος","horizonte, aforismo"]]];
+const greekBankKey=word=>String(word).split(/[|,]/)[0].replace(/\s*\(.*/, '').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/ς/g,'σ').trim();
+const greekEtymologyBank=(()=>{
+ const entries=new Map();
+ greekEtymologyUnits.forEach((rows,i)=>rows.forEach(([word,derivatives])=>{
+  const id=greekBankKey(word),record=entries.get(id);
+  if(record){record.units.push(i+1);if(!record.derivatives&&derivatives)record.derivatives=derivatives}
+  else entries.set(id,{word,firstUnit:i+1,units:[i+1],derivatives,verified:derivatives.split(',').filter(x=>x.trim()).length>=2});
+ }));
+ return {entries:[...entries.values()]};
+})();
+const greekEtymology=greekEtymologyBank.entries.filter(x=>x.verified)
+ .map(x=>[x.word,x.firstUnit,x.units,x.derivatives]);
+/* Registro léxico unificado: vocabulario, lemas de paradigma y étimos. */
+const greekSharedBank=(()=>{
+ const entries=new Map();
+ const add=(entry,meaning,source,unit)=>{
+  const key=greekBankKey(entry);if(!key)return;
+  if(!entries.has(key))entries.set(key,{entry,meaning:meaning||'',sources:new Set(),units:new Set()});
+  const item=entries.get(key);if(!item.meaning&&meaning)item.meaning=meaning;
+  item.sources.add(source);if(unit)item.units.add(unit);
+ };
+ for(const item of greekMaterials.required)add(item.entry,item.meaning,'vocabulario obligatorio',item.unit);
+ for(const item of vocab.filter(x=>courseOf(x)==='greek1'))add(item.entry,item.meaning,'vocabulario general',item.unit);
+ for(const [entry,meaning] of greekExtraLemmas)add(entry,meaning,'lemas adicionales');
+ for(const item of greekEtymologyBank.entries)add(item.word,'','etimología',item.firstUnit);
+ return {entries,lookup:lemma=>entries.get(greekBankKey(lemma))};
+})();
+
 // Only morphology already explicitly represented in v19 is used for full tables.
 const greekNounUnits={λογος:1,ανθρωπος:1,δωρον:2,εργον:2,αγορα:3,χωρα:3,θαλαττα:3,νεανιας:3,παιδεια:3,αδελφος:1};
 const greekVerbUnits={λυω:2,παιδευω:2,πεμπω:2};
@@ -960,14 +990,7 @@ Object.assign(greekVerbData,{
  λειπω:['λείπω','λείπεις','λείπει','λείπομεν','λείπετε','λείπουσι(ν)']
 });
 Object.assign(greekVerbUnits,{ακουω:4,αρχω:4,βασιλευω:4,γραφω:5,διωκω:5,θεραπευω:9,θαυμαζω:9,λειπω:9});
-greekEtymology.push(
- ['ἄνθρωπος',4,[4],'antropología, antropomorfo'],
- ['βίος',4,[4],'biología, biografía'],
- ['ἀγορά',4,[4],'ágora, agorafobia'],
- ['γῆ',5,[5],'geografía, geología'],
- ['λόγος',7,[7],'logopedia, logotipo'],
- ['φόβος',10,[10],'fobia, claustrofobia']
-);
+
 
 function greekMarkedUnits(){return [...document.querySelectorAll('.unit-choice:checked')].map(x=>units[+x.value]).filter(u=>/^UD\d+$/.test(u))}
 function greekLimit(){return Math.max(-1,...greekMarkedUnits().map(examUnitNumber))}
@@ -978,7 +1001,7 @@ isRequired=function(entry,chosen){if(currentCourse()!=='greek1')return legacyIsR
 // must survive reloads. Block UDs1–4 is first due at UD4, never split arbitrarily.
 try{if(!localStorage.getItem('examina_greek_materials_v20')){for(const x of greekMaterials.required){if(!examRequired.some(y=>y.course==='greek1'&&y.unit===x.unit&&y.key===examKey(x.entry)))examRequired.push({...x,course:'greek1',key:examKey(x.entry)})}saveRequired();localStorage.setItem('examina_greek_materials_v20','1')}}catch(e){for(const x of greekMaterials.required)if(!examRequired.some(y=>y.course==='greek1'&&y.unit===x.unit&&y.key===examKey(x.entry)))examRequired.push({...x,course:'greek1',key:examKey(x.entry)})}
 function greekLexKey(entry){return examKey(String(entry).split('+')[0].trim())}
-function greekLemma(head){const key=greekLexKey(head);return [...greekExtraLemmas.map(([entry,meaning])=>({entry,meaning})),...greekMaterials.required,...vocab.filter(x=>courseOf(x)==='greek1')].find(x=>greekLexKey(x.entry)===key)||{entry:head,meaning:'[Traducción pendiente de revisión]'}}
+function greekLemma(head){const item=greekSharedBank.lookup(head);return item?{entry:item.entry,meaning:item.meaning||'[Traducción pendiente de revisión]'}:{entry:head,meaning:'[Traducción pendiente de revisión]'}}
 function greekCorpus(){
  const items=[];
  const add=(kind,id,minUnit,contentUnits,prompt,answer,lemmas=[],table=null)=>items.push({kind,id,minUnit,contentUnits,prompt,answer,lemmas,table,verified:true});
@@ -986,13 +1009,13 @@ function greekCorpus(){
  for(const [key,forms] of Object.entries(greekVerbData)){const u=greekVerbUnits[key];if(u===undefined)continue;const lemma=greekLemma(forms[0]);add('conjugation','v-'+key,u,[u],'Conjuga '+lemma.entry+' en presente de indicativo activo.',greekPersonLabels.map((l,i)=>l+': '+forms[i]).join('; '),[lemma.entry],{headers:['Persona','Singular','Plural'],rows:[0,1,2].map(i=>[(i+1)+'.ª',forms[i],forms[i+3]])})}
  greekFormRows.forEach(([form,min,us,lemma,answer],i)=>add('forms','f-'+i,min,us,form,answer,[lemma]));
  greekPronounRows.forEach(([form,answer],i)=>{add('pronouns','p-'+i,7,[7],form,answer);add('forms','pf-'+i,7,[7],form,answer)});
- greekEtymology.forEach(([word,min,us,answer],i)=>add('etymology','e-'+i,min,us,word,answer,[word]));
+ greekEtymology.forEach(([word,min,us,answer],i)=>add('etymology','e-'+i,min,us,word,answer,[greekSharedBank.lookup(word)?.entry||word]));
  greekSentenceRows.forEach(([text,min,us,sol,analysis,lemmas],i)=>add('sentences','s-'+i,min,us,text,sol+' Análisis: '+analysis,lemmas));
  return items;
 }
 // Accent anomalies in the supplied sentences are quarantined rather than
 // silently corrected. The flagged UD7 sentence 5 never enters this array.
-const greekVerifiedCorpus=greekCorpus().filter(x=>!['s-2','s-3','s-7','s-9','p-13','pf-13'].includes(x.id));
+const greekVerifiedCorpus=greekSharedBank.exercises=greekCorpus().filter(x=>!['s-2','s-3','s-7','s-9','p-13','pf-13'].includes(x.id));
 // Pick across the entire enabled corpus first. Mandatory representatives may
 // expand a small requested count; coverage never depends on random chance.
 function greekSelect(pool,chosen,counts){
@@ -1097,6 +1120,25 @@ function greekExamControls(){
   const pool=greekChoicePool(kind),selected=greekExamState.ids[kind]||[];
   const row=document.createElement('div');row.style.margin='12px 0';row.style.padding='9px';row.style.border='1px solid #dce3ec';row.style.borderRadius='8px';
   const heading=document.createElement('strong');heading.textContent=label;row.append(heading);
+  if(kind==='etymology'){
+   const status=document.createElement('p');status.className='hint';
+   status.textContent='Programa: '+greekEtymologyUnits.reduce((n,rows)=>n+rows.length,0)+' entradas en 12 unidades; '+greekEtymologyBank.entries.filter(x=>x.verified).length+' étimos con dos derivados. Los demás no se incluyen en exámenes.';
+   row.append(status);
+   const details=document.createElement('details');
+   const summary=document.createElement('summary');summary.textContent='Ver los étimos de las 12 unidades';details.append(summary);
+   greekEtymologyUnits.forEach((entries,i)=>{
+    const unit=document.createElement('div');unit.style.marginTop='8px';
+    const heading=document.createElement('strong');heading.textContent='UD'+(i+1);unit.append(heading);
+    for(const [word,derivatives] of entries){
+     const item=document.createElement('div');item.className='hint';
+     item.textContent=word+' — '+(derivatives||'Pendiente de dos derivados');
+     unit.append(item);
+    }
+    details.append(unit);
+   });
+   row.append(details);
+  }
+
   const current=document.createElement('div');current.className='hint';
   current.textContent='Seleccionadas: '+(selected.length?selected.map(id=>{const x=pool.find(y=>y.id===id);return x?(kind==='conjugation'?headLex(x.lemmas[0]):x.prompt):''}).filter(Boolean).join(' · '):'ninguna');
   row.append(current);
@@ -1143,7 +1185,7 @@ function generateGreekExam(){
  const shortfalls=enabled.filter(k=>pool.filter(x=>x.kind===k).length<counts[k]).map(k=>greekKindNames[$('lang').value][greekKinds.indexOf(k)]+': '+pool.filter(x=>x.kind===k).length+' de '+counts[k]);
  $('greekCoverage').textContent=notice+' Gramática acumulativa'+(max>=0?' hasta UD'+max:'')+'.'+(chosen.length&&shortfalls.length?' Material disponible inferior al solicitado ('+shortfalls.join('; ')+'). Se utiliza únicamente el disponible.':'');
  const lemmas=[...new Map(result.items.flatMap(x=>x.lemmas).map(h=>{const x=greekLemma(h);return [examKey(x.entry),x]})).values()].sort((a,b)=>a.entry.localeCompare(b.entry));
- const visibleLemmas=lemmas.filter(x=>glossAccept(x.entry,chosen));
+ const visibleLemmas=lemmas.filter(x=>glossAccept(x.entry,chosen)&&!String(x.meaning).includes('[Traducción pendiente de revisión]'));
  const gloss=$('autoGloss').checked&&visibleLemmas.length?'<p class="exam-gloss-title"><strong>'+($('lang').value==='va'?'Vocabulari':'Vocabulario')+'</strong></p><div class="final-gloss">'+visibleLemmas.map(x=>'<div class="gloss-item">'+esc(x.entry)+':'+(isRequired(x.entry,chosen)?'':' ‘'+esc(x.meaning)+'’')+'</div>').join('')+'</div>':'';
  const grade=$('model').value==='morphology'?'<p class="exam-grade">Nota sobre '+String(Number(total.toFixed(2))).replace('.',',')+': __________　　Nota sobre 10: __________</p>':'';
  $('paper').innerHTML='<div class="exam-sheet">'+greekExamHeader(chosen,mode)+(chosen.length?sections.join(''):'<p>'+notice+'</p>')+grade+gloss+'<div id="answerkey" class="solutions"><h2>'+tr('key')+'</h2>'+answers.join('')+'</div></div>';
