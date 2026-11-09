@@ -1124,6 +1124,19 @@ function greekExamControls(){
    const status=document.createElement('p');status.className='hint';
    status.textContent='Programa: '+greekEtymologyUnits.reduce((n,rows)=>n+rows.length,0)+' entradas en 12 unidades; '+greekEtymologyBank.entries.filter(x=>x.verified).length+' étimos con dos derivados. Los demás no se incluyen en exámenes.';
    row.append(status);
+   const details=document.createElement('details');
+   const summary=document.createElement('summary');summary.textContent='Ver los étimos de las 12 unidades';details.append(summary);
+   greekEtymologyUnits.forEach((entries,i)=>{
+    const unit=document.createElement('div');unit.style.marginTop='8px';
+    const heading=document.createElement('strong');heading.textContent='UD'+(i+1);unit.append(heading);
+    for(const [word,derivatives] of entries){
+     const item=document.createElement('div');item.className='hint';
+     item.textContent=word+' — '+(derivatives||'Pendiente de dos derivados');
+     unit.append(item);
+    }
+    details.append(unit);
+   });
+   row.append(details);
   }
 
   const current=document.createElement('div');current.className='hint';
@@ -1172,7 +1185,7 @@ function generateGreekExam(){
  const shortfalls=enabled.filter(k=>pool.filter(x=>x.kind===k).length<counts[k]).map(k=>greekKindNames[$('lang').value][greekKinds.indexOf(k)]+': '+pool.filter(x=>x.kind===k).length+' de '+counts[k]);
  $('greekCoverage').textContent=notice+' Gramática acumulativa'+(max>=0?' hasta UD'+max:'')+'.'+(chosen.length&&shortfalls.length?' Material disponible inferior al solicitado ('+shortfalls.join('; ')+'). Se utiliza únicamente el disponible.':'');
  const lemmas=[...new Map(result.items.flatMap(x=>x.lemmas).map(h=>{const x=greekLemma(h);return [examKey(x.entry),x]})).values()].sort((a,b)=>a.entry.localeCompare(b.entry));
- const visibleLemmas=lemmas.filter(x=>glossAccept(x.entry,chosen));
+ const visibleLemmas=lemmas.filter(x=>glossAccept(x.entry,chosen)&&!String(x.meaning).includes('[Traducción pendiente de revisión]'));
  const gloss=$('autoGloss').checked&&visibleLemmas.length?'<p class="exam-gloss-title"><strong>'+($('lang').value==='va'?'Vocabulari':'Vocabulario')+'</strong></p><div class="final-gloss">'+visibleLemmas.map(x=>'<div class="gloss-item">'+esc(x.entry)+':'+(isRequired(x.entry,chosen)?'':' ‘'+esc(x.meaning)+'’')+'</div>').join('')+'</div>':'';
  const grade=$('model').value==='morphology'?'<p class="exam-grade">Nota sobre '+String(Number(total.toFixed(2))).replace('.',',')+': __________　　Nota sobre 10: __________</p>':'';
  $('paper').innerHTML='<div class="exam-sheet">'+greekExamHeader(chosen,mode)+(chosen.length?sections.join(''):'<p>'+notice+'</p>')+grade+gloss+'<div id="answerkey" class="solutions"><h2>'+tr('key')+'</h2>'+answers.join('')+'</div></div>';
