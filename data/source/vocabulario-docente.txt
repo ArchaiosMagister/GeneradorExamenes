@@ -1,0 +1,1871 @@
+Temario GR1
+UD0: El griego como lengua indoeuropea. El alfabeto griego.
+UD1: Segunda declinación. Verbo εἰμί. Oraciones copulativas.
+UD2: Segunda declinación: neutros. El presente de indicativo. Oraciones predicativas.
+UD3: Primera declinación. El artículo.
+UD4: Preposiciones. El complemento de régimen verbal.
+UD5: El adjetivo. Las oraciones coordinadas.
+UD6: Voz media y pasiva. Infinitivo concertado.
+UD7: Los pronombres en griego: demostrativos, anafórico, personales.
+UD8: Oraciones interrogativas. Tercera declinación.
+UD9: La oración de relativo.
+UD10: Participios: apositivo y atributivo. El genitivo absoluto.
+UD11: El futuro y el imperfecto.
+UD12: El aoristo sigmático y temático.
+UD13: Perfecto y pluscuamperfecto.
+UD14: Temas en silbante. Verbos contractos.
+
+Vocabulario para examen GR1
+Palabras básicas
+ἀλλά (conj.): ‘pero’, ‘sino’
+γάρ (part.): ‘pues’
+ἐπεί (conj.): ‘cuando’
+ἤ (conj.): ‘o’
+καί: ‘y’
+μέν… δέ (part.): “por un lado… por otro”
+οὐ μόνον ἀλλὰ καὶ: “no sólo, sino también”
+οὐδέ (conj.): ‘y no’
+οὖν (part.): ‘así pues’
+οὔτε… οὔτε (conj.): “ni… ni”
+πρῶτον (adv.): ‘en primer lugar’
+
+Preposiciones
+ἄνευ + genitivo: ‘sin’
+ἀπό + genitivo: ‘de, desde’
+διά + acusativo: ‘a través de, por, a causa de’
+εἰς + acusativo: ‘a, hacia’
+ἐκ/ἐξ + genitivo: ‘de, desde’
+ἐν + dativo: ‘en’
+μετά + genitivo | acusativo: ‘entre, con’ (gen.) | después de’ (ac.)
+περί + genitivo: ‘alrededor de, sobre’
+πρός + acusativo: ‘a, hacia, junto a’
+σύν + dativo: ‘con’
+ὐπό + genitivo: ‘debajo de, por’
+
+UDs 1–4
+ἀγορά, –ας: ‘plaza’
+ἀδικία, –ας: ‘injusticia’
+Ἀθηνᾶ, –ᾶς: 'Atenea'
+Ἀθῆναι, –ῶν: 'Atenas' (sólo pl.)
+ἀκούω: ‘escuchar’ (+ gen. CRV)
+ἀληθεία, –ας: ‘verdad’
+ἄνθρωπος, –ου: ‘hombre’
+ἀρετή, –ης: ‘virtud’
+ἄρχω: ‘gobernar’ (+ gen. CRV)
+βασιλεύω: ‘reinar’ (+ gen. CRV)
+βιβλίον, –ου: ‘libro’
+βίος, –ου: ‘vida’
+δῆμος, –ου: ‘pueblo’
+δίκη, –ης: ‘justicia’
+δοῦλος, –ου: ‘esclavo’
+ἐλευθερία, –ας: ‘libertad’
+ἐπιθυμέω: ‘desear’ (+ gen. CRV)
+ζῷον, –ου: ‘animal’
+θάλαττα, –ης: ‘mar’
+θέα, –ας: ‘diosa’
+θέος, –ου: ‘dios’
+ἵππος, –ου: ‘caballo’
+μαθητής, –ου: ‘alumno’
+μετέχω: ‘participar en’ (+ gen. CRV)
+οἰκία, –ας: 'casa'
+πολίτης, –ου: ‘ciudadano’
+σοφία, –ας: ‘sabiduría’
+σοφός, –ου: ‘sabio’
+φίλος, –ου: ‘amigo’
+
+
+UD5
+ἀγαθός, –η, –ον: ‘bueno/a’
+ἄγω: ‘conducir’
+ἀεί (adv.): ‘siempre’
+αἰσχρός, –ον: ‘vergonzoso/a’
+ἀλλά (conj.): ‘pero’, ‘sino’
+ἀρχή, –ῆς: ‘gobierno’, ‘origen’
+βάρβαρος, –ου: ‘bárbaro’
+γή, –ης: ‘tierra’
+γιγνώσκω: ‘conocer’
+γράφω: ‘escribir’
+δεσπότης, –ου: 'amo, señor'
+διδάσκαλος, –ου: ‘profesor’
+δίκαιος, –α, –ον: ‘justo/a’
+διώκω: ‘perseguir’
+Ἑλληνικός, –η, ον: ‘helénico/a’
+ἔνδοξος, –ον: 'famoso'
+ἐχθρός, –ον: ‘enemigo/a’
+ἥκω: ‘llegar’
+ἡμέρα, –ας: ‘día’
+ἡμετέρος, –α, –ον: ‘nuestro/a’
+κακός, –η, –ον: ‘malo/a’
+καλός, –η, –ον: ‘bonito/a’
+κίνδυνος, –ου: ‘peligro’
+λέγω: ‘decir’, ‘hablar’
+μέγας, μεγάλη, μέγα: ‘grande’
+μέν… δέ (conj.): “por un lado… por otro”
+μίκρος, –α, –ον: ‘pequeño/a’
+ὁδός, –ου (ἡ): ‘camino’
+οἰκέω: ‘habitar’
+ὀλιγός, –η, –ον: ‘poco/a’
+παιδεύω: ‘educar’
+πολύς, πολλή, πολύ: ‘mucho/a’
+πονηρός, –α, –ον: ‘desdichado/a’
+στρατηγός, –ου: ‘estratego’
+στρατιώτης, –ου: ‘soldado’
+σύμμαχος, –ον: aliado/a’
+φέρω: ‘llevar’
+φεύγω: ‘rechazar’, ‘huir’
+φιλέω: ‘amar’UDs 6–7
+ἀδικός, –ον: ‘injusto/a’
+βούλομαι: ‘querer’
+γίγνομαι: ‘llegar a ser’ (copulativo)
+δεῖ (impers.): ‘es necesario’
+δῶρον, –ου: ‘regalo’
+εἰρήνη, –ης: ‘paz’
+ἐπιστολή, –ης: ‘carta’
+ἔχω: ‘tener’
+ἥλιος, –ου: ‘sol’
+θάνατος, –ου: ‘muerte’
+ἰατρός, –ου: ‘médico’
+κεφαλῆ, –ῆς: 'cabeza'
+λόγος, –ου: ‘palabra’
+μάχη, –ης: ‘batalla’
+μάχομαι: ‘luchar’
+ναύτης, –ου: ‘marinero’
+νεανίας, –ου: ‘joven’
+νίκη, –ης: ‘victoria’
+νόμος, –ου: ‘ley’
+ξένος, –ου: ‘extranjero’
+ξύλον, –ου: ‘madera’
+πενία, –ας: ‘pobreza’
+πέτρα, –ας: ‘piedra’
+πλοῦτος, –ου: ‘riqueza’
+πόλεμος, –ου: ‘guerra’
+πολλάκις (adv.): ‘muchas veces’
+τύραννος, –ου: ‘tirano’
+χρή (impers.): ‘es necesario’
+
+UD8
+ἀθάνατος, –ον: ‘inmortal’
+αἴξ, αἰγός (ἡ): ‘cabra’
+ἀνήρ, ἀνδρός (ὁ): ‘hombre’
+ἄρχων, −οντος (ὁ): ‘arconte’
+ἀσπίς, ἀσπίδος (ἡ): ‘escudo’
+γέρων, −οντος (ὁ): ‘anciano’
+γυνή, γυναικός (ἡ): ‘mujer’
+δέρμα, –ματος (τὸ): ‘piel’
+Ἕλλας, Ἑλλάδος (ἡ): ‘Grecia’
+Ἕλλην, Ἕλληνος (ὁ o ἡ): ‘griego/a’
+ἡγεμών, −όνος (ὁ): ‘líder’, ‘soberano’
+θήρ, θηρός (ὁ o ἡ): ‘fiera’
+θώραξ, –ακος (ὁ): ‘coraza’
+λέων, λεόντος (ὁ): ‘león’
+μήτηρ, −τρός (ἡ): ‘madre’
+νύξ, νυκτός (ἡ): ‘noche’
+ὄνομα, −ματος (τὸ): ‘nombre’
+παῖς, παιδός (ὁ o ἡ): ‘niño/a’
+πάτηρ, −τρός (ὁ): ‘padre’
+πατρίς, πατρίδος (ἡ): ‘patria’
+ποῖ (adv.): ‘a dónde’
+ποῦ (adv.): ‘dónde’
+πράγμα, −ματος (τὸ): ‘asunto’
+πῶς (adv.): ‘cómo’
+ῥήτωρ, −ορος (ὁ): ‘orador’
+ῥίς, ῥινός (ἡ): ‘nariz’
+σῶμα, –ματος (τὸ): ‘cuerpo’
+ὕδωρ, ὕδατος (τὸ): ‘agua’
+φύλαξ, –ακος (ὁ o ἡ): ‘guardián/a’
+χρῆμα, –ατος (τὸ): ‘cosa’ (sing.), ‘riqueza’ (pl.)
+
+UD9
+ἀποθνῄσκω: ‘morir’
+διδάσκω: ‘enseñar’
+ἐθέλω: ‘querer’
+ἔρχομαι: ‘ir’
+θαυμάζω: ‘admirar’
+θεραπεύω: ‘curar’, ‘venerar’
+λαμβάνω: ‘coger, tomar’
+λείπω: ‘dejar’
+λύω: ‘liberar’
+
+μανθάνω: ‘estudiar’
+οὐράνος, –ου: ‘cielo’
+στράτευμα, –ατος: ‘ejército’
+σῴζω: ‘salvar’
+τόπος, –ου: ‘lugar’
+UD10
+ἔτι (adv.): ‘ya’, ‘aún’
+ἡγέομαι: ‘liderar’, ‘pensar’
+ναῦς, νεώς (ἡ): ‘nave’
+νέος, –α, –ον: ‘nuevo/a’, ‘joven’
+ὁπλίτης, –ου: ‘hoplita’
+ὅπλον, –ου: 'arma'
+ποιητής, –ου: ‘poeta’
+πρῶτος, –η, –ον: ‘primero/a’
+φόβος, –ου: ‘miedo’
+φύσις, –εως (ἡ): ‘naturaleza’
+
+UD10
+
+ἔτι (adv.): ‘ya’, ‘aún’
+ἡγέομαι: ‘liderar’, ‘pensar’
+ναῦς, νεώς (ἡ): ‘nave’
+νέος, –α, –ον: ‘nuevo/a’, ‘joven’
+ὁπλίτης, –ου: ‘hoplita’
+ὅπλον, –ου: 'arma'
+ποιητής, –ου: ‘poeta’
+πρῶτος, –η, –ον: ‘primero/a’
+φόβος, –ου: ‘miedo’
+φύσις, –εως (ἡ): ‘naturaleza’
+
+
+Vocabulario completo del curso
+
+Α | α
+
+ἀγαθός, –η, –ον: ‘bueno/a’
+ἄγαλμα, –ατος (τό): 'estatua'
+Ἀγαμέμνων, –ονος (ὁ): 'Agamenón'
+ἀγορά, –ας: ‘plaza’
+ἀδελφός, –ου: ‘hermano’
+ἀδικία, –ας: ‘injusticia’
+ἀδικός, –ον: ‘injusto/a’
+ἀθάνατος, –ον: ‘inmortal’
+Ἀθηνᾶ, –ᾶς: 'Atenea'
+Ἀθῆναι, –ῶν: 'Atenas' (sólo pl.)
+Ἀθηναῖος, –α, –ον: ‘ateniense’
+Αἰγίνα, –ης: ‘Egina’
+αἰθήρ, αἰθέρος: ‘cielo’
+αἷμα, αἵματος: ‘sangre’
+αἰξ, αἰγός: ‘cabra’
+αἰσχρός, –ον: ‘vergonzoso/a’
+ἀκόλουθος, –ου: ‘seguidor’
+ἀκρόαμα, –ματος: ‘placentero al oído’
+Ἀκροπόλις, –εως (ἡ): ‘Acrópolis’
+ἀληθεία, –ας: ‘verdad’
+Ἀλκιβιάδης, –ου: ‘Alcibíades’
+ἄλλος, –η, –ο: ‘otro/a’
+ἀνήρ, ἀνδρός (ὁ): ‘hombre’
+ἄνθρωπος, –ου: ‘hombre’
+ἄντρον, –ου: ‘gruta’, ‘cueva’
+Ἄραψ, Ἄραβος (ὁ o ἡ): ‘árabe’
+ἀρετή, –ης: ‘virtud’
+ἀριθμός, –ου: ‘cantidad’, ‘número’
+ἁρμονία, –ας: ‘harmonía’
+ἀρχή, –ῆς: ‘gobierno’, ‘origen’
+ἄρχων, –οντος (ὁ): ‘líder’
+ἀσπίς, –ίδος (ἡ): ‘escudo’
+Ἀττική, –ης: ‘Ática’
+αὐλητρίς, –ίδος (ἡ): ‘flautista’
+αὐτόνομος, –ον: ‘autónomo’
+Ἀχαῖος, –α, –ον: 'aqueo'
+
+Β | β
+
+βάρβαρος, –ου: ‘bárbaro’
+βασιλείος, –ου: ‘palacio real’
+βασιλεύς, –έως (ὁ): ‘rey’
+βιβλίον, –ου: ‘libro’
+βίος, –ου: ‘vida’
+
+Γ | γ
+
+γένος, –εος (τὸ): ‘linaje’, ‘tipo’
+γέρων, –οντος (ὁ): ‘anciano’
+γεωργός, –ου: ‘campesino’
+γή, –ης: ‘tierra’
+γίγας, –αντος (ὁ): ‘gigante’
+γλαῦξ, γλαυκός (ἡ): ‘lechuza’
+γυνή, γυναικός (ἡ): ‘mujer’
+
+Δ | δ
+
+Δαρεῖος, –ου: ‘Darío’
+δεῖπνος, –ου: ‘cena’
+δέρμα, –ματος: ‘piel’
+δεσπότης, –ου: 'amo, señor'
+δημοκρατία, –ας: ‘democracia’
+δῆμος, –ου: ‘pueblo’
+Δημοσθήνης, –ου: ‘Demóstenes’
+διδάσκαλος, –ου: ‘profesor’
+δίκαιος, –α, –ον: ‘justo/a’
+δίκη, –ης: ‘justicia’
+δόξα, –ης: ‘opinión’, ‘fama’
+δουλεία, –ας: ‘esclavitud’
+δοῦλος, –ου: ‘esclavo’
+δύναμις, –εως (ἡ): ‘poder’, ‘fuerza’
+δώδεκα (num. indecl.): ‘doce’
+δῶρον, –ου: ‘regalo’
+
+
+Ε | ε
+
+εἰκών, –όνος (ἡ): ‘imagen’
+εἰρήνη, –ης: ‘paz’
+ἐκκλεσία, –ας: ‘asamblea’
+ἐλευθερία, –ας: ‘libertad’
+ἐλέφας, –αντος (ὁ): ‘marfil’, ‘elefante’
+Ἑλλάς, Ἑλλάδος (ἡ): ‘Grecia’
+Ἕλλην, Ἕλληνος (ὁ o ἡ): ‘griego/a’
+Ἑλληνικός, –η, ον: ‘griego/a’
+ἐλπίς, ἐλπίδος (ἡ): ‘esperanza’
+ἔνδοξος, –ον: 'famoso'
+ἐπιστολή, –ης: ‘carta’
+ἔργον, –ου: ‘acción’, ‘trabajo’, ‘obra’
+εὐδαιμονία, –ας: ‘felicidad’
+Εὐρώπη, –ης: ‘Europa’
+εὐτυχία: ‘buena suerte’
+ἐχθρός, –ον: ‘enemigo/a’
+
+Ζ | ζ
+
+Ζεὺς, Διός (ὁ): 'Zeus'
+ζῷον, –ου: ‘animal’
+
+Η | η
+
+ἡγεμών, –ονος (ὁ): ‘soberano’
+ἡδονή, –ης: ‘placer’
+ἥλιος, –ου: ‘sol’
+ἡμέρα, –ας: ‘día’
+ἡμετέρος, –α, –ον: ‘nuestro/a’
+
+Θ | θ
+
+θάλαττα, –ης: ‘mar’
+θάνατος, –ου: ‘muerte’
+θέα, –ας: ‘diosa’
+θέος, –ου: ‘dios’
+θεράπων, –οντος (ὁ): ‘servidor’
+Θηβαῖος, –α, –ον: 'tebano/a'
+θήρ, θηρός (ὁ o ἡ): ‘fiera’
+θνητός, –ον: ‘mortal’
+θώραξ, –ακος (ὁ): ‘coraza’
+
+Ι | ι
+
+ἰατρός, –ου: ‘médico’
+Ἱέραξ, –ακος (ὁ): ‘Hiérax’
+ἱερεύς, –εως (ὁ): ‘sacerdote’
+ἱερόν, –ου: 'templo'
+Ἴκαρος, –ου: ‘Ícaro’
+Ἴλιον, –ου: 'Troya'
+ἱππεύς, –έως (ὁ): ‘caballero’
+ἵππος, –ου: ‘caballo’
+
+Κ | κ
+
+κακός, –η, –ον: ‘malo/a’
+καλός, –η, –ον: ‘bonito/a’
+κένος, –η, ον: ‘vacío/a’
+κεφαλῆ, –ῆς: 'cabeza'
+κηρός, –ου: ‘cera’
+κῆρυξ, –υκος (ὁ): ‘mensajero’
+κιθαριστής, –ου: ‘citarista’
+κίνδυνος, –ου: ‘peligro’
+κοινός, –η, –ον: ‘común’
+κόσμος, –ου: ‘orden’, ‘belleza’
+Κρήτη, –ης: ‘Creta’
+κύριος, –ου: ‘señor’, ‘soberano’
+κώμη, –ης: ‘aldea’
+
+Λ | λ
+
+Λακεδαιμονίος, –α, –ον: ‘espartano/a’
+λειμών, –ῶνος (ὁ): ‘prado’
+λέων, λεόντος (ὁ): ‘león’
+λίθος, –ου: ‘piedra’
+λιμήν, ένος (ὁ): ‘puerto’
+λόγος, –ου: ‘palabra’
+Λύσανδρος, –ου: ‘Lisandro’
+
+Μ | μ
+
+μαθητής, –ου: ‘alumno’
+Μαραθών, –ῶνος (ὁ): ‘Maratón’
+μάχη, –ης: ‘batalla’
+Μέγαρα, –ων: ‘Mégara’
+μέγας, μεγάλη, μέγα: ‘grande’
+Μενέλαος, –ου: 'Menelao' (rey espartano)
+μήν, μηνός (ὁ): ‘mes’, ‘luna’
+μήτηρ, μητρός (ἡ): ‘madre’
+μίκρος, –α, –ον: ‘pequeño/a’
+μόνος, –η, –ον: ‘único/a’
+μῦθος, –ου: ‘mito’
+
+Ν | ν
+
+ναῦς, νεώς (ἡ): ‘nave’
+ναύτης, –ου: ‘marinero’
+νεανίας, –ου: ‘joven’
+νεκρóς, –οῦ: 'cadáver'
+νέος, –α, –ον: ‘nuevo/a’, ‘joven’
+νήσος, –ου (ἡ): ‘isla’
+νίκη, –ης: ‘victoria’
+νόμος, –ου: ‘ley’
+νόσος, –ου: ‘enfermedad’
+νύξ, νυκτός (ἡ): ‘noche’
+
+Ξ | ξ
+
+ξένος, –ου: ‘extranjero’
+ξύλον, –ου: ‘madera’
+
+Ο | ο
+
+ὄγκος, –ου: 'montón'
+ὁδός, –ου (ἡ): ‘camino’
+οἰκέτης, –ου: ‘habitante’
+οἰκία, –ας: 'casa'
+ὀλιγός, –η, –ον: ‘poco/a’
+ὅλος, –η, –ον: ‘completo/a’, ‘todo/a’
+Ὅμηρος, –ου: ‘Homero’
+ὄνομα, –ματος: ‘nombre’
+ὄνυξ, –υχος (ὁ): ‘uña’
+ὁπλίτης, –ου: ‘hoplita’
+ὅπλον, –ου: 'arma'
+ὀργίλος, –η, –ον: 'enfadado/a'
+ὀρθός, –η, ον: ‘recto/a’
+οὐδεῖς, οὐδεμία, οὐδέν: ‘nadie, ‘nada’
+οὐράνος, –ου: ‘cielo’
+
+Π | π
+
+παιδεία, –ας: ‘educación’
+παῖς, παιδός (ὁ o ἡ): ‘niño/a’
+Πανταλέων, –οντος (ὁ): ‘Pantaleón’
+παροιμία, –ας: ‘proverbio’
+πᾶς, πᾶσα, πᾶν: ‘todo/a’
+πατήρ, πατρός (ὁ): ‘padre’
+πατρίς, πατρίδος (ἡ): ‘patria’
+πεδίον, –ου: 'llanura'
+πέλαγος, –εος (τό): ‘mar’
+πένης, –ετος: ‘pobre’
+πενία, –ας: ‘pobreza’
+πέρδιξ, ικος (ὁ o ἡ): ‘perdiz’
+Περικλῆς, –έους (ὁ): ‘Pericles’
+Περσαί, –ων: ‘persa’
+πέτρα, –ας: ‘piedra’
+πλοῦτος, –ου: ‘riqueza’
+ποιητής, –ου: ‘poeta’
+ποιμήν, –ένος (ὁ): ‘pastor’
+πολεμίος, –ου: ‘enemigo’
+πόλεμος, –ου: ‘guerra’
+πόλις, –εως (ἡ): ‘ciudad’
+πολιτεία, –ας: ‘ciudadanía’, ‘política’
+πολίτης, –ου: ‘ciudadano’
+πολιτικός, –η, ον: ‘político/a’
+πολύς, πολλή, πολύ: ‘mucho/a’
+πονηρός, –α, –ον: ‘desdichado/a’, ‘pobre’
+ποταμός, –ου: ‘río’
+πράγμα, πραγμάτος (N): ‘asunto’
+πρόϐατον, –ου: ‘animal’ (pl. ‘ganado’)
+προσέρχομαι: ‘acercarse’
+Προταγόρας, –ου: ‘Protágoras’
+πρῶτος, –η, –ον: ‘primero/a’
+πτερόν, –ου: ‘ala’
+Πυθαγορείος, –α, ον: ‘pitagórico/a’
+πυράμις, –ίδος
+
+Ρ | ρ
+
+ῥήτωρ, –ορος (ὁ): ‘orador’
+ῥίς, ῥινός (ἡ): ‘nariz’
+
+Σ | σ | ς
+
+σάρξ, σάρκος (ἡ): ‘carne’
+Σόλων, Σολόνος (ὁ): ‘Solón’
+σοφία, –ας: ‘sabiduría’
+σοφίστης, –ου: ‘sofista’
+σοφός, –ου: ‘sabio’
+Σπάρτη, –ης: ‘Esparta’
+σπονδή, –ης: ‘libación’
+στράτευμα, –ατος: ‘ejército’
+στρατηγός, –ου: ‘estratego’
+στρατιώτης, –ου: ‘soldado’
+στρατόπεδον, –ου: ‘campamento’
+σύμμαχος, –ον: aliado/a’
+Σωκράτης, –έος: ‘Sócrates’
+σῶμα, –ματος: ‘cuerpo’
+
+Τ | τ
+
+τείχος, –εος (τό): ‘muralla’
+τελευτή, –ης: ‘final’
+τέχνη, –ης: ‘arte’, ‘técnica’
+τόπος, –ου: ‘lugar’
+τριήρες, –εως (ἡ): ‘trirreme’
+τυραννίς, –ίδος (ἡ): ‘tiranía’
+τύραννος, –ου: ‘tirano’
+τύχη, –ης: ‘suerte’
+
+Υ | υ
+
+ὕδωρ, ὑδάτος (τό): ‘agua’
+ὑιός, –οῦ: ‘hijo’
+
+Φ | φ
+
+φάλαγξ, φάλαγγος (ἡ): ‘falange’
+φιλία, –ας: ‘amistad’
+Φίλιππος, –ου: ‘Filipo’
+φίλος, –ου: ‘amigo’
+φιλόσοφος, –ου: ‘filósofo’
+φλέψ, φλεβός (ἡ): ‘vena’
+φόβος, –ου: ‘miedo’
+φρόνησις, –εως (ἡ): ‘inteligencia’
+φύλαξ, –ακος (ὁ o ἡ): ‘guardián/a’
+φύσις, –εως (ἡ): ‘naturaleza’
+φωνή, −ης: ‘sonido’, ‘voz’
+
+Χ | χ
+
+χειμών, χειμῶνος (ὁ): ‘invierno’
+χιών, χιόνος (ἡ): ‘nieve’
+χρῆμα, –ατος (τὸ): ‘cosa’ (sing.), ‘riqueza’ (pl.)
+χρόνος, –ου: ‘tiempo’
+χρύσος, –ου: ‘oro’
+χώρα, –ας: ‘región’
+
+Ψ | ψ
+
+ψυχή, –ης: ‘alma’
+
+Ω | ω
+
+ὤνιος, –η, –ον: ‘en venta’ (n. pl.: ‘bienes’)
+
+
+Verbos
+
+ἀγαπάω: ‘amar’
+ἀγγέλλω: ‘anunciar’
+ἄγω: ‘conducir’
+ἀδικέω: ‘ser injusto’
+αἰτέω: 'buscar'
+ἀκούω: ‘escuchar’ (+ gen. CRV)
+ἀναγιγνώσκω: ‘leer’
+ἀνακράζω: ‘gritar’
+ἀποθνῄσκω: ‘morir’
+ἀποκτείνω: ‘matar’
+ἀποπλέω: ‘zarpar’
+ἁρπάζω: ‘raptar’, ‘arrebatar’
+ἄρχω: ‘gobernar’ (+ gen. CRV)
+ἀσκέω: ‘dar forma’
+αὐλέω: ‘tocar la flauta’
+ἀφικνέομαι: ‘llegar’
+βάλλω: ‘lanzar’
+βασιλεύω: ‘reinar’ (+ gen. CRV)
+βούλομαι: ‘querer’
+γίγνομαι: ‘llegar a ser’ (copulativo)
+γιγνώσκω: ‘conocer’
+γράφω: ‘escribir’
+δεῖ (impers.): ‘es necesario’
+διάγω: ‘pasar’
+διαφέρω: ‘diferir de’
+διαφθείρω: ‘destruir’, ‘matar’
+διδάσκω: ‘enseñar’
+διώκω: ‘perseguir’
+δοκέω: ‘parecer’
+δουλεύω: ‘ser esclavo’
+δύναμαι: ‘poder’
+ἐθέλω: ‘querer’
+εἰμί: ‘ser’, ‘estar’, ‘haber’
+εἰσβάλλω: ‘lanzar’, ‘atacar’
+εἰσφέρω: ‘introducir’
+ἐπιθυμέω: ‘desear’ (+ gen. CRV)
+ἐπιμελέομαι: ‘encargarse de’
+ἔρχομαι: ‘ir’
+ἐρωτάω: ‘preguntar’
+εὐδαιμονέω: ‘ser feliz’
+εὑρίσκω: ‘encontrar’
+εὐφραίνω: ‘alegrarse de’ (+ gen. CRV)
+ἔχω: ‘tener’
+ζάω: ‘vivir’
+ζητέω: ‘buscar’
+ἡγέομαι: ‘liderar’, ‘pensar’
+ἥκω: ‘llegar’
+θαυμάζω: ‘admirar’
+θεραπεύω: ‘curar’, ‘venerar’
+θύω: ‘hacer sacrificios’ (+ dat. CI)
+ἱδρύω: 'construir'
+καλέω: ‘llamar’
+καταλείπω: ‘abandonar’
+καταφρονέω: ‘despreciar’
+κατέχω: ‘retener’
+κελεύω: ‘ordenar’
+κιθαρίζω: ‘tocar la cítara’
+κομίζω: ‘llevarse’
+κυβερνάω: ‘dirigir’, ‘gobernar’
+λαμβάνω: ‘coger, tomar’
+λέγω: ‘decir’, ‘hablar’
+λείπω: ‘dejar’
+λύω: ‘liberar’
+μανθάνω: ‘estudiar’
+μάχομαι: ‘luchar’
+μένω: ‘esperar’
+μετέχω: ‘participar en’ (+ gen. CRV)
+νικάω: ‘vencer’
+νομίζω: ‘pensar’, ‘considerar’
+οἰκέω: ‘habitar’
+ὁράω: ‘ver’
+ὁρμάομαι: 'atacar'
+παιδεύω: ‘educar’
+παραλαμβάνω: ‘recibir’
+παρέχω: ‘proporcionar’, ‘dar’
+πάσχω: ‘sufrir’
+πείθω: ‘convencer’
+πέμπω: 'enviar'
+πλέω: ‘navegar’
+πλουτέω: ‘ser rico’
+ποιέω: ‘hacer’
+πράττω o πράσσω: ‘hacer’
+προσβάλλω: ‘atacar’
+πιστεύω: ‘confiar en’ (+ dat. CRV)
+ῥίπτω: ‘lanzar’
+σκοπέω: ‘observar’
+στέργω: ‘amar’
+στρατεύω: ‘dirigir al ejército’
+σῴζω: ‘salvar’
+τελευτάω: ‘acabar’, ‘morir’
+τέμνω: ‘cortar’
+τέρπω: ‘alegrar’, ‘satisfacer’
+τήκω: ‘fundirse’
+τιμάω: ‘honrar’
+τρέχω: ‘correr’
+φαίνω: ‘aparecer’, ‘iluminar’
+φέρω: ‘llevar’
+φεύγω: ‘rechazar’, ‘huir’
+φθείρω: ‘matar’, ‘destruir’
+φιλέω: ‘amar’
+φοβέω: ‘asustar’
+φονεύω: ‘matar’
+φρονέω: ‘pensar’
+φρόνιμος, –ον: ‘inteligente’
+φυλάσσω o φυλάττω: ‘proteger’
+φύω: 'engendrar'
+χρή (impers.): ‘es necesario’
+
+Adverbios
+
+ἀδίκως (adv.): ‘injustamente’
+ἀεί (adv.): ‘siempre’
+ἆρα (adv.): ‘acaso’
+ἀσκέπτως (adv.): 'temerariamente'
+ἔτι (adv.): ‘ya’, ‘aún’
+εὖ (adv.): ‘bien’
+μᾶλα (adv.): ‘muy’
+μάλιστα (adv.): ‘muy’
+μᾶλλον (adv.): ‘más’
+μή (adv.): ‘no’
+μόνον (adv.): ‘sólo’
+νῦν (adv.): ‘ahora’
+οὐ, οὐκ, οὐχ (adv.): ‘no’
+οὔποτε (adv.): ‘nunca’
+οὕτω (adv.): ‘así’
+ποῖ (adv.): ‘a dónde’
+πολλάκις (adv.): ‘muchas veces’
+ποῦ (adv.): ‘dónde’
+πρῶτον (adv.): ‘en primer lugar’
+πῶς (adv.): ‘cómo’
+ταχέως (adv.): ‘rápidamente’
+τότε (adv.): ‘entonces’
+
+Conjunciones y partículas
+
+ἀλλά (conj.): ‘pero’, ‘sino’
+γάρ (part.): ‘pues’
+ἐπεί (conj.): ‘cuando’
+ἤ (conj.): ‘o’
+καί: ‘y’
+μέν… δέ (part.): “por un lado… por otro”
+οὐ μόνον ἀλλὰ καὶ: “no sólo, sino también”
+οὐδέ (conj.): ‘y no’
+οὖν (part.): ‘así pues’
+οὔτε… οὔτε (conj.): “ni… ni”
+Preposiciones
+
+ἀμφί + genitivo | acusativo | dativo: ‘a ambos lados, alrededor de’
+ἀνά + acusativo: ‘hacia (arriba)’
+ἄνευ + genitivo: ‘sin’
+ἀντί + genitivo: ‘en vez de’
+ἀπό + genitivo: ‘de, desde’
+διά + genitivo | acusativo: ‘a través de, por, a causa de’
+εἰς + acusativo: ‘a, hacia’
+ἐκ/ἐξ + genitivo: ‘de, desde’
+ἐν + dativo: ‘en’
+ἐπί + genitivo | acusativo | dativo: ‘a, hacia, contra’
+κατά + genitivo | acusativo: ‘bajo, hacia abajo, por’
+μετά + genitivo | acusativo: ‘entre, con’ (+gen.), ‘después de’ (+ac.)
+παρά + genitivo | acusativo | dativo: ‘junto a, a lado de, en, a lo largo de’
+περί + genitivo | acusativo | dativo: ‘alrededor de, sobre’
+πρό + genitivo: ‘delante de’
+πρός + genitivo | acusativo | dativo: ‘a, hacia, junto a’
+σύν + dativo: ‘con’
+ὐπέρ + genitivo | acusativo: ‘sobre, más allá de, por’
+ὐπό + genitivo | acusativo | dativo: ‘debajo de, por’
+
+
+Vocabulario por unidades – Latín I
+UD1
+
+ambulo, ambulavi, ambulatum (1ª): ‘caminar’
+amo, amavi, amatum (1ª): ‘amar’
+bellum, –i: ‘guerra’
+bonus, –a, –um: ‘bueno/a’
+cælum, –i: ‘cielo’
+capio, cepi, captum (mx.): ‘coger’, ‘tomar’
+cathedra, –æ: ‘silla’
+Claudia, –æ: ‘Claudia’
+curro, cucurri, cursum (3ª): ‘correr’
+dea, –æ: ‘diosa’
+debeo, debui, debitum (2ª): ‘deber’
+deus, –i: ‘dios’
+Diana, –æ: ‘Diana’
+do, dedi, datum (1ª): ‘dar’
+dominus, –i: ‘señor’
+duco, duxi, ductum (3ª): ‘conducir’
+facio, feci, factum (mx.): ‘hacer’
+filia, –æ: ‘hija’
+filius, –i: ‘hijo’
+frequenter (adv.): ‘frecuentemente’
+habeo, habui, habitum (2ª): ‘tener’
+Iulia, –æ: ‘Julia’
+lego, legi, lectum (3ª): ‘leer’
+liber, –bri: ‘libro’
+magnus, –a, –um: ‘grande’
+Marcus, –i: ‘Marco’
+Minerva, –æ: ‘Minerva’
+moneo, monui, monitum (2ª): ‘aconsejar’
+moveo, movi, movitum (2ª): ‘mover’
+multus, –a, –um: ‘mucho/a’
+nauta, –æ (m.): ‘marinero’
+nondum (adv.): ‘aún no’
+oppidum, –i: ‘ciudad’
+poeta, –æ: ‘poeta’
+populus, –i: ‘pueblo’
+puella, –æ: ‘niña’
+puer, –i: ‘niño’
+pulso, pulsavi, pulsatum (1ª): ‘empujar’
+rosa, –æ: ‘rosa’
+regina, –æ: ‘reina’
+Romanus, –a, –um: ‘romano/a’
+sapientia, –æ: ‘sabiduría’
+sentio, sensi, sensum (4ª): ‘sentir’, ‘oír’
+serva, –æ: ‘esclava’
+servus, –i: ‘esclavo’
+studeo, studui, – (2ª): ‘estudiar’, ‘esforzarse’
+sum, fui, – (irr.): ‘ser’, ‘estar’, ‘haber’
+templum, –i: ‘templo’
+terra, –æ: ‘tierra’
+tuus, –a, –um: ‘tuyo/a’
+
+
+UD2
+
+ædificium, –i: ‘edificio’
+ager, –gri: ‘campo’
+agito, agitavi, agitatum (1ª): ‘llevar’
+agricola, –æ (m.): ‘campesino’
+amicus, –i: ‘amigo’
+Antonius, –i: ‘Antonio’
+appropinquo, appropinquavi, approprinquatum (1ª): ‘acercarse a’
+aratrum, –i: ‘arado’
+aro, aravi, aratum (1ª): ‘arar’
+Asia, –æ: ‘Asia’
+asinus, –i: ‘burro’
+barbarus, –i: ‘bárbaro’
+beatus, –a, –um: ‘feliz’
+bellum, –i: ‘guerra’
+castra, –orum (sólo pl.): ‘campamento’
+Claudia, –æ: ‘Claudia’
+cloaca, –æ: ‘cloaca’
+copia, –æ: ‘abundancia’ (sing.), ‘tropas’ (pl.)
+Corinthus, –i: ‘Corinto’ (ciudad griega)
+Corsica, –æ: ‘Córcega’
+doceo, docui, doctum (2ª): ‘enseñar’
+doctus, –a, –um: ‘sabio/a’
+domus, –i: ‘casa’
+dormio, dormivi, dormitum (4ª): ‘dormir’
+duco, duxi, ductum (3ª): ‘conducir’
+egregie (adv.): ‘muy bien’
+eo, ii, itum (irr.): ‘ir’
+exercitus, –us: ‘ejército’
+facio, feci, factum (mx.): ‘hacer’
+familia, –æ: ‘familia’
+femina, –æ: ‘mujer’
+fessus, –a, –um: ‘cansado/a’
+filius, –i: ‘hijo’
+Gallia, –æ: ‘la Galia’
+Græcus, –a, –um: ‘griego/a’
+Hispania, –æ: ‘Hispania’
+impiger, –gra, –grum: ‘trabajador/a’
+impigre (adv.): ‘activamente’, ‘laboriosamente’
+invenio, inveni, inventum: ‘encontrar’
+Italia, –æ: ‘Italia’
+laboro, laboravi, laboratum (1ª): ‘trabajar’
+legatus, –i: ‘legado’
+libero, liberavi, liberatum (1ª): ‘liberar’
+longus, –a, –um: ‘largo/a’
+ludo, lusi, lusum (3ª): ‘jugar’
+mæstus, a, um: ‘triste’
+magister, –tri: ‘maestro’
+magnus, –a, –um: ‘grande’
+Marcus, i: ‘Marco’
+multus, –a, –um: ‘mucho/a’
+murus, –i: ‘muro’
+nocte (adv.): ‘de noche’
+non (adv.): ‘no’
+numerus, –i: ‘número’
+oppidum, –i: ‘ciudad’
+Paulus, –i: ‘Paulo’
+primus, –a, –um: ‘primero/a’
+puer, –i: ‘niño’
+rex, regis (m.): ‘rey’
+Roma, –æ: ‘Roma’
+Romanus, –a, –um: ‘romano/a’
+sed (conj.): ‘pero’, ‘sino’
+servus, –i: ‘esclavo’
+stabulum, –i: ‘establo’
+sum, fui – (irr.): ‘ser’, ‘estar’, ‘haber’
+suus, –a, –um: ‘su’
+Tarentus, –i: ‘Tarento’ (ciudad italiana)
+Tarquinius Priscus, –i: ‘Tarquinio Prisco’
+taurus, –i: ‘toro’
+templum, –i: ‘templo’
+tenerus, –a, –um: ‘pequeño/a’
+terra, –æ: ‘tierra’
+Titus, –i: ‘Tito’
+venio, veni, ventum (4ª): ‘llegar’
+via, –æ: ‘camino’
+video, vidi, visum (2ª): ‘ver’
+villa, –æ: ‘granja’
+vir, –i: ‘hombre’
+vita, –æ: ‘vida’
+
+
+UD3
+
+adversarius, –i: ‘adversario’
+ager, –gri: ‘campo’
+ago, egi, actum (3ª): ‘conducir’, ‘hacer’
+albus, –a, –um: ‘blanco’
+amicitia, –æ: ‘amistad’
+amicus, –i: ‘amigo’
+argentum, –i: ‘plata’
+aurum, –i: ‘oro’
+cano, cecini, cantum (3ª): ‘cantar’
+carpo, carpsi, carptum (3ª): ‘recoger’
+clarus, –a, –um: ‘claro/a’, ‘ilustre’
+contineo, continui, contentum (2ª): ‘mantener’
+copia, –æ: ‘abundancia’ (sing.), ‘tropas’ (pl.)
+debeo, debui, debitum (2ª): ‘deber’
+dico, dixi, dictum (3ª): ‘decir’
+discipulus, –i: ‘alumno’
+dominus, –i: ‘señor’
+epistula, –æ: ‘carta’, ‘epístola’
+eripio, eripui, eripitum (4ª): ‘arrebatar’, ‘robar’
+expugno, expugnavi, expugnatum (1ª): ‘saquear’
+fortuna, –æ: ‘fortuna’
+Græcus, –a, –um: ‘griego/a’
+habeo, habui, habitum (2ª): ‘tener’
+hostis, –is (m.): ‘enemigo’
+impero, imperavi, imperatum (1ª): ‘ordenar’
+importo, importavi, importatum (1ª): ‘trær’
+lætitia, –æ: ‘alegría’
+liber, –bri: ‘libro’
+magister, –tri: ‘maestro’
+magistra, –æ: ‘maestra’
+magnus, –a, –um: ‘grande’
+migro, migravi, migratum (1ª): ‘migrar’
+mitto, misi, missum (3ª): ‘enviar’
+monstro, monstravi, monstratum (1ª): ‘mostrar’
+multus, –a, –um: ‘mucho/a’
+nauta, –æ (m.): ‘marinero’
+neque (conj.):
+non (adv.):
+noster, –tra, –trum:
+numquam (adv.): ‘nunca’
+occultus, –a, –um: ‘oculto/a’
+oppidum, –i: ‘ciudad’
+paucus, –a, –um: ‘poco/a’
+poeta, –æ (m.): ‘poeta’
+puer, –i: ‘niño’
+pulcher, –chra, –chrum: ‘bonito/a’, ‘guapo/a’
+rarus, –a, –um: ‘infrecuente’
+Romanus, –a, –um: ‘romano/a’
+sæpe (adv.): ‘frecuentemente’
+saluto, salutavi, salutatum (1ª): ‘saludar’
+scribo, scripsi, scriptum (3ª): ‘escribir’
+semper (adv.): ‘siempre’
+silva, –æ: ‘selva’
+stella, –æ: ‘estrella’
+strenuus, –a, –um: ‘fuerte’
+sum, fui – (irr.): ‘ser’, ‘estar’, ‘haber’
+suus, –a, –um: ‘su’
+tardus, –a, –um: ‘lento’
+tenerus, –a, –um: ‘pequeño/a’
+Troia, –æ: ‘Troya’
+tunica, –æ: ‘túnica’
+venio, veni, ventum (4ª): ‘llegar’, ‘venir’
+verbum, –i: ‘palabra’
+versiculus, –i: ‘verso’
+verus, –a, –um: ‘verdadero/a’
+vestio, vestivi, vestitum (4ª): ‘vestir’
+via, –æ: ‘camino’
+vicus, –i: ‘aldea’
+video, vidi, visum (2ª): ‘ver’
+vinco, vici, victum (3ª): ‘vencer’
+vir, –i: ‘hombre’
+voco, vocavi, vocatum (1ª): ‘llamar’
+vulnero, vulneravi, vulneratum (1ª): ‘herir’
+
+
+UD4
+
+agricola, –æ: ‘campesino’
+amo, amavi, amatum (1ª): ‘amar’
+Augustus, –i: ‘Augusto’
+bellum, –i: ‘guerra’
+bonus, –a, –um: ’bueno’
+bos, bovis (m.): ‘buey’
+brevis, –e: ‘breve’, ‘corto’
+capra, –æ: ‘cabra’
+castra, –orum (sólo pl.): ‘campamento’
+celeriter (adv.): ‘rápidamente’
+charta, –æ: ‘carta’
+Cicero, –onis (m.): ‘Cicerón’
+civis, –is (m. o f.): ‘ciudadano/a’
+commito, commisi, commissum (3ª): ‘entablar’
+consul, consulis (m.): ‘cónsul’
+crimen, criminis (n.): ‘crimen’
+cum (prep. + abl.): ‘con’
+debeo, debui, debitum (2ª): ‘deber’
+deligo, delegi, delictum (3ª): ‘elegir’
+deus, –i: ‘dios’
+dico, dixi, dictum (3ª): ‘decir’
+do, dedi, datum (1ª): ‘dar’
+dux, ducis (m.): ‘conducir’
+exercitus, –us: ‘ejército’
+filia, –æ: ‘hija’
+filius, –i: ‘hijo’
+fortiter (adv.): ‘con fuerza’
+frater, fratris (m.): ‘hermano’
+gens, gentis (f.): ‘pueblo’
+habeo, habui, habitum (2ª): ‘tener’
+Hannibal, Hannibalis (m.): ‘Aníbal’
+Hasdrubal, Hasdrubalis (m.): ‘Hasdrúbal’
+homo, hominis (m.): ‘hombre’
+hostis, –is (m.): ‘enemigo’
+ibi (adv.): ‘allí’
+idoneus, –a, –um: ‘idóneo/a’
+labor, laboris (m.): ‘trabajo’, ‘fatiga’
+legatus, –i: ‘legado’
+locus, –i: ‘lugar’
+lux, lucis (f.): ‘luz’
+magnus, –a, –um: ‘grande’
+miles, militis (m.): ‘soldado’
+mitto, misi, missum (3ª): ‘enviar’
+mons, montis (m.): ‘monte’
+mulier, mulieris (f.): ‘mujer’
+multus, –a, –um: ‘mucho’
+nam (conj.): ‘pues’, ‘ya que’, ‘en efecto’
+non (adv.): ‘no’
+noster, nostra, nostrum: ‘nuestro’
+nuntio, nuntiavi, nuntiatum (1ª): ‘anunciar’
+oppidum, –i: ‘ciudad’
+oppugnatio, oppugnationis (f.): ‘asedio’
+oppugno, oppugnavi, oppugnatum (1ª): ‘asediar’
+pars, partis (f.): ‘parte’
+pastor, pastoris (m.): ‘pastor’
+pater, patris (m.): ‘padre’
+pereo, perii, peritum (irr.): ‘morir’
+pervenio, perveni, perventum (4ª): ‘llegar’
+præsidium, –i: ‘guarnición’
+primus, –a, –um: ‘primero’
+probus, –a, –um: ‘responsable’
+prœlium, –i: ‘batalla’
+propinquus, –a, –um: ‘cercano/a’
+proximus, –a, –um: ‘cercano/a’
+rapio, rapui, raptum (mx.): ‘robar’, ‘raptar’
+reduco, reduxi, reductum (3ª): ‘trær’
+relinquo, reliqui, relictum (3ª): ‘dejar’
+remaneo, remansi, remansum (2ª): ‘permanecer’
+rus, ruris (n.): ‘campo’
+Sabinus, –a, –um: ‘sabino’
+scribo, scripsi, scriptum (3ª): ‘escribir’
+semper (adv.): ‘siempre’
+senator, senatoris (m.): ‘senador’
+similis, –e: ‘parecido/a’
+sum, fui – (irr.): ‘ser, estar, haber’
+templum, –i: ‘templo’
+tempus, temporis (n.): ‘tiempo’
+tolero, toleravi, toleratum (1ª): ‘tolerar’
+urbs, urbis (f.): ‘ciudad’
+uxor, uxoris (f.): ‘esposa’
+versiculus, –i: ‘verso’
+verus, –a, –um: ‘verdadero’
+vicinus, –a, –um: ‘vecino/a’
+victoria, –æ: ‘victoria’
+video, vidi, visum (2ª): ‘ver’
+vir, viri: ‘hombre’
+virgo, virginis (f.): ‘doncella’
+vito, vitavi, vitatum (1ª): ‘evitar’
+
+
+UD5
+
+accipio, accepi, acceptum (mx.): ‘recibir’, ‘aceptar’
+acer, acris, acre: ‘puntiagudo’, ‘agrio/a’ ‘duro/a’, ‘impetuoso/a’
+Achilles, −is (m.): ‘Aquiles’
+adduco, adduxi, adductum (3ª): ‘llevar a’
+ago, egi, actum (3ª): ‘llevar’, ‘hacer’
+alacer, alacris, alacre: ‘alerta’, ‘dispuesto/a’, ‘atento/a’
+animal, −alis (n.): ‘animal’
+animus, −i: ‘ánimo’, ‘espíritu’
+appello (1ª): ‘llamar’
+appello, appellavi, appellatum (1ª): ‘’llamar’
+arma, −orum: ‘armas’
+Atalanta, −æ: ‘Atalanta’ (mujer de la mitología griega)
+audax, audacis: ‘osado/a’, ‘audaz’
+aufugio − (mx.): ‘huir’
+Augustus, −i: ‘Augusto’ (emperador romano)
+autem (conj.): ‘por otro lado’, ‘por su parte’
+avidus, −a, −um: ‘ávido/a’, ‘deseoso/a’
+beatissimus, −a, −um: ‘el/la más feliz’
+bellum, −i: ‘guerra’
+bona, −orum: ‘bienes’
+bonus, −a, −um: ‘bueno/a’
+brevis, −e: ‘corto/a’
+Cæsar, −aris (m.): ‘César’
+Campus Martius, −i: “campo de Marte”
+canis, −is (m.): ‘perro’
+capio, cepi, captum (mx.): ‘coger’, ‘tomar’, ‘capturar’
+carmen, −inis (n.): ‘poema’, ‘canto’, ‘oda’
+Carthaginiensis, −e: ‘cartaginés’
+Carthago, −inis (m.): ‘Cartago’
+Catilina, −æ (m.): ‘Catilina’
+celeber, celebris, celebre: ‘célebre’
+celer, −ris, −e: ‘rápido/a’
+certo − (1ª): ‘combatir’
+cervus, −i: ‘ciervo’
+chaos, −i: ‘caos’ (nominativo copiado del griego)
+Cicero, −onis (m.): ‘Cicerón’
+civis, −is (m. o f.): ‘conciudadano/a’
+civitas, −tatis (f.): ‘ciudad’, ‘pueblo’, ‘tribu’
+clarus, −a, −um: ‘ilustre’
+cognomen, −inis (n.): ‘apellido’, ‘cognomen’
+cognosco, cognovi, cognitum (3ª): ‘conocer’
+collega, −æ (m.): ‘colega’
+colloco (1ª): ‘colocar’
+colo, colui, cultum (3ª): ‘cultivar’, ‘honrar’
+conclamo (1ª): ‘gritar a la vez’
+confero, contuli, collatum (irr.): ‘refugiarse’
+coniuratio, −onis (f.): ‘conjuración’
+consilium, −i: ‘consejo’, ‘decisión’, ‘plan’
+corpus, corporis (n.): ‘cuerpo’
+Crœsus, −i: ‘Creso’
+dedo, dedidi, deditum (3ª): ‘entregar’
+deligo, delegi, delectum (3ª): ‘elegir’
+deus, −i: ‘dios’
+dictator, −oris (m.): ‘dictador’
+diripio, diripui, direptum (mx.): ‘robar’, ‘arrebatar’
+discipulus, −i: ‘alumno’
+dives, divitis: ‘rico/a’
+do, dedi, datum (1ª): ‘dar’
+doctus, −a, −um:’sabio/a’
+dolor, −oris (m.): ‘dolor’
+domus, −i/−us (f.): ‘casa’
+dux, ducis (m.): ‘general’
+exerceo, exercui, exercitum (2ª): ‘ejercitar’, ‘entrenar’
+exhaustus, −a, −um: ‘exhausto/a’
+exsilium, −i: ‘exilio’, ‘destierro’
+faveo, favi, fautum (2ª): ‘favorecer’
+felix, −icis: ‘feliz’
+filius, −i: ‘hijo’
+flumen, fluminis (n.): ‘río’
+formosus, −a, −um: ‘hermoso/a’
+fortis, −e: ‘fuerte’
+fortuna, −æ: ‘fortuna’
+forum, −i: ‘foro’
+frequenter (adv.): ‘frecuentemente’
+furor, −oris (m.): ‘delirio’, ‘frenesí’
+gero, gessi, gestum (3ª): ‘llevar a cabo’
+gladiator, −oris (m.): ‘gladiador’
+gladius, −i: ‘espada’
+gloria, −æ: ‘gloria’
+graculus, −i: ‘grajo’
+gravis, −e: ‘pesado/a’
+grex, gregis (m.): ‘rebaño’
+habeo, habui, habitum (2ª): ‘tener’
+Hannibal, −alis (m.): ‘Aníbal’
+Homerus, −i: ‘Homero’ (legendario poeta griego)
+homo, hominis (m.): ‘hombre’
+Horatius, −i: ‘Horacio’ (poeta lírico romano)
+hostis, −is (m.): ‘enemigo’
+immortalis, −e: ‘inmortal’
+imperator, −oris (m.): ‘líder’
+imperium, −i: ‘imperio’
+impono, imposui, impositum (3ª): ‘trær’
+improbus, −a, −um: ‘malvado/a’
+indico (1ª): ‘indicar’, ‘señalar’
+ingens, −ntis: ‘abundante’, ‘numeroso/a’
+inimicus, −a, −um: ‘enemigo’
+interficio, interfeci, interfectum (mx.): ‘matar’
+ira, −æ: ‘ira’
+itaque (conj.): ‘así pues’
+iter, itineris (n.): ‘camino’, ‘marcha’
+iudico, iudicavi, iudicatum (1ª): ‘juzgar’, ‘considerar’
+iuvenis, −e: ‘joven’
+iuvo, iuvi, iutum (1ª): ‘ayudar’
+laborans, −ntis: ‘trabajador/a’
+laudo (1ª): ‘alabar’
+lego, legi, lectum (3ª): ‘leer’
+libentissime (adv.): ‘con mucho gusto’
+locus, −i: ‘lugar’
+magister, −tri: ‘mæstro’
+magnus, −a, −um: ‘grande’
+malus, −a, −um: ‘malo/a’
+maneo, manui, mansum (2ª): ‘permanecer’
+maximus, −a, −um: ‘el/la más grande’
+meus, −a, −um: ‘mío/a’
+miles, militis (m.): ‘soldado’
+militaris, −e: ‘militar’
+misceo, miscui, mixtum (2ª): ‘mezclar’
+mitto, misi, missum (3ª): ‘enviar’
+mors, mortis (f.): ‘muerte’
+mos, moris (m.): ‘costumbre’
+mulier, −eris (f.): ‘mujer’
+multus, −a, −um: ‘mucho/a’
+narro (1ª): ‘narrar’, ‘contar’
+Naso, −onis (m.): ‘Nasón’, ‘narizón’
+nomen, nominis (n.): ‘nombre’
+nomino, nominavi, nominatum (1ª): ‘nombrar’
+non (adv.): ’no’
+noster, −tra, −trum: ‘nuestro/a’
+obœdio, obœdii, obœditum (4ª): ‘obedecer’ (+ dat. CRV)
+occido, occidi, occisum (3ª): ‘matar’
+omnis, −e: ‘todo/a’
+oppidum, −i: ‘ciudad’
+opus, operis (n.): ‘obra’
+origo, −inis (f.): ‘origen’
+Ovidius, −i: ‘Ovidio’ (poeta romano)
+Ovidius, −i: ‘Ovidio’ (poeta romano)
+par, paris: ‘igual’
+pater, −tris (m.): ‘padre’
+patria, −æ: ‘patria’
+pauper, −eris: ‘pobre’
+pavo, −onis (m.): ‘pavo real’
+pax, pacis (f.): ‘paz’
+pecunia, −æ: ‘dinero’
+perterritus, −a, −um: ‘aterrorizado/a’
+philosophus, −i: ‘filósofo’
+poeta, −æ (m.): ‘poeta’
+præceptum, −i: ‘precepto’, ‘norma’
+princeps, principis: ‘primero/a’, ‘líder’, ‘emperador’
+prœlium, −i: ‘batalla’
+provincia, −æ: ‘provincia’
+prudens, −ntis: ‘sensato/a’
+pugno (1ª): ‘luchar’
+pulcherrimus, −a, −um: ‘el/la más bello/a’
+punio, punivi, punitum (4ª):’castigar’
+puto, putavi, putatum (1ª): ‘considerar’
+quia (conj.): ‘porque’
+regio, −onis (f.): ‘región’
+rego, rexi, rectum (3ª): ‘regir’, ‘gobernar’
+relinquo, reliqui, relictum (3ª): ‘dejar’, ‘abandonar’
+res publica, −æ: “República”
+res, −ei (f.): ‘cosa’, ‘asunto’
+rex, regis (m.): ‘rey’
+Romanus, −a, −um: ‘romano/a’
+sæpe (adv.): ‘a menudo’
+sapiens, −ntis: ‘sabio/a’
+scelus, sceleris (n.): ‘crimen’
+Scipio, −onis (m.): ‘Escipión’
+sed (conj.): ‘pero’, ‘sino’
+senator, −oris (m.): ‘senador’
+senex, senis (m.): ‘anciano’
+sentio, sensi, sensum (4ª): ‘sentir’, ‘oír’
+servo (1ª): ‘velar por’, ‘salvar’
+servus, −i: ‘esclavo’
+sum, fui – (irr.): ‘ser’, ‘estar’, ‘haber’
+suus, −a, −um: ‘suyo/a’, ‘su’
+telum, −i: ‘proyectil’
+tempus, temporis (n.): ‘tiempo’
+terra, −æ: ‘tierra’
+timeo, timui – (2ª): ‘temer’
+trado, tradidi, traditum (3ª): ‘entregar’
+transeo, transii, transitum (irr.): ‘cruzar’
+turba, −æ: ‘turba’, ‘multitud’
+tutus, −a, −um: ‘seguro/a’, ‘a salvo’
+urbs, urbis (f.): ‘ciudad’
+utilis, −e: ‘útil’
+uxor, −oris (f.): ‘esposa’
+velox, −ocis: ‘veloz’
+versiculus, −i: ‘verso’
+vetus, veteris: ‘viejo/a’
+victoria, −æ: ‘victoria’
+vir, −i: ‘hombre’
+vita, −æ: ‘vida’
+vito (1ª): ‘evitar’
+voco (1ª): ‘llamar’
+voluptas, −tatis (f.): ‘deseo’, ‘placer’
+vulneratus, −a, −um: ‘herido/a’
+
+UD6
+
+accurro, accucurri, accursum (3ª): ‘acudir’
+adiuvo, adiuvi, adiutum (1ª): ‘ayudar’
+Æneas, –æ: ‘Eneas’ (héroe troyano fundador de Alba Longa)
+æquus, –a, –um: ‘llano/a’, ‘igual’
+Africanus, –i: ‘Africano’ (sobrenombre de Escipión)
+Ambiorix, Ambiorigis (m): ‘Ambíorix’ (general belga)
+ancilla, –æ: ‘sirvienta’
+appropinquo, appropinquavi, appropinquatum (1ª): ‘acercarse a’ (+ dat.)
+Athenæ, –arum: ‘Atenas’
+atque (conj.): ‘y’
+Atuatuci, –orum: ‘aduátucos’ (pueblo belga)
+audio, audivi, auditum (4ª): ‘escuchar’
+bonus, –a, –um: ‘bueno/a’
+canis, –is: ‘perro’
+careo, carui – (2ª): ‘carecer de’ (+ abl.)
+carmen, carminis (n.): ‘canto’, ‘poema’
+celeriter (adv.): ‘rápidamente’
+civis, –is (m. y f.): ‘ciudadano/a’
+civitas, civitatis (f.): ‘tribu’
+clarus, –a, –um: ‘ilustre’
+colo, colui, cultum (3ª): ‘cultivar’
+conservo, conservavi, conservatum (1ª): ‘conservar’, ‘salvar’
+consul, consulis (m.): ‘cónsul’
+contendo, contendi, contentum (3ª): ‘dirigirse contra’
+contentio, contentionis (f.): ‘lucha’, ‘competición’
+corono, coronavi, coronatum (1ª): ‘coronar’
+corpus, corporis (n.): ‘cuerpo’
+delectatio, delectationis (f.): ‘deleite’, ‘disfrute’
+deleo, delevi, deletum (2ª): ‘destruir’
+desidero, desideravi, desideratum (1ª): ‘desear’
+disco, didici – (3ª): ‘aprender’
+do, dedi, datum (1ª): ‘dar’
+doleo, dolui, dolitum (2ª): ‘doler’, ‘estar afligido’
+domus, –i (tiene locativo): ‘casa’
+dux, ducis (m.): ‘general’
+equitatus, –us (m.): ‘caballería’
+finitimus, –a, –um: ‘limítrofe’, ‘vecino’
+frater, fratris (m.): ‘hermano’
+fugio, fugi – (4ª): ‘huir’
+gens, gentis (m.): ‘pueblo’, ‘gente’
+gero, gessi, gestum (3ª): ‘llevar a cabo’
+habeo, habui, habitum (2ª): ‘tener’
+historia, –æ: ‘historia’
+homo, hominis (m.): ‘hombre’
+honestus, –a, –um: ‘honesto/a’
+inclitus, –a, –um: ‘famoso/a’
+invito, invitavi, invitatum (1ª): ‘invitar’
+legio, –onis (f.): ‘legión’
+lego, legi, lectum (3ª): ‘leer’
+liber, –bri: ‘libro’
+locus, –i (en pl. es neutro): ‘lugar’
+ludus, –i: ‘juego’
+lux, lucis (f.): ‘luz’, ‘alba’
+Marathonius, –a, –um: ‘de Maratón’
+mare, maris (n.): ‘mar’
+miles, –itis (m.): ‘soldado’
+militia, –æ (tiene locativo): ‘ejército’
+moror, moratus sum (1ª): ‘detenerse’
+multus, –a, –um: ‘mucho/a’
+nec (conj.): ‘ni’
+numerus, –i: ‘número’
+ordo, ordinis (f.): ‘línea de batalla’
+osculum, –i: ‘beso’
+peragro, peragravi, peragratum (1ª): ‘recorrer’
+populus, –i: ‘pueblo’
+postea (adv.): ‘después’, ‘más tarde’
+potens, potentis: ‘poderoso/a’, ‘influyente’
+primus, –a, –um: ‘el primero/a’
+prœlium, –i: ‘batalla’
+pugna, –æ: ‘batalla’
+rapio, rapui, raptum (mx.): ‘raptar’
+recito, recitavi, recitatum (1ª): ‘recitar’
+regnum, –i: ‘reino’
+Scipio, Scipionis (m.): ‘Escipión’ (general romano)
+semper (adv.): ‘siempre’
+senectus, senectutis (f.): ‘vejez’
+serenus, –a, –um: ‘tranquilo/a’
+silva, –æ: ‘bosque’
+spectaculum, –i: ‘espectáculo’
+sublatus, –a, –um: ‘presuntuoso’, ‘altanero’
+sum, fui – (irr.): ‘ser’, ‘estar’, ‘haber’
+traho, traxi, tractum (3ª): ‘arrastrar’
+tuus, –a, –um: ‘tuyo/a’
+urbs, urbis (f.): ‘ciudad’
+uxor, –oris (f.): ‘esposa’
+venator, venatoris (m.): ‘cazador’
+vicinus, –a, –um: ‘vecino/a’
+victoria, –æ: ‘victoria’
+video, vidi, visum (2ª): ‘ver’
+vir, –i: ‘hombre’
+vir, viri: ‘hombre’
+virgo, virginis (f.): ‘doncella’
+virtus, virtutis (f.): ‘valentía’, ‘virtud’
+vita, –æ: ‘vida’
+
+
+
+	UD7
+
+ac (conj.): ‘y’
+adhibeo, adhibui, adhibitum (2ª): ‘aferrarse a’
+adiuvo, adiuvavi, adiuvatum (1ª): ‘ayudar’
+adversus, –a, –um: ‘adverso/a’
+Æneas, –æ: ‘Eneas’
+æquus, –a, –um: ‘igual’
+æstas, æstatis (f.): ‘verano’
+ager, –gri: ‘campo’
+agricola, –æ (m.): ‘campesino’
+annus, –i: ‘año’
+arma, –orum: ‘armas’
+ascendo, ascendi, ascensum (3ª): ‘subir’
+audio, audivi, auditum (4ª): ‘escuchar’
+autumnus, –i: ‘otoño’
+avis, –is (f.): ‘ave’
+cælum, –i: ‘cielo’
+cantus, –us: ‘canto’
+carmen, carminis (n.): ‘poema’
+cerno, crevi, cretum (3ª): ‘distinguir’, ‘discernir’
+civis, –is (m. y f.): ‘ciudadano/a’
+civitas, –tatis (f.): ‘ciudad’
+clamo, clamavi, clamatum (1ª): ‘gritar’
+clarus, –a, –um: ‘ilustre’
+complector, complectus sum (3ª): ‘abrazar’
+conor, conatus sum (1ª): ‘intentar’
+conservo, conservavi, conservatum (1ª): ‘salvar’
+consilium, –i: ‘decisión’, ‘plan’
+consul, consulis (m.): ‘cónsul’
+contentio, –onis (f.): ‘contienda’
+cornu, –us: ‘flanco’
+corono, coronavi, coronatum (1ª): ‘coronar’
+corpus, –oris (n.): ‘cuerpo’
+delectatio, –onis (f.): ‘deleite’
+deus, i: ‘dios’
+dexter, –tra, –trum: ‘derecho/a’
+dico, dixi, dictum (3ª): ‘decir’
+dies, –ei (m. o f.): ‘día’ (m.), ‘fecha’ (f.)
+difficilis, –e: ‘difícil’
+domus, –us (o –i): ‘casa’
+duco, duxi, ductum (3ª): ‘conducir’
+dux, ducis (m.): ‘general’
+exercitus, –us: ‘ejército’
+facio, feci, factum (mx.): ‘hacer’
+frater, –tris (m.): ‘hermano’
+fructus, –us: ‘fruto’
+hiems, hiemis (f.): ‘invierno’
+honestus, –a, –um: ‘honesto/a’
+hostis, –is (m.): ‘enemigo’
+iam (adv.): ‘ya’
+impetus, –us: ‘ataque’
+intueor, intuitus sum (2ª): ‘observar’, ‘fijar la vista en’
+iubeo, iussi, iussum (2ª): ‘ordenar’
+iuvenis, –e: ‘joven’
+laboro, laboravi, laboratum (1ª): ‘trabajar’
+lætor, lætatus sum (1ª): ‘alegrarse’
+littera, –æ: ‘letra’
+locus, –i (en pl. es n.): ‘lugar’
+magistratus, –us: ‘magistrado’
+mare, maris (n.): ‘mar’
+Medus, –i: ‘Medo’
+mitto, misi, missum (3ª): ‘enviar’
+mons, montis (m.): ‘monte’
+navis, –is (f.): ‘nave’
+neque (conj.): ‘y no’, ‘ni’
+nihil (adv.): ‘nada’
+nivis, –is (f.): ‘nieve’
+nomen, nominis (n.): ‘nombre’
+nox, noctis (f): ‘noche’
+numerus, –i: ‘número’
+nunc (adv.): ‘ahora’
+occasus, –us: ‘ocaso’
+olim (adv.): ‘otrora’
+omnis, –e: ‘todo/a’
+operio, operui, opertum (4ª): ‘cubrir’
+ora, –æ: ‘borde’
+ortus, –us: ‘nacimiento’
+pareo, parui, paritum (2ª): ‘obedecer’
+paulo (adv.): ‘poco’
+percipio, percepi, perceptum (mx.): ‘recoger’, ‘obtener’
+portus, –us: ‘puerto’
+post (adv.): ‘después’
+potens, potentis: ‘poderoso/a’
+præter (prep. + ac.): ‘excepto’
+proficiscor, profectus sum (3ª): ‘avanzar’, ‘marchar’
+puppis, –is (f.): ‘popa’
+recipio, recepi, receptum (mx.): ‘recoger’, ‘retirar’
+res, rei: ‘cosa’, ‘asunto’, ‘circunstancia’
+resono, resonavi, resonatum (1ª): ‘resonar’
+rex, regis (m.): ‘rey’
+rursus (adv.): ‘de nuevo’
+salvus, –a, –um: ‘seguro’
+scio, scivi, scitum (4ª): ‘saber’
+senatus, –us: ‘Senado’
+senectus, ­–utis (f.): ‘vejez’
+serenus, –a, –um: ‘sereno/a’
+series, –ei: ‘serie’, ‘sucesión’
+severus, –a, –um: ‘duro/a’
+silva, ­–æ: ‘bosque’
+soleo, solitus sum (2ª): ‘soler’
+solis, –is (m.): ‘sol’
+spes, –ei: ‘esperanza’
+sustineo, sustinui, sustentum (2ª): ‘sostener’
+tenuis, –e: ‘fino/a’
+traho, traxi, tractum (3ª): ‘arrastrar’
+urbs, urbis (f.): ‘ciudad’
+usque (adv.): ‘hasta’
+vallis, –is (f.): ‘valle’
+venator, –oris (m.): ‘cazador’
+ver, veris (f.): ‘primavera’
+vereor, veritus sum (2ª): ‘respetar’, ‘temer’
+vetus, veteris: ‘antiguo/a’
+video, vidi, visum (2ª): ‘ver’, ‘considerar’
+
+
+UD8
+
+amicus, –i: ‘amigo’
+aqua, –æ: ‘agua’
+Aristides, –is (m.): ‘Arístides’
+arma, –orum (sólo pl.): ‘armas’
+ascendo, ascendi, ascensum (3ª): ‘subir’
+Athenæ, –arum (sólo pl.): ‘Atenas’
+bellum, –i: ‘guerra’
+bonus, –a, –um: ‘bueno/a’
+Cæsar, –aris: ‘César’
+Capitolium, –i: ‘Capitolio’
+castra, –orum: ‘campamento’
+Celtiberia, –æ: ‘Celtiberia’
+cerno, crevi, cretum (3ª): ‘distinguir’
+civis, –is (m. o f.): ‘ciudadano/a’
+clamo, clamavi, clamatum (1ª): ‘gritar’
+contendo, contendi, contentum (3ª): ‘dirigirse a’
+deduco, deduxi, deductum (3ª): ‘llevar a’
+defendo, defendi, defensum (3ª): ‘defender’
+deus, –i: ‘dios’
+dico, dixi, dictum (3ª): ‘decir’
+difficilis, –e: ‘difícil’
+duco, duxi, ductum (3ª): ‘conducir’
+eques, equitis (m.): ‘jinete’
+exercitus, –us: ‘ejército’
+expulso, expulsavi, expulsatum (1ª): ‘expulsar’
+faveo, favi, fautum (2ª): ‘favorecer’
+fidelis, –e: ‘fiel’
+fidus, –a, –um: ‘fiable’
+flumen, fluminis (n.): ‘río’
+gero, gessi, gestum (3ª): ‘llevar a cabo’
+Græcus, –a, –um: ‘griego/a’
+Hispanus, –a, –um: ‘hispano/a’
+impero, imperavi, imperatum (1ª): ‘ordenar’
+inimicus, –a, –um: ‘enemigo/a’
+initium, –i: ‘inicio’
+integritas, integritatis (f.): ‘integridad’
+iubeo, iussi, iussum (2ª): ‘ordenar’
+ius, iuris (n.): ‘derecho’
+iustus, –a, –um: ‘justo/a’
+laudo, laudavi, laudatum (1ª): ‘alabar’
+littera, –æ: ‘letra’
+magnus, –a, –um: ‘grande’
+mare, –is (n.): ‘mar’
+Metellus, –i: ‘Metelo’
+miles, militis (m.): ‘soldado’
+miser, misera, miserum: ‘pobre’, ‘desgraciado/a’
+municipium, –i: ‘municipio’
+navigo, navigavi, navigatum (1ª): ‘navegar’
+navis, –is (f.): ‘nave’
+nihil (indecl.): ‘nada’
+omnis, –e: ‘todo/a’
+optimus, –a, –um: ‘el/la mejor’
+pars, partis (f.): ‘parte’
+parvulus, –a, –um: ‘pequeño/a’
+patria, –æ: ‘patria’
+permaneo, permansi, permansum (2ª): ‘permanecer’
+peto, petivi, petitium (3ª): ‘dirigirse a’, ‘pedir’
+Pompeius, ­–i: ‘Pompeyo’
+populus, –i: ‘pueblo’
+portus, –us: ‘puerto’
+possum, potui – (irr.): ‘poder’
+prœlium, –i: ‘batalla’
+proximus, –a, –um: ‘cercano/a’
+pugno, pugnavi, pugnatum (1ª): ‘luchar’
+puto, putavi, putatum (1ª): ‘considerar’
+recipio, recepi, receptum (mx.): ‘recoger’
+redeo, redii, reditum (irr.): ‘volver’
+res, –ei: ‘cosa’, ‘asunto’, ‘circunstancia’
+salvus, –a, –um: ‘a salvo’, ‘seguro/a’
+scio, scivi, scitum (4ª): ‘saber’
+semper (adv.): ‘siempre’
+socius, –a, –um: ‘aliado/a’
+soleo, solitus sum (2ª): ‘soler’
+Tamesis, –is: ‘Támesis’
+templum, –i: ‘templo’
+tempus, –oris (n.): ‘tiempo’
+tenuis, –e: ‘fino/a’
+Thales, –is (m.): ‘Tales’
+transeo, transii, transitum (irr.): ‘cruzar’
+Troianus, –a, –um: ‘troyano/a’
+unus, –a, –um: ‘uno/a’
+urbs, urbis (f.): ‘ciudad’
+venio, veni, ventum (4ª): ‘llegar’, ‘venir’
+vetus, veteris: ‘viejo/a’
+video, vidi, visum (2ª): ‘ver’
+
+
+UD9–10
+
+absum, abfui – (irr.): ‘distar’
+accipio, accepi, acceptum (mx.): ‘recibir’
+acriter (adv.): ‘duramente’
+ædifico, ædificavi, ædificatum (1ª): ‘construir’
+aequus, -a, -um: ‘favorable’
+ager, –gri: ‘campo’
+ambulo, ambulavi, ambulatum (1ª): ‘caminar’
+animus, -i: ‘espíritu’
+annus, –i: ‘año’
+appareo, apparui, apparitum (2ª): ‘aparecer’
+aqua, –æ: ‘agua’
+Ardea, –æ: ‘Ardea’ (ciudad)
+argentum, –i: ‘plata’
+audeo, ausus sum (2ª): ‘atreverse a’
+audio, audivi, auditum (4ª): ‘escuchar’
+aurum, –i: ‘oro’
+barbarus, –i: ‘bárbaro’
+bellum, –i: ‘guerra’
+bibliotheca, –æ: ‘biblioteca’
+bonus, –a, –um: ‘bueno/a’
+Cæsar, –aris (m.): ‘César’
+Callus, –i: ‘Calo’ (genticilio)
+canis, –is (m.): ‘perro’
+capio, cepi, captum (mx.): ‘coger’, ‘tomar’, ‘capturar’
+captivus, -a, -um: ‘cautivo/a’
+Capua, –æ: ‘Capua’
+careo, carui – (2ª): ‘carecer de’ (+ abl.)
+castra, –orum: ‘campamento’
+Catilina, –æ (m.): ‘Catilina’
+Cato, –onis (m.): ‘Catón’
+Cicero, –onis (m.): ‘Cicerón’
+civitas, civitatis (f.): ‘ciudad’
+clamor, –oris (m.): ‘griterío’
+clarus, –a, –um: ‘claro/a’, ‘ilustre’
+comperio, comperi, compertum (4ª): ‘descubrir’
+condo, condidi, conditum (3ª): ‘fundar’
+coniuratio, coniurationis (f.): ‘conjuración’
+conor, conatus sum (1ª): ‘intentar’
+consul, –ulis (m.): ‘cónsul’
+copia, -ae: ‘abundancia’ (s.), ‘tropas’ (pl.)
+cor, cordis (n.): ‘corazón’
+cremo, cremavi, crematum (1ª): ‘quemar’
+creo, creavi, creatum (1ª): ‘elegir’
+curro, cucurri, cursum (3ª): ‘correr’
+custos, custodis (m.): ‘guardián’
+debeo, debui, debitum (2ª): ‘deber’
+deleo, delevi, deletum (2ª): ‘eliminar’
+delibero, deliberavi, deliberatum (1ª): ‘deliberar’
+deus, –i: ‘dios’
+dico, dixi, dictum (3ª): ‘decir’
+dies, -ei: ‘día’ (m.), ‘fecha’ (f.)
+dissero, disserui, dissertum (3ª): ‘disertar’
+disto, distavi, distatum (1ª): ‘distar’
+diu (adv.): ‘de día’, ‘durante mucho tiempo’
+dives, divitis: ‘rico/a’
+do, dedi, datum (1ª): ‘dar’
+domus, –i o –us (f.): ‘casa’
+durus, –a, –um: ‘duro/a’
+dux, ducis (m.): ‘general’
+eloquens, eloquentis: ‘elocuente’
+epistula, –æ: ‘carta’
+equitatus, -us: ‘caballería’
+erro, erravi, erratum (1ª): ‘errar’, ‘vagar’
+exercitus, –us: ‘ejército’
+expugno, expugnavi, expugnatum (1ª): ‘saquear’
+fabula, –æ: ‘fábula’, ‘cuento’
+facilis, –e: ‘fácil’
+facio, feci, factum (mx.): ‘hacer’
+faveo, favi, fautum (2ª): ‘favorecer’ (+ dat.)
+ferme (adv.): ‘aporximadamente’
+ferrum, –i: ‘hierro’
+filius, –i: ‘hijo’
+finis, -is (f.): ‘frontera’
+fœdero, fœderavi, fœderatum (1ª): ‘aliarse’
+fortis, –e: ‘fuerte’
+fugio, fugi – (3ª): ‘huir’
+Galli, -orum: ‘galos’
+gaudeo, gavisus sum (2ª): ‘disfrutar’ (+ abl.)
+Græcus, –a, –um: ‘griego/a’
+gratulor, gratulatus sum (1ª): ‘agradecer a’ (+ dat.)
+Helvetius, –i: ‘helvecio’
+hiems, hiemis (f.): ‘invierno’
+homo, hominis (m.): ‘hombre’
+Hortensius, –i: ‘Hortensio’
+hostis, –is (m.): ‘enemigo’
+ibi (adv.): ‘allí’
+ignis, –is (m.): ‘fuego’
+imperator, –oris (m.): ‘líder’, ‘jefe’
+impetus, –us: ‘empuje’, ‘ataque’
+invenio, inveni, inventum (4ª): ‘encontrar’
+ita (adv.): ‘así’
+iudicium, –i: ‘juicio’
+labor, -oris (m.): ‘trabajo’, ‘fatiga’
+latus, –a, –um: ‘ancho/a’
+laudo, laudavi, laudatum (1ª); ‘alabar’
+leo, leonis (m.): ‘león’
+liber, –bri: ‘libro’
+locus, –i (en pl. es n.): ‘lugar’
+longe (adv.): ‘por mucho’
+longus, –a, –um: ‘largo/a’
+loquor, locutus sum (3ª): ‘hablar’
+Lucius, –i: ‘Lucio’
+Lucretia, –æ: ‘Lucrecia’
+lux, lucis (f.): ‘luz’
+malus, –a, –um: ‘malo/a’
+mandatum, –i: ‘orden’
+maneo, mansi, mansum (2ª): ‘permanecer’
+mare, –is (n.): ‘mar’
+Marius, –i: ‘Mario’
+milia, –orum: ‘mil’
+miror, miratus sum (1ª): ‘admirar’
+mitto, misi, missum (3ª): ‘enviar’
+mortuus, –a, –um: ‘muerto/a’
+mulier, mulieris (f.): ‘mujer’
+multus, –a, –um: ‘mucho/a’
+narro, narravi, narratum (1ª): ‘narrar’
+nascor, natus sum (3ª): ‘nacer’
+nobilis, –e: ‘noble’
+noster, –tra, –trum: ‘nuestro/a’
+obliviscor, oblitus sum (3ª): ‘olvidarse de’ (+ gen.)
+obses, obsidis (m.): ‘rehén de guerra’
+occido, occidi, occissum (3ª): ‘matar’
+omnis, –e: ‘todo/a’
+oppidum, -i: ‘ciudad’
+oppugno, oppugnavi, oppugnatum (1ª): ‘asediar’
+orator, oratoris (m.): ‘orador’
+Orgetorix, –igis: ‘Orgétorix’
+orior, ortus sum (4ª): ‘nacer’
+pareo, parui, paritum (2ª): ‘obedecer a’ (+ dat.)
+passus, –us: ‘paso’ (unidad de medida)
+patior, passus sum (4ª): ‘experimentar’
+pervenio, perveni , perventum (4ª): ‘llegar’
+pervenio, perveni, perventum (4ª): ‘llegar’
+poeta, –æ (m.): ‘poeta’
+polliceor, pollicitus sum (2ª): ‘prometer’
+Pompeius, –i: ‘Pompeyo’
+populus, –i: ‘pueblo’
+posterus, -a, -um: ‘posterior’
+postquam (conj.): ‘después de que’
+postulatum, –i: ‘petición’
+praesum, praefui – (irr.): ‘estar al frente de’ (+ dat.)
+primus, -a, -um: ‘primero/a’
+proficiscor, profectus sum (3ª): ‘marchar’
+puella, –æ: ‘niña’
+puer, –i: ‘niño’
+pugno, pugnavi, pugnatum (1ª): ‘luchar’
+quæro, quæsivi, quæsitum (3ª): ‘buscar’, ‘pedir’
+quam (conj.): ‘que’
+quattuor (num. indecl.): ‘cuatro’
+rapio, rapui, raptum (mx.): ‘robar’, ‘raptar’
+regno, regnavi, regnatum (1ª): ‘reinar’
+renuntio, renuntiavi, renuntiatum (1ª): ‘anunciar’
+res, rei: ‘cosa’, ‘asunto’, ‘circunstancia’
+respondo, responsi, responsum (3ª): ‘responder’
+revertor, reversus sum (3ª): ‘volver’
+rex, regis (m.): ‘rey’
+rideo, risi, risum (2ª): ‘reír’
+Roma, –æ: ‘Roma’
+Roscius, –i: ‘Roscio’
+Saguntum, –i: ‘Sagunto’
+saxum, –i: ‘piedra’
+scribo, scripsi, scriptum (3ª): ‘escribir’
+sedeo, sedi, sessum (2ª): ‘sentarse’
+semper (adv.): ‘siempre’
+senectus, senectutis (f.): ‘vejez’
+sepelio, sepelii, sepultum (3ª): ‘enterrar’
+sequor, secutus sum (3ª): ‘seguir’
+Servius Tullius: ‘Servio Tulio’
+sexcenti, –æ, –a (num.): ‘seiscientos’
+silva, -ae: ‘bosque’
+societas, societatis (f.): ‘alianza’
+soleo, solitus sum (2ª): ‘soler’
+solvo, solvi, solutum (2ª): ‘soltar’, ‘pagar’
+Sophocles, –i: ‘Sófocles’
+sum, fui – (irr.): ‘ser’, ‘estar’, ‘haber’
+tam (adv.): ‘tan’
+Tarquinius, –i: ‘Tarquinio’
+templum, –i: ‘templo’
+tertius, -a, -um: ‘tercero/a’
+Titus Livius: ‘Tito Livio’
+tres, tria (num.): ‘tres’
+Tullius, –i: ‘Tulio’
+urbs, urbis (f.): ‘ciudad’
+utor, usus sum (3ª): ‘utilizar’, ‘contar con’ (+ abl.)
+vasto, vastavi, vastatum (1ª): ‘devastar’
+vectigalis, –e: ‘impuesto’
+venio, veni, ventum (4ª): ‘venir’, ‘llegar’
+video, vidi, visum (2ª): ‘ver’
+vilis, –e: ‘vulgar’
+vinco, vici, victum (3ª): ‘vencer’
+vir, –i: ‘hombre’
+virtus, virtutis (f.): ‘virtud’
+vivus, –a, –um: ‘vivo/a’
+Vlixes, –ei: ‘Ulises’
+voco, vocavi, vocatum (1ª): ‘llamar’
+
+
+
+UD11-12
+
+abeo, abii, abitum (irr.): ‘salir’, ‘irse a’, ‘huir’
+accedo, accessi, acessum (3ª): ‘dirigirse a’
+accido, accidi, accesum (3ª): ‘suceder’
+advenio, adveni, adventum (4ª): ‘llegar’
+adversus (prep.): ‘contra’
+ægre (adv.): ‘con dificultad’
+alter, altera, alterum (pron.): ‘el otro/a’
+bello, bellavi, bellatum (1ª): ‘hacer la guerra’
+bellum, –i: ‘guerra’
+cado, cecidi, casum (3ª): ‘cær’
+Cæsar, –aris (m.): ‘César’
+capio, cepi, captum (mx.): ‘tomar’, ‘capturar’
+careo, carui – (2ª): ‘carecer de’ (+ abl.)
+castra, –orum (sólo pl.): ‘campamento’
+centurio, centurionis (m.): ‘centurión’
+ceterus, –a, –um: ‘el resto’
+civilis, –e: ‘civil’
+cœpi (def.): ‘empezar a’ (+ inf.)
+cognosco, cognovit, cognotum (3ª): ‘conocer’
+colo, colui, cultum (3ª): ‘cultivar’, ‘honrar’
+coniungo, coniunxi, coniunctum (3ª): ‘unir’
+constituo, constiti, constitutum (3ª): ‘decidir’, ‘colocar’
+consul, –ulis (m.): ‘cónsul’
+contentio, contentionis (f.): ‘esfuerzo’
+copia, –æ: ‘abundancia’ (s.), ‘tropas’ (pl.)
+Coriolanus, –i: ‘Coriolano’
+Creta, –æ: ‘Creta’
+cupio, cupii, cupitum (mx.): ‘desear’
+Dædalus, –i: ‘Dédalo’
+dico, dixi, dictum (3ª): ‘decir’
+do, dedi, datum (1ª): ‘dar’
+domus, –us (o –i): ‘casa’
+efficio, effeci, effectum (mx.): ‘hacer’, ‘provocar’
+elabor, elapsus sum (3ª): ‘reptar’
+eques, equitis (m.): ‘jinete’
+equitatus, –us: ‘caballería’
+etiam (adv.): ‘incluso’
+exspecto, exspectavi, exspectatum (1ª): ‘esperar’
+facio, feci, factum (mx.): ‘hacer’
+factio, –onis (f.): ‘facción’
+filius, –i: ‘hijo’
+firmo, firmavi, firmatum (1ª): ‘establecer’
+floreo, florui, floritum (2ª): ‘florecer’
+frumentum, –i: ‘trigo’
+Gallia, –æ: ‘la Galia’
+Gallus, –a, –um: ‘galo/a’
+gratulor, gratulatus sum (1ª): ‘dar las gracias’ (+ dat.)
+habeo, habui, habitum (2ª): ‘tener’
+Hædui, –orum: ‘eduos’
+Helvetii, –orum: ‘helvecios’
+hostis, –is (m.): ‘enemigo’
+iam (adv.): ‘ya’
+ibi (adv.): ‘allí’
+impetro, impetravi, impetratum (1ª): ‘conseguir’
+imploro, imploravi, imploratum (1ª): ‘suplicar’
+ineo, inii, initum (irr.): ‘empezar’
+inimicus, –a, –um: ‘enemigo’
+insula, –æ: ‘isla’
+intra (prep.): ‘dentro de’
+irrumpo, irrumpsi, irrumptum (3ª): ‘irrumpir’
+item (adv.): ‘del mismo modo’
+iter, itineris (n.): ‘camino’
+iustitia, –æ: ‘justicia’
+iuxta (adv.): ‘al lado’
+legio, legionis (f.): ‘legión’
+littera, –æ: ‘letra’ (s.), ‘carta’ (pl.)
+loquor, locutus sum (3ª): 
+malus, –a, –um: ‘malo/a’
+mater, matris (f.): ‘madre’
+memini (defect.): ‘recordar’
+memoro, memoravi, memoratum (1ª): ‘recordar’
+meus, –a, um: ‘mi’
+miles, militis (m.): ‘soldado’
+mitto, misi, missum (3ª): ‘enviar’
+moneo, monui, monitum (2ª): ‘aconsejar’
+morbus, –i: ‘enfermedad’
+mors, mortis (f.): ‘muerte’
+moveo, movi, motum (2ª): ‘mover’
+mulier, –eris (f.): ‘mujer’
+multus, –a, –um: ‘mucho/a’
+munio, munii, munitum (4ª): ‘reforzar’
+munitio, munitionis (f.): ‘fortificación’
+necesse (indecl.): ‘necesario’
+nolo, nolui – (irr.): ‘no querer’
+nondum (adv.): ‘aún no’
+obliviscor, oblitus sum (3ª): ‘olvidar’
+occulte (adv.): ‘ocultamente’
+omnis, –e: ‘todo/a’
+oppidum, –i: ‘ciudad’
+oraculum, –i: ‘oráculo’
+paro, paravi, paratum (1ª): ‘preparar’
+pater, –tris: ‘padre’
+paulatim (adv.): ‘poco a poco’
+pax, pacis (f.): ‘paz’
+pecunia, –æ: ‘dinero’
+peto, petii, petitum (3ª): ‘dirigirse a’, ‘pedir’
+pietas, pietatis (f.): ‘responsabilidad’
+pono, posui, positum (3ª): ‘poner’
+possum, potui – (irr.): ‘poder’
+postulo, postulavi, postulatum (1ª): ‘pedir’
+primum (adv.): ‘en primer lugar’
+primus, –a, –um: ‘primero/a’
+princeps, principis (m.): ‘líder’
+proficiscor, profectus sum (3ª): ‘avanzar’
+provincia, –æ: ‘provincia’
+puer, –i: ‘niño’
+pugno, pugnavi, pugnatum (1ª):
+quis, quid (pron. interr. / indef.): ‘quién’, ‘qué’, ‘algo’
+recipio, recepi, receptum (mx.): ‘refugiarse con’ (+ ad)
+recito, recitavi, recitatum (1ª): ‘recitar’
+reddo, reddidi, redditum (3ª): ‘devolver’
+redeo, redii, reditum (irr.): ‘volver’
+rex, regis (m.): ‘rey’
+salvus, –a, –um: ‘a salvo’
+senatus, –us: ‘Senado’
+septimus, –a, –um: ‘séptimo/a’
+Sequanus, –i: ‘secuanos’
+serpens, serpentis (m.): ‘serpiente’
+sol, solis (m.): ‘sol’
+spero, speravi, speratum (1ª): ‘esperar’
+statuo, statui, statutum (3ª): ‘decidir’
+summus, –a, –um: ‘el máximo/a’
+supplicium, –i: ‘castigo’
+supra (adv.): ‘arriba’, ‘anteriormente’
+suus, –a, –um: ‘su’
+taceo, tacui, tacitum (2ª): ‘callar’
+tamen (adv.): ‘sin embargo’
+Tarquinius, –i: ‘Tarquinio’
+terreo, terrui, territum (2ª): ‘aterrorizar’
+timeo, timui – (2ª): ‘temer’
+tribunus plebis: ‘tribuno de la plebe’
+tribunus, –i: ‘tribuno’ (cargo)
+tuus, –a, –um: ‘tu’
+urbs, urbis (f.): ‘ciudad’
+urgeo, ursi – (2ª): ‘presionar’
+usque (adv.): ‘hasta’ (+ ad)
+Vbii, –orum: ‘ubios’
+video, vidi, visum (2ª): ‘ver’
+vivo, vixi, vivitum (4ª): ‘vivir’
+vix (adv.): ‘apenas’
+
+UD0: El alfabeto latino. La lectura en latín. El sistema de la lengua latina.
+UD1: Primera y segunda declinación. Las conjugaciones. El presente de indicativo y el infinitivo.
+UD2: Los adjetivos. Las preposiciones. El imperfecto de indicativo.
+UD3: Pronombres personales. Sustantivación del adjetivo. Voz pasiva. El imperativo.
+UD4: Tercera declinación. El perfecto y el pluscuamperfecto de indicativo.
+UD5: Adjetivos de la tercera. Pronombre fórico. El complemento predicativo.
+UD6: Pronombres demostrativos. Oraciones de relativo.
+UD7: Cuarta y quinta declinación. Verbos deponentes. El futuro.
+UD8: Las oraciones de infinitivo. Pronombres de identidad y enfático. Qvod causal.
+UD9: Los adjetivos comparativos y superlativos. La voz pasiva del perfectum. Semideponentes.
+UD10: Los participios. El complemento de régimen verbal. El acusativo de extensión.

@@ -133,3 +133,12 @@ El formato se aplica a la vista previa, impresión/PDF y exportación DOCX de Gr
 Además de las pruebas de generación, `scripts/test-greek-ui.cjs` comprueba la estructura visual, imprime un PDF y exporta diez DOCX. `python3 scripts/check-greek-docx.py ARCHIVO.docx` verifica que la cabecera sean párrafos con bordes, las tablas tengan celdas combinadas sin sombreado y existan campos de numeración de página. Se han renderizado y revisado las tres modalidades con y sin soluciones. No se ha iniciado la compilación de macOS.
 
 Ajuste de márgenes: 3 cm a la izquierda y 2,5 cm arriba, derecha y abajo, en impresión y Word. Más espacio superior en la cabecera; tablas ajustadas al ancho disponible.
+
+### Morfología: tres preguntas y vocabulario docente offline
+
+El modelo de morfología usa controles específicos para las tres preguntas, respeta
+las unidades acumuladas y carga el léxico adjunto sin conexión desde el primer uso.
+La cobertura sigue siendo parcial, especialmente en griego; no se inventan formas
+ni se atribuyen validaciones a analizadores no ejecutados. Consulta el informe
+[de cobertura, pruebas y ambigüedades](docs/morfologia-offline.md) y las
+[atribuciones de los datos](data/teacher/ATTRIBUTION.md).

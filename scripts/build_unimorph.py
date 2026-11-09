@@ -205,6 +205,7 @@ def verb_unit(lang, tags):
     return unit
 
 def classify(lang, lemma, tags, paradigms):
+    tags = tags.split(";") if isinstance(tags, str) else tags
     f = set(tags)
     if f & UNSUPPORTED:
         return None
