@@ -26,6 +26,90 @@ def normalized(s):
     return "".join(c for c in unicodedata.normalize("NFD", s.lower())
                    if unicodedata.category(c) != "Mn").replace("ς", "σ")
 
+
+# Explicit lemma taxonomy: UniMorph PRO does not encode school-grammar subtypes.
+# Normalize accents and final sigma, but never guess a subtype from inflection.
+PRONOUNS = {
+ "lat": {
+  "personal": (3, "ego", "tu", "nos", "vos"),
+  "reflexive": (3, "sui", "se"),
+  "phoric": (5, "is", "ea", "id"),
+  "demonstrative": (6, "hic", "haec", "hoc", "ille", "illa", "illud",
+                      "iste", "ista", "istud"),
+  "relative": (6, "qui", "quae", "quod"),
+  "identity": (8, "idem", "eadem", "idem"),
+  "emphatic": (8, "ipse", "ipsa", "ipsum"),
+ },
+ "grc": {
+  "personal": (7, "εγω", "συ", "ημεισ", "υμεισ"),
+  "demonstrative": (7, "ουτοσ", "αυτη", "τουτο", "οδε", "ηδε", "τοδε",
+                      "εκεινοσ", "εκεινη", "εκεινο"),
+  "anaphoric": (7, "αυτοσ", "αυτη", "αυτο"),
+  "interrogative": (8, "τισ"),
+  "relative": (9, "οσ", "η", "ο"),
+ },
+}
+# Some lemmas (e.g. Greek τις, αὐτή) are homographs across categories.
+# Ambiguous lemma spellings are withheld rather than silently assigned.
+def pronoun_class(lang, lemma):
+    key = normalized(lemma)
+    matches = [(subtype, unit) for subtype, (unit, *lemmas) in PRONOUNS[lang].items()
+               if key in {normalized(x) for x in lemmas}]
+    if len(matches) != 1:
+        return None
+    subtype, unit = matches[0]
+    return ("pro", subtype, unit)
+
+def adjective_class(lang, lemma, paradigm, tags):
+    """Infer adjective paradigm only from attested gender-specific NOM/GEN forms."""
+    f = set(tags)
+    if "CMPR" in f or "SPRL" in f:
+        if lang != "lat":
+            return None
+        degree = "comparative" if "CMPR" in f else "superlative"
+        return ("adj", degree, 9)
+    if "POS" not in f and ("CMPR" in f or "SPRL" in f):
+        return None
+    nom = collections.defaultdict(set)
+    gen = collections.defaultdict(set)
+    for form, features in paradigm:
+        if "SG" not in features:
+            continue
+        gender = next((g for g in ("MASC", "FEM", "NEUT") if g in features), None)
+        if gender is None:
+            continue
+        if "NOM" in features:
+            nom[gender].add(normalized(form))
+        if "GEN" in features:
+            gen[gender].add(normalized(form))
+    if not nom["MASC"] or not nom["NEUT"] or not gen["MASC"]:
+        return None
+    if lang == "lat":
+        first = (any(x.endswith(("us", "er")) for x in nom["MASC"]) and
+                 any(x.endswith("um") for x in nom["NEUT"]) and
+                 any(x.endswith("i") for x in gen["MASC"]) and
+                 any(x.endswith("a") for x in nom["FEM"]))
+        third = (any(x.endswith(("e", "ns")) for x in nom["NEUT"]) and
+                 any(x.endswith("is") for x in gen["MASC"]))
+        if first and not third:
+            return ("adj", "first-class", 2)
+        if third and not first:
+            return ("adj", "third-class", 5)
+    else:
+        two_one_two = (any(x.endswith("οσ") for x in nom["MASC"]) and
+                       any(x.endswith("ον") for x in nom["NEUT"]) and
+                       any(x.endswith(("η", "α")) for x in nom["FEM"]) and
+                       any(x.endswith("ου") for x in gen["MASC"]))
+        two_two = (any(x.endswith("οσ") for x in nom["MASC"]) and
+                   any(x.endswith("ον") for x in nom["NEUT"]) and
+                   not nom["FEM"] and any(x.endswith("ου") for x in gen["MASC"]))
+        # UniMorph often marks two-ending adjectives' shared M/F form as MASC.
+        if two_one_two:
+            return ("adj", "2-1-2", 5)
+        if two_two:
+            return ("adj", "2-2", 5)
+    return None
+
 def declension(lang, lemma, paradigm):
     """Require a nominative lemma and an attested singular genitive; fail closed."""
     gen = {normalized(form) for form, tags in paradigm
@@ -136,12 +220,9 @@ def classify(lang, lemma, tags, paradigms):
         result = declension(lang, lemma, paradigms.get((lemma, pos), []))
         return ("n", result[0], result[1]) if result else None
     if pos == "ADJ":
-        # Degree and adjective class must both be known; do not guess from tags.
-        return None
+        return adjective_class(lang, lemma, paradigms.get((lemma, pos), []), f)
     if pos == "PRO":
-        # Personal, demonstrative, relative, reflexive etc. are not reliably
-        # distinguished by UniMorph POS alone. Keep out until lexicon reviewed.
-        return None
+        return pronoun_class(lang, lemma)
     return None
 
 def build(lang, url):
@@ -162,7 +243,7 @@ def build(lang, url):
             if pos is None:
                 continue
             records.append((lemma, form, tags, pos))
-            if pos == "N":
+            if pos in ("N", "ADJ"):
                 paradigms[(lemma, pos)].append((form, features))
     groups = collections.defaultdict(list)
     rejected = collections.Counter()
@@ -185,7 +266,7 @@ def build(lang, url):
         "language": lang, "source": url, "source_records": total,
         "classified_records": sum(len(rows) for rows in groups.values()),
         "excluded_by_pos": dict(rejected), "files": files,
-        "policy": "Conservative; unknown declensions, adjective classes, pronoun subclasses and unsupported features are withheld.",
+        "policy": "Conservative: adjectives require attested paradigms; pronouns require an unambiguous lemma taxonomy; unsupported forms are withheld.",
     }
     (OUT / f"{lang}-manifest.json").write_text(
         json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8")
