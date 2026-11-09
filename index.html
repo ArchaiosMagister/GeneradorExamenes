@@ -481,7 +481,9 @@ function exportWord(includeAnswers){
  if(greekLayout){
   files[0][1]=files[0][1].replace('</Types>','<Override PartName="/word/footer1.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.footer+xml"/></Types>');
   files[2][1]=files[2][1].replace('</Relationships>','<Relationship Id="rId3" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/footer" Target="footer1.xml"/></Relationships>');
-  files.push(['word/footer1.xml','<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:ftr xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:p><w:pPr><w:jc w:val="center"/></w:pPr><w:r><w:rPr><w:rFonts w:ascii="Palatino" w:hAnsi="Palatino"/><w:sz w:val="18"/></w:rPr><w:t></w:t></w:r><w:r><w:rPr><w:sz w:val="18"/></w:rPr><w:fldChar w:fldCharType="begin"/></w:r><w:r><w:instrText xml:space="preserve"> PAGE </w:instrText></w:r><w:r><w:fldChar w:fldCharType="end"/></w:r>'+wordRun(' | ')+'<w:r><w:fldChar w:fldCharType="begin"/></w:r><w:r><w:instrText xml:space="preserve"> NUMPAGES </w:instrText></w:r><w:r><w:fldChar w:fldCharType="end"/></w:r></w:p></w:ftr>']);
+  const footRun=(content)=>'<w:r><w:rPr><w:rFonts w:ascii="Palatino" w:hAnsi="Palatino"/><w:sz w:val="18"/></w:rPr>'+content+'</w:r>';
+  const footField=name=>footRun('<w:fldChar w:fldCharType="begin"/>')+footRun('<w:instrText xml:space="preserve"> '+name+' </w:instrText>')+footRun('<w:fldChar w:fldCharType="separate"/>')+footRun('<w:t>1</w:t>')+footRun('<w:fldChar w:fldCharType="end"/>');
+  files.push(['word/footer1.xml','<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:ftr xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:p><w:pPr><w:jc w:val="center"/></w:pPr>'+footField('PAGE')+footRun('<w:t xml:space="preserve"> | </w:t>')+footField('NUMPAGES')+'</w:p></w:ftr>']);
  }
  const course=currentCourse(),filename=`examen_${course}_${$('term').value}T_${includeAnswers?'solucionario':'alumnado'}.docx`;
  downloadBlob(filename,zip(files));
