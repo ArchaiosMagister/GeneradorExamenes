@@ -604,6 +604,12 @@ function latinExamFormCandidates(chosen){
   else if(a){const i=Math.floor(Math.random()*a.forms.length);groups[1].push({entry:x.entry,form:a.forms[i],answer:a.labels[i]+'; '+x.entry});}
   else if(v){const i=Math.floor(Math.random()*6);groups[2].push({entry:x.entry,form:v.forms[i],answer:v.labels[i]+', presente de indicativo activo; '+x.entry});}
  }
+ const indexedVerbs=new Set(groups[2].map(x=>examKey(x.entry)));
+ for(const {x,p} of latinSharedBank.paradigms(currentCourse(),chosen,'verb')){
+  if(indexedVerbs.has(examKey(x.entry))||!Array.isArray(p.forms)||p.forms.length!==6)continue;
+  const i=Math.floor(Math.random()*6);
+  groups[2].push({entry:x.entry,form:p.forms[i],answer:p.labels[i]+', presente de indicativo activo; '+x.entry});
+ }
  if(currentCourse()==='latin1')for(const x of latinExamPronouns(chosen)){
   groups[3].push({entry:x.form,form:x.form,answer:x.type+'; '+x.case+', '+x.gender+', '+x.number});
  }
@@ -622,9 +628,6 @@ function latinExamForms(chosen,number){
   }
  }
  return out;
-}
-function latinExamSentenceTarget(){
- return $('model').value==='mixto'?7:currentCourse()==='latin4'?4:5;
 }
 function generate(){
  if(currentCourse()==='greek1')return generateGreekExam();
@@ -674,7 +677,7 @@ function generate(){
    html+(picked.length>0&&picked.length<4?missing('Solo hay '+picked.length+' de 4 preguntas de cultura verificadas.'):''),
    '<ol>'+picked.map(x=>'<li>'+esc(x.question)+' — '+esc(va&&x.answer_va?x.answer_va:x.answer)+'</li>').join('')+'</ol>');
  }
- const count=latinExamSentenceTarget(),sentences=sample(latinSharedBank.sentences(course,chosen).filter(x=>x.text&&x.sol),count);
+ const count=countFor('sent'),sentences=sample(latinSharedBank.sentences(course,chosen).filter(x=>x.text&&x.sol),count);
  selectedSentences.push(...sentences);
  add(t('Analiza y traduce las siguientes oraciones.','Analitza i tradueix les oracions següents.'),
   (sentences.length?'<ol class="task" type="a">'+sentences.map(x=>'<li><i>'+esc(x.text)+'</i><div class="answer"></div><div class="answer"></div></li>').join('')+'</ol>':
