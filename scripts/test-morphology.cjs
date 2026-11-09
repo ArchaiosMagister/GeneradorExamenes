@@ -1,6 +1,7 @@
 const assert=require('node:assert/strict');
 const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
 const path=require('node:path');
+const outputDir=require('node:fs').mkdtempSync(path.join(require('node:os').tmpdir(),'examina-morphology-'));
 const {pathToFileURL}=require('node:url');
 (async()=>{
  const browser=await chromium.launch({headless:true,executablePath:process.env.BROWSER_PATH});
@@ -58,12 +59,12 @@ const {pathToFileURL}=require('node:url');
   await page.evaluate(()=>{document.querySelectorAll('[id^="morphCategory-"]').forEach(e=>e.checked=true);generate()});
   for(const id of ['docx','docxAnswers']){
    const pending=page.waitForEvent('download');await page.evaluate(id=>document.getElementById(id).click(),id);
-   const download=await pending;await download.saveAs('/private/tmp/'+course+'-fixed-'+id+'.docx');
+   const download=await pending;await download.saveAs(path.join(outputDir,course+'-fixed-'+id+'.docx'));
   }
  }
  assert.equal(await page.evaluate(()=>allowedProperNounForm('Ἀθηνᾶ','N;NOM;PL')),false);
  assert.equal(await page.evaluate(()=>allowedProperNounForm('Caesar','N;NOM;PL')),false);
- await page.screenshot({path:'/private/tmp/examina-morphology.png',fullPage:true});
+ await page.screenshot({path:path.join(outputDir,'examina-morphology.png'),fullPage:true});
  const lookup=await page.evaluate(()=>ExaminaMorphology.lookup('lat','puellae'));
  assert(lookup.length>=2,'ambiguous readings retained offline');
  assert.deepEqual(errors,[]);assert.deepEqual(network,[]);
