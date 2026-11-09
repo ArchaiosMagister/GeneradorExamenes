@@ -200,7 +200,7 @@ function translateUI(){document.documentElement.lang=$('lang').value==='va'?'ca-
 
 $('sheetType').addEventListener('change',()=>{const c=currentCourse();$('name').value=($('sheetType').value==='review'?($('lang').value==='va'?'Fitxa de repàs de ':'Ficha de repaso de '):($('lang').value==='va'?'Examen de ':'Examen de '))+({'latin1':$('lang').value==='va'?'Llatí I':'Latín I','latin4':$('lang').value==='va'?'Llatí 4t ESO':'Latín 4.º ESO','greek1':$('lang').value==='va'?'Grec I':'Griego I'})[c];generate()});
 function refreshManualMorphWords(){
- const host=$('manualMorphWords');if(!host)return;host.replaceChildren();const paper=$('paper');const targets=[];
+ const host=$('manualMorphWords');if(!host)return;host.replaceChildren();if(currentCourse()==='greek1'&&$('model').value==='complete')return;const paper=$('paper');const targets=[];
  if(currentCourse()==='greek1'){
   paper.querySelectorAll('.exam-nouns thead tr:first-child th[colspan],.exam-verbs thead tr:first-child th[colspan]').forEach(el=>targets.push({el,kind:el.closest('.exam-nouns')?'Declinación':'Conjugación'}));
   paper.querySelectorAll('.exam-form > span:last-child').forEach(el=>targets.push({el,kind:'Análisis morfológico'}));
@@ -949,6 +949,26 @@ const greekEtymology=[['περί',4,[4],'perímetro, periscopio'],['ὑπό',4
 // Only morphology already explicitly represented in v19 is used for full tables.
 const greekNounUnits={λογος:1,ανθρωπος:1,δωρον:2,εργον:2,αγορα:3,χωρα:3,θαλαττα:3,νεανιας:3,παιδεια:3,αδελφος:1};
 const greekVerbUnits={λυω:2,παιδευω:2,πεμπω:2};
+Object.assign(greekVerbData,{
+ ακουω:['ἀκούω','ἀκούεις','ἀκούει','ἀκούομεν','ἀκούετε','ἀκούουσι(ν)'],
+ αρχω:['ἄρχω','ἄρχεις','ἄρχει','ἄρχομεν','ἄρχετε','ἄρχουσι(ν)'],
+ βασιλευω:['βασιλεύω','βασιλεύεις','βασιλεύει','βασιλεύομεν','βασιλεύετε','βασιλεύουσι(ν)'],
+ γραφω:['γράφω','γράφεις','γράφει','γράφομεν','γράφετε','γράφουσι(ν)'],
+ διωκω:['διώκω','διώκεις','διώκει','διώκομεν','διώκετε','διώκουσι(ν)'],
+ θεραπευω:['θεραπεύω','θεραπεύεις','θεραπεύει','θεραπεύομεν','θεραπεύετε','θεραπεύουσι(ν)'],
+ θαυμαζω:['θαυμάζω','θαυμάζεις','θαυμάζει','θαυμάζομεν','θαυμάζετε','θαυμάζουσι(ν)'],
+ λειπω:['λείπω','λείπεις','λείπει','λείπομεν','λείπετε','λείπουσι(ν)']
+});
+Object.assign(greekVerbUnits,{ακουω:4,αρχω:4,βασιλευω:4,γραφω:5,διωκω:5,θεραπευω:9,θαυμαζω:9,λειπω:9});
+greekEtymology.push(
+ ['ἄνθρωπος',4,[4],'antropología, antropomorfo'],
+ ['βίος',4,[4],'biología, biografía'],
+ ['ἀγορά',4,[4],'ágora, agorafobia'],
+ ['γῆ',5,[5],'geografía, geología'],
+ ['λόγος',7,[7],'logopedia, logotipo'],
+ ['φόβος',10,[10],'fobia, claustrofobia']
+);
+
 function greekMarkedUnits(){return [...document.querySelectorAll('.unit-choice:checked')].map(x=>units[+x.value]).filter(u=>/^UD\d+$/.test(u))}
 function greekLimit(){return Math.max(-1,...greekMarkedUnits().map(examUnitNumber))}
 function greekRequiredStart(unit){if(unit==='Básicas')return 0;if(unit==='Preposiciones')return 4;const numbers=unit.match(/\d+/g);return numbers?Math.max(...numbers.map(Number)):Infinity}
@@ -1036,58 +1056,75 @@ function generateGreekMorphologyFixed(){
  $('solutions').textContent=tr('solutions');refreshManualMorphWords();
  $('greekCoverage').textContent='Gramática acumulativa hasta UD'+limit+'. Modelo de tres preguntas fijas. Solo corpus verificado.';
 }
-// Selecciones verificadas para el examen completo; nunca se inventan paradigmas.
-const greekManualChoices={};
+
+let greekExamState=null;
 function greekChoicePool(kind){
- const max=greekLimit();
- return greekVerifiedCorpus.filter(x=>x.verified&&x.kind===kind&&greekMorphologyEligible(x,max));
+ return greekVerifiedCorpus.filter(x=>x.verified&&x.kind===kind&&greekMorphologyEligible(x,greekLimit()));
 }
-function greekChoose(kind,id){
- if(!greekChoicePool(kind).some(x=>x.id===id))return;
- greekManualChoices[kind]=id;
- generateGreekExam();
+function greekSelectedItems(pool,chosen,counts){
+ const signature=JSON.stringify([chosen.map(examUnitNumber),$('model').value,counts]);
+ if(!greekExamState||greekExamState.signature!==signature){
+  const initial=greekSelect(pool,chosen.map(examUnitNumber),counts),ids={};
+  for(const kind of greekKinds)ids[kind]=initial.items.filter(x=>x.kind===kind).map(x=>x.id);
+  greekExamState={signature,ids};
+ }
+ const items=greekKinds.flatMap(kind=>(greekExamState.ids[kind]||[]).map(id=>pool.find(x=>x.id===id&&x.kind===kind)).filter(Boolean));
+ const covered=[...new Set(items.flatMap(x=>x.contentUnits))];
+ return {items,covered,missing:chosen.map(examUnitNumber).filter(u=>!covered.includes(u))};
+}
+function greekAddChoice(kind,id){
+ if(!greekExamState||!greekChoicePool(kind).some(x=>x.id===id))return;
+ if(!greekExamState.ids[kind].includes(id)){greekExamState.ids[kind].push(id);generateGreekExam()}
+}
+function greekRemoveChoice(kind,id){
+ if(!greekExamState)return;
+ greekExamState.ids[kind]=greekExamState.ids[kind].filter(x=>x!==id);generateGreekExam();
 }
 function greekRegenerate(kind){
- const pool=greekChoicePool(kind),current=greekManualChoices[kind];
- const alternatives=pool.filter(x=>x.id!==current);
- if(!alternatives.length){if(pool.length)greekManualChoices[kind]=pool[0].id;generateGreekExam();return}
- greekManualChoices[kind]=sample(alternatives,1)[0].id;
+ if(!greekExamState)return;
+ const pool=greekChoicePool(kind),previous=greekExamState.ids[kind]||[];
+ const candidates=pool.filter(x=>!previous.includes(x.id));
+ const count=Math.min(pool.length,Math.max(1,previous.length));
+ greekExamState.ids[kind]=sample(candidates.length>=count?candidates:pool,count).map(x=>x.id);
  generateGreekExam();
 }
 function greekExamControls(){
- const host=$('manualMorphWords');if(!host||currentCourse()!=='greek1'||$('model').value!=='complete')return;
- for(const [kind,label] of [['declension','Declinación'],['conjugation','Conjugación'],['forms','Análisis morfológico'],['etymology','Derivados etimológicos']]){
-  const pool=greekChoicePool(kind);
+ const host=$('manualMorphWords');
+ if(!host||currentCourse()!=='greek1'||$('model').value!=='complete'||!greekExamState)return;
+ host.replaceChildren();
+ const labels={declension:'Declinación',conjugation:'Conjugación',forms:'Análisis morfológico',etymology:'Derivados etimológicos'};
+ for(const [kind,label] of Object.entries(labels)){
+  const pool=greekChoicePool(kind),selected=greekExamState.ids[kind]||[];
   const row=document.createElement('div');row.style.margin='12px 0';row.style.padding='9px';row.style.border='1px solid #dce3ec';row.style.borderRadius='8px';
   const heading=document.createElement('strong');heading.textContent=label;row.append(heading);
+  const current=document.createElement('div');current.className='hint';
+  current.textContent='Seleccionadas: '+(selected.length?selected.map(id=>{const x=pool.find(y=>y.id===id);return x?(kind==='conjugation'?headLex(x.lemmas[0]):x.prompt):''}).filter(Boolean).join(' · '):'ninguna');
+  row.append(current);
   const select=document.createElement('select');select.setAttribute('aria-label','Elegir '+label);
-  const blank=document.createElement('option');blank.value='';blank.textContent='Elegir palabra del banco…';select.append(blank);
-  for(const item of pool){const option=document.createElement('option');option.value=item.id;option.textContent=kind==='conjugation'?headLex(item.lemmas[0]):item.prompt;select.append(option)}
-  select.value=greekManualChoices[kind]||'';
-  select.addEventListener('change',()=>{if(select.value)greekChoose(kind,select.value)});
+  for(const item of pool.filter(x=>!selected.includes(x.id))){const option=document.createElement('option');option.value=item.id;option.textContent=kind==='conjugation'?headLex(item.lemmas[0]):item.prompt;select.append(option)}
   row.append(select);
-  const button=document.createElement('button');button.type='button';button.className='secondary';button.textContent='Regenerar '+label.toLowerCase();button.disabled=!pool.length;
-  button.addEventListener('click',()=>greekRegenerate(kind));row.append(button);
-  if(!pool.length){const note=document.createElement('div');note.className='hint';note.textContent='No hay entradas verificadas para las unidades seleccionadas.';row.append(note)}
+  const add=document.createElement('button');add.type='button';add.className='secondary';add.textContent='Añadir al apartado';
+  add.disabled=!select.options.length;add.addEventListener('click',()=>greekAddChoice(kind,select.value));row.append(add);
+  const regen=document.createElement('button');regen.type='button';regen.className='secondary';regen.textContent='Regenerar '+label.toLowerCase();
+  regen.disabled=!pool.length;regen.addEventListener('click',()=>greekRegenerate(kind));row.append(regen);
+  for(const id of selected){const item=pool.find(x=>x.id===id);if(!item)continue;
+   const remove=document.createElement('button');remove.type='button';remove.className='secondary';
+   remove.textContent='Quitar '+(kind==='conjugation'?headLex(item.lemmas[0]):item.prompt);
+   remove.addEventListener('click',()=>greekRemoveChoice(kind,id));row.append(remove);
+  }
+  if(!pool.length){const note=document.createElement('p');note.className='hint';note.textContent='No hay entradas verificadas para las unidades seleccionadas.';row.append(note)}
   host.append(row);
  }
+ const note=document.createElement('p');note.className='hint';
+ note.textContent='Los controles actualizan las soluciones. Guarda como borrador los retoques hechos directamente en la vista previa antes de cambiar las preguntas.';
+ host.append(note);
 }
 function generateGreekExam(){
  if($('model').value==='morphology')return generateGreekMorphologyFixed();
  const chosen=greekMarkedUnits(),max=greekLimit(),mode=greekModes[$('model').value]||greekModes.complete;
  const enabled=greekKinds.filter((k,i)=>mode.points[i]>0),pool=greekVerifiedCorpus.filter(x=>x.verified&&greekMorphologyEligible(x,max)&&enabled.includes(x.kind));
  const counts={declension:Math.min(2,countFor('decl')),conjugation:Math.min(2,countFor('verb')),forms:countFor('verb'),pronouns:15,etymology:Math.min(2,countFor('lex')),sentences:countFor('sent')};
- const result=greekSelect(pool,chosen.map(examUnitNumber),counts),sections=[],answers=[];
- // Sustituir solo la selección de cada apartado por una entrada verificada elegida.
- for(const kind of ['declension','conjugation','forms','etymology']){
-  const id=greekManualChoices[kind],item=pool.find(x=>x.id===id&&x.kind===kind);
-  if(!item){delete greekManualChoices[kind];continue}
-  const existing=result.items.filter(x=>x.kind===kind);
-  if(existing.some(x=>x.id===id))continue;
-  const first=result.items.findIndex(x=>x.kind===kind);
-  if(first>=0)result.items.splice(first,1,item);
-  else result.items.push(item);
- }
+ const result=greekSelectedItems(pool,chosen,counts),sections=[],answers=[];
 
  let total=0,index=0;
  for(const [i,kind] of greekKinds.entries()){
