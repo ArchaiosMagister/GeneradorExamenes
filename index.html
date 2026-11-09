@@ -1088,20 +1088,35 @@ async function importText(language,text,onProgress){
  const t=transaction(d,['metadata'],'readwrite');t.objectStore('metadata').put({language,count,bad,imported:new Date().toISOString(),source:'UniMorph '+language});
  return {count,bad};
 }
+const builtInMorph={
+ lat:[["puella","puella","N;NOM;SG;FEM"],["puella","puellam","N;ACC;SG;FEM"],["puella","puellae","N;GEN;SG;FEM"],["puella","puellae","N;DAT;SG;FEM"],["puella","puellā","N;ABL;SG;FEM"],["puella","puellae","N;NOM;PL;FEM"],["puella","puellās","N;ACC;PL;FEM"],["puella","puellārum","N;GEN;PL;FEM"],["puella","puellīs","N;DAT;PL;FEM"],["puella","puellīs","N;ABL;PL;FEM"]],
+ grc:[["λόγος","λόγος","N;NOM;SG;MASC"],["λόγος","λόγον","N;ACC;SG;MASC"],["λόγος","λόγου","N;GEN;SG;MASC"],["λόγος","λόγῳ","N;DAT;SG;MASC"]]
+};
+function morphologyNormalize(s){return norm(s).normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/ς/g,'σ')}
 async function lookup(language,word,mode='form'){
- const d=await db(),t=transaction(d,['forms'],'readonly');
- const index=t.objectStore('forms').index(mode==='lemma'?'byLemma':'byForm');
- return req(index.getAll(language+'|'+norm(word)));
+ const query=morphologyNormalize(word),results=[];
+ const bundled=typeof bundledMorphology!=='undefined'?bundledMorphology[language]:null;
+ const rows=[...(builtInMorph[language]||[]),...(['v','n','adj','pro'].flatMap(k=>bundled?.[k]||[]))];
+ for(const row of rows){
+  if(morphologyNormalize(row[mode==='lemma'?0:1])===query)
+   results.push({headword:row[0],surface:row[1],features:row[2],source:row.length>=5?'UniMorph':'Paradigma escolar'});
+ }
+ try{
+  const d=await db(),t=transaction(d,['forms'],'readonly');
+  const index=t.objectStore('forms').index(mode==='lemma'?'byLemma':'byForm');
+  results.push(...await req(index.getAll(language+'|'+norm(word))));
+ }catch(error){}
+ return results.filter((r,i,a)=>a.findIndex(x=>x.headword===r.headword&&x.surface===r.surface&&x.features===r.features)===i);
 }
 async function stats(){const d=await db(),t=transaction(d,['metadata'],'readonly');return req(t.objectStore('metadata').getAll())}
 function ui(){
  const parent=$('lexiconSettings')||$('lexOption')||document.querySelector('.panel');
  if(!parent)return;
  const div=document.createElement('div');div.className='field';div.id='unimorphPanel';
- div.innerHTML='<h2>Base morfológica UniMorph (sin conexión)</h2><p class="hint">Importa los archivos TSV originales de UniMorph para consultar formas y lemas. Es una base auxiliar: no amplía el vocabulario exigible ni genera ejercicios sin validación docente. Los datos se guardan localmente en este navegador. Las importaciones grandes pueden tardar en iPhone.</p><label for="umLanguage">Idioma</label><select id="umLanguage"><option value="lat">Latín</option><option value="grc">Griego antiguo</option></select><label for="umFile">Archivo UniMorph (.tsv, lat o grc)</label><input id="umFile" type="file" accept=".tsv,.txt,.lat,.grc,text/plain"><button type="button" id="umImport" class="secondary">Importar base morfológica</button><p id="umStatus" class="hint" role="status" aria-live="polite"></p><label for="umQuery">Consultar forma o lema</label><input id="umQuery" type="text" placeholder="puellarum / λύουσι"><select id="umMode"><option value="form">Buscar análisis de una forma</option><option value="lemma">Buscar flexiones de un lema</option></select><button type="button" id="umLookup" class="secondary">Consultar morfología</button><div id="umResults" class="hint" aria-live="polite"></div>';
+ div.innerHTML='<h2>Consulta morfológica sin archivo TSV</h2><p class="hint">Consulta las formas incorporadas con la web, sin importar archivos. La cobertura es parcial; puedes ampliar la base opcionalmente con un TSV. No amplía el vocabulario exigible.</p><label for="umLanguage">Idioma</label><select id="umLanguage"><option value="lat">Latín</option><option value="grc">Griego antiguo</option></select><label for="umFile">Opcional: importar más formas (.tsv)</label><input id="umFile" type="file" accept=".tsv,.txt,.lat,.grc,text/plain"><button type="button" id="umImport" class="secondary">Importar base morfológica</button><p id="umStatus" class="hint" role="status" aria-live="polite"></p><label for="umQuery">Consultar forma o lema</label><input id="umQuery" type="text" placeholder="puellarum / λύουσι"><select id="umMode"><option value="form">Buscar análisis de una forma</option><option value="lemma">Buscar flexiones de un lema</option></select><button type="button" id="umLookup" class="secondary">Consultar morfología</button><div id="umResults" class="hint" aria-live="polite"></div>';
  parent.after(div);
  const status=$('umStatus');const say=s=>status.textContent=s;
- const refresh=async()=>{try{const ss=await stats();say(ss.map(x=>x.language+': '+x.count.toLocaleString('es')+' registros').join(' · ')||'Todavía no hay bases importadas.')}catch(e){say('Almacenamiento local no disponible: '+e.message)}};
+ const refresh=async()=>{try{const ss=await stats();say(ss.map(x=>x.language+': '+x.count.toLocaleString('es')+' registros').join(' · ')||'Consulta integrada disponible sin importar archivos.')}catch(e){say('Almacenamiento local no disponible: '+e.message)}};
  $('umImport').addEventListener('click',async()=>{
   const file=$('umFile').files?.[0];if(!file){say('Selecciona primero el archivo TSV.');return}
   const lang=$('umLanguage').value;
@@ -1114,7 +1129,7 @@ function ui(){
   try{
    const results=await lookup($('umLanguage').value,word,$('umMode').value);
    const p=document.createElement('p');p.textContent=results.length+' análisis/entradas encontradas'+(results.length>100?' (mostrando 100)':'');out.append(p);
-   for(const x of results.slice(0,100)){const line=document.createElement('div');line.textContent=x.headword+' → '+x.surface+' · '+x.features;out.append(line)}
+   for(const x of results.slice(0,100)){const line=document.createElement('div');line.textContent=x.headword+' → '+x.surface+' · '+x.features+(x.source?' · '+x.source:'');out.append(line)}
   }catch(e){out.textContent='Consulta no disponible: '+e.message}
  });
  refresh();
