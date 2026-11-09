@@ -176,7 +176,7 @@ button:disabled{opacity:.55;cursor:not-allowed}
 
 /* Respect native hidden state even for elements styled as grid/flex. */
 #greekPointsGrid[hidden],#greekPointsLabel[hidden],#greekPointsGrid label[hidden],
-#examLayout .check[hidden]{display:none!important}
+#examLayout .check[hidden],#examLayout .field[hidden],#examLayout .count-grid label[hidden]{display:none!important}
 .paper .latin-translation-exam .task>li{min-height:53pt;break-inside:avoid}
 @media print{
  .paper .latin-translation-exam .task>li{min-height:53pt}
@@ -1358,6 +1358,15 @@ function examModelOptions(course){
  const values=course==='latin4'?['tablas']:course==='greek1'?['complete','morphology','translation']:['tablas','morf','mixto'];
  return values.map(value=>'<option value="'+value+'">'+modes[value][$('lang').value]+'</option>').join('');
 }
+function syncExamModelControls(){
+ const course=currentCourse(),model=$('model').value;
+ const allBlocks=course!=='greek1'&&model==='tablas';
+ $('decl').parentElement.parentElement.hidden=!allBlocks;
+ const relevant=model==='mixto'||model==='translation'?['sent']:
+  model==='morf'||model==='morphology'?['decl','verb']:['decl','verb','lex','sent'];
+ for(const id of ['decl','verb','lex','sent'])$('count-'+id).parentElement.hidden=!relevant.includes(id);
+ $('count-culture').parentElement.hidden=course!=='latin4'||model!=='tablas';
+}
 function latinApplyMode(){
  const selected=models[$('model').value]||models.tablas;
  for(const id of ['decl','verb','lex','sent'])$(id).checked=selected.includes(id);
@@ -1366,6 +1375,7 @@ function latinApplyMode(){
  $('cultureOption').hidden=!cultureAvailable;
  $('culture').disabled=!cultureAvailable;
  if(!cultureAvailable)$('culture').checked=false;
+ syncExamModelControls();
  generate();
 }
 let modelCourse=null;
@@ -1387,6 +1397,7 @@ function greekApplyMode(){
  $('greekPointsGrid').hidden=$('model').value==='morphology';
  $('greekPointsLabel').hidden=$('model').value==='morphology';
  greekDefaultCounts();
+ syncExamModelControls();
  generate();
 }
 const legacyRefreshCourse=refreshCourse;
@@ -1402,6 +1413,7 @@ refreshCourse=function(){
  greekPanel.hidden=!greek;
  for(const id of ['decl','verb','lex','sent'])$(id).parentElement.hidden=greek||$('model').value!=='tablas';
  $('cumulative').parentElement.hidden=greek;
+ syncExamModelControls();
  if(greek){
   const mode=greekModes[$('model').value]||greekModes.complete;
   greekKinds.forEach((k,i)=>{
@@ -1414,6 +1426,7 @@ refreshCourse=function(){
   $('greekPointsLabel').hidden=$('model').value==='morphology';
  }
  legacyRefreshCourse();
+ if(course==='latin4')$('courseStatus').textContent+=' Solo está disponible el modelo 1: examen completo.';
  if(greek){
   $('courseStatus').textContent='Griego I · Modelo 1 completo, modelo 2 morfología, modelo 3 traducción. Solo ejercicios y paradigmas verificados.';
   if(!greekMarkedUnits().length){
