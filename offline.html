@@ -244,6 +244,7 @@ function refreshManualMorphWords(){
  const host=$('manualMorphWords');
  if(!host)return;
  host.replaceChildren();
+ if(currentCourse()==='greek1'&&$('model').value==='complete')return; // Tiene editor de corpus propio.
  const paper=$('paper'),targets=[],seen=new Set();
  const add=(el,kind)=>{
   if(!el||seen.has(el))return;
@@ -1610,7 +1611,9 @@ function syncExamModelControls(){
   (model==='translation'?'Formas sueltas ':'Verbos / formas '):'Verbos ';
  $('count-lex').parentElement.firstChild.textContent=course==='greek1'?'Derivación etimológica ':'Léxico ';
  // Léxico (2/3) y cultura (4) son cantidades fijas.
- $('count-culture').parentElement.hidden=true;
+ const cultureCount=$('count-culture');
+ cultureCount.hidden=true;
+ if(cultureCount.previousElementSibling?.tagName==='LABEL')cultureCount.previousElementSibling.hidden=true;
  $('cultureOption').hidden=true;
 }
 function latinDefaultCounts(){
