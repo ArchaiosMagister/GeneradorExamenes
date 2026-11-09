@@ -126,4 +126,6 @@ function greekSuite(){
 }
 latinSuite();greekSuite();
 assert(html.includes("course==='latin4'?['tablas']"),'Latín 4 solamente tiene el modelo completo');
+assert(html.includes("const alphabetic=tag==='ol'"),'Word debe conservar listas a–d');
+assert(html.includes('class="small no-print"'),'Los avisos docentes no deben salir en impresión');
 console.log('Exámenes comprobados: Latín 4 completo; Latín I completo, morfología y traducción; Griego I completo, morfología y traducción.');
