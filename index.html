@@ -574,9 +574,12 @@ function latinVocabularyExercises(chosen,countParts){
   !/\[TRADUCCI[ÓO]N PENDIENTE\]/i.test(x.meaning));
  const uniqueEntries=[...new Map(vocabWithMeaning.map(x=>[examKey(x.entry),x])).values()];
  const perPart=Math.min(8,countFor('lex'));
- const selected=sample(uniqueEntries,Math.min(perPart*2,uniqueEntries.length));
- const a=selected.slice(0,perPart),b=selected.slice(perPart,perPart*2);
- const taken=new Set(selected.map(x=>examKey(x.entry))),usedMeaning=new Set(),c=[];
+ const a=sample(uniqueEntries,perPart);
+ const meaningCount=new Map();
+ for(const x of uniqueEntries){const k=x.meaning.trim().toLowerCase();meaningCount.set(k,(meaningCount.get(k)||0)+1)}
+ const aKeys=new Set(a.map(x=>examKey(x.entry)));
+ const b=sample(uniqueEntries.filter(x=>!aKeys.has(examKey(x.entry))&&meaningCount.get(x.meaning.trim().toLowerCase())===1),perPart);
+ const taken=new Set([...a,...b].map(x=>examKey(x.entry))),usedMeaning=new Set(),c=[];
  if(countParts>=3)for(const x of uniqueEntries){
   const meaning=x.meaning.trim().toLowerCase();
   if(taken.has(examKey(x.entry))||usedMeaning.has(meaning))continue;
