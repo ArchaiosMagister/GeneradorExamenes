@@ -318,8 +318,13 @@ function unimorphNominalLabel(row){
  const g=f.has('MASC')?'masculino':f.has('FEM')?'femenino':f.has('NEUT')?'neutro':'';
  return [c,n,g,row[4]].filter(Boolean).join(', ');
 }
+function morphConfigNumber(id,fallback,min,max){const value=Number($(id)?.value);return Number.isFinite(value)?Math.max(min,Math.min(max,Math.floor(value))):fallback}
+function morphConfig(){
+ return {offer:morphConfigNumber('morphOffer',3,1,12),decline:morphConfigNumber('morphDecline',2,1,12),
+ verbs:morphConfigNumber('morphVerbs',10,1,30),words:morphConfigNumber('morphWords',10,1,30)};
+}
 function generateLatinMorphologyReference(){
- const chosen=selectedUnits(),allowed=unique(vocab.filter(x=>courseOf(x)===currentCourse()&&chosen.includes(x.unit)));
+ const chosen=selectedUnits(),config=morphConfig(),allowed=unique(vocab.filter(x=>courseOf(x)===currentCourse()&&chosen.includes(x.unit)));
  const unitLimit=Math.max(0,...chosen.map(u=>Number(String(u).replace(/\D/g,''))||0));
  const syllabus=morphologySyllabus('latin',unitLimit);
  const allowThird=syllabus.some(t=>/Tercera declinación/.test(t));
@@ -330,8 +335,8 @@ function generateLatinMorphologyReference(){
  const allowAdjectives=syllabus.some(t=>t==='Adjetivos');
  const nounPool=allowed.map(x=>({x,p:noun(x)})).filter(y=>y.p);
  const adjPool=allowAdjectives?allowed.map(x=>({x,p:adjective(x)})).filter(y=>y.p):[];
- const verbs=sample(allowed.map(x=>({x,p:verb(x)})).filter(y=>y.p),Math.min(10,countFor('verb')));
- const nominal=sample(allowed.map(x=>({x,p:noun(x)||adjective(x)})).filter(y=>y.p),Math.min(10,countFor('decl')));
+ const verbs=sample(allowed.map(x=>({x,p:verb(x)})).filter(y=>y.p),config.verbs);
+ const nominal=sample(allowed.map(x=>({x,p:noun(x)||adjective(x)})).filter(y=>y.p&&($('morphCategory-'+(noun(y.x)?'n':'adj'))?.checked!==false)),config.words);
  const pairPool=[];
  for(const a of adjPool){for(const n of nounPool){
   const adj=a.x.entry.split(',')[0].trim(),sub=n.x.entry.split(',')[0].trim();
@@ -339,22 +344,22 @@ function generateLatinMorphologyReference(){
   // The adjective is supplied in its dictionary form, not as an inflected agreement.
   pairPool.push({text:a.x.entry+' + '+n.x.entry,adj,noun:sub});
  }}
- const pairs=sample(pairPool,3),lang=$('lang').value,va=lang==='va';
+ const pairs=sample(pairPool,config.offer),lang=$('lang').value,va=lang==='va';
  const rowNames=va?['Nominatiu','Vocatiu','Acusatiu','Genitiu','Datiu','Ablatiu']:['Nominativo','Vocativo','Acusativo','Genitivo','Dativo','Ablativo'];
  const paradigm=()=>'<table class="exam-paradigm exam-nouns reference-morph-table" data-col-widths="16,42,42"><thead><tr><th class="exam-corner"></th><th>Singular</th><th>Plural</th></tr></thead><tbody>'+rowNames.map(n=>'<tr><th>'+n+'</th><td></td><td></td></tr>').join('')+'</tbody></table>';
  const bankRows=(bundledMorphology.lat?.v||[]).filter(row=>unimorphAllowedLatinVerb(row,unitLimit));
  const bankItems=sample(bankRows,Math.min(10,countFor('verb'))).map(([lemma,form,tags])=>({form,entry:lemma,label:unimorphVerbLabel(tags)}));
  const verbItems=bankItems.length?bankItems:verbs.map(({x,p})=>{const i=Math.floor(Math.random()*p.forms.length);return {form:p.forms[i],entry:x.entry,label:p.labels[i]}});
- const nominalRows=['n','adj','pro'].flatMap(category=>bundledMorphology.lat?.[category]||[])
+ const nominalRows=['n','adj','pro'].filter(category=>$('morphCategory-'+category)?.checked!==false).flatMap(category=>bundledMorphology.lat?.[category]||[])
   .filter(row=>row[3]<=unitLimit&&row[2].split(';').some(t=>['NOM','VOC','ACC','GEN','DAT','ABL'].includes(t)));
  const verifiedNominals=sample(nominalRows,Math.min(10,countFor('decl'))).map(row=>({
   form:row[1],entry:row[0],label:unimorphNominalLabel(row)}));
  const nomItems=verifiedNominals.length?verifiedNominals:nominal.map(({x,p})=>{
   const i=Math.floor(Math.random()*p.forms.length);return {form:p.forms[i],entry:x.entry,label:p.labels[i]}});
  const head='<div class="exam-header"><div class="exam-header-line"><span>'+(va?'Examen de morfologia':'Examen de morfología')+' – '+esc(chosen.join('–')||'—')+'</span><span>'+esc(courseName())+'</span></div><div class="exam-header-line"><span>'+(va?'Nom i cognoms':'Nombre y apellidos')+':</span><span>'+(va?'Data':'Fecha')+':</span></div></div>';
- const first='<p class="exam-question">1. '+(va?'Tria dos d’aquests tres sintagmes per declinar (2 p.):':'Elige dos de estos tres sintagmas para declinar (2 p.):')+'</p>'+
+ const first='<p class="exam-question">1. '+(va?'Tria '+config.decline+' de '+config.offer+' sintagmes per declinar (2 p.):':'Elige '+config.decline+' de '+config.offer+' sintagmas para declinar (2 p.):')+'</p>'+
  pairs.map((p,i)=>'<p class="exam-item">'+String.fromCharCode(97+i)+'. <i>'+esc(p.text)+'</i></p>').join('')+
- (pairs.length<3?'<p class="exam-item">'+(va?'No hi ha prou parelles verificades en aquestes unitats.':'No hay suficientes parejas verificadas en estas unidades.')+'</p>':'')+paradigm()+paradigm();
+ (pairs.length<config.offer?'<p class="exam-item">'+(va?'No hi ha prou parelles verificades en aquestes unitats.':'No hay suficientes parejas verificadas en estas unidades.')+'</p>':'')+paradigm()+paradigm();
  const italicLemma=(entry)=>{const cleaned=String(entry).trim().match(/^(.*?)(?:\s*\(([1-4]ª|mx\.)\))?$/);const lemma=cleaned?cleaned[1].trim():String(entry).trim();const conjugation=cleaned&&cleaned[2]?cleaned[2]:'';return '(<i>'+esc(lemma)+'</i>'+(conjugation?' '+esc(conjugation):'')+')'};
  const second='<p class="exam-question">2. '+(va?'Analitza morfològicament els verbs següents (1 p.):':'Analiza morfológicamente los siguientes verbos (1 p.):')+'</p>'+
  '<table class="exam-paradigm reference-morph-table reference-verb-table" data-col-widths="28,25,24,23"><thead><tr><th>'+(va?'Verb':'Verbo')+'</th><th>'+(va?'Persona i núm.':'Persona y nº')+'</th><th>'+(va?'Temps':'Tiempo')+'</th><th>'+(va?'Veu':'Voz')+'</th></tr></thead><tbody>'+
@@ -1242,7 +1247,30 @@ window.ExaminaMorphology={lookup,stats,importText};
    else sections[6].append(child);
   }
  }
- if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',collapsibleMenu);
+ function setupMorphModelControls(){
+ const panel=document.querySelector('#examLayout > aside.panel');
+ if(!panel)return;
+ const group=[...panel.querySelectorAll('.menu-section')].find(x=>x.querySelector('#amount'));
+ if(!group||document.getElementById('morphOptions'))return;
+ const block=document.createElement('div');block.className='field';block.id='morphOptions';
+ block.innerHTML='<h3>Modelo de morfología: tres preguntas fijas</h3><p class="hint">1. Declinación de sintagmas · 2. Análisis de verbos · 3. Análisis de palabras. Ajusta únicamente las cantidades y las categorías.</p><div class="count-grid"><label>Sintagmas ofrecidos<input id="morphOffer" type="number" min="1" max="12" value="3"></label><label>Sintagmas que se declinan<input id="morphDecline" type="number" min="1" max="12" value="2"></label><label>Formas verbales (pregunta 2)<input id="morphVerbs" type="number" min="1" max="30" value="10"></label><label>Palabras (pregunta 3)<input id="morphWords" type="number" min="1" max="30" value="10"></label></div><p class="hint">Categorías de la pregunta 3</p><label class="check"><input type="checkbox" id="morphCategory-n" checked>Sustantivos</label><label class="check"><input type="checkbox" id="morphCategory-adj" checked>Adjetivos</label><label class="check"><input type="checkbox" id="morphCategory-pro" checked>Pronombres</label>';
+ group.insertBefore(block,group.querySelector('#amount'));
+ const update=()=>{
+  const latinMorph=currentCourse()!=='greek1'&&$('model').value==='morf';
+  block.hidden=!latinMorph;
+  for(const id of ['decl','amount','count-decl']){const el=document.getElementById(id)?.closest('.field');if(el)el.hidden=latinMorph}
+  const lex=document.getElementById('lexiconSettings');
+  if(lex)lex.hidden=latinMorph;
+  const glossaryGroup=[...panel.querySelectorAll('.menu-section')].find(x=>x.querySelector('#lexiconSettings'));
+  if(glossaryGroup)glossaryGroup.hidden=latinMorph;
+  if(latinMorph){const offered=$('morphOffer'),declined=$('morphDecline');if(+declined.value>+offered.value)declined.value=offered.value}
+ };
+ block.addEventListener('change',()=>{update();generate()});
+ document.addEventListener('change',e=>{if(e.target.matches('#course,#model'))queueMicrotask(update)});
+ update();
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',setupMorphModelControls);else setupMorphModelControls();
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',collapsibleMenu);
  else collapsibleMenu();
 })();
 </script></html>
