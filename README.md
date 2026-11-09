@@ -2,19 +2,27 @@
 
 Prototipo experimental de un generador de exámenes para **Latín de 4.º de ESO, Latín I y Griego I**.
 
-## Probar la aplicación
+## Versión autónoma para usar sin Internet
 
-1. Descarga el archivo [`index.html`](./index.html) desde GitHub (opción **Download raw file**).
-2. Ábrelo en un navegador moderno.
-3. Configura el curso, el trimestre, las unidades y el modelo de examen.
-4. Genera el examen y prueba la exportación a Word (.docx).
+**Archivo recomendado:** [`offline.html`](./offline.html). En GitHub, abre ese enlace y pulsa **Download raw file**. Guarda el archivo en el ordenador y ábrelo con doble clic en un navegador. No necesitas instalar programas, iniciar un servidor ni conectarte a Internet.
 
-**La aplicación está diseñada para funcionar completamente sin Internet**: el archivo HTML incorpora el código y los datos que necesita el prototipo. Los cambios guardados en el almacenamiento del navegador pueden no trasladarse automáticamente a otros ordenadores o a otro origen web; usa las copias de seguridad JSON.
+1. Descarga `offline.html` cuando tengas conexión. Guárdalo, por ejemplo, en Documentos.
+2. Desconecta Internet y abre ese mismo archivo.
+3. Selecciona el curso, las unidades y el modelo; genera e imprime o descarga el examen en Word.
+4. Utiliza las opciones de **exportar datos/borradores a JSON** para guardar copias de seguridad: el almacenamiento del navegador en páginas `file://` puede variar según navegador, carpeta u ordenador.
+
+`offline.html` incluye toda la interfaz, el vocabulario y los paradigmas escolares de los tres cursos. Incluye también **16.988 formas latinas de UniMorph para consulta morfológica**, procedentes del archivo local `data/unimorph/lat-v.json`. Esas formas no se incorporan automáticamente a preguntas con soluciones sin la validación necesaria. El banco griego sigue siendo el ya incorporado en la webapp: **Morpheus y AGLDT aún no están integrados**.
+
+`index.html` continúa siendo la interfaz de la web publicada. Puede utilizar archivos locales adicionales si el servidor los ofrece; `offline.html` es la versión empaquetada en un solo archivo y sin consultas de red al abrirse desde el disco.
+
+### Mantenimiento y comprobación
+
+Para recrear `offline.html` desde el código del proyecto, ejecuta `npm run offline:build`. Para comprobar que el archivo distribuido corresponde al código y a los datos locales, ejecuta `npm run offline:test` (requiere Node.js; **el usuario final no necesita Node.js**). La preparación de la aplicación Tauri incorpora el mismo contenido autónomo.
 
 ## Funcionalidad actual (prototipo v21)
 
 - Cursos separados: Latín 4.º ESO, Latín I y Griego I.
-- Tres modelos de examen y bloques de preguntas configurables.
+- Tres modelos para Latín I y Griego I (completo, morfología, traducción); Latín 4.º de ESO solo presenta el modelo completo.
 - Selección de trimestre, unidades y vocabulario acumulativo.
 - Interfaz en castellano y valenciano.
 - Bancos de vocabulario y oraciones; edición e importación.
@@ -132,4 +140,4 @@ El formato se aplica a la vista previa, impresión/PDF y exportación DOCX de Gr
 
 Además de las pruebas de generación, `scripts/test-greek-ui.cjs` comprueba la estructura visual, imprime un PDF y exporta diez DOCX. `python3 scripts/check-greek-docx.py ARCHIVO.docx` verifica que la cabecera sean párrafos con bordes, las tablas tengan celdas combinadas sin sombreado y existan campos de numeración de página. Se han renderizado y revisado las tres modalidades con y sin soluciones. No se ha iniciado la compilación de macOS.
 
-Ajuste de márgenes: 3 cm a la izquierda y 2,5 cm arriba, derecha y abajo, en impresión y Word. Más espacio superior en la cabecera; tablas ajustadas al ancho disponible.
+Ajuste actual de márgenes: 3 cm a la derecha y 2,5 cm arriba, izquierda y abajo, en impresión y Word. Más espacio superior en la cabecera; tablas ajustadas al ancho disponible.
