@@ -1036,12 +1036,59 @@ function generateGreekMorphologyFixed(){
  $('solutions').textContent=tr('solutions');refreshManualMorphWords();
  $('greekCoverage').textContent='Gramática acumulativa hasta UD'+limit+'. Modelo de tres preguntas fijas. Solo corpus verificado.';
 }
+// Selecciones verificadas para el examen completo; nunca se inventan paradigmas.
+const greekManualChoices={};
+function greekChoicePool(kind){
+ const max=greekLimit();
+ return greekVerifiedCorpus.filter(x=>x.verified&&x.kind===kind&&greekMorphologyEligible(x,max));
+}
+function greekChoose(kind,id){
+ if(!greekChoicePool(kind).some(x=>x.id===id))return;
+ greekManualChoices[kind]=id;
+ generateGreekExam();
+}
+function greekRegenerate(kind){
+ const pool=greekChoicePool(kind),current=greekManualChoices[kind];
+ const alternatives=pool.filter(x=>x.id!==current);
+ if(!alternatives.length){if(pool.length)greekManualChoices[kind]=pool[0].id;generateGreekExam();return}
+ greekManualChoices[kind]=sample(alternatives,1)[0].id;
+ generateGreekExam();
+}
+function greekExamControls(){
+ const host=$('manualMorphWords');if(!host||currentCourse()!=='greek1'||$('model').value!=='complete')return;
+ for(const [kind,label] of [['declension','Declinación'],['conjugation','Conjugación'],['forms','Análisis morfológico'],['etymology','Derivados etimológicos']]){
+  const pool=greekChoicePool(kind);
+  const row=document.createElement('div');row.style.margin='12px 0';row.style.padding='9px';row.style.border='1px solid #dce3ec';row.style.borderRadius='8px';
+  const heading=document.createElement('strong');heading.textContent=label;row.append(heading);
+  const select=document.createElement('select');select.setAttribute('aria-label','Elegir '+label);
+  const blank=document.createElement('option');blank.value='';blank.textContent='Elegir palabra del banco…';select.append(blank);
+  for(const item of pool){const option=document.createElement('option');option.value=item.id;option.textContent=kind==='conjugation'?headLex(item.lemmas[0]):item.prompt;select.append(option)}
+  select.value=greekManualChoices[kind]||'';
+  select.addEventListener('change',()=>{if(select.value)greekChoose(kind,select.value)});
+  row.append(select);
+  const button=document.createElement('button');button.type='button';button.className='secondary';button.textContent='Regenerar '+label.toLowerCase();button.disabled=!pool.length;
+  button.addEventListener('click',()=>greekRegenerate(kind));row.append(button);
+  if(!pool.length){const note=document.createElement('div');note.className='hint';note.textContent='No hay entradas verificadas para las unidades seleccionadas.';row.append(note)}
+  host.append(row);
+ }
+}
 function generateGreekExam(){
  if($('model').value==='morphology')return generateGreekMorphologyFixed();
  const chosen=greekMarkedUnits(),max=greekLimit(),mode=greekModes[$('model').value]||greekModes.complete;
  const enabled=greekKinds.filter((k,i)=>mode.points[i]>0),pool=greekVerifiedCorpus.filter(x=>x.verified&&greekMorphologyEligible(x,max)&&enabled.includes(x.kind));
  const counts={declension:Math.min(2,countFor('decl')),conjugation:Math.min(2,countFor('verb')),forms:countFor('verb'),pronouns:15,etymology:Math.min(2,countFor('lex')),sentences:countFor('sent')};
  const result=greekSelect(pool,chosen.map(examUnitNumber),counts),sections=[],answers=[];
+ // Sustituir solo la selección de cada apartado por una entrada verificada elegida.
+ for(const kind of ['declension','conjugation','forms','etymology']){
+  const id=greekManualChoices[kind],item=pool.find(x=>x.id===id&&x.kind===kind);
+  if(!item){delete greekManualChoices[kind];continue}
+  const existing=result.items.filter(x=>x.kind===kind);
+  if(existing.some(x=>x.id===id))continue;
+  const first=result.items.findIndex(x=>x.kind===kind);
+  if(first>=0)result.items.splice(first,1,item);
+  else result.items.push(item);
+ }
+
  let total=0,index=0;
  for(const [i,kind] of greekKinds.entries()){
   if(!enabled.includes(kind))continue;const items=result.items.filter(x=>x.kind===kind),title=greekKindNames[$('lang').value][i],points=items.length?greekPoints(kind):0;total+=points;
@@ -1063,7 +1110,7 @@ function generateGreekExam(){
  const gloss=$('autoGloss').checked&&visibleLemmas.length?'<p class="exam-gloss-title"><strong>'+($('lang').value==='va'?'Vocabulari':'Vocabulario')+'</strong></p><div class="final-gloss">'+visibleLemmas.map(x=>'<div class="gloss-item">'+esc(x.entry)+':'+(isRequired(x.entry,chosen)?'':' ‘'+esc(x.meaning)+'’')+'</div>').join('')+'</div>':'';
  const grade=$('model').value==='morphology'?'<p class="exam-grade">Nota sobre '+String(Number(total.toFixed(2))).replace('.',',')+': __________　　Nota sobre 10: __________</p>':'';
  $('paper').innerHTML='<div class="exam-sheet">'+greekExamHeader(chosen,mode)+(chosen.length?sections.join(''):'<p>'+notice+'</p>')+grade+gloss+'<div id="answerkey" class="solutions"><h2>'+tr('key')+'</h2>'+answers.join('')+'</div></div>';
- $('paper').setAttribute('contenteditable','true');$('paper').setAttribute('spellcheck','false');$('solutions').textContent=tr('solutions');refreshManualMorphWords();
+ $('paper').setAttribute('contenteditable','true');$('paper').setAttribute('spellcheck','false');$('solutions').textContent=tr('solutions');refreshManualMorphWords();greekExamControls();
  // For auditable regression tests and inspection; no teacher data is transmitted.
  window.greekLastExam={chosen,max,mode:$('model').value,ids:result.items.map(x=>x.id),covered:result.covered,missing:result.missing,total:Number(total.toFixed(2))};
 }
