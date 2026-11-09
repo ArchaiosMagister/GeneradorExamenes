@@ -32,3 +32,8 @@ Los ejercicios de etimología piden derivados, no la traducción del lema. Las r
 `node scripts/check-web.mjs` verifica sintaxis y controles principales. `node scripts/test-greek-ui.cjs`, con Playwright y un navegador instalado, comprueba 300 generaciones aleatorias para las tres modalidades, combinaciones de dos y varias unidades, límites gramaticales, cobertura disponible, puntuaciones, borradores, cambio de idioma, diseño móvil, colores por curso y nueve descargas DOCX. Permite configurar `PLAYWRIGHT_PATH`, `BROWSER_PATH` y `TEST_OUTPUT_DIR` sin instalar dependencias en la aplicación.
 
 Las exportaciones se comprueban además como ZIP y XML WordprocessingML, con separación de alumnado y soluciones. Las páginas renderizadas sirven para revisar tablas, politónico, espacio de respuesta y paginación. Tauri mantiene la fuente única `index.html`; el flujo de Mac sigue siendo exclusivamente manual y no se ha iniciado.
+
+
+## Maquetación v21
+
+El PDF UD3–4 sirve de referencia visual: Palatino 10,5 pt, cabecera de texto con borde exterior, tablas con lema en celdas combinadas y esquina abierta, dos verbos en una tabla, numeración con letras, espacio en blanco y vocabulario a dos columnas. El DOCX conserva los párrafos de cabecera como `w:p` con `w:pBdr`, no como tabla ni imagen. La impresión del navegador y la exportación Word se comprueban por separado; el ejemplo UD3–4 ocupa dos páginas en ambos. La paginación es dinámica para otros números de ejercicios. No se modifica el corpus en esta revisión.

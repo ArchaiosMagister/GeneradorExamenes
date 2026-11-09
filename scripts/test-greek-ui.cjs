@@ -42,6 +42,20 @@ const {chromium} = require(process.env.PLAYWRIGHT_PATH || 'playwright');
     const download=await downloadPromise;await download.saveAs(path.join(out,mode+(answers?'-answers':'-student')+'.docx'));
    }
   }
+  // The teacher header stays editable text; nouns and verbs are table headings.
+  await page.selectOption('#model','complete');await choose(['UD3','UD4']);
+  assert.equal(await page.locator('.exam-header table').count(),0);
+  assert.equal(await page.locator('.exam-header > p').count(),2);
+  assert.equal(await page.locator('.exam-nouns').count(),2);
+  assert.equal(await page.locator('.exam-verbs').count(),1);
+  assert.equal(await page.locator('.exam-verbs thead tr:first-child th[colspan="2"]').count(),2);
+  assert.equal(await page.locator('.exam-page-break').count(),1);
+  assert.equal(await page.locator('.exam-sheet .answer').count(),0);
+  assert.match(await page.locator('.exam-header').textContent(),/UDs 3-4/);
+  await page.emulateMedia({media:'print'});
+  await page.pdf({path:path.join(out,'ud3-4-print.pdf'),preferCSSPageSize:true,printBackground:true});
+  await page.emulateMedia({media:'screen'});
+  const layoutDownload=page.waitForEvent('download');await page.click('#docx');await(await layoutDownload).saveAs(path.join(out,'ud3-4-layout.docx'));
   // Count below coverage requirement must expand rather than omit a unit.
   await page.selectOption('#model','complete');await page.fill('#count-verb','1');await page.fill('#count-sent','1');
   await choose(['UD3','UD4','UD5','UD6','UD7']);
@@ -66,7 +80,7 @@ const {chromium} = require(process.env.PLAYWRIGHT_PATH || 'playwright');
   assert.equal(await page.inputValue('#model'),'complete');
   await page.reload();await page.selectOption('#course','greek1');assert.equal(await page.inputValue('#model'),'complete');
   assert.deepEqual(errors,[]);assert.deepEqual(requests,[]);
-  console.log('PASS: 300 randomized mode/unit runs, strict corpus/grammar, guaranteed available coverage, scores, drafts, languages, mobile, course colors and nine offline DOCX downloads.');
+  console.log('PASS: 300 randomized mode/unit runs, strict corpus/grammar, guaranteed available coverage, scores, drafts, languages, mobile, course colors, reference layout, print PDF and ten offline DOCX downloads.');
   console.log('Artifacts: '+out);
  } finally {await browser.close()}
 })().catch(e=>{console.error(e);process.exitCode=1});

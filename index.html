@@ -1,4 +1,4 @@
-<!doctype html><html lang="es"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Generador de Exámenes Latín y Griego · v16</title><style>
+<!doctype html><html lang="es"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Generador de Exámenes Latín y Griego · v21</title><style>
 :root{font-family:system-ui,-apple-system,Segoe UI,sans-serif;color:#17243b;background:#f4f6fa}*{box-sizing:border-box}body{margin:0}.top{background:#152744;color:white;padding:25px max(24px,calc((100vw - 1150px)/2))}.top h1{margin:0;font-size:25px}.top p{margin:8px 0 0;color:#cbd6e7}.layout{max-width:1150px;margin:24px auto;padding:0 18px;display:grid;grid-template-columns:340px 1fr;gap:20px}.panel,.paper{background:white;border:1px solid #dce3ec;border-radius:12px;padding:22px;box-shadow:0 3px 14px #1527440b}.panel h2{margin:0 0 18px;font-size:19px}.field{margin:14px 0}.field label{display:block;font-weight:650;margin-bottom:6px;font-size:13px}select,input[type=number],input[type=text]{width:100%;padding:9px;border:1px solid #bac7d7;border-radius:7px;background:white;font-size:14px}.check{display:flex;align-items:center;gap:8px;margin:12px 0;font-size:14px}.check input{accent-color:#315cb1}button{border:0;border-radius:7px;padding:10px 13px;background:#315cb1;color:white;font-weight:650;cursor:pointer}button.secondary{background:#e8eef8;color:#23436f}button:hover{filter:brightness(.94)}.buttons{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}.hint{font-size:12px;color:#596b81;line-height:1.55}.paper{min-height:640px}.paper h2{text-align:center;font-family:Georgia,serif;font-size:21px}.paper h3{font-family:Georgia,serif;font-size:16px;margin-top:24px}.meta{display:flex;justify-content:space-between;gap:15px;border-bottom:1px solid #9baac0;padding-bottom:12px;font-size:13px}.task{line-height:1.7}.answer{border-bottom:1px dotted #b9c3d0;height:32px}.forms{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.forms div{padding:8px;background:#f7f9fc;border:1px solid #e3e9f1;border-radius:6px}.small{font-size:12px;color:#5b697b}.notice{padding:10px;background:#fff7e7;border-left:3px solid #d4a447;font-size:12px;margin:12px 0}.solutions{display:none}.solutions.show{display:block}.solutions li{margin:8px 0}.footer{max-width:1150px;margin:12px auto 35px;padding:0 18px;font-size:12px;color:#5c6b7c}@media(max-width:800px){.layout{grid-template-columns:1fr}.top{padding:22px}}@media print{body{background:white}.top,.panel,.footer,.no-print{display:none!important}.layout{display:block;margin:0;padding:0}.paper{border:0;box-shadow:none;padding:0}.solutions{page-break-before:always}.paper h3{break-after:avoid}}
 .unit-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;margin:8px 0}.unit-grid label{display:flex;align-items:center;gap:4px;font-size:12px;border:1px solid #d9e1ed;padding:6px;border-radius:5px;cursor:pointer}.unit-grid input{margin:0}.buttons button{margin-bottom:4px}.paper[contenteditable="true"]{outline:none}.paper[contenteditable="true"]:focus{box-shadow:0 0 0 2px #c4d7f7}@media print{.paper[contenteditable="true"]:focus{box-shadow:none}} .count-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.count-grid label{font-size:12px}.count-grid input{margin-top:4px}textarea{width:100%;border:1px solid #cbd5e1;border-radius:6px;padding:9px;font:inherit;resize:vertical}.paper{min-height:650px}@media print{.top,.panel,.footer{display:none!important}.layout{display:block;margin:0;padding:0}.paper{border:0;box-shadow:none;padding:0}.solutions:not(.show){display:none!important}}  .final-gloss{columns:2;column-gap:20px;font-family:Georgia,serif;font-size:13px;line-height:1.65}.final-gloss div{break-inside:avoid;margin:0 0 5px}@media print{.final-gloss{columns:2}}  .paper{font-family:"Palatino Linotype",Palatino,"Book Antiqua",serif;font-size:10.5pt}.paper .final-gloss{font-family:inherit;font-size:10.5pt;columns:2;column-gap:24px}.paper .gloss-item{break-inside:avoid;margin-bottom:3px}.paper .lex-pos{font-style:normal} @media print{.paper{font-family:"Palatino Linotype",Palatino,"Book Antiqua",serif;font-size:10.5pt}} .paper h3 + p.small{font-style:italic}
 </style><style>
@@ -76,7 +76,39 @@ button:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-vis
 button:disabled{opacity:.55;cursor:not-allowed}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
 @media print{.top{background:none!important;color:#000!important}}
-</style><header class="top"><h1>Generador de exámenes · Latín y griego</h1><p>Versión 20 · Genera, revisa y exporta exámenes de Latín y Griego sin conexión · borradores recuperables</p></header><nav class="vocab-tabbar" aria-label="Secciones de la aplicación"><button id="vmShowExam" class="active" type="button">Generador de exámenes</button><button id="vmShowList" type="button">Vocabulario exigible por unidad</button></nav><div class="quick-actions no-print" aria-label="Acciones rápidas"><span class="quick-label">Examen</span><button type="button" id="quickGenerate">Generar</button><button type="button" id="quickWord" class="secondary">Descargar Word</button><button type="button" id="quickWordAnswers" class="secondary">Word con soluciones</button><span class="quick-tip">La vista previa se puede editar antes de exportar.</span></div>
+</style><style id="greek-reference-layout">
+/* UD3–4 reference: Palatino 10.5 pt, bordered paragraphs and open-corner grids. */
+.paper .exam-sheet{font-family:"Palatino Linotype",Palatino,"Book Antiqua",serif;font-size:10.5pt;line-height:1.45;color:#000;overflow-wrap:normal}
+.paper .exam-header{border:.5pt solid #000;margin:0 -3pt 6pt;padding:0 6pt;break-inside:avoid}
+.paper .exam-header-line{display:grid;grid-template-columns:minmax(0,1fr) 25%;gap:8pt;min-height:19pt;align-items:center;margin:0;font-size:10.5pt;font-weight:bold;line-height:19pt}
+.paper .exam-question{margin:5pt 0 5pt 18pt;font-size:10.5pt;line-height:1.4;break-after:avoid}
+.paper .exam-q-number{display:inline-block;min-width:15pt}
+.paper .exam-sheet table{width:100%;border-collapse:collapse;table-layout:fixed;margin:0;font-size:10.5pt;font-family:inherit}
+.paper .exam-sheet th,.paper .exam-sheet td{border:.5pt solid #808080;padding:0 4pt;font-weight:normal;vertical-align:middle;height:24.6pt;background:transparent;color:#000}
+.paper .exam-paradigm th{text-align:center}
+.paper .exam-nouns col:first-child{width:16%}.paper .exam-nouns col:not(:first-child){width:42%}
+.paper .exam-verbs col:first-child{width:6%}.paper .exam-verbs col:not(:first-child){width:47%}.paper .exam-verbs:has(col:nth-child(5)) col:not(:first-child){width:23.5%}
+.paper .exam-nouns tbody th{text-align:right;white-space:nowrap}
+.paper .exam-verbs tbody th{text-align:left}
+.paper .exam-sheet .exam-corner{border:none!important;padding:0}
+.paper .exam-verbs th,.paper .exam-verbs td{height:23.1pt}
+.paper .exam-pronouns th{font-weight:normal;text-align:left}
+.paper .exam-table-gap{margin:0;height:7pt;line-height:7pt}
+.paper .exam-item{margin:0 0 0 36pt;padding-left:18pt;text-indent:-18pt;line-height:1.45;break-inside:avoid}
+.paper .exam-letter{display:inline-block;min-width:15pt;text-indent:0}
+.paper .exam-form{min-height:23pt}
+.paper .exam-sentence{min-height:53pt;padding-bottom:25pt}
+.paper .exam-etymology{display:flex;flex-wrap:wrap;gap:12pt 34pt;margin:0 0 8pt 36pt;min-height:20pt}
+.paper .exam-etymology span{min-width:143pt}
+.paper .exam-gloss-title{margin:4pt 0 3pt;font-size:10.5pt;break-after:avoid}
+.paper .exam-sheet .final-gloss{line-height:1.45;column-gap:24pt;font-size:10.5pt}
+.paper .exam-sheet .gloss-item{margin:0;break-inside:avoid}
+.paper .exam-grade{font-size:10.5pt;margin:12pt 0}
+.paper .exam-sheet #answerkey h2,.paper .exam-sheet #answerkey h3{font-size:10.5pt;text-align:left}
+@media(max-width:500px){.paper .exam-header-line{grid-template-columns:minmax(0,1fr) 30%;gap:4pt;line-height:1.4;padding:3pt 0}.paper .exam-sheet th,.paper .exam-sheet td{padding:0 2pt;font-size:9pt}.paper .exam-nouns tbody th{white-space:normal}.paper .exam-item{margin-left:12pt}.paper .exam-etymology{margin-left:12pt}.paper .exam-sheet .final-gloss{columns:1}}
+@page greek-exam{size:A4;margin:25mm 30mm 20mm;@bottom-center{content:counter(page) " | " counter(pages);font-family:Palatino,"Palatino Linotype",serif;font-size:9pt;color:black}}
+@media print{.layout:has(.exam-sheet){margin:0!important}.exam-sheet{page:greek-exam}.paper .exam-header{margin:0 0 6pt;padding:2pt 3pt 0}.paper .exam-page-break{break-before:page}.paper .exam-paradigm,.paper .exam-pronouns{break-inside:avoid}.paper .exam-sheet p{color:#000}.paper .exam-sheet .final-gloss{columns:2}.paper .exam-header-line{grid-template-columns:minmax(0,1fr) 25%;line-height:19pt;padding:0}.paper .exam-sheet th,.paper .exam-sheet td{font-size:10.5pt}.paper .exam-item{margin-left:36pt}.paper .exam-etymology{margin-left:36pt}}
+</style><header class="top"><h1>Generador de exámenes · Latín y griego</h1><p>Versión 21 · Genera, revisa y exporta exámenes de Latín y Griego sin conexión · borradores recuperables</p></header><nav class="vocab-tabbar" aria-label="Secciones de la aplicación"><button id="vmShowExam" class="active" type="button">Generador de exámenes</button><button id="vmShowList" type="button">Vocabulario exigible por unidad</button></nav><div class="quick-actions no-print" aria-label="Acciones rápidas"><span class="quick-label">Examen</span><button type="button" id="quickGenerate">Generar</button><button type="button" id="quickWord" class="secondary">Descargar Word</button><button type="button" id="quickWordAnswers" class="secondary">Word con soluciones</button><span class="quick-tip">La vista previa se puede editar antes de exportar.</span></div>
 <section class="vocab-manager" id="vocabManager" aria-label="Gestor de vocabulario exigible">
 <h2>Vocabulario exigible para examen</h2><p class="vm-help">Este listado es independiente del vocabulario general. Puedes añadir, corregir, cambiar de unidad o eliminar entradas. Las palabras exigibles en esta unidad o anteriores se muestran sin traducción en el vocabulario final del examen.</p>
 <div class="vm-grid"><div><label for="vmCourse">Asignatura</label><select id="vmCourse"><option value="latin4">Latín 4.º ESO</option><option value="latin1">Latín I</option><option value="greek1">Griego I (ático)</option></select></div><div><label for="vmUnit">Unidad</label><select id="vmUnit"></select></div><div><label for="vmSearch">Buscar por lema o enunciado</label><input id="vmSearch" placeholder="Buscar..."></div></div>
@@ -218,6 +250,7 @@ function wordPara(node,style='',number=''){
  return `<w:p>${pr}${wordInline(node)}</w:p>`;
 }
 function wordTable(table){
+ if(table.classList.contains('exam-paradigm')||table.classList.contains('exam-pronouns'))return wordExamTable(table);
  const rows=[...table.querySelectorAll('tr')];
  if(!rows.length)return '';
  const cols=Math.max(...rows.map(r=>r.children.length),1),w=Math.floor(9300/cols);
@@ -232,6 +265,7 @@ function wordTable(table){
  }return out+'</w:tbl>';
 }
 function wordGlossTable(el){
+ if(el.closest('.exam-sheet'))return wordExamGloss(el);
  const items=[...el.children].filter(x=>x.classList.contains('gloss-item'));
  if(!items.length)return '';
  const half=Math.ceil(items.length/2),w=4650;
@@ -246,6 +280,8 @@ function wordGlossTable(el){
  return out+'</w:tbl>';
 }
 function wordBlock(el){
+ if(el.classList?.contains('exam-header'))return wordExamHeader(el);
+ if(['exam-question','exam-item','exam-etymology','exam-gloss-title','exam-table-gap','exam-grade'].some(c=>el.classList?.contains(c)))return wordExamParagraph(el);
  if(el.id==='answerkey')return '<w:p><w:pPr><w:pageBreakBefore/></w:pPr></w:p>'+[...el.children].map(wordBlock).join('');
  if(el.classList&&el.classList.contains('answer'))return '<w:p><w:pPr><w:spacing w:after="120" w:line="360" w:lineRule="auto"/></w:pPr>'+wordRun('________________________________________________')+'</w:p>';
  if(el.classList&&el.classList.contains('final-gloss'))return wordGlossTable(el);
@@ -255,7 +291,7 @@ function wordBlock(el){
  if(tag==='h2')return wordPara(el,'Heading1');
  if(tag==='h3')return wordPara(el,'Heading2');
  if(tag==='h4')return wordPara(el,'Heading3');
- if(tag==='p'){const instruction=el.classList.contains('small')&&el.previousElementSibling?.tagName==='H3';if(el.nextElementSibling?.tagName==='TABLE')return '<w:p><w:pPr><w:keepNext/></w:pPr>'+wordInline(el)+'</w:p>';return instruction?`<w:p>${wordInline(el,false,true)}</w:p>`:wordPara(el);}
+ if(tag==='p'){if(el.closest('#answerkey')&&el.closest('.exam-sheet'))return '<w:p><w:pPr><w:keepLines/><w:spacing w:after="60" w:line="260" w:lineRule="auto"/></w:pPr>'+wordInline(el)+'</w:p>';const instruction=el.classList.contains('small')&&el.previousElementSibling?.tagName==='H3';if(el.nextElementSibling?.tagName==='TABLE')return '<w:p><w:pPr><w:keepNext/></w:pPr>'+wordInline(el)+'</w:p>';return instruction?`<w:p>${wordInline(el,false,true)}</w:p>`:wordPara(el);}
  if(tag==='li')return wordPara(el);
  if(tag==='div'||tag==='section'){
    const children=[...el.childNodes];
@@ -265,21 +301,72 @@ function wordBlock(el){
  }
  return wordPara(el);
 }
+function wordExamHeader(el){
+ // Two adjacent, identically bordered paragraphs form one Word border group.
+ // No layout table, text box, or raster image is used for the header.
+ const border='<w:pBdr>'+['top','left','bottom','right'].map(side=>'<w:'+side+' w:val="single" w:sz="4" w:space="'+(side==='top'?0:side==='bottom'?2:4)+'" w:color="000000"/>').join('')+'</w:pBdr>';
+ return [...el.children].map((p,i)=>'<w:p><w:pPr><w:keepNext/><w:keepLines/><w:tabs><w:tab w:val="left" w:pos="6360"/></w:tabs><w:ind w:left="45" w:right="45"/><w:spacing w:before="0" w:after="0" w:line="'+(i===0?340:380)+'" w:lineRule="exact"/>'+border+'</w:pPr>'+([...p.children].length===2?wordInline(p.children[0],true)+'<w:r><w:tab/></w:r>'+wordInline(p.children[1],true):wordInline(p,true))+'</w:p>').join('')+'<w:p><w:pPr><w:spacing w:before="0" w:after="0" w:line="50" w:lineRule="exact"/></w:pPr></w:p>';
+}
+function wordExamParagraph(el){
+ const cls=el.classList,props=['<w:keepLines/>'];let runs=wordInline(el);
+ if(cls.contains('exam-question')){
+  const m=el.textContent.match(/^(\d+\.)\s*(.*)$/s);
+  props.push('<w:keepNext/><w:ind w:left="720" w:hanging="360"/><w:tabs><w:tab w:val="left" w:pos="720"/></w:tabs><w:spacing w:before="80" w:after="80" w:line="290" w:lineRule="auto"/>');
+  if(cls.contains('exam-page-break'))props.push('<w:pageBreakBefore/>');
+  if(m)runs=wordRun(m[1],true)+'<w:r><w:tab/></w:r>'+wordRun(m[2],true);
+ }else if(cls.contains('exam-item')){
+  props.push('<w:ind w:left="1080" w:hanging="360"/><w:tabs><w:tab w:val="left" w:pos="1080"/></w:tabs><w:spacing w:before="0" w:after="'+(cls.contains('exam-sentence')?'750':'180')+'" w:line="'+(cls.contains('exam-sentence')?'310':'260')+'" w:lineRule="atLeast"/>');
+  const m=el.textContent.match(/^([a-z]\.)\s*(.*)$/s);if(m)runs=wordRun(m[1])+'<w:r><w:tab/></w:r>'+wordRun(m[2]);
+ }else if(cls.contains('exam-etymology')){
+  props.push('<w:ind w:left="720"/><w:tabs><w:tab w:val="left" w:pos="4240"/></w:tabs><w:spacing w:before="0" w:after="160" w:line="300" w:lineRule="auto"/>');
+  runs=[...el.children].map(x=>wordInline(x)).join('<w:r><w:tab/></w:r>');
+ }else if(cls.contains('exam-table-gap')){props.push('<w:spacing w:before="0" w:after="0" w:line="140" w:lineRule="exact"/>');runs='';}
+ else if(cls.contains('exam-gloss-title'))props.push('<w:keepNext/><w:spacing w:before="80" w:after="60" w:line="300" w:lineRule="auto"/>');
+ else props.push('<w:spacing w:before="200" w:after="100"/>');
+ return '<w:p><w:pPr>'+props.join('')+'</w:pPr>'+runs+'</w:p>';
+}
+function wordExamTable(table){
+ const rows=[...table.rows],paradigm=table.classList.contains('exam-paradigm'),verb=table.classList.contains('exam-verbs');
+ const raw=(table.dataset.colWidths||'').split(',').map(Number);
+ const count=Math.max(...rows.map(r=>[...r.cells].reduce((n,c)=>n+(+c.colSpan||1),0)));
+ const widths=raw.length===count&&raw.every(n=>Number.isFinite(n)&&n>0)?raw.map(n=>Math.round(n*8500/raw.reduce((a,b)=>a+b,0))):Array(count).fill(Math.floor(8500/count));
+ let out='<w:tbl><w:tblPr><w:tblW w:w="8500" w:type="dxa"/><w:tblLayout w:type="fixed"/><w:tblCellMar><w:top w:w="0" w:type="dxa"/><w:bottom w:w="0" w:type="dxa"/><w:left w:w="80" w:type="dxa"/><w:right w:w="80" w:type="dxa"/></w:tblCellMar></w:tblPr><w:tblGrid>'+widths.map(w=>'<w:gridCol w:w="'+w+'"/>').join('')+'</w:tblGrid>';
+ rows.forEach((row,ri)=>{
+  const head=row.parentElement.tagName==='THEAD';let col=0;
+  out+='<w:tr><w:trPr><w:cantSplit/><w:trHeight w:val="'+(verb?'452':'482')+'" w:hRule="atLeast"/>'+(head?'<w:tblHeader/>':'')+'</w:trPr>';
+  for(const cell of row.cells){const span=+cell.colSpan||1,w=widths.slice(col,col+span).reduce((a,b)=>a+b,0),corner=cell.classList.contains('exam-corner');
+   const align=paradigm?(col===0&&!head?(verb?'left':'right'):'center'):'left';
+   out+='<w:tc><w:tcPr><w:tcW w:w="'+w+'" w:type="dxa"/>'+(span>1?'<w:gridSpan w:val="'+span+'"/>':'')+'<w:tcBorders>'+['top','left','bottom','right'].map(side=>'<w:'+side+' w:val="'+(corner?'nil':'single')+'" w:sz="4" w:color="808080"/>').join('')+'</w:tcBorders><w:vAlign w:val="center"/></w:tcPr><w:p><w:pPr><w:jc w:val="'+align+'"/><w:spacing w:before="0" w:after="0" w:line="280" w:lineRule="auto"/>'+(ri<rows.length-1?'<w:keepNext/>':'')+'</w:pPr>'+[...cell.childNodes].map(n=>wordInline(n)).join('')+'</w:p></w:tc>';col+=span;
+  }out+='</w:tr>';
+ });return out+'</w:tbl>';
+}
+function wordExamGloss(el){
+ const items=[...el.children].filter(x=>x.classList.contains('gloss-item')),half=Math.ceil(items.length/2);
+ if(!items.length)return '';let out='<w:tbl><w:tblPr><w:tblW w:w="8500" w:type="dxa"/><w:tblLayout w:type="fixed"/><w:tblCellMar><w:top w:w="0" w:type="dxa"/><w:bottom w:w="0" w:type="dxa"/><w:left w:w="0" w:type="dxa"/><w:right w:w="80" w:type="dxa"/></w:tblCellMar></w:tblPr><w:tblGrid><w:gridCol w:w="4600"/><w:gridCol w:w="3900"/></w:tblGrid>';
+ for(let i=0;i<half;i++){out+='<w:tr><w:trPr><w:cantSplit/></w:trPr>';[items[i],items[i+half]].forEach((x,j)=>{out+='<w:tc><w:tcPr><w:tcW w:w="'+(j?3900:4600)+'" w:type="dxa"/></w:tcPr><w:p><w:pPr><w:spacing w:before="0" w:after="0" w:line="300" w:lineRule="atLeast"/></w:pPr>'+(x?wordInline(x):'')+'</w:p></w:tc>'});out+='</w:tr>'}return out+'</w:tbl>';
+}
 function exportWord(includeAnswers){
  const paper=$('paper');
  if(!paper||!paper.textContent.trim()){alert('Genera primero un examen.');return;}
  const copy=paper.cloneNode(true),key=copy.querySelector('#answerkey');
  if(key&&!includeAnswers)key.remove();
  if(key&&includeAnswers)key.classList.remove('solutions');
+ const greekLayout=!!copy.querySelector('.exam-sheet');
  let body=[...copy.children].map(wordBlock).join('');
- const doc=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>${body}<w:sectPr><w:pgSz w:w="11906" w:h="16838"/><w:pgMar w:top="1134" w:right="1134" w:bottom="1134" w:left="1134"/></w:sectPr></w:body></w:document>`;
- const styles=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:docDefaults><w:rPrDefault><w:rPr><w:rFonts w:ascii="Palatino Linotype" w:hAnsi="Palatino Linotype" w:eastAsia="Palatino Linotype"/><w:sz w:val="21"/></w:rPr></w:rPrDefault><w:pPrDefault><w:pPr><w:spacing w:after="110" w:line="276" w:lineRule="auto"/></w:pPr></w:pPrDefault></w:docDefaults><w:style w:type="paragraph" w:styleId="Heading1"><w:name w:val="heading 1"/><w:pPr><w:spacing w:before="180" w:after="140"/></w:pPr><w:rPr><w:b/><w:sz w:val="30"/></w:rPr></w:style><w:style w:type="paragraph" w:styleId="Heading2"><w:name w:val="heading 2"/><w:pPr><w:spacing w:before="190" w:after="90"/><w:keepNext/></w:pPr><w:rPr><w:b/><w:sz w:val="25"/></w:rPr></w:style><w:style w:type="paragraph" w:styleId="Heading3"><w:name w:val="heading 3"/><w:rPr><w:b/><w:sz w:val="23"/></w:rPr></w:style></w:styles>`;
+ const doc=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><w:body>${body}<w:sectPr>${greekLayout?'<w:footerReference w:type="default" r:id="rId3"/>':''}<w:pgSz w:w="11906" w:h="16838"/>${greekLayout?'<w:pgMar w:top="1420" w:right="1700" w:bottom="1000" w:left="1700" w:footer="560"/>':'<w:pgMar w:top="1134" w:right="1134" w:bottom="1134" w:left="1134"/>'}</w:sectPr></w:body></w:document>`;
+ let styles=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:docDefaults><w:rPrDefault><w:rPr><w:rFonts w:ascii="Palatino Linotype" w:hAnsi="Palatino Linotype" w:eastAsia="Palatino Linotype"/><w:sz w:val="21"/></w:rPr></w:rPrDefault><w:pPrDefault><w:pPr><w:spacing w:after="110" w:line="276" w:lineRule="auto"/></w:pPr></w:pPrDefault></w:docDefaults><w:style w:type="paragraph" w:styleId="Heading1"><w:name w:val="heading 1"/><w:pPr><w:spacing w:before="180" w:after="140"/></w:pPr><w:rPr><w:b/><w:sz w:val="30"/></w:rPr></w:style><w:style w:type="paragraph" w:styleId="Heading2"><w:name w:val="heading 2"/><w:pPr><w:spacing w:before="190" w:after="90"/><w:keepNext/></w:pPr><w:rPr><w:b/><w:sz w:val="25"/></w:rPr></w:style><w:style w:type="paragraph" w:styleId="Heading3"><w:name w:val="heading 3"/><w:rPr><w:b/><w:sz w:val="23"/></w:rPr></w:style></w:styles>`;
+ if(greekLayout)styles=styles.replace(/w:sz w:val="(?:30|25|23)"/g,'w:sz w:val="21"').replace('w:before="190" w:after="90"','w:before="120" w:after="60"').replace('w:before="180" w:after="140"','w:before="120" w:after="80"');
  const numbering=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:numbering xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:abstractNum w:abstractNumId="0"><w:multiLevelType w:val="singleLevel"/><w:lvl w:ilvl="0"><w:start w:val="1"/><w:numFmt w:val="decimal"/><w:lvlText w:val="%1."/><w:lvlJc w:val="left"/><w:pPr><w:ind w:left="600" w:hanging="300"/></w:pPr></w:lvl></w:abstractNum><w:abstractNum w:abstractNumId="1"><w:multiLevelType w:val="singleLevel"/><w:lvl w:ilvl="0"><w:start w:val="1"/><w:numFmt w:val="bullet"/><w:lvlText w:val="•"/><w:pPr><w:ind w:left="600" w:hanging="300"/></w:pPr></w:lvl></w:abstractNum><w:num w:numId="1"><w:abstractNumId w:val="0"/></w:num><w:num w:numId="2"><w:abstractNumId w:val="1"/></w:num></w:numbering>`;
  const files=[
  ['[Content_Types].xml','<?xml version="1.0"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/><Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/><Override PartName="/word/numbering.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.numbering+xml"/></Types>'],
  ['_rels/.rels','<?xml version="1.0"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>'],
  ['word/_rels/document.xml.rels','<?xml version="1.0"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/><Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/numbering" Target="numbering.xml"/></Relationships>'],
  ['word/document.xml',doc],['word/styles.xml',styles],['word/numbering.xml',numbering]];
+ if(greekLayout){
+  files[0][1]=files[0][1].replace('</Types>','<Override PartName="/word/footer1.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.footer+xml"/></Types>');
+  files[2][1]=files[2][1].replace('</Relationships>','<Relationship Id="rId3" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/footer" Target="footer1.xml"/></Relationships>');
+  files.push(['word/footer1.xml','<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:ftr xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:p><w:pPr><w:jc w:val="center"/></w:pPr><w:r><w:rPr><w:sz w:val="18"/></w:rPr><w:fldChar w:fldCharType="begin"/></w:r><w:r><w:instrText xml:space="preserve"> PAGE </w:instrText></w:r><w:r><w:fldChar w:fldCharType="end"/></w:r>'+wordRun(' | ')+'<w:r><w:fldChar w:fldCharType="begin"/></w:r><w:r><w:instrText xml:space="preserve"> NUMPAGES </w:instrText></w:r><w:r><w:fldChar w:fldCharType="end"/></w:r></w:p></w:ftr>']);
+ }
  const course=currentCourse(),filename=`examen_${course}_${$('term').value}T_${includeAnswers?'solucionario':'alumnado'}.docx`;
  downloadBlob(filename,zip(files));
 }
@@ -596,7 +683,27 @@ function greekSelect(pool,chosen,counts){
  for(const kind of greekKinds){const inKind=selected.filter(x=>x.kind===kind).length;sample(pool.filter(x=>x.kind===kind&&!selected.includes(x)),Math.max(0,(counts[kind]||0)-inKind)).forEach(put)}
  return {items:selected,covered:[...covered],missing:chosen.filter(u=>!covered.has(u))};
 }
-function greekTable(item,answers=false){return '<table><thead><tr>'+item.table.headers.map(h=>'<th>'+esc(h)+'</th>').join('')+'</tr></thead><tbody>'+item.table.rows.map(row=>'<tr>'+row.map((cell,i)=>'<td>'+(i===0||answers?esc(cell):'________________')+'</td>').join('')+'</tr>').join('')+'</tbody></table>'}
+// Reference layout: normal bordered header paragraphs; the word to decline
+// belongs to the first merged table row, with an open upper-left corner.
+function greekTable(item,answers=false){
+ const va=$('lang').value==='va',verb=item.kind==='conjugation';
+ const articles={λογος:'ὁ',ανθρωπος:'ὁ',δωρον:'τὸ',εργον:'τὸ',αγορα:'ἡ',χωρα:'ἡ',θαλαττα:'ἡ',νεανιας:'ὁ',παιδεια:'ἡ',αδελφος:'ὁ'};
+ const lemma=item.lemmas[0],article=articles[item.id.slice(2)]||'';
+ const title=verb?headLex(lemma):(article?article+' ':'')+lemma;
+ return '<table class="exam-paradigm '+(verb?'exam-verbs':'exam-nouns')+'" data-col-widths="'+(verb?'500,4000,4000':'1340,3580,3580')+'" data-corpus-id="'+item.id+'"><colgroup><col><col><col></colgroup><thead><tr><td class="exam-corner"></td><th colspan="2" scope="colgroup">'+esc(title)+'</th></tr><tr><td class="exam-corner"></td><th scope="col">Singular</th><th scope="col">Plural</th></tr></thead><tbody>'+item.table.rows.map(row=>'<tr><th scope="row">'+esc(verb?row[0].replace('.',''):row[0][0].toUpperCase()+row[0].slice(1))+'</th><td>'+(answers?esc(row[1]):'')+'</td><td>'+(answers?esc(row[2]):'')+'</td></tr>').join('')+'</tbody></table>';
+}
+function greekVerbTable(items){
+ const widths=[500,...items.flatMap(()=>[4000/items.length,4000/items.length])].map(Math.round);
+ return '<table class="exam-paradigm exam-verbs" data-col-widths="'+widths.join(',')+'"><colgroup>'+widths.map(()=>'<col>').join('')+'</colgroup><thead><tr><td class="exam-corner"></td>'+items.map(x=>'<th colspan="2" scope="colgroup" data-corpus-id="'+x.id+'">'+esc(headLex(x.lemmas[0]))+'</th>').join('')+'</tr><tr><td class="exam-corner"></td>'+items.map(()=>'<th scope="col">Singular</th><th scope="col">Plural</th>').join('')+'</tr></thead><tbody>'+[0,1,2].map(i=>'<tr><th scope="row">'+(i+1)+'ª</th>'+items.map(()=>'<td></td><td></td>').join('')+'</tr>').join('')+'</tbody></table>';
+}
+function greekExamHeader(chosen,mode){
+ const va=$('lang').value==='va',numbers=chosen.map(examUnitNumber),unitLabel=(numbers.length===1?'UD ':numbers.length?'UDs ':'')+(numbers.length===2&&numbers[1]===numbers[0]+1?numbers.join('-'):numbers.join(', '));
+ const titleInput=$('name').value.trim(),custom=titleInput&&!['Examen de Griego I','Examen de Grec I'].includes(titleInput);
+ const prefix=$('model').value==='morphology'?(va?'Examen de morfologia':'Examen de morfología'):'Examen';
+ const title=(custom?titleInput:prefix+' '+unitLabel+' '+(va?'Grec I':'Griego I'))+($('seed').value?' · '+$('seed').value:'');
+ return '<div class="exam-header"><p class="exam-header-line"><span>'+esc(title)+'</span><span>'+$('term').value+'ª '+(va?'avaluació':'evaluación')+'</span></p><p class="exam-header-line"><span>'+(va?'Nom i cognoms:':'Nombre y apellidos:')+'</span><span>'+(va?'Data:':'Fecha:')+'</span></p></div>';
+}
+function greekQuestionLabel(kind){return ({es:{declension:'Declina',conjugation:'Conjuga',forms:'Analiza morfológicamente',pronouns:'Completa la tabla con el análisis morfológico adecuado',etymology:'Escribe dos derivados etimológicos de cada una de estas palabras griegas',sentences:'Analiza y traduce las siguientes oraciones'},va:{declension:'Declina',conjugation:'Conjuga',forms:'Analitza morfològicament',pronouns:'Completa la taula amb l’anàlisi morfològica adequada',etymology:'Escriu dos derivats etimològics de cadascuna d’aquestes paraules gregues',sentences:'Analitza i tradueix les oracions següents'}})[$('lang').value][kind]}
 function greekPoints(kind){const v=Number($('greek-points-'+kind).value);return Number.isFinite(v)?Math.max(0,Math.min(100,v)):0}
 function generateGreekExam(){
  const chosen=greekMarkedUnits(),max=greekLimit(),mode=greekModes[$('model').value]||greekModes.complete;
@@ -606,19 +713,23 @@ function generateGreekExam(){
  let total=0,index=0;
  for(const [i,kind] of greekKinds.entries()){
   if(!enabled.includes(kind))continue;const items=result.items.filter(x=>x.kind===kind),title=greekKindNames[$('lang').value][i],points=items.length?greekPoints(kind):0;total+=points;
-  const instructions=kind==='forms'?'Indica todos los análisis posibles y el enunciado.':kind==='pronouns'?'Indica caso, género, número y tipo de pronombre; recoge todas las lecturas posibles.':kind==='etymology'?'Escribe dos derivados etimológicos de cada palabra.':kind==='sentences'?'Analiza sintácticamente y traduce las oraciones.':'Completa las tablas.';
-  sections.push('<h3>'+ (++index)+'. '+esc(title)+' ('+points+' p.)</h3><p class="small">'+esc(instructions)+'</p>');
+  const newPage=$('model').value==='complete'&&kind==='etymology';
+  sections.push('<p class="exam-question'+(newPage?' exam-page-break':'')+'"><strong><span class="exam-q-number">'+(++index)+'.</span> '+esc(greekQuestionLabel(kind))+' ('+String(points).replace('.',',')+'p.):</strong></p>');
   if(!items.length){sections.push('<p>No hay material verificado disponible para este apartado hasta UD'+max+'. No se asignan puntos.</p>');continue}
-  if(kind==='pronouns')sections.push('<table><thead><tr><th>Forma</th><th>Caso, género, número</th><th>Tipo de pronombre</th></tr></thead><tbody>'+items.map(x=>'<tr data-corpus-id="'+x.id+'"><td>'+esc(x.prompt)+'</td><td>________________</td><td>________________</td></tr>').join('')+'</tbody></table>');
-  else sections.push(items.map(x=>'<div data-corpus-id="'+x.id+'"><p><i>'+esc(x.prompt)+'</i></p>'+(x.table?greekTable(x):'<div class="answer"></div>'+(kind==='sentences'?'<div class="answer"></div>':''))+'</div>').join(''));
+  if(kind==='declension')sections.push(items.map(x=>greekTable(x)).join('<p class="exam-table-gap"></p>'));
+  else if(kind==='conjugation')sections.push(greekVerbTable(items));
+  else if(kind==='pronouns')sections.push('<table class="exam-pronouns" data-col-widths="1500,3500,3500"><thead><tr><th>Forma</th><th>Caso, género, número</th><th>Tipo de pronombre</th></tr></thead><tbody>'+items.map(x=>'<tr data-corpus-id="'+x.id+'"><td>'+esc(x.prompt)+'</td><td></td><td></td></tr>').join('')+'</tbody></table>');
+  else if(kind==='etymology')sections.push('<p class="exam-etymology">'+items.map((x,j)=>'<span data-corpus-id="'+x.id+'">'+String.fromCharCode(97+j)+'. '+esc(x.prompt)+':</span>').join('')+'</p>');
+  else sections.push(items.map((x,j)=>'<p class="exam-item '+(kind==='sentences'?'exam-sentence':'exam-form')+'" data-corpus-id="'+x.id+'"><span class="exam-letter">'+String.fromCharCode(97+j)+'.</span> <span>'+esc(x.prompt)+(kind==='forms'?':':'')+'</span></p>').join(''));
   answers.push('<h3>'+esc(title)+'</h3>'+items.map(x=>'<p><b>'+esc(x.prompt)+'</b> — '+esc(x.answer)+'</p>').join(''));
  }
  const missing=result.missing.map(u=>'UD'+u),notice=!chosen.length?'Selecciona al menos una unidad.':missing.length?'Sin material verificado para cubrir: '+missing.join(', ')+'. No se han inventado ejercicios.':'Cobertura verificada de todas las unidades seleccionadas.';
  const shortfalls=enabled.filter(k=>pool.filter(x=>x.kind===k).length<counts[k]).map(k=>greekKindNames[$('lang').value][greekKinds.indexOf(k)]+': '+pool.filter(x=>x.kind===k).length+' de '+counts[k]);
  $('greekCoverage').textContent=notice+' Gramática acumulativa'+(max>=0?' hasta UD'+max:'')+'.'+(chosen.length&&shortfalls.length?' Material disponible inferior al solicitado ('+shortfalls.join('; ')+'). Se utiliza únicamente el disponible.':'');
  const lemmas=[...new Map(result.items.flatMap(x=>x.lemmas).map(h=>{const x=greekLemma(h);return [examKey(x.entry),x]})).values()].sort((a,b)=>a.entry.localeCompare(b.entry));
- const gloss=$('autoGloss').checked&&lemmas.length?'<h3>Vocabulario final</h3><div class="final-gloss">'+lemmas.map(x=>'<div class="gloss-item"><i>'+esc(x.entry)+'</i>'+(isRequired(x.entry,chosen)?'':': '+esc(quoteGloss(x.meaning)))+'</div>').join('')+'</div>':'';
- $('paper').innerHTML='<div class="meta"><span>'+tr('name')+': ________________________________</span><span>'+tr('date')+': _________________</span></div><h2>'+esc($('name').value||courseName())+'</h2><p class="small">'+esc(mode[$('lang').value])+' · '+$('term').value+'.º '+tr('quarter')+' · '+tr('selection')+': '+esc(chosen.join(', ')||'—')+(max>=0?' · Gramática hasta UD'+max:'')+($('seed').value?' · Versión '+esc($('seed').value):'')+'</p><p>Nota sobre '+Number(total.toFixed(2))+' · Nota sobre 10: '+(total?'nota × 10 / '+Number(total.toFixed(2)):'sin puntuación')+'</p>'+(chosen.length?sections.join(''):'<p>'+notice+'</p>')+gloss+'<div id="answerkey" class="solutions"><h2>'+tr('key')+'</h2>'+answers.join('')+'</div>';
+ const gloss=$('autoGloss').checked&&lemmas.length?'<p class="exam-gloss-title"><strong>'+($('lang').value==='va'?'Vocabulari':'Vocabulario')+'</strong></p><div class="final-gloss">'+lemmas.map(x=>'<div class="gloss-item">'+esc(x.entry)+':'+(isRequired(x.entry,chosen)?'':' ‘'+esc(x.meaning)+'’')+'</div>').join('')+'</div>':'';
+ const grade=$('model').value==='morphology'?'<p class="exam-grade">Nota sobre '+String(Number(total.toFixed(2))).replace('.',',')+': __________　　Nota sobre 10: __________</p>':'';
+ $('paper').innerHTML='<div class="exam-sheet">'+greekExamHeader(chosen,mode)+(chosen.length?sections.join(''):'<p>'+notice+'</p>')+grade+gloss+'<div id="answerkey" class="solutions"><h2>'+tr('key')+'</h2>'+answers.join('')+'</div></div>';
  $('paper').setAttribute('contenteditable','true');$('paper').setAttribute('spellcheck','false');$('solutions').textContent=tr('solutions');
  // For auditable regression tests and inspection; no teacher data is transmitted.
  window.greekLastExam={chosen,max,mode:$('model').value,ids:result.items.map(x=>x.id),covered:result.covered,missing:result.missing,total:Number(total.toFixed(2))};

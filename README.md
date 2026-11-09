@@ -11,7 +11,7 @@ Prototipo experimental de un generador de exámenes para **Latín de 4.º de ESO
 
 **La aplicación está diseñada para funcionar completamente sin Internet**: el archivo HTML incorpora el código y los datos que necesita el prototipo. Los cambios guardados en el almacenamiento del navegador pueden no trasladarse automáticamente a otros ordenadores o a otro origen web; usa las copias de seguridad JSON.
 
-## Funcionalidad actual (prototipo v20)
+## Funcionalidad actual (prototipo v21)
 
 - Cursos separados: Latín 4.º ESO, Latín I y Griego I.
 - Tres modelos de examen y bloques de preguntas configurables.
@@ -120,3 +120,14 @@ Para compilar localmente, instala Node.js, Rust y las dependencias de Tauri para
 Detalles de procedencia, exclusiones y límites: [`data/greek1-validation.md`](data/greek1-validation.md). El banco aún no cubre todas las unidades ni todos los paradigmas del curso.
 
 Validación: `node scripts/check-web.mjs` y `node scripts/test-greek-ui.cjs` (requiere Playwright y un navegador instalado; admite `PLAYWRIGHT_PATH` y `BROWSER_PATH`). Se comprueban 300 generaciones aleatorias, modalidades, límites gramaticales, cobertura disponible, puntuaciones, borradores, idiomas, móvil, colores y nueve descargas DOCX. Los documentos se verifican como ZIP/XML y se renderizan para revisar su maquetación. La exportación en el WebView de macOS sigue pendiente.
+
+
+### Maquetación de Griego I v21 — referencia UD3–4
+
+Se reproduce el diseño académico del PDF aportado: Palatino 10,5 pt, cabecera editable en dos párrafos con bordes (sin tabla ni imagen), título y evaluación en la primera línea y nombre y fecha en la segunda.
+
+Las tablas de declinación incorporan el artículo y el lema en una fila superior combinada, con la esquina superior izquierda abierta, casos a la derecha y casillas sin sombreado. Los verbos comparten tabla, cada uno con sus columnas de singular y plural. Los apartados conservan numeración y letras; se deja espacio en blanco para responder, sin líneas añadidas. En el examen completo, etimología y traducción comienzan en una página nueva. El vocabulario mantiene dos columnas y el pie incluye página y total.
+
+El formato se aplica a la vista previa, impresión/PDF y exportación DOCX de Griego I. Los documentos siguen siendo editables; el corpus y los criterios de selección de v20 se conservan. La extensión aumenta cuando se solicitan más ejercicios o unidades. La referencia UD3–4 se ha comprobado en dos páginas tanto desde el navegador como desde Word renderizado.
+
+Además de las pruebas de generación, `scripts/test-greek-ui.cjs` comprueba la estructura visual, imprime un PDF y exporta diez DOCX. `python3 scripts/check-greek-docx.py ARCHIVO.docx` verifica que la cabecera sean párrafos con bordes, las tablas tengan celdas combinadas sin sombreado y existan campos de numeración de página. Se han renderizado y revisado las tres modalidades con y sin soluciones. No se ha iniciado la compilación de macOS.
