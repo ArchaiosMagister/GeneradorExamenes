@@ -637,8 +637,13 @@ function generate(){
  const va=$('lang').value==='va',t=(es,vl)=>va?vl:es;
  let idx=0;
  const add=(heading,html,solution)=>{
+  // Una advertencia docente nunca se convierte en una pregunta vacía al exportar.
+  const printable=html.replace(/<p class="small no-print">[\s\S]*?<\/p>/g,'')
+   .replace(/<ol[^>]*>\s*<\/ol>/gi,'').trim();
+  if(!printable){sections.push(html);return false}
   sections.push('<p class="exam-question"><strong><span class="exam-q-number">'+(++idx)+'.</span> '+esc(heading)+'</strong></p>'+html);
   answers.push('<li><strong>'+esc(heading)+'</strong>'+solution+'</li>');
+  return true;
  };
  const missing=message=>'<p class="small no-print">'+esc(message)+'</p>';
  const formsCount=countFor('forms');
