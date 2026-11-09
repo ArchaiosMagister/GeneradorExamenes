@@ -1339,25 +1339,86 @@ const greekPanel=document.createElement('div');greekPanel.className='field';gree
 greekPanel.innerHTML='<p class="hint">Los tres modelos comparten el formato académico. El modelo 1 reúne los apartados disponibles, el modelo 2 incluye tres preguntas morfológicas y el modelo 3 solo análisis y traducción de oraciones.</p><p id="greekCoverage" class="notice" role="status" aria-live="polite"></p><label id="greekPointsLabel">Puntuación por apartado</label><div id="greekPointsGrid" class="count-grid">'+greekKinds.map((k,i)=>'<label>'+greekKindNames.es[i]+'<input id="greek-points-'+k+'" type="number" min="0" max="100" step="0.1"></label>').join('')+'</div><p class="hint">Morfología: 2 + 1 + 1 puntos. Solo se utilizan formas y soluciones verificadas.</p>';
 document.querySelector('label[for="model"]').parentElement.after(greekPanel);
 for(const k of greekKinds)$('greek-points-'+k).onchange=()=>generate();
-const latinModelOptions=$('model').innerHTML;
-let modelCourse='latin1';
-function greekDefaultCounts(){const m=$('model').value;$('count-decl').value=m==='morphology'?1:2;$('count-verb').value=m==='analysis'?6:m==='morphology'?10:5;$('count-lex').value=2;$('count-sent').value=6}
-function greekApplyMode(){const mode=greekModes[$('model').value];greekKinds.forEach((k,i)=>{$('greek-points-'+k).value=mode.points[i];$('greek-points-'+k).disabled=mode.points[i]===0});greekDefaultCounts();generate()}
+// Three visible examination models; only the complete exam exists in Latin 4 ESO.
+const latinModes={
+ tablas:{es:'1 · Examen completo',va:'1 · Examen complet'},
+ morf:{es:'2 · Examen de morfología',va:'2 · Examen de morfologia'},
+ mixto:{es:'3 · Examen de traducción',va:'3 · Examen de traducció'}
+};
+function examModelOptions(course){
+ const modes=course==='greek1'?greekModes:latinModes;
+ const values=course==='latin4'?['tablas']:course==='greek1'?['complete','morphology','translation']:['tablas','morf','mixto'];
+ return values.map(value=>'<option value="'+value+'">'+modes[value][$('lang').value]+'</option>').join('');
+}
+function latinApplyMode(){
+ const selected=models[$('model').value]||models.tablas;
+ for(const id of ['decl','verb','lex','sent'])$(id).checked=selected.includes(id);
+ const cultureAvailable=currentCourse()==='latin4'&&$('model').value==='tablas';
+ $('cultureOption').hidden=!cultureAvailable;
+ $('culture').disabled=!cultureAvailable;
+ if(!cultureAvailable)$('culture').checked=false;
+ generate();
+}
+let modelCourse=null;
+function greekDefaultCounts(){
+ const m=$('model').value;
+ $('count-decl').value=m==='morphology'?1:2;
+ $('count-verb').value=m==='morphology'?10:5;
+ $('count-lex').value=2;
+ $('count-sent').value=6;
+}
+function greekApplyMode(){
+ const mode=greekModes[$('model').value]||greekModes.complete;
+ greekKinds.forEach((k,i)=>{
+  const input=$('greek-points-'+k);
+  input.value=mode.points[i];
+  input.disabled=mode.points[i]===0;
+  input.parentElement.hidden=mode.points[i]===0;
+ });
+ $('greekPointsGrid').hidden=$('model').value==='morphology';
+ $('greekPointsLabel').hidden=$('model').value==='morphology';
+ greekDefaultCounts();
+ generate();
+}
 const legacyRefreshCourse=refreshCourse;
 refreshCourse=function(){
- const greek=currentCourse()==='greek1',changed=modelCourse!==currentCourse();
- if(greek&&changed){$('model').innerHTML=Object.entries(greekModes).map(([k,m])=>'<option value="'+k+'">'+m[$('lang').value]+'</option>').join('');$('model').value='complete';greekDefaultCounts();greekKinds.forEach((k,i)=>{$('greek-points-'+k).value=greekModes.complete.points[i];$('greek-points-'+k).disabled=!greekModes.complete.points[i]})}
- if(!greek&&changed){$('model').innerHTML=latinModelOptions;for(const id of ['decl','verb','lex','sent'])$(id).checked=models[$('model').value].includes(id)}
- modelCourse=currentCourse();greekPanel.hidden=!greek;
+ const course=currentCourse(),greek=course==='greek1',changed=modelCourse!==course;
+ if(changed){
+  $('model').innerHTML=examModelOptions(course);
+  $('model').value=greek?'complete':'tablas';
+  if(greek)greekDefaultCounts();
+  else for(const id of ['decl','verb','lex','sent'])$(id).checked=models.tablas.includes(id);
+ }
+ modelCourse=course;
+ greekPanel.hidden=!greek;
  for(const id of ['decl','verb','lex','sent'])$(id).parentElement.hidden=greek;
  $('cumulative').parentElement.hidden=greek;
  legacyRefreshCourse();
- if(greek){$('courseStatus').textContent='Griego I · Temario UD0–14. Ejercicios del corpus docente y paradigmas explícitos revisados. Las importaciones genéricas no habilitan ejercicios griegos automáticamente.';if(!greekMarkedUnits().length){document.querySelectorAll('.unit-choice').forEach(e=>e.checked=units[+e.value]==='UD1');generate()}}
+ if(greek){
+  const mode=greekModes[$('model').value]||greekModes.complete;
+  greekKinds.forEach((k,i)=>{
+   const input=$('greek-points-'+k);
+   input.value=mode.points[i];
+   input.disabled=mode.points[i]===0;
+   input.parentElement.hidden=mode.points[i]===0;
+  });
+  $('greekPointsGrid').hidden=$('model').value==='morphology';
+  $('greekPointsLabel').hidden=$('model').value==='morphology';
+  $('courseStatus').textContent='Griego I · Modelo 1 completo, modelo 2 morfología, modelo 3 traducción. Solo ejercicios y paradigmas verificados.';
+  if(!greekMarkedUnits().length){
+   document.querySelectorAll('.unit-choice').forEach(e=>e.checked=units[+e.value]==='UD1');
+   generate();
+  }
+ }
 };
-$('model').onchange=()=>{if(currentCourse()==='greek1')greekApplyMode();else{for(const id of ['decl','verb','lex','sent'])$(id).checked=models[$('model').value].includes(id);$('cultureOption').hidden=currentCourse()!=='latin4'||$('model').value!=='tablas';$('culture').disabled=$('cultureOption').hidden;if($('cultureOption').hidden)$('culture').checked=false;generate()}};
+$('model').onchange=()=>{if(currentCourse()==='greek1')greekApplyMode();else latinApplyMode()};
 $('course').onchange=()=>{document.querySelectorAll('.unit-choice').forEach(e=>e.checked=false);refreshCourse()};
 const legacyTranslateUI=translateUI;
-translateUI=function(){legacyTranslateUI();if(currentCourse()==='greek1')for(const o of $('model').options)o.textContent=greekModes[o.value][$('lang').value]};
+translateUI=function(){
+ legacyTranslateUI();
+ const modes=currentCourse()==='greek1'?greekModes:latinModes;
+ for(const option of $('model').options)if(modes[option.value])option.textContent=modes[option.value][$('lang').value];
+};
 $('lang').onchange=()=>{translateUI();generate()};
 // Earlier controls captured the original function. Its Greek branch delegates
 // to generateGreekExam, so all imports, counts, quick actions and draft undo work.
