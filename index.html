@@ -174,6 +174,14 @@ button:disabled{opacity:.55;cursor:not-allowed}
 @media print{.layout:has(.exam-sheet){margin:0!important}.exam-sheet{page:greek-exam}.paper .exam-header{margin:0 0 6pt;padding:2pt 3pt 0}.paper .exam-page-break{break-before:page}.paper .exam-paradigm,.paper .exam-pronouns{break-inside:avoid}.paper .exam-sheet p{color:#000}.paper .exam-sheet .final-gloss{columns:2}.paper .exam-header-line{grid-template-columns:minmax(0,1fr) 25%;line-height:19pt;padding:0}.paper .exam-sheet th,.paper .exam-sheet td{font-size:10.5pt}.paper .exam-item{margin-left:36pt}.paper .exam-etymology{margin-left:36pt}}
 
 
+/* Respect native hidden state even for elements styled as grid/flex. */
+#greekPointsGrid[hidden],#greekPointsLabel[hidden],#greekPointsGrid label[hidden],
+#examLayout .check[hidden]{display:none!important}
+.paper .latin-translation-exam .task>li{min-height:53pt;break-inside:avoid}
+@media print{
+ .paper .latin-translation-exam .task>li{min-height:53pt}
+}
+
 /* Latin I and Latin 4 ESO use the same academic visual hierarchy as Greek I.
    The morphology-reference sheets retain their own verified table layout. */
 .paper .latin-standard-exam{font-family:Palatino,"Palatino Linotype","Book Antiqua",serif;font-size:10.5pt;line-height:1.45;color:#000}
@@ -509,7 +517,7 @@ function latinExamHeader(chosen){
  const titleInput=$('name').value.trim();
  const defaultNames=['Examen de Latín I','Examen de Llatí I','Examen de Latín 4.º ESO','Examen de Llatí 4t ESO'];
  const model=$('model').value;
- const examType=model==='morf'?(va?'Examen de morfologia':'Examen de morfología'):model==='mixto'?(va?'Examen de traducció':'Examen de traducción'):'Examen';
+ const examType=model==='morf'?(va?'Examen de morfologia':'Examen de morfología'):model==='mixto'?(va?'Examen de traducció':'Examen de traducción'):(va?'Examen complet':'Examen completo');
  const title=titleInput&&!defaultNames.includes(titleInput)?titleInput:examType+' '+(va?(currentCourse()==='latin4'?'de Llatí 4t ESO':'de Llatí I'):(currentCourse()==='latin4'?'de Latín 4.º ESO':'de Latín I'));
  const term=String($('term').value)+(va?'a':'ª')+' '+(va?'avaluació':'evaluación');
  const seed=$('seed').value.trim();
@@ -525,9 +533,9 @@ if($('verb').checked&&!onlyTranslation&&currentCourse()!=='greek1'){let pool=lat
 if(currentCourse()==='greek1'&&$('decl').checked){const ex=greekExercise(allowed,'noun');selectedMorph.push(...ex.entries);add(ex.title,ex.body,ex.solutions)}
 if(currentCourse()==='greek1'&&$('verb').checked){const ex=greekExercise(allowed,'verb');selectedMorph.push(...ex.entries);add(ex.title,ex.body,ex.solutions)}
 if($('lex').checked&&!onlyTranslation){let selected=sample(allowed,countFor('lex'));selectedLex.push(...selected);add(tr('lexTitle'),`<ol class="task">${selected.map(x=>`<li>${esc(x.entry)}<div class="answer"></div></li>`).join('')}</ol>`,selected.map(x=>`${x.entry}: ${x.meaning}${$('lang').value==='va'?' (glossa original en castellà; traducció valenciana pendent de revisió)':''}`))}
-if($('sent').checked||onlyTranslation){let selected=sample(latinSharedBank.sentences(currentCourse(),chosen),countFor('sent'));selectedSentences.push(...selected);const heading=onlyTranslation?($('lang').value==='va'?'Tradueix les oracions següents':'Traduce las siguientes oraciones'):tr('sentTitle');add(heading,`<ol class="task">${selected.map(x=>`<li><i>${esc(x.text)}</i><div class="answer"></div><div class="answer"></div></li>`).join('')}</ol>`,selected.map(x=>`${x.text} — ${$('lang').value==='va'?'Traducció valenciana pendent de revisió':x.sol}`))}
+if($('sent').checked||onlyTranslation){let selected=sample(latinSharedBank.sentences(currentCourse(),chosen),countFor('sent'));selectedSentences.push(...selected);const heading=onlyTranslation?($('lang').value==='va'?'Tradueix les oracions següents':'Traduce las siguientes oraciones'):tr('sentTitle');const task=selected.length?`<ol class="task">${selected.map(x=>`<li><i>${esc(x.text)}</i><div class="answer"></div><div class="answer"></div></li>`).join('')}</ol>`:'<p class="small">No hay oraciones verificadas disponibles para las unidades seleccionadas.</p>';add(heading,task,selected.map(x=>`${x.text} — ${$('lang').value==='va'?'Traducció valenciana pendent de revisió':x.sol}`))}
 if($('culture').checked&&currentCourse()==='latin4'&&$('model').value==='tablas'){let kind=$('cultureType').value;let pool=culture.filter(x=>x.course==='latin4'&&x.units.some(u=>chosen.includes(u))&&(kind==='all'||kind===x.type));let selected=sample(pool,countFor('culture'));if(!selected.length){sections.push(`<p class="exam-question"><strong><span class="exam-q-number">${++idx}.</span> ${esc(tr('cultureTitle'))}</strong></p><p class="small">${$('lang').value==='va'?'No hi ha preguntes de cultura per a aquestes unitats i tipus. Importa preguntes al banc.':'No hay preguntas de cultura para estas unidades y tipo. Importa preguntas al banco.'}</p>`)}else add(tr('cultureTitle'),`<ol class="task">${selected.map(x=>{let q=$('lang').value==='va'&&x.question_va?x.question_va:x.question;let opts=x.type==='mc'&&x.options?.length?`<ol type="A">${x.options.map(o=>`<li>${esc(o)}</li>`).join('')}</ol>`:'';let tf=x.type==='tf'?` <span class="small">(${$('lang').value==='va'?'Vertader / Fals':'Verdadero / Falso'})</span>`:'';return `<li>${esc(q)}${tf}${opts}<div class="answer"></div>${x.type==='essay'?'<div class="answer"></div><div class="answer"></div>':''}</li>`}).join('')}</ol>`,selected.map(x=>`${x.question} — ${x.answer}${$('lang').value==='va'&&!x.answer_va?' (resposta en castellà pendent de revisió)':''}`))}
-$('paper').innerHTML=`<div class="exam-sheet latin-standard-exam">${latinExamHeader(chosen)}${sections.join('')||`<p>${tr('empty')}</p>`}${buildFinalLexicon(chosen,allowed,selectedSentences,selectedMorph,selectedLex)}<div id="answerkey" class="solutions"><h2>${tr('key')}</h2><ol>${answers.join('')}</ol></div></div>`;
+$('paper').innerHTML=`<div class="exam-sheet latin-standard-exam${onlyTranslation?' latin-translation-exam':''}">${latinExamHeader(chosen)}${sections.join('')||`<p>${tr('empty')}</p>`}${buildFinalLexicon(chosen,allowed,selectedSentences,selectedMorph,selectedLex)}<p class="exam-grade">Nota: __________</p><div id="answerkey" class="solutions"><h2>${tr('key')}</h2><ol>${answers.join('')}</ol></div></div>`;
 $('paper').setAttribute('contenteditable','true');$('paper').setAttribute('spellcheck','false');$('solutions').textContent=tr('solutions');refreshManualMorphWords();}
 let culture=[]; // Sin ejemplos genéricos: solo temario cerrado de Latín 4.º ESO.
 const initialCulture=culture.slice();
@@ -1181,7 +1189,7 @@ function greekVerbTable(items){
 function greekExamHeader(chosen,mode){
  const va=$('lang').value==='va',numbers=chosen.map(examUnitNumber),unitLabel=(numbers.length===1?'UD ':numbers.length?'UDs ':'')+(numbers.length===2&&numbers[1]===numbers[0]+1?numbers.join('–'):numbers.join(', '));
  const titleInput=$('name').value.trim(),custom=titleInput&&!['Examen de Griego I','Examen de Grec I','Ficha de repaso de Griego I','Fitxa de repàs de Grec I'].includes(titleInput);
- const prefix=$('sheetType').value==='review'?(va?'Fitxa de repàs':'Ficha de repaso'):$('model').value==='morphology'?(va?'Examen de morfologia':'Examen de morfología'):$('model').value==='translation'?(va?'Examen de traducció':'Examen de traducción'):'Examen';
+ const prefix=$('sheetType').value==='review'?(va?'Fitxa de repàs':'Ficha de repaso'):$('model').value==='morphology'?(va?'Examen de morfologia':'Examen de morfología'):$('model').value==='translation'?(va?'Examen de traducció':'Examen de traducción'):(va?'Examen complet':'Examen completo');
  const title=(custom?titleInput:prefix+' '+unitLabel+' '+(va?'Grec I':'Griego I'))+($('seed').value?' · '+$('seed').value:'');
  return '<div class="exam-header"><p class="exam-header-line"><span>'+esc(title)+'</span><span>'+$('term').value+'ª '+(va?'avaluació':'evaluación')+'</span></p><p class="exam-header-line"><span>'+(va?'Nom i cognoms:':'Nombre y apellidos:')+'</span><span>'+(va?'Data:':'Fecha:')+'</span></p></div>';
 }
