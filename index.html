@@ -212,7 +212,7 @@ function refreshManualMorphWords(){
 }
 const models={tablas:['decl','sent'],morf:['decl','verb'],mixto:['verb','sent','lex']};$('model').onchange=()=>{for(const id of ['decl','verb','lex','sent'])$(id).checked=models[$('model').value].includes(id);$('cultureOption').hidden=currentCourse()!=='latin4'||$('model').value!=='mixto';$('culture').disabled=$('cultureOption').hidden;if($('cultureOption').hidden)$('culture').checked=false;if(currentCourse()==='greek1')$('lex').checked=false;generate()};
 function noun(x){let e=x.entry.replace(/[–−]/g,'-').replace(/æ/g,'ae');let m=e.match(/^([A-Za-zÀ-ÿ]+),\s*-(ae|i)\b/i);if(!m)return null;let word=m[1],g=m[2].toLowerCase(),stem=word.slice(0,g==='ae'?1:(word.endsWith('us')||word.endsWith('um')?2:1));if(g==='ae'&&!word.endsWith('a'))return null;if(g==='i'&&!(word.endsWith('us')||word.endsWith('um')))return null;let neutral=word.endsWith('um');let endings=g==='ae'?['a','ae','ae','am','a','a','ae','arum','is','as','ae','is']:neutral?['um','i','o','um','um','o','a','orum','is','a','a','is']:['us','i','o','um','e','o','i','orum','is','os','i','is'];let labels=['nominativo singular','genitivo singular','dativo singular','acusativo singular','vocativo singular','ablativo singular','nominativo plural','genitivo plural','dativo plural','acusativo plural','vocativo plural','ablativo plural'];return {word,forms:endings.map(a=>stem+a),labels,entry:x.entry};}
-function adjective(x){let e=x.entry.replace(/[–−]/g,'-').replace(/æ/g,'ae');let m=e.match(/^([A-Za-zÀ-ÿ]+),\s*-a,\s*-um\b/i);if(!m||!m[1].endsWith('us'))return null;let stem=m[1].slice(0,-2);return {entry:x.entry,forms:[stem+'us',stem+'a',stem+'um',stem+'i',stem+'ae',stem+'o',stem+'os',stem+'as',stem+'a',stem+'orum',stem+'arum'],labels:['nominativo masculino singular','nominativo femenino singular','nominativo neutro singular','genitivo masculino singular','genitivo femenino singular','dativo masculino singular','acusativo masculino plural','acusativo femenino plural','acusativo neutro plural','genitivo masculino plural','genitivo femenino plural']};}
+function adjective(x){let e=String(x.entry||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[–−—]/g,'-').replace(/æ/gi,'ae');let m=e.match(/^([A-Za-zÀ-ÿ]+),\s*-a,\s*-um\b/i);if(!m||!m[1].endsWith('us'))return null;let stem=m[1].slice(0,-2);return {entry:x.entry,forms:[stem+'us',stem+'a',stem+'um',stem+'i',stem+'ae',stem+'o',stem+'os',stem+'as',stem+'a',stem+'orum',stem+'arum'],labels:['nominativo masculino singular','nominativo femenino singular','nominativo neutro singular','genitivo masculino singular','genitivo femenino singular','dativo masculino singular','acusativo masculino plural','acusativo femenino plural','acusativo neutro plural','genitivo masculino plural','genitivo femenino plural']};}
 function verb(x){
  let e=x.entry.replace(/æ/g,'ae');let m=e.match(/^([A-Za-zÀ-ÿ]+),\s*[A-Za-zÀ-ÿ]+,\s*[A-Za-zÀ-ÿ]+\s*\(([1234])ª\)/);
  if(!m)return null;let first=m[1],conj=+m[2];if(!first.endsWith('o')||['do','sum','eo','fero'].includes(first))return null;
@@ -370,7 +370,31 @@ const latinSharedBank=(()=>{
  const paradigms=(course,selectedUnits,kind)=>{
   const parse=kind==='noun'?noun:kind==='adjective'?adjective:kind==='verb'?verb:null;
   if(!parse&&kind!=='nominal')return [];
-  return vocabulary(course,selectedUnits).map(x=>({x,p:kind==='nominal'?(noun(x)||adjective(x)):parse(x)})).filter(x=>x.p);
+  const registry=kind==='verb'?build():null;
+  return vocabulary(course,selectedUnits).map(x=>{
+   let p=kind==='nominal'?(noun(x)||adjective(x)):parse(x);
+   // El 4.º de ESO registra algunos verbos solo por su presente. Para ellos
+   // se reutiliza el presente ya validado en Latín I, nunca un paradigma
+   // inferido desde la terminación o desde un lema ajeno.
+   if(!p&&kind==='verb'){
+    const lemma=normLex(headLex(x.entry));
+    const requestedClass=(x.entry.match(/\(([1234])ª\)/)||[])[1];
+    const onlyLemma=!x.entry.includes(',')&&/(?:o|or)$/.test(lemma);
+    if(requestedClass||onlyLemma){
+     const shared=registry.get(key(x.entry));
+     for(const variant of shared?.variants||[]){
+      if(variant.course===course||variant.source!=='vocabulario general')continue;
+      const attestedClass=(variant.entry.match(/\(([1234])ª\)/)||[])[1];
+      if(requestedClass&&attestedClass!==requestedClass)continue;
+      const reference=verb({entry:variant.entry});
+      if(!reference)continue;
+      p={...reference,entry:x.entry,sourceEntry:variant.entry};
+      break;
+     }
+    }
+   }
+   return {x,p};
+  }).filter(x=>x.p);
  };
  const sentencesFor=(course,selectedUnits=null)=>{
   if(!courses.has(course))return [];
@@ -662,7 +686,7 @@ const M_END={
  '4n':[['u','u','u','us','u','u'],['ua','ua','ua','uum','ibus','ibus']],
  '5':[['es','es','em','ei','ei','e'],['es','es','es','erum','ebus','ebus']]
 };
-function mNormalize(s){return s.replace(/[–−—]/g,'-').replace(/æ/gi,'ae').replace(/œ/gi,'oe').trim()}
+function mNormalize(s){return String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[–−—]/g,'-').replace(/æ/gi,'ae').replace(/œ/gi,'oe').trim()}
 function mNoun(raw){
  const s=mNormalize(raw).replace(/\s+/g,' '),parts=s.split(',').map(x=>x.trim());if(parts.length<2)return null;
  const nom=parts[0],tail=parts[1].split(/\s*\(/)[0].trim();
@@ -729,7 +753,12 @@ function mTable(p){let rows=[];
 }
 let mLastRows=null;
 function mRefreshEntries(){let a=[...new Set(latinSharedBank.vocabulary(currentCourse()).map(v=>v.entry))];$('morphEntries').innerHTML=a.map(x=>'<option value="'+esc(x)+'"></option>').join('')}
-function mRender(){let raw=$('morphEntry').value.trim();let p=mNoun(raw)||mVerb(raw);const el=$('morphResult');
+function mRender(){let raw=$('morphEntry').value.trim();let p=mNoun(raw)||mVerb(raw);
+ if(!p&&currentCourse()!=='greek1'){
+  const match=latinSharedBank.paradigms(currentCourse(),null,'verb').find(y=>examKey(y.x.entry)===examKey(raw)&&y.p.sourceEntry);
+  if(match)p=mVerb(match.p.sourceEntry);
+ }
+ const el=$('morphResult');
  if(!p){mLastRows=null;el.innerHTML='<p class="notice">No se puede generar este paradigma con las reglas verificadas de esta versión. No se mostrarán formas hipotéticas. Comprueba el enunciado, el género y las irregularidades.</p>';return}
  let rows=mTable(p);mLastRows=rows;el.innerHTML='<p><strong>'+esc(p.lemma)+'</strong> · '+esc(p.source)+'</p><div style="overflow-x:auto"><table style="border-collapse:collapse;width:100%;font-size:12px">'+rows.map((r,i)=>'<tr>'+r.map(c=>'<'+(i?'td':'th')+' style="border:1px solid #cbd5e1;padding:5px">'+esc(c)+'</'+(i?'td':'th')+'>').join('')+'</tr>').join('')+'</table></div>';
 }
@@ -766,7 +795,9 @@ $('runMorphTests').onclick=()=>{let errors=[];for(const [entry,kind,i,j,expected
  $('morphAudit').innerHTML=errors.length?'<p class="notice">Pruebas fallidas: '+esc(errors.join('; '))+'</p>':'<p class="notice">'+M_TESTS.length+' pruebas de formas concretas superadas. No equivale a validar todos los lemas.</p>';
 };
 $('auditMorph').onclick=()=>{const chosen=selectedUnits(),entries=latinSharedBank.vocabulary(currentCourse(),chosen);let nouns=[],verbs=[],blocked=[];
- for(const x of entries){if(mNoun(x.entry))nouns.push(x);else if(mVerb(x.entry))verbs.push(x);else blocked.push(x)}
+ const nounEntries=new Set(latinSharedBank.paradigms(currentCourse(),chosen,'noun').map(y=>y.x.entry));
+ const verbEntries=new Set(latinSharedBank.paradigms(currentCourse(),chosen,'verb').map(y=>y.x.entry));
+ for(const x of entries){if(nounEntries.has(x.entry))nouns.push(x);else if(verbEntries.has(x.entry))verbs.push(x);else blocked.push(x)}
  const sampleBlocked=blocked.slice(0,12).map(x=>esc(x.entry)).join(' · ');
  $('morphAudit').innerHTML='<p class="notice"><strong>Auditoría de '+esc(chosen.join(', '))+'</strong>: '+entries.length+' entradas distintas; '+nouns.length+' sustantivos y '+verbs.length+' verbos aceptados por las reglas conservadoras; '+blocked.length+' entradas no reconocidas o excluidas (incluidos adjetivos y palabras invariables). No significa que sean incorrectas.</p><p class="hint">Ejemplos excluidos: '+sampleBlocked+'</p>';
 };
