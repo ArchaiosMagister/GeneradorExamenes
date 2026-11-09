@@ -76,6 +76,44 @@ button:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-vis
 button:disabled{opacity:.55;cursor:not-allowed}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
 @media print{.top{background:none!important;color:#000!important}}
+/* iPhone/iPad Safari: usable controls, touch targets and horizontal overflow protection. */
+html{-webkit-text-size-adjust:100%}
+button,select,input,textarea{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+button{min-height:44px}
+button:disabled{opacity:.55;cursor:not-allowed}
+[hidden]{display:none!important}
+@media(max-width:800px){
+ .layout{display:block;width:100%;max-width:100%;margin:12px auto;padding:0 10px}
+ .panel,.paper{width:100%;min-width:0;max-width:100%;padding:14px;border-radius:9px}
+ .panel{margin-bottom:14px}
+ .top{padding:16px}
+ .top h1{font-size:20px;line-height:1.25}
+ .buttons{gap:8px}
+ .buttons button{flex:1 1 135px;white-space:normal}
+ .field select,.field input[type=text],.field input[type=number],.field textarea{font-size:16px;max-width:100%}
+ .check{min-height:44px;align-items:center}
+ .check input[type=checkbox],.unit-choice input[type=checkbox]{width:20px;height:20px;flex:none}
+ .unit-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .unit-grid label{min-height:44px;overflow-wrap:anywhere}
+ .count-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .count-grid>*{min-width:0}
+ .paper{overflow-x:auto;-webkit-overflow-scrolling:touch}
+ .paper .exam-sheet{min-width:0}
+ .paper .exam-sheet table{max-width:100%}
+ .paper .exam-header-line{gap:5pt;grid-template-columns:minmax(0,1fr) minmax(90px,30%)}
+ .paper .exam-header-line span{overflow-wrap:anywhere}
+ .paper .exam-paradigm,.paper .exam-pronouns{font-size:9pt}
+ .paper .exam-paradigm th,.paper .exam-paradigm td,.paper .exam-pronouns th,.paper .exam-pronouns td{padding:2pt}
+ .meta{flex-wrap:wrap}
+ .forms{grid-template-columns:1fr}
+ .vocab-manager{max-width:100%;overflow-x:auto}
+ .quick-actions{flex-wrap:wrap;gap:7px}
+ .quick-actions button{min-height:44px;flex:1 1 135px}
+ .quick-tip{display:block;width:100%}
+ #manualMorphWords input{font-size:16px}
+}
+@media(max-width:380px){.count-grid{grid-template-columns:1fr}.unit-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media print{.paper{overflow:visible!important}.paper .exam-sheet{overflow:visible!important}}
 </style><style id="greek-reference-layout">
 /* Shared reference: Palatino 10.5 pt for all courses and examination types. */
 #lexOption[hidden],#cultureOption[hidden]{display:none!important}
@@ -226,7 +264,14 @@ function updateUnits(){const checked=new Set(selectedUnits());units=[...new Set(
 function importLines(text,kind){let added=0;for(const line of text.split(/\r?\n/)){if(!line.trim())continue;const c=line.split(';').map(s=>s.trim());if(c.length<3||!c[0]||!c[1]||!c[2])continue;if(kind==='v'){if(!vocab.some(x=>courseOf(x)===currentCourse()&&x.unit===c[0]&&x.entry===c[1])){vocab.push({course:currentCourse(),unit:c[0],entry:c[1],meaning:c.slice(2).join(';')});added++}}else{if(!sentences.some(x=>courseOf(x)===currentCourse()&&x.text===c[0])){sentences.push({course:currentCourse(),text:c[0],sol:c[1],units:c[2].split(',').map(s=>s.trim())});added++}}}saveLocal();updateUnits();generate();$('dataStatus').textContent=added+' entradas importadas.'}
 $('importCulture').onclick=()=>{if(currentCourse()!=='latin4')return;let added=0,errors=0;for(const line of $('newCulture').value.split(/\r?\n/)){if(!line.trim())continue;const c=line.split(';').map(v=>v.trim());if(c.length<4||!['short','essay','tf','mc'].includes(c[1])||!c[0]||!c[2]||!c[3]){errors++;continue}let options=c[4]?c[4].split('|').map(x=>x.trim()).filter(Boolean):[];if(c[1]==='mc'&&options.length<2){errors++;continue}let item={course:'latin4',units:c[0].split(',').map(x=>x.trim()),type:c[1],question:c[2],answer:c[3],options};if(!culture.some(x=>x.course==='latin4'&&x.question===item.question)){culture.push(item);added++}}saveLocal();$('cultureStatus').textContent=added+' preguntas importadas; '+errors+' líneas omitidas.';generate()};
 $('importVocab').onclick=()=>importLines($('newvocab').value,'v');$('importSentences').onclick=()=>importLines($('newSentences').value,'s');
-function downloadBlob(name,blob){const a=document.createElement('a'),u=URL.createObjectURL(blob);a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),30000)}
+function downloadBlob(name,blob){
+ const url=URL.createObjectURL(blob),link=document.createElement('a');
+ link.href=url;link.download=name;link.rel='noopener';link.style.display='none';
+ document.body.appendChild(link);
+ // Safari on iOS needs the object URL to survive beyond the click/navigation.
+ try{link.click()}catch(err){window.location.href=url}
+ setTimeout(()=>{link.remove();URL.revokeObjectURL(url)},120000);
+}
 $('exportData').onclick=()=>downloadBlob('examina_copia_datos.json',new Blob([JSON.stringify({version:9,examRequired,vocab:vocab.slice(initialVocab.length),sentences:sentences.slice(initialSentences.length),culture:culture.slice(initialCulture.length)},null,2)],{type:'application/json'}));
 $('importData').onclick=()=>$('restoreFile').click();$('restoreFile').onchange=async()=>{try{let d=JSON.parse(await $('restoreFile').files[0].text());if(!Array.isArray(d.vocab)||!Array.isArray(d.sentences))throw Error('Formato incorrecto');vocab=initialVocab.concat(d.vocab.filter(x=>x.unit&&x.entry&&x.meaning));sentences=initialSentences.concat(d.sentences.filter(x=>x.text&&x.sol));culture=initialCulture.concat((Array.isArray(d.culture)?d.culture:[]).filter(x=>x.course==='latin4'&&Array.isArray(x.units)&&x.question&&x.answer));if(Array.isArray(d.examRequired)){examRequired=d.examRequired.filter(x=>x.course&&x.unit&&x.key);saveRequired()}saveLocal();updateUnits();generate()}catch(e){alert('No se pudo importar: '+e.message)}};
 try{const d=JSON.parse(localStorage.getItem('examina_extra')||'null');if(d){if(Array.isArray(d.vocab))vocab.push(...d.vocab);if(Array.isArray(d.sentences))sentences.push(...d.sentences);if(Array.isArray(d.culture))culture.push(...d.culture.filter(x=>x.course==='latin4'&&Array.isArray(x.units)&&x.question&&x.answer));updateUnits()}}catch(e){}
