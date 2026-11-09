@@ -73,6 +73,9 @@ function latinSuite(){
  assert.equal((output.match(/class="exam-question"/g)||[]).length,6,'Latín 4: seis apartados');
  assert.equal((output.match(/Cultura \d/g)||[]).length,4,'Latín 4: cuatro preguntas de cultura');
  assert.equal((output.match(/Puella amat \d+\./g)||[]).length,4);
+ sandbox.culture.length=0;output=run();
+ assert.equal((output.match(/class="exam-question"/g)||[]).length,5,'Sin banco de cultura no debe exportarse una pregunta vacía');
+ assert(output.includes('Banco de cultura pendiente de completar'));
 }
 function greekSuite(){
  const state={model:{value:'complete'},lang:{value:'es'},paper:{innerHTML:'',setAttribute(){}},
