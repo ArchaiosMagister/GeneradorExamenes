@@ -1,0 +1,12 @@
+{
+  "source": "https://raw.githubusercontent.com/unimorph/lat/master/lat",
+  "language": "lat",
+  "records": 976489,
+  "files": {
+    "v": {
+      "path": "lat-v.json",
+      "records": 16988
+    }
+  },
+  "notice": "Only conservatively classified forms are eligible; remaining UniMorph records are excluded from exam selection."
+}
