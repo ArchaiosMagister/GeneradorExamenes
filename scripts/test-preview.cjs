@@ -58,6 +58,14 @@ async function checkFile(browser,filename){
   document.querySelectorAll('.unit-choice').forEach(el=>el.checked=units[Number(el.value)]==='UD3');
   generate();
  });
+ const visibility=await page.locator('#count-forms').evaluate(input=>{
+  const ancestors=[];for(let el=input;el;el=el.parentElement){
+   ancestors.push({tag:el.tagName,id:el.id,cls:el.className,hidden:el.hidden,open:el.open,display:getComputedStyle(el).display});
+   if(el.id==='examLayout')break;
+  }
+  return ancestors;
+ });
+ assert(await page.locator('#count-forms').isVisible(),filename+': campo de formas sueltas oculto '+JSON.stringify(visibility));
  await page.fill('#count-forms','1');
  await page.locator('#count-forms').dispatchEvent('change');
  const forms=await page.evaluate(()=>{
