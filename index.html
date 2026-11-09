@@ -481,6 +481,130 @@ const latinSharedBank=(()=>{
   units:course=>[...new Set(vocabulary(course).map(x=>x.unit).filter(Boolean))]
  };
 })();
+/* Composición de exámenes acordada por curso y modelo.
+   Solo los datos del banco y los paradigmas admitidos pueden ofrecer soluciones. */
+const EXAM_COMPOSITION={
+ latin4:{tablas:{declension:true,conjugation:true,forms:true,lexicalParts:2,cultureParts:4,sentences:4,glossary:true}},
+ latin1:{tablas:{declension:true,conjugation:true,forms:true,lexicalParts:3,cultureParts:0,sentences:5,glossary:true},
+         morf:{declension:true,verbTable:true,pronouns:true,forms:true},
+         mixto:{forms:true,lexicalParts:3,sentences:7,glossary:true}},
+ greek1:{complete:{declension:true,conjugation:true,forms:true,etymology:true,sentences:5,glossary:true},
+         morphology:{declension:true,verbTable:true,pronouns:true,forms:true},
+         translation:{forms:true,etymology:true,sentences:7,glossary:true}}
+};
+function examComposition(course=currentCourse(),model=$('model').value){
+ return EXAM_COMPOSITION[course]?.[model]||EXAM_COMPOSITION[course]?.tablas||{};
+}
+const LATIN_SCHOOL_PRONOUNS=[
+ {unit:3,form:'ego',lemma:'ego',type:'personal, 1.ª persona',case:'nominativo',gender:'—',number:'singular'},
+ {unit:3,form:'mihi',lemma:'ego',type:'personal, 1.ª persona',case:'dativo',gender:'—',number:'singular'},
+ {unit:3,form:'tu',lemma:'tu',type:'personal, 2.ª persona',case:'nominativo',gender:'—',number:'singular'},
+ {unit:3,form:'tibi',lemma:'tu',type:'personal, 2.ª persona',case:'dativo',gender:'—',number:'singular'},
+ {unit:5,form:'eum',lemma:'is, ea, id',type:'fórico',case:'acusativo',gender:'masculino',number:'singular'},
+ {unit:5,form:'eam',lemma:'is, ea, id',type:'fórico',case:'acusativo',gender:'femenino',number:'singular'},
+ {unit:6,form:'hunc',lemma:'hic, haec, hoc',type:'demostrativo',case:'acusativo',gender:'masculino',number:'singular'},
+ {unit:6,form:'hanc',lemma:'hic, haec, hoc',type:'demostrativo',case:'acusativo',gender:'femenino',number:'singular'},
+ {unit:6,form:'illum',lemma:'ille, illa, illud',type:'demostrativo',case:'acusativo',gender:'masculino',number:'singular'},
+ {unit:8,form:'ipse',lemma:'ipse, ipsa, ipsum',type:'enfático',case:'nominativo',gender:'masculino',number:'singular'},
+ {unit:8,form:'eundem',lemma:'idem, eadem, idem',type:'de identidad',case:'acusativo',gender:'masculino',number:'singular'}
+];
+function latinPronounsFor(chosen){
+ if(currentCourse()!=='latin1')return [];
+ const max=Math.max(0,...chosen.map(examUnitNumber).filter(Number.isInteger));
+ return LATIN_SCHOOL_PRONOUNS.filter(x=>x.unit<=max);
+}
+function latinDeclensionItems(chosen,count){
+ const pool=latinSharedBank.vocabulary(currentCourse(),chosen).map(x=>{
+  if(isProperNounLemma(x.entry))return null;
+  const p=mNoun(x.entry);
+  if(!p||!Array.isArray(p.forms)||p.forms.length!==2||p.forms.some(row=>row.length!==6))return null;
+  return {entry:x.entry,forms:p.forms};
+ }).filter(Boolean);
+ return sample(pool,Math.min(count,pool.length));
+}
+function latinEmptyParadigm(){
+ const cases=['Nominativo','Vocativo','Acusativo','Genitivo','Dativo','Ablativo'];
+ return '<table class="exam-paradigm exam-nouns reference-morph-table"><thead><tr><th>Caso</th><th>Singular</th><th>Plural</th></tr></thead><tbody>'+
+  cases.map(c=>'<tr><th>'+c+'</th><td></td><td></td></tr>').join('')+'</tbody></table>';
+}
+function latinParadigmSolution(item){
+ return item.entry+' — '+['Nominativo','Vocativo','Acusativo','Genitivo','Dativo','Ablativo']
+  .map((name,i)=>name+': '+item.forms[0][i]+' / '+item.forms[1][i]).join('; ');
+}
+function latinVariableForms(chosen,count,{includePronouns=true}={}){
+ const records=[];
+ const register=(type,x,forms,labels)=>{
+  const byForm=new Map();
+  forms.forEach((form,i)=>{
+   if(!form||!labels[i])return;
+   const k=normLex(form);
+   if(!byForm.has(k))byForm.set(k,{form,analyses:[]});
+   if(!byForm.get(k).analyses.includes(labels[i]))byForm.get(k).analyses.push(labels[i]);
+  });
+  for(const item of byForm.values())records.push({type,entry:x.entry,form:item.form,
+   answer:type+': '+item.analyses.join(' / ')+' ('+x.entry+')'});
+ };
+ for(const kind of ['noun','adjective','verb']){
+  for(const {x,p} of latinSharedBank.paradigms(currentCourse(),chosen,kind)){
+   if(isProperNounLemma(x.entry)&&kind!=='verb')continue;
+   register(kind==='noun'?'sustantivo':kind==='adjective'?'adjetivo':'verbo',x,p.forms,p.labels.map(label=>kind==='verb'?label+' del presente de indicativo, voz activa':label));
+  }
+ }
+ if(includePronouns)for(const p of latinPronounsFor(chosen))records.push({
+  type:'pronombre',entry:p.lemma,form:p.form,
+  answer:p.type+'; '+p.case+'; '+p.gender+'; '+p.number
+ });
+ const distinct=[...new Map(records.map(x=>[x.type+'|'+normLex(x.form),x])).values()];
+ const groups=['sustantivo','adjetivo','verbo','pronombre'].map(type=>sample(distinct.filter(x=>x.type===type),count));
+ const picked=[],used=new Set();
+ let i=0;
+ while(picked.length<count&&groups.some(a=>a.length)){
+  const bucket=groups[i%groups.length],item=bucket.shift();
+  if(item&&!used.has(item.type+'|'+normLex(item.form))){picked.push(item);used.add(item.type+'|'+normLex(item.form))}
+  i++;
+ }
+ return picked;
+}
+function examFormList(items){
+ return items.length?'<ol class="task">'+items.map(x=>'<li><i>'+esc(x.form)+'</i> ('+esc(x.entry)+')<div class="answer"></div></li>').join('')+'</ol>':
+ '<p class="notice">No hay formas variables comprobadas suficientes para estas unidades. Añade material validado al banco.</p>';
+}
+function latinVocabularyExercises(chosen,countParts){
+ const vocabWithMeaning=latinSharedBank.vocabulary(currentCourse(),chosen).filter(x=>x.entry&&x.meaning&&
+  !/\[TRADUCCI[ÓO]N PENDIENTE\]/i.test(x.meaning));
+ const uniqueEntries=[...new Map(vocabWithMeaning.map(x=>[examKey(x.entry),x])).values()];
+ const selected=sample(uniqueEntries,Math.min(9,uniqueEntries.length));
+ const a=selected.slice(0,3),b=selected.slice(3,6),c=selected.slice(6,9);
+ const block=(letter,prompt,rows,render,answer)=>{
+  const body=rows.length?'<ol class="task" type="1">'+rows.map(x=>'<li>'+render(x)+'<div class="answer"></div></li>').join('')+'</ol>':
+   '<p class="notice">Falta vocabulario con significado para este ejercicio.</p>';
+  return {html:'<p class="exam-lex-part"><strong>'+letter+'. '+prompt+'</strong></p>'+body,
+   answers:rows.map(answer)};
+ };
+ const parts=[
+  block('a', 'Escribe el significado de los siguientes enunciados latinos.',a,x=>'<i>'+esc(x.entry)+'</i>',x=>x.entry+' — '+x.meaning),
+  block('b', 'Escribe el enunciado latino que corresponde a cada significado.',b,x=>esc(x.meaning),x=>x.meaning+' — '+x.entry),
+  block('c', 'Relaciona cada enunciado latino con su significado.',c,x=>'<i>'+esc(x.entry)+'</i>',x=>x.entry+' — '+x.meaning)
+ ];
+ return {body:parts.slice(0,countParts).map(x=>x.html).join(''),
+  answers:parts.slice(0,countParts).flatMap(x=>x.answers),used:selected};
+}
+function examCultureParts(chosen,count=4){
+ const kind=$('cultureType').value;
+ const pool=culture.filter(x=>x.course==='latin4'&&x.units?.some(u=>chosen.includes(u))&&(kind==='all'||kind===x.type));
+ const items=sample(pool,count);
+ const letters='abcdefghijklmnopqrstuvwxyz';
+ const body=Array.from({length:count},(_,i)=>{
+  const x=items[i],letter=letters[i];
+  if(!x)return '<p class="exam-item"><strong>'+letter+'.</strong> [Pregunta de cultura pendiente de material docente]</p><div class="answer"></div>';
+  const q=$('lang').value==='va'&&x.question_va?x.question_va:x.question;
+  return '<p class="exam-item"><strong>'+letter+'.</strong> '+esc(q)+'</p><div class="answer"></div>';
+ }).join('');
+ const pending=count-items.length;
+ return {body:body+(pending?'<p class="notice no-print">Faltan '+pending+' preguntas de cultura verificadas; importa tus temas y preguntas para completar el examen.</p>':''),
+ answers:items.map(x=>x.question+' — '+x.answer),pending};
+}
+
 function generateLatinMorphologyReference(){
  const chosen=selectedUnits(),config=morphConfig(),allowed=latinSharedBank.vocabulary(currentCourse(),chosen);
  const unitLimit=Math.max(0,...chosen.map(u=>Number(String(u).replace(/\D/g,''))||0));
