@@ -638,7 +638,7 @@ function generate(){
   answers.push('<li><strong>'+esc(heading)+'</strong>'+solution+'</li>');
  };
  const missing=message=>'<p class="small">'+esc(message)+'</p>';
- const formsCount=course==='latin4'?Math.max(4,countFor('decl')):Math.max(5,countFor('decl'));
+ const formsCount=countFor('forms');
  if(!translation){
   const nouns=sample(latinExamNominals(chosen),Math.min(3,countFor('decl')));
   selectedMorph.push(...nouns.map(x=>x.x));
@@ -1518,10 +1518,15 @@ function generateGreekExam(){
 const legacyUpdateUnits=updateUnits;
 updateUnits=function(){if(currentCourse()!=='greek1')return legacyUpdateUnits();const marked=new Set(greekMarkedUnits());units=greekMaterials.syllabus.map((_,i)=>'UD'+i);$('unitChoices').innerHTML=units.map((u,i)=>'<label title="'+esc(greekMaterials.syllabus[i])+'"><input class="unit-choice" type="checkbox" value="'+i+'" '+(marked.has(u)?'checked':'')+'>'+u+'</label>').join('');document.querySelectorAll('.unit-choice').forEach(e=>e.onchange=()=>generate())};
 const greekPanel=document.createElement('div');greekPanel.className='field';greekPanel.id='greekSettings';greekPanel.hidden=true;
-greekPanel.innerHTML='<p class="hint">Los tres modelos comparten el formato académico. El modelo 1 reúne los apartados disponibles, el modelo 2 incluye tres preguntas morfológicas y el modelo 3 solo análisis y traducción de oraciones.</p><p id="greekCoverage" class="notice" role="status" aria-live="polite"></p><label id="greekPointsLabel">Puntuación por apartado</label><div id="greekPointsGrid" class="count-grid">'+greekKinds.map((k,i)=>'<label>'+greekKindNames.es[i]+'<input id="greek-points-'+k+'" type="number" min="0" max="100" step="0.1"></label>').join('')+'</div><p class="hint">Morfología: 2 + 1 + 1 puntos. Solo se utilizan formas y soluciones verificadas.</p>';
+greekPanel.innerHTML='<p class="hint">Modelo 1: declinación, conjugación, análisis de formas, etimología y oraciones. Modelo 2: declinación, análisis verbal, pronombres cuando se hayan estudiado y palabras variables. Modelo 3: análisis de formas, etimología y siete oraciones como objetivo.</p><p id="greekCoverage" class="notice" role="status" aria-live="polite"></p><label id="greekPointsLabel">Puntuación por apartado</label><div id="greekPointsGrid" class="count-grid">'+greekKinds.map((k,i)=>'<label>'+greekKindNames.es[i]+'<input id="greek-points-'+k+'" type="number" min="0" max="100" step="0.1"></label>').join('')+'</div><p class="hint">Morfología: 2 + 1 + 1 puntos. Solo se utilizan formas y soluciones verificadas.</p>';
 document.querySelector('label[for="model"]').parentElement.after(greekPanel);
 for(const k of greekKinds)$('greek-points-'+k).onchange=()=>generate();
 // Three visible examination models; only the complete exam exists in Latin 4 ESO.
+/* Cantidades específicas de los apartados de cada examen. */
+const latinFormsControl=document.createElement('label');
+latinFormsControl.id='latinFormsCountControl';
+latinFormsControl.innerHTML='Formas sueltas <input type="number" id="count-forms" min="1" max="30" value="6">';
+$('count-decl').closest('.count-grid').append(latinFormsControl);
 const latinModes={
  tablas:{es:'1 · Examen completo',va:'1 · Examen complet'},
  morf:{es:'2 · Examen de morfología',va:'2 · Examen de morfologia'},
@@ -1534,16 +1539,30 @@ function examModelOptions(course){
 }
 function syncExamModelControls(){
  const course=currentCourse(),model=$('model').value;
- const allBlocks=course!=='greek1'&&model==='tablas';
- $('decl').parentElement.parentElement.hidden=!allBlocks;
- const relevant=model==='mixto'||model==='translation'?['sent']:
-  model==='morf'||model==='morphology'?['decl','verb']:['decl','verb','lex','sent'];
+ const full=course!=='greek1'&&model==='tablas';
+ $('decl').parentElement.parentElement.hidden=!full;
+ const relevant=course==='greek1'?
+  (model==='complete'?['decl','verb','lex','sent']:model==='translation'?['verb','lex','sent']:[]):
+  (model==='morf'?[]:model==='mixto'?['sent']:['decl','verb','sent']);
  for(const id of ['decl','verb','lex','sent'])$('count-'+id).parentElement.hidden=!relevant.includes(id);
- $('count-culture').parentElement.hidden=course!=='latin4'||model!=='tablas';
+ latinFormsControl.hidden=course==='greek1'||model==='morf';
+ // Léxico (2/3) y cultura (4) son cantidades fijas.
+ $('count-culture').parentElement.hidden=true;
+ $('cultureOption').hidden=true;
+}
+function latinDefaultCounts(){
+ const course=currentCourse(),model=$('model').value;
+ $('count-sent').value=model==='mixto'?7:course==='latin4'?4:5;
+ $('count-decl').value=2;
+ $('count-verb').value=2;
+ $('count-lex').value=course==='latin4'?2:3;
+ $('count-culture').value=4;
+ $('count-forms').value=model==='mixto'?8:6;
 }
 function latinApplyMode(){
  const selected=models[$('model').value]||models.tablas;
  for(const id of ['decl','verb','lex','sent'])$(id).checked=selected.includes(id);
+ latinDefaultCounts();
  for(const id of ['decl','verb','lex','sent'])$(id).parentElement.hidden=$('model').value!=='tablas';
  const cultureAvailable=currentCourse()==='latin4'&&$('model').value==='tablas';
  $('cultureOption').hidden=!cultureAvailable;
@@ -1556,9 +1575,9 @@ let modelCourse=null;
 function greekDefaultCounts(){
  const m=$('model').value;
  $('count-decl').value=m==='morphology'?1:2;
- $('count-verb').value=m==='morphology'?10:5;
- $('count-lex').value=2;
- $('count-sent').value=6;
+ $('count-verb').value=m==='morphology'?10:m==='translation'?8:5;
+ $('count-lex').value=m==='translation'?3:2;
+ $('count-sent').value=m==='translation'?7:5;
 }
 function greekApplyMode(){
  const mode=greekModes[$('model').value]||greekModes.complete;
@@ -1581,7 +1600,7 @@ refreshCourse=function(){
   $('model').innerHTML=examModelOptions(course);
   $('model').value=greek?'complete':'tablas';
   if(greek)greekDefaultCounts();
-  else for(const id of ['decl','verb','lex','sent'])$(id).checked=models.tablas.includes(id);
+  else{latinDefaultCounts();for(const id of ['decl','verb','lex','sent'])$(id).checked=models.tablas.includes(id)}
  }
  modelCourse=course;
  greekPanel.hidden=!greek;
