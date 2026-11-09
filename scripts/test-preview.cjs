@@ -34,13 +34,23 @@ async function checkFile(browser,filename){
   });
   assert(result.visible&&result.height>80&&result.text>80,filename+' '+course+'/'+model+': vista previa ausente '+JSON.stringify(result));
   assert(result.questions>=3,filename+' '+course+'/'+model+': preguntas no renderizadas');
-  assert(result.controls>0,filename+' '+course+'/'+model+': no se pueden editar formas: '+result.warning);
   // El panel de preguntas es un acordeón cerrado por defecto.
   await page.locator('.menu-section').filter({has:page.locator('#manualMorphWords')}).evaluate(section=>section.open=true);
-  const input=page.locator('#manualMorphWords input[type="text"]').first();
-  await input.fill('FORMA_DE_PRUEBA');
-  assert((await page.locator('#paper').textContent()).includes('FORMA_DE_PRUEBA'),filename+' '+course+'/'+model+': la edición no actualiza la vista previa');
-  assert.equal(await page.locator('#paper #answerkey [data-manual-warning]').count(),1,filename+' '+course+'/'+model+': falta advertencia de solucionario');
+  if(course==='greek1'&&model==='complete'){
+   // El examen completo griego edita la selección del corpus, conservando las soluciones.
+   const available=await page.locator('#manualMorphWords select').count();
+   assert(available>0,filename+': faltan los selectores del corpus griego');
+   const before=await page.evaluate(()=>window.greekLastExam.ids.length);
+   await page.locator('#manualMorphWords button').filter({hasText:'Añadir al apartado'}).first().click();
+   const after=await page.evaluate(()=>window.greekLastExam.ids.length);
+   assert(after>before,filename+': el selector de Griego completo no modifica el examen');
+  }else{
+   assert(result.controls>0,filename+' '+course+'/'+model+': no se pueden editar formas: '+result.warning);
+   const input=page.locator('#manualMorphWords input[type="text"]').first();
+   await input.fill('FORMA_DE_PRUEBA');
+   assert((await page.locator('#paper').textContent()).includes('FORMA_DE_PRUEBA'),filename+' '+course+'/'+model+': la edición no actualiza la vista previa');
+   assert.equal(await page.locator('#paper #answerkey [data-manual-warning]').count(),1,filename+' '+course+'/'+model+': falta advertencia de solucionario');
+  }
  }
  await page.selectOption('#course','latin1');
  await page.selectOption('#model','mixto');
