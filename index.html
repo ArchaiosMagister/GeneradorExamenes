@@ -1015,7 +1015,7 @@ function greekCorpus(){
 }
 // Accent anomalies in the supplied sentences are quarantined rather than
 // silently corrected. The flagged UD7 sentence 5 never enters this array.
-const greekVerifiedCorpus=greekCorpus().filter(x=>!['s-2','s-3','s-7','s-9','p-13','pf-13'].includes(x.id));
+const greekVerifiedCorpus=greekSharedBank.exercises=greekCorpus().filter(x=>!['s-2','s-3','s-7','s-9','p-13','pf-13'].includes(x.id));
 // Pick across the entire enabled corpus first. Mandatory representatives may
 // expand a small requested count; coverage never depends on random chance.
 function greekSelect(pool,chosen,counts){
@@ -1118,13 +1118,14 @@ function greekExamControls(){
  const labels={declension:'Declinación',conjugation:'Conjugación',forms:'Análisis morfológico',etymology:'Derivados etimológicos'};
  for(const [kind,label] of Object.entries(labels)){
   const pool=greekChoicePool(kind),selected=greekExamState.ids[kind]||[];
+  const row=document.createElement('div');row.style.margin='12px 0';row.style.padding='9px';row.style.border='1px solid #dce3ec';row.style.borderRadius='8px';
+  const heading=document.createElement('strong');heading.textContent=label;row.append(heading);
   if(kind==='etymology'){
    const status=document.createElement('p');status.className='hint';
    status.textContent='Programa: '+greekEtymologyUnits.reduce((n,rows)=>n+rows.length,0)+' entradas en 12 unidades; '+greekEtymologyBank.entries.filter(x=>x.verified).length+' étimos con dos derivados. Los demás no se incluyen en exámenes.';
    row.append(status);
   }
-  const row=document.createElement('div');row.style.margin='12px 0';row.style.padding='9px';row.style.border='1px solid #dce3ec';row.style.borderRadius='8px';
-  const heading=document.createElement('strong');heading.textContent=label;row.append(heading);
+
   const current=document.createElement('div');current.className='hint';
   current.textContent='Seleccionadas: '+(selected.length?selected.map(id=>{const x=pool.find(y=>y.id===id);return x?(kind==='conjugation'?headLex(x.lemmas[0]):x.prompt):''}).filter(Boolean).join(' · '):'ninguna');
   row.append(current);
