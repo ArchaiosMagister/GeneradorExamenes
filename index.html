@@ -383,7 +383,7 @@ const latinSharedBank=(()=>{
     if(requestedClass||onlyLemma){
      const shared=registry.get(key(x.entry));
      for(const variant of shared?.variants||[]){
-      if(variant.course===course||variant.source!=='vocabulario general')continue;
+      if(variant.source!=='vocabulario general'||(variant.course===course&&variant.entry===x.entry))continue;
       const attestedClass=(variant.entry.match(/\(([1234])ª\)/)||[])[1];
       if(requestedClass&&attestedClass!==requestedClass)continue;
       const reference=verb({entry:variant.entry});
