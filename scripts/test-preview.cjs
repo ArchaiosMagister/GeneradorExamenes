@@ -35,6 +35,8 @@ async function checkFile(browser,filename){
   assert(result.visible&&result.height>80&&result.text>80,filename+' '+course+'/'+model+': vista previa ausente '+JSON.stringify(result));
   assert(result.questions>=3,filename+' '+course+'/'+model+': preguntas no renderizadas');
   assert(result.controls>0,filename+' '+course+'/'+model+': no se pueden editar formas: '+result.warning);
+  // El panel de preguntas es un acordeón cerrado por defecto.
+  await page.locator('.menu-section').filter({has:page.locator('#manualMorphWords')}).evaluate(section=>section.open=true);
   const input=page.locator('#manualMorphWords input[type="text"]').first();
   await input.fill('FORMA_DE_PRUEBA');
   assert((await page.locator('#paper').textContent()).includes('FORMA_DE_PRUEBA'),filename+' '+course+'/'+model+': la edición no actualiza la vista previa');
