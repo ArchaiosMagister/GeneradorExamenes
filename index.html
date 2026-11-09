@@ -529,20 +529,34 @@ function generateLatinMorphologyReference(){
  $('solutions').textContent=tr('solutions');refreshManualMorphWords();
 }
 
+/* El título refleja las unidades marcadas expresamente. El vocabulario
+   acumulativo puede incluir otras anteriores, pero no altera la cabecera. */
+function examHeadingUnits(chosen){
+ const marked=[...document.querySelectorAll('.unit-choice:checked')].map(el=>units[Number(el.value)]).filter(Boolean);
+ const numbers=[...new Set((marked.length?marked:chosen).map(examUnitNumber).filter(Number.isInteger))].sort((a,b)=>a-b);
+ if(!numbers.length)return '';
+ const consecutive=numbers.every((n,i)=>i===0||n===numbers[i-1]+1);
+ return (numbers.length===1?'UD ':'UDs ')+(numbers.length>1&&consecutive?numbers[0]+'–'+numbers[numbers.length-1]:numbers.join(', '));
+}
+function examHeadingWithUnits(title,chosen){
+ const suffix=examHeadingUnits(chosen);
+ if(!suffix||/\s[–—-]\sUDs?\s+\d[\d\s,–-]*$/i.test(title))return title;
+ return title+' – '+suffix;
+}
 function latinExamHeader(chosen){
  const va=$('lang').value==='va';
  const titleInput=$('name').value.trim();
  const defaultNames=['Examen de Latín I','Examen de Llatí I','Examen de Latín 4.º ESO','Examen de Llatí 4t ESO'];
+ const subject=va?(currentCourse()==='latin4'?'Llatí 4t ESO':'Llatí I'):(currentCourse()==='latin4'?'Latín 4.º ESO':'Latín I');
  const model=$('model').value;
- const examType=model==='morf'?(va?'Examen de morfologia':'Examen de morfología'):model==='mixto'?(va?'Examen de traducció':'Examen de traducción'):(va?'Examen complet':'Examen completo');
- const title=titleInput&&!defaultNames.includes(titleInput)?titleInput:examType+' '+(va?(currentCourse()==='latin4'?'de Llatí 4t ESO':'de Llatí I'):(currentCourse()==='latin4'?'de Latín 4.º ESO':'de Latín I'));
+ const type=model==='morf'?(va?'Examen de morfologia de ':'Examen de morfología de '):model==='mixto'?(va?'Examen de traducció de ':'Examen de traducción de '):'Examen de ';
+ const title=examHeadingWithUnits(titleInput&&!defaultNames.includes(titleInput)?titleInput:type+subject,chosen);
  const term=String($('term').value)+(va?'a':'ª')+' '+(va?'avaluació':'evaluación');
  const seed=$('seed').value.trim();
  return '<div class="exam-header">'+
   '<p class="exam-header-line"><span>'+esc(title)+(seed?' · '+esc(seed):'')+'</span><span>'+esc(term)+'</span></p>'+
   '<p class="exam-header-line"><span>'+(va?'Nom i cognoms:':'Nombre y apellidos:')+'</span><span>'+(va?'Data:':'Fecha:')+'</span></p>'+
-  '</div>'+
-  '<p class="latin-exam-context">'+esc(tr('selection'))+': '+esc(chosen.join(', ')||'—')+'</p>';
+  '</div>';
 }
 function generate(){if(currentCourse()==='greek1')return generateGreekExam();if($('model').value==='morf')return generateLatinMorphologyReference();const onlyTranslation=$('model').value==='mixto';let chosen=selectedUnits(),allowed=latinSharedBank.vocabulary(currentCourse(),chosen),n=Math.max(1,Math.min(12,+$('amount').value||5)),sections=[],answers=[],idx=0,selectedMorph=[],selectedLex=[],selectedSentences=[];const add=(title,body,sol)=>{sections.push(`<p class="exam-question"><strong><span class="exam-q-number">${++idx}.</span> ${esc(title)}</strong></p>${body}`);answers.push(`<li><strong>${esc(title)}</strong><ol>${sol.map(t=>`<li>${esc(t)}</li>`).join('')}</ol></li>`)};
 if($('decl').checked&&!onlyTranslation&&currentCourse()!=='greek1'){let pool=latinSharedBank.paradigms(currentCourse(),chosen,'nominal');let selected=sample(pool,countFor('decl'));selectedMorph.push(...selected.map(y=>y.x));add(tr('declTitle'),`<p class="small">${tr('declHelp')}</p><div class="forms">${selected.map(({p})=>{let i=Math.floor(Math.random()*p.forms.length);p._i=i;return `<div><b>${esc(p.forms[i])}</b><div class="answer"></div></div>`}).join('')}</div>`,selected.map(({p})=>`${p.forms[p._i]} — ${p.labels[p._i]}; ${p.entry}`))}
@@ -1204,11 +1218,11 @@ function greekVerbTable(items){
  return '<table class="exam-paradigm exam-verbs" data-col-widths="'+widths.join(',')+'"><colgroup>'+widths.map(()=>'<col>').join('')+'</colgroup><thead><tr><td class="exam-corner"></td>'+items.map(x=>'<th colspan="2" scope="colgroup" data-corpus-id="'+x.id+'">'+esc(headLex(x.lemmas[0]))+'</th>').join('')+'</tr><tr><td class="exam-corner"></td>'+items.map(()=>'<th scope="col">Singular</th><th scope="col">Plural</th>').join('')+'</tr></thead><tbody>'+[0,1,2].map(i=>'<tr><th scope="row">'+(i+1)+'ª</th>'+items.map(()=>'<td></td><td></td>').join('')+'</tr>').join('')+'</tbody></table>';
 }
 function greekExamHeader(chosen,mode){
- const va=$('lang').value==='va',numbers=chosen.map(examUnitNumber),unitLabel=(numbers.length===1?'UD ':numbers.length?'UDs ':'')+(numbers.length===2&&numbers[1]===numbers[0]+1?numbers.join('–'):numbers.join(', '));
+ const va=$('lang').value==='va';
  const titleInput=$('name').value.trim(),custom=titleInput&&!['Examen de Griego I','Examen de Grec I','Ficha de repaso de Griego I','Fitxa de repàs de Grec I'].includes(titleInput);
- const prefix=$('sheetType').value==='review'?(va?'Fitxa de repàs':'Ficha de repaso'):$('model').value==='morphology'?(va?'Examen de morfologia':'Examen de morfología'):$('model').value==='translation'?(va?'Examen de traducció':'Examen de traducción'):(va?'Examen complet':'Examen completo');
- const title=(custom?titleInput:prefix+' '+unitLabel+' '+(va?'Grec I':'Griego I'))+($('seed').value?' · '+$('seed').value:'');
- return '<div class="exam-header"><p class="exam-header-line"><span>'+esc(title)+'</span><span>'+$('term').value+'ª '+(va?'avaluació':'evaluación')+'</span></p><p class="exam-header-line"><span>'+(va?'Nom i cognoms:':'Nombre y apellidos:')+'</span><span>'+(va?'Data:':'Fecha:')+'</span></p></div>';
+ const prefix=$('sheetType').value==='review'?(va?'Fitxa de repàs de ':'Ficha de repaso de '):$('model').value==='morphology'?(va?'Examen de morfologia de ':'Examen de morfología de '):$('model').value==='translation'?(va?'Examen de traducció de ':'Examen de traducción de '):'Examen de ';
+ const title=examHeadingWithUnits(custom?titleInput:prefix+(va?'Grec I':'Griego I'),chosen)+($('seed').value?' · '+$('seed').value:'');
+ return '<div class="exam-header"><p class="exam-header-line"><span>'+esc(title)+'</span><span>'+$('term').value+'ª '+(va?'avaluació':'evaluación')+'</span></p><p class="exam-header-line"><span>'+(va?'Nom i cognoms:':'Nombre y apellidos:')+'</span><span>'+(va?'Data:':'Fecha')+'</span></p></div>';
 }
 function greekQuestionLabel(kind){if(kind==='sentences'&&$('model').value==='translation')return $('lang').value==='va'?'Tradueix les oracions següents':'Traduce las siguientes oraciones';return ({es:{declension:'Declina',conjugation:'Conjuga',forms:'Analiza morfológicamente',pronouns:'Completa la tabla con el análisis morfológico adecuado',etymology:'Escribe dos derivados etimológicos de cada una de estas palabras griegas',sentences:'Analiza y traduce las siguientes oraciones'},va:{declension:'Declina',conjugation:'Conjuga',forms:'Analitza morfològicament',pronouns:'Completa la taula amb l’anàlisi morfològica adequada',etymology:'Escriu dos derivats etimològics de cadascuna d’aquestes paraules gregues',sentences:'Analitza i tradueix les oracions següents'}})[$('lang').value][kind]}
 function greekPoints(kind){const v=Number($('greek-points-'+kind).value);return Number.isFinite(v)?Math.max(0,Math.min(100,v)):0}
