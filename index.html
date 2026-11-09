@@ -318,6 +318,20 @@ function unimorphNominalLabel(row){
  const g=f.has('MASC')?'masculino':f.has('FEM')?'femenino':f.has('NEUT')?'neutro':'';
  return [c,n,g,row[4]].filter(Boolean).join(', ');
 }
+// Los nombres propios se evalúan exclusivamente en singular.
+// La identificación utiliza los lemas del vocabulario docente (mayúscula inicial)
+// y una lista explícita para los bancos externos de formas.
+const PROPER_NOUN_LEMMAS=new Set(['hannibal','hasdrubal','caesar','cicero','pompeius','augustus','romulus','remus','aeneas','dido','jupiter','iuppiter','juno','minerva','venus','mars','neptunus','apollo','apollon','zeus','hera','athena','socrates','plato','aristoteles','alexander','achilles','hector','odysseus','ulixes','roma','athenae','graecia','italia','troia','troja','carthago','scipio']);
+function properNounKey(value){
+ return String(value||'').split(',')[0].trim().normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase();
+}
+function isProperNounLemma(value){
+ const lemma=String(value||'').split(',')[0].trim();
+ return PROPER_NOUN_LEMMAS.has(properNounKey(lemma))||/^[A-ZÁÉÍÓÚÀÈÌÒÙĀĒĪŌŪ]/.test(lemma);
+}
+function allowedProperNounForm(lemma,features){
+ return !isProperNounLemma(lemma)||!String(features).split(';').includes('PL');
+}
 function morphConfigNumber(id,fallback,min,max){const value=Number($(id)?.value);return Number.isFinite(value)?Math.max(min,Math.min(max,Math.floor(value))):fallback}
 function morphConfig(){
  return {offer:morphConfigNumber('morphOffer',3,1,12),decline:morphConfigNumber('morphDecline',2,1,12),
@@ -333,7 +347,7 @@ function generateLatinMorphologyReference(){
  const allowFuture=syllabus.some(t=>t==='Futuro');
  const allowParticiples=syllabus.some(t=>t==='Participios');
  const allowAdjectives=syllabus.some(t=>t==='Adjetivos');
- const nounPool=allowed.map(x=>({x,p:noun(x)})).filter(y=>y.p);
+ const nounPool=allowed.map(x=>({x,p:noun(x)})).filter(y=>y.p&&!isProperNounLemma(y.x.entry));
  const adjPool=allowAdjectives?allowed.map(x=>({x,p:adjective(x)})).filter(y=>y.p):[];
  const verbs=sample(allowed.map(x=>({x,p:verb(x)})).filter(y=>y.p),config.verbs);
  const nominal=sample(allowed.map(x=>({x,p:noun(x)||adjective(x)})).filter(y=>y.p&&($('morphCategory-'+(noun(y.x)?'n':'adj'))?.checked!==false)),config.words);
@@ -349,9 +363,9 @@ function generateLatinMorphologyReference(){
  const paradigm=()=>'<table class="exam-paradigm exam-nouns reference-morph-table" data-col-widths="16,42,42"><thead><tr><th class="exam-corner"></th><th>Singular</th><th>Plural</th></tr></thead><tbody>'+rowNames.map(n=>'<tr><th>'+n+'</th><td></td><td></td></tr>').join('')+'</tbody></table>';
  const bankRows=(bundledMorphology.lat?.v||[]).filter(row=>unimorphAllowedLatinVerb(row,unitLimit));
  const bankItems=sample(bankRows,Math.min(10,countFor('verb'))).map(([lemma,form,tags])=>({form,entry:lemma,label:unimorphVerbLabel(tags)}));
- const verbItems=bankItems.length?bankItems:verbs.map(({x,p})=>{const i=Math.floor(Math.random()*p.forms.length);return {form:p.forms[i],entry:x.entry,label:p.labels[i]}});
+ const verbItems=bankItems.length?bankItems:verbs.map(({x,p})=>{const valid=p.forms.map((form,i)=>({form,label:p.labels[i]})).filter(y=>!isProperNounLemma(x.entry)||/singular/i.test(y.label));const item=sample(valid,1)[0];return item?{form:item.form,entry:x.entry,label:item.label}:null}).filter(Boolean);
  const nominalRows=['n','adj','pro'].filter(category=>$('morphCategory-'+category)?.checked!==false).flatMap(category=>bundledMorphology.lat?.[category]||[])
-  .filter(row=>row[3]<=unitLimit&&row[2].split(';').some(t=>['NOM','VOC','ACC','GEN','DAT','ABL'].includes(t)));
+  .filter(row=>row[3]<=unitLimit&&allowedProperNounForm(row[0],row[2])&&row[2].split(';').some(t=>['NOM','VOC','ACC','GEN','DAT','ABL'].includes(t)));
  const verifiedNominals=sample(nominalRows,Math.min(10,countFor('decl'))).map(row=>({
   form:row[1],entry:row[0],label:unimorphNominalLabel(row)}));
  const nomItems=verifiedNominals.length?verifiedNominals:nominal.map(({x,p})=>{
@@ -992,7 +1006,7 @@ function greekQuestionLabel(kind){return ({es:{declension:'Declina',conjugation:
 function greekPoints(kind){const v=Number($('greek-points-'+kind).value);return Number.isFinite(v)?Math.max(0,Math.min(100,v)):0}
 function generateGreekMorphologyFixed(){
  const marked=greekMarkedUnits(),limit=greekLimit(),cfg=morphConfig(),va=$('lang').value==='va';
- const eligible=greekVerifiedCorpus.filter(x=>x.verified&&greekMorphologyEligible(x,limit));
+ const eligible=greekVerifiedCorpus.filter(x=>x.verified&&greekMorphologyEligible(x,limit)&&!(x.kind==='declension'&&x.lemmas.some(isProperNounLemma))&&!(x.kind==='forms'&&x.lemmas.some(isProperNounLemma)&&/plural/i.test(x.answer)));
  const nounPool=eligible.filter(x=>x.kind==='declension'&&x.table);
  const nounItems=sample(nounPool,cfg.offer);
  const verbPool=eligible.filter(x=>x.kind==='conjugation'&&x.table)
