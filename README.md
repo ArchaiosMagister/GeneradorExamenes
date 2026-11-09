@@ -2,6 +2,14 @@
 
 Prototipo experimental de un generador de exámenes para **Latín de 4.º de ESO, Latín I y Griego I**.
 
+## Probar la versión online
+
+La aplicación web utiliza `index.html` de la rama `main`. El enlace de GitHub Pages es
+[abrir el generador online](https://archaiosmagister.github.io/GeneradorExamenes/).
+Los cambios se publican mediante GitHub Pages; comprueba que el último despliegue
+haya terminado correctamente en **Actions → pages build and deployment**.
+La versión `offline.html` es una descarga alternativa, no la interfaz predeterminada.
+
 ## Versión autónoma para usar sin Internet
 
 **Archivo recomendado:** [`offline.html`](./offline.html). En GitHub, abre ese enlace y pulsa **Download raw file**. Guarda el archivo en el ordenador y ábrelo con doble clic en un navegador. No necesitas instalar programas, iniciar un servidor ni conectarte a Internet.
