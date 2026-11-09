@@ -4,6 +4,8 @@
   "version": "0.1.0",
   "description": "Aplicación de escritorio offline para generar exámenes de Latín y Griego",
   "scripts": {
+    "offline:build": "node scripts/build-offline.mjs",
+    "offline:test": "node scripts/check-web.mjs && node scripts/test-offline.mjs",
     "desktop:prepare": "node scripts/prepare-desktop.mjs",
     "tauri": "tauri",
     "desktop:build": "npm run desktop:prepare && tauri build"
