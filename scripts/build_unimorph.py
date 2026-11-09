@@ -127,6 +127,8 @@ def classify(lang, lemma, tags, paradigms):
     pos = next((p for p in ("N", "ADJ", "PRO", "V") if p in f), None)
     if pos == "V":
         u = verb_unit(lang, f)
+        if lang == "grc" and normalized(lemma) in {"ειμι", "ειμί"} and u == 2 and "PRS" in f and "ACT" in f:
+            u = 1
         return ("v", "verb", u) if u is not None else None
     if pos == "N":
         if not (f & CASES):
