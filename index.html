@@ -240,15 +240,48 @@ function translateUI(){document.documentElement.lang=$('lang').value==='va'?'ca-
 
 $('sheetType').addEventListener('change',()=>{const c=currentCourse();$('name').value=($('sheetType').value==='review'?($('lang').value==='va'?'Fitxa de repàs de ':'Ficha de repaso de '):($('lang').value==='va'?'Examen de ':'Examen de '))+({'latin1':$('lang').value==='va'?'Llatí I':'Latín I','latin4':$('lang').value==='va'?'Llatí 4t ESO':'Latín 4.º ESO','greek1':$('lang').value==='va'?'Grec I':'Griego I'})[c];generate()});
 function refreshManualMorphWords(){
- const host=$('manualMorphWords');if(!host)return;host.replaceChildren();if(currentCourse()==='greek1'&&$('model').value==='complete')return;const paper=$('paper');const targets=[];
- if(currentCourse()==='greek1'){
-  paper.querySelectorAll('.exam-nouns thead tr:first-child th[colspan],.exam-verbs thead tr:first-child th[colspan]').forEach(el=>targets.push({el,kind:el.closest('.exam-nouns')?'Declinación':'Conjugación'}));
-  paper.querySelectorAll('.exam-form > span:last-child').forEach(el=>targets.push({el,kind:'Análisis morfológico'}));
- }else{
-  paper.querySelectorAll('.forms b').forEach(el=>targets.push({el,kind:el.closest('.forms')?.previousElementSibling?.textContent?.includes('verbal')?'Conjugación / verbo':'Declinación / análisis'}));
+ const host=$('manualMorphWords');
+ if(!host)return;
+ host.replaceChildren();
+ const paper=$('paper'),targets=[],seen=new Set();
+ const add=(el,kind)=>{
+  if(!el||seen.has(el))return;
+  seen.add(el);targets.push({el,kind});
+ };
+ // Los siete modelos usan tablas, listas y formas independientes; no las antiguas .forms b.
+ paper.querySelectorAll('.exam-nouns thead tr:first-child th[colspan]').forEach(el=>add(el,'Declinación'));
+ paper.querySelectorAll('.exam-verbs thead tr:first-child th[colspan]').forEach(el=>add(el,'Conjugación'));
+ paper.querySelectorAll('.reference-verb-table tbody td:first-child i').forEach(el=>add(el,'Forma verbal'));
+ paper.querySelectorAll('.exam-pronouns tbody td:first-child i').forEach(el=>add(el,'Pronombre'));
+ paper.querySelectorAll('.reference-analysis-item > i').forEach(el=>add(el,'Análisis morfológico'));
+ paper.querySelectorAll('.exam-form > span:last-child').forEach(el=>add(el,'Análisis morfológico'));
+ paper.querySelectorAll('.latin-standard-exam .exam-question').forEach(question=>{
+  if(!question.textContent.toLowerCase().includes('morfol'))return;
+  const list=question.nextElementSibling;
+  if(list?.matches('ol.task'))list.querySelectorAll(':scope > li > i').forEach(el=>add(el,'Forma para analizar'));
+ });
+ if(!targets.length){
+  host.textContent='No hay formas morfológicas verificadas para editar en esta generación.';
+  return;
  }
- if(!targets.length){host.textContent=$('model').value==='mixto'||$('model').value==='translation'?'Este modelo contiene oraciones de traducción; no hay formas morfológicas independientes que editar.':'No hay formas seleccionadas en esta generación.';return}
- targets.forEach(({el,kind},i)=>{const row=document.createElement('label');row.style.display='block';row.style.margin='7px 0';const caption=document.createElement('span');caption.textContent=kind+' '+(i+1);caption.style.display='block';const input=document.createElement('input');input.type='text';input.value=el.textContent.replace(/:$/,'').trim();input.setAttribute('aria-label',kind+' '+(i+1));const original=el.textContent;input.addEventListener('input',()=>{el.textContent=input.value+(original.endsWith(':')?':':'');const key=paper.querySelector('#answerkey');if(key&&!key.querySelector('[data-manual-warning]')){const note=document.createElement('p');note.dataset.manualWarning='true';note.textContent='ATENCIÓN: se han modificado formas manualmente. Comprueba y corrige las soluciones correspondientes antes de entregar el solucionario.';key.prepend(note)}});row.append(caption,input);host.append(row)});
+ targets.forEach(({el,kind},i)=>{
+  const row=document.createElement('label');row.style.display='block';row.style.margin='7px 0';
+  const caption=document.createElement('span');caption.textContent=kind+' '+(i+1);caption.style.display='block';
+  const input=document.createElement('input');input.type='text';
+  input.value=el.textContent.replace(/:$/,'').trim();
+  input.setAttribute('aria-label',kind+' '+(i+1));
+  const original=el.textContent;
+  input.addEventListener('input',()=>{
+   el.textContent=input.value+(original.endsWith(':')?':':'');
+   const key=paper.querySelector('#answerkey');
+   if(key&&!key.querySelector('[data-manual-warning]')){
+    const note=document.createElement('p');note.dataset.manualWarning='true';
+    note.textContent='ATENCIÓN: se han modificado formas manualmente. Comprueba y corrige las soluciones correspondientes antes de entregar el solucionario.';
+    key.prepend(note);
+   }
+  });
+  row.append(caption,input);host.append(row);
+ });
 }
 const models={tablas:['decl','verb','lex','sent'],morf:['decl','verb'],mixto:['sent']};$('model').onchange=()=>{for(const id of ['decl','verb','lex','sent'])$(id).checked=models[$('model').value].includes(id);$('cultureOption').hidden=currentCourse()!=='latin4'||$('model').value!=='tablas';$('culture').disabled=$('cultureOption').hidden;if($('cultureOption').hidden)$('culture').checked=false;if(currentCourse()==='greek1')$('lex').checked=false;generate()};
 function noun(x){let e=x.entry.replace(/[–−]/g,'-').replace(/æ/g,'ae');let m=e.match(/^([A-Za-zÀ-ÿ]+),\s*-(ae|i)\b/i);if(!m)return null;let word=m[1],g=m[2].toLowerCase(),stem=word.slice(0,g==='ae'?1:(word.endsWith('us')||word.endsWith('um')?2:1));if(g==='ae'&&!word.endsWith('a'))return null;if(g==='i'&&!(word.endsWith('us')||word.endsWith('um')))return null;let neutral=word.endsWith('um');let endings=g==='ae'?['a','ae','ae','am','a','a','ae','arum','is','as','ae','is']:neutral?['um','i','o','um','um','o','a','orum','is','a','a','is']:['us','i','o','um','e','o','i','orum','is','os','i','is'];let labels=['nominativo singular','genitivo singular','dativo singular','acusativo singular','vocativo singular','ablativo singular','nominativo plural','genitivo plural','dativo plural','acusativo plural','vocativo plural','ablativo plural'];return {word,forms:endings.map(a=>stem+a),labels,entry:x.entry};}
@@ -1552,6 +1585,7 @@ const latinFormsControl=document.createElement('label');
 latinFormsControl.id='latinFormsCountControl';
 latinFormsControl.innerHTML='Formas sueltas <input type="number" id="count-forms" min="1" max="30" value="6">';
 $('count-decl').closest('.count-grid').append(latinFormsControl);
+ $('count-forms').onchange=generate;
 const latinModes={
  tablas:{es:'1 · Examen completo',va:'1 · Examen complet'},
  morf:{es:'2 · Examen de morfología',va:'2 · Examen de morfologia'},
