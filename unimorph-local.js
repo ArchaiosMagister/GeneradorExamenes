@@ -21,7 +21,6 @@ async function clearLanguage(language){
  const d=await db(),t=transaction(d,['forms','metadata'],'readwrite'),store=t.objectStore('forms');
  const range=IDBKeyRange.bound(language+'|',language+'|\uffff');
  await new Promise((ok,no)=>{const c=store.openCursor(range);c.onsuccess=()=>{const cur=c.result;if(cur){cur.delete();cur.continue()}else ok()};c.onerror=()=>no(c.error)});
- t.objectStore('metadata').delete(language);
 }
 async function importText(language,text,onProgress){
  const d=await db();await clearLanguage(language);
