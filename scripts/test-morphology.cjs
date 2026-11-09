@@ -33,6 +33,26 @@ const {pathToFileURL}=require('node:url');
     assert(!await page.locator('#paper .final-gloss').count());
    }
   }
+  await choose(7);
+  await page.evaluate(()=>{$('manualMorphField').closest('details').open=true});
+  const expectedEditors=await page.locator('.reference-morph-exam .exam-item > i:first-of-type, .reference-morph-exam table:not(.exam-nouns) tbody td:first-child > i:first-of-type').count();
+  assert(expectedEditors>0);
+  assert.equal(await page.locator('#manualMorphWords input').count(),expectedEditors);
+  for(const [kind,target] of [
+   ['Pregunta 1 · Opción','.exam-item:not(.reference-analysis-item) > i:first-of-type'],
+   ['Pregunta 2 · Verbo','table:not(.exam-nouns) tbody td:first-child > i:first-of-type'],
+   ['Pregunta 3 · Palabra','.reference-analysis-item > i:first-of-type']
+  ]){
+   const input=page.getByRole('textbox',{name:kind+' 1',exact:true});
+   assert.equal(await input.count(),1,course+' '+kind);
+   await input.fill('Cambio manual <seguro>');
+   assert.equal(await page.locator('.reference-morph-exam '+target).first().textContent(),'Cambio manual <seguro>');
+  }
+  assert.equal(await page.locator('#answerkey [data-manual-warning]').count(),1);
+  await page.evaluate(()=>{document.querySelectorAll('.unit-choice').forEach(e=>e.checked=false);generate()});
+  assert.equal(await page.locator('#manualMorphWords input').count(),0);
+  assert.match(await page.locator('#manualMorphWords').textContent(),/Selecciona unidades/);
+  await choose(7);
   await page.evaluate(()=>{document.querySelectorAll('[id^="morphCategory-"]').forEach(e=>e.checked=false);generate()});
   assert.equal(await page.locator('.reference-analysis-item').count(),0);
   await page.evaluate(()=>{document.querySelectorAll('[id^="morphCategory-"]').forEach(e=>e.checked=true);generate()});

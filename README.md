@@ -2,14 +2,21 @@
 
 Prototipo experimental de un generador de exámenes para **Latín de 4.º de ESO, Latín I y Griego I**.
 
-## Probar la aplicación
+## Usar la web
 
-1. Descarga el archivo [`index.html`](./index.html) desde GitHub (opción **Download raw file**).
-2. Ábrelo en un navegador moderno.
-3. Configura el curso, el trimestre, las unidades y el modelo de examen.
-4. Genera el examen y prueba la exportación a Word (.docx).
+El objetivo actual es una **web funcional**, accesible en:
+[Generador de exámenes](https://archaiosmagister.github.io/GeneradorExamenes/).
 
-**La aplicación está diseñada para funcionar completamente sin Internet**: el archivo HTML incorpora el código y los datos que necesita el prototipo. Los cambios guardados en el almacenamiento del navegador pueden no trasladarse automáticamente a otros ordenadores o a otro origen web; usa las copias de seguridad JSON.
+1. Abre la web en un navegador moderno.
+2. Configura el curso, el trimestre, las unidades y el modelo de examen.
+3. Genera el examen y ajusta las palabras desde «Preguntas y extensión».
+4. Descarga el examen o las soluciones en Word (.docx).
+
+Para usarla sin conexión, descarga el repositorio completo y abre `index.html`;
+conserva la carpeta `data`, que contiene el léxico local. El HTML por sí solo no
+incluye ese léxico. Los borradores del navegador pertenecen a cada origen y
+ordenador; usa las copias JSON para trasladarlos. La estructura de escritorio
+existente queda fuera de la prioridad actual.
 
 ## Funcionalidad actual (prototipo v21)
 
