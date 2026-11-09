@@ -571,7 +571,7 @@ const latinPronounRows=[
  {unit:6,form:'hic',type:'demostrativo',case:'nominativo',gender:'masculino',number:'singular'},
  {unit:6,form:'haec',type:'demostrativo',case:'nominativo singular o nominativo/acusativo plural',gender:'femenino singular o neutro plural',number:'singular o plural'},
  {unit:6,form:'ille',type:'demostrativo',case:'nominativo',gender:'masculino',number:'singular'},
- {unit:6,form:'quī',type:'relativo',case:'nominativo',gender:'masculino',number:'singular'}
+ {unit:6,form:'quī',type:'relativo',case:'nominativo',gender:'masculino',number:'singular o plural'}
 ];
 function latinExamPronouns(chosen){
  if(currentCourse()!=='latin1')return [];
@@ -684,7 +684,7 @@ function generate(){
    missing('No hay oraciones verificadas en estas unidades.'))+
    (sentences.length<count?missing('Banco de oraciones: '+sentences.length+' de '+count+' solicitadas. No se han inventado oraciones.'):''),
   '<ol>'+sentences.map(x=>'<li>'+esc(x.text)+' — '+esc(va&&x.sol_va?x.sol_va:x.sol)+'</li>').join('')+'</ol>');
- const gloss=buildFinalLexicon(chosen,allowed,selectedSentences,selectedMorph,selectedLex,{sentencesOnly:true,mandatory:true});
+ const gloss=buildFinalLexicon(chosen,allowed,selectedSentences,selectedMorph,selectedLex,{sentencesOnly:true});
  $('paper').innerHTML='<div class="exam-sheet latin-standard-exam'+(translation?' latin-translation-exam':'')+'">'+latinExamHeader(chosen)+
   sections.join('')+gloss+'<p class="exam-grade">Nota: __________</p>'+
   '<div id="answerkey" class="solutions"><h2>'+esc(tr('key'))+'</h2><ol>'+answers.join('')+'</ol></div></div>';
@@ -1511,7 +1511,7 @@ function generateGreekExam(){
  $('greekCoverage').textContent=notice+' Gramática acumulativa'+(max>=0?' hasta UD'+max:'')+'.'+(chosen.length&&shortfalls.length?' Material disponible inferior al solicitado ('+shortfalls.join('; ')+'). Se utiliza únicamente el disponible.':'');
  const lemmas=[...new Map(result.items.filter(x=>x.kind==='sentences').flatMap(x=>x.lemmas).map(h=>{const x=greekLemma(h);return [examKey(x.entry),x]})).values()].sort((a,b)=>a.entry.localeCompare(b.entry));
  const visibleLemmas=lemmas.filter(x=>glossAccept(x.entry,chosen)&&!String(x.meaning).includes('[Traducción pendiente de revisión]'));
- const gloss=$('model').value==='complete'&&visibleLemmas.length?'<p class="exam-gloss-title"><strong>'+($('lang').value==='va'?'Vocabulari':'Vocabulario')+'</strong></p><div class="final-gloss">'+visibleLemmas.map(x=>'<div class="gloss-item">'+esc(x.entry)+':'+(isRequired(x.entry,chosen)?'':' ‘'+esc(x.meaning)+'’')+'</div>').join('')+'</div>':'';
+ const gloss=$('model').value==='complete'&&$('autoGloss').checked&&visibleLemmas.length?'<p class="exam-gloss-title"><strong>'+($('lang').value==='va'?'Vocabulari':'Vocabulario')+'</strong></p><div class="final-gloss">'+visibleLemmas.map(x=>'<div class="gloss-item">'+esc(x.entry)+':'+(isRequired(x.entry,chosen)?'':' ‘'+esc(x.meaning)+'’')+'</div>').join('')+'</div>':'';
  const grade='<p class="exam-grade">Nota sobre '+String(Number(total.toFixed(2))).replace('.',',')+': __________</p>';
  $('paper').innerHTML='<div class="exam-sheet">'+greekExamHeader(chosen,mode)+(chosen.length?sections.join(''):'<p>'+notice+'</p>')+grade+gloss+'<div id="answerkey" class="solutions"><h2>'+tr('key')+'</h2>'+answers.join('')+'</div></div>';
  $('paper').setAttribute('contenteditable','true');$('paper').setAttribute('spellcheck','false');$('solutions').textContent=tr('solutions');refreshManualMorphWords();greekExamControls();
@@ -1562,10 +1562,16 @@ function latinDefaultCounts(){
  $('count-culture').value=4;
  $('count-forms').value=model==='mixto'?8:6;
 }
+function configureExamGlossary(){
+ const enabled=currentCourse()==='greek1'?$('model').value==='complete':$('model').value!=='morf';
+ $('autoGloss').checked=enabled;
+ $('glossScope').value='all';
+}
 function latinApplyMode(){
  const selected=models[$('model').value]||models.tablas;
  for(const id of ['decl','verb','lex','sent'])$(id).checked=selected.includes(id);
  latinDefaultCounts();
+ configureExamGlossary();
  for(const id of ['decl','verb','lex','sent'])$(id).parentElement.hidden=$('model').value!=='tablas';
  const cultureAvailable=currentCourse()==='latin4'&&$('model').value==='tablas';
  $('cultureOption').hidden=!cultureAvailable;
@@ -1593,6 +1599,7 @@ function greekApplyMode(){
  $('greekPointsGrid').hidden=$('model').value==='morphology';
  $('greekPointsLabel').hidden=$('model').value==='morphology';
  greekDefaultCounts();
+ configureExamGlossary();
  syncExamModelControls();
  generate();
 }
@@ -1604,6 +1611,7 @@ refreshCourse=function(){
   $('model').value=greek?'complete':'tablas';
   if(greek)greekDefaultCounts();
   else{latinDefaultCounts();for(const id of ['decl','verb','lex','sent'])$(id).checked=models.tablas.includes(id)}
+  configureExamGlossary();
  }
  modelCourse=course;
  greekPanel.hidden=!greek;
