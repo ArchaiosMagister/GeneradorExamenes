@@ -3,6 +3,7 @@
 .unit-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;margin:8px 0}.unit-grid label{display:flex;align-items:center;gap:4px;font-size:12px;border:1px solid #d9e1ed;padding:6px;border-radius:5px;cursor:pointer}.unit-grid input{margin:0}.buttons button{margin-bottom:4px}.paper[contenteditable="true"]{outline:none}.paper[contenteditable="true"]:focus{box-shadow:0 0 0 2px #c4d7f7}@media print{.paper[contenteditable="true"]:focus{box-shadow:none}} .count-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.count-grid label{font-size:12px}.count-grid input{margin-top:4px}textarea{width:100%;border:1px solid #cbd5e1;border-radius:6px;padding:9px;font:inherit;resize:vertical}.paper{min-height:650px}@media print{.top,.panel,.footer{display:none!important}.layout{display:block;margin:0;padding:0}.paper{border:0;box-shadow:none;padding:0}.solutions:not(.show){display:none!important}}  .final-gloss{columns:2;column-gap:20px;font-family:Georgia,serif;font-size:13px;line-height:1.65}.final-gloss div{break-inside:avoid;margin:0 0 5px}@media print{.final-gloss{columns:2}}  .paper{font-family:"Palatino Linotype",Palatino,"Book Antiqua",serif;font-size:10.5pt}.paper .final-gloss{font-family:inherit;font-size:10.5pt;columns:2;column-gap:24px}.paper .gloss-item{break-inside:avoid;margin-bottom:3px}.paper .lex-pos{font-style:normal} @media print{.paper{font-family:"Palatino Linotype",Palatino,"Book Antiqua",serif;font-size:10.5pt}} .paper h3 + p.small{font-style:italic}
 
 .curriculum-preview{margin:12px 0;padding:11px 12px;border:1px solid #d5dfed;border-radius:9px;background:#f8fafd;font-size:13px}.curriculum-preview>summary{cursor:pointer;font-weight:700;color:#203d69;line-height:1.5}.curriculum-preview .hint{font-size:12px;line-height:1.5}.curriculum-unit{padding:8px 0;border-bottom:1px solid #e1e8f2}.curriculum-unit summary{cursor:pointer;font-weight:650}.curriculum-unit ul{margin:7px 0 2px;padding-left:22px;line-height:1.6}.curriculum-selected{margin-top:12px;padding-top:10px;border-top:1px solid #cbd8e8;line-height:1.55}.curriculum-selected strong{display:block;margin-bottom:5px}.curriculum-selected ul{margin:5px 0;padding-left:20px}.curriculum-preview [hidden]{display:none!important}
+.morphology-result{border:1px solid #dce3ec;border-radius:8px;padding:10px;margin:9px 0;background:#fff;line-height:1.6}.morphology-result strong{color:#203d69}.morphology-result div{overflow-wrap:anywhere}
 </style><style>
 .vocab-tabbar{display:flex;gap:8px;padding:10px 18px;background:#eaf0f8;border-bottom:1px solid #ccd7e6;flex-wrap:wrap}.vocab-tabbar button{border:1px solid #a8bbd4;background:white;border-radius:7px;padding:9px 13px;cursor:pointer;font-weight:600}.vocab-tabbar button.active{background:#214f85;color:white}.vocab-manager{display:none;max-width:1100px;margin:18px auto;padding:18px;background:white;border:1px solid #d8e1eb;border-radius:12px}.vocab-manager.active{display:block}.vocab-manager .vm-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.vocab-manager label{display:block;font-size:13px;font-weight:600;margin:6px 0}.vocab-manager input,.vocab-manager select,.vocab-manager textarea{width:100%;box-sizing:border-box;padding:9px;border:1px solid #bac8da;border-radius:6px}.vocab-manager button{padding:8px 12px;border:1px solid #9ab0ca;border-radius:6px;background:#f3f7fc;cursor:pointer;margin:5px 5px 5px 0}.vocab-manager .vm-table{width:100%;border-collapse:collapse}.vocab-manager .vm-table th,.vocab-manager .vm-table td{border-bottom:1px solid #e0e6ed;padding:6px;text-align:left}.vocab-manager .vm-table input{min-width:90px}.vocab-manager .vm-scroll{max-height:440px;overflow:auto}.vocab-manager .vm-help{color:#52647a;font-size:13px}.vocab-manager .vm-warning{color:#92400e;font-size:13px}@media(max-width:750px){.vocab-manager .vm-grid{grid-template-columns:1fr}.vocab-manager{margin:8px}}@media print{.vocab-tabbar,.vocab-manager{display:none!important}}
 .vm-review{border-top:1px solid #dce3ec;margin-top:20px;padding-top:10px}.vm-review .check{display:flex;align-items:center;gap:8px}.vm-review .check input{width:auto}.vm-review .vm-scroll{max-height:250px}@media print{.vm-review{display:none!important}}</style><style>
@@ -1099,7 +1100,7 @@ async function lookup(language,word,mode='form'){
  const rows=[...(builtInMorph[language]||[]),...(['v','n','adj','pro'].flatMap(k=>bundled?.[k]||[]))];
  for(const row of rows){
   if(morphologyNormalize(row[mode==='lemma'?0:1])===query)
-   results.push({headword:row[0],surface:row[1],features:row[2],source:row.length>=5?'UniMorph':'Paradigma escolar'});
+   results.push({headword:row[0],surface:row[1],features:row[2],subtype:row[4]||'',source:row.length>=5?'UniMorph':'Paradigma escolar'});
  }
  try{
   const d=await db(),t=transaction(d,['forms'],'readonly');
@@ -1107,6 +1108,48 @@ async function lookup(language,word,mode='form'){
   results.push(...await req(index.getAll(language+'|'+norm(word))));
  }catch(error){}
  return results.filter((r,i,a)=>a.findIndex(x=>x.headword===r.headword&&x.surface===r.surface&&x.features===r.features)===i);
+}
+const morphologyTerms={
+ N:'sustantivo',V:'verbo',ADJ:'adjetivo',PRO:'pronombre',
+ NOM:'nominativo',VOC:'vocativo',ACC:'acusativo',GEN:'genitivo',DAT:'dativo',ABL:'ablativo',
+ SG:'singular',PL:'plural',DU:'dual',MASC:'masculino',FEM:'femenino',NEUT:'neutro',
+ IND:'indicativo',SBJV:'subjuntivo',IMP:'imperativo',INF:'infinitivo',PTCP:'participio',
+ PRS:'presente',PST:'pasado',FUT:'futuro',PRF:'perfecto',IPFV:'imperfectivo',
+ PFV:'perfectivo',PSTP:'pluscuamperfecto',ACT:'voz activa',PASS:'voz pasiva',MID:'voz media',
+ POS:'grado positivo',CMPR:'comparativo',SPRL:'superlativo',
+ '1':'primera persona','2':'segunda persona','3':'tercera persona'
+};
+const morphologySubtypes={
+ first:'primera declinación',second:'segunda declinación',third:'tercera declinación',
+ fourth:'cuarta declinación',fifth:'quinta declinación',
+ 'second-neuter':'segunda declinación (neutros)',
+ 'second-masculine':'segunda declinación (masculinos)',
+ 'first-class':'adjetivo de primera clase','third-class':'adjetivo de tercera clase',
+ '2-1-2':'adjetivo de tres terminaciones (2-1-2)',
+ '2-2':'adjetivo de dos terminaciones (2-2)',
+ personal:'pronombre personal',reflexive:'pronombre reflexivo',
+ phoric:'pronombre fórico',demonstrative:'pronombre demostrativo',
+ relative:'pronombre relativo',identity:'pronombre de identidad',
+ emphatic:'pronombre enfático',anaphoric:'pronombre anafórico',
+ interrogative:'pronombre interrogativo',comparative:'adjetivo comparativo',
+ superlative:'adjetivo superlativo',verb:'verbo'
+};
+function morphologyDescription(x,language){
+ const tags=x.features.split(';').map(t=>t.trim()).filter(Boolean);
+ const type=tags.find(t=>['N','V','ADJ','PRO'].includes(t));
+ const kind=morphologyTerms[type]||'Categoría no identificada';
+ const form=tags.filter(t=>!['N','V','ADJ','PRO'].includes(t)).map(t=>morphologyTerms[t]||t);
+ let subtype=x.subtype||'';
+ if(!subtype&&type==='N'){
+  const k=morphologyNormalize(x.headword);
+  if(language==='lat'){
+   if(['puella','rosa'].includes(k))subtype='first';
+   else if(['servus','dominus','bellum','templum'].includes(k))subtype='second';
+  }else if(language==='grc'&&['λογοσ','δωρον'].includes(k))subtype='second-masculine';
+ }
+ const declension=type==='N'?(morphologySubtypes[subtype]||'Declinación no determinada'):'';
+ const subtypeText=type!=='N'&&subtype&&morphologySubtypes[subtype]&&morphologySubtypes[subtype]!==kind?morphologySubtypes[subtype]:'';
+ return {kind,description:[...form,declension,subtypeText].filter(Boolean).join(' · ')};
 }
 async function stats(){const d=await db(),t=transaction(d,['metadata'],'readonly');return req(t.objectStore('metadata').getAll())}
 function ui(){
@@ -1129,7 +1172,14 @@ function ui(){
   try{
    const results=await lookup($('umLanguage').value,word,$('umMode').value);
    const p=document.createElement('p');p.textContent=results.length+' análisis/entradas encontradas'+(results.length>100?' (mostrando 100)':'');out.append(p);
-   for(const x of results.slice(0,100)){const line=document.createElement('div');line.textContent=x.headword+' → '+x.surface+' · '+x.features+(x.source?' · '+x.source:'');out.append(line)}
+   for(const x of results.slice(0,100)){
+    const info=morphologyDescription(x,$('umLanguage').value);
+    const line=document.createElement('div');line.className='morphology-result';
+    const head=document.createElement('strong');head.textContent=x.surface+' — '+info.kind;
+    const lemma=document.createElement('div');lemma.textContent='Lema: '+x.headword;
+    const details=document.createElement('div');details.textContent=info.description||'Análisis no disponible';
+    line.append(head,lemma,details);out.append(line);
+   }
   }catch(e){out.textContent='Consulta no disponible: '+e.message}
  });
  refresh();
