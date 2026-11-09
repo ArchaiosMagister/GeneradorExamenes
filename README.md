@@ -10,6 +10,24 @@ Los cambios se publican mediante GitHub Pages; comprueba que el último desplieg
 haya terminado correctamente en **Actions → pages build and deployment**.
 La versión `offline.html` es una descarga alternativa, no la interfaz predeterminada.
 
+## Estructura académica de los exámenes (versión actual)
+
+El **nombre del modelo** (completo, morfología o traducción) no sustituye el título académico de la cabecera: `Examen de Latín I – UDs 2–3`, por ejemplo.
+
+| Curso y modelo | Apartados |
+| --- | --- |
+| Latín 4.º ESO · completo | Tablas de declinación; tabla para conjugar; análisis de formas variables; **2** apartados de léxico (a, b); **4** preguntas de cultura (a–d), cuando existan en el banco; **4** oraciones por defecto; vocabulario de las oraciones |
+| Latín I · completo | Declinación, conjugación, análisis de formas variables, **3** apartados de léxico (a–c), **5** oraciones por defecto (ajustables de 4 a 6) y vocabulario de oraciones |
+| Latín I · morfología | Tablas de declinación, tabla de análisis verbal, tabla de pronombres a partir de la unidad correspondiente y análisis de palabras variables |
+| Latín I · traducción | Análisis de formas variables, **3** apartados de léxico, **7** oraciones por defecto y vocabulario de oraciones |
+| Griego I · completo | Declinación, conjugación, análisis morfológico, etimología, **5** oraciones por defecto (ajustables de 4 a 6) y vocabulario de oraciones |
+| Griego I · morfología | Declinación, análisis verbal, pronombres desde UD7 y palabras variables, excluidas las invariables |
+| Griego I · traducción | Análisis de formas, derivación etimológica y **7** oraciones como objetivo |
+
+**Vocabulario de las oraciones:** por defecto se incluyen los enunciados de los lemas identificados, con traducción únicamente cuando el lema no pertenece al vocabulario exigible para esa unidad. El profesor puede revisar los términos no identificados, importar su vocabulario y modificar el glosario. No se asignan lemas o traducciones ficticios.
+
+**Bancos pendientes:** no existe todavía un corpus cerrado de preguntas de cultura de Latín 4.º ESO. En su lugar se presenta una advertencia, sin inventar preguntas. Las cifras de oraciones son objetivos: si el banco verificado contiene menos, el examen muestra las disponibles y señala la carencia. Los pronombres de Latín I usan una selección de formas explícitas, limitada al temario de cada unidad. Los bancos Morpheus y AGLDT todavía no están integrados.
+
 ## Versión autónoma para usar sin Internet
 
 **Archivo recomendado:** [`offline.html`](./offline.html). En GitHub, abre ese enlace y pulsa **Download raw file**. Guarda el archivo en el ordenador y ábrelo con doble clic en un navegador. No necesitas instalar programas, iniciar un servidor ni conectarte a Internet.
