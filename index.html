@@ -310,6 +310,17 @@ function greekExercise(allowed,type){const pool=allowed.map(x=>({x,p:greekParadi
 if(typeof window!=='undefined')window.addEventListener('load',()=>{Promise.all(['lat','grc'].map(loadBundledMorphology)).then(()=>{if(currentCourse()==='latin1'&&$('model').value==='morf'&&$('paper')?.textContent.trim())generate();});});
 const APPENDIX_MORPHOLOGY_CURRICULUM={"latin":[{"unit":1,"morph":["Primera y segunda declinación","Conjugaciones","Presente de indicativo","Infinitivo"]},{"unit":2,"morph":["Adjetivos","Preposiciones","Imperfecto de indicativo"]},{"unit":3,"morph":["Pronombres personales","Sustantivación del adjetivo","Voz pasiva","Imperativo"]},{"unit":4,"morph":["Tercera declinación","Perfecto de indicativo","Pluscuamperfecto de indicativo"]},{"unit":5,"morph":["Adjetivos de la tercera declinación","Pronombre fórico","Complemento predicativo"]},{"unit":6,"morph":["Pronombres demostrativos","Oraciones de relativo"]},{"unit":7,"morph":["Cuarta y quinta declinación","Verbos deponentes","Futuro"]},{"unit":8,"morph":["Oraciones de infinitivo","Pronombres de identidad y enfático","Quod causal"]},{"unit":9,"morph":["Adjetivos comparativos y superlativos","Voz pasiva del perfectum","Semideponentes"]},{"unit":10,"morph":["Participios","Complemento de régimen verbal","Acusativo de extensión"]}],"greek":[{"unit":1,"morph":["Segunda declinación masculina","Presente de εἰμί"]},{"unit":2,"morph":["Segunda declinación neutra","Presente de indicativo activo"]},{"unit":3,"morph":["Primera declinación","El artículo"]},{"unit":4,"morph":["Preposiciones"]},{"unit":5,"morph":["Adjetivos 2–1–2 y 2–2","Adjetivos irregulares: πολύς y μέγας"]},{"unit":6,"morph":["Presente medio-pasivo","Infinitivos de presente activo y medio"]},{"unit":7,"morph":["Demostrativos, anafórico y personales"]},{"unit":8,"morph":["Interrogativos e indefinidos","Tercera declinación: consonantes"]},{"unit":9,"morph":["Pronombre relativo ὅς, ἥ, ὅ"]},{"unit":10,"morph":["Participios de presente activo y medio"]},{"unit":11,"morph":["Futuro e imperfecto activos"]},{"unit":12,"morph":["Aoristo sigmático y temático"]},{"unit":13,"morph":["Perfecto y pluscuamperfecto activos"]},{"unit":14,"morph":["Verbos contractos","Temas en silbante"]}]};
 function morphologySyllabus(language,unit){return APPENDIX_MORPHOLOGY_CURRICULUM[language].filter(x=>x.unit<=unit).flatMap(x=>x.morph)}
+/* Banco opcional embebido en el archivo HTML autónomo. */
+let examinaEmbeddedAssetsCache;
+function examinaEmbeddedAsset(path){
+ if(examinaEmbeddedAssetsCache===undefined){
+  const node=document.getElementById('examina-offline-assets');
+  if(!node)return null;
+  try{examinaEmbeddedAssetsCache=JSON.parse(node.textContent)}
+  catch(error){examinaEmbeddedAssetsCache={};console.warn('Banco local ilegible:',error)}
+ }
+ return Object.prototype.hasOwnProperty.call(examinaEmbeddedAssetsCache,path)?examinaEmbeddedAssetsCache[path]:null;
+}
 /* Published, curriculum-tagged UniMorph data. Missing files never block the app. */
 const bundledMorphology={lat:null,grc:null};
 const bundledStatus={lat:'pendiente',grc:'pendiente'};
@@ -320,11 +331,17 @@ async function loadBundledMorphology(lang){
  let loaded=0;
  await Promise.all(categories.map(async category=>{
   try{
-   const response=await fetch('data/unimorph/'+lang+'-'+category+'.json',{cache:'force-cache'});
-   if(!response.ok)return;
-   const payload=await response.json();
+   const path='data/unimorph/'+lang+'-'+category+'.json';
+   let payload=examinaEmbeddedAsset(path);
+   if(!payload){
+    if(location.protocol==='file:')return;
+    const response=await fetch(path,{cache:'force-cache'});
+    if(!response.ok)return;
+    payload=await response.json();
+   }
    if(!Array.isArray(payload.rows))return;
-   result[category]=payload.rows.filter(r=>Array.isArray(r)&&r.length>=5&&
+   // Cuatro campos obligatorios; el subtipo (quinto) es opcional.
+   result[category]=payload.rows.filter(r=>Array.isArray(r)&&r.length>=4&&
     typeof r[0]==='string'&&typeof r[1]==='string'&&typeof r[2]==='string'&&
     Number.isInteger(r[3])&&r[3]>=1&&r[3]<=(lang==='lat'?10:14));
    loaded++;
@@ -1507,9 +1524,13 @@ async function fullUniMorphLookup(language,word,mode){
  let rows=fullLookupCache.get(path);
  if(!rows){
   try{
-   const response=await fetch(path,{cache:'force-cache'});
-   if(!response.ok)return {rows:[],available:false};
-   rows=await response.json();
+   rows=examinaEmbeddedAsset(path);
+   if(!rows){
+    if(location.protocol==='file:')return {rows:[],available:false};
+    const response=await fetch(path,{cache:'force-cache'});
+    if(!response.ok)return {rows:[],available:false};
+    rows=await response.json();
+   }
    if(!Array.isArray(rows))return {rows:[],available:false};
    fullLookupCache.set(path,rows);
   }catch(error){return {rows:[],available:false}}
