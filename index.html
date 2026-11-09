@@ -1095,8 +1095,30 @@ const builtInMorph={
  grc:[["λόγος","λόγος","N;NOM;SG;MASC"],["λόγος","λόγον","N;ACC;SG;MASC"],["λόγος","λόγου","N;GEN;SG;MASC"],["λόγος","λόγῳ","N;DAT;SG;MASC"]]
 };
 function morphologyNormalize(s){return norm(s).normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/ς/g,'σ')}
+const fullLookupCache=new Map();
+async function fullUniMorphLookup(language,word,mode){
+ const key=morphologyNormalize(word),first=[...key][0];
+ if(!first)return {rows:[],available:false};
+ const hex=first.codePointAt(0).toString(16).padStart(4,'0');
+ const path='data/unimorph/lookup/'+language+'/'+(mode==='lemma'?'lemma':'form')+'-'+hex+'.json';
+ let rows=fullLookupCache.get(path);
+ if(!rows){
+  try{
+   const response=await fetch(path,{cache:'force-cache'});
+   if(!response.ok)return {rows:[],available:false};
+   rows=await response.json();
+   if(!Array.isArray(rows))return {rows:[],available:false};
+   fullLookupCache.set(path,rows);
+  }catch(error){return {rows:[],available:false}}
+ }
+ return {rows:rows.filter(row=>Array.isArray(row)&&morphologyNormalize(row[mode==='lemma'?0:1])===key)
+  .map(row=>({headword:row[0],surface:row[1],features:row[2],source:'UniMorph completo'})),available:true};
+}
 async function lookup(language,word,mode='form'){
  const query=morphologyNormalize(word),results=[];
+ const complete=await fullUniMorphLookup(language,word,mode);
+ results.push(...complete.rows);
+ window.ExaminaMorphologyFullLookupAvailable=complete.available;
  const bundled=typeof bundledMorphology!=='undefined'?bundledMorphology[language]:null;
  const rows=[...(builtInMorph[language]||[]),...(['v','n','adj','pro'].flatMap(k=>bundled?.[k]||[]))];
  for(const row of rows){
@@ -1157,7 +1179,7 @@ function ui(){
  const parent=$('lexiconSettings')||$('lexOption')||document.querySelector('.panel');
  if(!parent)return;
  const div=document.createElement('div');div.className='field';div.id='unimorphPanel';
- div.innerHTML='<h2>Consulta morfológica sin archivo TSV</h2><p class="hint">Consulta las formas incorporadas con la web, sin importar archivos. La cobertura es parcial; puedes ampliar la base opcionalmente con un TSV. No amplía el vocabulario exigible.</p><label for="umLanguage">Idioma</label><select id="umLanguage"><option value="lat">Latín</option><option value="grc">Griego antiguo</option></select><label for="umFile">Opcional: importar más formas (.tsv)</label><input id="umFile" type="file" accept=".tsv,.txt,.lat,.grc,text/plain"><button type="button" id="umImport" class="secondary">Importar base morfológica</button><p id="umStatus" class="hint" role="status" aria-live="polite"></p><label for="umQuery">Consultar forma o lema</label><input id="umQuery" type="text" placeholder="puellarum / λύουσι"><select id="umMode"><option value="form">Buscar análisis de una forma</option><option value="lemma">Buscar flexiones de un lema</option></select><button type="button" id="umLookup" class="secondary">Consultar morfología</button><div id="umResults" class="hint" aria-live="polite"></div>';
+ div.innerHTML='<h2>Consulta morfológica sin archivo TSV</h2><p class="hint">Consulta las formas incorporadas sin importar archivos. Cuando se publiquen los índices completos UniMorph, se consultarán automáticamente y mostrarán también análisis ambiguos. Hasta entonces la cobertura es parcial; puedes ampliarla opcionalmente con un TSV. No amplía el vocabulario exigible.</p><label for="umLanguage">Idioma</label><select id="umLanguage"><option value="lat">Latín</option><option value="grc">Griego antiguo</option></select><label for="umFile">Opcional: importar más formas (.tsv)</label><input id="umFile" type="file" accept=".tsv,.txt,.lat,.grc,text/plain"><button type="button" id="umImport" class="secondary">Importar base morfológica</button><p id="umStatus" class="hint" role="status" aria-live="polite"></p><label for="umQuery">Consultar forma o lema</label><input id="umQuery" type="text" placeholder="puellarum / λύουσι"><select id="umMode"><option value="form">Buscar análisis de una forma</option><option value="lemma">Buscar flexiones de un lema</option></select><button type="button" id="umLookup" class="secondary">Consultar morfología</button><div id="umResults" class="hint" aria-live="polite"></div>';
  parent.after(div);
  const status=$('umStatus');const say=s=>status.textContent=s;
  const refresh=async()=>{try{const ss=await stats();say(ss.map(x=>x.language+': '+x.count.toLocaleString('es')+' registros').join(' · ')||'Consulta integrada disponible sin importar archivos.')}catch(e){say('Almacenamiento local no disponible: '+e.message)}};
@@ -1172,7 +1194,7 @@ function ui(){
   const out=$('umResults');out.replaceChildren();const word=$('umQuery').value.trim();if(!word)return;
   try{
    const results=await lookup($('umLanguage').value,word,$('umMode').value);
-   const p=document.createElement('p');p.textContent=results.length+' análisis/entradas encontradas'+(results.length>100?' (mostrando 100)':'');out.append(p);
+   const p=document.createElement('p');p.textContent=results.length+' análisis/entradas encontradas'+(results.length>100?' (mostrando 100)':'')+(window.ExaminaMorphologyFullLookupAvailable?' · Consulta completa UniMorph':' · Consulta parcial; índice completo pendiente de publicación');out.append(p);
    for(const x of results.slice(0,100)){
     const info=morphologyDescription(x,$('umLanguage').value);
     const line=document.createElement('div');line.className='morphology-result';
