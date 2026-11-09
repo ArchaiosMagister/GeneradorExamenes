@@ -33,6 +33,8 @@ jobs:
           node-version: '22'
       - name: Verificar HTML autónomo
         run: npm run offline:test
+      - name: Comprobar estructura de exámenes
+        run: node scripts/test-exam-models.cjs
       - name: Verificar preparación de escritorio
         run: |
           npm run desktop:prepare
