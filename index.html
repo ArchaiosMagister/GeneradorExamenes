@@ -996,7 +996,7 @@ function generateGreekMorphologyFixed(){
  const nounPool=eligible.filter(x=>x.kind==='declension'&&x.table);
  const nounItems=sample(nounPool,cfg.offer);
  const verbPool=eligible.filter(x=>x.kind==='conjugation'&&x.table)
-  .flatMap(x=>x.table.rows.flatMap(row=>[row[1],row[2]].filter(Boolean).map(form=>({prompt:form,answer:x.answer,lemma:x.lemmas[0]}))));
+  .flatMap(x=>x.table.rows.flatMap((row,i)=>[row[1],row[2]].map((form,j)=>({prompt:form,answer:(i+1)+'ª persona '+(j===0?'singular':'plural')+' del presente de indicativo, voz activa',lemma:x.lemmas[0]})).filter(x=>x.prompt)));
  const verbItems=sample(verbPool,cfg.verbs);
  const categories={n:$('morphCategory-n')?.checked!==false,adj:$('morphCategory-adj')?.checked!==false,pro:$('morphCategory-pro')?.checked!==false};
  const nominalPool=eligible.filter(x=>(x.kind==='forms'||x.kind==='pronouns')&&(
@@ -1293,6 +1293,8 @@ window.ExaminaMorphology={lookup,stats,importText};
   const greekMorph=currentCourse()==='greek1'&&$('model').value==='morphology';
   const isMorph=latinMorph||greekMorph;
   block.hidden=!isMorph;
+  const greekSettings=$('greekSettings');
+  if(greekSettings){for(const el of [...greekSettings.children]){if(el.id==='greekCoverage'||el.querySelector?.('#greekCoverage'))continue;el.hidden=greekMorph}}
   for(const id of ['decl','amount','count-decl']){const el=document.getElementById(id)?.closest('.field');if(el)el.hidden=isMorph}
   const lex=document.getElementById('lexiconSettings');
   if(lex)lex.hidden=isMorph;
