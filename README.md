@@ -11,7 +11,7 @@ Prototipo experimental de un generador de exámenes para **Latín de 4.º de ESO
 
 **La aplicación está diseñada para funcionar completamente sin Internet**: el archivo HTML incorpora el código y los datos que necesita el prototipo. Los cambios guardados en el almacenamiento del navegador pueden no trasladarse automáticamente a otros ordenadores o a otro origen web; usa las copias de seguridad JSON.
 
-## Funcionalidad actual (prototipo v19)
+## Funcionalidad actual (prototipo v20)
 
 - Cursos separados: Latín 4.º ESO, Latín I y Griego I.
 - Tres modelos de examen y bloques de preguntas configurables.
@@ -105,3 +105,18 @@ Para compilar localmente, instala Node.js, Rust y las dependencias de Tauri para
 - Mejoras de accesibilidad: foco visible, botones desactivados y preferencia de movimiento reducido.
 - Pruebas en Chromium: carga sin errores JavaScript, cambio de curso, generación de ejercicios griegos y exportación de DOCX válido para los tres cursos.
 - **Limitaciones:** no se han verificado todos los paradigmas del temario ni se ha probado el WebView de macOS. La compilación sigue siendo manual y no se ha ejecutado.
+
+### Griego I v20 — modalidades y corpus docente
+
+- Selector propio de Griego I: **Examen completo** (predeterminado), **Análisis, traducción y etimología** y **Solo morfología**. Los modelos de los cursos de Latín se conservan.
+- Selección independiente de una, dos o varias unidades entre UD0 y UD14. La cabecera muestra las unidades marcadas; la gramática y el vocabulario exigible se acumulan hasta la más avanzada.
+- Reserva de ejercicios que representan cada unidad seleccionada cuando existe material verificado para la modalidad. Si es necesario, se amplía el número solicitado. Se muestran las lagunas y la escasez de material; nunca se crean ejercicios para rellenarlas.
+- Corpus cerrado de los ejemplos docentes UD3–4 y UD7, combinado con los paradigmas explícitos de v19. Se excluyen formas con anomalías y verbos pendientes de revisión. Las oraciones con tercera declinación requieren UD8.
+- Etimología con petición de derivados, tablas nominales y verbales, análisis de formas y concordancia, y tabla de pronombres. Las tablas completas de concordancia esperan paradigmas validados.
+- Puntuaciones editables: modelos de referencia sobre 10, 9 y 3,5, respectivamente. Solo suman los apartados que contienen ejercicios; se indica la conversión a 10.
+- Vocabulario exigible integrado desde los materiales aportados, con los bloques UDs1–4 y UDs6–7 sin distribución arbitraria entre unidades. Se exigen desde UD4 y UD7. El gestor permite revisarlos y editarlos.
+- Exportación DOCX con espacios de respuesta conservados. HTML autónomo, colores por curso y estructura Tauri conservados. **No se ha iniciado ninguna compilación para Mac.**
+
+Detalles de procedencia, exclusiones y límites: [`data/greek1-validation.md`](data/greek1-validation.md). El banco aún no cubre todas las unidades ni todos los paradigmas del curso.
+
+Validación: `node scripts/check-web.mjs` y `node scripts/test-greek-ui.cjs` (requiere Playwright y un navegador instalado; admite `PLAYWRIGHT_PATH` y `BROWSER_PATH`). Se comprueban 300 generaciones aleatorias, modalidades, límites gramaticales, cobertura disponible, puntuaciones, borradores, idiomas, móvil, colores y nueve descargas DOCX. Los documentos se verifican como ZIP/XML y se renderizan para revisar su maquetación. La exportación en el WebView de macOS sigue pendiente.

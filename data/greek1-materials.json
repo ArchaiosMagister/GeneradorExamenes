@@ -1,0 +1,881 @@
+{
+  "syllabus": [
+    "El griego como lengua indoeuropea. El alfabeto griego.",
+    "Segunda declinación. Verbo εἰμί. Oraciones copulativas.",
+    "Segunda declinación: neutros. El presente de indicativo. Oraciones predicativas.",
+    "Primera declinación. El artículo.",
+    "Preposiciones. El complemento de régimen verbal.",
+    "El adjetivo. Las oraciones coordinadas.",
+    "Voz media y pasiva. Infinitivo concertado.",
+    "Los pronombres en griego: demostrativos, anafórico, personales.",
+    "Oraciones interrogativas. Tercera declinación.",
+    "La oración de relativo.",
+    "Participios: apositivo y atributivo. El genitivo absoluto.",
+    "El futuro y el imperfecto.",
+    "El aoristo sigmático y temático.",
+    "Perfecto y pluscuamperfecto.",
+    "Temas en silbante. Verbos contractos."
+  ],
+  "required": [
+    {
+      "unit": "Básicas",
+      "entry": "ἀλλά (conj.)",
+      "meaning": "pero’, ‘sino"
+    },
+    {
+      "unit": "Básicas",
+      "entry": "γάρ (part.)",
+      "meaning": "pues"
+    },
+    {
+      "unit": "Básicas",
+      "entry": "ἐπεί (conj.)",
+      "meaning": "cuando"
+    },
+    {
+      "unit": "Básicas",
+      "entry": "ἤ (conj.)",
+      "meaning": "o"
+    },
+    {
+      "unit": "Básicas",
+      "entry": "καί",
+      "meaning": "y"
+    },
+    {
+      "unit": "Básicas",
+      "entry": "μέν… δέ (part.)",
+      "meaning": "“por un lado… por otro”"
+    },
+    {
+      "unit": "Básicas",
+      "entry": "οὐ μόνον ἀλλὰ καὶ",
+      "meaning": "“no sólo, sino también”"
+    },
+    {
+      "unit": "Básicas",
+      "entry": "οὐδέ (conj.)",
+      "meaning": "y no"
+    },
+    {
+      "unit": "Básicas",
+      "entry": "οὖν (part.)",
+      "meaning": "así pues"
+    },
+    {
+      "unit": "Básicas",
+      "entry": "οὔτε… οὔτε (conj.)",
+      "meaning": "“ni… ni”"
+    },
+    {
+      "unit": "Básicas",
+      "entry": "πρῶτον (adv.)",
+      "meaning": "en primer lugar"
+    },
+    {
+      "unit": "Preposiciones",
+      "entry": "ἄνευ + genitivo",
+      "meaning": "sin"
+    },
+    {
+      "unit": "Preposiciones",
+      "entry": "ἀπό + genitivo",
+      "meaning": "de, desde"
+    },
+    {
+      "unit": "Preposiciones",
+      "entry": "διά + acusativo",
+      "meaning": "a través de, por, a causa de"
+    },
+    {
+      "unit": "Preposiciones",
+      "entry": "εἰς + acusativo",
+      "meaning": "a, hacia"
+    },
+    {
+      "unit": "Preposiciones",
+      "entry": "ἐκ/ἐξ + genitivo",
+      "meaning": "de, desde"
+    },
+    {
+      "unit": "Preposiciones",
+      "entry": "ἐν + dativo",
+      "meaning": "en"
+    },
+    {
+      "unit": "Preposiciones",
+      "entry": "μετά + genitivo | acusativo",
+      "meaning": "entre, con’ (gen.) | después de’ (ac.)"
+    },
+    {
+      "unit": "Preposiciones",
+      "entry": "περί + genitivo",
+      "meaning": "alrededor de, sobre"
+    },
+    {
+      "unit": "Preposiciones",
+      "entry": "πρός + acusativo",
+      "meaning": "a, hacia, junto a"
+    },
+    {
+      "unit": "Preposiciones",
+      "entry": "σύν + dativo",
+      "meaning": "con"
+    },
+    {
+      "unit": "Preposiciones",
+      "entry": "ὐπό + genitivo",
+      "meaning": "debajo de, por"
+    },
+    {
+      "unit": "UDs 1–4",
+      "entry": "ἀγορά, –ας",
+      "meaning": "plaza"
+    },
+    {
+      "unit": "UDs 1–4",
+      "entry": "ἀδικία, –ας",
+      "meaning": "injusticia"
+    },
+    {
+      "unit": "UDs 1–4",
+      "entry": "Ἀθηνᾶ, –ᾶς",
+      "meaning": "Atenea"
+    },
+    {
+      "unit": "UDs 1–4",
+      "entry": "Ἀθῆναι, –ῶν",
+      "meaning": "Atenas' (sólo pl.)"
+    },
+    {
+      "unit": "UDs 1–4",
+      "entry": "ἀκούω",
+      "meaning": "escuchar’ (+ gen. CRV)"
+    },
+    {
+      "unit": "UDs 1–4",
+      "entry": "ἀληθεία, –ας",
+      "meaning": "verdad"
+    },
+    {
+      "unit": "UDs 1–4",
+      "entry": "ἄνθρωπος, –ου",
+      "meaning": "hombre"
+    },
+    {
+      "unit": "UDs 1–4",
+      "entry": "ἀρετή, –ης",
+      "meaning": "virtud"
+    },
+    {
+      "unit": "UDs 1–4",
+      "entry": "ἄρχω",
+      "meaning": "gobernar’ (+ gen. CRV)"
+    },
+    {
+      "unit": "UDs 1–4",
+      "entry": "βασιλεύω",
+      "meaning": "reinar’ (+ gen. CRV)"
+    },
+    {
+      "unit": "UDs 1–4",
+      "entry": "βιβλίον, –ου",
+      "meaning": "libro"
+    },
+    {
+      "unit": "UDs 1–4",
+      "entry": "βίος, –ου",
+      "meaning": "vida"
+    },
+    {
+      "unit": "UDs 1–4",
+      "entry": "δῆμος, –ου",
+      "meaning": "pueblo"
+    },
+    {
+      "unit": "UDs 1–4",
+      "entry": "δίκη, –ης",
+      "meaning": "justicia"
+    },
+    {
+      "unit": "UDs 1–4",
+      "entry": "δοῦλος, –ου",
+      "meaning": "esclavo"
+    },
+    {
+      "unit": "UDs 1–4",
+      "entry": "ἐλευθερία, –ας",
+      "meaning": "libertad"
+    },
+    {
+      "unit": "UDs 1–4",
+      "entry": "ἐπιθυμέω",
+      "meaning": "desear’ (+ gen. CRV)"
+    },
+    {
+      "unit": "UDs 1–4",
+      "entry": "ζῷον, –ου",
+      "meaning": "animal"
+    },
+    {
+      "unit": "UDs 1–4",
+      "entry": "θάλαττα, –ης",
+      "meaning": "mar"
+    },
+    {
+      "unit": "UDs 1–4",
+      "entry": "θέα, –ας",
+      "meaning": "diosa"
+    },
+    {
+      "unit": "UDs 1–4",
+      "entry": "θέος, –ου",
+      "meaning": "dios"
+    },
+    {
+      "unit": "UDs 1–4",
+      "entry": "ἵππος, –ου",
+      "meaning": "caballo"
+    },
+    {
+      "unit": "UDs 1–4",
+      "entry": "μαθητής, –ου",
+      "meaning": "alumno"
+    },
+    {
+      "unit": "UDs 1–4",
+      "entry": "μετέχω",
+      "meaning": "participar en’ (+ gen. CRV)"
+    },
+    {
+      "unit": "UDs 1–4",
+      "entry": "οἰκία, –ας",
+      "meaning": "casa"
+    },
+    {
+      "unit": "UDs 1–4",
+      "entry": "πολίτης, –ου",
+      "meaning": "ciudadano"
+    },
+    {
+      "unit": "UDs 1–4",
+      "entry": "σοφία, –ας",
+      "meaning": "sabiduría"
+    },
+    {
+      "unit": "UDs 1–4",
+      "entry": "σοφός, –ου",
+      "meaning": "sabio"
+    },
+    {
+      "unit": "UDs 1–4",
+      "entry": "φίλος, –ου",
+      "meaning": "amigo"
+    },
+    {
+      "unit": "UD5",
+      "entry": "ἀγαθός, –η, –ον",
+      "meaning": "bueno/a"
+    },
+    {
+      "unit": "UD5",
+      "entry": "ἄγω",
+      "meaning": "conducir"
+    },
+    {
+      "unit": "UD5",
+      "entry": "ἀεί (adv.)",
+      "meaning": "siempre"
+    },
+    {
+      "unit": "UD5",
+      "entry": "αἰσχρός, –ον",
+      "meaning": "vergonzoso/a"
+    },
+    {
+      "unit": "UD5",
+      "entry": "ἀλλά (conj.)",
+      "meaning": "pero’, ‘sino"
+    },
+    {
+      "unit": "UD5",
+      "entry": "ἀρχή, –ῆς",
+      "meaning": "gobierno’, ‘origen"
+    },
+    {
+      "unit": "UD5",
+      "entry": "βάρβαρος, –ου",
+      "meaning": "bárbaro"
+    },
+    {
+      "unit": "UD5",
+      "entry": "γή, –ης",
+      "meaning": "tierra"
+    },
+    {
+      "unit": "UD5",
+      "entry": "γιγνώσκω",
+      "meaning": "conocer"
+    },
+    {
+      "unit": "UD5",
+      "entry": "γράφω",
+      "meaning": "escribir"
+    },
+    {
+      "unit": "UD5",
+      "entry": "δεσπότης, –ου",
+      "meaning": "amo, señor"
+    },
+    {
+      "unit": "UD5",
+      "entry": "διδάσκαλος, –ου",
+      "meaning": "profesor"
+    },
+    {
+      "unit": "UD5",
+      "entry": "δίκαιος, –α, –ον",
+      "meaning": "justo/a"
+    },
+    {
+      "unit": "UD5",
+      "entry": "διώκω",
+      "meaning": "perseguir"
+    },
+    {
+      "unit": "UD5",
+      "entry": "Ἑλληνικός, –η, ον",
+      "meaning": "helénico/a"
+    },
+    {
+      "unit": "UD5",
+      "entry": "ἔνδοξος, –ον",
+      "meaning": "famoso"
+    },
+    {
+      "unit": "UD5",
+      "entry": "ἐχθρός, –ον",
+      "meaning": "enemigo/a"
+    },
+    {
+      "unit": "UD5",
+      "entry": "ἥκω",
+      "meaning": "llegar"
+    },
+    {
+      "unit": "UD5",
+      "entry": "ἡμέρα, –ας",
+      "meaning": "día"
+    },
+    {
+      "unit": "UD5",
+      "entry": "ἡμετέρος, –α, –ον",
+      "meaning": "nuestro/a"
+    },
+    {
+      "unit": "UD5",
+      "entry": "κακός, –η, –ον",
+      "meaning": "malo/a"
+    },
+    {
+      "unit": "UD5",
+      "entry": "καλός, –η, –ον",
+      "meaning": "bonito/a"
+    },
+    {
+      "unit": "UD5",
+      "entry": "κίνδυνος, –ου",
+      "meaning": "peligro"
+    },
+    {
+      "unit": "UD5",
+      "entry": "λέγω",
+      "meaning": "decir’, ‘hablar"
+    },
+    {
+      "unit": "UD5",
+      "entry": "μέγας, μεγάλη, μέγα",
+      "meaning": "grande"
+    },
+    {
+      "unit": "UD5",
+      "entry": "μέν… δέ (conj.)",
+      "meaning": "“por un lado… por otro”"
+    },
+    {
+      "unit": "UD5",
+      "entry": "μίκρος, –α, –ον",
+      "meaning": "pequeño/a"
+    },
+    {
+      "unit": "UD5",
+      "entry": "ὁδός, –ου (ἡ)",
+      "meaning": "camino"
+    },
+    {
+      "unit": "UD5",
+      "entry": "οἰκέω",
+      "meaning": "habitar"
+    },
+    {
+      "unit": "UD5",
+      "entry": "ὀλιγός, –η, –ον",
+      "meaning": "poco/a"
+    },
+    {
+      "unit": "UD5",
+      "entry": "παιδεύω",
+      "meaning": "educar"
+    },
+    {
+      "unit": "UD5",
+      "entry": "πολύς, πολλή, πολύ",
+      "meaning": "mucho/a"
+    },
+    {
+      "unit": "UD5",
+      "entry": "πονηρός, –α, –ον",
+      "meaning": "desdichado/a"
+    },
+    {
+      "unit": "UD5",
+      "entry": "στρατηγός, –ου",
+      "meaning": "estratego"
+    },
+    {
+      "unit": "UD5",
+      "entry": "στρατιώτης, –ου",
+      "meaning": "soldado"
+    },
+    {
+      "unit": "UD5",
+      "entry": "σύμμαχος, –ον",
+      "meaning": "aliado/a"
+    },
+    {
+      "unit": "UD5",
+      "entry": "φέρω",
+      "meaning": "llevar"
+    },
+    {
+      "unit": "UD5",
+      "entry": "φεύγω",
+      "meaning": "rechazar’, ‘huir"
+    },
+    {
+      "unit": "UD5",
+      "entry": "φιλέω",
+      "meaning": "amar"
+    },
+    {
+      "unit": "UDs 6–7",
+      "entry": "ἀδικός, –ον",
+      "meaning": "injusto/a"
+    },
+    {
+      "unit": "UDs 6–7",
+      "entry": "βούλομαι",
+      "meaning": "querer"
+    },
+    {
+      "unit": "UDs 6–7",
+      "entry": "γίγνομαι",
+      "meaning": "llegar a ser’ (copulativo)"
+    },
+    {
+      "unit": "UDs 6–7",
+      "entry": "δεῖ (impers.)",
+      "meaning": "es necesario"
+    },
+    {
+      "unit": "UDs 6–7",
+      "entry": "δῶρον, –ου",
+      "meaning": "regalo"
+    },
+    {
+      "unit": "UDs 6–7",
+      "entry": "εἰρήνη, –ης",
+      "meaning": "paz"
+    },
+    {
+      "unit": "UDs 6–7",
+      "entry": "ἐπιστολή, –ης",
+      "meaning": "carta"
+    },
+    {
+      "unit": "UDs 6–7",
+      "entry": "ἔχω",
+      "meaning": "tener"
+    },
+    {
+      "unit": "UDs 6–7",
+      "entry": "ἥλιος, –ου",
+      "meaning": "sol"
+    },
+    {
+      "unit": "UDs 6–7",
+      "entry": "θάνατος, –ου",
+      "meaning": "muerte"
+    },
+    {
+      "unit": "UDs 6–7",
+      "entry": "ἰατρός, –ου",
+      "meaning": "médico"
+    },
+    {
+      "unit": "UDs 6–7",
+      "entry": "κεφαλῆ, –ῆς",
+      "meaning": "cabeza"
+    },
+    {
+      "unit": "UDs 6–7",
+      "entry": "λόγος, –ου",
+      "meaning": "palabra"
+    },
+    {
+      "unit": "UDs 6–7",
+      "entry": "μάχη, –ης",
+      "meaning": "batalla"
+    },
+    {
+      "unit": "UDs 6–7",
+      "entry": "μάχομαι",
+      "meaning": "luchar"
+    },
+    {
+      "unit": "UDs 6–7",
+      "entry": "ναύτης, –ου",
+      "meaning": "marinero"
+    },
+    {
+      "unit": "UDs 6–7",
+      "entry": "νεανίας, –ου",
+      "meaning": "joven"
+    },
+    {
+      "unit": "UDs 6–7",
+      "entry": "νίκη, –ης",
+      "meaning": "victoria"
+    },
+    {
+      "unit": "UDs 6–7",
+      "entry": "νόμος, –ου",
+      "meaning": "ley"
+    },
+    {
+      "unit": "UDs 6–7",
+      "entry": "ξένος, –ου",
+      "meaning": "extranjero"
+    },
+    {
+      "unit": "UDs 6–7",
+      "entry": "ξύλον, –ου",
+      "meaning": "madera"
+    },
+    {
+      "unit": "UDs 6–7",
+      "entry": "πενία, –ας",
+      "meaning": "pobreza"
+    },
+    {
+      "unit": "UDs 6–7",
+      "entry": "πέτρα, –ας",
+      "meaning": "piedra"
+    },
+    {
+      "unit": "UDs 6–7",
+      "entry": "πλοῦτος, –ου",
+      "meaning": "riqueza"
+    },
+    {
+      "unit": "UDs 6–7",
+      "entry": "πόλεμος, –ου",
+      "meaning": "guerra"
+    },
+    {
+      "unit": "UDs 6–7",
+      "entry": "πολλάκις (adv.)",
+      "meaning": "muchas veces"
+    },
+    {
+      "unit": "UDs 6–7",
+      "entry": "τύραννος, –ου",
+      "meaning": "tirano"
+    },
+    {
+      "unit": "UDs 6–7",
+      "entry": "χρή (impers.)",
+      "meaning": "es necesario"
+    },
+    {
+      "unit": "UD8",
+      "entry": "ἀθάνατος, –ον",
+      "meaning": "inmortal"
+    },
+    {
+      "unit": "UD8",
+      "entry": "αἴξ, αἰγός (ἡ)",
+      "meaning": "cabra"
+    },
+    {
+      "unit": "UD8",
+      "entry": "ἀνήρ, ἀνδρός (ὁ)",
+      "meaning": "hombre"
+    },
+    {
+      "unit": "UD8",
+      "entry": "ἄρχων, −οντος (ὁ)",
+      "meaning": "arconte"
+    },
+    {
+      "unit": "UD8",
+      "entry": "ἀσπίς, ἀσπίδος (ἡ)",
+      "meaning": "escudo"
+    },
+    {
+      "unit": "UD8",
+      "entry": "γέρων, −οντος (ὁ)",
+      "meaning": "anciano"
+    },
+    {
+      "unit": "UD8",
+      "entry": "γυνή, γυναικός (ἡ)",
+      "meaning": "mujer"
+    },
+    {
+      "unit": "UD8",
+      "entry": "δέρμα, –ματος (τὸ)",
+      "meaning": "piel"
+    },
+    {
+      "unit": "UD8",
+      "entry": "Ἕλλας, Ἑλλάδος (ἡ)",
+      "meaning": "Grecia"
+    },
+    {
+      "unit": "UD8",
+      "entry": "Ἕλλην, Ἕλληνος (ὁ o ἡ)",
+      "meaning": "griego/a"
+    },
+    {
+      "unit": "UD8",
+      "entry": "ἡγεμών, −όνος (ὁ)",
+      "meaning": "líder’, ‘soberano"
+    },
+    {
+      "unit": "UD8",
+      "entry": "θήρ, θηρός (ὁ o ἡ)",
+      "meaning": "fiera"
+    },
+    {
+      "unit": "UD8",
+      "entry": "θώραξ, –ακος (ὁ)",
+      "meaning": "coraza"
+    },
+    {
+      "unit": "UD8",
+      "entry": "λέων, λεόντος (ὁ)",
+      "meaning": "león"
+    },
+    {
+      "unit": "UD8",
+      "entry": "μήτηρ, −τρός (ἡ)",
+      "meaning": "madre"
+    },
+    {
+      "unit": "UD8",
+      "entry": "νύξ, νυκτός (ἡ)",
+      "meaning": "noche"
+    },
+    {
+      "unit": "UD8",
+      "entry": "ὄνομα, −ματος (τὸ)",
+      "meaning": "nombre"
+    },
+    {
+      "unit": "UD8",
+      "entry": "παῖς, παιδός (ὁ o ἡ)",
+      "meaning": "niño/a"
+    },
+    {
+      "unit": "UD8",
+      "entry": "πάτηρ, −τρός (ὁ)",
+      "meaning": "padre"
+    },
+    {
+      "unit": "UD8",
+      "entry": "πατρίς, πατρίδος (ἡ)",
+      "meaning": "patria"
+    },
+    {
+      "unit": "UD8",
+      "entry": "ποῖ (adv.)",
+      "meaning": "a dónde"
+    },
+    {
+      "unit": "UD8",
+      "entry": "ποῦ (adv.)",
+      "meaning": "dónde"
+    },
+    {
+      "unit": "UD8",
+      "entry": "πράγμα, −ματος (τὸ)",
+      "meaning": "asunto"
+    },
+    {
+      "unit": "UD8",
+      "entry": "πῶς (adv.)",
+      "meaning": "cómo"
+    },
+    {
+      "unit": "UD8",
+      "entry": "ῥήτωρ, −ορος (ὁ)",
+      "meaning": "orador"
+    },
+    {
+      "unit": "UD8",
+      "entry": "ῥίς, ῥινός (ἡ)",
+      "meaning": "nariz"
+    },
+    {
+      "unit": "UD8",
+      "entry": "σῶμα, –ματος (τὸ)",
+      "meaning": "cuerpo"
+    },
+    {
+      "unit": "UD8",
+      "entry": "ὕδωρ, ὕδατος (τὸ)",
+      "meaning": "agua"
+    },
+    {
+      "unit": "UD8",
+      "entry": "φύλαξ, –ακος (ὁ o ἡ)",
+      "meaning": "guardián/a"
+    },
+    {
+      "unit": "UD8",
+      "entry": "χρῆμα, –ατος (τὸ)",
+      "meaning": "cosa’ (sing.), ‘riqueza’ (pl.)"
+    },
+    {
+      "unit": "UD9",
+      "entry": "ἀποθνῄσκω",
+      "meaning": "morir"
+    },
+    {
+      "unit": "UD9",
+      "entry": "διδάσκω",
+      "meaning": "enseñar"
+    },
+    {
+      "unit": "UD9",
+      "entry": "ἐθέλω",
+      "meaning": "querer"
+    },
+    {
+      "unit": "UD9",
+      "entry": "ἔρχομαι",
+      "meaning": "ir"
+    },
+    {
+      "unit": "UD9",
+      "entry": "θαυμάζω",
+      "meaning": "admirar"
+    },
+    {
+      "unit": "UD9",
+      "entry": "θεραπεύω",
+      "meaning": "curar’, ‘venerar"
+    },
+    {
+      "unit": "UD9",
+      "entry": "λαμβάνω",
+      "meaning": "coger, tomar"
+    },
+    {
+      "unit": "UD9",
+      "entry": "λείπω",
+      "meaning": "dejar"
+    },
+    {
+      "unit": "UD9",
+      "entry": "λύω",
+      "meaning": "liberar"
+    },
+    {
+      "unit": "UD9",
+      "entry": "μανθάνω",
+      "meaning": "estudiar"
+    },
+    {
+      "unit": "UD9",
+      "entry": "οὐράνος, –ου",
+      "meaning": "cielo"
+    },
+    {
+      "unit": "UD9",
+      "entry": "στράτευμα, –ατος",
+      "meaning": "ejército"
+    },
+    {
+      "unit": "UD9",
+      "entry": "σῴζω",
+      "meaning": "salvar"
+    },
+    {
+      "unit": "UD9",
+      "entry": "τόπος, –ου",
+      "meaning": "lugar"
+    },
+    {
+      "unit": "UD10",
+      "entry": "ἔτι (adv.)",
+      "meaning": "ya’, ‘aún"
+    },
+    {
+      "unit": "UD10",
+      "entry": "ἡγέομαι",
+      "meaning": "liderar’, ‘pensar"
+    },
+    {
+      "unit": "UD10",
+      "entry": "ναῦς, νεώς (ἡ)",
+      "meaning": "nave"
+    },
+    {
+      "unit": "UD10",
+      "entry": "νέος, –α, –ον",
+      "meaning": "nuevo/a’, ‘joven"
+    },
+    {
+      "unit": "UD10",
+      "entry": "ὁπλίτης, –ου",
+      "meaning": "hoplita"
+    },
+    {
+      "unit": "UD10",
+      "entry": "ὅπλον, –ου",
+      "meaning": "arma"
+    },
+    {
+      "unit": "UD10",
+      "entry": "ποιητής, –ου",
+      "meaning": "poeta"
+    },
+    {
+      "unit": "UD10",
+      "entry": "πρῶτος, –η, –ον",
+      "meaning": "primero/a"
+    },
+    {
+      "unit": "UD10",
+      "entry": "φόβος, –ου",
+      "meaning": "miedo"
+    },
+    {
+      "unit": "UD10",
+      "entry": "φύσις, –εως (ἡ)",
+      "meaning": "naturaleza"
+    }
+  ]
+}
