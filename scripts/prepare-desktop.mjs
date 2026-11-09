@@ -1,7 +1,11 @@
-import { mkdir, copyFile } from 'node:fs/promises';
-import { fileURLToPath } from 'node:url';
-import { dirname, resolve } from 'node:path';
-const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-await mkdir(resolve(root, 'web'), { recursive: true });
-await copyFile(resolve(root, 'index.html'), resolve(root, 'web/index.html'));
-console.log('Interfaz web copiada a web/index.html para Tauri.');
+import {mkdir} from 'node:fs/promises';
+import {fileURLToPath} from 'node:url';
+import {dirname,resolve} from 'node:path';
+import {renderOffline} from './build-offline.mjs';
+import {writeFile} from 'node:fs/promises';
+const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
+const folder=resolve(root,'web');
+await mkdir(folder,{recursive:true});
+const {content,latinRows}=await renderOffline(root);
+await writeFile(resolve(folder,'index.html'),content,'utf8');
+console.log('Interfaz autónoma copiada a web/index.html para Tauri ('+latinRows+' formas latinas).');
