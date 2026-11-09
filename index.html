@@ -1102,7 +1102,7 @@ const greekMaterials={"syllabus": ["El griego como lengua indoeuropea. El alfabe
 const greekModes={
  complete:{es:'1 · Examen completo',va:'1 · Examen complet',points:[1,1,1,0,1,6]},
  morphology:{es:'2 · Examen de morfología',va:'2 · Examen de morfologia',points:[0,0,0,0,0,0]},
- translation:{es:'3 · Examen de traducción',va:'3 · Examen de traducció',points:[0,0,0,0,0,10]}
+ translation:{es:'3 · Examen de traducción',va:'3 · Examen de traducció',points:[0,0,2,0,2,6]}
 };
 const greekKinds=['declension','conjugation','forms','pronouns','etymology','sentences'];
 const greekKindNames={es:['Declinación','Conjugación','Análisis morfológico','Pronombres','Etimología','Análisis y traducción'],va:['Declinació','Conjugació','Anàlisi morfològica','Pronoms','Etimologia','Anàlisi i traducció']};
@@ -1348,35 +1348,58 @@ function greekQuestionLabel(kind){if(kind==='sentences'&&$('model').value==='tra
 function greekPoints(kind){const v=Number($('greek-points-'+kind).value);return Number.isFinite(v)?Math.max(0,Math.min(100,v)):0}
 function generateGreekMorphologyFixed(){
  const marked=greekMarkedUnits(),limit=greekLimit(),cfg=morphConfig(),va=$('lang').value==='va';
- const eligible=greekVerifiedCorpus.filter(x=>x.verified&&greekMorphologyEligible(x,limit)&&!(x.kind==='declension'&&x.lemmas.some(isProperNounLemma))&&!(x.kind==='forms'&&x.lemmas.some(isProperNounLemma)&&/plural/i.test(x.answer)));
- const nounPool=eligible.filter(x=>x.kind==='declension'&&x.table);
- const nounItems=sample(nounPool,cfg.offer);
- const verbPool=eligible.filter(x=>x.kind==='conjugation'&&x.table)
-  .flatMap(x=>x.table.rows.flatMap((row,i)=>[row[1],row[2]].map((form,j)=>({prompt:form,answer:(i+1)+'ª persona '+(j===0?'singular':'plural')+' del presente de indicativo, voz activa',lemma:x.lemmas[0]})).filter(x=>x.prompt)));
- const verbItems=sample(verbPool,cfg.verbs);
+ const t=(es,vl)=>va?vl:es;
+ const eligible=greekVerifiedCorpus.filter(x=>x.verified&&greekMorphologyEligible(x,limit)&&
+  !(x.kind==='declension'&&x.lemmas.some(isProperNounLemma)));
+ const nouns=sample(eligible.filter(x=>x.kind==='declension'&&x.table),cfg.decline);
+ const verbs=sample(eligible.filter(x=>x.kind==='conjugation'&&x.table)
+  .flatMap(x=>x.table.rows.flatMap((row,i)=>[row[1],row[2]].map((form,j)=>({
+   prompt:form,answer:(i+1)+'ª persona '+(j===0?'singular':'plural')+' del presente de indicativo activo',
+   lemma:x.lemmas[0],person:(i+1)+'ª '+(j===0?'singular':'plural')
+  })).filter(x=>x.prompt))),cfg.verbs);
+ const pronPool=eligible.filter(x=>x.kind==='pronouns');
+ const pronouns=sample(pronPool,Math.min(6,pronPool.length));
  const categories={n:$('morphCategory-n')?.checked!==false,adj:$('morphCategory-adj')?.checked!==false,pro:$('morphCategory-pro')?.checked!==false};
- const nominalPool=eligible.filter(x=>(x.kind==='forms'||x.kind==='pronouns')&&(
+ const words=sample(eligible.filter(x=>x.kind==='forms'&&!x.prompt.includes(' ')&&(
   (/pronombre|demostrativo|anafórico|personal|interrogativo/i.test(x.answer)&&categories.pro)||
   (/adjetivo/i.test(x.answer)&&categories.adj)||
-  (/declinación|sustantivo/i.test(x.answer)&&categories.n)));
- const nomItems=sample(nominalPool,cfg.words);
- const chosenLabel=marked.length?'UD'+limit:'—';
- const header=greekExamHeader(marked,greekModes.morphology);
- const first='<p class="exam-question">1. '+(va?'Tria '+cfg.decline+' de '+cfg.offer+' paraules per declinar (2 p.):':'Elige '+cfg.decline+' de '+cfg.offer+' palabras para declinar (2 p.):')+'</p>'+
- nounItems.map((x,i)=>'<p class="exam-item">'+String.fromCharCode(97+i)+'. <i>'+esc(x.lemmas[0])+'</i></p>').join('')+
- (nounItems.length<cfg.offer?'<p class="exam-item">No hay suficientes paradigmas verificados para la cantidad solicitada.</p>':'')+
- Array.from({length:cfg.decline},()=>'<table class="exam-paradigm exam-nouns reference-morph-table"><thead><tr><th>Caso</th><th>Singular</th><th>Plural</th></tr></thead><tbody>'+['Nominativo','Vocativo','Acusativo','Genitivo','Dativo'].map(c=>'<tr><th>'+c+'</th><td></td><td></td></tr>').join('')+'</tbody></table>').join('');
- const second='<p class="exam-question">2. '+(va?'Analitza les formes verbals següents (1 p.):':'Analiza las siguientes formas verbales (1 p.):')+'</p>'+
- '<table class="exam-paradigm reference-morph-table"><thead><tr><th>Forma verbal</th><th>Persona y número</th><th>Tiempo</th><th>Voz</th></tr></thead><tbody>'+
- verbItems.map(x=>'<tr><td><i>'+esc(x.prompt)+'</i> ('+esc(x.lemma)+')</td><td></td><td></td><td></td></tr>').join('')+'</tbody></table>';
- const third='<p class="exam-question">3. '+(va?'Analitza morfològicament les paraules següents (1 p.):':'Analiza morfológicamente las siguientes palabras (1 p.):')+'</p>'+
- nomItems.map((x,i)=>'<p class="exam-item reference-analysis-item">'+String.fromCharCode(97+i)+'. <i>'+esc(x.prompt)+'</i>: <span class="reference-answer-line"></span></p>').join('');
- const notice='<p class="hint">'+(verbItems.length<cfg.verbs||nomItems.length<cfg.words?'El corpus verificado no contiene suficientes formas para todas las cantidades solicitadas. Se muestran solo las disponibles.':'')+'</p>';
- const answers='<div id="answerkey" class="solutions"><h2>'+tr('key')+'</h2><ol><li>'+nounItems.map(x=>esc(x.answer)).join('<p></p>')+'</li><li>'+verbItems.map(x=>esc(x.prompt+' — '+x.answer)).join('<p></p>')+'</li><li>'+nomItems.map(x=>esc(x.prompt+' — '+x.answer)).join('<p></p>')+'</li></ol></div>';
- $('paper').innerHTML='<div class="exam-sheet reference-morph-exam">'+header+first+second+third+notice+'<div class="exam-grade">Nota sobre 4: __________</div><div class="exam-grade">Nota sobre 10: __________</div>'+answers+'</div>';
+  (/declinación|sustantivo|artículo/i.test(x.answer)&&categories.n)||
+  (/verbo|persona|indicativo|deponente|infinitivo|participio|aoristo|imperativo|voz media/i.test(x.answer))
+  )),cfg.words);
+ const question=(n,txt)=>'<p class="exam-question">'+n+'. '+esc(txt)+'</p>';
+ let n=0;
+ const first=question(++n,t('Declina las siguientes palabras (2 p.).','Declina les paraules següents (2 p.).'))+
+  (nouns.length?nouns.map(x=>greekTable(x)).join(''):
+  '<p class="exam-item">No hay paradigmas de declinación verificados en estas unidades.</p>');
+ const second=question(++n,t('Analiza las siguientes formas verbales (1 p.).','Analitza les formes verbals següents (1 p.).'))+
+  '<table class="exam-paradigm reference-morph-table"><thead><tr><th>Forma verbal</th><th>Persona y número</th><th>Tiempo</th><th>Voz</th></tr></thead><tbody>'+
+  verbs.map(x=>'<tr><td><i>'+esc(x.prompt)+'</i> ('+esc(x.lemma)+')</td><td></td><td></td><td></td></tr>').join('')+'</tbody></table>';
+ let pronounSection='';
+ if(pronPool.length){
+  pronounSection=question(++n,t('Analiza los pronombres: tipo, caso, género y número (1 p.).','Analitza els pronoms: tipus, cas, gènere i nombre (1 p.).'))+
+   '<table class="exam-paradigm reference-morph-table exam-pronouns"><thead><tr><th>Forma</th><th>Tipo</th><th>Caso</th><th>Género</th><th>Número</th></tr></thead><tbody>'+
+   pronouns.map(x=>'<tr data-corpus-id="'+x.id+'"><td><i>'+esc(x.prompt)+'</i></td><td></td><td></td><td></td><td></td></tr>').join('')+'</tbody></table>';
+ }
+ const last=question(++n,t('Analiza morfológicamente las siguientes palabras variables (1 p.).','Analitza morfològicament les paraules variables següents (1 p.).'))+
+  words.map((x,i)=>'<p class="exam-item reference-analysis-item" data-corpus-id="'+x.id+'">'+String.fromCharCode(97+i)+'. <i>'+esc(x.prompt)+'</i>: <span class="reference-answer-line"></span></p>').join('');
+ const problems=[];
+ if(nouns.length<cfg.decline)problems.push('Declinaciones: '+nouns.length+' de '+cfg.decline);
+ if(verbs.length<cfg.verbs)problems.push('Verbos: '+verbs.length+' de '+cfg.verbs);
+ if(words.length<cfg.words)problems.push('Palabras variables: '+words.length+' de '+cfg.words);
+ const notice=problems.length?'<p class="hint">Material verificado insuficiente ('+esc(problems.join('; '))+'). No se han inventado análisis.</p>':'';
+ const total=pronPool.length?5:4;
+ const answer='<div id="answerkey" class="solutions"><h2>'+tr('key')+'</h2><ol>'+
+  '<li>'+nouns.map(x=>greekTable(x,true)).join('')+'</li>'+
+  '<li>'+verbs.map(x=>'<p>'+esc(x.prompt+' — '+x.answer)+'</p>').join('')+'</li>'+
+  (pronPool.length?'<li>'+pronouns.map(x=>'<p>'+esc(x.prompt+' — '+x.answer)+'</p>').join('')+'</li>':'')+
+  '<li>'+words.map(x=>'<p>'+esc(x.prompt+' — '+x.answer)+'</p>').join('')+'</li></ol></div>';
+ $('paper').innerHTML='<div class="exam-sheet reference-morph-exam">'+greekExamHeader(marked,greekModes.morphology)+
+  first+second+pronounSection+last+notice+
+  '<p class="exam-grade">Nota sobre '+total+': __________</p>'+
+  '<p class="exam-grade">Nota sobre 10: __________</p>'+answer+'</div>';
  $('paper').setAttribute('contenteditable','true');$('paper').setAttribute('spellcheck','false');
  $('solutions').textContent=tr('solutions');refreshManualMorphWords();
- $('greekCoverage').textContent='Gramática acumulativa hasta UD'+limit+'. Modelo de tres preguntas fijas. Solo corpus verificado.';
+ $('greekCoverage').textContent='Morfología hasta UD'+limit+'. Pronombres desde UD7. Solo soluciones verificadas.';
 }
 
 let greekExamState=null;
@@ -1464,7 +1487,7 @@ function generateGreekExam(){
  if($('model').value==='morphology')return generateGreekMorphologyFixed();
  const chosen=greekMarkedUnits(),max=greekLimit(),mode=greekModes[$('model').value]||greekModes.complete;
  const enabled=greekKinds.filter((k,i)=>mode.points[i]>0),pool=greekVerifiedCorpus.filter(x=>x.verified&&greekMorphologyEligible(x,max)&&enabled.includes(x.kind));
- const counts={declension:Math.min(2,countFor('decl')),conjugation:Math.min(2,countFor('verb')),forms:countFor('verb'),pronouns:15,etymology:Math.min(2,countFor('lex')),sentences:countFor('sent')};
+ const counts={declension:Math.min(2,countFor('decl')),conjugation:Math.min(2,countFor('verb')),forms:countFor('verb'),pronouns:15,etymology:Math.min($('model').value==='translation'?3:2,countFor('lex')),sentences:countFor('sent')};
  const result=greekSelectedItems(pool,chosen,counts),sections=[],answers=[];
 
  let total=0,index=0;
@@ -1483,9 +1506,9 @@ function generateGreekExam(){
  const missing=result.missing.map(u=>'UD'+u),notice=!chosen.length?'Selecciona al menos una unidad.':missing.length?'Sin material verificado para cubrir: '+missing.join(', ')+'. No se han inventado ejercicios.':'Cobertura verificada de todas las unidades seleccionadas.';
  const shortfalls=enabled.filter(k=>pool.filter(x=>x.kind===k).length<counts[k]).map(k=>greekKindNames[$('lang').value][greekKinds.indexOf(k)]+': '+pool.filter(x=>x.kind===k).length+' de '+counts[k]);
  $('greekCoverage').textContent=notice+' Gramática acumulativa'+(max>=0?' hasta UD'+max:'')+'.'+(chosen.length&&shortfalls.length?' Material disponible inferior al solicitado ('+shortfalls.join('; ')+'). Se utiliza únicamente el disponible.':'');
- const lemmas=[...new Map(result.items.flatMap(x=>x.lemmas).map(h=>{const x=greekLemma(h);return [examKey(x.entry),x]})).values()].sort((a,b)=>a.entry.localeCompare(b.entry));
+ const lemmas=[...new Map(result.items.filter(x=>x.kind==='sentences').flatMap(x=>x.lemmas).map(h=>{const x=greekLemma(h);return [examKey(x.entry),x]})).values()].sort((a,b)=>a.entry.localeCompare(b.entry));
  const visibleLemmas=lemmas.filter(x=>glossAccept(x.entry,chosen)&&!String(x.meaning).includes('[Traducción pendiente de revisión]'));
- const gloss=$('autoGloss').checked&&visibleLemmas.length?'<p class="exam-gloss-title"><strong>'+($('lang').value==='va'?'Vocabulari':'Vocabulario')+'</strong></p><div class="final-gloss">'+visibleLemmas.map(x=>'<div class="gloss-item">'+esc(x.entry)+':'+(isRequired(x.entry,chosen)?'':' ‘'+esc(x.meaning)+'’')+'</div>').join('')+'</div>':'';
+ const gloss=$('model').value==='complete'&&visibleLemmas.length?'<p class="exam-gloss-title"><strong>'+($('lang').value==='va'?'Vocabulari':'Vocabulario')+'</strong></p><div class="final-gloss">'+visibleLemmas.map(x=>'<div class="gloss-item">'+esc(x.entry)+':'+(isRequired(x.entry,chosen)?'':' ‘'+esc(x.meaning)+'’')+'</div>').join('')+'</div>':'';
  const grade='<p class="exam-grade">Nota sobre '+String(Number(total.toFixed(2))).replace('.',',')+': __________</p>';
  $('paper').innerHTML='<div class="exam-sheet">'+greekExamHeader(chosen,mode)+(chosen.length?sections.join(''):'<p>'+notice+'</p>')+grade+gloss+'<div id="answerkey" class="solutions"><h2>'+tr('key')+'</h2>'+answers.join('')+'</div></div>';
  $('paper').setAttribute('contenteditable','true');$('paper').setAttribute('spellcheck','false');$('solutions').textContent=tr('solutions');refreshManualMorphWords();greekExamControls();
