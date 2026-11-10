@@ -1748,6 +1748,15 @@ function greekCompleteAdjectiveForms(stem,gender){
  }[gender];
  return endings.map(number=>number.map(ending=>stem+ending));
 }
+// Una palabra oxítona pasa a acento grave cuando va seguida por otra
+// palabra dentro del mismo sintagma (ἀγορά > ἀγορὰ κακή).
+function greekAccentBeforeAdjective(surface){
+ const text=String(surface||'').normalize('NFD'),at=text.lastIndexOf('\u0301');
+ if(at<0)return surface;
+ const after=text.slice(at+1).replace(/[\u0300-\u036f]/g,'');
+ if(/[αεηιουω]/iu.test(after))return surface;
+ return (text.slice(0,at)+'\u0300'+text.slice(at+1)).normalize('NFC');
+}
 function greekCompleteNominalGroup(item){
  if($('model').value!=='complete'||greekLimit()<5||item.kind!=='declension')return null;
  const genders={λογος:'m',ανθρωπος:'m',δωρον:'n',εργον:'n',
@@ -1759,13 +1768,13 @@ function greekCompleteNominalGroup(item){
  const forms=greekCompleteAdjectiveForms(adjective.stem,gender),articles=greekArticles[gender];
  const nominative=item.table.rows[0][1];
  return {
-  title:articles[0][0]+' '+nominative+' '+forms[0][0],
+  title:articles[0][0]+' '+greekAccentBeforeAdjective(nominative)+' '+forms[0][0],
   // El griego antiguo no tiene artículo vocativo. Se declinan sustantivo y
   // adjetivo en esa fila; no se introduce ὦ como si fuera artículo.
   rows:item.table.rows.map((row,k)=>[row[0],
    [0,1].map(number=>{
     const article=articles[number][k];
-    return (article?article+' ':'')+row[number+1]+' '+forms[number][k];
+    return (article?article+' ':'')+greekAccentBeforeAdjective(row[number+1])+' '+forms[number][k];
    })])
  };
 }
