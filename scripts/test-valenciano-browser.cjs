@@ -30,13 +30,26 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
       'complete','gr1','va');
     const project={count:1,course:'lat1',lang:'va',units:[{
       title:'UD1',mode:'complete',text:'Puella.',analyzed:true,
-      rows:[{form:'puella',entry:'puella, –ae',meaning:'niña',status:'documented',candidates:[]}]
+      rows:[
+       {form:'puella',entry:'puella, –ae',meaning:'niña',status:'documented',candidates:[]},
+       {form:'Paulus',entry:'Paulus, –i',meaning:'Paulo',status:'documented',candidates:[]},
+       {form:'impono',entry:'impono, imposui, impositum (3ª)',meaning:'imponer, colocar encima',status:'documented',candidates:[]}
+      ]
     }]};
     const valencianWord=words.documentXml(project);
     const spanishWord=words.documentXml({...project,lang:'es'});
     const verifyTeacher=dict.forEntry({meaning:'ciudad',meaning_va:'traducció pròpia'},'va').value;
+    const specific={
+      kaleo:words.formatVocabularyEntry({entry:'καλέω',meaning:'llamar'},'complete','gr1','va'),
+      malista:words.formatVocabularyEntry({entry:'μάλιστα (adv.)',meaning:'muy'},'complete','gr1','va'),
+      athenaios:words.formatVocabularyEntry({entry:'Ἀθηναῖος, –α, –ον',meaning:'ateniense'},'complete','gr1','va')
+    };
     return {results,independent,wordVa:valencianWord.includes('xiqueta'),
-     wordEs:spanishWord.includes('niña'),teacher:verifyTeacher,
+     wordEs:spanishWord.includes('niña'),
+     paulusVa:valencianWord.includes('Paulus, –i:'),
+     imponoVa:valencianWord.includes('imposar')&&valencianWord.includes('posar damunt'),
+     imponoEs:spanishWord.includes('imponer'),
+     specific,teacher:verifyTeacher,
      ui:document.querySelector('#examLayout aside.panel')?.textContent||''};
    });
    for(const [course,record] of Object.entries(report.results)){
@@ -46,6 +59,11 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
    }
    assert.match(report.independent,/ciutat/,file+': exportación de vocabulario griego sin valenciano');
    assert(report.wordVa&&report.wordEs,file+': la exportación Word no respeta el idioma');
+   assert(report.paulusVa&&report.imponoVa&&report.imponoEs,
+    file+': elecciones sobre Paulus e impono no llegan a Word bilingüe');
+   assert.match(report.specific.kaleo,/cridar.*anomenar/,file+': falta la acepción valenciana de καλέω');
+   assert.match(report.specific.malista,/moltíssim.*especialment/,file+': falta la elección para μάλιστα');
+   assert.match(report.specific.athenaios,/atenenc\/atenenca/,file+': atenenc/atenenca no se imprime');
    assert.equal(report.teacher,'traducció pròpia',file+': prioridad de corrección docente');
    assert(report.ui.includes('Contingut')||report.ui.includes('Unitats'),file+': el menú no se ha localizado');
    assert.deepEqual(errors,[],file+': errores de JavaScript al cambiar idioma');
