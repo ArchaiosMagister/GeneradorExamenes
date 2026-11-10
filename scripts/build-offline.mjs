@@ -31,7 +31,7 @@ export async function renderOffline(root=projectRoot){
  const offlineModule=await readFile(resolve(root,'offline-lemmas.js'),'utf8');
  const external='<script src="offline-lemmas.js" defer></script>';
  if(!html.includes(external))throw new Error('No existe el lematizador en index.html');
- const script='<script>'+offlineModule.replace(/<\\/script/gi,'<\\\\/script')+'</script>';
+ const script='<script>'+offlineModule.replace(/<\/script/gi,'<\\/script')+'</script>';
  const offline=html.replace(external,script).replace(marker,
   '<script id="examina-offline-assets" type="application/json">'+json+'</script>\n'+marker);
  return {content:offline,datasetCount:Object.keys(assets).length,latinRows:latin.rows.length,lemmaRows:lemmatizer.rows.lat.length+lemmatizer.rows.grc.length};
