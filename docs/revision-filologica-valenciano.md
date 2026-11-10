@@ -1,6 +1,6 @@
 # Auditoría filológica del vocabulario en castellano y valenciano
 
-**Rama:** `feat/integracion-pr29-pr30-valenciano-20261110` · **PR:** #31 · **Estado:** trece decisiones docentes aplicadas; ninguna pendiente de esta revisión.
+**Rama:** `feat/integracion-pr29-pr30-valenciano-20261110` · **PR:** #31 · **Estado:** doce decisiones docentes aplicadas; *reduco* sigue pendiente.
 
 ## Criterio editorial
 
@@ -20,12 +20,11 @@
 
 ## Decisiones aprobadas por el docente
 
-**13 de 13 decisiones aplicadas** sobre esta PR, sin fusionarla. Se conservan las glosas castellanas originales salvo en `impono` y `reduco`, cuyas correcciones española y valenciana autorizó expresamente el docente.
+**12 de 13 decisiones aplicadas** sobre esta PR, sin fusionarla. Se conservan las glosas castellanas originales salvo en `impono`, cuya corrección española y valenciana autorizó expresamente el docente.
 
 | Código | Entrada | Decisión aprobada |
 | --- | --- | --- |
 | `LAT1-IMPORTO` | importo, importavi, importatum (1ª) | traer → portar |
-| `LAT1-REDUCO` | reduco, reduxi, reductum (3ª) | conducir de vuelta → conduir de tornada |
 | `LAT1-IMPONO` | impono, imposui, impositum (3ª) | imponer, colocar encima → imposar, posar damunt |
 | `GR1-KALEO` | καλέω | cridar, anomenar |
 | `GR1-MALISTA` | μάλιστα (adv.) | moltíssim, especialment |
@@ -44,7 +43,7 @@ Se ha eliminado `Ultrapuertos`/`ultraports` del único banco bilingüe de prefij
 
 ## Decisiones pendientes
 
-No quedan decisiones sin resolver de esta revisión: las trece elecciones filológicas fueron aprobadas por el docente. En particular, `LAT1-REDUCO` queda como «conducir de vuelta» / «conduir de tornada».
+**Permanece pendiente `LAT1-REDUCO`** (*reduco, reduxi, reductum*): se conserva provisionalmente «traer» en castellano y «portar» en valenciano porque el docente no ha seleccionado ninguna de las tres propuestas. No asignar de oficio otra traducción.
 
 La preferencia editorial es por el **valenciano de uso propio**, sin sustituciones por variantes del catalán que el docente no haya escogido.
 
@@ -62,4 +61,4 @@ La preferencia editorial es por el **valenciano de uso propio**, sin sustitucion
 - `node scripts/test-vocabulary.cjs`
 - `npm run offline:build`
 
-No fusionar con `main` hasta comprobar que las pruebas automatizadas y los documentos Word se generan correctamente tras estas trece decisiones.
+No fusionar con `main` hasta comprobar las pruebas automatizadas y los documentos Word; *reduco* se mantiene expresamente pendiente de decisión.
