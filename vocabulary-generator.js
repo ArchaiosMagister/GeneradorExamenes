@@ -687,11 +687,51 @@ function documentXml(project){
  return '<?xml version="1.0" encoding="UTF-8"?><w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>'+
   body+'<w:sectPr><w:type w:val="continuous"/>'+layout(1)+'</w:sectPr></w:body></w:document>';
 }
-window.ExaminaVocabulary={analyze,entries,displayEntry,formatVocabularyEntry,documentXml};
+// Cambios ortográficos elegidos por el profesor en las 14 unidades de
+// Griego I (10-11-2026). No se normalizan otras grafías ni se corrige
+// σωτερίας: no fue seleccionada en las decisiones recibidas.
+const approvedGreekTextCorrections=[
+ ['εἴς','εἰς'],
+ ['στρατεγός','στρατηγός'],
+ ['στρατεγὸς','στρατηγός'],
+ ['θάλάττῃ','θαλάττῃ'],
+ ['oἱ','οἱ'],
+ ['ἄνρωπος','ἄνθρωπος'],
+ ['εἷχεν','εἶχεν'],
+ ['ἐφεύξεν','ἔφυγεν'],
+ ['οἰκῦσιν','οἰκοῦσιν'],
+ ['Περίκλους','Περικλέους'],
+ ['στρατεγοὶ','στρατηγοὶ'],
+ ['ὠρᾶ','ἑώρα'],
+ ['Aἰσχύλος','Αἰσχύλος']
+];
+function applyApprovedGreekTextCorrections(project){
+ if(project?.course!=='gr1'||project.count!==14||!Array.isArray(project.units)||project.units.length<14)
+  return {changed:0,units:[]};
+ let changed=0;const affected=[];
+ for(let i=0;i<14;i++){
+  const unit=project.units[i];if(typeof unit?.text!=='string')continue;
+  let newText=unit.text,local=0;
+  for(const [before,after] of approvedGreekTextCorrections){
+   const matcher=new RegExp('(?<![\\p{L}\\p{M}])'+before+'(?![\\p{L}\\p{M}])','gu');
+   newText=newText.replace(matcher,()=>{local++;return after});
+  }
+  if(local){
+   unit.text=newText;
+   // Las formas antiguas no deben continuar apareciendo como analizadas.
+   unit.rows=[];unit.analyzed=false;
+   changed+=local;affected.push(i+1);
+  }
+ }
+ return {changed,units:affected};
+}
+window.ExaminaVocabulary={analyze,entries,displayEntry,formatVocabularyEntry,documentXml,applyApprovedGreekTextCorrections};
 function init(){
  const $=id=>document.getElementById(id),storage='examina_vocabulary_project_v1';
  let project={count:1,course:'lat1',units:[]},selected=0;
  try{const saved=JSON.parse(localStorage.getItem(storage));if(saved?.units&&Number.isInteger(saved.count)&&saved.count>=1&&saved.count<=100&&['lat1','lat4','gr1'].includes(saved.course))project=saved}catch{}
+ const startupCorrections=applyApprovedGreekTextCorrections(project);
+ if(startupCorrections.changed)try{localStorage.setItem(storage,JSON.stringify(project))}catch{}
  const unit=()=>{while(project.units.length<project.count)project.units.push({title:'UD'+(project.units.length+1),text:'',mode:'complete',rows:[],analyzed:false});return project.units[selected]};
  const needsAnalysis=u=>!!u.text?.trim()&&!(u.analyzed||u.rows?.length);
  const status=s=>{$('vgStatus').textContent=s};
@@ -784,10 +824,11 @@ function init(){
    status('Word generado con '+project.count+' unidades. Revisa las formas marcadas con * antes de utilizarlo.');
   }catch(e){status('No se ha exportado el Word: '+e.message)}
  };
- $('vgImport').onchange=async e=>{try{const p=JSON.parse(await e.target.files[0].text());if(!Number.isInteger(p.count)||p.count<1||p.count>100||!['lat1','lat4','gr1'].includes(p.course)||!Array.isArray(p.units)||p.units.length<p.count||!p.units.every(u=>typeof u.title==='string'&&typeof u.text==='string'&&['simple','complete'].includes(u.mode)&&Array.isArray(u.rows)&&u.rows.every(r=>typeof r.entry==='string'&&typeof r.meaning==='string'&&typeof r.form==='string'&&Array.isArray(r.candidates))))throw Error('Formato incorrecto');project=p;selected=0;render();save();const pending=project.units.slice(0,project.count).filter(needsAnalysis).length;status('Proyecto importado: '+project.count+' unidades y textos conservados. '+pending+' por analizar. Puedes pulsar «Analizar todas las unidades» o «Exportar Word» (analizará las pendientes).')}catch(e){status('No se pudo importar: '+e.message)}};
+ $('vgImport').onchange=async e=>{try{const p=JSON.parse(await e.target.files[0].text());if(!Number.isInteger(p.count)||p.count<1||p.count>100||!['lat1','lat4','gr1'].includes(p.course)||!Array.isArray(p.units)||p.units.length<p.count||!p.units.every(u=>typeof u.title==='string'&&typeof u.text==='string'&&['simple','complete'].includes(u.mode)&&Array.isArray(u.rows)&&u.rows.every(r=>typeof r.entry==='string'&&typeof r.meaning==='string'&&typeof r.form==='string'&&Array.isArray(r.candidates))))throw Error('Formato incorrecto');project=p;const applied=applyApprovedGreekTextCorrections(project);selected=0;render();save();const pending=project.units.slice(0,project.count).filter(needsAnalysis).length;status('Proyecto importado: '+project.count+' unidades. '+(applied.changed?('Correcciones docentes aplicadas en '+applied.changed+' apariciones. '):'')+pending+' por analizar. Puedes pulsar «Analizar todas las unidades» o «Exportar Word» (analizará las pendientes).')}catch(e){status('No se pudo importar: '+e.message)}};
  $('vgShow').onclick=()=>{$('examLayout').style.display='none';$('vocabManager').classList.remove('active');$('vocabularyGenerator').classList.add('active');for(const id of ['vmShowExam','vmShowList'])$(id).classList.remove('active');$('vgShow').classList.add('active');render()};
  for(const id of ['vmShowExam','vmShowList'])$(id).addEventListener('click',()=>{$('vocabularyGenerator').classList.remove('active');$('vgShow').classList.remove('active')});
  render();
+ if(startupCorrections.changed)status('Correcciones docentes aplicadas en '+startupCorrections.changed+' apariciones de Griego I; las unidades afectadas se deben volver a analizar. Se han conservado los demás textos.');
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
