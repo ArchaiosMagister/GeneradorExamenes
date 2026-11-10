@@ -420,8 +420,7 @@ function greekReferenceForms(bank){
   ['μήν','mes',['μήνες']],
   ['τύχη','suerte',['τύχης']],
   ['φύσις','naturaleza',['φύσει']],
-  ['θέα','diosa',['θέᾳ','θεάν']],
-  ['ὅδε','este',['ὅδε']]
+  ['θέα','diosa',['θέᾳ','θεάν']]
  ];
  for(const [lemma,meaning,forms] of lastGreekPass)addIrregular(forms,lemma,meaning);
 
