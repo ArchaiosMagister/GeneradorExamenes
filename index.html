@@ -643,23 +643,33 @@ function verifiedLatinSumForms(raw){
  'fueram','fueras','fuerat','fueramus','fueratis','fuerant','fuero','fueris','fuerit',
  'fuerimus','fueritis','fuerint','sim','sis','sit','simus','sitis','sint','esse'];
 }
-function findLemmaForForm(token,entries){
- const target=normLex(token);if(!target)return null;
- const matches=new Map();
+/* Índice efímero por generación: evita recorrer todos los paradigmas por cada palabra.
+   Nunca resuelve silenciosamente formas homógrafas de lemas diferentes. */
+function buildGlossaryFormIndex(entries){
+ const byForm=new Map();
+ const put=(surface,row,key)=>{
+  const token=normLex(surface);if(!token)return;
+  const old=byForm.get(token);
+  if(!old)byForm.set(token,{key,row,ambiguous:false});
+  else if(old.key!==key)old.ambiguous=true;
+  else if(!old.ambiguous)old.row=row;
+ };
  for(const row of entries){
-  const key=examKey(row.entry);
-  if(!key)continue;
-  let found=key===target;
-  if(!found&&currentCourse()!=='greek1'){
-   const paradigm=mNoun(row.entry)||mVerb(row.entry);
-   const forms=paradigm?.forms||paradigm?.tenses?.flatMap(t=>t[1])||[];
-   found=forms.flat(Infinity).some(form=>normLex(form)===target);
-   if(!found)found=verifiedLatinAdjectiveForms(row.entry).some(form=>normLex(form)===target);
-   if(!found)found=verifiedLatinSumForms(row.entry).some(form=>normLex(form)===target);
-  }
-  if(found){matches.set(key,row);if(matches.size>1)return null}
+  const key=examKey(row.entry);if(!key)continue;
+  put(key,row,key);
+  if(currentCourse()==='greek1')continue;
+  const p=mNoun(row.entry)||mVerb(row.entry);
+  const forms=p?.forms||p?.tenses?.flatMap(t=>t[1])||[];
+  for(const surface of forms.flat(Infinity))put(surface,row,key);
+  for(const surface of verifiedLatinAdjectiveForms(row.entry))put(surface,row,key);
+  for(const surface of verifiedLatinSumForms(row.entry))put(surface,row,key);
  }
- return matches.size===1?[...matches.values()][0]:null;
+ return byForm;
+}
+function findLemmaForForm(token,entries,prepared=null){
+ const index=prepared||buildGlossaryFormIndex(entries);
+ const item=index.get(normLex(token));
+ return item&&!item.ambiguous?item.row:null;
 }
 function lexPos(entry){let m=String(entry).match(/\((adv\.?|conj\.?|adverbio|conjunción)\)/i);if(!m)return '';return /^adv/i.test(m[1])?'adv.':'conj.'}
 function quoteGloss(text){const value=String(text).trim().replace(/^[\u0027\u2018\u2019"“”]+|[\u0027\u2018\u2019"“”]+$/g,'');return /[\s,;:]/u.test(value)?'“'+value+'”':'‘'+value+'’'}
@@ -670,10 +680,11 @@ function buildFinalLexicon(chosen,chosenEntries,selectedSentences,selectedMorph,
  const all=currentCourse()==='greek1'?vocab.filter(x=>courseOf(x)==='greek1'):latinSharedBank.vocabulary(currentCourse());let found=new Map(),unresolved=new Set();
  function add(x){if(!x)return;let k=examKey(x.entry);if(k&&!found.has(k))found.set(k,x)}
  if(!options.sentencesOnly){for(const x of selectedMorph)add(x);for(const x of selectedLex)add(x)}
+ const formIndex=buildGlossaryFormIndex(all);
  const manual=$('examExtra').value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
  for(const raw of manual){let key=examKey(raw),hit=all.find(x=>examKey(x.entry)===key);if(hit)add(hit);else unresolved.add(raw)}
  const resolveToken=token=>{
-  const direct=findLemmaForForm(token,all);
+  const direct=findLemmaForForm(token,all,formIndex);
   if(direct)return direct;
   // La fuente externa nunca aporta traducciones al examen: solo reconoce
   // formas documentadas y exige una única ficha del banco docente local.
