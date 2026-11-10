@@ -1,6 +1,6 @@
 # Banco de evolución fonética: latín a castellano
 
-El fichero [banco_examenes.json](./banco_examenes.json) contiene 460 candidatas para ejercicios: 330 iniciales, 100 de la primera ampliación y 30 voces comunes para preparación PAU, sin duplicación de identificadores.
+El fichero [banco_examenes.json](./banco_examenes.json) contiene 510 candidatas para ejercicios: 330 iniciales, 100 de la primera ampliación, 30 de la segunda y 50 de la tercera, sin duplicación de identificadores.
 
 Esquema: evoluciones-latin-castellano/v1. Campos por ficha: id, latin, castellano, normas (N01–N20), observacion, fila_origen, fuente y estado.
 
@@ -15,3 +15,9 @@ El banco canónico está conectado a los ejercicios de evolución fonética de L
 ## Segunda ampliación (30 voces habituales para preparación PAU)
 
 La segunda ampliación incluye palabras de uso común como autumnum > otoño, cepullam > cebolla, pauperem > pobre y strictum > estrecho. Se han priorizado cambios fonéticos que aparecen en los ejercicios de Latín II. Los resultados y algunas variantes latinas han sido contrastados con el Diccionario de la lengua española (https://dle.rae.es/). Este criterio es didáctico y no constituye una predicción de probabilidad real de aparición en selectividad. Las 30 entradas nuevas conservan `fila_origen`, notas y la referencia lexicográfica para revisión.
+
+## Tercera ampliación (50 voces, 510 entradas en total)
+
+Se han incorporado 50 fichas nuevas basadas en el Excel docente, seleccionando voces frecuentes o reconocibles para Latín II (por ejemplo: `dicere` → `decir`, `piscare` → `pescar`, `operare` → `obrar`, `temperare` → `templar` y `dominicum` → `domingo`). No existe garantía de que aparezcan en la PAU. Se mantiene el estado `APTO_PROPUESTO`, por lo que se recomienda validar la cadena etimológica antes de usar el material en evaluaciones. El étimo erróneo `plannum` del Excel se ha corregido a `plānum` para «llano», anotándolo expresamente.
+
+La ampliación 3 queda identificada con el campo `lote: 3` y mantiene `fila_origen`, `normas` y observaciones. El selector sigue exigiendo exactamente cuatro palabras. La interfaz del generador todavía no ofrece el selector fonético; este cambio amplía el fichero de datos del repositorio.
