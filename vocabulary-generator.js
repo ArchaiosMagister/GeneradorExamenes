@@ -504,7 +504,8 @@ function analyze(data,text,course,bank){
    else if(/ἄλλα/u.test(form))candidates=candidates.filter(x=>x.lemma!=='αλλα');
   }
   const resolved=candidates.length===1&&candidates[0].attested;
-  const spellingHint=lang==='grc'?greekSpellingNotes[form.normalize('NFC')]:undefined;
+  const spellingHint=lang==='grc'?Object.entries(greekSpellingNotes)
+   .find(([sample])=>sample.normalize('NFC')===form.normalize('NFC'))?.[1]:undefined;
   // Señalar erratas: proponer una corrección no equivale a lematizarla.
   const requiresSpellingReview=!!spellingHint;
   return {form,candidates,status:requiresSpellingReview?'review':resolved?'documented':candidates.length?'review':'unknown',
