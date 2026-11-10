@@ -88,7 +88,7 @@ console.log('Vocabulario: prioridad docente, deduplicación por UD, ambigüedad,
  await page.goto('file://'+root+'/offline.html');await page.click('#vgShow');
  const analyzeAll=page.locator('#vgAnalyzeAll');
  assert.equal(await analyzeAll.innerText(),'Analizar todas las unidades');
- assert.equal(await analyzeAll.evaluate(el=>el.previousElementSibling?.id),'vgMode');
+ assert.ok(await analyzeAll.evaluate(el=>!!el.previousElementSibling?.querySelector('#vgMode')));
  assert.equal(await analyzeAll.evaluate(el=>getComputedStyle(el).fontWeight),'800');
 
  await page.fill('#vgCount','2');await page.locator('#vgCount').dispatchEvent('change');
