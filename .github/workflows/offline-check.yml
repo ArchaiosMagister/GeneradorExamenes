@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - 'index.html'
+      - 'culture-lat4.js'
       - 'offline.html'
       - 'offline-lemmas.js'
       - 'verification-review.js'
@@ -20,6 +21,7 @@ on:
     branches: [main]
     paths:
       - 'index.html'
+      - 'culture-lat4.js'
       - 'offline.html'
       - 'data/lemmas/**'
       - 'data/unimorph/**'
@@ -43,6 +45,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Validar preguntas docentes de cultura LAT4
+        run: node scripts/test-cultura-lat4.cjs
       - name: Probar modelos regulares sin incorporación a los exámenes
         run: node scripts/test-regular-latin.mjs
       - name: Probar nominales griegos con corpus sintético etiquetado
