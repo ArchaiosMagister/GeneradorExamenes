@@ -10,7 +10,7 @@ const html=await readFile(resolve(root,'offline.html'),'utf8');
 const expected=await renderOffline(root);
 assert.equal(html,expected.content,'offline.html desactualizado: ejecuta npm run offline:build');
 const blocks=[...html.matchAll(/<script([^>]*)>([\s\S]*?)<\/script>/gi)];
-assert.equal(blocks.length,4,'Se esperan tres scripts JS y un banco JSON');
+assert.equal(blocks.length,5,'Se esperan cuatro scripts JS y un banco JSON');
 const data=blocks.filter(block=>/type="application\/json"/.test(block[1]));
 assert.equal(data.length,1,'Debe existir un único banco JSON embebido');
 const payload=JSON.parse(data[0][2]);
@@ -36,6 +36,8 @@ assert(!/<script[^>]+src=/.test(html),'El HTML no debe descargar scripts');
 assert(!/<link[^>]+href=/.test(html),'El HTML no debe descargar CSS ni manifest');
 assert(!html.includes('EXAMINA_PWA_START')&&!html.includes('id="pwaPanel"'),
  'La versión HTML de archivo único no necesita controles PWA');
+assert(html.includes('Revisión filológica y decisiones docentes'),'Falta revisión docente offline');
+assert(!html.includes('verification-review.js'),'El panel no se incrustó en HTML autónomo');
 assert(!html.includes('pwa.js')&&!html.includes('manifest.webmanifest'),
  'El HTML autónomo no debe depender de recursos PWA');
 assert(html.includes("if(location.protocol==='file:')return"),'No consultar archivos al abrir file://');
