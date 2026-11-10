@@ -17,6 +17,7 @@ const xml=api.documentXml(project);assert.equal((xml.match(/MI TRADUCCIÓN/g)||[
 assert.equal((xml.match(/<w:cols w:num="2"/g)||[]).length,2);
 assert.match(xml,/<w:sectPr><w:type w:val="continuous"\/><w:pgSz[^]*<w:cols w:num="1"[^]*<\/w:body>/);
 assert.match(xml,/\* xyzxyz/);
+assert.throws(()=>api.documentXml({count:1,units:[{title:'UD1',text:'ὁ θεός',rows:[]}]}),/sin analizar/);
 const greekRows=api.analyze(data,'λύω ἄγνωστον','gr1',[]);
 assert.equal(greekRows.length,2);
 assert.equal(greekRows[1].form,'ἄγνωστον','se deben conservar los diacríticos griegos originales');
@@ -35,6 +36,25 @@ console.log('Vocabulario: prioridad docente, deduplicación por UD, ambigüedad,
  await page.selectOption('#vgUnit','0');assert.match(await page.inputValue('#vgText'),/amamus/);
  const downloadPromise=page.waitForEvent('download');await page.click('#vgWord');const dl=await downloadPromise;const file=await dl.path();assert.equal(fs.readFileSync(file).readUInt32LE(0),0x04034b50);
  await page.reload();await page.click('#vgShow');assert.equal(await page.inputValue('#vgCount'),'2');
+ // Reproduce un JSON antiguo de 14 unidades: textos, pero sin ningún análisis.
+ const imported={count:14,course:'gr1',units:Array.from({length:14},(_,i)=>({
+  title:'UD'+(i+1),text:'ὁ θεός ἐστιν. οἱ ἄνθρωποι.',mode:'complete',rows:[]
+ }))};
+ await page.locator('#vgImport').setInputFiles({
+  name:'vocabulario-unidades.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(imported))
+ });
+ assert.match(await page.locator('#vgStatus').innerText(),/14 por analizar/);
+ const download14=page.waitForEvent('download');
+ await page.click('#vgWord');const doc14=await download14;
+ const body14=fs.readFileSync(await doc14.path()).toString('utf8');
+ for(let n=1;n<=14;n++)assert.ok(body14.includes('UD'+n),'No existe contenido para UD'+n);
+ assert.match(body14,/θεός|θεὸς|θεὸς/);
+ assert.match(await page.locator('#vgStatus').innerText(),/Word generado con 14 unidades/);
+ const persisted=await page.evaluate(()=>JSON.parse(localStorage.getItem('examina_vocabulary_project_v1')));
+ assert.equal(persisted.units.length,14);
+ assert.ok(persisted.units.every(u=>u.text.includes('θεός')&&u.rows.length>0));
+ console.log('Importación JSON con 14 unidades sin analizar: Word completo y textos conservados.');
+ 
  await page.click('#vmShowExam');assert.equal(await page.locator('#vocabularyGenerator').isVisible(),false);
  assert.deepEqual(errors,[]);console.log('Navegador offline: pestañas, unidades, persistencia y descarga DOCX correctas.');
  }finally{await browser.close()}
