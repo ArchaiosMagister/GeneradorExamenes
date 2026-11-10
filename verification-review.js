@@ -39,7 +39,7 @@ function buildCases(data,course){
    if(!byForm.has(f))byForm.set(f,new Set());
    byForm.get(f).add(lemma);
   }
-  if(source===0||source===1){
+  if(source===0||source===1||source===5){
    const id=lemma+'|'+tags;
    if(!slots.has(id))slots.set(id,new Set());
    slots.get(id).add(norm(surface));
@@ -53,11 +53,15 @@ function buildCases(data,course){
   cases.push({id,course,priority:3,...x,entry:eligible.get(x.lemma)?.[course]?.entry||x.lemma,
    units:eligible.get(x.lemma)?.[course]?.units||[]});
  }
- for(const x of CURATED.filter(x=>x.course===course))add(x);
+ for(const x of CURATED.filter(x=>x.course===course)){
+  if(x.kind==='correccion'&&eligible.get(x.lemma)?.[course]?.entry!==x.form)continue;
+  if(x.kind==='ampliacion'&&(lemmaRows.get(x.lemma)||[]).some(r=>r[3]===5))continue;
+  add(x);
+ }
  for(const [lemma] of eligible){
   const rows=lemmaRows.get(lemma)||[];
   const sources=new Set(rows.map(r=>r[3]));
-  if(!sources.has(0)&&!sources.has(1)){
+  if(!sources.has(0)&&!sources.has(1)&&!sources.has(5)){
    if(sources.has(2)||sources.has(4)){
     const candidates=rows.filter(r=>r[3]===2||r[3]===4);
     add({lemma,kind:'candidatas',priority:2,form:candidates.slice(0,4).map(x=>x[1]).join(' · '),
