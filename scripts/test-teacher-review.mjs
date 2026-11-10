@@ -11,8 +11,9 @@ const sandbox=createContext({
 new Script(source,{filename:'verification-review.js'}).runInContext(sandbox);
 const api=sandbox.window.ExaminaTeacherReview;
 assert.equal(typeof api?.buildCases,'function');
-const latin=api.buildCases(data,'lat1'),greek=api.buildCases(data,'gr1');
-for(const [course,items] of [['lat1',latin],['gr1',greek]]){
+const latin=api.buildCases(data,'lat1'),latin4=api.buildCases(data,'lat4'),greek=api.buildCases(data,'gr1');
+assert.ok(latin4.length>20,'Faltan incidencias de Latín 4.º ESO');
+for(const [course,items] of [['lat1',latin],['lat4',latin4],['gr1',greek]]){
  assert(items.length>200,course+': faltan incidencias');
  assert.equal(new Set(items.map(x=>x.id)).size,items.length,'ID duplicados: '+course);
  assert(items.every(x=>x.course===course),'Cursos mezclados');
