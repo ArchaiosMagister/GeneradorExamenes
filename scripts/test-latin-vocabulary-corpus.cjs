@@ -33,7 +33,13 @@ for(const w of ['ab','ad','in','de','per','et']){
  assert.equal(found?.status,'documented','Invariable sin reconocimiento: '+w);
  assert.ok(found.entry&&found.meaning,'Enunciado/glosa ausente para '+w);
 }
-assert.ok(coverage>=85,'Cobertura baja para diez frases latinas escolares: '+coverage+' %');
+assert.ok(coverage>=95,'Cobertura baja para diez frases latinas escolares: '+coverage+' %');
+const withPreposition=api.analyze(dataset,'de vita','lat1',latin);
+assert.equal(withPreposition.find(x=>x.form==='vita')?.status,'documented',
+ 'El ablativo tras de debe resolver el homógrafo de vita/vito');
+const withoutContext=api.analyze(dataset,'vita','lat1',latin);
+assert.equal(withoutContext[0].status,'review',
+ 'Sin contexto vita sigue siendo homógrafa; no se debe adivinar');
 assert.ok(!unknown.some(x=>x.status==='unknown'),'No debería quedar una forma escolar totalmente desconocida');
 const project={course:'lat1',lang:'es',count:10,units:analyzed};
 const xml=api.documentXml(project);
