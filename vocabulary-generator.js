@@ -568,9 +568,10 @@ function analyze(data,text,course,bank){
    const lexicalInvariable=source===3&&key(surface)===key(lemma)&&
     invariableEntry(data.vocabulary[lang][lemma][course].entry);
    const attested=[0,1,5,6,7].includes(source)||lexicalInvariable;
-   const exactForms=old?.exactForms||new Set();
+   const exactForms=old?.exactForms||new Set(),morphTags=old?.morphTags||new Set();
    if(lang==='grc')exactForms.add(surface.normalize('NFC'));
-   candidates.set(lemma,{lemma,attested:attested||!!old?.attested,exactForms});
+   morphTags.add(tags);
+   candidates.set(lemma,{lemma,attested:attested||!!old?.attested,exactForms,morphTags});
   }
   byCourse.set(course,index);
  }
@@ -584,14 +585,18 @@ function analyze(data,text,course,bank){
  for(const row of bank){attach('E'+key(row.entry),row);attach('H'+key(head(row.entry)),row)}
  const tokens=new Map();
  const cleanText=lang==='grc'?String(text).replace(/([\p{L}\p{M}])[’'](?=[\p{L}\p{M}])/gu,'$1 '):String(text);
+ let previous='';
  for(const match of cleanText.matchAll(/[\p{L}\p{M}]+(?:[’'][\p{L}\p{M}]+)*/gu)){
   const form=match[0],normal=key(form);
-  // En griego, τίς/τις, ὁ/ὅ o ἀλλά/ἄλλα no pueden confundirse:
-  // el índice de búsqueda omite acentos, pero el texto conserva su grafía.
+  // En griego, τίς/τις, ὁ/ὅ o ἀλλά/ἄλλα no pueden confundirse.
   const identity=lang==='grc'?form.normalize('NFC'):normal;
-  if(normal&&!tokens.has(identity))tokens.set(identity,{normal,form});
+  if(normal){
+   if(!tokens.has(identity))tokens.set(identity,{normal,form,precededBy:new Set()});
+   tokens.get(identity).precededBy.add(previous);
+   previous=normal;
+  }
  }
- return [...tokens.values()].map(({normal,form})=>{
+ return [...tokens.values()].map(({normal,form,precededBy})=>{
   const indexedCandidates=[...(index.get(normal)?.values()||[])].flatMap(c=>{
    const original=data.vocabulary[lang][c.lemma][course];
    const matches=[...new Set([...(bankIndex.get('E'+key(original.entry))||[]),
@@ -676,6 +681,16 @@ function analyze(data,text,course,bank){
   if(lang==='grc'&&normal==='αλλα'){
    if(/ἀλλ[άὰ]/u.test(form))candidates=candidates.filter(x=>x.lemma==='αλλα');
    else if(/ἄλλα/u.test(form))candidates=candidates.filter(x=>x.lemma!=='αλλα');
+  }
+  // Una preposición que rige exclusivamente ablativo permite descartar
+  // un homógrafo verbal incompatible si TODOS los usos del texto comparten
+  // ese contexto. Ej.: «de vita» (vita, abl.) frente a «vita!» (imperativo).
+  // No se aplica a in/cum ni a preposiciones de doble régimen.
+  if(lang==='lat'&&candidates.length>1&&precededBy?.size&&
+   [...precededBy].every(x=>['a','ab','abs','de','e','ex','sine','prae','pro'].includes(x))){
+   const abl=candidates.filter(candidate=>
+    [...(candidate.morphTags||[])].some(t=>/^(?:N|ADJ|PRO);(?:[^;]+;)*ABL(?:;|$)/.test(t)));
+   if(abl.length===1&&abl[0].attested)candidates=abl;
   }
   const resolved=candidates.length===1&&candidates[0].attested;
   const spellingHint=lang==='grc'?Object.entries(greekSpellingNotes)
