@@ -25,6 +25,7 @@ const translations={
  '1':'1.ª persona','2':'2.ª persona','3':'3.ª persona'
 };
 function describe(tags){
+ if(tags==='LEX;ENTRY')return 'Forma citada en el vocabulario; sin análisis flexivo documentado';
  if(tags.startsWith('DOCENTE;')){
   const xs=tags.split(';');
   return 'Paradigma docente · '+xs.slice(1).join(' · ');
@@ -43,7 +44,8 @@ function indexes(data){
    if(!Array.isArray(row)||row.length!==4)continue;
    const [lemma,surface,tags,source]=row;
    if(!data.vocabulary[lang]?.[lemma]||typeof surface!=='string'||typeof tags!=='string')continue;
-   const item={lemma,surface,tags,source:source===0?'UniMorph':'Paradigma docente',
+   const sourceNames={0:'UniMorph',1:'Paradigma docente',2:'Modelo regular · propuesta sin verificar',3:'Vocabulario docente'};
+   const item={lemma,surface,tags,source:sourceNames[source]||'Fuente desconocida',provisional:source===2,citation:source===3,
     info:data.vocabulary[lang][lemma]};
    for(const [map,key] of [[index.forms[lang],normalize(surface)],[index.lemmas[lang],normalize(lemma)]]){
     if(!map.has(key))map.set(key,[]);
@@ -75,7 +77,9 @@ function query(data,{course='lat1',mode='form',text='',max=100}={}){
 function uniqueLemmaFromData(data,course,form){
  const found=query(data,{course,mode:'form',text:form,max:Number.MAX_SAFE_INTEGER});
  if(found.invalid||!found.items.length)return null;
- const distinct=new Set(found.items.map(item=>item.lemma));
+ const reliable=found.items.filter(item=>!item.provisional);
+ if(!reliable.length)return null;
+ const distinct=new Set(reliable.map(item=>item.lemma));
  return distinct.size===1?[...distinct][0]:null;
 }
 let loadedData=null;
@@ -102,7 +106,7 @@ function load(){
 }
 function itemElement(item){
  const article=document.createElement('article');
- article.className='lemma-entry';
+ article.className='lemma-entry'+(item.provisional?' lemma-provisional':'');
  const heading=document.createElement('div'),title=document.createElement('strong');
  const entry=item.info[document.getElementById('offlineLemmaCourse').value];
  title.textContent=entry?.entry||item.lemma;
@@ -139,8 +143,13 @@ async function submit(){
   if(found.invalid){status.textContent='Consulta una sola palabra cada vez.';return}
   if(!found.total){status.textContent='No hay un análisis registrado para esa palabra en el vocabulario seleccionado. No se propone ningún lema por semejanza.';return}
   const unique=new Set(found.items.map(item=>item.lemma));
-  status.textContent=found.total+' análisis registrados · '+unique.size+' lema(s) en el vocabulario · '+
+  const proposals=found.items.filter(item=>item.provisional).length;
+  const lexical=found.items.filter(item=>item.citation).length;
+  status.textContent=found.total+' registros · '+unique.size+' lema(s) · '+
+   (proposals?proposals+' propuestas de modelo sin verificar · ':'')+
+   (lexical?lexical+' formas de cita del vocabulario · ':'')+
    (found.total>found.items.length?'mostrando los primeros '+found.items.length+'.':'sin conexión externa.');
+
   for(const item of found.items)out.append(itemElement(item));
  }catch(error){
   status.textContent='No se ha podido consultar el índice: '+error.message;
@@ -155,7 +164,7 @@ function init(){
  section.id='offlineLemmaPanel';
  section.className='field';
  section.innerHTML='<h2>Lematizador del vocabulario · sin conexión</h2>'+
-  '<p class="hint">Consulta formas del latín y del griego antiguo del vocabulario docente. Muestra todos los análisis documentados; no modifica las soluciones de los exámenes ni adivina lemas.</p>'+
+  '<p class="hint">Consulta formas del latín y del griego antiguo del vocabulario docente. Distingue formas documentadas, propuestas de modelos regulares y entradas del vocabulario sin flexión; no modifica las soluciones de los exámenes ni adivina lemas.</p>'+
   '<label for="offlineLemmaCourse">Asignatura</label>'+
   '<select id="offlineLemmaCourse"><option value="lat1">Latín I</option><option value="lat4">Latín 4.º ESO</option><option value="gr1">Griego I</option></select>'+
   '<label for="offlineLemmaMode">Tipo de consulta</label>'+
@@ -165,12 +174,13 @@ function init(){
   '<button id="offlineLemmaSearch" type="button" class="secondary">Consultar sin conexión</button>'+
   '<p id="offlineLemmaStatus" class="hint" role="status" aria-live="polite">Disponible desde los datos incluidos en la versión autónoma.</p>'+
   '<div id="offlineLemmaResults" class="lemma-results"></div>'+
-  '<p class="hint">Fuentes: UniMorph (CC BY-SA 3.0) y paradigmas docentes explícitos. Solo lemas del vocabulario preparado; no constituye un analizador de todo el latín o el griego.</p>';
+  '<p class="hint">Fuentes: UniMorph (CC BY-SA 3.0), paradigmas y vocabulario docentes. Las formas calculadas se distinguen como propuestas sin verificar y nunca se usan para corregir exámenes.</p>';
  parent.after(section);
  const style=document.createElement('style');
  style.textContent='#offlineLemmaPanel{margin-top:12px}#offlineLemmaPanel .lemma-results{max-height:360px;overflow:auto}'+
   '#offlineLemmaPanel .lemma-entry{border:1px solid var(--line,#dce4ee);border-radius:7px;padding:9px 11px;margin:8px 0;background:var(--surface,#fff)}'+
   '#offlineLemmaPanel .lemma-entry p{margin:5px 0;font-family:Georgia,serif}'+
+  '#offlineLemmaPanel .lemma-provisional{border-style:dashed;border-left:4px solid #a46b24}'+
   '#offlineLemmaPanel .lemma-meta{font-size:12px;opacity:.8}'+
   '@media print{#offlineLemmaPanel{display:none!important}}';
  document.head.append(style);
