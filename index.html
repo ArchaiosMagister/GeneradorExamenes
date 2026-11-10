@@ -764,6 +764,13 @@ function generate(){
  if(examQuestionEnabled('forms'))add(t('Analiza morfológicamente las siguientes formas.','Analitza morfològicament les formes següents.'),
   forms.length?'<ol class="task" type="a">'+forms.map(x=>'<li><i>'+esc(x.form)+'</i>: <span class="reference-answer-line"></span></li>').join('')+'</ol>':missing('No hay formas variables verificadas para estas unidades.'),
   '<ol>'+forms.map(x=>'<li>'+esc(x.form)+' — '+esc(x.answer)+'</li>').join('')+'</ol>');
+ if(course==='latin1'&&examQuestionEnabled('pronouns')){
+  const pronouns=stickyExamRows('pronouns',()=>sample(latinExamPronouns(chosen),6));
+  if(pronouns.length)add(t('Analiza los siguientes pronombres.','Analitza els pronoms següents.'),
+   '<table class="exam-paradigm exam-pronouns"><thead><tr><th>Forma</th><th>Tipo</th><th>Caso</th><th>Género</th><th>Número</th></tr></thead><tbody>'+
+   pronouns.map(x=>'<tr><td>'+esc(x.form)+'</td><td></td><td></td><td></td><td></td></tr>').join('')+'</tbody></table>',
+   '<ol>'+pronouns.map(x=>'<li>'+esc(x.form+' — '+x.type+', '+x.case+', '+x.gender+', '+x.number)+'</li>').join('')+'</ol>');
+ }
  const lexQuestion=buildLatinLexQuestion(course,chosen);
  if(examQuestionEnabled('lex')&&lexQuestion){
   add(t('Léxico.','Lèxic.'),lexQuestion.html,lexQuestion.solution);
@@ -1470,7 +1477,7 @@ function greekExamHeader(chosen,mode){
  return '<div class="exam-header"><p class="exam-header-line"><span>'+esc(title)+'</span><span>'+$('term').value+'ª '+(va?'avaluació':'evaluación')+'</span></p><p class="exam-header-line"><span>'+(va?'Nom i cognoms:':'Nombre y apellidos:')+'</span><span>'+(va?'Data:':'Fecha')+'</span></p></div>';
 }
 function greekQuestionLabel(kind){if(kind==='sentences'&&$('model').value==='translation')return $('lang').value==='va'?'Tradueix les oracions següents':'Traduce las siguientes oraciones';return ({es:{declension:'Declina',conjugation:'Conjuga',forms:'Analiza morfológicamente',pronouns:'Completa la tabla con el análisis morfológico adecuado',etymology:'Escribe dos derivados etimológicos de cada una de estas palabras griegas',sentences:'Analiza y traduce las siguientes oraciones'},va:{declension:'Declina',conjugation:'Conjuga',forms:'Analitza morfològicament',pronouns:'Completa la taula amb l’anàlisi morfològica adequada',etymology:'Escriu dos derivats etimològics de cadascuna d’aquestes paraules gregues',sentences:'Analitza i tradueix les oracions següents'}})[$('lang').value][kind]}
-function greekPoints(kind){const v=Number($('greek-points-'+kind).value);return Number.isFinite(v)?Math.max(0,Math.min(100,v)):0}
+function greekPoints(kind){const v=Number($('greek-points-'+kind).value);if(kind==='pronouns'&&$('model').value==='complete'&&examQuestionEnabled('pronouns')&&v===0)return 1;return Number.isFinite(v)?Math.max(0,Math.min(100,v)):0}
 function generateGreekMorphologyFixed(){
  const marked=greekMarkedUnits(),limit=greekLimit(),cfg=morphConfig(),va=$('lang').value==='va';
  const t=(es,vl)=>va?vl:es;
@@ -2042,7 +2049,7 @@ refreshCourse();
     const label=document.createElement('p');label.className='hint';label.textContent='Obligatoria en el examen de morfología.';body.append(label);
    }else{
     const check=document.createElement('input');check.type='checkbox';check.checked=on;
-    check.onchange=()=>{examQuestionChoiceState[currentCourse()+'/'+$('model').value+'/'+kind]=check.checked;generate()};
+    check.onchange=()=>{examQuestionChoiceState[currentCourse()+'/'+$('model').value+'/'+kind]=check.checked;if(currentCourse()==='greek1')greekExamState=null;generate()};
     body.append(makeLabel('Incluir esta pregunta',check));
    }
    if(kind==='lex')lexConfig(body);
