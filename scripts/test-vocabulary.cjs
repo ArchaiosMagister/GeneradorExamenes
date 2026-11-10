@@ -152,6 +152,12 @@ assert.ok(success.some(r=>r.meaning==='ateniense'), 'Debe identificar ateniense 
 assert.ok(success.length>100,'El corpus prioritario sigue sin cobertura nominal básica');
 if(unknown.length)console.log('Formas griegas sin resultado tras formateo:',JSON.stringify(unknown.map(r=>r.form)));
 assert.equal(unknown.length,0,'Todas las formas del corpus deben estar lematizadas o señaladas para revisión, sin desconocidas opacas');
+const suspiciousNominals=[...new Set(success.filter(r=>
+ !r.entry.includes(',') && !r.entry.includes('(') &&
+ /(?:ος|ον|η|α|ης|ας|ις|εύς|ευς|ων|ωρ|ξ|ψ)$/u.test(r.entry) &&
+ !/^\s*(?:εἰμί|ἐστί)/u.test(r.entry)
+).map(r=>r.entry))].sort();
+console.log('Posibles enunciados nominales incompletos (revisión):',JSON.stringify(suspiciousNominals));
 console.log('Corpus docente Griego I / pendientes anteriores:',JSON.stringify({
  total:originals.length,formasDistintasNormalizadas:benchmark.length,
  reconocidas:success.length,revision:review.length,desconocidas:unknown.length
