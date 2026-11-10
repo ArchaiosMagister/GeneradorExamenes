@@ -12,7 +12,7 @@ assert.equal(api.displayEntry('amo','complete'),'amo');
 assert.equal(api.displayEntry('λύω','simple'),'λύω');
 const fixture={rows:{lat:[['amo','test','V',0],['bellum','test','N',2]]},vocabulary:{lat:data.vocabulary.lat}};
 const ambiguous=api.analyze(fixture,'test','lat1',[])[0];assert.equal(ambiguous.status,'review');
-const project={count:2,units:[1,2].map(i=>({title:'UD'+i,mode:'complete',rows}))};
+const project={course:'lat1',lang:'es',count:2,units:[1,2].map(i=>({title:'UD'+i,mode:'complete',rows}))};
 const xml=api.documentXml(project);
 assert.equal((xml.match(/MI TRADUCCIÓN/g)||[]).length,2);
 assert.equal((xml.match(/<w:sectPr>/g)||[]).length,1,'El documento utiliza una sola sección');
