@@ -73,7 +73,7 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
    });
   });
   assert(agreement[0].title.startsWith('ὁ '),'Masculino griego: artículo equivocado');
-  assert(agreement[1].title.startsWith('ἡ '),'Femenino griego: artículo equivocado');
+  assert(agreement[1].title.startsWith('ἡ ἀγορὰ '),'Femenino griego: artículo y acento grave ante adjetivo incorrectos');
   assert(agreement[2].title.startsWith('τὸ '),'Neutro griego: artículo equivocado');
   assert(agreement[0].gen.startsWith('τοῦ '),'Genitivo masculino: falta artículo');
   assert(agreement[1].gen.startsWith('τῆς '),'Genitivo femenino: falta artículo');
