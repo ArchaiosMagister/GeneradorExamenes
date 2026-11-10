@@ -81,6 +81,17 @@ async function checkFile(browser,filename){
    };
   });
   assert(result.visible&&result.height>80&&result.text>80,filename+' '+course+'/'+model+': vista previa ausente '+JSON.stringify(result));
+  if(course==='greek1'&&model==='translation'&&result.greekAnalysisItems>=2){
+   // El contador del análisis griego es independiente del de conjugación.
+   const numberOfForms=await page.evaluate(()=>{
+    const counter=document.getElementById('count-greek-forms'),previous=counter.value;
+    counter.value='2';counter.dispatchEvent(new Event('change',{bubbles:true}));
+    const count=document.querySelectorAll('#paper .exam-form').length;
+    counter.value=previous;counter.dispatchEvent(new Event('change',{bubbles:true}));
+    return count;
+   });
+   assert.equal(numberOfForms,2,filename+': el número de formas griegas no respeta su contador');
+  }
   assert(result.questions>=(course==='latin1'&&model==='mixto'?2:3),filename+' '+course+'/'+model+': preguntas no renderizadas');
   const headings=await page.locator('#paper .exam-nouns thead tr:first-child th[colspan], #paper .exam-verbs thead tr:first-child th[colspan]').evaluateAll(
    cells=>cells.map(cell=>({text:cell.textContent,lexeme:cell.querySelector('i')?.textContent,indicator:cell.querySelector('.exam-paradigm-indicator')?.textContent||''}))
