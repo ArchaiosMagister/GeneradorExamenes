@@ -626,7 +626,8 @@ function formatVocabularyEntry(row,mode,course){
  if(!row.meaning)return entry;
  const meaning=String(row.meaning).trim().replace(/^[‘’'"]+|[‘’'"]+$/g,'');
  const pieces=meaning.split(/[’']\s*,\s*[‘']/).map(x=>x.trim()).filter(Boolean);
- const phrase=/\S(?:\s+|…)\S/u.test(entry.split(' (')[0]) &&
+ const lemmaPart=head(entry);
+ const phrase=(/\s|…/u.test(lemmaPart)&&!/\s+o\s+/i.test(lemmaPart)) &&
   !/^(?:ὁ,\s*ἡ|οὐ,\s*οὐκ)/u.test(entry);
  const quote=phrase?'"':"'";
  const quoted=phrase?quote+pieces.join(', ')+quote:
