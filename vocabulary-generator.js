@@ -631,8 +631,8 @@ function formatVocabularyEntry(row,mode,course,language='es'){
  const phrase=(/\s|…/u.test(lemmaPart)&&!/\s+o\s+/i.test(lemmaPart)) &&
   !/^(?:ὁ,\s*ἡ|οὐ,\s*οὐκ)/u.test(entry);
  const quote=phrase?'"':"'";
- const quoted=phrase?quote+pieces.join(', ')+quote:
-  pieces.map(x=>"'"+x+"'").join(', ');
+ const quoted=window.ExaminaValencianGloss?.quoteGloss(meaning)||
+  (phrase?quote+pieces.join(', ')+quote:pieces.map(x=>"'"+x+"'").join(', '));
  return entry+': '+quoted;
 }
 function documentXml(project){
