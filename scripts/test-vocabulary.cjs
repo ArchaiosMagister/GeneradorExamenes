@@ -39,6 +39,13 @@ for(const token of ['Ἀθηναῖοι','Ἀθηναίων','οἱ','δοῦλ�
 }
 assert.equal(priority.find(r=>r.form==='Ἀθηναῖοι').entry,'Ἀθηναῖος, –α, –ον');
 assert.equal(priority.find(r=>r.form==='Ἀθηναῖοι').meaning,'ateniense');
+const frequentGreek=api.analyze(data,'ἡ ἐν εἰς μὲν πολλοὺς οὗτοι μαθήτας ἀλλὰ','gr1',priorityBank);
+for(const token of ['ἡ','ἐν','εἰς','μὲν','πολλοὺς','οὗτοι','ἀλλὰ']){
+ const found=frequentGreek.find(r=>r.form===token);
+ assert.equal(found?.status,'documented','La forma frecuente debería quedar reconocida: '+token);
+ assert.ok(found.meaning,'Falta traducción de '+token);
+}
+
 const misspelled=api.analyze(data,'ἄνρωπος','gr1',priorityBank);
 assert.equal(misspelled[0].status,'unknown','No corregir silenciosamente errores ortográficos de los textos');
 console.log('Griego prioritario: ateniense, nominales, presente, artículo y formas de εἰμί reconocidos.');
@@ -79,6 +86,11 @@ console.log('Vocabulario: prioridad docente, deduplicación por UD, ambigüedad,
  try{
  const page=await browser.newPage({acceptDownloads:true});const errors=[];page.on('pageerror',e=>errors.push(e.message));
  await page.goto('file://'+root+'/offline.html');await page.click('#vgShow');
+ const analyzeAll=page.locator('#vgAnalyzeAll');
+ assert.equal(await analyzeAll.innerText(),'Analizar todas las unidades');
+ assert.equal(await analyzeAll.evaluate(el=>el.previousElementSibling?.id),'vgMode');
+ assert.equal(await analyzeAll.evaluate(el=>getComputedStyle(el).fontWeight),'800');
+
  await page.fill('#vgCount','2');await page.locator('#vgCount').dispatchEvent('change');
  await page.fill('#vgText','Puella puella amamus xyzxyz');await page.click('#vgAnalyze');await page.waitForFunction(()=>document.querySelector('#vgStatus').textContent.includes('pendientes'));
  assert.match(await page.locator('#vgResults').innerText(),/xyzxyz/);
