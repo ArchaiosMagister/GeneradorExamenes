@@ -49,25 +49,55 @@ const server=http.createServer(async(req,res)=>{
    latinisms:latinLexBanks.latin1.latinisms.length,
    prefixes:latinLexBanks.latin1.prefixes.length,
    preverbs:latinLexBanks.latin1.preverbs.length,
-   sample:buildLatinLexQuestion('latin1',['UD6'])?.html||''
+   phonetics:latinLexBanks.latin1.phonetics.length
   }));
-  assert.deepEqual([lex.latinisms,lex.prefixes,lex.preverbs],[87,287,120],'Bancos docentes incompletos en la web');
-  assert(lex.sample.includes('Modificación preverbial a partir de '),'Falta modificación preverbial');
-  assert(lex.sample.includes('Señala el prefijo'),'Falta pregunta de prefijos');
-  assert(lex.sample.includes('Explica el significado'),'Falta pregunta de latinismos');
-  assert.equal((lex.sample.match(/<i>/g)||[]).length,10,'Solo deben aparecer diez términos en cursiva (2 + 4 + 4)');
-  assert(!lex.sample.includes('Evolución fonética de '),'No debe inventarse el banco de evolución fonética');
-  const freeVerb=await page.evaluate(()=>{
-   const a=document.getElementById('lex-verb-a'),b=document.getElementById('lex-verb-b');
-   if(!a||!b)throw Error('Faltan controles de elección manual de verbos');
-   a.value='pugno, -avi, -atum';b.value='VERBO_PERSONALIZADO';
-   const generated=buildLatinLexQuestion('latin1',['UD6'])?.html||'';
-   a.value='';b.value='';
-   return generated;
+  assert.deepEqual([lex.latinisms,lex.prefixes,lex.preverbs,lex.phonetics],[87,287,120,330],
+   'No han cargado todos los bancos léxicos docentes');
+  await page.evaluate(()=>{
+   selectedPhoneticRules.add('N07');selectedPhoneticRules.add('N17');generate();
   });
-  assert(freeVerb.includes('<i>pugno</i> (3)')&&freeVerb.includes('<i>VERBO_PERSONALIZADO</i> (2)'),
-   'No se aceptan verbos simples escogidos por el profesor');
-  assert(freeVerb.includes('sin ficha de derivados'),'Falta advertencia para verbos sin derivados documentados');
+  const examLex=await page.evaluate(()=>({
+   html:buildLatinLexQuestion('latin1',['UD6'])?.html||'',
+   exam:[...document.querySelectorAll('#paper .lex-subquestion')].map(el=>({
+    kind:el.dataset.lexKind,terms:[...el.querySelectorAll('i')].map(i=>i.textContent)
+   })),
+   phonetics:latinLexChosenRows('latin1','phonetics',['UD6'])
+  }));
+  assert.equal(examLex.exam.length,4,'Latín I: deben estar presentes las cuatro subpreguntas de léxico');
+  assert(examLex.exam.every(x=>x.terms.length===4),'Cada subpregunta de léxico debe tener cuatro formas');
+  assert.equal((examLex.html.match(/<i>/g)||[]).length,16,'Deben imprimirse dieciséis términos en cursiva');
+  assert(examLex.phonetics.every(row=>row.normas.every(n=>['N07','N17'].includes(n))),
+   'Evolución fonética incluye una norma aún no seleccionada');
+  const before=examLex.exam.map(x=>({kind:x.kind,terms:x.terms.slice()}));
+  await page.locator('#lex-slot-prefixes-1 + button').click();
+  const afterOne=await page.evaluate(()=>[...document.querySelectorAll('#paper .lex-subquestion')].map(x=>({
+   kind:x.dataset.lexKind,terms:[...x.querySelectorAll('i')].map(i=>i.textContent)
+  })));
+  assert.notEqual(afterOne.find(x=>x.kind==='prefixes').terms[1],before.find(x=>x.kind==='prefixes').terms[1],
+   'Regenerar una palabra no ha cambiado esa forma');
+  for(const old of before){
+   const next=afterOne.find(x=>x.kind===old.kind);
+   if(old.kind==='prefixes')assert.deepEqual(next.terms.filter((_,i)=>i!==1),old.terms.filter((_,i)=>i!==1),
+    'Regenerar una palabra ha modificado otra de su subpregunta');
+   else assert.deepEqual(next.terms,old.terms,'Regenerar una palabra ha modificado otra subpregunta');
+  }
+  await page.locator('#lex-slot-latinisms-0').locator('..').locator('..').getByRole('button',{name:'Regenerar las cuatro formas'}).click();
+  const afterAll=await page.evaluate(()=>[...document.querySelector('#paper [data-lex-kind="latinisms"]').querySelectorAll('i')].map(x=>x.textContent));
+  assert(afterAll.some((x,i)=>x!==before.find(x=>x.kind==='latinisms').terms[i]),
+   'Regenerar subpregunta no ha sustituido las cuatro formas');
+  const freeVerbs=await page.evaluate(()=>{
+   const input=document.getElementById('lex-verb-0');
+   input.value='VERBO_PERSONALIZADO';input.dispatchEvent(new Event('change',{bubbles:true}));
+   const result=buildLatinLexQuestion('latin1',['UD6'])?.html||'';
+   input.value='';input.dispatchEvent(new Event('change',{bubbles:true}));
+   return result;
+  });
+  assert(freeVerbs.includes('<i>VERBO_PERSONALIZADO</i> (2)'),'No se admite verbo manual');
+  const noRules=await page.evaluate(()=>{
+   selectedPhoneticRules.clear();examSelectionCache.delete(examCacheSignature('lex-phonetics'));generate();
+   return [...document.querySelectorAll('#paper [data-lex-kind="phonetics"]')].length;
+  });
+  assert.equal(noRules,0,'Se ha generado una evolución sin seleccionar normas');
   await page.waitForFunction(()=>navigator.serviceWorker.controller!==null,null,{timeout:45000});
   await page.waitForFunction(()=>document.querySelector('#pwaStatus')?.textContent.includes('Preparada'),null,{timeout:30000});
   const cache=await page.evaluate(async()=>{
@@ -77,6 +107,7 @@ const server=http.createServer(async(req,res)=>{
    const paths=['index.html','offline.html','pwa.js','offline-lemmas.js',
     'data/unimorph/lat-v.json','data/lemmas/teacher-forms.json',
     'data/latinismos-docente.json','data/prefijos-docente.json','data/modificacion-preverbial-docente.json',
+    'data/fonetica/banco_examenes.tsv',
     'manifest.webmanifest','icons/icon-192.png','icons/icon-512.png'];
    return {scope:reg.scope,keys,entries:await Promise.all(paths.map(async p=>({
     path:p,stored:!!await storage.match(new URL(p,reg.scope).href)

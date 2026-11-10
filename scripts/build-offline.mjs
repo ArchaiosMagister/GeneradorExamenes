@@ -41,7 +41,9 @@ export async function renderOffline(root=projectRoot){
   if(data.schema!==1||!Array.isArray(data.items)||!data.items.length)throw new Error('Banco léxico docente incompleto: '+path);
   lexicalAssets[path]=data;
  }
- const assets={'data/unimorph/lat-v.json':latin,'data/lemmas/teacher-forms.json':lemmatizer,...lexicalAssets};
+ const phonetics=await readFile(resolve(root,'data/fonetica/banco_examenes.tsv'),'utf8');
+ if(phonetics.split(/\r?\n/).filter(x=>/^\d+\|/.test(x)).length!==330)throw new Error('El banco fonético debe contener 330 fichas');
+ const assets={'data/unimorph/lat-v.json':latin,'data/lemmas/teacher-forms.json':lemmatizer,...lexicalAssets,'data/fonetica/banco_examenes.tsv':phonetics};
  // Evita cerrar prematuramente el elemento HTML script inerte.
  const json=JSON.stringify(assets).replace(/</g,'\\u003c');
  const marker='<script>';

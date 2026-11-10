@@ -77,3 +77,9 @@ En Latín I se generan cuatro subapartados con letras de posición fija: **a)** 
 Los filtros de **intervalo y paridad** de latinismos conservan los ordinales 1–87 antes de la selección aleatoria; el de prefijos conserva los 25 grupos docentes. El banco de evolución fonética queda deliberadamente sin entradas.
 
 El profesor puede fijar en la configuración los **verbos A y B** escribiendo cualquier primera persona del presente. Si introduce un enunciado largo, solo se imprime su primera forma, separada por coma. Cuando una forma no figura con un análisis único en el banco de derivados, se muestra una advertencia docente y no se inventa una solución. Si deja los campos vacíos, se generan automáticamente dos verbos con suficientes derivados documentados.
+
+## Paquete de evolución fonética y regeneración individual (10 de noviembre de 2026)
+
+Del ZIP docente se ha incorporado `data/fonetica/banco_examenes.tsv`, extracto de **330 fichas `APTO_PROPUESTO`** con identificador original `EVF-xxxx`, grafía latina, evolución castellana y normas `N01`–`N20`. Se han excluido las entradas `REVISAR` y los dobletes; el paquete ZIP sigue siendo la fuente para observaciones extensas y auditoría (1055 registros). Cada ejercicio selecciona **cuatro étimos**, exige que todas sus normas figuren entre las explicadas y avisa si no existen cuatro compatibles; no se rellenan huecos con ejemplos inventados.
+
+**Todos los apartados de léxico contienen cuatro estímulos en cursiva**; cada uno dispone de un botón para regenerarlo sin cambiar los otros tres y de otro botón que regenera la subpregunta entera. Para mantener cinco derivados en modificación preverbial, se usan cuatro verbos con reparto 2 + 1 + 1 + 1. Los significados de prefijos y latinismos no se generan como soluciones: el profesor realizará la corrección. El banco es utilizable por la PWA y se incrusta en `offline.html` durante la construcción.

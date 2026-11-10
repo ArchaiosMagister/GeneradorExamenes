@@ -20,6 +20,7 @@ assert.ok(payload['data/lemmas/teacher-forms.json'].rows.grc.length>1400);
 assert.equal(payload['data/latinismos-docente.json'].items.length,87);
 assert.equal(payload['data/prefijos-docente.json'].groups.length,25);
 assert.equal(payload['data/modificacion-preverbial-docente.json'].items.length,120);
+assert.equal(payload['data/fonetica/banco_examenes.tsv'].split(/\r?\n/).filter(x=>/^\d+\|/.test(x)).length,330);
 assert(html.includes('Lematizador del vocabulario · sin conexión'),'Falta la interfaz local de consulta');
 for(const [,attributes,body] of blocks){
  if(!/type="application\/json"/.test(attributes))new Script(body,{filename:'offline.html'});

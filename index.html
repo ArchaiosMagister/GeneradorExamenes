@@ -275,6 +275,23 @@ const latinLexTitles={
  preverbs:'Modificación preverbial',phonetics:'Evolución fonética',
  prefixes:'Prefijos',latinisms:'Latinismos'
 };
+const phoneticRules='Abertura|Aféresis|Apócope|Asimilación|Aspiración|Consonantización|Diptongación|Disimilación|Epéntesis|Evolución de grafías griegas|Metátesis|Monoptongación|Palatalización|Prótesis|Simplificación|Síncopa|Sonorización|Vocalización|-min- > -mbr-|-cul- > -j-/-g-'.split('|').map((name,i)=>({id:'N'+String(i+1).padStart(2,'0'),name}));
+const selectedPhoneticRules=new Set();
+function parseTeacherPhonetics(raw){
+ if(typeof raw!=='string')return [];
+ const seen=new Set(),rows=[];
+ for(const line of raw.split(/\r?\n/)){
+  if(!line||line.startsWith('#'))continue;
+  const parts=line.split('|');if(parts.length!==4)continue;
+  const [ordinal,latin,castellano,codes]=parts;
+  const id='EVF-'+String(Number(ordinal)).padStart(4,'0');
+  const normas=codes.split(',').map(x=>'N'+String(Number(x)).padStart(2,'0'));
+  if(!/^EVF-\d{4}$/.test(id)||!latin||!castellano||seen.has(id)||
+   normas.some(n=>!phoneticRules.some(rule=>rule.id===n)))continue;
+  seen.add(id);rows.push({id,prompt:latin,latin,castellano,normas,estado:'APTO_PROPUESTO',answer:''});
+ }
+ return rows;
+}
 const LATIN_LEX_STORAGE='examina_lexical_banks_v1';
 const latinLexPartEnabled=Object.create(null);
 const latinLexBanks=readLatinLexBanks();
@@ -820,7 +837,7 @@ function generate(){
  }
  if(course==='latin4'&&!translation&&examQuestionEnabled('culture')){
   const kind=$('cultureType')?.value||'all',pool=culture.filter(x=>x.course==='latin4'&&x.units?.some(u=>chosen.includes(u))&&(kind==='all'||kind===x.type)&&x.question&&x.answer);
-  const picked=sample(pool,4);
+  const picked=stickyExamRows('culture',()=>sample(pool,4));
   const html=picked.length?'<ol class="task" type="a">'+picked.map(x=>{
    const question=va&&x.question_va?x.question_va:x.question;
    const opts=x.type==='mc'&&x.options?.length?'<ol type="A">'+x.options.map(o=>'<li>'+esc(o)+'</li>').join('')+'</ol>':'';
@@ -1880,43 +1897,56 @@ async function loadTeacherLatinLexBanks(){
  const sources=[
   ['latinisms','data/latinismos-docente.json'],
   ['prefixes','data/prefijos-docente.json'],
-  ['preverbs','data/modificacion-preverbial-docente.json']
+  ['preverbs','data/modificacion-preverbial-docente.json'],
+  ['phonetics','data/fonetica/banco_examenes.tsv']
  ];
  const bundles=await Promise.all(sources.map(async ([kind,path])=>{
   try{
    let data=examinaEmbeddedAsset(path);
-   if(!data&&location.protocol!=='file:'){
+   if(data==null&&location.protocol!=='file:'){
     const response=await fetch(path,{cache:'force-cache'});
-    if(response.ok)data=await response.json();
+    if(response.ok)data=kind==='phonetics'?await response.text():await response.json();
    }
    return {kind,data};
   }catch(error){console.warn('Banco de léxico no disponible:',path,error);return {kind,data:null}}
  }));
  let loaded=0;
  for(const {kind,data} of bundles){
-  if(data?.schema!==1||!Array.isArray(data.items)||!data.items.length)continue;
-  const verified=data.items.filter(x=>typeof x.prompt==='string'&&typeof x.answer==='string');
-  if(kind==='latinisms'&&!verified.every(x=>Number.isInteger(x.number)&&x.number>=1))continue;
-  if(kind==='preverbs'&&!verified.every(x=>Array.isArray(x.derivatives)))continue;
-  const old=latinLexBanks.latin1[kind]||[],merged=new Map();
-  for(const x of verified)merged.set(kind==='latinisms'?String(x.number):x.prompt+'|'+(x.enunciado||x.prefix||''),x);
-  for(const x of old)merged.set(kind==='latinisms'?String(x.number):x.prompt+'|'+(x.enunciado||x.prefix||''),x);
-  latinLexBanks.latin1[kind]=[...merged.values()];
+  let verified;
+  if(kind==='phonetics'){
+   verified=parseTeacherPhonetics(data);
+   if(verified.length!==330)continue;
+  }else{
+   if(data?.schema!==1||!Array.isArray(data.items)||!data.items.length)continue;
+   verified=data.items.filter(x=>typeof x.prompt==='string'&&typeof x.answer==='string');
+   if(kind==='latinisms'&&!verified.every(x=>Number.isInteger(x.number)&&x.number>=1))continue;
+   if(kind==='preverbs'&&!verified.every(x=>Array.isArray(x.derivatives)))continue;
+  }
+  for(const course of kind==='phonetics'?['latin1','latin4']:['latin1']){
+   const old=latinLexBanks[course][kind]||[],merged=new Map();
+   const key=x=>kind==='latinisms'?String(x.number):
+    kind==='phonetics'?x.id||x.prompt:x.prompt+'|'+(x.enunciado||x.prefix||'');
+   for(const x of verified)merged.set(key(x),x);
+   for(const x of old)merged.set(key(x),x);
+   latinLexBanks[course][kind]=[...merged.values()];
+  }
   loaded++;
  }
- window.ExaminaTeacherLexBankReady=loaded===3;
+ window.ExaminaTeacherLexBankReady=loaded===sources.length;
  window.ExaminaTeacherLexBankCount={
   latinisms:latinLexBanks.latin1.latinisms.length,
   prefixes:latinLexBanks.latin1.prefixes.length,
-  preverbs:latinLexBanks.latin1.preverbs.length
+  preverbs:latinLexBanks.latin1.preverbs.length,
+  phonetics:latinLexBanks.latin1.phonetics.length
  };
- // Redibuja los filtros tras la carga, pero no sustituye un examen editado.
  if(loaded){
   const safePreview=$('paper').innerHTML===window.examinaLastLatinPreview;
   syncExamModelControls();
+  document.dispatchEvent(new Event('examina-lex-ready'));
   if(safePreview||!$('paper').innerHTML.trim())generate();
  }
 }
+
 function examQuestionEnabled(kind){
  const course=currentCourse(),model=$('model').value;
  const key=course+'/'+model+'/'+kind;
@@ -1965,7 +1995,7 @@ function examCacheSignature(kind){
   kind==='forms'?(morph?'morphWords':currentCourse()==='greek1'?'count-greek-forms':'count-forms'):
   kind==='sent'?'count-sent':'count-lex';
  return JSON.stringify([currentCourse(),$('model').value,unitsKey,$('cumulative').checked,kind,
-  $(countId)?.value,kind==='forms'?examMorphQuotaValues():null,kind.startsWith('lex-')?[$('lex-count-'+kind.slice(4))?.value,$('lex-prefix')?.value,$('lex-phenomenon')?.value,$('lex-parity')?.value,$('lex-from')?.value,$('lex-to')?.value,$('lex-verb-a')?.value,$('lex-verb-b')?.value]:null]);
+  $(countId)?.value,kind==='forms'?examMorphQuotaValues():null,kind.startsWith('lex-')?[$('lex-prefix')?.value,$('lex-phenomenon')?.value,$('lex-parity')?.value,$('lex-from')?.value,$('lex-to')?.value,...[0,1,2,3].map(i=>$('lex-verb-'+i)?.value),...selectedPhoneticRules].join('|'):null]);
 }
 function stickyExamRows(kind,factory){
  const key=examCacheSignature(kind);
@@ -1988,7 +2018,13 @@ function examLexFilter(row,course,kind,chosen){
  if(row.unit&&!chosen.includes(row.unit))return false;
  const prefix=$('lex-prefix')?.value||'all',phenomenon=$('lex-phenomenon')?.value||'all';
  if(kind==='prefixes'&&prefix!=='all'&&row.prefix!==prefix)return false;
- if(kind==='phonetics'&&phenomenon!=='all'&&!(Array.isArray(row.phenomena)?row.phenomena:[row.phenomenon]).includes(phenomenon))return false;
+ if(kind==='phonetics'){
+  if(row.id?.startsWith('EVF-')){
+   if(!selectedPhoneticRules.size||row.estado!=='APTO_PROPUESTO'||!Array.isArray(row.normas)||!row.normas.length||
+    !row.normas.every(n=>selectedPhoneticRules.has(n)))return false;
+  }
+  if(phenomenon!=='all'&&!(Array.isArray(row.phenomena)?row.phenomena:[row.phenomenon]).includes(phenomenon))return false;
+ }
  if(kind==='latinisms'){
   const n=Number(row.number),parity=$('lex-parity')?.value||'all',from=Number($('lex-from')?.value)||0,to=Number($('lex-to')?.value)||0;
   if(parity!=='all'&&(!Number.isInteger(n)||(parity==='odd'&&n%2!==1)||(parity==='even'&&n%2!==0)))return false;
@@ -1997,58 +2033,110 @@ function examLexFilter(row,course,kind,chosen){
  }
  return true;
 }
-function buildLatinLexQuestion(course,chosen){
- const parts=examSelectedLexParts(course),html=[],answers=[];
- const italic=text=>'<i>'+esc(text)+'</i>';
- const four=rows=>rows.map(x=>italic(x.prompt)).join(', ');
- for(const kind of parts){
-  const available=(latinLexBanks[course]?.[kind]||[]).filter(x=>examLexFilter(x,course,kind,chosen));
-  if(!available.length)continue;
-  let rows,question;
-  if(kind==='preverbs'&&course==='latin1'){
-   // El alumno propone cinco derivados (3 + 2); no se inventan soluciones.
-   // Enunciados homógrafos como sero y volo necesitan desambiguación.
-   const verified=available.filter(x=>!x.ambiguousPrompt&&Array.isArray(x.derivatives)&&x.derivatives.length>=3);
-   rows=stickyExamRows('lex-'+kind,()=>{
-    const pool=sample(verified,verified.length),selected=[];
-    for(const code of ['a','b']){
-     const manual=String($('lex-verb-'+code)?.value||'').split(',')[0].trim();
-     if(manual){
-      const matches=available.filter(x=>normLex(x.prompt)===normLex(manual));
-      const safe=matches.length===1?matches[0]:null;
-      selected.push(safe?{...safe,prompt:manual}:{prompt:manual,answer:'Corrección abierta a cargo del docente',reviewRequired:true});
-     }else{
-      const next=pool.find(x=>!selected.some(y=>normLex(y.prompt)===normLex(x.prompt)));
-      if(next)selected.push(next);
-     }
-    }
-    return selected;
-   });
-   if(rows.length<2)continue;
-   question='Modificación preverbial a partir de '+italic(rows[0].prompt)+' (3) y de '+
-    italic(rows[1].prompt)+' (2). Cinco derivados en total en lengua propia.';
-  }else{
-   const quantity=Math.max(1,Math.min(20,Number($('lex-count-'+kind)?.value)||4));
-   rows=stickyExamRows('lex-'+kind,()=>sample(available,quantity));
-   if(!rows.length)continue;
-   if(kind==='phonetics')question='Evolución fonética de '+four(rows)+'.';
-   else if(kind==='prefixes')question='Señala el prefijo y el significado que aporta a estas palabras: '+four(rows)+'.';
-   else if(kind==='latinisms')question='Latinismos. Explica el significado de los siguientes latinismos y haz una oración con ellos en la que se vea su sentido: '+four(rows)+'.';
-   else question=esc(latinLexTitles[kind])+': '+four(rows)+'.';
-  }
-  // Cada letra corresponde a su tipo de pregunta, incluso mientras el banco
-  // fonético no esté disponible. Ningún rótulo va en cursiva.
-  const letter=String.fromCharCode(97+(latinLexModules[course]||[]).indexOf(kind));
-  html.push('<p class="exam-item lex-subquestion"><span class="exam-letter">'+letter+'.</span> '+question+'</p>');
-  answers.push('<li>'+esc(latinLexTitles[kind])+': '+rows.map(x=>esc(x.prompt)+' — '+esc(x.answer)).join('; ')+'</li>');
-  if(kind==='preverbs'&&rows.some(x=>x.reviewRequired))
-   html.push('<p class="small no-print">Verbo añadido manualmente sin ficha de derivados: comprobar que admite la cantidad solicitada. La app no inventa derivados.</p>');
- }
- if(!html.length)return null;
- if(course==='latin1'&&parts.includes('phonetics')&&!latinLexBanks.latin1.phonetics.length)
-  html.push('<p class="small no-print">Apartado b pendiente: falta el banco docente de evolución fonética. No se inventan étimos.</p>');
- return {html:html.join(''),solution:'<ol>'+answers.join('')+'</ol>'};
+function latinLexPool(course,kind,chosen){
+ return (latinLexBanks[course]?.[kind]||[]).filter(x=>examLexFilter(x,course,kind,chosen)&&
+  (kind!=='preverbs'||!x.ambiguousPrompt));
 }
+function latinLexTermKey(x){return normLex(x.prompt)}
+function latinLexRandomFour(kind,pool){
+ const unique=[],seen=new Set();
+ for(const x of sample(pool,pool.length)){const key=latinLexTermKey(x);if(!key||seen.has(key))continue;seen.add(key);unique.push(x)}
+ if(kind==='preverbs'){
+  const first=unique.find(x=>(x.derivatives||[]).length>=2);
+  const others=unique.filter(x=>x!==first&&(x.derivatives||[]).length>=1).slice(0,3);
+  return first&&others.length===3?[first,...others]:[];
+ }
+ if(unique.length<4)return [];
+ if(kind!=='phonetics')return unique.slice(0,4);
+ const wanted=[...selectedPhoneticRules],counts=Object.fromEntries(wanted.map(n=>[n,unique.filter(x=>x.normas?.includes(n)).length]));
+ const ordered=sample(wanted,wanted.length).sort((a,b)=>counts[a]-counts[b]);
+ const picked=[],covered=new Set();
+ for(const code of ordered){
+  if(picked.length>=4)break;
+  if(covered.has(code))continue;
+  const selected=unique.find(x=>!picked.includes(x)&&x.normas?.includes(code));
+  if(selected){picked.push(selected);selected.normas.forEach(n=>covered.add(n))}
+ }
+ for(const x of unique){if(picked.length>=4)break;if(!picked.includes(x))picked.push(x)}
+ return picked;
+}
+function latinLexManualVerb(i,available){
+ const value=String($('lex-verb-'+i)?.value||'').split(',')[0].trim();
+ if(!value)return null;
+ const hits=available.filter(x=>normLex(x.prompt)===normLex(value));
+ const hit=hits.length===1?hits[0]:null;
+ return hit?{...hit,prompt:value}:{prompt:value,answer:'',reviewRequired:true};
+}
+function latinLexChosenRows(course,kind,chosen){
+ const rows=stickyExamRows('lex-'+kind,()=>{
+  const selected=latinLexRandomFour(kind,latinLexPool(course,kind,chosen));
+  if(kind==='preverbs'&&course==='latin1'){
+   const result=selected.slice();
+   for(let i=0;i<4;i++){const manual=latinLexManualVerb(i,latinLexBanks.latin1.preverbs||[]);if(manual)result[i]=manual}
+   return result;
+  }
+  return selected;
+ });
+ return rows.length===4&&rows.every(Boolean)?rows:[];
+}
+function latinLexStatus(kind,rows,message=''){
+ const status=$('lex-status-'+kind);
+ if(status)status.textContent=message||(!rows.length?'No hay cuatro formas compatibles.':rows.map((x,i)=>(i+1)+'. '+x.prompt).join(' · '));
+ for(let i=0;i<4;i++){const node=$('lex-slot-'+kind+'-'+i);if(node)node.textContent=rows[i]?.prompt||'Sin forma'}
+}
+function regenerateLatinLexPart(kind){
+ if(kind==='preverbs')for(let i=0;i<4;i++){const input=$('lex-verb-'+i);if(input)input.value=''}
+ examSelectionCache.delete(examCacheSignature('lex-'+kind));
+ generate();
+}
+function regenerateLatinLexWord(kind,index){
+ if(index<0||index>=4)return;
+ const course=currentCourse(),chosen=selectedUnits(),oldKey=examCacheSignature('lex-'+kind);
+ const previous=examSelectionCache.get(oldKey);
+ if(!Array.isArray(previous)||previous.length!==4){regenerateLatinLexPart(kind);return}
+ if(kind==='preverbs'){const input=$('lex-verb-'+index);if(input)input.value=''}
+ const used=new Set(previous.filter((_,i)=>i!==index).map(latinLexTermKey));
+ const candidates=latinLexPool(course,kind,chosen).filter(x=>
+  !used.has(latinLexTermKey(x))&&latinLexTermKey(x)!==latinLexTermKey(previous[index])&&
+  (kind!=='preverbs'||(x.derivatives||[]).length>=(index===0?2:1)));
+ const next=sample(candidates,1)[0];
+ if(!next){latinLexStatus(kind,previous,'No hay otra forma compatible.');return}
+ const rows=previous.slice();rows[index]=next;
+ examSelectionCache.set(examCacheSignature('lex-'+kind),rows);
+ generate();
+}
+function buildLatinLexQuestion(course,chosen){
+ const html=[],parts=examSelectedLexParts(course),italic=x=>'<i>'+esc(x.prompt)+'</i>';
+ for(const kind of parts){
+  const available=latinLexPool(course,kind,chosen),rows=latinLexChosenRows(course,kind,chosen);
+  const letter=String.fromCharCode(97+(latinLexModules[course]||[]).indexOf(kind));
+  if(rows.length!==4){
+   const msg=kind==='phonetics'&&!selectedPhoneticRules.size?
+    'Selecciona las normas fonéticas explicadas para generar cuatro formas.':
+    'Solo hay '+new Set(available.map(latinLexTermKey)).size+' formas compatibles para '+latinLexTitles[kind]+'. Se necesitan cuatro.';
+   latinLexStatus(kind,[],msg);
+   html.push('<p class="small no-print">'+esc(msg)+'</p>');continue;
+  }
+  const partsHtml=rows.map(italic),four=partsHtml.join(', ');
+  let question;
+  if(kind==='preverbs'&&course==='latin1')
+   question='Modificación preverbial a partir de '+partsHtml.map((p,i)=>p+' ('+(i===0?'2':'1')+')').join(', ')+'. Cinco derivados en total en lengua propia.';
+  else if(kind==='phonetics')question='Evolución fonética de '+four+'.';
+  else if(kind==='prefixes')question='Señala el prefijo y el significado que aporta a estas palabras: '+four+'.';
+  else if(kind==='latinisms')question='Latinismos. Explica el significado de los siguientes latinismos y haz una oración con ellos en la que se vea su sentido: '+four+'.';
+  else question=esc(latinLexTitles[kind])+': '+four+'.';
+  html.push('<p class="exam-item lex-subquestion" data-lex-kind="'+esc(kind)+'"><span class="exam-letter">'+letter+'.</span> '+question+'</p>');
+  latinLexStatus(kind,rows);
+  if(kind==='preverbs'&&rows.some(x=>x.reviewRequired))
+   html.push('<p class="small no-print">Verbo escogido sin derivados documentados: lo corregirá el profesor.</p>');
+  if(kind==='phonetics'){
+   const missing=[...selectedPhoneticRules].filter(n=>!rows.some(x=>x.normas.includes(n)));
+   if(missing.length)html.push('<p class="small no-print">Normas sin representación: '+esc(missing.join(', '))+'.</p>');
+  }
+ }
+ return html.some(x=>x.includes('lex-subquestion'))?{html:html.join(''),solution:''}:null;
+}
+
 refreshCourse();
 loadTeacherLatinLexBanks();
 /* Los parámetros internos conservan la misma interfaz que lee el motor,
@@ -2154,48 +2242,66 @@ loadTeacherLatinLexBanks();
   box.append(makeLabel(kind==='sent'?'Número de oraciones':kind==='forms'?'Número de formas':'Número de elementos',number));
  }
  function lexConfig(box){
-  const course=currentCourse();
+  const course=currentCourse(),data=latinLexBanks[course]||{};
   const state=document.createElement('p');state.className='hint';
-  const count=Object.values(latinLexBanks[course]||{}).reduce((n,a)=>n+a.length,0);
-  state.textContent=count?count+' entradas léxicas incorporadas.':'Bancos pendientes: se incorporarán al recibir tus archivos. No se generan ejemplos inventados.';
+  state.textContent=Object.values(data).reduce((n,x)=>n+x.length,0)+' fichas disponibles. Cada subpregunta genera cuatro formas con regeneración individual.';
   box.append(state);
   for(const kind of latinLexModules[course]||[]){
    const group=document.createElement('div');group.className='lex-subparts';
-   const toggle=document.createElement('input');toggle.type='checkbox';toggle.checked=latinLexPartEnabled[course+'/'+kind]!==false;
-   toggle.onchange=()=>{latinLexPartEnabled[course+'/'+kind]=toggle.checked;generate()};
-   group.append(makeLabel(latinLexTitles[kind]+' ('+(latinLexBanks[course]?.[kind]?.length||0)+')',toggle));
-   const qty=document.createElement('input');qty.type='number';qty.id='lex-count-'+kind;
-   qty.min=kind==='preverbs'&&course==='latin1'?'2':'1';qty.max=kind==='preverbs'&&course==='latin1'?'2':'20';
-   qty.value=kind==='preverbs'&&course==='latin1'?'2':'4';qty.disabled=kind==='preverbs'&&course==='latin1';
-   qty.onchange=generate;
-   group.append(makeLabel(kind==='preverbs'&&course==='latin1'?'Verbos simples (3 + 2 derivados)':'Elementos de esta subpregunta',qty));
+   const check=document.createElement('input');check.type='checkbox';check.checked=latinLexPartEnabled[course+'/'+kind]!==false;
+   check.onchange=()=>{latinLexPartEnabled[course+'/'+kind]=check.checked;generate()};
+   group.append(makeLabel(latinLexTitles[kind]+' ('+(data[kind]?.length||0)+')',check));
+   const all=document.createElement('button');all.type='button';all.className='secondary';all.textContent='Regenerar las cuatro formas';
+   all.onclick=()=>regenerateLatinLexPart(kind);group.append(all);
+   for(let i=0;i<4;i++){
+    const row=document.createElement('div');row.className='lex-word-control';
+    const span=document.createElement('span');span.id='lex-slot-'+kind+'-'+i;span.textContent='Forma '+(i+1);
+    const button=document.createElement('button');button.type='button';button.className='secondary';
+    button.textContent='Cambiar solo esta forma';
+    button.setAttribute('aria-label','Regenerar forma '+(i+1)+' de '+latinLexTitles[kind]);
+    button.onclick=()=>regenerateLatinLexWord(kind,i);
+    row.append(span,button);group.append(row);
+   }
    if(kind==='preverbs'&&course==='latin1'){
-    for(const [key,description] of [['a','Verbo A: tres derivados'],['b','Verbo B: dos derivados']]){
-     const manual=document.createElement('input');
-     manual.id='lex-verb-'+key;manual.type='text';manual.placeholder='Aleatorio; escribe cualquier verbo para fijarlo';
-     manual.autocomplete='off';manual.onchange=generate;
-     group.append(makeLabel(description,manual));
+    const note=document.createElement('p');note.className='hint';
+    note.textContent='Cinco derivados: 2 + 1 + 1 + 1. Puedes fijar cualquier verbo, que corregirás manualmente.';
+    group.append(note);
+    for(let i=0;i<4;i++){
+     const input=document.createElement('input');input.id='lex-verb-'+i;input.type='text';
+     input.placeholder='Aleatorio (o escribe un verbo)';input.autocomplete='off';
+     input.onchange=()=>{examSelectionCache.clear();generate()};
+     group.append(makeLabel('Verbo '+(i+1)+' manual',input));
     }
    }
-   box.append(group);
+   const status=document.createElement('p');status.id='lex-status-'+kind;status.className='hint';
+   status.setAttribute('aria-live','polite');group.append(status);box.append(group);
   }
   const select=(id,label,values)=>{
-   const control=document.createElement('select');control.id=id;
-   values.forEach(([v,title])=>{const o=document.createElement('option');o.value=v;o.textContent=title;control.append(o)});
-   control.onchange=generate;box.append(makeLabel(label,control));
+   const input=document.createElement('select');input.id=id;
+   values.forEach(([v,title])=>{const opt=document.createElement('option');opt.value=v;opt.textContent=title;input.append(opt)});
+   input.onchange=generate;box.append(makeLabel(label,input));
   };
-  const prefix=[...new Set((latinLexBanks[course]?.prefixes||[]).map(x=>x.prefix).filter(Boolean))].sort();
-  const phenomena=[...new Set((latinLexBanks[course]?.phonetics||[]).flatMap(x=>Array.isArray(x.phenomena)?x.phenomena:[x.phenomenon]).filter(Boolean))].sort();
-  select('lex-prefix','Prefijo',[['all','Todos'],...prefix.map(x=>[x,x])]);
-  select('lex-phenomenon','Fenómeno fonético',[['all','Todos'],...phenomena.map(x=>[x,x])]);
+  const prefixes=[...new Set((data.prefixes||[]).map(x=>x.prefix).filter(Boolean))].sort();
+  select('lex-prefix','Prefijo',[['all','Todos'],...prefixes.map(x=>[x,x])]);
+  if((data.phonetics||[]).some(x=>x.id?.startsWith('EVF-'))){
+   const field=document.createElement('fieldset');field.className='lex-norms';
+   const legend=document.createElement('legend');legend.textContent='Normas fonéticas ya explicadas';field.append(legend);
+   for(const rule of phoneticRules){
+    const input=document.createElement('input');input.type='checkbox';input.value=rule.id;input.checked=selectedPhoneticRules.has(rule.id);
+    input.onchange=()=>{if(input.checked)selectedPhoneticRules.add(rule.id);else selectedPhoneticRules.delete(rule.id);
+     examSelectionCache.delete(examCacheSignature('lex-phonetics'));generate()};
+    field.append(makeLabel(rule.id+' · '+rule.name,input));
+   }
+   box.append(field);
+  }
   if(course==='latin1'){
    select('lex-parity','Latinismos',[['all','Todos'],['odd','Impares'],['even','Pares']]);
-   const min=document.createElement('input');min.id='lex-from';min.type='number';min.min='1';min.placeholder='Desde';
-   const max=document.createElement('input');max.id='lex-to';max.type='number';max.min='1';max.placeholder='Hasta';
-   min.onchange=generate;max.onchange=generate;
-   box.append(makeLabel('Intervalo desde',min),makeLabel('Hasta',max));
+   const from=document.createElement('input');from.id='lex-from';from.type='number';from.min='1';from.placeholder='Desde';
+   const to=document.createElement('input');to.id='lex-to';to.type='number';to.min='1';to.placeholder='Hasta';
+   from.onchange=generate;to.onchange=generate;box.append(makeLabel('Intervalo desde',from),makeLabel('Hasta',to));
   }
  }
+
  function quotaConfig(box){
   const info=document.createElement('p');info.className='hint';
   info.textContent='Cuotas por clase de palabra (0 = sin cuota). Solo se seleccionan formas flexivas verificadas; nunca invariables.';
@@ -2262,6 +2368,7 @@ loadTeacherLatinLexBanks();
   if(currentCourse()!=='greek1'||$('model').value!=='complete')return;
   prevGreekControls();distributeEditors();
  };
+ document.addEventListener('examina-lex-ready',()=>questionMenus());
  for(const id of ['course','model','lang'])$(id).addEventListener('change',()=>{buttons();questionMenus()});
  buttons();questionMenus();
  document.addEventListener('DOMContentLoaded',()=>{buttons();questionMenus()},{once:true});
