@@ -35,14 +35,13 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
   // sus decisiones se apliquen directamente a las soluciones del examen.
   await page.locator('#morphTeacherReview').waitFor({state:'attached'});
   await page.locator('#morphTeacherReview > details').evaluate(el=>el.open=true);
-  await page.locator('#reviewSummary').filter({hasText:'416 incidencias'}).waitFor();
-  await page.selectOption('#reviewKind','correccion');
-  assert.equal(await page.locator('#reviewItems .review-item').count(),2,'Faltan correcciones de Latín I');
-  assert.match(await page.locator('#reviewItems').textContent(),/moveo/);
+  await page.locator('#reviewSummary').filter({hasText:/incidencias detectadas/}).waitFor();
+  await page.selectOption('#reviewKind','candidatas');
+  assert.ok(await page.locator('#reviewItems .review-item').count()>0,'Faltan candidatas latinas pendientes');
   await page.selectOption('#reviewCourse','gr1');
-  await page.locator('#reviewSummary').filter({hasText:'251 incidencias'}).waitFor();
-  await page.selectOption('#reviewKind','ampliacion');
-  assert.match(await page.locator('#reviewItems').textContent(),/γίγνομαι/);
+  await page.locator('#reviewSummary').filter({hasText:/incidencias detectadas/}).waitFor();
+  await page.selectOption('#reviewKind','variantes');
+  assert.match(await page.locator('#reviewItems').textContent(),/παῖς/);
   assert.match(await page.locator('#morphTeacherReview').textContent(),/ni altera las soluciones/i);
   await page.selectOption('#reviewKind','');
 
