@@ -4,6 +4,7 @@ Esta mejora parte de la PR #31 (sin fusionar `main`) y no sustituye el banco doc
 
 ## 1. Auditoría reproducible
 - `node scripts/test-vocabulary-quality.cjs` comprueba las 2.046 filas iniciales de Latín I, Latín 4.º ESO y Griego I, y verifica que la clasificación de estados cubre todas las fichas.
+- En Griego I, las 399 fichas iniciales pertenecen al «Banco general». El informe desglosa por UD únicamente las asignaciones que constan expresamente en el índice, desdoblando rangos como «UD 1–4». Las demás fichas conservan la etiqueta «Banco general»; por ello las sumas por UD pueden superar el total de fichas diferentes.
 - El nuevo módulo `vocabulary-quality.js` clasifica cada ficha y unidad en: **al menos una forma contrastada** (fuentes 0, 1 o 5), solo candidata (2 o 4), solo cita (3) o sin correspondencia segura.
 - Distingue las traducciones castellanas y valencianas ausentes, duplicados literales en una misma unidad y conflictos de glosa por lema.
 - La presencia de una forma contrastada **no demuestra un paradigma completo ni valida todos los significados**. La cifra «lista para morfología» es un indicador técnico limitado, no una aprobación del conjunto de formas.
