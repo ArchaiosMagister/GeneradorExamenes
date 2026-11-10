@@ -844,6 +844,9 @@ function generate(){
   '<div id="answerkey" class="solutions"><h2>'+esc(tr('key'))+'</h2><ol>'+answers.join('')+'</ol></div></div>';
  $('paper').setAttribute('contenteditable','true');$('paper').setAttribute('spellcheck','false');
  $('solutions').textContent=tr('solutions');refreshManualMorphWords();
+ // Captura la versión autogenerada para completar el vocabulario cuando
+ // termine de cargarse el índice offline, sin sobrescribir ediciones manuales.
+ window.examinaLastLatinPreview=$('paper').innerHTML;
 }
 let culture=[]; // Sin ejemplos genéricos: solo temario cerrado de Latín 4.º ESO.
 const initialCulture=culture.slice();
@@ -1256,6 +1259,15 @@ $('draftFile').onchange=async()=>{const file=$('draftFile').files[0];if(!file)re
 // Guardar el examen actual antes de cada regeneración, incluso si se editó directamente.
 const originalGenerate=generate;
 generate=function(){if($('paper').innerHTML.trim())saveDraftTo(PREVIOUS_KEY);originalGenerate()};
+// En la web instalada el índice lematizador se descarga de la caché PWA de
+// modo asíncrono. Completa el vocabulario al quedar listo sin cambiar las
+// preguntas ni perder retoques hechos por el docente en la vista previa.
+document.addEventListener('examina-lemmas-ready',()=>{
+ if(currentCourse()==='greek1'||$('model').value==='morf')return;
+ const paper=$('paper');
+ if(!paper||!window.examinaLastLatinPreview||paper.innerHTML!==window.examinaLastLatinPreview)return;
+ originalGenerate();
+});
 $('generate').onclick=generate;
 const undoButton=document.createElement('button');undoButton.type='button';undoButton.className='secondary';undoButton.textContent='Deshacer última generación';undoButton.id='undoGeneration';
 $('restoreDraft').after(undoButton);
