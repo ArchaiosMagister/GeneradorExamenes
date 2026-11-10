@@ -20,11 +20,17 @@ for(const [course,items] of [['lat1',latin],['gr1',greek]]){
  assert(items.every(x=>['correccion','etiquetas','ampliacion','candidatas','sin-flexion','variantes','homografia'].includes(x.kind)));
 }
 for(const lemma of ['moveo','eripio']){
- const issue=latin.find(x=>x.kind==='correccion'&&x.lemma===lemma);
- assert(issue&&issue.source.includes('Lewis'),'La corrección debe citar fuente contrastada: '+lemma);
+ assert(!latin.some(x=>x.kind==='correccion'&&x.lemma===lemma),
+  'Una corrección ya aplicada no debe pedir decisión: '+lemma);
 }
-assert(latin.some(x=>x.lemma==='sum'&&x.kind==='sin-flexion'),'No se ha detectado la laguna de sum');
-assert(greek.some(x=>x.lemma==='γιγνομαι'&&x.kind==='ampliacion'),'Falta revisión de γίγνομαι');
+for(const lemma of ['sum','eo']){
+ assert(!latin.some(x=>x.lemma===lemma&&x.kind==='sin-flexion'),
+  'Debe haberse incorporado el paradigma contrastado de '+lemma);
+}
+for(const lemma of ['γιγνομαι','ερχομαι','διδασκω','ακουω']){
+ assert(!greek.some(x=>x.lemma===lemma&&x.kind==='sin-flexion'),
+  'No debería figurar como sin flexión tras el contraste: '+lemma);
+}
 assert(greek.some(x=>x.lemma==='παισ'&&x.kind==='variantes'),'Falta revisión de variantes de παῖς');
 assert(latin.some(x=>x.kind==='homografia'),'Se han perdido las homografías');
 assert(greek.some(x=>x.kind==='candidatas'),'Se han promocionado indebidamente candidatos a verificados');
