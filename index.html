@@ -1627,9 +1627,13 @@ generate=function(){if($('paper').innerHTML.trim())saveDraftTo(PREVIOUS_KEY);ori
 // modo asíncrono. Completa el vocabulario al quedar listo sin cambiar las
 // preguntas ni perder retoques hechos por el docente en la vista previa.
 document.addEventListener('examina-lemmas-ready',()=>{
- if(currentCourse()==='greek1'||$('model').value==='morf')return;
  const paper=$('paper');
- if(!paper||!window.examinaLastLatinPreview||paper.innerHTML!==window.examinaLastLatinPreview)return;
+ if(!paper)return;
+ if(currentCourse()==='greek1'){
+  if($('model').value==='morphology'||!window.greekLastPreview||paper.innerHTML!==window.greekLastPreview)return;
+  originalGenerate();return;
+ }
+ if($('model').value==='morf'||!window.examinaLastLatinPreview||paper.innerHTML!==window.examinaLastLatinPreview)return;
  originalGenerate();
 });
 $('generate').onclick=generate;
@@ -2145,6 +2149,7 @@ function generateGreekExam(){
  const manualWarning=manualUnresolved.length?'<p class="notice no-print">'+esc($('lang').value==='va'?'Revisió necessària del vocabulari de les oracions afegides: ':'Revisión necesaria del vocabulario de las oraciones añadidas: ')+esc(manualUnresolved.join(', '))+'.</p>':'';
  $('paper').innerHTML='<div class="exam-sheet">'+greekExamHeader(chosen,mode)+(chosen.length?sections.join(''):'<p>'+notice+'</p>')+grade+gloss+manualWarning+'<div id="answerkey" class="solutions"><h2>'+tr('key')+'</h2>'+answers.join('')+'</div></div>';
  $('paper').setAttribute('contenteditable','true');$('paper').setAttribute('spellcheck','false');$('solutions').textContent=tr('solutions');refreshManualMorphWords();greekExamControls();
+ window.greekLastPreview=$('paper').innerHTML;
  // For auditable regression tests and inspection; no teacher data is transmitted.
  window.greekLastExam={chosen,max,mode:$('model').value,ids:result.items.map(x=>x.id),covered:result.covered,missing:result.missing,total:Number(total.toFixed(2))};
 }
