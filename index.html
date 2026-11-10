@@ -2016,7 +2016,7 @@ async function loadTeacherLatinLexBanks(){
   let verified;
   if(kind==='phonetics'){
    verified=parseTeacherPhonetics(data);
-   if(verified.length!==460)continue;
+   if(verified.length<510)continue;
   }else{
    if(data?.schema!==1||!Array.isArray(data.items)||!data.items.length)continue;
    verified=data.items.filter(x=>typeof x.prompt==='string'&&typeof x.answer==='string');
