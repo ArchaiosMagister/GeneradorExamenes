@@ -64,7 +64,8 @@ function greekReferenceForms(bank){
   }
   }
  }
- const bankByHead=(form)=>bank.find(row=>key(head(row.entry))===key(form));
+ const bankByHead=(form)=>bank.find(row=>head(row.entry).normalize('NFC')===String(form).normalize('NFC'))||
+  (!['τίς','τις'].includes(form)?bank.find(row=>key(head(row.entry))===key(form)):undefined);
  const addIrregular=(forms,entry,meaning)=>{
   const saved=bankByHead(entry);
   const record={lemma:key(head(saved?.entry||entry)),entry:saved?.entry||entry,
@@ -215,7 +216,7 @@ function greekReferenceForms(bank){
   'Αἰσχύλος','Esquilo');
  addIrregular(['Ἀλέξανδρος','Ἀλέξανδρος','Ἀλεξάνδρου'],
   'Ἀλέξανδρος','Alejandro');
- addIrregular(['ἄγγελος','ἄγγελοι','ἀγγέλου','ἀγγέλλοι'],
+ addIrregular(['ἄγγελος','ἄγγελοι','ἀγγέλου'],
   'ἄγγελος','mensajero');
 
  addIrregular(['μαθητής','μαθητής','μαθητήν','μαθηταί','μαθηταὶ','μαθητάς','μαθητὰς',
@@ -284,8 +285,8 @@ function analyze(data,text,course,bank){
     'τίνες','τίνες','τίνας','τίνας','τίσι','τίσιν','τίσιν'];
    const indefinite=['τις','τι','τινά','τινὰ','τινάς','τινὰς','τινός','τινὸς',
     'τινί','τινὶ','τινές','τινὲς','τισι','τισιν'];
-   if(interrogative.includes(spelled))candidates=candidates.filter(x=>x.entry==='τίς');
-   else if(indefinite.includes(spelled))candidates=candidates.filter(x=>x.entry==='τις');
+   if(interrogative.includes(spelled))candidates=candidates.filter(x=>head(x.entry).normalize('NFC')==='τίς');
+   else if(indefinite.includes(spelled))candidates=candidates.filter(x=>head(x.entry).normalize('NFC')==='τις');
   }
   // 'ἀλλὰ' (conjunción) frente a 'ἄλλα' (neutro plural) son
   // grafías diferentes a pesar de la normalización sin acentos.
