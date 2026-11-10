@@ -62,7 +62,8 @@ function verb(lemma,entry){
  const match=original.match(/\((1ª|2ª|3ª|4ª|mx\.)\)/);
  if(!match)return [];
  const c=match[1],rule=suffixes[c],first=norm(lemma);
- if(!rule||!rule.head.test(first)||first.endsWith('or'))return [];
+ if(!rule||!rule.head.test(first)||first.endsWith('or')||
+    (c==='3ª'&&first.endsWith('io')))return [];
  const stem=first.slice(0,-rule.base);
  const out=[];
  for(const [tense,ends]of [
