@@ -9,7 +9,7 @@ function part(start,end){
  return html.slice(a,b);
 }
 const morphologyHelpers=part('/* Editable syntagm slots;','function generateLatinMorphologyReference(){');
-const latinCode=part('const latinPronounRows=','let culture=[];')+morphologyHelpers+
+const latinCode=part('const latinPronounRows=','let culture=')+morphologyHelpers+
  part('function generateLatinMorphologyReference(){','/* El título refleja las unidades');
 const greekCode=morphologyHelpers+part('const greekModes=','// Vista del temario:')+
  part('function generateGreekMorphologyFixed(){','let greekExamState=null;')+
