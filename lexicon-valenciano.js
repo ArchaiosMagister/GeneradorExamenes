@@ -1256,8 +1256,11 @@
   let node;
   while((node=walker.nextNode())){
    if(node.parentElement?.closest('script,style,.final-gloss,.gloss-item,.exam-sentences,.exam-sentence'))continue;
-   if(!nodeBase.has(node))nodeBase.set(node,node.nodeValue);
-   const original=nodeBase.get(node),plain=original.trim();
+   let cached=nodeBase.get(node);
+   if(!cached||node.nodeValue!==cached.last){
+    cached={original:node.nodeValue,last:node.nodeValue};nodeBase.set(node,cached);
+   }
+   const original=cached.original,plain=original.trim();
    if(!plain)continue;
    let replacement=UI_TRANSLATIONS[plain];
    if(!replacement&&language==='va'&&node.parentElement?.matches('th,.exam-question,.notice,.small,.hint')){
@@ -1269,6 +1272,7 @@
    }
    if(language==='va'&&replacement)node.nodeValue=original.replace(plain,replacement);
    else if(language!=='va')node.nodeValue=original;
+   cached.last=node.nodeValue;
   }
  }
  global.ExaminaValencianGloss={lookup,forEntry,translateDom,count:Object.keys(translations).length};
