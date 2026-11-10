@@ -26,7 +26,7 @@ function latinSuite(){
   $:id=>state[id]||(state[id]={value:'',checked:true}),
   currentCourse:()=>scope.course,selectedUnits:()=>scope.units,
   sample:(a,n)=>a.slice(0,n),countFor:id=>Number(state['count-'+id]?.value)||5,
-  tr:x=>x,esc:x=>String(x),normLex:x=>String(x).toLowerCase(),
+  window:{},tr:x=>x,esc:x=>String(x),normLex:x=>String(x).toLowerCase(),
   examKey:x=>String(x).split(',')[0].toLowerCase(),
   examUnitNumber:x=>Number(String(x).replace('UD','')),
   M_CASES:['Nominativo','Vocativo','Acusativo','Genitivo','Dativo','Ablativo'],
