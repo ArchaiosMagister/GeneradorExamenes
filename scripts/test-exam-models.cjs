@@ -8,9 +8,10 @@ function part(start,end){
  assert(a>=0&&b>a,'Fragmento no encontrado: '+start);
  return html.slice(a,b);
 }
-const latinCode=part('const latinPronounRows=','let culture=[];')+
+const morphologyHelpers=part('/* Editable syntagm slots;','function generateLatinMorphologyReference(){')+;
+const latinCode=part('const latinPronounRows=','let culture=[];')+morphologyHelpers+
  part('function generateLatinMorphologyReference(){','/* El título refleja las unidades');
-const greekCode=part('const greekModes=','// Vista del temario:')+
+const greekCode=morphologyHelpers+part('const greekModes=','// Vista del temario:')+
  part('function generateGreekMorphologyFixed(){','let greekExamState=null;')+
  part('function generateGreekExam(){','const legacyUpdateUnits=');
 
@@ -26,7 +27,7 @@ function latinSuite(){
   $:id=>state[id]||(state[id]={value:'',checked:true}),
   currentCourse:()=>scope.course,selectedUnits:()=>scope.units,
   sample:(a,n)=>a.slice(0,n),countFor:id=>Number(state['count-'+id]?.value)||5,
-  window:{},tr:x=>x,esc:x=>String(x),normLex:x=>String(x).toLowerCase(),
+  window:{},document:{getElementById:()=>null},tr:x=>x,esc:x=>String(x),normLex:x=>String(x).toLowerCase(),
   examKey:x=>String(x).split(',')[0].toLowerCase(),
   examUnitNumber:x=>Number(String(x).replace('UD','')),
   M_CASES:['Nominativo','Vocativo','Acusativo','Genitivo','Dativo','Ablativo'],
@@ -47,7 +48,7 @@ function latinSuite(){
   latinExamHeader:()=>'<div class="exam-header">Latín</div>',
   buildFinalLexicon:()=>'<div class="final-gloss">Vocabulario de oraciones</div>',
   refreshManualMorphWords:()=>{},generateGreekExam:()=>{},syncLatin1PhoneticRuleControls:()=>{},
-  morphConfig:()=>({decline:2,verbs:2,words:5}),
+  morphConfig:()=>({offer:3,decline:2,verbs:2,words:5}),
   examQuestionEnabled:kind=>kind!=='pronouns'||state.model.value==='morf',
   stickyExamRows:(_kind,create)=>create(),
   examQuotaPick:(_groups,_n,defaultPick)=>defaultPick(),
@@ -85,6 +86,7 @@ function latinSuite(){
  output=state.paper.innerHTML.split('<div id="answerkey"')[0];
  assert.equal((output.match(/class="exam-question"/g)||[]).length,4,'Latín I UD3: pronombres como tercera pregunta');
  assert(output.includes('exam-pronouns')&&output.includes('palabras variables'));
+ assert(output.includes('sintagmas propuestos')&&output.includes('(sustantivo) + (adjetivo)'));
  scope.units=['UD1'];vm.runInContext('generateLatinMorphologyReference()',sandbox);
  output=state.paper.innerHTML.split('<div id="answerkey"')[0];
  assert.equal((output.match(/class="exam-question"/g)||[]).length,3,'UD1: sin pronombres');
@@ -117,14 +119,14 @@ function greekSuite(){
   greekVerifiedCorpus:rows,greekMorphologyEligible:(x,n)=>x.minUnit<=n,
   isProperNounLemma:()=>false,isExcludedExamMorphLemma:()=>false,greekMarkedUnits:()=>['UD7'],greekLimit:()=>scope.limit,
   examUnitNumber:x=>Number(String(x).replace('UD','')),
-  morphConfig:()=>({decline:1,verbs:3,words:5}),
+  morphConfig:()=>({offer:3,decline:1,verbs:3,words:5}),
   greekSelectedItems:(pool,chosen,counts)=>({items:pool.filter(x=>pool.filter(y=>y.kind===x.kind).indexOf(x)<(counts[x.kind]||0)),covered:[7],missing:[]}),
   greekPoints:kind=>Number(state['greek-points-'+kind].value),
   greekTable:()=>'<table class="exam-nouns"></table>',greekVerbTable:()=>'<table class="exam-verbs"></table>',
   greekExamHeader:()=>'<div class="exam-header">Griego</div>',
   greekQuestionLabel:kind=>({declension:'Declina',conjugation:'Conjuga',forms:'Analiza',pronouns:'Pronombres',etymology:'Etimología',sentences:'Traduce'}[kind]),
   greekLemma:head=>({entry:head,meaning:'palabra'}),examKey:x=>x,
-  glossAccept:()=>true,isRequired:()=>false,quoteGloss:x=>"'"+x+"'",esc:x=>String(x),tr:x=>x,
+  glossAccept:()=>true,isRequired:()=>false,quoteGloss:x=>"'"+x+"'",esc:x=>String(x),tr:x=>x,document:{getElementById:()=>null},
   greekExamControls:()=>{},refreshManualMorphWords:()=>{},window:{},
   examQuestionEnabled:kind=>kind!=='pronouns'||state.model.value==='morphology',
   stickyExamRows:(_kind,create)=>create(),
@@ -151,6 +153,7 @@ function greekSuite(){
  output=run('morphology');
  assert.equal((output.match(/class="exam-question"/g)||[]).length,4,'Griego UD7: pronombres');
  assert(output.includes('exam-pronouns')&&output.includes('palabras variables'));
+ assert(output.includes('(artículo) + (sustantivo) + (adjetivo)'));
 }
 latinSuite();greekSuite();
 assert(html.includes("course==='latin4'?['tablas']"),'Latín 4 solamente tiene el modelo completo');
