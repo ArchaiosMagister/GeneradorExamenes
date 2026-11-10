@@ -31,9 +31,26 @@ Además de la consulta manual, el vocabulario final de los exámenes utiliza el 
 
 El funcionamiento offline **no utiliza Internet**: el generador `scripts/build-offline.mjs` incrusta el índice bilingüe y el módulo de consulta en `offline.html`, junto con el banco latino que ya existía.
 
+## Ampliación: modelos regulares y lemas sin paradigmas
+
+El índice distingue ahora **tres niveles de evidencia**, visibles en las fichas:
+
+1. **Forma documentada:** lectura de UniMorph o de un paradigma docente explícito.
+2. **Modelo regular (provisional):** forma latina calculada por una regla morfológica explícita en `scripts/regular-latin.mjs`. La ficha la señala como *propuesta sin verificar*, con borde discontinuo. **Nunca se utiliza para el solucionario, la calificación ni la identificación automática de palabras para el glosario final**.
+3. **Forma de cita:** el lema que figura literalmente en el vocabulario del profesor, aunque todavía no tengamos ninguna flexión documentada. Esto permite localizar los lemas que antes aparecían como «sin resultados», sin atribuirles un análisis inventado.
+
+La generación provisional latina se limita a sustantivos de **primera/segunda declinación**, con nominativo y genitivo compatibles, y verbos activos de conjugación **primera, segunda, tercera, cuarta y mixta** cuando la clase está expresamente identificada. Solo se generan presente e imperfecto de indicativo y, cuando el profesor proporciona la forma de perfecto, perfecto activo. Las formas deponentes, verbos sin conjugación reconocible, sustantivos de tercera, adjetivos irregulares y casos como el vocativo de `-ius` quedan fuera. Tampoco se inventan plurales de nombres propios.
+
+Las propuestas se contrastan automáticamente **con cada casilla documentada** que ya exista para el mismo lema. Ante una contradicción se descarta entero el modelo y se registra la incidencia en `extensions.rejected_for_conflict`. Las propuestas no sustituyen ninguna forma existente.
+
+Para el griego **no se generan formas flexivas sin contrastar**: la acentuación, el aumento y los temas nominales/verbales requieren un tratamiento más fino. Las entradas griegas sin paradigma quedan localizables mediante su forma de cita.
+
+La búsqueda de una forma sigue devolviendo todos los lemas posibles. Sin embargo, la recuperación del **vocabulario final de un examen** solo usa formas documentadas o la propia cita léxica; jamás formas de un modelo provisional. La fuente de cada lectura se muestra junto a su enunciado completo.
+
 ## Reproducir los datos
 
 ```sh
+node scripts/test-regular-latin.mjs
 node scripts/build-lemma-index.mjs
 npm run offline:build
 node scripts/test-lemma-index.mjs
