@@ -10,6 +10,12 @@ assert.equal(data.kind,'referencia-lematizacion-no-calificacion');
 assert.match(data.scope,/no es un diccionario exhaustivo/);
 assert.match(data.source.unimorph.lat.license,/CC BY-SA/);
 assert.ok(data.rows.lat.length>10000&&data.rows.grc.length>1400);
+assert.ok(data.extensions?.candidate_lemmas>=100,'Faltan lemas candidatos regulares');
+assert.ok(data.extensions?.candidate_rows>=1000,'Faltan las formas propuestas');
+assert.ok(data.extensions?.citation_only.lat>=100&&data.extensions?.citation_only.grc>=150,
+ 'Deben poder consultarse los lemas sin flexiones');
+assert.ok(data.rows.lat.some(x=>x[3]===2)&&data.rows.grc.some(x=>x[3]===3));
+assert.ok(data.extensions.rejected_for_conflict.every(x=>x.lemma&&x.features.length>0));
 assert.equal(Object.keys(data.vocabulary.lat).length,772,'Deben coincidir los lemas latinos del vocabulario docente');
 assert.equal(Object.keys(data.vocabulary.grc).length,349,'Deben coincidir los lemas griegos del vocabulario docente');
 assert.ok(data.vocabulary.lat.amo?.lat1,'Falta el lema latino del vocabulario docente');
@@ -27,6 +33,13 @@ assert.ok(a.items.length>=6,'Faltan formas de amo');
 assert.ok(a.items.every(r=>r.lemma==='amo'));
 assert.ok(a.items.some(r=>r.source==='Paradigma docente'));
 assert.equal(uniqueLemmaFromData(data,'lat1','amabam'),'amo','Lematizar una forma para el glosario offline');
+const model=query(data,{course:'lat1',mode:'form',text:'appropinquabas'});
+assert.ok(model.items.some(x=>x.provisional),'Debe figurar como propuesta, no como dato certificado');
+assert.equal(uniqueLemmaFromData(data,'lat1','appropinquabas'),null,
+ 'Una flexión solo propuesta nunca debe entrar en el glosario de examen');
+const greekMissing=query(data,{course:'gr1',mode:'lemma',text:'ἀδελφός'});
+assert.ok(greekMissing.items.some(x=>x.citation),'La entrada griega debe encontrarse sin paradigma disponible');
+assert.ok(!greekMissing.items.some(x=>x.provisional),'No generar griego acentuado por conjetura');
 const greek=query(data,{course:'gr1',mode:'lemma',text:'λύω'});
 assert.ok(greek.items.length>=5,'Faltan formas de λύω');
 assert.ok(greek.items.every(r=>r.info.gr1));
