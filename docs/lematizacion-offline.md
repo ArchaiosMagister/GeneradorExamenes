@@ -45,6 +45,8 @@ Las propuestas se contrastan automáticamente **con cada casilla documentada** q
 
 Para el griego **no se generan formas flexivas sin contrastar**: la acentuación, el aumento y los temas nominales/verbales requieren un tratamiento más fino. Las entradas griegas sin paradigma quedan localizables mediante su forma de cita.
 
+La cabecera del lematizador muestra ahora, **para cada curso**, cuántos lemas tienen alguna forma documentada, cuántos cuentan con modelos regulares provisionales y cuántos solo conservan su entrada de vocabulario. Estas cifras no significan que el paradigma esté completo.
+
 La búsqueda de una forma sigue devolviendo todos los lemas posibles. Sin embargo, la recuperación del **vocabulario final de un examen** solo usa formas documentadas o la propia cita léxica; jamás formas de un modelo provisional. La fuente de cada lectura se muestra junto a su enunciado completo.
 
 ## Reproducir los datos
