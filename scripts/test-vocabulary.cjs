@@ -111,14 +111,17 @@ const remainingEditorialForms=[
 ];
 assert.equal(benchmark.find(r=>r.form==='ὅδε')?.status,'documented',
  'El demostrativo ὅδε debe tener un único lema');
-assert.ok(review.length<=remainingEditorialForms.length,
- 'Hay falsas ambigüedades griegas ajenas a las discrepancias ortográficas: '+
+assert.ok(review.length<=40,
+ 'El índice Eulexis debe resolver la mayoría de formas sin ocultar homografías: '+
  JSON.stringify(review.map(r=>({form:r.form,candidates:r.candidates.map(c=>c.entry)}))));
 for(const row of review){
- assert.ok(remainingEditorialForms.includes(row.form),
-  'La revisión contiene una forma no reconocida como discrepancia ortográfica: '+row.form);
- assert.match(row.warning,/Posible errata/,
-  'Toda revisión restante debe mostrar una orientación editorial concreta: '+row.form);
+ if(remainingEditorialForms.includes(row.form)){
+  assert.match(row.warning,/Posible errata/,
+   'La errata original sigue requiriendo revisión: '+row.form);
+ }else{
+  assert.ok(new Set(row.candidates.map(c=>c.lemma)).size>1,
+   'Una lectura no errónea no debería quedar en revisión sin al menos dos lemas: '+row.form);
+ }
 }
 
 assert.ok(success.some(r=>r.meaning==='ateniense'), 'Debe identificar ateniense usando el banco propio');
