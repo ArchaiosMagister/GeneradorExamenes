@@ -561,7 +561,9 @@ function analyze(data,text,course,bank){
   const candidates=index.get(k),old=candidates.get(lemma);
   const lexicalInvariable=source===3&&key(surface)===key(lemma)&&invariableEntry(data.vocabulary[lang][lemma][course].entry);
   const attested=[0,1,5,6,7].includes(source)||lexicalInvariable;
-  candidates.set(lemma,{lemma,attested:attested||!!old?.attested});
+  const exactForms=old?.exactForms||new Set();
+  if(lang==='grc')exactForms.add(surface.normalize('NFC'));
+  candidates.set(lemma,{lemma,attested:attested||!!old?.attested,exactForms});
  }
  const tokens=new Map();
  const cleanText=lang==='grc'?String(text).replace(/([\p{L}\p{M}])[’'](?=[\p{L}\p{M}])/gu,'$1 '):String(text);
@@ -576,7 +578,15 @@ function analyze(data,text,course,bank){
   const indexedCandidates=[...(index.get(normal)?.values()||[])].flatMap(c=>{
    const original=data.vocabulary[lang][c.lemma][course];
    const matches=bank.filter(x=>key(x.entry)===key(original.entry)||key(head(x.entry))===key(c.lemma));
-   const variants=matches.length?matches:[{entry:original.entry,meaning:''}];
+   // Repetir una misma palabra en distintas UD con glosas ligeramente
+   // distintas no constituye una ambigüedad MORFOLÓGICA. Conservamos la
+   // entrada docente más completa, dando preferencia a la del índice.
+   // Los homógrafos de lemas distintos siguen separados en `candidates`.
+   const variants=matches.length?(lang==='lat'?[matches.slice().sort((a,b)=>{
+    const score=x=>(x.entry===original.entry?100:0)+
+     (x.meaning_va?6:0)+(x.entry.split(',').length*3);
+    return score(b)-score(a);
+   })[0]]:matches):[{entry:original.entry,meaning:''}];
    return variants.map(x=>({...c,entry:x.entry,meaning:x.meaning||'',meaning_va:x.meaning_va||''}));
   });
   const directInvariable=lang==='lat'?bank.filter(x=>
@@ -590,8 +600,10 @@ function analyze(data,text,course,bank){
   // La normalización ayuda a encontrar formas; la grafía exacta con
   // diacríticos decide el lema cuando hay coincidencia documentada.
   const exactGreek=supplement.filter(x=>x.exactForms?.has(form.normalize('NFC')));
+  const exactIndexed=lang==='grc'?indexedCandidates.filter(x=>x.exactForms?.has(form.normalize('NFC'))):[];
   const all=exactGreek.length?exactGreek:
-   [...indexedCandidates.filter(x=>!(supplement.length&&!x.attested&&!x.meaning)),...supplement,...directInvariable,...curated];
+   [...(exactIndexed.length?exactIndexed:indexedCandidates).filter(x=>
+    !(supplement.length&&!x.attested&&!x.meaning)),...supplement,...directInvariable,...curated];
   // Preferimos la evidencia más firme para la misma entrada, sin descartar
   // una segunda lectura posible de un homógrafo.
   const compact=new Map();
