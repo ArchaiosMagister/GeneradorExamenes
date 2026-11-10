@@ -193,6 +193,31 @@ function greekReferenceForms(bank){
  addIrregular(['μέγας','μέγας','μεγάλη','μεγάλη','μέγα','μεγάλα','μεγάλαι','μεγάλαι',
   'μεγάλων','μεγάλους','μεγάλας'],
   'μέγας','grande');
+
+ // Pronominales interrogativos e indefinidos. La acentuación del original
+ // distingue las formas coincidentes tras quitar tildes del índice.
+ addIrregular(['τίς','τίς','τί','τί','τίνα','τίνα','τίνος','τίνος','τίνι','τίνι',
+  'τίνες','τίνες','τίνας','τίνας','τίσι','τίσιν','τίσιν'],'τίς','quién, cuál, qué');
+ addIrregular(['τις','τι','τινά','τινὰ','τινάς','τινὰς','τινός','τινὸς','τινί','τινὶ',
+  'τινές','τινὲς','τισι','τισιν'],'τις','alguien, alguno, cierto');
+ addIrregular(['ἀγρός','ἀγρὸς','ἀγροῦ','ἀγρὸν','ἀγρόν','ἀγροὺς','ἀγρούς','ἀγροῖς'],
+  'ἀγρός','campo');
+ addIrregular(['δειλός','δειλὸς','δειλοῦ','δειλόν'],'δειλός','cobarde');
+ addIrregular(['πολέμιος','πολέμιοι','πολεμίαν','πολεμίαν','πολεμίων','πολεμίων'],
+  'πολέμιος','enemigo, hostil');
+ addIrregular(['τριήρης','τριήρης','τριήρεις','τριήρεις','τριήρους'],
+  'τριήρης','trirreme');
+ addIrregular(['Μαραθών','Μαραθῶν','Μαραθῶνος','Μαραθῶνι'],
+  'Μαραθών','Maratón');
+ addIrregular(['Ἀφροδίτη','Ἀφροδίτη','Ἀφροδίτης','Ἀφροδίτης'],
+  'Ἀφροδίτη','Afrodita');
+ addIrregular(['Αἰσχύλος','Αἰσχύλος','Αἰσχύλου'],
+  'Αἰσχύλος','Esquilo');
+ addIrregular(['Ἀλέξανδρος','Ἀλέξανδρος','Ἀλεξάνδρου'],
+  'Ἀλέξανδρος','Alejandro');
+ addIrregular(['ἄγγελος','ἄγγελοι','ἀγγέλου','ἀγγέλλοι'],
+  'ἄγγελος','mensajero');
+
  addIrregular(['μαθητής','μαθητής','μαθητήν','μαθηταί','μαθηταὶ','μαθητάς','μαθητὰς',
   'μαθητῶν','μαθητοῖς'],'μαθητής','alumno');
 
@@ -238,6 +263,29 @@ function analyze(data,text,course,bank){
    const accents={ο:['ὁ'],η:['ἡ'],το:['τὸ','τό']};
    if(!accents[normal].includes(form.normalize('NFC')))
     candidates=candidates.filter(x=>x.entry!=='ὁ, ἡ, τό');
+  }
+  // Preposiciones y adverbios con grafía acentuada inequívoca:
+  // al suprimir diacríticos, εἰς/εἷς y ἐν/ἕν no deben confundirse.
+  if(lang==='grc'){
+   const spelled=form.normalize('NFC');
+   const fixed={
+    'εἰς':'εἰς','ἐν':'ἐν','ἐκ':'ἐκ','οὐ':'οὐ','οὐκ':'οὐ','ἀπὸ':'ἀπό',
+    'διὰ':'διά','σὺν':'σύν','ἄνευ':'ἄνευ','περὶ':'περί'
+   };
+   if(Object.prototype.hasOwnProperty.call(fixed,spelled)){
+    const wanted=key(fixed[spelled]);
+    const distinct=candidates.filter(x=>x.origin==='paradigma gramatical explícito' &&
+     key(head(x.entry))===wanted);
+    if(distinct.length)candidates=distinct;
+   }
+   // τίς (interrogativo) frente a τις (indefinido); ambas entradas
+   // conservan su lema y traducción original.
+   const interrogative=['τίς','τίς','τί','τί','τίνα','τίνα','τίνος','τίνος','τίνι','τίνι',
+    'τίνες','τίνες','τίνας','τίνας','τίσι','τίσιν','τίσιν'];
+   const indefinite=['τις','τι','τινά','τινὰ','τινάς','τινὰς','τινός','τινὸς',
+    'τινί','τινὶ','τινές','τινὲς','τισι','τισιν'];
+   if(interrogative.includes(spelled))candidates=candidates.filter(x=>x.entry==='τίς');
+   else if(indefinite.includes(spelled))candidates=candidates.filter(x=>x.entry==='τις');
   }
   // 'ἀλλὰ' (conjunción) frente a 'ἄλλα' (neutro plural) son
   // grafías diferentes a pesar de la normalización sin acentos.
