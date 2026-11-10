@@ -110,6 +110,16 @@ assert.match(api.formatVocabularyEntry(get('καὶ'),'complete','gr1'),/\(conj\
 assert.match(api.formatVocabularyEntry(get('ἤ'),'complete','gr1'),/\(conj\.\): 'o'$/);
 assert.equal(api.formatVocabularyEntry({entry:'ἀλλά (conj.)',meaning:'pero’, ‘sino'},'complete','gr1'),
  "ἀλλά (conj.): 'pero', 'sino'");
+
+assert.equal(api.formatVocabularyEntry({entry:'εἰμί',meaning:'ser’, ‘estar’, ‘haber'},'complete','gr1'),
+ "εἰμί: 'ser', 'estar', 'haber'");
+assert.equal(api.formatVocabularyEntry({entry:'Μενέλαος, –ου',meaning:"Menelao' (rey espartano)"},'complete','gr1'),
+ "Μενέλαος, –ου: 'Menelao (rey espartano)'");
+assert.equal(api.formatVocabularyEntry({entry:'χρῆμα, –ατος',meaning:'cosa’ (sing.), ‘riqueza’ (pl.)'},'complete','gr1'),
+ "χρῆμα, –ατος: 'cosa (sing.)', 'riqueza (pl.)'");
+assert.equal(api.formatVocabularyEntry({entry:'μετά (prep. + gen./ac.)',meaning:'entre, con’ (+gen.), ‘después de’ (+ac.)'},'complete','gr1'),
+ "μετά (prep. + gen./ac.): 'entre, con (+gen.)', 'después de (+ac.)'");
+
 assert.equal(api.formatVocabularyEntry({entry:'οὐ μόνον ἀλλὰ καὶ',meaning:'no sólo, sino también'},'complete','gr1'),
  'οὐ μόνον ἀλλὰ καὶ (loc. conj.): "no sólo, sino también"');
 assert.equal(api.formatVocabularyEntry({entry:'ἀγορά, –ας',meaning:'plaza'},'complete','gr1'),
@@ -158,6 +168,7 @@ const suspiciousNominals=[...new Set(success.filter(r=>
  !/^\s*(?:εἰμί|ἐστί)/u.test(r.entry)
 ).map(r=>r.entry))].sort();
 console.log('Posibles enunciados nominales incompletos (revisión):',JSON.stringify(suspiciousNominals));
+assert.equal(suspiciousNominals.length,0,'Quedan enunciados nominales suplementarios sin genitivo o concordancia');
 console.log('Corpus docente Griego I / pendientes anteriores:',JSON.stringify({
  total:originals.length,formasDistintasNormalizadas:benchmark.length,
  reconocidas:success.length,revision:review.length,desconocidas:unknown.length
