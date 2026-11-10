@@ -20,6 +20,9 @@ assert.ok(payload['data/lemmas/teacher-forms.json'].rows.grc.length>1400);
 assert.equal(payload['data/latinismos-docente.json'].items.length,87);
 assert.equal(payload['data/prefijos-docente.json'].groups.length,25);
 assert.equal(payload['data/modificacion-preverbial-docente.json'].items.length,120);
+const syllabus=payload['data/modificacion-preverbial-unidades-lat1.json'];
+assert.equal(syllabus.units.reduce((n,x)=>n+x.verbs.length,0),28);
+assert.deepEqual(syllabus.units.filter(x=>x.verbs.length===0).map(x=>x.unit),[8,10]);
 assert.equal(payload['data/fonetica/banco_examenes.tsv'].split(/\r?\n/).filter(x=>/^\d+\|/.test(x)).length,330);
 assert(html.includes('Lematizador del vocabulario · sin conexión'),'Falta la interfaz local de consulta');
 for(const [,attributes,body] of blocks){

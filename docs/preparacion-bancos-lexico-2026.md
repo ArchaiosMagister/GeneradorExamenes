@@ -83,3 +83,20 @@ El profesor puede fijar en la configuración los **verbos A y B** escribiendo cu
 Del ZIP docente se ha incorporado `data/fonetica/banco_examenes.tsv`, extracto de **330 fichas `APTO_PROPUESTO`** con identificador original `EVF-xxxx`, grafía latina, evolución castellana y normas `N01`–`N20`. Se han excluido las entradas `REVISAR` y los dobletes; el paquete ZIP sigue siendo la fuente para observaciones extensas y auditoría (1055 registros). Cada ejercicio selecciona **cuatro étimos**, exige que todas sus normas figuren entre las explicadas y avisa si no existen cuatro compatibles; no se rellenan huecos con ejemplos inventados.
 
 **Todos los apartados de léxico contienen cuatro estímulos en cursiva**; cada uno dispone de un botón para regenerarlo sin cambiar los otros tres y de otro botón que regenera la subpregunta entera. Para mantener cinco derivados en modificación preverbial, se usan cuatro verbos con reparto 2 + 1 + 1 + 1. Los significados de prefijos y latinismos no se generan como soluciones: el profesor realizará la corrección. El banco es utilizable por la PWA y se incrusta en `offline.html` durante la construcción.
+
+## Verbos de modificación preverbial por unidad de Latín I (10 de noviembre de 2026)
+
+Se ha incorporado `data/modificacion-preverbial-unidades-lat1.json`, con **28 introducciones**:
+- UD2: `mitto`, `pono`, `duco`, `fero`.
+- UD3: `capio`, `clamo`, `facio`, `tendo`.
+- UD4: `porto`, `habeo`, `iacio`, `cado`.
+- UD5: `curro`, `dico`, `gero`, `peto`.
+- UD6: `pugno`, `sedeo`, `sentio`, `specio`.
+- UD7: `gradior`, `sequor`, `verto`, `video`.
+- UD8: sin verbos nuevos.
+- UD9: `cerno`, `do`, `eo`, `fligo`.
+- UD10: sin verbos nuevos.
+
+**Regla docente:** para un examen de una o varias unidades, entran los verbos explicados hasta la unidad más avanzada seleccionada; se mantiene este criterio incluso si el usuario no activa la opción «Acumulativo». La UD1 no ofrece modificación preverbial. En UD8 y UD10 se conserva todo el repertorio anterior. Los botones de regeneración, tanto por palabra como por subpregunta, respetan el mismo catálogo. La selección manual continúa disponible como excepción deliberada del profesor.
+
+De los 28 verbos, **27 tienen derivados documentados** en el banco previo. `fligo`, suministrado para UD9, no figura allí: es elegible pero aparece con aviso de revisión, sin proponer derivados ni soluciones inventadas. En el examen se imprime exclusivamente la primera persona del presente.

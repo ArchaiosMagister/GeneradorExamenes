@@ -53,7 +53,27 @@ const server=http.createServer(async(req,res)=>{
   }));
   assert.deepEqual([lex.latinisms,lex.prefixes,lex.preverbs,lex.phonetics],[87,287,120,330],
    'No han cargado todos los bancos léxicos docentes');
+  const taught=await page.evaluate(()=>{
+   const result={};
+   for(let i=1;i<=10;i++)result['UD'+i]=latinLexPool('latin1','preverbs',['UD'+i]).map(x=>x.prompt);
+   result.fligo=latinLexPool('latin1','preverbs',['UD9']).find(x=>x.prompt==='fligo');
+   result.fromFirstUnit=latinLexRandomFour('preverbs',latinLexPool('latin1','preverbs',['UD2'])).map(x=>x.prompt);
+   return result;
+  });
+  assert.deepEqual(taught.UD2.slice().sort(),['mitto','pono','duco','fero'].sort(),'UD2: verbos ajenos al programa');
+  for(const [unit,count] of Object.entries({UD1:0,UD2:4,UD3:8,UD4:12,UD5:16,UD6:20,UD7:24,UD8:24,UD9:28,UD10:28}))
+   assert.equal(taught[unit].length,count,'Error en los verbos explicados hasta '+unit);
+  assert.deepEqual(taught.UD7,taught.UD8,'UD8 no introduce verbos');
+  assert.deepEqual(taught.UD9,taught.UD10,'UD10 no introduce verbos');
+  assert(!taught.UD7.includes('fligo')&&taught.UD9.includes('fligo'),
+   'fligo solo es elegible a partir de la UD9');
+  assert(taught.fligo.reviewRequired&&taught.fligo.derivatives.length===0,
+   'No se deben inventar derivados de fligo');
+  assert.equal(taught.fromFirstUnit.length,4,'UD2 debe generar sus cuatro verbos');
   await page.evaluate(()=>{
+   const ud6=units.indexOf('UD6');
+   if(ud6<0)throw Error('No existe UD6 en Latín I');
+   document.querySelectorAll('.unit-choice').forEach(el=>el.checked=Number(el.value)===ud6);
    selectedPhoneticRules.add('N07');selectedPhoneticRules.add('N17');generate();
   });
   const examLex=await page.evaluate(()=>({
@@ -109,6 +129,7 @@ const server=http.createServer(async(req,res)=>{
    const paths=['index.html','offline.html','pwa.js','offline-lemmas.js',
     'data/unimorph/lat-v.json','data/lemmas/teacher-forms.json',
     'data/latinismos-docente.json','data/prefijos-docente.json','data/modificacion-preverbial-docente.json',
+    'data/modificacion-preverbial-unidades-lat1.json',
     'data/fonetica/banco_examenes.tsv',
     'manifest.webmanifest','icons/icon-192.png','icons/icon-512.png'];
    return {scope:reg.scope,keys,entries:await Promise.all(paths.map(async p=>({
