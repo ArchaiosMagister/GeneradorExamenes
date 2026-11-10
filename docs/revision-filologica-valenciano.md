@@ -1,6 +1,6 @@
 # Auditoría filológica del vocabulario en castellano y valenciano
 
-**Rama:** `feat/integracion-pr29-pr30-valenciano-20261110` · **PR:** #31 · **Estado:** correcciones aplicadas, con una única decisión docente pendiente.
+**Rama:** `feat/integracion-pr29-pr30-valenciano-20261110` · **PR:** #31 · **Estado:** trece decisiones docentes aplicadas; ninguna pendiente de esta revisión.
 
 ## Criterio editorial
 
@@ -20,11 +20,12 @@
 
 ## Decisiones aprobadas por el docente
 
-**12 de 13 decisiones aplicadas** sobre esta PR, sin fusionarla. Se conservan las glosas castellanas originales excepto en el caso de `impono`, cuya corrección española y valenciana se autorizó explícitamente.
+**13 de 13 decisiones aplicadas** sobre esta PR, sin fusionarla. Se conservan las glosas castellanas originales salvo en `impono` y `reduco`, cuyas correcciones española y valenciana autorizó expresamente el docente.
 
 | Código | Entrada | Decisión aprobada |
 | --- | --- | --- |
 | `LAT1-IMPORTO` | importo, importavi, importatum (1ª) | traer → portar |
+| `LAT1-REDUCO` | reduco, reduxi, reductum (3ª) | conducir de vuelta → conduir de tornada |
 | `LAT1-IMPONO` | impono, imposui, impositum (3ª) | imponer, colocar encima → imposar, posar damunt |
 | `GR1-KALEO` | καλέω | cridar, anomenar |
 | `GR1-MALISTA` | μάλιστα (adv.) | moltíssim, especialment |
@@ -41,11 +42,11 @@
 
 Se ha eliminado `Ultrapuertos`/`ultraports` del único banco bilingüe de prefijos: el fichero pasa de 287 a **286** fichas. La progresión de Latín 4.º debe continuar ofreciendo al menos cuatro candidatas por unidad y por idioma.
 
-## Decisión todavía pendiente
+## Decisiones pendientes
 
-**`LAT1-REDUCO` — *reduco, reduxi, reductum (3ª)*.** Se mantiene provisionalmente castellano «traer» y valenciano «portar». El docente **no eligió ninguna alternativa**: no alterar el contenido hasta una decisión posterior.
+No quedan decisiones sin resolver de esta revisión: las trece elecciones filológicas fueron aprobadas por el docente. En particular, `LAT1-REDUCO` queda como «conducir de vuelta» / «conduir de tornada».
 
-Las opciones inicialmente propuestas fueron «traer → portar», «hacer volver → fer tornar» y «conducir de vuelta → conduir de tornada». El registro de auditoría se mantiene en `data/revision-valenciano-pendiente.json`, separando decisiones resueltas de pendientes.
+La preferencia editorial es por el **valenciano de uso propio**, sin sustituciones por variantes del catalán que el docente no haya escogido.
 
 ## Referencias consultadas
 
@@ -61,4 +62,4 @@ Las opciones inicialmente propuestas fueron «traer → portar», «hacer volver
 - `node scripts/test-vocabulary.cjs`
 - `npm run offline:build`
 
-No fusionar con `main` sin validación posterior; la única duda no resuelta es *reduco*, que se conserva sin cambios.
+No fusionar con `main` hasta comprobar que las pruebas automatizadas y los documentos Word se generan correctamente tras estas trece decisiones.
