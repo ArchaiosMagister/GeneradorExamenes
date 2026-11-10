@@ -19,7 +19,10 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
   });
   await page.selectOption('#offlineLemmaCourse','lat1');
   await page.locator('#offlineLemmaCoverage').filter({hasText:'664 lemas'}).waitFor();
-  assert.match(await page.locator('#offlineLemmaCoverage').textContent(),/formas candidatas no verificadas/);
+  assert.match(await page.locator('#offlineLemmaCoverage').textContent(),/formas candidatas/);
+  await page.locator('#offlineLemmaPanel details.lemma-units').evaluate(el=>el.open=true);
+  assert.ok(await page.locator('#offlineLemmaByUnit tbody tr').count()>=8,'Falta la cobertura por unidades latinas');
+  assert.match(await page.locator('#offlineLemmaByUnit').textContent(),/Con formas documentadas/);
   await page.selectOption('#offlineLemmaMode','lemma');
   await page.locator('#offlineLemmaInput').fill('amo');
   await page.locator('#offlineLemmaSearch').click();
@@ -44,9 +47,20 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
   await page.locator('#offlineLemmaResults .lemma-provisional').first().waitFor();
   assert.match(await page.locator('#offlineLemmaStatus').textContent(),/propuestas de modelo sin verificar/);
   assert.match(await page.locator('#offlineLemmaResults').textContent(),/propuesta sin verificar/);
+  // Propuestas de tercera declinación completas solo en las casillas seguras.
+  await page.selectOption('#offlineLemmaMode','lemma');
+  await page.locator('#offlineLemmaInput').fill('dux');
+  await page.locator('#offlineLemmaSearch').click();
+  await page.locator('#offlineLemmaResults .lemma-provisional').first().waitFor();
+  assert.ok(await page.locator('#offlineLemmaResults .lemma-provisional').count()>=10,
+   'Faltan propuestas de tercera declinación para dux, ducis');
+  assert.match(await page.locator('#offlineLemmaResults').textContent(),/ducem/);
+  assert.doesNotMatch(await page.locator('#offlineLemmaResults').textContent(),/N;GEN;PL/,
+   'No debe inferirse el genitivo plural de un tema incierto');
   // Un lema griego sin formas queda localizable como entrada, sin inventar acentos.
   await page.selectOption('#offlineLemmaCourse','gr1');
   await page.locator('#offlineLemmaCoverage').filter({hasText:'349 lemas'}).waitFor();
+  assert.ok(await page.locator('#offlineLemmaByUnit tbody tr').count()>=5,'Faltan las unidades agrupadas de griego');
   await page.selectOption('#offlineLemmaMode','lemma');
   await page.locator('#offlineLemmaInput').fill('λύω');
   await page.locator('#offlineLemmaSearch').click();
