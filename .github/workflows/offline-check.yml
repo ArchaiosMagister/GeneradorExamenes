@@ -5,6 +5,7 @@ on:
     paths:
       - 'index.html'
       - 'culture-lat4.js'
+      - 'lexicon-valenciano.js'
       - 'vocabulary-generator.js'
       - 'offline.html'
       - 'offline-lemmas.js'
@@ -75,6 +76,8 @@ jobs:
         run: |
           npm install --no-save --ignore-scripts playwright@1.56.1
           npx playwright install --with-deps chromium
+      - name: Validar glosas en castellano y valenciano
+        run: node scripts/test-valenciano.cjs
       - name: Probar generador de vocabulario por unidades y Word
         run: npm run vocabulary:test
       - name: Probar las vistas previas de todos los modelos
