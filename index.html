@@ -1768,7 +1768,7 @@ function latinDefaultCounts(){
  $('count-forms').value=model==='mixto'?8:6;
 }
 function configureExamGlossary(){
- const enabled=currentCourse()==='greek1'?$('model').value==='complete':$('model').value!=='morf';
+ const enabled=currentCourse()==='greek1'?['complete','translation'].includes($('model').value):$('model').value!=='morf';
  $('autoGloss').checked=enabled;
  $('glossScope').value='all';
 }
