@@ -57,6 +57,45 @@ function noun(lemma,entry){
  }
  return result;
 }
+/**
+ * Third-declension M/F reference candidates using a FULL genitive in -is.
+ * Only forms shared by ordinary consonant- and mixed i-stems are suggested.
+ * Genitive plural is deliberately omitted (-um / -ium), and parisyllabic
+ * i-stems and exceptional stems are not inferred from spelling alone.
+ * These rows have source=2, NEVER exam answer keys.
+ */
+function thirdNoun(lemma,entry){
+ const raw=String(entry||'');
+ const p=raw.split(',').map(x=>x.trim());
+ if(p.length!==2||!/\(\s*(?:m|f)\.\s*\)/i.test(raw))return [];
+ const nominative=norm(lemma);
+ const rawGenitive=p[1].replace(/\([^)]*\)/g,'').trim();
+ // No hyphen shorthand or incomplete dictionary genitive, e.g. "-is".
+ if(!/^[a-zāăēĕīĭōŏūŭȳÿæœ]+$/iu.test(rawGenitive))return [];
+ const genitive=norm(rawGenitive);
+ if(!/^[a-z]+$/.test(nominative)||!/^[a-z]+is$/.test(genitive)||
+    genitive.length<5||nominative.endsWith('is')||genitive===nominative)return [];
+ // Dat./abl. plural of bos, bovis = bobus / bubus, not "bovibus".
+ // Unusual stems and defective nouns remain outside automatic generation.
+ if(['bos','vis','sus','grus','iuppiter','deus','ver'].includes(nominative))return [];
+ const stem=genitive.slice(0,-2);
+ if(stem.length<2)return [];
+ const proper=/^[A-ZĀĂĒĔĪĬŌŎŪŬÆŒ]/u.test(raw.trim());
+ const singular={
+  NOM:nominative,GEN:genitive,DAT:stem+'i',
+  ACC:stem+'em',VOC:nominative,ABL:stem+'e'
+ };
+ const plural={
+  NOM:stem+'es',DAT:stem+'ibus',ACC:stem+'es',
+  VOC:stem+'es',ABL:stem+'ibus'
+ };
+ // No GEN;PL: consonant stems and i-stems often differ. Some nouns
+ // have lexical alternatives or unusual plurals. Proper names: singular only.
+ return [
+  ...CASE.map(k=>[singular[k],'N;'+k+';SG']),
+  ...(proper?[]:Object.entries(plural).map(([k,form])=>[form,'N;'+k+';PL']))
+ ];
+}
 function verb(lemma,entry){
  const original=String(entry||'');
  const match=original.match(/\((1ª|2ª|3ª|4ª|mx\.)\)/);
@@ -85,7 +124,7 @@ export function proposeRegularLatin(lemma,entry){
  const form=String(entry||'');
  if(!form||form.includes('/'))return [];
  const result=/\((1ª|2ª|3ª|4ª|mx\.)\)/.test(form)?
-  verb(lemma,form):noun(lemma,form);
+  verb(lemma,form):[...noun(lemma,form),...thirdNoun(lemma,form)];
  return [...new Map(result.map(([surface,features])=>[norm(surface)+'|'+features,
   [norm(surface),features]])).values()];
 }

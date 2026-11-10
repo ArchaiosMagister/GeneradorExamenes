@@ -39,7 +39,9 @@ El índice distingue ahora **tres niveles de evidencia**, visibles en las fichas
 2. **Modelo regular (provisional):** forma latina calculada por una regla morfológica explícita en `scripts/regular-latin.mjs`. La ficha la señala como *propuesta sin verificar*, con borde discontinuo. **Nunca se utiliza para el solucionario, la calificación ni la identificación automática de palabras para el glosario final**.
 3. **Forma de cita:** el lema que figura literalmente en el vocabulario del profesor, aunque todavía no tengamos ninguna flexión documentada. Esto permite localizar los lemas que antes aparecían como «sin resultados», sin atribuirles un análisis inventado.
 
-La generación provisional latina se limita a sustantivos de **primera/segunda declinación**, con nominativo y genitivo compatibles, y verbos activos de conjugación **primera, segunda, tercera, cuarta y mixta** cuando la clase está expresamente identificada. Solo se generan presente e imperfecto de indicativo y, cuando el profesor proporciona la forma de perfecto, perfecto activo. Las formas deponentes, verbos sin conjugación reconocible, sustantivos de tercera, adjetivos irregulares y casos como el vocativo de `-ius` quedan fuera. Tampoco se inventan plurales de nombres propios.
+La generación provisional latina abarca sustantivos de **primera y segunda declinación** con enunciado compatible y, desde esta fase, **determinados sustantivos masculinos y femeninos de tercera declinación** con nominativo, genitivo singular *completo* en `-is` y género explícito. En la tercera se proponen solamente los casos singulares habituales y los plurales comunes compatibles con los temas consonánticos y mixtos. **No se inventa el genitivo plural** (`-um` frente a `-ium`), ni se infieren los paradigmas de los parisilábicos, los neutros y varias excepciones. Los nombres propios solo reciben candidatos singulares. Estas formas siguen siendo propuestas sin verificar, incluso cuando proceden de reglas regulares. Como referencia de las terminaciones generales se consultaron las tablas de gramática del National Archives y de Allen y Greenough; para distinguir temas consonánticos y temas en *-i* se siguen sus advertencias sobre variantes.
+
+Los verbos activos de conjugación **primera, segunda, tercera, cuarta y mixta**, con clase expresamente indicada, generan provisionalmente presente e imperfecto de indicativo y, cuando se proporciona el perfecto, perfecto activo. Los deponentes, verbos sin conjugación reconocible, adjetivos irregulares y casos como el vocativo de `-ius` quedan fuera.
 
 Las propuestas se contrastan automáticamente **con cada casilla documentada** que ya exista para el mismo lema. Ante una contradicción se descarta entero el modelo y se registra la incidencia en `extensions.rejected_for_conflict`. Las propuestas no sustituyen ninguna forma existente.
 
@@ -47,7 +49,11 @@ Para el griego **no se generan formas flexivas sin contrastar**: la acentuación
 
 La cabecera del lematizador muestra ahora, **para cada curso**, cuántos lemas tienen alguna forma documentada, cuántos cuentan con modelos regulares provisionales y cuántos solo conservan su entrada de vocabulario. Estas cifras no significan que el paradigma esté completo.
 
-La búsqueda de una forma sigue devolviendo todos los lemas posibles. Sin embargo, la recuperación del **vocabulario final de un examen** solo usa formas documentadas o la propia cita léxica; jamás formas de un modelo provisional. La fuente de cada lectura se muestra junto a su enunciado completo.
+La búsqueda de una forma sigue devolviendo todos los lemas posibles. Sin embargo, la recuperación del **vocabulario final de un examen** exige al menos una **forma morfológica documentada** (UniMorph o paradigma docente) y **un solo lema posible entre todas las lecturas**. Una forma de cita por sí sola no es prueba de flexión, y una lectura candidata de otro lema bloquea la resolución automática para evitar homonimias. Ninguna propuesta provisional sirve por sí sola para completar el glosario. La fuente de cada lectura se muestra junto a su enunciado completo.
+
+## Cobertura diferenciada por unidades
+
+El lematizador presenta ahora un desplegable **«Cobertura por unidad»**. Las unidades se mantienen tal y como figuran en los vocabularios docentes, incluidas las agrupaciones `UD 9–10` o `UD 1–4`, **sin dividirlas por tema**. Para cada unidad muestra los lemas con alguna forma documentada, los que solo tienen propuestas y los que carecen de flexión (su lema se conserva como forma de cita). Las cifras no certifican paradigmas completos. La consulta y el informe se generan enteramente con la base local, sin depender de servidores.
 
 ## Incorporación nominal griega desde Wikcionario
 
