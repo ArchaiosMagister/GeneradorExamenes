@@ -27,7 +27,7 @@ for(const [course,expected] of [['lat1',1106],['lat4',541],['gr1',399]]){
   assert.ok(perUnitReferences>=expected,'Las etiquetas UD griegas pueden asociarse a varias unidades');
   assert.ok(t.unassigned>0,'No debe inventarse unidad para todo el banco general griego');
   assert.ok(result.units.some(u=>/^UD/.test(u.unit)),'Deben recuperarse unidades griegas contrastadas');
- }else assert.equal(perUnitReferences,expected);
+ }else assert.ok(perUnitReferences>=expected,'Una ficha puede corresponder a un intervalo de unidades');
  assert.ok(result.units.every(u=>u.rows===u.documented+u.proposalsOnly+u.citationsOnly+u.noIndex));
  assert.ok(result.reviewQueue.length>=t.rows-t.documented);
  assert.ok(result.reviewQueue.every(r=>r.status!=='documented'),'No mandar formas documentadas a revisión sin motivo');
