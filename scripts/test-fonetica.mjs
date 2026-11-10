@@ -7,10 +7,15 @@ import {PALABRAS_POR_EXAMEN,seleccionarEvoluciones} from '../data/fonetica/selec
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const banco=JSON.parse(readFileSync(resolve(root,'data/fonetica/banco_examenes.json'),'utf8'));
 const ids=banco.items.map(x=>x.id);
-assert.equal(banco.items.length,460);
-assert.equal(new Set(ids).size,460,'Identificadores duplicados');
+assert.equal(banco.items.length,510);
+assert.equal(new Set(ids).size,510,'Identificadores duplicados');
 assert.equal(banco.normas.length,20);
 assert.equal(PALABRAS_POR_EXAMEN,4);
+const loteCincuenta=banco.items.filter(x=>x.lote===3);
+assert.equal(loteCincuenta.length,50,'La nueva ampliación debe tener 50 fichas');
+assert.equal(new Set(loteCincuenta.map(x=>x.id)).size,50,'IDs repetidos en la ampliación');
+assert(loteCincuenta.every(x=>x.estado==='APTO_PROPUESTO' && x.normas?.length>0),'Ficha nueva no válida');
+assert(loteCincuenta.some(x=>x.latin==='plānum' && x.castellano==='llano'),'Corrección de étimo omitida');
 const segundoLote=[33,56,95,117,158,164,249,255,312,326,376,509,720,724,736,784,794,801,819,825,835,859,865,869,912,946,951,999,1003,1053];
 assert.equal(segundoLote.length,30);
 assert(segundoLote.every(fila=>banco.items.some(item=>item.fila_origen===fila)),'Faltan palabras del lote PAU');
@@ -35,4 +40,4 @@ for(const n of todas){
  assert(r.ejercicios.length===0||r.ejercicios.length===4,'Cantidad distinta de cuatro');
  assert(r.controlDocente.every(x=>x.normas.every(c=>c===n)),'Filtrado incorrecto');
 }
-console.log('OK: 460 fichas, 20 normas, 4 palabras o ninguna.');
+console.log('OK: 510 fichas, 20 normas, 4 palabras o ninguna.');
