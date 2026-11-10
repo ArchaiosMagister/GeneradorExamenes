@@ -540,7 +540,27 @@ const tr=k=>T[$('lang').value][k];
 $('unitChoices').innerHTML=units.map((u,i)=>`<label><input type="checkbox" class="unit-choice" value="${i}" >${esc(u)}</label>`).join('');
 function selectedUnits(){const ix=[...document.querySelectorAll('.unit-choice:checked')].map(x=>+x.value);return $('cumulative').checked&&ix.length?units.filter((_,i)=>i<=Math.max(...ix)):ix.map(i=>units[i]);}
 function trimesterHeading(){const n=Math.max(1,Math.min(3,Number($('term').value)||1));return ($('lang').value==='va'?['1r trimestre','2n trimestre','3r trimestre']:['1.er trimestre','2.º trimestre','3.er trimestre'])[n-1]}
-function translateUI(){document.documentElement.lang=$('lang').value==='va'?'ca-valencia':'es';document.querySelectorAll('[data-i18n]').forEach(e=>e.textContent=tr(e.dataset.i18n));$('term').querySelectorAll('option').forEach((o,i)=>o.textContent=($('lang').value==='va'?['1r trimestre','2n trimestre','3r trimestre']:['1.er trimestre','2.º trimestre','3.er trimestre'])[i]);$('name').placeholder=courseName();}
+function examinaTranslateConfiguration(){
+ const va=$('lang').value==='va';
+ const labels={
+  'Curso y unidades':'Curs i unitats','Modelo y contenido':'Model i contingut',
+  'Preguntas y cantidades':'Preguntes i quantitats','Vocabulario del examen':'Vocabulari de l’examen',
+  'Generar, descargar y guardar':'Generar, descarregar i guardar',
+  'Banco de oraciones':'Banc d’oracions','Cultura clásica':'Cultura clàssica',
+  'Importación y copias de datos':'Importació i còpies de dades',
+  'Herramientas morfológicas':'Eines morfològiques'
+ };
+ for(const el of document.querySelectorAll('#examLayout aside.panel details.settings-group > summary')){
+  const base=el.dataset.castellano||(el.dataset.castellano=el.textContent);
+  el.textContent=va?(labels[base]||base):base;
+ }
+ const steps=['1 · Curs','2 · Contingut','3 · Oracions','4 · Vocabulari','5 · Exportar','6 · Bancs'];
+ document.querySelectorAll('#examLayout .sidebar-steps button').forEach((el,i)=>{
+  if(!el.dataset.castellano)el.dataset.castellano=el.textContent;
+  el.textContent=va?(steps[i]||el.dataset.castellano):el.dataset.castellano;
+ });
+}
+function translateUI(){examinaTranslateConfiguration();document.documentElement.lang=$('lang').value==='va'?'ca-valencia':'es';document.querySelectorAll('[data-i18n]').forEach(e=>e.textContent=tr(e.dataset.i18n));$('term').querySelectorAll('option').forEach((o,i)=>o.textContent=($('lang').value==='va'?['1r trimestre','2n trimestre','3r trimestre']:['1.er trimestre','2.º trimestre','3.er trimestre'])[i]);$('name').placeholder=courseName();}
 
 $('sheetType').addEventListener('change',()=>{const c=currentCourse();$('name').value=($('sheetType').value==='review'?($('lang').value==='va'?'Fitxa de repàs de ':'Ficha de repaso de '):($('lang').value==='va'?'Examen de ':'Examen de '))+({'latin1':$('lang').value==='va'?'Llatí I':'Latín I','latin4':$('lang').value==='va'?'Llatí 4t ESO':'Latín 4.º ESO','greek1':$('lang').value==='va'?'Grec I':'Griego I'})[c];generate()});
 function refreshManualMorphWords(){
@@ -942,12 +962,12 @@ function generateLatinMorphologyReference(){
  const first=question(++n,t('Declina los sintagmas nominales (1 p.).','Declina els sintagmes nominals (1 p.).'))+morphSyntagmInstruction(cfg,va)+morphSyntagmRows(cfg);
  const second=question(++n,t('Analiza morfológicamente las siguientes formas verbales (1 p.).','Analitza morfològicament les formes verbals següents (1 p.).'))+
   '<table class="exam-paradigm reference-morph-table reference-verb-table" data-col-widths="28,25,24,23">'+
-  '<thead><tr><th>Forma verbal</th><th>Persona y número</th><th>Tiempo</th><th>Voz</th></tr></thead>'+
+  '<thead><tr><th>'+t('Forma verbal','Forma verbal')+'</th><th>'+t('Persona y número','Persona i nombre')+'</th><th>'+t('Tiempo','Temps')+'</th><th>'+t('Voz','Veu')+'</th></tr></thead>'+
   '<tbody>'+verbItems.map(x=>'<tr><td><i>'+esc(x.form)+'</i></td><td></td><td></td><td></td></tr>').join('')+'</tbody></table>';
  let pronSection='';
  if(pronouns.length){
   pronSection=question(++n,t('Analiza los siguientes pronombres: tipo, caso, género y número (1 p.).','Analitza els pronoms següents: tipus, cas, gènere i nombre (1 p.).'))+
-   '<table class="exam-paradigm reference-morph-table exam-pronouns"><thead><tr><th>Forma</th><th>Tipo</th><th>Caso</th><th>Género</th><th>Número</th></tr></thead><tbody>'+
+   '<table class="exam-paradigm reference-morph-table exam-pronouns"><thead><tr><th>Forma</th><th>'+t('Tipo','Tipus')+'</th><th>'+t('Caso','Cas')+'</th><th>'+t('Género','Gènere')+'</th><th>'+t('Número','Nombre')+'</th></tr></thead><tbody>'+
    pronItems.map(x=>'<tr><td><i>'+esc(x.form)+'</i></td><td></td><td></td><td></td><td></td></tr>').join('')+
    '</tbody></table>';
  }
@@ -2124,7 +2144,7 @@ function generateGreekExam(){
   if(!items.length){sections.push('<p>No hay material verificado disponible para este apartado hasta UD'+max+'. No se asignan puntos.</p>');continue}
   if(kind==='declension')sections.push(items.map(x=>greekTable(x)).join('<p class="exam-table-gap"></p>'));
   else if(kind==='conjugation')sections.push(greekVerbTable(items));
-  else if(kind==='pronouns')sections.push('<table class="exam-pronouns" data-col-widths="1500,3500,3500"><thead><tr><th>Forma</th><th>Caso, género, número</th><th>Tipo de pronombre</th></tr></thead><tbody>'+items.map(x=>'<tr data-corpus-id="'+x.id+'"><td>'+esc(x.prompt)+'</td><td></td><td></td></tr>').join('')+'</tbody></table>');
+  else if(kind==='pronouns')sections.push('<table class="exam-pronouns" data-col-widths="1500,3500,3500"><thead><tr><th>Forma</th><th>'+($('lang').value==='va'?'Cas, gènere, nombre':'Caso, género, número')+'</th><th>'+($('lang').value==='va'?'Tipus de pronom':'Tipo de pronombre')+'</th></tr></thead><tbody>'+items.map(x=>'<tr data-corpus-id="'+x.id+'"><td>'+esc(x.prompt)+'</td><td></td><td></td></tr>').join('')+'</tbody></table>');
   else if(kind==='etymology')sections.push('<p class="exam-etymology">'+items.map((x,j)=>'<span data-corpus-id="'+x.id+'">'+String.fromCharCode(97+j)+'. '+esc(x.prompt)+':</span>').join('')+'</p>');
   else sections.push(items.map((x,j)=>'<p class="exam-item '+(kind==='sentences'?'exam-sentence':'exam-form')+'" data-corpus-id="'+x.id+'"><span class="exam-letter">'+String.fromCharCode(97+j)+'.</span> <span>'+esc(x.prompt)+(kind==='forms'?':':'')+'</span></p>').join(''));
   answers.push('<h3>'+esc(title)+'</h3>'+items.map(x=>'<p><b>'+esc(x.prompt)+'</b> — '+esc(kind==='sentences'&&$('model').value==='translation'?x.answer.split(/\s+Análisis:\s+/)[0]:x.answer)+'</p>').join(''));
