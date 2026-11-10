@@ -51,9 +51,9 @@ export async function renderOffline(root=projectRoot){
     syllabus.units.reduce((n,x)=>n+(x.verbs?.length||0),0)!==28)
   throw new Error('Programa docente de modificación preverbial incompleto');
  const phonetics=JSON.parse(await readFile(resolve(root,'data/fonetica/banco_examenes.json'),'utf8'));
- if(phonetics.esquema!=='evoluciones-latin-castellano/v1'||phonetics.items?.length!==460||
-  new Set(phonetics.items.map(x=>x.id)).size!==460)
-  throw new Error('El banco fonético integrado debe contener 460 fichas distintas');
+ if(phonetics.esquema!=='evoluciones-latin-castellano/v1'||phonetics.items?.length<510||
+  new Set(phonetics.items.map(x=>x.id)).size!==phonetics.items.length)
+  throw new Error('El banco fonético integrado debe contener al menos 510 fichas distintas');
  const assets={'data/unimorph/lat-v.json':latin,'data/lemmas/teacher-forms.json':lemmatizer,...lexicalAssets,[syllabusPath]:syllabus,[latin4ProgressPath]:latin4Progress,'data/fonetica/banco_examenes.json':phonetics};
  // Evita cerrar prematuramente el elemento HTML script inerte.
  const json=JSON.stringify(assets).replace(/</g,'\\u003c');
