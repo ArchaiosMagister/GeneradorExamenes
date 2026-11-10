@@ -8,7 +8,8 @@
     "offline:test": "node scripts/check-web.mjs && node scripts/test-offline.mjs",
     "desktop:prepare": "node scripts/prepare-desktop.mjs",
     "tauri": "tauri",
-    "desktop:build": "npm run desktop:prepare && tauri build"
+    "desktop:build": "npm run desktop:prepare && tauri build",
+    "preview:test": "node scripts/test-preview.cjs"
   },
   "devDependencies": {
     "@tauri-apps/cli": "^2.0.0"
