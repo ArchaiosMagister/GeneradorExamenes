@@ -41,7 +41,7 @@ function latinSuite(){
   culture:Array.from({length:4},(_,i)=>({course:'latin4',units:['UD3'],type:'essay',question:'Cultura '+i,answer:'Respuesta '+i})),
   latinExamHeader:()=>'<div class="exam-header">Latín</div>',
   buildFinalLexicon:()=>'<div class="final-gloss">Vocabulario de oraciones</div>',
-  refreshManualMorphWords:()=>{},generateGreekExam:()=>{},
+  refreshManualMorphWords:()=>{},generateGreekExam:()=>{},syncLatin1PhoneticRuleControls:()=>{},
   morphConfig:()=>({decline:2,verbs:2,words:5}),
   examQuestionEnabled:kind=>kind!=='pronouns'||state.model.value==='morf',
   stickyExamRows:(_kind,create)=>create(),
