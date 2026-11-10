@@ -7,7 +7,9 @@ const curriculum=read('data/lat4-progresion-lexico.json');
 const prefixes=read('data/prefijos-docente.json');
 const phonetics=read('data/fonetica/banco_examenes.json');
 assert.equal(curriculum.units.length,8);
-assert.equal(prefixes.items.length,287);
+assert.equal(prefixes.items.length,286);
+assert.ok(!prefixes.items.some(x=>x.prompt==='Ultrapuertos'||x.prompt_va==='ultraports'),
+ 'Ultrapuertos y ultraports no deben participar en el sorteo de ningún idioma');
 assert.ok(prefixes.items.every(x=>typeof x.prompt_va==='string'&&x.prompt_va.trim()));
 const norm=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/æ/gi,'ae').replace(/œ/gi,'oe');
 function phoneticEligible(row,lessons,allowed){
