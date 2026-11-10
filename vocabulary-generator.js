@@ -186,8 +186,10 @@ function greekReferenceForms(bank){
   'πολλούς','πολλοὺς','πολλὰς','πολλάς','πολλαί','πολλαὶ','πολλῶν','πολλοῖς','πολλαῖς','πολλὴν','πολλῆς'],
   'πολύς','mucho, numeroso');
  addIrregular(['πᾶς','πᾶσα','πᾶν','πάντες','πάντες','πάντας','πάντα','πάντα','πάντων','πάντων',
-  'πασῶν','πάσαις','πάσας','πᾶσι','πᾶσιν','ἅπαντες','ἅπαντα'],
+  'πασῶν','πάσαις','πάσας','πᾶσι','πᾶσιν'],
   'πᾶς','todo');
+ addIrregular(['ἅπας','ἅπασα','ἅπαν','ἅπαντες','ἅπαντα','ἅπαντας','ἁπάντων'],
+  'ἅπας','todo, entero');
  addIrregular(['μέγας','μέγας','μεγάλη','μεγάλη','μέγα','μεγάλα','μεγάλαι','μεγάλαι',
   'μεγάλων','μεγάλους','μεγάλας'],
   'μέγας','grande');
@@ -239,6 +241,10 @@ function analyze(data,text,course,bank){
   }
   // 'ἀλλὰ' (conjunción) frente a 'ἄλλα' (neutro plural) son
   // grafías diferentes a pesar de la normalización sin acentos.
+  if(lang==='grc'&&normal==='ο'&&form.normalize('NFC')==='ὁ')
+   candidates=candidates.filter(x=>x.entry==='ὁ, ἡ, τό');
+  if(lang==='grc'&&normal==='η'&&form.normalize('NFC')==='ἡ')
+   candidates=candidates.filter(x=>x.entry==='ὁ, ἡ, τό');
   if(lang==='grc'&&normal==='αλλα'){
    if(/ἀλλ[άὰ]/u.test(form))candidates=candidates.filter(x=>x.lemma==='αλλα');
    else if(/ἄλλα/u.test(form))candidates=candidates.filter(x=>x.lemma!=='αλλα');
