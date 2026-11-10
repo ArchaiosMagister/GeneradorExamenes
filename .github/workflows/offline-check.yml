@@ -82,6 +82,8 @@ jobs:
         run: npm run vocabulary:test
       - name: Probar las vistas previas de todos los modelos
         run: node scripts/test-preview.cjs
+      - name: Validar valenciano en pantalla y Word para los tres cursos
+        run: node scripts/test-valenciano-browser.cjs
       - name: Verificar concordancia de tablas y umbrales de unidad
         run: node scripts/test-nominal-agreement.cjs
       - name: Probar PWA sin red y actualizaciones controladas
