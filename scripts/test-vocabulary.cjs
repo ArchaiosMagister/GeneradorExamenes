@@ -272,7 +272,7 @@ console.log('Vocabulario: prioridad docente, deduplicación por UD, ambigüedad,
  assert.equal(await page.locator('#vgUnitButtons button').count(),14);
  assert.equal(await page.locator('#vgUnitButtons .has-text').count(),14);
  await page.click('#vgUnitButtons [data-unit="13"]');
- assert.equal(await page.inputValue('#vgText'),'ὁ θεός ἐστιν. οἱ ἄνθρωποι.');
+ assert.equal(await page.inputValue('#vgText'),'ὁ θεός ἐστιν. οἱ ἄνθρωποι. σωτερίας');
  assert.equal(await page.locator('#vgUnitButtons [data-unit="13"].is-selected.has-text').count(),1);
  await page.click('#vgUnitButtons [data-unit="0"]');
  const download14=page.waitForEvent('download');
