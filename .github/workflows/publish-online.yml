@@ -3,9 +3,10 @@ name: Publicar webapp online
 on:
   push:
     branches: [main]
-  pull_request:
-    types: [opened, synchronize, reopened]
-    branches: [main]
+  workflow_run:
+    workflows: ["Comprobar versión autónoma"]
+    types: [completed]
+    branches: [codex/vocabulario-unidades]
   workflow_dispatch:
 
 permissions:
@@ -21,7 +22,7 @@ concurrency:
 
 jobs:
   publish:
-    if: github.event_name != 'pull_request' || (github.event.pull_request.number == 29 && github.event.pull_request.head.repo.full_name == 'ArchaiosMagister/GeneradorExamenes')
+    if: github.event_name != 'workflow_run' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'codex/vocabulario-unidades' && github.event.workflow_run.head_repository.full_name == 'ArchaiosMagister/GeneradorExamenes')
     runs-on: ubuntu-latest
     environment:
       name: github-pages
