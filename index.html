@@ -1636,7 +1636,7 @@ function generateGreekExam(){
  if($('model').value==='morphology')return generateGreekMorphologyFixed();
  const chosen=greekMarkedUnits(),max=greekLimit(),mode=greekModes[$('model').value]||greekModes.complete;
  const enabled=greekKinds.filter((k,i)=>(mode.points[i]>0||(k==='pronouns'&&$('model').value==='complete'))&&examQuestionEnabled(k==='conjugation'?'verb':k==='declension'?'decl':k==='sentences'?'sent':k==='etymology'?'etymology':k)),pool=greekVerifiedCorpus.filter(x=>x.verified&&greekMorphologyEligible(x,max)&&enabled.includes(x.kind));
- const counts={declension:Math.min(2,countFor('decl')),conjugation:Math.min(2,countFor('verb')),forms:examMorphQuotasActive()?examMorphQuotaCount():countFor('verb'),pronouns:6,etymology:Math.min($('model').value==='translation'?3:2,countFor('lex')),sentences:countFor('sent')};
+ const counts={declension:Math.min(2,countFor('decl')),conjugation:Math.min(2,countFor('verb')),forms:examMorphQuotasActive()?examMorphQuotaCount():countFor('greek-forms'),pronouns:6,etymology:Math.min($('model').value==='translation'?3:2,countFor('lex')),sentences:countFor('sent')};
  const result=greekSelectedItems(pool,chosen,counts),sections=[],answers=[];
  if(examMorphQuotasActive()){
   const forms=stickyExamRows('forms',()=>examQuotaGreek(pool.filter(x=>x.kind==='forms'),counts.forms));
