@@ -753,5 +753,280 @@
     "question_va": "Qui es convertí en el primer emperador romà després de les guerres civils?",
     "answer_va": "Octavi, amb el nom d'August.",
     "source": "Temario docente de Cultura LAT4, UD8"
+  },
+  {
+    "id": "LAT4-CUL-UD1-MC",
+    "course": "latin4",
+    "units": [
+      "UD1"
+    ],
+    "type": "mc",
+    "question": "¿Cuál de estas lenguas pertenece a la rama itálica?",
+    "question_va": "Quina d'estes llengües pertany a la branca itàlica?",
+    "options": [
+      "Irlandés",
+      "Latín",
+      "Sánscrito"
+    ],
+    "options_va": [
+      "Irlandés",
+      "Llatí",
+      "Sànscrit"
+    ],
+    "answer": "B",
+    "answer_va": "B",
+    "source": "Temario docente de Cultura LAT4, UD1"
+  },
+  {
+    "id": "LAT4-CUL-UD2-MC",
+    "course": "latin4",
+    "units": [
+      "UD2"
+    ],
+    "type": "mc",
+    "question": "¿Quién es considerado el primer rey de Roma?",
+    "question_va": "Qui és considerat el primer rei de Roma?",
+    "options": [
+      "Ascanio",
+      "Rómulo",
+      "Numitor"
+    ],
+    "options_va": [
+      "Ascani",
+      "Ròmul",
+      "Numitor"
+    ],
+    "answer": "B",
+    "answer_va": "B",
+    "source": "Temario docente de Cultura LAT4, UD2"
+  },
+  {
+    "id": "LAT4-CUL-UD3-MC",
+    "course": "latin4",
+    "units": [
+      "UD3"
+    ],
+    "type": "mc",
+    "question": "¿Quién fue el último rey de Roma?",
+    "question_va": "Qui fou l'últim rei de Roma?",
+    "options": [
+      "Servio Tulio",
+      "Numa Pompilio",
+      "Tarquinio el Soberbio"
+    ],
+    "options_va": [
+      "Servi Tul·li",
+      "Numa Pompili",
+      "Tarquini el Superb"
+    ],
+    "answer": "C",
+    "answer_va": "C",
+    "source": "Temario docente de Cultura LAT4, UD3"
+  },
+  {
+    "id": "LAT4-CUL-UD4-MC",
+    "course": "latin4",
+    "units": [
+      "UD4"
+    ],
+    "type": "mc",
+    "question": "¿Cómo se llamaba el esclavo que había sido liberado?",
+    "question_va": "Com es deia l'esclau que havia sigut alliberat?",
+    "options": [
+      "Cliente",
+      "Liberto",
+      "Patricio"
+    ],
+    "options_va": [
+      "Client",
+      "Llibert",
+      "Patrici"
+    ],
+    "answer": "B",
+    "answer_va": "B",
+    "source": "Temario docente de Cultura LAT4, UD4"
+  },
+  {
+    "id": "LAT4-CUL-UD5-MC",
+    "course": "latin4",
+    "units": [
+      "UD5"
+    ],
+    "type": "mc",
+    "question": "¿Qué divinidades domésticas protegían la despensa?",
+    "question_va": "Quines divinitats domèstiques protegien el rebost?",
+    "options": [
+      "Manes",
+      "Penates",
+      "Lémures"
+    ],
+    "options_va": [
+      "Mans",
+      "Penats",
+      "Lèmurs"
+    ],
+    "answer": "B",
+    "answer_va": "B",
+    "source": "Temario docente de Cultura LAT4, UD5"
+  },
+  {
+    "id": "LAT4-CUL-UD6-MC",
+    "course": "latin4",
+    "units": [
+      "UD6"
+    ],
+    "type": "mc",
+    "question": "¿Quiénes mantenían el fuego sagrado de Vesta?",
+    "question_va": "Qui mantenia el foc sagrat de Vesta?",
+    "options": [
+      "Vestales",
+      "Augures",
+      "Harúspices"
+    ],
+    "options_va": [
+      "Vestals",
+      "Àugurs",
+      "Harúspexs"
+    ],
+    "answer": "A",
+    "answer_va": "A",
+    "source": "Temario docente de Cultura LAT4, UD6"
+  },
+  {
+    "id": "LAT4-CUL-UD7-MC",
+    "course": "latin4",
+    "units": [
+      "UD7"
+    ],
+    "type": "mc",
+    "question": "¿Qué magistrados administraban el tesoro público?",
+    "question_va": "Quins magistrats administraven el tresor públic?",
+    "options": [
+      "Cuestores",
+      "Pretores",
+      "Cónsules"
+    ],
+    "options_va": [
+      "Qüestors",
+      "Pretors",
+      "Cònsols"
+    ],
+    "answer": "A",
+    "answer_va": "A",
+    "source": "Temario docente de Cultura LAT4, UD7"
+  },
+  {
+    "id": "LAT4-CUL-UD8-MC",
+    "course": "latin4",
+    "units": [
+      "UD8"
+    ],
+    "type": "mc",
+    "question": "¿En qué año cruzó César el Rubicón?",
+    "question_va": "En quin any travessà Cèsar el Rubicó?",
+    "options": [
+      "58 a. C.",
+      "49 a. C.",
+      "44 a. C."
+    ],
+    "options_va": [
+      "58 aC",
+      "49 aC",
+      "44 aC"
+    ],
+    "answer": "B",
+    "answer_va": "B",
+    "source": "Temario docente de Cultura LAT4, UD8"
+  },
+  {
+    "id": "LAT4-CUL-UD2-TF",
+    "course": "latin4",
+    "units": [
+      "UD2"
+    ],
+    "type": "tf",
+    "question": "Ascanio fue el fundador de Roma. ¿Verdadero o falso?",
+    "question_va": "Ascani fou el fundador de Roma. Vertader o fals?",
+    "answer": "Falso. Ascanio fundó Alba Longa.",
+    "answer_va": "Fals. Ascani fundà Alba Longa.",
+    "source": "Temario docente de Cultura LAT4, UD2"
+  },
+  {
+    "id": "LAT4-CUL-UD3-TF",
+    "course": "latin4",
+    "units": [
+      "UD3"
+    ],
+    "type": "tf",
+    "question": "La elección de los reyes romanos era hereditaria. ¿Verdadero o falso?",
+    "question_va": "L'elecció dels reis romans era hereditària. Vertader o fals?",
+    "answer": "Falso. El Senado y los comicios intervenían en su elección.",
+    "answer_va": "Fals. El Senat i els comicis intervenien en l'elecció.",
+    "source": "Temario docente de Cultura LAT4, UD3"
+  },
+  {
+    "id": "LAT4-CUL-UD4-TF",
+    "course": "latin4",
+    "units": [
+      "UD4"
+    ],
+    "type": "tf",
+    "question": "Los plebeyos de la monarquía tenían los mismos derechos políticos que los patricios. ¿Verdadero o falso?",
+    "question_va": "Els plebeus de la monarquia tenien els mateixos drets polítics que els patricis. Vertader o fals?",
+    "answer": "Falso. Estaban excluidos de instituciones reservadas a los patricios.",
+    "answer_va": "Fals. Estaven exclosos d'institucions reservades als patricis.",
+    "source": "Temario docente de Cultura LAT4, UD4"
+  },
+  {
+    "id": "LAT4-CUL-UD5-TF",
+    "course": "latin4",
+    "units": [
+      "UD5"
+    ],
+    "type": "tf",
+    "question": "Los Lares eran divinidades protectoras del hogar. ¿Verdadero o falso?",
+    "question_va": "Els Lars eren divinitats protectores de la llar. Vertader o fals?",
+    "answer": "Verdadero.",
+    "answer_va": "Vertader.",
+    "source": "Temario docente de Cultura LAT4, UD5"
+  },
+  {
+    "id": "LAT4-CUL-UD6-TF",
+    "course": "latin4",
+    "units": [
+      "UD6"
+    ],
+    "type": "tf",
+    "question": "Los harúspices examinaban el vuelo de las aves. ¿Verdadero o falso?",
+    "question_va": "Els harúspexs examinaven el vol de les aus. Vertader o fals?",
+    "answer": "Falso. Examinaban las entrañas de las víctimas sacrificadas.",
+    "answer_va": "Fals. Examinaven les entranyes de les víctimes sacrificades.",
+    "source": "Temario docente de Cultura LAT4, UD6"
+  },
+  {
+    "id": "LAT4-CUL-UD7-TF",
+    "course": "latin4",
+    "units": [
+      "UD7"
+    ],
+    "type": "tf",
+    "question": "Cada año se elegían dos cónsules en la República romana. ¿Verdadero o falso?",
+    "question_va": "Cada any s'elegien dos cònsols en la República romana. Vertader o fals?",
+    "answer": "Verdadero.",
+    "answer_va": "Vertader.",
+    "source": "Temario docente de Cultura LAT4, UD7"
+  },
+  {
+    "id": "LAT4-CUL-UD8-TF",
+    "course": "latin4",
+    "units": [
+      "UD8"
+    ],
+    "type": "tf",
+    "question": "Julio César escribió De bello Gallico. ¿Verdadero o falso?",
+    "question_va": "Juli Cèsar escrigué De bello Gallico. Vertader o fals?",
+    "answer": "Verdadero.",
+    "answer_va": "Vertader.",
+    "source": "Temario docente de Cultura LAT4, UD8"
   }
 ];})(window);
