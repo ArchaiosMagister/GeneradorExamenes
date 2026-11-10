@@ -1,8 +1,8 @@
 {
   "esquema": "evoluciones-latin-castellano/v1",
   "revision": "2026-11-10",
-  "origen": "Banco docente de evoluciones fonéticas; preselección inicial + ampliación 1; ampliación 2: 30 palabras de uso común para preparación PAU",
-  "criterio": "460 candidatas para ejercicios. Las 30 nuevas se seleccionaron por frecuencia o facilidad en castellano y utilidad didáctica para PAU; APTO_PROPUESTO no equivale a una garantía de aparición en selectividad.",
+  "origen": "Banco docente de evoluciones fonéticas: 330 iniciales, ampliación 100, ampliación PAU 30 y nueva ampliación 50.",
+  "criterio": "510 candidatas a examen (APTO_PROPUESTO). Los étimos y etiquetas se ofrecen como preselección didáctica y no como garantía de probabilidad de aparición en PAU.",
   "idioma_origen": "la",
   "idioma_destino": "es",
   "normas": [
@@ -5945,6 +5945,732 @@
       "fuente": "https://dle.rae.es/sortija",
       "estado": "APTO_PROPUESTO",
       "criterio_pau": "Voz habitual o de fácil reconocimiento y cambios fonéticos de interés PAU; no implica una predicción estadística"
+    },
+    {
+      "fila_origen": 103,
+      "id": "EVF-0102",
+      "latin": "exercere",
+      "castellano": "ejercer",
+      "normas": [
+        "N13"
+      ],
+      "observacion": "Propuesta didáctica para evolución fonética del latín al castellano. Normas marcadas según el banco docente; requiere revisión de los pasos intermedios cuando proceda.",
+      "fuente": "https://iessapostol.educarex.es/latin/fonetica_pau.html",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz de uso reconocible o útil para explicar cambios fonéticos de Latín II; sin predicción de aparición en PAU.",
+      "lote": 3
+    },
+    {
+      "fila_origen": 116,
+      "id": "EVF-0115",
+      "latin": "fervĕntem",
+      "castellano": "hirviente",
+      "normas": [
+        "N05",
+        "N07"
+      ],
+      "observacion": "Propuesta didáctica para evolución fonética del latín al castellano. Normas marcadas según el banco docente; requiere revisión de los pasos intermedios cuando proceda.",
+      "fuente": "https://stel.ub.edu/diccaxv/listings/WordsByEtymologicalFamilyView/FERVERE",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz de uso reconocible o útil para explicar cambios fonéticos de Latín II; sin predicción de aparición en PAU.",
+      "lote": 3
+    },
+    {
+      "fila_origen": 185,
+      "id": "EVF-0184",
+      "latin": "luxum",
+      "castellano": "lujo",
+      "normas": [
+        "N13"
+      ],
+      "observacion": "Propuesta didáctica para evolución fonética del latín al castellano. Normas marcadas según el banco docente; requiere revisión de los pasos intermedios cuando proceda.",
+      "fuente": "",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz de uso reconocible o útil para explicar cambios fonéticos de Latín II; sin predicción de aparición en PAU.",
+      "lote": 3
+    },
+    {
+      "fila_origen": 192,
+      "id": "EVF-0191",
+      "latin": "malitiam",
+      "castellano": "maleza",
+      "normas": [
+        "N01",
+        "N13"
+      ],
+      "observacion": "Propuesta didáctica para evolución fonética del latín al castellano. Normas marcadas según el banco docente; requiere revisión de los pasos intermedios cuando proceda.",
+      "fuente": "https://iedra.es/palabras/maleza",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz de uso reconocible o útil para explicar cambios fonéticos de Latín II; sin predicción de aparición en PAU.",
+      "lote": 3
+    },
+    {
+      "fila_origen": 193,
+      "id": "EVF-0192",
+      "latin": "mancipum",
+      "castellano": "mancebo",
+      "normas": [
+        "N01",
+        "N13",
+        "N17"
+      ],
+      "observacion": "Etimología asociada al latín vulgar *mancipus; no se presenta como evolución directa sin matices.",
+      "fuente": "https://ghcl.ub.edu/diccaxv/dictionary/ViewLema/13244",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz de uso reconocible o útil para explicar cambios fonéticos de Latín II; sin predicción de aparición en PAU.",
+      "lote": 3
+    },
+    {
+      "fila_origen": 266,
+      "id": "EVF-0265",
+      "latin": "regŭlam",
+      "castellano": "regla",
+      "normas": [
+        "N16"
+      ],
+      "observacion": "Propuesta didáctica para evolución fonética del latín al castellano. Normas marcadas según el banco docente; requiere revisión de los pasos intermedios cuando proceda.",
+      "fuente": "",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz de uso reconocible o útil para explicar cambios fonéticos de Latín II; sin predicción de aparición en PAU.",
+      "lote": 3
+    },
+    {
+      "fila_origen": 279,
+      "id": "EVF-0278",
+      "latin": "securitatem",
+      "castellano": "seguridad",
+      "normas": [
+        "N17"
+      ],
+      "observacion": "Propuesta didáctica para evolución fonética del latín al castellano. Normas marcadas según el banco docente; requiere revisión de los pasos intermedios cuando proceda.",
+      "fuente": "",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz de uso reconocible o útil para explicar cambios fonéticos de Latín II; sin predicción de aparición en PAU.",
+      "lote": 3
+    },
+    {
+      "fila_origen": 303,
+      "id": "EVF-0302",
+      "latin": "spirare",
+      "castellano": "espirar",
+      "normas": [
+        "N14"
+      ],
+      "observacion": "Propuesta didáctica para evolución fonética del latín al castellano. Normas marcadas según el banco docente; requiere revisión de los pasos intermedios cuando proceda.",
+      "fuente": "",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz de uso reconocible o útil para explicar cambios fonéticos de Latín II; sin predicción de aparición en PAU.",
+      "lote": 3
+    },
+    {
+      "fila_origen": 341,
+      "id": "EVF-0340",
+      "latin": "vitium",
+      "castellano": "vicio",
+      "normas": [
+        "N13"
+      ],
+      "observacion": "Propuesta didáctica para evolución fonética del latín al castellano. Normas marcadas según el banco docente; requiere revisión de los pasos intermedios cuando proceda.",
+      "fuente": "",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz de uso reconocible o útil para explicar cambios fonéticos de Latín II; sin predicción de aparición en PAU.",
+      "lote": 3
+    },
+    {
+      "fila_origen": 353,
+      "id": "EVF-0352",
+      "latin": "brevitatem",
+      "castellano": "brevedad",
+      "normas": [
+        "N01",
+        "N17"
+      ],
+      "observacion": "Propuesta didáctica para evolución fonética del latín al castellano. Normas marcadas según el banco docente; requiere revisión de los pasos intermedios cuando proceda.",
+      "fuente": "",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz de uso reconocible o útil para explicar cambios fonéticos de Latín II; sin predicción de aparición en PAU.",
+      "lote": 3
+    },
+    {
+      "fila_origen": 365,
+      "id": "EVF-0364",
+      "latin": "convincere",
+      "castellano": "convencer",
+      "normas": [
+        "N01"
+      ],
+      "observacion": "Propuesta didáctica para evolución fonética del latín al castellano. Normas marcadas según el banco docente; requiere revisión de los pasos intermedios cuando proceda.",
+      "fuente": "",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz de uso reconocible o útil para explicar cambios fonéticos de Latín II; sin predicción de aparición en PAU.",
+      "lote": 3
+    },
+    {
+      "fila_origen": 380,
+      "id": "EVF-0379",
+      "latin": "gravitatem",
+      "castellano": "gravedad",
+      "normas": [
+        "N01",
+        "N17"
+      ],
+      "observacion": "Propuesta didáctica para evolución fonética del latín al castellano. Normas marcadas según el banco docente; requiere revisión de los pasos intermedios cuando proceda.",
+      "fuente": "",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz de uso reconocible o útil para explicar cambios fonéticos de Latín II; sin predicción de aparición en PAU.",
+      "lote": 3
+    },
+    {
+      "fila_origen": 394,
+      "id": "EVF-0393",
+      "latin": "levitatem",
+      "castellano": "levedad",
+      "normas": [
+        "N01",
+        "N17"
+      ],
+      "observacion": "Propuesta didáctica para evolución fonética del latín al castellano. Normas marcadas según el banco docente; requiere revisión de los pasos intermedios cuando proceda.",
+      "fuente": "",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz de uso reconocible o útil para explicar cambios fonéticos de Latín II; sin predicción de aparición en PAU.",
+      "lote": 3
+    },
+    {
+      "fila_origen": 399,
+      "id": "EVF-0398",
+      "latin": "lucrum",
+      "castellano": "logro",
+      "normas": [
+        "N01"
+      ],
+      "observacion": "Propuesta didáctica para evolución fonética del latín al castellano. Normas marcadas según el banco docente; requiere revisión de los pasos intermedios cuando proceda.",
+      "fuente": "https://es.wiktionary.org/wiki/logro",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz de uso reconocible o útil para explicar cambios fonéticos de Latín II; sin predicción de aparición en PAU.",
+      "lote": 3
+    },
+    {
+      "fila_origen": 421,
+      "id": "EVF-0420",
+      "latin": "pigritiam",
+      "castellano": "pereza",
+      "normas": [
+        "N01",
+        "N12",
+        "N13"
+      ],
+      "observacion": "Propuesta didáctica para evolución fonética del latín al castellano. Normas marcadas según el banco docente; requiere revisión de los pasos intermedios cuando proceda.",
+      "fuente": "https://www.delcastellano.com/evolucion/pereza-pigritia/",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz de uso reconocible o útil para explicar cambios fonéticos de Latín II; sin predicción de aparición en PAU.",
+      "lote": 3
+    },
+    {
+      "fila_origen": 424,
+      "id": "EVF-0423",
+      "latin": "piscare",
+      "castellano": "pescar",
+      "normas": [
+        "N01"
+      ],
+      "observacion": "Propuesta didáctica para evolución fonética del latín al castellano. Normas marcadas según el banco docente; requiere revisión de los pasos intermedios cuando proceda.",
+      "fuente": "",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz de uso reconocible o útil para explicar cambios fonéticos de Latín II; sin predicción de aparición en PAU.",
+      "lote": 3
+    },
+    {
+      "fila_origen": 438,
+      "id": "EVF-0437",
+      "latin": "subornare",
+      "castellano": "sobornar",
+      "normas": [
+        "N01"
+      ],
+      "observacion": "Propuesta didáctica para evolución fonética del latín al castellano. Normas marcadas según el banco docente; requiere revisión de los pasos intermedios cuando proceda.",
+      "fuente": "",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz de uso reconocible o útil para explicar cambios fonéticos de Latín II; sin predicción de aparición en PAU.",
+      "lote": 3
+    },
+    {
+      "fila_origen": 504,
+      "id": "EVF-0503",
+      "latin": "scriptorium",
+      "castellano": "escritorio",
+      "normas": [
+        "N14",
+        "N15"
+      ],
+      "observacion": "Propuesta didáctica para evolución fonética del latín al castellano. Normas marcadas según el banco docente; requiere revisión de los pasos intermedios cuando proceda.",
+      "fuente": "https://iedra.es/palabras/escritorio",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz de uso reconocible o útil para explicar cambios fonéticos de Latín II; sin predicción de aparición en PAU.",
+      "lote": 3
+    },
+    {
+      "fila_origen": 551,
+      "id": "EVF-0550",
+      "latin": "villam",
+      "castellano": "villa",
+      "normas": [
+        "N13"
+      ],
+      "observacion": "Propuesta didáctica para evolución fonética del latín al castellano. Normas marcadas según el banco docente; requiere revisión de los pasos intermedios cuando proceda.",
+      "fuente": "",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz de uso reconocible o útil para explicar cambios fonéticos de Latín II; sin predicción de aparición en PAU.",
+      "lote": 3
+    },
+    {
+      "fila_origen": 608,
+      "id": "EVF-0607",
+      "latin": "temperare",
+      "castellano": "templar",
+      "normas": [
+        "N08",
+        "N16"
+      ],
+      "observacion": "Propuesta didáctica para evolución fonética del latín al castellano. Normas marcadas según el banco docente; requiere revisión de los pasos intermedios cuando proceda.",
+      "fuente": "https://iedra.es/palabras/templar",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz de uso reconocible o útil para explicar cambios fonéticos de Latín II; sin predicción de aparición en PAU.",
+      "lote": 3
+    },
+    {
+      "fila_origen": 616,
+      "id": "EVF-0615",
+      "latin": "tonare",
+      "castellano": "tronar",
+      "normas": [
+        "N09"
+      ],
+      "observacion": "Propuesta didáctica para evolución fonética del latín al castellano. Normas marcadas según el banco docente; requiere revisión de los pasos intermedios cuando proceda.",
+      "fuente": "",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz de uso reconocible o útil para explicar cambios fonéticos de Latín II; sin predicción de aparición en PAU.",
+      "lote": 3
+    },
+    {
+      "fila_origen": 718,
+      "id": "EVF-0717",
+      "latin": "appectorare",
+      "castellano": "apretar",
+      "normas": [
+        "N11",
+        "N12",
+        "N15",
+        "N16"
+      ],
+      "observacion": "Étimo latino vulgar reconstruido *appectorare. Las normas fonéticas recogen solo los cambios clasificados en el banco.",
+      "fuente": "https://www.delcastellano.com/evolucion/apretar-appectorare/",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz de uso reconocible o útil para explicar cambios fonéticos de Latín II; sin predicción de aparición en PAU.",
+      "lote": 3
+    },
+    {
+      "fila_origen": 731,
+      "id": "EVF-0730",
+      "latin": "pro",
+      "castellano": "por",
+      "normas": [
+        "N11"
+      ],
+      "observacion": "Propuesta didáctica para evolución fonética del latín al castellano. Normas marcadas según el banco docente; requiere revisión de los pasos intermedios cuando proceda.",
+      "fuente": "",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz de uso reconocible o útil para explicar cambios fonéticos de Latín II; sin predicción de aparición en PAU.",
+      "lote": 3
+    },
+    {
+      "fila_origen": 750,
+      "id": "EVF-0749",
+      "latin": "ausare",
+      "castellano": "osar",
+      "normas": [
+        "N12"
+      ],
+      "observacion": "Propuesta didáctica para evolución fonética del latín al castellano. Normas marcadas según el banco docente; requiere revisión de los pasos intermedios cuando proceda.",
+      "fuente": "",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz de uso reconocible o útil para explicar cambios fonéticos de Latín II; sin predicción de aparición en PAU.",
+      "lote": 3
+    },
+    {
+      "fila_origen": 770,
+      "id": "EVF-0769",
+      "latin": "lautiam",
+      "castellano": "loza",
+      "normas": [
+        "N12",
+        "N13"
+      ],
+      "observacion": "Propuesta didáctica para evolución fonética del latín al castellano. Normas marcadas según el banco docente; requiere revisión de los pasos intermedios cuando proceda.",
+      "fuente": "",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz de uso reconocible o útil para explicar cambios fonéticos de Latín II; sin predicción de aparición en PAU.",
+      "lote": 3
+    },
+    {
+      "fila_origen": 807,
+      "id": "EVF-0806",
+      "latin": "ballænam",
+      "castellano": "ballena",
+      "normas": [
+        "N12",
+        "N13"
+      ],
+      "observacion": "Propuesta didáctica para evolución fonética del latín al castellano. Normas marcadas según el banco docente; requiere revisión de los pasos intermedios cuando proceda.",
+      "fuente": "",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz de uso reconocible o útil para explicar cambios fonéticos de Latín II; sin predicción de aparición en PAU.",
+      "lote": 3
+    },
+    {
+      "fila_origen": 814,
+      "id": "EVF-0813",
+      "latin": "castellanum",
+      "castellano": "castellano",
+      "normas": [
+        "N13"
+      ],
+      "observacion": "Propuesta didáctica para evolución fonética del latín al castellano. Normas marcadas según el banco docente; requiere revisión de los pasos intermedios cuando proceda.",
+      "fuente": "",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz de uso reconocible o útil para explicar cambios fonéticos de Latín II; sin predicción de aparición en PAU.",
+      "lote": 3
+    },
+    {
+      "fila_origen": 818,
+      "id": "EVF-0817",
+      "latin": "collarem",
+      "castellano": "collar",
+      "normas": [
+        "N13"
+      ],
+      "observacion": "Propuesta didáctica para evolución fonética del latín al castellano. Normas marcadas según el banco docente; requiere revisión de los pasos intermedios cuando proceda.",
+      "fuente": "",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz de uso reconocible o útil para explicar cambios fonéticos de Latín II; sin predicción de aparición en PAU.",
+      "lote": 3
+    },
+    {
+      "fila_origen": 838,
+      "id": "EVF-0837",
+      "latin": "grillum",
+      "castellano": "grillo",
+      "normas": [
+        "N13"
+      ],
+      "observacion": "Propuesta didáctica para evolución fonética del latín al castellano. Normas marcadas según el banco docente; requiere revisión de los pasos intermedios cuando proceda.",
+      "fuente": "",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz de uso reconocible o útil para explicar cambios fonéticos de Latín II; sin predicción de aparición en PAU.",
+      "lote": 3
+    },
+    {
+      "fila_origen": 853,
+      "id": "EVF-0852",
+      "latin": "prægnare",
+      "castellano": "preñar",
+      "normas": [
+        "N12",
+        "N13"
+      ],
+      "observacion": "Propuesta didáctica para evolución fonética del latín al castellano. Normas marcadas según el banco docente; requiere revisión de los pasos intermedios cuando proceda.",
+      "fuente": "",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz de uso reconocible o útil para explicar cambios fonéticos de Latín II; sin predicción de aparición en PAU.",
+      "lote": 3
+    },
+    {
+      "fila_origen": 937,
+      "id": "EVF-0936",
+      "latin": "translatum",
+      "castellano": "traslado",
+      "normas": [
+        "N15",
+        "N17"
+      ],
+      "observacion": "Propuesta didáctica para evolución fonética del latín al castellano. Normas marcadas según el banco docente; requiere revisión de los pasos intermedios cuando proceda.",
+      "fuente": "",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz de uso reconocible o útil para explicar cambios fonéticos de Latín II; sin predicción de aparición en PAU.",
+      "lote": 3
+    },
+    {
+      "fila_origen": 955,
+      "id": "EVF-0954",
+      "latin": "consuturam",
+      "castellano": "costura",
+      "normas": [
+        "N15"
+      ],
+      "observacion": "Propuesta didáctica para evolución fonética del latín al castellano. Normas marcadas según el banco docente; requiere revisión de los pasos intermedios cuando proceda.",
+      "fuente": "https://ghcl.ub.edu/diccaxv/dictionary/ViewLema/6224",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz de uso reconocible o útil para explicar cambios fonéticos de Latín II; sin predicción de aparición en PAU.",
+      "lote": 3
+    },
+    {
+      "fila_origen": 961,
+      "id": "EVF-0960",
+      "latin": "eremitam",
+      "castellano": "ermita",
+      "normas": [
+        "N16"
+      ],
+      "observacion": "Propuesta didáctica para evolución fonética del latín al castellano. Normas marcadas según el banco docente; requiere revisión de los pasos intermedios cuando proceda.",
+      "fuente": "",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz de uso reconocible o útil para explicar cambios fonéticos de Latín II; sin predicción de aparición en PAU.",
+      "lote": 3
+    },
+    {
+      "fila_origen": 964,
+      "id": "EVF-0963",
+      "latin": "follicare",
+      "castellano": "holgar",
+      "normas": [
+        "N05",
+        "N16",
+        "N17"
+      ],
+      "observacion": "Propuesta didáctica para evolución fonética del latín al castellano. Normas marcadas según el banco docente; requiere revisión de los pasos intermedios cuando proceda.",
+      "fuente": "https://ghcl.ub.edu/diccaxv/dictionary/ViewLema/8971",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz de uso reconocible o útil para explicar cambios fonéticos de Latín II; sin predicción de aparición en PAU.",
+      "lote": 3
+    },
+    {
+      "fila_origen": 976,
+      "id": "EVF-0975",
+      "latin": "litigare",
+      "castellano": "lidiar",
+      "normas": [
+        "N17"
+      ],
+      "observacion": "Propuesta didáctica para evolución fonética del latín al castellano. Normas marcadas según el banco docente; requiere revisión de los pasos intermedios cuando proceda.",
+      "fuente": "",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz de uso reconocible o útil para explicar cambios fonéticos de Latín II; sin predicción de aparición en PAU.",
+      "lote": 3
+    },
+    {
+      "fila_origen": 977,
+      "id": "EVF-0976",
+      "latin": "litteratum",
+      "castellano": "letrado",
+      "normas": [
+        "N01",
+        "N15",
+        "N16",
+        "N17"
+      ],
+      "observacion": "Propuesta didáctica para evolución fonética del latín al castellano. Normas marcadas según el banco docente; requiere revisión de los pasos intermedios cuando proceda.",
+      "fuente": "",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz de uso reconocible o útil para explicar cambios fonéticos de Latín II; sin predicción de aparición en PAU.",
+      "lote": 3
+    },
+    {
+      "fila_origen": 985,
+      "id": "EVF-0984",
+      "latin": "operare",
+      "castellano": "obrar",
+      "normas": [
+        "N16",
+        "N17"
+      ],
+      "observacion": "Propuesta didáctica para evolución fonética del latín al castellano. Normas marcadas según el banco docente; requiere revisión de los pasos intermedios cuando proceda.",
+      "fuente": "",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz de uso reconocible o útil para explicar cambios fonéticos de Latín II; sin predicción de aparición en PAU.",
+      "lote": 3
+    },
+    {
+      "fila_origen": 1005,
+      "id": "EVF-1004",
+      "latin": "traditorem",
+      "castellano": "traidor",
+      "normas": [
+        "N17"
+      ],
+      "observacion": "Propuesta didáctica para evolución fonética del latín al castellano. Normas marcadas según el banco docente; requiere revisión de los pasos intermedios cuando proceda.",
+      "fuente": "",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz de uso reconocible o útil para explicar cambios fonéticos de Latín II; sin predicción de aparición en PAU.",
+      "lote": 3
+    },
+    {
+      "fila_origen": 1012,
+      "id": "EVF-1011",
+      "latin": "aperturam",
+      "castellano": "abertura",
+      "normas": [
+        "N17"
+      ],
+      "observacion": "Propuesta didáctica para evolución fonética del latín al castellano. Normas marcadas según el banco docente; requiere revisión de los pasos intermedios cuando proceda.",
+      "fuente": "",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz de uso reconocible o útil para explicar cambios fonéticos de Latín II; sin predicción de aparición en PAU.",
+      "lote": 3
+    },
+    {
+      "fila_origen": 1034,
+      "id": "EVF-1033",
+      "latin": "luminaria",
+      "castellano": "lumbrera",
+      "normas": [
+        "N19"
+      ],
+      "observacion": "Luminaria (neutro plural) es la forma de partida tradicional; evolución -min- > -mbr-.",
+      "fuente": "https://ghcl.ub.edu/diccaxv/dictionary/ViewLema/12955",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz de uso reconocible o útil para explicar cambios fonéticos de Latín II; sin predicción de aparición en PAU.",
+      "lote": 3
+    },
+    {
+      "fila_origen": 513,
+      "id": "EVF-0512",
+      "latin": "farturam",
+      "castellano": "hartura",
+      "normas": [
+        "N05"
+      ],
+      "observacion": "Propuesta didáctica para evolución fonética del latín al castellano. Normas marcadas según el banco docente; requiere revisión de los pasos intermedios cuando proceda.",
+      "fuente": "",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz de uso reconocible o útil para explicar cambios fonéticos de Latín II; sin predicción de aparición en PAU.",
+      "lote": 3
+    },
+    {
+      "fila_origen": 31,
+      "id": "EVF-0030",
+      "latin": "auscultare",
+      "castellano": "escuchar",
+      "normas": [
+        "N13"
+      ],
+      "observacion": "La evolución histórica incluye la variante vulgar *ascultare; no se interpreta como correspondencia gráfica directa.",
+      "fuente": "https://ghcl.ub.edu/diccaxv/dictionary/ViewLema/8643",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz de uso reconocible o útil para explicar cambios fonéticos de Latín II; sin predicción de aparición en PAU.",
+      "lote": 3
+    },
+    {
+      "fila_origen": 90,
+      "id": "EVF-0089",
+      "latin": "dicere",
+      "castellano": "decir",
+      "normas": [
+        "N13"
+      ],
+      "observacion": "Del latín dicere, con evolución de consonante velar ante e; no se confunde con el cultismo dicción.",
+      "fuente": "https://www.apuntes-selectividad.com/latin/evolucion-del-latin-al-castellano/",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz de uso reconocible o útil para explicar cambios fonéticos de Latín II; sin predicción de aparición en PAU.",
+      "lote": 3
+    },
+    {
+      "fila_origen": 124,
+      "id": "EVF-0123",
+      "latin": "fixum",
+      "castellano": "fijo",
+      "normas": [
+        "N13"
+      ],
+      "observacion": "Del latín fixus, acusativo fixum: la antigua x castellana evolucionó al sonido escrito j. Forma de transmisión tradicional.",
+      "fuente": "https://iedra.es/palabras/fijo",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz de uso reconocible o útil para explicar cambios fonéticos de Latín II; sin predicción de aparición en PAU.",
+      "lote": 3
+    },
+    {
+      "fila_origen": 133,
+      "id": "EVF-0132",
+      "latin": "foveam",
+      "castellano": "hoya",
+      "normas": [
+        "N05"
+      ],
+      "observacion": "Se atestigua foya como fase medieval de hoya; f- inicial > h-. También intervienen cambios del grupo -ve-.",
+      "fuente": "https://ghcl.ub.edu/diccaxv/dictionary/ViewLema/11075",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz de uso reconocible o útil para explicar cambios fonéticos de Latín II; sin predicción de aparición en PAU.",
+      "lote": 3
+    },
+    {
+      "fila_origen": 240,
+      "id": "EVF-0239",
+      "latin": "plānum",
+      "castellano": "llano",
+      "normas": [
+        "N13"
+      ],
+      "observacion": "CORRECCIÓN DEL EXCEL: se reemplaza plannum (erróneo) por plānum, con -pl- inicial > ll-.",
+      "fuente": "https://www.educa2.madrid.org/web/dpto.-de-latin-ies-rey-pastor/lexico",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz de uso reconocible o útil para explicar cambios fonéticos de Latín II; sin predicción de aparición en PAU.",
+      "lote": 3
+    },
+    {
+      "fila_origen": 319,
+      "id": "EVF-0318",
+      "latin": "tepidum",
+      "castellano": "tibio",
+      "normas": [
+        "N16",
+        "N17"
+      ],
+      "observacion": "Tepidum > tibio: resultado tradicional, con sonorización de p y pérdida de d. La vocal tónica requiere explicación específica.",
+      "fuente": "",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz de uso reconocible o útil para explicar cambios fonéticos de Latín II; sin predicción de aparición en PAU.",
+      "lote": 3
+    },
+    {
+      "fila_origen": 457,
+      "id": "EVF-0456",
+      "latin": "virginem",
+      "castellano": "virgen",
+      "normas": [
+        "N16"
+      ],
+      "observacion": "Virginem > virgen: desaparición de vocal postónica; el resultado castellano no es simple copia culta.",
+      "fuente": "",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz de uso reconocible o útil para explicar cambios fonéticos de Latín II; sin predicción de aparición en PAU.",
+      "lote": 3
+    },
+    {
+      "fila_origen": 960,
+      "id": "EVF-0959",
+      "latin": "dominicum",
+      "castellano": "domingo",
+      "normas": [
+        "N16",
+        "N17"
+      ],
+      "observacion": "Dominicum > domingo: pérdida de vocal postónica y sonorización de c; no se presenta como paradigma sin irregularidades.",
+      "fuente": "https://www.delcastellano.com/evolucion/domingo-dominicu/",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz de uso reconocible o útil para explicar cambios fonéticos de Latín II; sin predicción de aparición en PAU.",
+      "lote": 3
+    },
+    {
+      "fila_origen": 975,
+      "id": "EVF-0974",
+      "latin": "limpidum",
+      "castellano": "limpio",
+      "normas": [
+        "N16"
+      ],
+      "observacion": "Limpidum > limpio: pérdida consonántica y reestructuración del grupo interior; algunas etapas históricas exigen explicación.",
+      "fuente": "",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz de uso reconocible o útil para explicar cambios fonéticos de Latín II; sin predicción de aparición en PAU.",
+      "lote": 3
     }
   ],
   "ampliacion": {
@@ -5988,6 +6714,63 @@
         1053
       ],
       "criterio": "Selección docente para preparación PAU, no pronóstico estadístico de futuras convocatorias."
+    },
+    "lote_3": {
+      "nuevas": 50,
+      "total": 510,
+      "filas": [
+        103,
+        116,
+        185,
+        192,
+        193,
+        266,
+        279,
+        303,
+        341,
+        353,
+        365,
+        380,
+        394,
+        399,
+        421,
+        424,
+        438,
+        504,
+        551,
+        608,
+        616,
+        718,
+        731,
+        750,
+        770,
+        807,
+        814,
+        818,
+        838,
+        853,
+        937,
+        955,
+        961,
+        964,
+        976,
+        977,
+        985,
+        1005,
+        1012,
+        1034,
+        513,
+        31,
+        90,
+        124,
+        133,
+        240,
+        319,
+        457,
+        960,
+        975
+      ],
+      "criterio": "Evoluciones de vocabulario común o escolar, sin duplicados; corrección documentada de plannum a planum."
     }
   }
 }
