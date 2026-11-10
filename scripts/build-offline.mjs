@@ -73,6 +73,10 @@ export async function renderOffline(root=projectRoot){
  const offlineModule=await readFile(resolve(root,'offline-lemmas.js'),'utf8');
  const reviewModule=await readFile(resolve(root,'verification-review.js'),'utf8');
  const cultureModule=await readFile(resolve(root,'culture-lat4.js'),'utf8');
+ const valencianModule=await readFile(resolve(root,'lexicon-valenciano.js'),'utf8');
+ const valencianExternal='<script src="lexicon-valenciano.js"></script>';
+ if(!html.includes(valencianExternal))throw new Error('Falta el léxico valenciano en index.html');
+ html=html.replace(valencianExternal,'<script>'+valencianModule.replace(/<\/script/gi,'<\\/script')+'</script>');
  const cultureExternal='<script src="culture-lat4.js"></script>';
  if(!html.includes(cultureExternal))throw new Error('Falta banco de cultura en index.html');
  html=html.replace(cultureExternal,'<script>'+cultureModule.replace(/<\/script/gi,'<\\/script')+'</script>');
