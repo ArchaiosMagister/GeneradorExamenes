@@ -71,6 +71,20 @@ for(const form of ['ἐπαίδευσαν','ἔπλευσαν','ἐπεπυρε�
 assert.notEqual(misspelled[0].status,'documented','No corregir silenciosamente errores ortográficos');
 console.log('Griego prioritario: ateniense, nominales, presente, artículo y formas de εἰμί reconocidos.');
 
+// La desambiguación griega se basa en la grafía y el acento exactos.
+const accentRows=api.analyze(data,'ἤ ἡ ὤν ὧν οὐ οὗ ἦν ἥν τινα τινες μάχῃ ψυχὴν','gr1',priorityBank);
+const exact=(w)=>accentRows.find(r=>r.form===w);
+for(const w of ['ἤ','ἡ','ὤν','οὐ','οὗ','ἦν','ἥν','τινα','τινες','μάχῃ','ψυχὴν']){
+ assert.equal(exact(w)?.status,'documented','No resuelta la grafía exacta '+w+': '+JSON.stringify(exact(w)?.candidates));
+}
+assert.notEqual(exact('ἤ')?.entry,exact('ἡ')?.entry);
+assert.equal(exact('ἤ')?.meaning.includes('que (comparación)'),true);
+for(const typo of ['εἴς','θάλάττῃ','στρατεγός','ἄνρωπος']){
+ const row=api.analyze(data,typo,'gr1',priorityBank)[0];
+ assert.equal(row.status,'review','Una grafía anómala no debe aceptarse en silencio: '+typo);
+ assert.match(row.warning,/Posible errata/);
+}
+
 const originalHTML=fs.readFileSync(path.join(root,'index.html'),'utf8');
 const bankStart=originalHTML.indexOf('let vocab=')+10;
 const sourceBank=JSON.parse(originalHTML.slice(bankStart,originalHTML.indexOf(';',bankStart)));
