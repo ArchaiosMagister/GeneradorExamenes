@@ -2093,7 +2093,7 @@ function generateGreekExam(){
    const contentUnits=[...new Set(x.units.map(examUnitNumber).filter(n=>Number.isInteger(n)&&n>=0&&n<=14))];
    if(!contentUnits.length)return null;
    const lemmas=new Set(),unresolved=new Set();
-   for(const token of x.text.match(/[\\p{L}\\p{M}]+/gu)||[]){
+   for(const token of x.text.match(/[\p{L}\p{M}]+/gu)||[]){
     const direct=greekSharedBank.lookup(token)?.entry;
     const recovered=direct||(typeof window!=='undefined'?window.ExaminaOfflineLemmatizer?.uniqueEntry(token,'greek1'):null);
     if(recovered)lemmas.add(recovered);else unresolved.add(token);
