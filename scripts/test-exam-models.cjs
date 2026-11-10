@@ -150,6 +150,16 @@ function greekSuite(){
  assert(!output.includes('exam-nouns')&&!output.includes('exam-verbs'));
  assert(output.includes('final-gloss'),'Griego traducción debe llevar vocabulario de las oraciones');
  assert.equal(sandbox.window.greekLastExam.total,10);
+ // Una oración griega añadida por el docente se ofrece en el banco,
+ // y los lemas que el índice no reconoce quedan señalados.
+ sandbox.sentences=[{course:'greek1',text:'ὁ δοῦλος λέγει.',sol:'[TRADUCCIÓN PENDIENTE]',
+  units:['UD7'],teacherProvided:true}];
+ sandbox.courseOf=x=>x.course||'latin1';
+ sandbox.greekSharedBank={lookup:()=>null};
+ state['count-sent'].value=12;
+ output=run('translation');
+ assert(output.includes('ὁ δοῦλος λέγει.'),'La oración griega importada no llegó al examen');
+ assert(output.includes('revisa el vocabulario'),'La oración griega sin lematización necesita revisión');
  output=run('morphology');
  assert.equal((output.match(/class="exam-question"/g)||[]).length,4,'Griego UD7: pronombres');
  assert(output.includes('exam-pronouns')&&output.includes('palabras variables'));
