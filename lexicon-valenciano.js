@@ -1131,7 +1131,7 @@
 };
  const exact=new Map(Object.entries(translations));
  // Preferencias expresas del docente: se aplican también a proyectos existentes de vocabulario.
- const entryOverrides=new Map([["importo, importavi, importatum (1ª)","portar"],["reduco, reduxi, reductum (3ª)","conduir de tornada"],["impono, imposui, impositum (3ª)","imposar, posar damunt"],["καλέω","cridar, anomenar"],["μάλιστα (adv.)","moltíssim, especialment"],["Ἀθηναῖος, –α, –ον","atenenc/atenenca"],["στρατηγός, –ου","estrateg (general)"],["Gērmānus, –a, –um","germànic/germànica"],["Paulus, –i","Paulus"],["Callus, –i","Calo (gentilici)"],["Orgetorix, –igis","Orgétorix"],["Ἱέραξ, –ακος (ὁ)","Hiérax"]].map(([k,v])=>[k.normalize('NFC'),v]));
+ const entryOverrides=new Map([["importo, importavi, importatum (1ª)","portar"],["impono, imposui, impositum (3ª)","imposar, posar damunt"],["καλέω","cridar, anomenar"],["μάλιστα (adv.)","moltíssim, especialment"],["Ἀθηναῖος, –α, –ον","atenenc/atenenca"],["στρατηγός, –ου","estrateg (general)"],["Gērmānus, –a, –um","germànic/germànica"],["Paulus, –i","Paulus"],["Callus, –i","Calo (gentilici)"],["Orgetorix, –igis","Orgétorix"],["Ἱέραξ, –ακος (ὁ)","Hiérax"]].map(([k,v])=>[k.normalize('NFC'),v]));
  const normalized=value=>String(value||'').trim().replace(/[‘’“”'"]/gu,'').replace(/\s+/gu,' ');
  const lower=value=>normalized(value).toLocaleLowerCase('es');
  function part(raw){
