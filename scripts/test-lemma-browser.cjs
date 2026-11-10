@@ -43,7 +43,7 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
   await page.locator('#reviewSummary').filter({hasText:'251 incidencias'}).waitFor();
   await page.selectOption('#reviewKind','ampliacion');
   assert.match(await page.locator('#reviewItems').textContent(),/γίγνομαι/);
-  assert.match(await page.locator('#morphTeacherReview').textContent(),/no altera las soluciones/i);
+  assert.match(await page.locator('#morphTeacherReview').textContent(),/ni altera las soluciones/i);
   await page.selectOption('#reviewKind','');
 
   // Lematización inversa: forma flexionada → lema y sus análisis.
