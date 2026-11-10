@@ -10,7 +10,7 @@ const html=await readFile(resolve(root,'offline.html'),'utf8');
 const expected=await renderOffline(root);
 assert.equal(html,expected.content,'offline.html desactualizado: ejecuta npm run offline:build');
 const blocks=[...html.matchAll(/<script([^>]*)>([\s\S]*?)<\/script>/gi)];
-assert.equal(blocks.length,5,'Se esperan cuatro scripts JS y un banco JSON');
+assert.ok(blocks.length>=5,'Faltan los módulos JS o el banco JSON; los scripts de apariencia pueden añadirse sin romper la versión offline');
 const data=blocks.filter(block=>/type="application\/json"/.test(block[1]));
 assert.equal(data.length,1,'Debe existir un único banco JSON embebido');
 const payload=JSON.parse(data[0][2]);
