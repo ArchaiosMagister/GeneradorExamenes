@@ -7,6 +7,7 @@
     "offline:build": "node scripts/build-offline.mjs",
     "offline:test": "node scripts/check-web.mjs && node scripts/test-teacher-review.mjs && node scripts/test-offline.mjs",
     "preview:test": "node scripts/test-preview.cjs",
-    "pwa:test": "node scripts/test-pwa.cjs"
+    "pwa:test": "node scripts/test-pwa.cjs",
+    "vocabulary:test": "node scripts/test-vocabulary.cjs"
   }
 }
