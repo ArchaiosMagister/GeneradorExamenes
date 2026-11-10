@@ -13,8 +13,13 @@ assert.equal(api.displayEntry('λύω','simple'),'λύω');
 const fixture={rows:{lat:[['amo','test','V',0],['bellum','test','N',2]]},vocabulary:{lat:data.vocabulary.lat}};
 const ambiguous=api.analyze(fixture,'test','lat1',[])[0];assert.equal(ambiguous.status,'review');
 const project={count:2,units:[1,2].map(i=>({title:'UD'+i,mode:'complete',rows}))};
-const xml=api.documentXml(project);assert.equal((xml.match(/MI TRADUCCIÓN/g)||[]).length,2);assert.match(xml,/w:cols w:num="2"/);assert.match(xml,/\* xyzxyz/);
-assert.ok(api.analyze(data,'λύω ἄγνωστον','gr1',[]).length===2);
+const xml=api.documentXml(project);assert.equal((xml.match(/MI TRADUCCIÓN/g)||[]).length,2);assert.equal((xml.match(/<w:sectPr>/g)||[]).length,3,'cada UD y la última tienen cierre continuo');
+assert.equal((xml.match(/<w:cols w:num="2"/g)||[]).length,2);
+assert.match(xml,/<w:sectPr><w:type w:val="continuous"\/><w:pgSz[^]*<w:cols w:num="1"[^]*<\/w:body>/);
+assert.match(xml,/\* xyzxyz/);
+const greekRows=api.analyze(data,'λύω ἄγνωστον','gr1',[]);
+assert.equal(greekRows.length,2);
+assert.equal(greekRows[1].form,'ἄγνωστον','se deben conservar los diacríticos griegos originales');
 console.log('Vocabulario: prioridad docente, deduplicación por UD, ambigüedad, desconocidas, griego y XML de dos columnas correctos.');
 (async()=>{
  const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
@@ -26,7 +31,7 @@ console.log('Vocabulario: prioridad docente, deduplicación por UD, ambigüedad,
  await page.fill('#vgText','Puella puella amamus xyzxyz');await page.click('#vgAnalyze');await page.waitForFunction(()=>document.querySelector('#vgStatus').textContent.includes('pendientes'));
  assert.match(await page.locator('#vgResults').innerText(),/xyzxyz/);
  await page.selectOption('#vgMode','simple');await page.selectOption('#vgUnit','1');assert.equal(await page.inputValue('#vgText'),'');
- await page.fill('#vgText','Puella');await page.click('#vgAnalyze');await page.waitForFunction(()=>document.querySelector('#vgStatus').textContent.includes('pendientes'));
+ await page.fill('#vgText','Puella');await page.click('#vgAnalyzeAll');await page.waitForFunction(()=>document.querySelector('#vgStatus').textContent.includes('pendientes'));
  await page.selectOption('#vgUnit','0');assert.match(await page.inputValue('#vgText'),/amamus/);
  const downloadPromise=page.waitForEvent('download');await page.click('#vgWord');const dl=await downloadPromise;const file=await dl.path();assert.equal(fs.readFileSync(file).readUInt32LE(0),0x04034b50);
  await page.reload();await page.click('#vgShow');assert.equal(await page.inputValue('#vgCount'),'2');
