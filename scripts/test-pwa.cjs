@@ -109,7 +109,7 @@ const server=http.createServer(async(req,res)=>{
    'fligo solo es elegible a partir de la UD9');
   assert(taught.fligo.reviewRequired&&taught.fligo.derivatives.length===0,
    'No se deben inventar derivados de fligo');
-  assert.equal(taught.fromFirstUnit.length,4,'UD2 debe generar sus cuatro verbos');
+  assert.equal(taught.fromFirstUnit.length,2,'UD2 debe generar dos verbos (3 y 2 derivados)');
   await page.evaluate(()=>{
    const ud6=units.indexOf('UD6');
    if(ud6<0)throw Error('No existe UD6 en Latín I');
@@ -124,8 +124,15 @@ const server=http.createServer(async(req,res)=>{
    phonetics:latinLexChosenRows('latin1','phonetics',['UD6'])
   }));
   assert.equal(examLex.exam.length,4,'Latín I: deben estar presentes las cuatro subpreguntas de léxico');
-  assert(examLex.exam.every(x=>x.terms.length===4),'Cada subpregunta de léxico debe tener cuatro formas');
-  assert.equal((examLex.html.match(/<i>/g)||[]).length,16,'Deben imprimirse dieciséis términos en cursiva');
+  assert.equal(examLex.exam.find(x=>x.kind==='preverbs').terms.length,2,
+   'Modificación preverbial requiere dos verbos (3 + 2 derivados)');
+  assert(examLex.exam.filter(x=>x.kind!=='preverbs').every(x=>x.terms.length===4),
+   'Las demás subpreguntas deben tener cuatro formas');
+  assert.equal((examLex.html.match(/<i>/g)||[]).length,14,'Deben imprimirse catorce términos en cursiva');
+  assert(examLex.html.includes('(3) y de ')&&examLex.html.includes('(2). Cinco derivados'),
+   'La modificación preverbial debe pedir primero tres derivados y después dos');
+  assert(examLex.exam.every(x=>x.terms.every(term=>term===term.toLocaleLowerCase('es'))),
+   'Hay palabras de léxico con mayúsculas');
   assert(examLex.phonetics.every(row=>row.normas.every(n=>['N07','N17'].includes(n))),
    'Evolución fonética incluye una norma aún no seleccionada');
   const before=examLex.exam.map(x=>({kind:x.kind,terms:x.terms.slice()}));
@@ -154,7 +161,23 @@ const server=http.createServer(async(req,res)=>{
    input.value='';input.dispatchEvent(new Event('change',{bubbles:true}));
    return result;
   });
-  assert(freeVerbs.includes('<i>VERBO_PERSONALIZADO</i> (2)'),'No se admite verbo manual');
+  assert(freeVerbs.includes('<i>verbo_personalizado</i> (3)'),'El primer verbo manual debe aparecer en minúscula y con tres derivados');
+  const preverbButtons=await page.evaluate(()=>({
+    twoSlots:document.querySelectorAll('#lex-slot-preverbs-0, #lex-slot-preverbs-1').length,
+    nonexistent:!!document.getElementById('lex-slot-preverbs-2'),
+    inputs:[0,1].map(i=>!!document.getElementById('lex-verb-'+i)),
+    thirdInput:!!document.getElementById('lex-verb-2')
+  }));
+  assert(preverbButtons.twoSlots===2&&!preverbButtons.nonexistent&&preverbButtons.inputs.every(Boolean)&&!preverbButtons.thirdInput,
+   'El panel de modificación preverbial debe permitir modificar solo dos verbos');
+  const morphExclusions=await page.evaluate(()=>{
+    const forbidden=['Marcus, -i','Roma, -ae','romanus, -a, -um','graecus, -a, -um','Ἀθήνα','ῥωμαῖος'];
+    const allowed=['puella, -ae','bonus, -a, -um','λύω'];
+    return {forbidden:forbidden.map(isExcludedExamMorphLemma),
+      allowed:allowed.map(isExcludedExamMorphLemma)};
+  });
+  assert(morphExclusions.forbidden.every(Boolean)&&morphExclusions.allowed.every(x=>!x),
+   'El análisis morfológico no excluye correctamente nombres propios y gentilicios');
   const noRules=await page.evaluate(()=>{
    selectedPhoneticRules.clear();examSelectionCache.delete(examCacheSignature('lex-phonetics'));generate();
    return [...document.querySelectorAll('#paper [data-lex-kind="phonetics"]')].length;
