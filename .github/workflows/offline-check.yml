@@ -9,6 +9,10 @@ on:
       - 'data/lemmas/**'
       - 'data/unimorph/**'
       - 'scripts/**'
+      - 'pwa.js'
+      - 'sw.js'
+      - 'manifest.webmanifest'
+      - 'icons/**'
       - 'package.json'
       - '.github/workflows/offline-check.yml'
   push:
@@ -18,6 +22,10 @@ on:
       - 'offline.html'
       - 'data/unimorph/**'
       - 'scripts/**'
+      - 'pwa.js'
+      - 'sw.js'
+      - 'manifest.webmanifest'
+      - 'icons/**'
       - 'package.json'
       - '.github/workflows/offline-check.yml'
 
@@ -27,7 +35,7 @@ permissions:
 jobs:
   offline:
     runs-on: ubuntu-24.04
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -51,6 +59,8 @@ jobs:
           npx playwright install --with-deps chromium
       - name: Probar las vistas previas de todos los modelos
         run: node scripts/test-preview.cjs
+      - name: Probar PWA sin red y actualizaciones controladas
+        run: npm run pwa:test
       - name: Probar en Chromium el lematizador sin conexión
         run: node scripts/test-lemma-browser.cjs
       - name: Guardar la base offline y el HTML descargable en main

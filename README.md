@@ -10,6 +10,20 @@ Los cambios se publican mediante GitHub Pages; comprueba que el último desplieg
 haya terminado correctamente en **Actions → pages build and deployment**.
 La versión `offline.html` es una descarga alternativa, no la interfaz predeterminada.
 
+## Webapp instalable y uso sin conexión (PWA)
+
+La versión web **puede funcionar sin Internet después de una primera visita con conexión**. No es una aplicación de escritorio ni requiere descargar un instalador:
+
+1. Abre [el generador online](https://archaiosmagister.github.io/GeneradorExamenes/) con Internet y mantén la página abierta hasta que aparezca **«Preparada para funcionar sin conexión»**.
+2. A partir de ese momento puedes volver a abrir la misma dirección sin conexión desde ese navegador y dispositivo. La caché incluye la interfaz, el banco latino UniMorph, el índice del lematizador de latín y griego y la versión alternativa `offline.html`.
+3. Si el navegador lo permite, pulsa **Instalar** o utiliza el menú de instalación / «Añadir a pantalla de inicio» (Safari en iPhone o iPad: **Compartir → Añadir a pantalla de inicio**). La instalación es opcional.
+4. Cuando se publique una actualización, aparecerá **«Preparar actualización»**. Puedes mantener el examen abierto sin perder las modificaciones. Para cargar el código nuevo, guarda o exporta primero el borrador y pulsa **«Recargar versión nueva»**.
+5. Usa **Copia de datos** y **Exportar examen** para guardar archivos JSON separados. La caché PWA **no sustituye a una copia de seguridad**: si borras los datos del sitio o cambias de dispositivo/navegador, podrías perder borradores y contenido añadido. Puedes solicitar **Proteger almacenamiento** cuando el navegador ofrezca esa función, sin garantía de concesión.
+
+**Nota:** la primera carga necesita conexión y que el navegador admita service workers (habitualmente HTTPS, o localhost durante desarrollo). Al abrir `offline.html` desde el disco mediante `file://` no se instala ningún service worker, porque ese archivo continúa siendo completamente autónomo por sí solo. Si el navegador bloquea el almacenamiento del sitio, utiliza `offline.html` y exporta tus datos regularmente.
+
+La actualización del service worker se versiona con el SHA del despliegue en GitHub Pages; los recursos se guardan de forma conjunta para evitar versiones mezcladas. No se envían borradores ni vocabulario del usuario a un servidor: permanecen en el almacenamiento local del navegador.
+
 ## Estructura académica de los exámenes (versión actual)
 
 El **nombre del modelo** (completo, morfología o traducción) no sustituye el título académico de la cabecera: `Examen de Latín I – UDs 2–3`, por ejemplo.
@@ -38,7 +52,7 @@ La consulta diferencia ahora las **formas documentadas**, las **propuestas de fl
 
 ## Versión autónoma para usar sin Internet
 
-**Archivo recomendado:** [`offline.html`](./offline.html). En GitHub, abre ese enlace y pulsa **Download raw file**. Guarda el archivo en el ordenador y ábrelo con doble clic en un navegador. No necesitas instalar programas, iniciar un servidor ni conectarte a Internet.
+**Alternativa de archivo único:** [`offline.html`](./offline.html). En GitHub, abre ese enlace y pulsa **Download raw file**. Guarda el archivo en el ordenador y ábrelo con doble clic en un navegador. No necesitas instalar programas, iniciar un servidor ni conectarte a Internet.
 
 1. Descarga `offline.html` cuando tengas conexión. Guárdalo, por ejemplo, en Documentos.
 2. Desconecta Internet y abre ese mismo archivo.

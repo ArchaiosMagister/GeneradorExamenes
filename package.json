@@ -6,6 +6,7 @@
   "scripts": {
     "offline:build": "node scripts/build-offline.mjs",
     "offline:test": "node scripts/check-web.mjs && node scripts/test-offline.mjs",
-    "preview:test": "node scripts/test-preview.cjs"
+    "preview:test": "node scripts/test-preview.cjs",
+    "pwa:test": "node scripts/test-pwa.cjs"
   }
 }
