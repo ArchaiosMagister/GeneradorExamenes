@@ -261,13 +261,14 @@ console.log('Vocabulario: prioridad docente, deduplicación por UD, ambigüedad,
  await page.reload();await page.click('#vgShow');assert.equal(await page.inputValue('#vgCount'),'2');
  // Reproduce un JSON antiguo de 14 unidades: textos, pero sin ningún análisis.
  const imported={count:14,course:'gr1',units:Array.from({length:14},(_,i)=>({
-  title:'UD'+(i+1),text:'ὁ θεός ἐστιν. οἱ ἄνθρωποι.',mode:'complete',rows:[]
+  title:'UD'+(i+1),text:'ὁ θεός ἐστιν. οἱ ἄνθρωποι.'+(i<approved.length?' '+approved[i][0]:' σωτερίας'),mode:'complete',rows:[]
  }))};
  await page.locator('#vgImport').setInputFiles({
   name:'vocabulario-unidades.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(imported))
  });
  await page.waitForFunction(()=>document.querySelector('#vgStatus')?.textContent.includes('14 por analizar'));
  assert.match(await page.locator('#vgStatus').innerText(),/14 por analizar/);
+ assert.match(await page.locator('#vgStatus').innerText(),/Correcciones docentes aplicadas en 13 apariciones/);
  assert.equal(await page.locator('#vgUnitButtons button').count(),14);
  assert.equal(await page.locator('#vgUnitButtons .has-text').count(),14);
  await page.click('#vgUnitButtons [data-unit="13"]');
@@ -283,6 +284,8 @@ console.log('Vocabulario: prioridad docente, deduplicación por UD, ambigüedad,
  const persisted=await page.evaluate(()=>JSON.parse(localStorage.getItem('examina_vocabulary_project_v1')));
  assert.equal(persisted.units.length,14);
  assert.ok(persisted.units.every(u=>u.text.includes('θεός')&&u.rows.length>0));
+ for(let i=0;i<approved.length;i++)assert.ok(persisted.units[i].text.includes(approved[i][1]),'La UD'+(i+1)+' debe reflejar la corrección aprobada');
+ assert.ok(persisted.units[13].text.includes('σωτερίας'),'La UD14 conserva la forma sin decisión');
  console.log('Importación JSON con 14 unidades sin analizar: Word completo y textos conservados.');
  
  await page.click('#vmShowExam');assert.equal(await page.locator('#vocabularyGenerator').isVisible(),false);
