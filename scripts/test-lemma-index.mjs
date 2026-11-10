@@ -23,7 +23,13 @@ assert.ok(data.vocabulary.grc['λυω']?.gr1,'Falta λύω en el vocabulario gri
 const script=fs.readFileSync(path.join(root,'offline-lemmas.js'),'utf8');
 const ctx={window:{},document:{readyState:'loading',addEventListener(){}},console};
 runInNewContext(script,ctx,{filename:'offline-lemmas.js'});
-const {normalize,query,describe,uniqueLemmaFromData}=ctx.window.ExaminaOfflineLemmatizer;
+const {normalize,query,describe,coverage,uniqueLemmaFromData}=ctx.window.ExaminaOfflineLemmatizer;
+const latCoverage=coverage(data,'lat1'),grCoverage=coverage(data,'gr1');
+assert.equal(latCoverage.lemmas,664);
+assert.equal(grCoverage.lemmas,349);
+assert.ok(latCoverage.documented>250&&latCoverage.proposed>100);
+assert.ok(grCoverage.documented>=100&&grCoverage.onlyCitation>=200);
+assert.equal(grCoverage.proposed,0,'No se han generado formas griegas sin comprobar');
 assert.equal(normalize('AMĀBAM'),normalize('amabam'));
 assert.equal(normalize('λόγῳ'),normalize('ΛΌΓῼ'));
 assert.notEqual(normalize('ᾳ'),normalize('α'),'La iota suscrita no puede eliminarse');
