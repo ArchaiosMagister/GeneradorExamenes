@@ -650,7 +650,12 @@ function formatVocabularyEntry(row,mode,course){
  }
  if(!row.meaning)return entry;
  const meaning=String(row.meaning).trim().replace(/^[‘’'"]+|[‘’'"]+$/g,'');
- const pieces=meaning.split(/[’']\s*,\s*[‘']/).map(x=>x.trim()).filter(Boolean);
+ // Algunas traducciones del banco conservan comillas interiores
+ // procedentes de su importación ('arte’, ‘técnica', etc.).
+ const pieces=(course==='gr1'?meaning.split(/,\s*[‘']/u):[meaning])
+  .flatMap(s=>course==='gr1'?s.split(/[’']\s*,\s*[‘']/u):[s])
+  .map(s=>s.replace(/[’'](?=\s*\()/gu,'').replace(/[‘’](?!\p{L})/gu,'')
+   .replace(/^[‘’']+|[‘’']+$/gu,'').trim()).filter(Boolean);
  const lemmaPart=head(entry);
  const phrase=(/\s|…/u.test(lemmaPart)&&!/\s+o\s+/i.test(lemmaPart)) &&
   !/^(?:ὁ,\s*ἡ|οὐ,\s*οὐκ)/u.test(entry);
