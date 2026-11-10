@@ -162,6 +162,15 @@ console.log('Vocabulario: prioridad docente, deduplicación por UD, ambigüedad,
  assert.ok(await analyzeAll.evaluate(el=>!!el.previousElementSibling?.querySelector('#vgMode')));
  assert.equal(await analyzeAll.evaluate(el=>getComputedStyle(el).fontWeight),'800');
 
+ // Prueba real de interfaz: diez frases escolares, incluida la preposición «ab».
+ const latinCorpus=JSON.parse(fs.readFileSync(path.join(root,'tests/latin-vocabulary-sentences.json'),'utf8')).sentences;
+ await page.fill('#vgText',latinCorpus.join('\\n'));
+ await page.click('#vgAnalyze');
+ await page.waitForFunction(()=>document.querySelector('#vgStatus')?.textContent.includes('pendientes'));
+ const vocabularyPreview=await page.locator('#vgResults').innerText();
+ assert.match(vocabularyPreview,/ab · Forma documentada/,'La UI debe reconocer ab sin revisión');
+ assert.match(vocabularyPreview,/puella/i,'La UI debe identificar los lemas del texto');
+ await page.fill('#vgText','');
  await page.fill('#vgCount','2');await page.locator('#vgCount').dispatchEvent('change');
  await page.fill('#vgText','Puella puella amamus xyzxyz');await page.click('#vgAnalyze');await page.waitForFunction(()=>document.querySelector('#vgStatus').textContent.includes('pendientes'));
  assert.match(await page.locator('#vgResults').innerText(),/xyzxyz/);
