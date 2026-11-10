@@ -17,7 +17,7 @@ assert.ok(data.vocabulary.grc['λυω']?.gr1,'Falta λύω en el vocabulario gri
 const script=fs.readFileSync(path.join(root,'offline-lemmas.js'),'utf8');
 const ctx={window:{},document:{readyState:'loading',addEventListener(){}},console};
 runInNewContext(script,ctx,{filename:'offline-lemmas.js'});
-const {normalize,query,describe}=ctx.window.ExaminaOfflineLemmatizer;
+const {normalize,query,describe,uniqueLemmaFromData}=ctx.window.ExaminaOfflineLemmatizer;
 assert.equal(normalize('AMĀBAM'),normalize('amabam'));
 assert.equal(normalize('λόγῳ'),normalize('ΛΌΓῼ'));
 assert.notEqual(normalize('ᾳ'),normalize('α'),'La iota suscrita no puede eliminarse');
@@ -26,6 +26,7 @@ const a=query(data,{course:'lat1',mode:'lemma',text:'amo'});
 assert.ok(a.items.length>=6,'Faltan formas de amo');
 assert.ok(a.items.every(r=>r.lemma==='amo'));
 assert.ok(a.items.some(r=>r.source==='Paradigma docente'));
+assert.equal(uniqueLemmaFromData(data,'lat1','amabam'),'amo','Lematizar una forma para el glosario offline');
 const greek=query(data,{course:'gr1',mode:'lemma',text:'λύω'});
 assert.ok(greek.items.length>=5,'Faltan formas de λύω');
 assert.ok(greek.items.every(r=>r.info.gr1));
@@ -43,6 +44,7 @@ const synthetic={schema:1,vocabulary:{lat:{
 ],grc:[]}};
 const ambiguous=query(synthetic,{course:'lat1',text:'rosae'});
 assert.equal(ambiguous.total,3,'Debe conservar análisis múltiples y lemas homógrafos');
+assert.equal(uniqueLemmaFromData(synthetic,'lat1','rosae'),null,'Un homógrafo no debe resolverse automáticamente');
 assert.equal(new Set(ambiguous.items.map(x=>x.lemma)).size,2);
 assert.equal(query(synthetic,{course:'gr1',text:'rosae'}).total,0);
 assert.ok(query(data,{course:'lat1',text:'dos palabras'}).invalid);
