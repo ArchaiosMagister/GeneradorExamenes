@@ -1,11 +1,31 @@
 // Prueba real en navegador: vista previa y edición de los siete modelos.
 const assert=require('node:assert/strict');
 const path=require('node:path');
+const fs=require('node:fs/promises');
 const {pathToFileURL}=require('node:url');
 const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
 
+// El exportador Word crea un ZIP válido sin compresión y sin librerías externas.
+// Esta lectura verifica el documento realmente descargado, no solo el HTML.
+function readStoredZipEntry(bytes,wanted){
+ let pos=0;
+ while(pos+30<=bytes.length&&bytes.readUInt32LE(pos)===0x04034b50){
+  const method=bytes.readUInt16LE(pos+8),size=bytes.readUInt32LE(pos+18);
+  const nameLength=bytes.readUInt16LE(pos+26),extraLength=bytes.readUInt16LE(pos+28);
+  const name=bytes.toString('utf8',pos+30,pos+30+nameLength);
+  const start=pos+30+nameLength+extraLength;
+  assert(start+size<=bytes.length,'ZIP truncado: '+name);
+  if(name===wanted){
+   assert.equal(method,0,'ZIP con compresión inesperada: '+name);
+   return bytes.toString('utf8',start,start+size);
+  }
+  pos=start+size;
+ }
+ throw new Error('Falta '+wanted+' en el documento Word');
+}
+
 async function checkFile(browser,filename){
- const context=await browser.newContext({viewport:{width:1440,height:960}});
+ const context=await browser.newContext({viewport:{width:1440,height:960},acceptDownloads:true});
  const page=await context.newPage(),errors=[];
  page.on('pageerror',error=>errors.push(String(error)));
  await page.goto(pathToFileURL(path.resolve(filename)).href);
@@ -61,6 +81,45 @@ async function checkFile(browser,filename){
    cells=>cells.map(cell=>({text:cell.textContent,lexeme:cell.querySelector('i')?.textContent,indicator:cell.querySelector('.exam-paradigm-indicator')?.textContent||''}))
   );
   assert(headings.every(h=>h.lexeme&&h.text===h.lexeme+(h.indicator?' '+h.indicator:'')),filename+' '+course+'/'+model+': formato de encabezado alterado '+JSON.stringify(headings));
+  // El estilo académico se conserva en pantalla y en el medio de impresión.
+  const screenLayout=await page.locator('#paper .exam-sheet').evaluate(el=>({
+   font:getComputedStyle(el).fontFamily,
+   tableCount:el.querySelectorAll('.exam-paradigm').length
+  }));
+  assert(/Palatino/i.test(screenLayout.font),filename+' '+course+'/'+model+': tipografía académica cambiada');
+  await page.emulateMedia({media:'print'});
+  const printLayout=await page.locator('#paper .exam-sheet').evaluate(el=>{
+   const glossary=el.querySelector('.final-gloss'),table=el.querySelector('.exam-paradigm');
+   return {font:getComputedStyle(el).fontFamily,
+    columns:glossary?getComputedStyle(glossary).columnCount:null,
+    avoidBreak:table?getComputedStyle(table).breakInside:null};
+  });
+  assert(/Palatino/i.test(printLayout.font),filename+' '+course+'/'+model+': tipografía de impresión cambiada');
+  if(printLayout.columns!==null)assert.equal(printLayout.columns,'2',filename+': vocabulario sin dos columnas en impresión');
+  if(printLayout.avoidBreak!==null)assert.equal(printLayout.avoidBreak,'avoid',filename+': tablas divididas entre páginas');
+  if((course==='latin1'&&model==='tablas')||(course==='greek1'&&model==='complete')){
+   const pdf=await page.pdf({printBackground:true,preferCSSPageSize:true});
+   assert(pdf.subarray(0,5).toString()==='%PDF-'&&pdf.length>5000,filename+': impresión PDF no generada');
+  }
+  await page.emulateMedia({media:'screen'});
+
+  // DOCX reales: se verifican el XML de Word, las tablas y el estilo Palatino.
+  for(const answers of [false,true]){
+   const downloadPromise=page.waitForEvent('download');
+   await page.locator(answers?'#docxAnswers':'#docx').click();
+   const download=await downloadPromise;
+   assert(download.suggestedFilename().endsWith('.docx'),filename+': descarga Word sin extensión .docx');
+   const bytes=await fs.readFile(await download.path());
+   const documentXml=readStoredZipEntry(bytes,'word/document.xml');
+   const styleXml=readStoredZipEntry(bytes,'word/styles.xml');
+   assert(documentXml.includes('<w:document ')&&documentXml.includes('<w:body>')&&documentXml.includes('</w:document>'),
+    filename+' '+course+'/'+model+': XML Word incompleto');
+   assert(/Palatino/.test(styleXml),filename+' '+course+'/'+model+': fuente Palatino ausente en Word');
+   if(screenLayout.tableCount){
+    assert(documentXml.includes('<w:tbl>'),filename+' '+course+'/'+model+': tablas ausentes en Word');
+    assert(documentXml.includes('<w:i/>'),filename+' '+course+'/'+model+': cursiva ausente en Word');
+   }
+  }
   // El panel de preguntas es un acordeón cerrado por defecto.
   await page.locator('.menu-section').filter({has:page.locator('#manualMorphWords')}).evaluate(section=>section.open=true);
   if(course==='greek1'&&model==='complete'){
