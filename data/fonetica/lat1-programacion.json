@@ -1,0 +1,820 @@
+{
+  "schema": 1,
+  "course": "latin1",
+  "revision": "2026-11-10",
+  "criterio": "73 entradas docentes en el orden original: 3 en UD0 y 7 en UD1–UD10. Cada unidad permite las normas introducidas hasta ella; solo APTO_PROPUESTO es elegible automáticamente. Revisar antes de evaluación las correspondencias señaladas.",
+  "unidades": [
+    {
+      "unit": 0,
+      "nuevas": [
+        "N02",
+        "N05",
+        "N07",
+        "N10",
+        "N17"
+      ],
+      "palabras": [
+        {
+          "id": "LAT1-FON-001",
+          "latin": "terram",
+          "castellano": "tierra",
+          "normas": [
+            "N07"
+          ],
+          "estado": "APTO_PROPUESTO"
+        },
+        {
+          "id": "LAT1-FON-002",
+          "latin": "apotheca",
+          "castellano": "bodega",
+          "normas": [
+            "N02",
+            "N10",
+            "N17"
+          ],
+          "estado": "APTO_PROPUESTO"
+        },
+        {
+          "id": "LAT1-FON-003",
+          "latin": "farinam",
+          "castellano": "harina",
+          "normas": [
+            "N05"
+          ],
+          "estado": "APTO_PROPUESTO"
+        }
+      ]
+    },
+    {
+      "unit": 1,
+      "nuevas": [
+        "N01",
+        "N06",
+        "N09",
+        "N13",
+        "N15",
+        "N16",
+        "N19"
+      ],
+      "palabras": [
+        {
+          "id": "LAT1-FON-004",
+          "latin": "iocum",
+          "castellano": "juego",
+          "normas": [
+            "N06",
+            "N07",
+            "N17"
+          ],
+          "estado": "APTO_PROPUESTO"
+        },
+        {
+          "id": "LAT1-FON-005",
+          "latin": "vaccam",
+          "castellano": "vaca",
+          "normas": [
+            "N15"
+          ],
+          "estado": "APTO_PROPUESTO"
+        },
+        {
+          "id": "LAT1-FON-006",
+          "latin": "focum",
+          "castellano": "fuego",
+          "normas": [
+            "N07",
+            "N17"
+          ],
+          "estado": "APTO_PROPUESTO"
+        },
+        {
+          "id": "LAT1-FON-007",
+          "latin": "lupum",
+          "castellano": "lobo",
+          "normas": [
+            "N01",
+            "N17"
+          ],
+          "estado": "APTO_PROPUESTO"
+        },
+        {
+          "id": "LAT1-FON-008",
+          "latin": "consilium",
+          "castellano": "consejo",
+          "normas": [
+            "N01",
+            "N13"
+          ],
+          "estado": "APTO_PROPUESTO"
+        },
+        {
+          "id": "LAT1-FON-009",
+          "latin": "hominem",
+          "castellano": "hombre",
+          "normas": [
+            "N09",
+            "N16",
+            "N19"
+          ],
+          "estado": "APTO_PROPUESTO"
+        },
+        {
+          "id": "LAT1-FON-010",
+          "latin": "lyram",
+          "castellano": "lira",
+          "normas": [
+            "N10"
+          ],
+          "estado": "APTO_PROPUESTO"
+        }
+      ]
+    },
+    {
+      "unit": 2,
+      "nuevas": [
+        "N03",
+        "N11",
+        "N12",
+        "N20"
+      ],
+      "palabras": [
+        {
+          "id": "LAT1-FON-011",
+          "latin": "philosophiam",
+          "castellano": "filosofía",
+          "normas": [
+            "N10"
+          ],
+          "estado": "APTO_PROPUESTO"
+        },
+        {
+          "id": "LAT1-FON-012",
+          "latin": "theatrum",
+          "castellano": "teatro",
+          "normas": [
+            "N10"
+          ],
+          "estado": "APTO_PROPUESTO"
+        },
+        {
+          "id": "LAT1-FON-013",
+          "latin": "choleram",
+          "castellano": "cólera",
+          "normas": [
+            "N10"
+          ],
+          "estado": "APTO_PROPUESTO"
+        },
+        {
+          "id": "LAT1-FON-014",
+          "latin": "crocodillum",
+          "castellano": "cocodrilo",
+          "normas": [
+            "N11",
+            "N15"
+          ],
+          "estado": "REVISAR",
+          "observacion": "El étimo preferente se documenta como crocodilus/crocodilum; comprobar la geminada de la forma propuesta."
+        },
+        {
+          "id": "LAT1-FON-015",
+          "latin": "aurum",
+          "castellano": "oro",
+          "normas": [
+            "N12"
+          ],
+          "estado": "APTO_PROPUESTO"
+        },
+        {
+          "id": "LAT1-FON-016",
+          "latin": "ædificare",
+          "castellano": "edificar",
+          "normas": [
+            "N03",
+            "N12"
+          ],
+          "estado": "APTO_PROPUESTO"
+        },
+        {
+          "id": "LAT1-FON-017",
+          "latin": "auriculam",
+          "castellano": "oreja",
+          "normas": [
+            "N12",
+            "N16",
+            "N20"
+          ],
+          "estado": "APTO_PROPUESTO"
+        }
+      ]
+    },
+    {
+      "unit": 3,
+      "nuevas": [
+        "N14",
+        "N18"
+      ],
+      "palabras": [
+        {
+          "id": "LAT1-FON-018",
+          "latin": "clavem",
+          "castellano": "llave",
+          "normas": [
+            "N13"
+          ],
+          "estado": "APTO_PROPUESTO"
+        },
+        {
+          "id": "LAT1-FON-019",
+          "latin": "multum",
+          "castellano": "mucho",
+          "normas": [
+            "N13",
+            "N18"
+          ],
+          "estado": "APTO_PROPUESTO"
+        },
+        {
+          "id": "LAT1-FON-020",
+          "latin": "speculum",
+          "castellano": "espejo",
+          "normas": [
+            "N14",
+            "N16",
+            "N20"
+          ],
+          "estado": "APTO_PROPUESTO"
+        },
+        {
+          "id": "LAT1-FON-021",
+          "latin": "gemmam",
+          "castellano": "yema",
+          "normas": [
+            "N13",
+            "N15"
+          ],
+          "estado": "APTO_PROPUESTO"
+        },
+        {
+          "id": "LAT1-FON-022",
+          "latin": "annum",
+          "castellano": "año",
+          "normas": [
+            "N13"
+          ],
+          "estado": "APTO_PROPUESTO"
+        },
+        {
+          "id": "LAT1-FON-023",
+          "latin": "ampullam",
+          "castellano": "ampolla",
+          "normas": [
+            "N01",
+            "N13"
+          ],
+          "estado": "APTO_PROPUESTO"
+        },
+        {
+          "id": "LAT1-FON-024",
+          "latin": "septem",
+          "castellano": "siete",
+          "normas": [
+            "N07",
+            "N15"
+          ],
+          "estado": "APTO_PROPUESTO"
+        }
+      ]
+    },
+    {
+      "unit": 4,
+      "nuevas": [],
+      "palabras": [
+        {
+          "id": "LAT1-FON-025",
+          "latin": "latronem",
+          "castellano": "ladrón",
+          "normas": [
+            "N03",
+            "N17"
+          ],
+          "estado": "APTO_PROPUESTO"
+        },
+        {
+          "id": "LAT1-FON-026",
+          "latin": "formica",
+          "castellano": "hormiga",
+          "normas": [
+            "N05",
+            "N17"
+          ],
+          "estado": "APTO_PROPUESTO"
+        },
+        {
+          "id": "LAT1-FON-027",
+          "latin": "alterum",
+          "castellano": "otro",
+          "normas": [
+            "N12",
+            "N16",
+            "N18"
+          ],
+          "estado": "APTO_PROPUESTO"
+        },
+        {
+          "id": "LAT1-FON-028",
+          "latin": "lenticulam",
+          "castellano": "lenteja",
+          "normas": [
+            "N16",
+            "N20"
+          ],
+          "estado": "APTO_PROPUESTO"
+        },
+        {
+          "id": "LAT1-FON-029",
+          "latin": "miraculum",
+          "castellano": "milagro",
+          "normas": [
+            "N11",
+            "N16",
+            "N17"
+          ],
+          "estado": "APTO_PROPUESTO"
+        },
+        {
+          "id": "LAT1-FON-030",
+          "latin": "pacem",
+          "castellano": "paz",
+          "normas": [
+            "N03",
+            "N13"
+          ],
+          "estado": "APTO_PROPUESTO"
+        },
+        {
+          "id": "LAT1-FON-031",
+          "latin": "dictum",
+          "castellano": "dicho",
+          "normas": [
+            "N13",
+            "N18"
+          ],
+          "estado": "APTO_PROPUESTO"
+        }
+      ]
+    },
+    {
+      "unit": 5,
+      "nuevas": [],
+      "palabras": [
+        {
+          "id": "LAT1-FON-032",
+          "latin": "complexum",
+          "castellano": "complejo",
+          "normas": [
+            "N13"
+          ],
+          "estado": "REVISAR",
+          "observacion": "La evolución de -x- a -j- no se reduce a una palatalización simple; revisar antes de examinar."
+        },
+        {
+          "id": "LAT1-FON-033",
+          "latin": "cuppam",
+          "castellano": "copa",
+          "normas": [
+            "N01",
+            "N15"
+          ],
+          "estado": "APTO_PROPUESTO"
+        },
+        {
+          "id": "LAT1-FON-034",
+          "latin": "impignum",
+          "castellano": "empeño",
+          "normas": [],
+          "estado": "REVISAR",
+          "observacion": "El castellano se relaciona con pignus / in pignus; impignum no es étimo directo seguro."
+        },
+        {
+          "id": "LAT1-FON-035",
+          "latin": "fœdum",
+          "castellano": "feo",
+          "normas": [
+            "N12",
+            "N16"
+          ],
+          "estado": "APTO_PROPUESTO"
+        },
+        {
+          "id": "LAT1-FON-036",
+          "latin": "patrem",
+          "castellano": "padre",
+          "normas": [
+            "N17"
+          ],
+          "estado": "APTO_PROPUESTO"
+        },
+        {
+          "id": "LAT1-FON-037",
+          "latin": "pugnum",
+          "castellano": "puño",
+          "normas": [
+            "N13"
+          ],
+          "estado": "APTO_PROPUESTO"
+        },
+        {
+          "id": "LAT1-FON-038",
+          "latin": "pectus",
+          "castellano": "pecho",
+          "normas": [
+            "N13",
+            "N18"
+          ],
+          "estado": "APTO_PROPUESTO"
+        }
+      ]
+    },
+    {
+      "unit": 6,
+      "nuevas": [],
+      "palabras": [
+        {
+          "id": "LAT1-FON-039",
+          "latin": "testum",
+          "castellano": "tiesto",
+          "normas": [
+            "N07"
+          ],
+          "estado": "APTO_PROPUESTO"
+        },
+        {
+          "id": "LAT1-FON-040",
+          "latin": "sponsam",
+          "castellano": "esposa",
+          "normas": [
+            "N14",
+            "N15"
+          ],
+          "estado": "APTO_PROPUESTO"
+        },
+        {
+          "id": "LAT1-FON-041",
+          "latin": "pannum",
+          "castellano": "paño",
+          "normas": [
+            "N13"
+          ],
+          "estado": "APTO_PROPUESTO"
+        },
+        {
+          "id": "LAT1-FON-042",
+          "latin": "sagittam",
+          "castellano": "saeta",
+          "normas": [
+            "N01",
+            "N15",
+            "N16"
+          ],
+          "estado": "APTO_PROPUESTO"
+        },
+        {
+          "id": "LAT1-FON-043",
+          "latin": "fontem",
+          "castellano": "fuente",
+          "normas": [
+            "N07"
+          ],
+          "estado": "APTO_PROPUESTO"
+        },
+        {
+          "id": "LAT1-FON-044",
+          "latin": "cæcum",
+          "castellano": "ciego",
+          "normas": [
+            "N07",
+            "N12",
+            "N17"
+          ],
+          "estado": "APTO_PROPUESTO"
+        },
+        {
+          "id": "LAT1-FON-045",
+          "latin": "cultellum",
+          "castellano": "cuchillo",
+          "normas": [
+            "N13",
+            "N18"
+          ],
+          "estado": "APTO_PROPUESTO"
+        }
+      ]
+    },
+    {
+      "unit": 7,
+      "nuevas": [
+        "N04"
+      ],
+      "palabras": [
+        {
+          "id": "LAT1-FON-046",
+          "latin": "adpodiare",
+          "castellano": "apoyar",
+          "normas": [
+            "N03",
+            "N04",
+            "N13",
+            "N15"
+          ],
+          "estado": "APTO_PROPUESTO"
+        },
+        {
+          "id": "LAT1-FON-047",
+          "latin": "æqualitatem",
+          "castellano": "igualdad",
+          "normas": [],
+          "estado": "REVISAR",
+          "observacion": "Igualdad es un derivado de igual (< aequalem) con sufijo -dad, no evolución fonética directa."
+        },
+        {
+          "id": "LAT1-FON-048",
+          "latin": "fustigare",
+          "castellano": "hostigar",
+          "normas": [
+            "N03",
+            "N05"
+          ],
+          "estado": "APTO_PROPUESTO"
+        },
+        {
+          "id": "LAT1-FON-049",
+          "latin": "hortum",
+          "castellano": "huerto",
+          "normas": [
+            "N07"
+          ],
+          "estado": "APTO_PROPUESTO"
+        },
+        {
+          "id": "LAT1-FON-050",
+          "latin": "malitiam",
+          "castellano": "maleza",
+          "normas": [
+            "N01",
+            "N13"
+          ],
+          "estado": "APTO_PROPUESTO"
+        },
+        {
+          "id": "LAT1-FON-051",
+          "latin": "materiam",
+          "castellano": "madera",
+          "normas": [
+            "N16",
+            "N17"
+          ],
+          "estado": "APTO_PROPUESTO"
+        },
+        {
+          "id": "LAT1-FON-052",
+          "latin": "scutum",
+          "castellano": "escudo",
+          "normas": [
+            "N14",
+            "N17"
+          ],
+          "estado": "APTO_PROPUESTO"
+        }
+      ]
+    },
+    {
+      "unit": 8,
+      "nuevas": [],
+      "palabras": [
+        {
+          "id": "LAT1-FON-053",
+          "latin": "rapum",
+          "castellano": "rabo",
+          "normas": [
+            "N17"
+          ],
+          "estado": "APTO_PROPUESTO"
+        },
+        {
+          "id": "LAT1-FON-054",
+          "latin": "stabulum",
+          "castellano": "establo",
+          "normas": [
+            "N14",
+            "N16"
+          ],
+          "estado": "APTO_PROPUESTO"
+        },
+        {
+          "id": "LAT1-FON-055",
+          "latin": "scholam",
+          "castellano": "escuela",
+          "normas": [
+            "N07",
+            "N10",
+            "N14"
+          ],
+          "estado": "APTO_PROPUESTO"
+        },
+        {
+          "id": "LAT1-FON-056",
+          "latin": "vaxillam",
+          "castellano": "vajilla",
+          "normas": [],
+          "estado": "REVISAR",
+          "observacion": "Forma latina no acreditada para vajilla; se relaciona con vascella y transmisión romance."
+        },
+        {
+          "id": "LAT1-FON-057",
+          "latin": "vitam",
+          "castellano": "vida",
+          "normas": [
+            "N17"
+          ],
+          "estado": "APTO_PROPUESTO"
+        },
+        {
+          "id": "LAT1-FON-058",
+          "latin": "taurum",
+          "castellano": "toro",
+          "normas": [
+            "N12"
+          ],
+          "estado": "APTO_PROPUESTO"
+        },
+        {
+          "id": "LAT1-FON-059",
+          "latin": "periculum",
+          "castellano": "peligro",
+          "normas": [
+            "N11",
+            "N16",
+            "N17"
+          ],
+          "estado": "APTO_PROPUESTO"
+        }
+      ]
+    },
+    {
+      "unit": 9,
+      "nuevas": [
+        "N08"
+      ],
+      "palabras": [
+        {
+          "id": "LAT1-FON-060",
+          "latin": "rancidum",
+          "castellano": "rancio",
+          "normas": [
+            "N13",
+            "N16"
+          ],
+          "estado": "APTO_PROPUESTO"
+        },
+        {
+          "id": "LAT1-FON-061",
+          "latin": "parabolam",
+          "castellano": "palabra",
+          "normas": [
+            "N11",
+            "N16"
+          ],
+          "estado": "APTO_PROPUESTO"
+        },
+        {
+          "id": "LAT1-FON-062",
+          "latin": "arborem",
+          "castellano": "árbol",
+          "normas": [
+            "N03",
+            "N08"
+          ],
+          "estado": "APTO_PROPUESTO"
+        },
+        {
+          "id": "LAT1-FON-063",
+          "latin": "carcerem",
+          "castellano": "cárcel",
+          "normas": [
+            "N03",
+            "N08",
+            "N13"
+          ],
+          "estado": "APTO_PROPUESTO"
+        },
+        {
+          "id": "LAT1-FON-064",
+          "latin": "filium",
+          "castellano": "hijo",
+          "normas": [
+            "N05",
+            "N13"
+          ],
+          "estado": "APTO_PROPUESTO"
+        },
+        {
+          "id": "LAT1-FON-065",
+          "latin": "ferrum",
+          "castellano": "hierro",
+          "normas": [
+            "N05",
+            "N07"
+          ],
+          "estado": "APTO_PROPUESTO"
+        },
+        {
+          "id": "LAT1-FON-066",
+          "latin": "stare",
+          "castellano": "estar",
+          "normas": [
+            "N03",
+            "N14"
+          ],
+          "estado": "APTO_PROPUESTO"
+        }
+      ]
+    },
+    {
+      "unit": 10,
+      "nuevas": [],
+      "palabras": [
+        {
+          "id": "LAT1-FON-067",
+          "latin": "lignam",
+          "castellano": "leña",
+          "normas": [
+            "N01",
+            "N13"
+          ],
+          "estado": "REVISAR",
+          "observacion": "La forma latina correcta es ligna (neutro plural de lignum), no lignam."
+        },
+        {
+          "id": "LAT1-FON-068",
+          "latin": "cannam",
+          "castellano": "caña",
+          "normas": [
+            "N13"
+          ],
+          "estado": "APTO_PROPUESTO"
+        },
+        {
+          "id": "LAT1-FON-069",
+          "latin": "araneam",
+          "castellano": "araña",
+          "normas": [
+            "N13",
+            "N16"
+          ],
+          "estado": "APTO_PROPUESTO"
+        },
+        {
+          "id": "LAT1-FON-070",
+          "latin": "podium",
+          "castellano": "poyo",
+          "normas": [
+            "N13"
+          ],
+          "estado": "APTO_PROPUESTO"
+        },
+        {
+          "id": "LAT1-FON-071",
+          "latin": "calidum",
+          "castellano": "caldo",
+          "normas": [
+            "N16"
+          ],
+          "estado": "APTO_PROPUESTO"
+        },
+        {
+          "id": "LAT1-FON-072",
+          "latin": "viridem",
+          "castellano": "verde",
+          "normas": [
+            "N01",
+            "N16"
+          ],
+          "estado": "APTO_PROPUESTO"
+        },
+        {
+          "id": "LAT1-FON-073",
+          "latin": "nominare",
+          "castellano": "nombrar",
+          "normas": [
+            "N03",
+            "N09",
+            "N16",
+            "N19"
+          ],
+          "estado": "APTO_PROPUESTO"
+        }
+      ]
+    }
+  ]
+}
