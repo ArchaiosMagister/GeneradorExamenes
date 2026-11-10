@@ -90,10 +90,15 @@ function coverage(data,course){
 function uniqueLemmaFromData(data,course,form){
  const found=query(data,{course,mode:'form',text:form,max:Number.MAX_SAFE_INTEGER});
  if(found.invalid||!found.items.length)return null;
- const reliable=found.items.filter(item=>!item.provisional);
+ // Only actual morphological evidence (UniMorph or explicit teacher paradigm)
+ // can authorize automatic entry recovery; a citation form is NOT an analysis.
+ const reliable=found.items.filter(item=>!item.provisional&&!item.citation);
  if(!reliable.length)return null;
- const distinct=new Set(reliable.map(item=>item.lemma));
- return distinct.size===1?[...distinct][0]:null;
+ // A competing provisional form or a citation lemma still makes the written
+ // form ambiguous. Never silently prefer the seemingly stronger analysis.
+ const possible=new Set(found.items.map(item=>item.lemma));
+ if(possible.size!==1)return null;
+ return [...possible][0];
 }
 let loadedData=null;
 function uniqueEntry(form,course){
