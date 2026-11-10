@@ -5,6 +5,7 @@ on:
     paths:
       - 'index.html'
       - 'culture-lat4.js'
+      - 'vocabulary-generator.js'
       - 'offline.html'
       - 'offline-lemmas.js'
       - 'verification-review.js'
@@ -22,6 +23,7 @@ on:
     paths:
       - 'index.html'
       - 'culture-lat4.js'
+      - 'vocabulary-generator.js'
       - 'offline.html'
       - 'data/lemmas/**'
       - 'data/unimorph/**'
@@ -73,6 +75,8 @@ jobs:
         run: |
           npm install --no-save --ignore-scripts playwright@1.56.1
           npx playwright install --with-deps chromium
+      - name: Probar generador de vocabulario por unidades y Word
+        run: npm run vocabulary:test
       - name: Probar las vistas previas de todos los modelos
         run: node scripts/test-preview.cjs
       - name: Verificar concordancia de tablas y umbrales de unidad
