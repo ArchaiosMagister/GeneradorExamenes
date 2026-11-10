@@ -49,10 +49,29 @@ La cabecera del lematizador muestra ahora, **para cada curso**, cuántos lemas t
 
 La búsqueda de una forma sigue devolviendo todos los lemas posibles. Sin embargo, la recuperación del **vocabulario final de un examen** solo usa formas documentadas o la propia cita léxica; jamás formas de un modelo provisional. La fuente de cada lectura se muestra junto a su enunciado completo.
 
+## Incorporación nominal griega desde Wikcionario
+
+La siguiente ampliación importa **sustantivos y adjetivos griegos de forma provisional** desde [Wiktextract/kaikki.org](https://kaikki.org/dictionary/Ancient%20Greek/index.html), conservando la ortografía, los espíritus y los acentos de la fuente. Los datos provienen de los colaboradores de Wikcionario y requieren atribución **CC BY-SA 4.0**, distinta de la licencia CC BY-SA 3.0 de UniMorph.
+
+El importador `scripts/build-greek-nominal-candidates.mjs` realiza la extracción **solo durante la generación de la base**, no desde el navegador. Su filtro exige:
+
+- Correspondencia exacta del lema con el vocabulario de Griego I y categoría sustantivo o adjetivo.
+- Casillas con **caso, número y género (si se trata de adjetivos)** expresamente etiquetados. Se excluyen duales, variantes dialectales y etiquetas desconocidas, romanizaciones y formas sin acentuación.
+- Identidad de **nominativo singular** entre el corpus y el vocabulario; para sustantivos, **genitivo singular** compatible con el enunciado docente.
+- Mínimo de siete casillas nominales o nueve adjetivales diferentes, y ninguna contradicción con casillas de UniMorph existentes. Se excluyen las variantes alternativas que no puedan identificarse de forma unívoca.
+
+Las formas adicionales figuran **como «Wikcionario · forma griega candidata sin verificar»**, con borde discontinuo, idéntico formato de ficha y búsqueda que el latín. No son generadas por analogía ni se consideran verificadas filológicamente: proceden de una fuente lexicográfica estructurada y deben contrastarse antes de corregir ejercicios. No pasan a los solucionarios ni a la identificación automática del glosario del examen.
+
+Los datos intermedios se conservan en `data/lemmas/greek-nominal-candidates.json`. La compilación los fusiona en el índice bilingüe con código de fuente `4`, manteniendo intactas las casillas verificadas. Todo el conjunto se empaqueta en `offline.html`, que **no consulta Internet durante su uso en clase**.
+
+**Limitación:** esta fase no añade conjugaciones griegas; los verbos irregulares, los temas de aoristo y las variantes históricas requieren fuentes léxicas y modelos específicos.
+
 ## Reproducir los datos
 
 ```sh
 node scripts/test-regular-latin.mjs
+node scripts/test-greek-nominal-import.mjs
+node scripts/build-greek-nominal-candidates.mjs
 node scripts/build-lemma-index.mjs
 npm run offline:build
 node scripts/test-lemma-index.mjs

@@ -13,6 +13,7 @@ const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const commit='8f1a7a3985e0bb60231d83daa85e422868c97683';
 const base='https://raw.githubusercontent.com/ArchaiosMagister/VocabulaLatinaGraecaque/'+commit+'/';
 const output=path.join(root,'data/lemmas/teacher-forms.json');
+const greekCandidatePath=path.join(root,'data/lemmas/greek-nominal-candidates.json');
 const norm=s=>String(s||'').toLowerCase().normalize('NFD')
  .replace(/\u0345/g,'ι').replace(/\p{M}/gu,'').replace(/æ/g,'ae').replace(/œ/g,'oe')
  .replace(/ς/g,'σ').trim();
@@ -73,7 +74,7 @@ async function main(){
  for(const lang of ['lat','grc'])if(Object.keys(catalog[lang]).length!==manifest.languages[lang].vocabulary_lemmas)
   throw Error('Inventario de lemas distinto del manifiesto: '+lang+' '+Object.keys(catalog[lang]).length);
  const rows={lat:[],grc:[]};
- const counts={lat:{unimorph:0,docente:0,modelo:0,lema:0},grc:{unimorph:0,docente:0,modelo:0,lema:0}};
+ const counts={lat:{unimorph:0,docente:0,modelo:0,lema:0},grc:{unimorph:0,docente:0,modelo:0,lema:0,wikcionario:0}};
  const seen={lat:new Set(),grc:new Set()};
  function add(lang,lemma,form,features,source){
   if(!['lat','grc'].includes(lang)||typeof form!=='string'||!form.trim()||typeof features!=='string')return;
@@ -82,7 +83,7 @@ async function main(){
   const sig=k+'\u0001'+norm(form)+'\u0001'+features+'\u0001'+source;
   if(seen[lang].has(sig))return;
   seen[lang].add(sig);
-  rows[lang].push([k,form,features,({unimorph:0,docente:1,modelo:2,lema:3})[source]]);
+  rows[lang].push([k,form,features,({unimorph:0,docente:1,modelo:2,lema:3,wikcionario:4})[source]]);
   counts[lang][source]++;
  }
  // Download all prefiltered teacher-vocabulary shards, keeping every attested
@@ -159,6 +160,41 @@ async function main(){
   }
   if(accepted){extensions.candidate_lemmas++;extensions.candidate_rows+=accepted}
  }
+ // The accented nominal forms have been extracted and screened separately:
+ // they remain Wiktionary CANDIDATES (source 4), never exam solutions.
+ let greekCandidateData;
+ try{greekCandidateData=JSON.parse(await fs.readFile(greekCandidatePath,'utf8'))}
+ catch(e){throw Error('Falta el extracto nominal griego (ejecuta build-greek-nominal-candidates.mjs): '+e.message)}
+ if(greekCandidateData.schema!==1||
+   greekCandidateData.status!=='WIKTIONARY_CANDIDATES_NOT_FOR_GRADING'||
+   !Array.isArray(greekCandidateData.entries))
+   throw Error('Las formas griegas no han superado la fase de preselección');
+ const greekCountBefore=counts.grc.wikcionario;
+ const documentedGreekSlots=new Map();
+ for(const [lemma,form,tags,source] of rows.grc){
+  if(![0,1].includes(source)||!/^N;|^ADJ;/.test(tags))continue;
+  const k=lemma+'|'+tags;
+  if(!documentedGreekSlots.has(k))documentedGreekSlots.set(k,new Set());
+  documentedGreekSlots.get(k).add(norm(form));
+ }
+ for(const record of greekCandidateData.entries){
+  if(!catalog.grc[record.lemma]||!['N','ADJ'].includes(record.kind)||!Array.isArray(record.forms))
+   throw Error('Candidata griega ajena al inventario docente');
+  for(const [surface,features] of record.forms){
+   if(!new RegExp('^'+record.kind+';').test(features)||/;DU(?:;|$)/.test(features))continue;
+   const prior=documentedGreekSlots.get(record.lemma+'|'+features);
+   if(prior?.size)continue; // Never override a documented morphological slot.
+   add('grc',record.lemma,surface,features,'wikcionario');
+  }
+ }
+ extensions.greek_nominal_candidates={
+  lemmas:greekCandidateData.entries.length,
+  rows:counts.grc.wikcionario-greekCountBefore,
+  license:greekCandidateData.license,
+  attribution:greekCandidateData.attribution,
+  status:greekCandidateData.status,
+  source:greekCandidateData.source
+ };
  for(const lang of ['lat','grc']){
   for(const lemma of Object.keys(catalog[lang])){
    if(verifiedByLang[lang].has(lemma))continue;

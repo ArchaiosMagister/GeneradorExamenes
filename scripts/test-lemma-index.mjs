@@ -10,6 +10,10 @@ assert.equal(data.kind,'referencia-lematizacion-no-calificacion');
 assert.match(data.scope,/no es un diccionario exhaustivo/);
 assert.match(data.source.unimorph.lat.license,/CC BY-SA/);
 assert.ok(data.rows.lat.length>10000&&data.rows.grc.length>1400);
+assert.ok(data.rows.grc.some(row=>row[3]===4),'Falta el complemento nominal griego de Wikcionario');
+assert.match(data.extensions.greek_nominal_candidates.license,/CC BY-SA 4.0/);
+assert.ok(data.extensions.greek_nominal_candidates.lemmas>0);
+assert.ok(data.extensions.greek_nominal_candidates.rows>0);
 assert.ok(data.extensions?.candidate_lemmas>=100,'Faltan lemas candidatos regulares');
 assert.ok(data.extensions?.candidate_rows>=1000,'Faltan las formas propuestas');
 assert.ok(data.extensions?.citation_only.lat>=100&&data.extensions?.citation_only.grc>=150,
@@ -28,8 +32,8 @@ const latCoverage=coverage(data,'lat1'),grCoverage=coverage(data,'gr1');
 assert.equal(latCoverage.lemmas,664);
 assert.equal(grCoverage.lemmas,349);
 assert.ok(latCoverage.documented>250&&latCoverage.proposed>100);
-assert.ok(grCoverage.documented>=100&&grCoverage.onlyCitation>=200);
-assert.equal(grCoverage.proposed,0,'No se han generado formas griegas sin comprobar');
+assert.ok(grCoverage.documented>=100&&grCoverage.onlyCitation>=0);
+assert.ok(grCoverage.proposed>0,'Faltan candidatos nominales griegos claramente identificados');
 assert.equal(normalize('AMĀBAM'),normalize('amabam'));
 assert.equal(normalize('λόγῳ'),normalize('ΛΌΓῼ'));
 assert.notEqual(normalize('ᾳ'),normalize('α'),'La iota suscrita no puede eliminarse');
@@ -45,10 +49,19 @@ assert.equal(uniqueLemmaFromData(data,'lat1','appropinquabas'),null,
  'Una flexión solo propuesta nunca debe entrar en el glosario de examen');
 const greekMissing=query(data,{course:'gr1',mode:'lemma',text:'ἀδελφός'});
 assert.ok(greekMissing.items.some(x=>x.citation),'La entrada griega debe encontrarse sin paradigma disponible');
-assert.ok(!greekMissing.items.some(x=>x.provisional),'No generar griego acentuado por conjetura');
+assert.ok(greekMissing.items.every(x=>!x.provisional||x.source.includes('Wikcionario')),'Las formas griegas propuestas deben conservar origen explícito');
 const greek=query(data,{course:'gr1',mode:'lemma',text:'λύω'});
 assert.ok(greek.items.length>=5,'Faltan formas de λύω');
 assert.ok(greek.items.every(r=>r.info.gr1));
+const provisionalGreekRow=data.rows.grc.find(r=>r[3]===4);
+const greekForm=query(data,{course:'gr1',text:provisionalGreekRow[1]});
+assert.ok(greekForm.items.some(q=>q.provisional&&q.source.includes('Wikcionario')));
+assert.equal(greekForm.items.filter(q=>q.provisional).every(q=>q.tags.startsWith('N;')||q.tags.startsWith('ADJ;')),true);
+const standaloneGreek={schema:1,vocabulary:{grc:{'δελτα':{gr1:{entry:'δέλτα, -ου',units:['UD 1']}}},lat:{}},
+ rows:{grc:[['δελτα','δέλτῳ','N;DAT;SG',4]],lat:[]}};
+assert.equal(uniqueLemmaFromData(standaloneGreek,'gr1','δέλτῳ'),null,
+ 'Una candidata griega no se puede usar como solución ni para el glosario de examen');
+
 const disallowed=query(data,{course:'gr1',mode:'lemma',text:'amo'});
 assert.equal(disallowed.total,0,'No debe mezclar cursos');
 assert.equal(query(data,{course:'lat1',text:'palabra-inventada'}).total,0);

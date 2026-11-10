@@ -44,8 +44,8 @@ function indexes(data){
    if(!Array.isArray(row)||row.length!==4)continue;
    const [lemma,surface,tags,source]=row;
    if(!data.vocabulary[lang]?.[lemma]||typeof surface!=='string'||typeof tags!=='string')continue;
-   const sourceNames={0:'UniMorph',1:'Paradigma docente',2:'Modelo regular · propuesta sin verificar',3:'Vocabulario docente'};
-   const item={lemma,surface,tags,source:sourceNames[source]||'Fuente desconocida',provisional:source===2,citation:source===3,
+   const sourceNames={0:'UniMorph',1:'Paradigma docente',2:'Modelo regular · propuesta sin verificar',3:'Vocabulario docente',4:'Wikcionario · forma griega candidata sin verificar'};
+   const item={lemma,surface,tags,source:sourceNames[source]||'Fuente desconocida',provisional:source===2||source===4,citation:source===3,
     info:data.vocabulary[lang][lemma]};
    for(const [map,key] of [[index.forms[lang],normalize(surface)],[index.lemmas[lang],normalize(lemma)]]){
     if(!map.has(key))map.set(key,[]);
@@ -82,7 +82,7 @@ function coverage(data,course){
  for(const [lemma,, ,source]of data.rows[lang]){
   if(!all.has(lemma))continue;
   if(source===0||source===1)attested.add(lemma);
-  if(source===2)proposed.add(lemma);
+  if(source===2||source===4)proposed.add(lemma);
  }
  return {lemmas:all.size,documented:attested.size,
   proposed:proposed.size,onlyCitation:[...all].filter(k=>!attested.has(k)&&!proposed.has(k)).length};
@@ -188,7 +188,7 @@ function init(){
   '<p id="offlineLemmaCoverage" class="hint" aria-live="polite">Preparando resumen de cobertura…</p>'+
   '<p id="offlineLemmaStatus" class="hint" role="status" aria-live="polite">Disponible desde los datos incluidos en la versión autónoma.</p>'+
   '<div id="offlineLemmaResults" class="lemma-results"></div>'+
-  '<p class="hint">Fuentes: UniMorph (CC BY-SA 3.0), paradigmas y vocabulario docentes. Las formas calculadas se distinguen como propuestas sin verificar y nunca se usan para corregir exámenes.</p>';
+  '<p class="hint">Fuentes: UniMorph (CC BY-SA 3.0), paradigmas docentes y Wikcionario/Wiktextract (CC BY-SA 4.0). Las propuestas de formas regulares y las candidatas de Wikcionario se marcan y no se usan para corregir exámenes.</p>';
  parent.after(section);
  const style=document.createElement('style');
  style.textContent='#offlineLemmaPanel{margin-top:12px}#offlineLemmaPanel .lemma-results{max-height:360px;overflow:auto}'+
@@ -203,7 +203,7 @@ function init(){
   try{
    const x=coverage(await load(),document.getElementById('offlineLemmaCourse').value);
    target.textContent=x.lemmas+' lemas · '+x.documented+' con formas documentadas · '+
-    x.proposed+' con modelos provisionales · '+x.onlyCitation+' solo con entrada de vocabulario.';
+    x.proposed+' con formas candidatas no verificadas · '+x.onlyCitation+' solo con entrada de vocabulario.';
   }catch(error){target.textContent='El resumen de cobertura no está disponible: '+error.message}
  }
  document.getElementById('offlineLemmaCourse').addEventListener('change',showCoverage);

@@ -19,7 +19,7 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
   });
   await page.selectOption('#offlineLemmaCourse','lat1');
   await page.locator('#offlineLemmaCoverage').filter({hasText:'664 lemas'}).waitFor();
-  assert.match(await page.locator('#offlineLemmaCoverage').textContent(),/modelos provisionales/);
+  assert.match(await page.locator('#offlineLemmaCoverage').textContent(),/formas candidatas no verificadas/);
   await page.selectOption('#offlineLemmaMode','lemma');
   await page.locator('#offlineLemmaInput').fill('amo');
   await page.locator('#offlineLemmaSearch').click();
@@ -60,6 +60,20 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
   await page.locator('#offlineLemmaResults .lemma-entry').first().waitFor();
   assert.match(await page.locator('#offlineLemmaStatus').textContent(),/formas de cita del vocabulario/);
   assert.match(await page.locator('#offlineLemmaResults').textContent(),/sin análisis flexivo documentado/);
+
+  // Consulta de una flexión griega nominal conservada con acento de Wikcionario,
+  // pero sin pasar al solucionario ni al glosario automático.
+  const greekCandidate=await page.evaluate(async()=>{
+   const d=await window.ExaminaOfflineLemmatizer.load();
+   return d.rows.grc.find(x=>x[3]===4)?.[1]||null;
+  });
+  assert.ok(greekCandidate,'No hay ninguna candidata griega nominal en el archivo autónomo');
+  await page.selectOption('#offlineLemmaCourse','gr1');
+  await page.selectOption('#offlineLemmaMode','form');
+  await page.locator('#offlineLemmaInput').fill(greekCandidate);
+  await page.locator('#offlineLemmaSearch').click();
+  await page.locator('#offlineLemmaResults .lemma-provisional').first().waitFor();
+  assert.match(await page.locator('#offlineLemmaResults').textContent(),/Wikcionario · forma griega candidata sin verificar/);
 
   await page.selectOption('#offlineLemmaMode','form');
   await page.locator('#offlineLemmaInput').fill('palabra-inexistente');

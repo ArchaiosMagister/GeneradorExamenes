@@ -20,6 +20,7 @@ on:
     paths:
       - 'index.html'
       - 'offline.html'
+      - 'data/lemmas/**'
       - 'data/unimorph/**'
       - 'scripts/**'
       - 'pwa.js'
@@ -43,6 +44,10 @@ jobs:
           node-version: '22'
       - name: Probar modelos regulares sin incorporación a los exámenes
         run: node scripts/test-regular-latin.mjs
+      - name: Probar nominales griegos con corpus sintético etiquetado
+        run: node scripts/test-greek-nominal-import.mjs
+      - name: Extraer nominales griegos reales para consulta offline
+        run: node scripts/build-greek-nominal-candidates.mjs
       - name: Construir índice bilingüe del vocabulario docente
         run: node scripts/build-lemma-index.mjs
       - name: Regenerar archivo autónomo
@@ -68,7 +73,7 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add data/lemmas/teacher-forms.json offline.html
+          git add data/lemmas/teacher-forms.json data/lemmas/greek-nominal-candidates.json offline.html
           if ! git diff --cached --quiet; then
             git commit -m 'Actualizar lematizador autónomo bilingüe'
             git pull --rebase origin main
