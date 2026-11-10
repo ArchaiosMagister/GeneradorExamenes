@@ -19,6 +19,16 @@ assert.ok(data.extensions?.candidate_rows>=1000,'Faltan las formas propuestas');
 assert.ok(data.extensions?.citation_only.lat>=100&&data.extensions?.citation_only.grc>=150,
  'Deben poder consultarse los lemas sin flexiones');
 assert.ok(data.rows.lat.some(x=>x[3]===2)&&data.rows.grc.some(x=>x[3]===3));
+assert.equal(data.vocabulary.lat.moveo.lat1.entry,'moveo, movi, motum (2ª)');
+assert.equal(data.vocabulary.lat.eripio.lat1.entry,'eripio, eripui, ereptum (mx.)');
+assert.equal(data.rows.lat.filter(x=>x[3]===5).length,36);
+assert.equal(data.rows.grc.filter(x=>x[3]===5).length,24);
+assert.equal(data.rows.lat.filter(x=>x[0]==='sum'&&x[3]===5).length,30);
+assert.equal(data.rows.grc.filter(x=>x[0]==='γιγνομαι'&&x[3]===5).length,6);
+assert.equal(data.rows.grc.filter(x=>x[0]==='ερχομαι'&&x[3]===5).length,6);
+assert.equal(data.rows.grc.filter(x=>x[0]==='διδασκω'&&x[3]===5).length,6);
+assert.equal(data.rows.grc.filter(x=>x[0]==='ακουω'&&x[3]===5).length,6);
+assert.equal(data.source.externalVerification.length,6);
 assert.ok(data.extensions.rejected_for_conflict.every(x=>x.lemma&&x.features.length>0));
 assert.equal(Object.keys(data.vocabulary.lat).length,772,'Deben coincidir los lemas latinos del vocabulario docente');
 assert.equal(Object.keys(data.vocabulary.grc).length,349,'Deben coincidir los lemas griegos del vocabulario docente');
