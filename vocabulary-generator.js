@@ -668,6 +668,68 @@ function init(){
  const needsAnalysis=u=>!!u.text?.trim()&&!(u.analyzed||u.rows?.length);
  const status=s=>{$('vgStatus').textContent=s};
  const save=()=>{try{localStorage.setItem(storage,JSON.stringify(project))}catch{status('No se pudo guardar en este navegador. Exporta una copia JSON.')}};
+
+ let qualitySnapshot=null;
+ function showQualityQueue(){
+  const summary=$('vgQualityQueueSummary'),target=$('vgQualityQueue');
+  target.replaceChildren();
+  if(!qualitySnapshot){summary.textContent='Auditoría sin cargar.';return}
+  const selected=$('vgReviewUnit').value;
+  const all=qualitySnapshot.reviewQueue.filter(x=>!selected||x.unit===selected);
+  summary.textContent=all.length+' fichas requieren contraste o ampliación de formas; se muestran las primeras 30. No se aceptan automáticamente.';
+  for(const item of all.slice(0,30)){
+   const line=document.createElement('p');
+   line.style.cssText='margin:5px 0;padding:5px 8px;border-bottom:1px solid #d4dce7';
+   line.textContent=item.unit+' · '+item.entry+' · '+item.reason+
+    (item.missingSpanish?' · sin castellano':'')+(item.missingValencian?' · sin valenciano':'');
+   target.append(line);
+  }
+ }
+ async function refreshQuality(){
+  const sourceCourse=project.course;
+  const area=$('vgQualityTotals');area.textContent='Auditando el índice morfológico local…';
+  try{
+   const data=await linguistic().load();
+   if(sourceCourse!==project.course)return;
+   const audit=window.ExaminaVocabularyQuality?.audit;
+   if(typeof audit!=='function')throw Error('No se ha cargado el módulo de auditoría.');
+   qualitySnapshot=audit(data,vocab,sourceCourse,window.ExaminaValencianGloss);
+   const t=qualitySnapshot.totals,locale=project.lang==='va';
+   area.textContent=(locale?'Fitxes: ':'Fichas: ')+t.rows+
+    ' · '+(locale?'amb alguna forma contrastada: ':'con alguna forma contrastada: ')+t.documented+
+    ' · '+(locale?'només candidates: ':'solo candidatas: ')+t.proposalsOnly+
+    ' · '+(locale?'sense equivalència segura: ':'sin equivalencia segura: ')+t.noIndex+
+    ' · '+(locale?'dobles en la mateixa unitat: ':'repetidas en la misma unidad: ')+t.duplicateRows+
+    ' · '+(locale?'conflictes de significat: ':'conflictos de significado: ')+t.meaningConflicts+'.';
+   const target=$('vgQualityRows');target.replaceChildren();
+   for(const u of qualitySnapshot.units){
+    const tr=document.createElement('tr');
+    for(const value of [u.unit,u.rows,u.documented+' ('+u.coverage+' %)',u.proposalsOnly,
+      u.citationsOnly+u.noIndex,u.spanishMissing+' / '+u.valencianMissing]){
+     const cell=document.createElement('td');cell.textContent=String(value);tr.append(cell);
+    }
+    target.append(tr);
+   }
+   const control=$('vgReviewUnit'),was=control.value;
+   control.replaceChildren(new Option(locale?'Totes les unitats':'Todas las unidades',''),
+    ...qualitySnapshot.units.map(u=>new Option(u.unit,u.unit)));
+   control.value=qualitySnapshot.units.some(u=>u.unit===was)?was:'';
+   showQualityQueue();
+  }catch(e){qualitySnapshot=null;area.textContent='No se ha podido auditar el banco: '+e.message}
+ }
+ $('vgQualityRefresh').onclick=refreshQuality;
+ $('vgReviewUnit').onchange=showQualityQueue;
+ $('vgQualityExport').onclick=()=>{
+  if(!qualitySnapshot){status('Actualiza primero la auditoría.');return}
+  downloadBlob('auditoria-vocabulario-'+project.course+'.json',
+   new Blob([JSON.stringify(qualitySnapshot,null,2)],{type:'application/json'}));
+ };
+ $('vgReviewExport').onclick=()=>{
+  if(!qualitySnapshot){status('Actualiza primero la auditoría.');return}
+  downloadBlob('revision-vocabulario-'+project.course+'.json',
+   new Blob([JSON.stringify({schema:1,course:project.course,verifiedAutomatically:false,
+    items:qualitySnapshot.reviewQueue},null,2)],{type:'application/json'}));
+ };
  function render(){
   unit();$('vgCount').value=project.count;$('vgCourse').value=project.course;$('vgLang').value=project.lang||'es';
   $('vgUnit').replaceChildren(...project.units.slice(0,project.count).map((u,i)=>new Option(u.title,i,false,i===selected)));
@@ -692,7 +754,7 @@ function init(){
  $('vgCount').onchange=()=>{const n=Number($('vgCount').value);if(!Number.isInteger(n)||n<1||n>100){status('Elige entre 1 y 100 unidades.');return}project.count=n;selected=Math.min(selected,n-1);render();save()};
  $('vgUnit').onchange=()=>{selected=Number($('vgUnit').value);render()};
  $('vgLang').onchange=()=>{project.lang=$('vgLang').value;render();save()};
- $('vgCourse').onchange=()=>{project.course=$('vgCourse').value;project.units.forEach(u=>{u.rows=[];u.analyzed=false});save();render();status('Banco cambiado. Vuelve a analizar los textos.')};
+ $('vgCourse').onchange=()=>{project.course=$('vgCourse').value;qualitySnapshot=null;project.units.forEach(u=>{u.rows=[];u.analyzed=false});save();render();status('Banco cambiado. Vuelve a analizar los textos.');refreshQuality()};
  for(const [id,field] of [['vgTitle','title'],['vgText','text'],['vgMode','mode']])$(id).oninput=()=>{unit()[field]=$(id).value;if(field==='text'){unit().rows=[];unit().analyzed=false;status('Texto modificado. Analiza la unidad antes de exportar.')}save();if(field==='mode')render()};
  async function analyzeUnits(mode){
   const button=$('vgAnalyze'),buttonAll=$('vgAnalyzeAll'),word=$('vgWord');
@@ -733,7 +795,7 @@ function init(){
   }catch(e){status('No se ha exportado el Word: '+e.message)}
  };
  $('vgImport').onchange=async e=>{try{const p=JSON.parse(await e.target.files[0].text());if(!Number.isInteger(p.count)||p.count<1||p.count>100||!['lat1','lat4','gr1'].includes(p.course)||!Array.isArray(p.units)||p.units.length<p.count||!p.units.every(u=>typeof u.title==='string'&&typeof u.text==='string'&&['simple','complete'].includes(u.mode)&&Array.isArray(u.rows)&&u.rows.every(r=>typeof r.entry==='string'&&typeof r.meaning==='string'&&typeof r.form==='string'&&Array.isArray(r.candidates))))throw Error('Formato incorrecto');project=p;project.lang=['es','va'].includes(p.lang)?p.lang:'es';selected=0;render();save();const pending=project.units.slice(0,project.count).filter(needsAnalysis).length;status('Proyecto importado: '+project.count+' unidades y textos conservados. '+pending+' por analizar. Puedes pulsar «Analizar todas las unidades» o «Exportar Word» (analizará las pendientes).')}catch(e){status('No se pudo importar: '+e.message)}};
- $('vgShow').onclick=()=>{$('examLayout').style.display='none';$('vocabManager').classList.remove('active');$('vocabularyGenerator').classList.add('active');for(const id of ['vmShowExam','vmShowList'])$(id).classList.remove('active');$('vgShow').classList.add('active');render()};
+ $('vgShow').onclick=()=>{$('examLayout').style.display='none';$('vocabManager').classList.remove('active');$('vocabularyGenerator').classList.add('active');for(const id of ['vmShowExam','vmShowList'])$(id).classList.remove('active');$('vgShow').classList.add('active');render();refreshQuality()};
  for(const id of ['vmShowExam','vmShowList'])$(id).addEventListener('click',()=>{$('vocabularyGenerator').classList.remove('active');$('vgShow').classList.remove('active')});
  render();
 }
