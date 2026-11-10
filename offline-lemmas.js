@@ -72,6 +72,21 @@ function query(data,{course='lat1',mode='form',text='',max=100}={}){
   a.surface.localeCompare(b.surface,'es')||a.tags.localeCompare(b.tags));
  return {total:items.length,items:items.slice(0,max),invalid:false};
 }
+function uniqueLemmaFromData(data,course,form){
+ const found=query(data,{course,mode:'form',text:form,max:Number.MAX_SAFE_INTEGER});
+ if(found.invalid||!found.items.length)return null;
+ const distinct=new Set(found.items.map(item=>item.lemma));
+ return distinct.size===1?[...distinct][0]:null;
+}
+let loadedData=null;
+function uniqueEntry(form,course){
+ try{
+  const data=loadedData||(typeof examinaEmbeddedAsset==='function'?examinaEmbeddedAsset(ASSET):null);
+  if(!data)return null;
+  const lemma=uniqueLemmaFromData(data,course,form);
+  return lemma?data.vocabulary[langOf(course)]?.[lemma]?.[course]?.entry||null:null;
+ }catch{return null}
+}
 let loading;
 function load(){
  if(loading)return loading;
@@ -82,7 +97,7 @@ function load(){
   const response=await fetch(ASSET,{cache:'force-cache'});
   if(!response.ok)throw Error('No se ha publicado todavía el índice offline (HTTP '+response.status+').');
   return response.json();
- })().catch(error=>{loading=null;throw error});
+ })().then(data=>{loadedData=data;return data}).catch(error=>{loading=null;throw error});
  return loading;
 }
 function itemElement(item){
@@ -162,7 +177,7 @@ function init(){
  document.getElementById('offlineLemmaSearch').addEventListener('click',submit);
  document.getElementById('offlineLemmaInput').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();submit()}});
 }
-window.ExaminaOfflineLemmatizer={normalize,describe,query,load,init};
+window.ExaminaOfflineLemmatizer={normalize,describe,query,uniqueLemmaFromData,uniqueEntry,load,init};
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);
 else init();
 })();
