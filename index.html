@@ -3143,10 +3143,12 @@ window.ExaminaMorphology={lookup,stats,importText};
  const panel=document.querySelector('#examLayout > aside.panel');
  if(!panel)return;
  const group=document.getElementById('examQuestionSettings')||[...panel.querySelectorAll('.menu-section')].find(x=>x.querySelector('#amount'));
- if(!group||document.getElementById('morphOptions'))return;
+ if(!group)return;
+ const legacy=document.getElementById('morphOptions');
+ if(legacy?.classList.contains('legacy-question-fields'))legacy.remove();else if(legacy)return;
  const block=document.createElement('div');block.className='field';block.id='morphOptions';
  block.innerHTML='<h3>Examen de morfología · 1 p. por pregunta</h3><p class="hint">Pregunta 1: sintagmas (artículo + sustantivo + adjetivo en griego). Configura las opciones; la generación automática de sintagmas queda pendiente.</p><div class="count-grid"><label>Sintagmas ofrecidos<select id="morphOffer">'+Array.from({length:11},(_,i)=>'<option value="'+(i+2)+'"'+(i===1?' selected':'')+'>'+(i+2)+'</option>').join('')+'</select></label><label>Sintagmas que se declinan<select id="morphDecline">'+Array.from({length:12},(_,i)=>'<option value="'+(i+1)+'"'+(i===1?' selected':'')+'>'+(i+1)+'</option>').join('')+'</select></label><label>Formas verbales (pregunta 2)<input id="morphVerbs" type="number" min="1" max="30" value="10"></label><label>Palabras (pregunta 3)<input id="morphWords" type="number" min="1" max="30" value="10"></label></div><label for="morphSyntagms">Sintagmas editables (uno por línea)</label><textarea id="morphSyntagms" rows="3" placeholder="magnus, –a, –um + oppidum, –i"></textarea><p class="hint">Si no introduces sintagmas, aparecerán espacios editables. No se inventan formas ni concordancias.</p><p class="hint">Categorías de la pregunta 3</p><label class="check"><input type="checkbox" id="morphCategory-n" checked>Sustantivos</label><label class="check"><input type="checkbox" id="morphCategory-adj" checked>Adjetivos</label><label class="check"><input type="checkbox" id="morphCategory-pro" checked>Pronombres</label>';
- group.insertBefore(block,group.querySelector('#amount'));
+ group.insertBefore(block,group.querySelector('#amount')?.closest('.field')||group.firstChild);
  const update=()=>{
   const latinMorph=currentCourse()!=='greek1'&&$('model').value==='morf';
   const greekMorph=currentCourse()==='greek1'&&$('model').value==='morphology';
