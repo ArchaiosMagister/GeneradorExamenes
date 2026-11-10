@@ -40,6 +40,9 @@ self.addEventListener('fetch',event=>{
  if(request.method!=='GET')return;
  const url=new URL(request.url),scope=new URL(self.registration.scope);
  if(url.origin!==scope.origin||!url.pathname.startsWith(scope.pathname))return;
+ // Las vistas previas tienen su propio service worker y caché: nunca servirles index.html de main.
+ const relativePath=url.pathname.slice(scope.pathname.length);
+ if(/^pr-\d+(?:\/|$)/.test(relativePath))return;
  if(request.mode==='navigate'){
   event.respondWith((async()=>{
    const cache=await caches.open(CACHE_NAME);
