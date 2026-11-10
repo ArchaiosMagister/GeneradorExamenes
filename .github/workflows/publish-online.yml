@@ -23,6 +23,14 @@ jobs:
     steps:
       - name: Obtener la versión actual
         uses: actions/checkout@v4
+      - name: Preparar Node.js para el índice bilingüe
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Construir el lematizador y la versión autónoma
+        run: |
+          node scripts/build-lemma-index.mjs
+          npm run offline:build
       - name: Preparar web publicada
         shell: bash
         run: |
@@ -30,6 +38,7 @@ jobs:
           mkdir -p _site
           cp index.html _site/index.html
           cp offline.html _site/offline.html
+          cp offline-lemmas.js _site/offline-lemmas.js
           cp -R data _site/data
           touch _site/.nojekyll
           test -s _site/index.html

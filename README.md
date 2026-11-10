@@ -28,6 +28,12 @@ El **nombre del modelo** (completo, morfología o traducción) no sustituye el t
 
 **Bancos pendientes:** no existe todavía un corpus cerrado de preguntas de cultura de Latín 4.º ESO. En su lugar se presenta una advertencia, sin inventar preguntas. Las cifras de oraciones son objetivos: si el banco verificado contiene menos, el examen muestra las disponibles y señala la carencia. Los pronombres de Latín I usan una selección de formas explícitas, limitada al temario de cada unidad. Los bancos Morpheus y AGLDT todavía no están integrados.
 
+## Lematización offline latina y griega
+
+La edición autónoma incorpora un **lematizador de consulta** para los lemas del vocabulario docente, alimentado por UniMorph y modelos explícitos de las dos lenguas. En «Laboratorio y consulta morfológica» permite buscar una forma o ver las flexiones registradas de un lema, incluso sin Internet. Conserva **todos los análisis posibles** en las coincidencias ambiguas y muestra las etiquetas originales.
+
+El índice se genera desde una instantánea fijada de `VocabulaLatinaGraecaque` y se incluye dentro de `offline.html`; no afecta automáticamente a la selección de respuestas de los exámenes. Consulta [las fuentes, licencias y limitaciones](docs/lematizacion-offline.md).
+
 ## Versión autónoma para usar sin Internet
 
 **Archivo recomendado:** [`offline.html`](./offline.html). En GitHub, abre ese enlace y pulsa **Download raw file**. Guarda el archivo en el ordenador y ábrelo con doble clic en un navegador. No necesitas instalar programas, iniciar un servidor ni conectarte a Internet.

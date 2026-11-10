@@ -5,6 +5,8 @@ on:
     paths:
       - 'index.html'
       - 'offline.html'
+      - 'offline-lemmas.js'
+      - 'data/lemmas/**'
       - 'data/unimorph/**'
       - 'scripts/**'
       - 'package.json'
@@ -20,7 +22,7 @@ on:
       - '.github/workflows/offline-check.yml'
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   offline:
@@ -31,6 +33,12 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Construir índice bilingüe del vocabulario docente
+        run: node scripts/build-lemma-index.mjs
+      - name: Regenerar archivo autónomo
+        run: npm run offline:build
+      - name: Probar lematización latina y griega sin red
+        run: node scripts/test-lemma-index.mjs
       - name: Verificar HTML autónomo
         run: npm run offline:test
       - name: Comprobar estructura de exámenes
@@ -41,3 +49,16 @@ jobs:
           npx playwright install --with-deps chromium
       - name: Probar las vistas previas de todos los modelos
         run: node scripts/test-preview.cjs
+      - name: Probar en Chromium el lematizador sin conexión
+        run: node scripts/test-lemma-browser.cjs
+      - name: Guardar la base offline y el HTML descargable en main
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/lemmas/teacher-forms.json offline.html
+          if ! git diff --cached --quiet; then
+            git commit -m 'Actualizar lematizador autónomo bilingüe'
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
