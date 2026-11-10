@@ -58,6 +58,12 @@ assert.equal(contrast.find(r=>r.form==='ὅ')?.status,'documented');
 const misspelled=api.analyze(data,'ἄνρωπος','gr1',priorityBank);
 assert.equal(misspelled[0].status,'review','La errata debe quedar señalada, no aceptada');
 assert.match(misspelled[0].warning,/ἄνθρωπος/);
+for(const typo of ['στρατεγός','Περίκλους','σωτερίας','Aἰσχύλος']){
+ const row=api.analyze(data,typo,'gr1',priorityBank)[0];
+ assert.equal(row.status,'review','No aceptar automáticamente la errata: '+typo);
+ assert.match(row.warning,/Posible errata/,'Falta sugerencia para '+typo);
+}
+
 const newVerbs=api.analyze(data,'ἐπαίδευσαν ἔπλευσαν ἐπεπυρεύκεσαν ἅπερ','gr1',priorityBank);
 for(const form of ['ἐπαίδευσαν','ἔπλευσαν','ἐπεπυρεύκεσαν','ἅπερ'])
  assert.equal(newVerbs.find(r=>r.form===form)?.status,'documented','Forma griega contrastada '+form);
@@ -79,6 +85,7 @@ const review=benchmark.filter(r=>r.status==='review');
 const unknown=benchmark.filter(r=>r.status==='unknown');
 assert.ok(success.some(r=>r.meaning==='ateniense'), 'Debe identificar ateniense usando el banco propio');
 assert.ok(success.length>100,'El corpus prioritario sigue sin cobertura nominal básica');
+assert.equal(unknown.length,0,'Todas las formas del corpus deben estar lematizadas o señaladas para revisión, sin desconocidas opacas');
 console.log('Corpus docente Griego I / pendientes anteriores:',JSON.stringify({
  total:originals.length,formasDistintasNormalizadas:benchmark.length,
  reconocidas:success.length,revision:review.length,desconocidas:unknown.length
