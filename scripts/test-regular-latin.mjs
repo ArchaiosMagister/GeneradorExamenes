@@ -30,7 +30,6 @@ assert.deepEqual(row('bellum','bellum, –i','N;ACC;PL'),['bella']);
 assert.deepEqual(row('servus','servus, –i','N;VOC;SG'),['serve']);
 assert.equal(proposeRegularLatin('Tarentus','Tarentus, –i').length,6,'No inventar plurales de nombres propios');
 assert.equal(proposeRegularLatin('Marius','Marius, –i').length,0,'Vocativo en -ius requiere control');
-assert.equal(proposeRegularLatin('rex','rex, regis (m.)').length,0,'No adivinar tercera declinación');
 assert.equal(proposeRegularLatin('bonus','bonus, –a, –um').length,0,'No tratar adjetivos como sustantivos');
 assert.equal(proposeRegularLatin('frequenter','frequenter (adv.)').length,0,'No flexionar invariables');
 assert.deepEqual(row('rex','rex, regis (m.)','N;GEN;SG'),['regis']);
