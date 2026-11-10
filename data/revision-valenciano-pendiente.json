@@ -3,32 +3,9 @@
   "repository": "ArchaiosMagister/GeneradorExamenes",
   "branch": "feat/integracion-pr29-pr30-valenciano-20261110",
   "origin": "revisión filológica del vocabulario bilingüe en PR31",
-  "status": "12 decisiones aplicadas; 1 pendiente (LAT1-REDUCO)",
-  "notes": "Las decisiones se aplican en la PR 31. Las glosas castellanas originales solo se cambian cuando el docente lo ha elegido expresamente. Preferir vocabulario y formas de uso valenciano según criterio docente (p. ej., este, eixe, tindre, vindre, meua, seua), evitando alternancias con formas de otras variedades; no reformular por cuenta propia el contenido latino ni griego. No modificar LAT1-REDUCO sin respuesta.",
-  "items": [
-    {
-      "id": "LAT1-REDUCO",
-      "course": "latin1",
-      "lemma": "reduco, reduxi, reductum (3ª)",
-      "spanish": "traer",
-      "current_va": "portar",
-      "reason": "Reduco implica conducción de vuelta o regreso; el enunciado español actual omite re-.",
-      "options": [
-        [
-          "a",
-          "traer → portar"
-        ],
-        [
-          "b",
-          "hacer volver → fer tornar"
-        ],
-        [
-          "c",
-          "conducir de vuelta → conduir de tornada"
-        ]
-      ]
-    }
-  ],
+  "status": "13 decisiones filológicas docentes aplicadas; ninguna pendiente de esta revisión",
+  "notes": "Se conserva el historial de las trece decisiones en «resolved», con la opción elegida. El valenciano debe seguir las formas de uso valenciano docente (este, eixe, tindre, vindre, meua, seua); no sustituirlas por soluciones catalanas, ni modificar los enunciados latinos/griegos.",
+  "items": [],
   "resolved": [
     {
       "id": "LAT1-IMPORTO",
@@ -377,6 +354,41 @@
       },
       "resolution": "aplicada",
       "approvedBy": "docente"
+    },
+    {
+      "id": "LAT1-REDUCO",
+      "course": "latin1",
+      "lemma": "reduco, reduxi, reductum (3ª)",
+      "spanish": "traer",
+      "current_va": "portar",
+      "reason": "Reduco implica conducción de vuelta o regreso; el enunciado español actual omite re-.",
+      "options": [
+        [
+          "a",
+          "traer → portar"
+        ],
+        [
+          "b",
+          "hacer volver → fer tornar"
+        ],
+        [
+          "c",
+          "conducir de vuelta → conduir de tornada"
+        ]
+      ],
+      "decision": {
+        "option": "c",
+        "value": "conducir de vuelta → conduir de tornada",
+        "scope": "El docente ha indicado cambiar tanto la glosa castellana como la valenciana de reduco"
+      },
+      "resolution": "aplicada",
+      "approvedBy": "docente"
     }
-  ]
+  ],
+  "localePolicy": {
+    "language": "valencià",
+    "priority": "formes i lèxic valencians escollits pel docent",
+    "avoid": "substitució per variants del català no triades pel docent"
+  },
+  "resolvedDate": "2026-11-10"
 }
