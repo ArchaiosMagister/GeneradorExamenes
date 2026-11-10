@@ -325,7 +325,20 @@ function buildFinalLexicon(chosen,chosenEntries,selectedSentences,selectedMorph,
  if(!options.sentencesOnly){for(const x of selectedMorph)add(x);for(const x of selectedLex)add(x)}
  const manual=$('examExtra').value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
  for(const raw of manual){let key=examKey(raw),hit=all.find(x=>examKey(x.entry)===key);if(hit)add(hit);else unresolved.add(raw)}
- for(const sent of selectedSentences){for(const token of sent.text.match(/[\p{L}\p{M}]+/gu)||[]){let hit=findLemmaForForm(token,all);if(hit)add(hit);else unresolved.add(token)}}
+ for(const sent of selectedSentences){for(const token of sent.text.match(/[\p{L}\p{M}]+/gu)||[]){
+  let hit=findLemmaForForm(token,all);
+  // Consulta únicamente la versión offline cuando existe un único lema
+  // documentado y una única ficha compatible del banco del examen.
+  if(!hit){
+   const entry=window.ExaminaOfflineLemmatizer?.uniqueEntry(token,currentCourse());
+   if(entry){
+    const wanted=normLex(headLex(entry));
+    const candidates=all.filter(x=>normLex(headLex(x.entry))===wanted);
+    if(candidates.length===1)hit=candidates[0];
+   }
+  }
+  if(hit)add(hit);else unresolved.add(token);
+ }};
  let rows=[...found.values()].filter(x=>options.mandatory||glossAccept(x.entry,chosen)).sort((a,b)=>headLex(a.entry).localeCompare(headLex(b.entry),'es'));
  if(!rows.length&&!unresolved.size)return '<h3>'+($('lang').value==='va'?'Vocabulari final':'Vocabulario final')+'</h3><p class="small">No se han identificado lemas para esta selección.</p>';
  let out='<h3>'+($('lang').value==='va'?'Vocabulari final':'Vocabulario final')+'</h3><div class="final-gloss">'+rows.map(x=>{const pos=lexPos(x.entry),entry=x.entry.replace(/\s*\((?:adv\.?|conj\.?|conjunción|adverbio)\)\s*/gi,' ').trim();const gloss=isRequired(x.entry,chosen)?'':': '+esc(quoteGloss(x.meaning||'[TRADUCCIÓN PENDIENTE]'));return '<div class="gloss-item"><i>'+esc(entry)+'</i>'+(pos?' <span class="lex-pos">('+esc(pos)+')</span>':'')+gloss+'</div>'}).join('')+'</div>';
