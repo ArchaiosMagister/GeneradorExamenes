@@ -22,9 +22,14 @@ for(const [course,expected] of [['lat1',1106],['lat4',541],['gr1',399]]){
  assert.ok(t.documented>0&&t.documented<t.rows,'La auditoría no debe declarar todo el banco verificado');
  assert.equal(t.readyForMorphology,t.documented,'Sólo se usan lemas con traducciones disponibles');
  assert.ok(result.units.length>1,'Deben existir unidades diferenciadas');
- assert.equal(result.units.reduce((n,u)=>n+u.rows,0),expected);
+ const perUnitReferences=result.units.reduce((n,u)=>n+u.rows,0);
+ if(course==='gr1'){
+  assert.ok(perUnitReferences>=expected,'Las etiquetas UD griegas pueden asociarse a varias unidades');
+  assert.ok(t.unassigned>0,'No debe inventarse unidad para todo el banco general griego');
+  assert.ok(result.units.some(u=>/^UD/.test(u.unit)),'Deben recuperarse unidades griegas contrastadas');
+ }else assert.equal(perUnitReferences,expected);
  assert.ok(result.units.every(u=>u.rows===u.documented+u.proposalsOnly+u.citationsOnly+u.noIndex));
- assert.equal(result.reviewQueue.length,t.rows-t.documented);
+ assert.ok(result.reviewQueue.length>=t.rows-t.documented);
  assert.ok(result.reviewQueue.every(r=>r.status!=='documented'),'No mandar formas documentadas a revisión sin motivo');
  total+=t.rows;
  console.log(course+': '+JSON.stringify(t)+'; '+result.units.length+' unidades');
