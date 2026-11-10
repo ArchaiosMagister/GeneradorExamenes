@@ -406,11 +406,11 @@
     },
     {
       "prompt": "Antifaz",
-      "prefix": "ANTI- (oposición)",
-      "meaningHint": "oposición, contra",
-      "answer": "ANTI- (oposición): oposición, contra",
+      "prefix": "ANTE-/ANTI- (anterioridad)",
+      "meaningHint": "posición delante del rostro (valor espacial de ante-/anti-)",
+      "answer": "ANTE-/ANTI- (anterioridad): delante de, ante la cara",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "meaningStatus": "revisado: anti- de antifaz no expresa oposición; valor de ante- delante",
       "prompt_va": "antifaç",
       "valencianPrefixEligible": true
     },
