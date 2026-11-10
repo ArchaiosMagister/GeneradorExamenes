@@ -8,7 +8,7 @@ function part(start,end){
  assert(a>=0&&b>a,'Fragmento no encontrado: '+start);
  return html.slice(a,b);
 }
-const morphologyHelpers=part('/* Editable syntagm slots;','function generateLatinMorphologyReference(){')+;
+const morphologyHelpers=part('/* Editable syntagm slots;','function generateLatinMorphologyReference(){');
 const latinCode=part('const latinPronounRows=','let culture=[];')+morphologyHelpers+
  part('function generateLatinMorphologyReference(){','/* El título refleja las unidades');
 const greekCode=morphologyHelpers+part('const greekModes=','// Vista del temario:')+
