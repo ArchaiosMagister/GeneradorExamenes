@@ -43,6 +43,8 @@ function displayEntry(entry,mode){
  return m?head(entry)+' '+m[0]:entry;
 }
 function documentXml(project){
+ const unanalysed=project.units.slice(0,project.count).filter(u=>u.text?.trim()&&!u.analyzed&&!u.rows?.length);
+ if(unanalysed.length)throw Error('Quedan '+unanalysed.length+' unidades con texto sin analizar.');
  const escape=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&apos;'}[c]));
  const p=(s,b=false)=>'<w:p><w:pPr>'+(b?'<w:keepNext/><w:keepLines/><w:spacing w:before="160" w:after="80"/>':'<w:keepLines/><w:spacing w:after="30"/>')+'</w:pPr><w:r><w:rPr>'+(b?'<w:b/>':'')+'<w:rFonts w:ascii="Palatino Linotype" w:hAnsi="Palatino Linotype" w:cs="Palatino Linotype"/><w:sz w:val="21"/></w:rPr><w:t xml:space="preserve">'+escape(s)+'</w:t></w:r></w:p>';
  const line=(r,u)=>p((['manual','documented'].includes(r.status)?'':'* ')+displayEntry(r.entry,u.mode)+(r.meaning?' — '+r.meaning:''));
@@ -68,7 +70,8 @@ function init(){
  const $=id=>document.getElementById(id),storage='examina_vocabulary_project_v1';
  let project={count:1,course:'lat1',units:[]},selected=0;
  try{const saved=JSON.parse(localStorage.getItem(storage));if(saved?.units&&Number.isInteger(saved.count)&&saved.count>=1&&saved.count<=100&&['lat1','lat4','gr1'].includes(saved.course))project=saved}catch{}
- const unit=()=>{while(project.units.length<project.count)project.units.push({title:'UD'+(project.units.length+1),text:'',mode:'complete',rows:[]});return project.units[selected]};
+ const unit=()=>{while(project.units.length<project.count)project.units.push({title:'UD'+(project.units.length+1),text:'',mode:'complete',rows:[],analyzed:false});return project.units[selected]};
+ const needsAnalysis=u=>!!u.text?.trim()&&!(u.analyzed||u.rows?.length);
  const status=s=>{$('vgStatus').textContent=s};
  const save=()=>{try{localStorage.setItem(storage,JSON.stringify(project))}catch{status('No se pudo guardar en este navegador. Exporta una copia JSON.')}};
  function render(){
@@ -92,34 +95,47 @@ function init(){
  }
  $('vgCount').onchange=()=>{const n=Number($('vgCount').value);if(!Number.isInteger(n)||n<1||n>100){status('Elige entre 1 y 100 unidades.');return}project.count=n;selected=Math.min(selected,n-1);render();save()};
  $('vgUnit').onchange=()=>{selected=Number($('vgUnit').value);render()};
- $('vgCourse').onchange=()=>{project.course=$('vgCourse').value;project.units.forEach(u=>u.rows=[]);save();render();status('Banco cambiado. Vuelve a analizar los textos.')};
- for(const [id,field] of [['vgTitle','title'],['vgText','text'],['vgMode','mode']])$(id).oninput=()=>{unit()[field]=$(id).value;if(field==='text')unit().rows=[];save();if(field==='mode')render()};
- async function analyzeUnits(all){
-  const button=$('vgAnalyze'),buttonAll=$('vgAnalyzeAll');
-  button.disabled=true;buttonAll.disabled=true;status('Analizando…');
+ $('vgCourse').onchange=()=>{project.course=$('vgCourse').value;project.units.forEach(u=>{u.rows=[];u.analyzed=false});save();render();status('Banco cambiado. Vuelve a analizar los textos.')};
+ for(const [id,field] of [['vgTitle','title'],['vgText','text'],['vgMode','mode']])$(id).oninput=()=>{unit()[field]=$(id).value;if(field==='text'){unit().rows=[];unit().analyzed=false;status('Texto modificado. Analiza la unidad antes de exportar.')}save();if(field==='mode')render()};
+ async function analyzeUnits(mode){
+  const button=$('vgAnalyze'),buttonAll=$('vgAnalyzeAll'),word=$('vgWord');
+  button.disabled=true;buttonAll.disabled=true;word.disabled=true;status('Analizando…');
   try{
+   const targets=mode==='missing'?project.units.slice(0,project.count).filter(needsAnalysis)
+    :mode==='all'?project.units.slice(0,project.count):[unit()];
+   if(!targets.length)return true;
    const data=await linguistic().load();
    const course={lat1:'latin1',lat4:'latin4',gr1:'greek1'}[project.course];
    const bank=vocab.filter(x=>courseOf(x)===course);
-   const targets=all?project.units.slice(0,project.count):[unit()];
-   for(const u of targets)u.rows=analyze(data,u.text,project.course,bank);
+   for(const u of targets){u.rows=analyze(data,u.text,project.course,bank);u.analyzed=true}
    save();render();
    const distinct=targets.reduce((n,u)=>n+u.rows.length,0);
    const pending=targets.reduce((n,u)=>n+u.rows.filter(r=>r.status!=='documented').length,0);
-   status((all?targets.length+' unidades analizadas. ':'')+distinct+' formas distintas. '+pending+' pendientes. Reanalizar sustituye correcciones, pero conserva los textos.');
-  }catch(e){status('No se pudo analizar: '+e.message)}
-  finally{button.disabled=false;buttonAll.disabled=false}
+   status(targets.length+' unidad(es) analizada(s). '+distinct+' formas distintas. '+pending+' pendientes de revisión. Textos conservados.');
+   return true;
+  }catch(e){status('No se pudo analizar: '+e.message);return false}
+  finally{button.disabled=false;buttonAll.disabled=false;word.disabled=false}
  }
- $('vgAnalyze').onclick=()=>analyzeUnits(false);
- $('vgAnalyzeAll').onclick=()=>analyzeUnits(true);
+ $('vgAnalyze').onclick=()=>analyzeUnits('current');
+ $('vgAnalyzeAll').onclick=()=>analyzeUnits('all');
  $('vgBackup').onclick=()=>downloadBlob('vocabulario-unidades.json',new Blob([JSON.stringify(project,null,2)],{type:'application/json'}));
- $('vgWord').onclick=()=>{
-  downloadBlob('vocabulario-unidades.docx',zip([
-   ['[Content_Types].xml','<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/></Types>'],
-   ['_rels/.rels','<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>'],['word/document.xml',documentXml(project)]
-  ]));
+ $('vgWord').onclick=async()=>{
+  const missing=project.units.slice(0,project.count).filter(needsAnalysis);
+  if(missing.length){
+   status('Hay '+missing.length+' unidad(es) sin analizar. Analizando antes de descargar el Word…');
+   if(!await analyzeUnits('missing'))return;
+  }
+  try{
+   const xml=documentXml(project);
+   downloadBlob('vocabulario-unidades.docx',zip([
+    ['[Content_Types].xml','<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/></Types>'],
+    ['_rels/.rels','<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>'],
+    ['word/document.xml',xml]
+   ]));
+   status('Word generado con '+project.count+' unidades. Revisa las formas marcadas con * antes de utilizarlo.');
+  }catch(e){status('No se ha exportado el Word: '+e.message)}
  };
- $('vgImport').onchange=async e=>{try{const p=JSON.parse(await e.target.files[0].text());if(!Number.isInteger(p.count)||p.count<1||p.count>100||!['lat1','lat4','gr1'].includes(p.course)||!Array.isArray(p.units)||p.units.length<p.count||!p.units.every(u=>typeof u.title==='string'&&typeof u.text==='string'&&['simple','complete'].includes(u.mode)&&Array.isArray(u.rows)&&u.rows.every(r=>typeof r.entry==='string'&&typeof r.meaning==='string'&&typeof r.form==='string'&&Array.isArray(r.candidates))))throw Error('Formato incorrecto');project=p;selected=0;render();save()}catch(e){status('No se pudo importar: '+e.message)}};
+ $('vgImport').onchange=async e=>{try{const p=JSON.parse(await e.target.files[0].text());if(!Number.isInteger(p.count)||p.count<1||p.count>100||!['lat1','lat4','gr1'].includes(p.course)||!Array.isArray(p.units)||p.units.length<p.count||!p.units.every(u=>typeof u.title==='string'&&typeof u.text==='string'&&['simple','complete'].includes(u.mode)&&Array.isArray(u.rows)&&u.rows.every(r=>typeof r.entry==='string'&&typeof r.meaning==='string'&&typeof r.form==='string'&&Array.isArray(r.candidates))))throw Error('Formato incorrecto');project=p;selected=0;render();save();const pending=project.units.slice(0,project.count).filter(needsAnalysis).length;status('Proyecto importado: '+project.count+' unidades y textos conservados. '+pending+' por analizar. Puedes pulsar «Analizar todas las unidades» o «Exportar Word» (analizará las pendientes).')}catch(e){status('No se pudo importar: '+e.message)}};
  $('vgShow').onclick=()=>{$('examLayout').style.display='none';$('vocabManager').classList.remove('active');$('vocabularyGenerator').classList.add('active');for(const id of ['vmShowExam','vmShowList'])$(id).classList.remove('active');$('vgShow').classList.add('active');render()};
  for(const id of ['vmShowExam','vmShowList'])$(id).addEventListener('click',()=>{$('vocabularyGenerator').classList.remove('active');$('vgShow').classList.remove('active')});
  render();
