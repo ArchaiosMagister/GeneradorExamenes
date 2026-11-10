@@ -581,6 +581,7 @@
   "imagen": "imatge",
   "imperio": "imperi",
   "impetuoso/a": "impetuós/impetuosa",
+  "imponer, colocar encima": "imposar, posar damunt",
   "impuesto": "impost",
   "incendio": "incendi",
   "incluso": "fins i tot",
@@ -1128,6 +1129,8 @@
   "zeus": "Zeus"
 };
  const exact=new Map(Object.entries(translations));
+ // Preferencias expresas del docente: se aplican también a proyectos existentes de vocabulario.
+ const entryOverrides=new Map([["importo, importavi, importatum (1ª)","portar"],["impono, imposui, impositum (3ª)","imposar, posar damunt"],["καλέω","cridar, anomenar"],["μάλιστα (adv.)","moltíssim, especialment"],["Ἀθηναῖος, –α, –ον","atenenc/atenenca"],["στρατηγός, –ου","estrateg (general)"],["Gērmānus, –a, –um","germànic/germànica"],["Paulus, –i","Paulus"],["Callus, –i","Calo (gentilici)"],["Orgetorix, –igis","Orgétorix"],["Ἱέραξ, –ακος (ὁ)","Hiérax"]].map(([k,v])=>[k.normalize('NFC'),v]));
  const normalized=value=>String(value||'').trim().replace(/[‘’“”'"]/gu,'').replace(/\s+/gu,' ');
  const lower=value=>normalized(value).toLocaleLowerCase('es');
  function part(raw){
@@ -1169,6 +1172,8 @@
  function forEntry(item,lang){
   if(lang!=='va')return {value:String(item?.meaning||''),ready:!!String(item?.meaning||'').trim(),source:'docente'};
   if(item?.meaning_va&&String(item.meaning_va).trim())return {value:String(item.meaning_va).trim(),ready:true,source:'docente-valenciano'};
+  const fixed=entryOverrides.get(String(item?.entry||'').normalize('NFC'));
+  if(fixed)return {value:fixed,ready:true,source:'criterio-docente'};
   const result=lookup(item?.meaning);return {...result,source:result.ready?'diccionario-valenciano':'pendiente'};
  }
  function quoteGloss(raw){
