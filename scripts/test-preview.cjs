@@ -151,6 +151,16 @@ async function checkFile(browser,filename){
    assert(result.controls>0,filename+' '+course+'/'+model+': no se pueden editar formas: '+result.warning);
    const input=page.locator('.question-editor input[type="text"]').first();
    const tableEdit=await input.evaluate(el=>/^(Declinación|Conjugación)/.test(el.parentElement.textContent.trim()));
+   if(!(await input.isVisible())){
+    const trace=await input.evaluate(el=>{
+     const chain=[];for(let p=el;p;p=p.parentElement){
+      chain.push({tag:p.tagName,id:p.id,cls:p.className,hidden:p.hidden,open:p.open,
+       computed:getComputedStyle(p).display,rect:p.getBoundingClientRect().toJSON()});
+      if(p.id==='examLayout')break;
+     }return chain;
+    });
+    throw Error(filename+' '+course+'/'+model+' editor oculto: '+JSON.stringify(trace));
+   }
    await input.fill('FORMA_DE_PRUEBA');
    assert((await page.locator('#paper').textContent()).includes('FORMA_DE_PRUEBA'),filename+' '+course+'/'+model+': la edición no actualiza la vista previa');
    if(tableEdit)assert(await page.locator('#paper .exam-paradigm thead tr:first-child th[colspan] i').filter({hasText:'FORMA_DE_PRUEBA'}).count()>0,filename+': editar título elimina cursiva');
