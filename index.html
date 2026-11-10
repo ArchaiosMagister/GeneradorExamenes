@@ -723,14 +723,16 @@ function buildFinalLexicon(chosen,chosenEntries,selectedSentences,selectedMorph,
  const manual=$('examExtra').value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
  for(const raw of manual){let key=examKey(raw),hit=all.find(x=>examKey(x.entry)===key);if(hit)add(hit);else unresolved.add(raw)}
  const resolveToken=token=>{
-  const direct=findLemmaForForm(token,all,formIndex);
-  if(direct)return direct;
-  // La fuente externa nunca aporta traducciones al examen: solo reconoce
-  // formas documentadas y exige una única ficha del banco docente local.
+  // Una identificación única basada en formas contrastadas tiene prioridad
+  // sobre los paradigmas heurísticos usados como respaldo por la webapp.
+  // Ningún análisis externo inventa la glosa: se exige ficha docente local.
   const entry=window.ExaminaOfflineLemmatizer?.uniqueEntry(token,currentCourse());
-  if(!entry)return null;
-  const wanted=normLex(headLex(entry)),candidates=all.filter(x=>examKey(x.entry)===wanted);
-  return candidates.length===1?candidates[0]:null;
+  if(entry){
+   const wanted=normLex(headLex(entry)),candidates=all.filter(x=>examKey(x.entry)===wanted);
+   if(candidates.length===1)return candidates[0];
+   return null; // No sustituir una evidencia documentada por una conjetura.
+  }
+  return findLemmaForForm(token,all,formIndex);
  };
  for(const sent of selectedSentences){for(const token of sent.text.match(/[\p{L}\p{M}]+/gu)||[]){
   let hit=resolveToken(token);
