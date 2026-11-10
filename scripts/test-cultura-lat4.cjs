@@ -17,7 +17,7 @@ for(const row of rows){
 }
 for(let u=1;u<=8;u++)assert.ok(rows.filter(x=>x.units[0]==='UD'+u).length>=7,'UD'+u);
 const html=fs.readFileSync(path.join(root,'index.html'),'utf8');
-assert.match(html,/<script src="culture-lat4.js"><\\/script>/);
+assert.ok(html.includes('<script src="culture-lat4.js"></script>'));
 assert.ok(html.indexOf('window.ExaminaCultureBank')<html.indexOf('const initialCulture'));
 assert.ok(!/Nota sobre [^<]*: __________|Nota: __________/.test(html));
 assert.match(html,/1\.er trimestre/);
