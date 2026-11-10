@@ -23,6 +23,14 @@ jobs:
     steps:
       - name: Obtener la versión actual
         uses: actions/checkout@v4
+      - name: Preparar Node.js para el índice bilingüe
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Construir el lematizador y la versión autónoma
+        run: |
+          node scripts/build-lemma-index.mjs
+          npm run offline:build
       - name: Preparar web publicada
         shell: bash
         run: |
