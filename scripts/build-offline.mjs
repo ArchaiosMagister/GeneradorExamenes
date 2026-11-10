@@ -51,10 +51,15 @@ export async function renderOffline(root=projectRoot){
     syllabus.units.reduce((n,x)=>n+(x.verbs?.length||0),0)!==28)
   throw new Error('Programa docente de modificación preverbial incompleto');
  const phonetics=JSON.parse(await readFile(resolve(root,'data/fonetica/banco_examenes.json'),'utf8'));
- if(phonetics.esquema!=='evoluciones-latin-castellano/v1'||phonetics.items?.length<510||
-  new Set(phonetics.items.map(x=>x.id)).size!==phonetics.items.length)
-  throw new Error('El banco fonético integrado debe contener al menos 510 fichas distintas');
- const assets={'data/unimorph/lat-v.json':latin,'data/lemmas/teacher-forms.json':lemmatizer,...lexicalAssets,[syllabusPath]:syllabus,[latin4ProgressPath]:latin4Progress,'data/fonetica/banco_examenes.json':phonetics};
+ if(phonetics.esquema!=='evoluciones-latin-castellano/v1'||phonetics.items?.length!==510||
+  new Set(phonetics.items.map(x=>x.id)).size!==510)
+  throw new Error('El banco fonético integrado debe contener 510 fichas distintas');
+ const lat1PhoneticsPath='data/fonetica/lat1-programacion.json';
+ const lat1Phonetics=JSON.parse(await readFile(resolve(root,lat1PhoneticsPath),'utf8'));
+ if(lat1Phonetics.schema!==1||lat1Phonetics.course!=='latin1'||lat1Phonetics.unidades?.length!==11||
+  lat1Phonetics.unidades.reduce((n,u)=>n+(u.palabras?.length||0),0)!==73)
+  throw new Error('Falta la programación acumulativa de las 73 evoluciones de Latín I');
+ const assets={'data/unimorph/lat-v.json':latin,'data/lemmas/teacher-forms.json':lemmatizer,...lexicalAssets,[syllabusPath]:syllabus,[latin4ProgressPath]:latin4Progress,[lat1PhoneticsPath]:lat1Phonetics,'data/fonetica/banco_examenes.json':phonetics};
  // Evita cerrar prematuramente el elemento HTML script inerte.
  const json=JSON.stringify(assets).replace(/</g,'\\u003c');
  const marker='<script>';
