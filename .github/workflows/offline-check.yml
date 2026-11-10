@@ -85,6 +85,13 @@ jobs:
         run: node scripts/test-vocabulary-quality.cjs
       - name: Probar generador de vocabulario por unidades y Word
         run: npm run vocabulary:test
+      - name: Guardar Word de diez frases para comprobación visual
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vocabulario-diez-frases-word
+          path: test-artifacts/vocabulario-latin-10-frases.docx
+          if-no-files-found: ignore
       - name: Probar las vistas previas de todos los modelos
         run: node scripts/test-preview.cjs
       - name: Validar valenciano en pantalla y Word para los tres cursos
