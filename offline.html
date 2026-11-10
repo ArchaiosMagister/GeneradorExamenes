@@ -166,6 +166,28 @@ html[data-course="greek1"] .paper em,
 html[data-course="greek1"] .paper .small,
 html[data-course="greek1"] .paper .exam-sheet *{font-style:normal!important}
 @media print{html[data-course="greek1"] .paper *{font-style:normal!important}}
+</style><style id="exam-controls-legible">
+/* Solo interfaz: botones claros y jerarquia visual, sin alterar examenes ni impresion. */
+#examLayout aside.panel button{min-height:44px;padding:11px 13px;border-radius:9px;font-size:14px;line-height:1.45;font-weight:700;letter-spacing:.005em}
+#examLayout aside.panel button:not(.secondary):not(.sidebar-choice){background:var(--accent);border:1px solid var(--accent);color:#fff}
+#examLayout aside.panel button:not(.secondary):not(.sidebar-choice):hover{background:var(--accent);color:#fff;filter:brightness(.88)}
+#examLayout aside.panel button.secondary{background:#f2f6fc;color:#18385c;border:1px solid #a8bed8}
+#examLayout aside.panel button.secondary:hover{background:#ddeaf8;color:#102a48;border-color:#6f95bf}
+#examLayout aside.panel button.sidebar-choice{display:flex;align-items:center;gap:8px;justify-content:flex-start;width:100%;text-align:left;background:#f6f9fd;color:#213b59;border:1px solid #b6c8df;box-shadow:none;font-weight:650}
+#examLayout aside.panel button.sidebar-choice:hover{background:#eaf2fb;color:#163452;border-color:#7299c3;filter:none}
+#examLayout aside.panel button.sidebar-choice[aria-pressed="true"]{background:var(--soft);color:var(--soft-ink);border:2px solid var(--accent);padding:10px 12px;box-shadow:inset 4px 0 0 var(--accent);font-weight:800}
+#examLayout aside.panel button.sidebar-choice[aria-pressed="true"]::after{content:"✓";margin-left:auto;flex:0 0 auto;font-size:16px;font-weight:800}
+#examLayout aside.panel button.sidebar-choice[aria-pressed="true"]:hover{background:var(--soft);color:var(--soft-ink);border-color:var(--accent)}
+#examLayout aside.panel .settings-group .buttons{gap:10px}
+#examLayout aside.panel .buttons:has(> #generate){grid-template-columns:minmax(0,1fr)}
+#examLayout aside.panel #generate{min-height:52px;font-size:15px;letter-spacing:.01em}
+#examLayout aside.panel button:focus-visible{outline:3px solid var(--focus-course,var(--accent));outline-offset:3px}
+:root[data-course] .vocab-tabbar button:not(.active){background:#f2f6fb;color:#1d3d5d;border:1px solid #a8bed8}
+:root[data-course] .vocab-tabbar button:not(.active):hover{background:#e0ecf9;color:#142f4d;border-color:#759bc3}
+:root[data-course] .vocab-tabbar button.active{background:var(--accent);color:#fff;border:1px solid var(--accent)}
+.vocab-tabbar button{min-height:44px;font-size:14px;font-weight:700;line-height:1.35}
+.quick-actions button{min-height:44px;font-size:14px;font-weight:700;line-height:1.35}
+@media(max-width:520px){#examLayout aside.panel button{font-size:14px}}
 </style><style id="greek-reference-layout">
 /* Shared reference: Palatino 10.5 pt for all courses and examination types. */
 #lexOption[hidden],#cultureOption[hidden]{display:none!important}
