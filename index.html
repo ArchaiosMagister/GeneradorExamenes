@@ -120,6 +120,34 @@ button:disabled{opacity:.55;cursor:not-allowed}
 @media print{.paper{overflow:visible!important}.paper .exam-sheet{overflow:visible!important}}
 
 @media screen and (max-width:800px){body{overflow-x:hidden}.layout{padding-left:max(10px,env(safe-area-inset-left));padding-right:max(10px,env(safe-area-inset-right))}.panel,.paper{overflow-wrap:break-word}select,input,textarea{max-width:100%}input[type=file]{width:100%;font-size:16px}.quick-actions{position:static;max-width:100%}.paper .exam-sheet{overflow-wrap:break-word}.paper .exam-sheet .exam-question{margin-left:7pt}.paper .exam-sheet .exam-item{margin-left:8pt;padding-left:12pt;text-indent:-12pt}.paper .exam-header-line{font-size:9.5pt}}
+</style><style id="exam-sidebar-2026">
+/* Los modelos y asignaturas son elecciones visibles, no menús desplegables. */
+.sidebar-choices{display:grid;grid-template-columns:1fr;gap:6px;margin-top:7px}
+.sidebar-choice{display:block;text-align:left;width:100%;background:#f8fafc;color:#243952;border:1px solid #d5e0eb;border-radius:9px;padding:10px 12px;font-weight:600}
+.sidebar-choice[aria-pressed="true"]{background:var(--soft);color:var(--soft-ink);border:2px solid var(--accent);padding:9px 11px}
+.sidebar-choice:focus-visible{outline:3px solid var(--ring);outline-offset:2px}
+#course,#model{display:none!important}
+.exam-accordion{margin:12px 0}
+.exam-accordion>.field{margin:0 12px}
+.exam-accordion .menu-section{margin:8px 10px}
+.exam-accordion .menu-section>summary{background:#fafcff}
+.exam-question-config{padding:10px 12px}
+.exam-question-config label{font-size:13px;display:block;margin:5px 0}
+.exam-question-config input[type=number]{max-width:115px}
+.exam-question-config select,.exam-question-config input[type=text]{width:100%}
+.exam-question-config button{margin-top:7px}
+.exam-question-config .hint{margin:5px 0}
+.exam-question-config .question-editor{margin:9px 0;padding:8px 0;border-top:1px solid #e4e9f0}
+.legacy-question-fields{display:none!important}
+#manualMorphField{padding:4px 0;border:0}
+#manualMorphField>label,#manualMorphField>.hint{display:none}
+.lex-subparts{margin:7px 0;padding:9px;border:1px solid #e3eaf3;border-radius:8px}
+.lex-subparts label{font-weight:500}
+html[data-course="greek1"] .paper i,
+html[data-course="greek1"] .paper em,
+html[data-course="greek1"] .paper .small,
+html[data-course="greek1"] .paper .exam-sheet *{font-style:normal!important}
+@media print{html[data-course="greek1"] .paper *{font-style:normal!important}}
 </style><style id="greek-reference-layout">
 /* Shared reference: Palatino 10.5 pt for all courses and examination types. */
 #lexOption[hidden],#cultureOption[hidden]{display:none!important}
@@ -549,8 +577,8 @@ function generateLatinMorphologyReference(){
   form,entry:x.entry,person:p.labels[i],tense:'presente de indicativo',voice:'activa'
  })));
  const verbItems=sample(allVerbs,cfg.verbs);
- const pronouns=latinExamPronouns(chosen),pronItems=sample(pronouns,Math.min(6,pronouns.length));
- const words=latinExamForms(chosen,cfg.words);
+ const pronouns=examQuestionEnabled('pronouns')?latinExamPronouns(chosen):[],pronItems=sample(pronouns,Math.min(6,pronouns.length));
+ const words=examQuotaPick(latinExamFormCandidates(chosen),cfg.words,()=>latinExamForms(chosen,cfg.words));
  const question=(index,heading)=>'<p class="exam-question">'+index+'. '+esc(heading)+'</p>';
  let n=0;
  const first=question(++n,t('Declina las siguientes palabras (2 p.).','Declina les paraules següents (2 p.).'))+
@@ -730,7 +758,7 @@ function generate(){
    verbs.length?latinExamConjugationTable(verbs):missing('No hay paradigmas verbales verificados en las unidades seleccionadas.'),
    verbs.length?latinExamConjugationTable(verbs,true):'');
  }
- const forms=latinExamForms(chosen,formsCount);
+ const forms=examQuotaPick(latinExamFormCandidates(chosen),formsCount,()=>latinExamForms(chosen,formsCount));
  add(t('Analiza morfológicamente las siguientes formas.','Analitza morfològicament les formes següents.'),
   forms.length?'<ol class="task" type="a">'+forms.map(x=>'<li><i>'+esc(x.form)+'</i>: <span class="reference-answer-line"></span></li>').join('')+'</ol>':missing('No hay formas variables verificadas para estas unidades.'),
   '<ol>'+forms.map(x=>'<li>'+esc(x.form)+' — '+esc(x.answer)+'</li>').join('')+'</ol>');
@@ -811,6 +839,8 @@ function zip(files){const enc=new TextEncoder(),parts=[],central=[];let off=0;co
 // V12: structured, dependency-free WordprocessingML export. Keeps headings, tables,
 // numbered lists, emphasis and editable paragraphs; no network or external program.
 function wordRun(text,bold=false,italic=false){
+ // En exámenes de griego no se aplica cursiva ni en celdas ni en Word.
+ if(currentCourse()==='greek1')italic=false;
  if(!text)return '';
  const pr=(bold||italic)?`<w:rPr>${bold?'<w:b/>':''}${italic?'<w:i/>':''}</w:rPr>`:'';
  return `<w:r>${pr}<w:t xml:space="preserve">${xmlEsc(text)}</w:t></w:r>`;
@@ -1453,10 +1483,10 @@ function generateGreekMorphologyFixed(){
    prompt:form,answer:(i+1)+'ª persona '+(j===0?'singular':'plural')+' del presente de indicativo activo',
    lemma:x.lemmas[0],person:(i+1)+'ª '+(j===0?'singular':'plural')
   })).filter(x=>x.prompt))),cfg.verbs);
- const pronPool=eligible.filter(x=>x.kind==='pronouns');
+ const pronPool=examQuestionEnabled('pronouns')?eligible.filter(x=>x.kind==='pronouns'):[];
  const pronouns=sample(pronPool,Math.min(6,pronPool.length));
  const categories={n:$('morphCategory-n')?.checked!==false,adj:$('morphCategory-adj')?.checked!==false,pro:$('morphCategory-pro')?.checked!==false};
- const words=sample(eligible.filter(x=>x.kind==='forms'&&!x.prompt.includes(' ')&&(
+ const words=examQuotaGreek(eligible.filter(x=>x.kind==='forms'&&!x.prompt.includes(' ')&&(
   (/pronombre|demostrativo|anafórico|personal|interrogativo/i.test(x.answer)&&categories.pro)||
   (/adjetivo/i.test(x.answer)&&categories.adj)||
   (/declinación|sustantivo|artículo/i.test(x.answer)&&categories.n)||
