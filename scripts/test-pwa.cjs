@@ -69,6 +69,8 @@ const server=http.createServer(async(req,res)=>{
   assert(examLex.phonetics.every(row=>row.normas.every(n=>['N07','N17'].includes(n))),
    'Evolución fonética incluye una norma aún no seleccionada');
   const before=examLex.exam.map(x=>({kind:x.kind,terms:x.terms.slice()}));
+  await page.locator('#examQuestionSettings').evaluate(el=>el.open=true);
+  await page.locator('#examQuestionMenus [data-question="lex"]').evaluate(el=>el.open=true);
   await page.locator('#lex-slot-prefixes-1 + button').click();
   const afterOne=await page.evaluate(()=>[...document.querySelectorAll('#paper .lex-subquestion')].map(x=>({
    kind:x.dataset.lexKind,terms:[...x.querySelectorAll('i')].map(i=>i.textContent)
