@@ -87,6 +87,33 @@ function coverage(data,course){
  return {lemmas:all.size,documented:attested.size,
   proposed:proposed.size,onlyCitation:[...all].filter(k=>!attested.has(k)&&!proposed.has(k)).length};
 }
+function coverageByUnit(data,course){
+ if(!names[course])throw Error('Curso desconocido');
+ const lang=langOf(course),tracked=new Map();
+ for(const [lemma,, ,source]of data.rows[lang]||[]){
+  const entry=data.vocabulary[lang]?.[lemma]?.[course];
+  if(!entry)continue;
+  if(!tracked.has(lemma))tracked.set(lemma,{documented:false,proposed:false});
+  const status=tracked.get(lemma);
+  if(source===0||source===1)status.documented=true;
+  if(source===2||source===4)status.proposed=true;
+ }
+ const groups=new Map();
+ for(const [lemma,entry]of Object.entries(data.vocabulary[lang]||{})){
+  if(!entry[course])continue;
+  const units=new Set(entry[course].units||[]);
+  for(const unit of units){
+   if(!/^UD\s*[1-9]/.test(unit))continue;
+   if(!groups.has(unit))groups.set(unit,{unit,total:0,documented:0,candidatesOnly:0,onlyCitation:0});
+   const group=groups.get(unit),status=tracked.get(lemma);
+   group.total++;
+   if(status?.documented)group.documented++;
+   else if(status?.proposed)group.candidatesOnly++;
+   else group.onlyCitation++;
+  }
+ }
+ return [...groups.values()].sort((a,b)=>a.unit.localeCompare(b.unit,'es',{numeric:true}));
+}
 function uniqueLemmaFromData(data,course,form){
  const found=query(data,{course,mode:'form',text:form,max:Number.MAX_SAFE_INTEGER});
  if(found.invalid||!found.items.length)return null;
@@ -191,6 +218,7 @@ function init(){
   '<input id="offlineLemmaInput" type="text" maxlength="90" autocomplete="off" spellcheck="false" placeholder="amābam / λόγου">'+
   '<button id="offlineLemmaSearch" type="button" class="secondary">Consultar sin conexión</button>'+
   '<p id="offlineLemmaCoverage" class="hint" aria-live="polite">Preparando resumen de cobertura…</p>'+
+  '<details class="lemma-units"><summary>Cobertura por unidad</summary><div id="offlineLemmaByUnit"></div></details>'+
   '<p id="offlineLemmaStatus" class="hint" role="status" aria-live="polite">Disponible desde los datos incluidos en la versión autónoma.</p>'+
   '<div id="offlineLemmaResults" class="lemma-results"></div>'+
   '<p class="hint">Fuentes: UniMorph (CC BY-SA 3.0), paradigmas docentes y Wikcionario/Wiktextract (CC BY-SA 4.0). Las propuestas de formas regulares y las candidatas de Wikcionario se marcan y no se usan para corregir exámenes.</p>';
@@ -201,14 +229,37 @@ function init(){
   '#offlineLemmaPanel .lemma-entry p{margin:5px 0;font-family:Georgia,serif}'+
   '#offlineLemmaPanel .lemma-provisional{border-style:dashed;border-left:4px solid #a46b24}'+
   '#offlineLemmaPanel .lemma-meta{font-size:12px;opacity:.8}'+
+  '#offlineLemmaPanel .lemma-units{margin:8px 0}#offlineLemmaPanel .lemma-units table{width:100%;border-collapse:collapse;font-size:13px}'+
+  '#offlineLemmaPanel .lemma-units th,#offlineLemmaPanel .lemma-units td{border-bottom:1px solid var(--line,#dce4ee);padding:6px;text-align:left}' +
   '@media print{#offlineLemmaPanel{display:none!important}}';
  document.head.append(style);
  async function showCoverage(){
   const target=document.getElementById('offlineLemmaCoverage');
   try{
    const x=coverage(await load(),document.getElementById('offlineLemmaCourse').value);
-   target.textContent=x.lemmas+' lemas · '+x.documented+' con formas documentadas · '+
-    x.proposed+' con formas candidatas no verificadas · '+x.onlyCitation+' solo con entrada de vocabulario.';
+   target.textContent=x.lemmas+' lemas · '+x.documented+' con alguna forma documentada · '+
+    x.proposed+' con formas candidatas (pueden coincidir) · '+x.onlyCitation+' sin formas flexionadas.';
+   const area=document.getElementById('offlineLemmaByUnit');
+   if(area){
+    const table=document.createElement('table'),body=document.createElement('tbody');
+    const head=document.createElement('thead'),header=document.createElement('tr');
+    for(const label of ['Unidad','Lemas','Con formas documentadas','Solo candidatos','Sin flexiones']){
+     const th=document.createElement('th');th.textContent=label;header.append(th);
+    }
+    head.append(header);table.append(head);
+    for(const group of coverageByUnit(await load(),document.getElementById('offlineLemmaCourse').value)){
+     const tr=document.createElement('tr');
+     for(const val of [group.unit,group.total,group.documented,group.candidatesOnly,group.onlyCitation]){
+      const td=document.createElement('td');td.textContent=String(val);tr.append(td);
+     }
+     body.append(tr);
+    }
+    table.append(body);
+    const note=document.createElement('p');
+    note.className='hint';
+    note.textContent='Se respeta la agrupación de unidades del vocabulario. Una sola forma documentada no garantiza un paradigma completo; las candidatas no se usan como soluciones.';
+    area.replaceChildren(table,note);
+   }
   }catch(error){target.textContent='El resumen de cobertura no está disponible: '+error.message}
  }
  document.getElementById('offlineLemmaCourse').addEventListener('change',showCoverage);
@@ -216,7 +267,7 @@ function init(){
  document.getElementById('offlineLemmaSearch').addEventListener('click',submit);
  document.getElementById('offlineLemmaInput').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();submit()}});
 }
-window.ExaminaOfflineLemmatizer={normalize,describe,query,coverage,uniqueLemmaFromData,uniqueEntry,load,init};
+window.ExaminaOfflineLemmatizer={normalize,describe,query,coverage,coverageByUnit,uniqueLemmaFromData,uniqueEntry,load,init};
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);
 else init();
 })();
