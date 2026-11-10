@@ -41,7 +41,3 @@ jobs:
           npx playwright install --with-deps chromium
       - name: Probar las vistas previas de todos los modelos
         run: node scripts/test-preview.cjs
-      - name: Verificar preparación de escritorio
-        run: |
-          npm run desktop:prepare
-          test -s web/index.html

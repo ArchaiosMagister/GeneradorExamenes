@@ -2,16 +2,10 @@
   "name": "generador-examenes-latin-griego",
   "private": true,
   "version": "0.1.0",
-  "description": "Aplicación de escritorio offline para generar exámenes de Latín y Griego",
+  "description": "Webapp autónoma para generar exámenes de Latín y Griego, utilizable sin conexión",
   "scripts": {
     "offline:build": "node scripts/build-offline.mjs",
     "offline:test": "node scripts/check-web.mjs && node scripts/test-offline.mjs",
-    "desktop:prepare": "node scripts/prepare-desktop.mjs",
-    "tauri": "tauri",
-    "desktop:build": "npm run desktop:prepare && tauri build",
     "preview:test": "node scripts/test-preview.cjs"
-  },
-  "devDependencies": {
-    "@tauri-apps/cli": "^2.0.0"
   }
 }
