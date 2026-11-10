@@ -13,12 +13,16 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
   page.on('pageerror',error=>errors.push(String(error)));
   await page.goto(pathToFileURL(path.resolve(__dirname,'../index.html')).href,{waitUntil:'load'});
   async function choose(course,model,unit){
-   await page.selectOption('#course',course);
-   await page.selectOption('#model',model);
-   await page.evaluate(unit=>{
+   // El selector del curso puede estar oculto por la pestaña de edición;
+   // reproducimos los mismos eventos change que usa la aplicación.
+   await page.evaluate(({course,model,unit})=>{
+    const selector=document.getElementById('course');
+    selector.value=course;selector.dispatchEvent(new Event('change',{bubbles:true}));
+    const modelSelect=document.getElementById('model');
+    modelSelect.value=model;modelSelect.dispatchEvent(new Event('change',{bubbles:true}));
     document.querySelectorAll('.unit-choice').forEach(el=>el.checked=units[Number(el.value)]===unit);
     generate();
-   },unit);
+   },{course,model,unit});
    return page.evaluate(()=>{
     const tables=[...document.querySelectorAll('#paper .exam-nouns')]
      .filter(x=>!x.closest('#answerkey'));
