@@ -24,7 +24,7 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
   await page.locator('#offlineLemmaInput').fill('amo');
   await page.locator('#offlineLemmaSearch').click();
   await page.locator('#offlineLemmaResults .lemma-entry').first().waitFor();
-  assert.match(await page.locator('#offlineLemmaStatus').textContent(),/análisis registrados/);
+  assert.match(await page.locator('#offlineLemmaStatus').textContent(),/registros/);
   assert.ok(await page.locator('#offlineLemmaResults .lemma-entry').count()>=5,'No se muestran flexiones latinas');
   assert.match(await page.locator('#offlineLemmaResults').textContent(),/amo/);
 
