@@ -57,6 +57,17 @@ const server=http.createServer(async(req,res)=>{
   assert(lex.sample.includes('Explica el significado'),'Falta pregunta de latinismos');
   assert.equal((lex.sample.match(/<i>/g)||[]).length,10,'Solo deben aparecer diez términos en cursiva (2 + 4 + 4)');
   assert(!lex.sample.includes('Evolución fonética de '),'No debe inventarse el banco de evolución fonética');
+  const freeVerb=await page.evaluate(()=>{
+   const a=document.getElementById('lex-verb-a'),b=document.getElementById('lex-verb-b');
+   if(!a||!b)throw Error('Faltan controles de elección manual de verbos');
+   a.value='pugno, -avi, -atum';b.value='VERBO_PERSONALIZADO';
+   const generated=buildLatinLexQuestion('latin1',['UD6'])?.html||'';
+   a.value='';b.value='';
+   return generated;
+  });
+  assert(freeVerb.includes('<i>pugno</i> (3)')&&freeVerb.includes('<i>VERBO_PERSONALIZADO</i> (2)'),
+   'No se aceptan verbos simples escogidos por el profesor');
+  assert(freeVerb.includes('sin ficha de derivados'),'Falta advertencia para verbos sin derivados documentados');
   await page.waitForFunction(()=>navigator.serviceWorker.controller!==null,null,{timeout:45000});
   await page.waitForFunction(()=>document.querySelector('#pwaStatus')?.textContent.includes('Preparada'),null,{timeout:30000});
   const cache=await page.evaluate(async()=>{

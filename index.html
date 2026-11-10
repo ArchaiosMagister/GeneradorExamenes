@@ -1965,7 +1965,7 @@ function examCacheSignature(kind){
   kind==='forms'?(morph?'morphWords':currentCourse()==='greek1'?'count-greek-forms':'count-forms'):
   kind==='sent'?'count-sent':'count-lex';
  return JSON.stringify([currentCourse(),$('model').value,unitsKey,$('cumulative').checked,kind,
-  $(countId)?.value,kind==='forms'?examMorphQuotaValues():null,kind.startsWith('lex-')?[$('lex-count-'+kind.slice(4))?.value,$('lex-prefix')?.value,$('lex-phenomenon')?.value,$('lex-parity')?.value,$('lex-from')?.value,$('lex-to')?.value]:null]);
+  $(countId)?.value,kind==='forms'?examMorphQuotaValues():null,kind.startsWith('lex-')?[$('lex-count-'+kind.slice(4))?.value,$('lex-prefix')?.value,$('lex-phenomenon')?.value,$('lex-parity')?.value,$('lex-from')?.value,$('lex-to')?.value,$('lex-verb-a')?.value,$('lex-verb-b')?.value]:null]);
 }
 function stickyExamRows(kind,factory){
  const key=examCacheSignature(kind);
@@ -2009,7 +2009,21 @@ function buildLatinLexQuestion(course,chosen){
    // El alumno propone cinco derivados (3 + 2); no se inventan soluciones.
    // Enunciados homógrafos como sero y volo necesitan desambiguación.
    const verified=available.filter(x=>!x.ambiguousPrompt&&Array.isArray(x.derivatives)&&x.derivatives.length>=3);
-   rows=stickyExamRows('lex-'+kind,()=>sample(verified,2));
+   rows=stickyExamRows('lex-'+kind,()=>{
+    const pool=sample(verified,verified.length),selected=[];
+    for(const code of ['a','b']){
+     const manual=String($('lex-verb-'+code)?.value||'').split(',')[0].trim();
+     if(manual){
+      const matches=available.filter(x=>normLex(x.prompt)===normLex(manual));
+      const safe=matches.length===1?matches[0]:null;
+      selected.push(safe?{...safe,prompt:manual}:{prompt:manual,answer:'Corrección abierta a cargo del docente',reviewRequired:true});
+     }else{
+      const next=pool.find(x=>!selected.some(y=>normLex(y.prompt)===normLex(x.prompt)));
+      if(next)selected.push(next);
+     }
+    }
+    return selected;
+   });
    if(rows.length<2)continue;
    question='Modificación preverbial a partir de '+italic(rows[0].prompt)+' (3) y de '+
     italic(rows[1].prompt)+' (2). Cinco derivados en total en lengua propia.';
@@ -2027,6 +2041,8 @@ function buildLatinLexQuestion(course,chosen){
   const letter=String.fromCharCode(97+(latinLexModules[course]||[]).indexOf(kind));
   html.push('<p class="exam-item lex-subquestion"><span class="exam-letter">'+letter+'.</span> '+question+'</p>');
   answers.push('<li>'+esc(latinLexTitles[kind])+': '+rows.map(x=>esc(x.prompt)+' — '+esc(x.answer)).join('; ')+'</li>');
+  if(kind==='preverbs'&&rows.some(x=>x.reviewRequired))
+   html.push('<p class="small no-print">Verbo añadido manualmente sin ficha de derivados: comprobar que admite la cantidad solicitada. La app no inventa derivados.</p>');
  }
  if(!html.length)return null;
  if(course==='latin1'&&parts.includes('phonetics')&&!latinLexBanks.latin1.phonetics.length)
@@ -2152,7 +2168,16 @@ loadTeacherLatinLexBanks();
    qty.min=kind==='preverbs'&&course==='latin1'?'2':'1';qty.max=kind==='preverbs'&&course==='latin1'?'2':'20';
    qty.value=kind==='preverbs'&&course==='latin1'?'2':'4';qty.disabled=kind==='preverbs'&&course==='latin1';
    qty.onchange=generate;
-   group.append(makeLabel(kind==='preverbs'&&course==='latin1'?'Verbos simples (3 + 2 derivados)':'Elementos de esta subpregunta',qty));box.append(group);
+   group.append(makeLabel(kind==='preverbs'&&course==='latin1'?'Verbos simples (3 + 2 derivados)':'Elementos de esta subpregunta',qty));
+   if(kind==='preverbs'&&course==='latin1'){
+    for(const [key,description] of [['a','Verbo A: tres derivados'],['b','Verbo B: dos derivados']]){
+     const manual=document.createElement('input');
+     manual.id='lex-verb-'+key;manual.type='text';manual.placeholder='Aleatorio; escribe cualquier verbo para fijarlo';
+     manual.autocomplete='off';manual.onchange=generate;
+     group.append(makeLabel(description,manual));
+    }
+   }
+   box.append(group);
   }
   const select=(id,label,values)=>{
    const control=document.createElement('select');control.id=id;
