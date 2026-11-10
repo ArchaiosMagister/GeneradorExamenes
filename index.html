@@ -2527,11 +2527,13 @@ function latinLexPool(course,kind,chosen){
  const taughtPrefixes=course==='latin4'&&kind==='prefixes'?latin4TaughtPrefixGroups(chosen):null;
  return (latinLexBanks[course]?.[kind]||[]).filter(x=>
   (!taughtPrefixes||taughtPrefixes.has(x.prefix))&&
+   !(kind==='prefixes'&&$('lang').value==='va'&&x.valencianPrefixEligible===false)&&
   (course!=='latin4'||kind!=='phonetics'||latin4PhoneticEligible(x,chosen))&&
   examLexFilter(x,course,kind,chosen)&&(kind!=='preverbs'||!x.ambiguousPrompt));
 }
 function latinLexExpectedCount(kind){return kind==='preverbs'?2:4}
 function latinLexLower(value){return String(value||'').toLocaleLowerCase('es')}
+function latinLexDisplayPrompt(kind,row){return latinLexLower(kind==='prefixes'&&$('lang').value==='va'&&row.prompt_va?row.prompt_va:row.prompt)}
 function latinLexTermKey(x){return normLex(latinLexLower(x.prompt))}
 function latinLexRandomFour(kind,pool,course=currentCourse()){
  const unique=[],seen=new Set();
@@ -2574,10 +2576,10 @@ function latinLexChosenRows(course,kind,chosen){
 function latinLexStatus(kind,rows,message=''){
  const status=$('lex-status-'+kind);
  if(status){
-  status.textContent=message||(!rows.length?'No hay formas compatibles.':rows.map((x,i)=>(i+1)+'. '+latinLexLower(x.prompt)).join(' · '));
+  status.textContent=message||(!rows.length?'No hay formas compatibles.':rows.map((x,i)=>(i+1)+'. '+latinLexDisplayPrompt(kind,x)).join(' · '));
   status.dataset.resultState=message||!rows.length?'missing':rows.some(x=>x.reviewRequired)?'review':'available';
  }
- for(let i=0;i<latinLexExpectedCount(kind);i++){const node=$('lex-slot-'+kind+'-'+i);if(node)node.textContent=rows[i]?latinLexLower(rows[i].prompt):'Sin forma'}
+ for(let i=0;i<latinLexExpectedCount(kind);i++){const node=$('lex-slot-'+kind+'-'+i);if(node)node.textContent=rows[i]?latinLexDisplayPrompt(kind,rows[i]):'Sin forma'}
 }
 function regenerateLatinLexPart(kind){
  if(kind==='preverbs')for(let i=0;i<2;i++){const input=$('lex-verb-'+i);if(input)input.value=''}
@@ -2600,7 +2602,7 @@ function regenerateLatinLexWord(kind,index){
  generate();
 }
 function buildLatinLexQuestion(course,chosen){
- const html=[],parts=examSelectedLexParts(course),italic=x=>'<i>'+esc(latinLexLower(x.prompt))+'</i>';
+ const html=[],parts=examSelectedLexParts(course),va=$('lang').value==='va',italic=(x,kind)=>'<i>'+esc(latinLexDisplayPrompt(kind,x))+'</i>';
  for(const kind of parts){
   const available=latinLexPool(course,kind,chosen),rows=latinLexChosenRows(course,kind,chosen);
   const letter=String.fromCharCode(97+(latinLexModules[course]||[]).indexOf(kind));
@@ -2611,13 +2613,13 @@ function buildLatinLexQuestion(course,chosen){
    latinLexStatus(kind,[],msg);
    html.push('<p class="small no-print">'+esc(msg)+'</p>');continue;
   }
-  const partsHtml=rows.map(italic),four=partsHtml.join(', ');
+  const partsHtml=rows.map(x=>italic(x,kind)),four=partsHtml.join(', ');
   let question;
   if(kind==='preverbs'&&course==='latin1')
-   question='Modificación preverbial a partir de '+partsHtml[0]+' (3) y de '+partsHtml[1]+' (2). Cinco derivados en total en lengua propia.';
-  else if(kind==='phonetics')question='Evolución fonética de '+four+'.';
-  else if(kind==='prefixes')question='Señala el prefijo y el significado que aporta a estas palabras: '+four+'.';
-  else if(kind==='latinisms')question='Latinismos. Explica el significado de los siguientes latinismos y haz una oración con ellos en la que se vea su sentido: '+four+'.';
+   question=(va?'Modificació preverbial a partir de ':'Modificación preverbial a partir de ')+partsHtml[0]+(va?' (3) i de ':' (3) y de ')+partsHtml[1]+(va?' (2). Cinc derivats en total en llengua pròpia.':' (2). Cinco derivados en total en lengua propia.');
+  else if(kind==='phonetics')question=(va?'Evolució fonètica de ':'Evolución fonética de ')+four+'.';
+  else if(kind==='prefixes')question=(va?'Assenyala el prefix i el significat que aporta a estes paraules: ':'Señala el prefijo y el significado que aporta a estas palabras: ')+four+'.';
+  else if(kind==='latinisms')question=(va?'Llatinismes. Explica el significat dels llatinismes següents i escriu una oració amb cadascun que en mostre el sentit: ':'Latinismos. Explica el significado de los siguientes latinismos y haz una oración con ellos en la que se vea su sentido: ')+four+'.';
   else question=esc(latinLexTitles[kind])+': '+four+'.';
   html.push('<p class="exam-item lex-subquestion" data-lex-kind="'+esc(kind)+'"><span class="exam-letter">'+letter+'.</span> '+question+'</p>');
   latinLexStatus(kind,rows);
