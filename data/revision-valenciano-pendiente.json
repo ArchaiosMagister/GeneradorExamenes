@@ -3,9 +3,32 @@
   "repository": "ArchaiosMagister/GeneradorExamenes",
   "branch": "feat/integracion-pr29-pr30-valenciano-20261110",
   "origin": "revisión filológica del vocabulario bilingüe en PR31",
-  "status": "13 decisiones filológicas docentes aplicadas; ninguna pendiente de esta revisión",
-  "notes": "Se conserva el historial de las trece decisiones en «resolved», con la opción elegida. El valenciano debe seguir las formas de uso valenciano docente (este, eixe, tindre, vindre, meua, seua); no sustituirlas por soluciones catalanas, ni modificar los enunciados latinos/griegos.",
-  "items": [],
+  "status": "12 decisiones docentes aplicadas; LAT1-REDUCO pendiente de elección",
+  "notes": "Las doce decisiones del mensaje actual están incorporadas; reduco, no elegido, conserva «traer»/«portar» provisionalmente. Se usa valenciano propio en la interfaz y el léxico. No declarar aprobaciones de opciones no expresamente elegidas.",
+  "items": [
+    {
+      "id": "LAT1-REDUCO",
+      "course": "latin1",
+      "lemma": "reduco, reduxi, reductum (3ª)",
+      "spanish": "traer",
+      "current_va": "portar",
+      "reason": "Reduco implica conducción de vuelta o regreso; el enunciado español actual omite re-.",
+      "options": [
+        [
+          "a",
+          "traer → portar"
+        ],
+        [
+          "b",
+          "hacer volver → fer tornar"
+        ],
+        [
+          "c",
+          "conducir de vuelta → conduir de tornada"
+        ]
+      ]
+    }
+  ],
   "resolved": [
     {
       "id": "LAT1-IMPORTO",
@@ -351,35 +374,6 @@
         "option": "c",
         "value": "Eliminar la ficha de ambos bancos",
         "scope": "Eliminada la única entrada bilingüe de los dos sorteos de prefijos"
-      },
-      "resolution": "aplicada",
-      "approvedBy": "docente"
-    },
-    {
-      "id": "LAT1-REDUCO",
-      "course": "latin1",
-      "lemma": "reduco, reduxi, reductum (3ª)",
-      "spanish": "traer",
-      "current_va": "portar",
-      "reason": "Reduco implica conducción de vuelta o regreso; el enunciado español actual omite re-.",
-      "options": [
-        [
-          "a",
-          "traer → portar"
-        ],
-        [
-          "b",
-          "hacer volver → fer tornar"
-        ],
-        [
-          "c",
-          "conducir de vuelta → conduir de tornada"
-        ]
-      ],
-      "decision": {
-        "option": "c",
-        "value": "conducir de vuelta → conduir de tornada",
-        "scope": "El docente ha indicado cambiar tanto la glosa castellana como la valenciana de reduco"
       },
       "resolution": "aplicada",
       "approvedBy": "docente"
