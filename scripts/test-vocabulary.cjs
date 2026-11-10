@@ -46,6 +46,15 @@ for(const token of ['ἡ','ἐν','εἰς','μὲν','πολλοὺς','οὗτ
  assert.ok(found.meaning,'Falta traducción de '+token);
 }
 
+
+const contrast=api.analyze(data,'τίς τις ὁ ὅ οἱ οἵ ἀλλὰ ἄλλα','gr1',priorityBank);
+for(const token of ['τίς','τις','ὁ','ὅ','οἱ','οἵ','ἀλλὰ','ἄλλα'])
+ assert.ok(contrast.some(r=>r.form===token),'No conservar homógrafo griego: '+token);
+assert.equal(contrast.find(r=>r.form==='τίς')?.status,'documented');
+assert.equal(contrast.find(r=>r.form==='τις')?.status,'documented');
+assert.equal(contrast.find(r=>r.form==='ὁ')?.status,'documented');
+assert.equal(contrast.find(r=>r.form==='ὅ')?.status,'documented');
+
 const misspelled=api.analyze(data,'ἄνρωπος','gr1',priorityBank);
 assert.equal(misspelled[0].status,'unknown','No corregir silenciosamente errores ortográficos de los textos');
 console.log('Griego prioritario: ateniense, nominales, presente, artículo y formas de εἰμί reconocidos.');
