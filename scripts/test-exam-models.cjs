@@ -30,7 +30,7 @@ function latinSuite(){
   examKey:x=>String(x).split(',')[0].toLowerCase(),
   examUnitNumber:x=>Number(String(x).replace('UD','')),
   M_CASES:['Nominativo','Vocativo','Acusativo','Genitivo','Dativo','Ablativo'],
-  isProperNounLemma:()=>false,
+  isProperNounLemma:()=>false,isExcludedExamMorphLemma:()=>false,
   mNoun:x=>x===noun.entry?{forms:[
     ['puella','puella','puellam','puellae','puellae','puella'],
     ['puellae','puellae','puellas','puellarum','puellis','puellis']
@@ -67,6 +67,8 @@ function latinSuite(){
  assert(output.includes('Modificación preverbial')&&output.includes('Latinismos'),'Latín I: las cuatro partes del léxico deben estar disponibles');
  assert(output.includes('final-gloss'));
  assert.equal((output.match(/Puella amat \d+\./g)||[]).length,5);
+ assert(output.includes('exam-sentences'),'Las oraciones latinas carecen de estilo para espaciado');
+ assert(!output.includes('<div class="answer"></div>'),'Las oraciones latinas todavía contienen líneas de respuesta');
  assert(!output.includes('Cultura 0'),'Cultura no se incluye en Latín I');
  state.model.value='mixto';state['count-sent'].value=7;output=run();
  assert.equal((output.match(/class="exam-question"/g)||[]).length,3,'Traducción: formas, léxico y oraciones');
@@ -107,7 +109,7 @@ function greekSuite(){
   $:id=>state[id]||(state[id]={checked:true,value:''}),
   sample:(a,n)=>a.slice(0,n),countFor:id=>Number(state['count-'+id]?.value)||5,
   greekVerifiedCorpus:rows,greekMorphologyEligible:(x,n)=>x.minUnit<=n,
-  isProperNounLemma:()=>false,greekMarkedUnits:()=>['UD7'],greekLimit:()=>scope.limit,
+  isProperNounLemma:()=>false,isExcludedExamMorphLemma:()=>false,greekMarkedUnits:()=>['UD7'],greekLimit:()=>scope.limit,
   examUnitNumber:x=>Number(String(x).replace('UD','')),
   morphConfig:()=>({decline:1,verbs:3,words:5}),
   greekSelectedItems:(pool,chosen,counts)=>({items:pool.filter(x=>pool.filter(y=>y.kind===x.kind).indexOf(x)<(counts[x.kind]||0)),covered:[7],missing:[]}),

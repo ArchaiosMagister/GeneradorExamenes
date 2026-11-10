@@ -108,6 +108,20 @@ async function checkFile(browser,filename){
    cells=>cells.map(cell=>({text:cell.textContent,lexeme:cell.querySelector('i')?.textContent,indicator:cell.querySelector('.exam-paradigm-indicator')?.textContent||''}))
   );
   assert(headings.every(h=>h.lexeme&&h.text===h.lexeme+(h.indicator?' '+h.indicator:'')),filename+' '+course+'/'+model+': formato de encabezado alterado '+JSON.stringify(headings));
+  // El espaciado es configurable en puntos; solo se dejan huecos entre oraciones.
+  const sentenceGap=await page.evaluate(()=>{
+   const control=document.getElementById('sentence-gap-pt');
+   if(!control)throw Error('No se encuentra el campo de separación entre oraciones');
+   control.value='64';control.dispatchEvent(new Event('change',{bubbles:true}));
+   return {
+    value:getComputedStyle(document.getElementById('paper')).getPropertyValue('--exam-sentence-gap').trim(),
+    latinLines:document.querySelectorAll('#paper .exam-sentences .answer').length,
+    latinCount:document.querySelectorAll('#paper .exam-sentences>li').length,
+    greekCount:document.querySelectorAll('#paper p.exam-sentence').length
+   };
+  });
+  assert.equal(sentenceGap.value,'64pt',filename+': el espaciado no llega a la vista previa');
+  assert.equal(sentenceGap.latinLines,0,filename+': persisten líneas bajo las oraciones');
   // El estilo académico se conserva en pantalla y en el medio de impresión.
   const screenLayout=await page.locator('#paper .exam-sheet').evaluate(el=>({
    font:getComputedStyle(el).fontFamily,
@@ -153,6 +167,10 @@ async function checkFile(browser,filename){
    assert(documentXml.includes('<w:document ')&&documentXml.includes('<w:body>')&&documentXml.includes('</w:document>'),
     caseLabel+': XML Word incompleto');
    assert(/Palatino/.test(styleXml),caseLabel+': fuente Palatino ausente en Word');
+   if(sentenceGap.latinCount>1||sentenceGap.greekCount>1)
+    assert(documentXml.includes('<w:spacing w:before="1280"'),caseLabel+': Word no respeta el espaciado de 64 pt entre oraciones');
+   if(course==='latin1'&&['tablas','mixto'].includes(model)&&!answers)
+    assert(!documentXml.includes('________________________________________________'),caseLabel+': el Word mantiene líneas de respuesta en las oraciones');
    if(screenLayout.tableCount){
     assert(documentXml.includes('<w:tbl>'),caseLabel+': tablas ausentes en Word');
     if(course==='greek1')assert(!documentXml.includes('<w:i/>'),caseLabel+': hay griego en cursiva en Word');
