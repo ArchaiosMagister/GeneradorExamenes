@@ -3173,7 +3173,7 @@ function setupPrimaryExamPickers(){
  const first=panel.firstElementChild;
  for(const [id,title,controlId] of [['primaryCoursePicker','Materia','course'],['primaryModelPicker','Tipo de examen','model'],['primaryUnitsPicker','Unidades','unitChoices']]){
   const field=document.getElementById(controlId)?.closest('.field');if(!field)continue;
-  const detail=document.createElement('details');detail.id=id;detail.className='exam-primary-picker';detail.open=true;
+  const detail=document.createElement('details');detail.id=id;detail.className='exam-primary-picker';
   const summary=document.createElement('summary');summary.textContent=title;detail.append(summary,field);panel.insertBefore(detail,first);
  }
 }
