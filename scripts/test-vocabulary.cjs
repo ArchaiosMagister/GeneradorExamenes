@@ -23,7 +23,7 @@ assert.match(xml,/<w:smallCaps\/><w:rFonts[^>]+><w:sz w:val="28"/);
 assert.match(xml,/<w:top w:val="single" w:sz="4"/,'Borde del título de 0,5 pt');
 assert.match(xml,/<w:i\/>[^]*amo, amavi, amatum/,'Enunciado latino en cursiva');
 assert.match(xml,/<w:sectPr><w:pgSz[^]*<w:cols w:num="1"[^]*<\/w:body>/);
-assert.match(xml,/\* xyzxyz/);
+assert.match(xml,/<w:t xml:space="preserve">\* <\/w:t>/);assert.match(xml,/xyzxyz/);
 assert.throws(()=>api.documentXml({count:1,units:[{title:'UD1',text:'ὁ θεός',rows:[]}]}),/sin analizar/);
 const greekRows=api.analyze(data,'λύω ἄγνωστον','gr1',[]);
 assert.equal(greekRows.length,2);
