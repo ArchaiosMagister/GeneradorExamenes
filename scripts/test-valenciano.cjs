@@ -34,14 +34,17 @@ assert.ok(dux.length>=1&&dux.every(x=>x.meaning==='general'),'dux es sustantivo,
 assert.ok(initial.some(x=>x.entry==='gens, gentis (f.)'),'gens debe ser femenino');
 const prefijos=JSON.parse(fs.readFileSync(path.join(root,'data/prefijos-docente.json'),'utf8'));
 assert.equal(prefijos.items.find(x=>x.prompt==='Antifaz').prefix,'ANTE-/ANTI- (anterioridad)');
+assert.equal(prefijos.items.length,286);
+assert.ok(!prefijos.items.some(x=>/ultrapuert|ultraport/i.test(x.prompt+' '+x.prompt_va)),
+ 'Debe eliminarse Ultrapuertos de las dos versiones del banco');
 const review=JSON.parse(fs.readFileSync(path.join(root,'data/revision-valenciano-pendiente.json'),'utf8'));
-assert.equal(review.items.length,1);
-assert.equal(review.items[0].id,'LAT1-REDUCO','La única decisión pendiente sigue siendo reduco');
-assert.equal(review.resolved.length,12,'Se han aplicado doce decisiones docentes');
-assert.ok(!review.resolved.some(x=>x.id==='LAT1-REDUCO'));
+assert.equal(review.items.length,0,'No deben quedar decisiones pendientes');
+assert.equal(review.resolved.length,13,'Se han aplicado las trece decisiones docentes');
+assert.ok(review.resolved.some(x=>x.id==='LAT1-REDUCO'&&x.decision.option==='c'),'La elección de reduco está registrada');
 assert.ok(review.resolved.some(x=>x.id==='PREF-ULTRAPUERTOS'&&x.decision.option==='c'));
 const choices=[
  ['importo, importavi, importatum (1ª)','traer','portar',1],
+ ['reduco, reduxi, reductum (3ª)','conducir de vuelta','conduir de tornada',1],
  ['impono, imposui, impositum (3ª)','imponer, colocar encima','imposar, posar damunt',1],
  ['καλέω','llamar','cridar, anomenar',1],
  ['μάλιστα (adv.)','muy','moltíssim, especialment',1],
@@ -65,9 +68,10 @@ for(const [entry,es,va,expectedCount] of choices){
   'La elección debe persistir también en proyectos anteriores: '+entry);
 }
 const reduco=initial.find(x=>x.entry==='reduco, reduxi, reductum (3ª)');
-assert.ok(reduco&&!reduco.meaning_va&&reduco.meaning==='traer',
- 'No decidir reduco por el docente');
-assert.equal(dictionary.forEntry(reduco,'va').value,'portar','Mantener reduco como estaba');
+assert.ok(reduco&&reduco.meaning==='conducir de vuelta'&&reduco.meaning_va==='conduir de tornada',
+ 'Conservar ambas formas de reduco elegidas por el docente');
+assert.equal(dictionary.lookup('conducir de vuelta').value,'conduir de tornada',
+ 'La equivalencia valenciana también debe funcionar sin una ficha explícita');
 
 
 const sample={entry:'πόλις, –εως',meaning:'ciudad',meaning_va:'la meua traducció'};
