@@ -639,24 +639,51 @@ function documentXml(project){
  const unanalysed=project.units.slice(0,project.count).filter(u=>u.text?.trim()&&!u.analyzed&&!u.rows?.length);
  if(unanalysed.length)throw Error('Quedan '+unanalysed.length+' unidades con texto sin analizar.');
  const escape=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&apos;'}[c]));
- const p=(s,b=false)=>'<w:p><w:pPr>'+(b?'<w:keepNext/><w:keepLines/><w:spacing w:before="160" w:after="80"/>':'<w:keepLines/><w:spacing w:after="30"/>')+'</w:pPr><w:r><w:rPr>'+(b?'<w:b/>':'')+'<w:rFonts w:ascii="Palatino Linotype" w:hAnsi="Palatino Linotype" w:cs="Palatino Linotype"/><w:sz w:val="21"/></w:rPr><w:t xml:space="preserve">'+escape(s)+'</w:t></w:r></w:p>';
- const line=(r,u)=>p((['manual','documented'].includes(r.status)?'':'* ')+formatVocabularyEntry(r,u.mode,project.course,project.lang||'es'));
- // Word balancea las dos columnas al cerrar cada sección continua.
- // Cerramos también la última unidad: sin ese salto final puede quedar toda
- // su lista en la primera columna aunque las anteriores se distribuyan bien.
- const layout=cols=>'<w:pgSz w:w="11906" w:h="16838"/><w:pgMar w:top="1417" w:bottom="1417" w:left="1417" w:right="1417"/><w:cols w:num="'+cols+'" w:space="500"/>';
- const closeUnit=()=>'<w:p><w:pPr><w:sectPr><w:type w:val="continuous"/>'+layout(2)+'</w:sectPr></w:pPr></w:p>';
+ const run=(value,{bold=false,italic=false,smallCaps=false,size=21}={})=>
+  '<w:r><w:rPr>'+(bold?'<w:b/>':'')+(italic?'<w:i/>':'')+
+  (smallCaps?'<w:smallCaps/>':'')+
+  '<w:rFonts w:ascii="Palatino Linotype" w:hAnsi="Palatino Linotype" w:cs="Palatino Linotype"/>'+
+  '<w:sz w:val="'+size+'"/><w:szCs w:val="'+size+'"/></w:rPr>'+
+  '<w:t xml:space="preserve">'+escape(value)+'</w:t></w:r>';
+ const paragraph=(runs,{heading=false,title=false}={})=>
+  '<w:p><w:pPr>'+(title?
+  '<w:keepNext/><w:keepLines/><w:jc w:val="center"/><w:spacing w:before="0" w:after="240"/>'+
+  // Bordes de medio punto: w:sz se expresa en octavos de punto.
+  '<w:ind w:left="160" w:right="160"/><w:pBdr>'+
+  ['top','left','bottom','right'].map(side=>'<w:'+side+' w:val="single" w:sz="4" w:space="8" w:color="404A56"/>').join('')+
+  '</w:pBdr>':
+  heading?'<w:keepNext/><w:keepLines/><w:spacing w:before="180" w:after="90"/>':
+  '<w:keepLines/><w:spacing w:after="45"/>')+
+  '</w:pPr>'+runs+'</w:p>';
+ const p=(value,bold=false)=>paragraph(run(value,{bold}),{heading:bold});
+ const titleNames={lat1:'Latín I',lat4:'Latín 4.º ESO',gr1:'Griego I'};
+ const title='Vocabulario por unidades de '+(titleNames[project.course]||project.course||'la asignatura');
+ const titleParagraph=paragraph(run(title,{bold:true,smallCaps:true,size:28}),{title:true});
+ const isLatin=project.course!=='gr1';
+ const line=(row,unit)=>{
+  const pending=!['manual','documented'].includes(row.status);
+  const formatted=formatVocabularyEntry(row,unit.mode,project.course,project.lang||'es');
+  if(!isLatin)return paragraph(run((pending?'* ':'')+formatted));
+  const italicEntry=displayEntry(row.entry,unit.mode);
+  if(formatted.startsWith(italicEntry)){
+   const suffix=formatted.slice(italicEntry.length);
+   return paragraph((pending?run('* '):'')+run(italicEntry,{italic:true})+run(suffix));
+  }
+  return paragraph(run((pending?'* ':'')+formatted));
+ };
+ // A4, márgenes de 2,5 cm y una columna en todo el documento.
+ const layout='<w:pgSz w:w="11906" w:h="16838"/>'+
+  '<w:pgMar w:top="1417" w:bottom="1417" w:left="1417" w:right="1417"/>'+
+  '<w:cols w:num="1" w:space="0"/>';
  const units=project.units.slice(0,project.count);
  const body=units.map(u=>{
   const all=entries(u.rows||[]),pending=all.filter(r=>!['manual','documented'].includes(r.status));
   return p(u.title,true)+all.filter(r=>['manual','documented'].includes(r.status)).map(r=>line(r,u)).join('')+
-    (pending.length?p(project.lang==='va'?'Pendents de revisió (*)':'Pendientes de revisión (*)',true)+pending.map(r=>line(r,u)).join(''):'')+
-    closeUnit();
+   (pending.length?p(project.lang==='va'?'Pendents de revisió (*)':'Pendientes de revisión (*)',true)+pending.map(r=>line(r,u)).join(''):'');
  }).join('');
- // La sección final, vacía y de una columna, fuerza la distribución equilibrada
- // de la última UD sin añadir texto ni mezclar las unidades en un único bloque.
- return '<?xml version="1.0" encoding="UTF-8"?><w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>'+
-  body+'<w:sectPr><w:type w:val="continuous"/>'+layout(1)+'</w:sectPr></w:body></w:document>';
+ return '<?xml version="1.0" encoding="UTF-8"?>'+
+  '<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>'+
+  titleParagraph+body+'<w:sectPr>'+layout+'</w:sectPr></w:body></w:document>';
 }
 window.ExaminaVocabulary={analyze,entries,displayEntry,formatVocabularyEntry,documentXml};
 function init(){
