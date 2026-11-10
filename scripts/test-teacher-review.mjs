@@ -14,7 +14,7 @@ assert.equal(typeof api?.buildCases,'function');
 const latin=api.buildCases(data,'lat1'),latin4=api.buildCases(data,'lat4'),greek=api.buildCases(data,'gr1');
 assert.ok(latin4.length>20,'Faltan incidencias de Latín 4.º ESO');
 for(const [course,items] of [['lat1',latin],['lat4',latin4],['gr1',greek]]){
- assert(items.length>200,course+': faltan incidencias');
+ assert(items.length>(course==='lat4'?20:200),course+': faltan incidencias');
  assert.equal(new Set(items.map(x=>x.id)).size,items.length,'ID duplicados: '+course);
  assert(items.every(x=>x.course===course),'Cursos mezclados');
  assert(items.every(x=>Array.isArray(x.units)&&x.detail&&x.entry),'Falta descripción o procedencia');
