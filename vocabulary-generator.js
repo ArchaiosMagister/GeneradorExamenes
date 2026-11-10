@@ -126,6 +126,74 @@ function greekReferenceForms(bank){
   'ἄρχων','gobernante');
  addIrregular(['Αἴγυπτος','Αἴγυπτου','Αἰγύπτου','Αἰγύπτου'],'Αἴγυπτος','Egipto');
 
+
+ // Partículas y preposiciones de alto rendimiento: son invariables,
+ // se respeta el enunciado docente cuando existe.
+ const closed=[
+  ['μέν','por una parte',['μὲν','μέν']],
+  ['τε','y (enclítica)',['τε']],
+  ['οὔτε','ni',['οὔτε']],
+  ['οὐδέ','ni, tampoco',['οὐδέ','οὐδὲ']],
+  ['γάρ','pues, porque',['γάρ','γὰρ']],
+  ['ὅτι','que, porque',['ὅτι']],
+  ['ἀεί','siempre',['ἀεί','ἀεὶ']],
+  ['οὔποτε','nunca',['οὔποτε']],
+  ['πολλάκις','muchas veces',['πολλάκις']],
+  ['ἐν','en, dentro de (+ dat.)',['ἐν']],
+  ['εἰς','a, hacia (+ acc.)',['εἰς']],
+  ['ἐκ','de, desde (+ gen.)',['ἐκ','ἐξ']],
+  ['ἀπό','de, desde (+ gen.)',['ἀπό','ἀπὸ']],
+  ['διά','a través de, por (+ gen./acc.)',['διά','διὰ']],
+  ['κατά','según, contra (+ gen./acc.)',['κατά','κατὰ']],
+  ['ἐπί','sobre, hacia (+ gen./dat./acc.)',['ἐπί','ἐπὶ']],
+  ['ὑπέρ','por, sobre (+ gen./acc.)',['ὑπέρ','ὑπὲρ']],
+  ['ὑπό','bajo, por (+ gen./dat./acc.)',['ὑπό','ὑπὸ']],
+  ['μετά','con, después de (+ gen./acc.)',['μετά','μετὰ']],
+  ['παρά','al lado de, de parte de (+ gen./dat./acc.)',['παρά','παρὰ']],
+  ['περί','acerca de, alrededor de (+ gen./acc.)',['περί','περὶ']],
+  ['πρός','hacia, a (+ acc.)',['πρός','πρὸς']],
+  ['σύν','con (+ dat.)',['σύν','σὺν']],
+  ['ἄνευ','sin (+ gen.)',['ἄνευ']],
+  ['ἀντί','en lugar de (+ gen.)',['ἀντί','ἀντὶ']],
+  ['πρό','antes de (+ gen.)',['πρό','πρὸ']],
+  ['πῶς','cómo',['πῶς']],
+  ['ποῦ','dónde',['ποῦ']],
+  ['ποῖ','adónde',['ποῖ']],
+  ['ἆρα','acaso (interrogación)',['ἆρα']],
+  ['μή','no (negación subjetiva)',['μή','μὴ']]
+ ];
+ for(const [entry,meaning,forms] of closed)addIrregular(forms,entry,meaning);
+ // Paradigmas pronominales irregulares que aparecen en las UDs 5–10.
+ addIrregular(['ἐγώ','ἐγὼ','ἐμοῦ','ἐμοί','ἐμοὶ','ἐμέ','ἐμὲ','ἡμεῖς','ἡμῶν','ἡμῖν','ἡμᾶς'],
+  'ἐγώ','yo; nosotros');
+ addIrregular(['σύ','σὺ','σοῦ','σοί','σοὶ','σέ','σὲ','ὑμεῖς','ὑμῶν','ὑμῖν','ὑμᾶς'],
+  'σύ','tú; vosotros');
+ addIrregular(['αὐτός','αὐτὸς','αὐτόν','αὐτὸν','αὐτοῦ','αὐτῷ','αὐτῇ','αὐτή','αὐτὴ','αὐτήν','αὐτήν',
+  'αὐτοί','αὐτοὶ','αὐτοῖς','αὐτῶν','αὐτούς','αὐτούς','αὐτά','αὐτὰ','αὐταῖς','αὐτάς'],
+  'αὐτός','él mismo; él, ella; mismo');
+ addIrregular(['οὗτος','οὗτοι','οὗτοι','οὗτοι','αὕτη','τοῦτο','τούτου','τούτου','τούτῳ',
+  'τούτον','τοῦτον','τούτους','τούτους','τούτων','τούτων','ταῦτα','ταύτην','ταύτῃ','ταύτῃ'],
+  'οὗτος','este, esta, esto');
+ addIrregular(['ἐκεῖνος','ἐκεῖνοι','ἐκείνη','ἐκείνης','ἐκείνων','ἐκείνης','ἐκεῖνον','ἐκείνου','ἐκείνους'],
+  'ἐκεῖνος','aquel, aquella, aquello');
+ addIrregular(['ὅδε','ἥδε','τόδε','τόδε','οἵδε','αἵδε','τάδε'],
+  'ὅδε','este, esta, esto');
+ addIrregular(['ὅς','ὅ','ἥ','ὅν','οὗ','ᾧ','ᾗ','ἧς','ἥν','οἵ','αἵ','ἅ','οὕς','ὧν','οἷς','αἷς'],
+  'ὅς','que, el cual');
+ addIrregular(['ὅστις','ἥτις','ὅ τι','οἵτινες','οἵτινας','ὧντινων','ὅτου'],
+  'ὅστις','quienquiera que, el que');
+ addIrregular(['πολύς','πολὺς','πολλή','πολλὴ','πολύ','πολλοὶ','πολλοί','πολλὰ','πολλά',
+  'πολλούς','πολλοὺς','πολλὰς','πολλάς','πολλαί','πολλαὶ','πολλῶν','πολλοῖς','πολλαῖς','πολλὴν','πολλῆς'],
+  'πολύς','mucho, numeroso');
+ addIrregular(['πᾶς','πᾶσα','πᾶν','πάντες','πάντες','πάντας','πάντα','πάντα','πάντων','πάντων',
+  'πασῶν','πάσαις','πάσας','πᾶσι','πᾶσιν','ἅπαντες','ἅπαντα'],
+  'πᾶς','todo');
+ addIrregular(['μέγας','μέγας','μεγάλη','μεγάλη','μέγα','μεγάλα','μεγάλαι','μεγάλαι',
+  'μεγάλων','μεγάλους','μεγάλας'],
+  'μέγας','grande');
+ addIrregular(['μαθητής','μαθητής','μαθητήν','μαθηταί','μαθηταὶ','μαθητάς','μαθητὰς',
+  'μαθητῶν','μαθητοῖς'],'μαθητής','alumno');
+
  addIrregular(['Ἀθηναῖοι','Ἀθηναίοις','Ἀθηναῖοις','Ἀθηναίων','Ἀθηναίων',
   'Ἀθηναίους','Ἀθηναίους','Ἀθηναῖος'],'Ἀθηναῖος','ateniense');
  return map;
@@ -152,7 +220,8 @@ function analyze(data,text,course,bank){
    const variants=matches.length?matches:[{entry:original.entry,meaning:''}];
    return variants.map(x=>({...c,entry:x.entry,meaning:x.meaning||''}));
   });
-  const all=[...indexedCandidates,...(greek?.get(normal)||[])];
+  const supplement=greek?.get(normal)||[];
+  const all=[...indexedCandidates.filter(x=>!(supplement.length&&!x.attested&&!x.meaning)),...supplement];
   // Preferimos la evidencia más firme para la misma entrada, sin descartar
   // una segunda lectura posible de un homógrafo.
   const compact=new Map();
@@ -167,6 +236,12 @@ function analyze(data,text,course,bank){
    const accents={ο:['ὁ'],η:['ἡ'],το:['τὸ','τό']};
    if(!accents[normal].includes(form.normalize('NFC')))
     candidates=candidates.filter(x=>x.entry!=='ὁ, ἡ, τό');
+  }
+  // 'ἀλλὰ' (conjunción) frente a 'ἄλλα' (neutro plural) son
+  // grafías diferentes a pesar de la normalización sin acentos.
+  if(lang==='grc'&&normal==='αλλα'){
+   if(/ἀλλ[άὰ]/u.test(form))candidates=candidates.filter(x=>x.lemma==='αλλα');
+   else if(/ἄλλα/u.test(form))candidates=candidates.filter(x=>x.lemma!=='αλλα');
   }
   const resolved=candidates.length===1&&candidates[0].attested;
   return {form,candidates,status:resolved?'documented':candidates.length?'review':'unknown',
