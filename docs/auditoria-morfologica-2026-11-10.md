@@ -25,6 +25,16 @@ La cobertura publicada se calcula **por lema**, no por casilla del paradigma. Te
 - **Variantes:** la entrada de `παῖς` tiene diferentes propuestas para acusativo singular y dativo plural; decidir cuáles deben enseñarse o aceptarse en un examen, sin descartar formas literarias o dialectales automáticamente.
 - **Precaución:** en los 190 casos de mera cita pueden existir adverbios, conjunciones u otras palabras invariables que **no requieren declinación**. Deben filtrarse antes de pedir paradigmas.
 
+## Contraste adicional incorporado sin intervención docente
+
+La revisión de entradas del generador ha permitido corregir **dos erratas seguras** en el vocabulario latino: `moveo, movi, motum (2ª)` y `eripio, eripui, ereptum (mx.)`. La fuente del índice se fija mediante `data/lemmas/verified-overrides.json`, para no perderlas cuando se reconstruye desde `VocabulaLatinaGraecaque`.
+
+Se han añadido **60 registros flexivos con fuente explícita** al índice de consulta: 30 de `sum`, seis de `eo`, seis de `γίγνομαι`, seis de `ἔρχομαι`, seis de `διδάσκω` y seis de `ἀκούω`. La procedencia queda en `source.externalVerification` y los registros usan la categoría 5 («contraste externo») para distinguirlos de analogías no verificadas.
+
+La ampliación es de referencia, no una autorización general para corregir exámenes ni una certificación de formas no incluidas. Se incluyen los presentes griegos indicativos documentados, pero las variantes (p. ej. γίγνῃ / γίγνει) se reservan para el criterio docente.
+
+**Las cifras de incidencias anteriores eran una instantánea de la primera pasada.** El panel recalcula las incidencias al cargar cada índice, por lo que los casos ya corregidos no vuelven a mostrarse como pendientes.
+
 ## Decisiones docentes
 
 El panel permite marcar cada caso como **aceptar variante**, **corregir/completar** o **no usar en ejercicios**, con observaciones y exportación JSON; el estado se conserva en el navegador. Las marcas no editan los bancos ni alteran la generación. La corrección de fuentes maestras y la promoción de formas requieren una fase separada con evidencias, pruebas y, si procede, actualización del vocabulario en `VocabulaLatinaGraecaque`.
