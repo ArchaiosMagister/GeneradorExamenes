@@ -146,7 +146,7 @@ function load(){
   const response=await fetch(ASSET,{cache:'force-cache'});
   if(!response.ok)throw Error('No se ha publicado todavía el índice offline (HTTP '+response.status+').');
   return response.json();
- })().then(data=>{loadedData=data;return data}).catch(error=>{loading=null;throw error});
+ })().then(data=>{loadedData=data;document.dispatchEvent(new Event('examina-lemmas-ready'));return data}).catch(error=>{loading=null;throw error});
  return loading;
 }
 function itemElement(item){
