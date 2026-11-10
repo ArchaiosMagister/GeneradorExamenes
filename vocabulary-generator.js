@@ -127,7 +127,7 @@ function greekReferenceForms(bank){
   'εἰμί','ser, estar, haber');
  addIrregular(['οὐ','οὐκ','οὐχ'],'οὐ','no');
  addIrregular(['ἀλλά','ἀλλὰ','ἀλλ'],'ἀλλά','pero, sino');
- addIrregular(['μέν','μὲν','μέν','δέ','δὲ','δέ'],'μέν… δέ','por un lado… por otro');
+ addIrregular(['μέν','μὲν','μέν','δέ','δὲ','δέ','δ'],'μέν… δέ','por un lado… por otro');
  addIrregular(['καί','καὶ'],'καί','y, también');
  // Los nombres propios solo se añaden cuando el banco no los contiene.
  addIrregular(['Διόνυσος','Διόνυσος','Διονύσου','Διονύσου'],'Διόνυσος','Dioniso');
