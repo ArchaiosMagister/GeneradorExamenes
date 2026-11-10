@@ -10,6 +10,8 @@ assert.equal(data.kind,'referencia-lematizacion-no-calificacion');
 assert.match(data.scope,/no es un diccionario exhaustivo/);
 assert.match(data.source.unimorph.lat.license,/CC BY-SA/);
 assert.ok(data.rows.lat.length>10000&&data.rows.grc.length>1400);
+assert.equal(Object.keys(data.vocabulary.lat).length,772,'Deben coincidir los lemas latinos del vocabulario docente');
+assert.equal(Object.keys(data.vocabulary.grc).length,349,'Deben coincidir los lemas griegos del vocabulario docente');
 assert.ok(data.vocabulary.lat.amo?.lat1,'Falta el lema latino del vocabulario docente');
 assert.ok(data.vocabulary.grc['λυω']?.gr1,'Falta λύω en el vocabulario griego');
 const script=fs.readFileSync(path.join(root,'offline-lemmas.js'),'utf8');
