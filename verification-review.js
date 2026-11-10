@@ -66,7 +66,7 @@ function buildCases(data,course){
  for(const [lemma] of eligible){
   const rows=lemmaRows.get(lemma)||[];
   const sources=new Set(rows.map(r=>r[3]));
-  if(!sources.has(0)&&!sources.has(1)&&!sources.has(5)){
+  if(![0,1,5,6,7].some(source=>sources.has(source))){
    if(sources.has(2)||sources.has(4)){
     const candidates=rows.filter(r=>r[3]===2||r[3]===4);
     add({lemma,kind:'candidatas',priority:2,form:candidates.slice(0,4).map(x=>x[1]).join(' · '),
