@@ -3,6 +3,9 @@ name: Publicar webapp online
 on:
   push:
     branches: [main]
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -10,45 +13,76 @@ permissions:
   pages: write
   id-token: write
 
+# Una sola publicación construye la versión estable y la vista previa.
+# Nunca se despliega el contenido de la PR en la raíz.
 concurrency:
   group: github-pages
   cancel-in-progress: false
 
 jobs:
   publish:
+    if: github.event_name != 'pull_request' || (github.event.pull_request.number == 29 && github.event.pull_request.head.repo.full_name == 'ArchaiosMagister/GeneradorExamenes')
     runs-on: ubuntu-latest
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      url: \${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Obtener la versión actual
+      - name: Obtener main (versión estable)
         uses: actions/checkout@v4
-      - name: Preparar Node.js para el índice bilingüe
+        with:
+          ref: main
+          path: stable
+          persist-credentials: false
+      - name: Obtener PR 29 (versión experimental)
+        uses: actions/checkout@v4
+        with:
+          ref: codex/vocabulario-unidades
+          path: preview
+          persist-credentials: false
+      - name: Preparar Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Construir el lematizador y la versión autónoma
+      - name: Construir versión estable
+        working-directory: stable
         run: |
           node scripts/build-greek-nominal-candidates.mjs
           node scripts/build-lemma-index.mjs
           npm run offline:build
-      - name: Preparar web publicada
+      - name: Construir y comprobar versión experimental
+        working-directory: preview
+        run: |
+          node scripts/build-greek-nominal-candidates.mjs
+          node scripts/build-lemma-index.mjs
+          npm run offline:build
+          npm run vocabulary:test
+      - name: Preparar ambas versiones para Pages
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p _site
-          cp index.html _site/index.html
-          cp offline.html _site/offline.html
-          cp offline-lemmas.js verification-review.js _site/
-          cp pwa.js manifest.webmanifest _site/
-          cp -R icons _site/icons
-          sed "s/__PWA_BUILD_VERSION__/${GITHUB_SHA}/g" sw.js > _site/sw.js
-          cp -R data _site/data
+          mkdir -p _site/pr-29
+          publish_app() {
+            local source="$1" dest="$2" version="$3"
+            cp "$source/index.html" "$dest/index.html"
+            cp "$source/offline.html" "$dest/offline.html"
+            cp "$source/offline-lemmas.js" "$source/verification-review.js" "$dest/"
+            cp "$source/pwa.js" "$source/manifest.webmanifest" "$dest/"
+            if [[ -f "$source/vocabulary-generator.js" ]]; then
+              cp "$source/vocabulary-generator.js" "$dest/"
+            fi
+            cp -R "$source/icons" "$dest/icons"
+            cp -R "$source/data" "$dest/data"
+            sed "s/__PWA_BUILD_VERSION__/$version/g" "$source/sw.js" > "$dest/sw.js"
+            test -s "$dest/index.html"
+            test -s "$dest/offline.html"
+            test -s "$dest/sw.js"
+            test -s "$dest/icons/icon-512.png"
+          }
+          publish_app stable _site "\${{ github.sha }}"
+          publish_app preview _site/pr-29 "$(git -C preview rev-parse HEAD)"
+          # Evitar que el SW experimental comparta/borre la caché de main.
+          sed -i 's/examina-pwa-/examina-preview-pr29-/g' _site/pr-29/sw.js
           touch _site/.nojekyll
-          test -s _site/index.html
-          test -s _site/offline.html
-          test -s _site/sw.js
-          test -s _site/icons/icon-512.png
       - name: Configurar GitHub Pages
         uses: actions/configure-pages@v5
       - name: Preparar archivos de Pages
