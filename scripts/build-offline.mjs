@@ -23,6 +23,10 @@ export async function renderOffline(root=projectRoot){
  const noHead=metadata.reduce((html,tag)=>html.replace(tag,''),sourceHtml);
  const noPanel=noHead.slice(0,noHead.indexOf(begin))+noHead.slice(noHead.indexOf(end)+end.length);
  let html=noPanel.replace('<script src="pwa.js" defer></script>','');
+ const vocabularyModule=await readFile(resolve(root,'vocabulary-generator.js'),'utf8');
+ const vocabularyExternal='<script src="vocabulary-generator.js" defer></script>';
+ if(!html.includes(vocabularyExternal))throw new Error('Falta el generador de vocabulario independiente');
+ html=html.replace(vocabularyExternal,'<script>'+vocabularyModule.replace(/<\/script/gi,'<\\/script')+'</script>');
  const latin=JSON.parse(await readFile(resolve(root,'data/unimorph/lat-v.json'),'utf8'));
  if(!Array.isArray(latin.rows)||!latin.rows.length||
     !latin.rows.every(row=>Array.isArray(row)&&row.length>=4)){
