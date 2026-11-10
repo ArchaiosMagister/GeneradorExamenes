@@ -29,6 +29,7 @@ jobs:
           node-version: '22'
       - name: Construir el lematizador y la versión autónoma
         run: |
+          node scripts/build-greek-nominal-candidates.mjs
           node scripts/build-lemma-index.mjs
           npm run offline:build
       - name: Preparar web publicada
