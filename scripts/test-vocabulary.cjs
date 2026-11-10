@@ -56,7 +56,13 @@ assert.equal(contrast.find(r=>r.form==='ὁ')?.status,'documented');
 assert.equal(contrast.find(r=>r.form==='ὅ')?.status,'documented');
 
 const misspelled=api.analyze(data,'ἄνρωπος','gr1',priorityBank);
-assert.equal(misspelled[0].status,'unknown','No corregir silenciosamente errores ortográficos de los textos');
+assert.equal(misspelled[0].status,'review','La errata debe quedar señalada, no aceptada');
+assert.match(misspelled[0].warning,/ἄνθρωπος/);
+const newVerbs=api.analyze(data,'ἐπαίδευσαν ἔπλευσαν ἐπεπυρεύκεσαν ἅπερ','gr1',priorityBank);
+for(const form of ['ἐπαίδευσαν','ἔπλευσαν','ἐπεπυρεύκεσαν','ἅπερ'])
+ assert.equal(newVerbs.find(r=>r.form===form)?.status,'documented','Forma griega contrastada '+form);
+
+assert.notEqual(misspelled[0].status,'documented','No corregir silenciosamente errores ortográficos');
 console.log('Griego prioritario: ateniense, nominales, presente, artículo y formas de εἰμί reconocidos.');
 
 const originalHTML=fs.readFileSync(path.join(root,'index.html'),'utf8');
