@@ -570,6 +570,7 @@ const latinSharedBank=(()=>{
 })();
 function generateLatinMorphologyReference(){
  const chosen=selectedUnits(),cfg=morphConfig(),va=$('lang').value==='va';
+ if(examMorphQuotasActive())cfg.words=examMorphQuotaCount();
  const t=(es,vl)=>va?vl:es;
  const nouns=stickyExamRows('decl',()=>sample(latinExamNominals(chosen),cfg.decline));
  const verbPool=latinSharedBank.paradigms(currentCourse(),chosen,'verb').filter(x=>Array.isArray(x.p.forms)&&x.p.forms.length===6);
@@ -745,7 +746,7 @@ function generate(){
   return true;
  };
  const missing=message=>'<p class="small no-print">'+esc(message)+'</p>';
- const formsCount=countFor('forms');
+ const formsCount=examMorphQuotasActive()?examMorphQuotaCount():countFor('forms');
  if(!translation&&examQuestionEnabled('decl')){
   const nouns=stickyExamRows('decl',()=>sample(latinExamNominals(chosen),Math.min(3,countFor('decl'))));
   selectedMorph.push(...nouns.map(x=>x.x));
@@ -1480,6 +1481,7 @@ function greekQuestionLabel(kind){if(kind==='sentences'&&$('model').value==='tra
 function greekPoints(kind){const v=Number($('greek-points-'+kind).value);if(kind==='pronouns'&&$('model').value==='complete'&&examQuestionEnabled('pronouns')&&v===0)return 1;return Number.isFinite(v)?Math.max(0,Math.min(100,v)):0}
 function generateGreekMorphologyFixed(){
  const marked=greekMarkedUnits(),limit=greekLimit(),cfg=morphConfig(),va=$('lang').value==='va';
+ if(examMorphQuotasActive())cfg.words=examMorphQuotaCount();
  const t=(es,vl)=>va?vl:es;
  const eligible=greekVerifiedCorpus.filter(x=>x.verified&&greekMorphologyEligible(x,limit)&&
   !(x.kind==='declension'&&x.lemmas.some(isProperNounLemma)));
