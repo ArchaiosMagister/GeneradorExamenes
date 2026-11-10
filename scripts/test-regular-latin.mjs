@@ -33,4 +33,28 @@ assert.equal(proposeRegularLatin('Marius','Marius, –i').length,0,'Vocativo en 
 assert.equal(proposeRegularLatin('rex','rex, regis (m.)').length,0,'No adivinar tercera declinación');
 assert.equal(proposeRegularLatin('bonus','bonus, –a, –um').length,0,'No tratar adjetivos como sustantivos');
 assert.equal(proposeRegularLatin('frequenter','frequenter (adv.)').length,0,'No flexionar invariables');
-console.log('Generación latina regular comprobada por 5 conjugaciones y dos declinaciones; exclusiones seguras.');
+assert.deepEqual(row('rex','rex, regis (m.)','N;GEN;SG'),['regis']);
+assert.deepEqual(row('rex','rex, regis (m.)','N;DAT;SG'),['regi']);
+assert.deepEqual(row('rex','rex, regis (m.)','N;ACC;SG'),['regem']);
+assert.deepEqual(row('rex','rex, regis (m.)','N;NOM;PL'),['reges']);
+assert.deepEqual(row('rex','rex, regis (m.)','N;ABL;PL'),['regibus']);
+assert.equal(proposeRegularLatin('rex','rex, regis (m.)').length,11);
+assert.equal(row('rex','rex, regis (m.)','N;GEN;PL').length,0,
+ 'No adivinar genitivo plural de temas consonánticos frente a temas en -i');
+assert.equal(row('pars','pars, partis (f.)','N;GEN;PL').length,0,
+ 'No inventar -um por defecto en los temas mixtos');
+assert.deepEqual(row('pars','pars, partis (f.)','N;DAT;SG'),['parti']);
+assert.deepEqual(row('virtus','virtus, virtutis (f.)','N;ACC;PL'),['virtutes']);
+assert.equal(proposeRegularLatin('Hannibal','Hannibal, Hannibalis (m.)').length,6,
+ 'No inventar plural de antropónimos');
+assert.equal(proposeRegularLatin('bos','bos, bovis (m.)').length,0,
+ 'Bos, bovis tiene dativo y ablativo plural excepcionales');
+assert.equal(proposeRegularLatin('civis','civis, civis (m.)').length,0,
+ 'No inferir la flexión de los parisilábicos solo a partir del genitivo');
+assert.equal(proposeRegularLatin('nivis','nivis, –is (f.)').length,0,
+ 'No inventar un tema desde un genitivo abreviado');
+assert.equal(proposeRegularLatin('rex','rex, regis').length,0,
+ 'La tercera necesita enunciado de género claro');
+assert.equal(proposeRegularLatin('mare','mare, maris (n.)').length,0,
+ 'Neutros de tema en -i requieren paradigma propio');
+console.log('Generación latina regular comprobada en 5 conjugaciones y 3 declinaciones; genitivos dudosos y excepciones excluidos.');
