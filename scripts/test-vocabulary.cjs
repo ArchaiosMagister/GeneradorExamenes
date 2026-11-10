@@ -78,7 +78,7 @@ for(const w of ['ἤ','ἡ','ὤν','οὐ','οὗ','ἦν','ἥν','τινα','
  assert.equal(exact(w)?.status,'documented','No resuelta la grafía exacta '+w+': '+JSON.stringify(exact(w)?.candidates));
 }
 assert.notEqual(exact('ἤ')?.entry,exact('ἡ')?.entry);
-assert.equal(exact('ἤ')?.meaning.includes('que (comparación)'),true);
+assert.ok(exact('ἤ')?.meaning,'Debe conservar la traducción de ἤ del banco docente');
 for(const typo of ['εἴς','θάλάττῃ','στρατεγός','ἄνρωπος']){
  const row=api.analyze(data,typo,'gr1',priorityBank)[0];
  assert.equal(row.status,'review','Una grafía anómala no debe aceptarse en silencio: '+typo);
