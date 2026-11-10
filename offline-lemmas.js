@@ -74,6 +74,19 @@ function query(data,{course='lat1',mode='form',text='',max=100}={}){
   a.surface.localeCompare(b.surface,'es')||a.tags.localeCompare(b.tags));
  return {total:items.length,items:items.slice(0,max),invalid:false};
 }
+function coverage(data,course){
+ if(!names[course])throw Error('Curso desconocido');
+ const lang=langOf(course);
+ const all=new Set(Object.keys(data.vocabulary[lang]||{}).filter(lemma=>data.vocabulary[lang][lemma][course]));
+ const attested=new Set(),proposed=new Set();
+ for(const [lemma,, ,source]of data.rows[lang]){
+  if(!all.has(lemma))continue;
+  if(source===0||source===1)attested.add(lemma);
+  if(source===2)proposed.add(lemma);
+ }
+ return {lemmas:all.size,documented:attested.size,
+  proposed:proposed.size,onlyCitation:[...all].filter(k=>!attested.has(k)&&!proposed.has(k)).length};
+}
 function uniqueLemmaFromData(data,course,form){
  const found=query(data,{course,mode:'form',text:form,max:Number.MAX_SAFE_INTEGER});
  if(found.invalid||!found.items.length)return null;
@@ -172,6 +185,7 @@ function init(){
   '<label for="offlineLemmaInput">Forma o lema</label>'+
   '<input id="offlineLemmaInput" type="text" maxlength="90" autocomplete="off" spellcheck="false" placeholder="amābam / λόγου">'+
   '<button id="offlineLemmaSearch" type="button" class="secondary">Consultar sin conexión</button>'+
+  '<p id="offlineLemmaCoverage" class="hint" aria-live="polite">Preparando resumen de cobertura…</p>'+
   '<p id="offlineLemmaStatus" class="hint" role="status" aria-live="polite">Disponible desde los datos incluidos en la versión autónoma.</p>'+
   '<div id="offlineLemmaResults" class="lemma-results"></div>'+
   '<p class="hint">Fuentes: UniMorph (CC BY-SA 3.0), paradigmas y vocabulario docentes. Las formas calculadas se distinguen como propuestas sin verificar y nunca se usan para corregir exámenes.</p>';
@@ -184,10 +198,20 @@ function init(){
   '#offlineLemmaPanel .lemma-meta{font-size:12px;opacity:.8}'+
   '@media print{#offlineLemmaPanel{display:none!important}}';
  document.head.append(style);
+ async function showCoverage(){
+  const target=document.getElementById('offlineLemmaCoverage');
+  try{
+   const x=coverage(await load(),document.getElementById('offlineLemmaCourse').value);
+   target.textContent=x.lemmas+' lemas · '+x.documented+' con formas documentadas · '+
+    x.proposed+' con modelos provisionales · '+x.onlyCitation+' solo con entrada de vocabulario.';
+  }catch(error){target.textContent='El resumen de cobertura no está disponible: '+error.message}
+ }
+ document.getElementById('offlineLemmaCourse').addEventListener('change',showCoverage);
+ showCoverage();
  document.getElementById('offlineLemmaSearch').addEventListener('click',submit);
  document.getElementById('offlineLemmaInput').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();submit()}});
 }
-window.ExaminaOfflineLemmatizer={normalize,describe,query,uniqueLemmaFromData,uniqueEntry,load,init};
+window.ExaminaOfflineLemmatizer={normalize,describe,query,coverage,uniqueLemmaFromData,uniqueEntry,load,init};
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);
 else init();
 })();
