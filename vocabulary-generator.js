@@ -601,12 +601,44 @@ function displayEntry(entry,mode){
  const m=entry.match(/\((?:[1-4]ª|mx\.|irr\.)\)/);
  return m?head(entry)+' '+m[0]:entry;
 }
+// Formato filológico de la exportación, sin alterar la base ni el JSON.
+// Traducción de un único lema griego: comillas simples. Locuciones con
+// varias palabras griegas (μέν… δέ): comillas dobles.
+function formatVocabularyEntry(row,mode,course){
+ let entry=displayEntry(row.entry,mode);
+ if(course==='gr1'){
+  const raw=entry.trim();
+  // Etiquetas gramaticales para invariables no etiquetadas en la fuente.
+  const types={
+   'καί':'conj.','καί':'conj.','τε':'part.','δέ':'part.',
+   'μέν':'part.','μὲν':'part.','δὲ':'part.',
+   'ὅτι':'conj.','ὦ':'interj.','οὐ':'adv.',
+   'οὐκ':'adv.','οὐχ':'adv.','εἰς':'prep.',
+   'ἐν':'prep.','ἐκ':'prep.','ἐξ':'prep.',
+   'κακῶς':'adv.','καλῶς':'adv.',
+   'οὐ μόνον ἀλλὰ καὶ':'loc. conj.'
+  };
+  if(!/\((?:adv\.|conj\.|part\.|prep\.|interj\.|loc\.)/.test(raw)){
+   const type=types[raw.normalize('NFC')];
+   if(type)entry+=' ('+type+')';
+  }
+ }
+ if(!row.meaning)return entry;
+ const meaning=String(row.meaning).trim().replace(/^[‘’'"]+|[‘’'"]+$/g,'');
+ const pieces=meaning.split(/[’']\s*,\s*[‘']/).map(x=>x.trim()).filter(Boolean);
+ const phrase=/\S(?:\s+|…)\S/u.test(entry.split(' (')[0]) &&
+  !/^(?:ὁ,\s*ἡ|οὐ,\s*οὐκ)/u.test(entry);
+ const quote=phrase?'"':"'";
+ const quoted=phrase?quote+pieces.join(', ')+quote:
+  pieces.map(x=>"'"+x+"'").join(', ');
+ return entry+': '+quoted;
+}
 function documentXml(project){
  const unanalysed=project.units.slice(0,project.count).filter(u=>u.text?.trim()&&!u.analyzed&&!u.rows?.length);
  if(unanalysed.length)throw Error('Quedan '+unanalysed.length+' unidades con texto sin analizar.');
  const escape=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&apos;'}[c]));
  const p=(s,b=false)=>'<w:p><w:pPr>'+(b?'<w:keepNext/><w:keepLines/><w:spacing w:before="160" w:after="80"/>':'<w:keepLines/><w:spacing w:after="30"/>')+'</w:pPr><w:r><w:rPr>'+(b?'<w:b/>':'')+'<w:rFonts w:ascii="Palatino Linotype" w:hAnsi="Palatino Linotype" w:cs="Palatino Linotype"/><w:sz w:val="21"/></w:rPr><w:t xml:space="preserve">'+escape(s)+'</w:t></w:r></w:p>';
- const line=(r,u)=>p((['manual','documented'].includes(r.status)?'':'* ')+displayEntry(r.entry,u.mode)+(r.meaning?' — '+r.meaning:''));
+ const line=(r,u)=>p((['manual','documented'].includes(r.status)?'':'* ')+formatVocabularyEntry(r,u.mode,project.course));
  // Word balancea las dos columnas al cerrar cada sección continua.
  // Cerramos también la última unidad: sin ese salto final puede quedar toda
  // su lista en la primera columna aunque las anteriores se distribuyan bien.
@@ -624,7 +656,7 @@ function documentXml(project){
  return '<?xml version="1.0" encoding="UTF-8"?><w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>'+
   body+'<w:sectPr><w:type w:val="continuous"/>'+layout(1)+'</w:sectPr></w:body></w:document>';
 }
-window.ExaminaVocabulary={analyze,entries,displayEntry,documentXml};
+window.ExaminaVocabulary={analyze,entries,displayEntry,formatVocabularyEntry,documentXml};
 function init(){
  const $=id=>document.getElementById(id),storage='examina_vocabulary_project_v1';
  let project={count:1,course:'lat1',units:[]},selected=0;
@@ -649,7 +681,7 @@ function init(){
    for(const [field,name] of [['entry','Enunciado'],['meaning','Traducción']]){
     const lab=document.createElement('label');lab.textContent=name;const input=document.createElement('input');input.value=r[field];input.onchange=()=>{r[field]=input.value;r.lemma=head(r.entry);r.status='manual';save();render()};lab.append(input);box.append(lab);
    }
-   const preview=document.createElement('p');preview.textContent='Vista de exportación: '+displayEntry(r.entry,unit().mode);box.append(preview);target.append(box);
+   const preview=document.createElement('p');preview.textContent='Vista de exportación: '+formatVocabularyEntry(r,unit().mode,project.course);box.append(preview);target.append(box);
   }
  }
  $('vgCount').onchange=()=>{const n=Number($('vgCount').value);if(!Number.isInteger(n)||n<1||n>100){status('Elige entre 1 y 100 unidades.');return}project.count=n;selected=Math.min(selected,n-1);render();save()};
