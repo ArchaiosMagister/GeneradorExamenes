@@ -39,7 +39,7 @@ function slot(form,kind){
  if(cs.length!==1||ns.length!==1||ss.length>(kind==='N'?1:1))return null;
  if(kind==='ADJ'&&ss.length!==1)return null;
  const surface=String(form.form||'').trim();
- if(!/^[\u0370-\u03ff\u1f00-\u1fff]+$/u.test(surface)||surface.length>40)return null;
+ if(!/^[\u0370-\u03ff\u1f00-\u1fff\p{M}]+$/u.test(surface)||surface.length>40)return null;
  // Preserve source orthography, but exclude accentless forms (not acceptable Greek display).
  if(!/[\u0300\u0301\u0342]/u.test(surface.normalize('NFD')))return null;
  return {tag:[kind,cas[cs[0]],num[ns[0]],...(kind==='ADJ'?[sex[ss[0]]]:[])].join(';'),surface};
