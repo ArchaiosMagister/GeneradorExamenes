@@ -68,6 +68,10 @@ export async function renderOffline(root=projectRoot){
  if(!html.includes(marker))throw new Error('No existe el script de la webapp');
  const offlineModule=await readFile(resolve(root,'offline-lemmas.js'),'utf8');
  const reviewModule=await readFile(resolve(root,'verification-review.js'),'utf8');
+ const cultureModule=await readFile(resolve(root,'culture-lat4.js'),'utf8');
+ const cultureExternal='<script src="culture-lat4.js"></script>';
+ if(!html.includes(cultureExternal))throw new Error('Falta banco de cultura en index.html');
+ html=html.replace(cultureExternal,'<script>'+cultureModule.replace(/<\/script/gi,'<\\/script')+'</script>');
  const reviewExternal='<script src="verification-review.js" defer></script>';
  if(!html.includes(reviewExternal))throw new Error('Falta el panel de revisión filológica');
  const reviewScript='<script>'+reviewModule.replace(/<\/script/gi,'<\\/script')+'</script>';
