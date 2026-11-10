@@ -407,19 +407,43 @@ $('importExamVocab').onclick=()=>{let count=0,bad=0;for(const line of $('examVoc
 $('clearExamVocab').onclick=()=>{if(!confirm('¿Vaciar el vocabulario exigible de este curso?'))return;examRequired=examRequired.filter(x=>x.course!==currentCourse());saveRequired();generate()};
 function examUnitNumber(s){let m=String(s).match(/\d+/);return m?Number(m[0]):null}
 function isRequired(entry,chosen){let key=examKey(entry),max=Math.max(0,...chosen.map(examUnitNumber).filter(x=>x!==null));return examRequired.some(x=>x.course===currentCourse()&&x.key===key&&examUnitNumber(x.unit)!==null&&examUnitNumber(x.unit)<=max)}
+// Reconocimiento del vocabulario final: formas documentadas por el enunciado del banco.
+// Las coincidencias múltiples entre lemas distintos siguen requiriendo revisión.
+function verifiedLatinAdjectiveForms(raw){
+ const entry=mNormalize(raw).replace(/\s+/g,' ');
+ const match=entry.match(/^([a-z]+),\s*-a,\s*-um(?:\s|$)/i);
+ if(!match||!match[1].endsWith('us'))return [];
+ const stem=match[1].slice(0,-2);
+ // Los paradigmas especiales no se infieren por analogía.
+ if(/^(meus|tuus|suus|noster|vester|alter|alius|unus|solus|totus|ullus|nullus|uter)$/i.test(match[1]))return [];
+ return [...new Set([
+  ...['us','i','o','um','e','o','i','orum','is','os','i','is'].map(x=>stem+x),
+  ...['a','ae','ae','am','a','a','ae','arum','is','as','ae','is'].map(x=>stem+x),
+  ...['um','i','o','um','um','o','a','orum','is','a','a','is'].map(x=>stem+x)
+ ])];
+}
+function verifiedLatinSumForms(raw){
+ if(!/^sum,\s*fui\s*,\s*[-–]\s*\(irr\.\)/i.test(mNormalize(raw)))return [];
+ return ['sum','es','est','sumus','estis','sunt','eram','eras','erat','eramus','eratis','erant',
+ 'ero','eris','erit','erimus','eritis','erunt','fui','fuisti','fuit','fuimus','fuistis','fuerunt',
+ 'fueram','fueras','fuerat','fueramus','fueratis','fuerant','fuero','fueris','fuerit',
+ 'fuerimus','fueritis','fuerint','sim','sis','sit','simus','sitis','sint','esse'];
+}
 function findLemmaForForm(token,entries){
- const k=normLex(token);if(!k)return null;
- // Una forma homógrafa puede ser lema de una palabra y forma flexiva de otra.
- // No se debe elegir silenciosamente la primera coincidencia del vocabulario.
+ const target=normLex(token);if(!target)return null;
  const matches=new Map();
- for(const x of entries){
-  if(examKey(x.entry)===k){matches.set(examKey(x.entry),x);continue}
-  if(currentCourse()==='greek1')continue;
-  const paradigm=mNoun(x.entry)||mVerb(x.entry)||adjective(x);
-  if(!paradigm)continue;
-  const forms=paradigm.forms||paradigm.tenses?.flatMap(t=>t[1])||[];
-  if(forms.flat(Infinity).some(form=>normLex(form)===k))matches.set(examKey(x.entry),x);
-  if(matches.size>1)return null;
+ for(const row of entries){
+  const key=examKey(row.entry);
+  if(!key)continue;
+  let found=key===target;
+  if(!found&&currentCourse()!=='greek1'){
+   const paradigm=mNoun(row.entry)||mVerb(row.entry);
+   const forms=paradigm?.forms||paradigm?.tenses?.flatMap(t=>t[1])||[];
+   found=forms.flat(Infinity).some(form=>normLex(form)===target);
+   if(!found)found=verifiedLatinAdjectiveForms(row.entry).some(form=>normLex(form)===target);
+   if(!found)found=verifiedLatinSumForms(row.entry).some(form=>normLex(form)===target);
+  }
+  if(found){matches.set(key,row);if(matches.size>1)return null}
  }
  return matches.size===1?[...matches.values()][0]:null;
 }
