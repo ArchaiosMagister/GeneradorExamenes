@@ -27,6 +27,8 @@ En **Laboratorio y consulta morfológica**, abre **Lematizador del vocabulario �
 
 Los lemas no encontrados se señalan como **sin registro**, no se inventa una respuesta. Las coincidencias ambiguas conservan todas sus lecturas documentadas, incluidas las que difieren únicamente en el análisis.
 
+Además de la consulta manual, el vocabulario final de los exámenes utiliza el índice local como **segunda oportunidad de identificación**: cuando los modelos anteriores no reconocen una forma y el índice devuelve exactamente **un lema**, se busca su ficha en el banco de vocabulario del curso. Solo se añade cuando hay una única ficha coincidente; si hay homonimia, múltiples fichas o falta de datos, continúa la advertencia de revisión. Esta ayuda no elige análisis morfológicos para corregir exámenes ni inventa traducciones.
+
 El funcionamiento offline **no utiliza Internet**: el generador `scripts/build-offline.mjs` incrusta el índice bilingüe y el módulo de consulta en `offline.html`, junto con el banco latino que ya existía.
 
 ## Reproducir los datos
