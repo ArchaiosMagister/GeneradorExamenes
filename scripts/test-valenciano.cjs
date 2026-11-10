@@ -35,7 +35,40 @@ assert.ok(initial.some(x=>x.entry==='gens, gentis (f.)'),'gens debe ser femenino
 const prefijos=JSON.parse(fs.readFileSync(path.join(root,'data/prefijos-docente.json'),'utf8'));
 assert.equal(prefijos.items.find(x=>x.prompt==='Antifaz').prefix,'ANTE-/ANTI- (anterioridad)');
 const review=JSON.parse(fs.readFileSync(path.join(root,'data/revision-valenciano-pendiente.json'),'utf8'));
-assert.equal(review.items.length,13);
+assert.equal(review.items.length,1);
+assert.equal(review.items[0].id,'LAT1-REDUCO','La única decisión pendiente sigue siendo reduco');
+assert.equal(review.resolved.length,12,'Se han aplicado doce decisiones docentes');
+assert.ok(!review.resolved.some(x=>x.id==='LAT1-REDUCO'));
+assert.ok(review.resolved.some(x=>x.id==='PREF-ULTRAPUERTOS'&&x.decision.option==='c'));
+const choices=[
+ ['importo, importavi, importatum (1ª)','traer','portar',1],
+ ['impono, imposui, impositum (3ª)','imponer, colocar encima','imposar, posar damunt',1],
+ ['καλέω','llamar','cridar, anomenar',1],
+ ['μάλιστα (adv.)','muy','moltíssim, especialment',1],
+ ['Ἀθηναῖος, –α, –ον','ateniense','atenenc/atenenca',1],
+ ['στρατηγός, –ου','estratego','estrateg (general)',2],
+ ['Gērmānus, –a, –um','germano/a','germànic/germànica',1],
+ ['Paulus, –i','Paulo','Paulus',1],
+ ['Callus, –i','Calo’ (gentilicio)','Calo (gentilici)',1],
+ ['Orgetorix, –igis','Orgétorix','Orgétorix',1],
+ ['Ἱέραξ, –ακος (ὁ)','Hiérax','Hiérax',1]
+];
+for(const [entry,es,va,expectedCount] of choices){
+ const selected=initial.filter(x=>x.entry===entry);
+ assert.equal(selected.length,expectedCount,'Número de entradas incorrecto: '+entry);
+ for(const item of selected){
+  assert.equal(item.meaning,es,'No debe cambiar el castellano salvo elección expresa: '+entry);
+  assert.equal(item.meaning_va,va,'No se ha guardado el valenciano docente: '+entry);
+  assert.equal(dictionary.forEntry(item,'va').value,va,'Glosa valenciana incorrecta: '+entry);
+ }
+ assert.equal(dictionary.forEntry({entry,meaning:es},'va').value,va,
+  'La elección debe persistir también en proyectos anteriores: '+entry);
+}
+const reduco=initial.find(x=>x.entry==='reduco, reduxi, reductum (3ª)');
+assert.ok(reduco&&!reduco.meaning_va&&reduco.meaning==='traer',
+ 'No decidir reduco por el docente');
+assert.equal(dictionary.forEntry(reduco,'va').value,'portar','Mantener reduco como estaba');
+
 
 const sample={entry:'πόλις, –εως',meaning:'ciudad',meaning_va:'la meua traducció'};
 assert.equal(dictionary.forEntry(sample,'va').value,'la meua traducció','La corrección docente valenciana tiene prioridad');
