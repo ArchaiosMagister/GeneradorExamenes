@@ -43,6 +43,26 @@ const misspelled=api.analyze(data,'ἄνρωπος','gr1',priorityBank);
 assert.equal(misspelled[0].status,'unknown','No corregir silenciosamente errores ortográficos de los textos');
 console.log('Griego prioritario: ateniense, nominales, presente, artículo y formas de εἰμί reconocidos.');
 
+const originalHTML=fs.readFileSync(path.join(root,'index.html'),'utf8');
+const bankStart=originalHTML.indexOf('let vocab=')+10;
+const sourceBank=JSON.parse(originalHTML.slice(bankStart,originalHTML.indexOf(';',bankStart)));
+for(const m of originalHTML.matchAll(/vocab\.push\(\.\.\.(\[.*\])\);/g))sourceBank.push(...JSON.parse(m[1]));
+const GreekBank=sourceBank.filter(x=>x.course==='greek1');
+const priorityFixture=JSON.parse(fs.readFileSync(path.join(root,'tests/greek-priority-forms.json'),'utf8'));
+assert.equal(priorityFixture.units.length,14);
+const originals=[...new Set(priorityFixture.units.flatMap(u=>u.forms))];
+const benchmark=api.analyze(data,originals.join('\n'),'gr1',GreekBank);
+const success=benchmark.filter(r=>r.status==='documented');
+const review=benchmark.filter(r=>r.status==='review');
+const unknown=benchmark.filter(r=>r.status==='unknown');
+assert.ok(success.some(r=>r.meaning==='ateniense'), 'Debe identificar ateniense usando el banco propio');
+assert.ok(success.length>100,'El corpus prioritario sigue sin cobertura nominal básica');
+console.log('Corpus docente Griego I / pendientes anteriores:',JSON.stringify({
+ total:originals.length,formasDistintasNormalizadas:benchmark.length,
+ reconocidas:success.length,revision:review.length,desconocidas:unknown.length
+}));
+
+
 console.log('Vocabulario: prioridad docente, deduplicación por UD, ambigüedad, desconocidas, griego y XML de dos columnas correctos.');
 (async()=>{
  const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
