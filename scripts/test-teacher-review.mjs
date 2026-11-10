@@ -32,6 +32,10 @@ for(const lemma of ['γιγνομαι','ερχομαι','διδασκω','ακο
   'No debería figurar como sin flexión tras el contraste: '+lemma);
 }
 assert(greek.some(x=>x.lemma==='παισ'&&x.kind==='variantes'),'Falta revisión de variantes de παῖς');
+assert(!latin.some(x=>x.lemma==='non'&&x.kind==='sin-flexion'),
+ 'Las palabras invariables no deben requerir flexión latina');
+assert(!greek.some(x=>x.lemma==='αει'&&x.kind==='sin-flexion'),
+ 'Las palabras invariables no deben requerir flexión griega');
 assert(latin.some(x=>x.kind==='homografia'),'Se han perdido las homografías');
 assert(greek.some(x=>x.kind==='candidatas'),'Se han promocionado indebidamente candidatos a verificados');
 console.log('Revisión filológica: '+latin.length+' incidencias de Latín I y '+greek.length+' de Griego I. Sin cambios automáticos en exámenes.');
