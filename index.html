@@ -1181,7 +1181,8 @@ function generate(){
   const picked=stickyExamRows('culture',()=>sample(pool,4));
   const html=picked.length?'<ol class="task" type="a">'+picked.map(x=>{
    const question=va&&x.question_va?x.question_va:x.question;
-   const opts=x.type==='mc'&&x.options?.length?'<ol type="a">'+x.options.map(o=>'<li>'+esc(o)+'</li>').join('')+'</ol>':'';
+   const mcOptions=va&&x.options_va?.length?x.options_va:x.options;
+   const opts=x.type==='mc'&&mcOptions?.length?'<ol type="a">'+mcOptions.map(o=>'<li>'+esc(o)+'</li>').join('')+'</ol>':'';
    return '<li>'+esc(question)+opts+'<div class="answer"></div></li>';
   }).join('')+'</ol>':missing('Banco de cultura pendiente de completar. No se han inventado preguntas.');
   add(t('Cultura clásica: responde a las preguntas.','Cultura clàssica: respon les preguntes.'),
