@@ -94,7 +94,7 @@ try{
   if(!lexicon[lemma]?.gr1){stats.unmatchedEntries++;continue}
   const teacherHead=lexicon[lemma].gr1.entry.split(',')[0].trim();
   if(lexicalNorm(r.word)!==lexicalNorm(teacherHead)){stats.unmatchedEntries++;continue}
-  const kind=r.pos='noun'?'N':'ADJ',id=lemma+'|'+kind;
+  const kind=r.pos==='noun'?'N':'ADJ',id=lemma+'|'+kind;
   if(!grouped.has(id))grouped.set(id,{lemma,word:r.word,kind,cells:new Map()});
   stats.matched++;
   const group=grouped.get(id);
@@ -123,7 +123,7 @@ for(const g of grouped.values()){
   if(vals.size!==1){output.stats.ambiguousCells++;continue}
   cells.set(tag,vals);
  }
- if(!matchesTeacher(g.lemma,g.kind,cells)){if(fixture)console.log('RECHAZO FICHA',g.lemma,g.kind,lexicon[g.lemma]?.gr1?.entry,[...cells.keys()].slice(0,5));output.stats.lexicalMismatch++;continue}
+ if(!matchesTeacher(g.lemma,g.kind,cells)){output.stats.lexicalMismatch++;continue}
  const min=g.kind==='N'?7:9;
  if(cells.size<min){output.stats.insufficient++;continue}
  let conflicts=0,matched=0;
