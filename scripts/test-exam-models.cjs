@@ -15,9 +15,9 @@ const greekCode=part('const greekModes=','// Vista del temario:')+
  part('function generateGreekExam(){','const legacyUpdateUnits=');
 
 function latinSuite(){
- const noun={entry:'puella, -ae',meaning:'niña'};
- const adj={entry:'bonus, -a, -um',meaning:'bueno'};
- const vb={entry:'amo, amavi, amatum (1ª)',meaning:'amar'};
+ const noun={entry:'puella, -ae',meaning:'niña',unit:'UD3'};
+ const adj={entry:'bonus, -a, -um',meaning:'bueno',unit:'UD2'};
+ const vb={entry:'amo, amavi, amatum (1ª)',meaning:'amar',unit:'UD3'};
  const state={model:{value:'tablas'},lang:{value:'es'},paper:{innerHTML:'',setAttribute(){}},
   solutions:{textContent:''},cultureType:{value:'all'},
   'count-decl':{value:2},'count-verb':{value:2},'count-forms':{value:6},'count-sent':{value:5}};
@@ -30,8 +30,13 @@ function latinSuite(){
   examKey:x=>String(x).split(',')[0].toLowerCase(),
   examUnitNumber:x=>Number(String(x).replace('UD','')),
   M_CASES:['Nominativo','Vocativo','Acusativo','Genitivo','Dativo','Ablativo'],
+  M_END:{'1':[['a','a','am','ae','ae','a'],['ae','ae','as','arum','is','is']],
+    '2m':[['us','e','um','i','o','o'],['i','i','os','orum','is','is']],
+    '2n':[['um','um','um','i','o','o'],['a','a','a','orum','is','is']]},
+  mNormalize:x=>String(x||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim(),
+  headLex:x=>String(x||'').split(',')[0].trim(),
   isProperNounLemma:()=>false,isExcludedExamMorphLemma:()=>false,
-  mNoun:x=>x===noun.entry?{forms:[
+  mNoun:x=>x===noun.entry?{lemma:'puella',gender:'f',forms:[
     ['puella','puella','puellam','puellae','puellae','puella'],
     ['puellae','puellae','puellas','puellarum','puellis','puellis']
   ]}:null,
@@ -64,6 +69,7 @@ function latinSuite(){
  let output=run();
  assert.equal((output.match(/class="exam-question"/g)||[]).length,5,'Latín I completo: cinco preguntas');
  assert(output.includes('exam-nouns')&&output.includes('exam-verbs'));
+ assert(output.includes('puella bona'),'Latín I desde UD2: falta sustantivo y adjetivo');
  assert(output.includes('Modificación preverbial')&&output.includes('Latinismos'),'Latín I: las cuatro partes del léxico deben estar disponibles');
  assert(output.includes('final-gloss'));
  assert.equal((output.match(/Puella amat \d+\./g)||[]).length,5);
