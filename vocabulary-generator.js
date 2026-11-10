@@ -4,8 +4,90 @@
 const linguistic=()=>window.ExaminaOfflineLemmatizer;
 const key=s=>linguistic().normalize(s);
 const head=s=>String(s).split(',')[0].replace(/\s*\([^)]*\).*/,'').trim();
+
+/* Paradigmas productivos de declinaciones 1.ª/2.ª y presente griego.
+ * Solo se aplican a enunciados que constan en el banco docente, con su
+ * traducción intacta. No se extrapolan flexiones irregulares ni temas
+ * verbales (aoristo, perfecto) que el enunciado no documenta.
+ */
+function greekReferenceForms(bank){
+ const map=new Map();
+ const add=(form,record)=>{
+  const k=key(form);
+  if(!k)return;
+  if(!map.has(k))map.set(k,[]);
+  const slot=map.get(k),id=record.lemma+'|'+record.entry+'|'+record.meaning;
+  if(!slot.some(c=>c.lemma+'|'+c.entry+'|'+c.meaning===id))slot.push(record);
+ };
+ const endings=(stem,list,row)=>{for(const ending of list)add(stem+key(ending),row)};
+ for(const source of bank){
+  if(!source?.entry||!source?.meaning)continue;
+  const entry=source.entry,lemma=key(head(entry)),record={lemma,entry,meaning:source.meaning,attested:true,origin:'banco docente / paradigma regular'};
+  if(!lemma)continue;
+  // La forma de cita del propio banco es una identificación segura.
+  add(head(entry),record);
+  const parts=entry.split(',').slice(1).map(s=>key(s.replace(/[–−—-]/g,'').replace(/\([^)]*\)/g,'')));
+  const part=(word)=>parts.some(p=>p===word),stem=lemma;
+  if(lemma.endsWith('οσ')&&(part('ου')||part('ον'))){
+   endings(stem.slice(0,-2),['ος','ου','ῳ','ον','ε','οι','ων','οις','ους'],record);
+   if(part('ον'))endings(stem.slice(0,-2),['ον','ου','ῳ','α','ων','οις'],record);
+   if(part('η'))endings(stem.slice(0,-2),['η','ης','ῃ','ην','αι','ων','αις','ας'],record);
+   if(part('α'))endings(stem.slice(0,-2),['α','ας','ᾳ','αν','αι','ων','αις','ας'],record);
+  }else if(lemma.endsWith('ον')&&part('ου')){
+   endings(stem.slice(0,-2),['ον','ου','ῳ','α','ων','οις'],record);
+  }else if((lemma.endsWith('η')||lemma.endsWith('α'))&&(part('ης')||part('ας'))){
+   const root=stem.slice(0,-1);
+   endings(root,[stem.endsWith('η')?'η':'α',part('ης')?'ης':'ας',
+    part('ης')?'ῃ':'ᾳ',stem.endsWith('η')?'ην':'αν','αι','ων','αις','ας'],record);
+  }else if((lemma.endsWith('ης')||lemma.endsWith('ας'))&&part('ου')){
+   const root=stem.slice(0,-2);
+   endings(root,[lemma.endsWith('ης')?'ης':'ας','ου',
+    lemma.endsWith('ης')?'ῃ':'ᾳ',lemma.endsWith('ης')?'ην':'αν',
+    'αι','ων','αις','ας'],record);
+  }else if(lemma.endsWith('αι')&&part('ων')){
+   // Pluralia tantum como Ἀθῆναι, –ῶν.
+   endings(stem.slice(0,-2),['αι','ων','αις','ας'],record);
+  }
+  // Solo presente de verbos en -ω y -ομαι; formas contractas transparentes.
+  const hasInflection=parts.length===0;
+  if(hasInflection&&lemma.endsWith('εω')){
+   endings(lemma.slice(0,-2),['ῶ','εῖς','εῖ','οῦμεν','εῖτε','οῦσι','οῦσιν','εῖν'],record);
+  }else if(hasInflection&&lemma.endsWith('αω')){
+   endings(lemma.slice(0,-2),['ῶ','ᾷς','ᾷ','ῶμεν','ᾶτε','ῶσι','ῶσιν','ᾶν'],record);
+  }else if(hasInflection&&lemma.endsWith('ομαι')){
+   endings(lemma.slice(0,-4),['ομαι','ῃ','εται','όμεθα','εσθε','ονται','εσθαι'],record);
+  }else if(hasInflection&&lemma.endsWith('ω')){
+   endings(lemma.slice(0,-1),['ω','εις','ει','ομεν','ετε','ουσι','ουσιν','ειν'],record);
+  }
+ }
+ const bankByHead=(form)=>bank.find(row=>key(head(row.entry))===key(form));
+ const addIrregular=(forms,entry,meaning)=>{
+  const saved=bankByHead(entry);
+  const record={lemma:key(head(saved?.entry||entry)),entry:saved?.entry||entry,
+   meaning:saved?.meaning||meaning,attested:true,origin:'paradigma gramatical explícito'};
+  for(const form of forms)add(form,record);
+ };
+ addIrregular(['ὁ','ἡ','τό','τὸ','τοῦ','τῆς','τῷ','τῇ','τόν','τὸν','τήν','τὴν',
+  'οἱ','αἱ','τά','τὰ','τῶν','τοῖς','ταῖς','τούς','τοὺς','τάς','τὰς'],
+  'ὁ, ἡ, τό','el, la, lo (artículo)');
+ addIrregular(['εἰμί','εἰμί','εἶ','ἐστί','ἐστὶ','ἐστί(ν)','ἐστίν','ἐστιν',
+  'ἐσμέν','ἐστέ','ἐστε','εἰσί','εἰσι','εἰσίν','εἰσιν','εἶναι','ἦν','ἦσαν',
+  'ἔσται','ἔσονται','ἐσόμεθα','ἐσόμεθα','ὤν','οὖσα','ὄν','ὄντος','ὄντες','ὄντων','οὖσαν'],
+  'εἰμί','ser, estar, haber');
+ addIrregular(['οὐ','οὐκ','οὐχ'],'οὐ','no');
+ addIrregular(['ἀλλά','ἀλλὰ','ἀλλ'],'ἀλλά','pero, sino');
+ addIrregular(['δέ','δὲ','δ'],'δέ','pero, por otra parte');
+ addIrregular(['καί','καὶ'],'καί','y, también');
+ // Los nombres propios solo se añaden cuando el banco no los contiene.
+ addIrregular(['Διόνυσος','Διόνυσος','Διονύσου','Διονύσου'],'Διόνυσος','Dioniso');
+ addIrregular(['Νεῖλος','Νείλου'],'Νεῖλος','Nilo');
+ addIrregular(['Ζεύς','Ζεὺς','Ζεύς','Διός','Διὸς','Διί','Δία','Ζεῦ'],'Ζεύς','Zeus');
+ addIrregular(['Ἀθηναῖοι','Ἀθηναίοις','Ἀθηναῖοις','Ἀθηναίων','Ἀθηναίων',
+  'Ἀθηναίους','Ἀθηναίους','Ἀθηναῖος'],'Ἀθηναῖος','ateniense');
+ return map;
+}
 function analyze(data,text,course,bank){
- const lang=course==='gr1'?'grc':'lat',index=new Map();
+ const lang=course==='gr1'?'grc':'lat',index=new Map(),greek=lang==='grc'?greekReferenceForms(bank):null;
  for(const [lemma,surface,tags,source] of data.rows[lang]){
   if(!data.vocabulary[lang][lemma]?.[course])continue;
   const k=key(surface);if(!index.has(k))index.set(k,new Map());
@@ -14,17 +96,34 @@ function analyze(data,text,course,bank){
   candidates.set(lemma,{lemma,attested:attested||!!old?.attested});
  }
  const tokens=new Map();
- for(const match of text.matchAll(/[\p{L}\p{M}]+(?:[’'][\p{L}\p{M}]+)*/gu)){
+ const cleanText=lang==='grc'?String(text).replace(/([\p{L}\p{M}])[’'](?=[\p{L}\p{M}])/gu,'$1 '):String(text);
+ for(const match of cleanText.matchAll(/[\p{L}\p{M}]+(?:[’'][\p{L}\p{M}]+)*/gu)){
   const form=match[0],normal=key(form);
   if(normal&&!tokens.has(normal))tokens.set(normal,form);
  }
  return [...tokens].map(([normal,form])=>{
-  const candidates=[...(index.get(normal)?.values()||[])].flatMap(c=>{
+  const indexedCandidates=[...(index.get(normal)?.values()||[])].flatMap(c=>{
    const original=data.vocabulary[lang][c.lemma][course];
    const matches=bank.filter(x=>key(x.entry)===key(original.entry)||key(head(x.entry))===key(c.lemma));
    const variants=matches.length?matches:[{entry:original.entry,meaning:''}];
    return variants.map(x=>({...c,entry:x.entry,meaning:x.meaning||''}));
-  }).filter((x,i,a)=>a.findIndex(y=>y.lemma===x.lemma&&y.entry===x.entry&&y.meaning===x.meaning)===i);
+  });
+  const all=[...indexedCandidates,...(greek?.get(normal)||[])];
+  // Preferimos la evidencia más firme para la misma entrada, sin descartar
+  // una segunda lectura posible de un homógrafo.
+  const compact=new Map();
+  for(const candidate of all){
+   const id=candidate.lemma+'|'+candidate.entry+'|'+candidate.meaning;
+   const previous=compact.get(id);
+   if(!previous||(!previous.attested&&candidate.attested))compact.set(id,candidate);
+  }
+  let candidates=[...compact.values()];
+  // Distinguir artículos de relativos de idéntica grafía sin acentos.
+  if(lang==='grc'&&['ο','η','το'].includes(normal)){
+   const accents={ο:['ὁ'],η:['ἡ'],το:['τὸ','τό']};
+   if(!accents[normal].includes(form.normalize('NFC')))
+    candidates=candidates.filter(x=>x.entry!=='ὁ, ἡ, τό');
+  }
   const resolved=candidates.length===1&&candidates[0].attested;
   return {form,candidates,status:resolved?'documented':candidates.length?'review':'unknown',
    lemma:resolved?candidates[0].lemma:'',entry:resolved?candidates[0].entry:form,meaning:resolved?candidates[0].meaning:''};
