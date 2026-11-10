@@ -395,7 +395,10 @@ function greekReferenceForms(bank){
   ['φοβέω','temer',['φοβούμεθα','φοβοῦνται']],
   ['Χείρων','Quirón',['Χείρων']],
   ['ὦ','oh (vocativo)',['ὦ']],
-  ['οὐδέ','ni, tampoco',['οὐδ']]
+  ['οὐδέ','ni, tampoco',['οὐδ']],
+  ['ὅσπερ','el cual precisamente',['ἅπερ']],
+  ['πυρεύω','encender, incendiar',['ἐπεπυρεύκεισαν','ἐπεπυρεύκεισαν','ἐπεπυρεύκεσαν','ἐπεπυρεύκεσαν']],
+  ['τιμάω','honrar',['ἐτίμητο','ἐτιμητο']]
  ];
  for(const [lemma,meaning,forms] of secondPass)addIrregular(forms,lemma,meaning);
 
