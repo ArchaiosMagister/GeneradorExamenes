@@ -51,10 +51,10 @@ const server=http.createServer(async(req,res)=>{
    preverbs:latinLexBanks.latin1.preverbs.length,
    phonetics:latinLexBanks.latin1.phonetics.length
   }));
-  assert.deepEqual([lex.latinisms,lex.prefixes,lex.preverbs,lex.phonetics],[87,287,120,460],
+  assert.deepEqual([lex.latinisms,lex.prefixes,lex.preverbs,lex.phonetics],[87,287,120,73],
    'No han cargado todos los bancos léxicos docentes');
-  const expanded=await page.evaluate(()=>latinLexBanks.latin1.phonetics.some(x=>x.id==='EVF-0008'));
-  assert(expanded,'Las 130 ampliaciones no han llegado al generador: falta EVF-0008');
+  const expanded=await page.evaluate(()=>latinLexBanks.latin4.phonetics.some(x=>x.id==='EVF-0008'));
+  assert(expanded,'Las ampliaciones del banco general no han llegado a Latín 4.º: falta EVF-0008');
   const latin4Progress=await page.evaluate(()=>{
    const result={};
    for(let unit=1;unit<=8;unit++){
@@ -114,7 +114,7 @@ const server=http.createServer(async(req,res)=>{
    const ud6=units.indexOf('UD6');
    if(ud6<0)throw Error('No existe UD6 en Latín I');
    document.querySelectorAll('.unit-choice').forEach(el=>el.checked=Number(el.value)===ud6);
-   selectedPhoneticRules.add('N07');selectedPhoneticRules.add('N17');generate();
+   selectedPhoneticRules.clear();selectedPhoneticRules.add('N07');selectedPhoneticRules.add('N17');generate();
   });
   const examLex=await page.evaluate(()=>({
    html:buildLatinLexQuestion('latin1',['UD6'])?.html||'',
@@ -193,7 +193,7 @@ const server=http.createServer(async(req,res)=>{
     'data/unimorph/lat-v.json','data/lemmas/teacher-forms.json',
     'data/latinismos-docente.json','data/prefijos-docente.json','data/modificacion-preverbial-docente.json',
     'data/modificacion-preverbial-unidades-lat1.json','data/lat4-progresion-lexico.json',
-    'data/fonetica/banco_examenes.json',
+    'data/fonetica/banco_examenes.json','data/fonetica/lat1-programacion.json',
     'manifest.webmanifest','icons/icon-192.png','icons/icon-512.png'];
    return {scope:reg.scope,keys,entries:await Promise.all(paths.map(async p=>({
     path:p,stored:!!await storage.match(new URL(p,reg.scope).href)
