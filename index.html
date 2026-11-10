@@ -2109,7 +2109,12 @@ refreshCourse();
  const prevRefresh=refreshManualMorphWords;
  refreshManualMorphWords=function(){prevRefresh();distributeEditors()};
  const prevGreekControls=greekExamControls;
- greekExamControls=function(){prevGreekControls();distributeEditors()};
+ greekExamControls=function(){
+  // Solo el examen completo crea controles de selección adicionales.
+  // En traducción, una segunda redistribución vaciaba editores ya trasladados.
+  if(currentCourse()!=='greek1'||$('model').value!=='complete')return;
+  prevGreekControls();distributeEditors();
+ };
  for(const id of ['course','model','lang'])$(id).addEventListener('change',()=>{buttons();questionMenus()});
  buttons();questionMenus();
  document.addEventListener('DOMContentLoaded',()=>{buttons();questionMenus()},{once:true});
