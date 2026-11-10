@@ -63,8 +63,15 @@ assert.ok(a.items.some(r=>r.source==='Paradigma docente'));
 assert.equal(uniqueLemmaFromData(data,'lat1','amabam'),'amo','Lematizar una forma para el glosario offline');
 const model=query(data,{course:'lat1',mode:'form',text:'appropinquabas'});
 assert.ok(model.items.some(x=>x.provisional),'Debe figurar como propuesta, no como dato certificado');
-assert.equal(uniqueLemmaFromData(data,'lat1','appropinquabas'),null,
- 'Una flexión solo propuesta nunca debe entrar en el glosario de examen');
+if(data.source.readers){
+ assert.equal(uniqueLemmaFromData(data,'lat1','appropinquabas'),'appropinquo',
+  'La forma contrastada por Collatinus sustituye la antigua candidatura');
+ assert.ok(data.rows.lat.some(r=>r[3]===6),'El índice enriquecido contiene Collatinus');
+ assert.ok(data.rows.grc.some(r=>r[3]===7),'El índice enriquecido contiene Eulexis');
+ assert.ok(data.extensions.readerEnrichment.counts.lat>5000,'La ampliación latina es insuficiente');
+ assert.ok(data.extensions.readerEnrichment.counts.grc>5000,'La ampliación griega es insuficiente');
+}else assert.equal(uniqueLemmaFromData(data,'lat1','appropinquabas'),null,
+ 'Una flexión exclusivamente propuesta no puede aprobarse sin fuente contrastada');
 const greekMissing=query(data,{course:'gr1',mode:'lemma',text:'ἀδελφός'});
 assert.ok(greekMissing.items.some(x=>x.citation),'La entrada griega debe encontrarse sin paradigma disponible');
 assert.ok(greekMissing.items.every(x=>!x.provisional||x.source.includes('Wikcionario')),'Las formas griegas propuestas deben conservar origen explícito');
