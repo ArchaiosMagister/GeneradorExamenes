@@ -113,7 +113,7 @@ async function checkFile(browser,filename){
    const titles=await page.locator('#paper .exam-nouns thead tr:first-child th[colspan]').allTextContents();
    assert(titles.length>0,filename+': no hay sustantivos declinables');
    assert(titles.every(text=>text.trim().split(/\\s+/).length>=2),
-    filename+': falta el adjetivo concordado desde el umbral de '+course);
+    filename+': falta el adjetivo concordado desde el umbral de '+course+' · '+JSON.stringify(titles));
   }
   if(course==='greek1'&&model==='complete'){
    const groups=await page.evaluate(()=>greekVerifiedCorpus.filter(x=>x.kind==='declension')
