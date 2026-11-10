@@ -3,31 +3,9 @@
   "repository": "ArchaiosMagister/GeneradorExamenes",
   "branch": "feat/integracion-pr29-pr30-valenciano-20261110",
   "origin": "revisión filológica del vocabulario bilingüe en PR31",
-  "status": "pendiente de decisiones del docente",
-  "notes": "El valor current_va no implica aprobación filológica. No aplicar opciones hasta recibir elección explícita; no sustituir los significados castellanos al elegir solo una variante valenciana.",
+  "status": "12 decisiones aplicadas; 1 pendiente (LAT1-REDUCO)",
+  "notes": "Las decisiones se aplican en la PR 31. Las glosas castellanas originales solo se cambian cuando el docente lo ha elegido expresamente. Preferir vocabulario y formas de uso valenciano según criterio docente (p. ej., este, eixe, tindre, vindre, meua, seua), evitando alternancias con formas de otras variedades; no reformular por cuenta propia el contenido latino ni griego. No modificar LAT1-REDUCO sin respuesta.",
   "items": [
-    {
-      "id": "LAT1-IMPORTO",
-      "course": "latin1",
-      "lemma": "importo, importavi, importatum (1ª)",
-      "spanish": "traer",
-      "current_va": "portar",
-      "reason": "Importo suele denotar introducir o traer hacia dentro; la glosa genérica puede quedarse corta.",
-      "options": [
-        [
-          "a",
-          "traer → portar"
-        ],
-        [
-          "b",
-          "introducir, traer → introduir, portar"
-        ],
-        [
-          "c",
-          "importar, introducir → importar, introduir"
-        ]
-      ]
-    },
     {
       "id": "LAT1-REDUCO",
       "course": "latin1",
@@ -49,6 +27,37 @@
           "conducir de vuelta → conduir de tornada"
         ]
       ]
+    }
+  ],
+  "resolved": [
+    {
+      "id": "LAT1-IMPORTO",
+      "course": "latin1",
+      "lemma": "importo, importavi, importatum (1ª)",
+      "spanish": "traer",
+      "current_va": "portar",
+      "reason": "Importo suele denotar introducir o traer hacia dentro; la glosa genérica puede quedarse corta.",
+      "options": [
+        [
+          "a",
+          "traer → portar"
+        ],
+        [
+          "b",
+          "introducir, traer → introduir, portar"
+        ],
+        [
+          "c",
+          "importar, introducir → importar, introduir"
+        ]
+      ],
+      "decision": {
+        "option": "a",
+        "value": "traer → portar",
+        "scope": "Se conservan la glosa española «traer» y valenciana «portar»"
+      },
+      "resolution": "aplicada",
+      "approvedBy": "docente"
     },
     {
       "id": "LAT1-IMPONO",
@@ -70,7 +79,14 @@
           "c",
           "imponer, colocar encima → imposar, posar damunt"
         ]
-      ]
+      ],
+      "decision": {
+        "option": "c",
+        "value": "imponer, colocar encima → imposar, posar damunt",
+        "scope": "Se corrigen significado castellano y equivalente valenciano solo para impono"
+      },
+      "resolution": "aplicada",
+      "approvedBy": "docente"
     },
     {
       "id": "GR1-KALEO",
@@ -92,7 +108,14 @@
           "c",
           "cridar, anomenar"
         ]
-      ]
+      ],
+      "decision": {
+        "option": "c",
+        "value": "cridar, anomenar",
+        "scope": "Traducción valenciana específica de καλέω"
+      },
+      "resolution": "aplicada",
+      "approvedBy": "docente"
     },
     {
       "id": "GR1-MALISTA",
@@ -114,7 +137,14 @@
           "c",
           "moltíssim, especialment"
         ]
-      ]
+      ],
+      "decision": {
+        "option": "c",
+        "value": "moltíssim, especialment",
+        "scope": "Traducción valenciana específica de μάλιστα"
+      },
+      "resolution": "aplicada",
+      "approvedBy": "docente"
     },
     {
       "id": "GR1-ATHENAIOS",
@@ -136,7 +166,14 @@
           "c",
           "atenés/atenesa, atenenc/atenenca"
         ]
-      ]
+      ],
+      "decision": {
+        "option": "b",
+        "value": "atenenc/atenenca",
+        "scope": "Traducción valenciana específica del adjetivo"
+      },
+      "resolution": "aplicada",
+      "approvedBy": "docente"
     },
     {
       "id": "GR1-STRATEGOS",
@@ -158,7 +195,14 @@
           "c",
           "estrateg (general)"
         ]
-      ]
+      ],
+      "decision": {
+        "option": "c",
+        "value": "estrateg (general)",
+        "scope": "Traducción valenciana en ambas entradas de στρατηγός"
+      },
+      "resolution": "aplicada",
+      "approvedBy": "docente"
     },
     {
       "id": "LAT4-GERMANUS",
@@ -180,7 +224,14 @@
           "c",
           "germànic/germànica (dels pobles germànics)"
         ]
-      ]
+      ],
+      "decision": {
+        "option": "a",
+        "value": "germànic/germànica",
+        "scope": "Conservado el equivalente valenciano"
+      },
+      "resolution": "aplicada",
+      "approvedBy": "docente"
     },
     {
       "id": "LAT1-PAULUS",
@@ -202,7 +253,14 @@
           "c",
           "Paulo"
         ]
-      ]
+      ],
+      "decision": {
+        "option": "b",
+        "value": "Paulus",
+        "scope": "Solo traducción valenciana; castellano Paulo intacto"
+      },
+      "resolution": "aplicada",
+      "approvedBy": "docente"
     },
     {
       "id": "LAT1-CALLUS",
@@ -224,7 +282,14 @@
           "c",
           "Calo (cognomen romà)"
         ]
-      ]
+      ],
+      "decision": {
+        "option": "a",
+        "value": "Calo (gentilici)",
+        "scope": "Se mantiene el criterio docente solicitado"
+      },
+      "resolution": "aplicada",
+      "approvedBy": "docente"
     },
     {
       "id": "LAT1-ORGETORIX",
@@ -246,7 +311,14 @@
           "c",
           "Orgetorix (grafía latina sin adaptar)"
         ]
-      ]
+      ],
+      "decision": {
+        "option": "a",
+        "value": "Orgétorix",
+        "scope": "Se mantiene grafía docente"
+      },
+      "resolution": "aplicada",
+      "approvedBy": "docente"
     },
     {
       "id": "GR1-HIERAX",
@@ -268,7 +340,14 @@
           "c",
           "Hierax (transcripción sin acento)"
         ]
-      ]
+      ],
+      "decision": {
+        "option": "a",
+        "value": "Hiérax",
+        "scope": "Se mantiene grafía docente"
+      },
+      "resolution": "aplicada",
+      "approvedBy": "docente"
     },
     {
       "id": "PREF-ULTRAPUERTOS",
@@ -290,7 +369,14 @@
           "c",
           "eliminar la ficha de ambos bancos"
         ]
-      ]
+      ],
+      "decision": {
+        "option": "c",
+        "value": "Eliminar la ficha de ambos bancos",
+        "scope": "Eliminada la única entrada bilingüe de los dos sorteos de prefijos"
+      },
+      "resolution": "aplicada",
+      "approvedBy": "docente"
     }
   ]
 }
