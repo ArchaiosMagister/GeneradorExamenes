@@ -29,6 +29,14 @@ try {
 #examLayout aside.panel button:disabled{opacity:.6;cursor:not-allowed}
 #examLayout aside.panel .buttons{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,135px),1fr));gap:9px}
 @media(max-width:520px){#examLayout aside.panel .buttons{grid-template-columns:1fr 1fr}#examLayout aside.panel button{font-size:13px}}
+
+/* A standard 18pt hanging indent keeps list text aligned on every line. */
+.paper .exam-sheet .exam-item{padding-left:18pt;text-indent:-18pt}
+.paper .exam-sheet .exam-letter{width:18pt;min-width:18pt;margin-right:-.25em;text-indent:0}
+.paper ol[type="a"],.paper ol[type="A"]{list-style:none;counter-reset:exam-letter}
+.paper ol[type="a"]>li,.paper ol[type="A"]>li{counter-increment:exam-letter;position:relative;padding-left:0}
+.paper ol[type="a"]>li::before,.paper ol[type="A"]>li::before{content:counter(exam-letter,lower-alpha) ".";position:absolute;right:100%;width:18pt;text-align:left}
+.paper ol[type="A"]>li::before{content:counter(exam-letter,upper-alpha) "."}
 </style><style>
 .vocab-tabbar{display:flex;gap:8px;padding:10px 18px;background:#eaf0f8;border-bottom:1px solid #ccd7e6;flex-wrap:wrap}.vocab-tabbar button{border:1px solid #a8bbd4;background:white;border-radius:7px;padding:9px 13px;cursor:pointer;font-weight:600}.vocab-tabbar button.active{background:#214f85;color:white}.vocab-manager{display:none;max-width:1100px;margin:18px auto;padding:18px;background:white;border:1px solid #d8e1eb;border-radius:12px}.vocab-manager.active{display:block}.vocab-manager .vm-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.vocab-manager label{display:block;font-size:13px;font-weight:600;margin:6px 0}.vocab-manager input,.vocab-manager select,.vocab-manager textarea{width:100%;box-sizing:border-box;padding:9px;border:1px solid #bac8da;border-radius:6px}.vocab-manager button{padding:8px 12px;border:1px solid #9ab0ca;border-radius:6px;background:#f3f7fc;cursor:pointer;margin:5px 5px 5px 0}.vocab-manager .vm-table{width:100%;border-collapse:collapse}.vocab-manager .vm-table th,.vocab-manager .vm-table td{border-bottom:1px solid #e0e6ed;padding:6px;text-align:left}.vocab-manager .vm-table input{min-width:90px}.vocab-manager .vm-scroll{max-height:440px;overflow:auto}.vocab-manager .vm-help{color:#52647a;font-size:13px}.vocab-manager .vm-warning{color:#92400e;font-size:13px}@media(max-width:750px){.vocab-manager .vm-grid{grid-template-columns:1fr}.vocab-manager{margin:8px}}@media print{.vocab-tabbar,.vocab-manager{display:none!important}}
 .vm-review{border-top:1px solid #dce3ec;margin-top:20px;padding-top:10px}.vm-review .check{display:flex;align-items:center;gap:8px}.vm-review .check input{width:auto}.vm-review .vm-scroll{max-height:250px}@media print{.vm-review{display:none!important}}</style><style>
@@ -423,7 +431,7 @@ html[data-course="greek1"] .paper .exam-sheet *{font-style:normal!important}
 </style><style id="primary-exam-pickers">
 @media screen {
  #examLayout aside.panel .exam-primary-picker{margin:9px 0;border:1px solid var(--line);border-radius:9px;background:var(--surface);overflow:hidden}
- #examLayout aside.panel .exam-primary-picker>summary{cursor:pointer;padding:12px;font-weight:750;min-height:44px;color:var(--ink);background:var(--soft)}
+ #examLayout aside.panel .exam-primary-picker>h3{margin:0;padding:12px;font-weight:750;min-height:44px;color:var(--ink);background:var(--soft)}
  #examLayout aside.panel .exam-primary-picker>.field{padding:12px;margin:0}
  #examLayout aside.panel .exam-primary-picker .sidebar-choices{display:none!important}
  #examLayout aside.panel .exam-primary-picker #course,#examLayout aside.panel .exam-primary-picker #model{display:block!important;min-height:44px;width:100%}
@@ -961,7 +969,7 @@ function latinExamHeader(chosen){
  const model=$('model').value;
  const type=model==='morf'?(va?'Examen de morfologia de ':'Examen de morfología de '):model==='mixto'?(va?'Examen de traducció de ':'Examen de traducción de '):'Examen de ';
  const title=examHeadingWithUnits(titleInput&&!defaultNames.includes(titleInput)?titleInput:type+subject,chosen);
- const term=String($('term').value)+(va?'a':'ª')+' '+(va?'avaluació':'evaluación');
+ const term=String($('term').value)+(va?'a':'ª')+' trimestre';
  const seed=$('seed').value.trim();
  return '<div class="exam-header">'+
   '<p class="exam-header-line"><span>'+esc(title)+(seed?' · '+esc(seed):'')+'</span><span>'+esc(term)+'</span></p>'+
@@ -1287,11 +1295,11 @@ function wordBlock(el){
     !['OL','UL'].includes(n.tagName)&&!n.classList?.contains('answer')))
     .map(n=>wordInline(n)).join('');
    const alphabetic=tag==='ol'&&['a','A'].includes(type);
-   const letter=alphabetic?String.fromCharCode((type==='a'?97:65)+(i%26))+'. ':'';
-   const pr=alphabetic?'<w:ind w:left="720" w:hanging="360"/>':
+   const letter=alphabetic?String.fromCharCode((type==='a'?97:65)+(i%26))+'.':'';
+   const pr=alphabetic?'<w:ind w:left="1080" w:hanging="360"/><w:tabs><w:tab w:val="left" w:pos="1080"/></w:tabs>':
     '<w:numPr><w:ilvl w:val="0"/><w:numId w:val="'+(tag==='ol'?'1':'2')+'"/></w:numPr>';
    const sentenceSpacing=el.classList.contains('exam-sentences')?'<w:spacing w:before="'+(i>0?sentenceGapPoints()*20:0)+'" w:after="0"/>':'';
-   const para='<w:p><w:pPr>'+pr+sentenceSpacing+'</w:pPr>'+(alphabetic?wordRun(letter):'')+inline+'</w:p>';
+   const para='<w:p><w:pPr>'+pr+sentenceSpacing+'</w:pPr>'+(alphabetic?wordRun(letter)+'<w:r><w:tab/></w:r>':'')+inline+'</w:p>';
    const extras=children.filter(n=>n.nodeType===1&&(
     ['OL','UL'].includes(n.tagName)||n.classList?.contains('answer'))).map(n=>wordBlock(n)).join('');
    return para+extras;
@@ -1910,7 +1918,7 @@ function greekExamHeader(chosen,mode){
  const titleInput=$('name').value.trim(),custom=titleInput&&!['Examen de Griego I','Examen de Grec I','Ficha de repaso de Griego I','Fitxa de repàs de Grec I'].includes(titleInput);
  const prefix=$('sheetType').value==='review'?(va?'Fitxa de repàs de ':'Ficha de repaso de '):$('model').value==='morphology'?(va?'Examen de morfologia de ':'Examen de morfología de '):$('model').value==='translation'?(va?'Examen de traducció de ':'Examen de traducción de '):'Examen de ';
  const title=examHeadingWithUnits(custom?titleInput:prefix+(va?'Grec I':'Griego I'),chosen)+($('seed').value?' · '+$('seed').value:'');
- return '<div class="exam-header"><p class="exam-header-line"><span>'+esc(title)+'</span><span>'+$('term').value+'ª '+(va?'avaluació':'evaluación')+'</span></p><p class="exam-header-line"><span>'+(va?'Nom i cognoms:':'Nombre y apellidos:')+'</span><span>'+(va?'Data:':'Fecha')+'</span></p></div>';
+ return '<div class="exam-header"><p class="exam-header-line"><span>'+esc(title)+'</span><span>'+$('term').value+(va?'a':'ª')+' trimestre'+'</span></p><p class="exam-header-line"><span>'+(va?'Nom i cognoms:':'Nombre y apellidos:')+'</span><span>'+(va?'Data:':'Fecha')+'</span></p></div>';
 }
 function greekQuestionLabel(kind){if(kind==='declension'&&$('model').value==='complete'&&greekLimit()>=5)return $('lang').value==='va'?'Declina els sintagmes: article, substantiu i adjectiu':'Declina los sintagmas: artículo, sustantivo y adjetivo';if(kind==='sentences'&&$('model').value==='translation')return $('lang').value==='va'?'Tradueix les oracions següents':'Traduce las siguientes oraciones';return ({es:{declension:'Declina',conjugation:'Conjuga',forms:'Analiza morfológicamente',pronouns:'Completa la tabla con el análisis morfológico adecuado',etymology:'Escribe dos derivados etimológicos de cada una de estas palabras griegas',sentences:'Analiza y traduce las siguientes oraciones'},va:{declension:'Declina',conjugation:'Conjuga',forms:'Analitza morfològicament',pronouns:'Completa la taula amb l’anàlisi morfològica adequada',etymology:'Escriu dos derivats etimològics de cadascuna d’aquestes paraules gregues',sentences:'Analitza i tradueix les oracions següents'}})[$('lang').value][kind]}
 function greekPoints(kind){const v=Number($('greek-points-'+kind).value);if(kind==='pronouns'&&$('model').value==='complete'&&examQuestionEnabled('pronouns')&&v===0)return 1;return Number.isFinite(v)?Math.max(0,Math.min(100,v)):0}
@@ -3134,7 +3142,7 @@ window.ExaminaMorphology={lookup,stats,importText};
   });
   for(const field of fields){if(field.parentElement===panel)sections[6].append(field)}
   for(const child of [...panel.children]){
-   if(sections.includes(child))continue;
+   if(sections.includes(child)||child.id==='primaryExamSettings')continue;
    if(child.id==='unimorphPanel')sections[3].append(child);
    else sections[6].append(child);
   }
@@ -3170,12 +3178,15 @@ window.ExaminaMorphology={lookup,stats,importText};
 }
 function setupPrimaryExamPickers(){
  const panel=document.querySelector('#examLayout > aside.panel');if(!panel||panel.querySelector('#primaryCoursePicker'))return;
- const first=panel.firstElementChild;
+ const section=document.createElement('section');section.id='primaryExamSettings';section.className='exam-primary-picker';
+ section.setAttribute('aria-labelledby','primaryExamHeading');
+ const heading=document.createElement('h3');heading.id='primaryExamHeading';heading.textContent='Materia, tipo de examen y unidades';section.append(heading);
  for(const [id,title,controlId] of [['primaryCoursePicker','Materia','course'],['primaryModelPicker','Tipo de examen','model'],['primaryUnitsPicker','Unidades','unitChoices']]){
   const field=document.getElementById(controlId)?.closest('.field');if(!field)continue;
-  const detail=document.createElement('details');detail.id=id;detail.className='exam-primary-picker';
-  const summary=document.createElement('summary');summary.textContent=title;detail.append(summary,field);panel.insertBefore(detail,first);
+  field.id=id;const label=field.querySelector('label');if(label)label.textContent=title;
+  section.append(field);
  }
+ panel.prepend(section);
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',setupPrimaryExamPickers);else setupPrimaryExamPickers();
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',setupMorphModelControls);else setupMorphModelControls();

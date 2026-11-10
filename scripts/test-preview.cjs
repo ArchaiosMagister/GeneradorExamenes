@@ -162,6 +162,14 @@ async function checkFile(browser,filename){
   }
   await page.emulateMedia({media:'screen'});
 
+  const primary=page.locator('#primaryExamSettings');
+  assert.equal(await primary.count(),1,filename+': falta el menú único');
+  assert.equal(await primary.locator('xpath=ancestor::details').count(),0,filename+': menú plegable');
+  for(const id of ['course','model','unitChoices'])assert(await primary.locator('#'+id).isVisible(),filename+': selector oculto '+id);
+  assert((await page.locator('#paper .exam-header').textContent()).includes('trimestre'),filename+': encabezado sin trimestre');
+  const listXml=await page.evaluate(()=>{const ol=document.createElement('ol');ol.type='a';ol.innerHTML='<li>Primera línea y continuación</li>';return wordBlock(ol)});
+  assert(listXml.includes('w:left="1080" w:hanging="360"')&&listXml.includes('<w:tab/>'),filename+': lista Word sin sangría y tabulación');
+
   // Comprueba el Blob DOCX construido al pulsar los botones de exportación.
   // La captura evita el bloqueo de descargas en navegadores headless bajo file://
   // sin eludir el exportador real de la aplicación.
