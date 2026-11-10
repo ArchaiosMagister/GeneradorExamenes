@@ -274,7 +274,9 @@ function refreshManualMorphWords(){
   input.setAttribute('aria-label',kind+' '+(i+1));
   const original=el.textContent;
   input.addEventListener('input',()=>{
-   el.textContent=input.value+(original.endsWith(':')?':':'');
+   if(el.matches('.exam-nouns thead tr:first-child th[colspan], .exam-verbs thead tr:first-child th[colspan]')){
+    el.innerHTML=examParadigmHeading(input.value,kind==='Conjugación'?'conjugation':'declension');
+   }else el.textContent=input.value+(original.endsWith(':')?':');
    const key=paper.querySelector('#answerkey');
    if(key&&!key.querySelector('[data-manual-warning]')){
     const note=document.createElement('p');note.dataset.manualWarning='true';
@@ -617,19 +619,30 @@ function latinExamNominals(chosen){
  return latinSharedBank.vocabulary(currentCourse(),chosen).map(x=>({x,p:mNoun(x.entry)}))
   .filter(y=>y.p&&!isProperNounLemma(y.x.entry));
 }
+// Los lemas y sintagmas de los paradigmas van en cursiva; las marcas
+// metalingüísticas de conjugación o género permanecen en redonda.
+// Las etiquetas explícitas preservan el formato en Word y al imprimir.
+function examParadigmHeading(value,kind){
+ const raw=String(value||'').trim();
+ const indicator=kind==='conjugation'
+  ?/\s*(\(\s*[1-4](?:\s*\.?\s*[ªº])?\s*(?:conj(?:ugación|\.)?)?\s*\))$/i
+  :/\s*(\(\s*[mfn]\.?\s*\))$/i;
+ const match=raw.match(indicator),lemma=match?raw.slice(0,match.index).trim():raw;
+ return '<i>'+esc(lemma)+'</i>'+(match?' <span class="exam-paradigm-indicator">'+esc(match[1])+'</span>':'');
+}
 function latinExamDeclensionTable(item,solutions=false){
  const p=item.p;
  return '<table class="exam-paradigm exam-nouns reference-morph-table" data-col-widths="16,42,42">'+
-  '<thead><tr><td class="exam-corner"></td><th colspan="2">'+esc(item.x.entry)+'</th></tr>'+
+  '<thead><tr><td class="exam-corner"></td><th colspan="2">'+examParadigmHeading(item.x.entry,'declension')+'</th></tr>'+
   '<tr><td class="exam-corner"></td><th>Singular</th><th>Plural</th></tr></thead><tbody>'+
-  M_CASES.map((name,i)=>'<tr><th>'+esc(name)+'</th><td>'+(solutions?esc(p.forms[0][i]):'')+'</td><td>'+(solutions?esc(p.forms[1][i]):'')+'</td></tr>').join('')+
+  M_CASES.map((name,i)=>'<tr><th>'+esc(name)+'</th><td>'+(solutions?'<i>'+esc(p.forms[0][i])+'</i>':'')+'</td><td>'+(solutions?'<i>'+esc(p.forms[1][i])+'</i>':'')+'</td></tr>').join('')+
   '</tbody></table>';
 }
 function latinExamConjugationTable(items,solutions=false){
  return '<table class="exam-paradigm exam-verbs"><thead><tr><td class="exam-corner"></td>'+
-  items.map(x=>'<th colspan="2">'+esc(x.x.entry)+'</th>').join('')+'</tr>'+
+  items.map(x=>'<th colspan="2">'+examParadigmHeading(x.x.entry,'conjugation')+'</th>').join('')+'</tr>'+
   '<tr><td class="exam-corner"></td>'+items.map(()=>'<th>Singular</th><th>Plural</th>').join('')+'</tr></thead><tbody>'+
-  [0,1,2].map(i=>'<tr><th>'+(i+1)+'ª</th>'+items.map(x=>'<td>'+(solutions?esc(x.p.forms[i]):'')+'</td><td>'+(solutions?esc(x.p.forms[i+3]):'')+'</td>').join('')+'</tr>').join('')+'</tbody></table>';
+  [0,1,2].map(i=>'<tr><th>'+(i+1)+'ª</th>'+items.map(x=>'<td>'+(solutions?'<i>'+esc(x.p.forms[i])+'</i>':'')+'</td><td>'+(solutions?'<i>'+esc(x.p.forms[i+3])+'</i>':'')+'</td>').join('')+'</tr>').join('')+'</tbody></table>';
 }
 function latinExamFormCandidates(chosen){
  const data=latinSharedBank.vocabulary(currentCourse(),chosen),groups=[[],[],[],[]];
@@ -1391,11 +1404,11 @@ function greekTable(item,answers=false){
  const articles={λογος:'ὁ',ανθρωπος:'ὁ',δωρον:'τὸ',εργον:'τὸ',αγορα:'ἡ',χωρα:'ἡ',θαλαττα:'ἡ',νεανιας:'ὁ',παιδεια:'ἡ',αδελφος:'ὁ'};
  const lemma=item.lemmas[0],article=articles[item.id.slice(2)]||'';
  const title=verb?headLex(lemma):(article?article+' ':'')+lemma;
- return '<table class="exam-paradigm '+(verb?'exam-verbs':'exam-nouns')+'" data-col-widths="'+(verb?'500,4000,4000':'1340,3580,3580')+'" data-corpus-id="'+item.id+'"><colgroup><col><col><col></colgroup><thead><tr><td class="exam-corner"></td><th colspan="2" scope="colgroup">'+esc(title)+'</th></tr><tr><td class="exam-corner"></td><th scope="col">Singular</th><th scope="col">Plural</th></tr></thead><tbody>'+item.table.rows.map(row=>'<tr><th scope="row">'+esc(verb?row[0].replace('.',''):row[0][0].toUpperCase()+row[0].slice(1))+'</th><td>'+(answers?esc(row[1]):'')+'</td><td>'+(answers?esc(row[2]):'')+'</td></tr>').join('')+'</tbody></table>';
+ return '<table class="exam-paradigm '+(verb?'exam-verbs':'exam-nouns')+'" data-col-widths="'+(verb?'500,4000,4000':'1340,3580,3580')+'" data-corpus-id="'+item.id+'"><colgroup><col><col><col></colgroup><thead><tr><td class="exam-corner"></td><th colspan="2" scope="colgroup">'+examParadigmHeading(title,verb?'conjugation':'declension')+'</th></tr><tr><td class="exam-corner"></td><th scope="col">Singular</th><th scope="col">Plural</th></tr></thead><tbody>'+item.table.rows.map(row=>'<tr><th scope="row">'+esc(verb?row[0].replace('.',''):row[0][0].toUpperCase()+row[0].slice(1))+'</th><td>'+(answers?'<i>'+esc(row[1])+'</i>':'')+'</td><td>'+(answers?'<i>'+esc(row[2])+'</i>':'')+'</td></tr>').join('')+'</tbody></table>';
 }
 function greekVerbTable(items){
  const widths=[500,...items.flatMap(()=>[4000/items.length,4000/items.length])].map(Math.round);
- return '<table class="exam-paradigm exam-verbs" data-col-widths="'+widths.join(',')+'"><colgroup>'+widths.map(()=>'<col>').join('')+'</colgroup><thead><tr><td class="exam-corner"></td>'+items.map(x=>'<th colspan="2" scope="colgroup" data-corpus-id="'+x.id+'">'+esc(headLex(x.lemmas[0]))+'</th>').join('')+'</tr><tr><td class="exam-corner"></td>'+items.map(()=>'<th scope="col">Singular</th><th scope="col">Plural</th>').join('')+'</tr></thead><tbody>'+[0,1,2].map(i=>'<tr><th scope="row">'+(i+1)+'ª</th>'+items.map(()=>'<td></td><td></td>').join('')+'</tr>').join('')+'</tbody></table>';
+ return '<table class="exam-paradigm exam-verbs" data-col-widths="'+widths.join(',')+'"><colgroup>'+widths.map(()=>'<col>').join('')+'</colgroup><thead><tr><td class="exam-corner"></td>'+items.map(x=>'<th colspan="2" scope="colgroup" data-corpus-id="'+x.id+'">'+examParadigmHeading(headLex(x.lemmas[0]),'conjugation')+'</th>').join('')+'</tr><tr><td class="exam-corner"></td>'+items.map(()=>'<th scope="col">Singular</th><th scope="col">Plural</th>').join('')+'</tr></thead><tbody>'+[0,1,2].map(i=>'<tr><th scope="row">'+(i+1)+'ª</th>'+items.map(()=>'<td></td><td></td>').join('')+'</tr>').join('')+'</tbody></table>';
 }
 function greekExamHeader(chosen,mode){
  const va=$('lang').value==='va';
