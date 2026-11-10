@@ -38,6 +38,21 @@ El **nombre del modelo** (completo, morfología o traducción) no sustituye el t
 | Griego I · morfología | Declinación, análisis verbal, pronombres desde UD7 y palabras variables, excluidas las invariables |
 | Griego I · traducción | Análisis de formas, derivación etimológica y **7** oraciones como objetivo |
 
+### Plantillas de Latín I según los ejemplos docentes
+
+Cuando se marca **una sola unidad**, la webapp aplica estas cuatro estructuras de referencia; para otras unidades o combinaciones mantiene el modelo general y sus controles:
+
+| Selección | Estructura |
+| --- | --- |
+| Completo · UD2 | Dos tablas para declinar sintagmas; cuatro formas para analizar; tabla doble de conjugación (*do* imperfecto y *facio* presente); hasta seis oraciones para analizar y traducir; vocabulario final |
+| Morfología · UD3 | Elegir dos de tres sintagmas; dos tablas de declinación en blanco; tabla de diez verbos para analizar; diez palabras para analizar |
+| Morfología · UD6 | Elegir uno de tres sintagmas; una tabla de declinación en blanco; quince pronombres en tabla con caso, género, número y tipo; diez palabras para analizar |
+| Traducción · UD6 | Seis formas para analizar; derivación preverbial con tres derivados de *pugno* y dos de *curro*; hasta siete oraciones; vocabulario final |
+
+Los sintagmas de ejemplo, las formas de la tabla verbal de UD3 y los dos verbos de derivación de UD6 proceden de los modelos aportados. **Las oraciones y los demás análisis variables se seleccionan del banco ya existente**: si no hay material suficiente se informa, sin inventarlo.
+
+El vocabulario final se genera a partir de los lemas identificados en las oraciones y utiliza el **enunciado más completo documentado** en el banco del curso. Los términos marcados como vocabulario exigible aparecen **sin traducción**; los demás la llevan cuando está documentada. La aplicación indica las formas ambiguas o sin identificar para revisión docente, no inventa traducciones ni paradigmas. En los documentos Word, las letras `a.`, `b.`, etc. se imprimen en redonda y las palabras y oraciones en cursiva. La interfaz prioriza la exportación del **examen del alumnado, sin solucionario**.
+
 **Vocabulario de las oraciones:** por defecto se incluyen los enunciados de los lemas identificados, con traducción únicamente cuando el lema no pertenece al vocabulario exigible para esa unidad. El profesor puede revisar los términos no identificados, importar su vocabulario y modificar el glosario. No se asignan lemas o traducciones ficticios.
 
 **Bancos pendientes:** no existe todavía un corpus cerrado de preguntas de cultura de Latín 4.º ESO. En su lugar se presenta una advertencia, sin inventar preguntas. Las cifras de oraciones son objetivos: si el banco verificado contiene menos, el examen muestra las disponibles y señala la carencia. Los pronombres de Latín I usan una selección de formas explícitas, limitada al temario de cada unidad. Los bancos Morpheus y AGLDT todavía no están integrados.
