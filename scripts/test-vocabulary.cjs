@@ -164,7 +164,7 @@ console.log('Vocabulario: prioridad docente, deduplicación por UD, ambigüedad,
 
  // Prueba real de interfaz: diez frases escolares, incluida la preposición «ab».
  const latinCorpus=JSON.parse(fs.readFileSync(path.join(root,'tests/latin-vocabulary-sentences.json'),'utf8')).sentences;
- await page.fill('#vgText',latinCorpus.join('\\n'));
+ await page.fill('#vgText',latinCorpus.join('\n'));
  await page.click('#vgAnalyze');
  await page.waitForFunction(()=>document.querySelector('#vgStatus')?.textContent.includes('pendientes'));
  const vocabularyPreview=await page.locator('#vgResults').innerText();
