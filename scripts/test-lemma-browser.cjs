@@ -34,6 +34,15 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
   assert.match(await page.locator('#offlineLemmaResults').textContent(),/amo/);
   assert.match(await page.locator('#offlineLemmaResults').textContent(),/imperfecto/i);
 
+  // Modelo provisional: sirve para consultar, pero nunca sustituye una forma contrastada.
+  await page.selectOption('#offlineLemmaCourse','lat1');
+  await page.selectOption('#offlineLemmaMode','form');
+  await page.locator('#offlineLemmaInput').fill('appropinquabas');
+  await page.locator('#offlineLemmaSearch').click();
+  await page.locator('#offlineLemmaResults .lemma-provisional').first().waitFor();
+  assert.match(await page.locator('#offlineLemmaStatus').textContent(),/propuestas de modelo sin verificar/);
+  assert.match(await page.locator('#offlineLemmaResults').textContent(),/propuesta sin verificar/);
+  // Un lema griego sin formas queda localizable como entrada, sin inventar acentos.
   await page.selectOption('#offlineLemmaCourse','gr1');
   await page.selectOption('#offlineLemmaMode','lemma');
   await page.locator('#offlineLemmaInput').fill('λύω');
@@ -41,6 +50,13 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
   await page.locator('#offlineLemmaResults .lemma-entry').first().waitFor();
   assert.ok(await page.locator('#offlineLemmaResults .lemma-entry').count()>=5,'No se muestran flexiones griegas');
   assert.match(await page.locator('#offlineLemmaResults').textContent(),/λύ/);
+
+  await page.selectOption('#offlineLemmaMode','lemma');
+  await page.locator('#offlineLemmaInput').fill('ἀδελφός');
+  await page.locator('#offlineLemmaSearch').click();
+  await page.locator('#offlineLemmaResults .lemma-entry').first().waitFor();
+  assert.match(await page.locator('#offlineLemmaStatus').textContent(),/formas de cita del vocabulario/);
+  assert.match(await page.locator('#offlineLemmaResults').textContent(),/sin análisis flexivo documentado/);
 
   await page.selectOption('#offlineLemmaMode','form');
   await page.locator('#offlineLemmaInput').fill('palabra-inexistente');
