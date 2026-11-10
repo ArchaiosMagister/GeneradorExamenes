@@ -17,7 +17,9 @@ function greekReferenceForms(bank){
   if(!k)return;
   if(!map.has(k))map.set(k,[]);
   const slot=map.get(k),id=record.lemma+'|'+record.entry+'|'+record.meaning;
-  if(!slot.some(c=>c.lemma+'|'+c.entry+'|'+c.meaning===id))slot.push(record);
+  const exact=form.normalize('NFC'),prior=slot.find(c=>c.lemma+'|'+c.entry+'|'+c.meaning===id);
+  if(prior)prior.exactForms.add(exact);
+  else slot.push({...record,exactForms:new Set([exact])});
  };
  const endings=(stem,list,row)=>{for(const ending of list)add(stem+key(ending),row)};
  for(const source of bank){
@@ -200,7 +202,7 @@ function greekReferenceForms(bank){
  addIrregular(['τίς','τίς','τί','τί','τίνα','τίνα','τίνος','τίνος','τίνι','τίνι',
   'τίνες','τίνες','τίνας','τίνας','τίσι','τίσιν','τίσιν'],'τίς','quién, cuál, qué');
  addIrregular(['τις','τι','τινά','τινὰ','τινάς','τινὰς','τινός','τινὸς','τινί','τινὶ',
-  'τινές','τινὲς','τισι','τισιν'],'τις','alguien, alguno, cierto');
+  'τινές','τινὲς','τισι','τισιν','τινα','τινες'],'τις','alguien, alguno, cierto');
  addIrregular(['ἀγρός','ἀγρὸς','ἀγροῦ','ἀγρὸν','ἀγρόν','ἀγροὺς','ἀγρούς','ἀγροῖς'],
   'ἀγρός','campo');
  addIrregular(['δειλός','δειλὸς','δειλοῦ','δειλόν'],'δειλός','cobarde');
@@ -403,11 +405,33 @@ function greekReferenceForms(bank){
  for(const [lemma,meaning,forms] of secondPass)addIrregular(forms,lemma,meaning);
 
 
+ // Revisión de las 49 grafías pendientes contrastadas con los textos UD1–14.
+ const lastGreekPass=[
+  ['ἤ','o; que (comparación)',['ἤ','ἢ']],
+  ['μάχη','batalla',['μάχῃ','μάχῃ']],
+  ['θάλαττα','mar',['θάλατταν','θαλάττῃ','θαλάττης']],
+  ['σοφία','sabiduría',['σοφίαν','σοφίᾳ','σοφίας']],
+  ['ψυχή','alma',['ψυχὰς','ψυχῇ','ψυχὴν']],
+  ['πενία','pobreza',['πενίαν']],
+  ['ἄλλος','otro, los demás',['ἄλλους','ἄλλων']],
+  ['Ἀκρόπολις','Acrópolis',['ἀκροπόλει','ἀκρόπολιν']],
+  ['αἰθήρ','cielo',['αἰθέρι']],
+  ['Ἕλλην','griego',['Ἕλληνες','Ἕλληνας','Ἑλλήνων']],
+  ['μήν','mes',['μήνες']],
+  ['τύχη','suerte',['τύχης']],
+  ['φύσις','naturaleza',['φύσει']],
+  ['θέα','diosa',['θέᾳ','θεάν']],
+  ['ὅδε','este',['ὅδε']]
+ ];
+ for(const [lemma,meaning,forms] of lastGreekPass)addIrregular(forms,lemma,meaning);
+
  addIrregular(['Ἀθηναῖοι','Ἀθηναίοις','Ἀθηναῖοις','Ἀθηναίων','Ἀθηναίων',
   'Ἀθηναίους','Ἀθηναίους','Ἀθηναῖος'],'Ἀθηναῖος','ateniense');
  return map;
 }
 const greekSpellingNotes={
+ 'εἴς':'εἰς (revisar acentuación de la preposición)',
+ 'θάλάττῃ':'θαλάττῃ (revisar acentuación)',
  'στρατεγός':'στρατηγός (falta η)',
  'στρατεγὸς':'στρατηγός (falta η)',
  'στρατεγοὶ':'στρατηγοί (falta η)',
@@ -447,7 +471,11 @@ function analyze(data,text,course,bank){
    return variants.map(x=>({...c,entry:x.entry,meaning:x.meaning||''}));
   });
   const supplement=greek?.get(normal)||[];
-  const all=[...indexedCandidates.filter(x=>!(supplement.length&&!x.attested&&!x.meaning)),...supplement];
+  // La normalización ayuda a encontrar formas; la grafía exacta con
+  // diacríticos decide el lema cuando hay coincidencia documentada.
+  const exactGreek=supplement.filter(x=>x.exactForms?.has(form.normalize('NFC')));
+  const all=exactGreek.length?exactGreek:
+   [...indexedCandidates.filter(x=>!(supplement.length&&!x.attested&&!x.meaning)),...supplement];
   // Preferimos la evidencia más firme para la misma entrada, sin descartar
   // una segunda lectura posible de un homógrafo.
   const compact=new Map();
