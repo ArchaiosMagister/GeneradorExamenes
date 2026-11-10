@@ -58,8 +58,8 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
    'Griego I UD4 no debe introducir todavía el adjetivo');
   const greek=await choose('greek1','complete','UD5');
   assert(greek.tableCount>0,'Griego I UD5: faltan tablas nominales');
-  assert(greek.headings.every(x=>/^(ὁ|ἡ|τὸ)\s+\S+\s+(ἀγαθ|καλ|κακ)/u.test(x)),
-   'Griego I UD5 debe mostrar artículo, sustantivo y adjetivo: '+greek.headings.join(' / '));
+  assert(greek.headings.every(x=>/^(ὁ|ἡ|τὸ)\s+(ἀγαθ|καλ|κακ)\S*\s+\S+/u.test(x)),
+   'Griego I UD5 debe mostrar artículo, adjetivo y sustantivo (orden atributivo): '+greek.headings.join(' / '));
   assert(greek.answers.every(rows=>rows.every((cols,k)=>
    cols.every(x=>k===1?x.split(' ').length===2:x.split(' ').length===3))),
    'En el vocativo no hay artículo; en los demás casos deben aparecer tres palabras');
@@ -73,14 +73,14 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
    });
   });
   assert(agreement[0].title.startsWith('ὁ '),'Masculino griego: artículo equivocado');
-  assert(agreement[1].title.startsWith('ἡ ἀγορὰ '),'Femenino griego: artículo y acento grave ante adjetivo incorrectos');
+  assert(/^ἡ (?:ἀγαθ|καλ|κακ)\S+ ἀγορά$/u.test(agreement[1].title),'Femenino griego: orden atributivo y acento grave del adjetivo incorrectos');
   assert(agreement[2].title.startsWith('τὸ '),'Neutro griego: artículo equivocado');
   assert(agreement[0].gen.startsWith('τοῦ '),'Genitivo masculino: falta artículo');
   assert(agreement[1].gen.startsWith('τῆς '),'Genitivo femenino: falta artículo');
   assert(agreement[2].gen.startsWith('τοῦ '),'Genitivo neutro: falta artículo');
   assert(agreement.every(x=>!x.voc.startsWith('ὁ ')&&!x.voc.startsWith('ἡ ')&&!x.voc.startsWith('τὸ ')),
    'El artículo griego no tiene vocativo');
-  assert(/ός$/u.test(agreement[0].nom)&&/ή$/u.test(agreement[1].nom)&&/όν$/u.test(agreement[2].nom),
+  assert(/ὸς$/u.test(agreement[0].nom.split(' ')[1])&&/ὴ$/u.test(agreement[1].nom.split(' ')[1])&&/ὸν$/u.test(agreement[2].nom.split(' ')[1]),
    'Concordancia griega incorrecta en el nominativo');
 
   const morph=await choose('greek1','morphology','UD5');
