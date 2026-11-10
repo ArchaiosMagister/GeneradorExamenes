@@ -930,12 +930,55 @@ function examParadigmHeading(value,kind){
  const match=raw.match(indicator),lemma=match?raw.slice(0,match.index).trim():raw;
  return '<i>'+esc(lemma)+'</i>'+(match?' <span class="exam-paradigm-indicator">'+esc(match[1])+'</span>':'');
 }
+function latinCompleteCompoundActive(chosen){
+ const from={latin1:2,latin4:3}[currentCourse()];
+ return Number.isInteger(from)&&Math.max(0,...chosen.map(examUnitNumber).filter(Number.isInteger))>=from;
+}
+function latinCompleteAdjectives(chosen){
+ const until=Math.max(0,...chosen.map(examUnitNumber).filter(Number.isInteger));
+ return latinSharedBank.vocabulary(currentCourse())
+  .filter(x=>examUnitNumber(x.unit)!==null&&examUnitNumber(x.unit)<=until&&!isExcludedExamMorphLemma(x.entry,x.meaning))
+  .map(x=>({x,p:adjective(x)})).filter(item=>{
+   const lemma=mNormalize(headLex(item.x.entry)).toLowerCase();
+   // meus > mi y los adjetivos en -ius requieren vocativos propios.
+   return item.p&&/^[a-z]+us$/.test(lemma)&&lemma!=='meus'&&!lemma.endsWith('ius');
+  });
+}
+function latinCompleteNounGender(item){
+ const lemma=mNormalize(item.p.lemma).toLowerCase();
+ // Primera declinación de género masculino: no cambiar a femenino por terminar en -a.
+ if(['agricola','nauta','poeta','pirata','incola','auriga','scriba','advena','conviva','collega','athleta','propheta','homicida','satrapa'].includes(lemma))return 'm';
+ return item.p.gender;
+}
+function latinCompleteDeclensionItems(chosen){
+ const nouns=latinExamNominals(chosen);
+ if(!latinCompleteCompoundActive(chosen))return nouns;
+ const adjectives=latinCompleteAdjectives(chosen);
+ if(!adjectives.length)return []; // No se inventan adjetivos fuera del programa.
+ return nouns.map(item=>{
+  const adjectival=sample(adjectives,1)[0],gender=latinCompleteNounGender(item);
+  const lemma=mNormalize(headLex(adjectival.x.entry)),stem=lemma.slice(0,-2);
+  const key={m:'2m',f:'1',n:'2n'}[gender];
+  if(!key||!lemma.endsWith('us'))return null;
+  const endings=M_END[key];
+  const adjectiveForms=endings.map((number,i)=>number.map((ending,k)=>{
+   if(i===0&&k===0)return stem+({m:'us',f:'a',n:'um'}[gender]);
+   return stem+ending;
+  }));
+  return {...item,compound:{
+   adjective:adjectival.x,gender,
+   title:item.p.forms[0][0]+' '+adjectiveForms[0][0],
+   forms:item.p.forms.map((number,i)=>number.map((surface,k)=>surface+' '+adjectiveForms[i][k]))
+  }};
+ }).filter(Boolean);
+}
 function latinExamDeclensionTable(item,solutions=false){
- const p=item.p;
+ const p=item.p,tableForms=item.compound?.forms||p.forms;
+ const title=item.compound?.title||item.x.entry;
  return '<table class="exam-paradigm exam-nouns reference-morph-table" data-col-widths="16,42,42">'+
-  '<thead><tr><td class="exam-corner"></td><th colspan="2">'+examParadigmHeading(item.x.entry,'declension')+'</th></tr>'+
+  '<thead><tr><td class="exam-corner"></td><th colspan="2">'+examParadigmHeading(title,'declension')+'</th></tr>'+
   '<tr><td class="exam-corner"></td><th>Singular</th><th>Plural</th></tr></thead><tbody>'+
-  M_CASES.map((name,i)=>'<tr><th>'+esc(name)+'</th><td>'+(solutions?'<i>'+esc(p.forms[0][i])+'</i>':'')+'</td><td>'+(solutions?'<i>'+esc(p.forms[1][i])+'</i>':'')+'</td></tr>').join('')+
+  M_CASES.map((name,i)=>'<tr><th>'+esc(name)+'</th><td>'+(solutions?'<i>'+esc(tableForms[0][i])+'</i>':'')+'</td><td>'+(solutions?'<i>'+esc(tableForms[1][i])+'</i>':'')+'</td></tr>').join('')+
   '</tbody></table>';
 }
 function latinExamConjugationTable(items,solutions=false){
@@ -999,9 +1042,9 @@ function generate(){
  const missing=message=>'<p class="small no-print">'+esc(message)+'</p>';
  const formsCount=examMorphQuotasActive()?examMorphQuotaCount():countFor('forms');
  if(!translation&&examQuestionEnabled('decl')){
-  const nouns=stickyExamRows('decl',()=>sample(latinExamNominals(chosen),Math.min(3,countFor('decl'))));
-  selectedMorph.push(...nouns.map(x=>x.x));
-  add(t('Declina las siguientes palabras.','Declina les paraules següents.'),
+  const nouns=stickyExamRows('decl',()=>sample(latinCompleteDeclensionItems(chosen),Math.min(3,countFor('decl'))));
+  selectedMorph.push(...nouns.flatMap(x=>x.compound?[x.x,x.compound.adjective]:[x.x]));
+  add(latinCompleteCompoundActive(chosen)?t('Declina los siguientes sintagmas nominales.','Declina els sintagmes nominals següents.'):t('Declina las siguientes palabras.','Declina les paraules següents.'),
    nouns.length?nouns.map(x=>latinExamDeclensionTable(x)).join(''):missing('No hay paradigmas nominales verificados en las unidades seleccionadas.'),
    nouns.map(x=>latinExamDeclensionTable(x,true)).join(''));
  }
@@ -1728,12 +1771,60 @@ function greekSelect(pool,chosen,counts){
 }
 // Reference layout: normal bordered header paragraphs; the word to decline
 // belongs to the first merged table row, with an open upper-left corner.
+const greekCompleteAdjectives=[
+ {lemma:'ἀγαθός',stem:'ἀγαθ'}, {lemma:'καλός',stem:'καλ'}, {lemma:'κακός',stem:'κακ'}
+];
+const greekArticles={
+ m:[['ὁ','','τὸν','τοῦ','τῷ'],['οἱ','','τοὺς','τῶν','τοῖς']],
+ f:[['ἡ','','τὴν','τῆς','τῇ'],['αἱ','','τὰς','τῶν','ταῖς']],
+ n:[['τὸ','','τὸ','τοῦ','τῷ'],['τὰ','','τὰ','τῶν','τοῖς']]
+};
+function greekCompleteAdjectiveForms(stem,gender){
+ const endings={
+  m:[['ός','έ','όν','οῦ','ῷ'],['οί','οί','ούς','ῶν','οῖς']],
+  f:[['ή','ή','ήν','ῆς','ῇ'],['αί','αί','άς','ῶν','αῖς']],
+  n:[['όν','όν','όν','οῦ','ῷ'],['ά','ά','ά','ῶν','οῖς']]
+ }[gender];
+ return endings.map(number=>number.map(ending=>stem+ending));
+}
+// Una palabra oxítona pasa a acento grave cuando va seguida por otra
+// palabra dentro del mismo sintagma (ἀγορά > ἀγορὰ κακή).
+function greekAccentBeforeAdjective(surface){
+ const text=String(surface||'').normalize('NFD'),at=text.lastIndexOf('\u0301');
+ if(at<0)return surface;
+ const after=text.slice(at+1).replace(/[\u0300-\u036f]/g,'');
+ if(/[αεηιουω]/iu.test(after))return surface;
+ return (text.slice(0,at)+'\u0300'+text.slice(at+1)).normalize('NFC');
+}
+function greekCompleteNominalGroup(item){
+ if($('model').value!=='complete'||greekLimit()<5||item.kind!=='declension')return null;
+ const genders={λογος:'m',ανθρωπος:'m',δωρον:'n',εργον:'n',
+  αγορα:'f',χωρα:'f',θαλαττα:'f',νεανιας:'m',παιδεια:'f',αδελφος:'m'};
+ const nounKey=item.id.slice(2),gender=genders[nounKey];
+ if(!gender)return null;
+ const seed=[...nounKey].reduce((n,c)=>n+c.codePointAt(0),0);
+ const adjective=greekCompleteAdjectives[seed%greekCompleteAdjectives.length];
+ const forms=greekCompleteAdjectiveForms(adjective.stem,gender),articles=greekArticles[gender];
+ const nominative=item.table.rows[0][1];
+ return {
+  title:articles[0][0]+' '+greekAccentBeforeAdjective(nominative)+' '+forms[0][0],
+  // El griego antiguo no tiene artículo vocativo. Se declinan sustantivo y
+  // adjetivo en esa fila; no se introduce ὦ como si fuera artículo.
+  rows:item.table.rows.map((row,k)=>[row[0],
+   [0,1].map(number=>{
+    const article=articles[number][k];
+    return (article?article+' ':'')+greekAccentBeforeAdjective(row[number+1])+' '+forms[number][k];
+   })])
+ };
+}
 function greekTable(item,answers=false){
  const va=$('lang').value==='va',verb=item.kind==='conjugation';
  const articles={λογος:'ὁ',ανθρωπος:'ὁ',δωρον:'τὸ',εργον:'τὸ',αγορα:'ἡ',χωρα:'ἡ',θαλαττα:'ἡ',νεανιας:'ὁ',παιδεια:'ἡ',αδελφος:'ὁ'};
  const lemma=item.lemmas[0],article=articles[item.id.slice(2)]||'';
- const title=verb?headLex(lemma):(article?article+' ':'')+lemma;
- return '<table class="exam-paradigm '+(verb?'exam-verbs':'exam-nouns')+'" data-col-widths="'+(verb?'500,4000,4000':'1340,3580,3580')+'" data-corpus-id="'+item.id+'"><colgroup><col><col><col></colgroup><thead><tr><td class="exam-corner"></td><th colspan="2" scope="colgroup">'+examParadigmHeading(title,verb?'conjugation':'declension')+'</th></tr><tr><td class="exam-corner"></td><th scope="col">Singular</th><th scope="col">Plural</th></tr></thead><tbody>'+item.table.rows.map(row=>'<tr><th scope="row">'+esc(verb?row[0].replace('.',''):row[0][0].toUpperCase()+row[0].slice(1))+'</th><td>'+(answers?'<i>'+esc(row[1])+'</i>':'')+'</td><td>'+(answers?'<i>'+esc(row[2])+'</i>':'')+'</td></tr>').join('')+'</tbody></table>';
+ const compound=!verb?greekCompleteNominalGroup(item):null;
+ const title=compound?.title||(verb?headLex(lemma):(article?article+' ':'')+lemma);
+ const tableRows=compound?compound.rows.map(row=>[row[0],...row[1]]):item.table.rows;
+ return '<table class="exam-paradigm '+(verb?'exam-verbs':'exam-nouns')+'" data-col-widths="'+(verb?'500,4000,4000':'1340,3580,3580')+'" data-corpus-id="'+item.id+'"><colgroup><col><col><col></colgroup><thead><tr><td class="exam-corner"></td><th colspan="2" scope="colgroup">'+examParadigmHeading(title,verb?'conjugation':'declension')+'</th></tr><tr><td class="exam-corner"></td><th scope="col">Singular</th><th scope="col">Plural</th></tr></thead><tbody>'+tableRows.map(row=>'<tr><th scope="row">'+esc(verb?row[0].replace('.',''):row[0][0].toUpperCase()+row[0].slice(1))+'</th><td>'+(answers?'<i>'+esc(row[1])+'</i>':'')+'</td><td>'+(answers?'<i>'+esc(row[2])+'</i>':'')+'</td></tr>').join('')+'</tbody></table>';
 }
 function greekVerbTable(items){
  const widths=[500,...items.flatMap(()=>[4000/items.length,4000/items.length])].map(Math.round);
@@ -1746,7 +1837,7 @@ function greekExamHeader(chosen,mode){
  const title=examHeadingWithUnits(custom?titleInput:prefix+(va?'Grec I':'Griego I'),chosen)+($('seed').value?' · '+$('seed').value:'');
  return '<div class="exam-header"><p class="exam-header-line"><span>'+esc(title)+'</span><span>'+$('term').value+'ª '+(va?'avaluació':'evaluación')+'</span></p><p class="exam-header-line"><span>'+(va?'Nom i cognoms:':'Nombre y apellidos:')+'</span><span>'+(va?'Data:':'Fecha')+'</span></p></div>';
 }
-function greekQuestionLabel(kind){if(kind==='sentences'&&$('model').value==='translation')return $('lang').value==='va'?'Tradueix les oracions següents':'Traduce las siguientes oraciones';return ({es:{declension:'Declina',conjugation:'Conjuga',forms:'Analiza morfológicamente',pronouns:'Completa la tabla con el análisis morfológico adecuado',etymology:'Escribe dos derivados etimológicos de cada una de estas palabras griegas',sentences:'Analiza y traduce las siguientes oraciones'},va:{declension:'Declina',conjugation:'Conjuga',forms:'Analitza morfològicament',pronouns:'Completa la taula amb l’anàlisi morfològica adequada',etymology:'Escriu dos derivats etimològics de cadascuna d’aquestes paraules gregues',sentences:'Analitza i tradueix les oracions següents'}})[$('lang').value][kind]}
+function greekQuestionLabel(kind){if(kind==='declension'&&$('model').value==='complete'&&greekLimit()>=5)return $('lang').value==='va'?'Declina els sintagmes: article, substantiu i adjectiu':'Declina los sintagmas: artículo, sustantivo y adjetivo';if(kind==='sentences'&&$('model').value==='translation')return $('lang').value==='va'?'Tradueix les oracions següents':'Traduce las siguientes oraciones';return ({es:{declension:'Declina',conjugation:'Conjuga',forms:'Analiza morfológicamente',pronouns:'Completa la tabla con el análisis morfológico adecuado',etymology:'Escribe dos derivados etimológicos de cada una de estas palabras griegas',sentences:'Analiza y traduce las siguientes oraciones'},va:{declension:'Declina',conjugation:'Conjuga',forms:'Analitza morfològicament',pronouns:'Completa la taula amb l’anàlisi morfològica adequada',etymology:'Escriu dos derivats etimològics de cadascuna d’aquestes paraules gregues',sentences:'Analitza i tradueix les oracions següents'}})[$('lang').value][kind]}
 function greekPoints(kind){const v=Number($('greek-points-'+kind).value);if(kind==='pronouns'&&$('model').value==='complete'&&examQuestionEnabled('pronouns')&&v===0)return 1;return Number.isFinite(v)?Math.max(0,Math.min(100,v)):0}
 function generateGreekMorphologyFixed(){
  const marked=greekMarkedUnits(),limit=greekLimit(),cfg=morphConfig(),va=$('lang').value==='va';
