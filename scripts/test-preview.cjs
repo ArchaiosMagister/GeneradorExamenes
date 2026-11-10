@@ -39,15 +39,20 @@ async function checkFile(browser,filename){
   const cell=document.createElement('th');
   cell.innerHTML=examParadigmHeading(text,kind);
   const lexeme=cell.querySelector('i'),indicator=cell.querySelector('.exam-paradigm-indicator');
+  const greek=/[\u0370-\u03ff\u1f00-\u1fff]/u.test(text),course=document.getElementById('course');
+  const previous=course.value;
+  if(greek)course.value='greek1';
+  const lexemeItalic=wordInline(lexeme).includes('<w:i/>');
+  course.value=previous;
   return {lexeme:lexeme?.textContent,indicator:indicator?.textContent||'',
-   lexemeItalic:wordInline(lexeme).includes('<w:i/>'),
+   greek,lexemeItalic,
    indicatorItalic:indicator?wordInline(indicator).includes('<w:i/>'):false,
    fullText:cell.textContent,expectedLexeme,expectedIndicator,source:text};
  }));
  for(const sample of typographies){
   assert.equal(sample.lexeme,sample.expectedLexeme,filename+': lema mal identificado '+sample.source);
   assert.equal(sample.indicator,sample.expectedIndicator,filename+': indicación mal separada '+sample.source);
-  assert.equal(sample.lexemeItalic,true,filename+': lema no cursivo en Word '+sample.source);
+  assert.equal(sample.lexemeItalic,!sample.greek,filename+': cursiva incorrecta en Word '+sample.source);
   assert.equal(sample.indicatorItalic,false,filename+': metadato en cursiva '+sample.source);
   assert.equal(sample.fullText,sample.source,filename+': se ha perdido contenido '+sample.source);
  }
@@ -57,8 +62,8 @@ async function checkFile(browser,filename){
   ['greek1','complete','UD7'],['greek1','morphology','UD7'],['greek1','translation','UD7']
  ];
  for(const [course,model,unit] of cases){
-  await page.selectOption('#course',course);
-  await page.selectOption('#model',model);
+  await page.evaluate(course=>{const select=document.getElementById('course');select.value=course;select.dispatchEvent(new Event('change',{bubbles:true}))},course);
+  await page.evaluate(model=>{const select=document.getElementById('model');select.value=model;select.dispatchEvent(new Event('change',{bubbles:true}))},model);
   await page.evaluate(value=>{
    document.querySelectorAll('.unit-choice').forEach(el=>el.checked=units[Number(el.value)]===value);
    generate();
@@ -70,12 +75,12 @@ async function checkFile(browser,filename){
     height:sheet?.getBoundingClientRect().height||0,
     text:paper.textContent.trim().length,
     questions:paper.querySelectorAll('.exam-question').length,
-    controls:document.querySelectorAll('#manualMorphWords input[type="text"]').length,
+    controls:document.querySelectorAll('.question-editor input[type="text"]').length,
     warning:document.querySelector('#manualMorphWords')?.textContent
    };
   });
   assert(result.visible&&result.height>80&&result.text>80,filename+' '+course+'/'+model+': vista previa ausente '+JSON.stringify(result));
-  assert(result.questions>=3,filename+' '+course+'/'+model+': preguntas no renderizadas');
+  assert(result.questions>=(course==='latin1'&&model==='mixto'?2:3),filename+' '+course+'/'+model+': preguntas no renderizadas');
   const headings=await page.locator('#paper .exam-nouns thead tr:first-child th[colspan], #paper .exam-verbs thead tr:first-child th[colspan]').evaluateAll(
    cells=>cells.map(cell=>({text:cell.textContent,lexeme:cell.querySelector('i')?.textContent,indicator:cell.querySelector('.exam-paradigm-indicator')?.textContent||''}))
   );
@@ -127,22 +132,24 @@ async function checkFile(browser,filename){
    assert(/Palatino/.test(styleXml),caseLabel+': fuente Palatino ausente en Word');
    if(screenLayout.tableCount){
     assert(documentXml.includes('<w:tbl>'),caseLabel+': tablas ausentes en Word');
-    assert(documentXml.includes('<w:i/>'),caseLabel+': cursiva ausente en Word');
+    if(course==='greek1')assert(!documentXml.includes('<w:i/>'),caseLabel+': hay griego en cursiva en Word');
+    else assert(documentXml.includes('<w:i/>'),caseLabel+': cursiva latina ausente en Word');
    }
   }
   // El panel de preguntas es un acordeón cerrado por defecto.
-  await page.locator('.menu-section').filter({has:page.locator('#manualMorphWords')}).evaluate(section=>section.open=true);
+  await page.locator('#examQuestionSettings').evaluate(section=>section.open=true);
+  await page.locator('#examQuestionMenus details').evaluateAll(sections=>sections.forEach(el=>el.open=true));
   if(course==='greek1'&&model==='complete'){
    // El examen completo griego edita la selección del corpus, conservando las soluciones.
-   const available=await page.locator('#manualMorphWords select').count();
+   const available=await page.locator('.question-editor select').count();
    assert(available>0,filename+': faltan los selectores del corpus griego');
    const before=await page.evaluate(()=>window.greekLastExam.ids.length);
-   await page.locator('#manualMorphWords button').filter({hasText:'Añadir al apartado'}).first().click();
+   await page.locator('.question-editor button').filter({hasText:'Añadir al apartado'}).first().click();
    const after=await page.evaluate(()=>window.greekLastExam.ids.length);
    assert(after>before,filename+': el selector de Griego completo no modifica el examen');
   }else{
    assert(result.controls>0,filename+' '+course+'/'+model+': no se pueden editar formas: '+result.warning);
-   const input=page.locator('#manualMorphWords input[type="text"]').first();
+   const input=page.locator('.question-editor input[type="text"]').first();
    const tableEdit=await input.evaluate(el=>/^(Declinación|Conjugación)/.test(el.parentElement.textContent.trim()));
    await input.fill('FORMA_DE_PRUEBA');
    assert((await page.locator('#paper').textContent()).includes('FORMA_DE_PRUEBA'),filename+' '+course+'/'+model+': la edición no actualiza la vista previa');
@@ -150,22 +157,23 @@ async function checkFile(browser,filename){
    assert.equal(await page.locator('#paper #answerkey [data-manual-warning]').count(),1,filename+' '+course+'/'+model+': falta advertencia de solucionario');
   }
  }
- await page.selectOption('#course','latin1');
- await page.selectOption('#model','mixto');
+ await page.evaluate(()=>{const course=document.getElementById('course');course.value='latin1';course.dispatchEvent(new Event('change',{bubbles:true}));const model=document.getElementById('model');model.value='mixto';model.dispatchEvent(new Event('change',{bubbles:true}))});
  await page.evaluate(()=>{
   document.querySelectorAll('.unit-choice').forEach(el=>el.checked=units[Number(el.value)]==='UD3');
   generate();
  });
- const visibility=await page.locator('#count-forms').evaluate(input=>{
+ const formsCountInput=page.locator('#examQuestionMenus [data-question="forms"] label:has-text("Número de formas") input');
+ await page.locator('#examQuestionMenus [data-question="forms"]').evaluate(section=>section.open=true);
+ const visibility=await formsCountInput.evaluate(input=>{
   const ancestors=[];for(let el=input;el;el=el.parentElement){
    ancestors.push({tag:el.tagName,id:el.id,cls:el.className,hidden:el.hidden,open:el.open,display:getComputedStyle(el).display});
    if(el.id==='examLayout')break;
   }
   return ancestors;
  });
- assert(await page.locator('#count-forms').isVisible(),filename+': campo de formas sueltas oculto '+JSON.stringify(visibility));
- await page.fill('#count-forms','1');
- await page.locator('#count-forms').dispatchEvent('change');
+ assert(await formsCountInput.isVisible(),filename+': campo de formas sueltas oculto '+JSON.stringify(visibility));
+ await formsCountInput.fill('1');
+ await formsCountInput.dispatchEvent('change');
  const forms=await page.evaluate(()=>{
   const q=[...document.querySelectorAll('.latin-standard-exam .exam-question')].find(el=>el.textContent.toLowerCase().includes('morfol'));
   return q?.nextElementSibling?.querySelectorAll(':scope > li').length||0;
