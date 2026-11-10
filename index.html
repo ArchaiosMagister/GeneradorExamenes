@@ -2646,15 +2646,7 @@ loadTeacherLatinLexBanks();
  }
  const legacyIds=['decl','amount','count-decl'];
  for(const id of legacyIds){const field=$(id)?.closest('.field');if(field)field.classList.add('legacy-question-fields')}
- const morphLegacy=document.createElement('div');morphLegacy.id='morphOptions';morphLegacy.className='legacy-question-fields';
- morphLegacy.innerHTML='<input type="number" id="morphOffer" value="3" min="1" max="12">'+
-  '<input type="number" id="morphDecline" value="2" min="1" max="12">'+
-  '<input type="number" id="morphVerbs" value="10" min="1" max="30">'+
-  '<input type="number" id="morphWords" value="10" min="1" max="30">'+
-  '<input type="checkbox" id="morphCategory-n" checked>'+
-  '<input type="checkbox" id="morphCategory-adj" checked>'+
-  '<input type="checkbox" id="morphCategory-pro" checked>';
- questions.append(morphLegacy);
+
  const oldMorph=$('manualMorphField');questions.append(oldMorph);
  const questionHost=document.createElement('div');questionHost.id='examQuestionMenus';questions.insertBefore(questionHost,oldMorph);
  const legacyCountArea=$('count-decl').closest('.count-grid');
@@ -3150,7 +3142,7 @@ window.ExaminaMorphology={lookup,stats,importText};
  function setupMorphModelControls(){
  const panel=document.querySelector('#examLayout > aside.panel');
  if(!panel)return;
- const group=[...panel.querySelectorAll('.menu-section')].find(x=>x.querySelector('#amount'));
+ const group=document.getElementById('examQuestionSettings')||[...panel.querySelectorAll('.menu-section')].find(x=>x.querySelector('#amount'));
  if(!group||document.getElementById('morphOptions'))return;
  const block=document.createElement('div');block.className='field';block.id='morphOptions';
  block.innerHTML='<h3>Examen de morfología · 1 p. por pregunta</h3><p class="hint">Pregunta 1: sintagmas (artículo + sustantivo + adjetivo en griego). Configura las opciones; la generación automática de sintagmas queda pendiente.</p><div class="count-grid"><label>Sintagmas ofrecidos<select id="morphOffer">'+Array.from({length:11},(_,i)=>'<option value="'+(i+2)+'"'+(i===1?' selected':'')+'>'+(i+2)+'</option>').join('')+'</select></label><label>Sintagmas que se declinan<select id="morphDecline">'+Array.from({length:12},(_,i)=>'<option value="'+(i+1)+'"'+(i===1?' selected':'')+'>'+(i+1)+'</option>').join('')+'</select></label><label>Formas verbales (pregunta 2)<input id="morphVerbs" type="number" min="1" max="30" value="10"></label><label>Palabras (pregunta 3)<input id="morphWords" type="number" min="1" max="30" value="10"></label></div><label for="morphSyntagms">Sintagmas editables (uno por línea)</label><textarea id="morphSyntagms" rows="3" placeholder="magnus, –a, –um + oppidum, –i"></textarea><p class="hint">Si no introduces sintagmas, aparecerán espacios editables. No se inventan formas ni concordancias.</p><p class="hint">Categorías de la pregunta 3</p><label class="check"><input type="checkbox" id="morphCategory-n" checked>Sustantivos</label><label class="check"><input type="checkbox" id="morphCategory-adj" checked>Adjetivos</label><label class="check"><input type="checkbox" id="morphCategory-pro" checked>Pronombres</label>';
