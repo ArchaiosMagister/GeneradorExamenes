@@ -46,7 +46,7 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
     };
     return {results,independent,wordVa:valencianWord.includes('xiqueta'),
      wordEs:spanishWord.includes('niña'),
-     paulusVa:valencianWord.includes('Paulus, –i:'),
+     paulusVa:valencianWord.includes('Paulus, –i</w:t>')&&valencianWord.includes('&apos;Paulus&apos;'),
      imponoVa:valencianWord.includes('imposar')&&valencianWord.includes('posar damunt'),
      imponoEs:spanishWord.includes('imponer'),
      specific,teacher:verifyTeacher,
