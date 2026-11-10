@@ -1,0 +1,183 @@
+{
+  "schema": 1,
+  "purpose": "Formas contrastadas individualmente con fuentes abiertas; ninguna etiqueta implica revisión del resto del paradigma.",
+  "entryCorrections": [
+    {
+      "lang": "lat",
+      "lemma": "moveo",
+      "course": "lat1",
+      "from": "moveo, movi, movitum (2ª)",
+      "to": "moveo, movi, motum (2ª)",
+      "reference": "https://cld.bbaw.de/lemma/lat/moveo"
+    },
+    {
+      "lang": "lat",
+      "lemma": "eripio",
+      "course": "lat1",
+      "from": "eripio, eripui, eripitum (4ª)",
+      "to": "eripio, eripui, ereptum (mx.)",
+      "reference": "https://logeion.uchicago.edu/eriperer"
+    }
+  ],
+  "paradigms": [
+    {
+      "lang": "lat",
+      "lemma": "sum",
+      "reference": "https://www.nationalarchives.gov.uk/latin/stage-2-latin/resources/stage-2-latin-grammar-resource/",
+      "type": "indicativo",
+      "blocks": [
+        {
+          "tags": "V;IND;ACT;PRS",
+          "forms": [
+            "sum",
+            "es",
+            "est",
+            "sumus",
+            "estis",
+            "sunt"
+          ]
+        },
+        {
+          "tags": "V;IND;ACT;PST;IPFV",
+          "forms": [
+            "eram",
+            "eras",
+            "erat",
+            "eramus",
+            "eratis",
+            "erant"
+          ]
+        },
+        {
+          "tags": "V;IND;ACT;FUT",
+          "forms": [
+            "ero",
+            "eris",
+            "erit",
+            "erimus",
+            "eritis",
+            "erunt"
+          ]
+        },
+        {
+          "tags": "V;IND;ACT;PRF",
+          "forms": [
+            "fui",
+            "fuisti",
+            "fuit",
+            "fuimus",
+            "fuistis",
+            "fuerunt"
+          ]
+        },
+        {
+          "tags": "V;IND;ACT;PSTP",
+          "forms": [
+            "fueram",
+            "fueras",
+            "fuerat",
+            "fueramus",
+            "fueratis",
+            "fuerant"
+          ]
+        }
+      ]
+    },
+    {
+      "lang": "lat",
+      "lemma": "eo",
+      "reference": "https://www.nationalarchives.gov.uk/latin/stage-2-latin/resources/stage-2-latin-grammar-resource/",
+      "type": "presente indicativo",
+      "blocks": [
+        {
+          "tags": "V;IND;ACT;PRS",
+          "forms": [
+            "eo",
+            "is",
+            "it",
+            "imus",
+            "itis",
+            "eunt"
+          ]
+        }
+      ]
+    },
+    {
+      "lang": "grc",
+      "lemma": "γιγνομαι",
+      "reference": "https://logeion.uchicago.edu/morpho/%CE%B3%CE%AF%CE%BD%CE%BF%CE%BC%CE%B1%CE%B9",
+      "type": "presente indicativo medio; una sola variante por casilla",
+      "blocks": [
+        {
+          "tags": "V;IND;MID;PRS",
+          "forms": [
+            "γίγνομαι",
+            "γίγνῃ",
+            "γίγνεται",
+            "γιγνόμεθα",
+            "γίγνεσθε",
+            "γίγνονται"
+          ]
+        }
+      ]
+    },
+    {
+      "lang": "grc",
+      "lemma": "ερχομαι",
+      "reference": "https://logeion.uchicago.edu/morpho/%E1%BC%94%CF%81%CF%87%CE%B5%CE%B9",
+      "type": "presente indicativo medio; una sola variante por casilla",
+      "blocks": [
+        {
+          "tags": "V;IND;MID;PRS",
+          "forms": [
+            "ἔρχομαι",
+            "ἔρχῃ",
+            "ἔρχεται",
+            "ἐρχόμεθα",
+            "ἔρχεσθε",
+            "ἔρχονται"
+          ]
+        }
+      ]
+    },
+    {
+      "lang": "grc",
+      "lemma": "διδασκω",
+      "reference": "https://logeion.uchicago.edu/morpho/%CE%B4%CE%B9%CE%B4%CE%AC%CF%83%CE%BA%CF%89",
+      "type": "presente indicativo activo",
+      "blocks": [
+        {
+          "tags": "V;IND;ACT;PRS",
+          "forms": [
+            "διδάσκω",
+            "διδάσκεις",
+            "διδάσκει",
+            "διδάσκομεν",
+            "διδάσκετε",
+            "διδάσκουσι"
+          ]
+        }
+      ]
+    },
+    {
+      "lang": "grc",
+      "lemma": "ακουω",
+      "reference": "https://logeion.uchicago.edu/morpho/%E1%BC%80%CE%BA%CE%BF%CF%8D%CE%B5%CE%B9%CF%82",
+      "type": "presente indicativo activo",
+      "blocks": [
+        {
+          "tags": "V;IND;ACT;PRS",
+          "forms": [
+            "ἀκούω",
+            "ἀκούεις",
+            "ἀκούει",
+            "ἀκούομεν",
+            "ἀκούετε",
+            "ἀκούουσι"
+          ]
+        }
+      ]
+    }
+  ],
+  "sourceCode": 5
+}
