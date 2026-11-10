@@ -123,7 +123,7 @@ for(const g of grouped.values()){
   if(vals.size!==1){output.stats.ambiguousCells++;continue}
   cells.set(tag,vals);
  }
- if(!matchesTeacher(g.lemma,g.kind,cells)){output.stats.lexicalMismatch++;continue}
+ if(!matchesTeacher(g.lemma,g.kind,cells)){if(fixture)console.log('RECHAZO FICHA',g.lemma,g.kind,lexicon[g.lemma]?.gr1?.entry,[...cells.keys()].slice(0,5));output.stats.lexicalMismatch++;continue}
  const min=g.kind==='N'?7:9;
  if(cells.size<min){output.stats.insufficient++;continue}
  let conflicts=0,matched=0;
