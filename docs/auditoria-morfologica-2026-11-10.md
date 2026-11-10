@@ -29,6 +29,10 @@ La cobertura publicada se calcula **por lema**, no por casilla del paradigma. Te
 
 El panel permite marcar cada caso como **aceptar variante**, **corregir/completar** o **no usar en ejercicios**, con observaciones y exportación JSON; el estado se conserva en el navegador. Las marcas no editan los bancos ni alteran la generación. La corrección de fuentes maestras y la promoción de formas requieren una fase separada con evidencias, pruebas y, si procede, actualización del vocabulario en `VocabulaLatinaGraecaque`.
 
+## Incidencia preexistente detectada por CI
+
+El banco de evolución fonética tiene actualmente **510** fichas distintas, mientras que el constructor offline y una prueba PWA aún esperaban **460**. Se ha actualizado la validación para admitir al menos 510 y seguir rechazando IDs duplicados. No se alteraron las fichas.
+
 ## Límites de esta primera pasada
 
 Es una **auditoría reproducible del índice existente y contraste externo de incidencias concretas**, no una colación filológica individual de las 16.829 filas ni una certificación de todos los paradigmas. Una segunda pasada deberá revisar por separado las irregularidades y las casillas elegibles por unidad. No se debe convertir «origen UniMorph» en «morfología garantizada» ni «decisión docente guardada» en «forma verificada».
