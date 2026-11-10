@@ -6,6 +6,7 @@ on:
       - 'index.html'
       - 'offline.html'
       - 'offline-lemmas.js'
+      - 'verification-review.js'
       - 'data/lemmas/**'
       - 'data/unimorph/**'
       - 'scripts/**'
@@ -56,6 +57,8 @@ jobs:
         run: npm run offline:build
       - name: Probar lematización latina y griega sin red
         run: node scripts/test-lemma-index.mjs
+      - name: Auditar incidencias morfológicas y decisiones
+        run: node scripts/test-teacher-review.mjs
       - name: Verificar HTML autónomo
         run: npm run offline:test
       - name: Comprobar estructura de exámenes

@@ -14,6 +14,7 @@ const commit='8f1a7a3985e0bb60231d83daa85e422868c97683';
 const base='https://raw.githubusercontent.com/ArchaiosMagister/VocabulaLatinaGraecaque/'+commit+'/';
 const output=path.join(root,'data/lemmas/teacher-forms.json');
 const greekCandidatePath=path.join(root,'data/lemmas/greek-nominal-candidates.json');
+const verifiedOverridesPath=path.join(root,'data/lemmas/verified-overrides.json');
 const norm=s=>String(s||'').toLowerCase().normalize('NFD')
  .replace(/\u0345/g,'ι').replace(/\p{M}/gu,'').replace(/æ/g,'ae').replace(/œ/g,'oe')
  .replace(/ς/g,'σ').trim();
@@ -57,6 +58,9 @@ async function main(){
   ...arrayLiteral(latinSource,'window.GRAMMAR_PARADIGMS.push(...'),
   ...arrayLiteral(greekSource,'window.GRAMMAR_PARADIGMS.push(...')
  ];
+ const overrides=JSON.parse(await fs.readFile(verifiedOverridesPath,'utf8'));
+ if(overrides.schema!==1||overrides.sourceCode!==5||!Array.isArray(overrides.entryCorrections)||!Array.isArray(overrides.paradigms))
+  throw Error('Listado de formas contrastadas inválido');
  const catalog={lat:{},grc:{}};
  for(const entry of vocabulary){
   const lang=entry.subject==='gr1'?'grc':['lat1','lat4'].includes(entry.subject)?'lat':null;
@@ -71,10 +75,17 @@ async function main(){
    if(!dst.includes(unit))dst.push(unit);
   }
  }
+ // Las correcciones aprobadas se mantienen separadas del repositorio fuente
+ // para que reconstruir el índice no vuelva a introducir las erratas.
+ for(const item of overrides.entryCorrections){
+  const slot=catalog[item.lang]?.[item.lemma]?.[item.course];
+  if(!slot||![item.from,item.to].includes(slot.entry))throw Error('Corrección sin entrada reconocible: '+item.lemma);
+  slot.entry=item.to;
+ }
  for(const lang of ['lat','grc'])if(Object.keys(catalog[lang]).length!==manifest.languages[lang].vocabulary_lemmas)
   throw Error('Inventario de lemas distinto del manifiesto: '+lang+' '+Object.keys(catalog[lang]).length);
  const rows={lat:[],grc:[]};
- const counts={lat:{unimorph:0,docente:0,modelo:0,lema:0},grc:{unimorph:0,docente:0,modelo:0,lema:0,wikcionario:0}};
+ const counts={lat:{unimorph:0,docente:0,modelo:0,lema:0,contrastado:0},grc:{unimorph:0,docente:0,modelo:0,lema:0,wikcionario:0,contrastado:0}};
  const seen={lat:new Set(),grc:new Set()};
  function add(lang,lemma,form,features,source){
   if(!['lat','grc'].includes(lang)||typeof form!=='string'||!form.trim()||typeof features!=='string')return;
@@ -83,7 +94,7 @@ async function main(){
   const sig=k+'\u0001'+norm(form)+'\u0001'+features+'\u0001'+source;
   if(seen[lang].has(sig))return;
   seen[lang].add(sig);
-  rows[lang].push([k,form,features,({unimorph:0,docente:1,modelo:2,lema:3,wikcionario:4})[source]]);
+  rows[lang].push([k,form,features,({unimorph:0,docente:1,modelo:2,lema:3,wikcionario:4,contrastado:5})[source]]);
   counts[lang][source]++;
  }
  // Download all prefiltered teacher-vocabulary shards, keeping every attested
@@ -120,6 +131,25 @@ async function main(){
     const alternatives=x.includes('(ν)')?[x.replaceAll('(ν)',''),x.replaceAll('(ν)','ν')]:[x];
     for(const surface of alternatives)add(lang,p.lemma,surface,
      'DOCENTE;'+String(p.desc||p.kind||'paradigma')+';'+feature,'docente');
+   }
+  }
+ }
+ // Incorporar exclusivamente casillas publicadas con fuente y rasgos completos.
+ // No extender por analogía a otras personas, tiempos ni verbos.
+ const externalReferences=[];
+ for(const record of overrides.paradigms){
+  if(!['lat','grc'].includes(record.lang)||!catalog[record.lang]?.[record.lemma]||!/^https:\/\//.test(record.reference))
+   throw Error('Referencia externa desconocida: '+record.lemma);
+  externalReferences.push({lang:record.lang,lemma:record.lemma,reference:record.reference});
+  for(const block of record.blocks){
+   if(!/^V;IND;(?:ACT|MID);(?:PRS|PST;IPFV|FUT|PRF|PSTP)$/.test(block.tags)||block.forms.length!==6)
+    throw Error('Paradigma contrastado sin seis casillas completas: '+record.lemma);
+   for(let i=0;i<6;i++){
+    const form=block.forms[i];
+    if(typeof form!=='string'||!form.trim()||!/^\p{L}[\p{L}\p{M}]*$/u.test(form))
+     throw Error('Forma contrastada inválida: '+record.lemma+' '+form);
+    const features=block.tags+';'+String((i%3)+1)+';'+(i<3?'SG':'PL');
+    add(record.lang,record.lemma,form,features,'contrastado');
    }
   }
  }
@@ -207,6 +237,7 @@ async function main(){
  const data={
   schema:1,kind:'referencia-lematizacion-no-calificacion',
   source:{repository:'ArchaiosMagister/VocabulaLatinaGraecaque',revision:commit,
+   externalVerification:externalReferences,
    unimorph:{
     lat:{revision:manifest.languages.lat.source_commit,license:'CC BY-SA 3.0'},
     grc:{revision:manifest.languages.grc.source_commit,license:'CC BY-SA 3.0'}

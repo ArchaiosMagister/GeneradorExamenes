@@ -189,7 +189,7 @@ const server=http.createServer(async(req,res)=>{
    const reg=await navigator.serviceWorker.ready;
    const keys=await caches.keys();
    const storage=await caches.open(keys.find(k=>k.startsWith('examina-pwa-')));
-   const paths=['index.html','offline.html','pwa.js','offline-lemmas.js',
+   const paths=['index.html','offline.html','pwa.js','offline-lemmas.js','verification-review.js',
     'data/unimorph/lat-v.json','data/lemmas/teacher-forms.json',
     'data/latinismos-docente.json','data/prefijos-docente.json','data/modificacion-preverbial-docente.json',
     'data/modificacion-preverbial-unidades-lat1.json','data/lat4-progresion-lexico.json',
