@@ -275,7 +275,7 @@ function refreshManualMorphWords(){
   input.addEventListener('input',()=>{
    if(el.matches('.exam-nouns thead tr:first-child th[colspan], .exam-verbs thead tr:first-child th[colspan]')){
     el.innerHTML=examParadigmHeading(input.value,kind==='Conjugación'?'conjugation':'declension');
-   }else el.textContent=input.value+(original.endsWith(':')?':');
+   }else el.textContent=input.value+(original.endsWith(':')?':':'');
    const key=paper.querySelector('#answerkey');
    if(key&&!key.querySelector('[data-manual-warning]')){
     const note=document.createElement('p');note.dataset.manualWarning='true';
