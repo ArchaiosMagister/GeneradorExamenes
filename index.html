@@ -216,7 +216,52 @@ html[data-course="greek1"] .paper .exam-sheet *{font-style:normal!important}
 #examLayout aside.panel .curriculum-preview{margin:8px 0;padding:9px 10px}
 #examLayout aside.panel .settings-group:has(>.settings-group-body>.field.legacy-question-fields):not(:has(>.settings-group-body>:not(.legacy-question-fields))){display:none}
 @media(max-width:420px){#examLayout aside.panel{padding:14px}#examLayout aside.panel .settings-group-body .buttons:has(> #generate){grid-template-columns:minmax(0,1fr)}}
-</style><style id="greek-reference-layout">
+</style><style id="exam-final-visual-polish">
+/* Interfaz únicamente: nunca altera el documento impreso ni las salidas Word. */
+@media screen {
+ #examLayout aside.panel #examSelectionSummary{margin:0 0 12px;padding:11px 13px;background:#f7f9fc;border:1px solid #d6e2ef;border-left:3px solid var(--accent);border-radius:9px;line-height:1.4}
+ #examSelectionSummary .exam-summary-caption{font-size:10px;font-weight:800;letter-spacing:.075em;color:#526783;text-transform:uppercase;margin-bottom:3px}
+ #examSelectionSummary .exam-summary-title{font-size:14px;font-weight:750;color:#24354c}
+ #examSelectionSummary .exam-summary-details{font-size:12px;color:#52637a;margin-top:3px;overflow-wrap:anywhere}
+ #examQuestionMenus{counter-reset:exam-question;display:grid;gap:8px;margin:8px 10px}
+ #examLayout aside.panel #examQuestionMenus>details.menu-section{counter-increment:exam-question;margin:0;border:1px solid #ccd8e8;border-radius:10px;background:#fff;box-shadow:0 1px 2px #20344c0a}
+ #examLayout aside.panel #examQuestionMenus>details.menu-section[open]{border-color:#91b0d2;box-shadow:0 2px 10px #20344c12}
+ #examLayout aside.panel #examQuestionMenus>details.menu-section>summary{display:flex;align-items:center;gap:9px;min-height:48px;padding:9px 32px 9px 10px;background:#f6f8fc;color:#1c385a;line-height:1.4}
+ #examLayout aside.panel #examQuestionMenus>details.menu-section>summary::before{content:counter(exam-question, decimal-leading-zero);display:inline-flex;align-items:center;justify-content:center;min-width:27px;height:27px;border:1px solid #b9cde3;border-radius:7px;background:#e7eff9;color:#214870;font-size:11px;font-weight:800;flex:0 0 auto}
+ #examLayout aside.panel #examQuestionMenus>details.menu-section[open]>summary{background:#edf4fc;border-bottom:1px solid #d6e3ef}
+ #examLayout aside.panel #examQuestionMenus>details.menu-section[data-included="false"]>summary{color:#5d6d80;background:#fafbfc}
+ #examLayout aside.panel #examQuestionMenus>details.menu-section[data-included="false"]>summary::before{background:#f2f4f7;color:#66778a;border-color:#d6dfe8}
+ #examQuestionMenus .exam-question-status{margin-left:auto;white-space:nowrap;font-size:11px;font-weight:650;color:#3d5873;flex:0 0 auto}
+ #examQuestionMenus details[data-included="false"] .exam-question-status{color:#677589}
+ #examQuestionMenus .exam-question-config{padding:10px 12px 12px;min-width:0}
+ #examQuestionMenus .exam-question-config>label:has(>input[type=number]){display:flex;justify-content:space-between;align-items:center;gap:8px;line-height:1.5}
+ #examQuestionMenus .exam-question-config>label>input[type=number]{max-width:86px;min-width:70px}
+ #examQuestionMenus .lex-subparts{padding:10px;margin:10px 0;background:#f9fbfe;border:1px solid #d7e2ef;border-radius:9px}
+ #examQuestionMenus .lex-subparts>label:first-child{font-size:13px;font-weight:750;color:#203e61}
+ #examQuestionMenus .lex-word-control{display:grid;grid-template-columns:minmax(0,1fr) minmax(112px,auto);gap:7px;align-items:center;padding:7px 0;border-top:1px solid #e4ebf3;font-size:13px}
+ #examQuestionMenus .lex-word-control>span{overflow-wrap:anywhere;font-weight:600}
+ #examQuestionMenus .lex-word-control>button{font-size:12px;min-height:44px;line-height:1.35;padding:7px 9px}
+ #examQuestionMenus .question-editor{border-top:1px solid #e3eaf2;margin-top:11px;padding-top:9px}
+ #examLayout aside.panel .notice{border:1px solid #e8d8ad;border-left:3px solid #c58a26;border-radius:7px;background:#fff9ec;color:#694d1e;padding:10px 12px;line-height:1.55}
+ #examLayout aside.panel .notice.notice-success{border-color:#b9d9c8;border-left-color:#32815a;background:#f1faf4;color:#20583b}
+ #examLayout aside.panel .notice.notice-error{border-color:#e9bdbd;border-left-color:#b43b3b;background:#fff3f2;color:#7c2727}
+ #examLayout aside.panel .notice.notice-review{border-color:#e8d8ad;border-left-color:#c58a26;background:#fff9ec;color:#694d1e}
+ #examLayout aside.panel .notice.notice-info{border-color:#c9d9ea;border-left-color:#4479a9;background:#f2f7fc;color:#244a70}
+ #examQuestionMenus [data-result-state]{border-radius:6px;border-left:3px solid #668cb8;padding:6px 8px;background:#f0f6fb;color:#244769;line-height:1.5}
+ #examQuestionMenus [data-result-state="review"]{border-left-color:#b77b23;background:#fff6e9;color:#754b18}
+ #examQuestionMenus [data-result-state="missing"]{border-left-color:#bd6d34;background:#fff6ef;color:#754726}
+ #examLayout>.paper{background:#fff;border:1px solid #c7d6e7;box-shadow:0 9px 28px #203a5719,0 1px 3px #203a570b}
+ #examLayout>.paper::before{content:"VISTA PREVIA · EDITABLE";display:block;margin:0 0 16px;padding:0 0 8px;border-bottom:1px solid #e3eaf2;color:#5b6f85;font:800 10px/1.4 system-ui,-apple-system,Segoe UI,sans-serif;letter-spacing:.085em}
+ #examLayout>.paper:focus-within{border-color:#8aafd4}
+}
+@media screen and (max-width:420px){
+ #examQuestionMenus .lex-word-control{grid-template-columns:minmax(0,1fr)}
+ #examQuestionMenus .lex-word-control>button{text-align:center}
+ #examLayout aside.panel #examQuestionMenus>details.menu-section>summary{gap:6px;padding-left:8px}
+ #examQuestionMenus .exam-question-status{font-size:10px}
+}
+</style>
+<style id="greek-reference-layout">
 /* Shared reference: Palatino 10.5 pt for all courses and examination types. */
 #lexOption[hidden],#cultureOption[hidden]{display:none!important}
 .paper{font-family:Palatino,"Palatino Linotype","Book Antiqua",serif;font-size:10.5pt;line-height:1.45;color:#000}
@@ -1312,7 +1357,7 @@ function mRender(){let raw=$('morphEntry').value.trim();let p=mNoun(raw)||mVerb(
   if(match)p=mVerb(match.p.sourceEntry);
  }
  const el=$('morphResult');
- if(!p){mLastRows=null;el.innerHTML='<p class="notice">No se puede generar este paradigma con las reglas verificadas de esta versión. No se mostrarán formas hipotéticas. Comprueba el enunciado, el género y las irregularidades.</p>';return}
+ if(!p){mLastRows=null;el.innerHTML='<p class="notice notice-review">No se puede generar este paradigma con las reglas verificadas de esta versión. No se mostrarán formas hipotéticas. Comprueba el enunciado, el género y las irregularidades.</p>';return}
  let rows=mTable(p);mLastRows=rows;el.innerHTML='<p><strong>'+esc(p.lemma)+'</strong> · '+esc(p.source)+'</p><div style="overflow-x:auto"><table style="border-collapse:collapse;width:100%;font-size:12px">'+rows.map((r,i)=>'<tr>'+r.map(c=>'<'+(i?'td':'th')+' style="border:1px solid #cbd5e1;padding:5px">'+esc(c)+'</'+(i?'td':'th')+'>').join('')+'</tr>').join('')+'</table></div>';
 }
 $('morphAnalyze').onclick=mRender;
@@ -1345,14 +1390,14 @@ const M_TESTS=[
  ['mitto, misi, missum (3ª)', 'v',3,5,'miserunt']
 ];
 $('runMorphTests').onclick=()=>{let errors=[];for(const [entry,kind,i,j,expected] of M_TESTS){let p=kind==='n'?mNoun(entry):mVerb(entry),actual=kind==='n'?p?.forms[i][j]:p?.tenses[i][1][j];if(actual!==expected)errors.push(entry+' → '+String(actual)+' ≠ '+expected)}
- $('morphAudit').innerHTML=errors.length?'<p class="notice">Pruebas fallidas: '+esc(errors.join('; '))+'</p>':'<p class="notice">'+M_TESTS.length+' pruebas de formas concretas superadas. No equivale a validar todos los lemas.</p>';
+ $('morphAudit').innerHTML=errors.length?'<p class="notice notice-error">Pruebas fallidas: '+esc(errors.join('; '))+'</p>':'<p class="notice notice-success">'+M_TESTS.length+' pruebas de formas concretas superadas. No equivale a validar todos los lemas.</p>';
 };
 $('auditMorph').onclick=()=>{const chosen=selectedUnits(),entries=latinSharedBank.vocabulary(currentCourse(),chosen);let nouns=[],verbs=[],blocked=[];
  const nounEntries=new Set(latinSharedBank.paradigms(currentCourse(),chosen,'noun').map(y=>y.x.entry));
  const verbEntries=new Set(latinSharedBank.paradigms(currentCourse(),chosen,'verb').map(y=>y.x.entry));
  for(const x of entries){if(nounEntries.has(x.entry))nouns.push(x);else if(verbEntries.has(x.entry))verbs.push(x);else blocked.push(x)}
  const sampleBlocked=blocked.slice(0,12).map(x=>esc(x.entry)).join(' · ');
- $('morphAudit').innerHTML='<p class="notice"><strong>Auditoría de '+esc(chosen.join(', '))+'</strong>: '+entries.length+' entradas distintas; '+nouns.length+' sustantivos y '+verbs.length+' verbos aceptados por las reglas conservadoras; '+blocked.length+' entradas no reconocidas o excluidas (incluidos adjetivos y palabras invariables). No significa que sean incorrectas.</p><p class="hint">Ejemplos excluidos: '+sampleBlocked+'</p>';
+ $('morphAudit').innerHTML='<p class="notice notice-info"><strong>Auditoría de '+esc(chosen.join(', '))+'</strong>: '+entries.length+' entradas distintas; '+nouns.length+' sustantivos y '+verbs.length+' verbos aceptados por las reglas conservadoras; '+blocked.length+' entradas no reconocidas o excluidas (incluidos adjetivos y palabras invariables). No significa que sean incorrectas.</p><p class="hint">Ejemplos excluidos: '+sampleBlocked+'</p>';
 };
 $('examExtra').addEventListener('input',generate);$('autoGloss').addEventListener('change',generate);$('course').addEventListener('change',updateRequiredStatus);updateRequiredStatus();refreshCourse();
 
@@ -2349,7 +2394,10 @@ function latinLexChosenRows(course,kind,chosen){
 }
 function latinLexStatus(kind,rows,message=''){
  const status=$('lex-status-'+kind);
- if(status)status.textContent=message||(!rows.length?'No hay formas compatibles.':rows.map((x,i)=>(i+1)+'. '+latinLexLower(x.prompt)).join(' · '));
+ if(status){
+  status.textContent=message||(!rows.length?'No hay formas compatibles.':rows.map((x,i)=>(i+1)+'. '+latinLexLower(x.prompt)).join(' · '));
+  status.dataset.resultState=message||!rows.length?'missing':rows.some(x=>x.reviewRequired)?'review':'available';
+ }
  for(let i=0;i<latinLexExpectedCount(kind);i++){const node=$('lex-slot-'+kind+'-'+i);if(node)node.textContent=rows[i]?latinLexLower(rows[i].prompt):'Sin forma'}
 }
 function regenerateLatinLexPart(kind){
@@ -2605,11 +2653,15 @@ loadTeacherLatinLexBanks();
    const summary=document.createElement('summary');summary.textContent=moduleLabels[kind];detail.append(summary);
    const body=document.createElement('div');body.className='exam-question-config';detail.append(body);
    const required=morph&&kind!=='pronouns',on=examQuestionEnabled(kind);
+   detail.dataset.included=String(required||on);
+   const statusLabel=document.createElement('span');statusLabel.className='exam-question-status';
+   statusLabel.textContent=required?'Fija':on?'Incluida':'Omitida';
+   summary.append(statusLabel);
    if(required){
     const label=document.createElement('p');label.className='hint';label.textContent='Obligatoria en el examen de morfología.';body.append(label);
    }else{
     const check=document.createElement('input');check.type='checkbox';check.checked=on;
-    check.onchange=()=>{examQuestionChoiceState[currentCourse()+'/'+$('model').value+'/'+kind]=check.checked;if(currentCourse()==='greek1')greekExamState=null;generate()};
+    check.onchange=()=>{examQuestionChoiceState[currentCourse()+'/'+$('model').value+'/'+kind]=check.checked;detail.dataset.included=String(check.checked);statusLabel.textContent=check.checked?'Incluida':'Omitida';if(currentCourse()==='greek1')greekExamState=null;generate()};
     body.append(makeLabel('Incluir esta pregunta',check));
    }
    if(kind==='lex')lexConfig(body);
@@ -2653,6 +2705,47 @@ loadTeacherLatinLexBanks();
  for(const id of ['course','model','lang'])$(id).addEventListener('change',()=>{buttons();questionMenus()});
  buttons();questionMenus();
  document.addEventListener('DOMContentLoaded',()=>{buttons();questionMenus()},{once:true});
+})();
+/* Resumen de la seleccion visible, sin modificar la configuracion ni generar datos. */
+(function setupExamVisualSummary(){
+ const panel=document.querySelector('#examLayout>aside.panel');
+ const heading=panel?.querySelector(':scope>h2');
+ if(!heading||document.getElementById('examSelectionSummary'))return;
+ const host=document.createElement('div');
+ host.id='examSelectionSummary';host.setAttribute('aria-live','polite');
+ const caption=document.createElement('div'),title=document.createElement('div'),details=document.createElement('div');
+ caption.className='exam-summary-caption';caption.textContent='Configuración actual';
+ title.className='exam-summary-title';details.className='exam-summary-details';
+ host.append(caption,title,details);heading.after(host);
+ const courseNames={latin1:'Latín I',latin4:'Latín 4.º ESO',greek1:'Griego I'};
+ function render(){
+  const course=document.getElementById('course'),model=document.getElementById('model'),lang=document.getElementById('lang');
+  if(!course||!model||!lang)return;
+  const mode=model.selectedOptions[0]?.textContent?.replace(/^\s*[123]\s*[·.]\s*/,'').trim()||'Examen';
+  title.textContent=(courseNames[course.value]||course.selectedOptions[0]?.textContent||'Curso')+' · '+mode;
+  const selected=[...document.querySelectorAll('#unitChoices .unit-choice:checked')]
+   .map(input=>typeof units!=='undefined'?units[Number(input.value)]:input.closest('label')?.textContent?.trim())
+   .filter(Boolean);
+  let description='Sin unidades seleccionadas';
+  if(selected.length){
+   const numbers=selected.map(x=>/^UD(\d+)$/i.exec(x)?.[1]).filter(Boolean).map(Number);
+   if(numbers.length===selected.length){
+    const consecutive=numbers.every((n,i)=>i===0||n===numbers[i-1]+1);
+    description=selected.length===1?'UD '+numbers[0]:
+     consecutive?'UDs '+numbers[0]+'–'+numbers[numbers.length-1]:
+     selected.length<=6?'UDs '+numbers.join(', '):selected.length+' unidades seleccionadas';
+   }else description=selected.length<=4?selected.join(', '):selected.length+' unidades seleccionadas';
+  }
+  const language=lang.value==='va'?'Valencià':'Castellano';
+  const cumulative=document.getElementById('cumulative');
+  const extra=cumulative?.checked&&!cumulative.closest('[hidden]')?' · Vocabulario acumulado':'';
+  details.textContent=description+' · '+language+extra;
+ }
+ document.addEventListener('change',()=>queueMicrotask(render),true);
+ for(const id of ['allUnits','clearUnits']){
+  document.getElementById(id)?.addEventListener('click',()=>queueMicrotask(render));
+ }
+ render();
 })();
 
 </script><script>/* UniMorph: local-only morphology reference, not an exam vocabulary source.
