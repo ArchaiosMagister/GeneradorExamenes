@@ -23,6 +23,10 @@ export async function renderOffline(root=projectRoot){
  const noHead=metadata.reduce((html,tag)=>html.replace(tag,''),sourceHtml);
  const noPanel=noHead.slice(0,noHead.indexOf(begin))+noHead.slice(noHead.indexOf(end)+end.length);
  let html=noPanel.replace('<script src="pwa.js" defer></script>','');
+ const qualityModule=await readFile(resolve(root,'vocabulary-quality.js'),'utf8');
+ const qualityExternal='<script src="vocabulary-quality.js" defer></script>';
+ if(!html.includes(qualityExternal))throw new Error('Falta el módulo de auditoría de vocabulario');
+ html=html.replace(qualityExternal,'<script>'+qualityModule.replace(/<\/script/gi,'<\\/script')+'</script>');
  const vocabularyModule=await readFile(resolve(root,'vocabulary-generator.js'),'utf8');
  const vocabularyExternal='<script src="vocabulary-generator.js" defer></script>';
  if(!html.includes(vocabularyExternal))throw new Error('Falta el generador de vocabulario independiente');
