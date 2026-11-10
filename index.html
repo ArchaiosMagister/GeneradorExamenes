@@ -39,6 +39,18 @@ try {
 .paper ol[type="A"]>li::before{content:counter(exam-letter,lower-alpha) "."}
 </style><style>
 .vocab-tabbar{display:flex;gap:8px;padding:10px 18px;background:#eaf0f8;border-bottom:1px solid #ccd7e6;flex-wrap:wrap}.vocab-tabbar button{border:1px solid #a8bbd4;background:white;border-radius:7px;padding:9px 13px;cursor:pointer;font-weight:600}.vocab-tabbar button.active{background:#214f85;color:white}.vocab-manager{display:none;max-width:1100px;margin:18px auto;padding:18px;background:white;border:1px solid #d8e1eb;border-radius:12px}.vocab-manager.active{display:block}.vocab-manager .vm-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.vocab-manager label{display:block;font-size:13px;font-weight:600;margin:6px 0}.vocab-manager input,.vocab-manager select,.vocab-manager textarea{width:100%;box-sizing:border-box;padding:9px;border:1px solid #bac8da;border-radius:6px}.vocab-manager button{padding:8px 12px;border:1px solid #9ab0ca;border-radius:6px;background:#f3f7fc;cursor:pointer;margin:5px 5px 5px 0}.vocab-manager .vm-table{width:100%;border-collapse:collapse}.vocab-manager .vm-table th,.vocab-manager .vm-table td{border-bottom:1px solid #e0e6ed;padding:6px;text-align:left}.vocab-manager .vm-table input{min-width:90px}.vocab-manager .vm-scroll{max-height:440px;overflow:auto}.vocab-manager .vm-help{color:#52647a;font-size:13px}.vocab-manager .vm-warning{color:#92400e;font-size:13px}@media(max-width:750px){.vocab-manager .vm-grid{grid-template-columns:1fr}.vocab-manager{margin:8px}}@media print{.vocab-tabbar,.vocab-manager{display:none!important}}
+/* Unidades: tres estados, distinguibles también por aria-pressed. */
+#vocabularyGenerator .vg-unit-picker{margin:12px 0 8px}
+#vocabularyGenerator .vg-unit-caption{display:flex;align-items:baseline;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+#vocabularyGenerator #vgUnitsTitle{font-size:14px;font-weight:750;color:#233c5a}
+#vocabularyGenerator .vg-unit-legend{font-size:12px;color:#53657c}
+#vocabularyGenerator .vg-unit-buttons{display:flex;flex-wrap:wrap;gap:7px;max-height:205px;overflow:auto;align-content:flex-start;padding:2px}
+#vocabularyGenerator .vg-unit-buttons .vg-unit-button{margin:0;min-width:55px;min-height:41px;flex:0 0 auto;font-size:13px;font-weight:750;border:2px solid #bdc8d4;background:#eef1f4;color:#34445a;box-shadow:none}
+#vocabularyGenerator .vg-unit-buttons .vg-unit-button.has-text{border-color:#267448;background:#dcf5e5;color:#175b32}
+#vocabularyGenerator .vg-unit-buttons .vg-unit-button.is-selected{border-color:#164f91;background:#164f91;color:#fff;box-shadow:0 2px 8px #164f9130}
+#vocabularyGenerator .vg-unit-buttons .vg-unit-button:hover:not(.is-selected){filter:brightness(.96);border-color:#5b7799}
+#vocabularyGenerator .vg-unit-buttons .vg-unit-button:focus-visible{outline:3px solid #e9a63a;outline-offset:2px}
+@media(max-width:750px){#vocabularyGenerator .vg-unit-buttons{max-height:180px;gap:6px}#vocabularyGenerator .vg-unit-buttons .vg-unit-button{min-width:48px;min-height:44px}}
 /* Acción principal del generador de vocabulario: visible en móvil y escritorio. */
 .vocab-manager #vgAnalyzeAll{background:#174d8b;color:#fff;border:2px solid #174d8b;
  font-size:15px;font-weight:800;min-height:50px;padding:13px 20px;
@@ -465,8 +477,10 @@ html[data-course="greek1"] .paper .exam-sheet *{font-style:normal!important}
 </script><div class="quick-actions no-print" aria-label="Acciones rápidas"><span class="quick-label">Examen</span><button type="button" id="quickGenerate">Generar</button><button type="button" id="quickWord" class="secondary">Descargar Word</button><button type="button" id="quickWordAnswers" class="secondary">Word con soluciones</button><span class="quick-tip">La vista previa se puede editar antes de exportar.</span></div>
 <section class="vocab-manager" id="vocabularyGenerator" aria-label="Generador de vocabulario independiente">
 <h2>Vocabulario de tus unidades</h2><p>Pega textos completos. Se usan únicamente los recursos locales disponibles; las formas desconocidas, ambiguas y candidatas requieren revisión. No se inventan traducciones. Las repeticiones se eliminan dentro de cada unidad.</p>
-<div class="vm-grid"><label>Banco docente<select id="vgCourse"><option value="lat1">Latín I</option><option value="lat4">Latín 4.º ESO</option><option value="gr1">Griego I</option></select></label><label>Número de unidades (1–100)<input id="vgCount" type="number" min="1" max="100"></label><label>Unidad<select id="vgUnit"></select></label></div>
-<label>Título de la unidad<input id="vgTitle"></label><label>Texto de la unidad<textarea id="vgText" rows="8"></textarea></label>
+<div class="vm-grid"><label>Banco docente<select id="vgCourse"><option value="lat1">Latín I</option><option value="lat4">Latín 4.º ESO</option><option value="gr1">Griego I</option></select></label><label>Número de unidades (1–100)<input id="vgCount" type="number" min="1" max="100"></label></div>
+<label>Título de la unidad<input id="vgTitle"></label>
+<div class="vg-unit-picker" role="group" aria-labelledby="vgUnitsTitle"><div class="vg-unit-caption"><span id="vgUnitsTitle">Seleccionar unidad</span><span class="vg-unit-legend">Gris: vacía · Azul: seleccionada · Verde: con texto</span></div><div id="vgUnitButtons" class="vg-unit-buttons"></div></div>
+<label>Texto de la unidad<textarea id="vgText" rows="8"></textarea></label>
 <label>Enunciado verbal<select id="vgMode"><option value="complete">Completo (según el banco, sin añadir temas ausentes)</option><option value="simple">Simple (forma de cita + conjugación latina disponible)</option></select></label>
 <button id="vgAnalyzeAll" type="button">Analizar todas las unidades</button><button id="vgAnalyze" type="button" class="secondary">Analizar solo esta unidad</button><button id="vgWord">Exportar todas las unidades a Word</button><button id="vgBackup">Guardar copia JSON</button><label>Recuperar copia JSON<input id="vgImport" type="file" accept=".json"></label>
 <p id="vgStatus" role="status" aria-live="polite">Los textos y correcciones se guardan en este navegador. Reducir el número de unidades las oculta sin borrarlas. Editar el texto requiere volver a analizar esa unidad.</p><div id="vgResults"></div></section>
