@@ -170,6 +170,11 @@ console.log('Vocabulario: prioridad docente, deduplicación por UD, ambigüedad,
  const vocabularyPreview=await page.locator('#vgResults').innerText();
  assert.match(vocabularyPreview,/ab · Forma documentada/,'La UI debe reconocer ab sin revisión');
  assert.match(vocabularyPreview,/puella/i,'La UI debe identificar los lemas del texto');
+ const sampleDownload=page.waitForEvent('download');await page.click('#vgWord');
+ const sample=await sampleDownload;const samplePath=await sample.path();
+ fs.mkdirSync(path.join(root,'test-artifacts'),{recursive:true});
+ fs.copyFileSync(samplePath,path.join(root,'test-artifacts/vocabulario-latin-10-frases.docx'));
+ console.log('Word real de diez frases guardado para revisión visual.');
  await page.fill('#vgText','');
  await page.fill('#vgCount','2');await page.locator('#vgCount').dispatchEvent('change');
  await page.fill('#vgText','Puella puella amamus xyzxyz');await page.click('#vgAnalyze');await page.waitForFunction(()=>document.querySelector('#vgStatus').textContent.includes('pendientes'));
