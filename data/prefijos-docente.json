@@ -2905,16 +2905,6 @@
       "valencianPrefixEligible": true
     },
     {
-      "prompt": "Ultrapuertos",
-      "prefix": "ULTER-/ULTRA-",
-      "meaningHint": "más allá de, exceso",
-      "answer": "ULTER-/ULTRA-: más allá de, exceso",
-      "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
-      "prompt_va": "ultraports",
-      "valencianPrefixEligible": true
-    },
-    {
       "prompt": "Ultrarrápido",
       "prefix": "ULTER-/ULTRA-",
       "meaningHint": "más allá de, exceso",
