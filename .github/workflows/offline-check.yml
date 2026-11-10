@@ -7,6 +7,7 @@ on:
       - 'culture-lat4.js'
       - 'lexicon-valenciano.js'
       - 'vocabulary-generator.js'
+      - 'vocabulary-quality.js'
       - 'offline.html'
       - 'offline-lemmas.js'
       - 'verification-review.js'
@@ -78,6 +79,8 @@ jobs:
           npx playwright install --with-deps chromium
       - name: Validar glosas en castellano y valenciano
         run: node scripts/test-valenciano.cjs
+      - name: Auditar cobertura y pendientes del vocabulario por unidad
+        run: node scripts/test-vocabulary-quality.cjs
       - name: Probar generador de vocabulario por unidades y Word
         run: npm run vocabulary:test
       - name: Probar las vistas previas de todos los modelos
