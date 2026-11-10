@@ -15,7 +15,7 @@ const output=path.join(root,'data/lemmas/teacher-forms.json');
 const norm=s=>String(s||'').toLowerCase().normalize('NFD')
  .replace(/\u0345/g,'ι').replace(/\p{M}/gu,'').replace(/æ/g,'ae').replace(/œ/g,'oe')
  .replace(/ς/g,'σ').trim();
-const head=s=>norm(String(s||'').split(/[,+(]/)[0].trim().split('/')[0]);
+const head=s=>{const first=String(s||'').split(/[,+(]/)[0].trim().split('/')[0];return first&&!/\s/u.test(first)?norm(first):null};
 async function fetchText(name){
  const url=base+name;
  for(let attempt=0;attempt<3;attempt++){
@@ -69,6 +69,8 @@ async function main(){
    if(!dst.includes(unit))dst.push(unit);
   }
  }
+ for(const lang of ['lat','grc'])if(Object.keys(catalog[lang]).length!==manifest.languages[lang].vocabulary_lemmas)
+  throw Error('Inventario de lemas distinto del manifiesto: '+lang+' '+Object.keys(catalog[lang]).length);
  const rows={lat:[],grc:[]};
  const counts={lat:{unimorph:0,docente:0},grc:{unimorph:0,docente:0}};
  const seen={lat:new Set(),grc:new Set()};
