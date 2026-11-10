@@ -1,0 +1,17 @@
+{
+  "schema": 1,
+  "course": "lat1",
+  "purpose": "Diez frases latinas originales para verificar la lematización, el vocabulario y el Word",
+  "sentences": [
+    "Puella rosam amat.",
+    "Servi in villa laborant.",
+    "Magister discipulos laudat.",
+    "Nautae ab insula ad terram navigant.",
+    "Agricola cum filio in agro laborat.",
+    "Regina pueris rosas dat.",
+    "Milites urbem defendunt.",
+    "Senator de pace cum amicis dicit.",
+    "Romani per silvas iter faciunt.",
+    "Poeta de vita et morte scribit."
+  ]
+}
