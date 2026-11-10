@@ -51,6 +51,22 @@ async function checkFile(browser,filename){
   assert.equal(sample.indicatorItalic,false,filename+': metadato en cursiva '+sample.source);
   assert.equal(sample.fullText,sample.source,filename+': se ha perdido contenido '+sample.source);
  }
+ // El enunciado latino conserva su cursiva en Word, pero la letra es
+ // siempre redonda, tanto en párrafos de examen como en listas alfabéticas.
+ const markerExample=await page.evaluate(()=>{
+  const p=document.createElement('p');
+  p.className='exam-item reference-analysis-item';
+  p.innerHTML='a. <i>magna</i>:';
+  const xml=wordExamParagraph(p);
+  const ol=document.createElement('ol');ol.type='a';ol.innerHTML='<li><i>Aratrum agricolam iuvat.</i></li>';
+  const list=wordBlock(ol);
+  return {xml,list};
+ });
+ for(const [name,xml] of Object.entries(markerExample)){
+  assert(/<w:i w:val="0"\/>/.test(xml),filename+': marcador de lista no explícitamente redondo ('+name+')');
+  assert(/<w:i\/>/.test(xml),filename+': se perdió la cursiva del contenido ('+name+')');
+  assert(/<w:t xml:space="preserve">a\./.test(xml),filename+': falta la letra a. ('+name+')');
+ }
  const cases=[
   ['latin1','tablas','UD3'],['latin1','morf','UD3'],['latin1','mixto','UD3'],
   ['latin4','tablas','UD3'],
@@ -102,7 +118,31 @@ async function checkFile(browser,filename){
   }
   await page.emulateMedia({media:'screen'});
 
-  // Comprueba el Blob DOCX construido al pulsar los botones de exportación.
+  // Banco existente: solo fichas documentadas; las exigibles pierden
+  // la traducción, no el enunciado. La comprobación no modifica el almacén.
+  if(course==='latin1'&&model==='tablas'){
+   const lexicon=await page.evaluate(()=>{
+    const row=latinSharedBank.vocabulary('latin1').find(x=>x.meaning&&x.entry.includes(','));
+    if(!row)return {error:'No hay un lema con enunciado y significado para la prueba'};
+    const key=examKey(row.entry),sample={text:headLex(row.entry)};
+    const before=buildFinalLexicon(['UD3'],[],[sample],[],[],{sentencesOnly:true});
+    examRequired.push({course:'latin1',unit:'UD1',key,entry:row.entry});
+    const after=buildFinalLexicon(['UD3'],[],[sample],[],[],{sentencesOnly:true});
+    examRequired.pop();
+    const parse=html=>{
+     const el=document.createElement('div');el.innerHTML=html;
+     return {item:el.querySelector('.gloss-item')?.textContent||'',
+      lexical:el.querySelector('.gloss-item i')?.textContent||''};
+    };
+    return {row:row.entry,before:parse(before),after:parse(after)};
+   });
+   assert(!lexicon.error,filename+': '+lexicon.error);
+   assert(lexicon.before.lexical&&lexicon.after.lexical,filename+': falta el enunciado automático');
+   assert.equal(lexicon.before.lexical,lexicon.after.lexical,filename+': la ficha cambió al marcar vocabulario exigible');
+   assert(lexicon.before.item.includes(':'),filename+': falta traducción fuera del vocabulario exigible');
+   assert(!lexicon.after.item.includes(':'),filename+': aparece traducción en vocabulario exigible');
+  }
+    // Comprueba el Blob DOCX construido al pulsar los botones de exportación.
   // La captura evita el bloqueo de descargas en navegadores headless bajo file://
   // sin eludir el exportador real de la aplicación.
   for(const answers of [false,true]){
@@ -125,6 +165,9 @@ async function checkFile(browser,filename){
    assert(documentXml.includes('<w:document ')&&documentXml.includes('<w:body>')&&documentXml.includes('</w:document>'),
     caseLabel+': XML Word incompleto');
    assert(/Palatino/.test(styleXml),caseLabel+': fuente Palatino ausente en Word');
+   if((await page.locator('#paper ol[type="a"] li, #paper .exam-item').count())>0){
+    assert(documentXml.includes('<w:i w:val="0"/>'),caseLabel+': el Word no distingue letras redondas del texto cursivo');
+   }
    if(screenLayout.tableCount){
     assert(documentXml.includes('<w:tbl>'),caseLabel+': tablas ausentes en Word');
     assert(documentXml.includes('<w:i/>'),caseLabel+': cursiva ausente en Word');
@@ -171,6 +214,48 @@ async function checkFile(browser,filename){
   return q?.nextElementSibling?.querySelectorAll(':scope > li').length||0;
  });
  assert.equal(forms,1,filename+': el control de formas no actualiza la vista previa');
+ // Cuatro plantillas reales de Latín I: unidad, estructura y vocabulario.
+ const teacherModels=[
+  {model:'tablas',unit:'UD2',questions:4,nouns:2,verbs:1,sentences:6,gloss:true},
+  {model:'morf',unit:'UD3',questions:3,nouns:2,verbRows:10,gloss:false},
+  {model:'morf',unit:'UD6',questions:3,nouns:1,pronRows:15,gloss:false},
+  {model:'mixto',unit:'UD6',questions:3,nouns:0,sentences:7,preverbial:true,gloss:true}
+ ];
+ for(const expected of teacherModels){
+  await page.selectOption('#course','latin1');
+  await page.selectOption('#model',expected.model);
+  await page.evaluate(unit=>{
+   document.querySelectorAll('.unit-choice').forEach(el=>el.checked=units[Number(el.value)]===unit);
+   generate();
+  },expected.unit);
+  const shape=await page.locator('#paper .exam-sheet').evaluate(el=>{
+   const questions=[...el.querySelectorAll('.exam-question')];
+   const sentenceQuestion=questions.find(q=>/traduce|tradueix/i.test(q.textContent));
+   return {
+    questions:questions.length,
+    texts:questions.map(q=>q.textContent),
+    nouns:el.querySelectorAll('.exam-nouns').length,
+    verbs:el.querySelectorAll('.exam-verbs').length,
+    verbRows:el.querySelectorAll('.reference-verb-table tbody tr').length,
+    pronRows:el.querySelectorAll('.exam-pronouns tbody tr').length,
+    sentences:sentenceQuestion?.nextElementSibling?.querySelectorAll(':scope > li').length||0,
+    preverbial:questions.some(q=>/preverbial|preverbal/i.test(q.textContent)),
+    gloss:el.querySelectorAll('.final-gloss .gloss-item').length,
+    visibleKey:!!el.querySelector('#answerkey')&&getComputedStyle(el.querySelector('#answerkey')).display!=='none'
+   };
+  });
+  const id=filename+' Latín I '+expected.model+' '+expected.unit;
+  assert.equal(shape.questions,expected.questions,id+' número de preguntas: '+JSON.stringify(shape.texts));
+  assert.equal(shape.nouns,expected.nouns,id+' tablas de declinación');
+  if(expected.verbs!==undefined)assert.equal(shape.verbs,expected.verbs,id+' tabla de conjugación');
+  if(expected.verbRows!==undefined)assert.equal(shape.verbRows,expected.verbRows,id+' formas verbales');
+  if(expected.pronRows!==undefined)assert.equal(shape.pronRows,expected.pronRows,id+' pronombres');
+  if(expected.sentences!==undefined)assert(shape.sentences>0&&shape.sentences<=expected.sentences,
+   id+' oraciones documentadas, límite '+expected.sentences+': '+shape.sentences);
+  if(expected.preverbial)assert(shape.preverbial,id+' falta derivación preverbial');
+  if(expected.gloss)assert(shape.gloss>0,id+' falta vocabulario automático de las oraciones');
+  assert(!shape.visibleKey,id+' no deben mostrarse soluciones');
+ }
  await page.setViewportSize({width:390,height:844});
  assert(await page.locator('#paper .exam-sheet').isVisible(),filename+': vista previa oculta en móvil');
  assert.deepEqual(errors,[],filename+': errores JavaScript');

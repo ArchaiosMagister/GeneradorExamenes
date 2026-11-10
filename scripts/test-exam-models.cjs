@@ -121,7 +121,7 @@ function greekSuite(){
  output=run('translation');
  assert.equal((output.match(/class="exam-question/g)||[]).length,3,'Griego traducción: formas, etimología y oraciones');
  assert(!output.includes('exam-nouns')&&!output.includes('exam-verbs'));
- assert(!output.includes('final-gloss'));
+ assert(output.includes('final-gloss'),'Los exámenes griegos con oraciones deben tener vocabulario');
  assert.equal(sandbox.window.greekLastExam.total,10);
  output=run('morphology');
  assert.equal((output.match(/class="exam-question"/g)||[]).length,4,'Griego UD7: pronombres');
