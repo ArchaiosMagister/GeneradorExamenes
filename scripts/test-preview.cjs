@@ -76,6 +76,7 @@ async function checkFile(browser,filename){
     text:paper.textContent.trim().length,
     questions:paper.querySelectorAll('.exam-question').length,
     controls:document.querySelectorAll('.question-editor input[type="text"]').length,
+    greekAnalysisItems:document.querySelectorAll('#paper .exam-form').length,
     warning:document.querySelector('#manualMorphWords')?.textContent
    };
   });
@@ -147,8 +148,12 @@ async function checkFile(browser,filename){
    await page.locator('.question-editor button').filter({hasText:'Añadir al apartado'}).first().click();
    const after=await page.evaluate(()=>window.greekLastExam.ids.length);
    assert(after>before,filename+': el selector de Griego completo no modifica el examen');
+  }else if(course==='greek1'&&model==='translation'&&!result.controls&&!result.greekAnalysisItems){
+   // Si el banco de UD elegida no tiene formas griegas verificadas,
+   // no debe inventarse una entrada editable vacía.
+   assert.equal(result.greekAnalysisItems,0,'No se deben editar formas inexistentes');
   }else{
-   assert(result.controls>0,filename+' '+course+'/'+model+': no se pueden editar formas: '+result.warning);
+   assert(result.controls>0,filename+' '+course+'/'+model+': no se pueden editar formas: '+JSON.stringify(result));
    const input=page.locator('.question-editor input[type="text"]').first();
    const tableEdit=await input.evaluate(el=>/^(Declinación|Conjugación)/.test(el.parentElement.textContent.trim()));
    if(!(await input.isVisible())){
