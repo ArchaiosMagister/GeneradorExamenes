@@ -65,6 +65,7 @@ console.log('Vocabulario: prioridad docente, deduplicación por UD, ambigüedad,
  await page.locator('#vgImport').setInputFiles({
   name:'vocabulario-unidades.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(imported))
  });
+ await page.waitForFunction(()=>document.querySelector('#vgStatus')?.textContent.includes('14 por analizar'));
  assert.match(await page.locator('#vgStatus').innerText(),/14 por analizar/);
  const download14=page.waitForEvent('download');
  await page.click('#vgWord');const doc14=await download14;
