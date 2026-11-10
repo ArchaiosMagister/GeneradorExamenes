@@ -22,7 +22,11 @@ for(const [,attributes,body] of blocks){
  if(!/type="application\/json"/.test(attributes))new Script(body,{filename:'offline.html'});
 }
 assert(!/<script[^>]+src=/.test(html),'El HTML no debe descargar scripts');
-assert(!/<link[^>]+href=/.test(html),'El HTML no debe descargar CSS');
+assert(!/<link[^>]+href=/.test(html),'El HTML no debe descargar CSS ni manifest');
+assert(!html.includes('EXAMINA_PWA_START')&&!html.includes('id="pwaPanel"'),
+ 'La versión HTML de archivo único no necesita controles PWA');
+assert(!html.includes('pwa.js')&&!html.includes('manifest.webmanifest'),
+ 'El HTML autónomo no debe depender de recursos PWA');
 assert(html.includes("if(location.protocol==='file:')return"),'No consultar archivos al abrir file://');
 assert(html.includes('r.length>=4'),'Se admiten filas de cuatro campos UniMorph');
 const network=[...html.matchAll(/\bfetch\(/g)];

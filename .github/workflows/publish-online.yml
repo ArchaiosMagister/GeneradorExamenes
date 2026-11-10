@@ -39,10 +39,15 @@ jobs:
           cp index.html _site/index.html
           cp offline.html _site/offline.html
           cp offline-lemmas.js _site/offline-lemmas.js
+          cp pwa.js manifest.webmanifest _site/
+          cp -R icons _site/icons
+          sed "s/__PWA_BUILD_VERSION__/${GITHUB_SHA}/g" sw.js > _site/sw.js
           cp -R data _site/data
           touch _site/.nojekyll
           test -s _site/index.html
           test -s _site/offline.html
+          test -s _site/sw.js
+          test -s _site/icons/icon-512.png
       - name: Configurar GitHub Pages
         uses: actions/configure-pages@v5
       - name: Preparar archivos de Pages

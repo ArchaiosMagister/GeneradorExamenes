@@ -9,7 +9,18 @@ const projectRoot=resolve(dirname(fileURLToPath(import.meta.url)),'..');
  * No descarga recursos externos y conserva index.html como fuente de la web pública.
  */
 export async function renderOffline(root=projectRoot){
- const html=await readFile(resolve(root,'index.html'),'utf8');
+ const sourceHtml=await readFile(resolve(root,'index.html'),'utf8');
+ // Los enlaces y controles PWA no deben aparecer en el HTML de archivo único.
+ const metadata='<meta name="theme-color" content="#16355d"><link rel="manifest" href="./manifest.webmanifest"><link rel="icon" href="./icons/icon-192.png" type="image/png">';
+ const begin='<!-- EXAMINA_PWA_START -->',end='<!-- EXAMINA_PWA_END -->';
+ const first=sourceHtml.indexOf(begin),last=sourceHtml.indexOf(end,first);
+ if(!sourceHtml.includes(metadata)||first<0||last<0||
+    !sourceHtml.includes('<script src="pwa.js" defer></script>')){
+  throw new Error('Faltan los marcadores PWA en index.html');
+ }
+ const noHead=sourceHtml.replace(metadata,'');
+ const noPanel=noHead.slice(0,noHead.indexOf(begin))+noHead.slice(noHead.indexOf(end)+end.length);
+ const html=noPanel.replace('<script src="pwa.js" defer></script>','');
  const latin=JSON.parse(await readFile(resolve(root,'data/unimorph/lat-v.json'),'utf8'));
  if(!Array.isArray(latin.rows)||!latin.rows.length||
     !latin.rows.every(row=>Array.isArray(row)&&row.length>=4)){

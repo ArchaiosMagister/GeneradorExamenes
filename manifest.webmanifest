@@ -1,0 +1,26 @@
+{
+  "id": "./",
+  "name": "Generador de Exámenes de Latín y Griego",
+  "short_name": "Exámenes clásicos",
+  "description": "Genera exámenes de Latín I, Latín de 4.º ESO y Griego I, incluso sin conexión.",
+  "lang": "es",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f4f6fa",
+  "theme_color": "#16355d",
+  "icons": [
+    {
+      "src": "./icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
