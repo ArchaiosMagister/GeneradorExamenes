@@ -32,7 +32,9 @@ El **nombre del modelo** (completo, morfología o traducción) no sustituye el t
 
 La edición autónoma incorpora un **lematizador de consulta** para los lemas del vocabulario docente, alimentado por UniMorph y modelos explícitos de las dos lenguas. En «Laboratorio y consulta morfológica» permite buscar una forma o ver las flexiones registradas de un lema, incluso sin Internet. Conserva **todos los análisis posibles** en las coincidencias ambiguas y muestra las etiquetas originales.
 
-El índice se genera desde una instantánea fijada de `VocabulaLatinaGraecaque` y se incluye dentro de `offline.html`; no afecta automáticamente a la selección de respuestas de los exámenes. Consulta [las fuentes, licencias y limitaciones](docs/lematizacion-offline.md).
+El índice se genera desde una instantánea fijada de `VocabulaLatinaGraecaque` y se incluye dentro de `offline.html`; no afecta automáticamente a la selección de respuestas de los exámenes.
+
+La consulta diferencia ahora las **formas documentadas**, las **propuestas de flexión regular latina aún sin verificar** y las **formas de cita del vocabulario** que no disponen de paradigma. Las propuestas nunca alimentan los solucionarios ni la identificación del vocabulario final. Consulta [las fuentes, licencias y limitaciones](docs/lematizacion-offline.md).
 
 ## Versión autónoma para usar sin Internet
 

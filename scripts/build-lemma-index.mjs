@@ -8,6 +8,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
+import {proposeRegularLatin} from './regular-latin.mjs';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const commit='8f1a7a3985e0bb60231d83daa85e422868c97683';
 const base='https://raw.githubusercontent.com/ArchaiosMagister/VocabulaLatinaGraecaque/'+commit+'/';
@@ -72,7 +73,7 @@ async function main(){
  for(const lang of ['lat','grc'])if(Object.keys(catalog[lang]).length!==manifest.languages[lang].vocabulary_lemmas)
   throw Error('Inventario de lemas distinto del manifiesto: '+lang+' '+Object.keys(catalog[lang]).length);
  const rows={lat:[],grc:[]};
- const counts={lat:{unimorph:0,docente:0},grc:{unimorph:0,docente:0}};
+ const counts={lat:{unimorph:0,docente:0,modelo:0,lema:0},grc:{unimorph:0,docente:0,modelo:0,lema:0}};
  const seen={lat:new Set(),grc:new Set()};
  function add(lang,lemma,form,features,source){
   if(!['lat','grc'].includes(lang)||typeof form!=='string'||!form.trim()||typeof features!=='string')return;
@@ -81,7 +82,7 @@ async function main(){
   const sig=k+'\u0001'+norm(form)+'\u0001'+features+'\u0001'+source;
   if(seen[lang].has(sig))return;
   seen[lang].add(sig);
-  rows[lang].push([k,form,features,source==='unimorph'?0:1]);
+  rows[lang].push([k,form,features,({unimorph:0,docente:1,modelo:2,lema:3})[source]]);
   counts[lang][source]++;
  }
  // Download all prefiltered teacher-vocabulary shards, keeping every attested
@@ -121,6 +122,50 @@ async function main(){
    }
   }
  }
+ // Preserve lexicon citation forms even when a lemma has no attested
+ // inflections. Citation is NOT a verified morphological analysis.
+ const verifiedByLang={
+  lat:new Set(rows.lat.map(row=>row[0])),
+  grc:new Set(rows.grc.map(row=>row[0]))
+ };
+ const extensions={candidate_lemmas:0,candidate_rows:0,rejected_for_conflict:[],
+  citation_only:{lat:0,grc:0},
+  warning:'Generated forms are provisional lookup suggestions, NEVER exam solutions.'};
+ const verifiedCells=new Map();
+ for(const [lemma,surface,features]of rows.lat){
+  const id=lemma+'|'+features;
+  if(!verifiedCells.has(id))verifiedCells.set(id,new Set());
+  verifiedCells.get(id).add(norm(surface));
+ }
+ for(const [lemma,v]of Object.entries(catalog.lat)){
+  const entry=Object.values(v).sort((a,b)=>
+   (b.entry.match(/,/g)||[]).length-(a.entry.match(/,/g)||[]).length)[0]?.entry;
+  const proposals=proposeRegularLatin(lemma,entry);
+  if(!proposals.length)continue;
+  const contradictory=proposals.filter(([surface,feature])=>{
+   const known=verifiedCells.get(lemma+'|'+feature);
+   return known?.size&&!known.has(norm(surface));
+  });
+  if(contradictory.length){
+   extensions.rejected_for_conflict.push({lemma,entry,features:contradictory.map(row=>row[1])});
+   continue;
+  }
+  let accepted=0;
+  for(const [surface,feature]of proposals){
+   // Don't repeat a documented cell; the attested source takes priority.
+   if(verifiedCells.has(lemma+'|'+feature))continue;
+   add('lat',lemma,surface,feature,'modelo');
+   accepted++;
+  }
+  if(accepted){extensions.candidate_lemmas++;extensions.candidate_rows+=accepted}
+ }
+ for(const lang of ['lat','grc']){
+  for(const lemma of Object.keys(catalog[lang])){
+   if(verifiedByLang[lang].has(lemma))continue;
+   add(lang,lemma,lemma,'LEX;ENTRY','lema');
+   extensions.citation_only[lang]++;
+  }
+ }
  for(const lang of ['lat','grc'])rows[lang].sort((a,b)=>
   a[0].localeCompare(b[0])||norm(a[1]).localeCompare(norm(b[1]))||a[2].localeCompare(b[2]));
  const data={
@@ -131,7 +176,7 @@ async function main(){
     grc:{revision:manifest.languages.grc.source_commit,license:'CC BY-SA 3.0'}
    }},
   scope:'UniMorph filtrado por lemas del vocabulario docente y paradigmas explícitos; no es un diccionario exhaustivo.',
-  vocabulary:catalog,rows,counts
+  vocabulary:catalog,rows,counts,extensions
  };
  if(rows.lat.length<10000||rows.grc.length<1400)throw Error('Índice anormalmente pequeño');
  await fs.mkdir(path.dirname(output),{recursive:true});

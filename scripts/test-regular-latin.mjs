@@ -1,0 +1,36 @@
+import assert from 'node:assert/strict';
+import {proposeRegularLatin} from './regular-latin.mjs';
+function row(lemma,entry,feature){
+ const all=proposeRegularLatin(lemma,entry);
+ return all.filter(x=>x[1]===feature).map(x=>x[0]);
+}
+assert.deepEqual(row('amo','amo, amavi, amatum (1ª)','V;IND;ACT;PRS;2;SG'),['amas']);
+assert.deepEqual(row('amo','amo, amavi, amatum (1ª)','V;IND;ACT;PST;IPFV;1;SG'),['amabam']);
+assert.deepEqual(row('amo','amo, amavi, amatum (1ª)','V;IND;ACT;PRF;3;PL'),['amaverunt']);
+assert.deepEqual(row('moveo','moveo, movi, motum (2ª)','V;IND;ACT;PRS;2;PL'),['movetis']);
+assert.deepEqual(row('moveo','moveo, movi, motum (2ª)','V;IND;ACT;PST;IPFV;1;SG'),['movebam']);
+assert.deepEqual(row('duco','duco, duxi, ductum (3ª)','V;IND;ACT;PRS;3;PL'),['ducunt']);
+assert.deepEqual(row('duco','duco, duxi, ductum (3ª)','V;IND;ACT;PST;IPFV;1;SG'),['ducebam']);
+assert.deepEqual(row('duco','duco, duxi, ductum (3ª)','V;IND;ACT;PRF;1;SG'),['duxi']);
+assert.deepEqual(row('audio','audio, audivi, auditum (4ª)','V;IND;ACT;PRS;3;PL'),['audiunt']);
+assert.deepEqual(row('audio','audio, audivi, auditum (4ª)','V;IND;ACT;PST;IPFV;1;SG'),['audiebam']);
+assert.deepEqual(row('capio','capio, cepi, captum (mx.)','V;IND;ACT;PRS;3;PL'),['capiunt']);
+assert.deepEqual(row('capio','capio, cepi, captum (mx.)','V;IND;ACT;PST;IPFV;1;SG'),['capiebam']);
+assert.deepEqual(row('capio','capio, cepi, captum (mx.)','V;IND;ACT;PRF;1;SG'),['cepi']);
+assert.equal(proposeRegularLatin('vivo','vivo, vixi, victum (4ª)').length,0,'Cuarta conjugación incompatible');
+assert.equal(proposeRegularLatin('facio','facio, feci, factum (3ª)').length,0,'No confundir conjugación mixta');
+assert.equal(proposeRegularLatin('sum','sum, fui, – (irr.)').length,0,'No generar irregulares');
+assert.equal(proposeRegularLatin('loquor','loquor, locutus sum (3ª)').length,0,'No generar deponentes');
+assert.equal(proposeRegularLatin('eo','eo, ii, itum (irr.)').length,0);
+assert.equal(proposeRegularLatin('studeo','studeo, studui, – (2ª)').length,18,'Perfecto explícito incluso sin supino');
+assert.equal(proposeRegularLatin('appello','appello (1ª)').length,12,'Sin perfecto explícito, nunca inventarlo');
+assert.deepEqual(row('puella','puella, –ae','N;GEN;PL'),['puellarum']);
+assert.deepEqual(row('puella','puella, –ae','N;ABL;SG'),['puella']);
+assert.deepEqual(row('bellum','bellum, –i','N;ACC;PL'),['bella']);
+assert.deepEqual(row('servus','servus, –i','N;VOC;SG'),['serve']);
+assert.equal(proposeRegularLatin('Tarentus','Tarentus, –i').length,6,'No inventar plurales de nombres propios');
+assert.equal(proposeRegularLatin('Marius','Marius, –i').length,0,'Vocativo en -ius requiere control');
+assert.equal(proposeRegularLatin('rex','rex, regis (m.)').length,0,'No adivinar tercera declinación');
+assert.equal(proposeRegularLatin('bonus','bonus, –a, –um').length,0,'No tratar adjetivos como sustantivos');
+assert.equal(proposeRegularLatin('frequenter','frequenter (adv.)').length,0,'No flexionar invariables');
+console.log('Generación latina regular comprobada por 5 conjugaciones y dos declinaciones; exclusiones seguras.');
