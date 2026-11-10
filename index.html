@@ -710,7 +710,7 @@ function findLemmaForForm(token,entries,prepared=null){
 }
 function lexPos(entry){let m=String(entry).match(/\((adv\.?|conj\.?|adverbio|conjunción)\)/i);if(!m)return '';return /^adv/i.test(m[1])?'adv.':'conj.'}
 function localizedGloss(item){return window.ExaminaValencianGloss?.forEntry(item,$('lang').value)||{value:String(item?.meaning||''),ready:!!String(item?.meaning||'').trim()}}
-function quoteGloss(text){const value=String(text).trim().replace(/^[\u0027\u2018\u2019"“”]+|[\u0027\u2018\u2019"“”]+$/g,'');return /[\s,;:]/u.test(value)?'“'+value+'”':'‘'+value+'’'}
+function quoteGloss(text){const central=window.ExaminaValencianGloss?.quoteGloss(text);if(central)return central;const value=String(text).trim().replace(/^[\u0027\u2018\u2019"“”]+|[\u0027\u2018\u2019"“”]+$/g,'');return /[\s,;:]/u.test(value)?'“'+value+'”':'‘'+value+'’'}
 function glossType(entry){const e=String(entry);if(/\((?:adv\.?|conj\.?|adverbio|conjunción|prep\.?)\)/i.test(e))return 'other';if(currentCourse()==='greek1'){if(/(?:ω|ομαι|μι)(?:\s|$|,)/u.test(e))return 'verbs';if(/(?:ος,\s*-[αη],\s*-ον|ος,\s*-ον|ύς,\s*εῖα,\s*ύ)/u.test(e))return 'adjectives';if(/,\s*[-–]/u.test(e))return 'nouns';return 'other'}if(mVerb(e)||verb({entry:e}))return 'verbs';if(mNoun(e)||noun({entry:e}))return 'nouns';if(adjective({entry:e}))return 'adjectives';return 'other'}
 function glossAccept(entry,chosen){const required=isRequired(entry,chosen),scope=$('glossScope').value;if(scope==='outside'&&required||scope==='required'&&!required)return false;return $('gloss'+({nouns:'Nouns',verbs:'Verbs',adjectives:'Adjectives',other:'Other'}[glossType(entry)])).checked}
 function buildFinalLexicon(chosen,chosenEntries,selectedSentences,selectedMorph,selectedLex,options={}){
