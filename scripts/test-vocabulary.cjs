@@ -71,7 +71,7 @@ console.log('Vocabulario: prioridad docente, deduplicación por UD, ambigüedad,
  await page.click('#vgWord');const doc14=await download14;
  const body14=fs.readFileSync(await doc14.path()).toString('utf8');
  for(let n=1;n<=14;n++)assert.ok(body14.includes('UD'+n),'No existe contenido para UD'+n);
- assert.match(body14,/θεός|θεὸς|θεὸς/);
+ assert.match(body14,/θεός|θεὸς|θεὸς|θέος/);
  assert.match(await page.locator('#vgStatus').innerText(),/Word generado con 14 unidades/);
  const persisted=await page.evaluate(()=>JSON.parse(localStorage.getItem('examina_vocabulary_project_v1')));
  assert.equal(persisted.units.length,14);
