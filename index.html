@@ -2089,7 +2089,7 @@ refreshCourse();
   for(const item of [...host.children]){
    const caption=(item.querySelector('strong,span')?.textContent||'').toLocaleLowerCase();
    let kind=/declina/.test(caption)?'decl':/conjuga|forma verbal|verbo/.test(caption)?'verb':
-    /pronombre/.test(caption)?'pronouns':/análisis|morfológic/.test(caption)?'forms':
+    /pronombre/.test(caption)?'pronouns':/análisis|morfológic|forma para analizar/.test(caption)?'forms':
     /derivados|etimol/.test(caption)?'etymology':null;
    if(!kind||!questionHost.querySelector('[data-editor-for="'+kind+'"]'))continue;
    questionHost.querySelector('[data-editor-for="'+kind+'"]').append(item);
