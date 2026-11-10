@@ -45,6 +45,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Comprobar prefijos y evolución fonética por UD de Latín 4.º
+        run: node scripts/test-lat4-lexico.cjs
       - name: Validar preguntas docentes de cultura LAT4
         run: node scripts/test-cultura-lat4.cjs
       - name: Probar modelos regulares sin incorporación a los exámenes
