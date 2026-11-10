@@ -1914,6 +1914,19 @@ function buildLatinLexQuestion(course,chosen){
  return {html:html.join(''),solution:'<ol>'+answers.join('')+'</ol>'};
 }
 refreshCourse();
+/* Los parámetros internos conservan la misma interfaz que lee el motor,
+   pero la vista editable se encuentra en los paneles de cada pregunta. */
+(function preserveMorphologyControls(){
+ const panel=document.querySelector('#examLayout>.panel');
+ if(!panel||document.getElementById('morphOptions'))return;
+ const host=document.createElement('div');host.id='morphOptions';host.hidden=true;host.className='legacy-question-fields';
+ host.innerHTML='<input id="morphOffer" type="number" value="3"><input id="morphDecline" type="number" value="2">'+
+  '<input id="morphVerbs" type="number" value="10"><input id="morphWords" type="number" value="10">'+
+  '<input id="morphCategory-n" type="checkbox" checked><input id="morphCategory-adj" type="checkbox" checked>'+
+  '<input id="morphCategory-pro" type="checkbox" checked>';
+ host.addEventListener('change',()=>generate());
+ panel.append(host);
+})();
 /* Controles reusables: el <select> original sigue accesible al motor, mientras
    las asignaturas y modelos se ven como opciones permanentes. */
 (function configureExamSidebar(){
@@ -2303,7 +2316,7 @@ window.ExaminaMorphology={lookup,stats,importText};
 (function(){
  function collapsibleMenu(){
   const panel=document.querySelector('#examLayout > aside.panel');
-  if(!panel||panel.dataset.grouped)return;panel.dataset.grouped='1';
+  if(!panel||panel.dataset.grouped||document.getElementById('examFormatSettings'))return;panel.dataset.grouped='1';
   const fields=[...panel.children].filter(x=>x.classList.contains('field'));
   const headings=[...panel.children].filter(x=>x.tagName==='H2');
   headings.forEach(x=>x.remove());
