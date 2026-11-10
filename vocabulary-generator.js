@@ -407,6 +407,20 @@ function greekReferenceForms(bank){
   'Ἀθηναίους','Ἀθηναίους','Ἀθηναῖος'],'Ἀθηναῖος','ateniense');
  return map;
 }
+const greekSpellingNotes={
+ 'στρατεγός':'στρατηγός (falta η)',
+ 'στρατεγὸς':'στρατηγός (falta η)',
+ 'στρατεγοὶ':'στρατηγοί (falta η)',
+ 'oἱ':'οἱ (la o inicial es latina)',
+ 'Aἰσχύλος':'Αἰσχύλος (la A inicial es latina)',
+ 'ἄνρωπος':'ἄνθρωπος (falta θ)',
+ 'εἷχεν':'εἶχεν (revisar el espíritu)',
+ 'οἰκῦσιν':'οἰκοῦσιν (falta ο)',
+ 'σωτερίας':'σωτηρίας (falta η)',
+ 'ὠρᾶ':'ὁρᾷ (revisar forma y aumento)',
+ 'Περίκλους':'Περικλέους (revisar el genitivo)',
+ 'ἐφεύξεν':'φεύγω: revisar el tiempo; aoristo usual ἔφυγεν'
+};
 function analyze(data,text,course,bank){
  const lang=course==='gr1'?'grc':'lat',index=new Map(),greek=lang==='grc'?greekReferenceForms(bank):null;
  for(const [lemma,surface,tags,source] of data.rows[lang]){
@@ -490,8 +504,14 @@ function analyze(data,text,course,bank){
    else if(/ἄλλα/u.test(form))candidates=candidates.filter(x=>x.lemma!=='αλλα');
   }
   const resolved=candidates.length===1&&candidates[0].attested;
-  return {form,candidates,status:resolved?'documented':candidates.length?'review':'unknown',
-   lemma:resolved?candidates[0].lemma:'',entry:resolved?candidates[0].entry:form,meaning:resolved?candidates[0].meaning:''};
+  const spellingHint=lang==='grc'?greekSpellingNotes[form.normalize('NFC')]:undefined;
+  // Señalar erratas: proponer una corrección no equivale a lematizarla.
+  const requiresSpellingReview=!!spellingHint;
+  return {form,candidates,status:requiresSpellingReview?'review':resolved?'documented':candidates.length?'review':'unknown',
+   warning:requiresSpellingReview?'Posible errata: '+spellingHint:'',
+   lemma:resolved&&!requiresSpellingReview?candidates[0].lemma:'',
+   entry:resolved&&!requiresSpellingReview?candidates[0].entry:form,
+   meaning:resolved&&!requiresSpellingReview?candidates[0].meaning:''};
  });
 }
 function entries(rows){
@@ -545,7 +565,7 @@ function init(){
   const target=$('vgResults');target.replaceChildren();
   for(const r of entries(unit().rows)){
    const box=document.createElement('div');box.style.cssText='padding:10px 0;border-bottom:1px solid #ccd7e6';
-   const label=document.createElement('p');label.textContent=r.form+' · '+({documented:'Forma documentada',manual:'Revisado manualmente',review:'* Ambigua o candidata sin verificar',unknown:'* Desconocida'}[r.status]);box.append(label);
+   const label=document.createElement('p');label.textContent=r.form+' · '+(r.warning||({documented:'Forma documentada',manual:'Revisado manualmente',review:'* Ambigua o candidata sin verificar',unknown:'* Desconocida'}[r.status]));box.append(label);
    if(r.candidates.length&&r.status!=='documented'){
     const select=document.createElement('select');select.append(new Option('Elegir una entrada documentada o candidata…',''));
     r.candidates.forEach((c,i)=>select.append(new Option(c.entry+' — '+c.meaning+(c.attested?'':' [sin verificar]'),i)));
