@@ -245,6 +245,13 @@ function analyze(data,text,course,bank){
    candidates=candidates.filter(x=>x.entry==='ὁ, ἡ, τό');
   if(lang==='grc'&&normal==='η'&&form.normalize('NFC')==='ἡ')
    candidates=candidates.filter(x=>x.entry==='ὁ, ἡ, τό');
+  // El plural del artículo (οἱ, αἱ) no debe confundirse con el relativo
+  // (οἵ, αἵ): la acentuación del original conserva esa distinción.
+  if(lang==='grc'&&(['οι','αι'].includes(normal))){
+   const written=form.normalize('NFC');
+   if(['οἱ','αἱ'].includes(written))candidates=candidates.filter(x=>x.entry==='ὁ, ἡ, τό');
+   else if(['οἵ','αἵ'].includes(written))candidates=candidates.filter(x=>x.entry!=='ὁ, ἡ, τό');
+  }
   if(lang==='grc'&&normal==='αλλα'){
    if(/ἀλλ[άὰ]/u.test(form))candidates=candidates.filter(x=>x.lemma==='αλλα');
    else if(/ἄλλα/u.test(form))candidates=candidates.filter(x=>x.lemma!=='αλλα');
