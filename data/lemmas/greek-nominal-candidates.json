@@ -1,0 +1,4686 @@
+{
+  "schema": 1,
+  "status": "WIKTIONARY_CANDIDATES_NOT_FOR_GRADING",
+  "source": "https://kaikki.org/dictionary/Ancient%20Greek/kaikki.org-dictionary-AncientGreek.jsonl",
+  "attribution": "Wiktionary contributors, extracted by Wiktextract/kaikki.org",
+  "license": "CC BY-SA 4.0",
+  "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "warning": "Forms retain source accents but are provisional; NEVER use for answer keys or automatic glossary resolution.",
+  "stats": {
+    "read": 69171,
+    "matched": 234,
+    "unsafeForms": 5423,
+    "unmatchedEntries": 38378,
+    "acceptedLemmas": 110,
+    "additionalRows": 918,
+    "consistentSlots": 484,
+    "conflicts": 4,
+    "lexicalMismatch": 89,
+    "insufficient": 0,
+    "ambiguousCells": 414
+  },
+  "entries": [
+    {
+      "lemma": "αγαθοσ",
+      "kind": "ADJ",
+      "word": "ἀγαθός",
+      "source_page": "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B3%CE%B1%CE%B8%CF%8C%CF%82",
+      "matchingSlots": 0,
+      "forms": [
+        [
+          "ᾰ̓γᾰθᾱ́ς",
+          "ADJ;ACC;PL;FEM"
+        ],
+        [
+          "ᾰ̓γᾰθούς",
+          "ADJ;ACC;PL;MASC"
+        ],
+        [
+          "ᾰ̓γᾰθᾰ́",
+          "ADJ;ACC;PL;NEUT"
+        ],
+        [
+          "ᾰ̓γᾰθήν",
+          "ADJ;ACC;SG;FEM"
+        ],
+        [
+          "ᾰ̓γᾰθόν",
+          "ADJ;ACC;SG;MASC"
+        ],
+        [
+          "ᾰ̓γᾰθόν",
+          "ADJ;ACC;SG;NEUT"
+        ],
+        [
+          "ᾰ̓γᾰθαῖς",
+          "ADJ;DAT;PL;FEM"
+        ],
+        [
+          "ᾰ̓γᾰθοῖς",
+          "ADJ;DAT;PL;MASC"
+        ],
+        [
+          "ᾰ̓γᾰθοῖς",
+          "ADJ;DAT;PL;NEUT"
+        ],
+        [
+          "ᾰ̓γᾰθῇ",
+          "ADJ;DAT;SG;FEM"
+        ],
+        [
+          "ᾰ̓γᾰθῷ",
+          "ADJ;DAT;SG;MASC"
+        ],
+        [
+          "ᾰ̓γᾰθῷ",
+          "ADJ;DAT;SG;NEUT"
+        ],
+        [
+          "ᾰ̓γᾰθῶν",
+          "ADJ;GEN;PL;FEM"
+        ],
+        [
+          "ᾰ̓γᾰθῶν",
+          "ADJ;GEN;PL;MASC"
+        ],
+        [
+          "ᾰ̓γᾰθῶν",
+          "ADJ;GEN;PL;NEUT"
+        ],
+        [
+          "ᾰ̓γᾰθῆς",
+          "ADJ;GEN;SG;FEM"
+        ],
+        [
+          "ᾰ̓γᾰθοῦ",
+          "ADJ;GEN;SG;MASC"
+        ],
+        [
+          "ᾰ̓γᾰθοῦ",
+          "ADJ;GEN;SG;NEUT"
+        ],
+        [
+          "ᾰ̓γᾰθαί",
+          "ADJ;NOM;PL;FEM"
+        ],
+        [
+          "ᾰ̓γᾰθοί",
+          "ADJ;NOM;PL;MASC"
+        ],
+        [
+          "ᾰ̓γᾰθᾰ́",
+          "ADJ;NOM;PL;NEUT"
+        ],
+        [
+          "ᾰ̓γᾰθή",
+          "ADJ;NOM;SG;FEM"
+        ],
+        [
+          "ᾰ̓γᾰθός",
+          "ADJ;NOM;SG;MASC"
+        ],
+        [
+          "ᾰ̓γᾰθόν",
+          "ADJ;NOM;SG;NEUT"
+        ],
+        [
+          "ᾰ̓γᾰθαί",
+          "ADJ;VOC;PL;FEM"
+        ],
+        [
+          "ᾰ̓γᾰθοί",
+          "ADJ;VOC;PL;MASC"
+        ],
+        [
+          "ᾰ̓γᾰθᾰ́",
+          "ADJ;VOC;PL;NEUT"
+        ],
+        [
+          "ᾰ̓γᾰθή",
+          "ADJ;VOC;SG;FEM"
+        ],
+        [
+          "ᾰ̓γᾰθέ",
+          "ADJ;VOC;SG;MASC"
+        ],
+        [
+          "ᾰ̓γᾰθόν",
+          "ADJ;VOC;SG;NEUT"
+        ]
+      ]
+    },
+    {
+      "lemma": "αγαλμα",
+      "kind": "N",
+      "word": "ἄγαλμα",
+      "source_page": "https://en.wiktionary.org/wiki/%E1%BC%84%CE%B3%CE%B1%CE%BB%CE%BC%CE%B1",
+      "matchingSlots": 0,
+      "forms": [
+        [
+          "ᾰ̓γᾰ́λμᾰτᾰ",
+          "N;ACC;PL"
+        ],
+        [
+          "ᾰ̓́γᾰλμᾰ",
+          "N;ACC;SG"
+        ],
+        [
+          "ᾰ̓γᾰ́λμᾰτῐ",
+          "N;DAT;SG"
+        ],
+        [
+          "ᾰ̓γᾰλμᾰ́των",
+          "N;GEN;PL"
+        ],
+        [
+          "ᾰ̓γᾰ́λμᾰτος",
+          "N;GEN;SG"
+        ],
+        [
+          "ᾰ̓γᾰ́λμᾰτᾰ",
+          "N;NOM;PL"
+        ],
+        [
+          "ᾰ̓́γᾰλμᾰ",
+          "N;NOM;SG"
+        ],
+        [
+          "ᾰ̓γᾰ́λμᾰτᾰ",
+          "N;VOC;PL"
+        ],
+        [
+          "ᾰ̓́γᾰλμᾰ",
+          "N;VOC;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "αγορα",
+      "kind": "N",
+      "word": "ἀγορά",
+      "source_page": "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B3%CE%BF%CF%81%CE%AC",
+      "matchingSlots": 9,
+      "forms": [
+        [
+          "ᾰ̓γορᾷ",
+          "N;DAT;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "αδελφοσ",
+      "kind": "N",
+      "word": "ἀδελφός",
+      "source_page": "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B4%CE%B5%CE%BB%CF%86%CF%8C%CF%82",
+      "matchingSlots": 0,
+      "forms": [
+        [
+          "ᾰ̓δελφούς",
+          "N;ACC;PL"
+        ],
+        [
+          "ᾰ̓δελφόν",
+          "N;ACC;SG"
+        ],
+        [
+          "ᾰ̓δελφοῖς",
+          "N;DAT;PL"
+        ],
+        [
+          "ᾰ̓δελφῷ",
+          "N;DAT;SG"
+        ],
+        [
+          "ᾰ̓δελφῶν",
+          "N;GEN;PL"
+        ],
+        [
+          "ᾰ̓δελφοῦ",
+          "N;GEN;SG"
+        ],
+        [
+          "ᾰ̓δελφοί",
+          "N;NOM;PL"
+        ],
+        [
+          "ᾰ̓δελφός",
+          "N;NOM;SG"
+        ],
+        [
+          "ᾰ̓δελφοί",
+          "N;VOC;PL"
+        ],
+        [
+          "ᾰ̓́δελφε",
+          "N;VOC;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "αδικια",
+      "kind": "N",
+      "word": "ἀδικία",
+      "source_page": "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B4%CE%B9%CE%BA%CE%AF%CE%B1",
+      "matchingSlots": 9,
+      "forms": [
+        [
+          "ᾰ̓δῐκῐ́ᾳ",
+          "N;DAT;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "αθανατοσ",
+      "kind": "ADJ",
+      "word": "ἀθάνατος",
+      "source_page": "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B8%CE%AC%CE%BD%CE%B1%CF%84%CE%BF%CF%82",
+      "matchingSlots": 0,
+      "forms": [
+        [
+          "ᾱ̓θᾰνᾰ́τᾱς",
+          "ADJ;ACC;PL;FEM"
+        ],
+        [
+          "ᾱ̓θᾰνᾰ́τους",
+          "ADJ;ACC;PL;MASC"
+        ],
+        [
+          "ᾱ̓θᾰ́νᾰτᾰ",
+          "ADJ;ACC;PL;NEUT"
+        ],
+        [
+          "ᾱ̓θᾰνᾰ́την",
+          "ADJ;ACC;SG;FEM"
+        ],
+        [
+          "ᾱ̓θᾰ́νᾰτον",
+          "ADJ;ACC;SG;MASC"
+        ],
+        [
+          "ᾱ̓θᾰ́νᾰτον",
+          "ADJ;ACC;SG;NEUT"
+        ],
+        [
+          "ᾱ̓θᾰνᾰ́τῃ",
+          "ADJ;DAT;SG;FEM"
+        ],
+        [
+          "ᾱ̓θᾰνᾰ́τῳ",
+          "ADJ;DAT;SG;MASC"
+        ],
+        [
+          "ᾱ̓θᾰνᾰ́τῳ",
+          "ADJ;DAT;SG;NEUT"
+        ],
+        [
+          "ᾱ̓θᾰνᾰ́των",
+          "ADJ;GEN;PL;MASC"
+        ],
+        [
+          "ᾱ̓θᾰνᾰ́των",
+          "ADJ;GEN;PL;NEUT"
+        ],
+        [
+          "ᾱ̓θᾰνᾰ́της",
+          "ADJ;GEN;SG;FEM"
+        ],
+        [
+          "ᾱ̓θᾰ́νᾰται",
+          "ADJ;NOM;PL;FEM"
+        ],
+        [
+          "ᾱ̓θᾰ́νᾰτοι",
+          "ADJ;NOM;PL;MASC"
+        ],
+        [
+          "ᾱ̓θᾰ́νᾰτᾰ",
+          "ADJ;NOM;PL;NEUT"
+        ],
+        [
+          "ᾱ̓θᾰνᾰ́τη",
+          "ADJ;NOM;SG;FEM"
+        ],
+        [
+          "ᾱ̓θᾰ́νᾰτος",
+          "ADJ;NOM;SG;MASC"
+        ],
+        [
+          "ᾱ̓θᾰ́νᾰτον",
+          "ADJ;NOM;SG;NEUT"
+        ],
+        [
+          "ᾱ̓θᾰ́νᾰται",
+          "ADJ;VOC;PL;FEM"
+        ],
+        [
+          "ᾱ̓θᾰ́νᾰτοι",
+          "ADJ;VOC;PL;MASC"
+        ],
+        [
+          "ᾱ̓θᾰ́νᾰτᾰ",
+          "ADJ;VOC;PL;NEUT"
+        ],
+        [
+          "ᾱ̓θᾰνᾰ́τη",
+          "ADJ;VOC;SG;FEM"
+        ],
+        [
+          "ᾱ̓θᾰ́νᾰτε",
+          "ADJ;VOC;SG;MASC"
+        ],
+        [
+          "ᾱ̓θᾰ́νᾰτον",
+          "ADJ;VOC;SG;NEUT"
+        ]
+      ]
+    },
+    {
+      "lemma": "αθηναιοσ",
+      "kind": "ADJ",
+      "word": "Ἀθηναῖος",
+      "source_page": "https://en.wiktionary.org/wiki/%E1%BC%88%CE%B8%CE%B7%CE%BD%CE%B1%E1%BF%96%CE%BF%CF%82",
+      "matchingSlots": 0,
+      "forms": [
+        [
+          "Ᾰ̓θηναίᾱς",
+          "ADJ;ACC;PL;FEM"
+        ],
+        [
+          "Ᾰ̓θηναίους",
+          "ADJ;ACC;PL;MASC"
+        ],
+        [
+          "Ᾰ̓θηναῖᾰ",
+          "ADJ;ACC;PL;NEUT"
+        ],
+        [
+          "Ᾰ̓θηναίᾱν",
+          "ADJ;ACC;SG;FEM"
+        ],
+        [
+          "Ᾰ̓θηναῖον",
+          "ADJ;ACC;SG;MASC"
+        ],
+        [
+          "Ᾰ̓θηναῖον",
+          "ADJ;ACC;SG;NEUT"
+        ],
+        [
+          "Ᾰ̓θηναίαις",
+          "ADJ;DAT;PL;FEM"
+        ],
+        [
+          "Ᾰ̓θηναίοις",
+          "ADJ;DAT;PL;MASC"
+        ],
+        [
+          "Ᾰ̓θηναίοις",
+          "ADJ;DAT;PL;NEUT"
+        ],
+        [
+          "Ᾰ̓θηναίᾳ",
+          "ADJ;DAT;SG;FEM"
+        ],
+        [
+          "Ᾰ̓θηναίῳ",
+          "ADJ;DAT;SG;MASC"
+        ],
+        [
+          "Ᾰ̓θηναίῳ",
+          "ADJ;DAT;SG;NEUT"
+        ],
+        [
+          "Ᾰ̓θηναίων",
+          "ADJ;GEN;PL;FEM"
+        ],
+        [
+          "Ᾰ̓θηναίων",
+          "ADJ;GEN;PL;MASC"
+        ],
+        [
+          "Ᾰ̓θηναίων",
+          "ADJ;GEN;PL;NEUT"
+        ],
+        [
+          "Ᾰ̓θηναίᾱς",
+          "ADJ;GEN;SG;FEM"
+        ],
+        [
+          "Ᾰ̓θηναίου",
+          "ADJ;GEN;SG;MASC"
+        ],
+        [
+          "Ᾰ̓θηναίου",
+          "ADJ;GEN;SG;NEUT"
+        ],
+        [
+          "Ᾰ̓θηναῖαι",
+          "ADJ;NOM;PL;FEM"
+        ],
+        [
+          "Ᾰ̓θηναῖοι",
+          "ADJ;NOM;PL;MASC"
+        ],
+        [
+          "Ᾰ̓θηναῖᾰ",
+          "ADJ;NOM;PL;NEUT"
+        ],
+        [
+          "Ᾰ̓θηναίᾱ",
+          "ADJ;NOM;SG;FEM"
+        ],
+        [
+          "Ᾰ̓θηναῖος",
+          "ADJ;NOM;SG;MASC"
+        ],
+        [
+          "Ᾰ̓θηναῖον",
+          "ADJ;NOM;SG;NEUT"
+        ],
+        [
+          "Ᾰ̓θηναῖαι",
+          "ADJ;VOC;PL;FEM"
+        ],
+        [
+          "Ᾰ̓θηναῖοι",
+          "ADJ;VOC;PL;MASC"
+        ],
+        [
+          "Ᾰ̓θηναῖᾰ",
+          "ADJ;VOC;PL;NEUT"
+        ],
+        [
+          "Ᾰ̓θηναίᾱ",
+          "ADJ;VOC;SG;FEM"
+        ],
+        [
+          "Ᾰ̓θηναῖε",
+          "ADJ;VOC;SG;MASC"
+        ],
+        [
+          "Ᾰ̓θηναῖον",
+          "ADJ;VOC;SG;NEUT"
+        ]
+      ]
+    },
+    {
+      "lemma": "αιθηρ",
+      "kind": "N",
+      "word": "αἰθήρ",
+      "source_page": "https://en.wiktionary.org/wiki/%CE%B1%E1%BC%B0%CE%B8%CE%AE%CF%81",
+      "matchingSlots": 8,
+      "forms": [
+        [
+          "αἰθέρῐ",
+          "N;DAT;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "αιμα",
+      "kind": "N",
+      "word": "αἷμα",
+      "source_page": "https://en.wiktionary.org/wiki/%CE%B1%E1%BC%B7%CE%BC%CE%B1",
+      "matchingSlots": 8,
+      "forms": [
+        [
+          "αἵμᾰτῐ",
+          "N;DAT;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "αιξ",
+      "kind": "N",
+      "word": "αἴξ",
+      "source_page": "https://en.wiktionary.org/wiki/%CE%B1%E1%BC%B4%CE%BE",
+      "matchingSlots": 8,
+      "forms": [
+        [
+          "αἰγῐ́",
+          "N;DAT;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "αισχροσ",
+      "kind": "ADJ",
+      "word": "αἰσχρός",
+      "source_page": "https://en.wiktionary.org/wiki/%CE%B1%E1%BC%B0%CF%83%CF%87%CF%81%CF%8C%CF%82",
+      "matchingSlots": 0,
+      "forms": [
+        [
+          "αἰσχρᾱ́ς",
+          "ADJ;ACC;PL;FEM"
+        ],
+        [
+          "αἰσχρούς",
+          "ADJ;ACC;PL;MASC"
+        ],
+        [
+          "αἰσχρᾰ́",
+          "ADJ;ACC;PL;NEUT"
+        ],
+        [
+          "αἰσχρόν",
+          "ADJ;ACC;SG;MASC"
+        ],
+        [
+          "αἰσχρόν",
+          "ADJ;ACC;SG;NEUT"
+        ],
+        [
+          "αἰσχρῷ",
+          "ADJ;DAT;SG;MASC"
+        ],
+        [
+          "αἰσχρῷ",
+          "ADJ;DAT;SG;NEUT"
+        ],
+        [
+          "αἰσχρῶν",
+          "ADJ;GEN;PL;MASC"
+        ],
+        [
+          "αἰσχρῶν",
+          "ADJ;GEN;PL;NEUT"
+        ],
+        [
+          "αἰσχραί",
+          "ADJ;NOM;PL;FEM"
+        ],
+        [
+          "αἰσχροί",
+          "ADJ;NOM;PL;MASC"
+        ],
+        [
+          "αἰσχρᾰ́",
+          "ADJ;NOM;PL;NEUT"
+        ],
+        [
+          "αἰσχρός",
+          "ADJ;NOM;SG;MASC"
+        ],
+        [
+          "αἰσχρόν",
+          "ADJ;NOM;SG;NEUT"
+        ],
+        [
+          "αἰσχραί",
+          "ADJ;VOC;PL;FEM"
+        ],
+        [
+          "αἰσχροί",
+          "ADJ;VOC;PL;MASC"
+        ],
+        [
+          "αἰσχρᾰ́",
+          "ADJ;VOC;PL;NEUT"
+        ],
+        [
+          "αἰσχρέ",
+          "ADJ;VOC;SG;MASC"
+        ],
+        [
+          "αἰσχρόν",
+          "ADJ;VOC;SG;NEUT"
+        ]
+      ]
+    },
+    {
+      "lemma": "ακροαμα",
+      "kind": "N",
+      "word": "ἀκρόαμα",
+      "source_page": "https://en.wiktionary.org/wiki/%E1%BC%80%CE%BA%CF%81%CF%8C%CE%B1%CE%BC%CE%B1",
+      "matchingSlots": 8,
+      "forms": [
+        [
+          "ἀκροᾱ́μᾰτῐ",
+          "N;DAT;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "ακροπολισ",
+      "kind": "N",
+      "word": "ἀκρόπολις",
+      "source_page": "https://en.wiktionary.org/wiki/%E1%BC%80%CE%BA%CF%81%CF%8C%CF%80%CE%BF%CE%BB%CE%B9%CF%82",
+      "matchingSlots": 0,
+      "forms": [
+        [
+          "ᾰ̓κροπόλεις",
+          "N;ACC;PL"
+        ],
+        [
+          "ᾰ̓κρόπολῐν",
+          "N;ACC;SG"
+        ],
+        [
+          "ᾰ̓κροπόλει",
+          "N;DAT;SG"
+        ],
+        [
+          "ᾰ̓κροπόλεων",
+          "N;GEN;PL"
+        ],
+        [
+          "ᾰ̓κροπόλεως",
+          "N;GEN;SG"
+        ],
+        [
+          "ᾰ̓κροπόλεις",
+          "N;NOM;PL"
+        ],
+        [
+          "ᾰ̓κρόπολῐς",
+          "N;NOM;SG"
+        ],
+        [
+          "ᾰ̓κροπόλεις",
+          "N;VOC;PL"
+        ],
+        [
+          "ᾰ̓κρόπολῐ",
+          "N;VOC;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "αληθεια",
+      "kind": "N",
+      "word": "ἀλήθεια",
+      "source_page": "https://en.wiktionary.org/wiki/%E1%BC%80%CE%BB%CE%AE%CE%B8%CE%B5%CE%B9%CE%B1",
+      "matchingSlots": 9,
+      "forms": [
+        [
+          "ᾰ̓ληθείᾳ",
+          "N;DAT;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "αλλοσ",
+      "kind": "ADJ",
+      "word": "ἄλλος",
+      "source_page": "https://en.wiktionary.org/wiki/%E1%BC%84%CE%BB%CE%BB%CE%BF%CF%82",
+      "matchingSlots": 0,
+      "forms": [
+        [
+          "ᾰ̓́λλᾱς",
+          "ADJ;ACC;PL;FEM"
+        ],
+        [
+          "ᾰ̓́λλους",
+          "ADJ;ACC;PL;MASC"
+        ],
+        [
+          "ᾰ̓́λλᾰ",
+          "ADJ;ACC;PL;NEUT"
+        ],
+        [
+          "ᾰ̓́λλην",
+          "ADJ;ACC;SG;FEM"
+        ],
+        [
+          "ᾰ̓́λλον",
+          "ADJ;ACC;SG;MASC"
+        ],
+        [
+          "ᾰ̓́λλο",
+          "ADJ;ACC;SG;NEUT"
+        ],
+        [
+          "ᾰ̓́λλῃ",
+          "ADJ;DAT;SG;FEM"
+        ],
+        [
+          "ᾰ̓́λλῳ",
+          "ADJ;DAT;SG;MASC"
+        ],
+        [
+          "ᾰ̓́λλῳ",
+          "ADJ;DAT;SG;NEUT"
+        ],
+        [
+          "ᾰ̓́λλων",
+          "ADJ;GEN;PL;MASC"
+        ],
+        [
+          "ᾰ̓́λλων",
+          "ADJ;GEN;PL;NEUT"
+        ],
+        [
+          "ᾰ̓́λλης",
+          "ADJ;GEN;SG;FEM"
+        ],
+        [
+          "ᾰ̓́λλαι",
+          "ADJ;NOM;PL;FEM"
+        ],
+        [
+          "ᾰ̓́λλοι",
+          "ADJ;NOM;PL;MASC"
+        ],
+        [
+          "ᾰ̓́λλᾰ",
+          "ADJ;NOM;PL;NEUT"
+        ],
+        [
+          "ᾰ̓́λλη",
+          "ADJ;NOM;SG;FEM"
+        ],
+        [
+          "ᾰ̓́λλος",
+          "ADJ;NOM;SG;MASC"
+        ],
+        [
+          "ᾰ̓́λλο",
+          "ADJ;NOM;SG;NEUT"
+        ],
+        [
+          "ᾰ̓́λλαι",
+          "ADJ;VOC;PL;FEM"
+        ],
+        [
+          "ᾰ̓́λλοι",
+          "ADJ;VOC;PL;MASC"
+        ],
+        [
+          "ᾰ̓́λλᾰ",
+          "ADJ;VOC;PL;NEUT"
+        ],
+        [
+          "ᾰ̓́λλη",
+          "ADJ;VOC;SG;FEM"
+        ],
+        [
+          "ᾰ̓́λλε",
+          "ADJ;VOC;SG;MASC"
+        ],
+        [
+          "ᾰ̓́λλο",
+          "ADJ;VOC;SG;NEUT"
+        ]
+      ]
+    },
+    {
+      "lemma": "αρετη",
+      "kind": "N",
+      "word": "ἀρετή",
+      "source_page": "https://en.wiktionary.org/wiki/%E1%BC%80%CF%81%CE%B5%CF%84%CE%AE",
+      "matchingSlots": 9,
+      "forms": [
+        [
+          "ᾰ̓ρετῇ",
+          "N;DAT;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "αρμονια",
+      "kind": "N",
+      "word": "ἁρμονία",
+      "source_page": "https://en.wiktionary.org/wiki/%E1%BC%81%CF%81%CE%BC%CE%BF%CE%BD%CE%AF%CE%B1",
+      "matchingSlots": 9,
+      "forms": [
+        [
+          "ἁρμονίᾳ",
+          "N;DAT;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "αρχων",
+      "kind": "N",
+      "word": "ἄρχων",
+      "source_page": "https://en.wiktionary.org/wiki/%E1%BC%84%CF%81%CF%87%CF%89%CE%BD",
+      "matchingSlots": 0,
+      "forms": [
+        [
+          "ᾰ̓́ρχοντᾰς",
+          "N;ACC;PL"
+        ],
+        [
+          "ᾰ̓́ρχοντᾰ",
+          "N;ACC;SG"
+        ],
+        [
+          "ᾰ̓́ρχοντῐ",
+          "N;DAT;SG"
+        ],
+        [
+          "ᾰ̓ρχόντων",
+          "N;GEN;PL"
+        ],
+        [
+          "ᾰ̓́ρχοντος",
+          "N;GEN;SG"
+        ],
+        [
+          "ᾰ̓́ρχοντες",
+          "N;NOM;PL"
+        ],
+        [
+          "ᾰ̓́ρχων",
+          "N;NOM;SG"
+        ],
+        [
+          "ᾰ̓́ρχοντες",
+          "N;VOC;PL"
+        ],
+        [
+          "ᾰ̓́ρχον",
+          "N;VOC;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "ασπισ",
+      "kind": "N",
+      "word": "ἀσπίς",
+      "source_page": "https://en.wiktionary.org/wiki/%E1%BC%80%CF%83%CF%80%CE%AF%CF%82",
+      "matchingSlots": 8,
+      "forms": [
+        [
+          "ᾰ̓σπῐ́δῐ",
+          "N;DAT;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "αχαιοσ",
+      "kind": "ADJ",
+      "word": "Ἀχαιός",
+      "source_page": "https://en.wiktionary.org/wiki/%E1%BC%88%CF%87%CE%B1%CE%B9%CF%8C%CF%82",
+      "matchingSlots": 0,
+      "forms": [
+        [
+          "Ἀχαιᾱ́ς",
+          "ADJ;ACC;PL;FEM"
+        ],
+        [
+          "Ἀχαιούς",
+          "ADJ;ACC;PL;MASC"
+        ],
+        [
+          "Ἀχαιᾰ́",
+          "ADJ;ACC;PL;NEUT"
+        ],
+        [
+          "Ἀχαιόν",
+          "ADJ;ACC;SG;MASC"
+        ],
+        [
+          "Ἀχαιόν",
+          "ADJ;ACC;SG;NEUT"
+        ],
+        [
+          "Ἀχαιῷ",
+          "ADJ;DAT;SG;MASC"
+        ],
+        [
+          "Ἀχαιῷ",
+          "ADJ;DAT;SG;NEUT"
+        ],
+        [
+          "Ἀχαιῶν",
+          "ADJ;GEN;PL;MASC"
+        ],
+        [
+          "Ἀχαιῶν",
+          "ADJ;GEN;PL;NEUT"
+        ],
+        [
+          "Ἀχαιαί",
+          "ADJ;NOM;PL;FEM"
+        ],
+        [
+          "Ἀχαιοί",
+          "ADJ;NOM;PL;MASC"
+        ],
+        [
+          "Ἀχαιᾰ́",
+          "ADJ;NOM;PL;NEUT"
+        ],
+        [
+          "Ἀχαιός",
+          "ADJ;NOM;SG;MASC"
+        ],
+        [
+          "Ἀχαιόν",
+          "ADJ;NOM;SG;NEUT"
+        ],
+        [
+          "Ἀχαιαί",
+          "ADJ;VOC;PL;FEM"
+        ],
+        [
+          "Ἀχαιοί",
+          "ADJ;VOC;PL;MASC"
+        ],
+        [
+          "Ἀχαιᾰ́",
+          "ADJ;VOC;PL;NEUT"
+        ],
+        [
+          "Ἀχαιέ",
+          "ADJ;VOC;SG;MASC"
+        ],
+        [
+          "Ἀχαιόν",
+          "ADJ;VOC;SG;NEUT"
+        ]
+      ]
+    },
+    {
+      "lemma": "βιβλιον",
+      "kind": "N",
+      "word": "βιβλίον",
+      "source_page": "https://en.wiktionary.org/wiki/%CE%B2%CE%B9%CE%B2%CE%BB%CE%AF%CE%BF%CE%BD",
+      "matchingSlots": 9,
+      "forms": [
+        [
+          "βῐβλῐ́ῳ",
+          "N;DAT;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "γλαυξ",
+      "kind": "N",
+      "word": "γλαῦξ",
+      "source_page": "https://en.wiktionary.org/wiki/%CE%B3%CE%BB%CE%B1%E1%BF%A6%CE%BE",
+      "matchingSlots": 8,
+      "forms": [
+        [
+          "γλαυκῐ́",
+          "N;DAT;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "γυνη",
+      "kind": "N",
+      "word": "γυνή",
+      "source_page": "https://en.wiktionary.org/wiki/%CE%B3%CF%85%CE%BD%CE%AE",
+      "matchingSlots": 2,
+      "forms": [
+        [
+          "γῠναῖκᾰς",
+          "N;ACC;PL"
+        ],
+        [
+          "γῠναῖκᾰ",
+          "N;ACC;SG"
+        ],
+        [
+          "γῠναικῐ́",
+          "N;DAT;SG"
+        ],
+        [
+          "γῠναικῶν",
+          "N;GEN;PL"
+        ],
+        [
+          "γῠναῖκες",
+          "N;NOM;PL"
+        ],
+        [
+          "γῠναῖκες",
+          "N;VOC;PL"
+        ],
+        [
+          "γῠ́ναι",
+          "N;VOC;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "δερμα",
+      "kind": "N",
+      "word": "δέρμα",
+      "source_page": "https://en.wiktionary.org/wiki/%CE%B4%CE%AD%CF%81%CE%BC%CE%B1",
+      "matchingSlots": 8,
+      "forms": [
+        [
+          "δέρμᾰτῐ",
+          "N;DAT;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "δημοκρατια",
+      "kind": "N",
+      "word": "δημοκρατία",
+      "source_page": "https://en.wiktionary.org/wiki/%CE%B4%CE%B7%CE%BC%CE%BF%CE%BA%CF%81%CE%B1%CF%84%CE%AF%CE%B1",
+      "matchingSlots": 9,
+      "forms": [
+        [
+          "δημοκρᾰτῐ́ᾳ",
+          "N;DAT;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "δικαιοσ",
+      "kind": "ADJ",
+      "word": "δίκαιος",
+      "source_page": "https://en.wiktionary.org/wiki/%CE%B4%CE%AF%CE%BA%CE%B1%CE%B9%CE%BF%CF%82",
+      "matchingSlots": 0,
+      "forms": [
+        [
+          "δῐκαίᾱς",
+          "ADJ;ACC;PL;FEM"
+        ],
+        [
+          "δῐκαίους",
+          "ADJ;ACC;PL;MASC"
+        ],
+        [
+          "δῐ́καιᾰ",
+          "ADJ;ACC;PL;NEUT"
+        ],
+        [
+          "δῐκαίᾱν",
+          "ADJ;ACC;SG;FEM"
+        ],
+        [
+          "δῐ́καιον",
+          "ADJ;ACC;SG;MASC"
+        ],
+        [
+          "δῐ́καιον",
+          "ADJ;ACC;SG;NEUT"
+        ],
+        [
+          "δῐκαίαις",
+          "ADJ;DAT;PL;FEM"
+        ],
+        [
+          "δῐκαίοις",
+          "ADJ;DAT;PL;MASC"
+        ],
+        [
+          "δῐκαίοις",
+          "ADJ;DAT;PL;NEUT"
+        ],
+        [
+          "δῐκαίᾳ",
+          "ADJ;DAT;SG;FEM"
+        ],
+        [
+          "δῐκαίῳ",
+          "ADJ;DAT;SG;MASC"
+        ],
+        [
+          "δῐκαίῳ",
+          "ADJ;DAT;SG;NEUT"
+        ],
+        [
+          "δῐκαίων",
+          "ADJ;GEN;PL;FEM"
+        ],
+        [
+          "δῐκαίων",
+          "ADJ;GEN;PL;MASC"
+        ],
+        [
+          "δῐκαίων",
+          "ADJ;GEN;PL;NEUT"
+        ],
+        [
+          "δῐκαίᾱς",
+          "ADJ;GEN;SG;FEM"
+        ],
+        [
+          "δῐκαίου",
+          "ADJ;GEN;SG;MASC"
+        ],
+        [
+          "δῐκαίου",
+          "ADJ;GEN;SG;NEUT"
+        ],
+        [
+          "δῐ́καιαι",
+          "ADJ;NOM;PL;FEM"
+        ],
+        [
+          "δῐ́καιοι",
+          "ADJ;NOM;PL;MASC"
+        ],
+        [
+          "δῐ́καιᾰ",
+          "ADJ;NOM;PL;NEUT"
+        ],
+        [
+          "δῐκαίᾱ",
+          "ADJ;NOM;SG;FEM"
+        ],
+        [
+          "δῐ́καιος",
+          "ADJ;NOM;SG;MASC"
+        ],
+        [
+          "δῐ́καιον",
+          "ADJ;NOM;SG;NEUT"
+        ],
+        [
+          "δῐ́καιαι",
+          "ADJ;VOC;PL;FEM"
+        ],
+        [
+          "δῐ́καιοι",
+          "ADJ;VOC;PL;MASC"
+        ],
+        [
+          "δῐ́καιᾰ",
+          "ADJ;VOC;PL;NEUT"
+        ],
+        [
+          "δῐκαίᾱ",
+          "ADJ;VOC;SG;FEM"
+        ],
+        [
+          "δῐ́καιε",
+          "ADJ;VOC;SG;MASC"
+        ],
+        [
+          "δῐ́καιον",
+          "ADJ;VOC;SG;NEUT"
+        ]
+      ]
+    },
+    {
+      "lemma": "δικη",
+      "kind": "N",
+      "word": "δίκη",
+      "source_page": "https://en.wiktionary.org/wiki/%CE%B4%CE%AF%CE%BA%CE%B7",
+      "matchingSlots": 9,
+      "forms": [
+        [
+          "δῐ́κῃ",
+          "N;DAT;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "δυναμισ",
+      "kind": "N",
+      "word": "δύναμις",
+      "source_page": "https://en.wiktionary.org/wiki/%CE%B4%CF%8D%CE%BD%CE%B1%CE%BC%CE%B9%CF%82",
+      "matchingSlots": 6,
+      "forms": [
+        [
+          "δῠνᾰ́μει",
+          "N;DAT;SG"
+        ],
+        [
+          "δῠνᾰ́μεις",
+          "N;NOM;PL"
+        ],
+        [
+          "δῠνᾰ́μεις",
+          "N;VOC;PL"
+        ]
+      ]
+    },
+    {
+      "lemma": "δωρον",
+      "kind": "N",
+      "word": "δῶρον",
+      "source_page": "https://en.wiktionary.org/wiki/%CE%B4%E1%BF%B6%CF%81%CE%BF%CE%BD",
+      "matchingSlots": 9,
+      "forms": [
+        [
+          "δώρῳ",
+          "N;DAT;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "ελευθερια",
+      "kind": "N",
+      "word": "ἐλευθερία",
+      "source_page": "https://en.wiktionary.org/wiki/%E1%BC%90%CE%BB%CE%B5%CF%85%CE%B8%CE%B5%CF%81%CE%AF%CE%B1",
+      "matchingSlots": 9,
+      "forms": [
+        [
+          "ἐλευθερῐ́ᾳ",
+          "N;DAT;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "ελλην",
+      "kind": "N",
+      "word": "Ἕλλην",
+      "source_page": "https://en.wiktionary.org/wiki/%E1%BC%9D%CE%BB%CE%BB%CE%B7%CE%BD",
+      "matchingSlots": 0,
+      "forms": [
+        [
+          "Ἕλληνᾰς",
+          "N;ACC;PL"
+        ],
+        [
+          "Ἕλληνᾰ",
+          "N;ACC;SG"
+        ],
+        [
+          "Ἕλληνῐ",
+          "N;DAT;SG"
+        ],
+        [
+          "Ἑλλήνων",
+          "N;GEN;PL"
+        ],
+        [
+          "Ἕλληνος",
+          "N;GEN;SG"
+        ],
+        [
+          "Ἕλληνες",
+          "N;NOM;PL"
+        ],
+        [
+          "Ἕλλην",
+          "N;NOM;SG"
+        ],
+        [
+          "Ἕλληνες",
+          "N;VOC;PL"
+        ],
+        [
+          "Ἕλλην",
+          "N;VOC;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "ελπισ",
+      "kind": "N",
+      "word": "ἐλπίς",
+      "source_page": "https://en.wiktionary.org/wiki/%E1%BC%90%CE%BB%CF%80%CE%AF%CF%82",
+      "matchingSlots": 8,
+      "forms": [
+        [
+          "ἐλπῐ́δῐ",
+          "N;DAT;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "επιστολη",
+      "kind": "N",
+      "word": "ἐπιστολή",
+      "source_page": "https://en.wiktionary.org/wiki/%E1%BC%90%CF%80%CE%B9%CF%83%CF%84%CE%BF%CE%BB%CE%AE",
+      "matchingSlots": 9,
+      "forms": [
+        [
+          "ἐπῐστολῇ",
+          "N;DAT;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "εχθροσ",
+      "kind": "ADJ",
+      "word": "ἐχθρός",
+      "source_page": "https://en.wiktionary.org/wiki/%E1%BC%90%CF%87%CE%B8%CF%81%CF%8C%CF%82",
+      "matchingSlots": 0,
+      "forms": [
+        [
+          "ἐχθρᾱ́ς",
+          "ADJ;ACC;PL;FEM"
+        ],
+        [
+          "ἐχθρούς",
+          "ADJ;ACC;PL;MASC"
+        ],
+        [
+          "ἐχθρᾰ́",
+          "ADJ;ACC;PL;NEUT"
+        ],
+        [
+          "ἐχθρᾱ́ν",
+          "ADJ;ACC;SG;FEM"
+        ],
+        [
+          "ἐχθρόν",
+          "ADJ;ACC;SG;MASC"
+        ],
+        [
+          "ἐχθρόν",
+          "ADJ;ACC;SG;NEUT"
+        ],
+        [
+          "ἐχθραῖς",
+          "ADJ;DAT;PL;FEM"
+        ],
+        [
+          "ἐχθροῖς",
+          "ADJ;DAT;PL;MASC"
+        ],
+        [
+          "ἐχθροῖς",
+          "ADJ;DAT;PL;NEUT"
+        ],
+        [
+          "ἐχθρᾷ",
+          "ADJ;DAT;SG;FEM"
+        ],
+        [
+          "ἐχθρῷ",
+          "ADJ;DAT;SG;MASC"
+        ],
+        [
+          "ἐχθρῷ",
+          "ADJ;DAT;SG;NEUT"
+        ],
+        [
+          "ἐχθρῶν",
+          "ADJ;GEN;PL;FEM"
+        ],
+        [
+          "ἐχθρῶν",
+          "ADJ;GEN;PL;MASC"
+        ],
+        [
+          "ἐχθρῶν",
+          "ADJ;GEN;PL;NEUT"
+        ],
+        [
+          "ἐχθρᾶς",
+          "ADJ;GEN;SG;FEM"
+        ],
+        [
+          "ἐχθροῦ",
+          "ADJ;GEN;SG;MASC"
+        ],
+        [
+          "ἐχθροῦ",
+          "ADJ;GEN;SG;NEUT"
+        ],
+        [
+          "ἐχθραί",
+          "ADJ;NOM;PL;FEM"
+        ],
+        [
+          "ἐχθροί",
+          "ADJ;NOM;PL;MASC"
+        ],
+        [
+          "ἐχθρᾰ́",
+          "ADJ;NOM;PL;NEUT"
+        ],
+        [
+          "ἐχθρᾱ́",
+          "ADJ;NOM;SG;FEM"
+        ],
+        [
+          "ἐχθρός",
+          "ADJ;NOM;SG;MASC"
+        ],
+        [
+          "ἐχθρόν",
+          "ADJ;NOM;SG;NEUT"
+        ],
+        [
+          "ἐχθραί",
+          "ADJ;VOC;PL;FEM"
+        ],
+        [
+          "ἐχθροί",
+          "ADJ;VOC;PL;MASC"
+        ],
+        [
+          "ἐχθρᾰ́",
+          "ADJ;VOC;PL;NEUT"
+        ],
+        [
+          "ἐχθρᾱ́",
+          "ADJ;VOC;SG;FEM"
+        ],
+        [
+          "ἐχθρέ",
+          "ADJ;VOC;SG;MASC"
+        ],
+        [
+          "ἐχθρόν",
+          "ADJ;VOC;SG;NEUT"
+        ]
+      ]
+    },
+    {
+      "lemma": "ηγεμων",
+      "kind": "N",
+      "word": "ἡγεμών",
+      "source_page": "https://en.wiktionary.org/wiki/%E1%BC%A1%CE%B3%CE%B5%CE%BC%CF%8E%CE%BD",
+      "matchingSlots": 8,
+      "forms": [
+        [
+          "ἡγεμόνῐ",
+          "N;DAT;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "ηδονη",
+      "kind": "N",
+      "word": "ἡδονή",
+      "source_page": "https://en.wiktionary.org/wiki/%E1%BC%A1%CE%B4%CE%BF%CE%BD%CE%AE",
+      "matchingSlots": 9,
+      "forms": [
+        [
+          "ἡδονῇ",
+          "N;DAT;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "ηλιοσ",
+      "kind": "N",
+      "word": "ἥλιος",
+      "source_page": "https://en.wiktionary.org/wiki/%E1%BC%A5%CE%BB%CE%B9%CE%BF%CF%82",
+      "matchingSlots": 0,
+      "forms": [
+        [
+          "ἡλῐ́ους",
+          "N;ACC;PL"
+        ],
+        [
+          "ἥλῐον",
+          "N;ACC;SG"
+        ],
+        [
+          "ἡλῐ́ῳ",
+          "N;DAT;SG"
+        ],
+        [
+          "ἡλῐ́ων",
+          "N;GEN;PL"
+        ],
+        [
+          "ἡλῐ́ου",
+          "N;GEN;SG"
+        ],
+        [
+          "ἥλῐοι",
+          "N;NOM;PL"
+        ],
+        [
+          "ἥλῐος",
+          "N;NOM;SG"
+        ],
+        [
+          "ἥλῐοι",
+          "N;VOC;PL"
+        ],
+        [
+          "ἥλῐε",
+          "N;VOC;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "ημετεροσ",
+      "kind": "ADJ",
+      "word": "ἡμέτερος",
+      "source_page": "https://en.wiktionary.org/wiki/%E1%BC%A1%CE%BC%CE%AD%CF%84%CE%B5%CF%81%CE%BF%CF%82",
+      "matchingSlots": 0,
+      "forms": [
+        [
+          "ἡμετέρᾱς",
+          "ADJ;ACC;PL;FEM"
+        ],
+        [
+          "ἡμετέρους",
+          "ADJ;ACC;PL;MASC"
+        ],
+        [
+          "ἡμέτερᾰ",
+          "ADJ;ACC;PL;NEUT"
+        ],
+        [
+          "ἡμέτερον",
+          "ADJ;ACC;SG;MASC"
+        ],
+        [
+          "ἡμέτερον",
+          "ADJ;ACC;SG;NEUT"
+        ],
+        [
+          "ἡμετέρῳ",
+          "ADJ;DAT;SG;MASC"
+        ],
+        [
+          "ἡμετέρῳ",
+          "ADJ;DAT;SG;NEUT"
+        ],
+        [
+          "ἡμετέρων",
+          "ADJ;GEN;PL;MASC"
+        ],
+        [
+          "ἡμετέρων",
+          "ADJ;GEN;PL;NEUT"
+        ],
+        [
+          "ἡμέτεραι",
+          "ADJ;NOM;PL;FEM"
+        ],
+        [
+          "ἡμέτεροι",
+          "ADJ;NOM;PL;MASC"
+        ],
+        [
+          "ἡμέτερᾰ",
+          "ADJ;NOM;PL;NEUT"
+        ],
+        [
+          "ἡμέτερος",
+          "ADJ;NOM;SG;MASC"
+        ],
+        [
+          "ἡμέτερον",
+          "ADJ;NOM;SG;NEUT"
+        ],
+        [
+          "ἡμέτεραι",
+          "ADJ;VOC;PL;FEM"
+        ],
+        [
+          "ἡμέτεροι",
+          "ADJ;VOC;PL;MASC"
+        ],
+        [
+          "ἡμέτερᾰ",
+          "ADJ;VOC;PL;NEUT"
+        ],
+        [
+          "ἡμέτερε",
+          "ADJ;VOC;SG;MASC"
+        ],
+        [
+          "ἡμέτερον",
+          "ADJ;VOC;SG;NEUT"
+        ]
+      ]
+    },
+    {
+      "lemma": "θαλαττα",
+      "kind": "N",
+      "word": "θάλαττα",
+      "source_page": "https://en.wiktionary.org/wiki/%CE%B8%CE%AC%CE%BB%CE%B1%CF%84%CF%84%CE%B1",
+      "matchingSlots": 0,
+      "forms": [
+        [
+          "θᾰλᾰ́ττᾱς",
+          "N;ACC;PL"
+        ],
+        [
+          "θᾰ́λᾰττᾰν",
+          "N;ACC;SG"
+        ],
+        [
+          "θᾰλᾰ́τταις",
+          "N;DAT;PL"
+        ],
+        [
+          "θᾰλᾰ́ττῃ",
+          "N;DAT;SG"
+        ],
+        [
+          "θᾰλᾰττῶν",
+          "N;GEN;PL"
+        ],
+        [
+          "θᾰλᾰ́ττης",
+          "N;GEN;SG"
+        ],
+        [
+          "θᾰ́λᾰτται",
+          "N;NOM;PL"
+        ],
+        [
+          "θᾰ́λᾰττᾰ",
+          "N;NOM;SG"
+        ],
+        [
+          "θᾰ́λᾰτται",
+          "N;VOC;PL"
+        ],
+        [
+          "θᾰ́λᾰττᾰ",
+          "N;VOC;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "θεα",
+      "kind": "N",
+      "word": "θεά",
+      "source_page": "https://en.wiktionary.org/wiki/%CE%B8%CE%B5%CE%AC",
+      "matchingSlots": 0,
+      "forms": [
+        [
+          "θέᾱς",
+          "N;ACC;PL"
+        ],
+        [
+          "θέᾱν",
+          "N;ACC;SG"
+        ],
+        [
+          "θέᾳ",
+          "N;DAT;SG"
+        ],
+        [
+          "θέᾱς",
+          "N;GEN;SG"
+        ],
+        [
+          "θέαι",
+          "N;NOM;PL"
+        ],
+        [
+          "θέᾱ",
+          "N;NOM;SG"
+        ],
+        [
+          "θέαι",
+          "N;VOC;PL"
+        ],
+        [
+          "θέᾱ",
+          "N;VOC;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "θεραπων",
+      "kind": "N",
+      "word": "θεράπων",
+      "source_page": "https://en.wiktionary.org/wiki/%CE%B8%CE%B5%CF%81%CE%AC%CF%80%CF%89%CE%BD",
+      "matchingSlots": 8,
+      "forms": [
+        [
+          "θερᾰ́ποντῐ",
+          "N;DAT;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "θηβαιοσ",
+      "kind": "ADJ",
+      "word": "Θηβαῖος",
+      "source_page": "https://en.wiktionary.org/wiki/%CE%98%CE%B7%CE%B2%CE%B1%E1%BF%96%CE%BF%CF%82",
+      "matchingSlots": 0,
+      "forms": [
+        [
+          "Θηβαίᾱς",
+          "ADJ;ACC;PL;FEM"
+        ],
+        [
+          "Θηβαίους",
+          "ADJ;ACC;PL;MASC"
+        ],
+        [
+          "Θηβαῖᾰ",
+          "ADJ;ACC;PL;NEUT"
+        ],
+        [
+          "Θηβαίᾱν",
+          "ADJ;ACC;SG;FEM"
+        ],
+        [
+          "Θηβαῖον",
+          "ADJ;ACC;SG;MASC"
+        ],
+        [
+          "Θηβαῖον",
+          "ADJ;ACC;SG;NEUT"
+        ],
+        [
+          "Θηβαίαις",
+          "ADJ;DAT;PL;FEM"
+        ],
+        [
+          "Θηβαίοις",
+          "ADJ;DAT;PL;MASC"
+        ],
+        [
+          "Θηβαίοις",
+          "ADJ;DAT;PL;NEUT"
+        ],
+        [
+          "Θηβαίᾳ",
+          "ADJ;DAT;SG;FEM"
+        ],
+        [
+          "Θηβαίῳ",
+          "ADJ;DAT;SG;MASC"
+        ],
+        [
+          "Θηβαίῳ",
+          "ADJ;DAT;SG;NEUT"
+        ],
+        [
+          "Θηβαίων",
+          "ADJ;GEN;PL;FEM"
+        ],
+        [
+          "Θηβαίων",
+          "ADJ;GEN;PL;MASC"
+        ],
+        [
+          "Θηβαίων",
+          "ADJ;GEN;PL;NEUT"
+        ],
+        [
+          "Θηβαίᾱς",
+          "ADJ;GEN;SG;FEM"
+        ],
+        [
+          "Θηβαίου",
+          "ADJ;GEN;SG;MASC"
+        ],
+        [
+          "Θηβαίου",
+          "ADJ;GEN;SG;NEUT"
+        ],
+        [
+          "Θηβαῖαι",
+          "ADJ;NOM;PL;FEM"
+        ],
+        [
+          "Θηβαῖοι",
+          "ADJ;NOM;PL;MASC"
+        ],
+        [
+          "Θηβαῖᾰ",
+          "ADJ;NOM;PL;NEUT"
+        ],
+        [
+          "Θηβαίᾱ",
+          "ADJ;NOM;SG;FEM"
+        ],
+        [
+          "Θηβαῖος",
+          "ADJ;NOM;SG;MASC"
+        ],
+        [
+          "Θηβαῖον",
+          "ADJ;NOM;SG;NEUT"
+        ],
+        [
+          "Θηβαῖαι",
+          "ADJ;VOC;PL;FEM"
+        ],
+        [
+          "Θηβαῖοι",
+          "ADJ;VOC;PL;MASC"
+        ],
+        [
+          "Θηβαῖᾰ",
+          "ADJ;VOC;PL;NEUT"
+        ],
+        [
+          "Θηβαίᾱ",
+          "ADJ;VOC;SG;FEM"
+        ],
+        [
+          "Θηβαῖε",
+          "ADJ;VOC;SG;MASC"
+        ],
+        [
+          "Θηβαῖον",
+          "ADJ;VOC;SG;NEUT"
+        ]
+      ]
+    },
+    {
+      "lemma": "θωραξ",
+      "kind": "N",
+      "word": "θώραξ",
+      "source_page": "https://en.wiktionary.org/wiki/%CE%B8%CF%8E%CF%81%CE%B1%CE%BE",
+      "matchingSlots": 8,
+      "forms": [
+        [
+          "θώρᾱκῐ",
+          "N;DAT;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "ιατροσ",
+      "kind": "N",
+      "word": "ἰατρός",
+      "source_page": "https://en.wiktionary.org/wiki/%E1%BC%B0%CE%B1%CF%84%CF%81%CF%8C%CF%82",
+      "matchingSlots": 9,
+      "forms": [
+        [
+          "ῑ̓ᾱτρῷ",
+          "N;DAT;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "κακοσ",
+      "kind": "ADJ",
+      "word": "κακός",
+      "source_page": "https://en.wiktionary.org/wiki/%CE%BA%CE%B1%CE%BA%CF%8C%CF%82",
+      "matchingSlots": 0,
+      "forms": [
+        [
+          "κᾰκᾱ́ς",
+          "ADJ;ACC;PL;FEM"
+        ],
+        [
+          "κᾰκούς",
+          "ADJ;ACC;PL;MASC"
+        ],
+        [
+          "κᾰκᾰ́",
+          "ADJ;ACC;PL;NEUT"
+        ],
+        [
+          "κᾰκήν",
+          "ADJ;ACC;SG;FEM"
+        ],
+        [
+          "κᾰκόν",
+          "ADJ;ACC;SG;MASC"
+        ],
+        [
+          "κᾰκόν",
+          "ADJ;ACC;SG;NEUT"
+        ],
+        [
+          "κᾰκῇ",
+          "ADJ;DAT;SG;FEM"
+        ],
+        [
+          "κᾰκῷ",
+          "ADJ;DAT;SG;MASC"
+        ],
+        [
+          "κᾰκῷ",
+          "ADJ;DAT;SG;NEUT"
+        ],
+        [
+          "κᾰκῶν",
+          "ADJ;GEN;PL;MASC"
+        ],
+        [
+          "κᾰκῶν",
+          "ADJ;GEN;PL;NEUT"
+        ],
+        [
+          "κᾰκῆς",
+          "ADJ;GEN;SG;FEM"
+        ],
+        [
+          "κᾰκαί",
+          "ADJ;NOM;PL;FEM"
+        ],
+        [
+          "κᾰκοί",
+          "ADJ;NOM;PL;MASC"
+        ],
+        [
+          "κᾰκᾰ́",
+          "ADJ;NOM;PL;NEUT"
+        ],
+        [
+          "κᾰκή",
+          "ADJ;NOM;SG;FEM"
+        ],
+        [
+          "κᾰκός",
+          "ADJ;NOM;SG;MASC"
+        ],
+        [
+          "κᾰκόν",
+          "ADJ;NOM;SG;NEUT"
+        ],
+        [
+          "κᾰκαί",
+          "ADJ;VOC;PL;FEM"
+        ],
+        [
+          "κᾰκοί",
+          "ADJ;VOC;PL;MASC"
+        ],
+        [
+          "κᾰκᾰ́",
+          "ADJ;VOC;PL;NEUT"
+        ],
+        [
+          "κᾰκή",
+          "ADJ;VOC;SG;FEM"
+        ],
+        [
+          "κᾰκέ",
+          "ADJ;VOC;SG;MASC"
+        ],
+        [
+          "κᾰκόν",
+          "ADJ;VOC;SG;NEUT"
+        ]
+      ]
+    },
+    {
+      "lemma": "καλοσ",
+      "kind": "ADJ",
+      "word": "καλός",
+      "source_page": "https://en.wiktionary.org/wiki/%CE%BA%CE%B1%CE%BB%CF%8C%CF%82",
+      "matchingSlots": 0,
+      "forms": [
+        [
+          "κᾰλᾱ́ς",
+          "ADJ;ACC;PL;FEM"
+        ],
+        [
+          "κᾰλούς",
+          "ADJ;ACC;PL;MASC"
+        ],
+        [
+          "κᾰλᾰ́",
+          "ADJ;ACC;PL;NEUT"
+        ],
+        [
+          "κᾰλήν",
+          "ADJ;ACC;SG;FEM"
+        ],
+        [
+          "κᾰλόν",
+          "ADJ;ACC;SG;MASC"
+        ],
+        [
+          "κᾰλόν",
+          "ADJ;ACC;SG;NEUT"
+        ],
+        [
+          "κᾰλῇ",
+          "ADJ;DAT;SG;FEM"
+        ],
+        [
+          "κᾰλῷ",
+          "ADJ;DAT;SG;MASC"
+        ],
+        [
+          "κᾰλῷ",
+          "ADJ;DAT;SG;NEUT"
+        ],
+        [
+          "κᾰλῶν",
+          "ADJ;GEN;PL;MASC"
+        ],
+        [
+          "κᾰλῶν",
+          "ADJ;GEN;PL;NEUT"
+        ],
+        [
+          "κᾰλῆς",
+          "ADJ;GEN;SG;FEM"
+        ],
+        [
+          "κᾰλαί",
+          "ADJ;NOM;PL;FEM"
+        ],
+        [
+          "κᾰλοί",
+          "ADJ;NOM;PL;MASC"
+        ],
+        [
+          "κᾰλᾰ́",
+          "ADJ;NOM;PL;NEUT"
+        ],
+        [
+          "κᾰλή",
+          "ADJ;NOM;SG;FEM"
+        ],
+        [
+          "κᾰλός",
+          "ADJ;NOM;SG;MASC"
+        ],
+        [
+          "κᾰλόν",
+          "ADJ;NOM;SG;NEUT"
+        ],
+        [
+          "κᾰλαί",
+          "ADJ;VOC;PL;FEM"
+        ],
+        [
+          "κᾰλοί",
+          "ADJ;VOC;PL;MASC"
+        ],
+        [
+          "κᾰλᾰ́",
+          "ADJ;VOC;PL;NEUT"
+        ],
+        [
+          "κᾰλή",
+          "ADJ;VOC;SG;FEM"
+        ],
+        [
+          "κᾰλέ",
+          "ADJ;VOC;SG;MASC"
+        ],
+        [
+          "κᾰλόν",
+          "ADJ;VOC;SG;NEUT"
+        ]
+      ]
+    },
+    {
+      "lemma": "κεφαλη",
+      "kind": "N",
+      "word": "κεφαλή",
+      "source_page": "https://en.wiktionary.org/wiki/%CE%BA%CE%B5%CF%86%CE%B1%CE%BB%CE%AE",
+      "matchingSlots": 9,
+      "forms": [
+        [
+          "κεφᾰλῇ",
+          "N;DAT;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "κηροσ",
+      "kind": "N",
+      "word": "κηρός",
+      "source_page": "https://en.wiktionary.org/wiki/%CE%BA%CE%B7%CF%81%CF%8C%CF%82",
+      "matchingSlots": 0,
+      "forms": [
+        [
+          "κηρούς",
+          "N;ACC;PL"
+        ],
+        [
+          "κηρόν",
+          "N;ACC;SG"
+        ],
+        [
+          "κηροῖς",
+          "N;DAT;PL"
+        ],
+        [
+          "κηρῷ",
+          "N;DAT;SG"
+        ],
+        [
+          "κηρῶν",
+          "N;GEN;PL"
+        ],
+        [
+          "κηροῦ",
+          "N;GEN;SG"
+        ],
+        [
+          "κηροί",
+          "N;NOM;PL"
+        ],
+        [
+          "κηρός",
+          "N;NOM;SG"
+        ],
+        [
+          "κηροί",
+          "N;VOC;PL"
+        ],
+        [
+          "κηρέ",
+          "N;VOC;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "κηρυξ",
+      "kind": "N",
+      "word": "κῆρυξ",
+      "source_page": "https://en.wiktionary.org/wiki/%CE%BA%E1%BF%86%CF%81%CF%85%CE%BE",
+      "matchingSlots": 8,
+      "forms": [
+        [
+          "κήρῡκῐ",
+          "N;DAT;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "κιθαριστησ",
+      "kind": "N",
+      "word": "κιθαριστής",
+      "source_page": "https://en.wiktionary.org/wiki/%CE%BA%CE%B9%CE%B8%CE%B1%CF%81%CE%B9%CF%83%CF%84%CE%AE%CF%82",
+      "matchingSlots": 0,
+      "forms": [
+        [
+          "κῐθᾰρῐστᾱ́ς",
+          "N;ACC;PL"
+        ],
+        [
+          "κῐθᾰρῐστήν",
+          "N;ACC;SG"
+        ],
+        [
+          "κῐθᾰρῐσταῖς",
+          "N;DAT;PL"
+        ],
+        [
+          "κῐθᾰρῐστῇ",
+          "N;DAT;SG"
+        ],
+        [
+          "κῐθᾰρῐστῶν",
+          "N;GEN;PL"
+        ],
+        [
+          "κῐθᾰρῐστοῦ",
+          "N;GEN;SG"
+        ],
+        [
+          "κῐθᾰρῐσταί",
+          "N;NOM;PL"
+        ],
+        [
+          "κῐθᾰρῐστής",
+          "N;NOM;SG"
+        ],
+        [
+          "κῐθᾰρῐσταί",
+          "N;VOC;PL"
+        ],
+        [
+          "κῐθᾰρῐστᾰ́",
+          "N;VOC;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "κοινοσ",
+      "kind": "ADJ",
+      "word": "κοινός",
+      "source_page": "https://en.wiktionary.org/wiki/%CE%BA%CE%BF%CE%B9%CE%BD%CF%8C%CF%82",
+      "matchingSlots": 0,
+      "forms": [
+        [
+          "κοινᾱ́ς",
+          "ADJ;ACC;PL;FEM"
+        ],
+        [
+          "κοινούς",
+          "ADJ;ACC;PL;MASC"
+        ],
+        [
+          "κοινᾰ́",
+          "ADJ;ACC;PL;NEUT"
+        ],
+        [
+          "κοινήν",
+          "ADJ;ACC;SG;FEM"
+        ],
+        [
+          "κοινόν",
+          "ADJ;ACC;SG;MASC"
+        ],
+        [
+          "κοινόν",
+          "ADJ;ACC;SG;NEUT"
+        ],
+        [
+          "κοιναῖς",
+          "ADJ;DAT;PL;FEM"
+        ],
+        [
+          "κοινοῖς",
+          "ADJ;DAT;PL;MASC"
+        ],
+        [
+          "κοινοῖς",
+          "ADJ;DAT;PL;NEUT"
+        ],
+        [
+          "κοινῇ",
+          "ADJ;DAT;SG;FEM"
+        ],
+        [
+          "κοινῷ",
+          "ADJ;DAT;SG;MASC"
+        ],
+        [
+          "κοινῷ",
+          "ADJ;DAT;SG;NEUT"
+        ],
+        [
+          "κοινῶν",
+          "ADJ;GEN;PL;FEM"
+        ],
+        [
+          "κοινῶν",
+          "ADJ;GEN;PL;MASC"
+        ],
+        [
+          "κοινῶν",
+          "ADJ;GEN;PL;NEUT"
+        ],
+        [
+          "κοινῆς",
+          "ADJ;GEN;SG;FEM"
+        ],
+        [
+          "κοινοῦ",
+          "ADJ;GEN;SG;MASC"
+        ],
+        [
+          "κοινοῦ",
+          "ADJ;GEN;SG;NEUT"
+        ],
+        [
+          "κοιναί",
+          "ADJ;NOM;PL;FEM"
+        ],
+        [
+          "κοινοί",
+          "ADJ;NOM;PL;MASC"
+        ],
+        [
+          "κοινᾰ́",
+          "ADJ;NOM;PL;NEUT"
+        ],
+        [
+          "κοινή",
+          "ADJ;NOM;SG;FEM"
+        ],
+        [
+          "κοινός",
+          "ADJ;NOM;SG;MASC"
+        ],
+        [
+          "κοινόν",
+          "ADJ;NOM;SG;NEUT"
+        ],
+        [
+          "κοιναί",
+          "ADJ;VOC;PL;FEM"
+        ],
+        [
+          "κοινοί",
+          "ADJ;VOC;PL;MASC"
+        ],
+        [
+          "κοινᾰ́",
+          "ADJ;VOC;PL;NEUT"
+        ],
+        [
+          "κοινή",
+          "ADJ;VOC;SG;FEM"
+        ],
+        [
+          "κοινέ",
+          "ADJ;VOC;SG;MASC"
+        ],
+        [
+          "κοινόν",
+          "ADJ;VOC;SG;NEUT"
+        ]
+      ]
+    },
+    {
+      "lemma": "κοσμοσ",
+      "kind": "N",
+      "word": "κόσμος",
+      "source_page": "https://en.wiktionary.org/wiki/%CE%BA%CF%8C%CF%83%CE%BC%CE%BF%CF%82",
+      "matchingSlots": 9,
+      "forms": [
+        [
+          "κόσμῳ",
+          "N;DAT;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "κυριοσ",
+      "kind": "N",
+      "word": "κύριος",
+      "source_page": "https://en.wiktionary.org/wiki/%CE%BA%CF%8D%CF%81%CE%B9%CE%BF%CF%82",
+      "matchingSlots": 0,
+      "forms": [
+        [
+          "κῡρῐ́ους",
+          "N;ACC;PL"
+        ],
+        [
+          "κῡ́ρῐον",
+          "N;ACC;SG"
+        ],
+        [
+          "κῡρῐ́οις",
+          "N;DAT;PL"
+        ],
+        [
+          "κῡρῐ́ῳ",
+          "N;DAT;SG"
+        ],
+        [
+          "κῡρῐ́ων",
+          "N;GEN;PL"
+        ],
+        [
+          "κῡρῐ́ου",
+          "N;GEN;SG"
+        ],
+        [
+          "κῡ́ρῐοι",
+          "N;NOM;PL"
+        ],
+        [
+          "κῡ́ρῐος",
+          "N;NOM;SG"
+        ],
+        [
+          "κῡ́ρῐοι",
+          "N;VOC;PL"
+        ],
+        [
+          "κῡ́ρῐε",
+          "N;VOC;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "λεων",
+      "kind": "N",
+      "word": "λέων",
+      "source_page": "https://en.wiktionary.org/wiki/%CE%BB%CE%AD%CF%89%CE%BD",
+      "matchingSlots": 8,
+      "forms": [
+        [
+          "λέοντῐ",
+          "N;DAT;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "λιμην",
+      "kind": "N",
+      "word": "λιμήν",
+      "source_page": "https://en.wiktionary.org/wiki/%CE%BB%CE%B9%CE%BC%CE%AE%CE%BD",
+      "matchingSlots": 8,
+      "forms": [
+        [
+          "λῐμένῐ",
+          "N;DAT;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "λογοσ",
+      "kind": "N",
+      "word": "λόγος",
+      "source_page": "https://en.wiktionary.org/wiki/%CE%BB%CF%8C%CE%B3%CE%BF%CF%82",
+      "matchingSlots": 9,
+      "forms": [
+        [
+          "λόγῳ",
+          "N;DAT;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "μαχη",
+      "kind": "N",
+      "word": "μάχη",
+      "source_page": "https://en.wiktionary.org/wiki/%CE%BC%CE%AC%CF%87%CE%B7",
+      "matchingSlots": 9,
+      "forms": [
+        [
+          "μᾰ́χῃ",
+          "N;DAT;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "μην",
+      "kind": "N",
+      "word": "μήν",
+      "source_page": "https://en.wiktionary.org/wiki/%CE%BC%CE%AE%CE%BD",
+      "matchingSlots": 0,
+      "forms": [
+        [
+          "μῆνᾰς",
+          "N;ACC;PL"
+        ],
+        [
+          "μῆνᾰ",
+          "N;ACC;SG"
+        ],
+        [
+          "μηνῐ́",
+          "N;DAT;SG"
+        ],
+        [
+          "μηνῶν",
+          "N;GEN;PL"
+        ],
+        [
+          "μηνός",
+          "N;GEN;SG"
+        ],
+        [
+          "μῆνες",
+          "N;NOM;PL"
+        ],
+        [
+          "μήν",
+          "N;NOM;SG"
+        ],
+        [
+          "μῆνες",
+          "N;VOC;PL"
+        ],
+        [
+          "μήν",
+          "N;VOC;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "μικροσ",
+      "kind": "ADJ",
+      "word": "μικρός",
+      "source_page": "https://en.wiktionary.org/wiki/%CE%BC%CE%B9%CE%BA%CF%81%CF%8C%CF%82",
+      "matchingSlots": 0,
+      "forms": [
+        [
+          "μῑκρᾱ́ς",
+          "ADJ;ACC;PL;FEM"
+        ],
+        [
+          "μῑκρούς",
+          "ADJ;ACC;PL;MASC"
+        ],
+        [
+          "μῑκρᾰ́",
+          "ADJ;ACC;PL;NEUT"
+        ],
+        [
+          "μῑκρᾱ́ν",
+          "ADJ;ACC;SG;FEM"
+        ],
+        [
+          "μῑκρόν",
+          "ADJ;ACC;SG;MASC"
+        ],
+        [
+          "μῑκρόν",
+          "ADJ;ACC;SG;NEUT"
+        ],
+        [
+          "μῑκραῖς",
+          "ADJ;DAT;PL;FEM"
+        ],
+        [
+          "μῑκροῖς",
+          "ADJ;DAT;PL;MASC"
+        ],
+        [
+          "μῑκροῖς",
+          "ADJ;DAT;PL;NEUT"
+        ],
+        [
+          "μῑκρᾷ",
+          "ADJ;DAT;SG;FEM"
+        ],
+        [
+          "μῑκρῷ",
+          "ADJ;DAT;SG;MASC"
+        ],
+        [
+          "μῑκρῷ",
+          "ADJ;DAT;SG;NEUT"
+        ],
+        [
+          "μῑκρῶν",
+          "ADJ;GEN;PL;FEM"
+        ],
+        [
+          "μῑκρῶν",
+          "ADJ;GEN;PL;MASC"
+        ],
+        [
+          "μῑκρῶν",
+          "ADJ;GEN;PL;NEUT"
+        ],
+        [
+          "μῑκρᾶς",
+          "ADJ;GEN;SG;FEM"
+        ],
+        [
+          "μῑκροῦ",
+          "ADJ;GEN;SG;MASC"
+        ],
+        [
+          "μῑκροῦ",
+          "ADJ;GEN;SG;NEUT"
+        ],
+        [
+          "μῑκραί",
+          "ADJ;NOM;PL;FEM"
+        ],
+        [
+          "μῑκροί",
+          "ADJ;NOM;PL;MASC"
+        ],
+        [
+          "μῑκρᾰ́",
+          "ADJ;NOM;PL;NEUT"
+        ],
+        [
+          "μῑκρᾱ́",
+          "ADJ;NOM;SG;FEM"
+        ],
+        [
+          "μῑκρός",
+          "ADJ;NOM;SG;MASC"
+        ],
+        [
+          "μῑκρόν",
+          "ADJ;NOM;SG;NEUT"
+        ],
+        [
+          "μῑκραί",
+          "ADJ;VOC;PL;FEM"
+        ],
+        [
+          "μῑκροί",
+          "ADJ;VOC;PL;MASC"
+        ],
+        [
+          "μῑκρᾰ́",
+          "ADJ;VOC;PL;NEUT"
+        ],
+        [
+          "μῑκρᾱ́",
+          "ADJ;VOC;SG;FEM"
+        ],
+        [
+          "μῑκρέ",
+          "ADJ;VOC;SG;MASC"
+        ],
+        [
+          "μῑκρόν",
+          "ADJ;VOC;SG;NEUT"
+        ]
+      ]
+    },
+    {
+      "lemma": "νεοσ",
+      "kind": "ADJ",
+      "word": "νέος",
+      "source_page": "https://en.wiktionary.org/wiki/%CE%BD%CE%AD%CE%BF%CF%82",
+      "matchingSlots": 0,
+      "forms": [
+        [
+          "νέᾱς",
+          "ADJ;ACC;PL;FEM"
+        ],
+        [
+          "νέους",
+          "ADJ;ACC;PL;MASC"
+        ],
+        [
+          "νέᾰ",
+          "ADJ;ACC;PL;NEUT"
+        ],
+        [
+          "νέον",
+          "ADJ;ACC;SG;MASC"
+        ],
+        [
+          "νέον",
+          "ADJ;ACC;SG;NEUT"
+        ],
+        [
+          "νέῳ",
+          "ADJ;DAT;SG;MASC"
+        ],
+        [
+          "νέῳ",
+          "ADJ;DAT;SG;NEUT"
+        ],
+        [
+          "νέων",
+          "ADJ;GEN;PL;MASC"
+        ],
+        [
+          "νέων",
+          "ADJ;GEN;PL;NEUT"
+        ],
+        [
+          "νέαι",
+          "ADJ;NOM;PL;FEM"
+        ],
+        [
+          "νέοι",
+          "ADJ;NOM;PL;MASC"
+        ],
+        [
+          "νέᾰ",
+          "ADJ;NOM;PL;NEUT"
+        ],
+        [
+          "νέος",
+          "ADJ;NOM;SG;MASC"
+        ],
+        [
+          "νέον",
+          "ADJ;NOM;SG;NEUT"
+        ],
+        [
+          "νέαι",
+          "ADJ;VOC;PL;FEM"
+        ],
+        [
+          "νέοι",
+          "ADJ;VOC;PL;MASC"
+        ],
+        [
+          "νέᾰ",
+          "ADJ;VOC;PL;NEUT"
+        ],
+        [
+          "νέε",
+          "ADJ;VOC;SG;MASC"
+        ],
+        [
+          "νέον",
+          "ADJ;VOC;SG;NEUT"
+        ]
+      ]
+    },
+    {
+      "lemma": "νικη",
+      "kind": "N",
+      "word": "νίκη",
+      "source_page": "https://en.wiktionary.org/wiki/%CE%BD%CE%AF%CE%BA%CE%B7",
+      "matchingSlots": 7,
+      "forms": [
+        [
+          "νῑ́κῃ",
+          "N;DAT;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "νοσοσ",
+      "kind": "N",
+      "word": "νόσος",
+      "source_page": "https://en.wiktionary.org/wiki/%CE%BD%CF%8C%CF%83%CE%BF%CF%82",
+      "matchingSlots": 9,
+      "forms": [
+        [
+          "νόσῳ",
+          "N;DAT;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "νυξ",
+      "kind": "N",
+      "word": "νύξ",
+      "source_page": "https://en.wiktionary.org/wiki/%CE%BD%CF%8D%CE%BE",
+      "matchingSlots": 8,
+      "forms": [
+        [
+          "νῠκτῐ́",
+          "N;DAT;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "ξυλον",
+      "kind": "N",
+      "word": "ξύλον",
+      "source_page": "https://en.wiktionary.org/wiki/%CE%BE%CF%8D%CE%BB%CE%BF%CE%BD",
+      "matchingSlots": 0,
+      "forms": [
+        [
+          "ξῠ́λᾰ",
+          "N;ACC;PL"
+        ],
+        [
+          "ξῠ́λον",
+          "N;ACC;SG"
+        ],
+        [
+          "ξῠ́λοις",
+          "N;DAT;PL"
+        ],
+        [
+          "ξῠ́λῳ",
+          "N;DAT;SG"
+        ],
+        [
+          "ξῠ́λων",
+          "N;GEN;PL"
+        ],
+        [
+          "ξῠ́λου",
+          "N;GEN;SG"
+        ],
+        [
+          "ξῠ́λᾰ",
+          "N;NOM;PL"
+        ],
+        [
+          "ξῠ́λον",
+          "N;NOM;SG"
+        ],
+        [
+          "ξῠ́λᾰ",
+          "N;VOC;PL"
+        ],
+        [
+          "ξῠ́λον",
+          "N;VOC;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "ογκοσ",
+      "kind": "N",
+      "word": "ὄγκος",
+      "source_page": "https://en.wiktionary.org/wiki/%E1%BD%84%CE%B3%CE%BA%CE%BF%CF%82",
+      "matchingSlots": 0,
+      "forms": [
+        [
+          "ὄγκους",
+          "N;ACC;PL"
+        ],
+        [
+          "ὄγκον",
+          "N;ACC;SG"
+        ],
+        [
+          "ὄγκοις",
+          "N;DAT;PL"
+        ],
+        [
+          "ὄγκῳ",
+          "N;DAT;SG"
+        ],
+        [
+          "ὄγκων",
+          "N;GEN;PL"
+        ],
+        [
+          "ὄγκου",
+          "N;GEN;SG"
+        ],
+        [
+          "ὄγκοι",
+          "N;NOM;PL"
+        ],
+        [
+          "ὄγκος",
+          "N;NOM;SG"
+        ],
+        [
+          "ὄγκοι",
+          "N;VOC;PL"
+        ],
+        [
+          "ὄγκε",
+          "N;VOC;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "ολιγοσ",
+      "kind": "ADJ",
+      "word": "ὀλίγος",
+      "source_page": "https://en.wiktionary.org/wiki/%E1%BD%80%CE%BB%CE%AF%CE%B3%CE%BF%CF%82",
+      "matchingSlots": 0,
+      "forms": [
+        [
+          "ὀλῐ́γᾱς",
+          "ADJ;ACC;PL;FEM"
+        ],
+        [
+          "ὀλῐ́γους",
+          "ADJ;ACC;PL;MASC"
+        ],
+        [
+          "ὀλῐ́γᾰ",
+          "ADJ;ACC;PL;NEUT"
+        ],
+        [
+          "ὀλῐ́γην",
+          "ADJ;ACC;SG;FEM"
+        ],
+        [
+          "ὀλῐ́γον",
+          "ADJ;ACC;SG;MASC"
+        ],
+        [
+          "ὀλῐ́γον",
+          "ADJ;ACC;SG;NEUT"
+        ],
+        [
+          "ὀλῐ́γαις",
+          "ADJ;DAT;PL;FEM"
+        ],
+        [
+          "ὀλῐ́γοις",
+          "ADJ;DAT;PL;MASC"
+        ],
+        [
+          "ὀλῐ́γοις",
+          "ADJ;DAT;PL;NEUT"
+        ],
+        [
+          "ὀλῐ́γῃ",
+          "ADJ;DAT;SG;FEM"
+        ],
+        [
+          "ὀλῐ́γῳ",
+          "ADJ;DAT;SG;MASC"
+        ],
+        [
+          "ὀλῐ́γῳ",
+          "ADJ;DAT;SG;NEUT"
+        ],
+        [
+          "ὀλῐ́γων",
+          "ADJ;GEN;PL;FEM"
+        ],
+        [
+          "ὀλῐ́γων",
+          "ADJ;GEN;PL;MASC"
+        ],
+        [
+          "ὀλῐ́γων",
+          "ADJ;GEN;PL;NEUT"
+        ],
+        [
+          "ὀλῐ́γης",
+          "ADJ;GEN;SG;FEM"
+        ],
+        [
+          "ὀλῐ́γου",
+          "ADJ;GEN;SG;MASC"
+        ],
+        [
+          "ὀλῐ́γου",
+          "ADJ;GEN;SG;NEUT"
+        ],
+        [
+          "ὀλῐ́γαι",
+          "ADJ;NOM;PL;FEM"
+        ],
+        [
+          "ὀλῐ́γοι",
+          "ADJ;NOM;PL;MASC"
+        ],
+        [
+          "ὀλῐ́γᾰ",
+          "ADJ;NOM;PL;NEUT"
+        ],
+        [
+          "ὀλῐ́γη",
+          "ADJ;NOM;SG;FEM"
+        ],
+        [
+          "ὀλῐ́γος",
+          "ADJ;NOM;SG;MASC"
+        ],
+        [
+          "ὀλῐ́γον",
+          "ADJ;NOM;SG;NEUT"
+        ],
+        [
+          "ὀλῐ́γαι",
+          "ADJ;VOC;PL;FEM"
+        ],
+        [
+          "ὀλῐ́γοι",
+          "ADJ;VOC;PL;MASC"
+        ],
+        [
+          "ὀλῐ́γᾰ",
+          "ADJ;VOC;PL;NEUT"
+        ],
+        [
+          "ὀλῐ́γη",
+          "ADJ;VOC;SG;FEM"
+        ],
+        [
+          "ὀλῐ́γε",
+          "ADJ;VOC;SG;MASC"
+        ],
+        [
+          "ὀλῐ́γον",
+          "ADJ;VOC;SG;NEUT"
+        ]
+      ]
+    },
+    {
+      "lemma": "ολοσ",
+      "kind": "ADJ",
+      "word": "ὅλος",
+      "source_page": "https://en.wiktionary.org/wiki/%E1%BD%85%CE%BB%CE%BF%CF%82",
+      "matchingSlots": 0,
+      "forms": [
+        [
+          "ὅλᾱς",
+          "ADJ;ACC;PL;FEM"
+        ],
+        [
+          "ὅλους",
+          "ADJ;ACC;PL;MASC"
+        ],
+        [
+          "ὅλᾰ",
+          "ADJ;ACC;PL;NEUT"
+        ],
+        [
+          "ὅλην",
+          "ADJ;ACC;SG;FEM"
+        ],
+        [
+          "ὅλον",
+          "ADJ;ACC;SG;MASC"
+        ],
+        [
+          "ὅλον",
+          "ADJ;ACC;SG;NEUT"
+        ],
+        [
+          "ὅλαις",
+          "ADJ;DAT;PL;FEM"
+        ],
+        [
+          "ὅλοις",
+          "ADJ;DAT;PL;MASC"
+        ],
+        [
+          "ὅλοις",
+          "ADJ;DAT;PL;NEUT"
+        ],
+        [
+          "ὅλῃ",
+          "ADJ;DAT;SG;FEM"
+        ],
+        [
+          "ὅλῳ",
+          "ADJ;DAT;SG;MASC"
+        ],
+        [
+          "ὅλῳ",
+          "ADJ;DAT;SG;NEUT"
+        ],
+        [
+          "ὅλων",
+          "ADJ;GEN;PL;FEM"
+        ],
+        [
+          "ὅλων",
+          "ADJ;GEN;PL;MASC"
+        ],
+        [
+          "ὅλων",
+          "ADJ;GEN;PL;NEUT"
+        ],
+        [
+          "ὅλης",
+          "ADJ;GEN;SG;FEM"
+        ],
+        [
+          "ὅλου",
+          "ADJ;GEN;SG;MASC"
+        ],
+        [
+          "ὅλου",
+          "ADJ;GEN;SG;NEUT"
+        ],
+        [
+          "ὅλαι",
+          "ADJ;NOM;PL;FEM"
+        ],
+        [
+          "ὅλοι",
+          "ADJ;NOM;PL;MASC"
+        ],
+        [
+          "ὅλᾰ",
+          "ADJ;NOM;PL;NEUT"
+        ],
+        [
+          "ὅλη",
+          "ADJ;NOM;SG;FEM"
+        ],
+        [
+          "ὅλος",
+          "ADJ;NOM;SG;MASC"
+        ],
+        [
+          "ὅλον",
+          "ADJ;NOM;SG;NEUT"
+        ],
+        [
+          "ὅλαι",
+          "ADJ;VOC;PL;FEM"
+        ],
+        [
+          "ὅλοι",
+          "ADJ;VOC;PL;MASC"
+        ],
+        [
+          "ὅλᾰ",
+          "ADJ;VOC;PL;NEUT"
+        ],
+        [
+          "ὅλη",
+          "ADJ;VOC;SG;FEM"
+        ],
+        [
+          "ὅλε",
+          "ADJ;VOC;SG;MASC"
+        ],
+        [
+          "ὅλον",
+          "ADJ;VOC;SG;NEUT"
+        ]
+      ]
+    },
+    {
+      "lemma": "ομηροσ",
+      "kind": "N",
+      "word": "ὅμηρος",
+      "source_page": "https://en.wiktionary.org/wiki/%E1%BD%85%CE%BC%CE%B7%CF%81%CE%BF%CF%82",
+      "matchingSlots": 0,
+      "forms": [
+        [
+          "ὅμηρον",
+          "N;ACC;SG"
+        ],
+        [
+          "ὁμήροις",
+          "N;DAT;PL"
+        ],
+        [
+          "ὁμήρῳ",
+          "N;DAT;SG"
+        ],
+        [
+          "ὁμήρων",
+          "N;GEN;PL"
+        ],
+        [
+          "ὁμήρου",
+          "N;GEN;SG"
+        ],
+        [
+          "ὅμηρος",
+          "N;NOM;SG"
+        ],
+        [
+          "ὅμηρε",
+          "N;VOC;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "ονυξ",
+      "kind": "N",
+      "word": "ὄνυξ",
+      "source_page": "https://en.wiktionary.org/wiki/%E1%BD%84%CE%BD%CF%85%CE%BE",
+      "matchingSlots": 8,
+      "forms": [
+        [
+          "ὄνῠχῐ",
+          "N;DAT;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "οπλον",
+      "kind": "N",
+      "word": "ὅπλον",
+      "source_page": "https://en.wiktionary.org/wiki/%E1%BD%85%CF%80%CE%BB%CE%BF%CE%BD",
+      "matchingSlots": 9,
+      "forms": [
+        [
+          "ὅπλῳ",
+          "N;DAT;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "οργιλοσ",
+      "kind": "ADJ",
+      "word": "ὀργίλος",
+      "source_page": "https://en.wiktionary.org/wiki/%E1%BD%80%CF%81%CE%B3%CE%AF%CE%BB%CE%BF%CF%82",
+      "matchingSlots": 0,
+      "forms": [
+        [
+          "ὀργῐ́λᾱς",
+          "ADJ;ACC;PL;FEM"
+        ],
+        [
+          "ὀργῐ́λους",
+          "ADJ;ACC;PL;MASC"
+        ],
+        [
+          "ὀργῐ́λᾰ",
+          "ADJ;ACC;PL;NEUT"
+        ],
+        [
+          "ὀργῐ́λην",
+          "ADJ;ACC;SG;FEM"
+        ],
+        [
+          "ὀργῐ́λον",
+          "ADJ;ACC;SG;MASC"
+        ],
+        [
+          "ὀργῐ́λον",
+          "ADJ;ACC;SG;NEUT"
+        ],
+        [
+          "ὀργῐ́λαις",
+          "ADJ;DAT;PL;FEM"
+        ],
+        [
+          "ὀργῐ́λοις",
+          "ADJ;DAT;PL;MASC"
+        ],
+        [
+          "ὀργῐ́λοις",
+          "ADJ;DAT;PL;NEUT"
+        ],
+        [
+          "ὀργῐ́λῃ",
+          "ADJ;DAT;SG;FEM"
+        ],
+        [
+          "ὀργῐ́λῳ",
+          "ADJ;DAT;SG;MASC"
+        ],
+        [
+          "ὀργῐ́λῳ",
+          "ADJ;DAT;SG;NEUT"
+        ],
+        [
+          "ὀργῐ́λων",
+          "ADJ;GEN;PL;FEM"
+        ],
+        [
+          "ὀργῐ́λων",
+          "ADJ;GEN;PL;MASC"
+        ],
+        [
+          "ὀργῐ́λων",
+          "ADJ;GEN;PL;NEUT"
+        ],
+        [
+          "ὀργῐ́λης",
+          "ADJ;GEN;SG;FEM"
+        ],
+        [
+          "ὀργῐ́λου",
+          "ADJ;GEN;SG;MASC"
+        ],
+        [
+          "ὀργῐ́λου",
+          "ADJ;GEN;SG;NEUT"
+        ],
+        [
+          "ὀργῐ́λαι",
+          "ADJ;NOM;PL;FEM"
+        ],
+        [
+          "ὀργῐ́λοι",
+          "ADJ;NOM;PL;MASC"
+        ],
+        [
+          "ὀργῐ́λᾰ",
+          "ADJ;NOM;PL;NEUT"
+        ],
+        [
+          "ὀργῐ́λη",
+          "ADJ;NOM;SG;FEM"
+        ],
+        [
+          "ὀργῐ́λος",
+          "ADJ;NOM;SG;MASC"
+        ],
+        [
+          "ὀργῐ́λον",
+          "ADJ;NOM;SG;NEUT"
+        ],
+        [
+          "ὀργῐ́λαι",
+          "ADJ;VOC;PL;FEM"
+        ],
+        [
+          "ὀργῐ́λοι",
+          "ADJ;VOC;PL;MASC"
+        ],
+        [
+          "ὀργῐ́λᾰ",
+          "ADJ;VOC;PL;NEUT"
+        ],
+        [
+          "ὀργῐ́λη",
+          "ADJ;VOC;SG;FEM"
+        ],
+        [
+          "ὀργῐ́λε",
+          "ADJ;VOC;SG;MASC"
+        ],
+        [
+          "ὀργῐ́λον",
+          "ADJ;VOC;SG;NEUT"
+        ]
+      ]
+    },
+    {
+      "lemma": "ουρανοσ",
+      "kind": "N",
+      "word": "οὐρανός",
+      "source_page": "https://en.wiktionary.org/wiki/%CE%BF%E1%BD%90%CF%81%CE%B1%CE%BD%CF%8C%CF%82",
+      "matchingSlots": 9,
+      "forms": [
+        [
+          "οὐρᾰνῷ",
+          "N;DAT;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "παισ",
+      "kind": "N",
+      "word": "παῖς",
+      "source_page": "https://en.wiktionary.org/wiki/%CF%80%CE%B1%E1%BF%96%CF%82",
+      "matchingSlots": 8,
+      "forms": [
+        [
+          "παῖδῐ",
+          "N;DAT;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "πενια",
+      "kind": "N",
+      "word": "πενία",
+      "source_page": "https://en.wiktionary.org/wiki/%CF%80%CE%B5%CE%BD%CE%AF%CE%B1",
+      "matchingSlots": 0,
+      "forms": [
+        [
+          "πενῐ́ᾱς",
+          "N;ACC;PL"
+        ],
+        [
+          "πενῐ́ᾱν",
+          "N;ACC;SG"
+        ],
+        [
+          "πενῐ́αις",
+          "N;DAT;PL"
+        ],
+        [
+          "πενῐ́ᾳ",
+          "N;DAT;SG"
+        ],
+        [
+          "πενῐῶν",
+          "N;GEN;PL"
+        ],
+        [
+          "πενῐ́ᾱς",
+          "N;GEN;SG"
+        ],
+        [
+          "πενῐ́αι",
+          "N;NOM;PL"
+        ],
+        [
+          "πενῐ́ᾱ",
+          "N;NOM;SG"
+        ],
+        [
+          "πενῐ́αι",
+          "N;VOC;PL"
+        ],
+        [
+          "πενῐ́ᾱ",
+          "N;VOC;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "πετρα",
+      "kind": "N",
+      "word": "πέτρα",
+      "source_page": "https://en.wiktionary.org/wiki/%CF%80%CE%AD%CF%84%CF%81%CE%B1",
+      "matchingSlots": 9,
+      "forms": [
+        [
+          "πέτρᾳ",
+          "N;DAT;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "πολεμιοσ",
+      "kind": "N",
+      "word": "πολέμιος",
+      "source_page": "https://en.wiktionary.org/wiki/%CF%80%CE%BF%CE%BB%CE%AD%CE%BC%CE%B9%CE%BF%CF%82",
+      "matchingSlots": 0,
+      "forms": [
+        [
+          "πολεμῐ́ους",
+          "N;ACC;PL"
+        ],
+        [
+          "πολέμῐον",
+          "N;ACC;SG"
+        ],
+        [
+          "πολεμῐ́οις",
+          "N;DAT;PL"
+        ],
+        [
+          "πολεμῐ́ῳ",
+          "N;DAT;SG"
+        ],
+        [
+          "πολεμῐ́ων",
+          "N;GEN;PL"
+        ],
+        [
+          "πολεμῐ́ου",
+          "N;GEN;SG"
+        ],
+        [
+          "πολέμῐοι",
+          "N;NOM;PL"
+        ],
+        [
+          "πολέμῐος",
+          "N;NOM;SG"
+        ],
+        [
+          "πολέμῐοι",
+          "N;VOC;PL"
+        ],
+        [
+          "πολέμῐε",
+          "N;VOC;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "πολεμοσ",
+      "kind": "N",
+      "word": "πόλεμος",
+      "source_page": "https://en.wiktionary.org/wiki/%CF%80%CF%8C%CE%BB%CE%B5%CE%BC%CE%BF%CF%82",
+      "matchingSlots": 0,
+      "forms": [
+        [
+          "πολέμους",
+          "N;ACC;PL"
+        ],
+        [
+          "πόλεμον",
+          "N;ACC;SG"
+        ],
+        [
+          "πολέμοις",
+          "N;DAT;PL"
+        ],
+        [
+          "πολέμῳ",
+          "N;DAT;SG"
+        ],
+        [
+          "πολέμων",
+          "N;GEN;PL"
+        ],
+        [
+          "πολέμου",
+          "N;GEN;SG"
+        ],
+        [
+          "πόλεμοι",
+          "N;NOM;PL"
+        ],
+        [
+          "πόλεμος",
+          "N;NOM;SG"
+        ],
+        [
+          "πόλεμοι",
+          "N;VOC;PL"
+        ],
+        [
+          "πόλεμε",
+          "N;VOC;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "πολιτεια",
+      "kind": "N",
+      "word": "πολιτεία",
+      "source_page": "https://en.wiktionary.org/wiki/%CF%80%CE%BF%CE%BB%CE%B9%CF%84%CE%B5%CE%AF%CE%B1",
+      "matchingSlots": 9,
+      "forms": [
+        [
+          "πολῑτείᾳ",
+          "N;DAT;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "πολιτησ",
+      "kind": "N",
+      "word": "πολίτης",
+      "source_page": "https://en.wiktionary.org/wiki/%CF%80%CE%BF%CE%BB%CE%AF%CF%84%CE%B7%CF%82",
+      "matchingSlots": 9,
+      "forms": [
+        [
+          "πολῑ́τῃ",
+          "N;DAT;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "πολιτικοσ",
+      "kind": "ADJ",
+      "word": "πολιτικός",
+      "source_page": "https://en.wiktionary.org/wiki/%CF%80%CE%BF%CE%BB%CE%B9%CF%84%CE%B9%CE%BA%CF%8C%CF%82",
+      "matchingSlots": 0,
+      "forms": [
+        [
+          "πολῑτῐκᾱ́ς",
+          "ADJ;ACC;PL;FEM"
+        ],
+        [
+          "πολῑτῐκούς",
+          "ADJ;ACC;PL;MASC"
+        ],
+        [
+          "πολῑτῐκᾰ́",
+          "ADJ;ACC;PL;NEUT"
+        ],
+        [
+          "πολῑτῐκήν",
+          "ADJ;ACC;SG;FEM"
+        ],
+        [
+          "πολῑτῐκόν",
+          "ADJ;ACC;SG;MASC"
+        ],
+        [
+          "πολῑτῐκόν",
+          "ADJ;ACC;SG;NEUT"
+        ],
+        [
+          "πολῑτῐκαῖς",
+          "ADJ;DAT;PL;FEM"
+        ],
+        [
+          "πολῑτῐκοῖς",
+          "ADJ;DAT;PL;MASC"
+        ],
+        [
+          "πολῑτῐκοῖς",
+          "ADJ;DAT;PL;NEUT"
+        ],
+        [
+          "πολῑτῐκῇ",
+          "ADJ;DAT;SG;FEM"
+        ],
+        [
+          "πολῑτῐκῷ",
+          "ADJ;DAT;SG;MASC"
+        ],
+        [
+          "πολῑτῐκῷ",
+          "ADJ;DAT;SG;NEUT"
+        ],
+        [
+          "πολῑτῐκῶν",
+          "ADJ;GEN;PL;FEM"
+        ],
+        [
+          "πολῑτῐκῶν",
+          "ADJ;GEN;PL;MASC"
+        ],
+        [
+          "πολῑτῐκῶν",
+          "ADJ;GEN;PL;NEUT"
+        ],
+        [
+          "πολῑτῐκῆς",
+          "ADJ;GEN;SG;FEM"
+        ],
+        [
+          "πολῑτῐκοῦ",
+          "ADJ;GEN;SG;MASC"
+        ],
+        [
+          "πολῑτῐκοῦ",
+          "ADJ;GEN;SG;NEUT"
+        ],
+        [
+          "πολῑτῐκαί",
+          "ADJ;NOM;PL;FEM"
+        ],
+        [
+          "πολῑτῐκοί",
+          "ADJ;NOM;PL;MASC"
+        ],
+        [
+          "πολῑτῐκᾰ́",
+          "ADJ;NOM;PL;NEUT"
+        ],
+        [
+          "πολῑτῐκή",
+          "ADJ;NOM;SG;FEM"
+        ],
+        [
+          "πολῑτῐκός",
+          "ADJ;NOM;SG;MASC"
+        ],
+        [
+          "πολῑτῐκόν",
+          "ADJ;NOM;SG;NEUT"
+        ],
+        [
+          "πολῑτῐκαί",
+          "ADJ;VOC;PL;FEM"
+        ],
+        [
+          "πολῑτῐκοί",
+          "ADJ;VOC;PL;MASC"
+        ],
+        [
+          "πολῑτῐκᾰ́",
+          "ADJ;VOC;PL;NEUT"
+        ],
+        [
+          "πολῑτῐκή",
+          "ADJ;VOC;SG;FEM"
+        ],
+        [
+          "πολῑτῐκέ",
+          "ADJ;VOC;SG;MASC"
+        ],
+        [
+          "πολῑτῐκόν",
+          "ADJ;VOC;SG;NEUT"
+        ]
+      ]
+    },
+    {
+      "lemma": "πονηροσ",
+      "kind": "ADJ",
+      "word": "πονηρός",
+      "source_page": "https://en.wiktionary.org/wiki/%CF%80%CE%BF%CE%BD%CE%B7%CF%81%CF%8C%CF%82",
+      "matchingSlots": 0,
+      "forms": [
+        [
+          "πονηρᾱ́ς",
+          "ADJ;ACC;PL;FEM"
+        ],
+        [
+          "πονηρούς",
+          "ADJ;ACC;PL;MASC"
+        ],
+        [
+          "πονηρᾰ́",
+          "ADJ;ACC;PL;NEUT"
+        ],
+        [
+          "πονηρόν",
+          "ADJ;ACC;SG;MASC"
+        ],
+        [
+          "πονηρόν",
+          "ADJ;ACC;SG;NEUT"
+        ],
+        [
+          "πονηρῷ",
+          "ADJ;DAT;SG;MASC"
+        ],
+        [
+          "πονηρῷ",
+          "ADJ;DAT;SG;NEUT"
+        ],
+        [
+          "πονηρῶν",
+          "ADJ;GEN;PL;MASC"
+        ],
+        [
+          "πονηρῶν",
+          "ADJ;GEN;PL;NEUT"
+        ],
+        [
+          "πονηροῦ",
+          "ADJ;GEN;SG;MASC"
+        ],
+        [
+          "πονηροῦ",
+          "ADJ;GEN;SG;NEUT"
+        ],
+        [
+          "πονηραί",
+          "ADJ;NOM;PL;FEM"
+        ],
+        [
+          "πονηροί",
+          "ADJ;NOM;PL;MASC"
+        ],
+        [
+          "πονηρᾰ́",
+          "ADJ;NOM;PL;NEUT"
+        ],
+        [
+          "πονηρός",
+          "ADJ;NOM;SG;MASC"
+        ],
+        [
+          "πονηρόν",
+          "ADJ;NOM;SG;NEUT"
+        ],
+        [
+          "πονηραί",
+          "ADJ;VOC;PL;FEM"
+        ],
+        [
+          "πονηροί",
+          "ADJ;VOC;PL;MASC"
+        ],
+        [
+          "πονηρᾰ́",
+          "ADJ;VOC;PL;NEUT"
+        ],
+        [
+          "πονηρέ",
+          "ADJ;VOC;SG;MASC"
+        ],
+        [
+          "πονηρόν",
+          "ADJ;VOC;SG;NEUT"
+        ]
+      ]
+    },
+    {
+      "lemma": "πραγμα",
+      "kind": "N",
+      "word": "πρᾶγμα",
+      "source_page": "https://en.wiktionary.org/wiki/%CF%80%CF%81%E1%BE%B6%CE%B3%CE%BC%CE%B1",
+      "matchingSlots": 8,
+      "forms": [
+        [
+          "πρᾱ́γμᾰτῐ",
+          "N;DAT;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "πρωτοσ",
+      "kind": "ADJ",
+      "word": "πρῶτος",
+      "source_page": "https://en.wiktionary.org/wiki/%CF%80%CF%81%E1%BF%B6%CF%84%CE%BF%CF%82",
+      "matchingSlots": 0,
+      "forms": [
+        [
+          "πρωτᾱ́ς",
+          "ADJ;ACC;PL;FEM"
+        ],
+        [
+          "πρωτούς",
+          "ADJ;ACC;PL;MASC"
+        ],
+        [
+          "πρωτᾰ́",
+          "ADJ;ACC;PL;NEUT"
+        ],
+        [
+          "πρωτήν",
+          "ADJ;ACC;SG;FEM"
+        ],
+        [
+          "πρωτόν",
+          "ADJ;ACC;SG;MASC"
+        ],
+        [
+          "πρωτόν",
+          "ADJ;ACC;SG;NEUT"
+        ],
+        [
+          "πρωτῇ",
+          "ADJ;DAT;SG;FEM"
+        ],
+        [
+          "πρωτῷ",
+          "ADJ;DAT;SG;MASC"
+        ],
+        [
+          "πρωτῷ",
+          "ADJ;DAT;SG;NEUT"
+        ],
+        [
+          "πρωτῶν",
+          "ADJ;GEN;PL;MASC"
+        ],
+        [
+          "πρωτῶν",
+          "ADJ;GEN;PL;NEUT"
+        ],
+        [
+          "πρωτῆς",
+          "ADJ;GEN;SG;FEM"
+        ],
+        [
+          "πρωταί",
+          "ADJ;NOM;PL;FEM"
+        ],
+        [
+          "πρωτοί",
+          "ADJ;NOM;PL;MASC"
+        ],
+        [
+          "πρωτᾰ́",
+          "ADJ;NOM;PL;NEUT"
+        ],
+        [
+          "πρωτή",
+          "ADJ;NOM;SG;FEM"
+        ],
+        [
+          "πρωτός",
+          "ADJ;NOM;SG;MASC"
+        ],
+        [
+          "πρωτόν",
+          "ADJ;NOM;SG;NEUT"
+        ],
+        [
+          "πρωταί",
+          "ADJ;VOC;PL;FEM"
+        ],
+        [
+          "πρωτοί",
+          "ADJ;VOC;PL;MASC"
+        ],
+        [
+          "πρωτᾰ́",
+          "ADJ;VOC;PL;NEUT"
+        ],
+        [
+          "πρωτή",
+          "ADJ;VOC;SG;FEM"
+        ],
+        [
+          "πρωτέ",
+          "ADJ;VOC;SG;MASC"
+        ],
+        [
+          "πρωτόν",
+          "ADJ;VOC;SG;NEUT"
+        ]
+      ]
+    },
+    {
+      "lemma": "πτερον",
+      "kind": "N",
+      "word": "πτερόν",
+      "source_page": "https://en.wiktionary.org/wiki/%CF%80%CF%84%CE%B5%CF%81%CF%8C%CE%BD",
+      "matchingSlots": 9,
+      "forms": [
+        [
+          "πτερῷ",
+          "N;DAT;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "ρητωρ",
+      "kind": "N",
+      "word": "ῥήτωρ",
+      "source_page": "https://en.wiktionary.org/wiki/%E1%BF%A5%CE%AE%CF%84%CF%89%CF%81",
+      "matchingSlots": 8,
+      "forms": [
+        [
+          "ῥήτορῐ",
+          "N;DAT;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "ρισ",
+      "kind": "N",
+      "word": "ῥίς",
+      "source_page": "https://en.wiktionary.org/wiki/%E1%BF%A5%CE%AF%CF%82",
+      "matchingSlots": 8,
+      "forms": [
+        [
+          "ῥῑνῐ́",
+          "N;DAT;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "σαρξ",
+      "kind": "N",
+      "word": "σάρξ",
+      "source_page": "https://en.wiktionary.org/wiki/%CF%83%CE%AC%CF%81%CE%BE",
+      "matchingSlots": 0,
+      "forms": [
+        [
+          "σᾰ́ρκᾰς",
+          "N;ACC;PL"
+        ],
+        [
+          "σᾰ́ρκᾰ",
+          "N;ACC;SG"
+        ],
+        [
+          "σᾰρκῐ́",
+          "N;DAT;SG"
+        ],
+        [
+          "σᾰρκῶν",
+          "N;GEN;PL"
+        ],
+        [
+          "σᾰρκός",
+          "N;GEN;SG"
+        ],
+        [
+          "σᾰ́ρκες",
+          "N;NOM;PL"
+        ],
+        [
+          "σᾰ́ρξ",
+          "N;NOM;SG"
+        ],
+        [
+          "σᾰ́ρκες",
+          "N;VOC;PL"
+        ],
+        [
+          "σᾰ́ρξ",
+          "N;VOC;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "σοφια",
+      "kind": "N",
+      "word": "σοφία",
+      "source_page": "https://en.wiktionary.org/wiki/%CF%83%CE%BF%CF%86%CE%AF%CE%B1",
+      "matchingSlots": 0,
+      "forms": [
+        [
+          "σοφῐ́ᾱς",
+          "N;ACC;PL"
+        ],
+        [
+          "σοφῐ́ᾱν",
+          "N;ACC;SG"
+        ],
+        [
+          "σοφῐ́αις",
+          "N;DAT;PL"
+        ],
+        [
+          "σοφῐ́ᾳ",
+          "N;DAT;SG"
+        ],
+        [
+          "σοφῐῶν",
+          "N;GEN;PL"
+        ],
+        [
+          "σοφῐ́ᾱς",
+          "N;GEN;SG"
+        ],
+        [
+          "σοφῐ́αι",
+          "N;NOM;PL"
+        ],
+        [
+          "σοφῐ́ᾱ",
+          "N;NOM;SG"
+        ],
+        [
+          "σοφῐ́αι",
+          "N;VOC;PL"
+        ],
+        [
+          "σοφῐ́ᾱ",
+          "N;VOC;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "σπονδη",
+      "kind": "N",
+      "word": "σπονδή",
+      "source_page": "https://en.wiktionary.org/wiki/%CF%83%CF%80%CE%BF%CE%BD%CE%B4%CE%AE",
+      "matchingSlots": 9,
+      "forms": [
+        [
+          "σπονδῇ",
+          "N;DAT;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "στρατευμα",
+      "kind": "N",
+      "word": "στράτευμα",
+      "source_page": "https://en.wiktionary.org/wiki/%CF%83%CF%84%CF%81%CE%AC%CF%84%CE%B5%CF%85%CE%BC%CE%B1",
+      "matchingSlots": 0,
+      "forms": [
+        [
+          "στρᾰτεύμᾰτᾰ",
+          "N;ACC;PL"
+        ],
+        [
+          "στρᾰ́τευμᾰ",
+          "N;ACC;SG"
+        ],
+        [
+          "στρᾰτεύμᾰτῐ",
+          "N;DAT;SG"
+        ],
+        [
+          "στρᾰτευμᾰ́των",
+          "N;GEN;PL"
+        ],
+        [
+          "στρᾰτεύμᾰτος",
+          "N;GEN;SG"
+        ],
+        [
+          "στρᾰτεύμᾰτᾰ",
+          "N;NOM;PL"
+        ],
+        [
+          "στρᾰ́τευμᾰ",
+          "N;NOM;SG"
+        ],
+        [
+          "στρᾰτεύμᾰτᾰ",
+          "N;VOC;PL"
+        ],
+        [
+          "στρᾰ́τευμᾰ",
+          "N;VOC;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "στρατηγοσ",
+      "kind": "N",
+      "word": "στρατηγός",
+      "source_page": "https://en.wiktionary.org/wiki/%CF%83%CF%84%CF%81%CE%B1%CF%84%CE%B7%CE%B3%CF%8C%CF%82",
+      "matchingSlots": 9,
+      "forms": [
+        [
+          "στρᾰτηγῷ",
+          "N;DAT;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "στρατοπεδον",
+      "kind": "N",
+      "word": "στρατόπεδον",
+      "source_page": "https://en.wiktionary.org/wiki/%CF%83%CF%84%CF%81%CE%B1%CF%84%CF%8C%CF%80%CE%B5%CE%B4%CE%BF%CE%BD",
+      "matchingSlots": 0,
+      "forms": [
+        [
+          "στρᾰτόπεδᾰ",
+          "N;ACC;PL"
+        ],
+        [
+          "στρᾰτόπεδον",
+          "N;ACC;SG"
+        ],
+        [
+          "στρᾰτοπέδοις",
+          "N;DAT;PL"
+        ],
+        [
+          "στρᾰτοπέδῳ",
+          "N;DAT;SG"
+        ],
+        [
+          "στρᾰτοπέδων",
+          "N;GEN;PL"
+        ],
+        [
+          "στρᾰτοπέδου",
+          "N;GEN;SG"
+        ],
+        [
+          "στρᾰτόπεδᾰ",
+          "N;NOM;PL"
+        ],
+        [
+          "στρᾰτόπεδον",
+          "N;NOM;SG"
+        ],
+        [
+          "στρᾰτόπεδᾰ",
+          "N;VOC;PL"
+        ],
+        [
+          "στρᾰτόπεδον",
+          "N;VOC;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "σωμα",
+      "kind": "N",
+      "word": "σῶμα",
+      "source_page": "https://en.wiktionary.org/wiki/%CF%83%E1%BF%B6%CE%BC%CE%B1",
+      "matchingSlots": 8,
+      "forms": [
+        [
+          "σώμᾰτῐ",
+          "N;DAT;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "τελευτη",
+      "kind": "N",
+      "word": "τελευτή",
+      "source_page": "https://en.wiktionary.org/wiki/%CF%84%CE%B5%CE%BB%CE%B5%CF%85%CF%84%CE%AE",
+      "matchingSlots": 9,
+      "forms": [
+        [
+          "τελευτῇ",
+          "N;DAT;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "τοποσ",
+      "kind": "N",
+      "word": "τόπος",
+      "source_page": "https://en.wiktionary.org/wiki/%CF%84%CF%8C%CF%80%CE%BF%CF%82",
+      "matchingSlots": 0,
+      "forms": [
+        [
+          "τόπους",
+          "N;ACC;PL"
+        ],
+        [
+          "τόπον",
+          "N;ACC;SG"
+        ],
+        [
+          "τόποις",
+          "N;DAT;PL"
+        ],
+        [
+          "τόπῳ",
+          "N;DAT;SG"
+        ],
+        [
+          "τόπων",
+          "N;GEN;PL"
+        ],
+        [
+          "τόπου",
+          "N;GEN;SG"
+        ],
+        [
+          "τόποι",
+          "N;NOM;PL"
+        ],
+        [
+          "τόπος",
+          "N;NOM;SG"
+        ],
+        [
+          "τόποι",
+          "N;VOC;PL"
+        ],
+        [
+          "τόπε",
+          "N;VOC;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "τυραννισ",
+      "kind": "N",
+      "word": "τυραννίς",
+      "source_page": "https://en.wiktionary.org/wiki/%CF%84%CF%85%CF%81%CE%B1%CE%BD%CE%BD%CE%AF%CF%82",
+      "matchingSlots": 0,
+      "forms": [
+        [
+          "τῠρᾰννῐ́δᾰς",
+          "N;ACC;PL"
+        ],
+        [
+          "τῠρᾰννῐ́δᾰ",
+          "N;ACC;SG"
+        ],
+        [
+          "τῠρᾰννῐ́δῐ",
+          "N;DAT;SG"
+        ],
+        [
+          "τῠρᾰννῐ́δων",
+          "N;GEN;PL"
+        ],
+        [
+          "τῠρᾰννῐ́δος",
+          "N;GEN;SG"
+        ],
+        [
+          "τῠρᾰννῐ́δες",
+          "N;NOM;PL"
+        ],
+        [
+          "τῠρᾰννῐ́ς",
+          "N;NOM;SG"
+        ],
+        [
+          "τῠρᾰννῐ́δες",
+          "N;VOC;PL"
+        ],
+        [
+          "τῠραννῐ́",
+          "N;VOC;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "τυχη",
+      "kind": "N",
+      "word": "τύχη",
+      "source_page": "https://en.wiktionary.org/wiki/%CF%84%CF%8D%CF%87%CE%B7",
+      "matchingSlots": 0,
+      "forms": [
+        [
+          "τῠ́χᾱς",
+          "N;ACC;PL"
+        ],
+        [
+          "τῠ́χην",
+          "N;ACC;SG"
+        ],
+        [
+          "τῠ́χαις",
+          "N;DAT;PL"
+        ],
+        [
+          "τῠ́χῃ",
+          "N;DAT;SG"
+        ],
+        [
+          "τῠχῶν",
+          "N;GEN;PL"
+        ],
+        [
+          "τῠ́χης",
+          "N;GEN;SG"
+        ],
+        [
+          "τῠ́χαι",
+          "N;NOM;PL"
+        ],
+        [
+          "τῠ́χη",
+          "N;NOM;SG"
+        ],
+        [
+          "τῠ́χαι",
+          "N;VOC;PL"
+        ],
+        [
+          "τῠ́χη",
+          "N;VOC;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "υδωρ",
+      "kind": "N",
+      "word": "ὕδωρ",
+      "source_page": "https://en.wiktionary.org/wiki/%E1%BD%95%CE%B4%CF%89%CF%81",
+      "matchingSlots": 8,
+      "forms": [
+        [
+          "ῡ̆̔́δᾰτῐ",
+          "N;DAT;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "φαλαγξ",
+      "kind": "N",
+      "word": "φάλαγξ",
+      "source_page": "https://en.wiktionary.org/wiki/%CF%86%CE%AC%CE%BB%CE%B1%CE%B3%CE%BE",
+      "matchingSlots": 8,
+      "forms": [
+        [
+          "φᾰ́λᾰγγῐ",
+          "N;DAT;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "φιλια",
+      "kind": "N",
+      "word": "φιλία",
+      "source_page": "https://en.wiktionary.org/wiki/%CF%86%CE%B9%CE%BB%CE%AF%CE%B1",
+      "matchingSlots": 9,
+      "forms": [
+        [
+          "φῐλῐ́ᾳ",
+          "N;DAT;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "φιλοσοφοσ",
+      "kind": "N",
+      "word": "φιλόσοφος",
+      "source_page": "https://en.wiktionary.org/wiki/%CF%86%CE%B9%CE%BB%CF%8C%CF%83%CE%BF%CF%86%CE%BF%CF%82",
+      "matchingSlots": 0,
+      "forms": [
+        [
+          "φῐλοσόφους",
+          "N;ACC;PL"
+        ],
+        [
+          "φῐλόσοφον",
+          "N;ACC;SG"
+        ],
+        [
+          "φῐλοσόφοις",
+          "N;DAT;PL"
+        ],
+        [
+          "φῐλοσόφῳ",
+          "N;DAT;SG"
+        ],
+        [
+          "φῐλοσόφων",
+          "N;GEN;PL"
+        ],
+        [
+          "φῐλοσόφου",
+          "N;GEN;SG"
+        ],
+        [
+          "φῐλόσοφοι",
+          "N;NOM;PL"
+        ],
+        [
+          "φῐλόσοφος",
+          "N;NOM;SG"
+        ],
+        [
+          "φῐλόσοφοι",
+          "N;VOC;PL"
+        ],
+        [
+          "φῐλόσοφε",
+          "N;VOC;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "φλεψ",
+      "kind": "N",
+      "word": "φλέψ",
+      "source_page": "https://en.wiktionary.org/wiki/%CF%86%CE%BB%CE%AD%CF%88",
+      "matchingSlots": 8,
+      "forms": [
+        [
+          "φλεβῐ́",
+          "N;DAT;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "φρονησισ",
+      "kind": "N",
+      "word": "φρόνησις",
+      "source_page": "https://en.wiktionary.org/wiki/%CF%86%CF%81%CF%8C%CE%BD%CE%B7%CF%83%CE%B9%CF%82",
+      "matchingSlots": 0,
+      "forms": [
+        [
+          "φρονήσεις",
+          "N;ACC;PL"
+        ],
+        [
+          "φρόνησῐν",
+          "N;ACC;SG"
+        ],
+        [
+          "φρονήσει",
+          "N;DAT;SG"
+        ],
+        [
+          "φρονήσεων",
+          "N;GEN;PL"
+        ],
+        [
+          "φρονήσεως",
+          "N;GEN;SG"
+        ],
+        [
+          "φρονήσεις",
+          "N;NOM;PL"
+        ],
+        [
+          "φρόνησῐς",
+          "N;NOM;SG"
+        ],
+        [
+          "φρονήσεις",
+          "N;VOC;PL"
+        ],
+        [
+          "φρόνησῐ",
+          "N;VOC;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "φυσισ",
+      "kind": "N",
+      "word": "φύσις",
+      "source_page": "https://en.wiktionary.org/wiki/%CF%86%CF%8D%CF%83%CE%B9%CF%82",
+      "matchingSlots": 0,
+      "forms": [
+        [
+          "φῠ́σεις",
+          "N;ACC;PL"
+        ],
+        [
+          "φῠ́σῐν",
+          "N;ACC;SG"
+        ],
+        [
+          "φῠ́σει",
+          "N;DAT;SG"
+        ],
+        [
+          "φῠ́σεων",
+          "N;GEN;PL"
+        ],
+        [
+          "φῠ́σεως",
+          "N;GEN;SG"
+        ],
+        [
+          "φῠ́σεις",
+          "N;NOM;PL"
+        ],
+        [
+          "φῠ́σῐς",
+          "N;NOM;SG"
+        ],
+        [
+          "φῠ́σεις",
+          "N;VOC;PL"
+        ],
+        [
+          "φῠ́σῐ",
+          "N;VOC;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "χειμων",
+      "kind": "N",
+      "word": "χειμών",
+      "source_page": "https://en.wiktionary.org/wiki/%CF%87%CE%B5%CE%B9%CE%BC%CF%8E%CE%BD",
+      "matchingSlots": 8,
+      "forms": [
+        [
+          "χειμῶνῐ",
+          "N;DAT;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "χιων",
+      "kind": "N",
+      "word": "χιών",
+      "source_page": "https://en.wiktionary.org/wiki/%CF%87%CE%B9%CF%8E%CE%BD",
+      "matchingSlots": 8,
+      "forms": [
+        [
+          "χῑ̆όνῐ",
+          "N;DAT;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "χρονοσ",
+      "kind": "N",
+      "word": "χρόνος",
+      "source_page": "https://en.wiktionary.org/wiki/%CF%87%CF%81%CF%8C%CE%BD%CE%BF%CF%82",
+      "matchingSlots": 0,
+      "forms": [
+        [
+          "χρόνους",
+          "N;ACC;PL"
+        ],
+        [
+          "χρόνον",
+          "N;ACC;SG"
+        ],
+        [
+          "χρόνοις",
+          "N;DAT;PL"
+        ],
+        [
+          "χρόνῳ",
+          "N;DAT;SG"
+        ],
+        [
+          "χρόνων",
+          "N;GEN;PL"
+        ],
+        [
+          "χρόνου",
+          "N;GEN;SG"
+        ],
+        [
+          "χρόνοι",
+          "N;NOM;PL"
+        ],
+        [
+          "χρόνος",
+          "N;NOM;SG"
+        ],
+        [
+          "χρόνοι",
+          "N;VOC;PL"
+        ],
+        [
+          "χρόνε",
+          "N;VOC;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "χωρα",
+      "kind": "N",
+      "word": "χώρα",
+      "source_page": "https://en.wiktionary.org/wiki/%CF%87%CF%8E%CF%81%CE%B1",
+      "matchingSlots": 9,
+      "forms": [
+        [
+          "χώρᾳ",
+          "N;DAT;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "ψυχη",
+      "kind": "N",
+      "word": "ψυχή",
+      "source_page": "https://en.wiktionary.org/wiki/%CF%88%CF%85%CF%87%CE%AE",
+      "matchingSlots": 0,
+      "forms": [
+        [
+          "ψῡχᾱ́ς",
+          "N;ACC;PL"
+        ],
+        [
+          "ψῡχήν",
+          "N;ACC;SG"
+        ],
+        [
+          "ψῡχαῖς",
+          "N;DAT;PL"
+        ],
+        [
+          "ψῡχῇ",
+          "N;DAT;SG"
+        ],
+        [
+          "ψῡχῶν",
+          "N;GEN;PL"
+        ],
+        [
+          "ψῡχῆς",
+          "N;GEN;SG"
+        ],
+        [
+          "ψῡχαί",
+          "N;NOM;PL"
+        ],
+        [
+          "ψῡχή",
+          "N;NOM;SG"
+        ],
+        [
+          "ψῡχαί",
+          "N;VOC;PL"
+        ],
+        [
+          "ψῡχή",
+          "N;VOC;SG"
+        ]
+      ]
+    },
+    {
+      "lemma": "ωνιοσ",
+      "kind": "ADJ",
+      "word": "ὤνιος",
+      "source_page": "https://en.wiktionary.org/wiki/%E1%BD%A4%CE%BD%CE%B9%CE%BF%CF%82",
+      "matchingSlots": 0,
+      "forms": [
+        [
+          "ὠνῐ́ους",
+          "ADJ;ACC;PL;MASC"
+        ],
+        [
+          "ὤνῐᾰ",
+          "ADJ;ACC;PL;NEUT"
+        ],
+        [
+          "ὤνῐον",
+          "ADJ;ACC;SG;MASC"
+        ],
+        [
+          "ὤνῐον",
+          "ADJ;ACC;SG;NEUT"
+        ],
+        [
+          "ὠνῐ́οις",
+          "ADJ;DAT;PL;MASC"
+        ],
+        [
+          "ὠνῐ́οις",
+          "ADJ;DAT;PL;NEUT"
+        ],
+        [
+          "ὠνῐ́ῳ",
+          "ADJ;DAT;SG;MASC"
+        ],
+        [
+          "ὠνῐ́ῳ",
+          "ADJ;DAT;SG;NEUT"
+        ],
+        [
+          "ὠνῐ́ων",
+          "ADJ;GEN;PL;FEM"
+        ],
+        [
+          "ὠνῐ́ων",
+          "ADJ;GEN;PL;MASC"
+        ],
+        [
+          "ὠνῐ́ων",
+          "ADJ;GEN;PL;NEUT"
+        ],
+        [
+          "ὠνῐ́ου",
+          "ADJ;GEN;SG;MASC"
+        ],
+        [
+          "ὠνῐ́ου",
+          "ADJ;GEN;SG;NEUT"
+        ],
+        [
+          "ὤνῐοι",
+          "ADJ;NOM;PL;MASC"
+        ],
+        [
+          "ὤνῐᾰ",
+          "ADJ;NOM;PL;NEUT"
+        ],
+        [
+          "ὤνῐος",
+          "ADJ;NOM;SG;MASC"
+        ],
+        [
+          "ὤνῐον",
+          "ADJ;NOM;SG;NEUT"
+        ],
+        [
+          "ὤνῐοι",
+          "ADJ;VOC;PL;MASC"
+        ],
+        [
+          "ὤνῐᾰ",
+          "ADJ;VOC;PL;NEUT"
+        ],
+        [
+          "ὤνῐε",
+          "ADJ;VOC;SG;MASC"
+        ],
+        [
+          "ὤνῐον",
+          "ADJ;VOC;SG;NEUT"
+        ]
+      ]
+    }
+  ]
+}
