@@ -82,7 +82,8 @@ async function latinIndex(data,dir,seen,counts){
       // Conservar el prefijo original: los temarios escriben a menudo
       // 'v' consonántica donde Collatinus admite 'u'.
       const variants=new Set([raw]);
-      if(/^[uU][aeiou]/.test(raw))variants.add(raw.replace(/^u/,'v').replace(/^U/,'V'));
+      variants.add(raw.replace(/^u(?=[aeiou])/,'v').replace(/^U(?=[AEIOU])/,'V')
+       .replace(/([aeiou])u(?=[aeiou])/g,'$1v'));
       for(const lemma of teachers)for(const form of variants){
        if(add(data.rows,data.vocabulary,'lat',lemma,form,
         'COLLATINUS;'+String(ending.morpho),6,seen.lat,counts))forms++;
