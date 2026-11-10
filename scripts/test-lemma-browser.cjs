@@ -18,6 +18,8 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
    const details=el.closest('details');if(details)details.open=true;
   });
   await page.selectOption('#offlineLemmaCourse','lat1');
+  await page.locator('#offlineLemmaCoverage').filter({hasText:'664 lemas'}).waitFor();
+  assert.match(await page.locator('#offlineLemmaCoverage').textContent(),/modelos provisionales/);
   await page.selectOption('#offlineLemmaMode','lemma');
   await page.locator('#offlineLemmaInput').fill('amo');
   await page.locator('#offlineLemmaSearch').click();
@@ -44,6 +46,7 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
   assert.match(await page.locator('#offlineLemmaResults').textContent(),/propuesta sin verificar/);
   // Un lema griego sin formas queda localizable como entrada, sin inventar acentos.
   await page.selectOption('#offlineLemmaCourse','gr1');
+  await page.locator('#offlineLemmaCoverage').filter({hasText:'349 lemas'}).waitFor();
   await page.selectOption('#offlineLemmaMode','lemma');
   await page.locator('#offlineLemmaInput').fill('λύω');
   await page.locator('#offlineLemmaSearch').click();
