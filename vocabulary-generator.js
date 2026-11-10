@@ -66,11 +66,55 @@ function greekReferenceForms(bank){
   }
   }
  }
- const bankByHead=(form)=>bank.find(row=>head(row.entry).normalize('NFC')===String(form).normalize('NFC'))||
-  (!['τίς','τις'].includes(form)?bank.find(row=>key(head(row.entry))===key(form)):undefined);
+ // Los enunciados docentes prevalecen sobre las entradas suplementarias.
+ // Estas equivalencias se usan únicamente donde la base docente no tiene
+ // la entrada, y documentan el genitivo o las formas de los adjetivos.
+ const supplementaryEntries={
+  'Διόνυσος':'Διόνυσος, –ου','Νεῖλος':'Νεῖλος, –ου',
+  'Αἴγυπτος':'Αἴγυπτος, –ου (ἡ)','Ἀλέξανδρος':'Ἀλέξανδρος, –ου',
+  'Αἰσχύλος':'Αἰσχύλος, –ου','Ἀφροδίτη':'Ἀφροδίτη, –ης',
+  'ἄγγελος':'ἄγγελος, –ου','ἀγρός':'ἀγρός, –οῦ',
+  'δειλός':'δειλός, –ή, –όν','πολέμιος':'πολέμιος, –α, –ον',
+  'τριήρης':'τριήρης, –ες','Μαραθών':'Μαραθών, –ῶνος',
+  'ὁ, ἡ, τό':'ὁ, ἡ, τό (art.)',
+  'ἐγώ':'ἐγώ, ἡμεῖς (pron. pers.)','σύ':'σύ, ὑμεῖς (pron. pers.)',
+  'αὐτός':'αὐτός, –ή, –ό (pron.)',
+  'οὗτος':'οὗτος, αὕτη, τοῦτο (pron. dem.)',
+  'ἐκεῖνος':'ἐκεῖνος, –η, –ο (pron. dem.)',
+  'ὅδε':'ὅδε, ἥδε, τόδε (pron. dem.)',
+  'ὅς':'ὅς, ἥ, ὅ (pron. rel.)',
+  'ὅστις':'ὅστις, ἥτις, ὅ τι (pron. rel.)',
+  'τίς':'τίς, τί (pron. interr.)',
+  'τις':'τις, τι (pron. indef.)',
+  'ἅπας':'ἅπας, ἅπασα, ἅπαν',
+  'ὦ':'ὦ (interj.)',
+  'ἤ':'ἤ (conj.)',
+  'μάχη':'μάχη, –ης','θάλαττα':'θάλαττα, –ης',
+  'σοφία':'σοφία, –ας','ψυχή':'ψυχή, –ῆς',
+  'πενία':'πενία, –ας','ἄλλος':'ἄλλος, –η, –ο',
+  'Ἀκρόπολις':'Ἀκρόπολις, –εως (ἡ)',
+  'αἰθήρ':'αἰθήρ, –έρος',
+  'Ἕλλην':'Ἕλλην, –ηνος (ὁ/ἡ)','μήν':'μήν, μηνός (ὁ)',
+  'τύχη':'τύχη, –ης','φύσις':'φύσις, –εως (ἡ)',
+  'θέα':'θέα, –ας','πολύς':'πολύς, πολλή, πολύ',
+  'πᾶς':'πᾶς, πᾶσα, πᾶν','μέγας':'μέγας, μεγάλη, μέγα',
+  'μαθητής':'μαθητής, –οῦ',
+  'μέν':'μέν… δέ (part.)','δέ':'μέν… δέ (part.)'
+ };
+ const bankByHead=form=>bank.find(row=>{
+  const raw=head(row.entry),base=raw.split(/\s+\+/)[0];
+  const parts=base.split('/');
+  return raw.normalize('NFC')===String(form).normalize('NFC') ||
+    (!['τίς','τις'].includes(form) &&
+     (key(raw)===key(form)||parts.some(part=>key(part)===key(form))));
+ });
+ const prepLabel=entry=>entry.replace(/\s+\+\s*(genitivo|acusativo|dativo)(?:\s*\|\s*(genitivo|acusativo|dativo))?(?:\s*\|\s*(genitivo|acusativo|dativo))?$/,
+  (_,a,b,c)=>' (prep. + '+[a,b,c].filter(Boolean).map(s=>({genitivo:'gen.',acusativo:'ac.',dativo:'dat.'}[s])).join('/')+')');
  const addIrregular=(forms,entry,meaning)=>{
   const saved=bankByHead(entry);
-  const record={lemma:key(head(saved?.entry||entry)),entry:saved?.entry||entry,
+  const sourceEntry=saved?.entry||supplementaryEntries[entry]||entry;
+  const outputEntry=/\s+\+\s*(genitivo|acusativo|dativo)/.test(sourceEntry)?prepLabel(sourceEntry):sourceEntry;
+  const record={lemma:key(head(saved?.entry||entry)),entry:outputEntry,
    meaning:saved?.meaning||meaning,attested:true,origin:'paradigma gramatical explícito'};
   for(const form of forms)add(form,record);
  };
@@ -83,7 +127,7 @@ function greekReferenceForms(bank){
   'εἰμί','ser, estar, haber');
  addIrregular(['οὐ','οὐκ','οὐχ'],'οὐ','no');
  addIrregular(['ἀλλά','ἀλλὰ','ἀλλ'],'ἀλλά','pero, sino');
- addIrregular(['δέ','δὲ','δ'],'δέ','pero, por otra parte');
+ addIrregular(['μέν','μὲν','μέν','δέ','δὲ','δέ'],'μέν… δέ','por un lado… por otro');
  addIrregular(['καί','καὶ'],'καί','y, también');
  // Los nombres propios solo se añaden cuando el banco no los contiene.
  addIrregular(['Διόνυσος','Διόνυσος','Διονύσου','Διονύσου'],'Διόνυσος','Dioniso');
@@ -166,6 +210,9 @@ function greekReferenceForms(bank){
   ['μή','no (negación subjetiva)',['μή','μὴ']]
  ];
  for(const [entry,meaning,forms] of closed)addIrregular(forms,entry,meaning);
+ // Todas las formas de la negación comparten el enunciado del banco.
+ // ὅλες οι μορφές οὐ, οὐκ, οὐχ: una entrada léxica.
+
  // Paradigmas pronominales irregulares que aparecen en las UDs 5–10.
  addIrregular(['ἐγώ','ἐγὼ','ἐμοῦ','ἐμοί','ἐμοὶ','ἐμέ','ἐμὲ','ἡμεῖς','ἡμῶν','ἡμῖν','ἡμᾶς'],
   'ἐγώ','yo; nosotros');
