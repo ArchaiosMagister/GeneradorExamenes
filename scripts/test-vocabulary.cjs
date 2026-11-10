@@ -197,11 +197,27 @@ console.log('Vocabulario: prioridad docente, deduplicación por UD, ambigüedad,
  assert.equal(await analyzeAll.evaluate(el=>getComputedStyle(el).fontWeight),'800');
 
  await page.fill('#vgCount','2');await page.locator('#vgCount').dispatchEvent('change');
- await page.fill('#vgText','Puella puella amamus xyzxyz');await page.click('#vgAnalyze');await page.waitForFunction(()=>document.querySelector('#vgStatus').textContent.includes('pendientes'));
+ assert.equal(await page.locator('#vgUnit').count(),0);
+ assert.equal(await page.locator('#vgUnitButtons button').count(),2);
+ assert.equal(await page.locator('#vgUnitButtons .is-selected').count(),1);
+ assert.equal(await page.locator('#vgUnitButtons .has-text').count(),0);
+ assert.equal(await page.locator('#vgUnitButtons [data-unit="0"]').getAttribute('aria-pressed'),'true');
+ assert.notEqual(await page.locator('#vgUnitButtons [data-unit="0"]').evaluate(el=>getComputedStyle(el).backgroundColor),
+  await page.locator('#vgUnitButtons [data-unit="1"]').evaluate(el=>getComputedStyle(el).backgroundColor));
+ await page.fill('#vgText','Puella puella amamus xyzxyz');
+ assert.equal(await page.locator('#vgUnitButtons .has-text').count(),1);
+ assert.equal(await page.locator('#vgUnitButtons [data-unit="0"].is-selected.has-text').count(),1);
+ await page.click('#vgAnalyze');await page.waitForFunction(()=>document.querySelector('#vgStatus').textContent.includes('pendientes'));
  assert.match(await page.locator('#vgResults').innerText(),/xyzxyz/);
- await page.selectOption('#vgMode','simple');await page.selectOption('#vgUnit','1');assert.equal(await page.inputValue('#vgText'),'');
+ await page.selectOption('#vgMode','simple');await page.click('#vgUnitButtons [data-unit="1"]');assert.equal(await page.inputValue('#vgText'),'');
+ assert.equal(await page.locator('#vgUnitButtons [data-unit="0"].has-text:not(.is-selected)').count(),1);
+ assert.equal(await page.locator('#vgUnitButtons [data-unit="1"].is-selected:not(.has-text)').count(),1);
+ await page.fill('#vgText','Puella');
+ assert.equal(await page.locator('#vgUnitButtons .has-text').count(),2);
+ await page.fill('#vgText','');
+ assert.equal(await page.locator('#vgUnitButtons .has-text').count(),1);
  await page.fill('#vgText','Puella');await page.click('#vgAnalyzeAll');await page.waitForFunction(()=>document.querySelector('#vgStatus').textContent.includes('pendientes'));
- await page.selectOption('#vgUnit','0');assert.match(await page.inputValue('#vgText'),/amamus/);
+ await page.click('#vgUnitButtons [data-unit="0"]');assert.match(await page.inputValue('#vgText'),/amamus/);
  const downloadPromise=page.waitForEvent('download');await page.click('#vgWord');const dl=await downloadPromise;const file=await dl.path();assert.equal(fs.readFileSync(file).readUInt32LE(0),0x04034b50);
  await page.reload();await page.click('#vgShow');assert.equal(await page.inputValue('#vgCount'),'2');
  // Reproduce un JSON antiguo de 14 unidades: textos, pero sin ningún análisis.
@@ -213,6 +229,12 @@ console.log('Vocabulario: prioridad docente, deduplicación por UD, ambigüedad,
  });
  await page.waitForFunction(()=>document.querySelector('#vgStatus')?.textContent.includes('14 por analizar'));
  assert.match(await page.locator('#vgStatus').innerText(),/14 por analizar/);
+ assert.equal(await page.locator('#vgUnitButtons button').count(),14);
+ assert.equal(await page.locator('#vgUnitButtons .has-text').count(),14);
+ await page.click('#vgUnitButtons [data-unit="13"]');
+ assert.equal(await page.inputValue('#vgText'),'ὁ θεός ἐστιν. οἱ ἄνθρωποι.');
+ assert.equal(await page.locator('#vgUnitButtons [data-unit="13"].is-selected.has-text').count(),1);
+ await page.click('#vgUnitButtons [data-unit="0"]');
  const download14=page.waitForEvent('download');
  await page.click('#vgWord');const doc14=await download14;
  const body14=fs.readFileSync(await doc14.path()).toString('utf8');
