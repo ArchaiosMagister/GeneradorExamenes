@@ -58,13 +58,15 @@ async function checkFile(browser,filename){
  }
  // La exportación Word conserva cursiva solo en los vocablos y no en
  // las letras a./c./d. ni en las consignas.
- const lexMarkup=document.createElement('p');
- lexMarkup.className='exam-item';
- lexMarkup.innerHTML='<span class="exam-letter">c.</span> Señala el prefijo de <i>inmortal</i>.';
- const lexWord=wordExamParagraph(lexMarkup);
- if(!lexWord.includes('<w:i/>'))throw Error('Falta cursiva de estímulo léxico en Word');
- if(!lexWord.includes('inmortal'))throw Error('Término léxico omitido');
- if(/<w:i\/>[\\s\\S]*?<w:t[^>]*>c\\./.test(lexWord))throw Error('La letra c. está en cursiva');
+ const lexWord=await page.evaluate(()=>{
+  const markup=document.createElement('p');
+  markup.className='exam-item';
+  markup.innerHTML='<span class="exam-letter">c.</span> Señala el prefijo de <i>inmortal</i>.';
+  return wordExamParagraph(markup);
+ });
+ assert(lexWord.includes('<w:i/>'),filename+': falta cursiva del estímulo léxico en Word');
+ assert(lexWord.includes('inmortal'),filename+': término léxico omitido en Word');
+ assert(lexWord.indexOf('c.')<lexWord.indexOf('<w:i/>'),filename+': letra de apartado en cursiva');
  const cases=[
   ['latin1','tablas','UD3'],['latin1','morf','UD3'],['latin1','mixto','UD3'],
   ['latin4','tablas','UD3'],

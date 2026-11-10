@@ -44,6 +44,19 @@ const server=http.createServer(async(req,res)=>{
   page.on('pageerror',err=>errors.push(String(err)));
   page.on('request',req=>requests.push(req.url()));
   await page.goto(origin+PREFIX);
+  await page.waitForFunction(()=>window.ExaminaTeacherLexBankReady===true,null,{timeout:30000});
+  const lex=await page.evaluate(()=>({
+   latinisms:latinLexBanks.latin1.latinisms.length,
+   prefixes:latinLexBanks.latin1.prefixes.length,
+   preverbs:latinLexBanks.latin1.preverbs.length,
+   sample:buildLatinLexQuestion('latin1',['UD6'])?.html||''
+  }));
+  assert.deepEqual([lex.latinisms,lex.prefixes,lex.preverbs],[87,287,120],'Bancos docentes incompletos en la web');
+  assert(lex.sample.includes('Modificación preverbial a partir de '),'Falta modificación preverbial');
+  assert(lex.sample.includes('Señala el prefijo'),'Falta pregunta de prefijos');
+  assert(lex.sample.includes('Explica el significado'),'Falta pregunta de latinismos');
+  assert.equal((lex.sample.match(/<i>/g)||[]).length,10,'Solo deben aparecer diez términos en cursiva (2 + 4 + 4)');
+  assert(!lex.sample.includes('Evolución fonética de '),'No debe inventarse el banco de evolución fonética');
   await page.waitForFunction(()=>navigator.serviceWorker.controller!==null,null,{timeout:45000});
   await page.waitForFunction(()=>document.querySelector('#pwaStatus')?.textContent.includes('Preparada'),null,{timeout:30000});
   const cache=await page.evaluate(async()=>{
