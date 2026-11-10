@@ -164,3 +164,9 @@ El formato se aplica a la vista previa, impresión/PDF y exportación DOCX de Gr
 
 
 Ajuste actual de márgenes: 3 cm a la derecha y 2,5 cm arriba, izquierda y abajo, en impresión y Word. Más espacio superior en la cabecera; tablas ajustadas al ancho disponible.
+
+## Vocabulario independiente por unidades
+
+La nueva pestaña **Generador de vocabulario** permite pegar textos propios de latín o griego, configurar unidades, revisar formas desconocidas y ambiguas, corregir entradas y exportar Word en dos columnas. Cada unidad tiene su selector de enunciado verbal y se guarda con independencia de los exámenes. Incluye copias JSON y funciona en la PWA y en `offline.html`.
+
+La cobertura lingüística es parcial: no se inventan formas ni traducciones. Consulta la [auditoría del banco, instrucciones y límites reales](docs/generador-vocabulario.md). El ajuste visual al DOCX docente de referencia está pendiente de recibir el archivo.

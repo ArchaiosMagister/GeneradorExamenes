@@ -22,7 +22,9 @@ export async function renderOffline(root=projectRoot){
  }
  const noHead=metadata.reduce((html,tag)=>html.replace(tag,''),sourceHtml);
  const noPanel=noHead.slice(0,noHead.indexOf(begin))+noHead.slice(noHead.indexOf(end)+end.length);
- const html=noPanel.replace('<script src="pwa.js" defer></script>','');
+ let html=noPanel.replace('<script src="pwa.js" defer></script>','');
+ const vocabularyModule=await readFile(resolve(root,'vocabulary-generator.js'),'utf8');
+ html=html.replace('<script src="vocabulary-generator.js" defer></script>','<script>'+vocabularyModule.replace(/<\/script/gi,'<\\/script')+'</script>');
  const latin=JSON.parse(await readFile(resolve(root,'data/unimorph/lat-v.json'),'utf8'));
  if(!Array.isArray(latin.rows)||!latin.rows.length||
     !latin.rows.every(row=>Array.isArray(row)&&row.length>=4)){
