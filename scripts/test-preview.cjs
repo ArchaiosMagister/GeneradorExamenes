@@ -1,7 +1,6 @@
 // Prueba real en navegador: vista previa y edición de los siete modelos.
 const assert=require('node:assert/strict');
 const path=require('node:path');
-const fs=require('node:fs/promises');
 const {pathToFileURL}=require('node:url');
 const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
 
@@ -103,25 +102,32 @@ async function checkFile(browser,filename){
   }
   await page.emulateMedia({media:'screen'});
 
-  // DOCX reales: se verifican el XML de Word, las tablas y el estilo Palatino.
+  // Comprueba el Blob DOCX construido al pulsar los botones de exportación.
+  // La captura evita el bloqueo de descargas en navegadores headless bajo file://
+  // sin eludir el exportador real de la aplicación.
   for(const answers of [false,true]){
    const caseLabel=filename+' '+course+'/'+model+' '+(answers?'solucionario':'alumnado');
    console.log('Comprobando DOCX:',caseLabel);
-   const downloadPromise=page.waitForEvent('download',{timeout:15000});
-   await page.locator(answers?'#docxAnswers':'#docx').click();
-   let download;
-   try{download=await downloadPromise}
-   catch(error){throw new Error(caseLabel+': descarga no iniciada. Errores JS: '+JSON.stringify(errors)+'; '+error.message)}
-   assert(download.suggestedFilename().endsWith('.docx'),filename+': descarga Word sin extensión .docx');
-   const bytes=await fs.readFile(await download.path());
+   const exported=await page.evaluate(async answers=>{
+    const previous=downloadBlob;
+    let blob,name;
+    try{
+     downloadBlob=(filename,output)=>{name=filename;blob=output};
+     document.getElementById(answers?'docxAnswers':'docx').click();
+    }finally{downloadBlob=previous}
+    if(!blob)throw new Error('El botón no generó ningún documento Word');
+    return {filename:name,bytes:Array.from(new Uint8Array(await blob.arrayBuffer()))};
+   },answers);
+   assert(exported.filename.endsWith('.docx'),caseLabel+': nombre Word incorrecto');
+   const bytes=Buffer.from(exported.bytes);
    const documentXml=readStoredZipEntry(bytes,'word/document.xml');
    const styleXml=readStoredZipEntry(bytes,'word/styles.xml');
    assert(documentXml.includes('<w:document ')&&documentXml.includes('<w:body>')&&documentXml.includes('</w:document>'),
-    filename+' '+course+'/'+model+': XML Word incompleto');
-   assert(/Palatino/.test(styleXml),filename+' '+course+'/'+model+': fuente Palatino ausente en Word');
+    caseLabel+': XML Word incompleto');
+   assert(/Palatino/.test(styleXml),caseLabel+': fuente Palatino ausente en Word');
    if(screenLayout.tableCount){
-    assert(documentXml.includes('<w:tbl>'),filename+' '+course+'/'+model+': tablas ausentes en Word');
-    assert(documentXml.includes('<w:i/>'),filename+' '+course+'/'+model+': cursiva ausente en Word');
+    assert(documentXml.includes('<w:tbl>'),caseLabel+': tablas ausentes en Word');
+    assert(documentXml.includes('<w:i/>'),caseLabel+': cursiva ausente en Word');
    }
   }
   // El panel de preguntas es un acordeón cerrado por defecto.
