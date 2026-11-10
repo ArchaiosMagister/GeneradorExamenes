@@ -1783,8 +1783,6 @@ translateUI=function(){
 $('lang').onchange=()=>{translateUI();generate()};
 // Earlier controls captured the original function. Its Greek branch delegates
 // to generateGreekExam, so all imports, counts, quick actions and draft undo work.
-refreshCourse();
-
 /* Configuración 2026: apartados específicos sin dependencias de escritorio.
    Los bancos léxicos permanecen vacíos hasta importar materiales docentes revisados. */
 const examQuestionChoiceState=Object.create(null);
@@ -1859,7 +1857,7 @@ function examCacheSignature(kind){
   kind==='forms'?(morph?'morphWords':currentCourse()==='greek1'?'count-greek-forms':'count-forms'):
   kind==='sent'?'count-sent':'count-lex';
  return JSON.stringify([currentCourse(),$('model').value,unitsKey,$('cumulative').checked,kind,
-  $(countId)?.value,kind==='forms'?examMorphQuotaValues():null]);
+  $(countId)?.value,kind==='forms'?examMorphQuotaValues():null,kind.startsWith('lex-')?[$('lex-count-'+kind.slice(4))?.value,$('lex-prefix')?.value,$('lex-phenomenon')?.value,$('lex-parity')?.value,$('lex-from')?.value,$('lex-to')?.value]:null]);
 }
 function stickyExamRows(kind,factory){
  const key=examCacheSignature(kind);
@@ -1868,6 +1866,7 @@ function stickyExamRows(kind,factory){
 }
 function regenerateExamQuestion(kind){
  const key=examCacheSignature(kind);examSelectionCache.delete(key);
+ if(kind==='lex')for(const part of latinLexModules[currentCourse()]||[])examSelectionCache.delete(examCacheSignature('lex-'+part));
  if(currentCourse()==='greek1'&&$('model').value!=='morphology'){
   const greekKind={decl:'declension',verb:'conjugation',forms:'forms',pronouns:'pronouns',etymology:'etymology',sent:'sentences'}[kind];
   if(greekKind&&typeof greekExamState!=='undefined'&&greekExamState){greekRegenerate(greekKind);return}
@@ -1905,6 +1904,7 @@ function buildLatinLexQuestion(course,chosen){
  if(!html.length)return null;
  return {html:html.join(''),solution:'<ol>'+answers.join('')+'</ol>'};
 }
+refreshCourse();
 /* Controles reusables: el <select> original sigue accesible al motor, mientras
    las asignaturas y modelos se ven como opciones permanentes. */
 (function configureExamSidebar(){
