@@ -1,0 +1,296 @@
+{
+  "schema": 1,
+  "repository": "ArchaiosMagister/GeneradorExamenes",
+  "branch": "feat/integracion-pr29-pr30-valenciano-20261110",
+  "origin": "revisión filológica del vocabulario bilingüe en PR31",
+  "status": "pendiente de decisiones del docente",
+  "notes": "El valor current_va no implica aprobación filológica. No aplicar opciones hasta recibir elección explícita; no sustituir los significados castellanos al elegir solo una variante valenciana.",
+  "items": [
+    {
+      "id": "LAT1-IMPORTO",
+      "course": "latin1",
+      "lemma": "importo, importavi, importatum (1ª)",
+      "spanish": "traer",
+      "current_va": "portar",
+      "reason": "Importo suele denotar introducir o traer hacia dentro; la glosa genérica puede quedarse corta.",
+      "options": [
+        [
+          "a",
+          "traer → portar"
+        ],
+        [
+          "b",
+          "introducir, traer → introduir, portar"
+        ],
+        [
+          "c",
+          "importar, introducir → importar, introduir"
+        ]
+      ]
+    },
+    {
+      "id": "LAT1-REDUCO",
+      "course": "latin1",
+      "lemma": "reduco, reduxi, reductum (3ª)",
+      "spanish": "traer",
+      "current_va": "portar",
+      "reason": "Reduco implica conducción de vuelta o regreso; el enunciado español actual omite re-.",
+      "options": [
+        [
+          "a",
+          "traer → portar"
+        ],
+        [
+          "b",
+          "hacer volver → fer tornar"
+        ],
+        [
+          "c",
+          "conducir de vuelta → conduir de tornada"
+        ]
+      ]
+    },
+    {
+      "id": "LAT1-IMPONO",
+      "course": "latin1",
+      "lemma": "impono, imposui, impositum (3ª)",
+      "spanish": "traer",
+      "current_va": "portar",
+      "reason": "La glosa original no corresponde al significado ordinario del compuesto impono.",
+      "options": [
+        [
+          "a",
+          "conservar provisionalmente traer → portar"
+        ],
+        [
+          "b",
+          "poner encima → posar damunt"
+        ],
+        [
+          "c",
+          "imponer, colocar encima → imposar, posar damunt"
+        ]
+      ]
+    },
+    {
+      "id": "GR1-KALEO",
+      "course": "greek1",
+      "lemma": "καλέω",
+      "spanish": "llamar",
+      "current_va": "cridar",
+      "reason": "Puede significar llamar, convocar o denominar, según el contexto.",
+      "options": [
+        [
+          "a",
+          "cridar"
+        ],
+        [
+          "b",
+          "anomenar"
+        ],
+        [
+          "c",
+          "cridar, anomenar"
+        ]
+      ]
+    },
+    {
+      "id": "GR1-MALISTA",
+      "course": "greek1",
+      "lemma": "μάλιστα (adv.)",
+      "spanish": "muy",
+      "current_va": "molt",
+      "reason": "Grado superlativo de μάλα; 'molt' no expresa claramente el matiz de 'sobre todo' o 'en grado máximo'.",
+      "options": [
+        [
+          "a",
+          "molt (mantener)"
+        ],
+        [
+          "b",
+          "sobretot"
+        ],
+        [
+          "c",
+          "moltíssim, especialment"
+        ]
+      ]
+    },
+    {
+      "id": "GR1-ATHENAIOS",
+      "course": "greek1",
+      "lemma": "Ἀθηναῖος, –α, –ον",
+      "spanish": "ateniense",
+      "current_va": "atenés",
+      "reason": "La ficha es un adjetivo de tres géneros y el masculino aislado no refleja la flexión.",
+      "options": [
+        [
+          "a",
+          "atenés/atenesa"
+        ],
+        [
+          "b",
+          "atenenc/atenenca"
+        ],
+        [
+          "c",
+          "atenés/atenesa, atenenc/atenenca"
+        ]
+      ]
+    },
+    {
+      "id": "GR1-STRATEGOS",
+      "course": "greek1",
+      "lemma": "στρατηγός, –οῦ",
+      "spanish": "estratego",
+      "current_va": "estrateg",
+      "reason": "Estrateg es el cargo griego; general es una equivalencia funcional menos técnica.",
+      "options": [
+        [
+          "a",
+          "estrateg"
+        ],
+        [
+          "b",
+          "general"
+        ],
+        [
+          "c",
+          "estrateg (general)"
+        ]
+      ]
+    },
+    {
+      "id": "LAT4-GERMANUS",
+      "course": "latin4",
+      "lemma": "Gērmānus, –a, –um",
+      "spanish": "germano/a",
+      "current_va": "germànic/germànica",
+      "reason": "Puede tratarse como gentilicio histórico o como adjetivo cultural.",
+      "options": [
+        [
+          "a",
+          "germànic/germànica"
+        ],
+        [
+          "b",
+          "germà/germana"
+        ],
+        [
+          "c",
+          "germànic/germànica (dels pobles germànics)"
+        ]
+      ]
+    },
+    {
+      "id": "LAT1-PAULUS",
+      "course": "latin1",
+      "lemma": "Paulus, –i",
+      "spanish": "Paulo",
+      "current_va": "Pau",
+      "reason": "El nombre romano puede adaptarse o conservarse con forma latinizante.",
+      "options": [
+        [
+          "a",
+          "Pau"
+        ],
+        [
+          "b",
+          "Paulus"
+        ],
+        [
+          "c",
+          "Paulo"
+        ]
+      ]
+    },
+    {
+      "id": "LAT1-CALLUS",
+      "course": "latin1",
+      "lemma": "Callus, –i",
+      "spanish": "Calo (gentilicio)",
+      "current_va": "Calo (gentilici)",
+      "reason": "La indicación '(gentilicio)' resulta dudosa sin contexto onomástico; puede ser cognomen.",
+      "options": [
+        [
+          "a",
+          "Calo (gentilici)"
+        ],
+        [
+          "b",
+          "Calo (nom propi)"
+        ],
+        [
+          "c",
+          "Calo (cognomen romà)"
+        ]
+      ]
+    },
+    {
+      "id": "LAT1-ORGETORIX",
+      "course": "latin1",
+      "lemma": "Orgetorix, –igis",
+      "spanish": "Orgétorix",
+      "current_va": "Orgétorix",
+      "reason": "No se ha fijado una adaptación valenciana del antropónimo en las fuentes consultadas.",
+      "options": [
+        [
+          "a",
+          "Orgétorix"
+        ],
+        [
+          "b",
+          "Orgetòrix"
+        ],
+        [
+          "c",
+          "Orgetorix (grafía latina sin adaptar)"
+        ]
+      ]
+    },
+    {
+      "id": "GR1-HIERAX",
+      "course": "greek1",
+      "lemma": "Ἱέραξ, –ακος (ὁ)",
+      "spanish": "Hiérax",
+      "current_va": "Hiérax",
+      "reason": "Transcripción rara sin suficiente evidencia para normalizar la acentuación.",
+      "options": [
+        [
+          "a",
+          "Hiérax"
+        ],
+        [
+          "b",
+          "Hièrax"
+        ],
+        [
+          "c",
+          "Hierax (transcripción sin acento)"
+        ]
+      ]
+    },
+    {
+      "id": "PREF-ULTRAPUERTOS",
+      "course": "latin4",
+      "lemma": "Ultrapuertos",
+      "spanish": "ultrapuertos",
+      "current_va": "ultraports",
+      "reason": "Término poco habitual y equivalencia valenciana no suficientemente documentada para un examen.",
+      "options": [
+        [
+          "a",
+          "mantener ultrapuertos / ultraports"
+        ],
+        [
+          "b",
+          "excluirlo del sorteo valenciano"
+        ],
+        [
+          "c",
+          "eliminar la ficha de ambos bancos"
+        ]
+      ]
+    }
+  ]
+}
