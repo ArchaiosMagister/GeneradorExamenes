@@ -77,7 +77,7 @@ function thirdNoun(lemma,entry){
     genitive.length<5||nominative.endsWith('is')||genitive===nominative)return [];
  // Dat./abl. plural of bos, bovis = bobus / bubus, not "bovibus".
  // Unusual stems and defective nouns remain outside automatic generation.
- if(['bos','vis','sus','grus','iuppiter','deus'].includes(nominative))return [];
+ if(['bos','vis','sus','grus','iuppiter','deus','ver'].includes(nominative))return [];
  const stem=genitive.slice(0,-2);
  if(stem.length<2)return [];
  const proper=/^[A-ZĀĂĒĔĪĬŌŎŪŬÆŒ]/u.test(raw.trim());
