@@ -4,9 +4,10 @@ import path from 'node:path';
 import {execFileSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
-execFileSync(process.execPath,[
+const testLog=execFileSync(process.execPath,[
  'scripts/build-greek-nominal-candidates.mjs','tests/fixtures/greek-nominals-sample.jsonl'
 ],{cwd:root,stdio:'pipe',timeout:25000});
+console.log(String(testLog));
 const data=JSON.parse(fs.readFileSync(path.join(root,'data/lemmas/greek-nominal-candidates.json'),'utf8'));
 assert.equal(data.schema,1);
 assert.equal(data.status,'WIKTIONARY_CANDIDATES_NOT_FOR_GRADING');
