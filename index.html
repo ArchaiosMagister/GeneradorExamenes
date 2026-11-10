@@ -895,12 +895,16 @@ function latinCompleteAdjectives(chosen){
  const until=Math.max(0,...chosen.map(examUnitNumber).filter(Number.isInteger));
  return latinSharedBank.vocabulary(currentCourse())
   .filter(x=>examUnitNumber(x.unit)!==null&&examUnitNumber(x.unit)<=until&&!isExcludedExamMorphLemma(x.entry,x.meaning))
-  .map(x=>({x,p:adjective(x)})).filter(item=>item.p&&/^[A-Za-z]+us$/i.test(mNormalize(headLex(item.x.entry))));
+  .map(x=>({x,p:adjective(x)})).filter(item=>{
+   const lemma=mNormalize(headLex(item.x.entry)).toLowerCase();
+   // meus > mi y los adjetivos en -ius requieren vocativos propios.
+   return item.p&&/^[a-z]+us$/.test(lemma)&&lemma!=='meus'&&!lemma.endsWith('ius');
+  });
 }
 function latinCompleteNounGender(item){
  const lemma=mNormalize(item.p.lemma).toLowerCase();
  // Primera declinación de género masculino: no cambiar a femenino por terminar en -a.
- if(['agricola','nauta','poeta','pirata','incola','auriga','scriba'].includes(lemma))return 'm';
+ if(['agricola','nauta','poeta','pirata','incola','auriga','scriba','advena','conviva','collega','athleta','propheta','homicida','satrapa'].includes(lemma))return 'm';
  return item.p.gender;
 }
 function latinCompleteDeclensionItems(chosen){
