@@ -5,6 +5,69 @@ const linguistic=()=>window.ExaminaOfflineLemmatizer;
 const key=s=>linguistic().normalize(s);
 const head=s=>String(s).split(',')[0].replace(/\s*\([^)]*\).*/,'').trim();
 
+/* Formas invariables de referencia: no requieren un paradigma flexivo.
+ * Se usan solo cuando el banco no contiene otra lectura para la misma forma.
+ * Las acepciones polisémicas pueden necesitar desambiguación contextual.
+ * Los enunciados y glosas específicos del docente tienen prioridad.
+ */
+const latinInvariables=[
+ [['a','ab','abs'],'a, ab (prep. + abl.)','de, desde, por','de, des de, per'],
+ [['ad'],'ad (prep. + ac.)','a, hacia','a, cap a'],
+ [['ante'],'ante (prep. + ac.)','delante de, antes de','davant de, abans de'],
+ [['apud'],'apud (prep. + ac.)','junto a, en casa de','al costat de, en casa de'],
+ [['circum'],'circum (prep. + ac.)','alrededor de','al voltant de'],
+ [['contra'],'contra (prep. + ac.)','contra','contra'],
+ [['de'],'de (prep. + abl.)','de, desde, acerca de','de, des de, sobre'],
+ [['e','ex'],'e, ex (prep. + abl.)','de, desde, fuera de','de, des de, fora de'],
+ [['in'],'in (prep. + ac./abl.)','a, hacia, en','a, cap a, en'],
+ [['inter'],'inter (prep. + ac.)','entre','entre'],
+ [['ob'],'ob (prep. + ac.)','a causa de','a causa de'],
+ [['per'],'per (prep. + ac.)','por, a través de','per, a través de'],
+ [['post'],'post (prep. + ac.)','después de, detrás de','després de, darrere de'],
+ [['prae'],'prae (prep. + abl.)','delante de, a causa de','davant de, a causa de'],
+ [['pro'],'pro (prep. + abl.)','en favor de, en lugar de','a favor de, en lloc de'],
+ [['propter'],'propter (prep. + ac.)','cerca de, a causa de','prop de, a causa de'],
+ [['sine'],'sine (prep. + abl.)','sin','sense'],
+ [['sub'],'sub (prep. + ac./abl.)','debajo de, al pie de','davall de, al peu de'],
+ [['super'],'super (prep. + ac./abl.)','sobre, encima de','sobre, damunt de'],
+ [['trans'],'trans (prep. + ac.)','al otro lado de, a través de','a l’altre costat de, a través de'],
+ [['et'],'et (conj.)','y','i'],
+ [['atque','ac'],'atque, ac (conj.)','y, e incluso','i, i fins i tot'],
+ [['aut'],'aut (conj.)','o','o'],
+ [['vel'],'vel (conj.)','o, incluso','o, fins i tot'],
+ [['sed'],'sed (conj.)','pero, sino','però, sinó'],
+ [['neque','nec'],'neque, nec (conj.)','y no, ni','i no, ni'],
+ [['enim'],'enim (conj.)','pues, en efecto','puix, en efecte'],
+ [['tamen'],'tamen (adv.)','sin embargo','no obstant això'],
+ [['non'],'non (adv.)','no','no'],
+ [['etiam'],'etiam (adv.)','también, incluso','també, fins i tot'],
+ [['quoque'],'quoque (adv.)','también','també'],
+ [['nunc'],'nunc (adv.)','ahora','ara'],
+ [['tum'],'tum (adv.)','entonces','aleshores'],
+ [['iam'],'iam (adv.)','ya','ja'],
+ [['semper'],'semper (adv.)','siempre','sempre'],
+ [['saepe'],'saepe (adv.)','a menudo','sovint'],
+ [['ibi'],'ibi (adv.)','allí','allí'],
+ [['ubi'],'ubi (adv.)','donde, cuando','on, quan'],
+ [['unde'],'unde (adv.)','de donde','d’on'],
+ [['cur'],'cur (adv.)','por qué','per què'],
+ [['hodie'],'hodie (adv.)','hoy','hui'],
+ [['heri'],'heri (adv.)','ayer','ahir'],
+ [['cras'],'cras (adv.)','mañana','demà'],
+ [['bene'],'bene (adv.)','bien','bé'],
+ [['male'],'male (adv.)','mal','mal']
+];
+const latinCore=new Map();
+for(const [forms,entry,meaning,meaning_va] of latinInvariables){
+ const lemma=key(forms[0]);
+ for(const surface of forms){
+  const k=key(surface);
+  if(!latinCore.has(k))latinCore.set(k,[]);
+  latinCore.get(k).push({lemma,entry,meaning,meaning_va,attested:true,origin:'invariable contrastada de gramática escolar'});
+ }
+}
+const invariableEntry=entry=>/\((?:adv\.?|conj\.?|prep\.?|part\.?|interj\.?|loc\.|num\.\s*indecl\.)/i.test(String(entry||''));
+
 /* Paradigmas productivos de declinaciones 1.ª/2.ª y presente griego.
  * Solo se aplican a enunciados que constan en el banco docente, con su
  * traducción intacta. No se extrapolan flexiones irregulares ni temas
@@ -496,7 +559,8 @@ function analyze(data,text,course,bank){
   if(!data.vocabulary[lang][lemma]?.[course])continue;
   const k=key(surface);if(!index.has(k))index.set(k,new Map());
   const candidates=index.get(k),old=candidates.get(lemma);
-  const attested=[0,1,5].includes(source);
+  const lexicalInvariable=source===3&&key(surface)===key(lemma)&&invariableEntry(data.vocabulary[lang][lemma][course].entry);
+  const attested=[0,1,5,6,7].includes(source)||lexicalInvariable;
   candidates.set(lemma,{lemma,attested:attested||!!old?.attested});
  }
  const tokens=new Map();
@@ -513,14 +577,21 @@ function analyze(data,text,course,bank){
    const original=data.vocabulary[lang][c.lemma][course];
    const matches=bank.filter(x=>key(x.entry)===key(original.entry)||key(head(x.entry))===key(c.lemma));
    const variants=matches.length?matches:[{entry:original.entry,meaning:''}];
-   return variants.map(x=>({...c,entry:x.entry,meaning:x.meaning||''}));
+   return variants.map(x=>({...c,entry:x.entry,meaning:x.meaning||'',meaning_va:x.meaning_va||''}));
   });
+  const directInvariable=lang==='lat'?bank.filter(x=>
+   key(head(x.entry))===normal&&invariableEntry(x.entry)).map(x=>({
+    lemma:normal,entry:x.entry,meaning:x.meaning||'',meaning_va:x.meaning_va||'',
+    attested:true,origin:'invariable explícita del banco docente'
+   })):[];
+  const curated=lang==='lat'&&!directInvariable.length&&!indexedCandidates.length?
+   (latinCore.get(normal)||[]):[];
   const supplement=greek?.get(normal)||[];
   // La normalización ayuda a encontrar formas; la grafía exacta con
   // diacríticos decide el lema cuando hay coincidencia documentada.
   const exactGreek=supplement.filter(x=>x.exactForms?.has(form.normalize('NFC')));
   const all=exactGreek.length?exactGreek:
-   [...indexedCandidates.filter(x=>!(supplement.length&&!x.attested&&!x.meaning)),...supplement];
+   [...indexedCandidates.filter(x=>!(supplement.length&&!x.attested&&!x.meaning)),...supplement,...directInvariable,...curated];
   // Preferimos la evidencia más firme para la misma entrada, sin descartar
   // una segunda lectura posible de un homógrafo.
   const compact=new Map();
@@ -585,7 +656,8 @@ function analyze(data,text,course,bank){
    warning:requiresSpellingReview?'Posible errata: '+spellingHint:'',
    lemma:resolved&&!requiresSpellingReview?candidates[0].lemma:'',
    entry:resolved&&!requiresSpellingReview?candidates[0].entry:form,
-   meaning:resolved&&!requiresSpellingReview?candidates[0].meaning:''};
+   meaning:resolved&&!requiresSpellingReview?candidates[0].meaning:'',
+   meaning_va:resolved&&!requiresSpellingReview?(candidates[0].meaning_va||''):''};
  });
 }
 function entries(rows){
