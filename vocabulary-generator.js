@@ -696,9 +696,37 @@ function init(){
  const needsAnalysis=u=>!!u.text?.trim()&&!(u.analyzed||u.rows?.length);
  const status=s=>{$('vgStatus').textContent=s};
  const save=()=>{try{localStorage.setItem(storage,JSON.stringify(project))}catch{status('No se pudo guardar en este navegador. Exporta una copia JSON.')}};
+ // Gris: unidad sin texto; verde: con texto; azul: seleccionada.
+ // Los atributos aria-pressed/aria-label hacen accesibles los tres estados
+ // y evitan que el color sea el único indicador.
+ function renderUnitButtons(){
+  const container=$('vgUnitButtons'),fragment=document.createDocumentFragment();
+  for(let i=0;i<project.count;i++){
+   const u=project.units[i]||{title:'UD'+(i+1),text:''};
+   const textPresent=!!u.text?.trim(),current=i===selected;
+   const button=document.createElement('button');
+   button.type='button';button.className='vg-unit-button'+(textPresent?' has-text':'')+(current?' is-selected':'');
+   button.dataset.unit=String(i);
+   button.textContent='UD '+(i+1);
+   button.title=(u.title||'UD'+(i+1))+' — '+(textPresent?'con texto':'vacía')+(current?', seleccionada':'');
+   button.setAttribute('aria-label',button.title);
+   button.setAttribute('aria-pressed',String(current));
+   button.addEventListener('click',()=>{if(i!==selected){selected=i;render()}});
+   fragment.append(button);
+  }
+  container.replaceChildren(fragment);
+ }
+ function refreshUnitButton(){
+  const u=unit(),button=$('vgUnitButtons').querySelector('[data-unit="'+selected+'"]');
+  if(!button)return;
+  const textPresent=!!u.text?.trim();
+  button.classList.toggle('has-text',textPresent);
+  button.title=(u.title||'UD'+(selected+1))+' — '+(textPresent?'con texto':'vacía')+', seleccionada';
+  button.setAttribute('aria-label',button.title);
+ }
  function render(){
   unit();$('vgCount').value=project.count;$('vgCourse').value=project.course;
-  $('vgUnit').replaceChildren(...project.units.slice(0,project.count).map((u,i)=>new Option(u.title,i,false,i===selected)));
+  renderUnitButtons();
   $('vgTitle').value=unit().title;$('vgText').value=unit().text;$('vgMode').value=unit().mode;
   const target=$('vgResults');target.replaceChildren();
   for(const r of entries(unit().rows)){
@@ -716,9 +744,8 @@ function init(){
   }
  }
  $('vgCount').onchange=()=>{const n=Number($('vgCount').value);if(!Number.isInteger(n)||n<1||n>100){status('Elige entre 1 y 100 unidades.');return}project.count=n;selected=Math.min(selected,n-1);render();save()};
- $('vgUnit').onchange=()=>{selected=Number($('vgUnit').value);render()};
  $('vgCourse').onchange=()=>{project.course=$('vgCourse').value;project.units.forEach(u=>{u.rows=[];u.analyzed=false});save();render();status('Banco cambiado. Vuelve a analizar los textos.')};
- for(const [id,field] of [['vgTitle','title'],['vgText','text'],['vgMode','mode']])$(id).oninput=()=>{unit()[field]=$(id).value;if(field==='text'){unit().rows=[];unit().analyzed=false;status('Texto modificado. Analiza la unidad antes de exportar.')}save();if(field==='mode')render()};
+ for(const [id,field] of [['vgTitle','title'],['vgText','text'],['vgMode','mode']])$(id).oninput=()=>{unit()[field]=$(id).value;if(field==='text'){unit().rows=[];unit().analyzed=false;refreshUnitButton();status('Texto modificado. Analiza la unidad antes de exportar.')}if(field==='title')refreshUnitButton();save();if(field==='mode')render()};
  async function analyzeUnits(mode){
   const button=$('vgAnalyze'),buttonAll=$('vgAnalyzeAll'),word=$('vgWord');
   button.disabled=true;buttonAll.disabled=true;word.disabled=true;status('Analizando…');
