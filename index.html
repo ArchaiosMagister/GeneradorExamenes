@@ -308,6 +308,8 @@ function refreshManualMorphWords(){
  paper.querySelectorAll('.exam-pronouns tbody td:first-child i').forEach(el=>add(el,'Pronombre'));
  paper.querySelectorAll('.reference-analysis-item > i').forEach(el=>add(el,'Análisis morfológico'));
  paper.querySelectorAll('.exam-form > span:last-child').forEach(el=>add(el,'Análisis morfológico'));
+ paper.querySelectorAll('.exam-etymology [data-corpus-id]').forEach(el=>add(el,'Etimología'));
+ paper.querySelectorAll('.exam-sentence > span:last-child').forEach(el=>add(el,'Oraciones'));
  paper.querySelectorAll('.latin-standard-exam .exam-question').forEach(question=>{
   if(!question.textContent.toLowerCase().includes('morfol'))return;
   const list=question.nextElementSibling;
@@ -1950,6 +1952,15 @@ refreshCourse();
  }
  const legacyIds=['decl','amount','count-decl'];
  for(const id of legacyIds){const field=$(id)?.closest('.field');if(field)field.classList.add('legacy-question-fields')}
+ const morphLegacy=document.createElement('div');morphLegacy.id='morphOptions';morphLegacy.className='legacy-question-fields';
+ morphLegacy.innerHTML='<input type="number" id="morphOffer" value="3" min="1" max="12">'+
+  '<input type="number" id="morphDecline" value="2" min="1" max="12">'+
+  '<input type="number" id="morphVerbs" value="10" min="1" max="30">'+
+  '<input type="number" id="morphWords" value="10" min="1" max="30">'+
+  '<input type="checkbox" id="morphCategory-n" checked>'+
+  '<input type="checkbox" id="morphCategory-adj" checked>'+
+  '<input type="checkbox" id="morphCategory-pro" checked>';
+ questions.append(morphLegacy);
  const oldMorph=$('manualMorphField');questions.append(oldMorph);
  const questionHost=document.createElement('div');questionHost.id='examQuestionMenus';questions.insertBefore(questionHost,oldMorph);
  const legacyCountArea=$('count-decl').closest('.count-grid');
@@ -2090,7 +2101,7 @@ refreshCourse();
    const caption=(item.querySelector('strong,span')?.textContent||'').toLocaleLowerCase();
    let kind=/declina/.test(caption)?'decl':/conjuga|forma verbal|verbo/.test(caption)?'verb':
     /pronombre/.test(caption)?'pronouns':/análisis|morfológic|forma para analizar/.test(caption)?'forms':
-    /derivados|etimol/.test(caption)?'etymology':null;
+    /derivados|etimol/.test(caption)?'etymology':/oraciones/.test(caption)?'sent':null;
    if(!kind||!questionHost.querySelector('[data-editor-for="'+kind+'"]'))continue;
    questionHost.querySelector('[data-editor-for="'+kind+'"]').append(item);
   }
