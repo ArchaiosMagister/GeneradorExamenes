@@ -687,6 +687,7 @@ function init(){
    }
    const preview=document.createElement('p');preview.textContent=(project.lang==='va'?'Vista d’exportació: ':'Vista de exportación: ')+formatVocabularyEntry(r,unit().mode,project.course,project.lang);box.append(preview);target.append(box);
   }
+  window.ExaminaValencianGloss?.translateDom?.($('vocabularyGenerator'),project.lang);
  }
  $('vgCount').onchange=()=>{const n=Number($('vgCount').value);if(!Number.isInteger(n)||n<1||n>100){status('Elige entre 1 y 100 unidades.');return}project.count=n;selected=Math.min(selected,n-1);render();save()};
  $('vgUnit').onchange=()=>{selected=Number($('vgUnit').value);render()};
