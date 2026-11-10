@@ -1,6 +1,6 @@
 # Auditoría filológica del vocabulario en castellano y valenciano
 
-**Rama:** `feat/integracion-pr29-pr30-valenciano-20261110` · **PR:** #31 · **Estado:** revisión automática aplicada, elecciones docentes pendientes.
+**Rama:** `feat/integracion-pr29-pr30-valenciano-20261110` · **PR:** #31 · **Estado:** correcciones aplicadas, con una única decisión docente pendiente.
 
 ## Criterio editorial
 
@@ -15,30 +15,37 @@
 - `trær` (tres fichas) → `traer`, `cær` → `caer`, `mæstro` → `maestro`, `aporximadamente` → `aproximadamente`.
 - `dux, ducis (m.)` clasificado erróneamente con significado verbal `conducir` → `general`, como las demás fichas del mismo sustantivo.
 - `gens, gentis (m.)` → `gens, gentis (f.)`.
-- `genticilio` → `gentilicio`; **el carácter de gentilicio o de nombre romano de *Callus* permanece sin decidir**.
+- `genticilio` → `gentilicio`; **el docente ha elegido conservar «Calo (gentilici)»**.
 - `Antifaz` (`antifaç`) movido de `ANTI- (oposición)` a `ANTE-/ANTI- (anterioridad)`: el valor en este caso es espacial, «delante de la cara», no oposicional (Nueva gramática académica, §10.5.2; antecedente histórico de la RAE).
 
-## Decisiones para el docente
+## Decisiones aprobadas por el docente
 
-Las siguientes propuestas **no se han aplicado**. El fichero `data/revision-valenciano-pendiente.json` mantiene sus códigos para ejecutarlas de forma inequívoca tras respuesta.
+**12 de 13 decisiones aplicadas** sobre esta PR, sin fusionarla. Se conservan las glosas castellanas originales excepto en el caso de `impono`, cuya corrección española y valenciana se autorizó explícitamente.
 
-| Código | Lema o expresión | Español actual | Valenciano actual | Motivo |
-| --- | --- | --- | --- | --- |
-| `LAT1-IMPORTO` | importo, importavi, importatum (1ª) | traer | portar | Importo suele denotar introducir o traer hacia dentro; la glosa genérica puede quedarse corta. |
-| `LAT1-REDUCO` | reduco, reduxi, reductum (3ª) | traer | portar | Reduco implica conducción de vuelta o regreso; el enunciado español actual omite re-. |
-| `LAT1-IMPONO` | impono, imposui, impositum (3ª) | traer | portar | La glosa original no corresponde al significado ordinario del compuesto impono. |
-| `GR1-KALEO` | καλέω | llamar | cridar | Puede significar llamar, convocar o denominar, según el contexto. |
-| `GR1-MALISTA` | μάλιστα (adv.) | muy | molt | Grado superlativo de μάλα; 'molt' no expresa claramente el matiz de 'sobre todo' o 'en grado máximo'. |
-| `GR1-ATHENAIOS` | Ἀθηναῖος, –α, –ον | ateniense | atenés | La ficha es un adjetivo de tres géneros y el masculino aislado no refleja la flexión. |
-| `GR1-STRATEGOS` | στρατηγός, –οῦ | estratego | estrateg | Estrateg es el cargo griego; general es una equivalencia funcional menos técnica. |
-| `LAT4-GERMANUS` | Gērmānus, –a, –um | germano/a | germànic/germànica | Puede tratarse como gentilicio histórico o como adjetivo cultural. |
-| `LAT1-PAULUS` | Paulus, –i | Paulo | Pau | El nombre romano puede adaptarse o conservarse con forma latinizante. |
-| `LAT1-CALLUS` | Callus, –i | Calo (gentilicio) | Calo (gentilici) | La indicación '(gentilicio)' resulta dudosa sin contexto onomástico; puede ser cognomen. |
-| `LAT1-ORGETORIX` | Orgetorix, –igis | Orgétorix | Orgétorix | No se ha fijado una adaptación valenciana del antropónimo en las fuentes consultadas. |
-| `GR1-HIERAX` | Ἱέραξ, –ακος (ὁ) | Hiérax | Hiérax | Transcripción rara sin suficiente evidencia para normalizar la acentuación. |
-| `PREF-ULTRAPUERTOS` | Ultrapuertos | ultrapuertos | ultraports | Término poco habitual y equivalencia valenciana no suficientemente documentada para un examen. |
+| Código | Entrada | Decisión aprobada |
+| --- | --- | --- |
+| `LAT1-IMPORTO` | importo, importavi, importatum (1ª) | traer → portar |
+| `LAT1-IMPONO` | impono, imposui, impositum (3ª) | imponer, colocar encima → imposar, posar damunt |
+| `GR1-KALEO` | καλέω | cridar, anomenar |
+| `GR1-MALISTA` | μάλιστα (adv.) | moltíssim, especialment |
+| `GR1-ATHENAIOS` | Ἀθηναῖος, –α, –ον | atenenc/atenenca |
+| `GR1-STRATEGOS` | στρατηγός, –οῦ | estrateg (general) |
+| `LAT4-GERMANUS` | Gērmānus, –a, –um | germànic/germànica |
+| `LAT1-PAULUS` | Paulus, –i | Paulus |
+| `LAT1-CALLUS` | Callus, –i | Calo (gentilici) |
+| `LAT1-ORGETORIX` | Orgetorix, –igis | Orgétorix |
+| `GR1-HIERAX` | Ἱέραξ, –ακος (ὁ) | Hiérax |
+| `PREF-ULTRAPUERTOS` | Ultrapuertos | Eliminar la ficha de ambos bancos |
 
-**No normalizar** formas dudosas por analogía ni cambiar significados castellanos por una decisión meramente ortográfica valenciana. En los tres verbos latinos con `traer` se deberá decidir si actualizar también la glosa castellana original.
+**Nota de criterio lingüístico:** el usuario ha elegido **valenciano de uso propio** para los ejercicios y glosarios; priorizar formas como `este`, `eixe`, `meua`, `seua`, `tindre`, `vindre` y `xiquet` cuando corresponda. Evitar sustituir esas elecciones por formas de otras variedades. Respetar asimismo las grafías originales latinas y griegas.
+
+Se ha eliminado `Ultrapuertos`/`ultraports` del único banco bilingüe de prefijos: el fichero pasa de 287 a **286** fichas. La progresión de Latín 4.º debe continuar ofreciendo al menos cuatro candidatas por unidad y por idioma.
+
+## Decisión todavía pendiente
+
+**`LAT1-REDUCO` — *reduco, reduxi, reductum (3ª)*.** Se mantiene provisionalmente castellano «traer» y valenciano «portar». El docente **no eligió ninguna alternativa**: no alterar el contenido hasta una decisión posterior.
+
+Las opciones inicialmente propuestas fueron «traer → portar», «hacer volver → fer tornar» y «conducir de vuelta → conduir de tornada». El registro de auditoría se mantiene en `data/revision-valenciano-pendiente.json`, separando decisiones resueltas de pendientes.
 
 ## Referencias consultadas
 
@@ -54,4 +61,4 @@ Las siguientes propuestas **no se han aplicado**. El fichero `data/revision-vale
 - `node scripts/test-vocabulary.cjs`
 - `npm run offline:build`
 
-No fusionar con `main` hasta aplicar las decisiones solicitadas y validar de nuevo los documentos Word.
+No fusionar con `main` sin validación posterior; la única duda no resuelta es *reduco*, que se conserva sin cambios.
