@@ -33,6 +33,7 @@
   "adverso/a": "advers/adversa",
   "aferrarse a": "aferrar-se a",
   "áfrica": "Àfrica",
+  "africano (sobrenombre de escipión)": "Africà (sobrenom d'Escipió)",
   "agamenón": "Agamèmnon",
   "agradecer a (+ dat.)": "agrair a (+ dat.)",
   "agricultor": "agricultor",
@@ -67,6 +68,7 @@
   "alumna": "alumna",
   "alumno": "alumne",
   "amar": "estimar",
+  "ambíorix (general belga)": "Ambíorix (general belga)",
   "amigo": "amic",
   "amistad": "amistat",
   "amo, señor": "amo, senyor",
@@ -96,6 +98,7 @@
   "arado": "arada",
   "arar": "llaurar",
   "árbol": "arbre",
+  "ardea (ciudad)": "Ardea (ciutat)",
   "arduo/a": "ardu/àrdua",
   "arístides": "Aristides",
   "arma": "arma",
@@ -176,6 +179,7 @@
   "caer": "caure",
   "callar": "callar",
   "calle, camino": "carrer, camí",
+  "calo (gentilicio)": "Calo (gentilici)",
   "caminar": "caminar",
   "camino": "camí",
   "camino, calle": "camí, carrer",
@@ -686,6 +690,7 @@
   "mediterráneo": "Mediterrani",
   "medo": "mede",
   "mégara": "Mègara",
+  "menelao (rey espartano)": "Menelau (rei espartà)",
   "mensajero": "missatger",
   "mercader, comerciante": "mercader, comerciant",
   "mercurio": "Mercuri",
@@ -1135,8 +1140,8 @@
    const notes={'masc.':'masc.','fem.':'fem.','sing.':'sing.','pl.':'pl.','m.':'m.','f.':'f.','adv.':'adv.','conj.':'conj.','prep.':'prep.'};
    return v+' ('+(notes[note[2]]||note[2])+')';
   }
-  // Nombres propios cuya grafía valenciana coincide con la castellana.
-  if(/^\p{Lu}/u.test(text)&&!text.includes(' ')&&/^[\p{L}\p{M}·-]+$/u.test(text))return text;
+  // No se admiten nombres propios desconocidos por mera mayúscula:
+  // las nuevas grafías onomásticas requieren equivalencia explícita.
   const elements=text.split(/\s+/u);
   if(elements.length>1){
    const translated=elements.map(word=>{
