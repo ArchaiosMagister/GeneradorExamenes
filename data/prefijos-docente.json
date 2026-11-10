@@ -110,7 +110,9 @@
       "meaningHint": "dirección, proximidad o adición",
       "answer": "AD-/A-: dirección, proximidad o adición",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "adjunt",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Admirar",
@@ -118,7 +120,9 @@
       "meaningHint": "dirección, proximidad o adición",
       "answer": "AD-/A-: dirección, proximidad o adición",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "admirar",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Admonición",
@@ -126,7 +130,9 @@
       "meaningHint": "dirección, proximidad o adición",
       "answer": "AD-/A-: dirección, proximidad o adición",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "admonició",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Adormecer",
@@ -134,7 +140,9 @@
       "meaningHint": "dirección, proximidad o adición",
       "answer": "AD-/A-: dirección, proximidad o adición",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "adormir",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Adquirir",
@@ -142,7 +150,9 @@
       "meaningHint": "dirección, proximidad o adición",
       "answer": "AD-/A-: dirección, proximidad o adición",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "adquirir",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Adverbio",
@@ -150,7 +160,9 @@
       "meaningHint": "dirección, proximidad o adición",
       "answer": "AD-/A-: dirección, proximidad o adición",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "adverbi",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Adyacente",
@@ -158,7 +170,9 @@
       "meaningHint": "dirección, proximidad o adición",
       "answer": "AD-/A-: dirección, proximidad o adición",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "adjacent",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Afligir",
@@ -166,7 +180,9 @@
       "meaningHint": "dirección, proximidad o adición",
       "answer": "AD-/A-: dirección, proximidad o adición",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "afligir",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Agredir",
@@ -174,7 +190,9 @@
       "meaningHint": "dirección, proximidad o adición",
       "answer": "AD-/A-: dirección, proximidad o adición",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "agredir",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Aprehender",
@@ -182,7 +200,9 @@
       "meaningHint": "dirección, proximidad o adición",
       "answer": "AD-/A-: dirección, proximidad o adición",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "aprehendre",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Anteayer",
@@ -190,7 +210,9 @@
       "meaningHint": "anterioridad espacial o temporal",
       "answer": "ANTE-/ANTI- (anterioridad): anterioridad espacial o temporal",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "despús-ahir",
+      "valencianPrefixEligible": false
     },
     {
       "prompt": "Antebrazo",
@@ -198,7 +220,9 @@
       "meaningHint": "anterioridad espacial o temporal",
       "answer": "ANTE-/ANTI- (anterioridad): anterioridad espacial o temporal",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "avantbraç",
+      "valencianPrefixEligible": false
     },
     {
       "prompt": "Antecapilla",
@@ -206,7 +230,9 @@
       "meaningHint": "anterioridad espacial o temporal",
       "answer": "ANTE-/ANTI- (anterioridad): anterioridad espacial o temporal",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "avantcapella",
+      "valencianPrefixEligible": false
     },
     {
       "prompt": "Antecedente",
@@ -214,7 +240,9 @@
       "meaningHint": "anterioridad espacial o temporal",
       "answer": "ANTE-/ANTI- (anterioridad): anterioridad espacial o temporal",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "antecedent",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Antecesor",
@@ -222,7 +250,9 @@
       "meaningHint": "anterioridad espacial o temporal",
       "answer": "ANTE-/ANTI- (anterioridad): anterioridad espacial o temporal",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "antecessor",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Antediluviano",
@@ -230,7 +260,9 @@
       "meaningHint": "anterioridad espacial o temporal",
       "answer": "ANTE-/ANTI- (anterioridad): anterioridad espacial o temporal",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "antediluvià",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Antelación",
@@ -238,7 +270,9 @@
       "meaningHint": "anterioridad espacial o temporal",
       "answer": "ANTE-/ANTI- (anterioridad): anterioridad espacial o temporal",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "antelació",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Antemano",
@@ -246,7 +280,9 @@
       "meaningHint": "anterioridad espacial o temporal",
       "answer": "ANTE-/ANTI- (anterioridad): anterioridad espacial o temporal",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "per endavant",
+      "valencianPrefixEligible": false
     },
     {
       "prompt": "Anteojos",
@@ -254,7 +290,9 @@
       "meaningHint": "anterioridad espacial o temporal",
       "answer": "ANTE-/ANTI- (anterioridad): anterioridad espacial o temporal",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "ulleres",
+      "valencianPrefixEligible": false
     },
     {
       "prompt": "Anteponer",
@@ -262,7 +300,9 @@
       "meaningHint": "anterioridad espacial o temporal",
       "answer": "ANTE-/ANTI- (anterioridad): anterioridad espacial o temporal",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "anteposar",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Antiácido",
@@ -270,7 +310,9 @@
       "meaningHint": "oposición, contra",
       "answer": "ANTI- (oposición): oposición, contra",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "antiàcid",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Antiadherente",
@@ -278,7 +320,9 @@
       "meaningHint": "oposición, contra",
       "answer": "ANTI- (oposición): oposición, contra",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "antiadherent",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Antiaéreo",
@@ -286,7 +330,9 @@
       "meaningHint": "oposición, contra",
       "answer": "ANTI- (oposición): oposición, contra",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "antiaeri",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Antialérgico",
@@ -294,7 +340,9 @@
       "meaningHint": "oposición, contra",
       "answer": "ANTI- (oposición): oposición, contra",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "antial·lèrgic",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Antiarrugas",
@@ -302,7 +350,9 @@
       "meaningHint": "oposición, contra",
       "answer": "ANTI- (oposición): oposición, contra",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "antiarrugues",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Antibiótico",
@@ -310,7 +360,9 @@
       "meaningHint": "oposición, contra",
       "answer": "ANTI- (oposición): oposición, contra",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "antibiòtic",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Anticonceptivo",
@@ -318,7 +370,9 @@
       "meaningHint": "oposición, contra",
       "answer": "ANTI- (oposición): oposición, contra",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "anticonceptiu",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Anticristo",
@@ -326,7 +380,9 @@
       "meaningHint": "oposición, contra",
       "answer": "ANTI- (oposición): oposición, contra",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "anticrist",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Anticuerpo",
@@ -334,7 +390,9 @@
       "meaningHint": "oposición, contra",
       "answer": "ANTI- (oposición): oposición, contra",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "anticòs",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Antídoto",
@@ -342,7 +400,9 @@
       "meaningHint": "oposición, contra",
       "answer": "ANTI- (oposición): oposición, contra",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "antídot",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Antifaz",
@@ -350,7 +410,9 @@
       "meaningHint": "oposición, contra",
       "answer": "ANTI- (oposición): oposición, contra",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "antifaç",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Antivírico",
@@ -358,7 +420,9 @@
       "meaningHint": "oposición, contra",
       "answer": "ANTI- (oposición): oposición, contra",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "antivíric",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Circuncidar",
@@ -366,7 +430,9 @@
       "meaningHint": "alrededor",
       "answer": "CIRCUN-: alrededor",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "circumcidar",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Circundar",
@@ -374,7 +440,9 @@
       "meaningHint": "alrededor",
       "answer": "CIRCUN-: alrededor",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "circumdar",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Circunferencia",
@@ -382,7 +450,9 @@
       "meaningHint": "alrededor",
       "answer": "CIRCUN-: alrededor",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "circumferència",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Circunflejo",
@@ -390,7 +460,9 @@
       "meaningHint": "alrededor",
       "answer": "CIRCUN-: alrededor",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "circumflex",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Circunloquio",
@@ -398,7 +470,9 @@
       "meaningHint": "alrededor",
       "answer": "CIRCUN-: alrededor",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "circumloqui",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Circunnavegar",
@@ -406,7 +480,9 @@
       "meaningHint": "alrededor",
       "answer": "CIRCUN-: alrededor",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "circumnavegar",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Circunscribir",
@@ -414,7 +490,9 @@
       "meaningHint": "alrededor",
       "answer": "CIRCUN-: alrededor",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "circumscriure",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Circunspección",
@@ -422,7 +500,9 @@
       "meaningHint": "alrededor",
       "answer": "CIRCUN-: alrededor",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "circumspecció",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Circunstancia",
@@ -430,7 +510,9 @@
       "meaningHint": "alrededor",
       "answer": "CIRCUN-: alrededor",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "circumstància",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Circunvalación",
@@ -438,7 +520,9 @@
       "meaningHint": "alrededor",
       "answer": "CIRCUN-: alrededor",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "circumval·lació",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Cisalpino",
@@ -446,7 +530,9 @@
       "meaningHint": "de este lado",
       "answer": "CIS-: de este lado",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "cisalpí",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Cisandino",
@@ -454,7 +540,9 @@
       "meaningHint": "de este lado",
       "answer": "CIS-: de este lado",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "cisandí",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Cisexual",
@@ -462,7 +550,9 @@
       "meaningHint": "de este lado",
       "answer": "CIS-: de este lado",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "cissexual",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Cisgénero",
@@ -470,7 +560,9 @@
       "meaningHint": "de este lado",
       "answer": "CIS-: de este lado",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "cisgènere",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Cisjordania",
@@ -478,7 +570,9 @@
       "meaningHint": "de este lado",
       "answer": "CIS-: de este lado",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "Cisjordània",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Cismontano",
@@ -486,7 +580,9 @@
       "meaningHint": "de este lado",
       "answer": "CIS-: de este lado",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "cismontà",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Cispadano",
@@ -494,7 +590,9 @@
       "meaningHint": "de este lado",
       "answer": "CIS-: de este lado",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "cispadà",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Coautor",
@@ -502,7 +600,9 @@
       "meaningHint": "unión, compañía o acción conjunta",
       "answer": "CON-/COL-/COM-/COR-/CO-: unión, compañía o acción conjunta",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "coautor",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Colaborar",
@@ -510,7 +610,9 @@
       "meaningHint": "unión, compañía o acción conjunta",
       "answer": "CON-/COL-/COM-/COR-/CO-: unión, compañía o acción conjunta",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "col·laborar",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Compadre",
@@ -518,7 +620,9 @@
       "meaningHint": "unión, compañía o acción conjunta",
       "answer": "CON-/COL-/COM-/COR-/CO-: unión, compañía o acción conjunta",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "compare",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Compilar",
@@ -526,7 +630,9 @@
       "meaningHint": "unión, compañía o acción conjunta",
       "answer": "CON-/COL-/COM-/COR-/CO-: unión, compañía o acción conjunta",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "compilar",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Compuerta",
@@ -534,7 +640,9 @@
       "meaningHint": "unión, compañía o acción conjunta",
       "answer": "CON-/COL-/COM-/COR-/CO-: unión, compañía o acción conjunta",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "comporta",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Concordia",
@@ -542,7 +650,9 @@
       "meaningHint": "unión, compañía o acción conjunta",
       "answer": "CON-/COL-/COM-/COR-/CO-: unión, compañía o acción conjunta",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "concòrdia",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Confluencia",
@@ -550,7 +660,9 @@
       "meaningHint": "unión, compañía o acción conjunta",
       "answer": "CON-/COL-/COM-/COR-/CO-: unión, compañía o acción conjunta",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "confluència",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Confluir",
@@ -558,7 +670,9 @@
       "meaningHint": "unión, compañía o acción conjunta",
       "answer": "CON-/COL-/COM-/COR-/CO-: unión, compañía o acción conjunta",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "confluir",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Convivir",
@@ -566,7 +680,9 @@
       "meaningHint": "unión, compañía o acción conjunta",
       "answer": "CON-/COL-/COM-/COR-/CO-: unión, compañía o acción conjunta",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "conviure",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Cooperación",
@@ -574,7 +690,9 @@
       "meaningHint": "unión, compañía o acción conjunta",
       "answer": "CON-/COL-/COM-/COR-/CO-: unión, compañía o acción conjunta",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "cooperació",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Correligionario",
@@ -582,7 +700,9 @@
       "meaningHint": "unión, compañía o acción conjunta",
       "answer": "CON-/COL-/COM-/COR-/CO-: unión, compañía o acción conjunta",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "correligionari",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Contraataque",
@@ -590,7 +710,9 @@
       "meaningHint": "oposición o sentido contrario",
       "answer": "CONTRA-: oposición o sentido contrario",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "contraatac",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Contrabando",
@@ -598,7 +720,9 @@
       "meaningHint": "oposición o sentido contrario",
       "answer": "CONTRA-: oposición o sentido contrario",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "contraban",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Contraceptivo",
@@ -606,7 +730,9 @@
       "meaningHint": "oposición o sentido contrario",
       "answer": "CONTRA-: oposición o sentido contrario",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "contraceptiu",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Contradecir",
@@ -614,7 +740,9 @@
       "meaningHint": "oposición o sentido contrario",
       "answer": "CONTRA-: oposición o sentido contrario",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "contradir",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Contradicción",
@@ -622,7 +750,9 @@
       "meaningHint": "oposición o sentido contrario",
       "answer": "CONTRA-: oposición o sentido contrario",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "contradicció",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Contraindicado",
@@ -630,7 +760,9 @@
       "meaningHint": "oposición o sentido contrario",
       "answer": "CONTRA-: oposición o sentido contrario",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "contraindicat",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Contranatural",
@@ -638,7 +770,9 @@
       "meaningHint": "oposición o sentido contrario",
       "answer": "CONTRA-: oposición o sentido contrario",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "contranatural",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Contraparte",
@@ -646,7 +780,9 @@
       "meaningHint": "oposición o sentido contrario",
       "answer": "CONTRA-: oposición o sentido contrario",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "contrapart",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Contrapeso",
@@ -654,7 +790,9 @@
       "meaningHint": "oposición o sentido contrario",
       "answer": "CONTRA-: oposición o sentido contrario",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "contrapés",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Contrarreforma",
@@ -662,7 +800,9 @@
       "meaningHint": "oposición o sentido contrario",
       "answer": "CONTRA-: oposición o sentido contrario",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "contrareforma",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Decaer",
@@ -670,7 +810,9 @@
       "meaningHint": "separación, descenso o privación",
       "answer": "DE-: separación, descenso o privación",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "decaure",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Decaído",
@@ -678,7 +820,9 @@
       "meaningHint": "separación, descenso o privación",
       "answer": "DE-: separación, descenso o privación",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "decaigut",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Decapitar",
@@ -686,7 +830,9 @@
       "meaningHint": "separación, descenso o privación",
       "answer": "DE-: separación, descenso o privación",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "decapitar",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Decolorar",
@@ -694,7 +840,9 @@
       "meaningHint": "separación, descenso o privación",
       "answer": "DE-: separación, descenso o privación",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "decolorar",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Deducir",
@@ -702,7 +850,9 @@
       "meaningHint": "separación, descenso o privación",
       "answer": "DE-: separación, descenso o privación",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "deduir",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Deferencia",
@@ -710,7 +860,9 @@
       "meaningHint": "separación, descenso o privación",
       "answer": "DE-: separación, descenso o privación",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "deferència",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Definir",
@@ -718,7 +870,9 @@
       "meaningHint": "separación, descenso o privación",
       "answer": "DE-: separación, descenso o privación",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "definir",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Deformar",
@@ -726,7 +880,9 @@
       "meaningHint": "separación, descenso o privación",
       "answer": "DE-: separación, descenso o privación",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "deformar",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Degradante",
@@ -734,7 +890,9 @@
       "meaningHint": "separación, descenso o privación",
       "answer": "DE-: separación, descenso o privación",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "degradant",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Delimitar",
@@ -742,7 +900,9 @@
       "meaningHint": "separación, descenso o privación",
       "answer": "DE-: separación, descenso o privación",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "delimitar",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Demente",
@@ -750,7 +910,9 @@
       "meaningHint": "separación, descenso o privación",
       "answer": "DE-: separación, descenso o privación",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "dement",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Depender",
@@ -758,7 +920,9 @@
       "meaningHint": "separación, descenso o privación",
       "answer": "DE-: separación, descenso o privación",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "dependre",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Difundir",
@@ -766,7 +930,9 @@
       "meaningHint": "separación, diversidad o negación",
       "answer": "DI-/DIS-: separación, diversidad o negación",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "difondre",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Dilatar",
@@ -774,7 +940,9 @@
       "meaningHint": "separación, diversidad o negación",
       "answer": "DI-/DIS-: separación, diversidad o negación",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "dilatar",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Dimanar",
@@ -782,7 +950,9 @@
       "meaningHint": "separación, diversidad o negación",
       "answer": "DI-/DIS-: separación, diversidad o negación",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "dimanar",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Discapacidad",
@@ -790,7 +960,9 @@
       "meaningHint": "separación, diversidad o negación",
       "answer": "DI-/DIS-: separación, diversidad o negación",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "discapacitat",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Disconformidad",
@@ -798,7 +970,9 @@
       "meaningHint": "separación, diversidad o negación",
       "answer": "DI-/DIS-: separación, diversidad o negación",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "disconformitat",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Discordia",
@@ -806,7 +980,9 @@
       "meaningHint": "separación, diversidad o negación",
       "answer": "DI-/DIS-: separación, diversidad o negación",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "discòrdia",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Disentir",
@@ -814,7 +990,9 @@
       "meaningHint": "separación, diversidad o negación",
       "answer": "DI-/DIS-: separación, diversidad o negación",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "dissentir",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Disfuncional",
@@ -822,7 +1000,9 @@
       "meaningHint": "separación, diversidad o negación",
       "answer": "DI-/DIS-: separación, diversidad o negación",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "disfuncional",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Dislocar",
@@ -830,7 +1010,9 @@
       "meaningHint": "separación, diversidad o negación",
       "answer": "DI-/DIS-: separación, diversidad o negación",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "dislocar",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Disputar",
@@ -838,7 +1020,9 @@
       "meaningHint": "separación, diversidad o negación",
       "answer": "DI-/DIS-: separación, diversidad o negación",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "disputar",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Divergir",
@@ -846,7 +1030,9 @@
       "meaningHint": "separación, diversidad o negación",
       "answer": "DI-/DIS-: separación, diversidad o negación",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "divergir",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Diversión",
@@ -854,7 +1040,9 @@
       "meaningHint": "separación, diversidad o negación",
       "answer": "DI-/DIS-: separación, diversidad o negación",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "diversió",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Dividir",
@@ -862,7 +1050,9 @@
       "meaningHint": "separación, diversidad o negación",
       "answer": "DI-/DIS-: separación, diversidad o negación",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "dividir",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Eficaz",
@@ -870,7 +1060,9 @@
       "meaningHint": "salida o movimiento hacia fuera",
       "answer": "E-: salida o movimiento hacia fuera",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "eficaç",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Efusión",
@@ -878,7 +1070,9 @@
       "meaningHint": "salida o movimiento hacia fuera",
       "answer": "E-: salida o movimiento hacia fuera",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "efusió",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Eliminar",
@@ -886,7 +1080,9 @@
       "meaningHint": "salida o movimiento hacia fuera",
       "answer": "E-: salida o movimiento hacia fuera",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "eliminar",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Eludir",
@@ -894,7 +1090,9 @@
       "meaningHint": "salida o movimiento hacia fuera",
       "answer": "E-: salida o movimiento hacia fuera",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "eludir",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Emanar",
@@ -902,7 +1100,9 @@
       "meaningHint": "salida o movimiento hacia fuera",
       "answer": "E-: salida o movimiento hacia fuera",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "emanar",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Emergencia",
@@ -910,7 +1110,9 @@
       "meaningHint": "salida o movimiento hacia fuera",
       "answer": "E-: salida o movimiento hacia fuera",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "emergència",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Emigrar",
@@ -918,7 +1120,9 @@
       "meaningHint": "salida o movimiento hacia fuera",
       "answer": "E-: salida o movimiento hacia fuera",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "emigrar",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Emoción",
@@ -926,7 +1130,9 @@
       "meaningHint": "salida o movimiento hacia fuera",
       "answer": "E-: salida o movimiento hacia fuera",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "emoció",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Evadir",
@@ -934,7 +1140,9 @@
       "meaningHint": "salida o movimiento hacia fuera",
       "answer": "E-: salida o movimiento hacia fuera",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "evadir",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Evaporación",
@@ -942,7 +1150,9 @@
       "meaningHint": "salida o movimiento hacia fuera",
       "answer": "E-: salida o movimiento hacia fuera",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "evaporació",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Exacción",
@@ -950,7 +1160,9 @@
       "meaningHint": "salida, exterioridad o privación",
       "answer": "EX-: salida, exterioridad o privación",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "exacció",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Exagerar",
@@ -958,7 +1170,9 @@
       "meaningHint": "salida, exterioridad o privación",
       "answer": "EX-: salida, exterioridad o privación",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "exagerar",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Exánime",
@@ -966,7 +1180,9 @@
       "meaningHint": "salida, exterioridad o privación",
       "answer": "EX-: salida, exterioridad o privación",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "exànime",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Excedente",
@@ -974,7 +1190,9 @@
       "meaningHint": "salida, exterioridad o privación",
       "answer": "EX-: salida, exterioridad o privación",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "excedent",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Excéntrico",
@@ -982,7 +1200,9 @@
       "meaningHint": "salida, exterioridad o privación",
       "answer": "EX-: salida, exterioridad o privación",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "excèntric",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Exclamación",
@@ -990,7 +1210,9 @@
       "meaningHint": "salida, exterioridad o privación",
       "answer": "EX-: salida, exterioridad o privación",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "exclamació",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Exclamar",
@@ -998,7 +1220,9 @@
       "meaningHint": "salida, exterioridad o privación",
       "answer": "EX-: salida, exterioridad o privación",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "exclamar",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Excónsul",
@@ -1006,7 +1230,9 @@
       "meaningHint": "salida, exterioridad o privación",
       "answer": "EX-: salida, exterioridad o privación",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "excònsol",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Exhumar",
@@ -1014,7 +1240,9 @@
       "meaningHint": "salida, exterioridad o privación",
       "answer": "EX-: salida, exterioridad o privación",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "exhumar",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Exigir",
@@ -1022,7 +1250,9 @@
       "meaningHint": "salida, exterioridad o privación",
       "answer": "EX-: salida, exterioridad o privación",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "exigir",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Exterminar",
@@ -1030,7 +1260,9 @@
       "meaningHint": "salida, exterioridad o privación",
       "answer": "EX-: salida, exterioridad o privación",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "exterminar",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Extraer",
@@ -1038,7 +1270,9 @@
       "meaningHint": "fuera de, más allá de",
       "answer": "EXTRA-: fuera de, más allá de",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "extraure",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Extrafino",
@@ -1046,7 +1280,9 @@
       "meaningHint": "fuera de, más allá de",
       "answer": "EXTRA-: fuera de, más allá de",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "extrafí",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Extrajudicial",
@@ -1054,7 +1290,9 @@
       "meaningHint": "fuera de, más allá de",
       "answer": "EXTRA-: fuera de, más allá de",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "extrajudicial",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Extralimitar",
@@ -1062,7 +1300,9 @@
       "meaningHint": "fuera de, más allá de",
       "answer": "EXTRA-: fuera de, más allá de",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "extralimitar",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Extramuros",
@@ -1070,7 +1310,9 @@
       "meaningHint": "fuera de, más allá de",
       "answer": "EXTRA-: fuera de, más allá de",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "extramurs",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Extraoficial",
@@ -1078,7 +1320,9 @@
       "meaningHint": "fuera de, más allá de",
       "answer": "EXTRA-: fuera de, más allá de",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "extraoficial",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Extraordinario",
@@ -1086,7 +1330,9 @@
       "meaningHint": "fuera de, más allá de",
       "answer": "EXTRA-: fuera de, más allá de",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "extraordinari",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Extraplano",
@@ -1094,7 +1340,9 @@
       "meaningHint": "fuera de, más allá de",
       "answer": "EXTRA-: fuera de, más allá de",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "extrapla",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Extrapolación",
@@ -1102,7 +1350,9 @@
       "meaningHint": "fuera de, más allá de",
       "answer": "EXTRA-: fuera de, más allá de",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "extrapolació",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Extrarradio",
@@ -1110,7 +1360,9 @@
       "meaningHint": "fuera de, más allá de",
       "answer": "EXTRA-: fuera de, más allá de",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "extraradi",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Extraterrestre",
@@ -1118,7 +1370,9 @@
       "meaningHint": "fuera de, más allá de",
       "answer": "EXTRA-: fuera de, más allá de",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "extraterrestre",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Extravertido",
@@ -1126,7 +1380,9 @@
       "meaningHint": "fuera de, más allá de",
       "answer": "EXTRA-: fuera de, más allá de",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "extravertit",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Extraviar",
@@ -1134,7 +1390,9 @@
       "meaningHint": "fuera de, más allá de",
       "answer": "EXTRA-: fuera de, más allá de",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "extraviar",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Ilegal",
@@ -1142,7 +1400,9 @@
       "meaningHint": "negación o interioridad según la palabra",
       "answer": "IN-/IL-/IM-: negación o interioridad según la palabra",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "il·legal",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Ilógico",
@@ -1150,7 +1410,9 @@
       "meaningHint": "negación o interioridad según la palabra",
       "answer": "IN-/IL-/IM-: negación o interioridad según la palabra",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "il·lògic",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Impaciencia",
@@ -1158,7 +1420,9 @@
       "meaningHint": "negación o interioridad según la palabra",
       "answer": "IN-/IL-/IM-: negación o interioridad según la palabra",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "impaciència",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Impasible",
@@ -1166,7 +1430,9 @@
       "meaningHint": "negación o interioridad según la palabra",
       "answer": "IN-/IL-/IM-: negación o interioridad según la palabra",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "impassible",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Importar",
@@ -1174,7 +1440,9 @@
       "meaningHint": "negación o interioridad según la palabra",
       "answer": "IN-/IL-/IM-: negación o interioridad según la palabra",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "importar",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Imprevisto",
@@ -1182,7 +1450,9 @@
       "meaningHint": "negación o interioridad según la palabra",
       "answer": "IN-/IL-/IM-: negación o interioridad según la palabra",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "imprevist",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Inaudito",
@@ -1190,7 +1460,9 @@
       "meaningHint": "negación o interioridad según la palabra",
       "answer": "IN-/IL-/IM-: negación o interioridad según la palabra",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "inaudit",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Incluir",
@@ -1198,7 +1470,9 @@
       "meaningHint": "negación o interioridad según la palabra",
       "answer": "IN-/IL-/IM-: negación o interioridad según la palabra",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "incloure",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Incoloro",
@@ -1206,7 +1480,9 @@
       "meaningHint": "negación o interioridad según la palabra",
       "answer": "IN-/IL-/IM-: negación o interioridad según la palabra",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "incolor",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Infrecuente",
@@ -1214,7 +1490,9 @@
       "meaningHint": "negación o interioridad según la palabra",
       "answer": "IN-/IL-/IM-: negación o interioridad según la palabra",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "infreqüent",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Inmortal",
@@ -1222,7 +1500,9 @@
       "meaningHint": "negación o interioridad según la palabra",
       "answer": "IN-/IL-/IM-: negación o interioridad según la palabra",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "immortal",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Inoperante",
@@ -1230,7 +1510,9 @@
       "meaningHint": "negación o interioridad según la palabra",
       "answer": "IN-/IL-/IM-: negación o interioridad según la palabra",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "inoperant",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Infradotar",
@@ -1238,7 +1520,9 @@
       "meaningHint": "debajo de, inferioridad",
       "answer": "INFRA-: debajo de, inferioridad",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "infradotar",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Infraestructura",
@@ -1246,7 +1530,9 @@
       "meaningHint": "debajo de, inferioridad",
       "answer": "INFRA-: debajo de, inferioridad",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "infraestructura",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Infrahumano",
@@ -1254,7 +1540,9 @@
       "meaningHint": "debajo de, inferioridad",
       "answer": "INFRA-: debajo de, inferioridad",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "infrahumà",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Inframundo",
@@ -1262,7 +1550,9 @@
       "meaningHint": "debajo de, inferioridad",
       "answer": "INFRA-: debajo de, inferioridad",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "inframón",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Infrarrojo",
@@ -1270,7 +1560,9 @@
       "meaningHint": "debajo de, inferioridad",
       "answer": "INFRA-: debajo de, inferioridad",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "infraroig",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Infrasonido",
@@ -1278,7 +1570,9 @@
       "meaningHint": "debajo de, inferioridad",
       "answer": "INFRA-: debajo de, inferioridad",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "infrasò",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Infrautilizar",
@@ -1286,7 +1580,9 @@
       "meaningHint": "debajo de, inferioridad",
       "answer": "INFRA-: debajo de, inferioridad",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "infrautilitzar",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Infravalorar",
@@ -1294,7 +1590,9 @@
       "meaningHint": "debajo de, inferioridad",
       "answer": "INFRA-: debajo de, inferioridad",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "infravalorar",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Infravivienda",
@@ -1302,7 +1600,9 @@
       "meaningHint": "debajo de, inferioridad",
       "answer": "INFRA-: debajo de, inferioridad",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "infrahabitatge",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Intercalar",
@@ -1310,7 +1610,9 @@
       "meaningHint": "entre, en medio de",
       "answer": "INTER-: entre, en medio de",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "intercalar",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Interceder",
@@ -1318,7 +1620,9 @@
       "meaningHint": "entre, en medio de",
       "answer": "INTER-: entre, en medio de",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "intercedir",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Intercostal",
@@ -1326,7 +1630,9 @@
       "meaningHint": "entre, en medio de",
       "answer": "INTER-: entre, en medio de",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "intercostal",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Interdependencia",
@@ -1334,7 +1640,9 @@
       "meaningHint": "entre, en medio de",
       "answer": "INTER-: entre, en medio de",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "interdependència",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Interferencia",
@@ -1342,7 +1650,9 @@
       "meaningHint": "entre, en medio de",
       "answer": "INTER-: entre, en medio de",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "interferència",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Interfono",
@@ -1350,7 +1660,9 @@
       "meaningHint": "entre, en medio de",
       "answer": "INTER-: entre, en medio de",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "interfon",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Interlocutor",
@@ -1358,7 +1670,9 @@
       "meaningHint": "entre, en medio de",
       "answer": "INTER-: entre, en medio de",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "interlocutor",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Intermedio",
@@ -1366,7 +1680,9 @@
       "meaningHint": "entre, en medio de",
       "answer": "INTER-: entre, en medio de",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "intermedi",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Interministerial",
@@ -1374,7 +1690,9 @@
       "meaningHint": "entre, en medio de",
       "answer": "INTER-: entre, en medio de",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "interministerial",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Internacional",
@@ -1382,7 +1700,9 @@
       "meaningHint": "entre, en medio de",
       "answer": "INTER-: entre, en medio de",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "internacional",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Interplanetario",
@@ -1390,7 +1710,9 @@
       "meaningHint": "entre, en medio de",
       "answer": "INTER-: entre, en medio de",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "interplanetari",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Interrelacionar",
@@ -1398,7 +1720,9 @@
       "meaningHint": "entre, en medio de",
       "answer": "INTER-: entre, en medio de",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "interrelacionar",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Intervenir",
@@ -1406,7 +1730,9 @@
       "meaningHint": "entre, en medio de",
       "answer": "INTER-: entre, en medio de",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "intervindre",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Intracelular",
@@ -1414,7 +1740,9 @@
       "meaningHint": "dentro de",
       "answer": "INTRA-: dentro de",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "intracel·lular",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Intracraneal",
@@ -1422,7 +1750,9 @@
       "meaningHint": "dentro de",
       "answer": "INTRA-: dentro de",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "intracranial",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Intradérmico",
@@ -1430,7 +1760,9 @@
       "meaningHint": "dentro de",
       "answer": "INTRA-: dentro de",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "intradèrmic",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Intradía",
@@ -1438,7 +1770,9 @@
       "meaningHint": "dentro de",
       "answer": "INTRA-: dentro de",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "intradia",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Intramuros",
@@ -1446,7 +1780,9 @@
       "meaningHint": "dentro de",
       "answer": "INTRA-: dentro de",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "intramurs",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Intramuscular",
@@ -1454,7 +1790,9 @@
       "meaningHint": "dentro de",
       "answer": "INTRA-: dentro de",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "intramuscular",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Intransitivo",
@@ -1462,7 +1800,9 @@
       "meaningHint": "dentro de",
       "answer": "INTRA-: dentro de",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "intransitiu",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Intratable",
@@ -1470,7 +1810,9 @@
       "meaningHint": "dentro de",
       "answer": "INTRA-: dentro de",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "intractable",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Intraurbano",
@@ -1478,7 +1820,9 @@
       "meaningHint": "dentro de",
       "answer": "INTRA-: dentro de",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "intraurbà",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Intravenoso",
@@ -1486,7 +1830,9 @@
       "meaningHint": "dentro de",
       "answer": "INTRA-: dentro de",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "intravenós",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Percusión",
@@ -1494,7 +1840,9 @@
       "meaningHint": "a través de, completamente",
       "answer": "PER-: a través de, completamente",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "percussió",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Percutáneo",
@@ -1502,7 +1850,9 @@
       "meaningHint": "a través de, completamente",
       "answer": "PER-: a través de, completamente",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "percutani",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Perdurable",
@@ -1510,7 +1860,9 @@
       "meaningHint": "a través de, completamente",
       "answer": "PER-: a través de, completamente",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "perdurable",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Perfecto",
@@ -1518,7 +1870,9 @@
       "meaningHint": "a través de, completamente",
       "answer": "PER-: a través de, completamente",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "perfecte",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Perjurar",
@@ -1526,7 +1880,9 @@
       "meaningHint": "a través de, completamente",
       "answer": "PER-: a través de, completamente",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "perjurar",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Permuta",
@@ -1534,7 +1890,9 @@
       "meaningHint": "a través de, completamente",
       "answer": "PER-: a través de, completamente",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "permuta",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Pernoctar",
@@ -1542,7 +1900,9 @@
       "meaningHint": "a través de, completamente",
       "answer": "PER-: a través de, completamente",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "pernoctar",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Perseguir",
@@ -1550,7 +1910,9 @@
       "meaningHint": "a través de, completamente",
       "answer": "PER-: a través de, completamente",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "perseguir",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Perturbar",
@@ -1558,7 +1920,9 @@
       "meaningHint": "a través de, completamente",
       "answer": "PER-: a través de, completamente",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "pertorbar",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Pervertir",
@@ -1566,7 +1930,9 @@
       "meaningHint": "a través de, completamente",
       "answer": "PER-: a través de, completamente",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "pervertir",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Pervivir",
@@ -1574,7 +1940,9 @@
       "meaningHint": "a través de, completamente",
       "answer": "PER-: a través de, completamente",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "perviure",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Posbélico",
@@ -1582,7 +1950,9 @@
       "meaningHint": "después de, posterioridad",
       "answer": "POS-/POST-: después de, posterioridad",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "postbèl·lic",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Posdata",
@@ -1590,7 +1960,9 @@
       "meaningHint": "después de, posterioridad",
       "answer": "POS-/POST-: después de, posterioridad",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "postdata",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Posgrado",
@@ -1598,7 +1970,9 @@
       "meaningHint": "después de, posterioridad",
       "answer": "POS-/POST-: después de, posterioridad",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "postgrau",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Posguerra",
@@ -1606,7 +1980,9 @@
       "meaningHint": "después de, posterioridad",
       "answer": "POS-/POST-: después de, posterioridad",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "postguerra",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Posmoderno",
@@ -1614,7 +1990,9 @@
       "meaningHint": "después de, posterioridad",
       "answer": "POS-/POST-: después de, posterioridad",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "postmodern",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Posponer",
@@ -1622,7 +2000,9 @@
       "meaningHint": "después de, posterioridad",
       "answer": "POS-/POST-: después de, posterioridad",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "posposar",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Postdata",
@@ -1630,7 +2010,9 @@
       "meaningHint": "después de, posterioridad",
       "answer": "POS-/POST-: después de, posterioridad",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "postdata",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Postdoctoral",
@@ -1638,7 +2020,9 @@
       "meaningHint": "después de, posterioridad",
       "answer": "POS-/POST-: después de, posterioridad",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "postdoctoral",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Postergar",
@@ -1646,7 +2030,9 @@
       "meaningHint": "después de, posterioridad",
       "answer": "POS-/POST-: después de, posterioridad",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "postergar",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Postónico",
@@ -1654,7 +2040,9 @@
       "meaningHint": "después de, posterioridad",
       "answer": "POS-/POST-: después de, posterioridad",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "posttònic",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Postoperatorio",
@@ -1662,7 +2050,9 @@
       "meaningHint": "después de, posterioridad",
       "answer": "POS-/POST-: después de, posterioridad",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "postoperatori",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Postparto",
@@ -1670,7 +2060,9 @@
       "meaningHint": "después de, posterioridad",
       "answer": "POS-/POST-: después de, posterioridad",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "postpart",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Preaviso",
@@ -1678,7 +2070,9 @@
       "meaningHint": "antes de, anterioridad",
       "answer": "PRE-: antes de, anterioridad",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "preavís",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Precaución",
@@ -1686,7 +2080,9 @@
       "meaningHint": "antes de, anterioridad",
       "answer": "PRE-: antes de, anterioridad",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "precaució",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Preclaro",
@@ -1694,7 +2090,9 @@
       "meaningHint": "antes de, anterioridad",
       "answer": "PRE-: antes de, anterioridad",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "preclar",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Predecir",
@@ -1702,7 +2100,9 @@
       "meaningHint": "antes de, anterioridad",
       "answer": "PRE-: antes de, anterioridad",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "predir",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Predicción",
@@ -1710,7 +2110,9 @@
       "meaningHint": "antes de, anterioridad",
       "answer": "PRE-: antes de, anterioridad",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "predicció",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Preescolar",
@@ -1718,7 +2120,9 @@
       "meaningHint": "antes de, anterioridad",
       "answer": "PRE-: antes de, anterioridad",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "preescolar",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Preferencia",
@@ -1726,7 +2130,9 @@
       "meaningHint": "antes de, anterioridad",
       "answer": "PRE-: antes de, anterioridad",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "preferència",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Prefijar",
@@ -1734,7 +2140,9 @@
       "meaningHint": "antes de, anterioridad",
       "answer": "PRE-: antes de, anterioridad",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "prefixar",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Prefijo",
@@ -1742,7 +2150,9 @@
       "meaningHint": "antes de, anterioridad",
       "answer": "PRE-: antes de, anterioridad",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "prefix",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Prehistoria",
@@ -1750,7 +2160,9 @@
       "meaningHint": "antes de, anterioridad",
       "answer": "PRE-: antes de, anterioridad",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "prehistòria",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Prejuicio",
@@ -1758,7 +2170,9 @@
       "meaningHint": "antes de, anterioridad",
       "answer": "PRE-: antes de, anterioridad",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "prejudici",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Prematuro",
@@ -1766,7 +2180,9 @@
       "meaningHint": "antes de, anterioridad",
       "answer": "PRE-: antes de, anterioridad",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "prematur",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Premonición",
@@ -1774,7 +2190,9 @@
       "meaningHint": "antes de, anterioridad",
       "answer": "PRE-: antes de, anterioridad",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "premonició",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Prever",
@@ -1782,7 +2200,9 @@
       "meaningHint": "antes de, anterioridad",
       "answer": "PRE-: antes de, anterioridad",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "preveure",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Proamnistía",
@@ -1790,7 +2210,9 @@
       "meaningHint": "hacia delante, en favor de",
       "answer": "PRO-: hacia delante, en favor de",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "proamnistia",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Proclamar",
@@ -1798,7 +2220,9 @@
       "meaningHint": "hacia delante, en favor de",
       "answer": "PRO-: hacia delante, en favor de",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "proclamar",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Procónsul",
@@ -1806,7 +2230,9 @@
       "meaningHint": "hacia delante, en favor de",
       "answer": "PRO-: hacia delante, en favor de",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "procònsol",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Progenitor",
@@ -1814,7 +2240,9 @@
       "meaningHint": "hacia delante, en favor de",
       "answer": "PRO-: hacia delante, en favor de",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "progenitor",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Progenitura",
@@ -1822,7 +2250,9 @@
       "meaningHint": "hacia delante, en favor de",
       "answer": "PRO-: hacia delante, en favor de",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "progenitura",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Progubernamental",
@@ -1830,7 +2260,9 @@
       "meaningHint": "hacia delante, en favor de",
       "answer": "PRO-: hacia delante, en favor de",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "progovernamental",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Promotor",
@@ -1838,7 +2270,9 @@
       "meaningHint": "hacia delante, en favor de",
       "answer": "PRO-: hacia delante, en favor de",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "promotor",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Promover",
@@ -1846,7 +2280,9 @@
       "meaningHint": "hacia delante, en favor de",
       "answer": "PRO-: hacia delante, en favor de",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "promoure",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Pronombre",
@@ -1854,7 +2290,9 @@
       "meaningHint": "hacia delante, en favor de",
       "answer": "PRO-: hacia delante, en favor de",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "pronom",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Proponer",
@@ -1862,7 +2300,9 @@
       "meaningHint": "hacia delante, en favor de",
       "answer": "PRO-: hacia delante, en favor de",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "proposar",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Proseguir",
@@ -1870,7 +2310,9 @@
       "meaningHint": "hacia delante, en favor de",
       "answer": "PRO-: hacia delante, en favor de",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "prosseguir",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Proyecto",
@@ -1878,7 +2320,9 @@
       "meaningHint": "hacia delante, en favor de",
       "answer": "PRO-: hacia delante, en favor de",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "projecte",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Recámara",
@@ -1886,7 +2330,9 @@
       "meaningHint": "repetición, retroceso o intensificación",
       "answer": "RE-/RED-: repetición, retroceso o intensificación",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "recambra",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Recargar",
@@ -1894,7 +2340,9 @@
       "meaningHint": "repetición, retroceso o intensificación",
       "answer": "RE-/RED-: repetición, retroceso o intensificación",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "recarregar",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Reconstruir",
@@ -1902,7 +2350,9 @@
       "meaningHint": "repetición, retroceso o intensificación",
       "answer": "RE-/RED-: repetición, retroceso o intensificación",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "reconstruir",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Redención",
@@ -1910,7 +2360,9 @@
       "meaningHint": "repetición, retroceso o intensificación",
       "answer": "RE-/RED-: repetición, retroceso o intensificación",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "redempció",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Referencia",
@@ -1918,7 +2370,9 @@
       "meaningHint": "repetición, retroceso o intensificación",
       "answer": "RE-/RED-: repetición, retroceso o intensificación",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "referència",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Refluir",
@@ -1926,7 +2380,9 @@
       "meaningHint": "repetición, retroceso o intensificación",
       "answer": "RE-/RED-: repetición, retroceso o intensificación",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "refluir",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Renombre",
@@ -1934,7 +2390,9 @@
       "meaningHint": "repetición, retroceso o intensificación",
       "answer": "RE-/RED-: repetición, retroceso o intensificación",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "renom",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Reponer",
@@ -1942,7 +2400,9 @@
       "meaningHint": "repetición, retroceso o intensificación",
       "answer": "RE-/RED-: repetición, retroceso o intensificación",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "reposar",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Reprobar",
@@ -1950,7 +2410,9 @@
       "meaningHint": "repetición, retroceso o intensificación",
       "answer": "RE-/RED-: repetición, retroceso o intensificación",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "reprovar",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Repugnar",
@@ -1958,7 +2420,9 @@
       "meaningHint": "repetición, retroceso o intensificación",
       "answer": "RE-/RED-: repetición, retroceso o intensificación",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "repugnar",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Reseco",
@@ -1966,7 +2430,9 @@
       "meaningHint": "repetición, retroceso o intensificación",
       "answer": "RE-/RED-: repetición, retroceso o intensificación",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "ressec",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Resistencia",
@@ -1974,7 +2440,9 @@
       "meaningHint": "repetición, retroceso o intensificación",
       "answer": "RE-/RED-: repetición, retroceso o intensificación",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "resistència",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Resurrección",
@@ -1982,7 +2450,9 @@
       "meaningHint": "repetición, retroceso o intensificación",
       "answer": "RE-/RED-: repetición, retroceso o intensificación",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "resurrecció",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Revivir",
@@ -1990,7 +2460,9 @@
       "meaningHint": "repetición, retroceso o intensificación",
       "answer": "RE-/RED-: repetición, retroceso o intensificación",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "reviure",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Retroactivo",
@@ -1998,7 +2470,9 @@
       "meaningHint": "hacia atrás",
       "answer": "RETRO-: hacia atrás",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "retroactiu",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Retroalimentación",
@@ -2006,7 +2480,9 @@
       "meaningHint": "hacia atrás",
       "answer": "RETRO-: hacia atrás",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "retroalimentació",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Retroceder",
@@ -2014,7 +2490,9 @@
       "meaningHint": "hacia atrás",
       "answer": "RETRO-: hacia atrás",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "retrocedir",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Retrógrado",
@@ -2022,7 +2500,9 @@
       "meaningHint": "hacia atrás",
       "answer": "RETRO-: hacia atrás",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "retrògrad",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Retroiluminar",
@@ -2030,7 +2510,9 @@
       "meaningHint": "hacia atrás",
       "answer": "RETRO-: hacia atrás",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "retroil·luminar",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Retropropulsión",
@@ -2038,7 +2520,9 @@
       "meaningHint": "hacia atrás",
       "answer": "RETRO-: hacia atrás",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "retropropulsió",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Retrospección",
@@ -2046,7 +2530,9 @@
       "meaningHint": "hacia atrás",
       "answer": "RETRO-: hacia atrás",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "retrospecció",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Retrospectiva",
@@ -2054,7 +2540,9 @@
       "meaningHint": "hacia atrás",
       "answer": "RETRO-: hacia atrás",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "retrospectiva",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Retrotraer",
@@ -2062,7 +2550,9 @@
       "meaningHint": "hacia atrás",
       "answer": "RETRO-: hacia atrás",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "retrotraure",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Retrovisor",
@@ -2070,7 +2560,9 @@
       "meaningHint": "hacia atrás",
       "answer": "RETRO-: hacia atrás",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "retrovisor",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Sofrito",
@@ -2078,7 +2570,9 @@
       "meaningHint": "debajo de, subordinación",
       "answer": "SUB(S)-/SU(S)-/SO(S)-: debajo de, subordinación",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "sofregit",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Soterrar",
@@ -2086,7 +2580,9 @@
       "meaningHint": "debajo de, subordinación",
       "answer": "SUB(S)-/SU(S)-/SO(S)-: debajo de, subordinación",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "soterrar",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Subacuático",
@@ -2094,7 +2590,9 @@
       "meaningHint": "debajo de, subordinación",
       "answer": "SUB(S)-/SU(S)-/SO(S)-: debajo de, subordinación",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "subaquàtic",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Subarrendar",
@@ -2102,7 +2600,9 @@
       "meaningHint": "debajo de, subordinación",
       "answer": "SUB(S)-/SU(S)-/SO(S)-: debajo de, subordinación",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "subarrendar",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Subconsciente",
@@ -2110,7 +2610,9 @@
       "meaningHint": "debajo de, subordinación",
       "answer": "SUB(S)-/SU(S)-/SO(S)-: debajo de, subordinación",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "subconscient",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Subdelegado",
@@ -2118,7 +2620,9 @@
       "meaningHint": "debajo de, subordinación",
       "answer": "SUB(S)-/SU(S)-/SO(S)-: debajo de, subordinación",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "subdelegat",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Subempleo",
@@ -2126,7 +2630,9 @@
       "meaningHint": "debajo de, subordinación",
       "answer": "SUB(S)-/SU(S)-/SO(S)-: debajo de, subordinación",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "subocupació",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Submarino",
@@ -2134,7 +2640,9 @@
       "meaningHint": "debajo de, subordinación",
       "answer": "SUB(S)-/SU(S)-/SO(S)-: debajo de, subordinación",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "submarí",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Subordinación",
@@ -2142,7 +2650,9 @@
       "meaningHint": "debajo de, subordinación",
       "answer": "SUB(S)-/SU(S)-/SO(S)-: debajo de, subordinación",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "subordinació",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Subsiguiente",
@@ -2150,7 +2660,9 @@
       "meaningHint": "debajo de, subordinación",
       "answer": "SUB(S)-/SU(S)-/SO(S)-: debajo de, subordinación",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "subsegüent",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Subsuelo",
@@ -2158,7 +2670,9 @@
       "meaningHint": "debajo de, subordinación",
       "answer": "SUB(S)-/SU(S)-/SO(S)-: debajo de, subordinación",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "subsòl",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Subterráneo",
@@ -2166,7 +2680,9 @@
       "meaningHint": "debajo de, subordinación",
       "answer": "SUB(S)-/SU(S)-/SO(S)-: debajo de, subordinación",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "subterrani",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Subyugar",
@@ -2174,7 +2690,9 @@
       "meaningHint": "debajo de, subordinación",
       "answer": "SUB(S)-/SU(S)-/SO(S)-: debajo de, subordinación",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "subjugar",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Transacción",
@@ -2182,7 +2700,9 @@
       "meaningHint": "a través de, al otro lado, cambio",
       "answer": "TRANS-/TRA-/TRAS-: a través de, al otro lado, cambio",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "transacció",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Transalpino",
@@ -2190,7 +2710,9 @@
       "meaningHint": "a través de, al otro lado, cambio",
       "answer": "TRANS-/TRA-/TRAS-: a través de, al otro lado, cambio",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "transalpí",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Transatlántico",
@@ -2198,7 +2720,9 @@
       "meaningHint": "a través de, al otro lado, cambio",
       "answer": "TRANS-/TRA-/TRAS-: a través de, al otro lado, cambio",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "transatlàntic",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Transcribir",
@@ -2206,7 +2730,9 @@
       "meaningHint": "a través de, al otro lado, cambio",
       "answer": "TRANS-/TRA-/TRAS-: a través de, al otro lado, cambio",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "transcriure",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Transeunte",
@@ -2214,7 +2740,9 @@
       "meaningHint": "a través de, al otro lado, cambio",
       "answer": "TRANS-/TRA-/TRAS-: a través de, al otro lado, cambio",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "transeünt",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Transeúnte",
@@ -2222,7 +2750,9 @@
       "meaningHint": "a través de, al otro lado, cambio",
       "answer": "TRANS-/TRA-/TRAS-: a través de, al otro lado, cambio",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "transeünt",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Transfiguración",
@@ -2230,7 +2760,9 @@
       "meaningHint": "a través de, al otro lado, cambio",
       "answer": "TRANS-/TRA-/TRAS-: a través de, al otro lado, cambio",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "transfiguració",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Transformar",
@@ -2238,7 +2770,9 @@
       "meaningHint": "a través de, al otro lado, cambio",
       "answer": "TRANS-/TRA-/TRAS-: a través de, al otro lado, cambio",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "transformar",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Transición",
@@ -2246,7 +2780,9 @@
       "meaningHint": "a través de, al otro lado, cambio",
       "answer": "TRANS-/TRA-/TRAS-: a través de, al otro lado, cambio",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "transició",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Translúcido",
@@ -2254,7 +2790,9 @@
       "meaningHint": "a través de, al otro lado, cambio",
       "answer": "TRANS-/TRA-/TRAS-: a través de, al otro lado, cambio",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "translúcid",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Trasalpino",
@@ -2262,7 +2800,9 @@
       "meaningHint": "a través de, al otro lado, cambio",
       "answer": "TRANS-/TRA-/TRAS-: a través de, al otro lado, cambio",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "trasalpí",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Trascendental",
@@ -2270,7 +2810,9 @@
       "meaningHint": "a través de, al otro lado, cambio",
       "answer": "TRANS-/TRA-/TRAS-: a través de, al otro lado, cambio",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "transcendental",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Trasladar",
@@ -2278,7 +2820,9 @@
       "meaningHint": "a través de, al otro lado, cambio",
       "answer": "TRANS-/TRA-/TRAS-: a través de, al otro lado, cambio",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "traslladar",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Traslúcido",
@@ -2286,7 +2830,9 @@
       "meaningHint": "a través de, al otro lado, cambio",
       "answer": "TRANS-/TRA-/TRAS-: a través de, al otro lado, cambio",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "translúcid",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Trastienda",
@@ -2294,7 +2840,9 @@
       "meaningHint": "a través de, al otro lado, cambio",
       "answer": "TRANS-/TRA-/TRAS-: a través de, al otro lado, cambio",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "rerebotiga",
+      "valencianPrefixEligible": false
     },
     {
       "prompt": "Travestismo",
@@ -2302,7 +2850,9 @@
       "meaningHint": "a través de, al otro lado, cambio",
       "answer": "TRANS-/TRA-/TRAS-: a través de, al otro lado, cambio",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "transvestisme",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Ulterior",
@@ -2310,7 +2860,9 @@
       "meaningHint": "más allá de, exceso",
       "answer": "ULTER-/ULTRA-: más allá de, exceso",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "ulterior",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Ultraderecha",
@@ -2318,7 +2870,9 @@
       "meaningHint": "más allá de, exceso",
       "answer": "ULTER-/ULTRA-: más allá de, exceso",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "ultradreta",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Ultraligero",
@@ -2326,7 +2880,9 @@
       "meaningHint": "más allá de, exceso",
       "answer": "ULTER-/ULTRA-: más allá de, exceso",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "ultralleuger",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Ultramar",
@@ -2334,7 +2890,9 @@
       "meaningHint": "más allá de, exceso",
       "answer": "ULTER-/ULTRA-: más allá de, exceso",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "ultramar",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Ultramarino",
@@ -2342,7 +2900,9 @@
       "meaningHint": "más allá de, exceso",
       "answer": "ULTER-/ULTRA-: más allá de, exceso",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "ultramarí",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Ultrapuertos",
@@ -2350,7 +2910,9 @@
       "meaningHint": "más allá de, exceso",
       "answer": "ULTER-/ULTRA-: más allá de, exceso",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "ultraports",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Ultrarrápido",
@@ -2358,7 +2920,9 @@
       "meaningHint": "más allá de, exceso",
       "answer": "ULTER-/ULTRA-: más allá de, exceso",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "ultraràpid",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Ultrasensible",
@@ -2366,7 +2930,9 @@
       "meaningHint": "más allá de, exceso",
       "answer": "ULTER-/ULTRA-: más allá de, exceso",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "ultrasensible",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Ultrasónico",
@@ -2374,7 +2940,9 @@
       "meaningHint": "más allá de, exceso",
       "answer": "ULTER-/ULTRA-: más allá de, exceso",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "ultrasònic",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Ultrasonido",
@@ -2382,7 +2950,9 @@
       "meaningHint": "más allá de, exceso",
       "answer": "ULTER-/ULTRA-: más allá de, exceso",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "ultrasò",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Ultratumba",
@@ -2390,7 +2960,9 @@
       "meaningHint": "más allá de, exceso",
       "answer": "ULTER-/ULTRA-: más allá de, exceso",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "ultratomba",
+      "valencianPrefixEligible": true
     },
     {
       "prompt": "Ultravioleta",
@@ -2398,7 +2970,10 @@
       "meaningHint": "más allá de, exceso",
       "answer": "ULTER-/ULTRA-: más allá de, exceso",
       "source": "lista docente de palabras con prefijos",
-      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso",
+      "prompt_va": "ultraviolat",
+      "valencianPrefixEligible": true
     }
-  ]
+  ],
+  "translationNote": "Traducciones docentes de trabajo al valenciano: mantener enunciados españoles originales; para las entradas sin correspondencia prefijal transparente en valenciano, excluirlas del sorteo valenciano."
 }
