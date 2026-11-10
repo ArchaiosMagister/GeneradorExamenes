@@ -148,6 +148,17 @@ async function checkFile(browser,filename){
     else assert(documentXml.includes('<w:i/>'),caseLabel+': cursiva latina ausente en Word');
    }
   }
+  if(course==='greek1'&&model==='translation'){
+   const greekGloss=await page.evaluate(()=>({
+    sentenceCount:document.querySelectorAll('#paper .exam-sentence').length,
+    glossCount:document.querySelectorAll('#paper .final-gloss .gloss-item').length,
+    placeholder:document.querySelector('#paper .final-gloss')?.textContent.includes('[Traducción pendiente de revisión]')||false
+   }));
+   if(greekGloss.sentenceCount>0){
+    assert(greekGloss.glossCount>0,filename+': el examen de traducción griega carece de vocabulario');
+    assert(!greekGloss.placeholder,filename+': traducción griega inventada o sin verificar en el vocabulario imprimible');
+   }
+  }
   // El panel de preguntas es un acordeón cerrado por defecto.
   await page.locator('#examQuestionSettings').evaluate(section=>section.open=true);
   await page.locator('#examQuestionMenus details').evaluateAll(sections=>sections.forEach(el=>el.open=true));
@@ -205,6 +216,52 @@ async function checkFile(browser,filename){
   return q?.nextElementSibling?.querySelectorAll(':scope > li').length||0;
  });
  assert.equal(forms,1,filename+': el control de formas no actualiza la vista previa');
+ // Casos tomados del formato docente: los vocablos exigibles se conservan
+ // con enunciado solamente, y una enclítica se analiza sin inventar lemas.
+ const glossaryRegression=await page.evaluate(()=>{
+  const course=document.getElementById('course'),model=document.getElementById('model');
+  const scope=document.getElementById('glossScope');
+  const previous={course:course.value,model:model.value,scope:scope.value,required:examRequired.slice()};
+  const parse=html=>{
+   const el=document.createElement('div');el.innerHTML=html;
+   return {
+    rows:[...el.querySelectorAll('.gloss-item')].map(x=>x.textContent),
+    warning:el.querySelector('.notice.no-print')?.textContent||'',
+    printText:el.querySelector('.final-gloss')?.textContent||''
+   };
+  };
+  try{
+   course.value='latin1';model.value='tablas';scope.value='all';
+   const base=parse(buildFinalLexicon(['UD1'],[],[{text:'Puellaque amat.'}],[],[],{sentencesOnly:true}));
+   examRequired.push({course:'latin1',unit:'UD1',key:examKey('puella'),entry:'puella, -ae'});
+   const required=parse(buildFinalLexicon(['UD1'],[],[{text:'Puella amat.'}],[],[],{sentencesOnly:true}));
+   const unknown=parse(buildFinalLexicon(['UD1'],[],[{text:'FORMADESCONOCIDAXYZ'}],[],[],{sentencesOnly:true}));
+   return {base,required,unknown,defaultScope:previous.scope};
+  }finally{
+   course.value=previous.course;model.value=previous.model;scope.value=previous.scope;
+   examRequired.length=0;examRequired.push(...previous.required);
+  }
+ });
+ assert.equal(glossaryRegression.defaultScope,'all',filename+': se ocultan por defecto las palabras exigibles');
+ assert(glossaryRegression.base.rows.some(x=>/puella/i.test(x)),filename+': no se reconoce la base de la enclítica -que');
+ assert(glossaryRegression.base.rows.some(x=>/amo/i.test(x)),filename+': no se incorpora un verbo con enunciado');
+ const requiredWord=glossaryRegression.required.rows.find(x=>/puella/i.test(x));
+ assert(requiredWord&&!requiredWord.includes(':'),filename+': el vocabulario exigible necesita enunciado pero no traducción');
+ assert(!glossaryRegression.unknown.printText.includes('FORMADESCONOCIDAXYZ'),filename+': se ha inventado un lema');
+ assert(glossaryRegression.unknown.warning.includes('FORMADESCONOCIDAXYZ'),filename+': falta advertencia para forma desconocida');
+
+ const noSentences=await page.evaluate(()=>{
+  const key='latin1/mixto/sent',had=Object.hasOwn(examQuestionChoiceState,key),previous=examQuestionChoiceState[key];
+  try{
+   examQuestionChoiceState[key]=false;generate();
+   return {sentences:document.querySelectorAll('#paper .latin-translation-exam ol.task li').length,
+    glossary:document.querySelectorAll('#paper .final-gloss .gloss-item').length};
+  }finally{
+   if(had)examQuestionChoiceState[key]=previous;else delete examQuestionChoiceState[key];
+   generate();
+  }
+ });
+ assert.equal(noSentences.glossary,0,filename+': se añade vocabulario de oraciones desactivadas');
  await page.setViewportSize({width:390,height:844});
  assert(await page.locator('#paper .exam-sheet').isVisible(),filename+': vista previa oculta en móvil');
  assert.deepEqual(errors,[],filename+': errores JavaScript');
