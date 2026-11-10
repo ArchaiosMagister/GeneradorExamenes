@@ -55,7 +55,7 @@ jobs:
           node scripts/build-greek-nominal-candidates.mjs
           node scripts/build-lemma-index.mjs
           npm run offline:build
-          npm run vocabulary:test
+          node scripts/audit-vocabulary.cjs
       - name: Preparar ambas versiones para Pages
         shell: bash
         run: |
