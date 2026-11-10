@@ -9,6 +9,29 @@ async function checkFile(browser,filename){
  const page=await context.newPage(),errors=[];
  page.on('pageerror',error=>errors.push(String(error)));
  await page.goto(pathToFileURL(path.resolve(filename)).href);
+ // Tipografía filológica: solo el lexema va en cursiva; la información
+ // de género (3.ª declinación) y conjugación permanece en redonda.
+ const typographies=await page.evaluate(()=>[
+  ['rex, regis (m.)','declension','rex, regis','(m.)'],
+  ['amō, amāvī, amātum (1ª)','conjugation','amō, amāvī, amātum','(1ª)'],
+  ['puella bona','declension','puella bona',''],
+  ['ὁ λόγος','declension','ὁ λόγος','']
+ ].map(([text,kind,expectedLexeme,expectedIndicator])=>{
+  const cell=document.createElement('th');
+  cell.innerHTML=examParadigmHeading(text,kind);
+  const lexeme=cell.querySelector('i'),indicator=cell.querySelector('.exam-paradigm-indicator');
+  return {lexeme:lexeme?.textContent,indicator:indicator?.textContent||'',
+   lexemeItalic:wordInline(lexeme).includes('<w:i/>'),
+   indicatorItalic:indicator?wordInline(indicator).includes('<w:i/>'):false,
+   fullText:cell.textContent,expectedLexeme,expectedIndicator,source:text};
+ }));
+ for(const sample of typographies){
+  assert.equal(sample.lexeme,sample.expectedLexeme,filename+': lema mal identificado '+sample.source);
+  assert.equal(sample.indicator,sample.expectedIndicator,filename+': indicación mal separada '+sample.source);
+  assert.equal(sample.lexemeItalic,true,filename+': lema no cursivo en Word '+sample.source);
+  assert.equal(sample.indicatorItalic,false,filename+': metadato en cursiva '+sample.source);
+  assert.equal(sample.fullText,sample.source,filename+': se ha perdido contenido '+sample.source);
+ }
  const cases=[
   ['latin1','tablas','UD3'],['latin1','morf','UD3'],['latin1','mixto','UD3'],
   ['latin4','tablas','UD3'],
@@ -34,6 +57,10 @@ async function checkFile(browser,filename){
   });
   assert(result.visible&&result.height>80&&result.text>80,filename+' '+course+'/'+model+': vista previa ausente '+JSON.stringify(result));
   assert(result.questions>=3,filename+' '+course+'/'+model+': preguntas no renderizadas');
+  const headings=await page.locator('#paper .exam-nouns thead tr:first-child th[colspan], #paper .exam-verbs thead tr:first-child th[colspan]').evaluateAll(
+   cells=>cells.map(cell=>({text:cell.textContent,lexeme:cell.querySelector('i')?.textContent,indicator:cell.querySelector('.exam-paradigm-indicator')?.textContent||''}))
+  );
+  assert(headings.every(h=>h.lexeme&&h.text===h.lexeme+(h.indicator?' '+h.indicator:'')),filename+' '+course+'/'+model+': formato de encabezado alterado '+JSON.stringify(headings));
   // El panel de preguntas es un acordeón cerrado por defecto.
   await page.locator('.menu-section').filter({has:page.locator('#manualMorphWords')}).evaluate(section=>section.open=true);
   if(course==='greek1'&&model==='complete'){
@@ -47,8 +74,10 @@ async function checkFile(browser,filename){
   }else{
    assert(result.controls>0,filename+' '+course+'/'+model+': no se pueden editar formas: '+result.warning);
    const input=page.locator('#manualMorphWords input[type="text"]').first();
+   const tableEdit=await input.evaluate(el=>/^(Declinación|Conjugación)/.test(el.parentElement.textContent.trim()));
    await input.fill('FORMA_DE_PRUEBA');
    assert((await page.locator('#paper').textContent()).includes('FORMA_DE_PRUEBA'),filename+' '+course+'/'+model+': la edición no actualiza la vista previa');
+   if(tableEdit)assert(await page.locator('#paper .exam-paradigm thead tr:first-child th[colspan] i').filter({hasText:'FORMA_DE_PRUEBA'}).count()>0,filename+': editar título elimina cursiva');
    assert.equal(await page.locator('#paper #answerkey [data-manual-warning]').count(),1,filename+' '+course+'/'+model+': falta advertencia de solucionario');
   }
  }
