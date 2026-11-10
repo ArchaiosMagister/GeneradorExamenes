@@ -19,7 +19,7 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
   });
   await page.selectOption('#offlineLemmaCourse','lat1');
   await page.locator('#offlineLemmaCoverage').filter({hasText:'664 lemas'}).waitFor();
-  assert.match(await page.locator('#offlineLemmaCoverage').textContent(),/modelos provisionales/);
+  assert.match(await page.locator('#offlineLemmaCoverage').textContent(),/formas candidatas no verificadas/);
   await page.selectOption('#offlineLemmaMode','lemma');
   await page.locator('#offlineLemmaInput').fill('amo');
   await page.locator('#offlineLemmaSearch').click();
