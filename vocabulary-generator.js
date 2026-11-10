@@ -603,7 +603,7 @@ function displayEntry(entry,mode){
 // Formato filológico de la exportación, sin alterar la base ni el JSON.
 // Traducción de un único lema griego: comillas simples. Locuciones con
 // varias palabras griegas (μέν… δέ): comillas dobles.
-function formatVocabularyEntry(row,mode,course){
+function formatVocabularyEntry(row,mode,course,language='es'){
  let entry=displayEntry(row.entry,mode);
  if(course==='gr1'){
   const raw=entry.trim();
@@ -622,8 +622,10 @@ function formatVocabularyEntry(row,mode,course){
    if(type)entry+=' ('+type+')';
   }
  }
- if(!row.meaning)return entry;
- const meaning=String(row.meaning).trim().replace(/^[‘’'"]+|[‘’'"]+$/g,'');
+ const localized=window.ExaminaValencianGloss?.forEntry(row,language);
+ const translated=localized?localized.value:row.meaning;
+ if(!translated)return entry;
+ const meaning=String(translated).trim().replace(/^[‘’'"]+|[‘’'"]+$/g,'');
  const pieces=meaning.split(/[’']\s*,\s*[‘']/).map(x=>x.trim()).filter(Boolean);
  const lemmaPart=head(entry);
  const phrase=(/\s|…/u.test(lemmaPart)&&!/\s+o\s+/i.test(lemmaPart)) &&
@@ -638,7 +640,7 @@ function documentXml(project){
  if(unanalysed.length)throw Error('Quedan '+unanalysed.length+' unidades con texto sin analizar.');
  const escape=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&apos;'}[c]));
  const p=(s,b=false)=>'<w:p><w:pPr>'+(b?'<w:keepNext/><w:keepLines/><w:spacing w:before="160" w:after="80"/>':'<w:keepLines/><w:spacing w:after="30"/>')+'</w:pPr><w:r><w:rPr>'+(b?'<w:b/>':'')+'<w:rFonts w:ascii="Palatino Linotype" w:hAnsi="Palatino Linotype" w:cs="Palatino Linotype"/><w:sz w:val="21"/></w:rPr><w:t xml:space="preserve">'+escape(s)+'</w:t></w:r></w:p>';
- const line=(r,u)=>p((['manual','documented'].includes(r.status)?'':'* ')+formatVocabularyEntry(r,u.mode,project.course));
+ const line=(r,u)=>p((['manual','documented'].includes(r.status)?'':'* ')+formatVocabularyEntry(r,u.mode,project.course,project.lang||'es'));
  // Word balancea las dos columnas al cerrar cada sección continua.
  // Cerramos también la última unidad: sin ese salto final puede quedar toda
  // su lista en la primera columna aunque las anteriores se distribuyan bien.
@@ -648,7 +650,7 @@ function documentXml(project){
  const body=units.map(u=>{
   const all=entries(u.rows||[]),pending=all.filter(r=>!['manual','documented'].includes(r.status));
   return p(u.title,true)+all.filter(r=>['manual','documented'].includes(r.status)).map(r=>line(r,u)).join('')+
-    (pending.length?p('Pendientes de revisión (*)',true)+pending.map(r=>line(r,u)).join(''):'')+
+    (pending.length?p(project.lang==='va'?'Pendents de revisió (*)':'Pendientes de revisión (*)',true)+pending.map(r=>line(r,u)).join(''):'')+
     closeUnit();
  }).join('');
  // La sección final, vacía y de una columna, fuerza la distribución equilibrada
@@ -659,33 +661,36 @@ function documentXml(project){
 window.ExaminaVocabulary={analyze,entries,displayEntry,formatVocabularyEntry,documentXml};
 function init(){
  const $=id=>document.getElementById(id),storage='examina_vocabulary_project_v1';
- let project={count:1,course:'lat1',units:[]},selected=0;
+ let project={count:1,course:'lat1',lang:'es',units:[]},selected=0;
  try{const saved=JSON.parse(localStorage.getItem(storage));if(saved?.units&&Number.isInteger(saved.count)&&saved.count>=1&&saved.count<=100&&['lat1','lat4','gr1'].includes(saved.course))project=saved}catch{}
+ if(!['es','va'].includes(project.lang))project.lang='es';
  const unit=()=>{while(project.units.length<project.count)project.units.push({title:'UD'+(project.units.length+1),text:'',mode:'complete',rows:[],analyzed:false});return project.units[selected]};
  const needsAnalysis=u=>!!u.text?.trim()&&!(u.analyzed||u.rows?.length);
  const status=s=>{$('vgStatus').textContent=s};
  const save=()=>{try{localStorage.setItem(storage,JSON.stringify(project))}catch{status('No se pudo guardar en este navegador. Exporta una copia JSON.')}};
  function render(){
-  unit();$('vgCount').value=project.count;$('vgCourse').value=project.course;
+  unit();$('vgCount').value=project.count;$('vgCourse').value=project.course;$('vgLang').value=project.lang||'es';
   $('vgUnit').replaceChildren(...project.units.slice(0,project.count).map((u,i)=>new Option(u.title,i,false,i===selected)));
   $('vgTitle').value=unit().title;$('vgText').value=unit().text;$('vgMode').value=unit().mode;
   const target=$('vgResults');target.replaceChildren();
   for(const r of entries(unit().rows)){
    const box=document.createElement('div');box.style.cssText='padding:10px 0;border-bottom:1px solid #ccd7e6';
-   const label=document.createElement('p');label.textContent=r.form+' · '+(r.warning||({documented:'Forma documentada',manual:'Revisado manualmente',review:'* Ambigua o candidata sin verificar',unknown:'* Desconocida'}[r.status]));box.append(label);
+   const states=project.lang==='va'?{documented:'Forma documentada',manual:'Revisat manualment',review:'* Ambigua o candidata sense verificar',unknown:'* Desconeguda'}:{documented:'Forma documentada',manual:'Revisado manualmente',review:'* Ambigua o candidata sin verificar',unknown:'* Desconocida'};
+   const label=document.createElement('p');label.textContent=r.form+' · '+(r.warning||states[r.status]);box.append(label);
    if(r.candidates.length&&r.status!=='documented'){
     const select=document.createElement('select');select.append(new Option('Elegir una entrada documentada o candidata…',''));
-    r.candidates.forEach((c,i)=>select.append(new Option(c.entry+' — '+c.meaning+(c.attested?'':' [sin verificar]'),i)));
+    r.candidates.forEach((c,i)=>{const candidateGloss=window.ExaminaValencianGloss?.forEntry(c,project.lang)?.value||c.meaning;select.append(new Option(c.entry+' — '+candidateGloss+(c.attested?'':' [sin verificar]'),i))});
     select.onchange=()=>{if(select.value==='')return;const c=r.candidates[Number(select.value)];Object.assign(r,{lemma:c.lemma,entry:c.entry,meaning:c.meaning,status:'manual'});save();render()};box.append(select);
    }
-   for(const [field,name] of [['entry','Enunciado'],['meaning','Traducción']]){
-    const lab=document.createElement('label');lab.textContent=name;const input=document.createElement('input');input.value=r[field];input.onchange=()=>{r[field]=input.value;r.lemma=head(r.entry);r.status='manual';save();render()};lab.append(input);box.append(lab);
+   for(const [field,name] of [['entry','Enunciado'],[project.lang==='va'?'meaning_va':'meaning',project.lang==='va'?'Traducció':'Traducción']]){
+    const lab=document.createElement('label');lab.textContent=name;const input=document.createElement('input');input.value=field==='meaning_va'?(window.ExaminaValencianGloss?.forEntry(r,'va')?.value||r.meaning_va||''):(r[field]||'');input.onchange=()=>{r[field]=input.value;r.lemma=head(r.entry);r.status='manual';save();render()};lab.append(input);box.append(lab);
    }
-   const preview=document.createElement('p');preview.textContent='Vista de exportación: '+formatVocabularyEntry(r,unit().mode,project.course);box.append(preview);target.append(box);
+   const preview=document.createElement('p');preview.textContent=(project.lang==='va'?'Vista d’exportació: ':'Vista de exportación: ')+formatVocabularyEntry(r,unit().mode,project.course,project.lang);box.append(preview);target.append(box);
   }
  }
  $('vgCount').onchange=()=>{const n=Number($('vgCount').value);if(!Number.isInteger(n)||n<1||n>100){status('Elige entre 1 y 100 unidades.');return}project.count=n;selected=Math.min(selected,n-1);render();save()};
  $('vgUnit').onchange=()=>{selected=Number($('vgUnit').value);render()};
+ $('vgLang').onchange=()=>{project.lang=$('vgLang').value;render();save()};
  $('vgCourse').onchange=()=>{project.course=$('vgCourse').value;project.units.forEach(u=>{u.rows=[];u.analyzed=false});save();render();status('Banco cambiado. Vuelve a analizar los textos.')};
  for(const [id,field] of [['vgTitle','title'],['vgText','text'],['vgMode','mode']])$(id).oninput=()=>{unit()[field]=$(id).value;if(field==='text'){unit().rows=[];unit().analyzed=false;status('Texto modificado. Analiza la unidad antes de exportar.')}save();if(field==='mode')render()};
  async function analyzeUnits(mode){
@@ -726,7 +731,7 @@ function init(){
    status('Word generado con '+project.count+' unidades. Revisa las formas marcadas con * antes de utilizarlo.');
   }catch(e){status('No se ha exportado el Word: '+e.message)}
  };
- $('vgImport').onchange=async e=>{try{const p=JSON.parse(await e.target.files[0].text());if(!Number.isInteger(p.count)||p.count<1||p.count>100||!['lat1','lat4','gr1'].includes(p.course)||!Array.isArray(p.units)||p.units.length<p.count||!p.units.every(u=>typeof u.title==='string'&&typeof u.text==='string'&&['simple','complete'].includes(u.mode)&&Array.isArray(u.rows)&&u.rows.every(r=>typeof r.entry==='string'&&typeof r.meaning==='string'&&typeof r.form==='string'&&Array.isArray(r.candidates))))throw Error('Formato incorrecto');project=p;selected=0;render();save();const pending=project.units.slice(0,project.count).filter(needsAnalysis).length;status('Proyecto importado: '+project.count+' unidades y textos conservados. '+pending+' por analizar. Puedes pulsar «Analizar todas las unidades» o «Exportar Word» (analizará las pendientes).')}catch(e){status('No se pudo importar: '+e.message)}};
+ $('vgImport').onchange=async e=>{try{const p=JSON.parse(await e.target.files[0].text());if(!Number.isInteger(p.count)||p.count<1||p.count>100||!['lat1','lat4','gr1'].includes(p.course)||!Array.isArray(p.units)||p.units.length<p.count||!p.units.every(u=>typeof u.title==='string'&&typeof u.text==='string'&&['simple','complete'].includes(u.mode)&&Array.isArray(u.rows)&&u.rows.every(r=>typeof r.entry==='string'&&typeof r.meaning==='string'&&typeof r.form==='string'&&Array.isArray(r.candidates))))throw Error('Formato incorrecto');project=p;project.lang=['es','va'].includes(p.lang)?p.lang:'es';selected=0;render();save();const pending=project.units.slice(0,project.count).filter(needsAnalysis).length;status('Proyecto importado: '+project.count+' unidades y textos conservados. '+pending+' por analizar. Puedes pulsar «Analizar todas las unidades» o «Exportar Word» (analizará las pendientes).')}catch(e){status('No se pudo importar: '+e.message)}};
  $('vgShow').onclick=()=>{$('examLayout').style.display='none';$('vocabManager').classList.remove('active');$('vocabularyGenerator').classList.add('active');for(const id of ['vmShowExam','vmShowList'])$(id).classList.remove('active');$('vgShow').classList.add('active');render()};
  for(const id of ['vmShowExam','vmShowList'])$(id).addEventListener('click',()=>{$('vocabularyGenerator').classList.remove('active');$('vgShow').classList.remove('active')});
  render();
