@@ -97,6 +97,23 @@ const benchmark=api.analyze(data,originals.join('\n'),'gr1',GreekBank);
 const success=benchmark.filter(r=>r.status==='documented');
 const review=benchmark.filter(r=>r.status==='review');
 const unknown=benchmark.filter(r=>r.status==='unknown');
+const remainingEditorialForms=[
+ 'εἴς','στρατεγός','στρατεγὸς','θάλάττῃ','oἱ','ἄνρωπος',
+ 'εἷχεν','ἐφεύξεν','οἰκῦσιν','Περίκλους','στρατεγοὶ',
+ 'σωτερίας','ὠρᾶ','Aἰσχύλος'
+];
+assert.equal(benchmark.find(r=>r.form==='ὅδε')?.status,'documented',
+ 'El demostrativo ὅδε debe tener un único lema');
+assert.ok(review.length<=remainingEditorialForms.length,
+ 'Hay falsas ambigüedades griegas ajenas a las discrepancias ortográficas: '+
+ JSON.stringify(review.map(r=>({form:r.form,candidates:r.candidates.map(c=>c.entry)}))));
+for(const row of review){
+ assert.ok(remainingEditorialForms.includes(row.form),
+  'La revisión contiene una forma no reconocida como discrepancia ortográfica: '+row.form);
+ assert.match(row.warning,/Posible errata/,
+  'Toda revisión restante debe mostrar una orientación editorial concreta: '+row.form);
+}
+
 assert.ok(success.some(r=>r.meaning==='ateniense'), 'Debe identificar ateniense usando el banco propio');
 assert.ok(success.length>100,'El corpus prioritario sigue sin cobertura nominal básica');
 assert.equal(unknown.length,0,'Todas las formas del corpus deben estar lematizadas o señaladas para revisión, sin desconocidas opacas');
