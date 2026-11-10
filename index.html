@@ -577,7 +577,7 @@ function examinaTranslateConfiguration(){
   el.textContent=va?(steps[i]||el.dataset.castellano):el.dataset.castellano;
  });
 }
-function translateUI(){examinaTranslateConfiguration();document.documentElement.lang=$('lang').value==='va'?'ca-valencia':'es';document.querySelectorAll('[data-i18n]').forEach(e=>e.textContent=tr(e.dataset.i18n));$('term').querySelectorAll('option').forEach((o,i)=>o.textContent=($('lang').value==='va'?['1r trimestre','2n trimestre','3r trimestre']:['1.er trimestre','2.º trimestre','3.er trimestre'])[i]);$('name').placeholder=courseName();}
+function translateUI(){examinaTranslateConfiguration();document.documentElement.lang=$('lang').value==='va'?'ca-valencia':'es';document.querySelectorAll('[data-i18n]').forEach(e=>e.textContent=tr(e.dataset.i18n));$('term').querySelectorAll('option').forEach((o,i)=>o.textContent=($('lang').value==='va'?['1r trimestre','2n trimestre','3r trimestre']:['1.er trimestre','2.º trimestre','3.er trimestre'])[i]);$('name').placeholder=courseName();document.querySelectorAll('.vocab-tabbar,.quick-actions,#examLayout aside.panel,#vocabManager').forEach(el=>window.ExaminaValencianGloss?.translateDom?.(el,$('lang').value));}
 
 $('sheetType').addEventListener('change',()=>{const c=currentCourse();$('name').value=($('sheetType').value==='review'?($('lang').value==='va'?'Fitxa de repàs de ':'Ficha de repaso de '):($('lang').value==='va'?'Examen de ':'Examen de '))+({'latin1':$('lang').value==='va'?'Llatí I':'Latín I','latin4':$('lang').value==='va'?'Llatí 4t ESO':'Latín 4.º ESO','greek1':$('lang').value==='va'?'Grec I':'Griego I'})[c];generate()});
 function refreshManualMorphWords(){
@@ -1660,7 +1660,13 @@ $('loadDraft').onclick=()=>$('draftFile').click();
 $('draftFile').onchange=async()=>{const file=$('draftFile').files[0];if(!file)return;try{if(file.size>2000000)throw Error('El archivo es demasiado grande');restoreDraft(JSON.parse(await file.text()))}catch(e){$('draftStatus').textContent='No se pudo importar: '+e.message}finally{$('draftFile').value=''}};
 // Guardar el examen actual antes de cada regeneración, incluso si se editó directamente.
 const originalGenerate=generate;
-generate=function(){if($('paper').innerHTML.trim())saveDraftTo(PREVIOUS_KEY);originalGenerate()};
+function localizeExamPreview(){
+ const paper=$('paper');
+ window.ExaminaValencianGloss?.translateDom?.(paper,$('lang').value);
+ if(currentCourse()==='greek1')window.greekLastPreview=paper.innerHTML;
+ else window.examinaLastLatinPreview=paper.innerHTML;
+}
+generate=function(){if($('paper').innerHTML.trim())saveDraftTo(PREVIOUS_KEY);originalGenerate();localizeExamPreview()};
 // En la web instalada el índice lematizador se descarga de la caché PWA de
 // modo asíncrono. Completa el vocabulario al quedar listo sin cambiar las
 // preguntas ni perder retoques hechos por el docente en la vista previa.
@@ -1669,10 +1675,10 @@ document.addEventListener('examina-lemmas-ready',()=>{
  if(!paper)return;
  if(currentCourse()==='greek1'){
   if($('model').value==='morphology'||!window.greekLastPreview||paper.innerHTML!==window.greekLastPreview)return;
-  originalGenerate();return;
+  originalGenerate();localizeExamPreview();return;
  }
  if($('model').value==='morf'||!window.examinaLastLatinPreview||paper.innerHTML!==window.examinaLastLatinPreview)return;
- originalGenerate();
+ originalGenerate();localizeExamPreview();
 });
 $('generate').onclick=generate;
 const undoButton=document.createElement('button');undoButton.type='button';undoButton.className='secondary';undoButton.textContent='Deshacer última generación';undoButton.id='undoGeneration';
@@ -2190,6 +2196,7 @@ function generateGreekExam(){
  const manualWarning=result.items.some(x=>x.teacherProvided)?'<p class="notice no-print">'+esc($('lang').value==='va'?'Oracions afegides pel docent: revisa el vocabulari i la traducció abans d’imprimir.':'Oraciones añadidas por el docente: revisa el vocabulario y la traducción antes de imprimir.')+(manualUnresolved.length?' '+esc(manualUnresolved.join(', '))+'.':'')+'</p>':'';
  $('paper').innerHTML='<div class="exam-sheet">'+greekExamHeader(chosen,mode)+(chosen.length?sections.join(''):'<p>'+notice+'</p>')+grade+gloss+manualWarning+'<div id="answerkey" class="solutions"><h2>'+tr('key')+'</h2>'+answers.join('')+'</div></div>';
  $('paper').setAttribute('contenteditable','true');$('paper').setAttribute('spellcheck','false');$('solutions').textContent=tr('solutions');refreshManualMorphWords();greekExamControls();
+ window.ExaminaValencianGloss?.translateDom?.($('paper'),$('lang').value);
  window.greekLastPreview=$('paper').innerHTML;
  // For auditable regression tests and inspection; no teacher data is transmitted.
  window.greekLastExam={chosen,max,mode:$('model').value,ids:result.items.map(x=>x.id),covered:result.covered,missing:result.missing,total:Number(total.toFixed(2))};
