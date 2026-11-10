@@ -239,9 +239,12 @@ function analyze(data,text,course,bank){
  const cleanText=lang==='grc'?String(text).replace(/([\p{L}\p{M}])[’'](?=[\p{L}\p{M}])/gu,'$1 '):String(text);
  for(const match of cleanText.matchAll(/[\p{L}\p{M}]+(?:[’'][\p{L}\p{M}]+)*/gu)){
   const form=match[0],normal=key(form);
-  if(normal&&!tokens.has(normal))tokens.set(normal,form);
+  // En griego, τίς/τις, ὁ/ὅ o ἀλλά/ἄλλα no pueden confundirse:
+  // el índice de búsqueda omite acentos, pero el texto conserva su grafía.
+  const identity=lang==='grc'?form.normalize('NFC'):normal;
+  if(normal&&!tokens.has(identity))tokens.set(identity,{normal,form});
  }
- return [...tokens].map(([normal,form])=>{
+ return [...tokens.values()].map(({normal,form})=>{
   const indexedCandidates=[...(index.get(normal)?.values()||[])].flatMap(c=>{
    const original=data.vocabulary[lang][c.lemma][course];
    const matches=bank.filter(x=>key(x.entry)===key(original.entry)||key(head(x.entry))===key(c.lemma));
