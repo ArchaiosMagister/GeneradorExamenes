@@ -15,6 +15,11 @@ const target=path.join(root,'data/lemmas/greek-nominal-candidates.json');
 const fixture=process.argv[2];
 const norm=s=>String(s||'').toLowerCase().normalize('NFD')
  .replace(/\u0345/g,'ι').replace(/\p{M}/gu,'').replace(/ς/g,'σ').trim();
+// Keep rough/smooth breathings when deciding whether the headword matches.
+// Accent and length marks vary between source spellings, breathing does not.
+const lexicalNorm=s=>String(s||'').toLowerCase().normalize('NFD')
+ .replace(/[\u0300\u0301\u0342\u0304\u0306]/gu,'').replace(/\u0345/g,'ι')
+ .replace(/ς/g,'σ').trim();
 const vocabulary=JSON.parse(fs.readFileSync(path.join(root,'data/lemmas/teacher-forms.json'),'utf8'));
 if(vocabulary.schema!==1||!vocabulary.vocabulary?.grc||!Array.isArray(vocabulary.rows?.grc))
  throw Error('Falta el inventario docente offline');
@@ -52,7 +57,9 @@ function matchesTeacher(lemma,kind,cells){
  if(!cells.has(nom)||!cells.get(nom).has(lemma))return false;
  if(kind==='ADJ'){
   if(parts.length<2||/\b(?:num|indecl|pron)\b/i.test(lex))return false;
-  return true;
+  // Exclude nouns in -ος, -ου incorrectly listed with adjective homonyms.
+  const second=norm(parts[1].replace(/^[\s−–—-]+/u,'').replace(/\([^)]*\)/g,'').trim());
+  return parts.length>=3? /^(?:η|α|ον)$/.test(second):/^(?:ον|εσ)$/.test(second);
  }
  if(parts.length!==2)return false;
  const suffix=norm(parts[1].replace(/\([^)]*\)/g,'').replace(/^[\s−–—-]+/u,'').trim());
@@ -85,7 +92,9 @@ try{
   if(r.lang_code!=='grc'||!['noun','adj'].includes(r.pos)||!Array.isArray(r.forms))continue;
   const lemma=norm(r.word);
   if(!lexicon[lemma]?.gr1){stats.unmatchedEntries++;continue}
-  const kind=r.pos==='noun'?'N':'ADJ',id=lemma+'|'+kind;
+  const teacherHead=lexicon[lemma].gr1.entry.split(',')[0].trim();
+  if(lexicalNorm(r.word)!==lexicalNorm(teacherHead)){stats.unmatchedEntries++;continue}
+  const kind=r.pos='noun'?'N':'ADJ',id=lemma+'|'+kind;
   if(!grouped.has(id))grouped.set(id,{lemma,word:r.word,kind,cells:new Map()});
   stats.matched++;
   const group=grouped.get(id);
