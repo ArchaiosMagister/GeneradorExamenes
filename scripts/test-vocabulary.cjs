@@ -21,6 +21,28 @@ assert.throws(()=>api.documentXml({count:1,units:[{title:'UD1',text:'ὁ θεό�
 const greekRows=api.analyze(data,'λύω ἄγνωστον','gr1',[]);
 assert.equal(greekRows.length,2);
 assert.equal(greekRows[1].form,'ἄγνωστον','se deben conservar los diacríticos griegos originales');
+
+const priorityBank=[
+ {entry:'Ἀθηναῖος, –α, –ον',meaning:'ateniense'},
+ {entry:'δοῦλος, –ου',meaning:'esclavo'},
+ {entry:'θέος, –ου',meaning:'dios'},
+ {entry:'γράφω',meaning:'escribir'},
+ {entry:'εἰμί',meaning:'ser, estar, haber'},
+ {entry:'οὐ, οὐκ, οὐχ (adv.)',meaning:'no'}
+];
+const priority=api.analyze(data,'Ἀθηναῖοι Ἀθηναίων οἱ δοῦλοι γράφει εἰσιν θεοὶ οὐκ','gr1',priorityBank);
+for(const token of ['Ἀθηναῖοι','Ἀθηναίων','οἱ','δοῦλοι','γράφει','εἰσιν','θεοὶ','οὐκ']){
+ const found=priority.find(r=>r.form===token);
+ assert.ok(found,'Falta la palabra prioritaria '+token);
+ assert.equal(found.status,'documented','No lematizada: '+token+' -> '+JSON.stringify(found.candidates));
+ assert.ok(found.meaning,'Falta la traducción: '+token);
+}
+assert.equal(priority.find(r=>r.form==='Ἀθηναῖοι').entry,'Ἀθηναῖος, –α, –ον');
+assert.equal(priority.find(r=>r.form==='Ἀθηναῖοι').meaning,'ateniense');
+const misspelled=api.analyze(data,'ἄνρωπος','gr1',priorityBank);
+assert.equal(misspelled[0].status,'unknown','No corregir silenciosamente errores ortográficos de los textos');
+console.log('Griego prioritario: ateniense, nominales, presente, artículo y formas de εἰμί reconocidos.');
+
 console.log('Vocabulario: prioridad docente, deduplicación por UD, ambigüedad, desconocidas, griego y XML de dos columnas correctos.');
 (async()=>{
  const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
