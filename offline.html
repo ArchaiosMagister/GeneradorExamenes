@@ -216,6 +216,17 @@ button:disabled{opacity:.55;cursor:not-allowed}
 /* The preview precedes the form in the DOM; desktop keeps the form at left. */
 @media screen and (min-width:801px){#examLayout>.panel{grid-column:1;grid-row:1}#examLayout>.paper{grid-column:2;grid-row:1}}
 @media screen and (max-width:800px){#examLayout{display:flex!important;flex-direction:column!important}#examLayout>.paper{order:0!important;width:100%}#examLayout>.panel{order:1!important;width:100%}}
+
+/* PWA: estado de conexión, instalación y actualización voluntaria. */
+.pwa-panel{display:flex;align-items:center;flex-wrap:wrap;gap:8px 12px;
+ padding:9px max(20px,calc((100vw - 1150px)/2));background:#eaf0f8;color:#173a60;
+ border-bottom:1px solid #c7d7e9;font:12px/1.45 system-ui,-apple-system,Segoe UI,sans-serif}
+.pwa-panel[hidden],.pwa-panel button[hidden]{display:none!important}
+.pwa-panel .pwa-status{font-weight:700}
+.pwa-panel .pwa-note{flex:1 1 200px}
+.pwa-panel button{padding:5px 10px;min-height:30px;font-size:12px}
+.pwa-panel .pwa-update{background:#1c5375;color:#fff}
+@media print{.pwa-panel{display:none!important}}
 </style><header class="top"><h1>Generador de exámenes · Latín y griego</h1><p>Versión 21 · Genera, revisa y exporta exámenes de Latín y Griego sin conexión · borradores recuperables</p></header><nav class="vocab-tabbar" aria-label="Secciones de la aplicación"><button id="vmShowExam" class="active" type="button">Generador de exámenes</button><button id="vmShowList" type="button">Vocabulario exigible por unidad</button></nav><div class="quick-actions no-print" aria-label="Acciones rápidas"><span class="quick-label">Examen</span><button type="button" id="quickGenerate">Generar</button><button type="button" id="quickWord" class="secondary">Descargar Word</button><button type="button" id="quickWordAnswers" class="secondary">Word con soluciones</button><span class="quick-tip">La vista previa se puede editar antes de exportar.</span></div>
 <section class="vocab-manager" id="vocabManager" aria-label="Gestor de vocabulario exigible">
 <h2>Vocabulario exigible para examen</h2><p class="vm-help">Este listado es independiente del vocabulario general. Puedes añadir, corregir, cambiar de unidad o eliminar entradas. Las palabras exigibles en esta unidad o anteriores se muestran sin traducción en el vocabulario final del examen.</p>
