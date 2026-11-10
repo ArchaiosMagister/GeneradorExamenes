@@ -105,9 +105,13 @@ async function checkFile(browser,filename){
 
   // DOCX reales: se verifican el XML de Word, las tablas y el estilo Palatino.
   for(const answers of [false,true]){
-   const downloadPromise=page.waitForEvent('download');
+   const caseLabel=filename+' '+course+'/'+model+' '+(answers?'solucionario':'alumnado');
+   console.log('Comprobando DOCX:',caseLabel);
+   const downloadPromise=page.waitForEvent('download',{timeout:15000});
    await page.locator(answers?'#docxAnswers':'#docx').click();
-   const download=await downloadPromise;
+   let download;
+   try{download=await downloadPromise}
+   catch(error){throw new Error(caseLabel+': descarga no iniciada. Errores JS: '+JSON.stringify(errors)+'; '+error.message)}
    assert(download.suggestedFilename().endsWith('.docx'),filename+': descarga Word sin extensión .docx');
    const bytes=await fs.readFile(await download.path());
    const documentXml=readStoredZipEntry(bytes,'word/document.xml');
