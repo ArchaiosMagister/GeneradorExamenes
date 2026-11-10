@@ -22,10 +22,11 @@ function greekReferenceForms(bank){
  const endings=(stem,list,row)=>{for(const ending of list)add(stem+key(ending),row)};
  for(const source of bank){
   if(!source?.entry||!source?.meaning)continue;
-  const entry=source.entry,lemma=key(head(entry)),record={lemma,entry,meaning:source.meaning,attested:true,origin:'banco docente / paradigma regular'};
-  if(!lemma)continue;
+  const entry=source.entry,alternatives=head(entry).split(/\s+o\s+/i).map(key).filter(Boolean);
+  for(const lemma of alternatives){
+  const record={lemma,entry,meaning:source.meaning,attested:true,origin:'banco docente / paradigma regular'};
   // La forma de cita del propio banco es una identificación segura.
-  add(head(entry),record);
+  add(lemma,record);
   const parts=entry.split(',').slice(1).map(s=>key(s.replace(/[–−—-]/g,'').replace(/\([^)]*\)/g,'')));
   const part=(word)=>parts.some(p=>p===word),stem=lemma;
   if(lemma.endsWith('οσ')&&(part('ου')||part('ον'))){
@@ -54,10 +55,13 @@ function greekReferenceForms(bank){
    endings(lemma.slice(0,-2),['ῶ','εῖς','εῖ','οῦμεν','εῖτε','οῦσι','οῦσιν','εῖν'],record);
   }else if(hasInflection&&lemma.endsWith('αω')){
    endings(lemma.slice(0,-2),['ῶ','ᾷς','ᾷ','ῶμεν','ᾶτε','ῶσι','ῶσιν','ᾶν'],record);
+  }else if(hasInflection&&/(?:εομαι|αομαι)$/.test(lemma)){
+   // Los medios contractos requieren paradigmas específicos; no se extrapolan.
   }else if(hasInflection&&lemma.endsWith('ομαι')){
    endings(lemma.slice(0,-4),['ομαι','ῃ','εται','όμεθα','εσθε','ονται','εσθαι'],record);
   }else if(hasInflection&&lemma.endsWith('ω')){
    endings(lemma.slice(0,-1),['ω','εις','ει','ομεν','ετε','ουσι','ουσιν','ειν'],record);
+  }
   }
  }
  const bankByHead=(form)=>bank.find(row=>key(head(row.entry))===key(form));
@@ -82,6 +86,46 @@ function greekReferenceForms(bank){
  addIrregular(['Διόνυσος','Διόνυσος','Διονύσου','Διονύσου'],'Διόνυσος','Dioniso');
  addIrregular(['Νεῖλος','Νείλου'],'Νεῖλος','Nilo');
  addIrregular(['Ζεύς','Ζεὺς','Ζεύς','Διός','Διὸς','Διί','Δία','Ζεῦ'],'Ζεύς','Zeus');
+
+ // Tercera declinación: únicamente formas explicitadas y comprobadas.
+ addIrregular(['ἀνὴρ','ἀνήρ','ἄνδρα','ἀνδρός','ἀνδρὸς','ἄνδρες','ἄνδρας','ἀνδρῶν','ἀνδρί'],
+  'ἀνήρ','hombre');
+ addIrregular(['γυνή','γυνὴ','γυναῖκα','γυναικός','γυναικὸς','γυναικῶν','γυναῖκες'],
+  'γυνή','mujer');
+ addIrregular(['πατήρ','πατὴρ','πατέρα','πατρός','πατρὸς','πατρί','πατέρες','πατέρων','πατρῶν'],
+  'πατήρ','padre');
+ addIrregular(['μήτηρ','μήτηρ','μητὴρ','μητρός','μητρί','μητέρα','μητέρες'],
+  'μήτηρ','madre');
+ addIrregular(['παῖς','παῖδα','παιδί','παιδὶ','παιδός','παῖδες','παῖδας','παίδων','παισίν'],
+  'παῖς','niño, niña');
+ addIrregular(['βασιλεύς','βασιλεὺς','βασιλέα','βασιλέως','βασιλεῖ','βασιλεῖς','βασιλέων','βασιλεῦσι','βασιλέων'],
+  'βασιλεύς','rey');
+ addIrregular(['πόλις','πόλιν','πόλεως','πόλει','πόλεις','πόλεων','πόλεσι','πόλεσιν','πόλεσι','πόλεις'],
+  'πόλις','ciudad');
+ addIrregular(['ὕδωρ','ὕδατος','ὕδατι','ὕδατα','ὑδάτων','ὕδασι'],
+  'ὕδωρ','agua');
+ addIrregular(['σῶμα','σώματος','σώματι','σώματα','σωμάτων','σώμασι','σώματα'],
+  'σῶμα','cuerpo');
+ addIrregular(['πρᾶγμα','πράγμα','πράγματος','πραγμάτων','πράγματα','πράγματι'],
+  'πρᾶγμα','asunto');
+ addIrregular(['αἷμα','αἵματος','αἵματι','αἵματα','αἱμάτων'],
+  'αἷμα','sangre');
+ addIrregular(['γέρων','γέρων','γέροντος','γέροντι','γέροντα','γέροντες','γερόντων'],
+  'γέρων','anciano');
+ addIrregular(['ῥήτωρ','ῥήτωρ','ῥήτορα','ῥήτορος','ῥήτορες','ῥήτορας','ῥητόρων'],
+  'ῥήτωρ','orador');
+ addIrregular(['λέων','λέων','λέοντα','λέοντος','λέοντες','λεόντων'],
+  'λέων','león');
+ addIrregular(['φλέψ','φλέψ','φλεβός','φλέβες','φλέβας','φλεψί','φλεψὶ'],
+  'φλέψ','vena');
+ addIrregular(['ἀσπίς','ἀσπίς','ἀσπίδος','ἀσπίδα','ἀσπίδες','ἀσπίδας','ἀσπίδων'],
+  'ἀσπίς','escudo');
+ addIrregular(['χιών','χιών','χιόνος','χιόνι','χίονι','χιόνα'],
+  'χιών','nieve');
+ addIrregular(['ἄρχων','ἄρχοντος','ἄρχοντι','ἄρχοντα','ἄρχοντες','ἀρχόντων'],
+  'ἄρχων','gobernante');
+ addIrregular(['Αἴγυπτος','Αἴγυπτου','Αἰγύπτου','Αἰγύπτου'],'Αἴγυπτος','Egipto');
+
  addIrregular(['Ἀθηναῖοι','Ἀθηναίοις','Ἀθηναῖοις','Ἀθηναίων','Ἀθηναίων',
   'Ἀθηναίους','Ἀθηναίους','Ἀθηναῖος'],'Ἀθηναῖος','ateniense');
  return map;
