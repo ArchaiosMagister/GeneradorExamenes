@@ -27,9 +27,17 @@ assert.ok(data.vocabulary.grc['λυω']?.gr1,'Falta λύω en el vocabulario gri
 const script=fs.readFileSync(path.join(root,'offline-lemmas.js'),'utf8');
 const ctx={window:{},document:{readyState:'loading',addEventListener(){}},console};
 runInNewContext(script,ctx,{filename:'offline-lemmas.js'});
-const {normalize,query,describe,coverage,uniqueLemmaFromData}=ctx.window.ExaminaOfflineLemmatizer;
+const {normalize,query,describe,coverage,coverageByUnit,uniqueLemmaFromData}=ctx.window.ExaminaOfflineLemmatizer;
 const latCoverage=coverage(data,'lat1'),grCoverage=coverage(data,'gr1');
 assert.equal(latCoverage.lemmas,664);
+for(const course of ['lat1','lat4','gr1']){
+ const units=coverageByUnit(data,course);
+ assert.ok(units.length>=5,'Faltan unidades de '+course);
+ assert.ok(units.every(u=>u.documented+u.candidatesOnly+u.onlyCitation===u.total));
+ assert.ok(units.every(u=>u.total>=u.documented));
+ assert.ok(units.every(u=>/^UD\s*[1-9]/.test(u.unit)));
+}
+
 assert.equal(grCoverage.lemmas,349);
 assert.ok(latCoverage.documented>250&&latCoverage.proposed>100);
 assert.ok(grCoverage.documented>=100&&grCoverage.onlyCitation>=0);
@@ -79,5 +87,23 @@ assert.equal(ambiguous.total,3,'Debe conservar análisis múltiples y lemas hom�
 assert.equal(uniqueLemmaFromData(synthetic,'lat1','rosae'),null,'Un homógrafo no debe resolverse automáticamente');
 assert.equal(new Set(ambiguous.items.map(x=>x.lemma)).size,2);
 assert.equal(query(synthetic,{course:'gr1',text:'rosae'}).total,0);
+const citationOnly={schema:1,vocabulary:{lat:{solo:{lat1:{entry:'solo',units:['UD 1']}}},grc:{}},
+ rows:{lat:[['solo','solo','LEX;ENTRY',3]],grc:[]}};
+assert.equal(uniqueLemmaFromData(citationOnly,'lat1','solo'),null,
+ 'Una mera cita del lema no autoriza lematizar automáticamente');
+const competingCandidates={schema:1,vocabulary:{lat:{
+ rex:{lat1:{entry:'rex, regis',units:['UD 4']}},
+ rectus:{lat1:{entry:'rectus, -a, -um',units:['UD 4']}}
+},grc:{}},rows:{lat:[
+ ['rex','regem','N;ACC;SG',0],
+ ['rectus','regem','ADJ;ACC;SG',2]
+],grc:[]}};
+assert.equal(uniqueLemmaFromData(competingCandidates,'lat1','regem'),null,
+ 'Si un candidato provisional tiene un lema distinto, no se puede resolver el homógrafo');
+const sameLemmaCandidate={...competingCandidates,rows:{lat:[
+ ['rex','regem','N;ACC;SG',0],['rex','regem','N;ACC;SG',2]
+],grc:[]}};
+assert.equal(uniqueLemmaFromData(sameLemmaCandidate,'lat1','regem'),'rex',
+ 'Una propuesta coincidente del mismo lema no bloquea una identificación documentada');
 assert.ok(query(data,{course:'lat1',text:'dos palabras'}).invalid);
 console.log('Lematizador offline validado:',data.rows.lat.length,'registros latinos y',data.rows.grc.length,'griegos, sin pérdida de ambigüedad ni iota suscrita.');
