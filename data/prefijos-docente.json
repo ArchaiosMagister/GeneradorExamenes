@@ -1,0 +1,2404 @@
+{
+  "schema": 1,
+  "source": "Lista docente de 25 grupos de prefijos con palabras asociadas",
+  "groups": [
+    {
+      "prefix": "AD-/A-",
+      "meaningHint": "dirección, proximidad o adición"
+    },
+    {
+      "prefix": "ANTE-/ANTI- (anterioridad)",
+      "meaningHint": "anterioridad espacial o temporal"
+    },
+    {
+      "prefix": "ANTI- (oposición)",
+      "meaningHint": "oposición, contra"
+    },
+    {
+      "prefix": "CIRCUN-",
+      "meaningHint": "alrededor"
+    },
+    {
+      "prefix": "CIS-",
+      "meaningHint": "de este lado"
+    },
+    {
+      "prefix": "CON-/COL-/COM-/COR-/CO-",
+      "meaningHint": "unión, compañía o acción conjunta"
+    },
+    {
+      "prefix": "CONTRA-",
+      "meaningHint": "oposición o sentido contrario"
+    },
+    {
+      "prefix": "DE-",
+      "meaningHint": "separación, descenso o privación"
+    },
+    {
+      "prefix": "DI-/DIS-",
+      "meaningHint": "separación, diversidad o negación"
+    },
+    {
+      "prefix": "E-",
+      "meaningHint": "salida o movimiento hacia fuera"
+    },
+    {
+      "prefix": "EX-",
+      "meaningHint": "salida, exterioridad o privación"
+    },
+    {
+      "prefix": "EXTRA-",
+      "meaningHint": "fuera de, más allá de"
+    },
+    {
+      "prefix": "IN-/IL-/IM-",
+      "meaningHint": "negación o interioridad según la palabra"
+    },
+    {
+      "prefix": "INFRA-",
+      "meaningHint": "debajo de, inferioridad"
+    },
+    {
+      "prefix": "INTER-",
+      "meaningHint": "entre, en medio de"
+    },
+    {
+      "prefix": "INTRA-",
+      "meaningHint": "dentro de"
+    },
+    {
+      "prefix": "PER-",
+      "meaningHint": "a través de, completamente"
+    },
+    {
+      "prefix": "POS-/POST-",
+      "meaningHint": "después de, posterioridad"
+    },
+    {
+      "prefix": "PRE-",
+      "meaningHint": "antes de, anterioridad"
+    },
+    {
+      "prefix": "PRO-",
+      "meaningHint": "hacia delante, en favor de"
+    },
+    {
+      "prefix": "RE-/RED-",
+      "meaningHint": "repetición, retroceso o intensificación"
+    },
+    {
+      "prefix": "RETRO-",
+      "meaningHint": "hacia atrás"
+    },
+    {
+      "prefix": "SUB(S)-/SU(S)-/SO(S)-",
+      "meaningHint": "debajo de, subordinación"
+    },
+    {
+      "prefix": "TRANS-/TRA-/TRAS-",
+      "meaningHint": "a través de, al otro lado, cambio"
+    },
+    {
+      "prefix": "ULTER-/ULTRA-",
+      "meaningHint": "más allá de, exceso"
+    }
+  ],
+  "items": [
+    {
+      "prompt": "Adjunto",
+      "prefix": "AD-/A-",
+      "meaningHint": "dirección, proximidad o adición",
+      "answer": "AD-/A-: dirección, proximidad o adición",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Admirar",
+      "prefix": "AD-/A-",
+      "meaningHint": "dirección, proximidad o adición",
+      "answer": "AD-/A-: dirección, proximidad o adición",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Admonición",
+      "prefix": "AD-/A-",
+      "meaningHint": "dirección, proximidad o adición",
+      "answer": "AD-/A-: dirección, proximidad o adición",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Adormecer",
+      "prefix": "AD-/A-",
+      "meaningHint": "dirección, proximidad o adición",
+      "answer": "AD-/A-: dirección, proximidad o adición",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Adquirir",
+      "prefix": "AD-/A-",
+      "meaningHint": "dirección, proximidad o adición",
+      "answer": "AD-/A-: dirección, proximidad o adición",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Adverbio",
+      "prefix": "AD-/A-",
+      "meaningHint": "dirección, proximidad o adición",
+      "answer": "AD-/A-: dirección, proximidad o adición",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Adyacente",
+      "prefix": "AD-/A-",
+      "meaningHint": "dirección, proximidad o adición",
+      "answer": "AD-/A-: dirección, proximidad o adición",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Afligir",
+      "prefix": "AD-/A-",
+      "meaningHint": "dirección, proximidad o adición",
+      "answer": "AD-/A-: dirección, proximidad o adición",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Agredir",
+      "prefix": "AD-/A-",
+      "meaningHint": "dirección, proximidad o adición",
+      "answer": "AD-/A-: dirección, proximidad o adición",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Aprehender",
+      "prefix": "AD-/A-",
+      "meaningHint": "dirección, proximidad o adición",
+      "answer": "AD-/A-: dirección, proximidad o adición",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Anteayer",
+      "prefix": "ANTE-/ANTI- (anterioridad)",
+      "meaningHint": "anterioridad espacial o temporal",
+      "answer": "ANTE-/ANTI- (anterioridad): anterioridad espacial o temporal",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Antebrazo",
+      "prefix": "ANTE-/ANTI- (anterioridad)",
+      "meaningHint": "anterioridad espacial o temporal",
+      "answer": "ANTE-/ANTI- (anterioridad): anterioridad espacial o temporal",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Antecapilla",
+      "prefix": "ANTE-/ANTI- (anterioridad)",
+      "meaningHint": "anterioridad espacial o temporal",
+      "answer": "ANTE-/ANTI- (anterioridad): anterioridad espacial o temporal",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Antecedente",
+      "prefix": "ANTE-/ANTI- (anterioridad)",
+      "meaningHint": "anterioridad espacial o temporal",
+      "answer": "ANTE-/ANTI- (anterioridad): anterioridad espacial o temporal",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Antecesor",
+      "prefix": "ANTE-/ANTI- (anterioridad)",
+      "meaningHint": "anterioridad espacial o temporal",
+      "answer": "ANTE-/ANTI- (anterioridad): anterioridad espacial o temporal",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Antediluviano",
+      "prefix": "ANTE-/ANTI- (anterioridad)",
+      "meaningHint": "anterioridad espacial o temporal",
+      "answer": "ANTE-/ANTI- (anterioridad): anterioridad espacial o temporal",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Antelación",
+      "prefix": "ANTE-/ANTI- (anterioridad)",
+      "meaningHint": "anterioridad espacial o temporal",
+      "answer": "ANTE-/ANTI- (anterioridad): anterioridad espacial o temporal",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Antemano",
+      "prefix": "ANTE-/ANTI- (anterioridad)",
+      "meaningHint": "anterioridad espacial o temporal",
+      "answer": "ANTE-/ANTI- (anterioridad): anterioridad espacial o temporal",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Anteojos",
+      "prefix": "ANTE-/ANTI- (anterioridad)",
+      "meaningHint": "anterioridad espacial o temporal",
+      "answer": "ANTE-/ANTI- (anterioridad): anterioridad espacial o temporal",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Anteponer",
+      "prefix": "ANTE-/ANTI- (anterioridad)",
+      "meaningHint": "anterioridad espacial o temporal",
+      "answer": "ANTE-/ANTI- (anterioridad): anterioridad espacial o temporal",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Antiácido",
+      "prefix": "ANTI- (oposición)",
+      "meaningHint": "oposición, contra",
+      "answer": "ANTI- (oposición): oposición, contra",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Antiadherente",
+      "prefix": "ANTI- (oposición)",
+      "meaningHint": "oposición, contra",
+      "answer": "ANTI- (oposición): oposición, contra",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Antiaéreo",
+      "prefix": "ANTI- (oposición)",
+      "meaningHint": "oposición, contra",
+      "answer": "ANTI- (oposición): oposición, contra",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Antialérgico",
+      "prefix": "ANTI- (oposición)",
+      "meaningHint": "oposición, contra",
+      "answer": "ANTI- (oposición): oposición, contra",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Antiarrugas",
+      "prefix": "ANTI- (oposición)",
+      "meaningHint": "oposición, contra",
+      "answer": "ANTI- (oposición): oposición, contra",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Antibiótico",
+      "prefix": "ANTI- (oposición)",
+      "meaningHint": "oposición, contra",
+      "answer": "ANTI- (oposición): oposición, contra",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Anticonceptivo",
+      "prefix": "ANTI- (oposición)",
+      "meaningHint": "oposición, contra",
+      "answer": "ANTI- (oposición): oposición, contra",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Anticristo",
+      "prefix": "ANTI- (oposición)",
+      "meaningHint": "oposición, contra",
+      "answer": "ANTI- (oposición): oposición, contra",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Anticuerpo",
+      "prefix": "ANTI- (oposición)",
+      "meaningHint": "oposición, contra",
+      "answer": "ANTI- (oposición): oposición, contra",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Antídoto",
+      "prefix": "ANTI- (oposición)",
+      "meaningHint": "oposición, contra",
+      "answer": "ANTI- (oposición): oposición, contra",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Antifaz",
+      "prefix": "ANTI- (oposición)",
+      "meaningHint": "oposición, contra",
+      "answer": "ANTI- (oposición): oposición, contra",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Antivírico",
+      "prefix": "ANTI- (oposición)",
+      "meaningHint": "oposición, contra",
+      "answer": "ANTI- (oposición): oposición, contra",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Circuncidar",
+      "prefix": "CIRCUN-",
+      "meaningHint": "alrededor",
+      "answer": "CIRCUN-: alrededor",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Circundar",
+      "prefix": "CIRCUN-",
+      "meaningHint": "alrededor",
+      "answer": "CIRCUN-: alrededor",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Circunferencia",
+      "prefix": "CIRCUN-",
+      "meaningHint": "alrededor",
+      "answer": "CIRCUN-: alrededor",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Circunflejo",
+      "prefix": "CIRCUN-",
+      "meaningHint": "alrededor",
+      "answer": "CIRCUN-: alrededor",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Circunloquio",
+      "prefix": "CIRCUN-",
+      "meaningHint": "alrededor",
+      "answer": "CIRCUN-: alrededor",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Circunnavegar",
+      "prefix": "CIRCUN-",
+      "meaningHint": "alrededor",
+      "answer": "CIRCUN-: alrededor",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Circunscribir",
+      "prefix": "CIRCUN-",
+      "meaningHint": "alrededor",
+      "answer": "CIRCUN-: alrededor",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Circunspección",
+      "prefix": "CIRCUN-",
+      "meaningHint": "alrededor",
+      "answer": "CIRCUN-: alrededor",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Circunstancia",
+      "prefix": "CIRCUN-",
+      "meaningHint": "alrededor",
+      "answer": "CIRCUN-: alrededor",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Circunvalación",
+      "prefix": "CIRCUN-",
+      "meaningHint": "alrededor",
+      "answer": "CIRCUN-: alrededor",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Cisalpino",
+      "prefix": "CIS-",
+      "meaningHint": "de este lado",
+      "answer": "CIS-: de este lado",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Cisandino",
+      "prefix": "CIS-",
+      "meaningHint": "de este lado",
+      "answer": "CIS-: de este lado",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Cisexual",
+      "prefix": "CIS-",
+      "meaningHint": "de este lado",
+      "answer": "CIS-: de este lado",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Cisgénero",
+      "prefix": "CIS-",
+      "meaningHint": "de este lado",
+      "answer": "CIS-: de este lado",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Cisjordania",
+      "prefix": "CIS-",
+      "meaningHint": "de este lado",
+      "answer": "CIS-: de este lado",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Cismontano",
+      "prefix": "CIS-",
+      "meaningHint": "de este lado",
+      "answer": "CIS-: de este lado",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Cispadano",
+      "prefix": "CIS-",
+      "meaningHint": "de este lado",
+      "answer": "CIS-: de este lado",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Coautor",
+      "prefix": "CON-/COL-/COM-/COR-/CO-",
+      "meaningHint": "unión, compañía o acción conjunta",
+      "answer": "CON-/COL-/COM-/COR-/CO-: unión, compañía o acción conjunta",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Colaborar",
+      "prefix": "CON-/COL-/COM-/COR-/CO-",
+      "meaningHint": "unión, compañía o acción conjunta",
+      "answer": "CON-/COL-/COM-/COR-/CO-: unión, compañía o acción conjunta",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Compadre",
+      "prefix": "CON-/COL-/COM-/COR-/CO-",
+      "meaningHint": "unión, compañía o acción conjunta",
+      "answer": "CON-/COL-/COM-/COR-/CO-: unión, compañía o acción conjunta",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Compilar",
+      "prefix": "CON-/COL-/COM-/COR-/CO-",
+      "meaningHint": "unión, compañía o acción conjunta",
+      "answer": "CON-/COL-/COM-/COR-/CO-: unión, compañía o acción conjunta",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Compuerta",
+      "prefix": "CON-/COL-/COM-/COR-/CO-",
+      "meaningHint": "unión, compañía o acción conjunta",
+      "answer": "CON-/COL-/COM-/COR-/CO-: unión, compañía o acción conjunta",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Concordia",
+      "prefix": "CON-/COL-/COM-/COR-/CO-",
+      "meaningHint": "unión, compañía o acción conjunta",
+      "answer": "CON-/COL-/COM-/COR-/CO-: unión, compañía o acción conjunta",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Confluencia",
+      "prefix": "CON-/COL-/COM-/COR-/CO-",
+      "meaningHint": "unión, compañía o acción conjunta",
+      "answer": "CON-/COL-/COM-/COR-/CO-: unión, compañía o acción conjunta",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Confluir",
+      "prefix": "CON-/COL-/COM-/COR-/CO-",
+      "meaningHint": "unión, compañía o acción conjunta",
+      "answer": "CON-/COL-/COM-/COR-/CO-: unión, compañía o acción conjunta",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Convivir",
+      "prefix": "CON-/COL-/COM-/COR-/CO-",
+      "meaningHint": "unión, compañía o acción conjunta",
+      "answer": "CON-/COL-/COM-/COR-/CO-: unión, compañía o acción conjunta",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Cooperación",
+      "prefix": "CON-/COL-/COM-/COR-/CO-",
+      "meaningHint": "unión, compañía o acción conjunta",
+      "answer": "CON-/COL-/COM-/COR-/CO-: unión, compañía o acción conjunta",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Correligionario",
+      "prefix": "CON-/COL-/COM-/COR-/CO-",
+      "meaningHint": "unión, compañía o acción conjunta",
+      "answer": "CON-/COL-/COM-/COR-/CO-: unión, compañía o acción conjunta",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Contraataque",
+      "prefix": "CONTRA-",
+      "meaningHint": "oposición o sentido contrario",
+      "answer": "CONTRA-: oposición o sentido contrario",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Contrabando",
+      "prefix": "CONTRA-",
+      "meaningHint": "oposición o sentido contrario",
+      "answer": "CONTRA-: oposición o sentido contrario",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Contraceptivo",
+      "prefix": "CONTRA-",
+      "meaningHint": "oposición o sentido contrario",
+      "answer": "CONTRA-: oposición o sentido contrario",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Contradecir",
+      "prefix": "CONTRA-",
+      "meaningHint": "oposición o sentido contrario",
+      "answer": "CONTRA-: oposición o sentido contrario",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Contradicción",
+      "prefix": "CONTRA-",
+      "meaningHint": "oposición o sentido contrario",
+      "answer": "CONTRA-: oposición o sentido contrario",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Contraindicado",
+      "prefix": "CONTRA-",
+      "meaningHint": "oposición o sentido contrario",
+      "answer": "CONTRA-: oposición o sentido contrario",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Contranatural",
+      "prefix": "CONTRA-",
+      "meaningHint": "oposición o sentido contrario",
+      "answer": "CONTRA-: oposición o sentido contrario",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Contraparte",
+      "prefix": "CONTRA-",
+      "meaningHint": "oposición o sentido contrario",
+      "answer": "CONTRA-: oposición o sentido contrario",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Contrapeso",
+      "prefix": "CONTRA-",
+      "meaningHint": "oposición o sentido contrario",
+      "answer": "CONTRA-: oposición o sentido contrario",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Contrarreforma",
+      "prefix": "CONTRA-",
+      "meaningHint": "oposición o sentido contrario",
+      "answer": "CONTRA-: oposición o sentido contrario",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Decaer",
+      "prefix": "DE-",
+      "meaningHint": "separación, descenso o privación",
+      "answer": "DE-: separación, descenso o privación",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Decaído",
+      "prefix": "DE-",
+      "meaningHint": "separación, descenso o privación",
+      "answer": "DE-: separación, descenso o privación",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Decapitar",
+      "prefix": "DE-",
+      "meaningHint": "separación, descenso o privación",
+      "answer": "DE-: separación, descenso o privación",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Decolorar",
+      "prefix": "DE-",
+      "meaningHint": "separación, descenso o privación",
+      "answer": "DE-: separación, descenso o privación",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Deducir",
+      "prefix": "DE-",
+      "meaningHint": "separación, descenso o privación",
+      "answer": "DE-: separación, descenso o privación",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Deferencia",
+      "prefix": "DE-",
+      "meaningHint": "separación, descenso o privación",
+      "answer": "DE-: separación, descenso o privación",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Definir",
+      "prefix": "DE-",
+      "meaningHint": "separación, descenso o privación",
+      "answer": "DE-: separación, descenso o privación",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Deformar",
+      "prefix": "DE-",
+      "meaningHint": "separación, descenso o privación",
+      "answer": "DE-: separación, descenso o privación",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Degradante",
+      "prefix": "DE-",
+      "meaningHint": "separación, descenso o privación",
+      "answer": "DE-: separación, descenso o privación",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Delimitar",
+      "prefix": "DE-",
+      "meaningHint": "separación, descenso o privación",
+      "answer": "DE-: separación, descenso o privación",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Demente",
+      "prefix": "DE-",
+      "meaningHint": "separación, descenso o privación",
+      "answer": "DE-: separación, descenso o privación",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Depender",
+      "prefix": "DE-",
+      "meaningHint": "separación, descenso o privación",
+      "answer": "DE-: separación, descenso o privación",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Difundir",
+      "prefix": "DI-/DIS-",
+      "meaningHint": "separación, diversidad o negación",
+      "answer": "DI-/DIS-: separación, diversidad o negación",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Dilatar",
+      "prefix": "DI-/DIS-",
+      "meaningHint": "separación, diversidad o negación",
+      "answer": "DI-/DIS-: separación, diversidad o negación",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Dimanar",
+      "prefix": "DI-/DIS-",
+      "meaningHint": "separación, diversidad o negación",
+      "answer": "DI-/DIS-: separación, diversidad o negación",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Discapacidad",
+      "prefix": "DI-/DIS-",
+      "meaningHint": "separación, diversidad o negación",
+      "answer": "DI-/DIS-: separación, diversidad o negación",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Disconformidad",
+      "prefix": "DI-/DIS-",
+      "meaningHint": "separación, diversidad o negación",
+      "answer": "DI-/DIS-: separación, diversidad o negación",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Discordia",
+      "prefix": "DI-/DIS-",
+      "meaningHint": "separación, diversidad o negación",
+      "answer": "DI-/DIS-: separación, diversidad o negación",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Disentir",
+      "prefix": "DI-/DIS-",
+      "meaningHint": "separación, diversidad o negación",
+      "answer": "DI-/DIS-: separación, diversidad o negación",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Disfuncional",
+      "prefix": "DI-/DIS-",
+      "meaningHint": "separación, diversidad o negación",
+      "answer": "DI-/DIS-: separación, diversidad o negación",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Dislocar",
+      "prefix": "DI-/DIS-",
+      "meaningHint": "separación, diversidad o negación",
+      "answer": "DI-/DIS-: separación, diversidad o negación",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Disputar",
+      "prefix": "DI-/DIS-",
+      "meaningHint": "separación, diversidad o negación",
+      "answer": "DI-/DIS-: separación, diversidad o negación",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Divergir",
+      "prefix": "DI-/DIS-",
+      "meaningHint": "separación, diversidad o negación",
+      "answer": "DI-/DIS-: separación, diversidad o negación",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Diversión",
+      "prefix": "DI-/DIS-",
+      "meaningHint": "separación, diversidad o negación",
+      "answer": "DI-/DIS-: separación, diversidad o negación",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Dividir",
+      "prefix": "DI-/DIS-",
+      "meaningHint": "separación, diversidad o negación",
+      "answer": "DI-/DIS-: separación, diversidad o negación",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Eficaz",
+      "prefix": "E-",
+      "meaningHint": "salida o movimiento hacia fuera",
+      "answer": "E-: salida o movimiento hacia fuera",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Efusión",
+      "prefix": "E-",
+      "meaningHint": "salida o movimiento hacia fuera",
+      "answer": "E-: salida o movimiento hacia fuera",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Eliminar",
+      "prefix": "E-",
+      "meaningHint": "salida o movimiento hacia fuera",
+      "answer": "E-: salida o movimiento hacia fuera",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Eludir",
+      "prefix": "E-",
+      "meaningHint": "salida o movimiento hacia fuera",
+      "answer": "E-: salida o movimiento hacia fuera",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Emanar",
+      "prefix": "E-",
+      "meaningHint": "salida o movimiento hacia fuera",
+      "answer": "E-: salida o movimiento hacia fuera",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Emergencia",
+      "prefix": "E-",
+      "meaningHint": "salida o movimiento hacia fuera",
+      "answer": "E-: salida o movimiento hacia fuera",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Emigrar",
+      "prefix": "E-",
+      "meaningHint": "salida o movimiento hacia fuera",
+      "answer": "E-: salida o movimiento hacia fuera",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Emoción",
+      "prefix": "E-",
+      "meaningHint": "salida o movimiento hacia fuera",
+      "answer": "E-: salida o movimiento hacia fuera",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Evadir",
+      "prefix": "E-",
+      "meaningHint": "salida o movimiento hacia fuera",
+      "answer": "E-: salida o movimiento hacia fuera",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Evaporación",
+      "prefix": "E-",
+      "meaningHint": "salida o movimiento hacia fuera",
+      "answer": "E-: salida o movimiento hacia fuera",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Exacción",
+      "prefix": "EX-",
+      "meaningHint": "salida, exterioridad o privación",
+      "answer": "EX-: salida, exterioridad o privación",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Exagerar",
+      "prefix": "EX-",
+      "meaningHint": "salida, exterioridad o privación",
+      "answer": "EX-: salida, exterioridad o privación",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Exánime",
+      "prefix": "EX-",
+      "meaningHint": "salida, exterioridad o privación",
+      "answer": "EX-: salida, exterioridad o privación",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Excedente",
+      "prefix": "EX-",
+      "meaningHint": "salida, exterioridad o privación",
+      "answer": "EX-: salida, exterioridad o privación",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Excéntrico",
+      "prefix": "EX-",
+      "meaningHint": "salida, exterioridad o privación",
+      "answer": "EX-: salida, exterioridad o privación",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Exclamación",
+      "prefix": "EX-",
+      "meaningHint": "salida, exterioridad o privación",
+      "answer": "EX-: salida, exterioridad o privación",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Exclamar",
+      "prefix": "EX-",
+      "meaningHint": "salida, exterioridad o privación",
+      "answer": "EX-: salida, exterioridad o privación",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Excónsul",
+      "prefix": "EX-",
+      "meaningHint": "salida, exterioridad o privación",
+      "answer": "EX-: salida, exterioridad o privación",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Exhumar",
+      "prefix": "EX-",
+      "meaningHint": "salida, exterioridad o privación",
+      "answer": "EX-: salida, exterioridad o privación",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Exigir",
+      "prefix": "EX-",
+      "meaningHint": "salida, exterioridad o privación",
+      "answer": "EX-: salida, exterioridad o privación",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Exterminar",
+      "prefix": "EX-",
+      "meaningHint": "salida, exterioridad o privación",
+      "answer": "EX-: salida, exterioridad o privación",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Extraer",
+      "prefix": "EXTRA-",
+      "meaningHint": "fuera de, más allá de",
+      "answer": "EXTRA-: fuera de, más allá de",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Extrafino",
+      "prefix": "EXTRA-",
+      "meaningHint": "fuera de, más allá de",
+      "answer": "EXTRA-: fuera de, más allá de",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Extrajudicial",
+      "prefix": "EXTRA-",
+      "meaningHint": "fuera de, más allá de",
+      "answer": "EXTRA-: fuera de, más allá de",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Extralimitar",
+      "prefix": "EXTRA-",
+      "meaningHint": "fuera de, más allá de",
+      "answer": "EXTRA-: fuera de, más allá de",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Extramuros",
+      "prefix": "EXTRA-",
+      "meaningHint": "fuera de, más allá de",
+      "answer": "EXTRA-: fuera de, más allá de",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Extraoficial",
+      "prefix": "EXTRA-",
+      "meaningHint": "fuera de, más allá de",
+      "answer": "EXTRA-: fuera de, más allá de",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Extraordinario",
+      "prefix": "EXTRA-",
+      "meaningHint": "fuera de, más allá de",
+      "answer": "EXTRA-: fuera de, más allá de",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Extraplano",
+      "prefix": "EXTRA-",
+      "meaningHint": "fuera de, más allá de",
+      "answer": "EXTRA-: fuera de, más allá de",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Extrapolación",
+      "prefix": "EXTRA-",
+      "meaningHint": "fuera de, más allá de",
+      "answer": "EXTRA-: fuera de, más allá de",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Extrarradio",
+      "prefix": "EXTRA-",
+      "meaningHint": "fuera de, más allá de",
+      "answer": "EXTRA-: fuera de, más allá de",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Extraterrestre",
+      "prefix": "EXTRA-",
+      "meaningHint": "fuera de, más allá de",
+      "answer": "EXTRA-: fuera de, más allá de",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Extravertido",
+      "prefix": "EXTRA-",
+      "meaningHint": "fuera de, más allá de",
+      "answer": "EXTRA-: fuera de, más allá de",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Extraviar",
+      "prefix": "EXTRA-",
+      "meaningHint": "fuera de, más allá de",
+      "answer": "EXTRA-: fuera de, más allá de",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Ilegal",
+      "prefix": "IN-/IL-/IM-",
+      "meaningHint": "negación o interioridad según la palabra",
+      "answer": "IN-/IL-/IM-: negación o interioridad según la palabra",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Ilógico",
+      "prefix": "IN-/IL-/IM-",
+      "meaningHint": "negación o interioridad según la palabra",
+      "answer": "IN-/IL-/IM-: negación o interioridad según la palabra",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Impaciencia",
+      "prefix": "IN-/IL-/IM-",
+      "meaningHint": "negación o interioridad según la palabra",
+      "answer": "IN-/IL-/IM-: negación o interioridad según la palabra",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Impasible",
+      "prefix": "IN-/IL-/IM-",
+      "meaningHint": "negación o interioridad según la palabra",
+      "answer": "IN-/IL-/IM-: negación o interioridad según la palabra",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Importar",
+      "prefix": "IN-/IL-/IM-",
+      "meaningHint": "negación o interioridad según la palabra",
+      "answer": "IN-/IL-/IM-: negación o interioridad según la palabra",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Imprevisto",
+      "prefix": "IN-/IL-/IM-",
+      "meaningHint": "negación o interioridad según la palabra",
+      "answer": "IN-/IL-/IM-: negación o interioridad según la palabra",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Inaudito",
+      "prefix": "IN-/IL-/IM-",
+      "meaningHint": "negación o interioridad según la palabra",
+      "answer": "IN-/IL-/IM-: negación o interioridad según la palabra",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Incluir",
+      "prefix": "IN-/IL-/IM-",
+      "meaningHint": "negación o interioridad según la palabra",
+      "answer": "IN-/IL-/IM-: negación o interioridad según la palabra",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Incoloro",
+      "prefix": "IN-/IL-/IM-",
+      "meaningHint": "negación o interioridad según la palabra",
+      "answer": "IN-/IL-/IM-: negación o interioridad según la palabra",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Infrecuente",
+      "prefix": "IN-/IL-/IM-",
+      "meaningHint": "negación o interioridad según la palabra",
+      "answer": "IN-/IL-/IM-: negación o interioridad según la palabra",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Inmortal",
+      "prefix": "IN-/IL-/IM-",
+      "meaningHint": "negación o interioridad según la palabra",
+      "answer": "IN-/IL-/IM-: negación o interioridad según la palabra",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Inoperante",
+      "prefix": "IN-/IL-/IM-",
+      "meaningHint": "negación o interioridad según la palabra",
+      "answer": "IN-/IL-/IM-: negación o interioridad según la palabra",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Infradotar",
+      "prefix": "INFRA-",
+      "meaningHint": "debajo de, inferioridad",
+      "answer": "INFRA-: debajo de, inferioridad",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Infraestructura",
+      "prefix": "INFRA-",
+      "meaningHint": "debajo de, inferioridad",
+      "answer": "INFRA-: debajo de, inferioridad",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Infrahumano",
+      "prefix": "INFRA-",
+      "meaningHint": "debajo de, inferioridad",
+      "answer": "INFRA-: debajo de, inferioridad",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Inframundo",
+      "prefix": "INFRA-",
+      "meaningHint": "debajo de, inferioridad",
+      "answer": "INFRA-: debajo de, inferioridad",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Infrarrojo",
+      "prefix": "INFRA-",
+      "meaningHint": "debajo de, inferioridad",
+      "answer": "INFRA-: debajo de, inferioridad",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Infrasonido",
+      "prefix": "INFRA-",
+      "meaningHint": "debajo de, inferioridad",
+      "answer": "INFRA-: debajo de, inferioridad",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Infrautilizar",
+      "prefix": "INFRA-",
+      "meaningHint": "debajo de, inferioridad",
+      "answer": "INFRA-: debajo de, inferioridad",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Infravalorar",
+      "prefix": "INFRA-",
+      "meaningHint": "debajo de, inferioridad",
+      "answer": "INFRA-: debajo de, inferioridad",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Infravivienda",
+      "prefix": "INFRA-",
+      "meaningHint": "debajo de, inferioridad",
+      "answer": "INFRA-: debajo de, inferioridad",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Intercalar",
+      "prefix": "INTER-",
+      "meaningHint": "entre, en medio de",
+      "answer": "INTER-: entre, en medio de",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Interceder",
+      "prefix": "INTER-",
+      "meaningHint": "entre, en medio de",
+      "answer": "INTER-: entre, en medio de",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Intercostal",
+      "prefix": "INTER-",
+      "meaningHint": "entre, en medio de",
+      "answer": "INTER-: entre, en medio de",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Interdependencia",
+      "prefix": "INTER-",
+      "meaningHint": "entre, en medio de",
+      "answer": "INTER-: entre, en medio de",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Interferencia",
+      "prefix": "INTER-",
+      "meaningHint": "entre, en medio de",
+      "answer": "INTER-: entre, en medio de",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Interfono",
+      "prefix": "INTER-",
+      "meaningHint": "entre, en medio de",
+      "answer": "INTER-: entre, en medio de",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Interlocutor",
+      "prefix": "INTER-",
+      "meaningHint": "entre, en medio de",
+      "answer": "INTER-: entre, en medio de",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Intermedio",
+      "prefix": "INTER-",
+      "meaningHint": "entre, en medio de",
+      "answer": "INTER-: entre, en medio de",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Interministerial",
+      "prefix": "INTER-",
+      "meaningHint": "entre, en medio de",
+      "answer": "INTER-: entre, en medio de",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Internacional",
+      "prefix": "INTER-",
+      "meaningHint": "entre, en medio de",
+      "answer": "INTER-: entre, en medio de",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Interplanetario",
+      "prefix": "INTER-",
+      "meaningHint": "entre, en medio de",
+      "answer": "INTER-: entre, en medio de",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Interrelacionar",
+      "prefix": "INTER-",
+      "meaningHint": "entre, en medio de",
+      "answer": "INTER-: entre, en medio de",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Intervenir",
+      "prefix": "INTER-",
+      "meaningHint": "entre, en medio de",
+      "answer": "INTER-: entre, en medio de",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Intracelular",
+      "prefix": "INTRA-",
+      "meaningHint": "dentro de",
+      "answer": "INTRA-: dentro de",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Intracraneal",
+      "prefix": "INTRA-",
+      "meaningHint": "dentro de",
+      "answer": "INTRA-: dentro de",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Intradérmico",
+      "prefix": "INTRA-",
+      "meaningHint": "dentro de",
+      "answer": "INTRA-: dentro de",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Intradía",
+      "prefix": "INTRA-",
+      "meaningHint": "dentro de",
+      "answer": "INTRA-: dentro de",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Intramuros",
+      "prefix": "INTRA-",
+      "meaningHint": "dentro de",
+      "answer": "INTRA-: dentro de",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Intramuscular",
+      "prefix": "INTRA-",
+      "meaningHint": "dentro de",
+      "answer": "INTRA-: dentro de",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Intransitivo",
+      "prefix": "INTRA-",
+      "meaningHint": "dentro de",
+      "answer": "INTRA-: dentro de",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Intratable",
+      "prefix": "INTRA-",
+      "meaningHint": "dentro de",
+      "answer": "INTRA-: dentro de",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Intraurbano",
+      "prefix": "INTRA-",
+      "meaningHint": "dentro de",
+      "answer": "INTRA-: dentro de",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Intravenoso",
+      "prefix": "INTRA-",
+      "meaningHint": "dentro de",
+      "answer": "INTRA-: dentro de",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Percusión",
+      "prefix": "PER-",
+      "meaningHint": "a través de, completamente",
+      "answer": "PER-: a través de, completamente",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Percutáneo",
+      "prefix": "PER-",
+      "meaningHint": "a través de, completamente",
+      "answer": "PER-: a través de, completamente",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Perdurable",
+      "prefix": "PER-",
+      "meaningHint": "a través de, completamente",
+      "answer": "PER-: a través de, completamente",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Perfecto",
+      "prefix": "PER-",
+      "meaningHint": "a través de, completamente",
+      "answer": "PER-: a través de, completamente",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Perjurar",
+      "prefix": "PER-",
+      "meaningHint": "a través de, completamente",
+      "answer": "PER-: a través de, completamente",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Permuta",
+      "prefix": "PER-",
+      "meaningHint": "a través de, completamente",
+      "answer": "PER-: a través de, completamente",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Pernoctar",
+      "prefix": "PER-",
+      "meaningHint": "a través de, completamente",
+      "answer": "PER-: a través de, completamente",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Perseguir",
+      "prefix": "PER-",
+      "meaningHint": "a través de, completamente",
+      "answer": "PER-: a través de, completamente",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Perturbar",
+      "prefix": "PER-",
+      "meaningHint": "a través de, completamente",
+      "answer": "PER-: a través de, completamente",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Pervertir",
+      "prefix": "PER-",
+      "meaningHint": "a través de, completamente",
+      "answer": "PER-: a través de, completamente",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Pervivir",
+      "prefix": "PER-",
+      "meaningHint": "a través de, completamente",
+      "answer": "PER-: a través de, completamente",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Posbélico",
+      "prefix": "POS-/POST-",
+      "meaningHint": "después de, posterioridad",
+      "answer": "POS-/POST-: después de, posterioridad",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Posdata",
+      "prefix": "POS-/POST-",
+      "meaningHint": "después de, posterioridad",
+      "answer": "POS-/POST-: después de, posterioridad",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Posgrado",
+      "prefix": "POS-/POST-",
+      "meaningHint": "después de, posterioridad",
+      "answer": "POS-/POST-: después de, posterioridad",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Posguerra",
+      "prefix": "POS-/POST-",
+      "meaningHint": "después de, posterioridad",
+      "answer": "POS-/POST-: después de, posterioridad",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Posmoderno",
+      "prefix": "POS-/POST-",
+      "meaningHint": "después de, posterioridad",
+      "answer": "POS-/POST-: después de, posterioridad",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Posponer",
+      "prefix": "POS-/POST-",
+      "meaningHint": "después de, posterioridad",
+      "answer": "POS-/POST-: después de, posterioridad",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Postdata",
+      "prefix": "POS-/POST-",
+      "meaningHint": "después de, posterioridad",
+      "answer": "POS-/POST-: después de, posterioridad",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Postdoctoral",
+      "prefix": "POS-/POST-",
+      "meaningHint": "después de, posterioridad",
+      "answer": "POS-/POST-: después de, posterioridad",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Postergar",
+      "prefix": "POS-/POST-",
+      "meaningHint": "después de, posterioridad",
+      "answer": "POS-/POST-: después de, posterioridad",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Postónico",
+      "prefix": "POS-/POST-",
+      "meaningHint": "después de, posterioridad",
+      "answer": "POS-/POST-: después de, posterioridad",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Postoperatorio",
+      "prefix": "POS-/POST-",
+      "meaningHint": "después de, posterioridad",
+      "answer": "POS-/POST-: después de, posterioridad",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Postparto",
+      "prefix": "POS-/POST-",
+      "meaningHint": "después de, posterioridad",
+      "answer": "POS-/POST-: después de, posterioridad",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Preaviso",
+      "prefix": "PRE-",
+      "meaningHint": "antes de, anterioridad",
+      "answer": "PRE-: antes de, anterioridad",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Precaución",
+      "prefix": "PRE-",
+      "meaningHint": "antes de, anterioridad",
+      "answer": "PRE-: antes de, anterioridad",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Preclaro",
+      "prefix": "PRE-",
+      "meaningHint": "antes de, anterioridad",
+      "answer": "PRE-: antes de, anterioridad",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Predecir",
+      "prefix": "PRE-",
+      "meaningHint": "antes de, anterioridad",
+      "answer": "PRE-: antes de, anterioridad",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Predicción",
+      "prefix": "PRE-",
+      "meaningHint": "antes de, anterioridad",
+      "answer": "PRE-: antes de, anterioridad",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Preescolar",
+      "prefix": "PRE-",
+      "meaningHint": "antes de, anterioridad",
+      "answer": "PRE-: antes de, anterioridad",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Preferencia",
+      "prefix": "PRE-",
+      "meaningHint": "antes de, anterioridad",
+      "answer": "PRE-: antes de, anterioridad",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Prefijar",
+      "prefix": "PRE-",
+      "meaningHint": "antes de, anterioridad",
+      "answer": "PRE-: antes de, anterioridad",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Prefijo",
+      "prefix": "PRE-",
+      "meaningHint": "antes de, anterioridad",
+      "answer": "PRE-: antes de, anterioridad",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Prehistoria",
+      "prefix": "PRE-",
+      "meaningHint": "antes de, anterioridad",
+      "answer": "PRE-: antes de, anterioridad",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Prejuicio",
+      "prefix": "PRE-",
+      "meaningHint": "antes de, anterioridad",
+      "answer": "PRE-: antes de, anterioridad",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Prematuro",
+      "prefix": "PRE-",
+      "meaningHint": "antes de, anterioridad",
+      "answer": "PRE-: antes de, anterioridad",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Premonición",
+      "prefix": "PRE-",
+      "meaningHint": "antes de, anterioridad",
+      "answer": "PRE-: antes de, anterioridad",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Prever",
+      "prefix": "PRE-",
+      "meaningHint": "antes de, anterioridad",
+      "answer": "PRE-: antes de, anterioridad",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Proamnistía",
+      "prefix": "PRO-",
+      "meaningHint": "hacia delante, en favor de",
+      "answer": "PRO-: hacia delante, en favor de",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Proclamar",
+      "prefix": "PRO-",
+      "meaningHint": "hacia delante, en favor de",
+      "answer": "PRO-: hacia delante, en favor de",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Procónsul",
+      "prefix": "PRO-",
+      "meaningHint": "hacia delante, en favor de",
+      "answer": "PRO-: hacia delante, en favor de",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Progenitor",
+      "prefix": "PRO-",
+      "meaningHint": "hacia delante, en favor de",
+      "answer": "PRO-: hacia delante, en favor de",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Progenitura",
+      "prefix": "PRO-",
+      "meaningHint": "hacia delante, en favor de",
+      "answer": "PRO-: hacia delante, en favor de",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Progubernamental",
+      "prefix": "PRO-",
+      "meaningHint": "hacia delante, en favor de",
+      "answer": "PRO-: hacia delante, en favor de",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Promotor",
+      "prefix": "PRO-",
+      "meaningHint": "hacia delante, en favor de",
+      "answer": "PRO-: hacia delante, en favor de",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Promover",
+      "prefix": "PRO-",
+      "meaningHint": "hacia delante, en favor de",
+      "answer": "PRO-: hacia delante, en favor de",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Pronombre",
+      "prefix": "PRO-",
+      "meaningHint": "hacia delante, en favor de",
+      "answer": "PRO-: hacia delante, en favor de",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Proponer",
+      "prefix": "PRO-",
+      "meaningHint": "hacia delante, en favor de",
+      "answer": "PRO-: hacia delante, en favor de",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Proseguir",
+      "prefix": "PRO-",
+      "meaningHint": "hacia delante, en favor de",
+      "answer": "PRO-: hacia delante, en favor de",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Proyecto",
+      "prefix": "PRO-",
+      "meaningHint": "hacia delante, en favor de",
+      "answer": "PRO-: hacia delante, en favor de",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Recámara",
+      "prefix": "RE-/RED-",
+      "meaningHint": "repetición, retroceso o intensificación",
+      "answer": "RE-/RED-: repetición, retroceso o intensificación",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Recargar",
+      "prefix": "RE-/RED-",
+      "meaningHint": "repetición, retroceso o intensificación",
+      "answer": "RE-/RED-: repetición, retroceso o intensificación",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Reconstruir",
+      "prefix": "RE-/RED-",
+      "meaningHint": "repetición, retroceso o intensificación",
+      "answer": "RE-/RED-: repetición, retroceso o intensificación",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Redención",
+      "prefix": "RE-/RED-",
+      "meaningHint": "repetición, retroceso o intensificación",
+      "answer": "RE-/RED-: repetición, retroceso o intensificación",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Referencia",
+      "prefix": "RE-/RED-",
+      "meaningHint": "repetición, retroceso o intensificación",
+      "answer": "RE-/RED-: repetición, retroceso o intensificación",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Refluir",
+      "prefix": "RE-/RED-",
+      "meaningHint": "repetición, retroceso o intensificación",
+      "answer": "RE-/RED-: repetición, retroceso o intensificación",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Renombre",
+      "prefix": "RE-/RED-",
+      "meaningHint": "repetición, retroceso o intensificación",
+      "answer": "RE-/RED-: repetición, retroceso o intensificación",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Reponer",
+      "prefix": "RE-/RED-",
+      "meaningHint": "repetición, retroceso o intensificación",
+      "answer": "RE-/RED-: repetición, retroceso o intensificación",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Reprobar",
+      "prefix": "RE-/RED-",
+      "meaningHint": "repetición, retroceso o intensificación",
+      "answer": "RE-/RED-: repetición, retroceso o intensificación",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Repugnar",
+      "prefix": "RE-/RED-",
+      "meaningHint": "repetición, retroceso o intensificación",
+      "answer": "RE-/RED-: repetición, retroceso o intensificación",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Reseco",
+      "prefix": "RE-/RED-",
+      "meaningHint": "repetición, retroceso o intensificación",
+      "answer": "RE-/RED-: repetición, retroceso o intensificación",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Resistencia",
+      "prefix": "RE-/RED-",
+      "meaningHint": "repetición, retroceso o intensificación",
+      "answer": "RE-/RED-: repetición, retroceso o intensificación",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Resurrección",
+      "prefix": "RE-/RED-",
+      "meaningHint": "repetición, retroceso o intensificación",
+      "answer": "RE-/RED-: repetición, retroceso o intensificación",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Revivir",
+      "prefix": "RE-/RED-",
+      "meaningHint": "repetición, retroceso o intensificación",
+      "answer": "RE-/RED-: repetición, retroceso o intensificación",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Retroactivo",
+      "prefix": "RETRO-",
+      "meaningHint": "hacia atrás",
+      "answer": "RETRO-: hacia atrás",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Retroalimentación",
+      "prefix": "RETRO-",
+      "meaningHint": "hacia atrás",
+      "answer": "RETRO-: hacia atrás",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Retroceder",
+      "prefix": "RETRO-",
+      "meaningHint": "hacia atrás",
+      "answer": "RETRO-: hacia atrás",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Retrógrado",
+      "prefix": "RETRO-",
+      "meaningHint": "hacia atrás",
+      "answer": "RETRO-: hacia atrás",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Retroiluminar",
+      "prefix": "RETRO-",
+      "meaningHint": "hacia atrás",
+      "answer": "RETRO-: hacia atrás",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Retropropulsión",
+      "prefix": "RETRO-",
+      "meaningHint": "hacia atrás",
+      "answer": "RETRO-: hacia atrás",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Retrospección",
+      "prefix": "RETRO-",
+      "meaningHint": "hacia atrás",
+      "answer": "RETRO-: hacia atrás",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Retrospectiva",
+      "prefix": "RETRO-",
+      "meaningHint": "hacia atrás",
+      "answer": "RETRO-: hacia atrás",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Retrotraer",
+      "prefix": "RETRO-",
+      "meaningHint": "hacia atrás",
+      "answer": "RETRO-: hacia atrás",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Retrovisor",
+      "prefix": "RETRO-",
+      "meaningHint": "hacia atrás",
+      "answer": "RETRO-: hacia atrás",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Sofrito",
+      "prefix": "SUB(S)-/SU(S)-/SO(S)-",
+      "meaningHint": "debajo de, subordinación",
+      "answer": "SUB(S)-/SU(S)-/SO(S)-: debajo de, subordinación",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Soterrar",
+      "prefix": "SUB(S)-/SU(S)-/SO(S)-",
+      "meaningHint": "debajo de, subordinación",
+      "answer": "SUB(S)-/SU(S)-/SO(S)-: debajo de, subordinación",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Subacuático",
+      "prefix": "SUB(S)-/SU(S)-/SO(S)-",
+      "meaningHint": "debajo de, subordinación",
+      "answer": "SUB(S)-/SU(S)-/SO(S)-: debajo de, subordinación",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Subarrendar",
+      "prefix": "SUB(S)-/SU(S)-/SO(S)-",
+      "meaningHint": "debajo de, subordinación",
+      "answer": "SUB(S)-/SU(S)-/SO(S)-: debajo de, subordinación",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Subconsciente",
+      "prefix": "SUB(S)-/SU(S)-/SO(S)-",
+      "meaningHint": "debajo de, subordinación",
+      "answer": "SUB(S)-/SU(S)-/SO(S)-: debajo de, subordinación",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Subdelegado",
+      "prefix": "SUB(S)-/SU(S)-/SO(S)-",
+      "meaningHint": "debajo de, subordinación",
+      "answer": "SUB(S)-/SU(S)-/SO(S)-: debajo de, subordinación",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Subempleo",
+      "prefix": "SUB(S)-/SU(S)-/SO(S)-",
+      "meaningHint": "debajo de, subordinación",
+      "answer": "SUB(S)-/SU(S)-/SO(S)-: debajo de, subordinación",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Submarino",
+      "prefix": "SUB(S)-/SU(S)-/SO(S)-",
+      "meaningHint": "debajo de, subordinación",
+      "answer": "SUB(S)-/SU(S)-/SO(S)-: debajo de, subordinación",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Subordinación",
+      "prefix": "SUB(S)-/SU(S)-/SO(S)-",
+      "meaningHint": "debajo de, subordinación",
+      "answer": "SUB(S)-/SU(S)-/SO(S)-: debajo de, subordinación",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Subsiguiente",
+      "prefix": "SUB(S)-/SU(S)-/SO(S)-",
+      "meaningHint": "debajo de, subordinación",
+      "answer": "SUB(S)-/SU(S)-/SO(S)-: debajo de, subordinación",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Subsuelo",
+      "prefix": "SUB(S)-/SU(S)-/SO(S)-",
+      "meaningHint": "debajo de, subordinación",
+      "answer": "SUB(S)-/SU(S)-/SO(S)-: debajo de, subordinación",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Subterráneo",
+      "prefix": "SUB(S)-/SU(S)-/SO(S)-",
+      "meaningHint": "debajo de, subordinación",
+      "answer": "SUB(S)-/SU(S)-/SO(S)-: debajo de, subordinación",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Subyugar",
+      "prefix": "SUB(S)-/SU(S)-/SO(S)-",
+      "meaningHint": "debajo de, subordinación",
+      "answer": "SUB(S)-/SU(S)-/SO(S)-: debajo de, subordinación",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Transacción",
+      "prefix": "TRANS-/TRA-/TRAS-",
+      "meaningHint": "a través de, al otro lado, cambio",
+      "answer": "TRANS-/TRA-/TRAS-: a través de, al otro lado, cambio",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Transalpino",
+      "prefix": "TRANS-/TRA-/TRAS-",
+      "meaningHint": "a través de, al otro lado, cambio",
+      "answer": "TRANS-/TRA-/TRAS-: a través de, al otro lado, cambio",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Transatlántico",
+      "prefix": "TRANS-/TRA-/TRAS-",
+      "meaningHint": "a través de, al otro lado, cambio",
+      "answer": "TRANS-/TRA-/TRAS-: a través de, al otro lado, cambio",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Transcribir",
+      "prefix": "TRANS-/TRA-/TRAS-",
+      "meaningHint": "a través de, al otro lado, cambio",
+      "answer": "TRANS-/TRA-/TRAS-: a través de, al otro lado, cambio",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Transeunte",
+      "prefix": "TRANS-/TRA-/TRAS-",
+      "meaningHint": "a través de, al otro lado, cambio",
+      "answer": "TRANS-/TRA-/TRAS-: a través de, al otro lado, cambio",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Transeúnte",
+      "prefix": "TRANS-/TRA-/TRAS-",
+      "meaningHint": "a través de, al otro lado, cambio",
+      "answer": "TRANS-/TRA-/TRAS-: a través de, al otro lado, cambio",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Transfiguración",
+      "prefix": "TRANS-/TRA-/TRAS-",
+      "meaningHint": "a través de, al otro lado, cambio",
+      "answer": "TRANS-/TRA-/TRAS-: a través de, al otro lado, cambio",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Transformar",
+      "prefix": "TRANS-/TRA-/TRAS-",
+      "meaningHint": "a través de, al otro lado, cambio",
+      "answer": "TRANS-/TRA-/TRAS-: a través de, al otro lado, cambio",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Transición",
+      "prefix": "TRANS-/TRA-/TRAS-",
+      "meaningHint": "a través de, al otro lado, cambio",
+      "answer": "TRANS-/TRA-/TRAS-: a través de, al otro lado, cambio",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Translúcido",
+      "prefix": "TRANS-/TRA-/TRAS-",
+      "meaningHint": "a través de, al otro lado, cambio",
+      "answer": "TRANS-/TRA-/TRAS-: a través de, al otro lado, cambio",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Trasalpino",
+      "prefix": "TRANS-/TRA-/TRAS-",
+      "meaningHint": "a través de, al otro lado, cambio",
+      "answer": "TRANS-/TRA-/TRAS-: a través de, al otro lado, cambio",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Trascendental",
+      "prefix": "TRANS-/TRA-/TRAS-",
+      "meaningHint": "a través de, al otro lado, cambio",
+      "answer": "TRANS-/TRA-/TRAS-: a través de, al otro lado, cambio",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Trasladar",
+      "prefix": "TRANS-/TRA-/TRAS-",
+      "meaningHint": "a través de, al otro lado, cambio",
+      "answer": "TRANS-/TRA-/TRAS-: a través de, al otro lado, cambio",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Traslúcido",
+      "prefix": "TRANS-/TRA-/TRAS-",
+      "meaningHint": "a través de, al otro lado, cambio",
+      "answer": "TRANS-/TRA-/TRAS-: a través de, al otro lado, cambio",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Trastienda",
+      "prefix": "TRANS-/TRA-/TRAS-",
+      "meaningHint": "a través de, al otro lado, cambio",
+      "answer": "TRANS-/TRA-/TRAS-: a través de, al otro lado, cambio",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Travestismo",
+      "prefix": "TRANS-/TRA-/TRAS-",
+      "meaningHint": "a través de, al otro lado, cambio",
+      "answer": "TRANS-/TRA-/TRAS-: a través de, al otro lado, cambio",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Ulterior",
+      "prefix": "ULTER-/ULTRA-",
+      "meaningHint": "más allá de, exceso",
+      "answer": "ULTER-/ULTRA-: más allá de, exceso",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Ultraderecha",
+      "prefix": "ULTER-/ULTRA-",
+      "meaningHint": "más allá de, exceso",
+      "answer": "ULTER-/ULTRA-: más allá de, exceso",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Ultraligero",
+      "prefix": "ULTER-/ULTRA-",
+      "meaningHint": "más allá de, exceso",
+      "answer": "ULTER-/ULTRA-: más allá de, exceso",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Ultramar",
+      "prefix": "ULTER-/ULTRA-",
+      "meaningHint": "más allá de, exceso",
+      "answer": "ULTER-/ULTRA-: más allá de, exceso",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Ultramarino",
+      "prefix": "ULTER-/ULTRA-",
+      "meaningHint": "más allá de, exceso",
+      "answer": "ULTER-/ULTRA-: más allá de, exceso",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Ultrapuertos",
+      "prefix": "ULTER-/ULTRA-",
+      "meaningHint": "más allá de, exceso",
+      "answer": "ULTER-/ULTRA-: más allá de, exceso",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Ultrarrápido",
+      "prefix": "ULTER-/ULTRA-",
+      "meaningHint": "más allá de, exceso",
+      "answer": "ULTER-/ULTRA-: más allá de, exceso",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Ultrasensible",
+      "prefix": "ULTER-/ULTRA-",
+      "meaningHint": "más allá de, exceso",
+      "answer": "ULTER-/ULTRA-: más allá de, exceso",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Ultrasónico",
+      "prefix": "ULTER-/ULTRA-",
+      "meaningHint": "más allá de, exceso",
+      "answer": "ULTER-/ULTRA-: más allá de, exceso",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Ultrasonido",
+      "prefix": "ULTER-/ULTRA-",
+      "meaningHint": "más allá de, exceso",
+      "answer": "ULTER-/ULTRA-: más allá de, exceso",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Ultratumba",
+      "prefix": "ULTER-/ULTRA-",
+      "meaningHint": "más allá de, exceso",
+      "answer": "ULTER-/ULTRA-: más allá de, exceso",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    },
+    {
+      "prompt": "Ultravioleta",
+      "prefix": "ULTER-/ULTRA-",
+      "meaningHint": "más allá de, exceso",
+      "answer": "ULTER-/ULTRA-: más allá de, exceso",
+      "source": "lista docente de palabras con prefijos",
+      "meaningStatus": "orientativo; requiere validación semántica caso por caso"
+    }
+  ]
+}

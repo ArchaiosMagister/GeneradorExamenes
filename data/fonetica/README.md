@@ -10,7 +10,7 @@ El módulo [seleccionar_evoluciones.mjs](./seleccionar_evoluciones.mjs) exporta 
 
 Pruebas: ejecutar node scripts/test-fonetica.mjs desde la raíz del repositorio.
 
-IMPORTANTE: este primer cambio incorpora los datos y el selector al repositorio; la elección de normas y la generación desde la interfaz de exámenes de la PWA aún no están conectadas. Tampoco está incluido en el paquete autónomo offline.html. Antes de usar fichas en pruebas calificables conviene validar los étimos y reglas seleccionados.
+El banco canónico está conectado a los ejercicios de evolución fonética de Latín I y Latín 4.º y se incluye en la PWA y en el HTML autónomo. En Latín I se seleccionan las normas impartidas manualmente; en Latín 4.º se sigue el repertorio acumulativo de fenómenos por unidad (correspondencia todavía provisional). La salida del alumno presenta cuatro étimos sin soluciones. El archivo `banco_examenes.tsv` contiene solo las primeras 330 fichas a efectos de trazabilidad; no es el origen activo de selección. Antes de usar fichas en pruebas calificables conviene validar los étimos y reglas seleccionados.
 
 ## Segunda ampliación (30 voces habituales para preparación PAU)
 

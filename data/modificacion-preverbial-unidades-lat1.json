@@ -1,0 +1,147 @@
+{
+  "schema": 1,
+  "course": "latin1",
+  "selection": "Permitir verbos introducidos hasta la última unidad seleccionada, incluso si no se activa el modo acumulativo. Las UD8 y UD10 no introducen verbos.",
+  "units": [
+    {
+      "unit": 2,
+      "verbs": [
+        {
+          "lemma": "mitto",
+          "enunciadoDocente": "mitto, misi, missum"
+        },
+        {
+          "lemma": "pono",
+          "enunciadoDocente": "pono, posui, positum"
+        },
+        {
+          "lemma": "duco",
+          "enunciadoDocente": "duco, duxi, ductum"
+        },
+        {
+          "lemma": "fero",
+          "enunciadoDocente": "fero, tuli, latum"
+        }
+      ]
+    },
+    {
+      "unit": 3,
+      "verbs": [
+        {
+          "lemma": "capio",
+          "enunciadoDocente": "capio, cepi, captum"
+        },
+        {
+          "lemma": "clamo",
+          "enunciadoDocente": "clamo, clamavi, clamatum"
+        },
+        {
+          "lemma": "facio",
+          "enunciadoDocente": "facio, feci, factum"
+        },
+        {
+          "lemma": "tendo",
+          "enunciadoDocente": "tendo, tetendi, tentum"
+        }
+      ]
+    },
+    {
+      "unit": 4,
+      "verbs": [
+        {
+          "lemma": "porto"
+        },
+        {
+          "lemma": "habeo"
+        },
+        {
+          "lemma": "iacio"
+        },
+        {
+          "lemma": "cado"
+        }
+      ]
+    },
+    {
+      "unit": 5,
+      "verbs": [
+        {
+          "lemma": "curro"
+        },
+        {
+          "lemma": "dico",
+          "enunciadoDocente": "dico, dixi, dictum"
+        },
+        {
+          "lemma": "gero"
+        },
+        {
+          "lemma": "peto"
+        }
+      ]
+    },
+    {
+      "unit": 6,
+      "verbs": [
+        {
+          "lemma": "pugno"
+        },
+        {
+          "lemma": "sedeo"
+        },
+        {
+          "lemma": "sentio"
+        },
+        {
+          "lemma": "specio"
+        }
+      ]
+    },
+    {
+      "unit": 7,
+      "verbs": [
+        {
+          "lemma": "gradior"
+        },
+        {
+          "lemma": "sequor"
+        },
+        {
+          "lemma": "verto"
+        },
+        {
+          "lemma": "video"
+        }
+      ]
+    },
+    {
+      "unit": 8,
+      "verbs": []
+    },
+    {
+      "unit": 9,
+      "verbs": [
+        {
+          "lemma": "cerno"
+        },
+        {
+          "lemma": "do"
+        },
+        {
+          "lemma": "eo"
+        },
+        {
+          "lemma": "fligo"
+        }
+      ]
+    },
+    {
+      "unit": 10,
+      "verbs": []
+    }
+  ],
+  "undocumentatedDerived": [
+    "fligo"
+  ],
+  "source": "Distribución por unidades facilitada directamente por el docente el 10/11/2026"
+}

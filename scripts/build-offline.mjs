@@ -34,7 +34,27 @@ export async function renderOffline(root=projectRoot){
     lemmatizer.rows.lat.length<10000||lemmatizer.rows.grc.length<1400){
   throw new Error('Falta el índice bilingüe para la versión autónoma');
  }
- const assets={'data/unimorph/lat-v.json':latin,'data/lemmas/teacher-forms.json':lemmatizer};
+ const lexicalPaths=['data/latinismos-docente.json','data/prefijos-docente.json','data/modificacion-preverbial-docente.json'];
+ const lexicalAssets={};
+ for(const path of lexicalPaths){
+  const data=JSON.parse(await readFile(resolve(root,path),'utf8'));
+  if(data.schema!==1||!Array.isArray(data.items)||!data.items.length)throw new Error('Banco léxico docente incompleto: '+path);
+  lexicalAssets[path]=data;
+ }
+ const latin4ProgressPath='data/lat4-progresion-lexico.json';
+ const latin4Progress=JSON.parse(await readFile(resolve(root,latin4ProgressPath),'utf8'));
+ if(latin4Progress.schema!==1||latin4Progress.course!=='latin4'||
+   latin4Progress.units?.length!==8)throw new Error('Falta programación de léxico de Latín 4.º');
+ const syllabusPath='data/modificacion-preverbial-unidades-lat1.json';
+ const syllabus=JSON.parse(await readFile(resolve(root,syllabusPath),'utf8'));
+ if(syllabus.schema!==1||syllabus.course!=='latin1'||!Array.isArray(syllabus.units)||
+    syllabus.units.reduce((n,x)=>n+(x.verbs?.length||0),0)!==28)
+  throw new Error('Programa docente de modificación preverbial incompleto');
+ const phonetics=JSON.parse(await readFile(resolve(root,'data/fonetica/banco_examenes.json'),'utf8'));
+ if(phonetics.esquema!=='evoluciones-latin-castellano/v1'||phonetics.items?.length!==460||
+  new Set(phonetics.items.map(x=>x.id)).size!==460)
+  throw new Error('El banco fonético integrado debe contener 460 fichas distintas');
+ const assets={'data/unimorph/lat-v.json':latin,'data/lemmas/teacher-forms.json':lemmatizer,...lexicalAssets,[syllabusPath]:syllabus,[latin4ProgressPath]:latin4Progress,'data/fonetica/banco_examenes.json':phonetics};
  // Evita cerrar prematuramente el elemento HTML script inerte.
  const json=JSON.stringify(assets).replace(/</g,'\\u003c');
  const marker='<script>';

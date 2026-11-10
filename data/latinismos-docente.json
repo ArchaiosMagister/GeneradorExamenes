@@ -1,0 +1,528 @@
+{
+  "schema": 1,
+  "source": "Listado docente de 87 latinismos; definiciones abreviadas fieles a los sentidos suministrados",
+  "items": [
+    {
+      "number": 1,
+      "prompt": "a posteriori",
+      "answer": "Después de examinar el asunto; posteriormente.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 2,
+      "prompt": "a priori",
+      "answer": "Antes de examinar el asunto; previamente.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 3,
+      "prompt": "ab initio",
+      "answer": "Desde el principio; también desde tiempo inmemorial.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 4,
+      "prompt": "accessit o accésit",
+      "answer": "Recompensa inmediatamente inferior al premio en certámenes.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 5,
+      "prompt": "ad hoc",
+      "answer": "Hecho o dispuesto especialmente para un fin determinado; adecuado para ese fin.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 6,
+      "prompt": "ad infinitum",
+      "answer": "Indefinidamente, sin límite.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 7,
+      "prompt": "ad kalendas graecas",
+      "answer": "En un plazo que nunca se cumplirá; nunca.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 8,
+      "prompt": "ad nauseam",
+      "answer": "Hasta la náusea; de manera excesivamente repetitiva.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 9,
+      "prompt": "addenda o adenda",
+      "answer": "Apéndice, especialmente de un libro; literalmente, lo que debe añadirse.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 10,
+      "prompt": "alias",
+      "answer": "Apodo o sobrenombre; también 'por otro nombre'.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 11,
+      "prompt": "alma mater",
+      "answer": "Universidad; literalmente, madre nutricia.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 12,
+      "prompt": "alter ego",
+      "answer": "Persona de plena confianza que puede representar a otra; también reflejo de otra persona.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 13,
+      "prompt": "ante meridiem (a. m.)",
+      "answer": "Antes del mediodía; para señalar horas anteriores a las doce.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 14,
+      "prompt": "bis",
+      "answer": "Repetición o pieza fuera de programa; también adjunto a un número o una persona equivalente.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 15,
+      "prompt": "campus",
+      "answer": "Conjunto de terrenos y edificios de una universidad.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 16,
+      "prompt": "carpe diem",
+      "answer": "Exhortación a aprovechar el presente ante la fugacidad del tiempo.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 17,
+      "prompt": "casus belli",
+      "answer": "Motivo de guerra o de cualquier conflicto.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 18,
+      "prompt": "corpus",
+      "answer": "Conjunto extenso y ordenado de datos o textos que sirven para investigar.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 19,
+      "prompt": "cum laude",
+      "answer": "Calificación máxima, especialmente de ciertos doctorados.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 20,
+      "prompt": "curriculum o currículum; curriculum vitae",
+      "answer": "Plan de estudios; historial formativo; curriculum vitae: relación de méritos, cargos y datos biográficos.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 21,
+      "prompt": "de facto",
+      "answer": "De hecho, sin ajustarse necesariamente a una norma jurídica previa.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 22,
+      "prompt": "de iure",
+      "answer": "De derecho, por disposición de la ley; se contrapone a de facto.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 23,
+      "prompt": "deficit o déficit",
+      "answer": "Falta o escasez; diferencia negativa entre recursos y obligaciones o gastos.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 24,
+      "prompt": "delirium tremens",
+      "answer": "Delirio con agitación y alucinaciones relacionado con alcoholismo crónico.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 25,
+      "prompt": "desiderata",
+      "answer": "Conjunto o relación de cosas que se echan en falta y se desean.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 26,
+      "prompt": "deus ex machina",
+      "answer": "Intervención inesperada que resuelve un conflicto; originalmente, divinidad que descendía al escenario por un mecanismo teatral.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 27,
+      "prompt": "etcétera",
+      "answer": "Y lo demás; abreviatura etc.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 28,
+      "prompt": "ex abrupto",
+      "answer": "De repente, de manera brusca o imprevista.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 29,
+      "prompt": "ex aequo",
+      "answer": "En igualdad para compartir una posición o un premio.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 30,
+      "prompt": "ex libris o exlibris",
+      "answer": "Etiqueta o sello que indica la propiedad de un libro.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 31,
+      "prompt": "ex professo o ex profeso",
+      "answer": "De propósito, con intención; también exprofeso.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 32,
+      "prompt": "extramuros",
+      "answer": "Fuera del recinto de una ciudad o población.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 33,
+      "prompt": "gratis et amore",
+      "answer": "Gratuitamente; de gracia y por amor.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 34,
+      "prompt": "grosso modo",
+      "answer": "Aproximadamente, a grandes rasgos.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 35,
+      "prompt": "habitat o hábitat",
+      "answer": "Medio o lugar con condiciones adecuadas para la vida de un organismo; también entorno personal o construido.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 36,
+      "prompt": "honoris causa",
+      "answer": "Distinción académica otorgada por méritos especiales.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 37,
+      "prompt": "horror vacui",
+      "answer": "Tendencia a llenar todo el espacio, especialmente en decoración.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 38,
+      "prompt": "idem o ídem",
+      "answer": "El mismo, lo mismo.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 39,
+      "prompt": "in absentia",
+      "answer": "En ausencia.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 40,
+      "prompt": "in extremis",
+      "answer": "En los últimos instantes de una vida o de una situación comprometida.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 41,
+      "prompt": "in fraganti o infraganti",
+      "answer": "En el momento mismo de cometer un delito o acto censurable.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 42,
+      "prompt": "in medias res",
+      "answer": "En plena acción; especialmente, modo de iniciar una narración.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 43,
+      "prompt": "in memoriam",
+      "answer": "En memoria o recuerdo de alguien.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 44,
+      "prompt": "in mente",
+      "answer": "En la mente, mentalmente.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 45,
+      "prompt": "in situ",
+      "answer": "En el lugar, en el sitio.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 46,
+      "prompt": "in vitro",
+      "answer": "Realizado en laboratorio por métodos experimentales, frente a in vivo.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 47,
+      "prompt": "inter nos",
+      "answer": "Entre nosotros.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 48,
+      "prompt": "ipso facto",
+      "answer": "Inmediatamente, en el acto, por el hecho mismo.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 49,
+      "prompt": "lapsus; lapsus calami; lapsus linguae",
+      "answer": "Error involuntario; lapsus calami: error al escribir; lapsus linguae: error al hablar.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 50,
+      "prompt": "mare magnum o maremágnum",
+      "answer": "Confusión, desorden o multitud abundante de personas o cosas.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 51,
+      "prompt": "mea culpa",
+      "answer": "Reconocimiento de la propia culpa.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 52,
+      "prompt": "memorandum o memorándum",
+      "answer": "Informe o nota recordatoria; comunicación diplomática o cuaderno de apuntes.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 53,
+      "prompt": "modus operandi",
+      "answer": "Forma característica de actuar o trabajar para alcanzar un fin.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 54,
+      "prompt": "modus vivendi",
+      "answer": "Modo de vivir o ganarse la vida; también acuerdo transitorio entre partes.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 55,
+      "prompt": "motu proprio",
+      "answer": "Por propia iniciativa y libremente; también documento pontificio o real.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 56,
+      "prompt": "mutatis mutandis",
+      "answer": "Cambiando lo que deba cambiarse.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 57,
+      "prompt": "numerus clausus",
+      "answer": "Limitación del número de plazas de una institución.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 58,
+      "prompt": "opera prima u ópera prima",
+      "answer": "Primera obra de un autor.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 59,
+      "prompt": "peccata minuta",
+      "answer": "Falta leve o cosa de poca importancia.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 60,
+      "prompt": "per capita o per cápita",
+      "answer": "Por cabeza, por cada individuo.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 61,
+      "prompt": "per se",
+      "answer": "Por sí o por sí mismo.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 62,
+      "prompt": "persona non grata",
+      "answer": "Persona rechazada por un Gobierno o institución.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 63,
+      "prompt": "placebo",
+      "answer": "Sustancia sin acción terapéutica propia que produce efecto favorable por la expectativa de quien la recibe.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 64,
+      "prompt": "placet o plácet",
+      "answer": "Aprobación u opinión favorable; en diplomacia, consentimiento para la representación de otro Estado.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 65,
+      "prompt": "plus",
+      "answer": "Complemento o suplemento adicional, monetario o no.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 66,
+      "prompt": "post meridiem (p. m.)",
+      "answer": "Después del mediodía; horas posteriores a las doce.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 67,
+      "prompt": "post mortem",
+      "answer": "Después de la muerte.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 68,
+      "prompt": "primus inter pares",
+      "answer": "El primero entre iguales.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 69,
+      "prompt": "quid",
+      "answer": "Esencia, cuestión principal o porqué de algo.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 70,
+      "prompt": "quid pro quo",
+      "answer": "Cosa recibida por otra equivalente; también confusión de una cosa o persona con otra.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 71,
+      "prompt": "quorum",
+      "answer": "Número de miembros necesario para tomar ciertos acuerdos; cuórum.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 72,
+      "prompt": "rara avis",
+      "answer": "Persona o cosa excepcional, fuera de lo común.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 73,
+      "prompt": "referendum o referéndum",
+      "answer": "Consulta o procedimiento de votación popular de decisiones trascendentes; también petición diplomática de instrucciones.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 74,
+      "prompt": "requiem o réquiem",
+      "answer": "Composición musical de la misa de difuntos.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 75,
+      "prompt": "rictus",
+      "answer": "Gesto o contracción del rostro o de los labios.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 76,
+      "prompt": "rigor mortis",
+      "answer": "Rigidez cadavérica.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 77,
+      "prompt": "sine die",
+      "answer": "Sin fecha o plazo fijo.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 78,
+      "prompt": "sine qua non",
+      "answer": "Condición indispensable para algo.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 79,
+      "prompt": "statu quo",
+      "answer": "Estado de cosas en un momento determinado.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 80,
+      "prompt": "stricto sensu",
+      "answer": "En sentido estricto.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 81,
+      "prompt": "sui generis o sui géneris",
+      "answer": "De género singular, peculiar o excepcional.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 82,
+      "prompt": "superavit o superávit",
+      "answer": "Exceso de ingresos sobre gastos, de haber sobre debe, o abundancia.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 83,
+      "prompt": "ultimatum o ultimátum",
+      "answer": "Resolución o exigencia terminante y definitiva.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 84,
+      "prompt": "vademécum",
+      "answer": "Manual breve de consulta inmediata; también cartapacio escolar.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 85,
+      "prompt": "vade retro",
+      "answer": "Expresión para rechazar a alguien o algo; vete atrás.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 86,
+      "prompt": "verbi gratia",
+      "answer": "Por ejemplo.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    },
+    {
+      "number": 87,
+      "prompt": "vox populi",
+      "answer": "Conocido o repetido por todos; voz del pueblo.",
+      "source": "docente: latinismos numerados (definición condensada para examen)"
+    }
+  ]
+}

@@ -1,0 +1,2089 @@
+{
+  "schema": 1,
+  "source": "Lista docente de verbos simples y derivados atestiguados para modificación preverbial",
+  "instruction": "Cualquier verbo puede proponerse; no inventar derivados automáticos cuando no haya ficha documentada",
+  "items": [
+    {
+      "id": 1,
+      "prompt": "ago",
+      "enunciado": "ago, -ere, egi, actum",
+      "derivatives": [
+        "abigo",
+        "adigo",
+        "ambigo",
+        "cogo",
+        "dego",
+        "exigo",
+        "indago",
+        "perago",
+        "prodigo",
+        "redigo",
+        "subigo",
+        "transigo"
+      ],
+      "answer": "abigo, adigo, ambigo, cogo, dego, exigo, indago, perago, prodigo, redigo, subigo, transigo",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 2,
+      "prompt": "arceo",
+      "enunciado": "arceo, -ere, -cui",
+      "derivatives": [
+        "coerceo",
+        "exerceo"
+      ],
+      "answer": "coerceo, exerceo",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 3,
+      "prompt": "cado",
+      "enunciado": "cado, -ere, cecidi, casum",
+      "derivatives": [
+        "accido",
+        "concido",
+        "decido",
+        "excido",
+        "incido",
+        "occido",
+        "recido"
+      ],
+      "answer": "accido, concido, decido, excido, incido, occido, recido",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 4,
+      "prompt": "caedo",
+      "enunciado": "caedo, -ere, cecidi, caesum",
+      "derivatives": [
+        "abscido",
+        "circumcido",
+        "concido",
+        "decido",
+        "excido",
+        "incido",
+        "occido",
+        "praecido",
+        "recido"
+      ],
+      "answer": "abscido, circumcido, concido, decido, excido, incido, occido, praecido, recido",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 5,
+      "prompt": "cano",
+      "enunciado": "cano, -ere, cecini, cantum",
+      "derivatives": [
+        "concino",
+        "intercino",
+        "occino",
+        "praecino",
+        "recino",
+        "succino"
+      ],
+      "answer": "concino, intercino, occino, praecino, recino, succino",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 6,
+      "prompt": "capio",
+      "enunciado": "capio, -ere, cepi, captum",
+      "derivatives": [
+        "accipio",
+        "antecapio",
+        "concipio",
+        "decipio",
+        "excipio",
+        "incipio",
+        "intercipio",
+        "percipio",
+        "praecipio",
+        "recipio",
+        "suscipio"
+      ],
+      "answer": "accipio, antecapio, concipio, decipio, excipio, incipio, intercipio, percipio, praecipio, recipio, suscipio",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 7,
+      "prompt": "carpo",
+      "enunciado": "carpo, -ere, -psi, -ptum",
+      "derivatives": [
+        "concerpo",
+        "decerpo",
+        "discerpo",
+        "excerpo"
+      ],
+      "answer": "concerpo, decerpo, discerpo, excerpo",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 8,
+      "prompt": "cedo",
+      "enunciado": "cedo, -ere, cessi, cessum",
+      "derivatives": [
+        "abscedo",
+        "accedo",
+        "antecedo",
+        "concedo",
+        "decedo",
+        "discedo",
+        "excedo",
+        "incedo",
+        "intercedo",
+        "praecedo",
+        "procedo",
+        "recedo",
+        "retrocedo",
+        "secedo",
+        "succedo"
+      ],
+      "answer": "abscedo, accedo, antecedo, concedo, decedo, discedo, excedo, incedo, intercedo, praecedo, procedo, recedo, retrocedo, secedo, succedo",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 9,
+      "prompt": "cerno",
+      "enunciado": "cerno, -ere, -crevi, -cretum",
+      "derivatives": [
+        "decerno",
+        "discerno",
+        "excerno",
+        "secerno"
+      ],
+      "answer": "decerno, discerno, excerno, secerno",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 10,
+      "prompt": "cieo",
+      "enunciado": "cieo, -ere, civi, citum",
+      "derivatives": [
+        "accio",
+        "concieo",
+        "excio",
+        "percieo"
+      ],
+      "answer": "accio, concieo, excio, percieo",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 11,
+      "prompt": "clamo",
+      "enunciado": "clamo, -are, -avi, -atum",
+      "derivatives": [
+        "acclamo",
+        "conclamo",
+        "declamo",
+        "exclamo",
+        "inclamo",
+        "proclamo",
+        "reclamo",
+        "succlamo"
+      ],
+      "answer": "acclamo, conclamo, declamo, exclamo, inclamo, proclamo, reclamo, succlamo",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 12,
+      "prompt": "claudo",
+      "enunciado": "claudo, -ere, clausi, clausum",
+      "derivatives": [
+        "concludo",
+        "excludo",
+        "includo",
+        "intercludo",
+        "occludo",
+        "praecludo",
+        "recludo",
+        "secludo"
+      ],
+      "answer": "concludo, excludo, includo, intercludo, occludo, praecludo, recludo, secludo",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 13,
+      "prompt": "colo",
+      "enunciado": "colo, -ere, colui, cultum",
+      "derivatives": [
+        "accolo",
+        "excolo",
+        "incolo",
+        "percolo",
+        "recolo"
+      ],
+      "answer": "accolo, excolo, incolo, percolo, recolo",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 14,
+      "prompt": "creo",
+      "enunciado": "creo, -are, -avi, -atum",
+      "derivatives": [
+        "concreo",
+        "procreo",
+        "recreo"
+      ],
+      "answer": "concreo, procreo, recreo",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 15,
+      "prompt": "cubo",
+      "enunciado": "cubo, -are, -ui, -itum",
+      "derivatives": [
+        "accubo",
+        "excubo",
+        "incubo",
+        "recubo"
+      ],
+      "answer": "accubo, excubo, incubo, recubo",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 16,
+      "prompt": "curo",
+      "enunciado": "curo, -are, -avi, -atum",
+      "derivatives": [
+        "accuro",
+        "percuro",
+        "procuro"
+      ],
+      "answer": "accuro, percuro, procuro",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 17,
+      "prompt": "curro",
+      "enunciado": "curro, -ere, cucurri, cursum",
+      "derivatives": [
+        "accurro",
+        "concurro",
+        "decurro",
+        "discurro",
+        "excurro",
+        "incurro",
+        "intercurro",
+        "occurro",
+        "percurro",
+        "praecurro",
+        "procurro",
+        "recurro",
+        "succurro",
+        "transcurro"
+      ],
+      "answer": "accurro, concurro, decurro, discurro, excurro, incurro, intercurro, occurro, percurro, praecurro, procurro, recurro, succurro, transcurro",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 18,
+      "prompt": "dico",
+      "enunciado": "dico, -ere, dixi, dictum",
+      "derivatives": [
+        "abdico",
+        "addico",
+        "benedico",
+        "contradico",
+        "dedico",
+        "edico",
+        "indico",
+        "interdico",
+        "maledico",
+        "praedico"
+      ],
+      "answer": "abdico, addico, benedico, contradico, dedico, edico, indico, interdico, maledico, praedico",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 19,
+      "prompt": "disco",
+      "enunciado": "disco, -ere, didici, discitum",
+      "derivatives": [
+        "addisco",
+        "condisco",
+        "dedisco",
+        "edisco",
+        "perdisco",
+        "praedisco"
+      ],
+      "answer": "addisco, condisco, dedisco, edisco, perdisco, praedisco",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 20,
+      "prompt": "do",
+      "enunciado": "do, dare, dedi, datum",
+      "derivatives": [
+        "abdo",
+        "abscondo",
+        "addo",
+        "circumdo",
+        "condo",
+        "dedo",
+        "edo",
+        "indo",
+        "obdo",
+        "perdo",
+        "prodo",
+        "recondo",
+        "reddo",
+        "subdo",
+        "trado",
+        "vendo"
+      ],
+      "answer": "abdo, abscondo, addo, circumdo, condo, dedo, edo, indo, obdo, perdo, prodo, recondo, reddo, subdo, trado, vendo",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 21,
+      "prompt": "doceo",
+      "enunciado": "doceo, -ere, -cui, doctum",
+      "derivatives": [
+        "edoceo",
+        "perdoceo"
+      ],
+      "answer": "edoceo, perdoceo",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 22,
+      "prompt": "duco",
+      "enunciado": "duco, -ere, duxi, ductum",
+      "derivatives": [
+        "abduco",
+        "adduco",
+        "circumduco",
+        "conduco",
+        "deduco",
+        "diduco",
+        "educo",
+        "induco",
+        "introduco",
+        "obduco",
+        "perduco",
+        "produco",
+        "reduco",
+        "seduco",
+        "subduco",
+        "traduco"
+      ],
+      "answer": "abduco, adduco, circumduco, conduco, deduco, diduco, educo, induco, introduco, obduco, perduco, produco, reduco, seduco, subduco, traduco",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 23,
+      "prompt": "emo",
+      "enunciado": "emo, -ere, emi, emptum",
+      "derivatives": [
+        "adimo",
+        "coemo",
+        "como",
+        "demo",
+        "dirimo",
+        "eximo",
+        "interimo",
+        "perimo",
+        "promo",
+        "redimo"
+      ],
+      "answer": "adimo, coemo, como, demo, dirimo, eximo, interimo, perimo, promo, redimo",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 24,
+      "prompt": "eo",
+      "enunciado": "eo, ire, ivi, itum",
+      "derivatives": [
+        "abeo",
+        "adeo",
+        "ambio",
+        "circumeo",
+        "coeo",
+        "exeo",
+        "ineo",
+        "intereo",
+        "obeo",
+        "pereo",
+        "praeeo",
+        "praetereo",
+        "prodeo",
+        "redeo",
+        "subeo",
+        "transeo"
+      ],
+      "answer": "abeo, adeo, ambio, circumeo, coeo, exeo, ineo, intereo, obeo, pereo, praeeo, praetereo, prodeo, redeo, subeo, transeo",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 25,
+      "prompt": "facio",
+      "enunciado": "facio, -ere, feci, factum",
+      "derivatives": [
+        "afficio",
+        "calefacio",
+        "conficio",
+        "deficio",
+        "efficio",
+        "inficio",
+        "interficio",
+        "perficio",
+        "praeficio",
+        "proficio",
+        "reficio",
+        "satisfacio",
+        "sufficio"
+      ],
+      "answer": "afficio, calefacio, conficio, deficio, efficio, inficio, interficio, perficio, praeficio, proficio, reficio, satisfacio, sufficio",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 26,
+      "prompt": "fero",
+      "enunciado": "fero, ferre, tuli, latum",
+      "derivatives": [
+        "affero",
+        "antefero",
+        "aufero",
+        "circumfero",
+        "confero",
+        "defero",
+        "differo",
+        "effero",
+        "infero",
+        "offero",
+        "perfero",
+        "praefero",
+        "profero",
+        "refero",
+        "suffero",
+        "transfero"
+      ],
+      "answer": "affero, antefero, aufero, circumfero, confero, defero, differo, effero, infero, offero, perfero, praefero, profero, refero, suffero, transfero",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 27,
+      "prompt": "figo",
+      "enunciado": "figo, -ere, fixi, fixum",
+      "derivatives": [
+        "affigo",
+        "configo",
+        "defigo",
+        "infigo",
+        "praefigo",
+        "refigo",
+        "suffigo",
+        "transfigo"
+      ],
+      "answer": "affigo, configo, defigo, infigo, praefigo, refigo, suffigo, transfigo",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 28,
+      "prompt": "fingo",
+      "enunciado": "fingo, -ere, finxi, fictum",
+      "derivatives": [
+        "affingo",
+        "confingo",
+        "diffingo",
+        "effingo",
+        "refingo"
+      ],
+      "answer": "affingo, confingo, diffingo, effingo, refingo",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 29,
+      "prompt": "flecto",
+      "enunciado": "flecto, -ere, flexi, flexum",
+      "derivatives": [
+        "circumflecto",
+        "deflecto",
+        "inflecto",
+        "reflecto"
+      ],
+      "answer": "circumflecto, deflecto, inflecto, reflecto",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 30,
+      "prompt": "for",
+      "enunciado": "for, fari, fatus sum",
+      "derivatives": [
+        "affor",
+        "effor",
+        "praefor",
+        "profor"
+      ],
+      "answer": "affor, effor, praefor, profor",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 31,
+      "prompt": "frango",
+      "enunciado": "frango, -ere, fregi, fractum",
+      "derivatives": [
+        "confringo",
+        "diffringo",
+        "effringo",
+        "infringo",
+        "perfringo",
+        "refringo"
+      ],
+      "answer": "confringo, diffringo, effringo, infringo, perfringo, refringo",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 32,
+      "prompt": "fugio",
+      "enunciado": "fugio, -ere, fugi, -giturus",
+      "derivatives": [
+        "aufugio",
+        "confugio",
+        "defugio",
+        "diffugio",
+        "effugio",
+        "perfugio",
+        "profugio",
+        "refugio",
+        "subterfugio",
+        "transfugio"
+      ],
+      "answer": "aufugio, confugio, defugio, diffugio, effugio, perfugio, profugio, refugio, subterfugio, transfugio",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 33,
+      "prompt": "fundo",
+      "enunciado": "fundo, -ere, fudi, fusum",
+      "derivatives": [
+        "affundo",
+        "circumfundo",
+        "confundo",
+        "defundo",
+        "diffundo",
+        "effundo",
+        "infundo",
+        "offundo",
+        "perfundo",
+        "profundo",
+        "refundo",
+        "suffundo",
+        "transfundo"
+      ],
+      "answer": "affundo, circumfundo, confundo, defundo, diffundo, effundo, infundo, offundo, perfundo, profundo, refundo, suffundo, transfundo",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 34,
+      "prompt": "gigno",
+      "enunciado": "geno (gigno), -ere, genui, genitum",
+      "derivatives": [
+        "ingigno",
+        "progigno",
+        "progenero"
+      ],
+      "answer": "ingigno, progigno, progenero",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 35,
+      "prompt": "gero",
+      "enunciado": "gero, -ere, gessi, gestum",
+      "derivatives": [
+        "aggero",
+        "belligero",
+        "congero",
+        "digero",
+        "egero",
+        "ingero",
+        "regero",
+        "suggero"
+      ],
+      "answer": "aggero, belligero, congero, digero, egero, ingero, regero, suggero",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 36,
+      "prompt": "gradior",
+      "enunciado": "gradior, gradi, gressus sum",
+      "derivatives": [
+        "aggredior",
+        "congredior",
+        "digredior",
+        "egredior",
+        "ingredior",
+        "praegredior",
+        "progredior",
+        "regredior",
+        "transgredior"
+      ],
+      "answer": "aggredior, congredior, digredior, egredior, ingredior, praegredior, progredior, regredior, transgredior",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 37,
+      "prompt": "habeo",
+      "enunciado": "habeo, -ere, -ui, -itum",
+      "derivatives": [
+        "adhibeo",
+        "cohibeo",
+        "debeo",
+        "exhibeo",
+        "inhibeo",
+        "perhibeo",
+        "posthabeo",
+        "praebeo",
+        "prohibeo",
+        "redhibeo"
+      ],
+      "answer": "adhibeo, cohibeo, debeo, exhibeo, inhibeo, perhibeo, posthabeo, praebeo, prohibeo, redhibeo",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 38,
+      "prompt": "haereo",
+      "enunciado": "haereo, -ere, haesi, haesum",
+      "derivatives": [
+        "adhaereo",
+        "cohaereo",
+        "inhaereo"
+      ],
+      "answer": "adhaereo, cohaereo, inhaereo",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 39,
+      "prompt": "iacio",
+      "enunciado": "iacio, -ere, ieci, iactum",
+      "derivatives": [
+        "abicio",
+        "adicio",
+        "conicio",
+        "deicio",
+        "disicio",
+        "eicio",
+        "inicio",
+        "intericio",
+        "obicio",
+        "proicio",
+        "reicio",
+        "subicio",
+        "traicio"
+      ],
+      "answer": "abicio, adicio, conicio, deicio, disicio, eicio, inicio, intericio, obicio, proicio, reicio, subicio, traicio",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 40,
+      "prompt": "iungo",
+      "enunciado": "iungo, -ere, iunxi, iunctum",
+      "derivatives": [
+        "adiungo",
+        "coniungo",
+        "disiungo",
+        "iniungo",
+        "seiungo",
+        "subiungo"
+      ],
+      "answer": "adiungo, coniungo, disiungo, iniungo, seiungo, subiungo",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 41,
+      "prompt": "labor",
+      "enunciado": "labor, -i, lapsus sum",
+      "derivatives": [
+        "allabor",
+        "collabor",
+        "delabor",
+        "elabor",
+        "illabor",
+        "prolabor",
+        "relabor",
+        "sublabor"
+      ],
+      "answer": "allabor, collabor, delabor, elabor, illabor, prolabor, relabor, sublabor",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 42,
+      "prompt": "lego",
+      "enunciado": "lego, -ere, -legi, lectum",
+      "derivatives": [
+        "colligo",
+        "deligo",
+        "diligo",
+        "eligo",
+        "intellego",
+        "neglego",
+        "perlego",
+        "praelego",
+        "relego",
+        "seligo",
+        "sublego"
+      ],
+      "answer": "colligo, deligo, diligo, eligo, intellego, neglego, perlego, praelego, relego, seligo, sublego",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 43,
+      "prompt": "levo",
+      "enunciado": "levo, -are, -avi, -atum",
+      "derivatives": [
+        "allevo",
+        "elevo",
+        "relevo",
+        "sublevo"
+      ],
+      "answer": "allevo, elevo, relevo, sublevo",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 44,
+      "prompt": "ligo",
+      "enunciado": "ligo, -are, -avi, -atum",
+      "derivatives": [
+        "alligo",
+        "colligo",
+        "deligo",
+        "obligo",
+        "praeligo",
+        "religo",
+        "subligo"
+      ],
+      "answer": "alligo, colligo, deligo, obligo, praeligo, religo, subligo",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 45,
+      "prompt": "maneo",
+      "enunciado": "maneo, -ere, mansi, mansum",
+      "derivatives": [
+        "immaneo",
+        "permaneo",
+        "remaneo"
+      ],
+      "answer": "immaneo, permaneo, remaneo",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 46,
+      "prompt": "misceo",
+      "enunciado": "misceo, -ere, -cui, mixtum",
+      "derivatives": [
+        "admisceo",
+        "commisceo",
+        "immisceo",
+        "intermisceo",
+        "permisceo"
+      ],
+      "answer": "admisceo, commisceo, immisceo, intermisceo, permisceo",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 47,
+      "prompt": "mitto",
+      "enunciado": "mitto, -ere, misi, missum",
+      "derivatives": [
+        "admitto",
+        "amitto",
+        "circummitto",
+        "committo",
+        "demitto",
+        "dimitto",
+        "emitto",
+        "immitto",
+        "intermitto",
+        "omitto",
+        "permitto",
+        "praemitto",
+        "praetermitto",
+        "promitto",
+        "remitto",
+        "submitto",
+        "transmitto"
+      ],
+      "answer": "admitto, amitto, circummitto, committo, demitto, dimitto, emitto, immitto, intermitto, omitto, permitto, praemitto, praetermitto, promitto, remitto, submitto, transmitto",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 48,
+      "prompt": "moneo",
+      "enunciado": "moneo, -ere, -ui, -itum",
+      "derivatives": [
+        "admoneo",
+        "commoneo",
+        "praemoneo",
+        "summoneo"
+      ],
+      "answer": "admoneo, commoneo, praemoneo, summoneo",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 49,
+      "prompt": "moror",
+      "enunciado": "moror, -ari, -atus sum",
+      "derivatives": [
+        "commoror",
+        "demoror",
+        "immoror",
+        "remoror"
+      ],
+      "answer": "commoror, demoror, immoror, remoror",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 50,
+      "prompt": "moveo",
+      "enunciado": "moveo, -ere, movi, motum",
+      "derivatives": [
+        "admoveo",
+        "amoveo",
+        "commoveo",
+        "demoveo",
+        "dimoveo",
+        "emoveo",
+        "permoveo",
+        "promoveo",
+        "removeo",
+        "summoveo"
+      ],
+      "answer": "admoveo, amoveo, commoveo, demoveo, dimoveo, emoveo, permoveo, promoveo, removeo, summoveo",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 51,
+      "prompt": "muto",
+      "enunciado": "muto, -are, -avi, -atum",
+      "derivatives": [
+        "commuto",
+        "demuto",
+        "immuto",
+        "permuto",
+        "transmuto"
+      ],
+      "answer": "commuto, demuto, immuto, permuto, transmuto",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 52,
+      "prompt": "nosco",
+      "enunciado": "nosco, -ere, novi, notum",
+      "derivatives": [
+        "agnosco",
+        "cognosco",
+        "dignosco",
+        "ignosco",
+        "internosco",
+        "recognosco"
+      ],
+      "answer": "agnosco, cognosco, dignosco, ignosco, internosco, recognosco",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 53,
+      "prompt": "nuntio",
+      "enunciado": "nuntio, -are, -avi, -atum",
+      "derivatives": [
+        "annuntio",
+        "denuntio",
+        "enuntio",
+        "internuntio",
+        "pronuntio",
+        "renuntio"
+      ],
+      "answer": "annuntio, denuntio, enuntio, internuntio, pronuntio, renuntio",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 54,
+      "prompt": "orior",
+      "enunciado": "orior, oriri, ortus sum",
+      "derivatives": [
+        "aborior",
+        "adorior",
+        "coorior",
+        "exorior"
+      ],
+      "answer": "aborior, adorior, coorior, exorior",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 55,
+      "prompt": "oro",
+      "enunciado": "oro, -are, -avi, -atum",
+      "derivatives": [
+        "adoro",
+        "exoro",
+        "peroro"
+      ],
+      "answer": "adoro, exoro, peroro",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 56,
+      "prompt": "paro",
+      "enunciado": "paro, -are, -avi, -atum",
+      "derivatives": [
+        "apparo",
+        "comparo",
+        "impero",
+        "praeparo",
+        "reparo",
+        "separo"
+      ],
+      "answer": "apparo, comparo, impero, praeparo, reparo, separo",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 57,
+      "prompt": "pello",
+      "enunciado": "pello, -ere, pepuli, pulsum",
+      "derivatives": [
+        "appello",
+        "compello",
+        "depello",
+        "dispello",
+        "expello",
+        "impello",
+        "interpello",
+        "propello",
+        "repello"
+      ],
+      "answer": "appello, compello, depello, dispello, expello, impello, interpello, propello, repello",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 58,
+      "prompt": "pendo",
+      "enunciado": "pendo, -ere, pependi, pensum",
+      "derivatives": [
+        "appendo",
+        "dependo",
+        "expendo",
+        "impendo",
+        "perpendo",
+        "rependo",
+        "suspendo"
+      ],
+      "answer": "appendo, dependo, expendo, impendo, perpendo, rependo, suspendo",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 59,
+      "prompt": "peto",
+      "enunciado": "peto, -ere, -ivi, -itum",
+      "derivatives": [
+        "appeto",
+        "competo",
+        "expeto",
+        "impeto",
+        "oppeto",
+        "repeto",
+        "suppeto"
+      ],
+      "answer": "appeto, competo, expeto, impeto, oppeto, repeto, suppeto",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 60,
+      "prompt": "plecto",
+      "enunciado": "plecto, -ere, plexi, plexum",
+      "derivatives": [
+        "amplector",
+        "complector",
+        "implecto"
+      ],
+      "answer": "amplector, complector, implecto",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 61,
+      "prompt": "pleo",
+      "enunciado": "pleo, -ere, -plevi, -pletum",
+      "derivatives": [
+        "compleo",
+        "expleo",
+        "impleo",
+        "oppleo",
+        "repleo",
+        "suppleo"
+      ],
+      "answer": "compleo, expleo, impleo, oppleo, repleo, suppleo",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 62,
+      "prompt": "pono",
+      "enunciado": "pono, -ere, -sui, -situm",
+      "derivatives": [
+        "antepono",
+        "appono",
+        "circumpono",
+        "compono",
+        "depono",
+        "dispono",
+        "expono",
+        "impono",
+        "interpono",
+        "oppono",
+        "postpono",
+        "praepono",
+        "propono",
+        "repono",
+        "sepono",
+        "superpono",
+        "suppono",
+        "transpono"
+      ],
+      "answer": "antepono, appono, circumpono, compono, depono, dispono, expono, impono, interpono, oppono, postpono, praepono, propono, repono, sepono, superpono, suppono, transpono",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 63,
+      "prompt": "porto",
+      "enunciado": "porto, -are, -avi, -atum",
+      "derivatives": [
+        "apporto",
+        "asporto",
+        "comporto",
+        "deporto",
+        "exporto",
+        "importo",
+        "reporto",
+        "supporto",
+        "transporto"
+      ],
+      "answer": "apporto, asporto, comporto, deporto, exporto, importo, reporto, supporto, transporto",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 64,
+      "prompt": "prehendo",
+      "enunciado": "prehendo, -ere, -di, -sum",
+      "derivatives": [
+        "apprehendo",
+        "comprehendo",
+        "deprehendo",
+        "reprehendo"
+      ],
+      "answer": "apprehendo, comprehendo, deprehendo, reprehendo",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 65,
+      "prompt": "precor",
+      "enunciado": "precor, -ari, -atus sum",
+      "derivatives": [
+        "comprecor",
+        "deprecor",
+        "imprecor"
+      ],
+      "answer": "comprecor, deprecor, imprecor",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 66,
+      "prompt": "premo",
+      "enunciado": "premo, -ere, pressi, pressum",
+      "derivatives": [
+        "apprimo",
+        "comprimo",
+        "deprimo",
+        "exprimo",
+        "imprimo",
+        "opprimo",
+        "reprimo",
+        "supprimo"
+      ],
+      "answer": "apprimo, comprimo, deprimo, exprimo, imprimo, opprimo, reprimo, supprimo",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 67,
+      "prompt": "pugno",
+      "enunciado": "pugno, -are, -avi, -atum",
+      "derivatives": [
+        "depugno",
+        "expugno",
+        "impugno",
+        "oppugno",
+        "propugno",
+        "repugno"
+      ],
+      "answer": "depugno, expugno, impugno, oppugno, propugno, repugno",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 68,
+      "prompt": "puto",
+      "enunciado": "puto, -are, -avi, -atum",
+      "derivatives": [
+        "amputo",
+        "computo",
+        "deputo",
+        "disputo",
+        "imputo",
+        "reputo",
+        "supputo"
+      ],
+      "answer": "amputo, computo, deputo, disputo, imputo, reputo, supputo",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 69,
+      "prompt": "quaero",
+      "enunciado": "quaero, -ere, -sivi, -situm",
+      "derivatives": [
+        "acquiro",
+        "conquiro",
+        "disquiro",
+        "exquiro",
+        "inquiro",
+        "perquiro",
+        "requiro"
+      ],
+      "answer": "acquiro, conquiro, disquiro, exquiro, inquiro, perquiro, requiro",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 70,
+      "prompt": "quatio",
+      "enunciado": "quatio, -ere, quassum",
+      "derivatives": [
+        "concutio",
+        "decutio",
+        "discutio",
+        "excutio",
+        "incutio",
+        "percutio",
+        "recutio",
+        "succutio"
+      ],
+      "answer": "concutio, decutio, discutio, excutio, incutio, percutio, recutio, succutio",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 71,
+      "prompt": "rapio",
+      "enunciado": "rapio, -ere, -pui, -ptum",
+      "derivatives": [
+        "abripio",
+        "arripio",
+        "corripio",
+        "deripio",
+        "diripio",
+        "eripio",
+        "praeripio",
+        "proripio",
+        "surripio"
+      ],
+      "answer": "abripio, arripio, corripio, deripio, diripio, eripio, praeripio, proripio, surripio",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 72,
+      "prompt": "rego",
+      "enunciado": "rego, -ere, rexi, rectum",
+      "derivatives": [
+        "arrigo",
+        "corrigo",
+        "dirigo",
+        "erigo",
+        "pergo",
+        "porrigo",
+        "surgo"
+      ],
+      "answer": "arrigo, corrigo, dirigo, erigo, pergo, porrigo, surgo",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 73,
+      "prompt": "rogo",
+      "enunciado": "rogo, -are, -avi, -atum",
+      "derivatives": [
+        "abrogo",
+        "arrogo",
+        "derogo",
+        "erogo",
+        "interrogo",
+        "irrogo",
+        "obrogo",
+        "prorogo",
+        "subrogo",
+        "surrogo"
+      ],
+      "answer": "abrogo, arrogo, derogo, erogo, interrogo, irrogo, obrogo, prorogo, subrogo, surrogo",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 74,
+      "prompt": "rumpo",
+      "enunciado": "rumpo, -ere, rupi, ruptum",
+      "derivatives": [
+        "abrumpo",
+        "corrumpo",
+        "dirumpo",
+        "erumpo",
+        "interrumpo",
+        "irrumpo",
+        "perrumpo",
+        "prorumpo"
+      ],
+      "answer": "abrumpo, corrumpo, dirumpo, erumpo, interrumpo, irrumpo, perrumpo, prorumpo",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 75,
+      "prompt": "salio",
+      "enunciado": "salio, -ire, -lui, saltum",
+      "derivatives": [
+        "absilio",
+        "assilio",
+        "circumsilio",
+        "desilio",
+        "dissilio",
+        "exsilio",
+        "insilio",
+        "prosilio",
+        "resilio",
+        "subsilio",
+        "transilio"
+      ],
+      "answer": "absilio, assilio, circumsilio, desilio, dissilio, exsilio, insilio, prosilio, resilio, subsilio, transilio",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 76,
+      "prompt": "sapio",
+      "enunciado": "sapio, -ere, -pui",
+      "derivatives": [
+        "desipio",
+        "resipio"
+      ],
+      "answer": "desipio, resipio",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 77,
+      "prompt": "scando",
+      "enunciado": "scando, -ere, -ndi, -nsum",
+      "derivatives": [
+        "ascendo",
+        "conscendo",
+        "descendo",
+        "inscendo",
+        "transcendo"
+      ],
+      "answer": "ascendo, conscendo, descendo, inscendo, transcendo",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 78,
+      "prompt": "scio",
+      "enunciado": "scio, -ire, -ivi, scitum",
+      "derivatives": [
+        "conscio",
+        "nescio",
+        "praescio",
+        "rescio"
+      ],
+      "answer": "conscio, nescio, praescio, rescio",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 79,
+      "prompt": "scribo",
+      "enunciado": "scribo, -ere, -psi, -ptum",
+      "derivatives": [
+        "ascribo",
+        "circumscribo",
+        "conscribo",
+        "describo",
+        "inscribo",
+        "perscribo",
+        "praescribo",
+        "proscribo",
+        "rescribo",
+        "subscribo",
+        "transcribo"
+      ],
+      "answer": "ascribo, circumscribo, conscribo, describo, inscribo, perscribo, praescribo, proscribo, rescribo, subscribo, transcribo",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 80,
+      "prompt": "seco",
+      "enunciado": "seco, -are, -cui, sectum",
+      "derivatives": [
+        "circumseco",
+        "deseco",
+        "disseco",
+        "exseco",
+        "perseco",
+        "praeseco",
+        "reseco",
+        "subseco"
+      ],
+      "answer": "circumseco, deseco, disseco, exseco, perseco, praeseco, reseco, subseco",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 81,
+      "prompt": "sedeo",
+      "enunciado": "sedeo, -ere, sedi, sessum",
+      "derivatives": [
+        "assideo",
+        "circumsedeo",
+        "desideo",
+        "dissideo",
+        "insideo",
+        "obsideo",
+        "possideo",
+        "praesideo",
+        "resideo",
+        "supersedeo"
+      ],
+      "answer": "assideo, circumsedeo, desideo, dissideo, insideo, obsideo, possideo, praesideo, resideo, supersedeo",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 82,
+      "prompt": "sentio",
+      "enunciado": "sentio, -ire, sensi, sensum",
+      "derivatives": [
+        "assentio",
+        "consentio",
+        "dissentio",
+        "persentio",
+        "praesentio"
+      ],
+      "answer": "assentio, consentio, dissentio, persentio, praesentio",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 83,
+      "prompt": "sequor",
+      "enunciado": "sequor, sequi, secutus sum",
+      "derivatives": [
+        "assequor",
+        "consequor",
+        "exsequor",
+        "insequor",
+        "obsequor",
+        "persequor",
+        "prosequor",
+        "subsequor"
+      ],
+      "answer": "assequor, consequor, exsequor, insequor, obsequor, persequor, prosequor, subsequor",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 84,
+      "prompt": "sero",
+      "enunciado": "sero, -ere, -rui, sertum",
+      "derivatives": [
+        "assero",
+        "consero",
+        "desero",
+        "dissero",
+        "exsero",
+        "insero"
+      ],
+      "answer": "assero, consero, desero, dissero, exsero, insero",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": true
+    },
+    {
+      "id": 85,
+      "prompt": "sero",
+      "enunciado": "sero, -ere, sevi, satum",
+      "derivatives": [
+        "consero",
+        "dissero",
+        "insero",
+        "obsero"
+      ],
+      "answer": "consero, dissero, insero, obsero",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": true
+    },
+    {
+      "id": 86,
+      "prompt": "sino",
+      "enunciado": "sino, -ere, sivi, situm",
+      "derivatives": [
+        "desino"
+      ],
+      "answer": "desino",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 87,
+      "prompt": "sisto",
+      "enunciado": "sisto, -ere, stiti, statum",
+      "derivatives": [
+        "absisto",
+        "assisto",
+        "circumsisto",
+        "consisto",
+        "desisto",
+        "exsisto",
+        "insisto",
+        "obsisto",
+        "persisto",
+        "resisto",
+        "subsisto"
+      ],
+      "answer": "absisto, assisto, circumsisto, consisto, desisto, exsisto, insisto, obsisto, persisto, resisto, subsisto",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 88,
+      "prompt": "solvo",
+      "enunciado": "solvo, -ere, solvi, solutum",
+      "derivatives": [
+        "absolvo",
+        "dissolvo",
+        "exsolvo",
+        "persolvo",
+        "resolvo"
+      ],
+      "answer": "absolvo, dissolvo, exsolvo, persolvo, resolvo",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 89,
+      "prompt": "specio",
+      "enunciado": "specio (spicio), -ere, spexi, spectum",
+      "derivatives": [
+        "aspicio",
+        "circumspicio",
+        "conspicio",
+        "despicio",
+        "inspicio",
+        "introspicio",
+        "perspicio",
+        "prospicio",
+        "respicio",
+        "suspicio"
+      ],
+      "answer": "aspicio, circumspicio, conspicio, despicio, inspicio, introspicio, perspicio, prospicio, respicio, suspicio",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 90,
+      "prompt": "spiro",
+      "enunciado": "spiro, -are, -avi, -atum",
+      "derivatives": [
+        "aspiro",
+        "conspiro",
+        "exspiro",
+        "inspiro",
+        "respiro",
+        "suspiro"
+      ],
+      "answer": "aspiro, conspiro, exspiro, inspiro, respiro, suspiro",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 91,
+      "prompt": "statuo",
+      "enunciado": "statuo, -ere, -ui, -tutum",
+      "derivatives": [
+        "constituo",
+        "destituo",
+        "instituo",
+        "prostituo",
+        "restituo",
+        "substituo"
+      ],
+      "answer": "constituo, destituo, instituo, prostituo, restituo, substituo",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 92,
+      "prompt": "sterno",
+      "enunciado": "sterno, -ere, stravi, stratum",
+      "derivatives": [
+        "consterno",
+        "insterno",
+        "prosterno",
+        "substerno"
+      ],
+      "answer": "consterno, insterno, prosterno, substerno",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 93,
+      "prompt": "sto",
+      "enunciado": "sto, -are, steti, staturus",
+      "derivatives": [
+        "asto",
+        "antisto",
+        "circumsto",
+        "consto",
+        "disto",
+        "exsto",
+        "insto",
+        "obsto",
+        "persto",
+        "praesto",
+        "prosto",
+        "resto",
+        "supersto"
+      ],
+      "answer": "asto, antisto, circumsto, consto, disto, exsto, insto, obsto, persto, praesto, prosto, resto, supersto",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 94,
+      "prompt": "stringo",
+      "enunciado": "stringo, -ere, -nxi, -ctum",
+      "derivatives": [
+        "astringo",
+        "constringo",
+        "destringo",
+        "distringo",
+        "obstringo",
+        "perstringo",
+        "praestringo",
+        "restringo",
+        "substringo"
+      ],
+      "answer": "astringo, constringo, destringo, distringo, obstringo, perstringo, praestringo, restringo, substringo",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 95,
+      "prompt": "struo",
+      "enunciado": "struo, -ere, -uxi, -uctum",
+      "derivatives": [
+        "astruo",
+        "circumstruo",
+        "construo",
+        "destruo",
+        "exstruo",
+        "instruo",
+        "obstruo",
+        "praestruo",
+        "substruo",
+        "superstruo"
+      ],
+      "answer": "astruo, circumstruo, construo, destruo, exstruo, instruo, obstruo, praestruo, substruo, superstruo",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 96,
+      "prompt": "sum",
+      "enunciado": "sum, esse, fui",
+      "derivatives": [
+        "absum",
+        "adsum",
+        "desum",
+        "insum",
+        "intersum",
+        "obsum",
+        "possum",
+        "praesum",
+        "prosum",
+        "subsum",
+        "supersum"
+      ],
+      "answer": "absum, adsum, desum, insum, intersum, obsum, possum, praesum, prosum, subsum, supersum",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 97,
+      "prompt": "sumo",
+      "enunciado": "sumo, -ere, sumpsi, sumptum",
+      "derivatives": [
+        "absumo",
+        "assumo",
+        "consumo",
+        "desumo",
+        "insumo",
+        "praesumo",
+        "resumo"
+      ],
+      "answer": "absumo, assumo, consumo, desumo, insumo, praesumo, resumo",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 98,
+      "prompt": "tango",
+      "enunciado": "tango, -ere, tetigi, tactum",
+      "derivatives": [
+        "attingo",
+        "contingo"
+      ],
+      "answer": "attingo, contingo",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 99,
+      "prompt": "tego",
+      "enunciado": "tego, -ere, texi, tectum",
+      "derivatives": [
+        "contego",
+        "detego",
+        "intego",
+        "obtego",
+        "protego",
+        "retego"
+      ],
+      "answer": "contego, detego, intego, obtego, protego, retego",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 100,
+      "prompt": "tendo",
+      "enunciado": "tendo, -ere, tetendi, tensum",
+      "derivatives": [
+        "attendo",
+        "contendo",
+        "distendo",
+        "extendo",
+        "intendo",
+        "obtendo",
+        "ostendo",
+        "portendo",
+        "praetendo",
+        "protendo",
+        "retendo"
+      ],
+      "answer": "attendo, contendo, distendo, extendo, intendo, obtendo, ostendo, portendo, praetendo, protendo, retendo",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 101,
+      "prompt": "teneo",
+      "enunciado": "teneo, -ere, tenui, tentum",
+      "derivatives": [
+        "abstineo",
+        "attineo",
+        "contineo",
+        "detineo",
+        "distineo",
+        "obtineo",
+        "pertineo",
+        "retineo",
+        "sustineo"
+      ],
+      "answer": "abstineo, attineo, contineo, detineo, distineo, obtineo, pertineo, retineo, sustineo",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 102,
+      "prompt": "tollo",
+      "enunciado": "tollo, -ere, sustuli, sublatum",
+      "derivatives": [
+        "attollo",
+        "extollo"
+      ],
+      "answer": "attollo, extollo",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 103,
+      "prompt": "torqueo",
+      "enunciado": "torqueo, -ere, torsi, tortum",
+      "derivatives": [
+        "contorqueo",
+        "detorqueo",
+        "distorqueo",
+        "extorqueo",
+        "intorqueo",
+        "obtorqueo",
+        "retorqueo"
+      ],
+      "answer": "contorqueo, detorqueo, distorqueo, extorqueo, intorqueo, obtorqueo, retorqueo",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 104,
+      "prompt": "traho",
+      "enunciado": "traho, -ere, traxi, tractum",
+      "derivatives": [
+        "abstraho",
+        "attraho",
+        "contraho",
+        "detraho",
+        "distraho",
+        "extraho",
+        "protraho",
+        "retraho",
+        "subtraho"
+      ],
+      "answer": "abstraho, attraho, contraho, detraho, distraho, extraho, protraho, retraho, subtraho",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 105,
+      "prompt": "tueor",
+      "enunciado": "tueor, tueri, tutus sum",
+      "derivatives": [
+        "contueor",
+        "intueor"
+      ],
+      "answer": "contueor, intueor",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 106,
+      "prompt": "turbo",
+      "enunciado": "turbo, -are, -atum",
+      "derivatives": [
+        "conturbo",
+        "disturbo",
+        "exturbo",
+        "interturbo",
+        "perturbo",
+        "proturbo"
+      ],
+      "answer": "conturbo, disturbo, exturbo, interturbo, perturbo, proturbo",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 107,
+      "prompt": "tundo",
+      "enunciado": "tundo, -ere, tutudi, tunsum",
+      "derivatives": [
+        "contundo",
+        "extundo",
+        "obtundo",
+        "pertundo",
+        "retundo"
+      ],
+      "answer": "contundo, extundo, obtundo, pertundo, retundo",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 108,
+      "prompt": "vado",
+      "enunciado": "vado, -ere, vasi, -vasum",
+      "derivatives": [
+        "evado",
+        "invado",
+        "pervado"
+      ],
+      "answer": "evado, invado, pervado",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 109,
+      "prompt": "vagor",
+      "enunciado": "vagor, -ari, -atus sum",
+      "derivatives": [
+        "evagor",
+        "pervagor"
+      ],
+      "answer": "evagor, pervagor",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 110,
+      "prompt": "vasto",
+      "enunciado": "vasto, -are, -avi, -atum",
+      "derivatives": [
+        "devasto",
+        "pervasto"
+      ],
+      "answer": "devasto, pervasto",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 111,
+      "prompt": "veho",
+      "enunciado": "veho, -ere, vexi, vectum",
+      "derivatives": [
+        "adveho",
+        "aveho",
+        "circumvehor",
+        "conveho",
+        "deveho",
+        "eveho",
+        "inveho",
+        "perveho",
+        "praevehor",
+        "proveho",
+        "reveho",
+        "subveho",
+        "transveho"
+      ],
+      "answer": "adveho, aveho, circumvehor, conveho, deveho, eveho, inveho, perveho, praevehor, proveho, reveho, subveho, transveho",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 112,
+      "prompt": "vello",
+      "enunciado": "vello, -ere, velli, vulsum",
+      "derivatives": [
+        "avello",
+        "convello",
+        "divello",
+        "evello",
+        "revello"
+      ],
+      "answer": "avello, convello, divello, evello, revello",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 113,
+      "prompt": "venio",
+      "enunciado": "venio, -ire, veni, ventum",
+      "derivatives": [
+        "advenio",
+        "antevenio",
+        "circumvenio",
+        "convenio",
+        "devenio",
+        "evenio",
+        "intervenio",
+        "invenio",
+        "obvenio",
+        "pervenio",
+        "praevenio",
+        "provenio",
+        "revenio",
+        "subvenio",
+        "supervenio"
+      ],
+      "answer": "advenio, antevenio, circumvenio, convenio, devenio, evenio, intervenio, invenio, obvenio, pervenio, praevenio, provenio, revenio, subvenio, supervenio",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 114,
+      "prompt": "verto",
+      "enunciado": "verto, -ere, -rsi, -rsum",
+      "derivatives": [
+        "adverto",
+        "animadverto",
+        "averto",
+        "circumverto",
+        "converto",
+        "deverto",
+        "diverto",
+        "everto",
+        "inverto",
+        "obverto",
+        "perverto",
+        "praeverto",
+        "reverto",
+        "subverto",
+        "transverto"
+      ],
+      "answer": "adverto, animadverto, averto, circumverto, converto, deverto, diverto, everto, inverto, obverto, perverto, praeverto, reverto, subverto, transverto",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 115,
+      "prompt": "video",
+      "enunciado": "video, -ere, vidi, visum",
+      "derivatives": [
+        "invideo",
+        "praevideo",
+        "provideo"
+      ],
+      "answer": "invideo, praevideo, provideo",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 116,
+      "prompt": "vivo",
+      "enunciado": "vivo, -ere, vixi, victum",
+      "derivatives": [
+        "convivo",
+        "revivisco"
+      ],
+      "answer": "convivo, revivisco",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 117,
+      "prompt": "voco",
+      "enunciado": "voco, -are, -avi, -atum",
+      "derivatives": [
+        "advoco",
+        "avoco",
+        "convoco",
+        "devoco",
+        "evoco",
+        "invoco",
+        "provoco",
+        "revoco"
+      ],
+      "answer": "advoco, avoco, convoco, devoco, evoco, invoco, provoco, revoco",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    },
+    {
+      "id": 118,
+      "prompt": "volo",
+      "enunciado": "volo, -are, -avi, -atum",
+      "derivatives": [
+        "advolo",
+        "avolo",
+        "circumvolo",
+        "convolo",
+        "devolo",
+        "evolo",
+        "involo",
+        "pervolo",
+        "provolo",
+        "revolo",
+        "subvolo",
+        "supervolo",
+        "transvolo"
+      ],
+      "answer": "advolo, avolo, circumvolo, convolo, devolo, evolo, involo, pervolo, provolo, revolo, subvolo, supervolo, transvolo",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": true
+    },
+    {
+      "id": 119,
+      "prompt": "volo",
+      "enunciado": "volo, velle, volui",
+      "derivatives": [
+        "malo",
+        "nolo"
+      ],
+      "answer": "malo, nolo",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": true
+    },
+    {
+      "id": 120,
+      "prompt": "volvo",
+      "enunciado": "volvo, -ere, volvi, volutum",
+      "derivatives": [
+        "circumvolvo",
+        "convolvo",
+        "devolvo",
+        "evolvo",
+        "involvo",
+        "obvolvo",
+        "provolvo",
+        "revolvo"
+      ],
+      "answer": "circumvolvo, convolvo, devolvo, evolvo, involvo, obvolvo, provolvo, revolvo",
+      "source": "lista docente de modificación preverbial",
+      "ambiguousPrompt": false
+    }
+  ]
+}

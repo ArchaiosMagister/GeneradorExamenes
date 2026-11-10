@@ -39,26 +39,42 @@ async function checkFile(browser,filename){
   const cell=document.createElement('th');
   cell.innerHTML=examParadigmHeading(text,kind);
   const lexeme=cell.querySelector('i'),indicator=cell.querySelector('.exam-paradigm-indicator');
+  const greek=/[\u0370-\u03ff\u1f00-\u1fff]/u.test(text),course=document.getElementById('course');
+  const previous=course.value;
+  if(greek)course.value='greek1';
+  const lexemeItalic=wordInline(lexeme).includes('<w:i/>');
+  course.value=previous;
   return {lexeme:lexeme?.textContent,indicator:indicator?.textContent||'',
-   lexemeItalic:wordInline(lexeme).includes('<w:i/>'),
+   greek,lexemeItalic,
    indicatorItalic:indicator?wordInline(indicator).includes('<w:i/>'):false,
    fullText:cell.textContent,expectedLexeme,expectedIndicator,source:text};
  }));
  for(const sample of typographies){
   assert.equal(sample.lexeme,sample.expectedLexeme,filename+': lema mal identificado '+sample.source);
   assert.equal(sample.indicator,sample.expectedIndicator,filename+': indicación mal separada '+sample.source);
-  assert.equal(sample.lexemeItalic,true,filename+': lema no cursivo en Word '+sample.source);
+  assert.equal(sample.lexemeItalic,!sample.greek,filename+': cursiva incorrecta en Word '+sample.source);
   assert.equal(sample.indicatorItalic,false,filename+': metadato en cursiva '+sample.source);
   assert.equal(sample.fullText,sample.source,filename+': se ha perdido contenido '+sample.source);
  }
+ // La exportación Word conserva cursiva solo en los vocablos y no en
+ // las letras a./c./d. ni en las consignas.
+ const lexWord=await page.evaluate(()=>{
+  const markup=document.createElement('p');
+  markup.className='exam-item';
+  markup.innerHTML='<span class="exam-letter">c.</span> Señala el prefijo de <i>inmortal</i>.';
+  return wordExamParagraph(markup);
+ });
+ assert(lexWord.includes('<w:i/>'),filename+': falta cursiva del estímulo léxico en Word');
+ assert(lexWord.includes('inmortal'),filename+': término léxico omitido en Word');
+ assert(lexWord.indexOf('c.')<lexWord.indexOf('<w:i/>'),filename+': letra de apartado en cursiva');
  const cases=[
   ['latin1','tablas','UD3'],['latin1','morf','UD3'],['latin1','mixto','UD3'],
   ['latin4','tablas','UD3'],
   ['greek1','complete','UD7'],['greek1','morphology','UD7'],['greek1','translation','UD7']
  ];
  for(const [course,model,unit] of cases){
-  await page.selectOption('#course',course);
-  await page.selectOption('#model',model);
+  await page.evaluate(course=>{const select=document.getElementById('course');select.value=course;select.dispatchEvent(new Event('change',{bubbles:true}))},course);
+  await page.evaluate(model=>{const select=document.getElementById('model');select.value=model;select.dispatchEvent(new Event('change',{bubbles:true}))},model);
   await page.evaluate(value=>{
    document.querySelectorAll('.unit-choice').forEach(el=>el.checked=units[Number(el.value)]===value);
    generate();
@@ -70,12 +86,24 @@ async function checkFile(browser,filename){
     height:sheet?.getBoundingClientRect().height||0,
     text:paper.textContent.trim().length,
     questions:paper.querySelectorAll('.exam-question').length,
-    controls:document.querySelectorAll('#manualMorphWords input[type="text"]').length,
+    controls:document.querySelectorAll('.question-editor input[type="text"]').length,
+    greekAnalysisItems:document.querySelectorAll('#paper .exam-form').length,
     warning:document.querySelector('#manualMorphWords')?.textContent
    };
   });
   assert(result.visible&&result.height>80&&result.text>80,filename+' '+course+'/'+model+': vista previa ausente '+JSON.stringify(result));
-  assert(result.questions>=3,filename+' '+course+'/'+model+': preguntas no renderizadas');
+  if(course==='greek1'&&model==='translation'&&result.greekAnalysisItems>=2){
+   // El contador del análisis griego es independiente del de conjugación.
+   const numberOfForms=await page.evaluate(()=>{
+    const counter=document.getElementById('count-greek-forms'),previous=counter.value;
+    counter.value='2';counter.dispatchEvent(new Event('change',{bubbles:true}));
+    const count=document.querySelectorAll('#paper .exam-form').length;
+    counter.value=previous;counter.dispatchEvent(new Event('change',{bubbles:true}));
+    return count;
+   });
+   assert.equal(numberOfForms,2,filename+': el número de formas griegas no respeta su contador');
+  }
+  assert(result.questions>=(course==='latin1'&&model==='mixto'?2:3),filename+' '+course+'/'+model+': preguntas no renderizadas');
   const headings=await page.locator('#paper .exam-nouns thead tr:first-child th[colspan], #paper .exam-verbs thead tr:first-child th[colspan]').evaluateAll(
    cells=>cells.map(cell=>({text:cell.textContent,lexeme:cell.querySelector('i')?.textContent,indicator:cell.querySelector('.exam-paradigm-indicator')?.textContent||''}))
   );
@@ -127,50 +155,124 @@ async function checkFile(browser,filename){
    assert(/Palatino/.test(styleXml),caseLabel+': fuente Palatino ausente en Word');
    if(screenLayout.tableCount){
     assert(documentXml.includes('<w:tbl>'),caseLabel+': tablas ausentes en Word');
-    assert(documentXml.includes('<w:i/>'),caseLabel+': cursiva ausente en Word');
+    if(course==='greek1')assert(!documentXml.includes('<w:i/>'),caseLabel+': hay griego en cursiva en Word');
+    else assert(documentXml.includes('<w:i/>'),caseLabel+': cursiva latina ausente en Word');
+   }
+  }
+  if(course==='greek1'&&model==='translation'){
+   const greekGloss=await page.evaluate(()=>({
+    sentenceCount:document.querySelectorAll('#paper .exam-sentence').length,
+    glossCount:document.querySelectorAll('#paper .final-gloss .gloss-item').length,
+    placeholder:document.querySelector('#paper .final-gloss')?.textContent.includes('[Traducción pendiente de revisión]')||false
+   }));
+   if(greekGloss.sentenceCount>0){
+    assert(greekGloss.glossCount>0,filename+': el examen de traducción griega carece de vocabulario');
+    assert(!greekGloss.placeholder,filename+': traducción griega inventada o sin verificar en el vocabulario imprimible');
    }
   }
   // El panel de preguntas es un acordeón cerrado por defecto.
-  await page.locator('.menu-section').filter({has:page.locator('#manualMorphWords')}).evaluate(section=>section.open=true);
+  await page.locator('#examQuestionSettings').evaluate(section=>section.open=true);
+  await page.locator('#examQuestionMenus details').evaluateAll(sections=>sections.forEach(el=>el.open=true));
   if(course==='greek1'&&model==='complete'){
    // El examen completo griego edita la selección del corpus, conservando las soluciones.
-   const available=await page.locator('#manualMorphWords select').count();
+   const available=await page.locator('.question-editor select').count();
    assert(available>0,filename+': faltan los selectores del corpus griego');
    const before=await page.evaluate(()=>window.greekLastExam.ids.length);
-   await page.locator('#manualMorphWords button').filter({hasText:'Añadir al apartado'}).first().click();
+   await page.locator('.question-editor button').filter({hasText:'Añadir al apartado'}).first().click();
    const after=await page.evaluate(()=>window.greekLastExam.ids.length);
    assert(after>before,filename+': el selector de Griego completo no modifica el examen');
+  }else if(course==='greek1'&&model==='translation'&&!result.controls&&!result.greekAnalysisItems){
+   // Si el banco de UD elegida no tiene formas griegas verificadas,
+   // no debe inventarse una entrada editable vacía.
+   assert.equal(result.greekAnalysisItems,0,'No se deben editar formas inexistentes');
   }else{
-   assert(result.controls>0,filename+' '+course+'/'+model+': no se pueden editar formas: '+result.warning);
-   const input=page.locator('#manualMorphWords input[type="text"]').first();
+   assert(result.controls>0,filename+' '+course+'/'+model+': no se pueden editar formas: '+JSON.stringify(result));
+   const input=page.locator('.question-editor input[type="text"]').first();
    const tableEdit=await input.evaluate(el=>/^(Declinación|Conjugación)/.test(el.parentElement.textContent.trim()));
+   if(!(await input.isVisible())){
+    const trace=await input.evaluate(el=>{
+     const chain=[];for(let p=el;p;p=p.parentElement){
+      chain.push({tag:p.tagName,id:p.id,cls:p.className,hidden:p.hidden,open:p.open,
+       computed:getComputedStyle(p).display,rect:p.getBoundingClientRect().toJSON()});
+      if(p.id==='examLayout')break;
+     }return chain;
+    });
+    throw Error(filename+' '+course+'/'+model+' editor oculto: '+JSON.stringify(trace));
+   }
    await input.fill('FORMA_DE_PRUEBA');
    assert((await page.locator('#paper').textContent()).includes('FORMA_DE_PRUEBA'),filename+' '+course+'/'+model+': la edición no actualiza la vista previa');
    if(tableEdit)assert(await page.locator('#paper .exam-paradigm thead tr:first-child th[colspan] i').filter({hasText:'FORMA_DE_PRUEBA'}).count()>0,filename+': editar título elimina cursiva');
    assert.equal(await page.locator('#paper #answerkey [data-manual-warning]').count(),1,filename+' '+course+'/'+model+': falta advertencia de solucionario');
   }
  }
- await page.selectOption('#course','latin1');
- await page.selectOption('#model','mixto');
+ await page.evaluate(()=>{const course=document.getElementById('course');course.value='latin1';course.dispatchEvent(new Event('change',{bubbles:true}));const model=document.getElementById('model');model.value='mixto';model.dispatchEvent(new Event('change',{bubbles:true}))});
  await page.evaluate(()=>{
   document.querySelectorAll('.unit-choice').forEach(el=>el.checked=units[Number(el.value)]==='UD3');
   generate();
  });
- const visibility=await page.locator('#count-forms').evaluate(input=>{
+ const formsCountInput=page.locator('#examQuestionMenus [data-question="forms"] label:has-text("Número de formas") input');
+ await page.locator('#examQuestionMenus [data-question="forms"]').evaluate(section=>section.open=true);
+ const visibility=await formsCountInput.evaluate(input=>{
   const ancestors=[];for(let el=input;el;el=el.parentElement){
    ancestors.push({tag:el.tagName,id:el.id,cls:el.className,hidden:el.hidden,open:el.open,display:getComputedStyle(el).display});
    if(el.id==='examLayout')break;
   }
   return ancestors;
  });
- assert(await page.locator('#count-forms').isVisible(),filename+': campo de formas sueltas oculto '+JSON.stringify(visibility));
- await page.fill('#count-forms','1');
- await page.locator('#count-forms').dispatchEvent('change');
+ assert(await formsCountInput.isVisible(),filename+': campo de formas sueltas oculto '+JSON.stringify(visibility));
+ await formsCountInput.fill('1');
+ await formsCountInput.dispatchEvent('change');
  const forms=await page.evaluate(()=>{
   const q=[...document.querySelectorAll('.latin-standard-exam .exam-question')].find(el=>el.textContent.toLowerCase().includes('morfol'));
   return q?.nextElementSibling?.querySelectorAll(':scope > li').length||0;
  });
  assert.equal(forms,1,filename+': el control de formas no actualiza la vista previa');
+ // Casos tomados del formato docente: los vocablos exigibles se conservan
+ // con enunciado solamente, y una enclítica se analiza sin inventar lemas.
+ const glossaryRegression=await page.evaluate(()=>{
+  const course=document.getElementById('course'),model=document.getElementById('model');
+  const scope=document.getElementById('glossScope');
+  const previous={course:course.value,model:model.value,scope:scope.value,required:examRequired.slice()};
+  const parse=html=>{
+   const el=document.createElement('div');el.innerHTML=html;
+   return {
+    rows:[...el.querySelectorAll('.gloss-item')].map(x=>x.textContent),
+    warning:el.querySelector('.notice.no-print')?.textContent||'',
+    printText:el.querySelector('.final-gloss')?.textContent||''
+   };
+  };
+  try{
+   course.value='latin1';model.value='tablas';scope.value='all';
+   const base=parse(buildFinalLexicon(['UD1'],[],[{text:'Puellaque amat.'}],[],[],{sentencesOnly:true}));
+   examRequired.push({course:'latin1',unit:'UD1',key:examKey('puella'),entry:'puella, -ae'});
+   const required=parse(buildFinalLexicon(['UD1'],[],[{text:'Puella amat.'}],[],[],{sentencesOnly:true}));
+   const unknown=parse(buildFinalLexicon(['UD1'],[],[{text:'FORMADESCONOCIDAXYZ'}],[],[],{sentencesOnly:true}));
+   return {base,required,unknown,defaultScope:previous.scope};
+  }finally{
+   course.value=previous.course;model.value=previous.model;scope.value=previous.scope;
+   examRequired.length=0;examRequired.push(...previous.required);
+  }
+ });
+ assert.equal(glossaryRegression.defaultScope,'all',filename+': se ocultan por defecto las palabras exigibles');
+ assert(glossaryRegression.base.rows.some(x=>/puella/i.test(x)),filename+': no se reconoce la base de la enclítica -que');
+ assert(glossaryRegression.base.rows.some(x=>/amo/i.test(x)),filename+': no se incorpora un verbo con enunciado');
+ const requiredWord=glossaryRegression.required.rows.find(x=>/puella/i.test(x));
+ assert(requiredWord&&!requiredWord.includes(':'),filename+': el vocabulario exigible necesita enunciado pero no traducción');
+ assert(!glossaryRegression.unknown.printText.includes('FORMADESCONOCIDAXYZ'),filename+': se ha inventado un lema');
+ assert(glossaryRegression.unknown.warning.includes('FORMADESCONOCIDAXYZ'),filename+': falta advertencia para forma desconocida');
+
+ const noSentences=await page.evaluate(()=>{
+  const key='latin1/mixto/sent',had=Object.hasOwn(examQuestionChoiceState,key),previous=examQuestionChoiceState[key];
+  try{
+   examQuestionChoiceState[key]=false;generate();
+   return {sentences:document.querySelectorAll('#paper .latin-translation-exam ol.task li').length,
+    glossary:document.querySelectorAll('#paper .final-gloss .gloss-item').length};
+  }finally{
+   if(had)examQuestionChoiceState[key]=previous;else delete examQuestionChoiceState[key];
+   generate();
+  }
+ });
+ assert.equal(noSentences.glossary,0,filename+': se añade vocabulario de oraciones desactivadas');
  await page.setViewportSize({width:390,height:844});
  assert(await page.locator('#paper .exam-sheet').isVisible(),filename+': vista previa oculta en móvil');
  assert.deepEqual(errors,[],filename+': errores JavaScript');

@@ -26,7 +26,7 @@ function latinSuite(){
   $:id=>state[id]||(state[id]={value:'',checked:true}),
   currentCourse:()=>scope.course,selectedUnits:()=>scope.units,
   sample:(a,n)=>a.slice(0,n),countFor:id=>Number(state['count-'+id]?.value)||5,
-  tr:x=>x,esc:x=>String(x),normLex:x=>String(x).toLowerCase(),
+  window:{},tr:x=>x,esc:x=>String(x),normLex:x=>String(x).toLowerCase(),
   examKey:x=>String(x).split(',')[0].toLowerCase(),
   examUnitNumber:x=>Number(String(x).replace('UD','')),
   M_CASES:['Nominativo','Vocativo','Acusativo','Genitivo','Dativo','Ablativo'],
@@ -42,7 +42,17 @@ function latinSuite(){
   latinExamHeader:()=>'<div class="exam-header">Latín</div>',
   buildFinalLexicon:()=>'<div class="final-gloss">Vocabulario de oraciones</div>',
   refreshManualMorphWords:()=>{},generateGreekExam:()=>{},
-  morphConfig:()=>({decline:2,verbs:2,words:5})
+  morphConfig:()=>({decline:2,verbs:2,words:5}),
+  examQuestionEnabled:kind=>kind!=='pronouns'||state.model.value==='morf',
+  stickyExamRows:(_kind,create)=>create(),
+  examQuotaPick:(_groups,_n,defaultPick)=>defaultPick(),
+  examMorphQuotasActive:()=>false,
+  examMorphQuotaCount:()=>0,
+  buildLatinLexQuestion:course=>({
+    html:course==='latin1'?'<p class="exam-item">a. Modificación preverbial · b. Evolución fonética · c. Prefijos · d. Latinismos</p>':
+      '<p class="exam-item">a. Prefijos · b. Evolución fonética</p>',
+    solution:'<ol></ol>'
+  })
  };
  sandbox.latinSharedBank={
   vocabulary:()=>[noun,adj,vb],
@@ -54,6 +64,7 @@ function latinSuite(){
  let output=run();
  assert.equal((output.match(/class="exam-question"/g)||[]).length,5,'Latín I completo: cinco preguntas');
  assert(output.includes('exam-nouns')&&output.includes('exam-verbs'));
+ assert(output.includes('Modificación preverbial')&&output.includes('Latinismos'),'Latín I: las cuatro partes del léxico deben estar disponibles');
  assert(output.includes('final-gloss'));
  assert.equal((output.match(/Puella amat \d+\./g)||[]).length,5);
  assert(!output.includes('Cultura 0'),'Cultura no se incluye en Latín I');
@@ -72,6 +83,7 @@ function latinSuite(){
  scope.course='latin4';scope.units=['UD3'];state.model.value='tablas';state['count-sent'].value=4;output=run();
  assert.equal((output.match(/class="exam-question"/g)||[]).length,6,'Latín 4: seis apartados');
  assert.equal((output.match(/Cultura \d/g)||[]).length,4,'Latín 4: cuatro preguntas de cultura');
+ assert(output.includes('Prefijos')&&output.includes('Evolución fonética'),'Latín 4: dos partes léxicas');
  assert.equal((output.match(/Puella amat \d+\./g)||[]).length,4);
  sandbox.culture.length=0;output=run();
  assert.equal((output.match(/class="exam-question"/g)||[]).length,5,'Sin banco de cultura no debe exportarse una pregunta vacía');
@@ -104,8 +116,13 @@ function greekSuite(){
   greekExamHeader:()=>'<div class="exam-header">Griego</div>',
   greekQuestionLabel:kind=>({declension:'Declina',conjugation:'Conjuga',forms:'Analiza',pronouns:'Pronombres',etymology:'Etimología',sentences:'Traduce'}[kind]),
   greekLemma:head=>({entry:head,meaning:'palabra'}),examKey:x=>x,
-  glossAccept:()=>true,isRequired:()=>false,esc:x=>String(x),tr:x=>x,
-  greekExamControls:()=>{},refreshManualMorphWords:()=>{},window:{}
+  glossAccept:()=>true,isRequired:()=>false,quoteGloss:x=>"'"+x+"'",esc:x=>String(x),tr:x=>x,
+  greekExamControls:()=>{},refreshManualMorphWords:()=>{},window:{},
+  examQuestionEnabled:kind=>kind!=='pronouns'||state.model.value==='morphology',
+  stickyExamRows:(_kind,create)=>create(),
+  examMorphQuotasActive:()=>false,
+  examMorphQuotaCount:()=>0,
+  examQuotaGreek:(pool,count)=>pool.slice(0,count)
  };
  vm.createContext(sandbox);vm.runInContext(greekCode,sandbox,{filename:'greek-exams.js'});
  const modes=vm.runInContext('greekModes',sandbox),kinds=vm.runInContext('greekKinds',sandbox);
@@ -121,7 +138,7 @@ function greekSuite(){
  output=run('translation');
  assert.equal((output.match(/class="exam-question/g)||[]).length,3,'Griego traducción: formas, etimología y oraciones');
  assert(!output.includes('exam-nouns')&&!output.includes('exam-verbs'));
- assert(!output.includes('final-gloss'));
+ assert(output.includes('final-gloss'),'Griego traducción debe llevar vocabulario de las oraciones');
  assert.equal(sandbox.window.greekLastExam.total,10);
  output=run('morphology');
  assert.equal((output.match(/class="exam-question"/g)||[]).length,4,'Griego UD7: pronombres');

@@ -6,7 +6,10 @@ const CORE_FILES=[
  './','./index.html','./offline.html','./offline-lemmas.js',
  './pwa.js','./manifest.webmanifest',
  './icons/icon-192.png','./icons/icon-512.png',
- './data/unimorph/lat-v.json','./data/lemmas/teacher-forms.json'
+ './data/unimorph/lat-v.json','./data/lemmas/teacher-forms.json',
+ './data/latinismos-docente.json','./data/prefijos-docente.json','./data/modificacion-preverbial-docente.json',
+ './data/modificacion-preverbial-unidades-lat1.json','./data/lat4-progresion-lexico.json',
+ './data/fonetica/banco_examenes.json'
 ];
 const scopedUrl=path=>new URL(path,self.registration.scope).href;
 const cacheable=new Set(CORE_FILES.map(scopedUrl));

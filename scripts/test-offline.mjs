@@ -17,6 +17,17 @@ const payload=JSON.parse(data[0][2]);
 assert.equal(payload['data/unimorph/lat-v.json'].rows.length,16988);
 assert.ok(payload['data/lemmas/teacher-forms.json'].rows.lat.length>10000);
 assert.ok(payload['data/lemmas/teacher-forms.json'].rows.grc.length>1400);
+assert.equal(payload['data/latinismos-docente.json'].items.length,87);
+assert.equal(payload['data/prefijos-docente.json'].groups.length,25);
+const latin4=payload['data/lat4-progresion-lexico.json'];
+assert.equal(latin4.units.length,8,'Deben definirse las 8 unidades de Latín 4.º');
+assert.deepEqual(latin4.units[7].prefixGroups,[],'UD8 de Latín 4.º repasa los prefijos anteriores');
+assert.equal(payload['data/modificacion-preverbial-docente.json'].items.length,120);
+const syllabus=payload['data/modificacion-preverbial-unidades-lat1.json'];
+assert.equal(syllabus.units.reduce((n,x)=>n+x.verbs.length,0),28);
+assert.deepEqual(syllabus.units.filter(x=>x.verbs.length===0).map(x=>x.unit),[8,10]);
+assert.equal(payload['data/fonetica/banco_examenes.json'].esquema,'evoluciones-latin-castellano/v1');
+assert.equal(payload['data/fonetica/banco_examenes.json'].items.length,460);
 assert(html.includes('Lematizador del vocabulario · sin conexión'),'Falta la interfaz local de consulta');
 for(const [,attributes,body] of blocks){
  if(!/type="application\/json"/.test(attributes))new Script(body,{filename:'offline.html'});
@@ -30,6 +41,6 @@ assert(!html.includes('pwa.js')&&!html.includes('manifest.webmanifest'),
 assert(html.includes("if(location.protocol==='file:')return"),'No consultar archivos al abrir file://');
 assert(html.includes('r.length>=4'),'Se admiten filas de cuatro campos UniMorph');
 const network=[...html.matchAll(/\bfetch\(/g)];
-assert.equal(network.length,3,'Revisar nuevos accesos fetch antes de publicar la edición autónoma');
+assert.equal(network.length,4,'Revisar nuevos accesos fetch antes de publicar la edición autónoma');
 console.log('Pruebas offline superadas: HTML reproducible, dos scripts válidos y',
  expected.latinRows,'formas latinas.');
