@@ -15,9 +15,9 @@ const greekCode=part('const greekModes=','// Vista del temario:')+
  part('function generateGreekExam(){','const legacyUpdateUnits=');
 
 function latinSuite(){
- const noun={entry:'puella, -ae',meaning:'niña'};
- const adj={entry:'bonus, -a, -um',meaning:'bueno'};
- const vb={entry:'amo, amavi, amatum (1ª)',meaning:'amar'};
+ const noun={entry:'puella, -ae',meaning:'niña',unit:'UD3'};
+ const adj={entry:'bonus, -a, -um',meaning:'bueno',unit:'UD2'};
+ const vb={entry:'amo, amavi, amatum (1ª)',meaning:'amar',unit:'UD3'};
  const state={model:{value:'tablas'},lang:{value:'es'},paper:{innerHTML:'',setAttribute(){}},
   solutions:{textContent:''},cultureType:{value:'all'},
   'count-decl':{value:2},'count-verb':{value:2},'count-forms':{value:6},'count-sent':{value:5}};
