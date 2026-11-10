@@ -83,7 +83,7 @@ for(const u of priorityFixture.units)for(const form of u.forms){
  const k=normGreek(form);occ.set(k,(occ.get(k)||0)+1);
 }
 const topPending=rows=>rows.map(r=>({form:r.form,frecuencia:occ.get(normGreek(r.form))||0}))
- .sort((a,b)=>b.frecuencia-a.frecuencia||a.form.localeCompare(b.form,'el')).slice(0,70);
+ .sort((a,b)=>b.frecuencia-a.frecuencia||a.form.localeCompare(b.form,'el')).slice(0,280);
 console.log('Pendientes restantes prioritarios sin índice:',JSON.stringify(topPending(unknown)));
 console.log('Pendientes con lecturas alternativas:',JSON.stringify(topPending(review)));
 
