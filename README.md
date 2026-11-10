@@ -89,7 +89,7 @@ La compatibilidad con Safari/WebKit, las descargas DOCX, la impresión, los borr
 - Añadida una comprobación automática de sintaxis JavaScript y controles esenciales para detectar errores en la webapp.
 - Probados en Chromium: carga de modelos, guardado/recuperación/deshacer borradores, exportación JSON y DOCX con y sin soluciones. El DOCX se ha renderizado para inspección visual.
 
-### Revisión de interfaz v16 (sin compilación)
+### Revisión de interfaz v16
 
 - Diseño más legible y coherente; controles agrupados, botones con foco visible y mejor contraste.
 - Acciones rápidas de generar y descargar Word, accesibles al principio de la página.
@@ -126,7 +126,7 @@ La compatibilidad con Safari/WebKit, las descargas DOCX, la impresión, los borr
 - Etimología con petición de derivados, tablas nominales y verbales, análisis de formas y concordancia, y tabla de pronombres. Las tablas completas de concordancia esperan paradigmas validados.
 - Puntuaciones editables: modelos de referencia sobre 10, 9 y 3,5, respectivamente. Solo suman los apartados que contienen ejercicios; se indica la conversión a 10.
 - Vocabulario exigible integrado desde los materiales aportados, con los bloques UDs1–4 y UDs6–7 sin distribución arbitraria entre unidades. Se exigen desde UD4 y UD7. El gestor permite revisarlos y editarlos.
-- Exportación DOCX con espacios de respuesta conservados. HTML autónomo, colores por curso y estructura Tauri conservados. **No se ha iniciado ninguna compilación para Mac.**
+- Exportación DOCX con espacios de respuesta conservados, interfaz HTML autónoma y colores por curso.
 
 Detalles de procedencia, exclusiones y límites: [`data/greek1-validation.md`](data/greek1-validation.md). El banco aún no cubre todas las unidades ni todos los paradigmas del curso.
 
