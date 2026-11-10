@@ -26,6 +26,14 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
   assert.ok(await page.locator('#offlineLemmaResults .lemma-entry').count()>=5,'No se muestran flexiones latinas');
   assert.match(await page.locator('#offlineLemmaResults').textContent(),/amo/);
 
+  // Lematización inversa: forma flexionada → lema y sus análisis.
+  await page.selectOption('#offlineLemmaMode','form');
+  await page.locator('#offlineLemmaInput').fill('amabam');
+  await page.locator('#offlineLemmaSearch').click();
+  await page.locator('#offlineLemmaResults .lemma-entry').first().waitFor();
+  assert.match(await page.locator('#offlineLemmaResults').textContent(),/amo/);
+  assert.match(await page.locator('#offlineLemmaResults').textContent(),/imperfecto/i);
+
   await page.selectOption('#offlineLemmaCourse','gr1');
   await page.selectOption('#offlineLemmaMode','lemma');
   await page.locator('#offlineLemmaInput').fill('λύω');
