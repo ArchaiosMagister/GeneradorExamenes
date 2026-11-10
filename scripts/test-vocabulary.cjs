@@ -90,6 +90,40 @@ const bankStart=originalHTML.indexOf('let vocab=')+10;
 const sourceBank=JSON.parse(originalHTML.slice(bankStart,originalHTML.indexOf(';',bankStart)));
 for(const m of originalHTML.matchAll(/vocab\.push\(\.\.\.(\[.*\])\);/g))sourceBank.push(...JSON.parse(m[1]));
 const GreekBank=sourceBank.filter(x=>x.course==='greek1');
+
+const formatting=api.analyze(data,'Νεῖλος μὲν δὲ οὐκ οὐχ καὶ ἤ ἄνθρωπος','gr1',GreekBank);
+const get=w=>formatting.find(r=>r.form===w);
+for(const w of ['Νεῖλος','μὲν','δὲ','οὐκ','οὐχ','καὶ','ἤ','ἄνθρωπος'])
+ assert.equal(get(w)?.status,'documented','Sin enunciado reconocido para '+w+': '+JSON.stringify(get(w)?.candidates));
+assert.equal(get('μὲν').entry,get('δὲ').entry);
+assert.match(get('μὲν').entry,/μέν… δέ \(part\.\)/);
+assert.equal(get('οὐκ').entry,'οὐ, οὐκ, οὐχ (adv.)');
+assert.equal(get('οὐχ').entry,'οὐ, οὐκ, οὐχ (adv.)');
+assert.equal(api.formatVocabularyEntry(get('Νεῖλος'),'complete','gr1'),"Νεῖλος, –ου: 'Nilo'");
+assert.equal(api.formatVocabularyEntry(get('ἄνθρωπος'),'complete','gr1'),"ἄνθρωπος, –ου: 'hombre'");
+assert.equal(api.formatVocabularyEntry(get('οὐκ'),'complete','gr1'),"οὐ, οὐκ, οὐχ (adv.): 'no'");
+assert.equal(api.formatVocabularyEntry(get('μὲν'),'complete','gr1'),
+ 'μέν… δέ (part.): "por un lado… por otro"');
+assert.equal(api.formatVocabularyEntry(get('δὲ'),'complete','gr1'),
+ 'μέν… δέ (part.): "por un lado… por otro"');
+assert.match(api.formatVocabularyEntry(get('καὶ'),'complete','gr1'),/\(conj\.\): 'y'$/);
+assert.match(api.formatVocabularyEntry(get('ἤ'),'complete','gr1'),/\(conj\.\): 'o'$/);
+assert.equal(api.formatVocabularyEntry({entry:'ἀλλά (conj.)',meaning:'pero’, ‘sino'},'complete','gr1'),
+ "ἀλλά (conj.): 'pero', 'sino'");
+assert.equal(api.formatVocabularyEntry({entry:'οὐ μόνον ἀλλὰ καὶ',meaning:'no sólo, sino también'},'complete','gr1'),
+ 'οὐ μόνον ἀλλὰ καὶ (loc. conj.): "no sólo, sino también"');
+assert.equal(api.formatVocabularyEntry({entry:'ἀγορά, –ας',meaning:'plaza'},'complete','gr1'),
+ "ἀγορά, –ας: 'plaza'");
+for(const word of ['εἰς','ἐν','ἀπὸ']){
+ const res=api.analyze(data,word,'gr1',GreekBank)[0];
+ assert.match(api.formatVocabularyEntry(res,'complete','gr1'),/\(prep\.\s*\+/);
+}
+const exportedGreek=api.documentXml({count:1,course:'gr1',units:[{title:'UD1',mode:'complete',rows:formatting}]});
+assert.match(exportedGreek,/Νεῖλος, –ου: 'Nilo'/);
+assert.match(exportedGreek,/μέν… δέ \(part\.\): &quot;por un lado… por otro&quot;/);
+assert.ok(!exportedGreek.includes(' — '),'El exportador debe utilizar dos puntos, no rayas');
+console.log('Formato griego Word: enunciados completos, etiquetas y comillas correctos.');
+
 const priorityFixture=JSON.parse(fs.readFileSync(path.join(root,'tests/greek-priority-forms.json'),'utf8'));
 assert.equal(priorityFixture.units.length,14);
 const originals=[...new Set(priorityFixture.units.flatMap(u=>u.forms))];
