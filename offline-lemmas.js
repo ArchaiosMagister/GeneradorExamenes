@@ -44,7 +44,7 @@ function indexes(data){
    if(!Array.isArray(row)||row.length!==4)continue;
    const [lemma,surface,tags,source]=row;
    if(!data.vocabulary[lang]?.[lemma]||typeof surface!=='string'||typeof tags!=='string')continue;
-   const sourceNames={0:'UniMorph',1:'Paradigma docente',2:'Modelo regular · propuesta sin verificar',3:'Vocabulario docente',4:'Wikcionario · forma griega candidata sin verificar',5:'Contraste externo · paradigma revisado'};
+   const sourceNames={0:'UniMorph',1:'Paradigma docente',2:'Modelo regular · propuesta sin verificar',3:'Vocabulario docente',4:'Wikcionario · forma griega candidata sin verificar',5:'Contraste externo · paradigma revisado',6:'Collatinus 11 · referencia léxica',7:'Eulexis · referencia léxica'};
    const item={lemma,surface,tags,source:sourceNames[source]||'Fuente desconocida',provisional:source===2||source===4,citation:source===3,
     info:data.vocabulary[lang][lemma]};
    for(const [map,key] of [[index.forms[lang],normalize(surface)],[index.lemmas[lang],normalize(lemma)]]){
@@ -81,7 +81,7 @@ function coverage(data,course){
  const attested=new Set(),proposed=new Set();
  for(const [lemma,, ,source]of data.rows[lang]){
   if(!all.has(lemma))continue;
-  if(source===0||source===1||source===5)attested.add(lemma);
+  if([0,1,5,6,7].includes(source))attested.add(lemma);
   if(source===2||source===4)proposed.add(lemma);
  }
  return {lemmas:all.size,documented:attested.size,
@@ -95,7 +95,7 @@ function coverageByUnit(data,course){
   if(!entry)continue;
   if(!tracked.has(lemma))tracked.set(lemma,{documented:false,proposed:false});
   const status=tracked.get(lemma);
-  if(source===0||source===1||source===5)status.documented=true;
+  if([0,1,5,6,7].includes(source))status.documented=true;
   if(source===2||source===4)status.proposed=true;
  }
  const groups=new Map();
