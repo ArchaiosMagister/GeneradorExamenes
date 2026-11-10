@@ -533,10 +533,15 @@ const PROPER_NOUN_LEMMAS=new Set(['hannibal','hasdrubal','caesar','cicero','pomp
 function properNounKey(value){
  return String(value||'').split(',')[0].trim().normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase();
 }
+const GREEK_PROPER_NOUN_LEMMAS=new Set([
+ 'σωκράτης','πλάτων','ἀριστοτέλης','ἀλέξανδρος','ὀδυσσεύς',
+ 'ἀχιλλεύς','ἕκτωρ','ἥρα','ζεύς','ἀπόλλων','ἀθηνᾶ','ἀθῆναι',
+ 'τροία','ῥώμη','σπάρτη'
+].map(properNounKey));
 function isProperNounLemma(value){
  const lemma=String(value||'').split(',')[0].trim();
  // Incluye mayúsculas griegas (Ἀθήνα, Σωκράτης), no solo latinas.
- return PROPER_NOUN_LEMMAS.has(properNounKey(lemma))||/^\p{Lu}/u.test(lemma);
+ return PROPER_NOUN_LEMMAS.has(properNounKey(lemma))||GREEK_PROPER_NOUN_LEMMAS.has(properNounKey(lemma))||/^\p{Lu}/u.test(lemma);
 }
 // La exclusión afecta a preguntas de ANÁLISIS, no al texto de las oraciones
 // ni a vocabularios donde un nombre propio puede tener sentido filológico.
@@ -545,13 +550,13 @@ const EXAM_GENTILIC_LEMMAS=new Set([
  'hispanus','italicus','gallicus','punicus','carthaginiensis',
  'africanus','celticus','persicus','spartanus','lacedaemonius',
  'ῥωμαιος','αθηναιος','ἑλλην','ἑλληνικος','τροικος','περσης','λακεδαιμονιος'
-]);
+].map(properNounKey));
 function isExcludedExamMorphLemma(entry,meaning=''){
  const first=String(entry||'').split(',')[0].trim();
  const key=properNounKey(first);
  const gloss=String(meaning||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('es');
  return isProperNounLemma(first)||EXAM_GENTILIC_LEMMAS.has(key)||
-  /\b(?:romano|romana|romanos|romanas|griego|griega|griegos|griegas|ateniense|atenienses|troyano|troyana|galo|gala|galos|galas|hispano|hispana|cartagines|cartaginesa|espartano|espartana|siciliano|siciliana)\b/u.test(gloss);
+  /^(?:romano|romana|romanos|romanas|griego|griega|griegos|griegas|ateniense|atenienses|troyano|troyana|galo|gala|galos|galas|hispano|hispana|cartagines|cartaginesa|espartano|espartana|siciliano|siciliana)\b/u.test(gloss);
 }
 function allowedProperNounForm(lemma,features){
  return !isProperNounLemma(lemma)||!String(features).split(';').includes('PL');
