@@ -53,6 +53,44 @@ const server=http.createServer(async(req,res)=>{
   }));
   assert.deepEqual([lex.latinisms,lex.prefixes,lex.preverbs,lex.phonetics],[87,287,120,330],
    'No han cargado todos los bancos léxicos docentes');
+  const latin4Progress=await page.evaluate(()=>{
+   const result={};
+   for(let unit=1;unit<=8;unit++){
+    const chosen=['UD'+unit];
+    const prefixes=latinLexPool('latin4','prefixes',chosen),phonetics=latinLexPool('latin4','phonetics',chosen);
+    result[unit]={prefixes:prefixes.map(x=>x.prompt),groups:[...new Set(prefixes.map(x=>x.prefix))],
+      phonetics:phonetics.map(x=>x.prompt),phoneticRows:phonetics.length};
+   }
+   return result;
+  });
+  assert(latin4Progress[1].prefixes.length>6,'Latín 4.º UD1: los seis ejemplos de clase no son el banco');
+  assert(latin4Progress[1].phonetics.length>6,'Latín 4.º UD1: se debe utilizar el banco fonético general');
+  assert.deepEqual(latin4Progress[1].groups.sort(),['PRE-','RE-/RED-'].sort(),
+    'UD1: solo los prefijos re- y pre-');
+  assert(!latin4Progress[2].groups.includes('CONTRA-'),'La UD2 no puede anticipar contra-');
+  assert(latin4Progress[4].groups.includes('CONTRA-')&&latin4Progress[4].groups.includes('ANTI- (oposición)'),
+    'La UD4 debe introducir contra-/anti-');
+  assert(latin4Progress[7].groups.includes('INTER-'),'La UD7 debe incluir inter-');
+  assert.deepEqual(latin4Progress[8].groups.sort(),latin4Progress[7].groups.sort(),
+    'La UD8 no introduce prefijos nuevos: debe reutilizar los anteriores');
+  for(let u=1;u<=8;u++){
+   assert(latin4Progress[u].prefixes.length>=4&&latin4Progress[u].phoneticRows>=4,
+     'Latín 4.º UD'+u+': debe disponer de al menos cuatro propuestas por apartado');
+   if(u>1){
+    assert(latin4Progress[u].prefixes.length>=latin4Progress[u-1].prefixes.length,
+     'Latín 4.º: las palabras de prefijos no son acumulativas en UD'+u);
+    assert(latin4Progress[u].phoneticRows>=latin4Progress[u-1].phoneticRows,
+     'Latín 4.º: las formas fonéticas no son acumulativas en UD'+u);
+   }
+  }
+  const latin4Excluded=await page.evaluate(()=>({
+    all:latinLexBanks.latin4.prefixes.length,
+    earlier:latinLexPool('latin4','prefixes',['UD1']).length,
+    selected:latinLexRandomFour('prefixes',latinLexPool('latin4','prefixes',['UD1']),'latin4').map(x=>x.prompt)
+  }));
+  assert(latin4Excluded.all===287&&latin4Excluded.earlier<287,
+    'Latín 4.º debe usar los 287 prefijos generales pero con filtro curricular');
+  assert.equal(latin4Excluded.selected.length,4,'Latín 4.º debe seleccionar cuatro formas para prefijos');
   const taught=await page.evaluate(()=>{
    const result={};
    for(let i=1;i<=10;i++)result['UD'+i]=latinLexPool('latin1','preverbs',['UD'+i]).map(x=>x.prompt);
@@ -129,7 +167,7 @@ const server=http.createServer(async(req,res)=>{
    const paths=['index.html','offline.html','pwa.js','offline-lemmas.js',
     'data/unimorph/lat-v.json','data/lemmas/teacher-forms.json',
     'data/latinismos-docente.json','data/prefijos-docente.json','data/modificacion-preverbial-docente.json',
-    'data/modificacion-preverbial-unidades-lat1.json',
+    'data/modificacion-preverbial-unidades-lat1.json','data/lat4-progresion-lexico.json',
     'data/fonetica/banco_examenes.tsv',
     'manifest.webmanifest','icons/icon-192.png','icons/icon-512.png'];
    return {scope:reg.scope,keys,entries:await Promise.all(paths.map(async p=>({

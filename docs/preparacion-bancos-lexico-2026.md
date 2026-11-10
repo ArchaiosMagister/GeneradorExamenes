@@ -100,3 +100,21 @@ Se ha incorporado `data/modificacion-preverbial-unidades-lat1.json`, con **28 in
 **Regla docente:** para un examen de una o varias unidades, entran los verbos explicados hasta la unidad más avanzada seleccionada; se mantiene este criterio incluso si el usuario no activa la opción «Acumulativo». La UD1 no ofrece modificación preverbial. En UD8 y UD10 se conserva todo el repertorio anterior. Los botones de regeneración, tanto por palabra como por subpregunta, respetan el mismo catálogo. La selección manual continúa disponible como excepción deliberada del profesor.
 
 De los 28 verbos, **27 tienen derivados documentados** en el banco previo. `fligo`, suministrado para UD9, no figura allí: es elegible pero aparece con aviso de revisión, sin proponer derivados ni soluciones inventadas. En el examen se imprime exclusivamente la primera persona del presente.
+
+## Latín 4.º: ejemplos de clase ≠ banco de examen (10/11/2026)
+
+**Aclaración del docente:** las listas de seis palabras para prefijos y seis étimos para evolución fonética de cada una de las UD1–UD8 son **ejemplos de ejercicios realizados en clase**. No constituyen un banco cerrado. Las preguntas de examen **deben tomar cualesquiera cuatro palabras del banco general** que correspondan a los prefijos o normas ya explicados, con acumulación hasta la última UD seleccionada.
+
+Se ha incorporado `data/lat4-progresion-lexico.json` **sin copiar esos ejemplos como fichas de examen**. La selección reutiliza el banco general de 287 palabras con prefijos y las 330 evoluciones fonéticas `APTO_PROPUESTO`. Prefijos introducidos:
+- UD1: RE-/RED-, PRE-;
+- UD2: IN-/IL-/IM-, SUB-/SU-/SO-;
+- UD3: ANTE- (anterioridad), POS-/POST-;
+- UD4: CONTRA-, ANTI- (oposición);
+- UD5: CON-/COL-/COM-/COR-/CO-;
+- UD6: EX-;
+- UD7: INTER-;
+- UD8: repaso de las familias anteriores, sin una nueva.
+
+Los grupos fonéticos inferidos de los ejemplos de aula son: UD1 sonorización intervocálica (`N17`); UD2 simplificación de geminadas (`N15`); UD3 diptongación (`N07`); UD4 F- inicial > h- (`N05`); UD5 monoptongación (`N12`); UD6 palatalización de -ct- (`N13`); UD7 palatalización de -gn- (`N13`); UD8 palatalización por yod, especialmente -li- ante vocal (`N13`). La codificación de estos subtipos procede de una **interpretación inicial** de los ejercicios; el docente puede corregirla si hubiera otra progresión curricular. El filtro requiere que la ficha no incluya ninguna norma ajena al repertorio acumulado, contando también las transformaciones básicas `N01` y `N17`. No añade nuevas evoluciones al banco: solo clasifica y elige entre fichas existentes.
+
+El número de estímulos del examen sigue siendo **cuatro por subpregunta**, con regeneración individual y de las cuatro juntas, y cursiva solo para los estímulos. Las explicaciones y significados quedan para corrección manual. La programación viaja incrustada en el HTML autónomo y precargada por la PWA.

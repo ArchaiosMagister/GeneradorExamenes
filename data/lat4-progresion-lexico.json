@@ -1,0 +1,118 @@
+{
+  "schema": 1,
+  "course": "latin4",
+  "selectionPolicy": "Los ejercicios proporcionados son ejemplos de clase, NO un banco cerrado. Tomar términos del banco general por las familias de prefijos y normas fonéticas acumuladas hasta la última unidad seleccionada.",
+  "units": [
+    {
+      "unit": 1,
+      "prefixGroups": [
+        "RE-/RED-",
+        "PRE-"
+      ],
+      "phoneticLessons": [
+        {
+          "code": "N17",
+          "sourcePattern": null,
+          "description": "Sonorización intervocálica"
+        }
+      ]
+    },
+    {
+      "unit": 2,
+      "prefixGroups": [
+        "IN-/IL-/IM-",
+        "SUB(S)-/SU(S)-/SO(S)-"
+      ],
+      "phoneticLessons": [
+        {
+          "code": "N15",
+          "sourcePattern": "([bcdfghjklmnpqrstvwxyz])\\1",
+          "description": "Simplificación de geminadas"
+        }
+      ]
+    },
+    {
+      "unit": 3,
+      "prefixGroups": [
+        "ANTE-/ANTI- (anterioridad)",
+        "POS-/POST-"
+      ],
+      "phoneticLessons": [
+        {
+          "code": "N07",
+          "sourcePattern": null,
+          "description": "Diptongación"
+        }
+      ]
+    },
+    {
+      "unit": 4,
+      "prefixGroups": [
+        "CONTRA-",
+        "ANTI- (oposición)"
+      ],
+      "phoneticLessons": [
+        {
+          "code": "N05",
+          "sourcePattern": "f",
+          "description": "F- latina inicial > h- en castellano"
+        }
+      ]
+    },
+    {
+      "unit": 5,
+      "prefixGroups": [
+        "CON-/COL-/COM-/COR-/CO-"
+      ],
+      "phoneticLessons": [
+        {
+          "code": "N12",
+          "sourcePattern": "(au|ae|oe)",
+          "description": "Monoptongación"
+        }
+      ]
+    },
+    {
+      "unit": 6,
+      "prefixGroups": [
+        "EX-"
+      ],
+      "phoneticLessons": [
+        {
+          "code": "N13",
+          "sourcePattern": "ct",
+          "description": "Palatalización del grupo -ct-"
+        }
+      ]
+    },
+    {
+      "unit": 7,
+      "prefixGroups": [
+        "INTER-"
+      ],
+      "phoneticLessons": [
+        {
+          "code": "N13",
+          "sourcePattern": "gn",
+          "description": "Palatalización del grupo -gn-"
+        }
+      ]
+    },
+    {
+      "unit": 8,
+      "prefixGroups": [],
+      "phoneticLessons": [
+        {
+          "code": "N13",
+          "sourcePattern": "(li[aeiou]|le[aeiou])",
+          "description": "Palatalización por yod (especialmente -li- ante vocal)"
+        }
+      ]
+    }
+  ],
+  "baselineNormCodes": [
+    "N01",
+    "N17"
+  ],
+  "notes": "Grupos y subtipos fonéticos inferidos de los ejercicios docentes; se pueden revisar. Las palabras de los enunciados no se convierten en banco cerrado ni se crean formas nuevas."
+}

@@ -41,6 +41,10 @@ export async function renderOffline(root=projectRoot){
   if(data.schema!==1||!Array.isArray(data.items)||!data.items.length)throw new Error('Banco léxico docente incompleto: '+path);
   lexicalAssets[path]=data;
  }
+ const latin4ProgressPath='data/lat4-progresion-lexico.json';
+ const latin4Progress=JSON.parse(await readFile(resolve(root,latin4ProgressPath),'utf8'));
+ if(latin4Progress.schema!==1||latin4Progress.course!=='latin4'||
+   latin4Progress.units?.length!==8)throw new Error('Falta programación de léxico de Latín 4.º');
  const syllabusPath='data/modificacion-preverbial-unidades-lat1.json';
  const syllabus=JSON.parse(await readFile(resolve(root,syllabusPath),'utf8'));
  if(syllabus.schema!==1||syllabus.course!=='latin1'||!Array.isArray(syllabus.units)||
@@ -48,7 +52,7 @@ export async function renderOffline(root=projectRoot){
   throw new Error('Programa docente de modificación preverbial incompleto');
  const phonetics=await readFile(resolve(root,'data/fonetica/banco_examenes.tsv'),'utf8');
  if(phonetics.split(/\r?\n/).filter(x=>/^\d+\|/.test(x)).length!==330)throw new Error('El banco fonético debe contener 330 fichas');
- const assets={'data/unimorph/lat-v.json':latin,'data/lemmas/teacher-forms.json':lemmatizer,...lexicalAssets,[syllabusPath]:syllabus,'data/fonetica/banco_examenes.tsv':phonetics};
+ const assets={'data/unimorph/lat-v.json':latin,'data/lemmas/teacher-forms.json':lemmatizer,...lexicalAssets,[syllabusPath]:syllabus,[latin4ProgressPath]:latin4Progress,'data/fonetica/banco_examenes.tsv':phonetics};
  // Evita cerrar prematuramente el elemento HTML script inerte.
  const json=JSON.stringify(assets).replace(/</g,'\\u003c');
  const marker='<script>';
