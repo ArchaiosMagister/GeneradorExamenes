@@ -31,6 +31,21 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
   assert.ok(await page.locator('#offlineLemmaResults .lemma-entry').count()>=5,'No se muestran flexiones latinas');
   assert.match(await page.locator('#offlineLemmaResults').textContent(),/amo/);
 
+  // El apartado de revisión no debe interferir con el lematizador ni reclamar que
+  // sus decisiones se apliquen directamente a las soluciones del examen.
+  await page.locator('#morphTeacherReview').waitFor({state:'attached'});
+  await page.locator('#morphTeacherReview > details').evaluate(el=>el.open=true);
+  await page.locator('#reviewSummary').filter({hasText:'416 incidencias'}).waitFor();
+  await page.selectOption('#reviewKind','correccion');
+  assert.equal(await page.locator('#reviewItems .review-item').count(),2,'Faltan correcciones de Latín I');
+  assert.match(await page.locator('#reviewItems').textContent(),/moveo/);
+  await page.selectOption('#reviewCourse','gr1');
+  await page.locator('#reviewSummary').filter({hasText:'251 incidencias'}).waitFor();
+  await page.selectOption('#reviewKind','ampliacion');
+  assert.match(await page.locator('#reviewItems').textContent(),/γίγνομαι/);
+  assert.match(await page.locator('#morphTeacherReview').textContent(),/no altera las soluciones/i);
+  await page.selectOption('#reviewKind','');
+
   // Lematización inversa: forma flexionada → lema y sus análisis.
   await page.selectOption('#offlineLemmaMode','form');
   await page.locator('#offlineLemmaInput').fill('amabam');
