@@ -145,6 +145,36 @@ async function greekIndex(data,dir,seen,counts){
 async function main(){
  const data=JSON.parse(await fs.readFile(target,'utf8'));
  if(data.schema!==1||!data.vocabulary?.lat||!data.vocabulary?.grc)throw Error('Índice base inválido');
+ // El corpus compartido original no incluye algunos lemas que sí figuran
+ // literalmente en el banco editable de la aplicación, sobre todo griegos.
+ // Incorporar solo palabras individuales con grafía inequívoca: los nombres
+ // compuestos, frases, alternativas con «o» y erratas permanecen aparte.
+ const html=await fs.readFile(path.join(root,'index.html'),'utf8');
+ const first=html.indexOf('let vocab=')+'let vocab='.length;
+ if(first<10)throw Error('No se encuentra el banco docente de index.html');
+ const bank=JSON.parse(html.slice(first,html.indexOf(';',first)));
+ for(const m of html.matchAll(/vocab\.push\(\.\.\.(\[.*\])\);/g))bank.push(...JSON.parse(m[1]));
+ const additions={lat:0,grc:0};
+ for(const record of bank){
+  const course=record.course==='greek1'?'gr1':record.course==='latin4'?'lat4':'lat1';
+  const lang=course==='gr1'?'grc':'lat';
+  const cited=String(record.entry||'').split(',')[0].trim()
+   .replace(/\s+[–−—-]\s*\([^)]*\)$/u,'').trim();
+  if(!/^[\p{L}\p{M}]+$/u.test(cited))continue;
+  const lemma=normalize(cited);
+  if(!lemma)continue;
+  if(!data.vocabulary[lang][lemma]){
+   data.vocabulary[lang][lemma]={};
+   additions[lang]++;
+  }
+  if(!data.vocabulary[lang][lemma][course])
+   data.vocabulary[lang][lemma][course]={entry:record.entry,units:[]};
+  const unit=String(record.unit||'');
+  if(/^UD\s*\d+/i.test(unit)){
+   const units=data.vocabulary[lang][lemma][course].units;
+   if(!units.includes(unit))units.push(unit);
+  }
+ }
  const seen={lat:new Set(),grc:new Set()};
  for(const lang of ['lat','grc'])for(const [lemma,form,tags,source] of data.rows[lang])
   seen[lang].add([lemma,normalize(form),tags,source].join('\u0001'));
@@ -161,7 +191,7 @@ async function main(){
    grc:{repository:REVISIONS.greek[0],revision:REVISIONS.greek[1],
     engine:'Eulexis / Diogenes / Perseus',license:'GNU GPL-3.0 (ver documentación de procedencia)',sourceCode:7}
   };
-  data.extensions.readerEnrichment={counts,latin,greek,
+  data.extensions.readerEnrichment={counts,latin,greek,additions,
    note:'Análisis de fuentes externas: no son decisiones docentes ni soluciones automáticas de exámenes.'};
   data.scope+=' Incluye formas de Collatinus y Eulexis filtradas por lemas de clase; no es un diccionario exhaustivo.';
   for(const lang of ['lat','grc'])data.rows[lang].sort((a,b)=>
