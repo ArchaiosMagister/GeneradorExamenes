@@ -13,9 +13,13 @@ function analyze(data,text,course,bank){
   const attested=[0,1,5].includes(source);
   candidates.set(lemma,{lemma,attested:attested||!!old?.attested});
  }
- const tokens=[...new Set((text.match(/[\p{L}\p{M}]+(?:[’'][\p{L}\p{M}]+)*/gu)||[]).map(key))];
- return tokens.map(form=>{
-  const candidates=[...(index.get(form)?.values()||[])].flatMap(c=>{
+ const tokens=new Map();
+ for(const match of text.matchAll(/[\p{L}\p{M}]+(?:[’'][\p{L}\p{M}]+)*/gu)){
+  const form=match[0],normal=key(form);
+  if(normal&&!tokens.has(normal))tokens.set(normal,form);
+ }
+ return [...tokens].map(([normal,form])=>{
+  const candidates=[...(index.get(normal)?.values()||[])].flatMap(c=>{
    const original=data.vocabulary[lang][c.lemma][course];
    const matches=bank.filter(x=>key(x.entry)===key(original.entry)||key(head(x.entry))===key(c.lemma));
    const variants=matches.length?matches:[{entry:original.entry,meaning:''}];
@@ -40,10 +44,24 @@ function displayEntry(entry,mode){
 }
 function documentXml(project){
  const escape=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&apos;'}[c]));
- const p=(s,b=false)=>'<w:p><w:r><w:rPr>'+(b?'<w:b/>':'')+'<w:rFonts w:ascii="Palatino Linotype" w:hAnsi="Palatino Linotype"/><w:sz w:val="21"/></w:rPr><w:t xml:space="preserve">'+escape(s)+'</w:t></w:r></w:p>';
+ const p=(s,b=false)=>'<w:p><w:pPr>'+(b?'<w:keepNext/><w:keepLines/><w:spacing w:before="160" w:after="80"/>':'<w:spacing w:after="30"/>')+'</w:pPr><w:r><w:rPr>'+(b?'<w:b/>':'')+'<w:rFonts w:ascii="Palatino Linotype" w:hAnsi="Palatino Linotype" w:cs="Palatino Linotype"/><w:sz w:val="21"/></w:rPr><w:t xml:space="preserve">'+escape(s)+'</w:t></w:r></w:p>';
  const line=(r,u)=>p((['manual','documented'].includes(r.status)?'':'* ')+displayEntry(r.entry,u.mode)+(r.meaning?' — '+r.meaning:''));
- const body=project.units.slice(0,project.count).map(u=>{const all=entries(u.rows),pending=all.filter(r=>!['manual','documented'].includes(r.status));return p(u.title,true)+all.filter(r=>['manual','documented'].includes(r.status)).map(r=>line(r,u)).join('')+(pending.length?p('Pendientes de revisión (*)',true)+pending.map(r=>line(r,u)).join(''):'')}).join('');
- return '<?xml version="1.0" encoding="UTF-8"?><w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>'+body+'<w:sectPr><w:pgSz w:w="11906" w:h="16838"/><w:pgMar w:top="1417" w:bottom="1417" w:left="1417" w:right="1417"/><w:cols w:num="2" w:space="500"/></w:sectPr></w:body></w:document>';
+ // Word balancea las dos columnas al cerrar cada sección continua.
+ // Cerramos también la última unidad: sin ese salto final puede quedar toda
+ // su lista en la primera columna aunque las anteriores se distribuyan bien.
+ const layout=cols=>'<w:pgSz w:w="11906" w:h="16838"/><w:pgMar w:top="1417" w:bottom="1417" w:left="1417" w:right="1417"/><w:cols w:num="'+cols+'" w:space="500"/>';
+ const closeUnit=()=>'<w:p><w:pPr><w:sectPr><w:type w:val="continuous"/>'+layout(2)+'</w:sectPr></w:pPr></w:p>';
+ const units=project.units.slice(0,project.count);
+ const body=units.map(u=>{
+  const all=entries(u.rows||[]),pending=all.filter(r=>!['manual','documented'].includes(r.status));
+  return p(u.title,true)+all.filter(r=>['manual','documented'].includes(r.status)).map(r=>line(r,u)).join('')+
+    (pending.length?p('Pendientes de revisión (*)',true)+pending.map(r=>line(r,u)).join(''):'')+
+    closeUnit();
+ }).join('');
+ // La sección final, vacía y de una columna, fuerza la distribución equilibrada
+ // de la última UD sin añadir texto ni mezclar las unidades en un único bloque.
+ return '<?xml version="1.0" encoding="UTF-8"?><w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>'+
+  body+'<w:sectPr><w:type w:val="continuous"/>'+layout(1)+'</w:sectPr></w:body></w:document>';
 }
 window.ExaminaVocabulary={analyze,entries,displayEntry,documentXml};
 function init(){
@@ -76,13 +94,24 @@ function init(){
  $('vgUnit').onchange=()=>{selected=Number($('vgUnit').value);render()};
  $('vgCourse').onchange=()=>{project.course=$('vgCourse').value;project.units.forEach(u=>u.rows=[]);save();render();status('Banco cambiado. Vuelve a analizar los textos.')};
  for(const [id,field] of [['vgTitle','title'],['vgText','text'],['vgMode','mode']])$(id).oninput=()=>{unit()[field]=$(id).value;if(field==='text')unit().rows=[];save();if(field==='mode')render()};
- $('vgAnalyze').onclick=async()=>{
-  const button=$('vgAnalyze');button.disabled=true;status('Analizando…');
-  try{const data=await linguistic().load();const course={lat1:'latin1',lat4:'latin4',gr1:'greek1'}[project.course];
-   unit().rows=analyze(data,unit().text,project.course,vocab.filter(x=>courseOf(x)===course));save();render();
-   status(unit().rows.length+' formas distintas. '+unit().rows.filter(r=>r.status!=='documented').length+' pendientes. Reanalizar sustituye las correcciones de esta unidad.');
-  }catch(e){status('No se pudo analizar: '+e.message)}finally{button.disabled=false}
- };
+ async function analyzeUnits(all){
+  const button=$('vgAnalyze'),buttonAll=$('vgAnalyzeAll');
+  button.disabled=true;buttonAll.disabled=true;status('Analizando…');
+  try{
+   const data=await linguistic().load();
+   const course={lat1:'latin1',lat4:'latin4',gr1:'greek1'}[project.course];
+   const bank=vocab.filter(x=>courseOf(x)===course);
+   const targets=all?project.units.slice(0,project.count):[unit()];
+   for(const u of targets)u.rows=analyze(data,u.text,project.course,bank);
+   save();render();
+   const distinct=targets.reduce((n,u)=>n+u.rows.length,0);
+   const pending=targets.reduce((n,u)=>n+u.rows.filter(r=>r.status!=='documented').length,0);
+   status((all?targets.length+' unidades analizadas. ':'')+distinct+' formas distintas. '+pending+' pendientes. Reanalizar sustituye correcciones, pero conserva los textos.');
+  }catch(e){status('No se pudo analizar: '+e.message)}
+  finally{button.disabled=false;buttonAll.disabled=false}
+ }
+ $('vgAnalyze').onclick=()=>analyzeUnits(false);
+ $('vgAnalyzeAll').onclick=()=>analyzeUnits(true);
  $('vgBackup').onclick=()=>downloadBlob('vocabulario-unidades.json',new Blob([JSON.stringify(project,null,2)],{type:'application/json'}));
  $('vgWord').onclick=()=>{
   downloadBlob('vocabulario-unidades.docx',zip([
