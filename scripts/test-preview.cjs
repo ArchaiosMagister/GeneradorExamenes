@@ -56,6 +56,15 @@ async function checkFile(browser,filename){
   assert.equal(sample.indicatorItalic,false,filename+': metadato en cursiva '+sample.source);
   assert.equal(sample.fullText,sample.source,filename+': se ha perdido contenido '+sample.source);
  }
+ // La exportación Word conserva cursiva solo en los vocablos y no en
+ // las letras a./c./d. ni en las consignas.
+ const lexMarkup=document.createElement('p');
+ lexMarkup.className='exam-item';
+ lexMarkup.innerHTML='<span class="exam-letter">c.</span> Señala el prefijo de <i>inmortal</i>.';
+ const lexWord=wordExamParagraph(lexMarkup);
+ if(!lexWord.includes('<w:i/>'))throw Error('Falta cursiva de estímulo léxico en Word');
+ if(!lexWord.includes('inmortal'))throw Error('Término léxico omitido');
+ if(/<w:i\/>[\\s\\S]*?<w:t[^>]*>c\\./.test(lexWord))throw Error('La letra c. está en cursiva');
  const cases=[
   ['latin1','tablas','UD3'],['latin1','morf','UD3'],['latin1','mixto','UD3'],
   ['latin4','tablas','UD3'],

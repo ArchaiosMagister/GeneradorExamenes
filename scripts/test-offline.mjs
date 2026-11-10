@@ -17,6 +17,9 @@ const payload=JSON.parse(data[0][2]);
 assert.equal(payload['data/unimorph/lat-v.json'].rows.length,16988);
 assert.ok(payload['data/lemmas/teacher-forms.json'].rows.lat.length>10000);
 assert.ok(payload['data/lemmas/teacher-forms.json'].rows.grc.length>1400);
+assert.equal(payload['data/latinismos-docente.json'].items.length,87);
+assert.equal(payload['data/prefijos-docente.json'].groups.length,25);
+assert.equal(payload['data/modificacion-preverbial-docente.json'].items.length,120);
 assert(html.includes('Lematizador del vocabulario · sin conexión'),'Falta la interfaz local de consulta');
 for(const [,attributes,body] of blocks){
  if(!/type="application\/json"/.test(attributes))new Script(body,{filename:'offline.html'});
@@ -30,6 +33,6 @@ assert(!html.includes('pwa.js')&&!html.includes('manifest.webmanifest'),
 assert(html.includes("if(location.protocol==='file:')return"),'No consultar archivos al abrir file://');
 assert(html.includes('r.length>=4'),'Se admiten filas de cuatro campos UniMorph');
 const network=[...html.matchAll(/\bfetch\(/g)];
-assert.equal(network.length,3,'Revisar nuevos accesos fetch antes de publicar la edición autónoma');
+assert.equal(network.length,4,'Revisar nuevos accesos fetch antes de publicar la edición autónoma');
 console.log('Pruebas offline superadas: HTML reproducible, dos scripts válidos y',
  expected.latinRows,'formas latinas.');

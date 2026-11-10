@@ -997,7 +997,11 @@ function wordExamParagraph(el){
   if(m)runs=wordRun(m[1],true)+'<w:r><w:tab/></w:r>'+wordRun(m[2],true);
  }else if(cls.contains('exam-item')){
   props.push('<w:ind w:left="1080" w:hanging="360"/><w:tabs><w:tab w:val="left" w:pos="1080"/></w:tabs><w:spacing w:before="0" w:after="'+(cls.contains('exam-sentence')?'750':'180')+'" w:line="'+(cls.contains('exam-sentence')?'310':'260')+'" w:lineRule="atLeast"/>');
-  const m=el.textContent.match(/^([a-z]\.)\s*(.*)$/s);if(m)runs=wordRun(m[1])+'<w:r><w:tab/></w:r>'+wordRun(m[2]);
+  const letter=el.querySelector(':scope > .exam-letter');
+  if(letter)runs=wordRun(letter.textContent.trim())+'<w:r><w:tab/></w:r>'+
+   [...el.childNodes].filter(n=>n!==letter).map(n=>wordInline(n)).join('');
+  else{const m=el.textContent.match(/^([a-z]\\.)\\s*(.*)$/s);
+   if(m)runs=wordRun(m[1])+'<w:r><w:tab/></w:r>'+wordRun(m[2])}
  }else if(cls.contains('exam-etymology')){
   props.push('<w:ind w:left="720"/><w:tabs><w:tab w:val="left" w:pos="4240"/></w:tabs><w:spacing w:before="0" w:after="160" w:line="300" w:lineRule="auto"/>');
   runs=[...el.children].map(x=>wordInline(x)).join('<w:r><w:tab/></w:r>');
@@ -1869,6 +1873,50 @@ function readLatinLexBanks(){
  }catch(error){}
  return empty;
 }
+/* Bancos docentes distribuidos con la PWA y embebidos en offline.html.
+   Se conservan el número de latinismos, los grupos de prefijos y los derivados
+   originales. Las respuestas léxicas abiertas no se completan por conjetura. */
+async function loadTeacherLatinLexBanks(){
+ const sources=[
+  ['latinisms','data/latinismos-docente.json'],
+  ['prefixes','data/prefijos-docente.json'],
+  ['preverbs','data/modificacion-preverbial-docente.json']
+ ];
+ const bundles=await Promise.all(sources.map(async ([kind,path])=>{
+  try{
+   let data=examinaEmbeddedAsset(path);
+   if(!data&&location.protocol!=='file:'){
+    const response=await fetch(path,{cache:'force-cache'});
+    if(response.ok)data=await response.json();
+   }
+   return {kind,data};
+  }catch(error){console.warn('Banco de léxico no disponible:',path,error);return {kind,data:null}}
+ }));
+ let loaded=0;
+ for(const {kind,data} of bundles){
+  if(data?.schema!==1||!Array.isArray(data.items)||!data.items.length)continue;
+  const verified=data.items.filter(x=>typeof x.prompt==='string'&&typeof x.answer==='string');
+  if(kind==='latinisms'&&!verified.every(x=>Number.isInteger(x.number)&&x.number>=1))continue;
+  if(kind==='preverbs'&&!verified.every(x=>Array.isArray(x.derivatives)))continue;
+  const old=latinLexBanks.latin1[kind]||[],merged=new Map();
+  for(const x of verified)merged.set(kind==='latinisms'?String(x.number):x.prompt+'|'+(x.enunciado||x.prefix||''),x);
+  for(const x of old)merged.set(kind==='latinisms'?String(x.number):x.prompt+'|'+(x.enunciado||x.prefix||''),x);
+  latinLexBanks.latin1[kind]=[...merged.values()];
+  loaded++;
+ }
+ window.ExaminaTeacherLexBankReady=loaded===3;
+ window.ExaminaTeacherLexBankCount={
+  latinisms:latinLexBanks.latin1.latinisms.length,
+  prefixes:latinLexBanks.latin1.prefixes.length,
+  preverbs:latinLexBanks.latin1.preverbs.length
+ };
+ // Redibuja los filtros tras la carga, pero no sustituye un examen editado.
+ if(loaded){
+  const safePreview=$('paper').innerHTML===window.examinaLastLatinPreview;
+  syncExamModelControls();
+  if(safePreview||!$('paper').innerHTML.trim())generate();
+ }
+}
 function examQuestionEnabled(kind){
  const course=currentCourse(),model=$('model').value;
  const key=course+'/'+model+'/'+kind;
@@ -1950,21 +1998,43 @@ function examLexFilter(row,course,kind,chosen){
  return true;
 }
 function buildLatinLexQuestion(course,chosen){
- const parts=examSelectedLexParts(course),html=[],answers=[],va=$('lang').value==='va';
+ const parts=examSelectedLexParts(course),html=[],answers=[];
+ const italic=text=>'<i>'+esc(text)+'</i>';
+ const four=rows=>rows.map(x=>italic(x.prompt)).join(', ');
  for(const kind of parts){
   const available=(latinLexBanks[course]?.[kind]||[]).filter(x=>examLexFilter(x,course,kind,chosen));
   if(!available.length)continue;
-  const quantity=Math.max(1,Math.min(20,Number($('lex-count-'+kind)?.value)||3));
-  const rows=stickyExamRows('lex-'+kind,()=>sample(available,quantity));
-  const letter=String.fromCharCode(97+html.length);
-  html.push('<p class="exam-item"><span class="exam-letter">'+letter+'.</span> <strong>'+
-   esc(latinLexTitles[kind])+'</strong>: '+rows.map(x=>esc(x.prompt)).join(' · ')+'</p>');
+  let rows,question;
+  if(kind==='preverbs'&&course==='latin1'){
+   // El alumno propone cinco derivados (3 + 2); no se inventan soluciones.
+   // Enunciados homógrafos como sero y volo necesitan desambiguación.
+   const verified=available.filter(x=>!x.ambiguousPrompt&&Array.isArray(x.derivatives)&&x.derivatives.length>=3);
+   rows=stickyExamRows('lex-'+kind,()=>sample(verified,2));
+   if(rows.length<2)continue;
+   question='Modificación preverbial a partir de '+italic(rows[0].prompt)+' (3) y de '+
+    italic(rows[1].prompt)+' (2). Cinco derivados en total en lengua propia.';
+  }else{
+   const quantity=Math.max(1,Math.min(20,Number($('lex-count-'+kind)?.value)||4));
+   rows=stickyExamRows('lex-'+kind,()=>sample(available,quantity));
+   if(!rows.length)continue;
+   if(kind==='phonetics')question='Evolución fonética de '+four(rows)+'.';
+   else if(kind==='prefixes')question='Señala el prefijo y el significado que aporta a estas palabras: '+four(rows)+'.';
+   else if(kind==='latinisms')question='Latinismos. Explica el significado de los siguientes latinismos y haz una oración con ellos en la que se vea su sentido: '+four(rows)+'.';
+   else question=esc(latinLexTitles[kind])+': '+four(rows)+'.';
+  }
+  // Cada letra corresponde a su tipo de pregunta, incluso mientras el banco
+  // fonético no esté disponible. Ningún rótulo va en cursiva.
+  const letter=String.fromCharCode(97+(latinLexModules[course]||[]).indexOf(kind));
+  html.push('<p class="exam-item lex-subquestion"><span class="exam-letter">'+letter+'.</span> '+question+'</p>');
   answers.push('<li>'+esc(latinLexTitles[kind])+': '+rows.map(x=>esc(x.prompt)+' — '+esc(x.answer)).join('; ')+'</li>');
  }
  if(!html.length)return null;
+ if(course==='latin1'&&parts.includes('phonetics')&&!latinLexBanks.latin1.phonetics.length)
+  html.push('<p class="small no-print">Apartado b pendiente: falta el banco docente de evolución fonética. No se inventan étimos.</p>');
  return {html:html.join(''),solution:'<ol>'+answers.join('')+'</ol>'};
 }
 refreshCourse();
+loadTeacherLatinLexBanks();
 /* Los parámetros internos conservan la misma interfaz que lee el motor,
    pero la vista editable se encuentra en los paneles de cada pregunta. */
 (function preserveMorphologyControls(){
@@ -2078,8 +2148,11 @@ refreshCourse();
    const toggle=document.createElement('input');toggle.type='checkbox';toggle.checked=latinLexPartEnabled[course+'/'+kind]!==false;
    toggle.onchange=()=>{latinLexPartEnabled[course+'/'+kind]=toggle.checked;generate()};
    group.append(makeLabel(latinLexTitles[kind]+' ('+(latinLexBanks[course]?.[kind]?.length||0)+')',toggle));
-   const qty=document.createElement('input');qty.type='number';qty.id='lex-count-'+kind;qty.min='1';qty.max='20';qty.value='3';qty.onchange=generate;
-   group.append(makeLabel('Elementos de esta subpregunta',qty));box.append(group);
+   const qty=document.createElement('input');qty.type='number';qty.id='lex-count-'+kind;
+   qty.min=kind==='preverbs'&&course==='latin1'?'2':'1';qty.max=kind==='preverbs'&&course==='latin1'?'2':'20';
+   qty.value=kind==='preverbs'&&course==='latin1'?'2':'4';qty.disabled=kind==='preverbs'&&course==='latin1';
+   qty.onchange=generate;
+   group.append(makeLabel(kind==='preverbs'&&course==='latin1'?'Verbos simples (3 + 2 derivados)':'Elementos de esta subpregunta',qty));box.append(group);
   }
   const select=(id,label,values)=>{
    const control=document.createElement('select');control.id=id;

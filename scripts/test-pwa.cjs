@@ -52,6 +52,7 @@ const server=http.createServer(async(req,res)=>{
    const storage=await caches.open(keys.find(k=>k.startsWith('examina-pwa-')));
    const paths=['index.html','offline.html','pwa.js','offline-lemmas.js',
     'data/unimorph/lat-v.json','data/lemmas/teacher-forms.json',
+    'data/latinismos-docente.json','data/prefijos-docente.json','data/modificacion-preverbial-docente.json',
     'manifest.webmanifest','icons/icon-192.png','icons/icon-512.png'];
    return {scope:reg.scope,keys,entries:await Promise.all(paths.map(async p=>({
     path:p,stored:!!await storage.match(new URL(p,reg.scope).href)
