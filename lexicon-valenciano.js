@@ -1171,6 +1171,29 @@
   if(item?.meaning_va&&String(item.meaning_va).trim())return {value:String(item.meaning_va).trim(),ready:true,source:'docente-valenciano'};
   const result=lookup(item?.meaning);return {...result,source:result.ready?'diccionario-valenciano':'pendiente'};
  }
+ function quoteGloss(raw){
+  // Un único vocablo recibe comillas simples; una locución,
+  // comillas dobles. Las glosas con alternativas se comillan por separado.
+  const cleaned=String(raw||'').trim().replace(/[‘’“”'"]/gu,'');
+  const chunks=[];let depth=0,begin=0;
+  for(let i=0;i<cleaned.length;i++){
+   const ch=cleaned[i];
+   if(ch==='(')depth++;
+   else if(ch===')')depth=Math.max(0,depth-1);
+   else if(depth===0&&(ch===','||ch===';')){
+    chunks.push([cleaned.slice(begin,i),ch]);begin=i+1;
+   }
+  }
+  chunks.push([cleaned.slice(begin),'']);
+  return chunks.map(([fragment,separator])=>{
+   const text=fragment.trim();
+   if(!text)return '';
+   const m=text.match(/^(.*?)(\s+\([^()]*\))$/u);
+   const lemma=(m?m[1]:text).trim(),note=m?m[2]:'';
+   const quote=/\s|…/u.test(lemma)?'“':'‘',close=quote==='“'?'”':'’';
+   return quote+lemma+close+note+separator+(separator?' ':'');
+  }).join('').trim();
+ }
  const UI_TRANSLATIONS={
   "Configurar examen": "Configura l’examen",
   "Preparar el examen": "Preparar l’examen",
@@ -1334,5 +1357,5 @@
    cached.last=node.nodeValue;
   }
  }
- global.ExaminaValencianGloss={lookup,forEntry,translateDom,count:Object.keys(translations).length};
+ global.ExaminaValencianGloss={lookup,forEntry,quoteGloss,translateDom,count:Object.keys(translations).length};
 })(window);
