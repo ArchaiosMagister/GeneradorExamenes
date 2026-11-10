@@ -39,7 +39,7 @@ jobs:
           mkdir -p _site
           cp index.html _site/index.html
           cp offline.html _site/offline.html
-          cp offline-lemmas.js _site/offline-lemmas.js
+          cp offline-lemmas.js verification-review.js _site/
           cp pwa.js manifest.webmanifest _site/
           cp -R icons _site/icons
           sed "s/__PWA_BUILD_VERSION__/${GITHUB_SHA}/g" sw.js > _site/sw.js
