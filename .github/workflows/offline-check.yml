@@ -33,6 +33,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Probar modelos regulares sin incorporación a los exámenes
+        run: node scripts/test-regular-latin.mjs
       - name: Construir índice bilingüe del vocabulario docente
         run: node scripts/build-lemma-index.mjs
       - name: Regenerar archivo autónomo
