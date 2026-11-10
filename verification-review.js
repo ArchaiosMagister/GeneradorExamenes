@@ -23,6 +23,11 @@ const CURATED=[
   detail:'El índice atribuye dos acusativos singulares a παῖς. Hay que delimitar las variantes admitidas en clase y distinguir formas literarias de las escolares.',
   source:'UniMorph · revisión de variante dialectal/lexicográfica pendiente'}
 ];
+// Un adverbio, conjunción, preposición o numeral expresamente indeclinable
+// no necesita paradigma: no se le presenta como incidencia por ausencia de flexión.
+function isDeclaredInvariable(entry){
+ return /\((?:adv\.?|conj\.?|prep\.?\s*\+\s*(?:ac|acc|abl)\.?|preposición|adverbio|conjunción|interj\.?|num\.?\s*indecl\.?)\)/i.test(String(entry||''));
+}
 const norm=x=>String(x||'').toLowerCase().normalize('NFD').replace(/\u0345/g,'ι').replace(/\p{M}/gu,'').replace(/ς/g,'σ').replace(/æ/g,'ae').replace(/œ/g,'oe');
 function buildCases(data,course){
  if(!NAMES[course])throw Error('Curso desconocido');
@@ -67,7 +72,7 @@ function buildCases(data,course){
     add({lemma,kind:'candidatas',priority:2,form:candidates.slice(0,4).map(x=>x[1]).join(' · '),
      detail:candidates.length+' propuestas de flexión, sin análisis morfológico contrastado en el índice. Revisar antes de habilitarlas para exámenes.',
      source:sources.has(4)?'Wikcionario/Wiktextract · candidatas':'Modelo regular · propuestas sin comprobar'});
-   }else{
+   }else if(!isDeclaredInvariable(eligible.get(lemma)?.[course]?.entry)){
     add({lemma,kind:'sin-flexion',priority:2,form:'',
      detail:'Consta la entrada léxica, pero no hay formas flexivas documentadas en el índice. Las palabras invariables pueden no necesitar paradigma.',
      source:'Vocabulario docente · registro de cita'});
