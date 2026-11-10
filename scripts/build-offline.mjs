@@ -60,10 +60,14 @@ export async function renderOffline(root=projectRoot){
  const marker='<script>';
  if(!html.includes(marker))throw new Error('No existe el script de la webapp');
  const offlineModule=await readFile(resolve(root,'offline-lemmas.js'),'utf8');
+ const reviewModule=await readFile(resolve(root,'verification-review.js'),'utf8');
+ const reviewExternal='<script src="verification-review.js" defer></script>';
+ if(!html.includes(reviewExternal))throw new Error('Falta el panel de revisión filológica');
+ const reviewScript='<script>'+reviewModule.replace(/<\\/script/gi,'<\\\\/script')+'</script>';
  const external='<script src="offline-lemmas.js" defer></script>';
  if(!html.includes(external))throw new Error('No existe el lematizador en index.html');
  const script='<script>'+offlineModule.replace(/<\/script/gi,'<\\/script')+'</script>';
- const offline=html.replace(external,script).replace(marker,
+ const offline=html.replace(external,script).replace(reviewExternal,reviewScript).replace(marker,
   '<script id="examina-offline-assets" type="application/json">'+json+'</script>\n'+marker);
  return {content:offline,datasetCount:Object.keys(assets).length,latinRows:latin.rows.length,lemmaRows:lemmatizer.rows.lat.length+lemmatizer.rows.grc.length};
 }
