@@ -3,32 +3,9 @@
   "repository": "ArchaiosMagister/GeneradorExamenes",
   "branch": "feat/integracion-pr29-pr30-valenciano-20261110",
   "origin": "revisión filológica del vocabulario bilingüe en PR31",
-  "status": "12 decisiones docentes aplicadas; LAT1-REDUCO pendiente de elección",
-  "notes": "Las doce decisiones del mensaje actual están incorporadas; reduco, no elegido, conserva «traer»/«portar» provisionalmente. Se usa valenciano propio en la interfaz y el léxico. No declarar aprobaciones de opciones no expresamente elegidas.",
-  "items": [
-    {
-      "id": "LAT1-REDUCO",
-      "course": "latin1",
-      "lemma": "reduco, reduxi, reductum (3ª)",
-      "spanish": "traer",
-      "current_va": "portar",
-      "reason": "Reduco implica conducción de vuelta o regreso; el enunciado español actual omite re-.",
-      "options": [
-        [
-          "a",
-          "traer → portar"
-        ],
-        [
-          "b",
-          "hacer volver → fer tornar"
-        ],
-        [
-          "c",
-          "conducir de vuelta → conduir de tornada"
-        ]
-      ]
-    }
-  ],
+  "status": "13 decisiones docentes aplicadas; ninguna pendiente de esta revisión",
+  "notes": "Historial de 13 decisiones aprobadas. Priorizar formas y léxico del valenciano docente, como este, eixe, meua, seua, tindre, vindre y xiquet, sin sustituciones por variantes catalanas no escogidas. Se conservan grafías latinas y griegas.",
+  "items": [],
   "resolved": [
     {
       "id": "LAT1-IMPORTO",
@@ -374,6 +351,35 @@
         "option": "c",
         "value": "Eliminar la ficha de ambos bancos",
         "scope": "Eliminada la única entrada bilingüe de los dos sorteos de prefijos"
+      },
+      "resolution": "aplicada",
+      "approvedBy": "docente"
+    },
+    {
+      "id": "LAT1-REDUCO",
+      "course": "latin1",
+      "lemma": "reduco, reduxi, reductum (3ª)",
+      "spanish": "traer",
+      "current_va": "portar",
+      "reason": "Reduco implica conducción de vuelta o regreso; el enunciado español actual omite re-.",
+      "options": [
+        [
+          "a",
+          "traer → portar"
+        ],
+        [
+          "b",
+          "hacer volver → fer tornar"
+        ],
+        [
+          "c",
+          "conducir de vuelta → conduir de tornada"
+        ]
+      ],
+      "decision": {
+        "option": "c",
+        "value": "conducir de vuelta → conduir de tornada",
+        "scope": "Actualizar traducciones castellana y valenciana a petición explícita del docente"
       },
       "resolution": "aplicada",
       "approvedBy": "docente"

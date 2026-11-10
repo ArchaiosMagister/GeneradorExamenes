@@ -38,12 +38,14 @@ assert.equal(prefijos.items.length,286);
 assert.ok(!prefijos.items.some(x=>/ultrapuert|ultraport/i.test(x.prompt+' '+x.prompt_va)),
  'Debe eliminarse Ultrapuertos de las dos versiones del banco');
 const review=JSON.parse(fs.readFileSync(path.join(root,'data/revision-valenciano-pendiente.json'),'utf8'));
-assert.equal(review.items.length,1,'Debe quedar pendiente la decisión sobre reduco');
-assert.equal(review.resolved.length,12,'Solo doce decisiones han sido elegidas');
-assert.ok(review.items.some(x=>x.id==='LAT1-REDUCO'),'No aprobar reduco sin elección expresa');
+assert.equal(review.items.length,0,'No quedan decisiones pendientes');
+assert.equal(review.resolved.length,13,'Se han aprobado las trece decisiones');
+assert.ok(review.resolved.some(x=>x.id==='LAT1-REDUCO'&&x.decision.option==='c'),
+ 'Reduco fue aprobado por el docente');
 assert.ok(review.resolved.some(x=>x.id==='PREF-ULTRAPUERTOS'&&x.decision.option==='c'));
 const choices=[
  ['importo, importavi, importatum (1ª)','traer','portar',1],
+ ['reduco, reduxi, reductum (3ª)','conducir de vuelta','conduir de tornada',1],
  ['impono, imposui, impositum (3ª)','imponer, colocar encima','imposar, posar damunt',1],
  ['καλέω','llamar','cridar, anomenar',1],
  ['μάλιστα (adv.)','muy','moltíssim, especialment',1],
@@ -67,10 +69,10 @@ for(const [entry,es,va,expectedCount] of choices){
   'La elección debe persistir también en proyectos anteriores: '+entry);
 }
 const reduco=initial.find(x=>x.entry==='reduco, reduxi, reductum (3ª)');
-assert.ok(reduco&&reduco.meaning==='traer'&&!reduco.meaning_va,
- 'Conservar reduco como traducción pendiente');
-assert.equal(dictionary.forEntry(reduco,'va').value,'portar',
- 'Mientras está pendiente, reduco mantiene la traducción general portar');
+assert.ok(reduco&&reduco.meaning==='conducir de vuelta'&&reduco.meaning_va==='conduir de tornada',
+ 'La traducción aprobada de reduco debe figurar en los dos idiomas');
+assert.equal(dictionary.lookup('conducir de vuelta').value,'conduir de tornada');
+
 
 
 const sample={entry:'πόλις, –εως',meaning:'ciudad',meaning_va:'la meua traducció'};
