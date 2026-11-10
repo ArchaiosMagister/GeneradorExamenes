@@ -61,6 +61,15 @@ console.log('Corpus docente Griego I / pendientes anteriores:',JSON.stringify({
  total:originals.length,formasDistintasNormalizadas:benchmark.length,
  reconocidas:success.length,revision:review.length,desconocidas:unknown.length
 }));
+const normGreek=s=>s.toLowerCase().normalize('NFD').replace(/\u0345/g,'ι').replace(/\p{M}/gu,'').replace(/ς/g,'σ');
+const occ=new Map();
+for(const u of priorityFixture.units)for(const form of u.forms){
+ const k=normGreek(form);occ.set(k,(occ.get(k)||0)+1);
+}
+const topPending=rows=>rows.map(r=>({form:r.form,frecuencia:occ.get(normGreek(r.form))||0}))
+ .sort((a,b)=>b.frecuencia-a.frecuencia||a.form.localeCompare(b.form,'el')).slice(0,70);
+console.log('Pendientes restantes prioritarios sin índice:',JSON.stringify(topPending(unknown)));
+console.log('Pendientes con lecturas alternativas:',JSON.stringify(topPending(review)));
 
 
 console.log('Vocabulario: prioridad docente, deduplicación por UD, ambigüedad, desconocidas, griego y XML de dos columnas correctos.');
