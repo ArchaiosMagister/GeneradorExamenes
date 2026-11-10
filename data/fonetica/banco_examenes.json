@@ -1,8 +1,8 @@
 {
   "esquema": "evoluciones-latin-castellano/v1",
   "revision": "2026-11-10",
-  "origen": "Banco docente de evoluciones fonéticas; preselección inicial + ampliación 1",
-  "criterio": "430 candidatas para examen; estado APTO_PROPUESTO, pendientes de validación definitiva del docente",
+  "origen": "Banco docente de evoluciones fonéticas; preselección inicial + ampliación 1; ampliación 2: 30 palabras de uso común para preparación PAU",
+  "criterio": "460 candidatas para ejercicios. Las 30 nuevas se seleccionaron por frecuencia o facilidad en castellano y utilidad didáctica para PAU; APTO_PROPUESTO no equivale a una garantía de aparición en selectividad.",
   "idioma_origen": "la",
   "idioma_destino": "es",
   "normas": [
@@ -5533,12 +5533,461 @@
       "fila_origen": 1044,
       "fuente": "https://www.lletresasturianes.alladixital.org/pdf/Lletres%2096%20%28dixital%29.pdf",
       "estado": "APTO_PROPUESTO"
+    },
+    {
+      "id": "EVF-0032",
+      "latin": "autumnum",
+      "castellano": "otoño",
+      "normas": [
+        "N01",
+        "N12",
+        "N13"
+      ],
+      "observacion": "autumnum > otoño: au > o, vocal ŭ > o y palatalización -mn- > -ñ-.",
+      "fila_origen": 33,
+      "fuente": "https://dle.rae.es/oto%C3%B1o",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz habitual o de fácil reconocimiento y cambios fonéticos de interés PAU; no implica una predicción estadística"
+    },
+    {
+      "id": "EVF-0055",
+      "latin": "cepullam",
+      "castellano": "cebolla",
+      "normas": [
+        "N01",
+        "N13",
+        "N17"
+      ],
+      "observacion": "cepullam > cebolla: -p- intervocálica > -b-, ŭ > o y -ll- latina > ll palatal. Se mantiene la grafía de la forma de partida cepullam, sin añadir monoptongación de ae que no está escrito en ella.",
+      "fila_origen": 56,
+      "fuente": "https://dle.rae.es/cebolla",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz habitual o de fácil reconocimiento y cambios fonéticos de interés PAU; no implica una predicción estadística"
+    },
+    {
+      "id": "EVF-0094",
+      "latin": "dixit",
+      "castellano": "dijo",
+      "normas": [
+        "N13"
+      ],
+      "observacion": "dixit > dixo (cast. med.) > dijo: la x (/ks/) dio la antigua fricativa palatal /ʃ/, hoy /x/ (j). La terminación -it > -o responde también a la reorganización del perfecto fuerte; no es una simple abertura de vocal. Nota de verificación: La terminación -it se integra en la evolución del perfecto fuerte; no se explica solo como un cambio de x a j.",
+      "fila_origen": 95,
+      "fuente": "https://dle.rae.es/decir",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz habitual o de fácil reconocimiento y cambios fonéticos de interés PAU; no implica una predicción estadística"
+    },
+    {
+      "id": "EVF-0116",
+      "latin": "fervorem",
+      "castellano": "hervor",
+      "normas": [
+        "N05"
+      ],
+      "observacion": "fervorem > hervor: f- inicial > h-; se mantiene la secuencia -vor y la vocal tónica o. «Fervor» es el doblete culto.",
+      "fila_origen": 117,
+      "fuente": "https://dle.rae.es/hervor",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz habitual o de fácil reconocimiento y cambios fonéticos de interés PAU; no implica una predicción estadística"
+    },
+    {
+      "id": "EVF-0157",
+      "latin": "iŏvis",
+      "castellano": "jueves",
+      "normas": [
+        "N06",
+        "N07"
+      ],
+      "observacion": "iŏvis (dies) > jueves: resultado del nombre latino del día de Júpiter con i- consonántica > j- y vocalismo ue; explicar el sintagma «dies Iovis», no una palabra aislada equivalente a un día. Nota de verificación: La palabra del día de la semana procede de la expresión [dies] Iovis, no del genitivo aislado.",
+      "fila_origen": 158,
+      "fuente": "https://dle.rae.es/jueves",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz habitual o de fácil reconocimiento y cambios fonéticos de interés PAU; no implica una predicción estadística"
+    },
+    {
+      "id": "EVF-0163",
+      "latin": "iuventutem",
+      "castellano": "juventud",
+      "normas": [
+        "N06",
+        "N17"
+      ],
+      "observacion": "iuventutem > juventud: i- consonántica se representa j- y el sufijo -tūtem evoluciona hacia -tud con sonorización; hay también reajuste morfológico de la palabra. Nota de verificación: Iuventutem es el acusativo de iuventus, -utis.",
+      "fila_origen": 164,
+      "fuente": "https://dle.rae.es/juventud",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz habitual o de fácil reconocimiento y cambios fonéticos de interés PAU; no implica una predicción estadística"
+    },
+    {
+      "id": "EVF-0248",
+      "latin": "pretium",
+      "castellano": "precio",
+      "normas": [
+        "N13"
+      ],
+      "observacion": "pretium > precio: -ti- ante vocal origina consonante palatalizada/sibilante que termina en c (ante i) del castellano moderno.",
+      "fila_origen": 249,
+      "fuente": "https://dle.rae.es/precio",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz habitual o de fácil reconocimiento y cambios fonéticos de interés PAU; no implica una predicción estadística"
+    },
+    {
+      "id": "EVF-0254",
+      "latin": "radiare",
+      "castellano": "rayar",
+      "normas": [
+        "N13"
+      ],
+      "observacion": "radiare > rayar: -di- ante vocal forma un elemento palatal que desemboca en y; -are > -ar.",
+      "fila_origen": 255,
+      "fuente": "https://dle.rae.es/rayar",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz habitual o de fácil reconocimiento y cambios fonéticos de interés PAU; no implica una predicción estadística"
+    },
+    {
+      "id": "EVF-0311",
+      "latin": "superbiam",
+      "castellano": "soberbia",
+      "normas": [
+        "N01",
+        "N17"
+      ],
+      "observacion": "Superbiam > soberbia: ŭ > o y -p- intervocálica > -b-; el sufijo se conserva en -bia.",
+      "fila_origen": 312,
+      "fuente": "https://dle.rae.es/soberbia",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz habitual o de fácil reconocimiento y cambios fonéticos de interés PAU; no implica una predicción estadística"
+    },
+    {
+      "id": "EVF-0325",
+      "latin": "tristitiam",
+      "castellano": "tristeza",
+      "normas": [
+        "N13"
+      ],
+      "observacion": "El segmento -ti- ante vocal en tristitiam da la sibilante escrita z: tristeza.",
+      "fila_origen": 326,
+      "fuente": "https://dle.rae.es/tristeza",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz habitual o de fácil reconocimiento y cambios fonéticos de interés PAU; no implica una predicción estadística"
+    },
+    {
+      "id": "EVF-0375",
+      "latin": "duritiam",
+      "castellano": "dureza",
+      "normas": [
+        "N13"
+      ],
+      "observacion": "Duritiam > dureza: el sufijo -itia da -eza por palatalización de -ti- ante vocal y reajustes del vocalismo átono.",
+      "fila_origen": 376,
+      "fuente": "https://dle.rae.es/dureza",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz habitual o de fácil reconocimiento y cambios fonéticos de interés PAU; no implica una predicción estadística"
+    },
+    {
+      "id": "EVF-0508",
+      "latin": "temptare",
+      "castellano": "tentar",
+      "normas": [
+        "N15"
+      ],
+      "observacion": "Temptare > tentar: simplificación del grupo -mpt- > -nt-. Nota de verificación: Temptare es una grafía histórica del verbo latino también escrito tentare; la evolución castellana es tentar.",
+      "fila_origen": 509,
+      "fuente": "https://dle.rae.es/tentar",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz habitual o de fácil reconocimiento y cambios fonéticos de interés PAU; no implica una predicción estadística"
+    },
+    {
+      "id": "EVF-0719",
+      "latin": "catenatum",
+      "castellano": "candado",
+      "normas": [
+        "N11",
+        "N16",
+        "N17"
+      ],
+      "observacion": "Catenatum > cadenado > cadnado > candado: -t- intervocálica > d, síncopa de e pretónica y metátesis -dn- > -nd-.",
+      "fila_origen": 720,
+      "fuente": "https://dle.rae.es/candado",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz habitual o de fácil reconocimiento y cambios fonéticos de interés PAU; no implica una predicción estadística"
+    },
+    {
+      "id": "EVF-0723",
+      "latin": "integrare",
+      "castellano": "entregar",
+      "normas": [
+        "N01",
+        "N11"
+      ],
+      "observacion": "Integrare > *entegrar > entregar: ĭ átona > e y metátesis de r; no confundir con el latinismo integrar.",
+      "fila_origen": 724,
+      "fuente": "https://dle.rae.es/entregar",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz habitual o de fácil reconocimiento y cambios fonéticos de interés PAU; no implica una predicción estadística"
+    },
+    {
+      "id": "EVF-0735",
+      "latin": "viduam",
+      "castellano": "viuda",
+      "normas": [
+        "N11"
+      ],
+      "observacion": "Viduam > viuda: cambio de orden de los segmentos en -dua- > -uda-; no confundir con viudedad, derivado castellano.",
+      "fila_origen": 736,
+      "fuente": "https://dle.rae.es/viuda",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz habitual o de fácil reconocimiento y cambios fonéticos de interés PAU; no implica una predicción estadística"
+    },
+    {
+      "id": "EVF-0783",
+      "latin": "pauperem",
+      "castellano": "pobre",
+      "normas": [
+        "N12",
+        "N16",
+        "N17"
+      ],
+      "observacion": "Pauperem > pobre: au > o, -p- intervocálica > b y pérdida de la vocal interior pretónica.",
+      "fila_origen": 784,
+      "fuente": "https://dle.rae.es/pobre",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz habitual o de fácil reconocimiento y cambios fonéticos de interés PAU; no implica una predicción estadística"
+    },
+    {
+      "id": "EVF-0793",
+      "latin": "thesaurum",
+      "castellano": "tesoro",
+      "normas": [
+        "N10",
+        "N12"
+      ],
+      "observacion": "Thesaurum > tesoro: th griega transmitida por el latín > t y au > o; voz antigua de uso popular, frente a derivados cultos en tesaur-.",
+      "fila_origen": 794,
+      "fuente": "https://dle.rae.es/tesoro",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz habitual o de fácil reconocimiento y cambios fonéticos de interés PAU; no implica una predicción estadística"
+    },
+    {
+      "id": "EVF-0800",
+      "latin": "alienum",
+      "castellano": "ajeno",
+      "normas": [
+        "N13"
+      ],
+      "observacion": "Alienum > ajeno: palatalización del grupo -li- ante vocal, luego fricativa representada por j; no confundir con alieno, latinismo.",
+      "fila_origen": 801,
+      "fuente": "https://dle.rae.es/ajeno",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz habitual o de fácil reconocimiento y cambios fonéticos de interés PAU; no implica una predicción estadística"
+    },
+    {
+      "id": "EVF-0818",
+      "latin": "concilium",
+      "castellano": "concejo",
+      "normas": [
+        "N01",
+        "N13"
+      ],
+      "observacion": "Concilium > concejo: abertura de ĭ > e y -li- ante vocal > j; doblete culto: concilio.",
+      "fila_origen": 819,
+      "fuente": "https://dle.rae.es/concejo",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz habitual o de fácil reconocimiento y cambios fonéticos de interés PAU; no implica una predicción estadística"
+    },
+    {
+      "id": "EVF-0824",
+      "latin": "despoliare",
+      "castellano": "despojar",
+      "normas": [
+        "N13"
+      ],
+      "observacion": "Despoliare > despojar: palatalización de -li- ante vocal > j; es distinto del cultismo expoliar.",
+      "fila_origen": 825,
+      "fuente": "https://dle.rae.es/despojar",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz habitual o de fácil reconocimiento y cambios fonéticos de interés PAU; no implica una predicción estadística"
+    },
+    {
+      "id": "EVF-0834",
+      "latin": "gallinam",
+      "castellano": "gallina",
+      "normas": [
+        "N13"
+      ],
+      "observacion": "Gallinam > gallina: geminada latina -ll- > ll palatal; g inicial permanece.",
+      "fila_origen": 835,
+      "fuente": "https://dle.rae.es/gallina",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz habitual o de fácil reconocimiento y cambios fonéticos de interés PAU; no implica una predicción estadística"
+    },
+    {
+      "id": "EVF-0858",
+      "latin": "relaxare",
+      "castellano": "relajar",
+      "normas": [
+        "N13"
+      ],
+      "observacion": "Relaxare > relajar: x (/ks/) > antigua fricativa palatal, moderna j; contrasta con el latinismo laxo.",
+      "fila_origen": 859,
+      "fuente": "https://dle.rae.es/relajar",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz habitual o de fácil reconocimiento y cambios fonéticos de interés PAU; no implica una predicción estadística"
+    },
+    {
+      "id": "EVF-0864",
+      "latin": "strictum",
+      "castellano": "estrecho",
+      "normas": [
+        "N01",
+        "N13",
+        "N14"
+      ],
+      "observacion": "Strĭctum > estrecho: e- protética ante str-, apertura de ĭ tónica y palatalización de -ct- > ch. Doblete culto: estricto.",
+      "fila_origen": 865,
+      "fuente": "https://dle.rae.es/estrecho",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz habitual o de fácil reconocimiento y cambios fonéticos de interés PAU; no implica una predicción estadística"
+    },
+    {
+      "id": "EVF-0868",
+      "latin": "tructam",
+      "castellano": "trucha",
+      "normas": [
+        "N13"
+      ],
+      "observacion": "Tructam > trucha: el grupo latino -ct- evoluciona a la africada ch.",
+      "fila_origen": 869,
+      "fuente": "https://dle.rae.es/trucha",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz habitual o de fácil reconocimiento y cambios fonéticos de interés PAU; no implica una predicción estadística"
+    },
+    {
+      "id": "EVF-0911",
+      "latin": "desponsare",
+      "castellano": "desposar",
+      "normas": [
+        "N15"
+      ],
+      "observacion": "Desponsare > desposar: simplificación del grupo -ns- > s, con pérdida de la nasal.",
+      "fila_origen": 912,
+      "fuente": "https://dle.rae.es/desposar",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz habitual o de fácil reconocimiento y cambios fonéticos de interés PAU; no implica una predicción estadística"
+    },
+    {
+      "id": "EVF-0945",
+      "latin": "aperire",
+      "castellano": "abrir",
+      "normas": [
+        "N03",
+        "N16",
+        "N17"
+      ],
+      "observacion": "Aperire > abrir: -p- intervocálica > b, pérdida de e interior y de la vocal final tras -r.",
+      "fila_origen": 946,
+      "fuente": "https://dle.rae.es/abrir",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz habitual o de fácil reconocimiento y cambios fonéticos de interés PAU; no implica una predicción estadística"
+    },
+    {
+      "id": "EVF-0950",
+      "latin": "carricare",
+      "castellano": "cargar",
+      "normas": [
+        "N15",
+        "N16",
+        "N17"
+      ],
+      "observacion": "Carricare > cargar: síncopa de i, simplificación de -rr- intervocálica y sonorización de -c- > g.",
+      "fila_origen": 951,
+      "fuente": "https://dle.rae.es/cargar",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz habitual o de fácil reconocimiento y cambios fonéticos de interés PAU; no implica una predicción estadística"
+    },
+    {
+      "id": "EVF-0998",
+      "latin": "sæcularem",
+      "castellano": "seglar",
+      "normas": [
+        "N12",
+        "N16",
+        "N17"
+      ],
+      "observacion": "Sæcularem > seglar: ae > e, -c- intervocálica > g y síncopa de u. Doblete culto: secular.",
+      "fila_origen": 999,
+      "fuente": "https://dle.rae.es/seglar",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz habitual o de fácil reconocimiento y cambios fonéticos de interés PAU; no implica una predicción estadística"
+    },
+    {
+      "id": "EVF-1002",
+      "latin": "sucidum",
+      "castellano": "sucio",
+      "normas": [
+        "N13"
+      ],
+      "observacion": "Sucidum > sucio: palatalización histórica de c ante i, después fricativa sorda, y caída de d intervocálica. Nota de verificación: El DLE documenta el étimo latino su[c]cidus, con variante de la consonante interior; su sentido cambió de húmedo a sucio.",
+      "fila_origen": 1003,
+      "fuente": "https://dle.rae.es/sucio",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz habitual o de fácil reconocimiento y cambios fonéticos de interés PAU; no implica una predicción estadística"
+    },
+    {
+      "id": "EVF-1052",
+      "latin": "sorticulam",
+      "castellano": "sortija",
+      "normas": [
+        "N20"
+      ],
+      "observacion": "Sorticŭlam > sortija: desarrollo de -cŭl- > j. La conservación de i se explica por el contexto palatal y la historia de la forma; no se marca mecánicamente apertura ĭ > e. Nota de verificación: La forma *sorticula es una reconstrucción, no forma del latín clásico atestiguada directamente.",
+      "fila_origen": 1053,
+      "fuente": "https://dle.rae.es/sortija",
+      "estado": "APTO_PROPUESTO",
+      "criterio_pau": "Voz habitual o de fácil reconocimiento y cambios fonéticos de interés PAU; no implica una predicción estadística"
     }
   ],
   "ampliacion": {
     "anteriores": 330,
     "nuevas": 100,
     "total": 430,
-    "lote": "ampliacion-01"
+    "lote": "ampliacion-01",
+    "lote_2": {
+      "nuevas": 30,
+      "total": 460,
+      "filas": [
+        33,
+        56,
+        95,
+        117,
+        158,
+        164,
+        249,
+        255,
+        312,
+        326,
+        376,
+        509,
+        720,
+        724,
+        736,
+        784,
+        794,
+        801,
+        819,
+        825,
+        835,
+        859,
+        865,
+        869,
+        912,
+        946,
+        951,
+        999,
+        1003,
+        1053
+      ],
+      "criterio": "Selección docente para preparación PAU, no pronóstico estadístico de futuras convocatorias."
+    }
   }
 }
