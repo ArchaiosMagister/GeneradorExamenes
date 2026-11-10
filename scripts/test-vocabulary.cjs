@@ -104,7 +104,7 @@ assert.equal(corrected.changed,13,'Deben aplicarse todas las decisiones elegidas
 assert.equal(corrected.units.length,13);
 for(let i=0;i<13;i++){
  assert.equal(testProject.units[i].text,approved[i][1]+' σωτερίας');
- assert.deepEqual(testProject.units[i].rows,[],'No se pueden conservar lemas anteriores en la unidad modificada');
+ assert.equal(testProject.units[i].rows.length,0,'No se pueden conservar lemas anteriores en la unidad modificada');
  assert.equal(testProject.units[i].analyzed,false);
 }
 assert.equal(testProject.units[13].text,originalTexts[13],'No se modifica la unidad no afectada');
