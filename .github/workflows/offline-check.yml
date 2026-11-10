@@ -6,6 +6,7 @@ on:
       - 'index.html'
       - 'offline.html'
       - 'offline-lemmas.js'
+      - 'verification-review.js'
       - 'data/lemmas/**'
       - 'data/unimorph/**'
       - 'scripts/**'
