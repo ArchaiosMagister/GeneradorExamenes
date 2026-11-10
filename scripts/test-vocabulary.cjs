@@ -119,7 +119,7 @@ for(const word of ['εἰς','ἐν','ἀπὸ']){
  assert.match(api.formatVocabularyEntry(res,'complete','gr1'),/\(prep\.\s*\+/);
 }
 const exportedGreek=api.documentXml({count:1,course:'gr1',units:[{title:'UD1',mode:'complete',rows:formatting}]});
-assert.match(exportedGreek,/Νεῖλος, –ου: 'Nilo'/);
+assert.match(exportedGreek,/Νεῖλος, –ου: &apos;Nilo&apos;/);
 assert.match(exportedGreek,/μέν… δέ \(part\.\): &quot;por un lado… por otro&quot;/);
 assert.ok(!exportedGreek.includes(' — '),'El exportador debe utilizar dos puntos, no rayas');
 console.log('Formato griego Word: enunciados completos, etiquetas y comillas correctos.');
@@ -150,6 +150,7 @@ for(const row of review){
 
 assert.ok(success.some(r=>r.meaning==='ateniense'), 'Debe identificar ateniense usando el banco propio');
 assert.ok(success.length>100,'El corpus prioritario sigue sin cobertura nominal básica');
+if(unknown.length)console.log('Formas griegas sin resultado tras formateo:',JSON.stringify(unknown.map(r=>r.form)));
 assert.equal(unknown.length,0,'Todas las formas del corpus deben estar lematizadas o señaladas para revisión, sin desconocidas opacas');
 console.log('Corpus docente Griego I / pendientes anteriores:',JSON.stringify({
  total:originals.length,formasDistintasNormalizadas:benchmark.length,
