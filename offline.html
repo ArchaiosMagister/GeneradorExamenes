@@ -175,7 +175,8 @@ html[data-course="greek1"] .paper .exam-sheet *{font-style:normal!important}
 .paper .exam-item{margin:0 0 0 36pt;padding-left:18pt;text-indent:-18pt;line-height:1.45;break-inside:avoid}
 .paper .exam-letter{display:inline-block;min-width:15pt;text-indent:0}
 .paper .exam-form{min-height:22pt}
-.paper .exam-sentence{min-height:53pt;padding-bottom:25pt}
+.paper .exam-sentence{min-height:0;padding-bottom:0}
+.paper p.exam-sentence + p.exam-sentence{margin-top:var(--exam-sentence-gap,42pt)}
 .paper .exam-etymology{display:flex;flex-wrap:wrap;gap:12pt 34pt;margin:0 0 8pt 36pt;min-height:20pt}
 .paper .exam-etymology span{min-width:143pt}
 .paper .exam-gloss-title{margin:4pt 0 3pt;font-size:10.5pt;break-after:avoid}
@@ -223,6 +224,8 @@ html[data-course="greek1"] .paper .exam-sheet *{font-style:normal!important}
 .paper .latin-standard-exam .answer{height:17pt;border-bottom:.5pt dotted #777}
 .paper .latin-standard-exam .task{font-size:10.5pt;line-height:1.45;margin:6pt 0 10pt 36pt;padding-left:18pt}
 .paper .latin-standard-exam .task>li{margin:0 0 7pt;padding:0 0 3pt;break-inside:avoid}
+.paper .latin-standard-exam .task.exam-sentences>li{margin:0;padding:0}
+.paper .latin-standard-exam .task.exam-sentences>li+li{margin-top:var(--exam-sentence-gap,42pt)}
 .paper .latin-standard-exam .task .task{margin:4pt 0 5pt 14pt}
 .paper .latin-standard-exam .task .answer{height:17pt}
 .paper .latin-standard-exam .final-gloss{font-size:10.5pt;line-height:1.45}
@@ -371,6 +374,8 @@ function verb(x){
  else {if(!first.endsWith('io'))return null;stem=first.slice(0,-2);forms=[stem+'io',stem+'is',stem+'it',stem+'imus',stem+'itis',stem+'iunt']}
  return {entry:x.entry,forms,labels:['1.ª persona singular','2.ª persona singular','3.ª persona singular','1.ª persona plural','2.ª persona plural','3.ª persona plural']};
 }
+function sentenceGapPoints(){const value=Number($('sentence-gap-pt')?.value);return Number.isFinite(value)&&value>0?Math.max(12,Math.min(100,Math.round(value))):42}
+function applySentenceGap(){const paper=$('paper');if(paper?.style)paper.style.setProperty('--exam-sentence-gap',sentenceGapPoints()+'pt')}
 function countFor(id){const input=$('count-'+id);const fallback=id==='forms'?6:5;return Math.max(1,Math.min(id==='sent'?15:30,Number(input?.value)||fallback))}
 let sentences=[{text:'Puella rosam amat.',sol:'La niña ama la rosa.',units:['UD1']},{text:'Servi in villa laborant.',sol:'Los esclavos trabajan en la finca.',units:['UD1','UD2']},{text:'Nauta terram videt.',sol:'El marinero ve la tierra.',units:['UD1','UD2']},{text:'Romani oppidum oppugnant.',sol:'Los romanos asedian la ciudad.',units:['UD2']},{text:'Magister discipulos laudat.',sol:'El maestro elogia a los alumnos.',units:['UD2']}];
 // Vocabulario exigible, separado del banco general y de la unidad de aparición del lema.
@@ -529,9 +534,30 @@ const PROPER_NOUN_LEMMAS=new Set(['hannibal','hasdrubal','caesar','cicero','pomp
 function properNounKey(value){
  return String(value||'').split(',')[0].trim().normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase();
 }
+const GREEK_PROPER_NOUN_LEMMAS=new Set([
+ 'σωκράτης','πλάτων','ἀριστοτέλης','ἀλέξανδρος','ὀδυσσεύς',
+ 'ἀχιλλεύς','ἕκτωρ','ἥρα','ζεύς','ἀπόλλων','ἀθηνᾶ','ἀθῆναι',
+ 'τροία','ῥώμη','σπάρτη'
+].map(properNounKey));
 function isProperNounLemma(value){
  const lemma=String(value||'').split(',')[0].trim();
- return PROPER_NOUN_LEMMAS.has(properNounKey(lemma))||/^[A-ZÁÉÍÓÚÀÈÌÒÙĀĒĪŌŪ]/.test(lemma);
+ // Incluye mayúsculas griegas (Ἀθήνα, Σωκράτης), no solo latinas.
+ return PROPER_NOUN_LEMMAS.has(properNounKey(lemma))||GREEK_PROPER_NOUN_LEMMAS.has(properNounKey(lemma))||/^\p{Lu}/u.test(lemma);
+}
+// La exclusión afecta a preguntas de ANÁLISIS, no al texto de las oraciones
+// ni a vocabularios donde un nombre propio puede tener sentido filológico.
+const EXAM_GENTILIC_LEMMAS=new Set([
+ 'romanus','graecus','hellenus','atheniensis','athenaeus','troianus',
+ 'hispanus','italicus','gallicus','punicus','carthaginiensis',
+ 'africanus','celticus','persicus','spartanus','lacedaemonius',
+ 'ῥωμαιος','αθηναιος','ἑλλην','ἑλληνικος','τροικος','περσης','λακεδαιμονιος'
+].map(properNounKey));
+function isExcludedExamMorphLemma(entry,meaning=''){
+ const first=String(entry||'').split(',')[0].trim();
+ const key=properNounKey(first);
+ const gloss=String(meaning||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('es');
+ return isProperNounLemma(first)||EXAM_GENTILIC_LEMMAS.has(key)||
+  /^(?:romano|romana|romanos|romanas|griego|griega|griegos|griegas|ateniense|atenienses|troyano|troyana|galo|gala|galos|galas|hispano|hispana|cartagines|cartaginesa|espartano|espartana|siciliano|siciliana)\b/u.test(gloss);
 }
 function allowedProperNounForm(lemma,features){
  return !isProperNounLemma(lemma)||!String(features).split(';').includes('PL');
@@ -759,6 +785,7 @@ function latinExamConjugationTable(items,solutions=false){
 function latinExamFormCandidates(chosen){
  const data=latinSharedBank.vocabulary(currentCourse(),chosen),groups=[[],[],[],[]];
  for(const x of data){
+  if(isExcludedExamMorphLemma(x.entry,x.meaning))continue;
   const n=mNoun(x.entry),a=adjective(x),v=verb(x);
   if(n){const i=Math.floor(Math.random()*6),pl=Math.floor(Math.random()*2);groups[0].push({entry:x.entry,form:n.forms[pl][i],answer:M_CASES[i]+', '+(pl?'plural':'singular')+'; '+x.entry});}
   else if(a){const i=Math.floor(Math.random()*a.forms.length);groups[1].push({entry:x.entry,form:a.forms[i],answer:a.labels[i]+'; '+x.entry});}
@@ -766,6 +793,7 @@ function latinExamFormCandidates(chosen){
  }
  const indexedVerbs=new Set(groups[2].map(x=>examKey(x.entry)));
  for(const {x,p} of latinSharedBank.paradigms(currentCourse(),chosen,'verb')){
+  if(isExcludedExamMorphLemma(x.entry,x.meaning))continue;
   if(indexedVerbs.has(examKey(x.entry))||!Array.isArray(p.forms)||p.forms.length!==6)continue;
   const i=Math.floor(Math.random()*6);
   groups[2].push({entry:x.entry,form:p.forms[i],answer:p.labels[i]+', presente de indicativo activo; '+x.entry});
@@ -852,7 +880,7 @@ function generate(){
   stickyExamRows('sent',()=>sample(latinSharedBank.sentences(course,chosen).filter(x=>x.text&&x.sol),count)):[];
  selectedSentences.push(...sentences);
  if(examQuestionEnabled('sent'))add(t('Analiza y traduce las siguientes oraciones.','Analitza i tradueix les oracions següents.'),
-  (sentences.length?'<ol class="task" type="a">'+sentences.map(x=>'<li><i>'+esc(x.text)+'</i><div class="answer"></div><div class="answer"></div></li>').join('')+'</ol>':
+  (sentences.length?'<ol class="task exam-sentences" type="a">'+sentences.map(x=>'<li><i>'+esc(x.text)+'</i></li>').join('')+'</ol>':
    missing('No hay oraciones verificadas en estas unidades.'))+
    (sentences.length<count?missing('Banco de oraciones: '+sentences.length+' de '+count+' solicitadas. No se han inventado oraciones.'):''),
   '<ol>'+sentences.map(x=>'<li>'+esc(x.text)+' — '+esc(va&&x.sol_va?x.sol_va:x.sol)+'</li>').join('')+'</ol>');
@@ -981,7 +1009,8 @@ function wordBlock(el){
    const letter=alphabetic?String.fromCharCode((type==='a'?97:65)+(i%26))+'. ':'';
    const pr=alphabetic?'<w:ind w:left="720" w:hanging="360"/>':
     '<w:numPr><w:ilvl w:val="0"/><w:numId w:val="'+(tag==='ol'?'1':'2')+'"/></w:numPr>';
-   const para='<w:p><w:pPr>'+pr+'</w:pPr>'+(alphabetic?wordRun(letter):'')+inline+'</w:p>';
+   const sentenceSpacing=el.classList.contains('exam-sentences')?'<w:spacing w:before="'+(i>0?sentenceGapPoints()*20:0)+'" w:after="0"/>':'';
+   const para='<w:p><w:pPr>'+pr+sentenceSpacing+'</w:pPr>'+(alphabetic?wordRun(letter):'')+inline+'</w:p>';
    const extras=children.filter(n=>n.nodeType===1&&(
     ['OL','UL'].includes(n.tagName)||n.classList?.contains('answer'))).map(n=>wordBlock(n)).join('');
    return para+extras;
@@ -1014,7 +1043,7 @@ function wordExamParagraph(el){
   if(cls.contains('exam-page-break'))props.push('<w:pageBreakBefore/>');
   if(m)runs=wordRun(m[1],true)+'<w:r><w:tab/></w:r>'+wordRun(m[2],true);
  }else if(cls.contains('exam-item')){
-  props.push('<w:ind w:left="1080" w:hanging="360"/><w:tabs><w:tab w:val="left" w:pos="1080"/></w:tabs><w:spacing w:before="0" w:after="'+(cls.contains('exam-sentence')?'750':'180')+'" w:line="'+(cls.contains('exam-sentence')?'310':'260')+'" w:lineRule="atLeast"/>');
+  props.push('<w:ind w:left="1080" w:hanging="360"/><w:tabs><w:tab w:val="left" w:pos="1080"/></w:tabs><w:spacing w:before="'+(cls.contains('exam-sentence')&&el.previousElementSibling?.classList?.contains('exam-sentence')?sentenceGapPoints()*20:0)+'" w:after="'+(cls.contains('exam-sentence')?'0':'180')+'" w:line="'+(cls.contains('exam-sentence')?'310':'260')+'" w:lineRule="atLeast"/>');
   const letter=el.querySelector(':scope > .exam-letter');
   if(letter)runs=wordRun(letter.textContent.trim())+'<w:r><w:tab/></w:r>'+
    [...el.childNodes].filter(n=>n!==letter).map(n=>wordInline(n)).join('');
@@ -1561,7 +1590,8 @@ function generateGreekMorphologyFixed(){
  if(examMorphQuotasActive())cfg.words=examMorphQuotaCount();
  const t=(es,vl)=>va?vl:es;
  const eligible=greekVerifiedCorpus.filter(x=>x.verified&&greekMorphologyEligible(x,limit)&&
-  !(x.kind==='declension'&&x.lemmas.some(isProperNounLemma)));
+  !(x.kind==='declension'&&(x.lemmas||[]).some(isProperNounLemma))&&
+  !(x.kind==='forms'&&(x.lemmas||[]).some(lemma=>isExcludedExamMorphLemma(lemma))));
  const nouns=stickyExamRows('decl',()=>sample(eligible.filter(x=>x.kind==='declension'&&x.table),cfg.decline));
  const verbs=stickyExamRows('verb',()=>sample(eligible.filter(x=>x.kind==='conjugation'&&x.table)
   .flatMap(x=>x.table.rows.flatMap((row,i)=>[row[1],row[2]].map((form,j)=>({
@@ -1615,7 +1645,8 @@ function generateGreekMorphologyFixed(){
 
 let greekExamState=null;
 function greekChoicePool(kind){
- return greekVerifiedCorpus.filter(x=>x.verified&&x.kind===kind&&greekMorphologyEligible(x,greekLimit()));
+ return greekVerifiedCorpus.filter(x=>x.verified&&x.kind===kind&&greekMorphologyEligible(x,greekLimit())&&
+  (kind!=='forms'||!(x.lemmas||[]).some(lemma=>isExcludedExamMorphLemma(lemma))));
 }
 function greekSelectedItems(pool,chosen,counts){
  const signature=JSON.stringify([chosen.map(examUnitNumber),$('model').value,counts]);
@@ -1697,7 +1728,8 @@ function greekExamControls(){
 function generateGreekExam(){
  if($('model').value==='morphology')return generateGreekMorphologyFixed();
  const chosen=greekMarkedUnits(),max=greekLimit(),mode=greekModes[$('model').value]||greekModes.complete;
- const enabled=greekKinds.filter((k,i)=>(mode.points[i]>0||(k==='pronouns'&&$('model').value==='complete'))&&examQuestionEnabled(k==='conjugation'?'verb':k==='declension'?'decl':k==='sentences'?'sent':k==='etymology'?'etymology':k)),pool=greekVerifiedCorpus.filter(x=>x.verified&&greekMorphologyEligible(x,max)&&enabled.includes(x.kind));
+ const enabled=greekKinds.filter((k,i)=>(mode.points[i]>0||(k==='pronouns'&&$('model').value==='complete'))&&examQuestionEnabled(k==='conjugation'?'verb':k==='declension'?'decl':k==='sentences'?'sent':k==='etymology'?'etymology':k)),pool=greekVerifiedCorpus.filter(x=>x.verified&&greekMorphologyEligible(x,max)&&enabled.includes(x.kind)&&
+  (x.kind!=='forms'||!(x.lemmas||[]).some(lemma=>isExcludedExamMorphLemma(lemma))));
  const counts={declension:Math.min(2,countFor('decl')),conjugation:Math.min(2,countFor('verb')),forms:examMorphQuotasActive()?examMorphQuotaCount():countFor('greek-forms'),pronouns:6,etymology:Math.min($('model').value==='translation'?3:2,countFor('lex')),sentences:countFor('sent')};
  const result=greekSelectedItems(pool,chosen,counts),sections=[],answers=[];
  if(examMorphQuotasActive()){
@@ -1751,6 +1783,12 @@ const latinFormsControl=document.createElement('label');
 latinFormsControl.id='latinFormsCountControl';
 latinFormsControl.innerHTML='Formas sueltas <input type="number" id="count-forms" min="1" max="30" value="6">';
 $('count-decl').closest('.count-grid').append(latinFormsControl);
+const sentenceSpaceControl=document.createElement('label');
+sentenceSpaceControl.id='sentenceSpacingControl';
+sentenceSpaceControl.innerHTML='Separación entre oraciones (pt) <input id="sentence-gap-pt" type="number" min="12" max="100" step="2" value="42">';
+$('count-sent').closest('.count-grid').append(sentenceSpaceControl);
+$('sentence-gap-pt').onchange=()=>{applySentenceGap();generate()};
+applySentenceGap();
  $('count-forms').onchange=generate;
 const latinModes={
  tablas:{es:'1 · Examen completo',va:'1 · Examen complet'},
@@ -2110,11 +2148,13 @@ function latinLexPool(course,kind,chosen){
   (course!=='latin4'||kind!=='phonetics'||latin4PhoneticEligible(x,chosen))&&
   examLexFilter(x,course,kind,chosen)&&(kind!=='preverbs'||!x.ambiguousPrompt));
 }
-function latinLexTermKey(x){return normLex(x.prompt)}
+function latinLexExpectedCount(kind){return kind==='preverbs'?2:4}
+function latinLexLower(value){return String(value||'').toLocaleLowerCase('es')}
+function latinLexTermKey(x){return normLex(latinLexLower(x.prompt))}
 function latinLexRandomFour(kind,pool,course=currentCourse()){
  const unique=[],seen=new Set();
  for(const x of sample(pool,pool.length)){const key=latinLexTermKey(x);if(!key||seen.has(key))continue;seen.add(key);unique.push(x)}
- if(kind==='preverbs')return unique.length>=4?unique.slice(0,4):[];
+ if(kind==='preverbs')return unique.length>=2?unique.slice(0,2):[];
  if(unique.length<4)return [];
  if(kind!=='phonetics')return unique.slice(0,4);
  const wanted=course==='latin4'?[]:[...selectedPhoneticRules],counts=Object.fromEntries(wanted.map(n=>[n,unique.filter(x=>x.normas?.includes(n)).length]));
@@ -2134,35 +2174,35 @@ function latinLexManualVerb(i,available){
  if(!value)return null;
  const hits=available.filter(x=>normLex(x.prompt)===normLex(value));
  const hit=hits.length===1?hits[0]:null;
- return hit?{...hit,prompt:value}:{prompt:value,answer:'',reviewRequired:true};
+ return hit?{...hit,prompt:latinLexLower(value)}:{prompt:latinLexLower(value),answer:'',reviewRequired:true};
 }
 function latinLexChosenRows(course,kind,chosen){
  const rows=stickyExamRows('lex-'+kind,()=>{
   const selected=latinLexRandomFour(kind,latinLexPool(course,kind,chosen),course);
   if(kind==='preverbs'&&course==='latin1'){
    const result=selected.slice();
-   for(let i=0;i<4;i++){const manual=latinLexManualVerb(i,latinLexPool('latin1','preverbs',chosen));if(manual)result[i]=manual}
+   for(let i=0;i<2;i++){const manual=latinLexManualVerb(i,latinLexPool('latin1','preverbs',chosen));if(manual)result[i]=manual}
    return result;
   }
   return selected;
  });
- return rows.length===4&&rows.every(Boolean)?rows:[];
+ return rows.length===latinLexExpectedCount(kind)&&rows.every(Boolean)?rows:[];
 }
 function latinLexStatus(kind,rows,message=''){
  const status=$('lex-status-'+kind);
- if(status)status.textContent=message||(!rows.length?'No hay cuatro formas compatibles.':rows.map((x,i)=>(i+1)+'. '+x.prompt).join(' · '));
- for(let i=0;i<4;i++){const node=$('lex-slot-'+kind+'-'+i);if(node)node.textContent=rows[i]?.prompt||'Sin forma'}
+ if(status)status.textContent=message||(!rows.length?'No hay formas compatibles.':rows.map((x,i)=>(i+1)+'. '+latinLexLower(x.prompt)).join(' · '));
+ for(let i=0;i<latinLexExpectedCount(kind);i++){const node=$('lex-slot-'+kind+'-'+i);if(node)node.textContent=rows[i]?latinLexLower(rows[i].prompt):'Sin forma'}
 }
 function regenerateLatinLexPart(kind){
- if(kind==='preverbs')for(let i=0;i<4;i++){const input=$('lex-verb-'+i);if(input)input.value=''}
+ if(kind==='preverbs')for(let i=0;i<2;i++){const input=$('lex-verb-'+i);if(input)input.value=''}
  examSelectionCache.delete(examCacheSignature('lex-'+kind));
  generate();
 }
 function regenerateLatinLexWord(kind,index){
- if(index<0||index>=4)return;
+ if(index<0||index>=latinLexExpectedCount(kind))return;
  const course=currentCourse(),chosen=selectedUnits(),oldKey=examCacheSignature('lex-'+kind);
  const previous=examSelectionCache.get(oldKey);
- if(!Array.isArray(previous)||previous.length!==4){regenerateLatinLexPart(kind);return}
+ if(!Array.isArray(previous)||previous.length!==latinLexExpectedCount(kind)){regenerateLatinLexPart(kind);return}
  if(kind==='preverbs'){const input=$('lex-verb-'+index);if(input)input.value=''}
  const used=new Set(previous.filter((_,i)=>i!==index).map(latinLexTermKey));
  const candidates=latinLexPool(course,kind,chosen).filter(x=>
@@ -2174,21 +2214,21 @@ function regenerateLatinLexWord(kind,index){
  generate();
 }
 function buildLatinLexQuestion(course,chosen){
- const html=[],parts=examSelectedLexParts(course),italic=x=>'<i>'+esc(x.prompt)+'</i>';
+ const html=[],parts=examSelectedLexParts(course),italic=x=>'<i>'+esc(latinLexLower(x.prompt))+'</i>';
  for(const kind of parts){
   const available=latinLexPool(course,kind,chosen),rows=latinLexChosenRows(course,kind,chosen);
   const letter=String.fromCharCode(97+(latinLexModules[course]||[]).indexOf(kind));
-  if(rows.length!==4){
+  if(rows.length!==latinLexExpectedCount(kind)){
    const msg=kind==='phonetics'&&course==='latin1'&&!selectedPhoneticRules.size?
     'Selecciona las normas fonéticas explicadas para generar cuatro formas.':
-    'Solo hay '+new Set(available.map(latinLexTermKey)).size+' formas compatibles para '+latinLexTitles[kind]+'. Se necesitan cuatro.';
+    'Solo hay '+new Set(available.map(latinLexTermKey)).size+' formas compatibles para '+latinLexTitles[kind]+'. Se necesitan '+latinLexExpectedCount(kind)+'.';
    latinLexStatus(kind,[],msg);
    html.push('<p class="small no-print">'+esc(msg)+'</p>');continue;
   }
   const partsHtml=rows.map(italic),four=partsHtml.join(', ');
   let question;
   if(kind==='preverbs'&&course==='latin1')
-   question='Modificación preverbial a partir de '+partsHtml.map((p,i)=>p+' ('+(i===0?'2':'1')+')').join(', ')+'. Cinco derivados en total en lengua propia.';
+   question='Modificación preverbial a partir de '+partsHtml[0]+' (3) y de '+partsHtml[1]+' (2). Cinco derivados en total en lengua propia.';
   else if(kind==='phonetics')question='Evolución fonética de '+four+'.';
   else if(kind==='prefixes')question='Señala el prefijo y el significado que aporta a estas palabras: '+four+'.';
   else if(kind==='latinisms')question='Latinismos. Explica el significado de los siguientes latinismos y haz una oración con ellos en la que se vea su sentido: '+four+'.';
@@ -2312,7 +2352,7 @@ loadTeacherLatinLexBanks();
  function lexConfig(box){
   const course=currentCourse(),data=latinLexBanks[course]||{};
   const state=document.createElement('p');state.className='hint';
-  state.textContent=Object.values(data).reduce((n,x)=>n+x.length,0)+' fichas disponibles. Cada subpregunta genera cuatro formas con regeneración individual.';
+  state.textContent=Object.values(data).reduce((n,x)=>n+x.length,0)+' fichas disponibles. Modificación preverbial: dos verbos (3 + 2 derivados); los demás apartados: cuatro formas, con regeneración individual.';
   if(course==='latin4'){
    const intro=document.createElement('p');intro.className='hint';
    intro.textContent='Latín 4.º: los ejercicios de clase son ejemplos, no un banco cerrado. El generador sortea del banco general según los prefijos y las normas estudiadas hasta la última unidad seleccionada.';
@@ -2324,9 +2364,9 @@ loadTeacherLatinLexBanks();
    const check=document.createElement('input');check.type='checkbox';check.checked=latinLexPartEnabled[course+'/'+kind]!==false;
    check.onchange=()=>{latinLexPartEnabled[course+'/'+kind]=check.checked;generate()};
    group.append(makeLabel(latinLexTitles[kind]+' ('+(data[kind]?.length||0)+')',check));
-   const all=document.createElement('button');all.type='button';all.className='secondary';all.textContent='Regenerar las cuatro formas';
+   const all=document.createElement('button');all.type='button';all.className='secondary';all.textContent=kind==='preverbs'?'Regenerar los dos verbos':'Regenerar las cuatro formas';
    all.onclick=()=>regenerateLatinLexPart(kind);group.append(all);
-   for(let i=0;i<4;i++){
+   for(let i=0;i<latinLexExpectedCount(kind);i++){
     const row=document.createElement('div');row.className='lex-word-control';
     const span=document.createElement('span');span.id='lex-slot-'+kind+'-'+i;span.textContent='Forma '+(i+1);
     const button=document.createElement('button');button.type='button';button.className='secondary';
@@ -2337,13 +2377,13 @@ loadTeacherLatinLexBanks();
    }
    if(kind==='preverbs'&&course==='latin1'){
     const note=document.createElement('p');note.className='hint';
-    note.textContent='Cinco derivados: 2 + 1 + 1 + 1. Se usan solo verbos explicados hasta la última UD seleccionada. Puedes fijar un verbo manualmente; se avisará si no está documentado.';
+    note.textContent='Dos verbos, en este orden: el primero requiere 3 derivados y el segundo 2. Solo se sortean verbos ya explicados. También puedes escribirlos manualmente.';
     group.append(note);
-    for(let i=0;i<4;i++){
+    for(let i=0;i<2;i++){
      const input=document.createElement('input');input.id='lex-verb-'+i;input.type='text';
      input.placeholder='Aleatorio (o escribe un verbo)';input.autocomplete='off';
      input.onchange=()=>{examSelectionCache.clear();generate()};
-     group.append(makeLabel('Verbo '+(i+1)+' manual',input));
+     group.append(makeLabel('Verbo '+(i+1)+' ('+(i===0?3:2)+' derivados) · manual',input));
     }
    }
    const status=document.createElement('p');status.id='lex-status-'+kind;status.className='hint';
