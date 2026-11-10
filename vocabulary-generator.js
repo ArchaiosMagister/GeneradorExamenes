@@ -553,18 +553,35 @@ const greekSpellingNotes={
  'Περίκλους':'Περικλέους (revisar el genitivo)',
  'ἐφεύξεν':'φεύγω: revisar el tiempo; aoristo usual ἔφυγεν'
 };
+const vocabularyIndexCache=new WeakMap(),greekReferenceCache=new WeakMap();
 function analyze(data,text,course,bank){
- const lang=course==='gr1'?'grc':'lat',index=new Map(),greek=lang==='grc'?greekReferenceForms(bank):null;
- for(const [lemma,surface,tags,source] of data.rows[lang]){
-  if(!data.vocabulary[lang][lemma]?.[course])continue;
-  const k=key(surface);if(!index.has(k))index.set(k,new Map());
-  const candidates=index.get(k),old=candidates.get(lemma);
-  const lexicalInvariable=source===3&&key(surface)===key(lemma)&&invariableEntry(data.vocabulary[lang][lemma][course].entry);
-  const attested=[0,1,5,6,7].includes(source)||lexicalInvariable;
-  const exactForms=old?.exactForms||new Set();
-  if(lang==='grc')exactForms.add(surface.normalize('NFC'));
-  candidates.set(lemma,{lemma,attested:attested||!!old?.attested,exactForms});
+ const lang=course==='gr1'?'grc':'lat';
+ let byCourse=vocabularyIndexCache.get(data);
+ if(!byCourse){byCourse=new Map();vocabularyIndexCache.set(data,byCourse)}
+ let index=byCourse.get(course);
+ if(!index){
+  index=new Map();
+  for(const [lemma,surface,tags,source] of data.rows[lang]){
+   if(!data.vocabulary[lang][lemma]?.[course])continue;
+   const k=key(surface);if(!index.has(k))index.set(k,new Map());
+   const candidates=index.get(k),old=candidates.get(lemma);
+   const lexicalInvariable=source===3&&key(surface)===key(lemma)&&
+    invariableEntry(data.vocabulary[lang][lemma][course].entry);
+   const attested=[0,1,5,6,7].includes(source)||lexicalInvariable;
+   const exactForms=old?.exactForms||new Set();
+   if(lang==='grc')exactForms.add(surface.normalize('NFC'));
+   candidates.set(lemma,{lemma,attested:attested||!!old?.attested,exactForms});
+  }
+  byCourse.set(course,index);
  }
+ let greek=null;
+ if(lang==='grc'){
+  if(!greekReferenceCache.has(bank))greekReferenceCache.set(bank,greekReferenceForms(bank));
+  greek=greekReferenceCache.get(bank);
+ }
+ const bankIndex=new Map();
+ const attach=(id,row)=>{if(!bankIndex.has(id))bankIndex.set(id,[]);bankIndex.get(id).push(row)};
+ for(const row of bank){attach('E'+key(row.entry),row);attach('H'+key(head(row.entry)),row)}
  const tokens=new Map();
  const cleanText=lang==='grc'?String(text).replace(/([\p{L}\p{M}])[’'](?=[\p{L}\p{M}])/gu,'$1 '):String(text);
  for(const match of cleanText.matchAll(/[\p{L}\p{M}]+(?:[’'][\p{L}\p{M}]+)*/gu)){
@@ -577,7 +594,8 @@ function analyze(data,text,course,bank){
  return [...tokens.values()].map(({normal,form})=>{
   const indexedCandidates=[...(index.get(normal)?.values()||[])].flatMap(c=>{
    const original=data.vocabulary[lang][c.lemma][course];
-   const matches=bank.filter(x=>key(x.entry)===key(original.entry)||key(head(x.entry))===key(c.lemma));
+   const matches=[...new Set([...(bankIndex.get('E'+key(original.entry))||[]),
+    ...(bankIndex.get('H'+key(c.lemma))||[])])];
    // Repetir una misma palabra en distintas UD con glosas ligeramente
    // distintas no constituye una ambigüedad MORFOLÓGICA. Conservamos la
    // entrada docente más completa, dando preferencia a la del índice.
@@ -589,8 +607,8 @@ function analyze(data,text,course,bank){
    })[0]]:matches):[{entry:original.entry,meaning:''}];
    return variants.map(x=>({...c,entry:x.entry,meaning:x.meaning||'',meaning_va:x.meaning_va||''}));
   });
-  const directInvariable=lang==='lat'?bank.filter(x=>
-   key(head(x.entry))===normal&&invariableEntry(x.entry)).map(x=>({
+  const directInvariable=lang==='lat'?(bankIndex.get('H'+normal)||[]).filter(x=>
+   invariableEntry(x.entry)).map(x=>({
     lemma:normal,entry:x.entry,meaning:x.meaning||'',meaning_va:x.meaning_va||'',
     attested:true,origin:'invariable explícita del banco docente'
    })):[];
