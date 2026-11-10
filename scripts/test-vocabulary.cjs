@@ -85,6 +85,45 @@ for(const typo of ['εἴς','θάλάττῃ','στρατεγός','ἄνρ�
  assert.match(row.warning,/Posible errata/);
 }
 
+// Decisiones docentes exactas: 13 grafías en 14 unidades, sin tocar σωτερίας.
+const approved=[
+ ['εἴς','εἰς'],['στρατεγός','στρατηγός'],['στρατεγὸς','στρατηγός'],
+ ['θάλάττῃ','θαλάττῃ'],['oἱ','οἱ'],['ἄνρωπος','ἄνθρωπος'],
+ ['εἷχεν','εἶχεν'],['ἐφεύξεν','ἔφυγεν'],['οἰκῦσιν','οἰκοῦσιν'],
+ ['Περίκλους','Περικλέους'],['στρατεγοὶ','στρατηγοὶ'],
+ ['ὠρᾶ','ἑώρα'],['Aἰσχύλος','Αἰσχύλος']
+];
+const testProject={count:14,course:'gr1',units:Array.from({length:14},(_,i)=>({
+ title:'UD'+(i+1),text:i<approved.length?approved[i][0]+' σωτερίας':'σωτερίας',
+ mode:'complete',rows:[{form:'anterior',entry:'anterior',meaning:'',candidates:[]}],
+ analyzed:true
+}))};
+const originalTexts=testProject.units.map(u=>u.text);
+const corrected=api.applyApprovedGreekTextCorrections(testProject);
+assert.equal(corrected.changed,13,'Deben aplicarse todas las decisiones elegidas');
+assert.equal(corrected.units.length,13);
+for(let i=0;i<13;i++){
+ assert.equal(testProject.units[i].text,approved[i][1]+' σωτερίας');
+ assert.deepEqual(testProject.units[i].rows,[],'No se pueden conservar lemas anteriores en la unidad modificada');
+ assert.equal(testProject.units[i].analyzed,false);
+}
+assert.equal(testProject.units[13].text,originalTexts[13],'No se modifica la unidad no afectada');
+assert.equal(testProject.units[13].analyzed,true,'Se conserva el estado de unidades no afectadas');
+assert.equal(testProject.units[13].rows.length,1,'Se conservan las correcciones de unidades no afectadas');
+assert.equal(api.applyApprovedGreekTextCorrections(testProject).changed,0,'No deben repetirse correcciones');
+assert.equal(api.applyApprovedGreekTextCorrections({count:14,course:'lat1',units:testProject.units}).changed,0);
+const storedProject=JSON.parse(fs.readFileSync(path.join(root,'data/vocabulary/greek1-units-corrected.json'),'utf8'));
+assert.equal(storedProject.count,14);
+assert.equal(storedProject.course,'gr1');
+assert.equal(storedProject.units.length,14);
+for(const [before,after] of approved){
+ const matcher=new RegExp('(?<![\\p{L}\\p{M}])'+before+'(?![\\p{L}\\p{M}])','gu');
+ assert.ok(storedProject.units.every(u=>![...u.text.matchAll(matcher)].length),'La grafía aprobada antigua sigue en el archivo: '+before);
+}
+assert.ok(storedProject.units[12].text.includes('σωτερίας'),'No debe cambiarse la grafía 12, sin elección');
+assert.equal(api.applyApprovedGreekTextCorrections(storedProject).changed,0,'El JSON corregido ya es idempotente');
+console.log('Correcciones de Griego I: 13 decisiones verificadas, JSON de 14 unidades y forma 12 conservada.');
+
 const originalHTML=fs.readFileSync(path.join(root,'index.html'),'utf8');
 const bankStart=originalHTML.indexOf('let vocab=')+10;
 const sourceBank=JSON.parse(originalHTML.slice(bankStart,originalHTML.indexOf(';',bankStart)));
