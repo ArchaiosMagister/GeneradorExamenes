@@ -204,11 +204,11 @@ const server=http.createServer(async(req,res)=>{
   const firstVersion=cache.keys.find(k=>k.startsWith('examina-pwa-'));
   assert(firstVersion?.includes('test-one'));
   // El documento es la misma aplicación en línea y sin conexión.
-  // La interfaz pública usa botones visibles; los <select> nativos quedan ocultos.
-  await page.locator('[role="group"][aria-label="Asignatura"] .sidebar-choice').first().click();
-  await page.locator('[role="group"][aria-label="Tipo de examen"] .sidebar-choice').first().click();
+  // El menú único mantiene visibles los selectores nativos.
+  await page.locator('#primaryExamSettings #course').selectOption('latin1');
+  await page.locator('#primaryExamSettings #model').selectOption('tablas');
   assert.deepEqual(await page.evaluate(()=>[document.getElementById('course').value,document.getElementById('model').value]),['latin1','tablas'],
-   'Los botones visibles no sincronizan asignatura y modelo');
+   'Los selectores visibles no sincronizan asignatura y modelo');
   await page.evaluate(()=>{generate();document.getElementById('saveDraft').click()});
   const storedDraft=await page.evaluate(()=>Object.keys(localStorage)
    .find(key=>key.toLowerCase().includes('draft')||key.toLowerCase().includes('borrador')));
