@@ -1,5 +1,14 @@
 # Banco de evolución fonética: latín a castellano
 
+## Programación específica de Latín I (UD0–UD10)
+
+El fichero [lat1-programacion.json](./lat1-programacion.json) contiene las 73 palabras docentes en el orden original: tres en UD0 y siete en cada unidad UD1–UD10. Cada entrada conserva el resultado castellano, los códigos de normas N01–N20, su unidad y, cuando procede, una observación. Las normas son **acumulativas**: la selección de una unidad permite utilizar las palabras y los fenómenos de todas las unidades precedentes, aunque el selector global de vocabulario no esté en modo «acumulativo».
+
+En Latín I se sortea exclusivamente este repertorio específico, con cuatro palabras por ejercicio y sin mostrar respuestas al alumno. Se excluyen automáticamente las fichas `REVISAR`, que permanecen disponibles para control docente. Las unidades UD9–10 agrupadas por el vocabulario general se interpretan como UD10 para la progresión fonética. En Latín 4.º se conserva el banco general abierto y su propia progresión.
+
+Las leyes se activan por unidad y se pueden desmarcar dentro de las ya impartidas. Las normas que todavía no han sido explicadas no se pueden activar. Pruebas: `node scripts/test-lat1-fonetica.mjs`.
+
+
 El fichero [banco_examenes.json](./banco_examenes.json) contiene 510 candidatas para ejercicios: 330 iniciales, 100 de la primera ampliación, 30 de la segunda y 50 de la tercera, sin duplicación de identificadores.
 
 Esquema: evoluciones-latin-castellano/v1. Campos por ficha: id, latin, castellano, normas (N01–N20), observacion, fila_origen, fuente y estado.

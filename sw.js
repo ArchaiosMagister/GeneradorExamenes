@@ -9,7 +9,7 @@ const CORE_FILES=[
  './data/unimorph/lat-v.json','./data/lemmas/teacher-forms.json',
  './data/latinismos-docente.json','./data/prefijos-docente.json','./data/modificacion-preverbial-docente.json',
  './data/modificacion-preverbial-unidades-lat1.json','./data/lat4-progresion-lexico.json',
- './data/fonetica/banco_examenes.json'
+ './data/fonetica/banco_examenes.json','./data/fonetica/lat1-programacion.json'
 ];
 const scopedUrl=path=>new URL(path,self.registration.scope).href;
 const cacheable=new Set(CORE_FILES.map(scopedUrl));
