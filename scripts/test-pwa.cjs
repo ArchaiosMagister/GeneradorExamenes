@@ -51,8 +51,10 @@ const server=http.createServer(async(req,res)=>{
    preverbs:latinLexBanks.latin1.preverbs.length,
    phonetics:latinLexBanks.latin1.phonetics.length
   }));
-  assert.deepEqual([lex.latinisms,lex.prefixes,lex.preverbs,lex.phonetics],[87,287,120,330],
+  assert.deepEqual([lex.latinisms,lex.prefixes,lex.preverbs,lex.phonetics],[87,287,120,460],
    'No han cargado todos los bancos léxicos docentes');
+  const expanded=await page.evaluate(()=>latinLexBanks.latin1.phonetics.some(x=>x.id==='EVF-0008'));
+  assert(expanded,'Las 130 ampliaciones no han llegado al generador: falta EVF-0008');
   const latin4Progress=await page.evaluate(()=>{
    const result={};
    for(let unit=1;unit<=8;unit++){
@@ -168,7 +170,7 @@ const server=http.createServer(async(req,res)=>{
     'data/unimorph/lat-v.json','data/lemmas/teacher-forms.json',
     'data/latinismos-docente.json','data/prefijos-docente.json','data/modificacion-preverbial-docente.json',
     'data/modificacion-preverbial-unidades-lat1.json','data/lat4-progresion-lexico.json',
-    'data/fonetica/banco_examenes.tsv',
+    'data/fonetica/banco_examenes.json',
     'manifest.webmanifest','icons/icon-192.png','icons/icon-512.png'];
    return {scope:reg.scope,keys,entries:await Promise.all(paths.map(async p=>({
     path:p,stored:!!await storage.match(new URL(p,reg.scope).href)

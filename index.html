@@ -278,17 +278,15 @@ const latinLexTitles={
 const phoneticRules='Abertura|Aféresis|Apócope|Asimilación|Aspiración|Consonantización|Diptongación|Disimilación|Epéntesis|Evolución de grafías griegas|Metátesis|Monoptongación|Palatalización|Prótesis|Simplificación|Síncopa|Sonorización|Vocalización|-min- > -mbr-|-cul- > -j-/-g-'.split('|').map((name,i)=>({id:'N'+String(i+1).padStart(2,'0'),name}));
 const selectedPhoneticRules=new Set();
 function parseTeacherPhonetics(raw){
- if(typeof raw!=='string')return [];
- const seen=new Set(),rows=[];
- for(const line of raw.split(/\r?\n/)){
-  if(!line||line.startsWith('#'))continue;
-  const parts=line.split('|');if(parts.length!==4)continue;
-  const [ordinal,latin,castellano,codes]=parts;
-  const id='EVF-'+String(Number(ordinal)).padStart(4,'0');
-  const normas=codes.split(',').map(x=>'N'+String(Number(x)).padStart(2,'0'));
-  if(!/^EVF-\d{4}$/.test(id)||!latin||!castellano||seen.has(id)||
-   normas.some(n=>!phoneticRules.some(rule=>rule.id===n)))continue;
-  seen.add(id);rows.push({id,prompt:latin,latin,castellano,normas,estado:'APTO_PROPUESTO',answer:''});
+ if(raw?.esquema!=='evoluciones-latin-castellano/v1'||!Array.isArray(raw.items))return [];
+ const known=new Set(phoneticRules.map(rule=>rule.id)),seen=new Set(),rows=[];
+ for(const item of raw.items){
+  const {id,latin,castellano,normas,estado}=item;
+  if(typeof id!=='string'||!/^EVF-\d{4}$/.test(id)||typeof latin!=='string'||!latin||
+   typeof castellano!=='string'||!castellano||seen.has(id)||estado!=='APTO_PROPUESTO'||
+   !Array.isArray(normas)||!normas.length||normas.some(n=>!known.has(n)))continue;
+  seen.add(id);rows.push({id,prompt:latin,latin,castellano,normas,estado,answer:'',
+   source:'Banco docente de evolución fonética · '+id});
  }
  return rows;
 }
@@ -1900,7 +1898,7 @@ async function loadTeacherLatinLexBanks(){
   ['latinisms','data/latinismos-docente.json'],
   ['prefixes','data/prefijos-docente.json'],
   ['preverbs','data/modificacion-preverbial-docente.json'],
-  ['phonetics','data/fonetica/banco_examenes.tsv'],
+  ['phonetics','data/fonetica/banco_examenes.json'],
   ['preverbCurriculum','data/modificacion-preverbial-unidades-lat1.json'],
   ['latin4Curriculum','data/lat4-progresion-lexico.json']
  ];
@@ -1909,7 +1907,7 @@ async function loadTeacherLatinLexBanks(){
    let data=examinaEmbeddedAsset(path);
    if(data==null&&location.protocol!=='file:'){
     const response=await fetch(path,{cache:'force-cache'});
-    if(response.ok)data=kind==='phonetics'?await response.text():await response.json();
+    if(response.ok)data=await response.json();
    }
    return {kind,data};
   }catch(error){console.warn('Banco de léxico no disponible:',path,error);return {kind,data:null}}
@@ -1938,7 +1936,7 @@ async function loadTeacherLatinLexBanks(){
   let verified;
   if(kind==='phonetics'){
    verified=parseTeacherPhonetics(data);
-   if(verified.length!==330)continue;
+   if(verified.length!==460)continue;
   }else{
    if(data?.schema!==1||!Array.isArray(data.items)||!data.items.length)continue;
    verified=data.items.filter(x=>typeof x.prompt==='string'&&typeof x.answer==='string');

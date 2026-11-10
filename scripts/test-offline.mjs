@@ -26,7 +26,8 @@ assert.equal(payload['data/modificacion-preverbial-docente.json'].items.length,1
 const syllabus=payload['data/modificacion-preverbial-unidades-lat1.json'];
 assert.equal(syllabus.units.reduce((n,x)=>n+x.verbs.length,0),28);
 assert.deepEqual(syllabus.units.filter(x=>x.verbs.length===0).map(x=>x.unit),[8,10]);
-assert.equal(payload['data/fonetica/banco_examenes.tsv'].split(/\r?\n/).filter(x=>/^\d+\|/.test(x)).length,330);
+assert.equal(payload['data/fonetica/banco_examenes.json'].esquema,'evoluciones-latin-castellano/v1');
+assert.equal(payload['data/fonetica/banco_examenes.json'].items.length,460);
 assert(html.includes('Lematizador del vocabulario · sin conexión'),'Falta la interfaz local de consulta');
 for(const [,attributes,body] of blocks){
  if(!/type="application\/json"/.test(attributes))new Script(body,{filename:'offline.html'});
