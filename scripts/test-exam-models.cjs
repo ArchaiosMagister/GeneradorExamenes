@@ -116,7 +116,7 @@ function greekSuite(){
   greekExamHeader:()=>'<div class="exam-header">Griego</div>',
   greekQuestionLabel:kind=>({declension:'Declina',conjugation:'Conjuga',forms:'Analiza',pronouns:'Pronombres',etymology:'Etimología',sentences:'Traduce'}[kind]),
   greekLemma:head=>({entry:head,meaning:'palabra'}),examKey:x=>x,
-  glossAccept:()=>true,isRequired:()=>false,esc:x=>String(x),tr:x=>x,
+  glossAccept:()=>true,isRequired:()=>false,quoteGloss:x=>"'"+x+"'",esc:x=>String(x),tr:x=>x,
   greekExamControls:()=>{},refreshManualMorphWords:()=>{},window:{},
   examQuestionEnabled:kind=>kind!=='pronouns'||state.model.value==='morphology',
   stickyExamRows:(_kind,create)=>create(),
@@ -138,7 +138,7 @@ function greekSuite(){
  output=run('translation');
  assert.equal((output.match(/class="exam-question/g)||[]).length,3,'Griego traducción: formas, etimología y oraciones');
  assert(!output.includes('exam-nouns')&&!output.includes('exam-verbs'));
- assert(!output.includes('final-gloss'));
+ assert(output.includes('final-gloss'),'Griego traducción debe llevar vocabulario de las oraciones');
  assert.equal(sandbox.window.greekLastExam.total,10);
  output=run('morphology');
  assert.equal((output.match(/class="exam-question"/g)||[]).length,4,'Griego UD7: pronombres');
