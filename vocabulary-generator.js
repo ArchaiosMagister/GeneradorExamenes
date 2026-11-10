@@ -127,7 +127,7 @@ function greekReferenceForms(bank){
   'εἰμί','ser, estar, haber');
  addIrregular(['οὐ','οὐκ','οὐχ'],'οὐ','no');
  addIrregular(['ἀλλά','ἀλλὰ','ἀλλ'],'ἀλλά','pero, sino');
- addIrregular(['μέν','μὲν','μέν','δέ','δὲ','δέ'],'μέν… δέ','por un lado… por otro');
+ addIrregular(['μέν','μὲν','μέν','δέ','δὲ','δέ','δ'],'μέν… δέ','por un lado… por otro');
  addIrregular(['καί','καὶ'],'καί','y, también');
  // Los nombres propios solo se añaden cuando el banco no los contiene.
  addIrregular(['Διόνυσος','Διόνυσος','Διονύσου','Διονύσου'],'Διόνυσος','Dioniso');
@@ -177,7 +177,6 @@ function greekReferenceForms(bank){
  // Partículas y preposiciones de alto rendimiento: son invariables,
  // se respeta el enunciado docente cuando existe.
  const closed=[
-  ['μέν','por una parte',['μὲν','μέν']],
   ['τε','y (enclítica)',['τε']],
   ['οὔτε','ni',['οὔτε']],
   ['οὐδέ','ni, tampoco',['οὐδέ','οὐδὲ']],
@@ -211,7 +210,7 @@ function greekReferenceForms(bank){
  ];
  for(const [entry,meaning,forms] of closed)addIrregular(forms,entry,meaning);
  // Todas las formas de la negación comparten el enunciado del banco.
- // ὅλες οι μορφές οὐ, οὐκ, οὐχ: una entrada léxica.
+ // Las tres formas οὐ, οὐκ y οὐχ pertenecen a una única entrada.
 
  // Paradigmas pronominales irregulares que aparecen en las UDs 5–10.
  addIrregular(['ἐγώ','ἐγὼ','ἐμοῦ','ἐμοί','ἐμοὶ','ἐμέ','ἐμὲ','ἡμεῖς','ἡμῶν','ἡμῖν','ἡμᾶς'],
@@ -535,7 +534,7 @@ function analyze(data,text,course,bank){
   if(lang==='grc'&&['ο','η','το'].includes(normal)){
    const accents={ο:['ὁ'],η:['ἡ'],το:['τὸ','τό']};
    if(!accents[normal].includes(form.normalize('NFC')))
-    candidates=candidates.filter(x=>x.entry!=='ὁ, ἡ, τό');
+    candidates=candidates.filter(x=>!x.entry.startsWith('ὁ, ἡ, τό'));
   }
   // Preposiciones y adverbios con grafía acentuada inequívoca:
   // al suprimir diacríticos, εἰς/εἷς y ἐν/ἕν no deben confundirse.
@@ -563,15 +562,15 @@ function analyze(data,text,course,bank){
   // 'ἀλλὰ' (conjunción) frente a 'ἄλλα' (neutro plural) son
   // grafías diferentes a pesar de la normalización sin acentos.
   if(lang==='grc'&&normal==='ο'&&form.normalize('NFC')==='ὁ')
-   candidates=candidates.filter(x=>x.entry==='ὁ, ἡ, τό');
+   candidates=candidates.filter(x=>x.entry.startsWith('ὁ, ἡ, τό'));
   if(lang==='grc'&&normal==='η'&&form.normalize('NFC')==='ἡ')
-   candidates=candidates.filter(x=>x.entry==='ὁ, ἡ, τό');
+   candidates=candidates.filter(x=>x.entry.startsWith('ὁ, ἡ, τό'));
   // El plural del artículo (οἱ, αἱ) no debe confundirse con el relativo
   // (οἵ, αἵ): la acentuación del original conserva esa distinción.
   if(lang==='grc'&&(['οι','αι'].includes(normal))){
    const written=form.normalize('NFC');
-   if(['οἱ','αἱ'].includes(written))candidates=candidates.filter(x=>x.entry==='ὁ, ἡ, τό');
-   else if(['οἵ','αἵ'].includes(written))candidates=candidates.filter(x=>x.entry!=='ὁ, ἡ, τό');
+   if(['οἱ','αἱ'].includes(written))candidates=candidates.filter(x=>x.entry.startsWith('ὁ, ἡ, τό'));
+   else if(['οἵ','αἵ'].includes(written))candidates=candidates.filter(x=>!x.entry.startsWith('ὁ, ἡ, τό'));
   }
   if(lang==='grc'&&normal==='αλλα'){
    if(/ἀλλ[άὰ]/u.test(form))candidates=candidates.filter(x=>x.lemma==='αλλα');
@@ -626,7 +625,8 @@ function formatVocabularyEntry(row,mode,course){
  if(!row.meaning)return entry;
  const meaning=String(row.meaning).trim().replace(/^[‘’'"]+|[‘’'"]+$/g,'');
  const pieces=meaning.split(/[’']\s*,\s*[‘']/).map(x=>x.trim()).filter(Boolean);
- const phrase=/\S(?:\s+|…)\S/u.test(entry.split(' (')[0]) &&
+ const lemmaPart=head(entry);
+ const phrase=(/\s|…/u.test(lemmaPart)&&!/\s+o\s+/i.test(lemmaPart)) &&
   !/^(?:ὁ,\s*ἡ|οὐ,\s*οὐκ)/u.test(entry);
  const quote=phrase?'"':"'";
  const quoted=phrase?quote+pieces.join(', ')+quote:
