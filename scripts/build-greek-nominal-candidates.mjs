@@ -58,7 +58,7 @@ function matchesTeacher(lemma,kind,cells){
  const suffix=norm(parts[1].replace(/\([^)]*\)/g,'').replace(/^[\s−–—-]+/u,'').trim());
  if(!suffix||suffix.length<2||suffix.length>20)return false;
  const gen=cells.get('N;GEN;SG');
- return !!gen&&[...gen].some(g=>g.endsWith(suffix));
+ return !!gen&&[...gen.keys()].some(g=>g.endsWith(suffix));
 }
 async function openSource(){
  if(fixture){
