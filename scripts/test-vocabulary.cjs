@@ -670,6 +670,53 @@ console.log('Vocabulario: prioridad docente, deduplicación por UD, ambigüedad,
  for(const lemma of ['filia','filius'])
   assert(bothXml.split('</w:p>').some(p=>p.includes('>'+lemma+',')&&!p.includes('>* ')));
 
+ // Bancos con textos independientes y decisiones recuperables tras editar contexto.
+ await page.selectOption('#vgCourse','lat1');
+ await page.locator('#vgUnitButtons button').first().click();
+ await page.fill('#vgText','Regina bona est.');
+ await page.click('#vgAnalyzeAll');
+ const bonaCard=page.locator('#vgResults section').filter({has:page.getByRole('heading',{name:'bona',exact:true})});
+ await bonaCard.waitFor();
+ await bonaCard.locator('select').selectOption(await bonaCard.locator('option').filter({hasText:/^bonus,/}).getAttribute('value'));
+ await bonaCard.getByRole('button',{name:'Aceptar',exact:true}).click();
+ await page.fill('#vgText','Regina bona erat.');
+ await page.click('#vgAnalyzeAll');
+ const changedBona=page.locator('#vgResults section').filter({has:page.getByRole('heading',{name:'bona',exact:true})});
+ await changedBona.waitFor();
+ assert.match(await changedBona.innerText(),/decisión anterior/i);
+ await page.selectOption('#vgCourse','gr1');
+ await page.fill('#vgText','ὁ λόγος ἐστίν.');
+ await page.click('#vgAnalyzeAll');
+ await page.selectOption('#vgCourse','lat1');
+ assert.equal(await page.inputValue('#vgText'),'Regina bona erat.');
+ await page.selectOption('#vgCourse','gr1');
+ assert.equal(await page.inputValue('#vgText'),'ὁ λόγος ἐστίν.');
+ await page.reload();await page.click('#vgShow');
+ await page.selectOption('#vgCourse','lat1');
+ assert.equal(await page.inputValue('#vgText'),'Regina bona erat.');
+
+ // Un lector que propone otro lema del banco obliga a revisar la ambigüedad.
+ await page.fill('#vgText','Puella amat.');
+ await page.click('#vgAnalyzeAll');
+ const conflicting={schema:'examina-reader-proposals/v1',language:'lat',rows:[
+  {form:'Puella',lemma:'rosa',analysis:'sustantivo femenino'}
+ ]};
+ await page.locator('#vgReaderImport').setInputFiles({
+  name:'lector-conflicto.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(conflicting))
+ });
+ await page.waitForFunction(()=>document.querySelector('#vgReaderStatus').textContent.includes('1 propuestas'));
+ const readingConflict=page.locator('#vgResults section').filter({has:page.getByRole('heading',{name:'Puella',exact:true})});
+ await readingConflict.waitFor();
+ assert.match(await readingConflict.innerText(),/Otro lema del banco docente/);
+ const conflictingWord=page.waitForEvent('download');await page.click('#vgWord');
+ assert.match(fs.readFileSync(await (await conflictingWord).path(),'utf8'),/Pendientes de revisión/);
+ await page.reload();await page.click('#vgShow');
+ await page.waitForFunction(()=>document.querySelector('#vgReaderStatus').textContent.includes('1 propuestas'));
+ assert.match(await page.locator('#vgResults').innerText(),/Otro lema del banco docente/);
+ await page.locator('#vgReaderImport').evaluate(el=>el.closest('details').open=true);
+ await page.click('#vgReaderRemove');
+ assert.match(await page.locator('#vgReaderStatus').innerText(),/Todavía no hay propuestas/);
+
  if(process.env.LATIN1_VOCABULARY_CORPUS){
   const corpus=JSON.parse(fs.readFileSync(process.env.LATIN1_VOCABULARY_CORPUS,'utf8'));
   assert.equal(corpus.course,'lat1');assert.equal(corpus.count,10);
