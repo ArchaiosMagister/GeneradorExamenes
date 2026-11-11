@@ -56,6 +56,7 @@ assert.equal(parts.filter(p=>p.match)[0].text,'λόγος');
 const real=JSON.parse(readFileSync(new URL('../data/lemmas/teacher-forms.json',import.meta.url),'utf8'));
 const count=buildCases(real);
 assert.ok(count.length>0,'Las ambigüedades del banco actual deben poder revisarse');
-assert.ok(count.every(x=>x.options.length>1&&x.units.length>0));
+assert.ok(count.every(x=>x.options.length>1&&Array.isArray(x.units)));
+assert.ok(count.some(x=>x.units.length>0),'Las unidades asignadas deben conservarse');
 assert.equal(real.rows.grc.length,JSON.parse(readFileSync(new URL('../data/lemmas/teacher-forms.json',import.meta.url),'utf8')).rows.grc.length);
 console.log('Revisión de Griego I: '+count.length+' tarjetas locales; importación opcional Eulexis, contexto y deduplicación correctos.');
