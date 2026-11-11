@@ -15,7 +15,7 @@ const migrationStart=vocabSource.indexOf('function applyLatinEditorialProjectCor
 const migrationEnd=vocabSource.indexOf('function migrateProject(project){',migrationStart);
 assert(migrationStart>0&&migrationEnd>migrationStart,'Falta migración de la UD10');
 const correctText=new Function('project',vocabSource.slice(migrationStart,migrationEnd)+
- '\\napplyLatinEditorialProjectCorrections(project);');
+ '\napplyLatinEditorialProjectCorrections(project);');
 const oldText='Pecunia carere nonnulli philosophi placebat.';
 const revisedText='Pecunia carere nonnullis philosophis placebat.';
 const testProject={course:'lat1',units:[
