@@ -1479,6 +1479,71 @@ function displayEntry(entry,mode){
 // Formato filológico de la exportación, sin alterar la base ni el JSON.
 // Traducción de un único lema griego: comillas simples. Locuciones con
 // varias palabras griegas (μέν… δέ): comillas dobles.
+// Clasificación compartida por el glosario del examen y el vocabulario por UD.
+// Es independiente del sorteo o certificación de paradigmas.
+function classifyVocabularyEntry(item,course='lat1'){
+ const entry=String(typeof item==='string'?item:item?.entry||'').trim();
+ const first=entry.split(',')[0].trim();
+ const norm=value=>String(value).normalize('NFD').replace(/\p{M}/gu,'')
+  .replace(/æ/gi,'ae').replace(/ς/g,'σ').toLowerCase();
+ const lemma=norm(first),label=norm(entry);
+ const greek=course==='gr1'||course==='greek1';
+ if(greek&&(/^ὁ\s*,\s*ἡ\s*,\s*(?:τό|τὸ)/u.test(entry)||/\b(?:art[íi]culo|article)\b/iu.test(entry)))
+  return 'articles';
+ if(greek&&(/\((?:part\.?|part[íi]cula)\)/iu.test(entry)||
+  ['μεν','δε','τε','γε','δη','περ','τοι','ουν','αρα'].includes(lemma)))
+  return 'particles';
+ const pronouns=greek?
+  new Set(['εγω','συ','ημεισ','υμεισ','αυτοσ','ουτοσ','οδε','εκεινοσ',
+   'οσ','οστισ','τισ','τι','εμαυτου','σεαυτου','αλληλων','εισ','ουδεισ']):
+  new Set(['ego','tu','sui','se','nos','vos','is','hic','ille','iste','ipse',
+   'idem','qui','quis','quisque','uterque','quicumque','aliquis','aliqui',
+   'quidam','quisquam','quispiam','nemo','nihil','meus','tuus','suus',
+   'noster','vester','nostras','vestras']);
+ if(/\((?:pron\.?|pronombre|pronom\.?|demostrativo|interrogativo|relativo|anaf[oó]rico|personal|indefinido|f[oó]rico)[^)]*\)/iu.test(entry)||
+  pronouns.has(lemma))return 'pronouns';
+ if(/\((?:adv\.?|adverbio|conj\.?|conjunci[oó]n|prep\.?|preposici[oó]n|part\.?|interj\.?|interjecci[oó]n)[^)]*\)/iu.test(entry))
+  return 'other';
+ if(/\((?:[1-4][ªa]|mx\.?|irr\.?|dep\.?|semidep\.?|verbo)[^)]*\)/iu.test(entry))
+  return 'verbs';
+ if(greek){
+  if(/(?:ω|ομαι|μι)(?:\s|$|,)/u.test(first))return 'verbs';
+  if(/,\s*[–−-]?(?:α|η)\s*,\s*[–−-]?(?:ον|ο|όv|um)/iu.test(entry)||
+   /,\s*[–−-]?(?:ον|όν)\s*$/u.test(entry)||/,\s*[–−-]?(?:εια|εῖα)\s*,/u.test(entry))
+   return 'adjectives';
+  if(/,/.test(entry))return 'nouns';
+  return 'other';
+ }
+ if(/,\s*[–−-]?(?:a|ra|era)\s*,\s*[–−-]?um\b/iu.test(entry)||
+  /,\s*[–−-]?e\b/iu.test(entry)||/\((?:adj\.?|adjetivo)[^)]*\)/iu.test(entry))
+  return 'adjectives';
+ if(/^[a-z]+(?:o|or)\s*,/i.test(first+',')&&entry.split(',').length>=3)return 'verbs';
+ if(entry.includes(','))return 'nouns';
+ return 'other';
+}
+function vocabularyGroups(rows,course,language='es'){
+ const labels=language==='va'?[
+  ['nouns','Substantius i adjectius'],
+  ['verbs','Verbs'],
+  ['pronouns','Pronoms'],
+  ['other','Adverbis, conjuncions i altres paraules']
+ ]:[
+  ['nouns','Sustantivos y adjetivos'],
+  ['verbs','Verbos'],
+  ['pronouns','Pronombres'],
+  ['other','Adverbios, conjunciones y otras palabras']
+ ];
+ const grouped=new Map(labels.map(([key])=>[key,[]]));
+ for(const row of rows){
+  const kind=classifyVocabularyEntry(row,course);
+  const target=kind==='adjectives'?'nouns':
+   ['articles','particles'].includes(kind)?'other':kind;
+  (grouped.get(target)||grouped.get('other')).push(row);
+ }
+ return labels.map(([key,label])=>({key,label,rows:grouped.get(key)}))
+  .filter(group=>group.rows.length);
+}
+
 function formatVocabularyEntry(row,mode,course,language='es'){
  let entry=displayEntry(row.entry,mode);
  if(course==='gr1'){
@@ -1581,8 +1646,13 @@ function vocabularyRequiresReview(row){
    return [...readings.values()].map(({entry,lemma,meaning,meaning_va})=>
     ({...row,entry,lemma,meaning:meaning||'',meaning_va,alternative:true}));
   });
-  return p(u.title,true)+all.filter(r=>!vocabularyRequiresReview(r)).map(r=>line(r,u)).join('')+
-   (pending.length?p(project.lang==='va'?'Pendents de revisió (*)':'Pendientes de revisión (*)',true)+pending.map(r=>line(r,u)).join(''):'');
+  const safe=all.filter(r=>!vocabularyRequiresReview(r));
+  const groupedLines=rows=>project.groupTypes===true?
+   vocabularyGroups(rows,project.course,project.lang||'es').map(group=>
+    p(group.label,true)+group.rows.map(r=>line(r,u)).join('')).join(''):
+   rows.map(r=>line(r,u)).join('');
+  return p(u.title,true)+groupedLines(safe)+
+   (pending.length?p(project.lang==='va'?'Pendents de revisió (*)':'Pendientes de revisión (*)',true)+groupedLines(pending):'');
  }).join('');
  return '<?xml version="1.0" encoding="UTF-8"?>'+
   '<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>'+
@@ -1608,8 +1678,6 @@ function reviewedRows(unit,course,data,bank){
   return decision?{...row,...decision,identity:row.identity,form:row.form}:row;
  });
 }
-// Aplica únicamente en Latín I una oración aprobada expresamente por el
-// docente. No reescribe otras unidades ni infiere análisis morfológicos.
 function applyLatinEditorialProjectCorrections(project){
  const sources=[];
  if(project?.course==='lat1'&&Array.isArray(project.units))sources.push(project.units);
@@ -1642,7 +1710,7 @@ function migrateProject(project){
  }
  return project;
 }
-window.ExaminaVocabulary={analyze,entries,displayEntry,formatVocabularyEntry,documentXml};
+window.ExaminaVocabulary={analyze,entries,displayEntry,formatVocabularyEntry,documentXml,classifyVocabularyEntry,vocabularyGroups};
 function init(){
  const $=id=>document.getElementById(id),storage='examina_vocabulary_project_v1';
  let project={count:1,course:'lat1',lang:'es',units:[]},selected=0;
@@ -1782,6 +1850,7 @@ function init(){
  function render(){
   unit();$('vgCount').value=project.count;$('vgCourse').value=project.course;$('vgLang').value=project.lang||'es';
   $('vgWordAlternatives').checked=project.wordAlternatives===true;
+  $('vgGroupTypes').checked=project.groupTypes===true;
   renderUnitButtons();
   if($('vgEulexisPanel'))$('vgEulexisPanel').hidden=project.course!=='gr1';
   $('vgUnit').replaceChildren(...project.units.slice(0,project.count).map((u,i)=>new Option(u.title,i,false,i===selected)));
@@ -1860,7 +1929,15 @@ function init(){
    }
   }
   for(const row of pending)target.append(reviewCard(u,row,paragraph,button,relatedByForm));
-  for(const row of resolved){
+  const resolvedDisplay=project.groupTypes===true?
+   [...vocabularyGroups(resolved.filter(row=>row.status!=='omitted'),project.course,project.lang||'es')
+    .flatMap(group=>[{groupLabel:group.label},...group.rows]),
+    ...resolved.filter(row=>row.status==='omitted')]:resolved;
+  for(const row of resolvedDisplay){
+   if(row.groupLabel){
+    const heading=paragraph(row.groupLabel);heading.className='vm-help';
+    heading.style.fontWeight='bold';reviewed.append(heading);continue;
+   }
    const detail=document.createElement('details'),title=document.createElement('summary');
    const state={documented:'Identificación automática',manual:'Aceptada para Word',omitted:'Omitida del Word'}[row.status];
    title.textContent=row.form+' · '+state+' · '+formatVocabularyEntry(row,u.mode,project.course,project.lang);
@@ -1963,6 +2040,7 @@ function init(){
  $('vgCount').onchange=()=>{const n=Number($('vgCount').value);if(!Number.isInteger(n)||n<1||n>100){status('Elige entre 1 y 100 unidades.');return}project.count=n;selected=Math.min(selected,n-1);render();save()};
  $('vgUnit').onchange=()=>{selected=Number($('vgUnit').value);render()};
  $('vgWordAlternatives').onchange=()=>{project.wordAlternatives=$('vgWordAlternatives').checked;save()};
+ $('vgGroupTypes').onchange=()=>{project.groupTypes=$('vgGroupTypes').checked;save();render()};
  $('vgLang').onchange=()=>{project.lang=$('vgLang').value;render();save()};
  $('vgCourse').onchange=()=>{
   project.course=$('vgCourse').value;qualitySnapshot=null;
