@@ -1907,7 +1907,15 @@ function init(){
    }
   }
   for(const row of pending)target.append(reviewCard(u,row,paragraph,button,relatedByForm));
-  for(const row of resolved){
+  const resolvedDisplay=project.groupTypes===true?
+   [...vocabularyGroups(resolved.filter(row=>row.status!=='omitted'),project.course)
+    .flatMap(group=>[{groupLabel:group.label},...group.rows]),
+    ...resolved.filter(row=>row.status==='omitted')]:resolved;
+  for(const row of resolvedDisplay){
+   if(row.groupLabel){
+    const heading=paragraph(row.groupLabel);heading.className='vm-help';
+    heading.style.fontWeight='bold';reviewed.append(heading);continue;
+   }
    const detail=document.createElement('details'),title=document.createElement('summary');
    const state={documented:'Identificación automática',manual:'Aceptada para Word',omitted:'Omitida del Word'}[row.status];
    title.textContent=row.form+' · '+state+' · '+formatVocabularyEntry(row,u.mode,project.course,project.lang);
@@ -2010,7 +2018,7 @@ function init(){
  $('vgCount').onchange=()=>{const n=Number($('vgCount').value);if(!Number.isInteger(n)||n<1||n>100){status('Elige entre 1 y 100 unidades.');return}project.count=n;selected=Math.min(selected,n-1);render();save()};
  $('vgUnit').onchange=()=>{selected=Number($('vgUnit').value);render()};
  $('vgWordAlternatives').onchange=()=>{project.wordAlternatives=$('vgWordAlternatives').checked;save()};
- $('vgGroupTypes').onchange=()=>{project.groupTypes=$('vgGroupTypes').checked;save()};
+ $('vgGroupTypes').onchange=()=>{project.groupTypes=$('vgGroupTypes').checked;save();render()};
  $('vgLang').onchange=()=>{project.lang=$('vgLang').value;render();save()};
  $('vgCourse').onchange=()=>{
   project.course=$('vgCourse').value;qualitySnapshot=null;
