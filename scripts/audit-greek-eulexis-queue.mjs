@@ -24,3 +24,13 @@ for(const c of cases){
  if(c.kind==='eulexis-proposal'&&samples.eulexisSingle.length<8)samples.eulexisSingle.push({form:c.form,analysis:c.options[0].analysis});
 }
 console.log('AUDITORIA_CASOS '+JSON.stringify({sourceRows:imported.length,cases:cases.length,nOne,nMultiple,nMultiLemma,nSameLemma,nExternal,samples}));
+
+const withoutDialect=x=>x.analysis.split(' · ')[0].trim().toLowerCase();
+const sameBase=cases.filter(x=>x.options.length>1&&
+ new Set(x.options.map(o=>api.norm(o.lemma))).size===1&&
+ new Set(x.options.map(withoutDialect)).size===1);
+const redundant=cases.filter(x=>x.options.length>1&&
+ new Set(x.options.map(withoutDialect)).size<x.options.length);
+const dialectExamples=sameBase.slice(0,40).map(x=>({form:x.form,options:x.options.map(o=>o.analysis).slice(0,8)}));
+console.log('AUDITORIA_DIALECTO '+JSON.stringify({fullResolved:sameBase.length,redundantWithinCards:redundant.length,sampleForms:sameBase.slice(0,120).map(x=>x.form),dialectExamples}));
+
