@@ -61,8 +61,8 @@ jobs:
         run: node scripts/build-greek-nominal-candidates.mjs
       - name: Construir índice bilingüe del vocabulario docente
         run: node scripts/build-lemma-index.mjs
-      - name: Ampliar el índice con Collatinus y Eulexis (datos fijados)
-        run: node scripts/enrich-from-readers.mjs
+      # La ampliación externa se mantiene en la PR experimental hasta
+      # resolver la procedencia/licencias de los datos morfológicos.
       - name: Validar banco de 510 evoluciones fonéticas y programa de Latín I
         run: node scripts/test-fonetica.mjs && node scripts/test-lat1-fonetica.mjs
       - name: Regenerar archivo autónomo
