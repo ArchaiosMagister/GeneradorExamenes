@@ -149,6 +149,19 @@ const latinLexicalQueWords=new Set([
  'ubicumque','undecumque','quandocumque','qualiscumque',
  'quantuscumque'
 ].map(latinKey));
+// Las sospechas ortográficas no son pruebas de que la palabra sea errónea.
+// El docente decide con la frase original: no se sustituye el token ni el lema.
+const latinSpellingNotes={
+ 'clasis':'comprobar classis, –is (f.), si se refiere a «flota» o «clase»',
+ 'consilo':'comprobar consilio (de consilium, –i), según el contexto',
+ 'pasuum':'comprobar passuum (genitivo plural de passus, –us)',
+ 'nonulli':'comprobar nonnulli (de nonnullus, –a, –um)',
+ 'propinquiis':'comprobar propinquis (de propinquus, –a, –um)',
+ 'templos':'comprobar templa si el sustantivo es templum, –i (n.); exige contexto',
+ 'c':'inicial o abreviatura, no lema autónomo; consultar la oración',
+ 'm':'inicial, cifra o abreviatura, no lema autónomo; consultar la oración',
+ 't':'inicial o abreviatura, no lema autónomo; consultar la oración'
+};
 const latinExpandedCache=new WeakMap();
 function latinExpandedForms(bank){
  if(latinExpandedCache.has(bank))return latinExpandedCache.get(bank);
@@ -1300,11 +1313,13 @@ function analyze(data,text,course,bank){
   }
   const resolved=candidates.length===1&&candidates[0].attested;
   const spellingHint=lang==='grc'?Object.entries(greekSpellingNotes)
-   .find(([sample])=>sample.normalize('NFC')===form.normalize('NFC'))?.[1]:undefined;
-  // Señalar erratas: proponer una corrección no equivale a lematizarla.
+   .find(([sample])=>sample.normalize('NFC')===form.normalize('NFC'))?.[1]:
+   lang==='lat'?latinSpellingNotes[normal]:undefined;
+  // Señalar erratas y abreviaturas sin modificar el original ni simular
+  // una flexión contrastada. Distinguir sugerencia de evidencia.
   const requiresSpellingReview=!!spellingHint;
   return {form,candidates,status:requiresSpellingReview?'review':resolved?'documented':candidates.length?'review':'unknown',
-   warning:requiresSpellingReview?'Posible errata: '+spellingHint:'',
+   warning:requiresSpellingReview?'Revisión de grafía o abreviatura: '+spellingHint:'',
    lemma:resolved&&!requiresSpellingReview?candidates[0].lemma:'',
    entry:resolved&&!requiresSpellingReview?candidates[0].entry:form,
    meaning:resolved&&!requiresSpellingReview?candidates[0].meaning:'',
