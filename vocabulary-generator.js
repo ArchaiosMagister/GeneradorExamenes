@@ -1714,6 +1714,31 @@ function init(){
  };
  initWorkspaces();
  const stale=u=>needsAnalysis(u,project.course);
+ // Los índices importados pueden ser grandes: se guardan en IndexedDB y
+ // no se duplican en localStorage. Las copias JSON sí incluyen los datos.
+ let readersIndexed=false;
+ const readerDatabase=()=>new Promise((resolve,reject)=>{
+  if(!('indexedDB' in window)){reject(Error('IndexedDB no disponible'));return}
+  const request=indexedDB.open('examina-vocabulary-readers',1);
+  request.onupgradeneeded=()=>request.result.createObjectStore('projects');
+  request.onerror=()=>reject(request.error||Error('IndexedDB no disponible'));
+  request.onsuccess=()=>resolve(request.result);
+ });
+ const readerDb=(operation,key,value)=>readerDatabase().then(db=>new Promise((resolve,reject)=>{
+  const tx=db.transaction('projects',operation==='get'?'readonly':'readwrite');
+  const request=tx.objectStore('projects')[operation](...(operation==='get'?[key]:[value,key]));
+  request.onsuccess=()=>resolve(request.result);
+  request.onerror=()=>reject(request.error||Error('No se pudo guardar el índice'));
+  tx.oncomplete=()=>db.close();
+  tx.onerror=()=>{db.close();reject(tx.error||Error('Transacción fallida'))};
+ }));
+ const persistReaders=async()=>{
+  project.readerStoreKey||='lectores-'+(window.crypto?.randomUUID?.()||
+   Date.now().toString(36)+'-'+Math.random().toString(36).slice(2));
+  try{await readerDb('put',project.readerStoreKey,project.readerProposals||{});
+   readersIndexed=true;return true}
+  catch{readersIndexed=false;return false}
+ };
  const readerLanguage=()=>project.course==='gr1'?'grc':'lat';
  let readerByForm=new Map(),readerTeachers=new Map();
  function refreshReader(){
@@ -1762,19 +1787,25 @@ function init(){
    if(proposals.language!==language)throw Error('El archivo corresponde a otra lengua.');
    if(project!==target||readerLanguage()!==language)return;
    project.readerProposals={...project.readerProposals,[language]:proposals};
+   const persisted=await persistReaders();
    render();save();
+   if(!persisted)$('vgReaderStatus').textContent=
+    'IndexedDB no disponible. Guarda una copia JSON: el navegador puede agotar su cuota.';
   }catch(error){$('vgReaderStatus').textContent=error.message}
   finally{event.target.value=''}
  };
- $('vgReaderRemove').onclick=()=>{
+ $('vgReaderRemove').onclick=async()=>{
   delete project.readerProposals[readerLanguage()];
+  await persistReaders();
   render();save();
  };
  const status=s=>{$('vgStatus').textContent=s};
  const save=()=>{
   initWorkspaces();
-  try{localStorage.setItem(storage,JSON.stringify(project))}
-  catch{status('Almacenamiento lleno: no se han guardado los cambios. Descarga una copia JSON.')}
+  try{
+   const local=readersIndexed?{...project,readerProposals:undefined}:project;
+   localStorage.setItem(storage,JSON.stringify(local));
+  }catch{status('Almacenamiento lleno: no se han guardado los cambios. Descarga una copia JSON.')}
  };
 
 
@@ -2274,10 +2305,26 @@ function init(){
   }catch(e){status('No se ha exportado el Word: '+e.message)}
  };
  $('vgRestore').onclick=()=>$('vgImport').click();
- $('vgImport').onchange=async e=>{if(!e.target.files.length)return;try{const p=JSON.parse(await e.target.files[0].text());if(!Number.isInteger(p.count)||p.count<1||p.count>100||!['lat1','lat4','gr1'].includes(p.course)||!Array.isArray(p.units)||p.units.length<p.count||!p.units.every(u=>typeof u.title==='string'&&typeof u.text==='string'&&['simple','complete'].includes(u.mode)&&Array.isArray(u.rows)&&u.rows.every(r=>typeof r.entry==='string'&&typeof r.meaning==='string'&&typeof r.form==='string'&&Array.isArray(r.candidates))))throw Error('Formato incorrecto');project=migrateProject(p);qualitySnapshot=null;project.lang=['es','va'].includes(p.lang)?p.lang:'es';selected=0;initWorkspaces();render();save();const pending=project.units.slice(0,project.count).filter(stale).length;status('Proyecto importado: '+project.count+' unidades y textos conservados. '+pending+' por analizar. Puedes pulsar «Analizar y revisar vocabulario» o «Exportar Word» (analizará las pendientes).')}catch(e){status('No se pudo importar: '+e.message)}finally{e.target.value=''}};
+ $('vgImport').onchange=async e=>{if(!e.target.files.length)return;try{const p=JSON.parse(await e.target.files[0].text());if(!Number.isInteger(p.count)||p.count<1||p.count>100||!['lat1','lat4','gr1'].includes(p.course)||!Array.isArray(p.units)||p.units.length<p.count||!p.units.every(u=>typeof u.title==='string'&&typeof u.text==='string'&&['simple','complete'].includes(u.mode)&&Array.isArray(u.rows)&&u.rows.every(r=>typeof r.entry==='string'&&typeof r.meaning==='string'&&typeof r.form==='string'&&Array.isArray(r.candidates))))throw Error('Formato incorrecto');project=migrateProject(p);qualitySnapshot=null;project.lang=['es','va'].includes(p.lang)?p.lang:'es';selected=0;
+   readersIndexed=false;initWorkspaces();render();save();
+   if(project.readerProposals&&Object.keys(project.readerProposals).length){
+    const persisted=await persistReaders();if(persisted)save();
+   }else if(project.readerStoreKey){
+    const imported=project,stored=await readerDb('get',project.readerStoreKey).catch(()=>null);
+    if(project===imported&&stored){project.readerProposals=stored;readersIndexed=true;render();save()}
+   }const pending=project.units.slice(0,project.count).filter(stale).length;status('Proyecto importado: '+project.count+' unidades y textos conservados. '+pending+' por analizar. Puedes pulsar «Analizar y revisar vocabulario» o «Exportar Word» (analizará las pendientes).')}catch(e){status('No se pudo importar: '+e.message)}finally{e.target.value=''}};
  $('vgShow').onclick=()=>{$('examLayout').style.display='none';$('vocabManager').classList.remove('active');$('vocabularyGenerator').classList.add('active');for(const id of ['vmShowExam','vmShowList'])$(id).classList.remove('active');$('vgShow').classList.add('active');render();if($('vgQualityPanel').open)refreshQuality()};
  for(const id of ['vmShowExam','vmShowList'])$(id).addEventListener('click',()=>{$('vocabularyGenerator').classList.remove('active');$('vgShow').classList.remove('active')});
  render();
+ const current=project;
+ if(project.readerProposals&&Object.keys(project.readerProposals).length){
+  persistReaders().then(success=>{if(project===current&&success)save()});
+ }else if(project.readerStoreKey){
+  readerDb('get',project.readerStoreKey).then(stored=>{
+   if(project!==current||!stored)return;
+   project.readerProposals=stored;readersIndexed=true;render();save();
+  }).catch(()=>status('No se pudo recuperar el índice del lector. Puedes volver a importar el JSON.'));
+ }
  if(project.course==='gr1')prepareEulexis().catch(error=>eulexisStatus('No se pudo abrir Eulexis: '+error.message));
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
