@@ -179,7 +179,7 @@ function greekReferenceForms(bank){
   'Αἴγυπτος':'Αἴγυπτος, –ου (ἡ)','Ἀλέξανδρος':'Ἀλέξανδρος, –ου',
   'Αἰσχύλος':'Αἰσχύλος, –ου','Ἀφροδίτη':'Ἀφροδίτη, –ης',
   'ἄγγελος':'ἄγγελος, –ου','ἀγρός':'ἀγρός, –οῦ',
-  'σωτηρία':'σωτηρία, –ας (ἡ)',
+  'σωτηρία':'σωτηρία, –ας (ἡ)','Δημοσθένης':'Δημοσθένης, –ους (ὁ)',
   'δειλός':'δειλός, –ή, –όν','πολέμιος':'πολέμιος, –α, –ον',
   'τριήρης':'τριήρης, –ες','Μαραθών':'Μαραθών, –ῶνος',
   'ὁ, ἡ, τό':'ὁ, ἡ, τό (art.)',
@@ -432,6 +432,9 @@ function greekReferenceForms(bank){
   // no implican comprobación de paradigmas enteros ni elevan el índice a source 5.
   ['σωτηρία','salvación',['σωτηρίας']],
   ['ὁράω','ver',['ἑώρα']],
+  // No extrapolar temas ni otras flexiones de estas formas del texto.
+  ['Δημοσθένης','Demóstenes',['Δημοσθένης']],
+  ['νίκη','victoria',['νίκαι']],
   ['Ἑλένη','Helena',['Ἑλένη']]
  ];
  for(const [lemma,meaning,forms] of confirmed)addIrregular(forms,lemma,meaning);
