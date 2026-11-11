@@ -139,6 +139,17 @@ console.log('Vocabulario: prioridad docente, deduplicación por UD, ambigüedad,
  try{
  const page=await browser.newPage({acceptDownloads:true});const errors=[];page.on('pageerror',e=>errors.push(e.message));
  await page.goto('file://'+root+'/offline.html');await page.click('#vgShow');
+ await page.click('#vgQualityPanel summary');
+ await page.click('#vgQualityRefresh');
+ await page.waitForFunction(()=>document.getElementById('vgQualityTotals').textContent.includes('Fichas:'));
+ assert.ok(await page.locator('#vgQualityRows tr').count()>4,'Deben presentarse varias unidades');
+ assert.match(await page.locator('#vgQualityQueueSummary').innerText(),/fichas requieren contraste/);
+ const qualityDownload=page.waitForEvent('download');await page.click('#vgQualityExport');
+ const qualityFile=await qualityDownload;
+ const qualityJSON=JSON.parse(fs.readFileSync(await qualityFile.path(),'utf8'));
+ assert.equal(qualityJSON.course,'lat1');
+ assert.equal(qualityJSON.totals.rows,1106);
+ console.log('Panel de cobertura por UD, filtro de pendientes y exportación JSON operativos.');
  const analyzeAll=page.locator('#vgAnalyzeAll');
  assert.equal(await analyzeAll.innerText(),'Analizar todas las unidades');
  assert.ok(await analyzeAll.evaluate(el=>!!el.previousElementSibling?.querySelector('#vgMode')));

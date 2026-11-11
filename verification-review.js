@@ -5,7 +5,7 @@
 (function () {
 'use strict';
 const STORE='examina-morph-review-v1';
-const NAMES={lat1:'Latín I',gr1:'Griego I'};
+const NAMES={lat1:'Latín I',lat4:'Latín 4.º ESO',gr1:'Griego I'};
 const CURATED=[
  {course:'lat1',lemma:'moveo',kind:'correccion',priority:0,form:'moveo, movi, movitum (2ª)',
   detail:'El supino documentado es motum, no movitum. Propuesta: moveo, movi, motum (2.ª).',
@@ -125,8 +125,8 @@ async function init(){
  if(!parent)return;
  const section=document.createElement('section');section.id='morphTeacherReview';section.className='field';
  section.innerHTML='<details><summary><strong>Revisión filológica y decisiones docentes</strong></summary>'+
-  '<p class="hint">Primero Latín I; después Griego I. Clasificación conservadora: ninguna marca convierte una propuesta en forma verificada ni altera las soluciones del generador. Las decisiones se guardan únicamente en este navegador; exporta una copia.</p>'+
-  '<div class="review-controls"><label for="reviewCourse">Curso<select id="reviewCourse"><option value="lat1">Latín I</option><option value="gr1">Griego I</option></select></label>'+
+  '<p class="hint">Latín I, Latín 4.º ESO y Griego I. Clasificación conservadora: ninguna marca convierte una propuesta en forma verificada ni altera las soluciones del generador. Las decisiones se guardan únicamente en este navegador; exporta una copia.</p>'+
+  '<div class="review-controls"><label for="reviewCourse">Curso<select id="reviewCourse"><option value="lat1">Latín I</option><option value="lat4">Latín 4.º ESO</option><option value="gr1">Griego I</option></select></label>'+
   '<label for="reviewKind">Tipo de incidencia<select id="reviewKind"><option value="">Todas</option><option value="correccion">Corrección contrastada</option><option value="etiquetas">Etiquetas dudosas</option><option value="ampliacion">Ampliación contrastada</option><option value="candidatas">Solo candidatas</option><option value="sin-flexion">Sin flexión</option><option value="variantes">Variantes</option><option value="homografia">Homografía</option></select></label>'+
   '<label for="reviewUnit">Unidad<select id="reviewUnit"><option value="">Todas las unidades</option></select></label>'+
   '<label for="reviewQuery">Buscar lema o forma<input type="text" id="reviewQuery" placeholder="sum / γίγνομαι" autocomplete="off"></label></div>'+
