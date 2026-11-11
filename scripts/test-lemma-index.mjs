@@ -32,7 +32,7 @@ assert.equal(data.source.externalVerification.length,6);
 assert.ok(data.extensions.rejected_for_conflict.every(x=>x.lemma&&x.features.length>0));
 assert.equal(Object.keys(data.vocabulary.lat).length,772+(data.extensions?.readerEnrichment?.additions?.lat||0),
  'El enriquecimiento solo puede añadir lemas presentes en el banco docente');
-assert.equal(Object.keys(data.vocabulary.grc).length,349+(data.extensions?.readerEnrichment?.additions?.grc||0),
+assert.equal(Object.keys(data.vocabulary.grc).length,351+(data.extensions?.readerEnrichment?.additions?.grc||0),
  'El enriquecimiento griego solo puede añadir lemas presentes en el banco docente');
 assert.ok(data.vocabulary.lat.amo?.lat1,'Falta el lema latino del vocabulario docente');
 assert.ok(data.vocabulary.grc['λυω']?.gr1,'Falta λύω en el vocabulario griego');
@@ -50,7 +50,7 @@ for(const course of ['lat1','lat4','gr1']){
  assert.ok(units.every(u=>/^UD\s*[1-9]/.test(u.unit)));
 }
 
-assert.ok(grCoverage.lemmas>=349,'No puede perderse ningún lema del temario de Griego I');
+assert.ok(grCoverage.lemmas>=351,'No puede perderse ningún lema del temario de Griego I');
 assert.ok(latCoverage.documented>250&&latCoverage.proposed>100);
 assert.ok(grCoverage.documented>=100&&grCoverage.onlyCitation>=0);
 assert.ok(grCoverage.proposed>0,'Faltan candidatos nominales griegos claramente identificados');
