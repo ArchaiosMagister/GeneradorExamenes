@@ -1448,7 +1448,7 @@ function generate(){
  const lexQuestion=buildLatinLexQuestion(course,chosen);
  if(examQuestionEnabled('lex')&&lexQuestion){
   add(course==='latin1'
-   ?t('Léxico: elige dos de las '+examSelectedLexParts(course).length+' cuestiones siguientes.','Lèxic: tria dues de les '+examSelectedLexParts(course).length+' qüestions següents.')
+   ?t('Léxico: elige dos de las '+(lexQuestion.count||examSelectedLexParts(course).length)+' cuestiones siguientes.','Lèxic: tria dues de les '+(lexQuestion.count||examSelectedLexParts(course).length)+' qüestions següents.')
    :t('Léxico.','Lèxic.'),
    lexQuestion.html,lexQuestion.solution);
  }
@@ -3173,7 +3173,11 @@ function buildLatinLexQuestion(course,chosen){
    html.push('<p class="small no-print">Verbo escogido sin derivados documentados: lo corregirá el profesor.</p>');
   // En una pregunta de cuatro palabras no es necesario representar todas las normas acumuladas.
  }
- return html.some(x=>x.includes('lex-subquestion'))?{html:html.join(''),solution:''}:null;
+ const availableCount=html.filter(x=>x.includes('lex-subquestion')).length;
+ // «Elige dos de tres/cuatro» solo se imprime si hay suficientes ejercicios.
+ // Los avisos de banco incompleto siguen visibles en el menú de léxico.
+ return availableCount>=(course==='latin1'?3:1)?
+  {html:html.join(''),solution:'',count:availableCount}:null;
 }
 
 refreshCourse();
