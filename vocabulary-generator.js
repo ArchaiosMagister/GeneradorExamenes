@@ -56,7 +56,12 @@ const latinInvariables=[
  [['heri'],'heri (adv.)','ayer','ahir'],
  [['cras'],'cras (adv.)','mañana','demà'],
  [['bene'],'bene (adv.)','bien','bé'],
- [['male'],'male (adv.)','mal','mal']
+ [['male'],'male (adv.)','mal','mal'],
+ [['dum'],'dum (conj.)','mientras, hasta que','mentre, fins que'],
+ [['at'],'at (conj.)','pero, en cambio','però, en canvi'],
+ [['statim'],'statim (adv.)','inmediatamente','immediatament'],
+ [['illic'],'illic (adv.)','allí','allí'],
+ [['longe'],'longe (adv.)','lejos','lluny']
 ];
 const latinCore=new Map();
 for(const [forms,entry,meaning,meaning_va] of latinInvariables){
@@ -390,7 +395,44 @@ function latinExpandedForms(bank){
     'ibo','ibis','ibit','ibimus','ibitis','ibunt','ire','ii','ivi','iit','ierunt','ierat']},
   {lemma:'dico',entry:'dico, dixi, dictum (3ª)',meaning:'decir',forms:['dic']},
   {lemma:'duco',entry:'duco, duxi, ductum (3ª)',meaning:'conducir',forms:['duc']},
-  {lemma:'facio',entry:'facio, feci, factum (mx.)',meaning:'hacer',forms:['fac']}
+  {lemma:'facio',entry:'facio, feci, factum (mx.)',meaning:'hacer',forms:['fac']},
+  {lemma:'humus',entry:'humus, –i (f.)',meaning:'suelo, tierra',forms:['humi']},
+  {lemma:'mare',entry:'mare, maris (n.)',meaning:'mar',forms:['mare','maria','mari','marium','maribus']},
+  {lemma:'tres',entry:'tres, tria (num.)',meaning:'tres',forms:['tres','tria','trium','tribus']},
+  {lemma:'mille',entry:'mille, milia (num.)',meaning:'mil',forms:['mille','milia','milium','milibus']},
+  {lemma:'idem',entry:'idem, eadem, idem (pron.)',meaning:'el mismo, la misma',
+   forms:['idem','eadem','eiusdem','eidem','eundem','eandem','eodem','eadem','iidem','eaedem',
+    'eorundem','earundem','eisdem','iisdem','eosdem','easdem']},
+  {lemma:'pereo',entry:'pereo, perii, peritum (irr.)',meaning:'perecer',
+   forms:['pereo','perire','periit','perierat','perierunt','perierant']},
+  {lemma:'redeo',entry:'redeo, redii, reditum (irr.)',meaning:'regresar',
+   forms:['redeo','redire','rediit','redierunt','redierant','redierat']},
+  {lemma:'transeo',entry:'transeo, transii, transitum (irr.)',meaning:'atravesar',
+   forms:['transeo','transire','transiri','transiit','transierunt','transierant']},
+  {lemma:'confero',entry:'confero, contuli, collatum (irr.)',meaning:'reunir, llevar',
+   forms:['contuli','contulit','contulerunt','contulerant']},
+  {lemma:'infero',entry:'infero, intuli, illatum (irr.)',meaning:'llevar, introducir',
+   forms:['intuli','intulit','intulerunt','intulerant']},
+  {lemma:'aufugio',entry:'aufugio, aufugi, – (mx.)',meaning:'huir',
+   forms:['aufugit','aufugerunt','aufugerat']},
+  {lemma:'facilis',entry:'facilis, –e',meaning:'fácil',
+   forms:['facillimus','facillima','facillimum','facillimi','facillimis']},
+  {lemma:'similis',entry:'similis, –e',meaning:'semejante',
+   forms:['simillimus','simillima','simillimum','simillimi']},
+  {lemma:'dives',entry:'dives, divitis',meaning:'rico/a',
+   forms:['ditissimus','ditissima','ditissimum','ditissimi']},
+  {lemma:'eloquens',entry:'eloquens, eloquentis',meaning:'elocuente',
+   forms:['eloquentior','eloquentius','eloquentissimus','eloquentissima','eloquentissimum']},
+  {lemma:'malus',entry:'malus, –a, –um',meaning:'malo/a',
+   forms:['peior','peius','pessimus','pessima','pessimum','pessimi']},
+  {lemma:'bonus',entry:'bonus, –a, –um',meaning:'bueno/a',
+   forms:['melior','melius','optimus','optima','optimum']},
+  {lemma:'magnus',entry:'magnus, –a, –um',meaning:'grande',
+   forms:['maior','maius','maximus','maxima','maximum']},
+  {lemma:'parvus',entry:'parvus, –a, –um',meaning:'pequeño/a',
+   forms:['minor','minus','minimus','minima','minimum']},
+  {lemma:'multus',entry:'multus, –a, –um',meaning:'mucho/a',
+   forms:['plures','plura','plurimus','plurima','plurimum','plurimos']}
  ];
  for(const info of irregular){
   const existing=bank.find(row=>latinKey(head(row.entry))===latinKey(info.lemma));
