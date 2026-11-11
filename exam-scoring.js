@@ -59,7 +59,8 @@
  status.setAttribute('role','status');status.setAttribute('aria-live','polite');
  header.append(title,help,rows,status);
  const questions=document.getElementById('examQuestionSettings');
- if(questions)questions.after(header);else panel.prepend(header);
+ if(questions?.parentElement===panel)questions.after(header);
+ else panel.insertBefore(header,document.getElementById('group-sentences')||panel.firstChild);
  let renderPending=false,observer=null,previousQuestions=[];
  const find=()=>[...paper.querySelectorAll('.exam-sheet .exam-question')].filter(el=>!el.closest('#answerkey'));
  const sum=()=>previousQuestions.reduce((total,item)=>total+(scores[item.key]||0),0);
