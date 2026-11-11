@@ -226,3 +226,49 @@ Las voces fuera del vocabulario de Griego I no se incorporan al generador.
 La publicación de la interfaz **no autoriza** publicar el índice Eulexis.
 La incertidumbre jurídica sobre los datos originales permanece y se
 documenta arriba.
+
+
+## Instalación personal de Eulexis en la PWA (sin redistribuir corpus)
+
+La PWA de Griego I ofrece ahora **«Activar Eulexis en este dispositivo»**.
+No hace falta instalar una aplicación de escritorio, importar a mano un JSON ni
+ejecutar código con permisos del profesor. El primer uso requiere Internet y
+descarga unos **30 MB** de fragmentos **directamente** del repositorio
+\`genuensis/lector-griego\` (revisión
+\`e3ca505b0e028af68a800673f5dc4565b0b05104\`). El código local procesa
+los lemas y las formas en el navegador: solo los análisis que corresponden a
+lemas del temario de Griego I se almacenan en IndexedDB bajo el origen de la
+PWA. Las fichas externas completas y las glosas de Bailly, LSJ y Pape nunca
+son replicadas ni incluidas en la publicación de GitHub Pages. El profesor
+puede eliminar los datos instalados; **las decisiones docentes se conservan
+aparte**.
+
+Conexión requerida: **solo para la instalación inicial o una reinstalación**.
+La revisión posterior funciona sin conexión, incluido el archivo autónomo
+\`offline.html\` en navegadores que permitan almacenamiento local. El espacio
+específico de la PWA instalada puede diferir del usado en Safari/Chrome:
+cada origen o instalación puede necesitar su propia activación. La política
+del navegador puede eliminar datos locales si hay poco almacenamiento.
+
+Este acceso directo al origen no resuelve la ambigüedad de licencias de los
+fragmentos redistribuidos por terceros: por eso **no se guardan en GitHub ni
+en los assets del sitio**. No constituye una aprobación de todas sus formas.
+Las propuestas se distinguen de las verificaciones docentes y las homografías
+siguen sujetas a revisión por tarjetas. Para la forma \`θεά\`, el adaptador
+excluye el lema distinto \`θέα\` ('vista'). El adaptador emplea código propio
+de conversión Beta Code y una extracción mínima, sin ejecutar scripts
+descargados del origen. Las peticiones CORS se envían solo cuando el docente
+pulsa instalar. La instalación puede fallar si GitHub está inaccesible o el
+navegador impide el almacenamiento.
+
+Tests:
+- \`node scripts/test-eulexis-local.cjs\`: conversión, homografía,
+  filtrado por programa, invalidación de caché, sin necesidad de corpus real
+- \`node scripts/test-eulexis-browser.cjs\`: origen remoto interceptado con
+  fragmentos de prueba, instalación con un clic y caché IndexedDB sin red
+- \`node scripts/test-greek-review-browser.cjs\`: el importador JSON manual
+  preexistente sigue disponible y no exige Internet
+
+**Límite funcional**: la instalación amplía la revisión filológica; **no
+convierte las formas de Eulexis en formas verificadas para exámenes**,
+ni modifica automáticamente las 399 fichas o sus glosas.
