@@ -204,6 +204,9 @@ function latinExpandedForms(bank){
    add(l,record); // masculino nom./voc. sin -us
    addMany(stem,['i','o','um','orum','is','os','a','ae','am','arum','as'],record);
    decl12(stem,record,'n');
+   const compStem=fields[1].endsWith('era')?l:stem;
+   addMany(compStem,['ior','ius','iorem','iore','iori','iores','ioribus','iora'],record);
+   decl12(stem+'rim',record);
   }else if(fields.length===2&&fields[1]==='e'&&l.endsWith('is')){
    const stem=l.slice(0,-2);
    addMany(stem,['is','e','em','i','es','ia','ium','ibus'],record);
@@ -212,7 +215,7 @@ function latinExpandedForms(bank){
     addMany(stem,['ior','ius','iorem','iore','iori','iores','iorum','ioribus','iora'],record);
    }
   }else if(fields.length===2&&l.endsWith('a')&&fields[1]==='ae'){
-   addMany(l.slice(0,-1),proper?['a','ae','am','is']:['a','ae','am','arum','is','as'],record);
+   addMany(l.slice(0,-1),proper?['a','ae','am']:['a','ae','am','arum','is','as'],record);
   }else if(fields.length===2&&['us','um'].some(e=>l.endsWith(e))&&fields[1]==='i'){
    const root=l.slice(0,-2),neuter=l.endsWith('um');
    if(proper){
@@ -222,11 +225,19 @@ function latinExpandedForms(bank){
    const stem=l.slice(0,-2);
    addMany(stem,proper?['is','em','i','e']:['is','em','i','e','es','ibus'],record);
   }else if(fields.length===2&&fields[1].endsWith('is')&&fields[1].length>4&&
-     !['bos','vis','sus','grus','iuppiter'].includes(l)){
+     !/\(n\.\)/i.test(raw)&&!['bos','vis','sus','grus','iuppiter'].includes(l)){
    const stem=fields[1].slice(0,-2);
    addMany(stem,proper?['is','em','i','e']:['is','em','i','e','es','ibus'],record);
   }
   if(!annotated)continue;
+  // Los deponentes dan un participio perfecto activo en su propio enunciado.
+  // Las otras formas se proponen sin certificarlas individualmente.
+  if(l.endsWith('or')&&fields[1]&&/^(?:[a-z]+(?:tus|sus)) sum$/.test(fields[1])){
+   const p=fields[1].slice(0,-4),stemP=p.slice(0,-2);
+   add(p,record);
+   decl12(stemP,{...record,attested:false,origin:'participio deponente flexionado: pendiente de contraste'});
+   continue;
+  }
   const group=annotated[1],end=group==='2ª'?'eo':(['4ª','mx.'].includes(group)?'io':'o');
   if(!l.endsWith(end)||!l.slice(0,-end.length))continue;
   const stem=l.slice(0,-end.length);
@@ -240,6 +251,9 @@ function latinExpandedForms(bank){
   const rule=formsByGroup[group];
   add(stem+rule.inf,record);
   if(!['dico','duco','facio','fero'].includes(l))add(stem+rule.imp,record);
+  const participleStem=stem+(group==='1ª'?'ant':['4ª','mx.'].includes(group)?'ient':'ent');
+  add(participleStem.slice(0,-1)+'s',record);
+  addMany(participleStem,['is','em','i','e','es','ium','ibus'],record);
   const endingActive=['am','as','at','amus','atis','ant'];
   for(const ending of endingActive)add(stem+rule.imperf+ending,record);
   // Pasiva de presente e imperfecto: no se extrapola a facio -> fio.
@@ -274,7 +288,13 @@ function latinExpandedForms(bank){
     add(root+end,record);
    }
    const sup=fields[2]||'';
-   if(sup.endsWith('um')&&sup.length>3)decl12(sup.slice(0,-2),record);
+   if(sup.endsWith('um')&&sup.length>3){
+    // Un error en el supino docente no puede validar un falso participio.
+    // Ofrecer como hipótesis revisable, conservando el índice contrastado.
+    const proposal={...record,attested:false,
+     origin:'participio deducido del supino docente: revisar individualmente'};
+    decl12(sup.slice(0,-2),proposal);
+   }
   }
  }
  // Modos y perfectos irregulares de enorme frecuencia, explícitos.
