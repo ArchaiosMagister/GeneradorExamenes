@@ -880,6 +880,8 @@ function init(){
   const data=await linguistic().load();
   const result=install?await adapter.install(data,eulexisStatus):await adapter.load(data);
   const catalog=data.vocabulary?.grc||{},mapped=new Map();
+  const teacherGloss=new Map(vocab.filter(row=>courseOf(row)==='greek1')
+   .map(row=>[adapter.norm(head(row.entry)),row.meaning||'']));
   for(const proposal of result?.rows||[]){
    const entry=catalog[adapter.norm(proposal.lemma)]?.gr1;
    if(!entry?.entry)continue; // Una glosa pendiente no impide consultar la lectura morfológica.
@@ -887,7 +889,7 @@ function init(){
    if(!mapped.has(form))mapped.set(form,new Map());
    const signature=entry.entry+'|'+proposal.analysis;
    if(!mapped.get(form).has(signature))mapped.get(form).set(signature,{
-    lemma:proposal.lemma,entry:entry.entry,meaning:entry.meaning||'',analysis:proposal.analysis
+    lemma:proposal.lemma,entry:entry.entry,meaning:teacherGloss.get(adapter.norm(proposal.lemma))||'',analysis:proposal.analysis
    });
   }
   eulexisByForm=new Map([...mapped].map(([form,values])=>[form,[...values.values()]]));
@@ -916,7 +918,7 @@ function init(){
   for(const candidate of options){
    const button=document.createElement('button');button.type='button';button.className='vg-eulexis-choice secondary';
    const name=document.createElement('strong');name.textContent=candidate.entry;
-   const detail=document.createElement('span');detail.textContent=candidate.analysis+' · '+candidate.meaning;
+   const detail=document.createElement('span');detail.textContent=candidate.analysis+' · '+(candidate.meaning||'traducción pendiente en el banco docente');
    button.append(name,detail);
    button.onclick=()=>{Object.assign(r,{lemma:candidate.lemma,entry:candidate.entry,
     meaning:candidate.meaning,status:'manual',
