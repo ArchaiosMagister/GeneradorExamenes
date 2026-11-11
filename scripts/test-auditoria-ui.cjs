@@ -30,7 +30,17 @@ assert.match(index,/if\(\/artículo\|articulo\/\.test\(a\)\)return null/,
   const errors=[];
   page.on('pageerror',error=>errors.push(error.message));
   await page.goto('http://127.0.0.1:'+server.address().port+'/offline.html',{waitUntil:'load'});
-  await page.locator('#examQuestionMenus .exam-question-panel').first().waitFor();
+  await page.waitForTimeout(500);
+  console.log('Diagnóstico de arranque:',JSON.stringify({
+   errors,
+   ...(await page.evaluate(()=>({
+    questionCount:document.querySelectorAll('#examQuestionMenus .exam-question-panel').length,
+    examPanel:!!document.getElementById('examQuestionSettings'),
+    height:document.getElementById('examQuestionMenus')?.getBoundingClientRect().height,
+    activeTab:document.querySelector('.vocab-tabbar button.active')?.textContent
+   })))
+  }));
+  await page.locator('#examQuestionMenus .exam-question-panel').first().waitFor({timeout:5000});
   assert.equal(await page.locator('.vocab-tabbar>button').count(),3);
   assert.equal(await page.locator('#examQuestionMenus details[data-question]').count(),6,
    'Cada pregunta debe tener su propio desplegable numerado');
