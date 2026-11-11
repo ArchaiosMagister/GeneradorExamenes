@@ -102,6 +102,8 @@ jobs:
         run: node scripts/test-vocabulary-quality.cjs
       - name: Probar generador de vocabulario por unidades y Word
         run: npm run vocabulary:test
+      - name: Auditar las 100 formas más frecuentes de Griego I
+        run: node scripts/audit-greek-frequent-100.cjs
       - name: Guardar Word de diez frases para comprobación visual
         if: always()
         uses: actions/upload-artifact@v4
