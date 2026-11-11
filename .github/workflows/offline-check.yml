@@ -44,6 +44,12 @@ on:
 permissions:
   contents: read
 
+# Evita acumular decenas de comprobaciones obsoletas de la misma PR;
+# las pruebas de main nunca son canceladas por las de una rama.
+concurrency:
+  group: offline-check-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
   offline:
     runs-on: ubuntu-24.04
