@@ -425,9 +425,23 @@ function latinExpandedForms(bank){
   // Los deponentes dan un participio perfecto activo en su propio enunciado.
   // Las otras formas se proponen sin certificarlas individualmente.
   if(l.endsWith('or')&&fields[1]&&/^(?:[a-z]+(?:tus|sus)) sum$/.test(fields[1])){
-   const p=fields[1].slice(0,-4),stemP=p.slice(0,-2);
+   const p=fields[1].slice(0,-4),stemP=p.slice(0,-2),group=annotated[1];
    add(p,record);
    decl12(stemP,{...record,attested:false,origin:'participio deponente flexionado: pendiente de contraste'});
+   // Las desinencias activas NO sirven para los deponentes. El imperfecto
+   // deponente sí es productivo y la conjugación está dada por el docente.
+   const stem=(group==='2ª'||group==='4ª'||group==='mx.')?
+    l.slice(0,-3):l.slice(0,-2);
+   const deponent={
+    '1ª':{present:['or','aris','atur','amur','amini','antur'],imperfect:'ab'},
+    '2ª':{present:['eor','eris','etur','emur','emini','entur'],imperfect:'eb'},
+    '3ª':{present:['or','eris','itur','imur','imini','untur'],imperfect:'eb'},
+    '4ª':{present:['ior','iris','itur','imur','imini','iuntur'],imperfect:'ieb'},
+    'mx.':{present:['ior','eris','itur','imur','imini','iuntur'],imperfect:'ieb'}
+   }[group];
+   addMany(stem,deponent.present,record);
+   addMany(stem+deponent.imperfect,
+    ['ar','aris','atur','amur','amini','antur'],record);
    continue;
   }
   const group=annotated[1],end=group==='2ª'?'eo':(['4ª','mx.'].includes(group)?'io':'o');
@@ -555,7 +569,51 @@ function latinExpandedForms(bank){
   {lemma:'parvus',entry:'parvus, –a, –um',meaning:'pequeño/a',
    forms:['minor','minus','minimus','minima','minimum']},
   {lemma:'multus',entry:'multus, –a, –um',meaning:'mucho/a',
-   forms:['plures','plura','plurimus','plurima','plurimum','plurimos']}
+   forms:['plures','plura','plurimus','plurima','plurimum','plurimos']},
+  {lemma:'vivo',entry:'vivo, vixi, victum (3ª)',meaning:'vivir',
+   forms:['vivo','vivis','vivit','vivimus','vivitis','vivunt']},
+  {lemma:'solvo',entry:'solvo, solvi, solutum (3ª)',meaning:'soltar, pagar',
+   forms:['solvo','solvis','solvit','solvimus','solvitis','solvunt',
+    'solvebam','solvebas','solvebat','solvebamus','solvebatis','solvebant']},
+  {lemma:'fugio',entry:'fugio, fugi, fugitum (mx.)',meaning:'huir',
+   forms:['fugio','fugis','fugit','fugimus','fugitis','fugiunt',
+    'fugi','fugisti','fugit','fugimus','fugistis','fugerunt',
+    'fugeram','fugeras','fugerat','fugeramus','fugeratis','fugerant']},
+  {lemma:'soleo',entry:'soleo, solitus sum (2ª)',meaning:'soler',
+   forms:['solitus','solita','solitum']},
+  {lemma:'absum',entry:'absum, afui, – (irr.)',meaning:'estar ausente, distar',
+   forms:['absum','abes','abest','absumus','abestis','absunt',
+    'aberam','aberas','aberat','aberamus','aberatis','aberant',
+    'afui','afuit']},
+  {lemma:'adsum',entry:'adsum, adfui, – (irr.)',meaning:'estar presente, asistir',
+   forms:['adsum','ades','adest','adsumus','adestis','adsunt',
+    'aderam','aderas','aderat','aderamus','aderatis','aderant',
+    'adfui','affui','adfuit']},
+  {lemma:'praesum',entry:'praesum, praefui, – (irr.)',
+   meaning:'estar al frente de',
+   forms:['praesum','praees','praeest','praesumus','praeestis','praesunt',
+    'praeeram','praeeras','praeerat','praeeramus','praeeratis','praeerant',
+    'praefui','praefuisti','praefuit','praefuerunt']},
+  {lemma:'volo',entry:'volo, volui, – (irr.)',meaning:'querer',
+   forms:['volo','vis','vult','volumus','vultis','volunt',
+    'volebam','volebas','volebat','volebamus','volebatis','volebant']},
+  {lemma:'duo',entry:'duo, duae, duo (num.)',meaning:'dos',
+   forms:['duo','duae','duos','duas','duorum','duarum','duobus','duabus']},
+  {lemma:'sexcenti',entry:'sexcenti, –æ, –a (num.)',meaning:'seiscientos',
+   forms:['sexcenti','sexcentae','sexcenta','sexcentos','sexcentas',
+    'sexcentorum','sexcentarum','sexcentis']},
+  {lemma:'Belgæ',entry:'Belgæ, –arum (m. pl.)',meaning:'belgas',
+   forms:['Belgae','Belgarum','Belgis','Belgas']},
+  {lemma:'Atuatuci',entry:'Atuatuci, –orum (m. pl.)',meaning:'atuatucos',
+   forms:['Atuatuci','Atuatucorum','Atuatucis','Atuatucos']},
+  {lemma:'Allobroges',entry:'Allobroges, –um (m. pl.)',meaning:'alóbroges',
+   forms:['Allobroges','Allobrogum','Allobrogibus']},
+  {lemma:'Cannae',entry:'Cannae, –arum (f. pl.)',meaning:'Cannas',
+   forms:['Cannae','Cannarum','Cannis','Cannas']},
+  {lemma:'comitia',entry:'comitia, –orum (n. pl.)',meaning:'comicios',
+   forms:['comitia','comitiorum','comitiis']},
+  {lemma:'nonnumquam',entry:'nonnumquam (adv.)',meaning:'a veces',
+   forms:['nonnumquam']}
  ];
  for(const info of irregular){
   const existing=bank.find(row=>latinKey(head(row.entry))===latinKey(info.lemma));
