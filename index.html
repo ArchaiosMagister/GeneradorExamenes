@@ -992,6 +992,23 @@ function analyzeExamVocabulary(text,course,bank){
  const data=window.ExaminaOfflineLemmatizer.currentData()||emptyExamLemmaIndex;
  return engine.entries(engine.analyze(data,text,({latin1:'lat1',latin4:'lat4',greek1:'gr1'})[course],bank));
 }
+// Las preposiciones sirven para el análisis contextual, pero se omiten en Word.
+const latinExamPrepositions=new Set('a ab abs ad ante apud circum circa contra cum de e ex extra in inter intra ob per post prae pro propter sine sub super trans ultra'.split(' '));
+const greekExamPrepositions=new Set(['ἀπό','ἀντί','ἀμφί','διά','εἰς','ἐκ','ἐξ','ἐν','ἐπί','κατά','μετά','παρά','περί','πρό','πρός','σύν','ὑπέρ','ὑπό','χωρίς','ἄνευ'].map(normLex));
+function examGlossaryIsPreposition(row,course){
+ const normalized=normLex(row.form);
+ return course==='greek1'?greekExamPrepositions.has(normalized):latinExamPrepositions.has(normalized);
+}
+// Vincula citas plurales docentes al nominativo plural nominal registrado.
+// La vinculación solo afecta al glosario; no verifica nuevas flexiones.
+function examPluralCitation(row,bank){
+ const matches=bank.filter(x=>examKey(x.entry)===normLex(row.form)&&
+  /,\s*[-–]\s*orum\b/i.test(x.entry));
+ if(matches.length!==1)return null;
+ const plural=row.candidates?.some(candidate=>candidate.attested&&
+  [...(candidate.morphTags||[])].some(tags=>/^N;NOM;PL(?:;|$)/.test(tags)));
+ return plural?matches[0]:null;
+}
 function buildFinalLexicon(chosen,sentences){
  if(!$('autoGloss').checked)return '';
  const course=currentCourse(),greek=course==='greek1';
@@ -1004,8 +1021,13 @@ function buildFinalLexicon(chosen,sentences){
  }
  const text=sentences.map(x=>x.text).join('\n');
  for(const row of analyzeExamVocabulary(text,course,bank)){
+  if(examGlossaryIsPreposition(row,course))continue;
   if(row.status==='documented')add(row);
-  else unresolved.add(row.form);
+  else{
+   const citation=course==='greek1'?null:examPluralCitation(row,bank);
+   if(citation)add(citation);
+   else unresolved.add(row.form);
+  }
  }
  const rows=[...found.values()].filter(x=>
   !/\(\s*(?:prep\.?|preposición)\b|\s+\+\s*(?:genitivo|acusativo|dativo|ablativo)/iu.test(x.entry)&&
