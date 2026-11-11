@@ -272,7 +272,7 @@ async function checkFile(browser,filename){
   assert.equal(await page.locator('#group-sentences').isVisible(),shouldHaveSent,filename+': menú de oraciones fuera de contexto');
   assert.equal(await page.locator('#group-vocab').isVisible(),shouldHaveSent,filename+': vocabulario fuera de contexto');
   assert.equal(await page.locator('#group-culture').isVisible(),course==='latin4',filename+': cultura visible fuera de Latín 4.º');
-  assert.equal(await page.locator('#examQuestionMenus [data-question="lex"]').count()>0,course!=='greek1'&&shouldHaveSent,
+  assert.equal(await page.locator('#examQuestionMenus [data-question="lex"]').count()>0,course!=='greek1',
    filename+': sección de léxico incoherente');
   assert.equal(await page.locator('#examQuestionMenus [data-question="culture"]').count()>0,course==='latin4',
    filename+': sección de cultura incoherente');
