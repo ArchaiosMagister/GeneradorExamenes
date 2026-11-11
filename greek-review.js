@@ -202,7 +202,7 @@ async function init(){
    b.append(t,sub);b.addEventListener('click',()=>record('choose',opt.id));article.append(b);
   }
   for(const [action,titleText] of [['all','Conservar todas las interpretaciones (ambigua)'],
-   ['exclude','Excluir esta forma de la selección futura']]){
+   ['exclude','Descartar esta forma de la revisión']]){
    const b=document.createElement('button');b.type='button';b.className='secondary';
    b.style.margin='4px 8px 4px 0';b.textContent=titleText;b.addEventListener('click',()=>record(action));article.append(b);
   }
