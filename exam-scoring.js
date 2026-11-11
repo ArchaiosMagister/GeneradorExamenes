@@ -177,6 +177,19 @@
   Promise.resolve().then(sync);
  }
  observer=new MutationObserver(records=>{
+  // En un elemento contenteditable anidado, Playwright, Safari y algunos
+  // editores pueden cambiar nodos de texto sin emitir input desde el span.
+  // Observar el contenido garantiza que la puntuación escrita a mano se
+  // sincronice también en ese caso (sin regenerar ni perder el enunciado).
+  for(const record of records){
+   const node=record.target?.nodeType===1?record.target:record.target?.parentElement;
+   const span=node?.closest?.('.exam-question-points');
+   if(span?.isConnected&&span.dataset.scoringKey){
+    const cents=number(span.textContent);
+    if(cents!==null&&scores[span.dataset.scoringKey]!==cents)
+     setScore(span.dataset.scoringKey,cents,{source:'preview'});
+   }
+  }
   if(records.some(record=>record.type==='childList'&&(
    [...record.addedNodes].some(node=>node.nodeType===1&&(
     node.classList?.contains('exam-sheet')||node.classList?.contains('exam-question')||node.querySelector?.('.exam-question')
