@@ -577,6 +577,7 @@ html[data-appearance="oled"] #examScoring .exam-scoring-correct{color:#a0e9cd}
 .vocab-tabbar .appearance-picker{flex:0 1 auto;margin-left:8px}
 .exam-coursebar{background:linear-gradient(115deg,var(--top-start,#16355d),var(--top-end,#244a77));padding:5px 20px 19px;border-bottom:2px solid var(--top-edge,#9fb9d6)}
 .exam-coursebar #exam-header-controls{margin:0 auto;max-width:1190px}
+body:has(.vocab-manager.active) .exam-coursebar{display:none}
 .quick-actions{display:none!important} /* Los controles de exportación permanecen en su panel; sin duplicados visuales. */
 @media(max-width:760px){.vocab-tabbar{padding:12px}.vocab-tabbar>button{flex:1 1 100%;max-width:none;min-height:51px}.vocab-tabbar .appearance-picker{margin-left:0}.exam-coursebar{padding:12px}}
 @media print{.exam-coursebar{display:none!important}}
