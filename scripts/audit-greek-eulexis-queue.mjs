@@ -12,7 +12,12 @@ const source=fs.existsSync(path)?JSON.parse(fs.readFileSync(path,'utf8')):null;
 const clean=source?source.rows.filter(r=>/^[\p{Script=Greek}\p{M}]+$/u.test(r.form)):[];
 const imported=source?api.parseImport({...source,rows:clean}):[];
 if(source)console.log('AUDITORIA_FORMATOS',JSON.stringify({total:source.rows.length,clean:clean.length,rejected:source.rows.length-clean.length}));
+const unmerged=api.buildCases(data,imported,{}, {mergeDialects:false});
 const cases=api.buildCases(data,imported);
+const afterIds=new Set(cases.map(x=>x.id));
+const removed=unmerged.filter(x=>!afterIds.has(x.id));
+if(source&&removed.length<100)throw Error('Solo se han resuelto '+removed.length+' falsas discrepancias: mínimo 100');
+console.log('AUDITORIA_DEPURACION '+JSON.stringify({antes:unmerged.length,despues:cases.length,resueltas:removed.length,ejemplos100:removed.slice(0,100).map(x=>x.form)}));
 let nOne=0,nMultiple=0,nMultiLemma=0,nSameLemma=0,nExternal=0;
 const samples={sameLemma:[],multiLemma:[],eulexisSingle:[]};
 for(const c of cases){
