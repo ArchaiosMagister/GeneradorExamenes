@@ -204,9 +204,11 @@ function latinExpandedForms(bank){
    add(l,record); // masculino nom./voc. sin -us
    addMany(stem,['i','o','um','orum','is','os','a','ae','am','arum','as'],record);
    decl12(stem,record,'n');
-   const compStem=fields[1].endsWith('era')?l:stem;
-   addMany(compStem,['ior','ius','iorem','iore','iori','iores','ioribus','iora'],record);
-   decl12(stem+'rim',record);
+   if(!['noster','vester'].includes(l)){
+    const compStem=fields[1].endsWith('era')?l:stem;
+    addMany(compStem,['ior','ius','iorem','iore','iori','iores','ioribus','iora'],record);
+    decl12(l+'rim',record); // pulcher -> pulcherrimus; miser -> miserrimus
+   }
   }else if(fields.length===2&&fields[1]==='e'&&l.endsWith('is')){
    const stem=l.slice(0,-2);
    addMany(stem,['is','e','em','i','es','ia','ium','ibus'],record);
