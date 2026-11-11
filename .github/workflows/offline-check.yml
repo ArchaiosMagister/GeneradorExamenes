@@ -122,6 +122,8 @@ jobs:
         run: node scripts/test-valenciano-browser.cjs
       - name: Verificar concordancia de tablas y umbrales de unidad
         run: node scripts/test-nominal-agreement.cjs
+      - name: Verificar variedad y concordancia de sintagmas nominales grecolatinos
+        run: node scripts/test-syntagm-variation.cjs
       - name: Probar PWA sin red y actualizaciones controladas
         run: npm run pwa:test
       - name: Probar en Chromium el lematizador sin conexión
