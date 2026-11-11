@@ -15,6 +15,7 @@ const base='https://raw.githubusercontent.com/ArchaiosMagister/VocabulaLatinaGra
 const output=path.join(root,'data/lemmas/teacher-forms.json');
 const greekCandidatePath=path.join(root,'data/lemmas/greek-nominal-candidates.json');
 const verifiedOverridesPath=path.join(root,'data/lemmas/verified-overrides.json');
+const greekEditorialPath=path.join(root,'data/lemmas/greek-editorial-decisions.json');
 const norm=s=>String(s||'').toLowerCase().normalize('NFD')
  .replace(/\u0345/g,'ι').replace(/\p{M}/gu,'').replace(/æ/g,'ae').replace(/œ/g,'oe')
  .replace(/ς/g,'σ').trim();
@@ -84,6 +85,41 @@ async function main(){
  }
  for(const lang of ['lat','grc'])if(Object.keys(catalog[lang]).length!==manifest.languages[lang].vocabulary_lemmas)
   throw Error('Inventario de lemas distinto del manifiesto: '+lang+' '+Object.keys(catalog[lang]).length);
+ // Las correcciones filológicas aprobadas NO proceden del índice externo fijado.
+ // Aplicarlas en cada compilación preserva las elecciones sin falsear UniMorph
+ // ni declarar contrastadas las nuevas flexiones. Validar siempre la fuente.
+ const greekEditorial=JSON.parse(await fs.readFile(greekEditorialPath,'utf8'));
+ if(greekEditorial.schema!==1||greekEditorial.course!=='gr1'||
+    greekEditorial.verifiedMorphology!==false||!Array.isArray(greekEditorial.decisions)||
+    greekEditorial.decisions.length!==17)throw Error('Revisión editorial griega desconocida');
+ const replacedGreekKeys=new Set(),suspendedGreekCandidates=new Set();
+ let greekEditorialAdded=0,greekEditorialRekeyed=0;
+ for(const item of greekEditorial.decisions){
+  if(item.course!=='gr1'||typeof item.entry!=='string'||typeof item.original!=='string')
+   throw Error('Decisión editorial sin curso o entrada: '+item.id);
+  const previous=head(item.original),next=head(item.entry);
+  if(!previous||!next)throw Error('Lema editorial inválido: '+item.id);
+  const existing=catalog.grc[previous]?.gr1;
+  if(item.sourceEntry===null){
+   if(existing||catalog.grc[next])throw Error('Una entrada supuestamente ausente ya existe: '+item.id);
+   catalog.grc[next]={gr1:{entry:item.entry,units:[]}};
+   greekEditorialAdded++;
+  }else{
+   if(!existing||![item.sourceEntry,item.entry].includes(existing.entry))
+    throw Error('Entrada fuente inesperada al regenerar: '+item.id+' ('+(existing?.entry||'ausente')+')');
+   if(previous!==next){
+    if(catalog.grc[next])throw Error('Colisión entre lemas editoriales: '+item.id);
+    catalog.grc[next]=catalog.grc[previous];
+    delete catalog.grc[previous];
+    replacedGreekKeys.add(previous);
+    greekEditorialRekeyed++;
+   }
+   catalog.grc[next].gr1.entry=item.entry;
+  }
+  if(item.candidatePolicy==='suppress-source-4')
+   suspendedGreekCandidates.add(next);
+  else if(item.candidatePolicy)throw Error('Política de candidatas no reconocida: '+item.id);
+ }
  const rows={lat:[],grc:[]};
  const counts={lat:{unimorph:0,docente:0,modelo:0,lema:0,contrastado:0},grc:{unimorph:0,docente:0,modelo:0,lema:0,wikcionario:0,contrastado:0}};
  const seen={lat:new Set(),grc:new Set()};
@@ -208,6 +244,8 @@ async function main(){
   documentedGreekSlots.get(k).add(norm(form));
  }
  for(const record of greekCandidateData.entries){
+  // θέα ('vista') y θεά ('diosa') no comparten paradigma: no reciclar candidatas.
+  if(suspendedGreekCandidates.has(record.lemma)||replacedGreekKeys.has(record.lemma))continue;
   if(!catalog.grc[record.lemma]||!['N','ADJ'].includes(record.kind)||!Array.isArray(record.forms))
    throw Error('Candidata griega ajena al inventario docente');
   for(const [surface,features] of record.forms){
@@ -224,6 +262,14 @@ async function main(){
   attribution:greekCandidateData.attribution,
   status:greekCandidateData.status,
   source:greekCandidateData.source
+ };
+ extensions.greek_editorial_decisions={
+  count:greekEditorial.decisions.length,
+  addedCitationOnlyEntries:greekEditorialAdded,
+  rekeyedLemmas:greekEditorialRekeyed,
+  suspendedCandidateLemmas:[...suspendedGreekCandidates],
+  verifiedFormsAdded:0,
+  note:'Enunciados y significados aprobados por el docente; no verifican ninguna flexión.'
  };
  for(const lang of ['lat','grc']){
   for(const lemma of Object.keys(catalog[lang])){
