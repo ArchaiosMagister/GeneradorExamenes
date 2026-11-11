@@ -23,8 +23,8 @@ const occurrences=new Map();
  // Count the same lexical tokens that the production analyzer actually sees.
 for(const unit of fixture.units)
  for(const source of unit.forms){
-  const cleaned=source.replace(/([\\p{L}\\p{M}])[’'](?=[\\p{L}\\p{M}])/gu,'$1 ');
-  for(const match of cleaned.matchAll(/[\\p{L}\\p{M}]+(?:[’'][\\p{L}\\p{M}]+)*/gu)){
+  const cleaned=source.replace(/([\p{L}\p{M}])[’'](?=[\p{L}\p{M}])/gu,'$1 ');
+  for(const match of cleaned.matchAll(/[\p{L}\p{M}]+(?:[’'][\p{L}\p{M}]+)*/gu)){
    const id=match[0].normalize('NFC');
    const record=occurrences.get(id)||{form:id,frequency:0,units:[]};
    record.frequency++;
