@@ -32,3 +32,7 @@ Hay desajustes entre ambas instantáneas: no se encuentra correspondencia exacta
 `vocabulary-generator.js` publica `window.ExaminaVocabulary`: análisis, deduplicación, presentación y XML Word. La interfaz es un adaptador del banco editable y del cargador del lematizador existentes. No altera los datos ni la lógica de generación de exámenes. El módulo se incluye tanto en la caché PWA como dentro del HTML autónomo mediante `offline:build`.
 
 Pruebas: `npm run vocabulary:test` (motor y navegador), `npm run offline:test`, `node scripts/test-lemma-index.mjs`, `node scripts/test-exam-models.cjs`, `npm run pwa:test`. Las pruebas de navegador admiten `PLAYWRIGHT_PATH` y `BROWSER_PATH` cuando Playwright o Chromium están instalados fuera del proyecto.
+
+
+## Enriquecimiento de lematización (PR de mejora)
+El índice puede ampliarse durante la compilación con las formas de Collatinus 11 (latín) y Eulexis (griego), filtradas por los lemas docentes. Para reproducir la actualización, ejecutar `node scripts/build-lemma-index.mjs` y `node scripts/enrich-from-readers.mjs`, con conexión de red únicamente durante la compilación. En la web publicada se usa el índice ya generado: no se consulta ningún servidor al analizar las palabras. Las fuentes quedan registradas por fila y no se confunden con validación docente. Véase `docs/lematizacion-lectores.md`.

@@ -32,7 +32,7 @@ function evidence(data,course){
  for(const [lemma,, ,source] of data.rows?.[lang]||[]){
   const info=data.vocabulary?.[lang]?.[lemma]?.[course];if(!info)continue;
   const record=map.get(normalize(info.entry||lemma));if(!record)continue;
-  if([0,1,5].includes(source))record.documented=true;
+  if([0,1,5,6,7].includes(source))record.documented=true;
   if([2,4].includes(source))record.proposed=true;
   if(source===3)record.citation=true;
   record.sources.add(source);

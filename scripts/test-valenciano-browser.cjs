@@ -46,7 +46,7 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
     };
     return {results,independent,wordVa:valencianWord.includes('xiqueta'),
      wordEs:spanishWord.includes('niña'),
-     paulusVa:valencianWord.includes('Paulus, –i:'),
+     paulusVa:valencianWord.includes('Paulus, –i</w:t>')&&valencianWord.includes('‘Paulus’'),
      imponoVa:valencianWord.includes('imposar')&&valencianWord.includes('posar damunt'),
      imponoEs:spanishWord.includes('imponer'),
      specific,teacher:verifyTeacher,
@@ -60,7 +60,9 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
    assert.match(report.independent,/ciutat/,file+': exportación de vocabulario griego sin valenciano');
    assert(report.wordVa&&report.wordEs,file+': la exportación Word no respeta el idioma');
    assert(report.paulusVa&&report.imponoVa&&report.imponoEs,
-    file+': elecciones sobre Paulus e impono no llegan a Word bilingüe');
+    file+': elecciones sobre Paulus e impono no llegan a Word bilingüe: '+JSON.stringify({
+     paulusVa:report.paulusVa,imponoVa:report.imponoVa,imponoEs:report.imponoEs
+    }));
    assert.match(report.specific.kaleo,/cridar.*anomenar/,file+': falta la acepción valenciana de καλέω');
    assert.match(report.specific.malista,/moltíssim.*especialment/,file+': falta la elección para μάλιστα');
    assert.match(report.specific.athenaios,/atenenc\/atenenca/,file+': atenenc/atenenca no se imprime');

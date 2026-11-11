@@ -61,6 +61,8 @@ jobs:
         run: node scripts/build-greek-nominal-candidates.mjs
       - name: Construir índice bilingüe del vocabulario docente
         run: node scripts/build-lemma-index.mjs
+      # La ampliación externa se mantiene en la PR experimental hasta
+      # resolver la procedencia/licencias de los datos morfológicos.
       - name: Validar banco de 510 evoluciones fonéticas y programa de Latín I
         run: node scripts/test-fonetica.mjs && node scripts/test-lat1-fonetica.mjs
       - name: Regenerar archivo autónomo
@@ -83,6 +85,13 @@ jobs:
         run: node scripts/test-vocabulary-quality.cjs
       - name: Probar generador de vocabulario por unidades y Word
         run: npm run vocabulary:test
+      - name: Guardar Word de diez frases para comprobación visual
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vocabulario-diez-frases-word
+          path: test-artifacts/vocabulario-latin-10-frases.docx
+          if-no-files-found: ignore
       - name: Probar las vistas previas de todos los modelos
         run: node scripts/test-preview.cjs
       - name: Validar valenciano en pantalla y Word para los tres cursos

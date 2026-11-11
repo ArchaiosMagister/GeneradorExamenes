@@ -5,6 +5,69 @@ const linguistic=()=>window.ExaminaOfflineLemmatizer;
 const key=s=>linguistic().normalize(s);
 const head=s=>String(s).split(',')[0].replace(/\s*\([^)]*\).*/,'').trim();
 
+/* Formas invariables de referencia: no requieren un paradigma flexivo.
+ * Se usan solo cuando el banco no contiene otra lectura para la misma forma.
+ * Las acepciones polisémicas pueden necesitar desambiguación contextual.
+ * Los enunciados y glosas específicos del docente tienen prioridad.
+ */
+const latinInvariables=[
+ [['a','ab','abs'],'a, ab (prep. + abl.)','de, desde, por','de, des de, per'],
+ [['ad'],'ad (prep. + ac.)','a, hacia','a, cap a'],
+ [['ante'],'ante (prep. + ac.)','delante de, antes de','davant de, abans de'],
+ [['apud'],'apud (prep. + ac.)','junto a, en casa de','al costat de, en casa de'],
+ [['circum'],'circum (prep. + ac.)','alrededor de','al voltant de'],
+ [['contra'],'contra (prep. + ac.)','contra','contra'],
+ [['de'],'de (prep. + abl.)','de, desde, acerca de','de, des de, sobre'],
+ [['e','ex'],'e, ex (prep. + abl.)','de, desde, fuera de','de, des de, fora de'],
+ [['in'],'in (prep. + ac./abl.)','a, hacia, en','a, cap a, en'],
+ [['inter'],'inter (prep. + ac.)','entre','entre'],
+ [['ob'],'ob (prep. + ac.)','a causa de','a causa de'],
+ [['per'],'per (prep. + ac.)','por, a través de','per, a través de'],
+ [['post'],'post (prep. + ac.)','después de, detrás de','després de, darrere de'],
+ [['prae'],'prae (prep. + abl.)','delante de, a causa de','davant de, a causa de'],
+ [['pro'],'pro (prep. + abl.)','en favor de, en lugar de','a favor de, en lloc de'],
+ [['propter'],'propter (prep. + ac.)','cerca de, a causa de','prop de, a causa de'],
+ [['sine'],'sine (prep. + abl.)','sin','sense'],
+ [['sub'],'sub (prep. + ac./abl.)','debajo de, al pie de','davall de, al peu de'],
+ [['super'],'super (prep. + ac./abl.)','sobre, encima de','sobre, damunt de'],
+ [['trans'],'trans (prep. + ac.)','al otro lado de, a través de','a l’altre costat de, a través de'],
+ [['et'],'et (conj.)','y','i'],
+ [['atque','ac'],'atque, ac (conj.)','y, e incluso','i, i fins i tot'],
+ [['aut'],'aut (conj.)','o','o'],
+ [['vel'],'vel (conj.)','o, incluso','o, fins i tot'],
+ [['sed'],'sed (conj.)','pero, sino','però, sinó'],
+ [['neque','nec'],'neque, nec (conj.)','y no, ni','i no, ni'],
+ [['enim'],'enim (conj.)','pues, en efecto','puix, en efecte'],
+ [['tamen'],'tamen (adv.)','sin embargo','no obstant això'],
+ [['non'],'non (adv.)','no','no'],
+ [['etiam'],'etiam (adv.)','también, incluso','també, fins i tot'],
+ [['quoque'],'quoque (adv.)','también','també'],
+ [['nunc'],'nunc (adv.)','ahora','ara'],
+ [['tum'],'tum (adv.)','entonces','aleshores'],
+ [['iam'],'iam (adv.)','ya','ja'],
+ [['semper'],'semper (adv.)','siempre','sempre'],
+ [['saepe'],'saepe (adv.)','a menudo','sovint'],
+ [['ibi'],'ibi (adv.)','allí','allí'],
+ [['ubi'],'ubi (adv.)','donde, cuando','on, quan'],
+ [['unde'],'unde (adv.)','de donde','d’on'],
+ [['cur'],'cur (adv.)','por qué','per què'],
+ [['hodie'],'hodie (adv.)','hoy','hui'],
+ [['heri'],'heri (adv.)','ayer','ahir'],
+ [['cras'],'cras (adv.)','mañana','demà'],
+ [['bene'],'bene (adv.)','bien','bé'],
+ [['male'],'male (adv.)','mal','mal']
+];
+const latinCore=new Map();
+for(const [forms,entry,meaning,meaning_va] of latinInvariables){
+ const lemma=key(forms[0]);
+ for(const surface of forms){
+  const k=key(surface);
+  if(!latinCore.has(k))latinCore.set(k,[]);
+  latinCore.get(k).push({lemma,entry,meaning,meaning_va,attested:true,origin:'invariable contrastada de gramática escolar'});
+ }
+}
+const invariableEntry=entry=>/\((?:adv\.?|conj\.?|prep\.?|part\.?|interj\.?|loc\.|num\.\s*indecl\.)/i.test(String(entry||''));
+
 /* Paradigmas productivos de declinaciones 1.ª/2.ª y presente griego.
  * Solo se aplican a enunciados que constan en el banco docente, con su
  * traducción intacta. No se extrapolan flexiones irregulares ni temas
@@ -490,37 +553,80 @@ const greekSpellingNotes={
  'Περίκλους':'Περικλέους (revisar el genitivo)',
  'ἐφεύξεν':'φεύγω: revisar el tiempo; aoristo usual ἔφυγεν'
 };
+const vocabularyIndexCache=new WeakMap(),greekReferenceCache=new WeakMap();
 function analyze(data,text,course,bank){
- const lang=course==='gr1'?'grc':'lat',index=new Map(),greek=lang==='grc'?greekReferenceForms(bank):null;
- for(const [lemma,surface,tags,source] of data.rows[lang]){
-  if(!data.vocabulary[lang][lemma]?.[course])continue;
-  const k=key(surface);if(!index.has(k))index.set(k,new Map());
-  const candidates=index.get(k),old=candidates.get(lemma);
-  const attested=[0,1,5].includes(source);
-  candidates.set(lemma,{lemma,attested:attested||!!old?.attested});
+ const lang=course==='gr1'?'grc':'lat';
+ let byCourse=vocabularyIndexCache.get(data);
+ if(!byCourse){byCourse=new Map();vocabularyIndexCache.set(data,byCourse)}
+ let index=byCourse.get(course);
+ if(!index){
+  index=new Map();
+  for(const [lemma,surface,tags,source] of data.rows[lang]){
+   if(!data.vocabulary[lang][lemma]?.[course])continue;
+   const k=key(surface);if(!index.has(k))index.set(k,new Map());
+   const candidates=index.get(k),old=candidates.get(lemma);
+   const lexicalInvariable=source===3&&key(surface)===key(lemma)&&
+    invariableEntry(data.vocabulary[lang][lemma][course].entry);
+   const attested=[0,1,5,6,7].includes(source)||lexicalInvariable;
+   const exactForms=old?.exactForms||new Set(),morphTags=old?.morphTags||new Set();
+   if(lang==='grc')exactForms.add(surface.normalize('NFC'));
+   morphTags.add(tags);
+   candidates.set(lemma,{lemma,attested:attested||!!old?.attested,exactForms,morphTags});
+  }
+  byCourse.set(course,index);
  }
+ let greek=null;
+ if(lang==='grc'){
+  if(!greekReferenceCache.has(bank))greekReferenceCache.set(bank,greekReferenceForms(bank));
+  greek=greekReferenceCache.get(bank);
+ }
+ const bankIndex=new Map();
+ const attach=(id,row)=>{if(!bankIndex.has(id))bankIndex.set(id,[]);bankIndex.get(id).push(row)};
+ for(const row of bank){attach('E'+key(row.entry),row);attach('H'+key(head(row.entry)),row)}
  const tokens=new Map();
  const cleanText=lang==='grc'?String(text).replace(/([\p{L}\p{M}])[’'](?=[\p{L}\p{M}])/gu,'$1 '):String(text);
+ let previous='';
  for(const match of cleanText.matchAll(/[\p{L}\p{M}]+(?:[’'][\p{L}\p{M}]+)*/gu)){
   const form=match[0],normal=key(form);
-  // En griego, τίς/τις, ὁ/ὅ o ἀλλά/ἄλλα no pueden confundirse:
-  // el índice de búsqueda omite acentos, pero el texto conserva su grafía.
+  // En griego, τίς/τις, ὁ/ὅ o ἀλλά/ἄλλα no pueden confundirse.
   const identity=lang==='grc'?form.normalize('NFC'):normal;
-  if(normal&&!tokens.has(identity))tokens.set(identity,{normal,form});
+  if(normal){
+   if(!tokens.has(identity))tokens.set(identity,{normal,form,precededBy:new Set()});
+   tokens.get(identity).precededBy.add(previous);
+   previous=normal;
+  }
  }
- return [...tokens.values()].map(({normal,form})=>{
+ return [...tokens.values()].map(({normal,form,precededBy})=>{
   const indexedCandidates=[...(index.get(normal)?.values()||[])].flatMap(c=>{
    const original=data.vocabulary[lang][c.lemma][course];
-   const matches=bank.filter(x=>key(x.entry)===key(original.entry)||key(head(x.entry))===key(c.lemma));
-   const variants=matches.length?matches:[{entry:original.entry,meaning:''}];
-   return variants.map(x=>({...c,entry:x.entry,meaning:x.meaning||''}));
+   const matches=[...new Set([...(bankIndex.get('E'+key(original.entry))||[]),
+    ...(bankIndex.get('H'+key(c.lemma))||[])])];
+   // Repetir una misma palabra en distintas UD con glosas ligeramente
+   // distintas no constituye una ambigüedad MORFOLÓGICA. Conservamos la
+   // entrada docente más completa, dando preferencia a la del índice.
+   // Los homógrafos de lemas distintos siguen separados en `candidates`.
+   const variants=matches.length?(lang==='lat'?[matches.slice().sort((a,b)=>{
+    const score=x=>(x.entry===original.entry?100:0)+
+     (x.meaning_va?6:0)+(x.entry.split(',').length*3);
+    return score(b)-score(a);
+   })[0]]:matches):[{entry:original.entry,meaning:''}];
+   return variants.map(x=>({...c,entry:x.entry,meaning:x.meaning||'',meaning_va:x.meaning_va||''}));
   });
+  const directInvariable=lang==='lat'?(bankIndex.get('H'+normal)||[]).filter(x=>
+   invariableEntry(x.entry)).map(x=>({
+    lemma:normal,entry:x.entry,meaning:x.meaning||'',meaning_va:x.meaning_va||'',
+    attested:true,origin:'invariable explícita del banco docente'
+   })):[];
+  const curated=lang==='lat'&&!directInvariable.length&&!indexedCandidates.length?
+   (latinCore.get(normal)||[]):[];
   const supplement=greek?.get(normal)||[];
   // La normalización ayuda a encontrar formas; la grafía exacta con
   // diacríticos decide el lema cuando hay coincidencia documentada.
   const exactGreek=supplement.filter(x=>x.exactForms?.has(form.normalize('NFC')));
+  const exactIndexed=lang==='grc'?indexedCandidates.filter(x=>x.exactForms?.has(form.normalize('NFC'))):[];
   const all=exactGreek.length?exactGreek:
-   [...indexedCandidates.filter(x=>!(supplement.length&&!x.attested&&!x.meaning)),...supplement];
+   [...(exactIndexed.length?exactIndexed:indexedCandidates).filter(x=>
+    !(supplement.length&&!x.attested&&!x.meaning)),...supplement,...directInvariable,...curated];
   // Preferimos la evidencia más firme para la misma entrada, sin descartar
   // una segunda lectura posible de un homógrafo.
   const compact=new Map();
@@ -576,6 +682,16 @@ function analyze(data,text,course,bank){
    if(/ἀλλ[άὰ]/u.test(form))candidates=candidates.filter(x=>x.lemma==='αλλα');
    else if(/ἄλλα/u.test(form))candidates=candidates.filter(x=>x.lemma!=='αλλα');
   }
+  // Una preposición que rige exclusivamente ablativo permite descartar
+  // un homógrafo verbal incompatible si TODOS los usos del texto comparten
+  // ese contexto. Ej.: «de vita» (vita, abl.) frente a «vita!» (imperativo).
+  // No se aplica a in/cum ni a preposiciones de doble régimen.
+  if(lang==='lat'&&candidates.length>1&&precededBy?.size&&
+   [...precededBy].every(x=>['a','ab','abs','de','e','ex','sine','prae','pro'].includes(x))){
+   const abl=candidates.filter(candidate=>
+    [...(candidate.morphTags||[])].some(t=>/^(?:N|ADJ|PRO);(?:[^;]+;)*ABL(?:;|$)/.test(t)));
+   if(abl.length===1&&abl[0].attested)candidates=abl;
+  }
   const resolved=candidates.length===1&&candidates[0].attested;
   const spellingHint=lang==='grc'?Object.entries(greekSpellingNotes)
    .find(([sample])=>sample.normalize('NFC')===form.normalize('NFC'))?.[1]:undefined;
@@ -585,7 +701,8 @@ function analyze(data,text,course,bank){
    warning:requiresSpellingReview?'Posible errata: '+spellingHint:'',
    lemma:resolved&&!requiresSpellingReview?candidates[0].lemma:'',
    entry:resolved&&!requiresSpellingReview?candidates[0].entry:form,
-   meaning:resolved&&!requiresSpellingReview?candidates[0].meaning:''};
+   meaning:resolved&&!requiresSpellingReview?candidates[0].meaning:'',
+   meaning_va:resolved&&!requiresSpellingReview?(candidates[0].meaning_va||''):''};
  });
 }
 function entries(rows){
@@ -639,24 +756,51 @@ function documentXml(project){
  const unanalysed=project.units.slice(0,project.count).filter(u=>u.text?.trim()&&!u.analyzed&&!u.rows?.length);
  if(unanalysed.length)throw Error('Quedan '+unanalysed.length+' unidades con texto sin analizar.');
  const escape=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&apos;'}[c]));
- const p=(s,b=false)=>'<w:p><w:pPr>'+(b?'<w:keepNext/><w:keepLines/><w:spacing w:before="160" w:after="80"/>':'<w:keepLines/><w:spacing w:after="30"/>')+'</w:pPr><w:r><w:rPr>'+(b?'<w:b/>':'')+'<w:rFonts w:ascii="Palatino Linotype" w:hAnsi="Palatino Linotype" w:cs="Palatino Linotype"/><w:sz w:val="21"/></w:rPr><w:t xml:space="preserve">'+escape(s)+'</w:t></w:r></w:p>';
- const line=(r,u)=>p((['manual','documented'].includes(r.status)?'':'* ')+formatVocabularyEntry(r,u.mode,project.course,project.lang||'es'));
- // Word balancea las dos columnas al cerrar cada sección continua.
- // Cerramos también la última unidad: sin ese salto final puede quedar toda
- // su lista en la primera columna aunque las anteriores se distribuyan bien.
- const layout=cols=>'<w:pgSz w:w="11906" w:h="16838"/><w:pgMar w:top="1417" w:bottom="1417" w:left="1417" w:right="1417"/><w:cols w:num="'+cols+'" w:space="500"/>';
- const closeUnit=()=>'<w:p><w:pPr><w:sectPr><w:type w:val="continuous"/>'+layout(2)+'</w:sectPr></w:pPr></w:p>';
+ const run=(value,{bold=false,italic=false,smallCaps=false,size=21}={})=>
+  '<w:r><w:rPr>'+(bold?'<w:b/>':'')+(italic?'<w:i/>':'')+
+  (smallCaps?'<w:smallCaps/>':'')+
+  '<w:rFonts w:ascii="Palatino Linotype" w:hAnsi="Palatino Linotype" w:cs="Palatino Linotype"/>'+
+  '<w:sz w:val="'+size+'"/><w:szCs w:val="'+size+'"/></w:rPr>'+
+  '<w:t xml:space="preserve">'+escape(value)+'</w:t></w:r>';
+ const paragraph=(runs,{heading=false,title=false}={})=>
+  '<w:p><w:pPr>'+(title?
+  '<w:keepNext/><w:keepLines/><w:jc w:val="center"/><w:spacing w:before="0" w:after="240"/>'+
+  // Bordes de medio punto: w:sz se expresa en octavos de punto.
+  '<w:ind w:left="160" w:right="160"/><w:pBdr>'+
+  ['top','left','bottom','right'].map(side=>'<w:'+side+' w:val="single" w:sz="4" w:space="8" w:color="404A56"/>').join('')+
+  '</w:pBdr>':
+  heading?'<w:keepNext/><w:keepLines/><w:spacing w:before="180" w:after="90"/>':
+  '<w:keepLines/><w:spacing w:after="45"/>')+
+  '</w:pPr>'+runs+'</w:p>';
+ const p=(value,bold=false)=>paragraph(run(value,{bold}),{heading:bold});
+ const titleNames={lat1:'Latín I',lat4:'Latín 4.º ESO',gr1:'Griego I'};
+ const title='Vocabulario por unidades de '+(titleNames[project.course]||project.course||'la asignatura');
+ const titleParagraph=paragraph(run(title,{bold:true,smallCaps:true,size:28}),{title:true});
+ const isLatin=project.course!=='gr1';
+ const line=(row,unit)=>{
+  const pending=!['manual','documented'].includes(row.status);
+  const formatted=formatVocabularyEntry(row,unit.mode,project.course,project.lang||'es');
+  if(!isLatin)return paragraph(run((pending?'* ':'')+formatted));
+  const italicEntry=displayEntry(row.entry,unit.mode);
+  if(formatted.startsWith(italicEntry)){
+   const suffix=formatted.slice(italicEntry.length);
+   return paragraph((pending?run('* '):'')+run(italicEntry,{italic:true})+run(suffix));
+  }
+  return paragraph(run((pending?'* ':'')+formatted));
+ };
+ // A4, márgenes de 2,5 cm y una columna en todo el documento.
+ const layout='<w:pgSz w:w="11906" w:h="16838"/>'+
+  '<w:pgMar w:top="1417" w:bottom="1417" w:left="1417" w:right="1417"/>'+
+  '<w:cols w:num="1" w:space="0"/>';
  const units=project.units.slice(0,project.count);
  const body=units.map(u=>{
   const all=entries(u.rows||[]),pending=all.filter(r=>!['manual','documented'].includes(r.status));
   return p(u.title,true)+all.filter(r=>['manual','documented'].includes(r.status)).map(r=>line(r,u)).join('')+
-    (pending.length?p(project.lang==='va'?'Pendents de revisió (*)':'Pendientes de revisión (*)',true)+pending.map(r=>line(r,u)).join(''):'')+
-    closeUnit();
+   (pending.length?p(project.lang==='va'?'Pendents de revisió (*)':'Pendientes de revisión (*)',true)+pending.map(r=>line(r,u)).join(''):'');
  }).join('');
- // La sección final, vacía y de una columna, fuerza la distribución equilibrada
- // de la última UD sin añadir texto ni mezclar las unidades en un único bloque.
- return '<?xml version="1.0" encoding="UTF-8"?><w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>'+
-  body+'<w:sectPr><w:type w:val="continuous"/>'+layout(1)+'</w:sectPr></w:body></w:document>';
+ return '<?xml version="1.0" encoding="UTF-8"?>'+
+  '<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>'+
+  titleParagraph+body+'<w:sectPr>'+layout+'</w:sectPr></w:body></w:document>';
 }
 window.ExaminaVocabulary={analyze,entries,displayEntry,formatVocabularyEntry,documentXml};
 function init(){

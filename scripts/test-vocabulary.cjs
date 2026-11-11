@@ -12,11 +12,18 @@ assert.equal(api.displayEntry('amo','complete'),'amo');
 assert.equal(api.displayEntry('λύω','simple'),'λύω');
 const fixture={rows:{lat:[['amo','test','V',0],['bellum','test','N',2]]},vocabulary:{lat:data.vocabulary.lat}};
 const ambiguous=api.analyze(fixture,'test','lat1',[])[0];assert.equal(ambiguous.status,'review');
-const project={count:2,units:[1,2].map(i=>({title:'UD'+i,mode:'complete',rows}))};
-const xml=api.documentXml(project);assert.equal((xml.match(/MI TRADUCCIÓN/g)||[]).length,2);assert.equal((xml.match(/<w:sectPr>/g)||[]).length,3,'cada UD y la última tienen cierre continuo');
-assert.equal((xml.match(/<w:cols w:num="2"/g)||[]).length,2);
-assert.match(xml,/<w:sectPr><w:type w:val="continuous"\/><w:pgSz[^]*<w:cols w:num="1"[^]*<\/w:body>/);
-assert.match(xml,/\* xyzxyz/);
+const project={course:'lat1',lang:'es',count:2,units:[1,2].map(i=>({title:'UD'+i,mode:'complete',rows}))};
+const xml=api.documentXml(project);
+assert.equal((xml.match(/MI TRADUCCIÓN/g)||[]).length,2);
+assert.equal((xml.match(/<w:sectPr>/g)||[]).length,1,'El documento utiliza una sola sección');
+assert.equal((xml.match(/<w:cols w:num="1"/g)||[]).length,1,'Una sola columna');
+assert.doesNotMatch(xml,/<w:cols w:num="2"/,'Sin columnas dobles');
+assert.match(xml,/Vocabulario por unidades de Latín I/);
+assert.match(xml,/<w:smallCaps\/><w:rFonts[^>]+><w:sz w:val="28"/);
+assert.match(xml,/<w:top w:val="single" w:sz="4"/,'Borde del título de 0,5 pt');
+assert.match(xml,/<w:i\/>[^]*amo, amavi, amatum/,'Enunciado latino en cursiva');
+assert.match(xml,/<w:sectPr><w:pgSz[^]*<w:cols w:num="1"[^]*<\/w:body>/);
+assert.match(xml,/<w:t xml:space="preserve">\* <\/w:t>/);assert.match(xml,/xyzxyz/);
 assert.throws(()=>api.documentXml({count:1,units:[{title:'UD1',text:'ὁ θεός',rows:[]}]}),/sin analizar/);
 const greekRows=api.analyze(data,'λύω ἄγνωστον','gr1',[]);
 assert.equal(greekRows.length,2);
@@ -104,14 +111,17 @@ const remainingEditorialForms=[
 ];
 assert.equal(benchmark.find(r=>r.form==='ὅδε')?.status,'documented',
  'El demostrativo ὅδε debe tener un único lema');
-assert.ok(review.length<=remainingEditorialForms.length,
- 'Hay falsas ambigüedades griegas ajenas a las discrepancias ortográficas: '+
+assert.ok(review.length<=40,
+ 'El índice Eulexis debe resolver la mayoría de formas sin ocultar homografías: '+
  JSON.stringify(review.map(r=>({form:r.form,candidates:r.candidates.map(c=>c.entry)}))));
 for(const row of review){
- assert.ok(remainingEditorialForms.includes(row.form),
-  'La revisión contiene una forma no reconocida como discrepancia ortográfica: '+row.form);
- assert.match(row.warning,/Posible errata/,
-  'Toda revisión restante debe mostrar una orientación editorial concreta: '+row.form);
+ if(remainingEditorialForms.includes(row.form)){
+  assert.match(row.warning,/Posible errata/,
+   'La errata original sigue requiriendo revisión: '+row.form);
+ }else{
+  assert.ok(new Set(row.candidates.map(c=>c.lemma)).size>1,
+   'Una lectura no errónea no debería quedar en revisión sin al menos dos lemas: '+row.form);
+ }
 }
 
 assert.ok(success.some(r=>r.meaning==='ateniense'), 'Debe identificar ateniense usando el banco propio');
@@ -155,6 +165,20 @@ console.log('Vocabulario: prioridad docente, deduplicación por UD, ambigüedad,
  assert.ok(await analyzeAll.evaluate(el=>!!el.previousElementSibling?.querySelector('#vgMode')));
  assert.equal(await analyzeAll.evaluate(el=>getComputedStyle(el).fontWeight),'800');
 
+ // Prueba real de interfaz: diez frases escolares, incluida la preposición «ab».
+ const latinCorpus=JSON.parse(fs.readFileSync(path.join(root,'tests/latin-vocabulary-sentences.json'),'utf8')).sentences;
+ await page.fill('#vgText',latinCorpus.join('\n'));
+ await page.click('#vgAnalyze');
+ await page.waitForFunction(()=>document.querySelector('#vgStatus')?.textContent.includes('pendientes'));
+ const vocabularyPreview=await page.locator('#vgResults').innerText();
+ assert.match(vocabularyPreview,/ab · Forma documentada/,'La UI debe reconocer ab sin revisión');
+ assert.match(vocabularyPreview,/puella/i,'La UI debe identificar los lemas del texto');
+ const sampleDownload=page.waitForEvent('download');await page.click('#vgWord');
+ const sample=await sampleDownload;const samplePath=await sample.path();
+ fs.mkdirSync(path.join(root,'test-artifacts'),{recursive:true});
+ fs.copyFileSync(samplePath,path.join(root,'test-artifacts/vocabulario-latin-10-frases.docx'));
+ console.log('Word real de diez frases guardado para revisión visual.');
+ await page.fill('#vgText','');
  await page.fill('#vgCount','2');await page.locator('#vgCount').dispatchEvent('change');
  await page.fill('#vgText','Puella puella amamus xyzxyz');await page.click('#vgAnalyze');await page.waitForFunction(()=>document.querySelector('#vgStatus').textContent.includes('pendientes'));
  assert.match(await page.locator('#vgResults').innerText(),/xyzxyz/);

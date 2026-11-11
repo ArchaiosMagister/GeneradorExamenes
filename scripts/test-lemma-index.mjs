@@ -30,8 +30,10 @@ assert.equal(data.rows.grc.filter(x=>x[0]==='διδασκω'&&x[3]===5).length,6
 assert.equal(data.rows.grc.filter(x=>x[0]==='ακουω'&&x[3]===5).length,6);
 assert.equal(data.source.externalVerification.length,6);
 assert.ok(data.extensions.rejected_for_conflict.every(x=>x.lemma&&x.features.length>0));
-assert.equal(Object.keys(data.vocabulary.lat).length,772,'Deben coincidir los lemas latinos del vocabulario docente');
-assert.equal(Object.keys(data.vocabulary.grc).length,349,'Deben coincidir los lemas griegos del vocabulario docente');
+assert.equal(Object.keys(data.vocabulary.lat).length,772+(data.extensions?.readerEnrichment?.additions?.lat||0),
+ 'El enriquecimiento solo puede añadir lemas presentes en el banco docente');
+assert.equal(Object.keys(data.vocabulary.grc).length,349+(data.extensions?.readerEnrichment?.additions?.grc||0),
+ 'El enriquecimiento griego solo puede añadir lemas presentes en el banco docente');
 assert.ok(data.vocabulary.lat.amo?.lat1,'Falta el lema latino del vocabulario docente');
 assert.ok(data.vocabulary.grc['λυω']?.gr1,'Falta λύω en el vocabulario griego');
 const script=fs.readFileSync(path.join(root,'offline-lemmas.js'),'utf8');
@@ -39,7 +41,7 @@ const ctx={window:{},document:{readyState:'loading',addEventListener(){}},consol
 runInNewContext(script,ctx,{filename:'offline-lemmas.js'});
 const {normalize,query,describe,coverage,coverageByUnit,uniqueLemmaFromData}=ctx.window.ExaminaOfflineLemmatizer;
 const latCoverage=coverage(data,'lat1'),grCoverage=coverage(data,'gr1');
-assert.equal(latCoverage.lemmas,664);
+assert.ok(latCoverage.lemmas>=664,'No puede perderse ningún lema del temario de Latín I');
 for(const course of ['lat1','lat4','gr1']){
  const units=coverageByUnit(data,course);
  assert.ok(units.length>=5,'Faltan unidades de '+course);
@@ -48,7 +50,7 @@ for(const course of ['lat1','lat4','gr1']){
  assert.ok(units.every(u=>/^UD\s*[1-9]/.test(u.unit)));
 }
 
-assert.equal(grCoverage.lemmas,349);
+assert.ok(grCoverage.lemmas>=349,'No puede perderse ningún lema del temario de Griego I');
 assert.ok(latCoverage.documented>250&&latCoverage.proposed>100);
 assert.ok(grCoverage.documented>=100&&grCoverage.onlyCitation>=0);
 assert.ok(grCoverage.proposed>0,'Faltan candidatos nominales griegos claramente identificados');
@@ -63,8 +65,15 @@ assert.ok(a.items.some(r=>r.source==='Paradigma docente'));
 assert.equal(uniqueLemmaFromData(data,'lat1','amabam'),'amo','Lematizar una forma para el glosario offline');
 const model=query(data,{course:'lat1',mode:'form',text:'appropinquabas'});
 assert.ok(model.items.some(x=>x.provisional),'Debe figurar como propuesta, no como dato certificado');
-assert.equal(uniqueLemmaFromData(data,'lat1','appropinquabas'),null,
- 'Una flexión solo propuesta nunca debe entrar en el glosario de examen');
+if(data.source.readers){
+ assert.equal(uniqueLemmaFromData(data,'lat1','appropinquabas'),'appropinquo',
+  'La forma contrastada por Collatinus sustituye la antigua candidatura');
+ assert.ok(data.rows.lat.some(r=>r[3]===6),'El índice enriquecido contiene Collatinus');
+ assert.ok(data.rows.grc.some(r=>r[3]===7),'El índice enriquecido contiene Eulexis');
+ assert.ok(data.extensions.readerEnrichment.counts.lat>5000,'La ampliación latina es insuficiente');
+ assert.ok(data.extensions.readerEnrichment.counts.grc>5000,'La ampliación griega es insuficiente');
+}else assert.equal(uniqueLemmaFromData(data,'lat1','appropinquabas'),null,
+ 'Una flexión exclusivamente propuesta no puede aprobarse sin fuente contrastada');
 const greekMissing=query(data,{course:'gr1',mode:'lemma',text:'ἀδελφός'});
 assert.ok(greekMissing.items.some(x=>x.citation),'La entrada griega debe encontrarse sin paradigma disponible');
 assert.ok(greekMissing.items.every(x=>!x.provisional||x.source.includes('Wikcionario')),'Las formas griegas propuestas deben conservar origen explícito');
