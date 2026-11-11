@@ -1107,8 +1107,26 @@ const latinSharedBank=(()=>{
 })();
 /* Editable syntagm slots; auto-agreement requires verified paradigms. */
 function morphSyntagmRows(cfg,greek=false){
- const lines=String(document.getElementById('morphSyntagms')?.value||'').split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
- return Array.from({length:cfg.offer},(_,i)=>'<p class="exam-item reference-analysis-item">'+String.fromCharCode(97+i)+'. '+esc(lines[i]||(greek?'(artículo) + (sustantivo) + (adjetivo)':'(sustantivo) + (adjetivo)'))+'</p>').join('');
+ const lines=String(document.getElementById('morphSyntagms')?.value||'')
+  .split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
+ const proposed=stickyExamRows('decl',()=>{
+  if(greek){
+   if(greekLimit()<5)return [];
+   const available=greekAvailableSyntagmAdjectives(greekLimit());
+   const nouns=sample(greekVerifiedCorpus.filter(x=>x.verified&&x.kind==='declension'&&
+    x.minUnit<=greekLimit()&&greekSyntagmNounGenders[x.id.slice(2)]&&
+    !(x.lemmas||[]).some(isProperNounLemma)),cfg.offer);
+   const adjectives=sample(available,available.length);
+   return nouns.map((item,i)=>greekCompleteNominalGroup(item,true,
+    adjectives.length?adjectives[i%adjectives.length]:null)).filter(Boolean);
+  }
+  if(!latinCompleteCompoundActive(selectedUnits()))return [];
+  return sample(latinCompleteDeclensionItems(selectedUnits()).filter(x=>x.compound),cfg.offer)
+   .map(x=>({title:x.compound.title}));
+ });
+ return Array.from({length:cfg.offer},(_,i)=>'<p class="exam-item reference-analysis-item">'+
+  String.fromCharCode(97+i)+'. '+esc(lines[i]||proposed[i]?.title||
+  (greek?'(artículo) + (sustantivo) + (adjetivo)':'(sustantivo) + (adjetivo)'))+'</p>').join('');
 }
 function morphSyntagmHeading(cfg,va){return (va?'Declina ':'Declina ')+cfg.decline+(va?' dels ':' de los ')+cfg.offer+(va?' sintagmes proposats.':' sintagmas propuestos.')}
 // Grafía de presentación: la normalización morfológica conserva ae/oe para buscar,
@@ -1259,8 +1277,9 @@ function latinCompleteDeclensionItems(chosen){
  if(!latinCompleteCompoundActive(chosen))return nouns;
  const adjectives=latinCompleteAdjectives(chosen);
  if(!adjectives.length)return []; // No se inventan adjetivos fuera del programa.
- return nouns.map(item=>{
-  const adjectival=sample(adjectives,1)[0],gender=latinCompleteNounGender(item);
+ const orderedAdjectives=sample(adjectives,adjectives.length);
+ return nouns.map((item,index)=>{
+  const adjectival=orderedAdjectives[index%orderedAdjectives.length],gender=latinCompleteNounGender(item);
   const lemma=mNormalize(headLex(adjectival.x.entry)),stem=lemma.slice(0,-2);
   const key={m:'2m',f:'1',n:'2n'}[gender];
   if(!key||!lemma.endsWith('us'))return null;
@@ -2091,21 +2110,109 @@ function greekSelect(pool,chosen,counts){
 }
 // Reference layout: normal bordered header paragraphs; the word to decline
 // belongs to the first merged table row, with an open upper-left corner.
+/* Sintagmas griegos: paradigmas escolares acotados y derivados solo de lemas
+ * que constan en el vocabulario de Griego I. No importa las candidatas
+ * Wiktextract/Eulexis ni marca como verificadas sus flexiones aisladas.
+ * El tipo 2-2 usa la misma flexión nominal para masculino y femenino.
+ */
 const greekCompleteAdjectives=[
- {lemma:'ἀγαθός',stem:'ἀγαθ'}, {lemma:'καλός',stem:'καλ'}, {lemma:'κακός',stem:'κακ'}
+ {lemma:'ἀγαθός',stem:'ἀγαθ',feminine:'η',accent:'oxytone'},
+ {lemma:'καλός',stem:'καλ',feminine:'η',accent:'oxytone'},
+ {lemma:'κακός',stem:'κακ',feminine:'η',accent:'oxytone'},
+ {lemma:'ὀλιγός',stem:'ὀλιγ',feminine:'η',accent:'oxytone'},
+ {lemma:'πονηρός',stem:'πονηρ',feminine:'α',accent:'oxytone'},
+ {lemma:'αἰσχρός',stem:'αἰσχρ',feminine:null,accent:'oxytone'},
+ {lemma:'ἐχθρός',stem:'ἐχθρ',feminine:null,accent:'oxytone'},
+ {lemma:'ἄδικος',short:'ἄδικ',long:'ἀδίκ',feminine:null,accent:'recessive'},
+ {lemma:'βάρβαρος',short:'βάρβαρ',long:'βαρβάρ',feminine:null,accent:'recessive'},
+ {lemma:'ἔνδοξος',short:'ἔνδοξ',long:'ἐνδόξ',feminine:null,accent:'recessive'},
+ {lemma:'σύμμαχος',short:'σύμμαχ',long:'συμμάχ',feminine:null,accent:'recessive'},
+ {lemma:'δίκαιος',feminine:'α',accent:'dikaios'}
 ];
+const greekSyntagmNounGenders={
+ λογος:'m',ανθρωπος:'m',δωρον:'n',εργον:'n',αγορα:'f',χωρα:'f',
+ θαλαττα:'f',νεανιας:'m',παιδεια:'f',αδελφος:'m'
+};
 const greekArticles={
  m:[['ὁ','','τὸν','τοῦ','τῷ'],['οἱ','','τοὺς','τῶν','τοῖς']],
  f:[['ἡ','','τὴν','τῆς','τῇ'],['αἱ','','τὰς','τῶν','ταῖς']],
  n:[['τὸ','','τὸ','τοῦ','τῷ'],['τὰ','','τὰ','τῶν','τοῖς']]
 };
-function greekCompleteAdjectiveForms(stem,gender){
- const endings={
-  m:[['ός','έ','όν','οῦ','ῷ'],['οί','οί','ούς','ῶν','οῖς']],
-  f:[['ή','ή','ήν','ῆς','ῇ'],['αί','αί','άς','ῶν','αῖς']],
-  n:[['όν','όν','όν','οῦ','ῷ'],['ά','ά','ά','ῶν','οῖς']]
- }[gender];
- return endings.map(number=>number.map(ending=>stem+ending));
+// Comprueba tanto el lema real como el enunciado (2-1-2, 2-2).
+function greekAvailableSyntagmAdjectives(limit){
+ if(limit<5)return [];
+ return greekCompleteAdjectives.filter(item=>{
+  const found=greekSharedBank.lookup(item.lemma);
+  if(!found||!found.entry||isExcludedExamMorphLemma(found.entry,found.meaning))return false;
+  const head=properNounKey(found.entry);
+  if(head!==properNounKey(item.lemma))return false;
+  const entry=String(found.entry).normalize('NFD').replace(/\p{M}/gu,'')
+   .replace(/[–−—]/g,'-').replace(/\s+/g,' ').trim();
+  const valid=item.feminine===null
+   ?/,\s*-(?:ον)(?:\s|$)/u.test(entry)&&!/,.*,\s*-ον/u.test(entry)
+   :new RegExp(',\\s*-'+item.feminine+',\\s*-ον(?:\\s|$)','u').test(entry);
+  if(!valid)return false;
+  const starts=[...found.units].flatMap(unit=>{
+   const m=String(unit).match(/UD\s*(\d+)/i);
+   return m?[Number(m[1])]:[];
+  });
+  return starts.length>0&&Math.min(...starts)<=limit;
+ });
+}
+// Matriz [singular, plural] × [nominativo, vocativo, acusativo, genitivo, dativo].
+function greekCompleteAdjectiveForms(adjective,gender){
+ if(!adjective||!['m','f','n'].includes(gender))return null;
+ if(adjective.accent==='oxytone'){
+  const common={
+   m:[['ός','έ','όν','οῦ','ῷ'],['οί','οί','ούς','ῶν','οῖς']],
+   n:[['όν','όν','όν','οῦ','ῷ'],['ά','ά','ά','ῶν','οῖς']],
+   eta:[['ή','ή','ήν','ῆς','ῇ'],['αί','αί','άς','ῶν','αῖς']],
+   alpha:[['ά','ά','άν','ᾶς','ᾷ'],['αί','αί','άς','ῶν','αῖς']]
+  };
+  const endings=common[gender==='f'?(adjective.feminine==='α'?'alpha':
+   adjective.feminine==='η'?'eta':'m'):gender];
+  return endings.map(number=>number.map(suffix=>adjective.stem+suffix));
+ }
+ if(adjective.accent==='recessive'){
+  const short=adjective.short,long=adjective.long;
+  if(gender==='n')return [
+   [short+'ον',short+'ον',short+'ον',long+'ου',long+'ῳ'],
+   [short+'α',short+'α',short+'α',long+'ων',long+'οις']
+  ];
+  return [
+   [short+'ος',short+'ε',short+'ον',long+'ου',long+'ῳ'],
+   [short+'οι',short+'οι',long+'ους',long+'ων',long+'οις']
+  ];
+ }
+ if(adjective.accent==='dikaios'){
+  if(gender==='m')return [
+   ['δίκαιος','δίκαιε','δίκαιον','δικαίου','δικαίῳ'],
+   ['δίκαιοι','δίκαιοι','δικαίους','δικαίων','δικαίοις']
+  ];
+  if(gender==='f')return [
+   ['δικαία','δικαία','δικαίαν','δικαίας','δικαίᾳ'],
+   ['δίκαιαι','δίκαιαι','δικαίας','δικαίων','δικαίαις']
+  ];
+  return [
+   ['δίκαιον','δίκαιον','δίκαιον','δικαίου','δικαίῳ'],
+   ['δίκαια','δίκαια','δίκαια','δικαίων','δικαίοις']
+  ];
+ }
+ return null;
+}
+function greekSyntagmAdjective(item,available){
+ const state=typeof greekExamState!=='undefined'?greekExamState:null;
+ if(!state?.ids?.declension?.includes(item.id))return available[0]||null;
+ if(!state.adjectiveChoices)state.adjectiveChoices={};
+ const saved=state.adjectiveChoices[item.id];
+ const previous=available.find(x=>x.lemma===saved);
+ if(previous)return previous;
+ const used=new Set(Object.values(state.adjectiveChoices));
+ const fresh=available.filter(x=>!used.has(x.lemma));
+ const pool=fresh.length?fresh:available;
+ const chosen=sample(pool,1)[0];
+ if(chosen)state.adjectiveChoices[item.id]=chosen.lemma;
+ return chosen||null;
 }
 // En el orden atributivo (artículo + adjetivo + sustantivo),
 // los adjetivos oxítonos no finales cambian agudo por grave.
@@ -2116,20 +2223,23 @@ function greekAccentBeforeNoun(surface){
  if(/[αεηιουω]/iu.test(after))return surface;
  return (text.slice(0,at)+'\u0300'+text.slice(at+1)).normalize('NFC');
 }
-function greekCompleteNominalGroup(item){
- if($('model').value!=='complete'||greekLimit()<5||item.kind!=='declension')return null;
- const genders={λογος:'m',ανθρωπος:'m',δωρον:'n',εργον:'n',
-  αγορα:'f',χωρα:'f',θαλαττα:'f',νεανιας:'m',παιδεια:'f',αδελφος:'m'};
- const nounKey=item.id.slice(2),gender=genders[nounKey];
- if(!gender)return null;
- const seed=[...nounKey].reduce((n,c)=>n+c.codePointAt(0),0);
- const adjective=greekCompleteAdjectives[seed%greekCompleteAdjectives.length];
- const forms=greekCompleteAdjectiveForms(adjective.stem,gender),articles=greekArticles[gender];
+function greekCompleteNominalGroup(item,forMorphology=false,preferred=null){
+ if((!forMorphology&&$('model').value!=='complete')||greekLimit()<5||
+  item.kind!=='declension'||!item.table?.rows?.length)return null;
+ const gender=greekSyntagmNounGenders[item.id.slice(2)];
+ if(!gender)return null; // No adivinar el género ni la declinación.
+ const available=greekAvailableSyntagmAdjectives(greekLimit());
+ const adjective=preferred&&available.find(x=>x.lemma===preferred.lemma)||
+  greekSyntagmAdjective(item,available);
+ if(!adjective)return null;
+ const forms=greekCompleteAdjectiveForms(adjective,gender),articles=greekArticles[gender];
+ if(!forms)return null;
  const nominative=item.table.rows[0][1];
  return {
+  adjective:adjective.lemma,noun:item.lemmas[0],gender,
   title:articles[0][0]+' '+greekAccentBeforeNoun(forms[0][0])+' '+nominative,
-  // No hay artículo en vocativo. Se declinan adjetivo y sustantivo,
-  // manteniendo el orden atributivo del sintagma.
+  // El segundo orden atributivo exigiría repetir el artículo: aquí se usa
+  // artículo + adjetivo + sustantivo; no se presenta una predicación como sintagma.
   rows:item.table.rows.map((row,k)=>[row[0],
    [0,1].map(number=>{
     const article=articles[number][k];
@@ -2243,6 +2353,7 @@ function greekRegenerate(kind){
  const candidates=pool.filter(x=>!previous.includes(x.id));
  const count=Math.min(pool.length,Math.max(1,previous.length));
  greekExamState.ids[kind]=sample(candidates.length>=count?candidates:pool,count).map(x=>x.id);
+ if(kind==='declension')greekExamState.adjectiveChoices={};
  generateGreekExam();
 }
 function greekExamControls(){
@@ -2697,7 +2808,8 @@ function examCacheSignature(kind){
   kind==='forms'?(morph?'morphWords':currentCourse()==='greek1'?'count-greek-forms':'count-forms'):
   kind==='sent'?'count-sent':'count-lex';
  return JSON.stringify([currentCourse(),$('model').value,unitsKey,$('cumulative').checked,kind,
-  $(countId)?.value,kind==='forms'?examMorphQuotaValues():null,kind.startsWith('lex-')?[$('lex-prefix')?.value,$('lex-phenomenon')?.value,$('lex-parity')?.value,$('lex-from')?.value,$('lex-to')?.value,...[0,1,2,3].map(i=>$('lex-verb-'+i)?.value),...selectedPhoneticRules].join('|'):null]);
+  $(countId)?.value,morph&&kind==='decl'?$('morphOffer')?.value:null,
+  kind==='forms'?examMorphQuotaValues():null,kind.startsWith('lex-')?[$('lex-prefix')?.value,$('lex-phenomenon')?.value,$('lex-parity')?.value,$('lex-from')?.value,$('lex-to')?.value,...[0,1,2,3].map(i=>$('lex-verb-'+i)?.value),...selectedPhoneticRules].join('|'):null]);
 }
 function stickyExamRows(kind,factory){
  const key=examCacheSignature(kind);
@@ -3472,7 +3584,7 @@ window.ExaminaMorphology={lookup,stats,importText};
  const legacy=document.getElementById('morphOptions');
  if(legacy?.classList.contains('legacy-question-fields'))legacy.remove();else if(legacy)return;
  const block=document.createElement('div');block.className='field';block.id='morphOptions';
- block.innerHTML='<h3>Examen de morfología · 1 p. por pregunta</h3><p class="hint">Pregunta 1: sintagmas (artículo + sustantivo + adjetivo en griego). Configura las opciones; la generación automática de sintagmas queda pendiente.</p><div class="count-grid"><label>Sintagmas ofrecidos<select id="morphOffer">'+Array.from({length:11},(_,i)=>'<option value="'+(i+2)+'"'+(i===1?' selected':'')+'>'+(i+2)+'</option>').join('')+'</select></label><label>Sintagmas que se declinan<select id="morphDecline">'+Array.from({length:12},(_,i)=>'<option value="'+(i+1)+'"'+(i===1?' selected':'')+'>'+(i+1)+'</option>').join('')+'</select></label><label>Formas verbales (pregunta 2)<input id="morphVerbs" type="number" min="1" max="30" value="10"></label><label>Palabras (pregunta 3)<input id="morphWords" type="number" min="1" max="30" value="10"></label></div><label for="morphSyntagms">Sintagmas editables (uno por línea)</label><textarea id="morphSyntagms" rows="3" placeholder="magnus, –a, –um + oppidum, –i"></textarea><p class="hint">Si no introduces sintagmas, aparecerán espacios editables. No se inventan formas ni concordancias.</p><p class="hint">Categorías de la pregunta 3</p><label class="check"><input type="checkbox" id="morphCategory-n" checked>Sustantivos</label><label class="check"><input type="checkbox" id="morphCategory-adj" checked>Adjetivos</label><label class="check"><input type="checkbox" id="morphCategory-pro" checked>Pronombres</label>';
+ block.innerHTML='<h3>Examen de morfología · 1 p. por pregunta</h3><p class="hint">Pregunta 1: sintagmas (artículo + sustantivo + adjetivo en griego). Configura las opciones; la generación automática de sintagmas queda pendiente.</p><div class="count-grid"><label>Sintagmas ofrecidos<select id="morphOffer">'+Array.from({length:11},(_,i)=>'<option value="'+(i+2)+'"'+(i===1?' selected':'')+'>'+(i+2)+'</option>').join('')+'</select></label><label>Sintagmas que se declinan<select id="morphDecline">'+Array.from({length:12},(_,i)=>'<option value="'+(i+1)+'"'+(i===1?' selected':'')+'>'+(i+1)+'</option>').join('')+'</select></label><label>Formas verbales (pregunta 2)<input id="morphVerbs" type="number" min="1" max="30" value="10"></label><label>Palabras (pregunta 3)<input id="morphWords" type="number" min="1" max="30" value="10"></label></div><label for="morphSyntagms">Sintagmas editables (uno por línea)</label><textarea id="morphSyntagms" rows="3" placeholder="magnus, –a, –um + oppidum, –i"></textarea><p class="hint">Si el banco contiene sustantivos y adjetivos adecuados a las unidades, se propondrán sintagmas automáticamente. Puedes sustituirlos escribiendo uno por línea. Si todavía no se ha estudiado el adjetivo, se conservan huecos editables.</p><p class="hint">Categorías de la pregunta 3</p><label class="check"><input type="checkbox" id="morphCategory-n" checked>Sustantivos</label><label class="check"><input type="checkbox" id="morphCategory-adj" checked>Adjetivos</label><label class="check"><input type="checkbox" id="morphCategory-pro" checked>Pronombres</label>';
  group.insertBefore(block,group.querySelector('#examQuestionMenus')||group.children[1]||null);
  const update=()=>{
   const latinMorph=currentCourse()!=='greek1'&&$('model').value==='morf';
