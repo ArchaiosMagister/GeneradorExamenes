@@ -852,7 +852,7 @@ function vocabularyRequiresReview(row){
    // indicaciones parentéticas (conjugación, género, régimen, etc.)
    // se componen en redonda incluso cuando forman parte de la ficha.
    let wordRuns='',position=0;
-   for(const note of italicEntry.matchAll(/\\([^()]*\\)/g)){
+   for(const note of italicEntry.matchAll(/\([^()]*\)/g)){
     if(note.index>position)wordRuns+=run(italicEntry.slice(position,note.index),{italic:true});
     wordRuns+=run(note[0]);
     position=note.index+note[0].length;
