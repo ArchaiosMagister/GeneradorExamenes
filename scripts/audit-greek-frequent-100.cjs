@@ -21,15 +21,16 @@ assert.equal(fixture.units.length,14);
 const occurrences=new Map();
 for(const unit of fixture.units)
  for(const form of unit.forms){
-  const record=occurrences.get(form)||{form,frequency:0,units:[]};
+  const id=form.normalize('NFC');
+  const record=occurrences.get(id)||{form:id,frequency:0,units:[]};
   record.frequency++;
   if(!record.units.includes(unit.unit))record.units.push(unit.unit);
-  occurrences.set(form,record);
+  occurrences.set(id,record);
  }
 const analyses=api.analyze(index,[...occurrences.keys()].join('\n'),'gr1',greek);
-const byForm=new Map(analyses.map(x=>[x.form,x]));
+const byForm=new Map(analyses.map(x=>[x.form.normalize('NFC'),x]));
 const cases=[...occurrences.values()].map(x=>{
- const result=byForm.get(x.form);
+ const result=byForm.get(x.form.normalize('NFC'));
  assert.ok(result,'Missing token '+x.form);
  return {...x,status:result.status,entry:result.entry,meaning:result.meaning,
   warning:result.warning||'',candidates:result.candidates.map(y=>({entry:y.entry,lemma:y.lemma,attested:y.attested}))};
