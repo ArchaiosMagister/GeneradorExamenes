@@ -62,7 +62,7 @@ function parseImport(input){
  }
  return rows;
 }
-function buildCases(data,imported=[],morphologies={}){
+function buildCases(data,imported=[],morphologies={},auditOptions={}){
  if(data?.schema!==1||!Array.isArray(data.rows?.grc)||!data.vocabulary?.grc)
   throw Error('Índice griego local no disponible');
  const vocab=data.vocabulary.grc,groups=new Map();
@@ -70,7 +70,8 @@ function buildCases(data,imported=[],morphologies={}){
   const key=norm(form),lk=norm(lemma),entry=vocab[lk]?.gr1;
   if(!key||!entry)return; // No introducir palabras ajenas al temario.
   if(!groups.has(key))groups.set(key,{key,form,byAnalysis:new Map(),units:new Set()});
-  const group=groups.get(key),parts=analysisParts(tags);
+  const group=groups.get(key),parts=auditOptions.mergeDialects===false?
+   {original:String(tags).trim(),core:String(tags).trim(),dialects:[]}:analysisParts(tags);
   const signature=lk+'|'+norm(parts.core),legacy=lk+'|'+norm(tags);
   if(!group.byAnalysis.has(signature)){
    group.byAnalysis.set(signature,{id:signature,lemma,form,analysis:parts.core,
