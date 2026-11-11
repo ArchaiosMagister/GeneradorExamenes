@@ -903,7 +903,7 @@ function init(){
   render();
  }
  function showEulexisCard(box,r,u){
-  if(project.course!=='gr1'||!eulexisAvailable)return;
+  if(project.course!=='gr1'||!eulexisAvailable||r.eulexisUnverified)return;
   const options=(eulexisByForm.get(eulexisAdapter().norm(r.form))||[]).slice(0,16);
   if(!options.length)return;
   // Si la fuente docente ya documenta la lectura, solo avisar de alternativas distintas.
@@ -1025,6 +1025,7 @@ function init(){
  function render(){
   unit();$('vgCount').value=project.count;$('vgCourse').value=project.course;$('vgLang').value=project.lang||'es';
   renderUnitButtons();
+  if($('vgEulexisPanel'))$('vgEulexisPanel').hidden=project.course!=='gr1';
   $('vgUnit').replaceChildren(...project.units.slice(0,project.count).map((u,i)=>new Option(u.title,i,false,i===selected)));
   $('vgTitle').value=unit().title;$('vgText').value=unit().text;$('vgMode').value=unit().mode;
   const target=$('vgResults');target.replaceChildren();
