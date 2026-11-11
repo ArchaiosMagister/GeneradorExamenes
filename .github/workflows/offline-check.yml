@@ -106,6 +106,8 @@ jobs:
         run: npm run vocabulary:test
       - name: Auditar las 612 formas pendientes aportadas para Latín I
         run: node scripts/audit-latin1-generated.cjs --minimum=429
+      - name: Revisar individualmente las 183 pendientes de Latín I
+        run: node scripts/audit-latin1-rest-183.cjs
       - name: Verificar contraste de botones de unidades y Limpiar todo
         run: node scripts/test-vg-unit-controls.cjs
       - name: Comprobar 15 correcciones de grafía en el corpus de regresión
