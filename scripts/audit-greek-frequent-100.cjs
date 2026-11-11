@@ -19,13 +19,18 @@ const greek=bank.filter(x=>x.course==='greek1');
 const fixture=JSON.parse(read('tests/greek-priority-forms.json'));
 assert.equal(fixture.units.length,14);
 const occurrences=new Map();
+// The fixture contains occasional crasis/elision and multiword snippets.
+ // Count the same lexical tokens that the production analyzer actually sees.
 for(const unit of fixture.units)
- for(const form of unit.forms){
-  const id=form.normalize('NFC');
-  const record=occurrences.get(id)||{form:id,frequency:0,units:[]};
-  record.frequency++;
-  if(!record.units.includes(unit.unit))record.units.push(unit.unit);
-  occurrences.set(id,record);
+ for(const source of unit.forms){
+  const cleaned=source.replace(/([\\p{L}\\p{M}])[’'](?=[\\p{L}\\p{M}])/gu,'$1 ');
+  for(const match of cleaned.matchAll(/[\\p{L}\\p{M}]+(?:[’'][\\p{L}\\p{M}]+)*/gu)){
+   const id=match[0].normalize('NFC');
+   const record=occurrences.get(id)||{form:id,frequency:0,units:[]};
+   record.frequency++;
+   if(!record.units.includes(unit.unit))record.units.push(unit.unit);
+   occurrences.set(id,record);
+  }
  }
 const analyses=api.analyze(index,[...occurrences.keys()].join('\n'),'gr1',greek);
 const byForm=new Map(analyses.map(x=>[x.form.normalize('NFC'),x]));
