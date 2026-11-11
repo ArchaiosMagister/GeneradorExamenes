@@ -671,6 +671,58 @@ UD2;amicus, -i"></textarea><div class="buttons"><button type="button" class="sec
 puella"></textarea><p class="hint">Esta lista complementa la detección automática. Revisa siempre el vocabulario antes de imprimir.</p></div></div></details><h3 class="settings-section-caption">Crear y exportar</h3><details id="group-export" class="settings-group" open><summary>Generar, descargar y guardar</summary><div class="settings-group-body"><div class="buttons"><button id="generate" data-i18n="generate">Generar examen</button><button class="secondary" id="docx" type="button">Descargar Word (.docx)</button><button class="secondary" id="docxAnswers" type="button">Word con soluciones (.docx)</button><button class="secondary" id="saveDraft" type="button">Guardar borrador</button><button class="secondary" id="restoreDraft" type="button">Recuperar borrador</button><button class="secondary" id="downloadDraft" type="button">Exportar borrador (.json)</button><button class="secondary" id="loadDraft" type="button">Importar borrador (.json)</button><input type="file" id="draftFile" accept=".json,application/json" hidden><button class="secondary" id="print" data-i18n="print">Imprimir / PDF</button><button class="secondary" id="solutions" data-i18n="solutions">Mostrar soluciones</button></div><p class="hint" id="draftStatus" role="status" aria-live="polite">Los borradores guardan también las modificaciones manuales del examen y su solucionario. Recuperarlos no modifica los bancos de vocabulario.</p><p class="hint">Cada generación elige otras palabras. El texto del examen es editable. Puedes elegir unidades sueltas o activar el vocabulario acumulado. Puedes añadir vocabulario más adelante sin alterar las plantillas.</p><div class="notice">Versión de desarrollo: el banco de Cultura de Latín 4.º está cargado con preguntas basadas en los ocho temas docentes. El laboratorio morfológico no cubre todos los paradigmas ni irregularidades. Los significados del vocabulario original están en castellano; la traducción léxica valenciana está pendiente. Generación conservadora de 1.ª y 2.ª declinación, adjetivos de tres terminaciones y presente de indicativo activo regular; no cubre irregularidades ni toda la flexión. Las formas especiales y otras conjugaciones se incorporarán después.</div></div></details><h3 class="settings-section-caption">Bancos y herramientas</h3><details id="group-culture" class="settings-group"><summary>Cultura clásica</summary><div class="settings-group-body"><div class="field"><h2 data-i18n="culture">Cultura clásica</h2><p class="hint" id="cultureHint">Solo Latín de 4.º ESO. Banco de preguntas por las ocho unidades de Cultura de Latín 4.º; puedes añadir más preguntas.</p><label for="cultureType">Tipo de pregunta</label><select id="cultureType"><option value="all">Todos / Tots</option><option value="short">Respuesta breve / Resposta breu</option><option value="essay">Desarrollo / Desenvolupament</option><option value="tf">Verdadero/falso / Vertader/fals</option><option value="mc">Elección múltiple / Elecció múltiple</option></select><label for="newCulture">Añadir cultura (unidad;tipo;pregunta;respuesta;opciones separadas por |)</label><textarea id="newCulture" rows="4" placeholder="UD1;short;¿Quién era Júpiter?;El dios principal del panteón romano.
 UD1;mc;¿Qué lengua se hablaba en Roma?;B;Griego|Latín|Etrusco"></textarea><button type="button" class="secondary" id="importCulture">Importar preguntas de cultura</button><p class="hint" id="cultureStatus"></p></div></div></details><details id="group-import" class="settings-group"><summary>Importación y copias de datos</summary><div class="settings-group-body"><div class="field"><label for="newvocab">Añadir vocabulario al curso seleccionado (CSV: unidad;enunciado;significado)</label><textarea id="newvocab" rows="4" placeholder="UD13;puella, -ae;muchacha"></textarea><div class="buttons"><button class="secondary" id="importVocab" type="button">Importar léxico</button><button class="secondary" id="exportData" type="button">Copia de datos (.json)</button><button class="secondary" id="importData" type="button">Restaurar copia</button><input type="file" id="restoreFile" accept=".json" hidden></div><p class="hint" id="dataStatus"></p></div></div></details><details id="group-morph" class="settings-group"><summary>Herramientas morfológicas</summary><div class="settings-group-body"><div class="field" id="morphWorkbench"><div class="buttons"><button type="button" id="auditMorph" class="secondary">Auditar vocabulario de las unidades elegidas</button><button type="button" id="runMorphTests" class="secondary">Ejecutar pruebas morfológicas</button></div><div id="morphAudit" aria-live="polite"></div><h2>Laboratorio morfológico · offline</h2><label for="morphEntry">Lema del banco (o escribe un enunciado)</label><input id="morphEntry" list="morphEntries" placeholder="rex, regis (m.)"><datalist id="morphEntries"></datalist><div class="buttons"><button type="button" id="morphAnalyze" class="secondary">Generar paradigma</button><button type="button" id="morphCsv" class="secondary">Exportar tabla CSV</button></div><p class="hint">Paradigmas latinos generados por reglas internas conservadoras, con pruebas de regresión puntuales. Los lemas no reconocidos se bloquean; no se inventan formas. Griego ático: flexión limitada a paradigmas explícitos. Corpus externos pendientes.</p><div id="morphResult" aria-live="polite"></div></div></div></details></aside></main><footer class="footer">Prototipo local: no requiere conexión ni envía datos a ningún servidor. Revisa los lemas, las formas y las traducciones antes de utilizar cualquier examen en una evaluación real. <a href="https://github.com/ArchaiosMagister/GeneradorExamenes/blob/main/docs/lematizacion-lectores.md" target="_blank" rel="noopener noreferrer">Fuentes y licencias de lematización</a> (Collatinus, Eulexis, UniMorph y Wikcionario).</footer><script src="culture-lat4.js"></script><script src="lexicon-valenciano.js"></script><script>const examQuestionChoiceState=Object.create(null);
 const examSelectionCache=new Map();
+// Las ediciones se guardan por curso, modelo, unidades, ejercicio y posición.
+const examPreviewEdits=new Map();
+function examEditKey(kind,index){
+ return JSON.stringify([currentCourse(),$('model').value,
+  [...document.querySelectorAll('.unit-choice:checked')].map(x=>x.value),kind,index]);
+}
+function examReadEditedText(el){
+ let value=el.textContent.trim().replace(/:$/,'').trim();
+ if(el.matches('.exam-etymology [data-corpus-id]'))value=value.replace(/^[a-z]\.\s*/i,'');
+ return value;
+}
+function examSetEditedText(el,value){
+ if(el.matches('.exam-nouns thead tr:first-child th[colspan], .exam-verbs thead tr:first-child th[colspan]')){
+  el.innerHTML=examParadigmHeading(value,el.closest('.exam-verbs')?'conjugation':'declension');
+ }else if(el.matches('.exam-etymology [data-corpus-id]')){
+  const prefix=el.textContent.match(/^\s*[a-z]\.\s*/i)?.[0]||'';
+  el.textContent=prefix+value+':';
+ }else el.textContent=value+(el.dataset.examEditColon==='true'?':':'');
+}
+function examBindEditedElement(el,kind,index){
+ const key=examEditKey(kind,index);
+ el.dataset.examEditKey=key;
+ el.dataset.examEditColon=String(el.textContent.trim().endsWith(':'));
+ if(examPreviewEdits.has(key))examSetEditedText(el,examPreviewEdits.get(key));
+ return key;
+}
+function examClearEditedPart(kind,index=null){
+ const names=kind==='decl'?['Declinación','Greek-declension']:
+  kind==='verb'?['Conjugación','Forma verbal','Greek-conjugation']:
+  kind==='forms'?['Análisis morfológico','Greek-forms']:
+  kind==='pronouns'?['Pronombre','Greek-pronouns']:
+  kind==='etymology'?['Etimología','Greek-etymology']:[];
+ for(const name of names){
+  if(index!==null)examPreviewEdits.delete(examEditKey(name,index));
+  else for(const key of [...examPreviewEdits.keys()]){
+   const parts=JSON.parse(key);
+   if(parts[0]===currentCourse()&&parts[1]===$('model').value&&parts[3]===name)examPreviewEdits.delete(key);
+  }
+ }
+}
+$('paper').addEventListener('input',event=>{
+ if(event.target.closest?.('[data-sentence-slot]'))return;
+ const selection=window.getSelection();
+ const selected=selection?.anchorNode?.nodeType===1?selection.anchorNode:selection?.anchorNode?.parentElement;
+ const el=event.target.closest?.('[data-exam-edit-key]')||selected?.closest?.('[data-exam-edit-key]');
+ if(!el||!$('paper').contains(el))return;
+ const key=el.dataset.examEditKey,value=examReadEditedText(el);
+ examPreviewEdits.set(key,value);
+ for(const input of document.querySelectorAll('input[data-exam-edit-key]'))
+  if(input.dataset.examEditKey===key&&input.value!==value)input.value=value;
+});
+
 const latinLexModules={
  latin1:['preverbs','phonetics','prefixes','latinisms'],
  latin4:['prefixes','phonetics']
@@ -800,13 +852,13 @@ function refreshManualMorphWords(){
   const caption=document.createElement('label');caption.textContent=kind+' '+(i+1);
   caption.style.display='block';
   const input=document.createElement('input');input.type='text';
-  input.value=el.textContent.replace(/:$/,'').trim();
+  const editKey=examBindEditedElement(el,kind,i);
+  input.value=examReadEditedText(el);
+  input.dataset.examEditKey=editKey;
   input.setAttribute('aria-label',kind+' '+(i+1));
-  const original=el.textContent;
   input.addEventListener('input',()=>{
-   if(el.matches('.exam-nouns thead tr:first-child th[colspan], .exam-verbs thead tr:first-child th[colspan]')){
-    el.innerHTML=examParadigmHeading(input.value,kind==='Conjugación'?'conjugation':'declension');
-   }else el.textContent=input.value+(original.endsWith(':')?':':'');
+   examPreviewEdits.set(editKey,input.value);
+   examSetEditedText(el,input.value);
    const key=paper.querySelector('#answerkey');
    if(key&&!key.querySelector('[data-manual-warning]')){
     const note=document.createElement('p');note.dataset.manualWarning='true';
