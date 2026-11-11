@@ -536,19 +536,19 @@ async function checkFile(browser,filename){
   course.value='latin1';course.dispatchEvent(new Event('change',{bubbles:true}));
   model.value='tablas';model.dispatchEvent(new Event('change',{bubbles:true}));
   document.querySelectorAll('.unit-choice').forEach(el=>{
-   el.checked=units[Number(el.value)]==='UD9–10';
+   el.checked=units[Number(el.value)]==='UD6';
    if(el.checked)el.dispatchEvent(new Event('change',{bubbles:true}));
   });
   generate();
   const first=document.getElementById('lex-verb-0'),second=document.getElementById('lex-verb-1');
-  if(!first||!second||!first.value||!second.value)return {available:false};
+  if(!first||!second||!first.value||!second.value)return {available:false,selected:selectedUnits(),firstValue:first?.value,secondValue:second?.value,options:first?.options.length};
   const before=second.value;
   const alternate=[...first.options].find(o=>o.value&&o.value!==first.value&&o.value!==second.value);
-  if(!alternate)return {available:false};
+  if(!alternate)return {available:false,selected:selectedUnits(),firstValue:first.value,secondValue:second.value,options:first.options.length};
   first.value=alternate.value;first.dispatchEvent(new Event('change',{bubbles:true}));
   return {available:true,first:first.value,expected:alternate.value,second:second.value,before};
  });
- assert(preverbs.available,filename+': deben existir dos verbos de modificación preverbial seleccionables');
+ assert(preverbs.available,filename+': deben existir dos verbos de modificación preverbial seleccionables: '+JSON.stringify(preverbs));
  assert.equal(preverbs.first,preverbs.expected,filename+': no se seleccionó el verbo elegido');
  assert.equal(preverbs.second,preverbs.before,filename+': se regeneró el segundo verbo sin solicitarlo');
  await page.setViewportSize({width:390,height:844});
