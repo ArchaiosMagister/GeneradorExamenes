@@ -60,7 +60,7 @@ function buildCases(data,imported=[],morphologies={}){
   if(!Array.isArray(row)||row.length!==4)continue;
   const [lemma,form,tags,src]=row;
   if(src===3||src===2||typeof tags!=='string')continue;
-  add(form,lemma,readable(tags,morphologies),VALID_SOURCES[src]||'Fuente local',src,src===4);
+  add(form,lemma,readable(tags,morphologies),VALID_SOURCES[src]||'Fuente local',src,src===4||src===7);
  }
  for(const row of imported)add(row.form,row.lemma,row.analysis,row.source,'imported',true);
  const out=[];
@@ -68,13 +68,21 @@ function buildCases(data,imported=[],morphologies={}){
   const options=[...group.byAnalysis.values()].map(x=>({
    ...x,sources:[...x.sources],labels:[...x.labels]
   }));
-  // Una discrepancia exige análisis distintos; jamás se muestra por mera duplicación de fuentes.
-  if(options.length<2)continue;
+  // Una discrepancia exige análisis distintos. Si hay un único análisis Eulexis
+  // de una forma de cita aún sin contraste docente, también ofrecer una tarjeta:
+  // es una propuesta, NO un paradigma verificado. No mostrar las miles de flexiones
+  // individuales de un lema no validado: limitar esta modalidad al lema de cita.
+  const withExternal=options.some(o=>o.sources.includes(7)||o.sources.includes('imported'));
+  const verifiedSource=options.some(o=>o.sources.some(x=>[0,1,5].includes(x)));
+  const citation=options.some(o=>norm(o.form)===norm(o.entry.split(',')[0]));
+  const onlyProposal=options.length===1&&withExternal&&!verifiedSource&&citation;
+  if(options.length<2&&!onlyProposal)continue;
   options.sort((a,b)=>a.provisional-b.provisional||a.lemma.localeCompare(b.lemma,'el')||
    a.analysis.localeCompare(b.analysis,'es'));
   const withEulexis=options.some(x=>x.sources.includes(7)||x.sources.includes('imported'));
   const units=[...group.units].sort((a,b)=>a.localeCompare(b,'es',{numeric:true}));
-  out.push({id:'gr1|'+group.key,form:group.form,units,options,withEulexis});
+  out.push({id:'gr1|'+group.key,form:group.form,units,options,withEulexis,
+   kind:onlyProposal?'eulexis-proposal':'discrepancy'});
  }
  // Priorizar discrepancias Eulexis, sin eliminar las homografías preexistentes.
  return out.sort((a,b)=>Number(b.withEulexis)-Number(a.withEulexis)||
@@ -176,7 +184,7 @@ async function init(){
   const found=visible(),remaining=found.filter(x=>!validDecision(x,state.decisions[x.id])&&!state.skipped.has(x.id));
   const decided=found.filter(x=>validDecision(x,state.decisions[x.id])).length;
   state.current=remaining[0]||null;
-  status.textContent=found.length+' formas con discrepancias · '+decided+' decididas · '+
+  status.textContent=found.length+' formas con discrepancias o propuestas · '+decided+' decididas · '+
    remaining.length+' pendientes en esta sesión'+(state.external.length?' · '+state.external.length+' análisis Eulexis importados':'');
   card.replaceChildren();
   byId('grReviewSkip').disabled=!state.current;
@@ -189,7 +197,9 @@ async function init(){
   article.className='greek-review-card';
   const title=document.createElement('h3');title.textContent=x.form;article.append(title);
   const label=document.createElement('p');label.className='greek-review-meta';
-  label.textContent=x.units.join(', ')+' · '+x.options.length+' análisis alternativos'+(x.withEulexis?' · con datos Eulexis':'');
+  label.textContent=(x.units.join(', ')||'Banco general')+' · '+
+   (x.kind==='eulexis-proposal'?'Propuesta única de Eulexis pendiente de contraste':
+    x.options.length+' análisis alternativos')+(x.withEulexis?' · con datos Eulexis':'');
   article.append(label);
   const contexts=typeof window.ExaminaGreekSentenceContexts==='function'
    ?window.ExaminaGreekSentenceContexts(x.form).slice(0,2):[];
