@@ -123,8 +123,13 @@ assert(!engine.documentXml({...project,groupTypes:false}).includes('Sustantivos 
   await page.locator('#group-vocab').evaluate(el=>el.open=true);
   await page.locator('#group-export').evaluate(el=>el.open=true);
   await page.evaluate(()=>{
+   const course=document.getElementById('course');
+   course.value='latin1';course.dispatchEvent(new Event('change',{bubbles:true}));
    const model=document.getElementById('model');
    model.value='mixto';model.dispatchEvent(new Event('change',{bubbles:true}));
+   const editor=document.getElementById('newSentences');
+   editor.value='Galli pugnant.\nBona sunt.';
+   editor.dispatchEvent(new Event('input',{bubbles:true}));
    generate();
   });
   await page.waitForFunction(()=>document.querySelector('#examSentenceGlossary .exam-gloss-selected'));
