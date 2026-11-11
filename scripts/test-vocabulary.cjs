@@ -180,6 +180,27 @@ const bankStart=originalHTML.indexOf('let vocab=')+10;
 const sourceBank=JSON.parse(originalHTML.slice(bankStart,originalHTML.indexOf(';',bankStart)));
 for(const m of originalHTML.matchAll(/vocab\.push\(\.\.\.(\[.*\])\);/g))sourceBank.push(...JSON.parse(m[1]));
 const GreekBank=sourceBank.filter(x=>x.course==='greek1');
+
+// La cobertura extra de Latín I usa paradigmas escolares pero no modifica
+// registros source=0/1/5 ni resuelve arbitrariamente lemas homógrafos.
+const LatinBank=sourceBank.filter(x=>!x.course||x.course==='latin1');
+const latinCorpusGuards=api.analyze(data,
+ 'alta humanum tuæ mihi me esse potest dare docebat longisque fecerant Romamque',
+ 'lat1',LatinBank);
+for(const form of ['alta','humanum','tuæ','mihi','me','esse','potest',
+ 'dare','docebat','longisque','fecerant','Romamque']){
+ const item=latinCorpusGuards.find(x=>x.form===form);
+ assert.equal(item?.status,'documented','Forma escolar habitual no reconocida: '+form);
+}
+const realHomographs=api.analyze(data,'bona bello','lat1',LatinBank);
+for(const form of ['bona','bello']){
+ assert.equal(realHomographs.find(x=>x.form===form)?.status,'review',
+  'No elegir arbitrariamente entre lemas homógrafos: '+form);
+}
+const historicOrthography=api.analyze(data,'uideo video','lat1',LatinBank);
+assert.equal(historicOrthography.length,1,'La búsqueda latina debe tratar u/v como alógrafos');
+assert.equal(historicOrthography[0].status,'documented');
+
 const priorityFixture=JSON.parse(fs.readFileSync(path.join(root,'tests/greek-priority-forms.json'),'utf8'));
 assert.equal(priorityFixture.units.length,14);
 const originals=[...new Set(priorityFixture.units.flatMap(u=>u.forms))];
