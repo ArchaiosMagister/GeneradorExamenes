@@ -156,6 +156,10 @@ const latinLexicalQueWords=new Set([
 ].map(latinKey));
 // Las sospechas ortográficas no son pruebas de que la palabra sea errónea.
 // El docente decide con la frase original: no se sustituye el token ni el lema.
+const latinContextNotes={
+ 'avarus':'puede ser avarus, –a, –um («avaro») o un nombre propio; consultar la oración',
+ 'medicum':'puede ser medicus, –i (m., «médico») o medicus, –a, –um (adjetivo); consultar la oración'
+};
 const latinSpellingNotes={
  'clasis':'comprobar classis, –is (f.), si se refiere a «flota» o «clase»',
  'consilo':'comprobar consilio (de consilium, –i), según el contexto',
@@ -656,6 +660,10 @@ function latinExpandedForms(bank){
    forms:['comitia','comitiorum','comitiis']},
   {lemma:'nonnumquam',entry:'nonnumquam (adv.)',meaning:'a veces',
    forms:['nonnumquam']},
+  {lemma:'sapiens',entry:'sapiens, sapientis',meaning:'sabio/a',
+   forms:['sapientissimus','sapientissima','sapientissimum']},
+  {lemma:'neco',entry:'neco, necavi, necatum (1ª)',meaning:'matar',
+   forms:['necaturos'],provisional:true},
   {lemma:'disco',entry:'disco, didici, – (3ª)',meaning:'aprender',forms:['didici']},
   {lemma:'patefacio',entry:'patefacio, patefeci, patefactum (mx.)',meaning:'abrir, descubrir',
    forms:['patefecit']},
@@ -672,7 +680,9 @@ function latinExpandedForms(bank){
   const existing=bank.find(row=>latinKey(head(row.entry))===latinKey(info.lemma));
   const rec={lemma:latinKey(info.lemma),entry:existing?.entry||info.entry,
    meaning:existing?.meaning||info.meaning,meaning_va:existing?.meaning_va||'',
-   attested:true,origin:'paradigma irregular escolar explícito; sin nuevas flexiones verificadas en índice'};
+   attested:!info.provisional,
+   origin:info.provisional?'participio futuro derivado del supino: confirmar con contexto':
+    'paradigma irregular escolar explícito; sin nuevas flexiones verificadas en índice'};
   for(const form of info.forms)add(form,rec);
  }
  const out=new Map([...forms].map(([f,rows])=>[f,[...rows.values()]]));
@@ -1357,9 +1367,11 @@ function analyze(data,text,course,bank){
    lang==='lat'?latinSpellingNotes[normal]:undefined;
   // Señalar erratas y abreviaturas sin modificar el original ni simular
   // una flexión contrastada. Distinguir sugerencia de evidencia.
-  const requiresSpellingReview=!!spellingHint;
+  const contextHint=lang==='lat'?latinContextNotes[normal]:undefined;
+  const requiresSpellingReview=!!(spellingHint||contextHint);
   return {form,candidates,status:requiresSpellingReview?'review':resolved?'documented':candidates.length?'review':'unknown',
-   warning:requiresSpellingReview?'Revisión de grafía o abreviatura: '+spellingHint:'',
+   warning:contextHint?'Necesita contexto: '+contextHint:
+    spellingHint?'Revisión de grafía o abreviatura: '+spellingHint:'',
    lemma:resolved&&!requiresSpellingReview?candidates[0].lemma:'',
    entry:resolved&&!requiresSpellingReview?candidates[0].entry:form,
    meaning:resolved&&!requiresSpellingReview?candidates[0].meaning:'',
