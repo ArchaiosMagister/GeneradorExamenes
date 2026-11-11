@@ -14,7 +14,7 @@ assert.match(index,/id="vgUnitButtons"/,'No desaparecerán los botones por unida
 assert.match(vocab,/function renderUnitButtons\(\)/,'Los botones deben conservar su renderizado');
 assert.match(vocab,/showEulexisCard\(box,r,unit\(\)\)/,'Las propuestas deben aparecer junto a cada forma');
 assert.match(index,/for\(const id of \['glossScope','glossNouns','glossVerbs','glossAdjectives','glossOther'\]\)/,
- 'Los filtros deben regenerar el examen');
+ 'Los filtros deben actualizar el glosario');
 assert.match(index,/if\(\/artículo\|articulo\/\.test\(a\)\)return null/,
  'El artículo no debe identificarse como sustantivo');
 
@@ -44,6 +44,12 @@ assert.match(index,/if\(\/artículo\|articulo\/\.test\(a\)\)return null/,
    new MutationObserver(()=>window.__glossUpdates++).observe(paper,{childList:true,subtree:true});
   });
   await page.locator('#group-vocab').evaluate(el=>el.open=true);
+  await page.evaluate(()=>{
+   const editor=document.getElementById('newSentences');
+   editor.value='Puella amat.';
+   editor.dispatchEvent(new Event('input',{bubbles:true}));
+   window.__glossUpdates=0;
+  });
   await page.selectOption('#glossScope','required');
   await page.waitForFunction(()=>window.__glossUpdates>0);
   await page.evaluate(()=>{

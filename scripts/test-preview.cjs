@@ -226,7 +226,7 @@ async function checkFile(browser,filename){
     value:getComputedStyle(document.getElementById('paper')).getPropertyValue('--exam-sentence-gap').trim(),
     latinLines:document.querySelectorAll('#paper .exam-sentences .answer').length,
     latinCount:document.querySelectorAll('#paper .exam-sentences>li').length,
-    greekCount:document.querySelectorAll('#paper p.exam-sentence').length
+    greekCount:document.querySelectorAll('#paper .exam-sentence').length
    };
   });
   assert.equal(sentenceGap.value,'64pt',filename+': el espaciado no llega a la vista previa');
@@ -319,6 +319,8 @@ async function checkFile(browser,filename){
    }
   }
   if(course==='greek1'&&model==='translation'){
+   await page.locator('#group-sentences').evaluate(el=>el.open=true);
+   await page.locator('#newSentences').fill('ὁ ἄνθρωπος ἐν τῇ οἰκίᾳ μένει.');
    const greekGloss=await page.evaluate(()=>({
     sentenceCount:document.querySelectorAll('#paper .exam-sentence').length,
     glossCount:document.querySelectorAll('#paper .final-gloss .gloss-item').length,
@@ -423,9 +425,10 @@ async function checkFile(browser,filename){
  assert.equal(glossaryRegression.defaultScope,'all',filename+': se ocultan por defecto las palabras exigibles');
  assert(glossaryRegression.base.rows.some(x=>/puella/i.test(x)),filename+': no se reconoce la base de la enclítica -que');
  assert(glossaryRegression.base.rows.some(x=>/amo/i.test(x)),filename+': no se incorpora un verbo con enunciado');
- for(const lemma of [/^in \(prep/i,/^quoque/i,/^quisque/i,/^uterque/i,/^[–-]que/i]){
+ for(const lemma of [/^quoque/i,/^quisque/i,/^uterque/i,/^[–-]que/i]){
   assert(glossaryRegression.base.rows.some(x=>lemma.test(x)),filename+': falta '+lemma);
  }
+ assert(!glossaryRegression.base.rows.some(x=>/^in\b/i.test(x)),filename+': el glosario incluye una preposición');
  assert(!/\bin\b/i.test(glossaryRegression.base.warning),filename+': «in» figura como forma sin resolver');
  const requiredWord=glossaryRegression.required.rows.find(x=>/puella/i.test(x));
  assert(requiredWord&&!requiredWord.includes(':'),filename+': el vocabulario exigible necesita enunciado pero no traducción');
@@ -444,6 +447,53 @@ async function checkFile(browser,filename){
   }
  });
  assert.equal(noSentences.glossary,0,filename+': se añade vocabulario de oraciones desactivadas');
+ // Latín I, UD2 y UD3: edición bidireccional y filtros sin regenerar.
+ await page.evaluate(()=>{
+  const course=document.getElementById('course'),model=document.getElementById('model');
+  course.value='latin1';course.dispatchEvent(new Event('change',{bubbles:true}));
+  model.value='mixto';model.dispatchEvent(new Event('change',{bubbles:true}));
+  document.querySelectorAll('.unit-choice').forEach(el=>el.checked=['UD2','UD3'].includes(units[Number(el.value)]));
+  document.getElementById('group-sentences').open=true;
+  document.getElementById('group-vocab').open=true;
+  examRequired.push({course:'latin1',unit:'UD2',key:examKey('puella'),entry:'puella, –æ'});
+  generate();
+ });
+ const slots=page.locator('#paper [data-sentence-slot]');
+ const editor=page.locator('#newSentences');
+ const gloss=page.locator('#examSentenceGlossary');
+ assert.equal(await slots.count(),7);
+ assert((await slots.allTextContents()).every(text=>!text),'Los huecos de traducción deben empezar vacíos');
+ await editor.fill('Puella in villa laborat.\n\nNauta navigat.');
+ assert.deepEqual((await slots.allTextContents()).slice(0,3),['Puella in villa laborat.','','Nauta navigat.']);
+ const requiredRow=gloss.locator('.gloss-item').filter({hasText:/^puella/i});
+ assert.equal(await requiredRow.count(),1);
+ assert(!/[:‘“]/.test(await requiredRow.textContent()),'La entrada exigible debe ir sin significado');
+ assert.equal(await gloss.locator('.gloss-item').filter({hasText:/^in\b/i}).count(),0);
+ assert(await gloss.locator('.gloss-item').filter({hasText:/^villa.+:/i}).count());
+ await slots.nth(1).fill('Puella amat.');
+ assert.equal(await editor.inputValue(),'Puella in villa laborat.\nPuella amat.\nNauta navigat.');
+ assert(await gloss.locator('.gloss-item').filter({hasText:/^amo[ ,]/i}).count());
+ const previewIdentity=await slots.first().elementHandle();
+ await page.selectOption('#glossScope','outside');
+ assert.equal(await requiredRow.count(),0);
+ assert(await previewIdentity.evaluate(el=>el.isConnected),'El filtro reconstruyó la vista previa');
+ assert.equal(await editor.inputValue(),'Puella in villa laborat.\nPuella amat.\nNauta navigat.');
+ await page.evaluate(()=>{
+  const count=document.getElementById('count-sent');
+  count.value=2;count.dispatchEvent(new Event('change',{bubbles:true}));
+ });
+ assert.equal(await slots.count(),2);
+ assert.equal(await gloss.locator('.gloss-item').filter({hasText:/^nauta/i}).count(),0);
+ await page.evaluate(()=>{
+  const count=document.getElementById('count-sent');
+  count.value=7;count.dispatchEvent(new Event('change',{bubbles:true}));
+ });
+ assert.equal(await slots.nth(2).textContent(),'Nauta navigat.');
+ const doc=page.waitForEvent('download');
+ await page.evaluate(()=>exportWord(false));
+ const downloaded=await doc;
+ const xml=readStoredZipEntry(fs.readFileSync(await downloaded.path()),'word/document.xml');
+ assert(xml.includes('Puella amat.')&&xml.includes('Nauta navigat.')&&xml.includes('g.'));
  await page.setViewportSize({width:390,height:844});
  assert(await page.locator('#paper .exam-sheet').isVisible(),filename+': vista previa oculta en móvil');
  assert.deepEqual(errors,[],filename+': errores JavaScript');
