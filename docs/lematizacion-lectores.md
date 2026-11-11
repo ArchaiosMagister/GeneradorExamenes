@@ -152,3 +152,77 @@ Para uso ordinario sin Internet bastan los activos ya construidos. Se incluye
 una batería de diez frases originales en
 `tests/latin-vocabulary-sentences.json` y una prueba de navegador que
 introduce las frases en el generador real.
+
+
+## Revisión interactiva de Griego I (tarjetas)
+
+La webapp incorpora el módulo `greek-review.js` para resolver análisis incompatibles
+de una misma forma. Detecta las **ambigüedades internas** del índice docente publicado
+(sin elegir automáticamente ninguna) y, cuando se le facilita un índice Eulexis
+local, antepone las discrepancias que involucran esa fuente.
+
+El docente puede escoger un análisis, conservar todas las interpretaciones
+(ambiguas), excluir la forma o saltar a la tarjeta siguiente. La tarjeta
+desaparece inmediatamente después de elegir. Cuando una forma aparece en
+alguna oración de Griego I, se muestra el contexto con la palabra destacada.
+Las decisiones se guardan en `localStorage` y pueden exportarse/importarse
+como JSON, útil para pasar del ordenador al iPad.
+
+**Límite deliberado de seguridad:** estas decisiones NO modifican el corpus
+compartido, las claves ni las preguntas de examen. «Excluir» expresa una
+preferencia de revisión y no bloquea todavía los modelos de generación.
+El componente distingue las propuestas documentadas de las candidatas;
+ninguna selección convierte automáticamente una forma en «verificada».
+
+### Preparar Eulexis de forma local y optativa
+
+Para preparar un extracto legible **sin añadir datos a GitHub**:
+
+```bash
+node scripts/export-eulexis-review.mjs
+```
+
+Requiere `git`, Node.js e Internet **solo durante esa preparación**. El
+script consulta una revisión fija de `genuensis/lector-griego`, filtra las
+formas cuyos lemas figuran en el banco docente y produce
+`private/eulexis-review.json`. Este archivo está excluido por `.gitignore`.
+No incluye glosas procedentes de LSJ/Bailly/Pape; conserva la referencia del
+origen. No redistribuir el fichero sin comprobar los derechos aplicables
+a las tablas de Diogenes/Perseus.
+
+En la PWA, abre «Griego I · Resolver discrepancias por tarjetas» → «Índice
+Eulexis local (opcional)» → «Cargar índice Eulexis» y selecciona el JSON.
+El análisis se realiza en el propio navegador, sin subida a servidores.
+El corpus importado se mantiene solamente durante la sesión; por su tamaño
+**no se guarda** en almacenamiento local. Las decisiones, separadas del corpus,
+sí se pueden conservar y exportar.
+
+Formato abierto de intercambio (de elaboración local):
+
+```json
+{
+  "schema": "examina-eulexis-review/v1",
+  "rows": [
+    {"form": "λόγος", "lemma": "λόγος", "analysis": "masculino nominativo singular"}
+  ]
+}
+```
+
+El ejemplo ilustra el esquema, **no es una importación de la base Eulexis**.
+Se rechazan archivos mal formados, demasiado grandes o con formas no griegas.
+Las voces fuera del vocabulario de Griego I no se incorporan al generador.
+
+### Pruebas automáticas
+
+- `scripts/test-greek-review.mjs`: normalización Unicode, deduplicación,
+  filtros curriculares, fuentes, validación de ficheros y conflictos sintéticos.
+- `scripts/test-greek-review-browser.cjs`: Chromium sin conexión; elección
+  que avanza, omisión, deshacer, almacenamiento local, contexto disponible e
+  importación sin llamadas de red.
+- `scripts/build-offline.mjs` incrusta el módulo en `offline.html`; el
+  service worker cachea `greek-review.js`. El workflow de publicación
+  distribuye el módulo a la webapp estable.
+
+La publicación de la interfaz **no autoriza** publicar el índice Eulexis.
+La incertidumbre jurídica sobre los datos originales permanece y se
+documenta arriba.
