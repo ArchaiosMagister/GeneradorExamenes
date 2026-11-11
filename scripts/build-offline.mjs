@@ -80,6 +80,7 @@ export async function renderOffline(root=projectRoot){
  if(!html.includes(marker))throw new Error('No existe el script de la webapp');
  const offlineModule=await readFile(resolve(root,'offline-lemmas.js'),'utf8');
  const reviewModule=await readFile(resolve(root,'verification-review.js'),'utf8');
+ const greekReviewModule=await readFile(resolve(root,'greek-review.js'),'utf8');
  const cultureModule=await readFile(resolve(root,'culture-lat4.js'),'utf8');
  const valencianModule=await readFile(resolve(root,'lexicon-valenciano.js'),'utf8');
  const valencianExternal='<script src="lexicon-valenciano.js"></script>';
@@ -91,10 +92,13 @@ export async function renderOffline(root=projectRoot){
  const reviewExternal='<script src="verification-review.js" defer></script>';
  if(!html.includes(reviewExternal))throw new Error('Falta el panel de revisión filológica');
  const reviewScript='<script>'+reviewModule.replace(/<\/script/gi,'<\\/script')+'</script>';
+ const greekReviewExternal='<script src="greek-review.js" defer></script>';
+ if(!html.includes(greekReviewExternal))throw new Error('Falta la cola de revisión griega');
+ const greekReviewScript='<script>'+greekReviewModule.replace(/<\/script/gi,'<\\/script')+'</script>';
  const external='<script src="offline-lemmas.js" defer></script>';
  if(!html.includes(external))throw new Error('No existe el lematizador en index.html');
  const script='<script>'+offlineModule.replace(/<\/script/gi,'<\\/script')+'</script>';
- const offline=html.replace(external,script).replace(reviewExternal,reviewScript).replace(marker,
+ const offline=html.replace(external,script).replace(reviewExternal,reviewScript).replace(greekReviewExternal,greekReviewScript).replace(marker,
   '<script id="examina-offline-assets" type="application/json">'+json+'</script>\n'+marker);
  return {content:offline,datasetCount:Object.keys(assets).length,latinRows:latin.rows.length,lemmaRows:lemmatizer.rows.lat.length+lemmatizer.rows.grc.length};
 }
