@@ -111,19 +111,10 @@ async function checkFile(browser,filename){
     filename+' '+course+'/'+model+': morfología no debe exigir diez puntos');
   }
   const previewScore=page.locator('#paper .exam-question-points').first();
-  await page.evaluate(()=>{window.__scoringEvents=[];document.getElementById('paper').addEventListener('input',event=>{
-   window.__scoringEvents.push({target:event.target?.id||event.target?.className,
-    selected:window.getSelection()?.anchorNode?.parentElement?.className,
-    html:document.querySelector('.exam-question-points')?.outerHTML});
-  },true)});
-  await previewScore.fill('3,25');
-  console.log('Diagnóstico puntos editados',filename,course,model,JSON.stringify(await page.evaluate(()=>({
-   inputEvents:window.__scoringEvents,
-   span:document.querySelector('.exam-question-points')?.outerHTML,
-   controls:[...document.querySelectorAll('#examScoring .exam-scoring-row input')].map(x=>({key:x.dataset.scoringKey,value:x.value})).slice(0,2),
-   state:window.ExaminaScoring.rows().slice(0,2),
-   selection:window.getSelection()?.anchorNode?.parentElement?.outerHTML.slice(0,180)
-  }))));
+  await previewScore.click();
+  const inlineScore=page.locator('#paper .exam-score-inline-editor').first();
+  await inlineScore.fill('3,25');
+  await inlineScore.press('Enter');
   await page.waitForFunction(()=>document.querySelector('#examScoring .exam-scoring-row input')?.value==='3,25');
   assert.equal((await scoringRows.first().inputValue()),'3,25',
    filename+' '+course+'/'+model+': la edición en la vista previa no actualiza el panel');
