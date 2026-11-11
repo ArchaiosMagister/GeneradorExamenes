@@ -505,6 +505,25 @@ html[data-course="greek1"] .paper .exam-sheet *{font-style:normal!important}
  #exam-header-controls button{flex:1;min-width:max-content;padding-inline:9px;font-size:12.5px}
 }
 @media print{#exam-header-controls{display:none!important}}
+</style><style id="vocabulary-unit-picker-style">
+.vg-unit-picker{margin:14px 0 16px}
+.vg-unit-buttons{display:flex;flex-wrap:wrap;gap:7px;margin-top:8px;max-height:260px;overflow:auto;padding:3px}
+.vg-unit-buttons .vg-unit-button{display:inline-flex;align-items:center;gap:6px;min-width:68px;justify-content:center;
+ background:#eef1f5;color:#4b596e;border:1px solid #cad4e0;border-radius:8px;font:700 13px system-ui,sans-serif;
+ padding:9px 11px;min-height:42px;cursor:pointer}
+.vg-unit-buttons .vg-unit-button[data-filled="true"]{background:#e6f4ea;color:#23603a;border-color:#a9d8b8}
+.vg-unit-buttons .vg-unit-button[aria-pressed="true"]{background:#24568f;color:#fff;border:2px solid #14365f;padding:8px 10px;box-shadow:0 0 0 2px #bad2eb}
+.vg-unit-buttons .vg-unit-dot{width:8px;height:8px;border-radius:50%;background:#aeb7c2;flex-shrink:0}
+.vg-unit-buttons .vg-unit-button[data-filled="true"] .vg-unit-dot{background:#25a45d}
+.vg-unit-buttons .vg-unit-button[aria-pressed="true"] .vg-unit-dot{box-shadow:0 0 0 1px #fff}
+.vg-unit-buttons .vg-unit-button:focus-visible{outline:3px solid #e3a836;outline-offset:2px}
+html[data-appearance="dark"] .vg-unit-buttons .vg-unit-button,html[data-appearance="oled"] .vg-unit-buttons .vg-unit-button{
+ background:#242d39;color:#d5dfec;border-color:#637286}
+html[data-appearance="dark"] .vg-unit-buttons .vg-unit-button[data-filled="true"],html[data-appearance="oled"] .vg-unit-buttons .vg-unit-button[data-filled="true"]{
+ background:#173d2a;color:#baf1cf;border-color:#568b6a}
+html[data-appearance="dark"] .vg-unit-buttons .vg-unit-button[aria-pressed="true"],html[data-appearance="oled"] .vg-unit-buttons .vg-unit-button[aria-pressed="true"]{
+ background:#24568f;color:#fff;border-color:#a7d0ff}
+#vgUnit[hidden]{display:none!important}
 </style><style id="examina-question-toggle-style">
 #examQuestionMenus .exam-question-toggle{flex:0 0 auto;width:19px;height:19px;margin:0;accent-color:var(--accent,#315cb1);cursor:pointer}
 #examQuestionMenus .exam-question-name{flex:1;min-width:0}
@@ -565,7 +584,7 @@ html[data-appearance="oled"] #examScoring .exam-scoring-correct{color:#a0e9cd}
 </script><div class="quick-actions no-print" aria-label="Acciones rápidas"><span class="quick-label">Examen</span><button type="button" id="quickGenerate">Generar</button><button type="button" id="quickWord" class="secondary">Descargar Word</button><button type="button" id="quickWordAnswers" class="secondary">Word con soluciones</button><span class="quick-tip">La vista previa se puede editar antes de exportar.</span></div>
 <section class="vocab-manager" id="vocabularyGenerator" aria-label="Generador de vocabulario independiente">
 <h2>Vocabulario de tus unidades</h2><p>Pega textos completos. Se usan únicamente los recursos locales disponibles; las formas desconocidas, ambiguas y candidatas requieren revisión. No se inventan traducciones. Las repeticiones se eliminan dentro de cada unidad.</p>
-<div class="vm-grid"><label>Banco docente<select id="vgCourse"><option value="lat1">Latín I</option><option value="lat4">Latín 4.º ESO</option><option value="gr1">Griego I</option></select></label><label>Número de unidades (1–100)<input id="vgCount" type="number" min="1" max="100"></label><label>Unidad<select id="vgUnit"></select></label></div>
+<div class="vm-grid"><label>Banco docente<select id="vgCourse"><option value="lat1">Latín I</option><option value="lat4">Latín 4.º ESO</option><option value="gr1">Griego I</option></select></label><label>Número de unidades (1–100)<input id="vgCount" type="number" min="1" max="100"></label></div><div class="vg-unit-picker"><strong>Unidad</strong><p class="vm-help">Azul: seleccionada · Punto verde: contiene texto · Gris: sin texto</p><div id="vgUnitButtons" class="vg-unit-buttons" role="group" aria-label="Elegir unidad de vocabulario"></div><select id="vgUnit" hidden aria-label="Unidad (selección interna)"></select></div>
 <label for="vgLang">Idioma del vocabulario <select id="vgLang"><option value="es">Castellano</option><option value="va">Valencià</option></select></label>
 <label>Título de la unidad<input id="vgTitle"></label><label>Texto de la unidad<textarea id="vgText" rows="8"></textarea></label>
 <label>Enunciado verbal<select id="vgMode"><option value="complete">Completo (según el banco, sin añadir temas ausentes)</option><option value="simple">Simple (forma de cita + conjugación latina disponible)</option></select></label>
