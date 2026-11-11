@@ -54,6 +54,7 @@ function latinSuite(){
   examQuotaPick:(_groups,_n,defaultPick)=>defaultPick(),
   examMorphQuotasActive:()=>false,
   examMorphQuotaCount:()=>0,
+  examSelectedLexParts:()=>['preverbs','phonetics','prefixes','latinisms'],
   buildLatinLexQuestion:course=>({
     html:course==='latin1'?'<p class="exam-item">a. Modificación preverbial · b. Evolución fonética · c. Prefijos · d. Latinismos</p>':
       '<p class="exam-item">a. Prefijos · b. Evolución fonética</p>',
