@@ -400,7 +400,7 @@ async function checkFile(browser,filename){
  // con enunciado solamente, y una enclítica se analiza sin inventar lemas.
  const glossaryRegression=await page.evaluate(()=>{
   const course=document.getElementById('course'),model=document.getElementById('model');
-  const scope=document.getElementById('glossScope');
+  const scope=document.getElementById('glossTranslationMode');
   const previous={course:course.value,model:model.value,scope:scope.value,required:examRequired.slice()};
   const parse=html=>{
    const el=document.createElement('div');el.innerHTML=html;
@@ -413,7 +413,8 @@ async function checkFile(browser,filename){
   try{
    course.value='latin1';model.value='tablas';scope.value='all';
    const base=parse(buildFinalLexicon(['UD1'],[{text:'Puellaque amat in villa. Quoque quisque uterque.'}]));
-   examRequired.push({course:'latin1',unit:'UD1',key:examKey('puella'),entry:'puella, -ae'});
+   scope.value='unlearned';
+    examRequired.push({course:'latin1',unit:'UD1',key:examKey('puella'),entry:'puella, -ae'});
    const required=parse(buildFinalLexicon(['UD1'],[{text:'Puella amat.'}]));
    const unknown=parse(buildFinalLexicon(['UD1'],[{text:'FORMADESCONOCIDAXYZ'}]));
    return {base,required,unknown,defaultScope:previous.scope};
@@ -422,7 +423,7 @@ async function checkFile(browser,filename){
    examRequired.length=0;examRequired.push(...previous.required);
   }
  });
- assert.equal(glossaryRegression.defaultScope,'all',filename+': se ocultan por defecto las palabras exigibles');
+ assert.equal(glossaryRegression.defaultScope,'unlearned',filename+': las traducciones de lo estudiado se ocultan por defecto');
  assert(glossaryRegression.base.rows.some(x=>/puella/i.test(x)),filename+': no se reconoce la base de la enclítica -que');
  assert(glossaryRegression.base.rows.some(x=>/amo/i.test(x)),filename+': no se incorpora un verbo con enunciado');
  for(const lemma of [/^quoque/i,/^quisque/i,/^uterque/i,/^[–-]que/i]){
@@ -474,8 +475,9 @@ async function checkFile(browser,filename){
  assert.equal(await editor.inputValue(),'Puella in villa laborat.\nPuella amat.\nNauta navigat.');
  assert(await gloss.locator('.gloss-item').filter({hasText:/^amo[ ,]/i}).count());
  const previewIdentity=await slots.first().elementHandle();
- await page.selectOption('#glossScope','outside');
- assert.equal(await requiredRow.count(),0);
+ await page.selectOption('#glossTranslationMode','all');
+ assert.equal(await requiredRow.count(),1);
+  assert((await requiredRow.textContent()).includes(':'),'Traducir todas debe mostrar la traducción del vocabulario estudiado');
  assert(await previewIdentity.evaluate(el=>el.isConnected),'El filtro reconstruyó la vista previa');
  assert.equal(await editor.inputValue(),'Puella in villa laborat.\nPuella amat.\nNauta navigat.');
  await page.evaluate(()=>{
