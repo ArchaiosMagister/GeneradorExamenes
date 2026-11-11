@@ -1290,6 +1290,15 @@ function analyze(data,text,course,bank){
   // una segunda lectura posible de un homógrafo.
   const compact=new Map();
   for(const candidate of all){
+   // UniMorph contiene servus como sustantivo Y como adjetivo, pero si el
+   // banco docente declara expresamente servus, –i (sustantivo), una flexión
+   // exclusivamente adjetival como servae no pertenece a esa ficha.
+   // Preservamos los análisis N y descartamos solo lecturas ADJ aisladas
+   // incompatibles con un enunciado nominal inequívoco en -us, –i.
+   if(lang==='lat'&&/^[a-z]+us,\s*[–−—-]i\b/i.test(candidate.entry||'')){
+    const tags=[...(candidate.morphTags||[])];
+    if(tags.length&&tags.every(tag=>tag.startsWith('ADJ;')))continue;
+   }
    // Un único lema latino puede figurar en el banco con distintas rayas,
    // indicaciones de género o glosas de varias unidades. No son homógrafos:
    // conservar la ficha más completa en lugar de crear falsa ambigüedad.
