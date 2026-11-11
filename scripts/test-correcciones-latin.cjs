@@ -9,7 +9,9 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
   const page=await browser.newPage({viewport:{width:1400,height:950}});
   const errors=[];
   page.on('pageerror',e=>errors.push(e.message));
-  await page.goto(pathToFileURL(path.resolve(__dirname,'../index.html')).href,{waitUntil:'load'});
+  await page.goto(pathToFileURL(path.resolve(__dirname,'../offline.html')).href,{waitUntil:'load'});
+  await page.waitForFunction(()=>!!latin1PreverbCurriculum&&!!latin1PhoneticCurriculum&&
+   latinLexBanks.latin1.preverbs.length>0&&latinLexBanks.latin1.phonetics.length>0,null,{timeout:15000});
   async function configure(course,model,unit){
    await page.evaluate(({course,model,unit})=>{
     const c=document.getElementById('course');c.value=course;c.dispatchEvent(new Event('change',{bubbles:true}));
