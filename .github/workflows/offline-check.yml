@@ -74,6 +74,12 @@ jobs:
         run: node scripts/test-teacher-review.mjs
       - name: Probar la cola griega y el adaptador de importación Eulexis
         run: node scripts/test-greek-review.mjs
+      - name: Contrastar extractor Eulexis de forma temporal (no publicar corpus)
+        if: github.event_name == 'pull_request'
+        run: |
+          node scripts/export-eulexis-review.mjs
+          node -e "const f=require('./private/eulexis-review.json'); if(f.schema!=='examina-eulexis-review/v1'||!f.rows?.length)process.exit(1); console.log('Extracto Eulexis comprobado:',f.rows.length,'análisis')"
+          rm -rf private
       - name: Verificar HTML autónomo
         run: npm run offline:test
       - name: Comprobar estructura de exámenes
