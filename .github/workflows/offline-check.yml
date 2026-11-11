@@ -112,3 +112,5 @@ jobs:
         run: npm run pwa:test
       - name: Probar en Chromium el lematizador sin conexión
         run: node scripts/test-lemma-browser.cjs
+      - name: Probar en Chromium las tarjetas griegas y la importación local
+        run: node scripts/test-greek-review-browser.cjs
