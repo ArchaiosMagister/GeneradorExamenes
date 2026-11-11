@@ -14,7 +14,8 @@ assert.equal(api.displayEntry('λύω','simple'),'λύω');
 // las erratas en supinos no deben convertirse en lematizaciones seguras.
 for(const [form,entry,lemma] of [
  ['laudati','laudo, laudavi, laudatum (1ª)','laudo'],
- ['ædificata','ædifico, ædificavi, ædificatum (1ª)','aedifico']
+ ['ædificata','ædifico, ædificavi, ædificatum (1ª)','aedifico'],
+ ['vulneratus','vulnero, vulneravi, vulneratum (1ª)','uulnero']
 ]){
  const row=api.analyze(data,form,'lat1',[{entry,meaning:'traducción docente'}],{contextual:true})[0];
  assert.equal(row.status,'documented',form+' debe lematizarse sin pedir confirmación');
