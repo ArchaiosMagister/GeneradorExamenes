@@ -181,7 +181,7 @@ function latinExpandedForms(bank){
  for(const row of complete){
   const raw=String(row.entry||'').trim(),lemma=head(raw),l=latinKey(lemma);
   if(!l||!row.meaning||!(/^[a-z]+$/.test(l)))continue;
-  const fields=raw.split(',').map(x=>latinKey(x.replace(/\([^)]*\)/g,'').replace(/^[–−—-]+/,'').trim()));
+  const fields=raw.split(',').map(x=>latinKey(x.replace(/\([^)]*\)/g,'').trim().replace(/^[–−—-]+/,'').trim()));
   const annotated=raw.match(/\((1ª|2ª|3ª|4ª|mx\.)\)\s*$/u);
   const record={lemma:l,entry:raw,meaning:row.meaning,meaning_va:row.meaning_va||'',
    attested:true,origin:'paradigma regular escolar derivado del enunciado (no flexión individual certificada)'};
@@ -199,9 +199,11 @@ function latinExpandedForms(bank){
     decl12(stem+'issim',record);
     addMany(stem,['ior','ius','iorem','iore','iori','iores','iorum','ioribus','iora'],record);
    }
-  }else if(fields.length>=3&&l.endsWith('er')&&/^(?:ra|era)$/.test(fields[1])&&/^(?:rum|erum)$/.test(fields[2])){
-   const stem=fields[1]==='ra'?l.slice(0,-2)+'r':l;
-   decl12(stem,record);
+  }else if(fields.length>=3&&l.endsWith('er')&&fields[1].endsWith('a')&&fields[2].endsWith('um')){
+   const stem=fields[1].endsWith('era')?l:l.slice(0,-2)+'r';
+   add(l,record); // masculino nom./voc. sin -us
+   addMany(stem,['i','o','um','orum','is','os','a','ae','am','arum','as'],record);
+   decl12(stem,record,'n');
   }else if(fields.length===2&&fields[1]==='e'&&l.endsWith('is')){
    const stem=l.slice(0,-2);
    addMany(stem,['is','e','em','i','es','ia','ium','ibus'],record);
@@ -212,7 +214,10 @@ function latinExpandedForms(bank){
   }else if(fields.length===2&&l.endsWith('a')&&fields[1]==='ae'){
    addMany(l.slice(0,-1),proper?['a','ae','am','is']:['a','ae','am','arum','is','as'],record);
   }else if(fields.length===2&&['us','um'].some(e=>l.endsWith(e))&&fields[1]==='i'){
-   decl12(l.slice(0,-2),record,l.endsWith('um')?'n':'m');
+   const root=l.slice(0,-2),neuter=l.endsWith('um');
+   if(proper){
+    addMany(root,neuter?['um','i','o']:['us','i','o','um','e'],record);
+   }else decl12(root,record,neuter?'n':'m');
   }else if(fields.length===2&&l.endsWith('is')&&fields[1]==='is'){
    const stem=l.slice(0,-2);
    addMany(stem,proper?['is','em','i','e']:['is','em','i','e','es','ibus'],record);
