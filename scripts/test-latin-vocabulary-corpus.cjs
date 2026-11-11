@@ -34,16 +34,24 @@ for(const w of ['ab','ad','in','de','per','et']){
  assert.ok(found.entry&&found.meaning,'Enunciado/glosa ausente para '+w);
 }
 const external=!!dataset.source.readers;
-if(external)assert.ok(coverage>=95,'Cobertura baja para diez frases con motores externos: '+coverage+' %');
-else console.log('Prueba de regresión sin índices externos: '+coverage+' %; se conservan las candidatas para revisión.');
+assert.ok(coverage>=95,'Cobertura insuficiente con las conjugaciones latinas escolares: '+coverage+' %');
 const withPreposition=api.analyze(dataset,'de vita','lat1',latin);
 if(external)assert.equal(withPreposition.find(x=>x.form==='vita')?.status,'documented',
  'El ablativo tras de debe resolver el homógrafo de vita/vito');
 const withoutContext=api.analyze(dataset,'vita','lat1',latin);
 if(external)assert.equal(withoutContext[0].status,'review',
  'Sin contexto vita sigue siendo homógrafa; no se debe adivinar');
-if(external)assert.ok(!unknown.some(x=>x.status==='unknown'),
- 'El índice ampliado debe reconocer todos los ejemplos escolares');
+assert.ok(!unknown.some(x=>x.status==='unknown'),'Queda una forma escolar completamente desconocida');
+// Evitar que una conjugación irregular o un lema sin clase explícita
+// reciba falsas flexiones del motor regular.
+const independent={rows:{lat:[],grc:[]},vocabulary:{lat:{},grc:{}}};
+const paradigms=[{entry:'laudo, laudavi, laudatum (1ª)',meaning:'alabar'},
+ {entry:'facio, feci, factum (mx.)',meaning:'hacer'},
+ {entry:'fero, tuli, latum (irr.)',meaning:'llevar'}];
+assert.equal(api.analyze(independent,'laudant','lat1',paradigms)[0].status,'documented');
+assert.equal(api.analyze(independent,'faciunt','lat1',paradigms)[0].status,'documented');
+assert.notEqual(api.analyze(independent,'ferunt','lat1',paradigms)[0].status,'documented',
+ 'No generar presentes de un verbo irregular por analogía');
 const project={course:'lat1',lang:'es',count:10,units:analyzed};
 const xml=api.documentXml(project);
 assert.match(xml,/Vocabulario por unidades de Latín I/);
