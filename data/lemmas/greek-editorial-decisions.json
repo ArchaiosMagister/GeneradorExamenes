@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "course": "gr1",
-  "purpose": "17 decisiones filológicas docentes de entradas y glosas; no certifican flexiones ni paradigmas",
+  "purpose": "19 decisiones filológicas docentes de entradas y glosas; no certifican flexiones ni paradigmas",
   "verifiedMorphology": false,
   "decisions": [
     {
@@ -38,8 +38,8 @@
       "original": "σοφός, –ου",
       "entry": "σοφός, –οῦ (ὁ)",
       "sourceEntry": "σοφός, –ου",
-      "newMeaning": "sabio (sustantivado)",
-      "newMeaningVa": "savi (substantivat)"
+      "newMeaning": "sabio",
+      "newMeaningVa": "savi"
     },
     {
       "id": "barbaros",
@@ -93,7 +93,8 @@
       "entry": "πένης, –ητος (ὁ)",
       "sourceEntry": "πένης, –ετος",
       "newMeaning": null,
-      "newMeaningVa": null
+      "newMeaningVa": null,
+      "teacherDecision": "Conservar la categoría de sustantivo masculino. Se mantiene πένης, –ητος, documentado en LSJ, frente a la grafía πενής, –ῆτος de la solicitud."
     },
     {
       "id": "ekklesia",
@@ -157,6 +158,26 @@
       "sourceEntry": "αἰτέω",
       "newMeaning": "pedir, solicitar",
       "newMeaningVa": "demanar, sol·licitar"
+    },
+    {
+      "id": "aischros-two-endings",
+      "course": "gr1",
+      "original": "αἰσχρός, –ον",
+      "entry": "αἰσχρός, –ον",
+      "sourceEntry": "αἰσχρός, –ον",
+      "newMeaning": null,
+      "newMeaningVa": null,
+      "teacherDecision": "keep: conservar adjetivo de dos terminaciones; no verificar flexiones"
+    },
+    {
+      "id": "poneros-expanded-senses",
+      "course": "gr1",
+      "original": "πονηρός, –α, –ον",
+      "entry": "πονηρός, –α, –ον",
+      "sourceEntry": "πονηρός, –α, –ον",
+      "newMeaning": "desdichado/a, pobre, malo, perverso",
+      "newMeaningVa": "desgraciat/ada, pobre, dolent/a, pervers/a",
+      "teacherDecision": "Conservar acepciones anteriores y añadir malo, perverso; no verificar flexiones"
     }
   ]
 }

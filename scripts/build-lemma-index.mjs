@@ -91,7 +91,7 @@ async function main(){
  const greekEditorial=JSON.parse(await fs.readFile(greekEditorialPath,'utf8'));
  if(greekEditorial.schema!==1||greekEditorial.course!=='gr1'||
     greekEditorial.verifiedMorphology!==false||!Array.isArray(greekEditorial.decisions)||
-    greekEditorial.decisions.length!==17)throw Error('Revisión editorial griega desconocida');
+    greekEditorial.decisions.length!==19)throw Error('Revisión editorial griega desconocida');
  const replacedGreekKeys=new Set(),suspendedGreekCandidates=new Set();
  let greekEditorialAdded=0,greekEditorialRekeyed=0;
  for(const item of greekEditorial.decisions){

@@ -331,6 +331,7 @@
   "desde": "des de",
   "desdichado, mísero": "desgraciat, míser",
   "desdichado/a, pobre": "desgraciat/desgraciada, pobre",
+  "desdichado/a, pobre, malo, perverso": "desgraciat/desgraciada, pobre, dolent/dolenta, pervers/perversa",
   "desear": "desitjar",
   "deseo, placer": "desig, plaer",
   "deseoso/a": "desitjós/desitjosa",
