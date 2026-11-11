@@ -1067,8 +1067,8 @@ function init(){
  $('vgCourse').onchange=()=>{project.course=$('vgCourse').value;qualitySnapshot=null;project.units.forEach(u=>{u.rows=[];u.analyzed=false});save();render();status('Banco cambiado. Vuelve a analizar los textos.');refreshQuality();if(project.course==='gr1')prepareEulexis().catch(error=>eulexisStatus(error.message))};
  for(const [id,field] of [['vgTitle','title'],['vgText','text'],['vgMode','mode']])$(id).oninput=()=>{unit()[field]=$(id).value;if(field==='text'){unit().rows=[];unit().analyzed=false;status('Texto modificado. Analiza la unidad antes de exportar.')}save();if(field==='mode')render();else renderUnitButtons()};
  async function analyzeUnits(mode){
-  const button=$('vgAnalyze'),buttonAll=$('vgAnalyzeAll'),word=$('vgWord');
-  button.disabled=true;buttonAll.disabled=true;word.disabled=true;status('Analizando…');
+  const button=$('vgAnalyze'),buttonAll=$('vgAnalyzeAll'),word=$('vgWord'),clear=$('vgClearAll');
+  button.disabled=true;buttonAll.disabled=true;word.disabled=true;clear.disabled=true;status('Analizando…');
   try{
    const targets=mode==='missing'?project.units.slice(0,project.count).filter(needsAnalysis)
     :mode==='all'?project.units.slice(0,project.count):[unit()];
@@ -1083,11 +1083,33 @@ function init(){
    status(targets.length+' unidad(es) analizada(s). '+distinct+' formas distintas. '+pending+' pendientes de revisión. Textos conservados.');
    return true;
   }catch(e){status('No se pudo analizar: '+e.message);return false}
-  finally{button.disabled=false;buttonAll.disabled=false;word.disabled=false}
+  finally{button.disabled=false;buttonAll.disabled=false;word.disabled=false;clear.disabled=false}
  }
  $('vgAnalyze').onclick=()=>analyzeUnits('current');
  $('vgAnalyzeAll').onclick=()=>analyzeUnits('all');
  $('vgBackup').onclick=()=>downloadBlob('vocabulario-unidades.json',new Blob([JSON.stringify(project,null,2)],{type:'application/json'}));
+ $('vgClearAll').onclick=()=>{
+  // Solo se vacía ESTE proyecto local; no modificar el banco de vocabulario
+  // compartido, las listas exigibles ni los proyectos exportados en JSON.
+  const hasWork=project.count!==1||project.units.length>1||project.units.some((u,i)=>
+   !!u.text?.trim()||!!u.rows?.length||!!u.analyzed||
+   (u.title||'UD'+(i+1))!=='UD'+(i+1)||(u.mode||'complete')!=='complete');
+  if(!hasWork){
+   status(project.lang==='va'?'El projecte ja està buit.':'El proyecto ya está vacío.');
+   return;
+  }
+  const warning=project.lang==='va'?
+   'Esborrar tot el projecte? S’eliminaran els textos, títols, anàlisis i correccions de TOTES les unitats, incloses les ocultes. Es conservaran l’assignatura i l’idioma. Aquesta acció no es pot desfer si no tens una còpia JSON.':
+   '¿Limpiar todo el proyecto? Se borrarán los textos, títulos, análisis y correcciones de TODAS las unidades, incluidas las ocultas. Se conservarán la asignatura y el idioma. No podrás deshacerlo sin una copia JSON.';
+  if(!window.confirm(warning))return;
+  // Reiniciar a una única UD1 vacía y persistir inmediatamente.
+  // Mantener la asignatura y el idioma evita cambios inesperados de contexto.
+  project={count:1,course:project.course,lang:project.lang,units:[]};
+  selected=0;
+  save();render();
+  status(project.lang==='va'?'Projecte net. Pots començar amb la UD1 o recuperar una còpia JSON.':
+   'Proyecto limpiado. Puedes empezar por la UD1 o recuperar una copia JSON.');
+ };
  $('vgWord').onclick=async()=>{
   const missing=project.units.slice(0,project.count).filter(needsAnalysis);
   if(missing.length){
