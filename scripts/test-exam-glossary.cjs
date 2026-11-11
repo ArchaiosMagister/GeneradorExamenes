@@ -77,6 +77,7 @@ assert(!engine.documentXml({...project,groupTypes:false}).includes('Sustantivos 
   const page=await browser.newPage({viewport:{width:1200,height:850}});
   const errors=[];page.on('pageerror',e=>errors.push(e.message));
   await page.goto('http://127.0.0.1:'+server.address().port+'/offline.html',{waitUntil:'load'});
+  await page.locator('#vmShowExam').click();
   await page.selectOption('#course','latin1');
   await page.locator('#group-vocab').evaluate(el=>el.open=true);
   await page.selectOption('#model','mixto');
@@ -101,6 +102,7 @@ assert(!engine.documentXml({...project,groupTypes:false}).includes('Sustantivos 
   const stored=await page.evaluate(()=>JSON.parse(localStorage.getItem('examina_exam_gloss_choices_v1')));
   assert.equal(Object.keys(stored).length,2,'Las dos decisiones deben persistir');
   await page.reload();
+  await page.locator('#vmShowExam').click();
   await page.locator('#group-vocab').evaluate(el=>el.open=true);
   await page.selectOption('#model','mixto');
   await page.click('#generate');
