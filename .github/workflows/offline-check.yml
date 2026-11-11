@@ -4,6 +4,9 @@ on:
   pull_request:
     paths:
       - 'index.html'
+      - 'culture-lat4.js'
+      - 'lexicon-valenciano.js'
+      - 'vocabulary-generator.js'
       - 'offline.html'
       - 'offline-lemmas.js'
       - 'verification-review.js'
@@ -20,6 +23,8 @@ on:
     branches: [main]
     paths:
       - 'index.html'
+      - 'culture-lat4.js'
+      - 'vocabulary-generator.js'
       - 'offline.html'
       - 'data/lemmas/**'
       - 'data/unimorph/**'
@@ -43,6 +48,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Comprobar prefijos y evolución fonética por UD de Latín 4.º
+        run: node scripts/test-lat4-lexico.cjs
+      - name: Validar preguntas docentes de cultura LAT4
+        run: node scripts/test-cultura-lat4.cjs
       - name: Probar modelos regulares sin incorporación a los exámenes
         run: node scripts/test-regular-latin.mjs
       - name: Probar nominales griegos con corpus sintético etiquetado
@@ -67,8 +76,14 @@ jobs:
         run: |
           npm install --no-save --ignore-scripts playwright@1.56.1
           npx playwright install --with-deps chromium
+      - name: Validar glosas en castellano y valenciano
+        run: node scripts/test-valenciano.cjs
+      - name: Probar generador de vocabulario por unidades y Word
+        run: npm run vocabulary:test
       - name: Probar las vistas previas de todos los modelos
         run: node scripts/test-preview.cjs
+      - name: Validar valenciano en pantalla y Word para los tres cursos
+        run: node scripts/test-valenciano-browser.cjs
       - name: Verificar concordancia de tablas y umbrales de unidad
         run: node scripts/test-nominal-agreement.cjs
       - name: Probar PWA sin red y actualizaciones controladas

@@ -9,7 +9,7 @@ function part(start,end){
  return html.slice(a,b);
 }
 const morphologyHelpers=part('/* Editable syntagm slots;','function generateLatinMorphologyReference(){');
-const latinCode=part('const latinPronounRows=','let culture=[];')+morphologyHelpers+
+const latinCode=part('const latinPronounRows=','let culture=')+morphologyHelpers+
  part('function generateLatinMorphologyReference(){','/* El título refleja las unidades');
 const greekCode=morphologyHelpers+part('const greekModes=','// Vista del temario:')+
  part('function generateGreekMorphologyFixed(){','let greekExamState=null;')+
@@ -126,6 +126,7 @@ function greekSuite(){
   greekExamHeader:()=>'<div class="exam-header">Griego</div>',
   greekQuestionLabel:kind=>({declension:'Declina',conjugation:'Conjuga',forms:'Analiza',pronouns:'Pronombres',etymology:'Etimología',sentences:'Traduce'}[kind]),
   greekLemma:head=>({entry:head,meaning:'palabra'}),examKey:x=>x,
+  localizedGloss:row=>({value:row.meaning,ready:!!row.meaning}),
   glossAccept:()=>true,isRequired:()=>false,quoteGloss:x=>"'"+x+"'",esc:x=>String(x),tr:x=>x,document:{getElementById:()=>null},
   greekExamControls:()=>{},refreshManualMorphWords:()=>{},window:{},
   examQuestionEnabled:kind=>kind!=='pronouns'||state.model.value==='morphology',
@@ -150,6 +151,16 @@ function greekSuite(){
  assert(!output.includes('exam-nouns')&&!output.includes('exam-verbs'));
  assert(output.includes('final-gloss'),'Griego traducción debe llevar vocabulario de las oraciones');
  assert.equal(sandbox.window.greekLastExam.total,10);
+ // Una oración griega añadida por el docente se ofrece en el banco,
+ // y los lemas que el índice no reconoce quedan señalados.
+ sandbox.sentences=[{course:'greek1',text:'ὁ δοῦλος λέγει.',sol:'[TRADUCCIÓN PENDIENTE]',
+  units:['UD7'],teacherProvided:true}];
+ sandbox.courseOf=x=>x.course||'latin1';
+ sandbox.greekSharedBank={lookup:()=>null};
+ state['count-sent'].value=12;
+ output=run('translation');
+ assert(output.includes('ὁ δοῦλος λέγει.'),'La oración griega importada no llegó al examen');
+ assert(output.includes('revisa el vocabulario'),'La oración griega sin lematización necesita revisión');
  output=run('morphology');
  assert.equal((output.match(/class="exam-question"/g)||[]).length,4,'Griego UD7: pronombres');
  assert(output.includes('exam-pronouns')&&output.includes('palabras variables'));

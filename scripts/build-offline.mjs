@@ -22,7 +22,11 @@ export async function renderOffline(root=projectRoot){
  }
  const noHead=metadata.reduce((html,tag)=>html.replace(tag,''),sourceHtml);
  const noPanel=noHead.slice(0,noHead.indexOf(begin))+noHead.slice(noHead.indexOf(end)+end.length);
- const html=noPanel.replace('<script src="pwa.js" defer></script>','');
+ let html=noPanel.replace('<script src="pwa.js" defer></script>','');
+ const vocabularyModule=await readFile(resolve(root,'vocabulary-generator.js'),'utf8');
+ const vocabularyExternal='<script src="vocabulary-generator.js" defer></script>';
+ if(!html.includes(vocabularyExternal))throw new Error('Falta el generador de vocabulario independiente');
+ html=html.replace(vocabularyExternal,'<script>'+vocabularyModule.replace(/<\/script/gi,'<\\/script')+'</script>');
  const latin=JSON.parse(await readFile(resolve(root,'data/unimorph/lat-v.json'),'utf8'));
  if(!Array.isArray(latin.rows)||!latin.rows.length||
     !latin.rows.every(row=>Array.isArray(row)&&row.length>=4)){
@@ -68,6 +72,14 @@ export async function renderOffline(root=projectRoot){
  if(!html.includes(marker))throw new Error('No existe el script de la webapp');
  const offlineModule=await readFile(resolve(root,'offline-lemmas.js'),'utf8');
  const reviewModule=await readFile(resolve(root,'verification-review.js'),'utf8');
+ const cultureModule=await readFile(resolve(root,'culture-lat4.js'),'utf8');
+ const valencianModule=await readFile(resolve(root,'lexicon-valenciano.js'),'utf8');
+ const valencianExternal='<script src="lexicon-valenciano.js"></script>';
+ if(!html.includes(valencianExternal))throw new Error('Falta el léxico valenciano en index.html');
+ html=html.replace(valencianExternal,'<script>'+valencianModule.replace(/<\/script/gi,'<\\/script')+'</script>');
+ const cultureExternal='<script src="culture-lat4.js"></script>';
+ if(!html.includes(cultureExternal))throw new Error('Falta banco de cultura en index.html');
+ html=html.replace(cultureExternal,'<script>'+cultureModule.replace(/<\/script/gi,'<\\/script')+'</script>');
  const reviewExternal='<script src="verification-review.js" defer></script>';
  if(!html.includes(reviewExternal))throw new Error('Falta el panel de revisión filológica');
  const reviewScript='<script>'+reviewModule.replace(/<\/script/gi,'<\\/script')+'</script>';

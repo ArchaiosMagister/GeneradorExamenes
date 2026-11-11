@@ -1,0 +1,394 @@
+{
+  "schema": 1,
+  "repository": "ArchaiosMagister/GeneradorExamenes",
+  "branch": "feat/integracion-pr29-pr30-valenciano-20261110",
+  "origin": "revisión filológica del vocabulario bilingüe en PR31",
+  "status": "13 decisiones docentes aplicadas; ninguna pendiente de esta revisión",
+  "notes": "Historial de 13 decisiones aprobadas. Priorizar formas y léxico del valenciano docente, como este, eixe, meua, seua, tindre, vindre y xiquet, sin sustituciones por variantes catalanas no escogidas. Se conservan grafías latinas y griegas.",
+  "items": [],
+  "resolved": [
+    {
+      "id": "LAT1-IMPORTO",
+      "course": "latin1",
+      "lemma": "importo, importavi, importatum (1ª)",
+      "spanish": "traer",
+      "current_va": "portar",
+      "reason": "Importo suele denotar introducir o traer hacia dentro; la glosa genérica puede quedarse corta.",
+      "options": [
+        [
+          "a",
+          "traer → portar"
+        ],
+        [
+          "b",
+          "introducir, traer → introduir, portar"
+        ],
+        [
+          "c",
+          "importar, introducir → importar, introduir"
+        ]
+      ],
+      "decision": {
+        "option": "a",
+        "value": "traer → portar",
+        "scope": "Se conservan la glosa española «traer» y valenciana «portar»"
+      },
+      "resolution": "aplicada",
+      "approvedBy": "docente"
+    },
+    {
+      "id": "LAT1-IMPONO",
+      "course": "latin1",
+      "lemma": "impono, imposui, impositum (3ª)",
+      "spanish": "traer",
+      "current_va": "portar",
+      "reason": "La glosa original no corresponde al significado ordinario del compuesto impono.",
+      "options": [
+        [
+          "a",
+          "conservar provisionalmente traer → portar"
+        ],
+        [
+          "b",
+          "poner encima → posar damunt"
+        ],
+        [
+          "c",
+          "imponer, colocar encima → imposar, posar damunt"
+        ]
+      ],
+      "decision": {
+        "option": "c",
+        "value": "imponer, colocar encima → imposar, posar damunt",
+        "scope": "Se corrigen significado castellano y equivalente valenciano solo para impono"
+      },
+      "resolution": "aplicada",
+      "approvedBy": "docente"
+    },
+    {
+      "id": "GR1-KALEO",
+      "course": "greek1",
+      "lemma": "καλέω",
+      "spanish": "llamar",
+      "current_va": "cridar",
+      "reason": "Puede significar llamar, convocar o denominar, según el contexto.",
+      "options": [
+        [
+          "a",
+          "cridar"
+        ],
+        [
+          "b",
+          "anomenar"
+        ],
+        [
+          "c",
+          "cridar, anomenar"
+        ]
+      ],
+      "decision": {
+        "option": "c",
+        "value": "cridar, anomenar",
+        "scope": "Traducción valenciana específica de καλέω"
+      },
+      "resolution": "aplicada",
+      "approvedBy": "docente"
+    },
+    {
+      "id": "GR1-MALISTA",
+      "course": "greek1",
+      "lemma": "μάλιστα (adv.)",
+      "spanish": "muy",
+      "current_va": "molt",
+      "reason": "Grado superlativo de μάλα; 'molt' no expresa claramente el matiz de 'sobre todo' o 'en grado máximo'.",
+      "options": [
+        [
+          "a",
+          "molt (mantener)"
+        ],
+        [
+          "b",
+          "sobretot"
+        ],
+        [
+          "c",
+          "moltíssim, especialment"
+        ]
+      ],
+      "decision": {
+        "option": "c",
+        "value": "moltíssim, especialment",
+        "scope": "Traducción valenciana específica de μάλιστα"
+      },
+      "resolution": "aplicada",
+      "approvedBy": "docente"
+    },
+    {
+      "id": "GR1-ATHENAIOS",
+      "course": "greek1",
+      "lemma": "Ἀθηναῖος, –α, –ον",
+      "spanish": "ateniense",
+      "current_va": "atenés",
+      "reason": "La ficha es un adjetivo de tres géneros y el masculino aislado no refleja la flexión.",
+      "options": [
+        [
+          "a",
+          "atenés/atenesa"
+        ],
+        [
+          "b",
+          "atenenc/atenenca"
+        ],
+        [
+          "c",
+          "atenés/atenesa, atenenc/atenenca"
+        ]
+      ],
+      "decision": {
+        "option": "b",
+        "value": "atenenc/atenenca",
+        "scope": "Traducción valenciana específica del adjetivo"
+      },
+      "resolution": "aplicada",
+      "approvedBy": "docente"
+    },
+    {
+      "id": "GR1-STRATEGOS",
+      "course": "greek1",
+      "lemma": "στρατηγός, –οῦ",
+      "spanish": "estratego",
+      "current_va": "estrateg",
+      "reason": "Estrateg es el cargo griego; general es una equivalencia funcional menos técnica.",
+      "options": [
+        [
+          "a",
+          "estrateg"
+        ],
+        [
+          "b",
+          "general"
+        ],
+        [
+          "c",
+          "estrateg (general)"
+        ]
+      ],
+      "decision": {
+        "option": "c",
+        "value": "estrateg (general)",
+        "scope": "Traducción valenciana en ambas entradas de στρατηγός"
+      },
+      "resolution": "aplicada",
+      "approvedBy": "docente"
+    },
+    {
+      "id": "LAT4-GERMANUS",
+      "course": "latin4",
+      "lemma": "Gērmānus, –a, –um",
+      "spanish": "germano/a",
+      "current_va": "germànic/germànica",
+      "reason": "Puede tratarse como gentilicio histórico o como adjetivo cultural.",
+      "options": [
+        [
+          "a",
+          "germànic/germànica"
+        ],
+        [
+          "b",
+          "germà/germana"
+        ],
+        [
+          "c",
+          "germànic/germànica (dels pobles germànics)"
+        ]
+      ],
+      "decision": {
+        "option": "a",
+        "value": "germànic/germànica",
+        "scope": "Conservado el equivalente valenciano"
+      },
+      "resolution": "aplicada",
+      "approvedBy": "docente"
+    },
+    {
+      "id": "LAT1-PAULUS",
+      "course": "latin1",
+      "lemma": "Paulus, –i",
+      "spanish": "Paulo",
+      "current_va": "Pau",
+      "reason": "El nombre romano puede adaptarse o conservarse con forma latinizante.",
+      "options": [
+        [
+          "a",
+          "Pau"
+        ],
+        [
+          "b",
+          "Paulus"
+        ],
+        [
+          "c",
+          "Paulo"
+        ]
+      ],
+      "decision": {
+        "option": "b",
+        "value": "Paulus",
+        "scope": "Solo traducción valenciana; castellano Paulo intacto"
+      },
+      "resolution": "aplicada",
+      "approvedBy": "docente"
+    },
+    {
+      "id": "LAT1-CALLUS",
+      "course": "latin1",
+      "lemma": "Callus, –i",
+      "spanish": "Calo (gentilicio)",
+      "current_va": "Calo (gentilici)",
+      "reason": "La indicación '(gentilicio)' resulta dudosa sin contexto onomástico; puede ser cognomen.",
+      "options": [
+        [
+          "a",
+          "Calo (gentilici)"
+        ],
+        [
+          "b",
+          "Calo (nom propi)"
+        ],
+        [
+          "c",
+          "Calo (cognomen romà)"
+        ]
+      ],
+      "decision": {
+        "option": "a",
+        "value": "Calo (gentilici)",
+        "scope": "Se mantiene el criterio docente solicitado"
+      },
+      "resolution": "aplicada",
+      "approvedBy": "docente"
+    },
+    {
+      "id": "LAT1-ORGETORIX",
+      "course": "latin1",
+      "lemma": "Orgetorix, –igis",
+      "spanish": "Orgétorix",
+      "current_va": "Orgétorix",
+      "reason": "No se ha fijado una adaptación valenciana del antropónimo en las fuentes consultadas.",
+      "options": [
+        [
+          "a",
+          "Orgétorix"
+        ],
+        [
+          "b",
+          "Orgetòrix"
+        ],
+        [
+          "c",
+          "Orgetorix (grafía latina sin adaptar)"
+        ]
+      ],
+      "decision": {
+        "option": "a",
+        "value": "Orgétorix",
+        "scope": "Se mantiene grafía docente"
+      },
+      "resolution": "aplicada",
+      "approvedBy": "docente"
+    },
+    {
+      "id": "GR1-HIERAX",
+      "course": "greek1",
+      "lemma": "Ἱέραξ, –ακος (ὁ)",
+      "spanish": "Hiérax",
+      "current_va": "Hiérax",
+      "reason": "Transcripción rara sin suficiente evidencia para normalizar la acentuación.",
+      "options": [
+        [
+          "a",
+          "Hiérax"
+        ],
+        [
+          "b",
+          "Hièrax"
+        ],
+        [
+          "c",
+          "Hierax (transcripción sin acento)"
+        ]
+      ],
+      "decision": {
+        "option": "a",
+        "value": "Hiérax",
+        "scope": "Se mantiene grafía docente"
+      },
+      "resolution": "aplicada",
+      "approvedBy": "docente"
+    },
+    {
+      "id": "PREF-ULTRAPUERTOS",
+      "course": "latin4",
+      "lemma": "Ultrapuertos",
+      "spanish": "ultrapuertos",
+      "current_va": "ultraports",
+      "reason": "Término poco habitual y equivalencia valenciana no suficientemente documentada para un examen.",
+      "options": [
+        [
+          "a",
+          "mantener ultrapuertos / ultraports"
+        ],
+        [
+          "b",
+          "excluirlo del sorteo valenciano"
+        ],
+        [
+          "c",
+          "eliminar la ficha de ambos bancos"
+        ]
+      ],
+      "decision": {
+        "option": "c",
+        "value": "Eliminar la ficha de ambos bancos",
+        "scope": "Eliminada la única entrada bilingüe de los dos sorteos de prefijos"
+      },
+      "resolution": "aplicada",
+      "approvedBy": "docente"
+    },
+    {
+      "id": "LAT1-REDUCO",
+      "course": "latin1",
+      "lemma": "reduco, reduxi, reductum (3ª)",
+      "spanish": "traer",
+      "current_va": "portar",
+      "reason": "Reduco implica conducción de vuelta o regreso; el enunciado español actual omite re-.",
+      "options": [
+        [
+          "a",
+          "traer → portar"
+        ],
+        [
+          "b",
+          "hacer volver → fer tornar"
+        ],
+        [
+          "c",
+          "conducir de vuelta → conduir de tornada"
+        ]
+      ],
+      "decision": {
+        "option": "c",
+        "value": "conducir de vuelta → conduir de tornada",
+        "scope": "Actualizar traducciones castellana y valenciana a petición explícita del docente"
+      },
+      "resolution": "aplicada",
+      "approvedBy": "docente"
+    }
+  ],
+  "localePolicy": {
+    "language": "valencià",
+    "priority": "formes i lèxic valencians escollits pel docent",
+    "avoid": "substitució per variants del català no triades pel docent"
+  },
+  "resolvedDate": "2026-11-10"
+}

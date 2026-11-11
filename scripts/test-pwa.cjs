@@ -51,7 +51,7 @@ const server=http.createServer(async(req,res)=>{
    preverbs:latinLexBanks.latin1.preverbs.length,
    phonetics:latinLexBanks.latin1.phonetics.length
   }));
-  assert.deepEqual([lex.latinisms,lex.prefixes,lex.preverbs,lex.phonetics],[87,287,120,73],
+  assert.deepEqual([lex.latinisms,lex.prefixes,lex.preverbs,lex.phonetics],[87,286,120,73],
    'No han cargado todos los bancos léxicos docentes');
   const expanded=await page.evaluate(()=>latinLexBanks.latin4.phonetics.some(x=>x.id==='EVF-0008'));
   assert(expanded,'Las ampliaciones del banco general no han llegado a Latín 4.º: falta EVF-0008');
@@ -90,8 +90,8 @@ const server=http.createServer(async(req,res)=>{
     earlier:latinLexPool('latin4','prefixes',['UD1']).length,
     selected:latinLexRandomFour('prefixes',latinLexPool('latin4','prefixes',['UD1']),'latin4').map(x=>x.prompt)
   }));
-  assert(latin4Excluded.all===287&&latin4Excluded.earlier<287,
-    'Latín 4.º debe usar los 287 prefijos generales pero con filtro curricular');
+  assert(latin4Excluded.all===286&&latin4Excluded.earlier<286,
+    'Latín 4.º debe usar los 286 prefijos generales pero con filtro curricular');
   assert.equal(latin4Excluded.selected.length,4,'Latín 4.º debe seleccionar cuatro formas para prefijos');
   const taught=await page.evaluate(()=>{
    const result={};

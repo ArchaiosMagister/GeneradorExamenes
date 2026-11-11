@@ -67,7 +67,7 @@ jobs:
             cp "$source/index.html" "$dest/index.html"
             cp "$source/offline.html" "$dest/offline.html"
             cp "$source/offline-lemmas.js" "$source/verification-review.js" "$dest/"
-            cp "$source/pwa.js" "$source/manifest.webmanifest" "$dest/"
+            cp "$source/pwa.js" "$source/culture-lat4.js" "$source/lexicon-valenciano.js" "$source/vocabulary-generator.js" "$source/manifest.webmanifest" "$dest/"
             if [[ -f "$source/vocabulary-generator.js" ]]; then
               cp "$source/vocabulary-generator.js" "$dest/"
             fi

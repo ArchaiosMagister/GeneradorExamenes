@@ -164,3 +164,9 @@ El formato se aplica a la vista previa, impresión/PDF y exportación DOCX de Gr
 
 
 Ajuste actual de márgenes: 3 cm a la derecha y 2,5 cm arriba, izquierda y abajo, en impresión y Word. Más espacio superior en la cabecera; tablas ajustadas al ancho disponible.
+
+## Integración experimental de las dos mejoras
+
+La rama de integración incluye el **generador de vocabulario por unidades** de la PR 29 y las mejoras de configuración, Cultura de Latín 4.º, prefijos y fonética de la PR 30. El trabajo continúa en una PR de borrador independiente. El modo valenciano utiliza una capa de traducciones propia; no sustituye los significados castellanos del banco docente.
+
+Lee [la guía del generador por unidades](docs/generador-vocabulario.md) y [el informe de optimización](docs/optimizacion-inicial-2026-11-10.md). Se revisarán los resultados en navegador, Word y PWA antes de fusionar.
