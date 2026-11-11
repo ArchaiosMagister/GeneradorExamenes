@@ -2649,7 +2649,7 @@ function generateGreekExam(){
 const legacyUpdateUnits=updateUnits;
 updateUnits=function(){if(currentCourse()!=='greek1')return legacyUpdateUnits();const marked=new Set(greekMarkedUnits());units=greekMaterials.syllabus.map((_,i)=>'UD'+i);$('unitChoices').innerHTML=units.map((u,i)=>'<label title="'+esc(greekMaterials.syllabus[i])+'"><input class="unit-choice" type="checkbox" value="'+i+'" '+(marked.has(u)?'checked':'')+'>'+u+'</label>').join('');document.querySelectorAll('.unit-choice').forEach(e=>e.onchange=()=>generate())};
 const greekPanel=document.createElement('div');greekPanel.className='field';greekPanel.id='greekSettings';greekPanel.hidden=true;
-greekPanel.innerHTML='<p class="hint">Modelo 1: declinación, conjugación, análisis de formas, etimología y oraciones. Modelo 2: declinación, análisis verbal, pronombres cuando se hayan estudiado y palabras variables. Modelo 3: análisis de formas, etimología y siete huecos para oraciones por defecto.</p><p id="greekCoverage" class="notice" role="status" aria-live="polite"></p><label id="greekPointsLabel">Puntuación por apartado</label><div id="greekPointsGrid" class="count-grid">'+greekKinds.map((k,i)=>'<label>'+greekKindNames.es[i]+'<input id="greek-points-'+k+'" type="number" min="0" max="100" step="0.1"></label>').join('')+'</div><p class="hint">Morfología: 2 + 1 + 1 puntos. Solo se utilizan formas y soluciones verificadas.</p>';
+greekPanel.innerHTML='<p id="greekCoverage" class="notice" role="status" aria-live="polite"></p><label id="greekPointsLabel">Puntuación por apartado</label><div id="greekPointsGrid" class="count-grid">'+greekKinds.map((k,i)=>'<label>'+greekKindNames.es[i]+'<input id="greek-points-'+k+'" type="number" min="0" max="100" step="0.1"></label>').join('')+'</div>';
 document.querySelector('label[for="model"]').parentElement.after(greekPanel);
 for(const k of greekKinds)$('greek-points-'+k).onchange=()=>generate();
 // Three visible examination models; only the complete exam exists in Latin 4 ESO.
@@ -3413,9 +3413,8 @@ loadTeacherLatinLexBanks();
     row.append(span,button);group.append(row);
    }
    if(kind==='preverbs'&&course==='latin1'){
-    const note=document.createElement('p');note.className='hint';
-    note.textContent='Dos verbos, en este orden: el primero requiere 3 derivados y el segundo 2. Solo se sortean verbos ya explicados. También puedes escribirlos manualmente.';
-    group.append(note);
+    appendQuestionExplanation('Modificación preverbial',
+     'Dos verbos, el primero con tres derivados y el segundo con dos; solo se sortean verbos explicados hasta la unidad seleccionada.');
     const pool=latinLexPool('latin1','preverbs',selectedUnits());
     for(let i=0;i<2;i++){
      const select=document.createElement('select');select.id='lex-verb-'+i;
@@ -3482,6 +3481,8 @@ loadTeacherLatinLexBanks();
   appendQuestionExplanation('Edición y regeneración',
    'Los cambios realizados en el examen y en el menú afectan a la misma forma. Regenerar una posición no altera las demás.');
   const morph=['morf','morphology'].includes($('model').value);
+  if(currentCourse()==='greek1')appendQuestionExplanation('Griego I',
+   'Examen completo: declinación, conjugación, análisis morfológico, etimología y oraciones. Morfología: declinación, verbos, pronombres cuando se hayan estudiado y palabras variables. Traducción: análisis, etimología y oraciones.');
   for(const [index,kind] of questionKeys().entries()){
    const detail=document.createElement('details');detail.className='exam-question-panel';detail.dataset.question=kind;
    detail.open=false;
