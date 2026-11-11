@@ -30,6 +30,7 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
   assert.notEqual(await page.locator('#grReviewCard h3').textContent(),first,
    'Omitir debe avanzar sin registrar una solución');
   // Importación desde archivo local; la cola debe reconocer Eulexis sin llamadas de red.
+  await page.locator('#grReviewEulexisFile').evaluate(el=>{const details=el.closest('details');if(details)details.open=true;});
   await page.locator('#grReviewEulexisFile').setInputFiles({
    name:'eulexis-local.json',mimeType:'application/json',
    buffer:Buffer.from(JSON.stringify({schema:'examina-eulexis-review/v1',rows:[
