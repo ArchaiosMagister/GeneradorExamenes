@@ -11,6 +11,7 @@ on:
       - 'offline.html'
       - 'offline-lemmas.js'
       - 'verification-review.js'
+      - 'greek-review.js'
       - 'data/lemmas/**'
       - 'data/unimorph/**'
       - 'scripts/**'
@@ -71,6 +72,8 @@ jobs:
         run: node scripts/test-lemma-index.mjs
       - name: Auditar incidencias morfológicas y decisiones
         run: node scripts/test-teacher-review.mjs
+      - name: Probar la cola griega y el adaptador de importación Eulexis
+        run: node scripts/test-greek-review.mjs
       - name: Verificar HTML autónomo
         run: npm run offline:test
       - name: Comprobar estructura de exámenes
