@@ -112,10 +112,13 @@ async function checkFile(browser,filename){
   }
   const previewScore=page.locator('#paper .exam-question-points').first();
   await previewScore.fill('3,25');
+  await page.waitForFunction(()=>document.querySelector('#examScoring .exam-scoring-row input')?.value==='3,25');
   assert.equal((await scoringRows.first().inputValue()),'3,25',
    filename+' '+course+'/'+model+': la edición en la vista previa no actualiza el panel');
   assert.match(await page.locator('#paper .exam-question').first().textContent(),/\(3,25 p\.\)\.$/,
    filename+' '+course+'/'+model+': puntos no terminan el enunciado');
+  const wordScored=await page.evaluate(()=>wordExamParagraph(document.querySelector('#paper .exam-question')));
+  assert(wordScored.includes('3,25 p.).'),filename+' '+course+'/'+model+': puntuación editada ausente del XML Word');
   // El valor restaurado queda asociado a su pregunta aunque se regenere.
   await scoringRows.first().fill(scoreValue);
   await page.evaluate(()=>generate());
