@@ -22,6 +22,33 @@ assert.match(xml,/Vocabulario por unidades de Latín I/);
 assert.match(xml,/<w:smallCaps\/><w:rFonts[^>]+><w:sz w:val="28"/);
 assert.match(xml,/<w:top w:val="single" w:sz="4"/,'Borde del título de 0,5 pt');
 assert.match(xml,/<w:i\/>[^]*amo, amavi, amatum/,'Enunciado latino en cursiva');
+// El enunciado latino conserva la cursiva, pero cualquier paréntesis es redonda.
+const formatProject={course:'lat1',lang:'es',count:1,units:[{
+ title:'UD1',mode:'complete',rows:[
+ {form:'ad',entry:'ad (prep. + ac.)',meaning:'a, hacia',status:'documented'},
+ {form:'agricola',entry:'agricola, –æ (m.)',meaning:'campesino',status:'documented'},
+ {form:'amo',entry:'amo, amavi, amatum (1ª)',meaning:'amar',status:'documented'},
+ {form:'castra',entry:'castra, –orum (sólo pl.)',meaning:'campamento',status:'documented'},
+ {form:'rex',entry:'rex, regis (m.)',meaning:'rey',status:'documented'},
+ {form:'pendiente',entry:'pendiente (v.)',meaning:'',status:'review'}
+]}]};
+const wordFormat=api.documentXml(formatProject);
+const runs=[...wordFormat.matchAll(/<w:r>(.*?)<\/w:r>/gs)].map(m=>({
+ text:(m[1].match(/<w:t xml:space="preserve">([^<]*)<\/w:t>/)||[])[1]||'',
+ italic:m[1].includes('<w:i/>')
+}));
+function runsWith(text){return runs.filter(r=>r.text.includes(text))}
+for(const citation of ['ad ','agricola, –æ ','amo, amavi, amatum ','castra, –orum ','rex, regis '])
+ assert.ok(runsWith(citation).some(r=>r.italic),'Falta cursiva en '+citation);
+for(const note of ['(prep. + ac.)','(m.)','(1ª)','(sólo pl.)','(v.)'])
+ assert.ok(runsWith(note).some(r=>!r.italic),'Debe ir en redonda '+note);
+assert.ok(!runs.some(r=>/\([^)]*\)/.test(r.text)&&r.italic),'Algún paréntesis latino conserva cursiva');
+const simpleProject={...formatProject,units:[{...formatProject.units[0],mode:'simple'}]};
+const simpleRuns=[...api.documentXml(simpleProject).matchAll(/<w:r>(.*?)<\/w:r>/gs)]
+ .map(m=>({text:(m[1].match(/<w:t xml:space="preserve">([^<]*)<\/w:t>/)||[])[1]||'',italic:m[1].includes('<w:i/>')}));
+assert.ok(simpleRuns.some(r=>r.text==='amo '&&r.italic));
+assert.ok(simpleRuns.some(r=>r.text==='(1ª)'&&!r.italic));
+
 assert.match(xml,/<w:sectPr><w:pgSz[^]*<w:cols w:num="1"[^]*<\/w:body>/);
 assert.match(xml,/<w:t xml:space="preserve">\* <\/w:t>/);assert.match(xml,/xyzxyz/);
 const fromEulexis={course:'gr1',lang:'es',count:1,units:[{
