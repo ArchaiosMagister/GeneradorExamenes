@@ -1977,6 +1977,7 @@ function cleanDraftHtml(raw){
 }
 function saveDraftTo(key){try{localStorage.setItem(key,JSON.stringify(snapshotExam()));return true}catch(e){$('draftStatus').textContent='No se pudo guardar localmente. Exporta el borrador JSON.';return false}}
 function restoreDraft(d){if(!validDraft(d))throw Error('Formato de borrador no reconocido');$('paper').innerHTML=cleanDraftHtml(d.html);
+ examPreviewEdits.clear();
  const restoredSlots=[...$('paper').querySelectorAll('[data-sentence-slot]')];
  if(restoredSlots.length&&d.course===currentCourse()&&(!d.model||d.model===$('model').value)){
   saveSentenceLines(restoredSlots.map(node=>node.textContent));
@@ -2957,6 +2958,7 @@ function regenerateExamWord(kind,index){
   const next=sample(pool.filter(x=>!used.has(x.id)&&x.id!==ids[index]&&
    (!preserveQuota||examGreekWordClass(x)===examGreekWordClass(previous))),1)[0];
   if(next){
+   examClearEditedPart(kind,index);
    const former=ids[index];ids[index]=next.id;
    if(gkind==='declension'){
     if(greekExamState.adjectiveChoices){
@@ -2972,7 +2974,7 @@ function regenerateExamWord(kind,index){
    const available=greekAvailableSyntagmAdjectives(greekLimit())
     .filter(x=>x.lemma!==allocated[ids[index]]);
    const alternate=sample(available,1)[0];
-   if(noun&&alternate){allocated[ids[index]]=alternate.lemma;generateGreekExam()}
+   if(noun&&alternate){examClearEditedPart(kind,index);allocated[ids[index]]=alternate.lemma;generateGreekExam()}
   }
   return;
  }
@@ -3022,9 +3024,11 @@ function regenerateExamWord(kind,index){
  const next=sample(alternatives,1)[0],updated=current.slice();
  updated[index]=next;
  examSelectionCache.set(cacheKey,updated);
+ examClearEditedPart(kind,index);
  generate();
 }
 function regenerateExamQuestion(kind){
+ examClearEditedPart(kind);
  const key=examCacheSignature(kind);examSelectionCache.delete(key);
  if(kind==='lex')for(const part of latinLexModules[currentCourse()]||[])examSelectionCache.delete(examCacheSignature('lex-'+part));
  if(currentCourse()==='greek1'&&$('model').value!=='morphology'){
