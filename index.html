@@ -540,7 +540,7 @@ html[data-appearance="dark"] #examScoring .exam-scoring-warning,
 html[data-appearance="oled"] #examScoring .exam-scoring-warning{color:#ffb0a7}
 html[data-appearance="dark"] #examScoring .exam-scoring-correct,
 html[data-appearance="oled"] #examScoring .exam-scoring-correct{color:#a0e9cd}
-</style><header class="top"><h1>Generador de exámenes · Latín y griego</h1><p>Versión 21 · Genera, revisa y exporta exámenes de Latín y Griego sin conexión · borradores recuperables</p><div id="exam-header-controls" class="no-print" role="region" aria-label="Elecciones principales del examen"></div></header><!-- EXAMINA_PWA_START --><section class="pwa-panel no-print" id="pwaPanel" aria-label="Aplicación sin conexión" hidden><span id="pwaStatus" class="pwa-status" role="status" aria-live="polite">Comprobando disponibilidad sin conexión…</span><span id="pwaNote" class="pwa-note">Guarda copias de tus datos y borradores para evitar pérdidas.</span><button id="pwaInstall" class="secondary" type="button" hidden>Instalar</button><button id="pwaDataBackup" class="secondary" type="button">Copia de datos</button><button id="pwaExamBackup" class="secondary" type="button">Exportar examen</button><button id="pwaPersist" class="secondary" type="button" hidden>Proteger almacenamiento</button><button id="pwaUpdate" class="pwa-update" type="button" hidden>Preparar actualización</button><button id="pwaReload" class="pwa-update" type="button" hidden>Recargar versión nueva</button></section><!-- EXAMINA_PWA_END --><nav class="vocab-tabbar" aria-label="Secciones de la aplicación"><button id="vmShowExam" class="active" type="button">Generador de exámenes</button><button id="vgShow" type="button">Generador de vocabulario</button><button id="vmShowList" type="button">Vocabulario exigible por unidad</button><label class="appearance-picker" for="appearanceMode">Apariencia <select id="appearanceMode" aria-label="Modo de apariencia"><option value="light">Claro</option><option value="dark">Oscuro</option><option value="oled">Oscuro OLED</option></select></label></nav><script>
+</style><nav class="vocab-tabbar" aria-label="Secciones de la aplicación"><button id="vmShowExam" class="active" type="button">Generador de exámenes</button><button id="vgShow" type="button">Generador de vocabulario</button><button id="vmShowList" type="button">Vocabulario exigible por unidad</button><label class="appearance-picker" for="appearanceMode">Apariencia <select id="appearanceMode" aria-label="Modo de apariencia"><option value="light">Claro</option><option value="dark">Oscuro</option><option value="oled">Oscuro OLED</option></select></label></nav><header class="top"><h1>Generador de exámenes · Latín y griego</h1><p>Versión 21 · Genera, revisa y exporta exámenes de Latín y Griego sin conexión · borradores recuperables</p><div id="exam-header-controls" class="no-print" role="region" aria-label="Elecciones principales del examen"></div></header><!-- EXAMINA_PWA_START --><section class="pwa-panel no-print" id="pwaPanel" aria-label="Aplicación sin conexión" hidden><span id="pwaStatus" class="pwa-status" role="status" aria-live="polite">Comprobando disponibilidad sin conexión…</span><span id="pwaNote" class="pwa-note">Guarda copias de tus datos y borradores para evitar pérdidas.</span><button id="pwaInstall" class="secondary" type="button" hidden>Instalar</button><button id="pwaDataBackup" class="secondary" type="button">Copia de datos</button><button id="pwaExamBackup" class="secondary" type="button">Exportar examen</button><button id="pwaPersist" class="secondary" type="button" hidden>Proteger almacenamiento</button><button id="pwaUpdate" class="pwa-update" type="button" hidden>Preparar actualización</button><button id="pwaReload" class="pwa-update" type="button" hidden>Recargar versión nueva</button></section><!-- EXAMINA_PWA_END --><script>
 (function(){
  const select=document.getElementById('appearanceMode');
  if(!select)return;
@@ -1060,7 +1060,7 @@ function morphSyntagmRows(cfg,greek=false){
  const lines=String(document.getElementById('morphSyntagms')?.value||'').split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
  return Array.from({length:cfg.offer},(_,i)=>'<p class="exam-item reference-analysis-item">'+String.fromCharCode(97+i)+'. '+esc(lines[i]||(greek?'(artículo) + (sustantivo) + (adjetivo)':'(sustantivo) + (adjetivo)'))+'</p>').join('');
 }
-function morphSyntagmInstruction(cfg,va){return '<p class="small">'+(va?'Tria i declina ':'Elige y declina ')+cfg.decline+(va?' dels ':' de los ')+cfg.offer+(va?' sintagmes proposats.':' sintagmas propuestos.')+'</p>'}
+function morphSyntagmHeading(cfg,va){return (va?'Declina ':'Declina ')+cfg.decline+(va?' dels ':' de los ')+cfg.offer+(va?' sintagmes proposats.':' sintagmas propuestos.')}
 function generateLatinMorphologyReference(){
  const chosen=selectedUnits(),cfg=morphConfig(),va=$('lang').value==='va';
  if(examMorphQuotasActive())cfg.words=examMorphQuotaCount();
@@ -1074,7 +1074,7 @@ function generateLatinMorphologyReference(){
  const words=stickyExamRows('forms',()=>examQuotaPick(latinExamFormCandidates(chosen),cfg.words,()=>latinExamForms(chosen,cfg.words)));
  const question=(index,heading)=>'<p class="exam-question">'+index+'. '+esc(heading)+'</p>';
  let n=0;
- const first=question(++n,t('Declina los sintagmas nominales (1 p.).','Declina els sintagmes nominals (1 p.).'))+morphSyntagmInstruction(cfg,va)+morphSyntagmRows(cfg);
+ const first=question(++n,morphSyntagmHeading(cfg,va)+' (1 p.).')+morphSyntagmRows(cfg);
  const second=question(++n,t('Analiza morfológicamente las siguientes formas verbales (1 p.).','Analitza morfològicament les formes verbals següents (1 p.).'))+
   '<table class="exam-paradigm reference-morph-table reference-verb-table" data-col-widths="28,25,24,23">'+
   '<thead><tr><th>'+t('Forma verbal','Forma verbal')+'</th><th>'+t('Persona y número','Persona i nombre')+'</th><th>'+t('Tiempo','Temps')+'</th><th>'+t('Voz','Veu')+'</th></tr></thead>'+
@@ -2117,7 +2117,7 @@ function generateGreekMorphologyFixed(){
   )),cfg.words));
  const question=(n,txt)=>'<p class="exam-question">'+n+'. '+esc(txt)+'</p>';
  let n=0;
- const first=question(++n,t('Declina los sintagmas de artículo, sustantivo y adjetivo (1 p.).','Declina els sintagmes d’article, substantiu i adjectiu (1 p.).'))+morphSyntagmInstruction(cfg,va)+morphSyntagmRows(cfg,true);
+ const first=question(++n,morphSyntagmHeading(cfg,va)+' (1 p.).')+morphSyntagmRows(cfg,true);
  const second=question(++n,t('Analiza las siguientes formas verbales (1 p.).','Analitza les formes verbals següents (1 p.).'))+
   '<table class="exam-paradigm reference-morph-table"><thead><tr><th>Forma verbal</th><th>Persona y número</th><th>Tiempo</th><th>Voz</th></tr></thead><tbody>'+
   verbs.map(x=>'<tr><td><i>'+esc(x.prompt)+'</i> ('+esc(x.lemma)+')</td><td></td><td></td><td></td></tr>').join('')+'</tbody></table>';
