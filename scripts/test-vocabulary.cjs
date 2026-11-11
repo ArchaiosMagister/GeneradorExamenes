@@ -2,6 +2,37 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('nod
 const root=path.resolve(__dirname,'..'),ctx={window:{},document:{readyState:'loading',addEventListener(){}}};
 for(const file of ['offline-lemmas.js','vocabulary-generator.js'])vm.runInNewContext(fs.readFileSync(path.join(root,file),'utf8'),ctx);
 const api=ctx.window.ExaminaVocabulary,data=JSON.parse(fs.readFileSync(path.join(root,'data/lemmas/teacher-forms.json')));
+// Decisiones docentes aprobadas: una sola ficha en el índice, dos unidades
+// que comparten adjetivo, y una sola oración de UD10 que debe corregirse.
+const latinSource=fs.readFileSync(path.join(root,'index.html'),'utf8');
+const newEntry='"entry": "tener, tenera, tenerum", "meaning": "pequeño/a"';
+assert.equal(latinSource.split(newEntry).length-1,2,'Tener debe figurar en UD2 y UD3');
+assert(!latinSource.includes('"entry": "tenerus, –a, –um"'));
+assert.equal(data.vocabulary.lat.tener.lat1.entry,'tener, tenera, tenerum');
+assert.equal(data.vocabulary.lat.tenerus,undefined);
+const vocabSource=fs.readFileSync(path.join(root,'vocabulary-generator.js'),'utf8');
+const migrationStart=vocabSource.indexOf('function applyLatinEditorialProjectCorrections(project){');
+const migrationEnd=vocabSource.indexOf('function migrateProject(project){',migrationStart);
+assert(migrationStart>0&&migrationEnd>migrationStart,'Falta migración de la UD10');
+const correctText=new Function('project',vocabSource.slice(migrationStart,migrationEnd)+
+ '\napplyLatinEditorialProjectCorrections(project);');
+const oldText='Pecunia carere nonnulli philosophi placebat.';
+const revisedText='Pecunia carere nonnullis philosophis placebat.';
+const testProject={course:'lat1',units:[
+ {title:'UD2',text:'Magister teneros pueros docebat.',rows:[]},
+ {title:'UD10',text:'Puer amat. '+oldText+' Puella laborat.',rows:[]},
+ {title:'UD11',text:oldText,rows:[]}
+]};
+correctText(testProject);
+assert.equal(testProject.units[0].text,'Magister teneros pueros docebat.');
+assert.equal(testProject.units[1].text,'Puer amat. '+revisedText+' Puella laborat.');
+assert.equal(testProject.units[2].text,oldText,'No modificar oraciones de otras unidades');
+correctText(testProject);
+assert.equal(testProject.units[1].text,'Puer amat. '+revisedText+' Puella laborat.',
+ 'La migración es idempotente');
+const greekProject={course:'gr1',units:[{title:'UD10',text:oldText,rows:[]}]};
+correctText(greekProject);
+assert.equal(greekProject.units[0].text,oldText,'No cambiar textos griegos');
 const bank=[{entry:'amo, amavi, amatum (1ª)',meaning:'MI TRADUCCIÓN'}];
 const rows=api.analyze(data,'Amo amo amamus xyzxyz','lat1',bank);
 assert.equal(rows.length,3);assert.equal(rows.find(r=>r.form==='xyzxyz').status,'unknown');

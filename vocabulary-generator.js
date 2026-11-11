@@ -1608,7 +1608,26 @@ function reviewedRows(unit,course,data,bank){
   return decision?{...row,...decision,identity:row.identity,form:row.form}:row;
  });
 }
+// Aplica únicamente en Latín I una oración aprobada expresamente por el
+// docente. No reescribe otras unidades ni infiere análisis morfológicos.
+function applyLatinEditorialProjectCorrections(project){
+ const sources=[];
+ if(project?.course==='lat1'&&Array.isArray(project.units))sources.push(project.units);
+ if(Array.isArray(project?.workspaces?.lat1?.units))
+  sources.push(project.workspaces.lat1.units);
+ for(const units of new Set(sources)){
+  for(const u of units){
+   if(!/^UD\s*10$/iu.test(u.title)||typeof u.text!=='string')continue;
+   const revised='Pecunia carere nonnullis philosophis placebat.';
+   for(const prior of ['Pecunia carere nonulli philosophi placebat.',
+    'Pecunia carere nonnulli philosophi placebat.']){
+    if(u.text.includes(prior))u.text=u.text.replaceAll(prior,revised);
+   }
+  }
+ }
+}
 function migrateProject(project){
+ applyLatinEditorialProjectCorrections(project);
  for(const unit of project.units){
   const source=unit.decisions,decisions={};
   for(const course of ['lat1','lat4','gr1']){

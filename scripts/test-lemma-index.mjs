@@ -19,6 +19,17 @@ assert.ok(data.extensions?.candidate_rows>=1000,'Faltan las formas propuestas');
 assert.ok(data.extensions?.citation_only.lat>=100&&data.extensions?.citation_only.grc>=150,
  'Deben poder consultarse los lemas sin flexiones');
 assert.ok(data.rows.lat.some(x=>x[3]===2)&&data.rows.grc.some(x=>x[3]===3));
+const latinEditorial=JSON.parse(fs.readFileSync(path.join(root,'data/lemmas/latin-editorial-decisions.json'),'utf8'));
+assert.equal(latinEditorial.verifiedMorphology,false);
+assert.equal(latinEditorial.decisions.length,1);
+assert.equal(latinEditorial.textCorrections[0].corrected,'Pecunia carere nonnullis philosophis placebat.');
+assert.equal(data.vocabulary.lat.tener.lat1.entry,'tener, tenera, tenerum');
+assert.deepEqual([...data.vocabulary.lat.tener.lat1.units].sort(),['UD 2','UD 3']);
+assert.equal(data.vocabulary.lat.tenerus,undefined,'La clave antigua no debe sobrevivir a la reconstrucción');
+assert(data.rows.lat.some(row=>row[0]==='tener'&&row[1]==='tener'&&row[2]==='LEX;ENTRY'&&row[3]===3));
+assert(!data.rows.lat.some(row=>row[0]==='tenerus'),'No deben conservarse registros huérfanos');
+assert.equal(data.extensions.latin_editorial_decisions.verifiedFormsAdded,0,
+ 'La corrección de un enunciado no acredita nuevas flexiones');
 assert.equal(data.vocabulary.lat.moveo.lat1.entry,'moveo, movi, motum (2ª)');
 assert.equal(data.vocabulary.lat.eripio.lat1.entry,'eripio, eripui, ereptum (mx.)');
 assert.equal(data.rows.lat.filter(x=>x[3]===5).length,36);

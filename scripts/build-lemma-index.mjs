@@ -16,6 +16,7 @@ const output=path.join(root,'data/lemmas/teacher-forms.json');
 const greekCandidatePath=path.join(root,'data/lemmas/greek-nominal-candidates.json');
 const verifiedOverridesPath=path.join(root,'data/lemmas/verified-overrides.json');
 const greekEditorialPath=path.join(root,'data/lemmas/greek-editorial-decisions.json');
+const latinEditorialPath=path.join(root,'data/lemmas/latin-editorial-decisions.json');
 const norm=s=>String(s||'').toLowerCase().normalize('NFD')
  .replace(/\u0345/g,'ι').replace(/\p{M}/gu,'').replace(/æ/g,'ae').replace(/œ/g,'oe')
  .replace(/ς/g,'σ').trim();
@@ -83,6 +84,32 @@ async function main(){
   if(!slot||![item.from,item.to].includes(slot.entry))throw Error('Corrección sin entrada reconocible: '+item.lemma);
   slot.entry=item.to;
  }
+ // Las decisiones docentes cambian el lema y el enunciado, nunca
+ // autentican por sí solas las formas de un paradigma latino.
+ const latinEditorial=JSON.parse(await fs.readFile(latinEditorialPath,'utf8'));
+ if(latinEditorial.schema!==1||latinEditorial.course!=='lat1'||
+    latinEditorial.verifiedMorphology!==false||
+    !Array.isArray(latinEditorial.decisions)||!latinEditorial.decisions.length)
+  throw Error('Decisiones editoriales latinas inválidas');
+ const latinEditorialLemmaRekeys=new Map();
+ for(const decision of latinEditorial.decisions){
+  if(decision.type!=='entry'||decision.verifiedMorphology!==false||
+     head(decision.fromEntry)!==decision.fromLemma||
+     head(decision.toEntry)!==decision.toLemma||
+     decision.fromLemma===decision.toLemma)
+   throw Error('Decisión latina mal formada: '+decision.id);
+  const original=catalog.lat[decision.fromLemma],revised=catalog.lat[decision.toLemma];
+  if(original?.lat1){
+   if(revised||original.lat1.entry!==decision.fromEntry||
+      JSON.stringify([...original.lat1.units].sort())!==JSON.stringify([...decision.units].sort()))
+    throw Error('La ficha latina cambió inesperadamente: '+decision.id);
+   catalog.lat[decision.toLemma]={...original,lat1:{...original.lat1,entry:decision.toEntry}};
+   delete catalog.lat[decision.fromLemma];
+  }else if(!revised?.lat1||revised.lat1.entry!==decision.toEntry){
+   throw Error('No se puede reproducir la decisión latina: '+decision.id);
+  }
+  latinEditorialLemmaRekeys.set(decision.fromLemma,decision.toLemma);
+ }
  for(const lang of ['lat','grc'])if(Object.keys(catalog[lang]).length!==manifest.languages[lang].vocabulary_lemmas)
   throw Error('Inventario de lemas distinto del manifiesto: '+lang+' '+Object.keys(catalog[lang]).length);
  // Las correcciones filológicas aprobadas NO proceden del índice externo fijado.
@@ -125,7 +152,8 @@ async function main(){
  const seen={lat:new Set(),grc:new Set()};
  function add(lang,lemma,form,features,source){
   if(!['lat','grc'].includes(lang)||typeof form!=='string'||!form.trim()||typeof features!=='string')return;
-  const k=head(lemma);
+  const original=head(lemma);
+  const k=lang==='lat'?(latinEditorialLemmaRekeys.get(original)||original):original;
   if(!catalog[lang][k])return;
   const sig=k+'\u0001'+norm(form)+'\u0001'+features+'\u0001'+source;
   if(seen[lang].has(sig))return;
@@ -262,6 +290,12 @@ async function main(){
   attribution:greekCandidateData.attribution,
   status:greekCandidateData.status,
   source:greekCandidateData.source
+ };
+ extensions.latin_editorial_decisions={
+  count:latinEditorial.decisions.length,
+  rekeyedLemmas:latinEditorialLemmaRekeys.size,
+  verifiedFormsAdded:0,
+  note:'Decisiones editoriales del profesor sin certificación morfológica.'
  };
  extensions.greek_editorial_decisions={
   count:greekEditorial.decisions.length,
