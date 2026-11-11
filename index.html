@@ -3032,9 +3032,7 @@ function latin1TaughtPreverbs(chosen){
  // Son elegibles todos los verbos explicados hasta la última UD seleccionada.
  // «No hay nuevos» en UD8/UD10 no vacía el banco acumulado.
  if(!latin1PreverbCurriculum)return [];
- const maxUnit=Math.max(0,...chosen.map(u=>{
-  const m=String(u).match(/^UD(\d+)$/i);return m?Number(m[1]):0;
- }));
+ const maxUnit=latin1PhoneticMaxUnit(chosen); // Reconoce también «UD9–10» y «UD11-12».
  const lemmas=latin1PreverbCurriculum.units.filter(x=>x.unit<=maxUnit)
   .flatMap(x=>x.verbs.map(v=>v.lemma));
  const base=latinLexBanks.latin1.preverbs||[];
