@@ -74,6 +74,32 @@ assert.equal(contrast.find(r=>r.form==='τις')?.status,'documented');
 assert.equal(contrast.find(r=>r.form==='ὁ')?.status,'documented');
 assert.equal(contrast.find(r=>r.form==='ὅ')?.status,'documented');
 
+// El interrogativo mantiene siempre el agudo en la primera sílaba.
+ // El indefinido enclítico admite ausencia de acento y acento final,
+ // incluso grave ante la palabra siguiente (Smyth §334).
+const indefiniteVariants=['τὶ','τινας','τινι','τινος','τισὶ',
+ 'τινά','τινὰ','τινάς','τινὰς','τινός','τινὸς','τινί','τινὶ',
+ 'τινές','τινὲς','τινῶν','τινων','τισί','τισίν','τισὶν','τισιν'];
+const interrogativeVariants=['τί','τίνα','τίνας','τίνος','τίνι','τίνες','τίνων','τίσι','τίσιν'];
+for(const form of indefiniteVariants){
+ const found=api.analyze(data,form,'gr1',priorityBank)[0];
+ assert.equal(found?.status,'documented','Indefinido no reconocido: '+form+' '+JSON.stringify(found?.candidates));
+ assert.equal(found.entry,'τις, τι (pron. indef.)','Confusión con el interrogativo: '+form);
+}
+for(const form of interrogativeVariants){
+ const found=api.analyze(data,form,'gr1',priorityBank)[0];
+ assert.equal(found?.status,'documented','Interrogativo no reconocido: '+form);
+ assert.equal(found.entry,'τίς, τί (pron. interr.)','Confusión con el indefinido: '+form);
+}
+const apart=api.analyze(data,'τὶ τί τινας τίνας τινος τίνος τισὶ τίσι','gr1',priorityBank);
+assert.equal(apart.length,8,'El tokenizador no debe fundir grafías diferentes');
+assert.notEqual(apart.find(r=>r.form==='τὶ').entry,apart.find(r=>r.form==='τί').entry);
+assert.notEqual(apart.find(r=>r.form==='τινος').entry,apart.find(r=>r.form==='τίνος').entry);
+// Otros pares sensibles al acento no deben sufrir regresiones.
+const otherAccents=api.analyze(data,'οἱ οἵ ἡ ἥ ἀλλὰ ἄλλα','gr1',priorityBank);
+assert.equal(otherAccents.find(r=>r.form==='οἱ')?.status,'documented');
+assert.equal(otherAccents.find(r=>r.form==='ἡ')?.status,'documented');
+
 const misspelled=api.analyze(data,'ἄνρωπος','gr1',priorityBank);
 assert.equal(misspelled[0].status,'review','La errata debe quedar señalada, no aceptada');
 assert.match(misspelled[0].warning,/ἄνθρωπος/);
