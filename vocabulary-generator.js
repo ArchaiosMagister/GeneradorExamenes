@@ -798,7 +798,10 @@ function formatVocabularyEntry(row,mode,course,language='es'){
   (phrase?quote+pieces.join(', ')+quote:pieces.map(x=>"'"+x+"'").join(', '));
  return entry+': '+quoted;
 }
-function documentXml(project){
+function vocabularyRequiresReview(row){
+  return !['manual','documented'].includes(row.status)||row.eulexisUnverified===true;
+ }
+ function documentXml(project){
  const unanalysed=project.units.slice(0,project.count).filter(u=>u.text?.trim()&&!u.analyzed&&!u.rows?.length);
  if(unanalysed.length)throw Error('Quedan '+unanalysed.length+' unidades con texto sin analizar.');
  const escape=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&apos;'}[c]));
@@ -824,7 +827,7 @@ function documentXml(project){
  const titleParagraph=paragraph(run(title,{bold:true,smallCaps:true,size:28}),{title:true});
  const isLatin=project.course!=='gr1';
  const line=(row,unit)=>{
-  const pending=!['manual','documented'].includes(row.status);
+  const pending=vocabularyRequiresReview(row);
   const formatted=formatVocabularyEntry(row,unit.mode,project.course,project.lang||'es');
   if(!isLatin)return paragraph(run((pending?'* ':'')+formatted));
   const italicEntry=displayEntry(row.entry,unit.mode);
@@ -840,8 +843,8 @@ function documentXml(project){
   '<w:cols w:num="1" w:space="0"/>';
  const units=project.units.slice(0,project.count);
  const body=units.map(u=>{
-  const all=entries(u.rows||[]),pending=all.filter(r=>!['manual','documented'].includes(r.status));
-  return p(u.title,true)+all.filter(r=>['manual','documented'].includes(r.status)).map(r=>line(r,u)).join('')+
+  const all=entries(u.rows||[]),pending=all.filter(vocabularyRequiresReview);
+  return p(u.title,true)+all.filter(r=>!vocabularyRequiresReview(r)).map(r=>line(r,u)).join('')+
    (pending.length?p(project.lang==='va'?'Pendents de revisió (*)':'Pendientes de revisión (*)',true)+pending.map(r=>line(r,u)).join(''):'');
  }).join('');
  return '<?xml version="1.0" encoding="UTF-8"?>'+
@@ -921,7 +924,7 @@ function init(){
    const detail=document.createElement('span');detail.textContent=candidate.analysis+' · '+(candidate.meaning||'traducción pendiente en el banco docente');
    button.append(name,detail);
    button.onclick=()=>{Object.assign(r,{lemma:candidate.lemma,entry:candidate.entry,
-    meaning:candidate.meaning,status:'manual',
+    meaning:candidate.meaning,status:'manual',eulexisUnverified:true,
     warning:'Revisado por el docente usando Eulexis; flexión no certificada'});
     save();render();
    };
