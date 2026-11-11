@@ -33,7 +33,7 @@ const fromEulexis={course:'gr1',lang:'es',count:1,units:[{
 const greekDocx=api.documentXml(fromEulexis);
 assert.match(greekDocx,/Pendientes de revisión \(\*\)/,
  'La elección de Eulexis no certifica una flexión griega');
-assert.match(greekDocx,/<w:t xml:space="preserve">\* <\/w:t>/,
+assert.match(greekDocx,/<w:t xml:space="preserve">\* θεός/,
  'La lectura de Eulexis conserva asterisco de revisión');
 
 assert.throws(()=>api.documentXml({count:1,units:[{title:'UD1',text:'ὁ θεός',rows:[]}]}),/sin analizar/);
