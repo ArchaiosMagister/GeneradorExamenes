@@ -70,7 +70,7 @@ function latinSuite(){
  let output=run();
  assert.equal((output.match(/class="exam-question"/g)||[]).length,5,'Latín I completo: cinco preguntas');
  assert(output.includes('exam-nouns')&&output.includes('exam-verbs'));
- assert(output.includes('bonus, -a, -um + puella, -ae'),'Latín I desde UD2: falta el enunciado completo de adjetivo y sustantivo');
+ assert(output.includes('bonus, –a, –um + puella, –æ'),'Latín I desde UD2: falta el enunciado completo de adjetivo y sustantivo');
  assert(output.includes('Modificación preverbial')&&output.includes('Latinismos'),'Latín I: las cuatro partes del léxico deben estar disponibles');
  assert(output.includes('final-gloss'));
  assert.equal((output.match(/Puella amat \d+\./g)||[]).length,5);
