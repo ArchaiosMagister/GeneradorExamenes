@@ -272,3 +272,81 @@ Tests:
 **Límite funcional**: la instalación amplía la revisión filológica; **no
 convierte las formas de Eulexis en formas verificadas para exámenes**,
 ni modifica automáticamente las 399 fichas o sus glosas.
+
+## Consultar ambos lectores para un proyecto de vocabulario
+
+El generador por unidades admite propuestas personales de los lectores de
+latín y griego. La consulta se hace para todas las formas de una copia del
+proyecto, con los motores de las revisiones indicadas arriba y sus léxicos
+completos. Los motores y sus datos se usan localmente. El archivo resultante
+contiene forma, lema y análisis, sin glosas de los lectores.
+
+Con Node.js y un checkout local del lector en la revisión fijada:
+
+```sh
+node scripts/prepare-reader-proposals.mjs proyecto.json carpeta-del-lector propuestas.json
+```
+
+En «Propuestas de los lectores de latín y griego», carga `propuestas.json`.
+La aplicación busca una ficha en el banco del curso seleccionado para cada
+lema que propuso el lector. Si la encuentra, toma de ahí el enunciado y las
+glosas. Si falta la ficha, la lectura aparece con el lema externo y sin
+traducción. Las propuestas se conservan en el proyecto y en sus copias JSON.
+Pueden quitarse sin borrar decisiones ya aceptadas. Si añades formas nuevas
+que no figuran en el archivo, vuelve a prepararlo con el proyecto actualizado.
+
+Las propuestas aparecen en las tarjetas y en el bloque de pendientes de Word
+al activar la casilla de lecturas posibles. La consulta de los lectores no
+acredita una flexión ni modifica los ejercicios, los solucionarios o el banco
+exigible. La instalación opcional anterior de Eulexis sigue disponible para
+sus consultas habituales y conserva su alcance curricular.
+
+En los materiales de prueba, el lector latino encontró propuestas para
+1.372 de 1.379 formas escritas distintas del JSON de Latín I, incluidas
+*amica* y *Helvetios*, y para las 28 del examen de Latín 4.º. El lector griego
+encontró propuestas para 33 de 34 formas distintas del examen de Griego I.
+Estas cifras miden si el lector devolvió alguna lectura.
+
+
+## Salvaguardas de la revisión del generador (11-11-2026)
+
+- **Latín y griego:** cada asignatura conserva sus propios textos, unidades,
+  decisiones, formato verbal y progreso; las copias JSON incluyen los tres
+  espacios de trabajo y pueden importar proyectos antiguos.
+- **Participios latinos:** los supinos docentes permiten identificar de forma
+  automática participios regulares y algunas alternancias léxicas contrastadas
+  sin certificar un paradigma completo. Los supinos incongruentes se muestran
+  como hipótesis. Cuando un adjetivo homógrafo sin ficha ni glosa compite con
+  un participio inequívoco del verbo docente, se prefiere el verbo; las
+  ambigüedades con ficha propia continúan pendientes.
+- **Edición del texto:** una decisión cuyo contexto cambió no se aplica a
+  ciegas. Si la oración mantiene suficiente coincidencia, se ofrece como
+  opción de revisión para evitar repetir toda la corrección.
+- **Contradicciones entre lectores:** si una fuente externa propone otro
+  lema que también existe en el banco docente, la aparición se marca para
+  revisión, incluso cuando antes figuraba como documentada. Aceptar una
+  interpretación no valida todas sus flexiones.
+- **Almacenamiento:** las propuestas importadas se guardan preferentemente
+  en IndexedDB, sin duplicarlas en localStorage. Las copias JSON siguen
+  incorporando esos datos y permiten recuperar el proyecto. Si IndexedDB
+  no está disponible, el navegador avisa de la limitación.
+- **Glosario del examen:** la desambiguación emplea también el criterio
+  contextual del generador por unidades para evitar que las dos vistas
+  atribuyan niveles diferentes de certeza a una misma forma.
+
+### Conexión a Internet
+
+No se exige que el generador funcione siempre sin conexión. Para el
+contraste filológico, la interfaz enlaza las aplicaciones oficiales
+[Collatinus-web](https://outils.biblissima.fr/fr/collatinus-web/) y
+[Eulexis-web](https://outils.biblissima.fr/fr/eulexis-web/).
+
+No se han configurado peticiones programáticas a esos portales: ofrecen
+aplicaciones web, pero esta integración aún no dispone de una API pública
+documentada y verificada (incluidas las restricciones CORS). Las lecturas
+personales preparadas por el procedimiento reproducible anterior sí pueden
+importarse a las tarjetas. Los textos del profesor no se envían
+automáticamente a terceros.
+
+La rama no debe fusionarse mientras sus comprobaciones automáticas o la
+revisión de licencias/atribuciones estén pendientes.

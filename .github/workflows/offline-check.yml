@@ -44,6 +44,12 @@ on:
 permissions:
   contents: read
 
+# Evita acumular decenas de comprobaciones obsoletas de la misma PR;
+# las pruebas de main nunca son canceladas por las de una rama.
+concurrency:
+  group: offline-check-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
   offline:
     runs-on: ubuntu-24.04
@@ -105,6 +111,8 @@ jobs:
         run: node scripts/test-vocabulary-quality.cjs
       - name: Probar generador de vocabulario por unidades y Word
         run: npm run vocabulary:test
+      - name: Comparar lematización del examen y vocabulario en los tres cursos
+        run: node scripts/test-vocabulary-parity.cjs
       - name: Auditar las 612 formas pendientes aportadas para Latín I
         run: node scripts/audit-latin1-generated.cjs --minimum=429
       - name: Revisar individualmente las 183 pendientes de Latín I
