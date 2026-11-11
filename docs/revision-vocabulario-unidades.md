@@ -30,3 +30,18 @@ npm run pwa:test
 ```
 
 Las pruebas comprueban decisiones contextuales, edición, omisión, revisión por lotes, recarga, importación de copias, exportación DOCX y los tres cursos con la PWA sin red. El DOCX conserva una columna, título en versalita a 14 pt y bordes de 0,5 pt. Las pruebas inspeccionan el archivo descargado y su XML. La validación local se realizó en Chromium.
+
+## Validación con los exámenes de Latín 4.º UD5 y Griego I UD6
+
+Se probaron las cuatro oraciones de traducción del examen de Latín 4.º y las seis del de Griego I en Chromium, con el texto original y su glosario como referencia.
+
+| Examen | Identificaciones automáticas | En revisión | Sin lectura |
+| --- | ---: | ---: | ---: |
+| Latín 4.º UD5 | 27 | 1 | 0 |
+| Griego I UD6 | 34 | 5 | 0 |
+
+En Latín 4.º se añadieron las lecturas de *terra*, *timebant* y *fortitudinem*. Se verificó la separación de *marique* en *mare* y *–que*. *Fortissime* se enviaba al Word como *fortis*. Ahora se ofrece también la lectura adverbial del glosario docente. Se seleccionó esa lectura en la tarjeta y se comprobó el Word descargado.
+
+En Griego I se reconocieron *σώζονται* y *παιδεύεται*. Se mantuvieron en revisión cinco grafías del texto original con propuestas concretas de corrección. Las lecturas de *γίγνεται* y *χρημάτων* ya se identificaban. El banco activo prevalece si su enunciado o su glosa difieren del glosario impreso. El Word descargado conserva los pendientes en un bloque separado.
+
+La prueba completa del JSON de Latín I mantuvo los recuentos anteriores. Se añadieron pruebas con las formas puntuales que descubrieron los exámenes. Los documentos completos se utilizaron localmente.

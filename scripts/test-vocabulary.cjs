@@ -57,6 +57,26 @@ const fromEulexis={course:'gr1',lang:'es',count:1,units:[{
   candidates:[],status:'manual',eulexisUnverified:true
  }]
 }]};
+// Formas aisladas de la regresión con Latín 4.º UD5 y Griego I UD6.
+const latinExamBank=[{entry:'fōrtĭs, –e',meaning:'fuerte'},
+ {entry:'terra, −æ',meaning:'glosa del banco de prueba'}];
+const latinExamRows=api.analyze(data,'terra marique fortissime timebant fortitudinem','lat4',latinExamBank,{contextual:true});
+for(const [form,lemma] of [['terra','terra'],['timebant','timeo'],['fortitudinem','fortitudo']])
+ assert(latinExamRows.some(r=>r.form===form&&r.lemma===lemma&&r.status==='documented'));
+assert.equal(latinExamRows.find(r=>r.form==='terra').meaning,'glosa del banco de prueba');
+assert(latinExamRows.find(r=>r.form==='marique').encliticQue);
+const adverb=latinExamRows.find(r=>r.form==='fortissime');
+assert.equal(adverb.status,'review');
+assert(adverb.candidates.some(c=>c.entry==='fortissime (adv.)'&&c.meaning==='con mucha fuerza'));
+const greekExamRows=api.analyze(data,'σώζονται παιδεύεται ἀνθρώποι νὸμοι ἀδικόν οἰ διδασκὰλου',
+ 'gr1',[{entry:'σῴζω',meaning:'glosa griega de prueba'}],{contextual:true});
+for(const form of ['σώζονται','παιδεύεται'])
+ assert.equal(greekExamRows.find(r=>r.form===form).status,'documented');
+assert.equal(greekExamRows[0].meaning,'glosa griega de prueba');
+for(const row of greekExamRows.slice(2)){
+ assert.equal(row.status,'review');
+ assert.match(row.warning,/Posible errata/);
+}
 const greekDocx=api.documentXml(fromEulexis);
 assert.doesNotMatch(greekDocx,/Pendientes de revisión|\* θεός/,
  'La decisión léxica docente pasa a Word sin asterisco');

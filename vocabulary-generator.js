@@ -579,6 +579,10 @@ function latinExpandedForms(bank){
     'poteramus','poteratis','poterant','potero','poteris','poterit','poterimus','poteritis','poterunt',
     'posse','potui','potuit','potuerunt']},
   {lemma:'do',entry:'do, dedi, datum (1ª)',meaning:'dar',forms:['dare']},
+  // Formas del examen docente de Latín 4.º UD5. El banco activo conserva prioridad.
+  {lemma:'terra',entry:'terra, −æ',meaning:'tierra, territorio',forms:['terra']},
+  {lemma:'timeo',entry:'timeo (2ª)',meaning:'temer',forms:['timebant']},
+  {lemma:'fortitudo',entry:'fortitudo, −dinis (f.)',meaning:'fuerza, fortaleza',forms:['fortitudinem']},
   {lemma:'eo',entry:'eo, ii, itum (irr.)',meaning:'ir',
    forms:['eo','is','it','imus','itis','eunt','ibam','ibas','ibat','ibamus','ibatis','ibant',
     'ibo','ibis','ibit','ibimus','ibitis','ibunt','ire','ii','ivi','iit','ierunt','ierat']},
@@ -1033,7 +1037,7 @@ function greekReferenceForms(bank){
   ['μένω','permanecer, esperar',['ἔμενον']],
   ['ἐμπίπτω','caer en',['ἐνέπεσεν']],
   ['πάσχω','sufrir',['ἔπαθεν']],
-  ['παιδεύω','educar',['ἐπαίδευε','ἐπαίδευσαν','ἐπαίδευσε','ἐπαίδευσεν','ἐπεπαιδεύκει','παιδεύονται','παιδεύσει','πεπαιδεύκασιν','πεπαίδευκε']],
+  ['παιδεύω','educar',['ἐπαίδευε','ἐπαίδευσαν','ἐπαίδευσε','ἐπαίδευσεν','ἐπεπαιδεύκει','παιδεύεται','παιδεύονται','παιδεύσει','πεπαιδεύκασιν','πεπαίδευκε']],
   ['ἐπαινέω','alabar',['ἐπαινεῖ']],
   ['πείθω','convencer',['ἔπειθον','ἔπεισαν']],
   ['πέμπω','enviar',['ἔπεμπεν','ἐπέμψατε','ἐπέμψεν','πέμποντος']],
@@ -1049,7 +1053,7 @@ function greekReferenceForms(bank){
   ['εἰσβάλλω','invadir',['ἐσέβαλον']],
   ['στρατεύω','hacer una expedición',['ἐστράτευσαν','στρατεύσουσιν']],
   ['ἔχω','tener',['ἔσχον']],
-  ['σῴζω','salvar',['ἐσῴσαν']],
+  ['σῴζω','salvar',['ἐσῴσαν','σῴζονται','σώζονται']],
   ['τέμνω','cortar',['ἔτεμον']],
   ['τιμάω','honrar',['ἐτιμᾶτο','ἐτιμῶμεθα','τιμᾶται']],
   ['τυγχάνω','alcanzar, conseguir',['ἔτυχεν']],
@@ -1178,6 +1182,11 @@ function greekReferenceForms(bank){
  return map;
 }
 const greekSpellingNotes={
+ 'ἀνθρώποι':'ἄνθρωποι (revisar el acento del nominativo plural)',
+ 'νὸμοι':'νόμοι (revisar el acento del nominativo plural)',
+ 'ἀδικόν':'ἄδικον (revisar el acento)',
+ 'οἰ':'οἱ si es el artículo (revisar el espíritu)',
+ 'διδασκὰλου':'διδασκάλου (revisar el acento del genitivo)',
  'Δημοσθήνης':'Δημοσθένης (nominativo del nombre propio; revisar el acento)',
  'εἴς':'εἰς (revisar acentuación de la preposición)',
  'θάλάττῃ':'θαλάττῃ (revisar acentuación)',
@@ -1311,6 +1320,12 @@ function analyze(data,text,course,bank,{contextual=false}={}){
    const noun=data.vocabulary.lat.bona?.lat1;
    if(noun)all.push({lemma:'bona',entry:noun.entry,meaning:'',attested:false,
     origin:'sustantivo plural registrado en el índice léxico'});
+  }
+  // El superlativo adverbial y el vocativo pueden tener la misma grafía.
+  // La lectura adverbial consta explícitamente en el glosario docente de UD5.
+  if(contextual&&lang==='lat'&&normal==='fortissime'){
+   all.push({lemma:'fortissime',entry:'fortissime (adv.)',meaning:'con mucha fuerza',
+    attested:true,origin:'glosario docente de Latín 4.º UD5'});
   }
   // Preferimos la evidencia más firme para la misma entrada, sin descartar
   // una segunda lectura posible de un homógrafo.
@@ -1547,7 +1562,7 @@ function vocabularyRequiresReview(row){
   '<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>'+
   titleParagraph+body+'<w:sectPr>'+layout+'</w:sectPr></w:body></w:document>';
 }
-const analysisVersion=1;
+const analysisVersion=2;
 function needsAnalysis(unit,course){
  return !!unit.text?.trim()&&(unit.analysisVersion!==analysisVersion||
   unit.analyzedCourse!==course||unit.analyzedText!==unit.text);
