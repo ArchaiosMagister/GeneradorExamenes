@@ -379,6 +379,16 @@ function latinExpandedForms(bank){
    'mx.':{inf:'ere',imp:'e',imperf:'ieb',future:'4',passive:'4'}
   };
   const rule=formsByGroup[group];
+  // El mismo modelo explícito vale para las seis personas del presente,
+  // también cuando el lema figura solo en el suplemento de vocabulario.
+  const present={
+   '1ª':['o','as','at','amus','atis','ant'],
+   '2ª':['eo','es','et','emus','etis','ent'],
+   '3ª':['o','is','it','imus','itis','unt'],
+   '4ª':['io','is','it','imus','itis','iunt'],
+   'mx.':['io','is','it','imus','itis','iunt']
+  }[group];
+  addMany(stem,present,record);
   add(stem+rule.inf,record);
   if(l!=='facio')add(stem+({
    '1ª':'ari','2ª':'eri','3ª':'i','4ª':'iri','mx.':'i'
