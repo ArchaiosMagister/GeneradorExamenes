@@ -46,9 +46,9 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
    return colors;
   }
 
-  await page.fill('#vgCount','3');
+  await page.fill('#vgCount','4');
   await page.locator('#vgCount').dispatchEvent('change');
-  assert.equal(await page.locator('#vgUnitButtons .vg-unit-button').count(),3);
+  assert.equal(await page.locator('#vgUnitButtons .vg-unit-button').count(),4);
   await page.fill('#vgTitle','Lección con nombre');
   await page.fill('#vgText','Puella cantat');
   await page.selectOption('#vgMode','simple');
@@ -74,7 +74,7 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
   });
   await page.click('#vgClearAll');
   assert(cancelObserved,'Limpiar todo debe mostrar confirmación explícita');
-  assert.equal(await page.locator('#vgUnitButtons .vg-unit-button').count(),3);
+  assert.equal(await page.locator('#vgUnitButtons .vg-unit-button').count(),4);
   assert.equal(await page.evaluate(()=>localStorage.getItem('examina_vocabulary_project_v1')),previous,
    'Cancelar no puede modificar el proyecto almacenado');
 
