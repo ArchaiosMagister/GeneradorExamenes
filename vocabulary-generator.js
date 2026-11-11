@@ -3,6 +3,7 @@
 'use strict';
 const linguistic=()=>window.ExaminaOfflineLemmatizer;
 const key=s=>linguistic().normalize(s);
+const latinKey=s=>key(s).replace(/v/g,'u'); // u/v gráficas, sin cambiar los enunciados.
 const head=s=>String(s).split(',')[0].replace(/\s*\([^)]*\).*/,'').trim();
 
 /* Formas invariables de referencia: no requieren un paradigma flexivo.
@@ -59,9 +60,9 @@ const latinInvariables=[
 ];
 const latinCore=new Map();
 for(const [forms,entry,meaning,meaning_va] of latinInvariables){
- const lemma=key(forms[0]);
+ const lemma=latinKey(forms[0]);
  for(const surface of forms){
-  const k=key(surface);
+  const k=latinKey(surface);
   if(!latinCore.has(k))latinCore.set(k,[]);
   latinCore.get(k).push({lemma,entry,meaning,meaning_va,attested:true,origin:'invariable contrastada de gramática escolar'});
  }
@@ -98,7 +99,7 @@ function latinPresentForms(bank){
    origin:'presente regular de la conjugación declarada en el banco docente'};
   const score=x=>x.entry.split(',').length*10+x.entry.length/100;
   for(const ending of endings[group]){
-   const form=key(stem+ending);
+   const form=latinKey(stem+ending);
    if(!byForm.has(form))byForm.set(form,new Map());
    const candidates=byForm.get(form),old=candidates.get(record.lemma);
    if(!old||score(record)>score(old))candidates.set(record.lemma,record);
@@ -117,7 +118,6 @@ function latinPresentForms(bank){
  * Cada propuesta conserva exactamente el enunciado y la glosa docentes;
  * una homografía entre lemas distintos sigue necesitando revisión.
  */
-const latinKey=s=>key(s).replace(/v/g,'u'); // u/v, æ/ae y œ/oe son alógrafos ortográficos.
 const latinExpandedCache=new WeakMap();
 function latinExpandedForms(bank){
  if(latinExpandedCache.has(bank))return latinExpandedCache.get(bank);
@@ -809,7 +809,7 @@ function analyze(data,text,course,bank){
   index=new Map();
   for(const [lemma,surface,tags,source] of data.rows[lang]){
    if(!data.vocabulary[lang][lemma]?.[course])continue;
-   const k=key(surface);if(!index.has(k))index.set(k,new Map());
+   const k=lang==='lat'?latinKey(surface):key(surface);if(!index.has(k))index.set(k,new Map());
    const candidates=index.get(k),old=candidates.get(lemma);
    const lexicalInvariable=source===3&&key(surface)===key(lemma)&&
     invariableEntry(data.vocabulary[lang][lemma][course].entry);
@@ -827,13 +827,14 @@ function analyze(data,text,course,bank){
   greek=greekReferenceCache.get(bank);
  }
  const bankIndex=new Map();
+ const normalizeCourse=lang==='lat'?latinKey:key;
  const attach=(id,row)=>{if(!bankIndex.has(id))bankIndex.set(id,[]);bankIndex.get(id).push(row)};
- for(const row of bank){attach('E'+key(row.entry),row);attach('H'+key(head(row.entry)),row)}
+ for(const row of bank){attach('E'+normalizeCourse(row.entry),row);attach('H'+normalizeCourse(head(row.entry)),row)}
  const tokens=new Map();
  const cleanText=lang==='grc'?String(text).replace(/([\p{L}\p{M}])[’'](?=[\p{L}\p{M}])/gu,'$1 '):String(text);
  let previous='';
  for(const match of cleanText.matchAll(/[\p{L}\p{M}]+(?:[’'][\p{L}\p{M}]+)*/gu)){
-  const form=match[0],normal=key(form);
+  const form=match[0],normal=normalizeCourse(form);
   // En griego, τίς/τις, ὁ/ὅ o ἀλλά/ἄλλα no pueden confundirse.
   const identity=lang==='grc'?form.normalize('NFC'):normal;
   if(normal){
@@ -845,8 +846,8 @@ function analyze(data,text,course,bank){
  return [...tokens.values()].map(({normal,form,precededBy})=>{
   const indexedCandidates=[...(index.get(normal)?.values()||[])].flatMap(c=>{
    const original=data.vocabulary[lang][c.lemma][course];
-   const matches=[...new Set([...(bankIndex.get('E'+key(original.entry))||[]),
-    ...(bankIndex.get('H'+key(c.lemma))||[])])];
+   const matches=[...new Set([...(bankIndex.get('E'+normalizeCourse(original.entry))||[]),
+    ...(bankIndex.get('H'+normalizeCourse(c.lemma))||[])])];
    // Repetir una misma palabra en distintas UD con glosas ligeramente
    // distintas no constituye una ambigüedad MORFOLÓGICA. Conservamos la
    // entrada docente más completa, dando preferencia a la del índice.
@@ -858,14 +859,31 @@ function analyze(data,text,course,bank){
    })[0]]:matches):[{entry:original.entry,meaning:''}];
    return variants.map(x=>({...c,entry:x.entry,meaning:x.meaning||'',meaning_va:x.meaning_va||''}));
   });
-  const regular=lang==='lat'?(latinPresentForms(bank).get(normal)||[]):[];
+  const regular=lang==='lat'?[...(latinPresentForms(bank).get(normal)||[]),
+   ...(latinExpandedForms(bank).get(normal)||[])]:[];
   const directInvariable=lang==='lat'?(bankIndex.get('H'+normal)||[]).filter(x=>
    invariableEntry(x.entry)).map(x=>({
     lemma:normal,entry:x.entry,meaning:x.meaning||'',meaning_va:x.meaning_va||'',
     attested:true,origin:'invariable explícita del banco docente'
    })):[];
-  const curated=lang==='lat'&&!directInvariable.length&&!indexedCandidates.length?
+  const curated=lang==='lat'&&!directInvariable.length?
    (latinCore.get(normal)||[]):[];
+  // La enclítica -que se separa SOLO si la base tiene un análisis
+  // registrado o un paradigma regular explícito; nunca por sufijo solo.
+  let enclitic=[];
+  if(lang==='lat'&&normal.endsWith('que')&&normal.length>5&&
+    !indexedCandidates.length&&!regular.length&&!directInvariable.length){
+   const base=normal.slice(0,-3);
+   const explicit=(latinExpandedForms(bank).get(base)||[]);
+   const indexed=[...(index.get(base)?.values()||[])].map(x=>{
+    const teacher=data.vocabulary.lat[x.lemma]?.lat1;
+    if(!teacher)return null;
+    const found=(bankIndex.get('H'+latinKey(x.lemma))||[])[0]||teacher;
+    return {...x,entry:found.entry,meaning:found.meaning||'',meaning_va:found.meaning_va||''};
+   }).filter(Boolean);
+   enclitic=[...explicit,...indexed].map(x=>({...x,
+    origin:'análisis de la base con enclítica -que, sin alterar el original'}));
+  }
   const supplement=greek?.get(normal)||[];
   // La normalización ayuda a encontrar formas; la grafía exacta con
   // diacríticos decide el lema cuando hay coincidencia documentada.
@@ -876,7 +894,7 @@ function analyze(data,text,course,bank){
    [...(exactIndexed.length?exactIndexed:indexedCandidates).filter(x=>
     !(supplement.length&&!x.attested&&!x.meaning)&&
     !(regularLemmas.has(x.lemma)&&!x.attested)),
-    ...supplement,...directInvariable,...curated,...regular];
+    ...supplement,...directInvariable,...curated,...regular,...enclitic];
   // Preferimos la evidencia más firme para la misma entrada, sin descartar
   // una segunda lectura posible de un homógrafo.
   const compact=new Map();
