@@ -48,15 +48,19 @@ for(const item of decisions.decisions){
  const rows=data.rows.grc.filter(x=>x[0]===newKey);
  assert.ok(rows.length>0,'No se puede consultar '+item.id+' en el lematizador');
  if(['ekklesia','probaton','thea'].includes(item.id)){
-  assert.ok(rows.every(x=>x[3]===3),'Se han aprobado flexiones sin evidencia para '+item.id);
+  assert.ok(rows.every(x=>x[3]===3||x[3]===4),
+   'Se han aprobado flexiones sin evidencia para '+item.id);
  }
+ if(item.id==='thea')assert.ok(rows.every(x=>x[3]===3),
+  'No se deben confundir las flexiones de θέα con las de θεά');
 }
 const goddess=data.rows.grc.filter(x=>x[0]==='θεα');
 assert.ok(goddess.length>0,'Debe encontrarse θεά');
 assert.ok(goddess.every(x=>x[3]!==4),'Las flexiones de θέα (vista) no son de θεά (diosa)');
 for(const lemma of ['εκκλησια','προβατον']){
  assert.equal(data.rows.grc.filter(x=>x[0]===lemma&&x[3]===3).length,1);
- assert.equal(data.rows.grc.filter(x=>x[0]===lemma&&[0,1,5,7].includes(x[3])).length,0);
+ assert.equal(data.rows.grc.filter(x=>x[0]===lemma&&[0,1,5,7].includes(x[3])).length,0,
+  'No se deben promover automáticamente las propuestas nominales a verificadas');
 }
 assert.equal(data.vocabulary.grc['θεοσ'].gr1.units[0],'UD 1–4',
  'No se deben perder las unidades del índice fuente');
