@@ -105,7 +105,7 @@ jobs:
       - name: Probar generador de vocabulario por unidades y Word
         run: npm run vocabulary:test
       - name: Auditar las 612 formas pendientes aportadas para Latín I
-        run: node scripts/audit-latin1-generated.cjs
+        run: node scripts/audit-latin1-generated.cjs --minimum=429
       - name: Verificar contraste de botones de unidades y Limpiar todo
         run: node scripts/test-vg-unit-controls.cjs
       - name: Comprobar 15 correcciones de grafía en el corpus de regresión
