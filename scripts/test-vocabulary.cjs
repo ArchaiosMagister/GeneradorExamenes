@@ -120,9 +120,10 @@ for(const [before,after] of approved){
  const matcher=new RegExp('(?<![\\p{L}\\p{M}])'+before+'(?![\\p{L}\\p{M}])','gu');
  assert.ok(storedProject.units.every(u=>![...u.text.matchAll(matcher)].length),'La grafía aprobada antigua sigue en el archivo: '+before);
 }
-assert.ok(storedProject.units[12].text.includes('σωτερίας'),'No debe cambiarse la grafía 12, sin elección');
+assert.ok(storedProject.units[12].text.includes('σωτηρίας'),'UD13 debe conservar la corrección explícita σωτηρίας');
+assert.ok(storedProject.units[11].text.includes('Δημοσθένης'),'UD12 debe conservar la corrección explícita Δημοσθένης');
 assert.equal(api.applyApprovedGreekTextCorrections(storedProject).changed,0,'El JSON corregido ya es idempotente');
-console.log('Correcciones de Griego I: 13 decisiones verificadas, JSON de 14 unidades y forma 12 conservada.');
+console.log('Correcciones de Griego I: 13 decisiones previas y dos erratas adicionales corregidas en el JSON de 14 unidades.');
 
 const originalHTML=fs.readFileSync(path.join(root,'index.html'),'utf8');
 const bankStart=originalHTML.indexOf('let vocab=')+10;
