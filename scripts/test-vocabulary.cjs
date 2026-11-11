@@ -100,6 +100,9 @@ const otherAccents=api.analyze(data,'οἱ οἵ ἡ ἥ ἀλλὰ ἄλλα','
 assert.equal(otherAccents.find(r=>r.form==='οἱ')?.status,'documented');
 assert.equal(otherAccents.find(r=>r.form==='ἡ')?.status,'documented');
 
+const demosthenesTypo=api.analyze(data,'Δημοσθήνης','gr1',priorityBank)[0];
+assert.equal(demosthenesTypo.status,'review','El nombre propio con acento incorrecto debe revisarse');
+assert.match(demosthenesTypo.warning,/Δημοσθένης/,'Debe mostrarse la forma correcta sin modificar los textos');
 const misspelled=api.analyze(data,'ἄνρωπος','gr1',priorityBank);
 assert.equal(misspelled[0].status,'review','La errata debe quedar señalada, no aceptada');
 assert.match(misspelled[0].warning,/ἄνθρωπος/);
