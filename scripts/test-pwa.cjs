@@ -136,19 +136,21 @@ const server=http.createServer(async(req,res)=>{
   assert(examLex.phonetics.every(row=>row.normas.every(n=>['N07','N17'].includes(n))),
    'Evolución fonética incluye una norma aún no seleccionada');
   const before=examLex.exam.map(x=>({kind:x.kind,terms:x.terms.slice()}));
+  const prefixEditor=()=>page.locator('[id^="lex-slot-prefixes-"]').allTextContents();
+  const beforeSlots=await prefixEditor();
   await page.locator('#examQuestionSettings').evaluate(el=>el.open=true);
   await page.locator('#examQuestionMenus [data-question="lex"]').evaluate(el=>el.open=true);
   await page.locator('#lex-slot-prefixes-1 + button').click();
+  const afterSlots=await prefixEditor();
+  assert.notEqual(afterSlots[1],beforeSlots[1],'Regenerar una palabra no ha cambiado la forma elegida');
+  assert.deepEqual(afterSlots.filter((_,i)=>i!==1),beforeSlots.filter((_,i)=>i!==1));
   const afterOne=await page.evaluate(()=>[...document.querySelectorAll('#paper .lex-subquestion')].map(x=>({
    kind:x.dataset.lexKind,terms:[...x.querySelectorAll('i')].map(i=>i.textContent)
   })));
-  assert.notEqual(afterOne.find(x=>x.kind==='prefixes').terms[1],before.find(x=>x.kind==='prefixes').terms[1],
-   'Regenerar una palabra no ha cambiado esa forma');
   for(const old of before){
    const next=afterOne.find(x=>x.kind===old.kind);
-   if(old.kind==='prefixes')assert.deepEqual(next.terms.filter((_,i)=>i!==1),old.terms.filter((_,i)=>i!==1),
-    'Regenerar una palabra ha modificado otra de su subpregunta');
-   else assert.deepEqual(next.terms,old.terms,'Regenerar una palabra ha modificado otra subpregunta');
+   const expected=old.kind==='prefixes'?afterSlots.slice().sort((a,b)=>a.localeCompare(b,'es')):old.terms;
+   assert.deepEqual(next.terms,expected,'Regenerar una palabra ha alterado términos ajenos o el orden alfabético');
   }
   await page.locator('#lex-slot-latinisms-0').locator('..').locator('..').getByRole('button',{name:'Regenerar las cuatro formas'}).click();
   const afterAll=await page.evaluate(()=>[...document.querySelector('#paper [data-lex-kind="latinisms"]').querySelectorAll('i')].map(x=>x.textContent));
@@ -223,6 +225,17 @@ const server=http.createServer(async(req,res)=>{
   await page.evaluate(()=>document.getElementById('restoreDraft').click());
   assert(await page.locator('#paper .exam-sheet').count()>0,
    'No se recupera el examen guardado sin red');
+  await page.waitForFunction(()=>!!window.ExaminaOfflineLemmatizer.currentData());
+  const offlineGloss=await page.evaluate(()=>{
+   const bank=latinSharedBank.vocabulary('latin1');
+   const gloss=analyzeExamVocabulary('In villa puellaque. Quoque quisque uterque. Formadesconocidaxyz.',
+    'latin1',bank);
+   return gloss.map(({form,lemma,status})=>({form,lemma,status}));
+  });
+  for(const lemma of ['in','puella','-que','quoque','quisque','uterque']){
+   assert(offlineGloss.some(row=>row.lemma===lemma&&row.status==='documented'),'Falta en el glosario offline: '+lemma);
+  }
+  assert(offlineGloss.some(row=>row.form==='Formadesconocidaxyz'&&row.status==='unknown'));
   const latin=await page.evaluate(async()=>{
    const response=await fetch('data/unimorph/lat-v.json');
    return {status:response.status,length:(await response.json()).rows.length};

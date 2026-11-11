@@ -128,9 +128,12 @@ function uniqueLemmaFromData(data,course,form){
  return [...possible][0];
 }
 let loadedData=null;
+function currentData(){
+ return loadedData||(typeof examinaEmbeddedAsset==='function'?examinaEmbeddedAsset(ASSET):null);
+}
 function uniqueEntry(form,course){
  try{
-  const data=loadedData||(typeof examinaEmbeddedAsset==='function'?examinaEmbeddedAsset(ASSET):null);
+  const data=currentData();
   if(!data)return null;
   const lemma=uniqueLemmaFromData(data,course,form);
   return lemma?data.vocabulary[langOf(course)]?.[lemma]?.[course]?.entry||null:null;
@@ -267,7 +270,7 @@ function init(){
  document.getElementById('offlineLemmaSearch').addEventListener('click',submit);
  document.getElementById('offlineLemmaInput').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();submit()}});
 }
-window.ExaminaOfflineLemmatizer={normalize,describe,query,coverage,coverageByUnit,uniqueLemmaFromData,uniqueEntry,load,init};
+window.ExaminaOfflineLemmatizer={normalize,describe,query,coverage,coverageByUnit,uniqueLemmaFromData,uniqueEntry,currentData,load,init};
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);
 else init();
 })();

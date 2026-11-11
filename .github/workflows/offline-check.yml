@@ -95,7 +95,8 @@ jobs:
       - name: Preparar Chromium para pruebas visuales
         run: |
           npm install --no-save --ignore-scripts playwright@1.56.1
-          npx playwright install --with-deps chromium
+          # El runner de Ubuntu ya incluye las bibliotecas para Chromium.
+          npx playwright install chromium
       - name: Comprobar interfaz de preguntas, UD, alcance del glosario y Eulexis contextual
         run: node scripts/test-auditoria-ui.cjs
       - name: Validar glosas en castellano y valenciano
@@ -106,6 +107,8 @@ jobs:
         run: npm run vocabulary:test
       - name: Auditar las 612 formas pendientes aportadas para Latín I
         run: node scripts/audit-latin1-generated.cjs --minimum=429
+      - name: Revisar individualmente las 183 pendientes de Latín I
+        run: node scripts/audit-latin1-rest-183.cjs
       - name: Verificar contraste de botones de unidades y Limpiar todo
         run: node scripts/test-vg-unit-controls.cjs
       - name: Comprobar 15 correcciones de grafía en el corpus de regresión

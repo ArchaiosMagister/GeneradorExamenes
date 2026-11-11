@@ -83,6 +83,11 @@ function latinSuite(){
  assert(!output.includes('exam-nouns')&&!output.includes('exam-verbs'));
  assert.equal((output.match(/Puella amat \d+\./g)||[]).length,7);
  assert(output.includes('final-gloss'));
+ const fullSentenceBank=sandbox.latinSharedBank.sentences;
+ sandbox.latinSharedBank.sentences=()=>fullSentenceBank().slice(0,4);
+ output=run();
+ assert.equal((output.match(/<li><i><\/i><\/li>/g)||[]).length,3,'Latín: reservar e., f. y g.');
+ sandbox.latinSharedBank.sentences=fullSentenceBank;
  state.model.value='morf';vm.runInContext('generateLatinMorphologyReference()',sandbox);
  output=state.paper.innerHTML.split('<div id="answerkey"')[0];
  assert.equal((output.match(/class="exam-question"/g)||[]).length,4,'Latín I UD3: pronombres como tercera pregunta');
@@ -125,6 +130,7 @@ function greekSuite(){
  const sandbox={
   $:id=>state[id]||(state[id]={checked:true,value:''}),
   sample:(a,n)=>a.slice(0,n),countFor:id=>Number(state['count-'+id]?.value)||5,
+  vocab:[],sentences:[],analyzeExamVocabulary:()=>[],
   greekVerifiedCorpus:rows,greekMorphologyEligible:(x,n)=>x.minUnit<=n,
   // En este test sintético no hay banco nominal ni diccionario de adjetivos.
   greekAvailableSyntagmAdjectives:()=>[],greekSyntagmNounGenders:{},
@@ -171,6 +177,7 @@ function greekSuite(){
  state['count-sent'].value=12;
  output=run('translation');
  assert(output.includes('ὁ δοῦλος λέγει.'),'La oración griega importada no llegó al examen');
+ assert(output.includes('<span class="exam-letter">l.</span> <span></span>'),'Griego: reservar hasta la última letra solicitada');
  assert(output.includes('revisa el vocabulario'),'La oración griega sin lematización necesita revisión');
  output=run('morphology');
  assert.equal((output.match(/class="exam-question"/g)||[]).length,4,'Griego UD7: pronombres');

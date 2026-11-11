@@ -100,8 +100,34 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
     'Regenerar '+kind+' ha alterado otras palabras');
   }
 
+  const forms=await page.evaluate(()=>{
+   const inExam=()=>[...document.querySelectorAll('#paper [data-analysis-slot] > i:first-child')].map(x=>x.textContent);
+   const inEditor=()=>[...document.querySelectorAll('[data-editor-for="forms"] .exam-word-editor input')].map(x=>x.value);
+   const before=inExam(),editorBefore=inEditor(),index=2;
+   document.querySelectorAll('[data-editor-for="forms"] .exam-regenerate-word')[index].click();
+   return {before,editorBefore,index,after:inExam(),editorAfter:inEditor()};
+  });
+  assert.deepEqual(forms.editorBefore,forms.before,'El editor incluye solo la forma, sin enunciados');
+  assert.deepEqual(forms.editorAfter,forms.after);
+  assert.deepEqual(forms.after.map((form,i)=>form!==forms.before[i]),forms.before.map((_,i)=>i===forms.index));
+
   // 2 puntos fijos para el léxico, con el banco completo ya disponible.
   await configure('latin1','tablas','UD9–10');
+  const lexicon=await page.evaluate(()=>{
+   const kinds=['phonetics','prefixes','latinisms','preverbs'];
+   return Object.fromEntries(kinds.map(kind=>[kind,{
+    exam:[...document.querySelectorAll('[data-lex-kind="'+kind+'"] i')].map(x=>x.textContent),
+    editor:[...document.querySelectorAll('[id^="lex-slot-'+kind+'-"]')].map(x=>x.textContent),
+    canonical:latinLexBanks.latin1.latinisms.find(x=>x.number===30).prompt
+   }]));
+  });
+  for(const kind of ['phonetics','prefixes','latinisms']){
+   const {exam,editor}=lexicon[kind];
+   assert.equal(exam.length,4);
+   assert.deepEqual(exam,editor.slice().sort((a,b)=>a.localeCompare(b,'es')));
+  }
+  assert.deepEqual(lexicon.preverbs.exam,lexicon.preverbs.editor);
+  assert.equal(lexicon.latinisms.canonical,'ex libris');
   await page.waitForFunction(()=>!!window.ExaminaScoring);
   await page.locator('#examScoring .exam-scoring-heading button').click();
   const score=await page.evaluate(()=>{
@@ -145,9 +171,9 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
    const course='latin1',key=examKey(row.entry),chosen=['UD4'];
    try{
     examRequired=backup.filter(x=>!(x.course===course&&(x.key||examKey(x.entry))===key));
-    const before=buildFinalLexicon(chosen,[],[],[row],[]);
+    const before=buildFinalLexicon(chosen,[{text:'oppidum'}]);
     examRequired.push({course,unit:'UD1',entry:row.entry,key,meaning:row.meaning});
-    const after=buildFinalLexicon(chosen,[],[],[row],[]);
+    const after=buildFinalLexicon(chosen,[{text:'oppidum'}]);
     return {entry:row.entry,meaning:row.meaning,before,after,
      isRequired:isRequired(row.entry,chosen)};
    }finally{examRequired=backup}

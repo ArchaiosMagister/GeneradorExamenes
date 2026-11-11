@@ -1,0 +1,1106 @@
+{
+  "schema": 1,
+  "course": "lat1",
+  "source": "Baseline 2026-11-11 GitHub Actions 43031012775 after PR #56; 612 teacher examples",
+  "description": "183 unresolved occurrences, not manually validated; keep source token and unit intact",
+  "rows": [
+    {
+      "unit": 1,
+      "form": "bona",
+      "priorStatus": "review",
+      "priorCandidates": 2
+    },
+    {
+      "unit": 1,
+      "form": "servæ",
+      "priorStatus": "review",
+      "priorCandidates": 2
+    },
+    {
+      "unit": 1,
+      "form": "stylum",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 2,
+      "form": "bello",
+      "priorStatus": "review",
+      "priorCandidates": 2
+    },
+    {
+      "unit": 2,
+      "form": "modo",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 2,
+      "form": "Nocte",
+      "priorStatus": "review",
+      "priorCandidates": 2
+    },
+    {
+      "unit": 2,
+      "form": "Nostrum",
+      "priorStatus": "review",
+      "priorCandidates": 2
+    },
+    {
+      "unit": 2,
+      "form": "pugna",
+      "priorStatus": "review",
+      "priorCandidates": 2
+    },
+    {
+      "unit": 2,
+      "form": "templos",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 2,
+      "form": "teneros",
+      "priorStatus": "review",
+      "priorCandidates": 2
+    },
+    {
+      "unit": 2,
+      "form": "visimus",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 3,
+      "form": "admirabantur",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 3,
+      "form": "arate",
+      "priorStatus": "review",
+      "priorCandidates": 1
+    },
+    {
+      "unit": 3,
+      "form": "Nostri",
+      "priorStatus": "review",
+      "priorCandidates": 2
+    },
+    {
+      "unit": 4,
+      "form": "bona",
+      "priorStatus": "review",
+      "priorCandidates": 2
+    },
+    {
+      "unit": 4,
+      "form": "commiserat",
+      "priorStatus": "review",
+      "priorCandidates": 2
+    },
+    {
+      "unit": 4,
+      "form": "commiserunt",
+      "priorStatus": "review",
+      "priorCandidates": 2
+    },
+    {
+      "unit": 4,
+      "form": "dedit",
+      "priorStatus": "review",
+      "priorCandidates": 2
+    },
+    {
+      "unit": 4,
+      "form": "nostri",
+      "priorStatus": "review",
+      "priorCandidates": 2
+    },
+    {
+      "unit": 4,
+      "form": "propinquiis",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 4,
+      "form": "vera",
+      "priorStatus": "review",
+      "priorCandidates": 2
+    },
+    {
+      "unit": 5,
+      "form": "bonaque",
+      "priorStatus": "review",
+      "priorCandidates": 2
+    },
+    {
+      "unit": 5,
+      "form": "Campo",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 5,
+      "form": "certant",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 5,
+      "form": "collocaverat",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 5,
+      "form": "indicavit",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 5,
+      "form": "Nostri",
+      "priorStatus": "review",
+      "priorCandidates": 2
+    },
+    {
+      "unit": 5,
+      "form": "pares",
+      "priorStatus": "review",
+      "priorCandidates": 2
+    },
+    {
+      "unit": 5,
+      "form": "servavit",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 6,
+      "form": "aperuerunt",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 6,
+      "form": "Atuatucos",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 6,
+      "form": "dedicaverunt",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 6,
+      "form": "fugerant",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 6,
+      "form": "gemit",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 6,
+      "form": "regno",
+      "priorStatus": "review",
+      "priorCandidates": 2
+    },
+    {
+      "unit": 6,
+      "form": "reverterunt",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 6,
+      "form": "teste",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 6,
+      "form": "turtur",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 6,
+      "form": "vere",
+      "priorStatus": "review",
+      "priorCandidates": 2
+    },
+    {
+      "unit": 6,
+      "form": "vivunt",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 7,
+      "form": "ii",
+      "priorStatus": "review",
+      "priorCandidates": 2
+    },
+    {
+      "unit": 7,
+      "form": "opertam",
+      "priorStatus": "review",
+      "priorCandidates": 1
+    },
+    {
+      "unit": 7,
+      "form": "Paulo",
+      "priorStatus": "review",
+      "priorCandidates": 2
+    },
+    {
+      "unit": 7,
+      "form": "solis",
+      "priorStatus": "review",
+      "priorCandidates": 2
+    },
+    {
+      "unit": 7,
+      "form": "vere",
+      "priorStatus": "review",
+      "priorCandidates": 2
+    },
+    {
+      "unit": 8,
+      "form": "ædificata",
+      "priorStatus": "review",
+      "priorCandidates": 1
+    },
+    {
+      "unit": 8,
+      "form": "Bello",
+      "priorStatus": "review",
+      "priorCandidates": 2
+    },
+    {
+      "unit": 8,
+      "form": "egregias",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 8,
+      "form": "Neapolis",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 8,
+      "form": "postrema",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 8,
+      "form": "volebat",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 9,
+      "form": "ædificata",
+      "priorStatus": "review",
+      "priorCandidates": 1
+    },
+    {
+      "unit": 9,
+      "form": "ausus",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 9,
+      "form": "Avarus",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 9,
+      "form": "Belgæ",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 9,
+      "form": "canis",
+      "priorStatus": "review",
+      "priorCandidates": 2
+    },
+    {
+      "unit": 9,
+      "form": "capta",
+      "priorStatus": "review",
+      "priorCandidates": 1
+    },
+    {
+      "unit": 9,
+      "form": "conati",
+      "priorStatus": "review",
+      "priorCandidates": 1
+    },
+    {
+      "unit": 9,
+      "form": "confisus",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 9,
+      "form": "creatus",
+      "priorStatus": "review",
+      "priorCandidates": 1
+    },
+    {
+      "unit": 9,
+      "form": "cremata",
+      "priorStatus": "review",
+      "priorCandidates": 1
+    },
+    {
+      "unit": 9,
+      "form": "dato",
+      "priorStatus": "review",
+      "priorCandidates": 1
+    },
+    {
+      "unit": 9,
+      "form": "deleta",
+      "priorStatus": "review",
+      "priorCandidates": 1
+    },
+    {
+      "unit": 9,
+      "form": "expugnata",
+      "priorStatus": "review",
+      "priorCandidates": 1
+    },
+    {
+      "unit": 9,
+      "form": "factus",
+      "priorStatus": "review",
+      "priorCandidates": 1
+    },
+    {
+      "unit": 9,
+      "form": "ferarum",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 9,
+      "form": "filiis",
+      "priorStatus": "review",
+      "priorCandidates": 2
+    },
+    {
+      "unit": 9,
+      "form": "horas",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 9,
+      "form": "laudati",
+      "priorStatus": "review",
+      "priorCandidates": 1
+    },
+    {
+      "unit": 9,
+      "form": "longe",
+      "priorStatus": "review",
+      "priorCandidates": 2
+    },
+    {
+      "unit": 9,
+      "form": "mirati",
+      "priorStatus": "review",
+      "priorCandidates": 1
+    },
+    {
+      "unit": 9,
+      "form": "missus",
+      "priorStatus": "review",
+      "priorCandidates": 1
+    },
+    {
+      "unit": 9,
+      "form": "multitudine",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 9,
+      "form": "narratæ",
+      "priorStatus": "review",
+      "priorCandidates": 1
+    },
+    {
+      "unit": 9,
+      "form": "occisus",
+      "priorStatus": "review",
+      "priorCandidates": 1
+    },
+    {
+      "unit": 9,
+      "form": "ortus",
+      "priorStatus": "review",
+      "priorCandidates": 2
+    },
+    {
+      "unit": 9,
+      "form": "Peditatus",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 9,
+      "form": "pretiosius",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 9,
+      "form": "profectæ",
+      "priorStatus": "review",
+      "priorCandidates": 1
+    },
+    {
+      "unit": 9,
+      "form": "profectos",
+      "priorStatus": "review",
+      "priorCandidates": 1
+    },
+    {
+      "unit": 9,
+      "form": "pugnatum",
+      "priorStatus": "review",
+      "priorCandidates": 1
+    },
+    {
+      "unit": 9,
+      "form": "punitus",
+      "priorStatus": "review",
+      "priorCandidates": 1
+    },
+    {
+      "unit": 9,
+      "form": "sapientissimus",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 9,
+      "form": "scripta",
+      "priorStatus": "review",
+      "priorCandidates": 1
+    },
+    {
+      "unit": 9,
+      "form": "sepultus",
+      "priorStatus": "review",
+      "priorCandidates": 1
+    },
+    {
+      "unit": 9,
+      "form": "Solitus",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 9,
+      "form": "T",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 9,
+      "form": "vastata",
+      "priorStatus": "review",
+      "priorCandidates": 1
+    },
+    {
+      "unit": 9,
+      "form": "victi",
+      "priorStatus": "review",
+      "priorCandidates": 1
+    },
+    {
+      "unit": 9,
+      "form": "vocatus",
+      "priorStatus": "review",
+      "priorCandidates": 1
+    },
+    {
+      "unit": 10,
+      "form": "aberat",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 10,
+      "form": "Acceptis",
+      "priorStatus": "review",
+      "priorCandidates": 1
+    },
+    {
+      "unit": 10,
+      "form": "aderant",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 10,
+      "form": "affirmauerunt",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 10,
+      "form": "Allobroges",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 10,
+      "form": "amissa",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 10,
+      "form": "amore",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 10,
+      "form": "bello",
+      "priorStatus": "review",
+      "priorCandidates": 2
+    },
+    {
+      "unit": 10,
+      "form": "Boudicca",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 10,
+      "form": "Britanni",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 10,
+      "form": "C",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 10,
+      "form": "Cannas",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 10,
+      "form": "capta",
+      "priorStatus": "review",
+      "priorCandidates": 1
+    },
+    {
+      "unit": 10,
+      "form": "clasis",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 10,
+      "form": "Comitiis",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 10,
+      "form": "commiserunt",
+      "priorStatus": "review",
+      "priorCandidates": 2
+    },
+    {
+      "unit": 10,
+      "form": "commisit",
+      "priorStatus": "review",
+      "priorCandidates": 2
+    },
+    {
+      "unit": 10,
+      "form": "comparatis",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 10,
+      "form": "condiciones",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 10,
+      "form": "condita",
+      "priorStatus": "review",
+      "priorCandidates": 1
+    },
+    {
+      "unit": 10,
+      "form": "consilo",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 10,
+      "form": "constantia",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 10,
+      "form": "consulatum",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 10,
+      "form": "creati",
+      "priorStatus": "review",
+      "priorCandidates": 1
+    },
+    {
+      "unit": 10,
+      "form": "curaque",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 10,
+      "form": "decrevit",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 10,
+      "form": "deletam",
+      "priorStatus": "review",
+      "priorCandidates": 1
+    },
+    {
+      "unit": 10,
+      "form": "deletum",
+      "priorStatus": "review",
+      "priorCandidates": 1
+    },
+    {
+      "unit": 10,
+      "form": "deliberata",
+      "priorStatus": "review",
+      "priorCandidates": 1
+    },
+    {
+      "unit": 10,
+      "form": "didici",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 10,
+      "form": "Duos",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 10,
+      "form": "Egressi",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 10,
+      "form": "elephantos",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 10,
+      "form": "expulsos",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 10,
+      "form": "factus",
+      "priorStatus": "review",
+      "priorCandidates": 1
+    },
+    {
+      "unit": 10,
+      "form": "Fœderatæ",
+      "priorStatus": "review",
+      "priorCandidates": 1
+    },
+    {
+      "unit": 10,
+      "form": "Græcia",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 10,
+      "form": "grammaticam",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 10,
+      "form": "gratulati",
+      "priorStatus": "review",
+      "priorCandidates": 1
+    },
+    {
+      "unit": 10,
+      "form": "habitis",
+      "priorStatus": "review",
+      "priorCandidates": 1
+    },
+    {
+      "unit": 10,
+      "form": "hasta",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 10,
+      "form": "hortatus",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 10,
+      "form": "incolumem",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 10,
+      "form": "intrauit",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 10,
+      "form": "latrauerunt",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 10,
+      "form": "ludo",
+      "priorStatus": "review",
+      "priorCandidates": 2
+    },
+    {
+      "unit": 10,
+      "form": "M",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 10,
+      "form": "medicum",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 10,
+      "form": "milia",
+      "priorStatus": "review",
+      "priorCandidates": 2
+    },
+    {
+      "unit": 10,
+      "form": "missos",
+      "priorStatus": "review",
+      "priorCandidates": 1
+    },
+    {
+      "unit": 10,
+      "form": "morante",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 10,
+      "form": "necaturos",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 10,
+      "form": "nonulli",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 10,
+      "form": "Nullo",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 10,
+      "form": "nunquam",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 10,
+      "form": "Occiso",
+      "priorStatus": "review",
+      "priorCandidates": 1
+    },
+    {
+      "unit": 10,
+      "form": "oppugnata",
+      "priorStatus": "review",
+      "priorCandidates": 1
+    },
+    {
+      "unit": 10,
+      "form": "parcebant",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 10,
+      "form": "parentibus",
+      "priorStatus": "review",
+      "priorCandidates": 2
+    },
+    {
+      "unit": 10,
+      "form": "passus",
+      "priorStatus": "review",
+      "priorCandidates": 2
+    },
+    {
+      "unit": 10,
+      "form": "pasuum",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 10,
+      "form": "patefecit",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 10,
+      "form": "patrocinio",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 10,
+      "form": "Paulo",
+      "priorStatus": "review",
+      "priorCandidates": 2
+    },
+    {
+      "unit": 10,
+      "form": "perduxit",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 10,
+      "form": "piratis",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 10,
+      "form": "placebat",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 10,
+      "form": "postulata",
+      "priorStatus": "review",
+      "priorCandidates": 2
+    },
+    {
+      "unit": 10,
+      "form": "præerat",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 10,
+      "form": "præfuit",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 10,
+      "form": "prætore",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 10,
+      "form": "procedentes",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 10,
+      "form": "prohibente",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 10,
+      "form": "pronuntiata",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 10,
+      "form": "rapta",
+      "priorStatus": "review",
+      "priorCandidates": 1
+    },
+    {
+      "unit": 10,
+      "form": "rebellionem",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 10,
+      "form": "regressi",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 10,
+      "form": "relictis",
+      "priorStatus": "review",
+      "priorCandidates": 1
+    },
+    {
+      "unit": 10,
+      "form": "Saguntini",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 10,
+      "form": "salutis",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 10,
+      "form": "sexcentos",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 10,
+      "form": "solvebant",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 10,
+      "form": "superfluum",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 10,
+      "form": "terga",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 10,
+      "form": "totam",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 10,
+      "form": "transgressi",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 10,
+      "form": "uagabantur",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 10,
+      "form": "uerterunt",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 10,
+      "form": "uictis",
+      "priorStatus": "review",
+      "priorCandidates": 1
+    },
+    {
+      "unit": 10,
+      "form": "uulnerati",
+      "priorStatus": "review",
+      "priorCandidates": 2
+    },
+    {
+      "unit": 10,
+      "form": "uulneratum",
+      "priorStatus": "review",
+      "priorCandidates": 2
+    },
+    {
+      "unit": 10,
+      "form": "vescebantur",
+      "priorStatus": "unknown",
+      "priorCandidates": 0
+    },
+    {
+      "unit": 10,
+      "form": "victa",
+      "priorStatus": "review",
+      "priorCandidates": 1
+    }
+  ]
+}

@@ -61,7 +61,20 @@ const latinInvariables=[
  [['at'],'at (conj.)','pero, en cambio','però, en canvi'],
  [['statim'],'statim (adv.)','inmediatamente','immediatament'],
  [['illic'],'illic (adv.)','allí','allí'],
- [['longe'],'longe (adv.)','lejos','lluny']
+ [['longe'],'longe (adv.)','lejos','lluny'],
+ [['itaque'],'itaque (conj.)','así pues, por tanto','per tant'],
+ [['denique'],'denique (adv.)','finalmente, en suma','finalment, en suma'],
+ [['namque'],'namque (conj.)','pues, en efecto','perquè, en efecte'],
+ [['utique'],'utique (adv.)','en todo caso, ciertamente','en tot cas, certament'],
+ [['ubique'],'ubique (adv.)','en todas partes','pertot arreu'],
+ [['undique'],'undique (adv.)','de todas partes','de tot arreu'],
+ [['usque'],'usque (adv.)','hasta, continuamente','fins a, contínuament'],
+ [['absque'],'absque (prep. + abl.)','sin, lejos de','sense, lluny de'],
+ [['ubicumque'],'ubicumque (adv.)','dondequiera que','allà on siga'],
+ [['quandocumque'],'quandocumque (adv.)','cuandoquiera que','quan siga'],
+ [['quandoque'],'quandoque (adv.)','alguna vez, cuandoquiera que','alguna vegada, quan siga'],
+ [['numquam','nunquam'],'numquam (adv.)','nunca','mai'],
+ [['modo'],'modo (adv.)','solamente, hace poco, ahora','solament, fa poc, ara']
 ];
 const latinCore=new Map();
 for(const [forms,entry,meaning,meaning_va] of latinInvariables){
@@ -123,6 +136,46 @@ function latinPresentForms(bank){
  * Cada propuesta conserva exactamente el enunciado y la glosa docentes;
  * una homografía entre lemas distintos sigue necesitando revisión.
  */
+// -que coordinante es productivo, pero el mismo segmento puede ser parte
+// inseparable de un pronombre compuesto o de un adverbio/conjunción.
+ // No descomponer nunca un lexema completo reconocido por su paradigma.
+const latinLexicalQueWords=new Set([
+ 'quoque','neque','atque','itaque','denique','namque','utique','ubique',
+ 'undique','usque','absque','quandoque','quaque','quaeque',
+ // Pronombres compuestos: los casos oblicuos también son unidades léxicas.
+ 'quisque','quidque','quodque','quique','cuiusque','cuique','quemque',
+ 'quamque','quosque','quasque','quorumque','quarumque','quibusque',
+ 'uterque','utraque','utrumque','utriusque','utrique','utrumque',
+ 'utramque','utroque','utraque','utrorumque','utrarumque',
+ 'utrisque','utrosque','utrasque',
+ 'quicumque','quaecumque','quodcumque','cuiuscumque','cuicumque',
+ 'quemcumque','quamcumque','quocumque','quacumque','quibuscumque',
+ 'quorumcumque','quarumcumque','quoscumque','quascumque',
+ 'ubicumque','undecumque','quandocumque','qualiscumque',
+ 'quantuscumque'
+].map(latinKey));
+// Las sospechas ortográficas no son pruebas de que la palabra sea errónea.
+// El docente decide con la frase original: no se sustituye el token ni el lema.
+const latinContextNotes={
+ 'auarus':'puede ser avarus, –a, –um («avaro») o un nombre propio; consultar la oración',
+ 'medicum':'puede ser medicus, –i (m., «médico») o medicus, –a, –um (adjetivo); consultar la oración',
+ 'commiserat':'el banco propone commito y committo para el mismo tema commis-; contrastar la grafía de la ficha',
+ 'commiserunt':'el banco propone commito y committo para el mismo tema commis-; contrastar la grafía de la ficha',
+ 'commisit':'el banco propone commito y committo para el mismo tema commis-; contrastar la grafía de la ficha',
+ 'teneros':'coexisten los enunciados tenerus, –a, –um y tener, tenera, tenerum; revisar si son variantes de una sola ficha',
+ 'solis':'coexisten las fichas sol, solis y solis, –is; contrastar si la segunda es un duplicado editorial'
+};
+const latinSpellingNotes={
+ 'clasis':'comprobar classis, –is (f.), si se refiere a «flota» o «clase»',
+ 'consilo':'comprobar consilio (de consilium, –i), según el contexto',
+ 'pasuum':'comprobar passuum (genitivo plural de passus, –us)',
+ 'nonulli':'comprobar nonnulli (de nonnullus, –a, –um)',
+ 'propinquiis':'comprobar propinquis (de propinquus, –a, –um)',
+ 'templos':'comprobar templa si el sustantivo es templum, –i (n.); exige contexto',
+ 'c':'inicial o abreviatura, no lema autónomo; consultar la oración',
+ 'm':'inicial, cifra o abreviatura, no lema autónomo; consultar la oración',
+ 't':'inicial o abreviatura, no lema autónomo; consultar la oración'
+};
 const latinExpandedCache=new WeakMap();
 function latinExpandedForms(bank){
  if(latinExpandedCache.has(bank))return latinExpandedCache.get(bank);
@@ -142,6 +195,31 @@ function latinExpandedForms(bank){
   if(kind==='all'||kind==='f')addMany(stem,['a','ae','am','arum','is','as'],record);
   if(kind==='all'||kind==='n')addMany(stem,['um','i','o','a','orum','is'],record);
  };
+ // Formas pronominales lexicalizadas: -que NO es la conjunción copulativa.
+ // No se infieren otras flexiones a partir de los tres últimos caracteres.
+ const lexicalCompounds=[
+  {head:'quisque',entry:'quisque, quaeque, quidque (pron. indef.)',
+   meaning:'cada uno/a, cada cual',forms:[
+    'quisque','quique','quaeque','quidque','quodque','cuiusque','cuique',
+    'quemque','quamque','quaque','quosque','quasque',
+    'quorumque','quarumque','quibusque']},
+  {head:'uterque',entry:'uterque, utraque, utrumque (pron. indef.)',
+   meaning:'uno y otro, ambos',forms:[
+    'uterque','utraque','utrumque','utriusque','utrique','utroque',
+    'utramque','utrosque','utrasque','utrorumque','utrarumque','utrisque']},
+  {head:'quicumque',entry:'quicumque, quaecumque, quodcumque (pron. rel. indef.)',
+   meaning:'cualquiera que, quienquiera que',forms:[
+    'quicumque','quaecumque','quodcumque','cuiuscumque','cuicumque',
+    'quemcumque','quamcumque','quocumque','quacumque','quorumcumque',
+    'quarumcumque','quibuscumque','quoscumque','quascumque']}
+ ];
+ for(const compound of lexicalCompounds){
+  const teacher=bank.find(r=>latinKey(head(r.entry))===latinKey(compound.head));
+  const record={lemma:latinKey(compound.head),entry:teacher?.entry||compound.entry,
+   meaning:teacher?.meaning||compound.meaning,meaning_va:teacher?.meaning_va||'',
+   attested:true,origin:'paradigma pronominal compuesto, -que inseparable'};
+  for(const surface of compound.forms)add(surface,record);
+ }
  // Paradigmas pronominales cerrados: no se infieren a partir de sufijos.
  const personal=[
   [['ego','mei','mihi','me','nos','nostri','nostrum','nobis'],
@@ -243,7 +321,81 @@ function latinExpandedForms(bank){
   ['tres, tria (num.)','tres','tres'],
   ['mille, milia (num.)','mil','mil'],
   ['idem, eadem, idem (pron.)','el mismo, la misma','el mateix, la mateixa'],
-  ['necesse (adj. indecl.)','necesario','necessari']
+  ['necesse (adj. indecl.)','necesario','necessari'],
+  // Lemas escolares cuya ausencia explica varias formas del corpus docente.
+  // Si el profesor ya ofrece ficha propia, se conserva sin sustitución.
+  ['stylus, –i','punzón para escribir','punxó per a escriure'],
+  ['campus, –i','campo','camp'],
+  ['fera, –æ','fiera','fera'],
+  ['hora, –æ','hora','hora'],
+  ['multitudo, multitudinis (f.)','multitud','multitud'],
+  ['peditatus, –us','infantería','infanteria'],
+  ['pretiosus, –a, –um','precioso/a, valioso/a','valuós/valuosa'],
+  ['sapiens, sapientis','sabio/a','savi/sàvia'],
+  ['postremus, –a, –um','último/a','últim/a'],
+  ['egregius, –a, –um','distinguido/a','distingit/ida'],
+  ['Neapolis, Neapolis (f.)','Nápoles','Nàpols'],
+  ['Boudicca, –æ','Boudica','Boudica'],
+  ['Britannus, –i','britano','brità'],
+  ['condicio, condicionis (f.)','condición','condició'],
+  ['constantia, –æ','constancia','constància'],
+  ['consulatus, –us','consulado','consolat'],
+  ['cura, –æ','cuidado','cura'],
+  ['elephantus, –i','elefante','elefant'],
+  ['Graecia, –æ','Grecia','Grècia'],
+  ['grammatica, –æ','gramática','gramàtica'],
+  ['hasta, –æ','lanza','llança'],
+  ['incolumis, –e','ileso/a','il·lés/esa'],
+  ['patrocinium, –i','patrocinio, protección','patrocini, protecció'],
+  ['pirata, –æ (m.)','pirata','pirata'],
+  ['praetor, praetoris (m.)','pretor','pretor'],
+  ['rebellio, rebellionis (f.)','rebelión','rebel·lió'],
+  ['salus, salutis (f.)','salud, salvación','salut, salvació'],
+  ['superfluus, –a, –um','superfluo/a','superflu/a'],
+  ['tergum, –i','espalda, dorso','esquena, dors'],
+  ['totus, –a, –um','todo/a, entero/a','tot/a, sencer/a'],
+  ['nullus, –a, –um','ninguno/a','cap'],
+  ['amor, amoris (m.)','amor','amor'],
+  ['agmen, agminis (n.)','columna de marcha','columna de marxa'],
+  ['gemo, gemui, gemitum (3ª)','gemir','gemegar'],
+  ['vivo, vixi, victum (3ª)','vivir','viure'],
+  ['aperio, aperui, apertum (4ª)','abrir','obrir'],
+  ['dedico, dedicavi, dedicatum (1ª)','dedicar','dedicar'],
+  ['affirmo, affirmavi, affirmatum (1ª)','afirmar','afirmar'],
+  ['latro, latravi, latratum (1ª)','ladrar','lladrar'],
+  ['placeo, placui, placitum (2ª)','agradar','agradar'],
+  ['parco, peperci, parsum (3ª)','perdonar, respetar','perdonar, respectar'],
+  ['perduco, perduxi, perductum (3ª)','conducir hasta','conduir fins a'],
+  ['procedo, processi, processum (3ª)','avanzar, salir','avançar, eixir'],
+  ['prohibeo, prohibui, prohibitum (2ª)','prohibir','prohibir'],
+  ['verto, verti, versum (3ª)','volver, girar','girar, tornar'],
+  ['reverto, reverti, reversum (3ª)','regresar','tornar'],
+  ['intro, intravi, intratum (1ª)','entrar','entrar'],
+  ['decerno, decrevi, decretum (3ª)','decidir, decretar','decidir, decretar'],
+  ['solvo, solvi, solutum (3ª)','soltar, pagar','soltar, pagar'],
+  ['disco, didici, – (3ª)','aprender','aprendre'],
+  ['soleo, solitus sum (2ª)','soler, acostumbrar','soler, acostumar'],
+  ['vagor, vagatus sum (1ª)','andar errante','vagar'],
+  ['vescor, vesci, – (3ª)','alimentarse','alimentar-se'],
+  ['admiror, admiratus sum (1ª)','admirar','admirar'],
+  ['hortor, hortatus sum (1ª)','exhortar','exhortar'],
+  ['egredior, egressus sum (mx.)','salir','eixir'],
+  ['regredior, regressus sum (mx.)','regresar','tornar'],
+  ['transgredior, transgressus sum (mx.)','atravesar','travessar'],
+  ['moror, moratus sum (1ª)','detenerse, demorarse','detindre’s, demorar-se'],
+  ['fugio, fugi, fugitum (mx.)','huir','fugir'],
+  ['modus, –i','modo, manera','manera'],
+  ['viso, visi, visum (3ª)','visitar, ir a ver','visitar, anar a veure'],
+  ['testis, testis (m./f.)','testigo','testimoni'],
+  ['turtur, turturis (m.)','tórtola','tórtora'],
+  ['comparo, comparavi, comparatum (1ª)','preparar, comparar','preparar, comparar'],
+  ['amitto, amisi, amissum (3ª)','perder, dejar marchar','perdre, deixar anar'],
+  ['expello, expuli, expulsum (3ª)','expulsar','expulsar'],
+  ['pronuntio, pronuntiavi, pronuntiatum (1ª)','pronunciar, anunciar','pronunciar, anunciar'],
+  ['patefacio, patefeci, patefactum (mx.)','abrir, descubrir','obrir, descobrir'],
+  ['Saguntinus, –a, –um','saguntino/a','saguntí/ina'],
+  ['audeo, ausus sum (2ª)','atreverse','atrevir-se'],
+  ['confido, confisus sum (3ª)','confiar','confiar']
  ];
  const complete=[...bank];
  for(const [entry,meaning,meaning_va] of supplementary){
@@ -307,14 +459,40 @@ function latinExpandedForms(bank){
      !/\(n\.\)/i.test(raw)&&!['bos','vis','sus','grus','iuppiter'].includes(l)){
    const stem=fields[1].slice(0,-2);
    addMany(stem,proper?['is','em','i','e']:['is','em','i','e','es','ibus'],record);
+   // Comparativos y superlativos regulares de adjetivos en -ens, -entis.
+   if(l.endsWith('ens')&&fields[1].endsWith('entis')&&!/\((?:m|f)\.\)/i.test(raw)){
+    addMany(stem,['ior','ius','iorem','iore','iori','iores','iorum','ioribus','iora'],record);
+    decl12(stem+'issim',record);
+   }
   }
   if(!annotated)continue;
   // Los deponentes dan un participio perfecto activo en su propio enunciado.
   // Las otras formas se proponen sin certificarlas individualmente.
-  if(l.endsWith('or')&&fields[1]&&/^(?:[a-z]+(?:tus|sus)) sum$/.test(fields[1])){
-   const p=fields[1].slice(0,-4),stemP=p.slice(0,-2);
-   add(p,record);
-   decl12(stemP,{...record,attested:false,origin:'participio deponente flexionado: pendiente de contraste'});
+  if(l.endsWith('or')&&(fields[1]&&/^(?:[a-z]+(?:tus|sus)) sum$/.test(fields[1])||
+     fields[1]?.endsWith('i')&&/\(\s*(?:[1-4]ª|mx\.)\s*\)/.test(raw))){
+   const group=annotated[1];
+   if(fields[1].endsWith(' sum')){
+    const p=fields[1].slice(0,-4),stemP=p.slice(0,-2);
+    add(p,record);
+    decl12(stemP,{...record,attested:false,origin:'participio deponente flexionado: pendiente de contraste'});
+   }
+   // Las desinencias activas NO sirven para los deponentes. El imperfecto
+   // deponente sí es productivo y la conjugación está dada por el docente.
+   const stem=(group==='2ª'||group==='4ª'||group==='mx.')?
+    l.slice(0,-3):l.slice(0,-2);
+   const deponent={
+    '1ª':{present:['or','aris','atur','amur','amini','antur'],imperfect:'ab'},
+    '2ª':{present:['eor','eris','etur','emur','emini','entur'],imperfect:'eb'},
+    '3ª':{present:['or','eris','itur','imur','imini','untur'],imperfect:'eb'},
+    '4ª':{present:['ior','iris','itur','imur','imini','iuntur'],imperfect:'ieb'},
+    'mx.':{present:['ior','eris','itur','imur','imini','iuntur'],imperfect:'ieb'}
+   }[group];
+   addMany(stem,deponent.present,record);
+   addMany(stem+deponent.imperfect,
+    ['ar','aris','atur','amur','amini','antur'],record);
+   const participleStem=stem+(group==='1ª'?'ant':['4ª','mx.'].includes(group)?'ient':'ent');
+   add(participleStem.slice(0,-1)+'s',record);
+   addMany(participleStem,['is','em','i','e','es','ibus'],record);
    continue;
   }
   const group=annotated[1],end=group==='2ª'?'eo':(['4ª','mx.'].includes(group)?'io':'o');
@@ -328,6 +506,16 @@ function latinExpandedForms(bank){
    'mx.':{inf:'ere',imp:'e',imperf:'ieb',future:'4',passive:'4'}
   };
   const rule=formsByGroup[group];
+  // El mismo modelo explícito vale para las seis personas del presente,
+  // también cuando el lema figura solo en el suplemento de vocabulario.
+  const present={
+   '1ª':['o','as','at','amus','atis','ant'],
+   '2ª':['eo','es','et','emus','etis','ent'],
+   '3ª':['o','is','it','imus','itis','unt'],
+   '4ª':['io','is','it','imus','itis','iunt'],
+   'mx.':['io','is','it','imus','itis','iunt']
+  }[group];
+  addMany(stem,present,record);
   add(stem+rule.inf,record);
   if(l!=='facio')add(stem+({
    '1ª':'ari','2ª':'eri','3ª':'i','4ª':'iri','mx.':'i'
@@ -432,13 +620,74 @@ function latinExpandedForms(bank){
   {lemma:'parvus',entry:'parvus, –a, –um',meaning:'pequeño/a',
    forms:['minor','minus','minimus','minima','minimum']},
   {lemma:'multus',entry:'multus, –a, –um',meaning:'mucho/a',
-   forms:['plures','plura','plurimus','plurima','plurimum','plurimos']}
+   forms:['plures','plura','plurimus','plurima','plurimum','plurimos']},
+  {lemma:'vivo',entry:'vivo, vixi, victum (3ª)',meaning:'vivir',
+   forms:['vivo','vivis','vivit','vivimus','vivitis','vivunt']},
+  {lemma:'solvo',entry:'solvo, solvi, solutum (3ª)',meaning:'soltar, pagar',
+   forms:['solvo','solvis','solvit','solvimus','solvitis','solvunt',
+    'solvebam','solvebas','solvebat','solvebamus','solvebatis','solvebant']},
+  {lemma:'fugio',entry:'fugio, fugi, fugitum (mx.)',meaning:'huir',
+   forms:['fugio','fugis','fugit','fugimus','fugitis','fugiunt',
+    'fugi','fugisti','fugit','fugimus','fugistis','fugerunt',
+    'fugeram','fugeras','fugerat','fugeramus','fugeratis','fugerant']},
+  {lemma:'soleo',entry:'soleo, solitus sum (2ª)',meaning:'soler',
+   forms:['solitus','solita','solitum']},
+  {lemma:'absum',entry:'absum, afui, – (irr.)',meaning:'estar ausente, distar',
+   forms:['absum','abes','abest','absumus','abestis','absunt',
+    'aberam','aberas','aberat','aberamus','aberatis','aberant',
+    'afui','afuit']},
+  {lemma:'adsum',entry:'adsum, adfui, – (irr.)',meaning:'estar presente, asistir',
+   forms:['adsum','ades','adest','adsumus','adestis','adsunt',
+    'aderam','aderas','aderat','aderamus','aderatis','aderant',
+    'adfui','affui','adfuit']},
+  {lemma:'praesum',entry:'praesum, praefui, – (irr.)',
+   meaning:'estar al frente de',
+   forms:['praesum','praees','praeest','praesumus','praeestis','praesunt',
+    'praeeram','praeeras','praeerat','praeeramus','praeeratis','praeerant',
+    'praefui','praefuisti','praefuit','praefuerunt']},
+  {lemma:'volo',entry:'volo, volui, – (irr.)',meaning:'querer',
+   forms:['volo','vis','vult','volumus','vultis','volunt',
+    'volebam','volebas','volebat','volebamus','volebatis','volebant']},
+  {lemma:'duo',entry:'duo, duae, duo (num.)',meaning:'dos',
+   forms:['duo','duae','duos','duas','duorum','duarum','duobus','duabus']},
+  {lemma:'sexcenti',entry:'sexcenti, –æ, –a (num.)',meaning:'seiscientos',
+   forms:['sexcenti','sexcentae','sexcenta','sexcentos','sexcentas',
+    'sexcentorum','sexcentarum','sexcentis']},
+  {lemma:'Belgæ',entry:'Belgæ, –arum (m. pl.)',meaning:'belgas',
+   forms:['Belgae','Belgarum','Belgis','Belgas']},
+  {lemma:'Atuatuci',entry:'Atuatuci, –orum (m. pl.)',meaning:'atuatucos',
+   forms:['Atuatuci','Atuatucorum','Atuatucis','Atuatucos']},
+  {lemma:'Allobroges',entry:'Allobroges, –um (m. pl.)',meaning:'alóbroges',
+   forms:['Allobroges','Allobrogum','Allobrogibus']},
+  {lemma:'Cannae',entry:'Cannae, –arum (f. pl.)',meaning:'Cannas',
+   forms:['Cannae','Cannarum','Cannis','Cannas']},
+  {lemma:'comitia',entry:'comitia, –orum (n. pl.)',meaning:'comicios',
+   forms:['comitia','comitiorum','comitiis']},
+  {lemma:'nonnumquam',entry:'nonnumquam (adv.)',meaning:'a veces',
+   forms:['nonnumquam']},
+  {lemma:'sapiens',entry:'sapiens, sapientis',meaning:'sabio/a',
+   forms:['sapientissimus','sapientissima','sapientissimum']},
+  {lemma:'neco',entry:'neco, necavi, necatum (1ª)',meaning:'matar',
+   forms:['necaturos'],provisional:true},
+  {lemma:'disco',entry:'disco, didici, – (3ª)',meaning:'aprender',forms:['didici']},
+  {lemma:'patefacio',entry:'patefacio, patefeci, patefactum (mx.)',meaning:'abrir, descubrir',
+   forms:['patefecit']},
+  {lemma:'audeo',entry:'audeo, ausus sum (2ª)',meaning:'atreverse',forms:['ausus']},
+  {lemma:'confido',entry:'confido, confisus sum (3ª)',meaning:'confiar',forms:['confisus']},
+  {lemma:'colloco',entry:'colloco, collocavi, collocatum (1ª)',meaning:'colocar',
+   forms:['collocaverat']},
+  {lemma:'indico',entry:'indico, indicavi, indicatum (1ª)',meaning:'indicar',
+   forms:['indicavit']},
+  {lemma:'servo',entry:'servo, servavi, servatum (1ª)',meaning:'guardar, salvar',
+   forms:['servavit']}
  ];
  for(const info of irregular){
   const existing=bank.find(row=>latinKey(head(row.entry))===latinKey(info.lemma));
   const rec={lemma:latinKey(info.lemma),entry:existing?.entry||info.entry,
    meaning:existing?.meaning||info.meaning,meaning_va:existing?.meaning_va||'',
-   attested:true,origin:'paradigma irregular escolar explícito; sin nuevas flexiones verificadas en índice'};
+   attested:!info.provisional,
+   origin:info.provisional?'participio futuro derivado del supino: confirmar con contexto':
+    'paradigma irregular escolar explícito; sin nuevas flexiones verificadas en índice'};
   for(const form of info.forms)add(form,rec);
  }
  const out=new Map([...forms].map(([f,rows])=>[f,[...rows.values()]]));
@@ -1017,11 +1266,13 @@ function analyze(data,text,course,bank){
   // registrado o un paradigma regular explícito; nunca por sufijo solo.
   let enclitic=[];
   if(lang==='lat'&&normal.endsWith('que')&&normal.length>5&&
-    !indexedCandidates.length&&!regular.length&&!directInvariable.length){
+    !latinLexicalQueWords.has(normal)&&
+    !indexedCandidates.length&&!regular.length&&!directInvariable.length&&
+    !curated.length){
    const base=normal.slice(0,-3);
    const explicit=(latinExpandedForms(bank).get(base)||[]);
    const indexed=[...(index.get(base)?.values()||[])].map(x=>{
-    const teacher=data.vocabulary.lat[x.lemma]?.lat1;
+    const teacher=data.vocabulary.lat[x.lemma]?.[course];
     if(!teacher)return null;
     const found=(bankIndex.get('H'+latinKey(x.lemma))||[])[0]||teacher;
     return {...x,entry:found.entry,meaning:found.meaning||'',meaning_va:found.meaning_va||''};
@@ -1044,6 +1295,15 @@ function analyze(data,text,course,bank){
   // una segunda lectura posible de un homógrafo.
   const compact=new Map();
   for(const candidate of all){
+   // UniMorph contiene servus como sustantivo Y como adjetivo, pero si el
+   // banco docente declara expresamente servus, –i (sustantivo), una flexión
+   // exclusivamente adjetival como servae no pertenece a esa ficha.
+   // Preservamos los análisis N y descartamos solo lecturas ADJ aisladas
+   // incompatibles con un enunciado nominal inequívoco en -us, –i.
+   if(lang==='lat'&&/^[a-z]+us,\s*[–−—-]i\b/i.test(candidate.entry||'')){
+    const tags=[...(candidate.morphTags||[])];
+    if(tags.length&&tags.every(tag=>tag.startsWith('ADJ;')))continue;
+   }
    // Un único lema latino puede figurar en el banco con distintas rayas,
    // indicaciones de género o glosas de varias unidades. No son homógrafos:
    // conservar la ficha más completa en lugar de crear falsa ambigüedad.
@@ -1117,11 +1377,18 @@ function analyze(data,text,course,bank){
   }
   const resolved=candidates.length===1&&candidates[0].attested;
   const spellingHint=lang==='grc'?Object.entries(greekSpellingNotes)
-   .find(([sample])=>sample.normalize('NFC')===form.normalize('NFC'))?.[1]:undefined;
-  // Señalar erratas: proponer una corrección no equivale a lematizarla.
-  const requiresSpellingReview=!!spellingHint;
+   .find(([sample])=>sample.normalize('NFC')===form.normalize('NFC'))?.[1]:
+   lang==='lat'?latinSpellingNotes[normal]:undefined;
+  // Señalar erratas y abreviaturas sin modificar el original ni simular
+  // una flexión contrastada. Distinguir sugerencia de evidencia.
+  const contextHint=lang==='lat'?latinContextNotes[normal]:undefined;
+  const requiresSpellingReview=!!(spellingHint||contextHint);
   return {form,candidates,status:requiresSpellingReview?'review':resolved?'documented':candidates.length?'review':'unknown',
-   warning:requiresSpellingReview?'Posible errata: '+spellingHint:'',
+   warning:contextHint?'Necesita contexto: '+contextHint:
+    spellingHint?(lang==='grc'?'Posible errata: ':'Revisión de grafía o abreviatura: ')+spellingHint:'',
+   // En una forma con -que copulativa se identifican DOS elementos:
+   // el lexema base (quizá ambiguo) y la conjunción enclítica -que.
+   encliticQue:lang==='lat'&&enclitic.length>0,
    lemma:resolved&&!requiresSpellingReview?candidates[0].lemma:'',
    entry:resolved&&!requiresSpellingReview?candidates[0].entry:form,
    meaning:resolved&&!requiresSpellingReview?candidates[0].meaning:'',
@@ -1129,7 +1396,13 @@ function analyze(data,text,course,bank){
  });
 }
 function entries(rows){
- const seen=new Set();return rows.filter(r=>{
+ // La descomposición del nexo produce una entrada de vocabulario propia,
+ // pero nunca para quoque, quisque, uterque ni otros -que lexicalizados.
+ // Incluso si bonaque tiene un lema base ambiguo, el nexo sigue siendo «y».
+ const withEnclitic=rows.some(r=>r.encliticQue)?[...rows,{
+  form:'-que',lemma:'-que',entry:'–que (conj.)',meaning:'y',meaning_va:'i',
+  status:'documented',candidates:[],origin:'conjunción enclítica identificada'}]:rows;
+ const seen=new Set();return withEnclitic.filter(r=>{
   const id=r.status==='manual'||r.status==='documented'?key(r.lemma||head(r.entry))+'|'+r.entry+'|'+r.meaning:'?'+r.form;
   if(seen.has(id))return false;seen.add(id);return true;
  }).sort((a,b)=>key(a.entry).localeCompare(key(b.entry),'el'));
