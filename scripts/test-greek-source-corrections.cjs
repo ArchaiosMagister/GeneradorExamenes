@@ -34,6 +34,13 @@ for(const [num,old,correct] of cases){
  assert.ok(!tokens.includes(old.normalize('NFC')),'Persiste una errata en UD'+num+': '+old);
  assert.ok(tokens.includes(correct.normalize('NFC')),'Falta la corrección en UD'+num+': '+correct);
 }
+// Source contexts decide interrogative vs indefinite and article vs conjunction.
+const unit8=data.units.find(u=>u.title==='UD8').text;
+assert.ok(unit8.includes('περὶ τί λέγει ὁ Σωκράτης'),'UD8 interrogative requires acute');
+assert.ok(!unit8.includes('περὶ τὶ λέγει ὁ Σωκράτης'));
+const unit10=data.units.find(u=>u.title==='UD10').text;
+assert.ok(unit10.includes('ἀνθρώπου, ἡ ψυχὴ'),'UD10 needs nominative article ἡ');
+assert.ok(!unit10.includes('ἀνθρώπου, ἠ ψυχὴ'));
 // Do not store supposedly checked analyses or overwrite the teacher's originals.
 for(const unit of data.units){
  assert.ok(unit.text.trim(),'Texto original desaparecido en '+unit.title);
