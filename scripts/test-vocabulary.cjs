@@ -156,7 +156,7 @@ assert.ok(review.length<=40,
  'El índice Eulexis debe resolver la mayoría de formas sin ocultar homografías: '+
  JSON.stringify(review.map(r=>({form:r.form,candidates:r.candidates.map(c=>c.entry)}))));
 for(const row of review){
- if(remainingEditorialForms.includes(row.form)){
+ if(remainingEditorialForms.includes(row.form)||row.warning){
   assert.match(row.warning,/Posible errata/,
    'La errata original sigue requiriendo revisión: '+row.form);
  }else{
