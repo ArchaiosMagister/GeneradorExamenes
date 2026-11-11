@@ -912,7 +912,7 @@ function analyze(data,text,course,bank){
     candidate.lemma+'|'+candidate.entry+'|'+candidate.meaning;
    const previous=compact.get(id);
    const score=x=>(x.attested?100:0)+(x.meaning?3:0)+
-    (x.entry.split(',').length*5)+(/\\([^)]*\\)/.test(x.entry)?4:0)+
+    (x.entry.split(',').length*5)+(/\([^)]*\)/.test(x.entry)?4:0)+
     (/[æœ–−]/.test(x.entry)?2:0);
    if(!previous||score(candidate)>score(previous))compact.set(id,candidate);
   }
