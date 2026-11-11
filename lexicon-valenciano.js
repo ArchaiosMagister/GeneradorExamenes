@@ -1230,6 +1230,7 @@
   "Número de unidades (1–100)": "Nombre d’unitats (1–100)",
   "Enunciado verbal": "Enunciat verbal",
   "Analizar y revisar vocabulario": "Analitzar i revisar vocabulari",
+  "Incluir las lecturas posibles en Word, marcadas para revisión": "Incloure les lectures possibles en Word, marcades per a revisió",
   "Exportar a Word": "Exportar a Word",
   "Diagnóstico del banco docente": "Diagnòstic del banc docent",
   "Cobertura y revisión por unidades": "Cobertura i revisió per unitats",

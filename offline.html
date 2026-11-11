@@ -656,6 +656,7 @@ body:has(.vocab-manager.active) .exam-coursebar{display:none}
 <label for="vgLang">Idioma del vocabulario <select id="vgLang"><option value="es">Castellano</option><option value="va">Valencià</option></select></label>
 <label>Título de la unidad<input id="vgTitle"></label><label>Texto de la unidad<textarea id="vgText" rows="8"></textarea></label>
 <label>Enunciado verbal<select id="vgMode"><option value="complete">Completo (según el banco, sin añadir temas ausentes)</option><option value="simple">Simple (forma de cita + conjugación latina disponible)</option></select></label>
+<label class="check"><input type="checkbox" id="vgWordAlternatives"> Incluir las lecturas posibles en Word, marcadas para revisión</label>
 <div class="buttons"><button id="vgAnalyzeAll" type="button">Analizar y revisar vocabulario</button><button id="vgWord" type="button">Exportar a Word</button></div>
 <div class="buttons" role="group" aria-label="Copias del proyecto"><button id="vgBackup" type="button" class="secondary">Guardar copia JSON</button><button id="vgRestore" type="button" class="secondary">Recuperar copia JSON</button><input id="vgImport" type="file" accept=".json,application/json" hidden><button id="vgClearAll" type="button" class="vg-danger" title="Vaciar todas las unidades del proyecto">Limpiar todo</button></div>
 <p id="vgStatus" role="status" aria-live="polite">Los textos y correcciones se guardan en este navegador. Reducir el número de unidades las oculta sin borrarlas. Editar el texto requiere volver a analizar esa unidad.</p><details id="vgEulexisPanel" class="vg-eulexis-panel"><summary>Griego I · Sugerencias de Eulexis en el vocabulario</summary><p class="vm-help">Instalación opcional de una fuente externa en este dispositivo. Descarga los datos del proyecto original una sola vez (aproximadamente 30 MB) y conserva únicamente las propuestas aplicables al banco de Griego I. No convierte las flexiones en verificadas.</p><div class="buttons"><button type="button" id="vgEulexisInstall">Instalar o actualizar Eulexis</button><button type="button" id="vgEulexisRemove" class="secondary">Borrar índice local</button></div><p class="vm-help" id="vgEulexisStatus" role="status" aria-live="polite">Comprobando Eulexis local…</p><p class="vm-help">Fuente: <a href="https://github.com/genuensis/lector-griego" target="_blank" rel="noopener noreferrer">lector-griego / Eulexis</a>. Las propuestas se revisan junto al contexto real de tus unidades y solo se aceptan manualmente.</p></details><div id="vgResults"></div>
@@ -2933,6 +2934,7 @@ UD1;mc;¿Qué lengua se hablaba en Roma?;B;Griego|Latín|Etrusco"></textarea><bu
   "Número de unidades (1–100)": "Nombre d’unitats (1–100)",
   "Enunciado verbal": "Enunciat verbal",
   "Analizar y revisar vocabulario": "Analitzar i revisar vocabulari",
+  "Incluir las lecturas posibles en Word, marcadas para revisión": "Incloure les lectures possibles en Word, marcades per a revisió",
   "Exportar a Word": "Exportar a Word",
   "Diagnóstico del banco docente": "Diagnòstic del banc docent",
   "Cobertura y revisión por unidades": "Cobertura i revisió per unitats",
@@ -8977,7 +8979,7 @@ function formatVocabularyEntry(row,mode,course,language='es'){
 function vocabularyRequiresReview(row){
   return !['manual','documented'].includes(row.status);
  }
- function documentXml(project){
+ function documentXml(project,externalCandidates=()=>[]){
  const unanalysed=project.units.slice(0,project.count).filter(u=>u.text?.trim()&&!u.analyzed&&!u.rows?.length);
  if(unanalysed.length)throw Error('Quedan '+unanalysed.length+' unidades con texto sin analizar.');
  const escape=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&apos;'}[c]));
@@ -9005,7 +9007,8 @@ function vocabularyRequiresReview(row){
  const line=(row,unit)=>{
   const pending=vocabularyRequiresReview(row);
   const formatted=formatVocabularyEntry(row,unit.mode,project.course,project.lang||'es')+
-   (pending&&row.context?' ['+row.context+']':'');
+   (pending&&row.alternative?' ['+row.form+(row.context?' · '+row.context:'')+']':
+    pending&&row.context?' ['+row.context+']':'');
   if(!isLatin)return paragraph(run((pending?'* ':'')+formatted));
   const italicEntry=displayEntry(row.entry,unit.mode);
   if(formatted.startsWith(italicEntry)){
@@ -9030,7 +9033,19 @@ function vocabularyRequiresReview(row){
   '<w:cols w:num="1" w:space="0"/>';
  const units=project.units.slice(0,project.count);
  const body=units.map(u=>{
-  const all=entries(typeof u.text==='string'&&!u.text.trim()?[]:u.rows||[]),pending=all.filter(vocabularyRequiresReview);
+  const all=entries(typeof u.text==='string'&&!u.text.trim()?[]:u.rows||[]);
+  const pending=all.filter(vocabularyRequiresReview).flatMap(row=>{
+   if(project.wordAlternatives!==true)return [row];
+   const readings=new Map();
+   for(const candidate of [...(row.candidates||[]),...externalCandidates(row)]){
+    if(!candidate.entry)continue;
+    const citation=candidate.entry.normalize('NFC');
+    if(!readings.has(citation))readings.set(citation,candidate);
+   }
+   if(!readings.size)return [row];
+   return [...readings.values()].map(({entry,lemma,meaning,meaning_va})=>
+    ({...row,entry,lemma,meaning:meaning||'',meaning_va,alternative:true}));
+  });
   return p(u.title,true)+all.filter(r=>!vocabularyRequiresReview(r)).map(r=>line(r,u)).join('')+
    (pending.length?p(project.lang==='va'?'Pendents de revisió (*)':'Pendientes de revisión (*)',true)+pending.map(r=>line(r,u)).join(''):'');
  }).join('');
@@ -9212,6 +9227,7 @@ function init(){
  }
  function render(){
   unit();$('vgCount').value=project.count;$('vgCourse').value=project.course;$('vgLang').value=project.lang||'es';
+  $('vgWordAlternatives').checked=project.wordAlternatives===true;
   renderUnitButtons();
   if($('vgEulexisPanel'))$('vgEulexisPanel').hidden=project.course!=='gr1';
   $('vgUnit').replaceChildren(...project.units.slice(0,project.count).map((u,i)=>new Option(u.title,i,false,i===selected)));
@@ -9300,6 +9316,10 @@ function init(){
   }
   if(resolved.length)target.append(reviewed);
  }
+ function externalCandidates(row){
+  return project.course==='gr1'&&eulexisAvailable?
+   (eulexisByForm.get(eulexisAdapter().norm(row.form))||[]):[];
+ }
  function reviewCard(u,row,paragraph,button,relatedByForm){
   const card=document.createElement('section');card.className='vg-eulexis-card';
   const heading=document.createElement('h3');heading.textContent=row.form;
@@ -9311,8 +9331,7 @@ function init(){
   if(vocabularyRequiresReview(row)&&row.status!=='omitted'){
    card.append(paragraph(row.warning||(row.candidates.length>1?'Pendiente: varias lecturas posibles.':'Pendiente de revisión.')));
   }
-  const external=project.course==='gr1'&&eulexisAvailable?
-   (eulexisByForm.get(eulexisAdapter().norm(row.form))||[]).slice(0,16):[];
+  const external=externalCandidates(row).slice(0,16);
   const options=[...row.candidates,...external];
   if(options.length){
    const label=document.createElement('label'),select=document.createElement('select');
@@ -9389,6 +9408,7 @@ function init(){
  }
  $('vgCount').onchange=()=>{const n=Number($('vgCount').value);if(!Number.isInteger(n)||n<1||n>100){status('Elige entre 1 y 100 unidades.');return}project.count=n;selected=Math.min(selected,n-1);render();save()};
  $('vgUnit').onchange=()=>{selected=Number($('vgUnit').value);render()};
+ $('vgWordAlternatives').onchange=()=>{project.wordAlternatives=$('vgWordAlternatives').checked;save()};
  $('vgLang').onchange=()=>{project.lang=$('vgLang').value;render();save()};
  $('vgCourse').onchange=()=>{
   project.course=$('vgCourse').value;qualitySnapshot=null;
@@ -9457,7 +9477,7 @@ function init(){
  $('vgWord').onclick=async()=>{
   if(!await analyzeUnits())return;
   try{
-   const xml=documentXml(project);
+   const xml=documentXml(project,externalCandidates);
    downloadBlob('vocabulario-unidades.docx',zip([
     ['[Content_Types].xml','<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/></Types>'],
     ['_rels/.rels','<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>'],

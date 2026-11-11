@@ -53,3 +53,7 @@ El generador puede usar una flexión documentada en el índice de otro curso de 
 La grafía *est* sin indicación de cantidad ofrece *sum* y *edō*. La grafía *ēst* permite identificar *edō*. Véase [Allen y Greenough, §201](https://dcc.dickinson.edu/grammar/latin/irregular-verbs-fer%C5%8D-and-ed%C5%8D). Al elegir una lectura, la tarjeta muestra las demás apariciones pendientes compatibles con esa ficha. Los pasajes distintos se seleccionan de forma explícita. La decisión sigue guardándose para cada aparición seleccionada.
 
 En el JSON de Latín I, el nuevo recuento es 2.047 identificaciones, 218 casos para revisión y 2 formas sin lectura. El cambio se debe a 64 apariciones de *est* que ahora ofrecen las dos lecturas. Hay 23 conjuntos de apariciones con las mismas opciones y advertencias, que permiten evitar hasta 102 confirmaciones separadas si el docente selecciona la misma lectura para todas las apariciones de cada conjunto. Los recuentos de las oraciones de Latín 4.º y Griego I se mantuvieron. Se comprobaron nuevamente el Word y el funcionamiento sin conexión.
+
+## Lecturas posibles en Word
+
+La casilla «Incluir las lecturas posibles en Word, marcadas para revisión» está desactivada de entrada y se guarda con el proyecto. Al activarla, el Word enumera las fichas candidatas de cada aparición pendiente con asterisco, forma original y contexto. Se incluyen las propuestas de Eulexis cuando el índice está disponible localmente. Una aparición sin propuestas conserva la forma original. Las decisiones aceptadas u omitidas prevalecen.

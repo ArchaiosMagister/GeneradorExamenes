@@ -72,6 +72,24 @@ assert.equal(crossCourseRows[0].status,'documented');
 assert.equal(crossCourseRows[0].meaning,'glosa del curso');
 const middle=api.analyze(data,'βάλλεται','gr1',[{entry:'βάλλω',meaning:'lanzar'}],{contextual:true});
 assert.equal(middle[0].status,'documented');assert.equal(middle[0].meaning,'lanzar');
+for(const [course,form,citations] of [
+ ['lat1','est',['sum','edō']],['lat4','est',['sum','edō']],
+ ['gr1','τι',['τις','τίς']]
+]){
+ const candidates=citations.map(lemma=>({lemma,entry:lemma,meaning:''}));
+ const pending={form,entry:form,meaning:'',status:'review',candidates,context:form};
+ const accepted={...pending,form:'aceptada',entry:'Confirmada',status:'manual',lemma:'confirmada'};
+ const omitted={...pending,form:'omitida',entry:'Omitida',status:'omitted'};
+ const units=[{title:'UD1',mode:'complete',rows:[pending,accepted,omitted]}];
+ const base={course,count:1,units};
+ const enabled=api.documentXml({...base,wordAlternatives:true});
+ const paragraphs=enabled.split('</w:p>');
+ for(const citation of citations)
+  assert(paragraphs.some(p=>p.includes('* ')&&(p.includes(citation+'<')||p.includes(citation+' [')||p.includes(citation+':'))),course+' · '+citation);
+ assert(paragraphs.some(p=>p.includes('Confirmada')&&!p.includes('* ')));
+ assert.doesNotMatch(enabled,/Omitida/);
+ assert(!api.documentXml(base).includes(citations[1]));
+}
 const latinExamBank=[{entry:'fōrtĭs, –e',meaning:'fuerte'},
  {entry:'terra, −æ',meaning:'glosa del banco de prueba'}];
 const latinExamRows=api.analyze(data,'terra marique fortissime timebant fortitudinem','lat4',latinExamBank,{contextual:true});
@@ -485,6 +503,26 @@ console.log('Vocabulario: prioridad docente, deduplicación por UD, ambigüedad,
  assert.equal(batch.status,'manual');assert.equal(batch.candidates[0].attested,false);
  assert.equal(batch.meaning,'');
  console.log('Tres cursos: contexto, cambios incrementales, corrección, omisión, Word, lote y copia JSON.');
+
+ // La opción es de proyecto y se aplica a la descarga real sin cambiar las lecturas.
+ await page.selectOption('#vgCourse','lat1');
+ await page.fill('#vgText','Est bonus.');
+ const alternatives=page.locator('#vgWordAlternatives');
+ assert.equal(await alternatives.isChecked(),false);
+ await alternatives.check();
+ const downloadAlternatives=page.waitForEvent('download');await page.click('#vgWord');
+ const altWord=fs.readFileSync(await (await downloadAlternatives).path(),'utf8');
+ assert.match(altWord,/Pendientes de revisión/);
+ assert.match(altWord,/edō/);assert.match(altWord,/sum/);
+ await page.reload();await page.click('#vgShow');
+ assert.equal(await alternatives.isChecked(),true);
+ const altCopy=page.waitForEvent('download');await page.click('#vgBackup');
+ const altFile=await (await altCopy).path();
+ await alternatives.uncheck();
+ await page.locator('#vgImport').setInputFiles(altFile);
+ await page.waitForFunction(()=>document.querySelector('#vgStatus').textContent.includes('Proyecto importado'));
+ assert.equal(await alternatives.isChecked(),true);
+ await alternatives.uncheck();
 
  // Compartir una lectura es explícito cuando el pasaje cambia.
  await page.selectOption('#vgCourse','lat4');

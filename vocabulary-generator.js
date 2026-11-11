@@ -1514,7 +1514,7 @@ function formatVocabularyEntry(row,mode,course,language='es'){
 function vocabularyRequiresReview(row){
   return !['manual','documented'].includes(row.status);
  }
- function documentXml(project){
+ function documentXml(project,externalCandidates=()=>[]){
  const unanalysed=project.units.slice(0,project.count).filter(u=>u.text?.trim()&&!u.analyzed&&!u.rows?.length);
  if(unanalysed.length)throw Error('Quedan '+unanalysed.length+' unidades con texto sin analizar.');
  const escape=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&apos;'}[c]));
@@ -1542,7 +1542,8 @@ function vocabularyRequiresReview(row){
  const line=(row,unit)=>{
   const pending=vocabularyRequiresReview(row);
   const formatted=formatVocabularyEntry(row,unit.mode,project.course,project.lang||'es')+
-   (pending&&row.context?' ['+row.context+']':'');
+   (pending&&row.alternative?' ['+row.form+(row.context?' · '+row.context:'')+']':
+    pending&&row.context?' ['+row.context+']':'');
   if(!isLatin)return paragraph(run((pending?'* ':'')+formatted));
   const italicEntry=displayEntry(row.entry,unit.mode);
   if(formatted.startsWith(italicEntry)){
@@ -1567,7 +1568,19 @@ function vocabularyRequiresReview(row){
   '<w:cols w:num="1" w:space="0"/>';
  const units=project.units.slice(0,project.count);
  const body=units.map(u=>{
-  const all=entries(typeof u.text==='string'&&!u.text.trim()?[]:u.rows||[]),pending=all.filter(vocabularyRequiresReview);
+  const all=entries(typeof u.text==='string'&&!u.text.trim()?[]:u.rows||[]);
+  const pending=all.filter(vocabularyRequiresReview).flatMap(row=>{
+   if(project.wordAlternatives!==true)return [row];
+   const readings=new Map();
+   for(const candidate of [...(row.candidates||[]),...externalCandidates(row)]){
+    if(!candidate.entry)continue;
+    const citation=candidate.entry.normalize('NFC');
+    if(!readings.has(citation))readings.set(citation,candidate);
+   }
+   if(!readings.size)return [row];
+   return [...readings.values()].map(({entry,lemma,meaning,meaning_va})=>
+    ({...row,entry,lemma,meaning:meaning||'',meaning_va,alternative:true}));
+  });
   return p(u.title,true)+all.filter(r=>!vocabularyRequiresReview(r)).map(r=>line(r,u)).join('')+
    (pending.length?p(project.lang==='va'?'Pendents de revisió (*)':'Pendientes de revisión (*)',true)+pending.map(r=>line(r,u)).join(''):'');
  }).join('');
@@ -1749,6 +1762,7 @@ function init(){
  }
  function render(){
   unit();$('vgCount').value=project.count;$('vgCourse').value=project.course;$('vgLang').value=project.lang||'es';
+  $('vgWordAlternatives').checked=project.wordAlternatives===true;
   renderUnitButtons();
   if($('vgEulexisPanel'))$('vgEulexisPanel').hidden=project.course!=='gr1';
   $('vgUnit').replaceChildren(...project.units.slice(0,project.count).map((u,i)=>new Option(u.title,i,false,i===selected)));
@@ -1837,6 +1851,10 @@ function init(){
   }
   if(resolved.length)target.append(reviewed);
  }
+ function externalCandidates(row){
+  return project.course==='gr1'&&eulexisAvailable?
+   (eulexisByForm.get(eulexisAdapter().norm(row.form))||[]):[];
+ }
  function reviewCard(u,row,paragraph,button,relatedByForm){
   const card=document.createElement('section');card.className='vg-eulexis-card';
   const heading=document.createElement('h3');heading.textContent=row.form;
@@ -1848,8 +1866,7 @@ function init(){
   if(vocabularyRequiresReview(row)&&row.status!=='omitted'){
    card.append(paragraph(row.warning||(row.candidates.length>1?'Pendiente: varias lecturas posibles.':'Pendiente de revisión.')));
   }
-  const external=project.course==='gr1'&&eulexisAvailable?
-   (eulexisByForm.get(eulexisAdapter().norm(row.form))||[]).slice(0,16):[];
+  const external=externalCandidates(row).slice(0,16);
   const options=[...row.candidates,...external];
   if(options.length){
    const label=document.createElement('label'),select=document.createElement('select');
@@ -1926,6 +1943,7 @@ function init(){
  }
  $('vgCount').onchange=()=>{const n=Number($('vgCount').value);if(!Number.isInteger(n)||n<1||n>100){status('Elige entre 1 y 100 unidades.');return}project.count=n;selected=Math.min(selected,n-1);render();save()};
  $('vgUnit').onchange=()=>{selected=Number($('vgUnit').value);render()};
+ $('vgWordAlternatives').onchange=()=>{project.wordAlternatives=$('vgWordAlternatives').checked;save()};
  $('vgLang').onchange=()=>{project.lang=$('vgLang').value;render();save()};
  $('vgCourse').onchange=()=>{
   project.course=$('vgCourse').value;qualitySnapshot=null;
@@ -1994,7 +2012,7 @@ function init(){
  $('vgWord').onclick=async()=>{
   if(!await analyzeUnits())return;
   try{
-   const xml=documentXml(project);
+   const xml=documentXml(project,externalCandidates);
    downloadBlob('vocabulario-unidades.docx',zip([
     ['[Content_Types].xml','<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/></Types>'],
     ['_rels/.rels','<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>'],
