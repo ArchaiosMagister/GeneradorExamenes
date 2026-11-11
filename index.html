@@ -831,7 +831,7 @@ function updateRequiredStatus(){let c=currentCourse();$('examVocabStatus').textC
 $('importExamVocab').onclick=()=>{let count=0,bad=0;for(const line of $('examVocabInput').value.split(/\r?\n/)){if(!line.trim())continue;let i=line.indexOf(';');if(i<0){bad++;continue}let unit=line.slice(0,i).trim(),entry=line.slice(i+1).trim(),key=examKey(entry);if(!unit||!key){bad++;continue}if(!examRequired.some(x=>x.course===currentCourse()&&x.unit===unit&&x.key===key)){examRequired.push({course:currentCourse(),unit,key,entry});count++}}saveRequired();generate();$('examVocabStatus').textContent+=' Añadidas: '+count+'. Omitidas: '+bad+'.'};
 $('clearExamVocab').onclick=()=>{if(!confirm('¿Vaciar el vocabulario exigible de este curso?'))return;examRequired=examRequired.filter(x=>x.course!==currentCourse());saveRequired();generate()};
 function examUnitNumber(s){let m=String(s).match(/\d+/);return m?Number(m[0]):null}
-function isRequired(entry,chosen){let key=examKey(entry),max=Math.max(0,...chosen.map(examUnitNumber).filter(x=>x!==null));return examRequired.some(x=>x.course===currentCourse()&&x.key===key&&examUnitNumber(x.unit)!==null&&examUnitNumber(x.unit)<=max)}
+function isRequired(entry,chosen){let key=examKey(entry),max=Math.max(0,...chosen.map(examUnitNumber).filter(x=>x!==null));return examRequired.some(x=>x.course===currentCourse()&&(x.key||examKey(x.entry))===key&&examUnitNumber(x.unit)!==null&&examUnitNumber(x.unit)<=max)}
 // Reconocimiento del vocabulario final: formas documentadas por el enunciado del banco.
 // Las coincidencias múltiples entre lemas distintos siguen requiriendo revisión.
 function verifiedLatinAdjectiveForms(raw){
@@ -2878,6 +2878,85 @@ function stickyExamRows(kind,factory){
  const key=examCacheSignature(kind);
  if(!examSelectionCache.has(key))examSelectionCache.set(key,factory());
  return examSelectionCache.get(key);
+}
+// Regeneración de una sola palabra, sin descartar las otras del apartado.
+// Mantiene las restricciones de la unidad y las lecturas verificadas del banco.
+function regenerateExamWord(kind,index){
+ if(!['decl','verb','forms'].includes(kind)||!Number.isInteger(index)||index<0)return;
+ const greek=currentCourse()==='greek1',morph=['morf','morphology'].includes($('model').value);
+ if(greek&&!morph){
+  const gkind=({decl:'declension',verb:'conjugation',forms:'forms'})[kind];
+  const ids=greekExamState?.ids?.[gkind],pool=greekChoicePool(gkind);
+  if(!ids||index>=ids.length)return;
+  const used=new Set(ids.filter((_,i)=>i!==index));
+  const next=sample(pool.filter(x=>!used.has(x.id)&&x.id!==ids[index]),1)[0];
+  if(next){
+   const former=ids[index];ids[index]=next.id;
+   if(gkind==='declension'){
+    if(greekExamState.adjectiveChoices){
+     delete greekExamState.adjectiveChoices[former];
+     delete greekExamState.adjectiveChoices[next.id];
+    }
+   }
+   generateGreekExam();
+  }else if(gkind==='declension'){
+   // Si las bases están agotadas, un nuevo adjetivo también cambia el sintagma.
+   const noun=pool.find(x=>x.id===ids[index]);
+   const allocated=greekExamState.adjectiveChoices||={};
+   const available=greekAvailableSyntagmAdjectives(greekLimit())
+    .filter(x=>x.lemma!==allocated[ids[index]]);
+   const alternate=sample(available,1)[0];
+   if(noun&&alternate){allocated[ids[index]]=alternate.lemma;generateGreekExam()}
+  }
+  return;
+ }
+ const cacheKey=examCacheSignature(kind),current=examSelectionCache.get(cacheKey);
+ if(!Array.isArray(current)||index>=current.length)return;
+ const chosen=selectedUnits(),limit=greek?greekLimit():Math.max(0,...chosen.map(examUnitNumber).filter(Number.isInteger));
+ let candidates=[];
+ if(kind==='decl'){
+  if(greek){
+   const adjectives=greekAvailableSyntagmAdjectives(limit);
+   const nouns=greekVerifiedCorpus.filter(x=>x.verified&&x.kind==='declension'&&
+    x.minUnit<=limit&&greekSyntagmNounGenders[x.id.slice(2)]&&
+    !(x.lemmas||[]).some(isProperNounLemma));
+   candidates=nouns.flatMap(noun=>adjectives.map(adj=>greekCompleteNominalGroup(noun,true,adj))).filter(Boolean);
+  }else if(morph)candidates=latinCompleteDeclensionItems(chosen).filter(x=>x.compound)
+   .map(x=>({title:x.compound.title}));
+  else candidates=latinCompleteDeclensionItems(chosen);
+ }else if(kind==='verb'){
+  if(greek){
+   candidates=greekVerifiedCorpus.filter(x=>x.verified&&x.kind==='conjugation'&&
+    greekMorphologyEligible(x,limit)&&x.table).flatMap(x=>x.table.rows.flatMap((row,i)=>
+    [row[1],row[2]].map((form,j)=>({
+     prompt:form,answer:(i+1)+'ª persona '+(j===0?'singular':'plural')+' del presente de indicativo activo',
+     lemma:x.lemmas[0],person:(i+1)+'ª '+(j===0?'singular':'plural')
+    })).filter(item=>item.prompt)));
+  }else if(morph)candidates=latinSharedBank.paradigms(currentCourse(),chosen,'verb')
+   .filter(x=>Array.isArray(x.p.forms)&&x.p.forms.length===6)
+   .flatMap(({x,p})=>p.forms.map((form,i)=>({form,entry:x.entry,person:p.labels[i],
+     tense:'presente de indicativo',voice:'activa'})));
+  else candidates=latinSharedBank.paradigms(currentCourse(),chosen,'verb')
+   .filter(x=>Array.isArray(x.p.forms)&&x.p.forms.length===6);
+ }else if(kind==='forms'){
+  if(greek)candidates=greekVerifiedCorpus.filter(x=>x.verified&&x.kind==='forms'&&
+   greekMorphologyEligible(x,limit)&&!x.prompt.includes(' ')&&
+   !(x.lemmas||[]).some(lemma=>isExcludedExamMorphLemma(lemma)));
+  else for(let n=0;n<5;n++)candidates.push(...latinExamFormCandidates(chosen).flat());
+ }
+ const identity=item=>String(item?.id||item?.title||item?.x?.entry||
+  item?.prompt||item?.form||'');
+ const previous=current[index],used=new Set(current.filter((_,i)=>i!==index).map(identity));
+ let alternatives=candidates.filter(item=>identity(item)!==identity(previous)&&!used.has(identity(item)));
+ if(kind==='forms'&&!greek&&previous.category){
+  const matching=alternatives.filter(x=>x.category===previous.category);
+  if(matching.length)alternatives=matching;
+ }
+ if(!alternatives.length)return;
+ const next=sample(alternatives,1)[0],updated=current.slice();
+ updated[index]=next;
+ examSelectionCache.set(cacheKey,updated);
+ generate();
 }
 function regenerateExamQuestion(kind){
  const key=examCacheSignature(kind);examSelectionCache.delete(key);
