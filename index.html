@@ -2931,7 +2931,9 @@ function examCacheSignature(kind){
   kind==='sent'?'count-sent':'count-lex';
  return JSON.stringify([currentCourse(),$('model').value,unitsKey,$('cumulative').checked,kind,
   $(countId)?.value,morph&&kind==='decl'?$('morphOffer')?.value:null,
-  kind==='forms'?examMorphQuotaValues():null,kind.startsWith('lex-')?[$('lex-prefix')?.value,$('lex-phenomenon')?.value,$('lex-parity')?.value,$('lex-from')?.value,$('lex-to')?.value,...[0,1,2,3].map(i=>$('lex-verb-'+i)?.value),...selectedPhoneticRules].join('|'):null]);
+  kind==='forms'?examMorphQuotaValues():null,kind==='lex-prefixes'?$('lex-prefix')?.value:
+   kind==='lex-phonetics'?[$('lex-phenomenon')?.value,...[...selectedPhoneticRules].sort()].join('|'):
+   kind==='lex-latinisms'?[$('lex-parity')?.value,$('lex-from')?.value,$('lex-to')?.value].join('|'):null]);
 }
 function stickyExamRows(kind,factory){
  const key=examCacheSignature(kind);
@@ -3161,23 +3163,22 @@ function latinLexRandomFour(kind,pool,course=currentCourse()){
  for(const x of unique){if(picked.length>=4)break;if(!picked.includes(x))picked.push(x)}
  return picked;
 }
-function latinLexManualVerb(i,available){
- const value=String($('lex-verb-'+i)?.value||'').split(',')[0].trim();
- if(!value)return null;
- const hits=available.filter(x=>normLex(x.prompt)===normLex(value));
- const hit=hits.length===1?hits[0]:null;
- return hit?{...hit,prompt:latinLexLower(value)}:{prompt:latinLexLower(value),answer:'',reviewRequired:true};
+// El desplegable altera exclusivamente la posición elegida, sin sortear las demás.
+function selectLatinPreverb(index,form){
+ const pool=latinLexPool('latin1','preverbs',selectedUnits()),cacheKey=examCacheSignature('lex-preverbs');
+ const previous=examSelectionCache.get(cacheKey)||latinLexRandomFour('preverbs',pool,'latin1');
+ if(previous.length!==2)return;
+ const taken=latinLexTermKey(previous[1-index]);
+ const alternatives=pool.filter(x=>latinLexTermKey(x)!==taken);
+ const selected=form?alternatives.find(x=>normLex(x.prompt)===normLex(form)):
+  sample(alternatives.filter(x=>latinLexTermKey(x)!==latinLexTermKey(previous[index])),1)[0];
+ if(!selected){latinLexStatus('preverbs',previous,'No hay otra forma compatible.');return}
+ const updated=previous.slice();updated[index]=selected;
+ examSelectionCache.set(cacheKey,updated);
+ generate();
 }
 function latinLexChosenRows(course,kind,chosen){
- const rows=stickyExamRows('lex-'+kind,()=>{
-  const selected=latinLexRandomFour(kind,latinLexPool(course,kind,chosen),course);
-  if(kind==='preverbs'&&course==='latin1'){
-   const result=selected.slice();
-   for(let i=0;i<2;i++){const manual=latinLexManualVerb(i,latinLexPool('latin1','preverbs',chosen));if(manual)result[i]=manual}
-   return result;
-  }
-  return selected;
- });
+ const rows=stickyExamRows('lex-'+kind,()=>latinLexRandomFour(kind,latinLexPool(course,kind,chosen),course));
  return rows.length===latinLexExpectedCount(kind)&&rows.every(Boolean)?rows:[];
 }
 function latinLexStatus(kind,rows,message=''){
@@ -3186,10 +3187,13 @@ function latinLexStatus(kind,rows,message=''){
   status.textContent=message||(!rows.length?'No hay formas compatibles.':rows.map((x,i)=>(i+1)+'. '+latinLexDisplayPrompt(kind,x)).join(' · '));
   status.dataset.resultState=message||!rows.length?'missing':rows.some(x=>x.reviewRequired)?'review':'available';
  }
- for(let i=0;i<latinLexExpectedCount(kind);i++){const node=$('lex-slot-'+kind+'-'+i);if(node)node.textContent=rows[i]?latinLexDisplayPrompt(kind,rows[i]):'Sin forma'}
+ for(let i=0;i<latinLexExpectedCount(kind);i++){
+  const node=$('lex-slot-'+kind+'-'+i);
+  if(node)node.textContent=rows[i]?latinLexDisplayPrompt(kind,rows[i]):'Sin forma';
+  if(kind==='preverbs'){const select=$('lex-verb-'+i);if(select)select.value=rows[i]?.prompt||''}
+ }
 }
 function regenerateLatinLexPart(kind){
- if(kind==='preverbs')for(let i=0;i<2;i++){const input=$('lex-verb-'+i);if(input)input.value=''}
  examSelectionCache.delete(examCacheSignature('lex-'+kind));
  generate();
 }
@@ -3198,7 +3202,6 @@ function regenerateLatinLexWord(kind,index){
  const course=currentCourse(),chosen=selectedUnits(),oldKey=examCacheSignature('lex-'+kind);
  const previous=examSelectionCache.get(oldKey);
  if(!Array.isArray(previous)||previous.length!==latinLexExpectedCount(kind)){regenerateLatinLexPart(kind);return}
- if(kind==='preverbs'){const input=$('lex-verb-'+index);if(input)input.value=''}
  const used=new Set(previous.filter((_,i)=>i!==index).map(latinLexTermKey));
  const candidates=latinLexPool(course,kind,chosen).filter(x=>
   !used.has(latinLexTermKey(x))&&latinLexTermKey(x)!==latinLexTermKey(previous[index]));
@@ -3383,11 +3386,17 @@ loadTeacherLatinLexBanks();
     const note=document.createElement('p');note.className='hint';
     note.textContent='Dos verbos, en este orden: el primero requiere 3 derivados y el segundo 2. Solo se sortean verbos ya explicados. También puedes escribirlos manualmente.';
     group.append(note);
+    const pool=latinLexPool('latin1','preverbs',selectedUnits());
     for(let i=0;i<2;i++){
-     const input=document.createElement('input');input.id='lex-verb-'+i;input.type='text';
-     input.placeholder='Aleatorio (o escribe un verbo)';input.autocomplete='off';
-     input.onchange=()=>{examSelectionCache.clear();generate()};
-     group.append(makeLabel('Verbo '+(i+1)+' ('+(i===0?3:2)+' derivados) · manual',input));
+     const select=document.createElement('select');select.id='lex-verb-'+i;
+     const placeholder=document.createElement('option');placeholder.value='';placeholder.textContent='Sin verbo disponible';select.append(placeholder);
+     for(const item of pool){
+      const option=document.createElement('option');option.value=item.prompt;option.textContent=item.prompt;
+      select.append(option);
+     }
+     select.disabled=!pool.length;
+     select.onchange=()=>selectLatinPreverb(i,select.value);
+     group.append(makeLabel('Verbo '+(i+1)+' ('+(i===0?3:2)+' derivados)',select));
     }
    }
    const status=document.createElement('p');status.id='lex-status-'+kind;status.className='hint';
