@@ -80,7 +80,9 @@ assert(!engine.documentXml({...project,groupTypes:false}).includes('Sustantivos 
   await page.locator('#vmShowExam').click();
   await page.locator('#group-course').evaluate(el=>el.open=true);
   await page.locator('#group-content').evaluate(el=>el.open=true);
+  await page.locator('#group-sentences').evaluate(el=>el.open=true);
   await page.locator('#group-vocab').evaluate(el=>el.open=true);
+  await page.locator('#group-export').evaluate(el=>el.open=true);
   await page.selectOption('#course','latin1');
   await page.selectOption('#model','mixto');
   await page.fill('#newSentences','Galli pugnant.\nBona sunt.');
@@ -107,7 +109,9 @@ assert(!engine.documentXml({...project,groupTypes:false}).includes('Sustantivos 
   await page.locator('#vmShowExam').click();
   await page.locator('#group-course').evaluate(el=>el.open=true);
   await page.locator('#group-content').evaluate(el=>el.open=true);
+  await page.locator('#group-sentences').evaluate(el=>el.open=true);
   await page.locator('#group-vocab').evaluate(el=>el.open=true);
+  await page.locator('#group-export').evaluate(el=>el.open=true);
   await page.selectOption('#model','mixto');
   await page.click('#generate');
   await page.waitForFunction(()=>document.querySelector('#examSentenceGlossary .exam-gloss-selected'));
