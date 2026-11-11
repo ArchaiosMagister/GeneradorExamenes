@@ -19,9 +19,9 @@ assert.equal(greek.length,399,'Se han perdido fichas del vocabulario griego');
 assert.equal(decisions.schema,1);
 assert.equal(decisions.course,'gr1');
 assert.equal(decisions.verifiedMorphology,false);
-assert.equal(decisions.decisions.length,17);
+assert.equal(decisions.decisions.length,19);
 assert.equal(new Set(decisions.decisions.map(x=>x.id)).size,17);
-assert.equal(data.extensions.greek_editorial_decisions.count,17);
+assert.equal(data.extensions.greek_editorial_decisions.count,19);
 assert.equal(data.extensions.greek_editorial_decisions.verifiedFormsAdded,0);
 assert.equal(data.extensions.greek_editorial_decisions.addedCitationOnlyEntries,2);
 assert.equal(data.extensions.greek_editorial_decisions.rekeyedLemmas,5);
@@ -71,4 +71,4 @@ for(const item of decisions.decisions)
  assert.ok(offline.includes(item.entry),'La versión autónoma carece de '+item.id);
 assert.ok(!offline.includes('greek-editorial-decisions.json'),
  'El archivo offline no debe necesitar descargar el registro editorial');
-console.log('OK: 17 decisiones en banco, índice y HTML autónomo; 399 fichas, unidades intactas, cero flexiones promovidas.');
+console.log('OK: 19 decisiones en banco, índice y HTML autónomo; 399 fichas, unidades intactas, cero flexiones promovidas.');
