@@ -101,7 +101,7 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
   assert(latin.examples.every(x=>x.singular.every(form=>form.split(' ').length===2)));
   assert(latin.examples.every(x=>x.plural.every(form=>form.split(' ').length===2)));
   if(latin.nounCount>=2&&latin.adjectiveCount>=2)
-   assert(new Set(latin.examples.map(x=>x.title.split(' ').at(-1))).size>=2,
+   assert(new Set(latin.examples.map(x=>x.title.split(' + ')[0])).size>=2,
     'Los adjetivos latinos no deben repetirse cuando hay alternativas');
   await configure('latin1','morf','UD2');
   const latinMorph=await page.evaluate(()=>{

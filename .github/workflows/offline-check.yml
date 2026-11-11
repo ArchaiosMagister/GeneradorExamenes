@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - 'index.html'
+      - 'exam-scoring.js'
       - 'culture-lat4.js'
       - 'lexicon-valenciano.js'
       - 'vocabulary-generator.js'
@@ -26,6 +27,7 @@ on:
     branches: [main]
     paths:
       - 'index.html'
+      - 'exam-scoring.js'
       - 'culture-lat4.js'
       - 'vocabulary-generator.js'
       - 'offline.html'
@@ -124,6 +126,8 @@ jobs:
           if-no-files-found: ignore
       - name: Validar valenciano en pantalla y Word para los tres cursos
         run: node scripts/test-valenciano-browser.cjs
+      - name: Verificar correcciones docentes de Latín I y 4.º, editores y vocabulario exigible
+        run: node scripts/test-correcciones-latin.cjs
       - name: Verificar concordancia de tablas y umbrales de unidad
         run: node scripts/test-nominal-agreement.cjs
       - name: Verificar variedad y concordancia de sintagmas nominales grecolatinos

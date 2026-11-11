@@ -38,7 +38,7 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
 
   const lat1=await choose('latin1','tablas','UD2');
   assert(lat1.tableCount>0,'Faltan sustantivos de Latín I UD2');
-  assert(lat1.headings.every(x=>/^[^\s,]+\s+[^\s,]+$/.test(x)),
+  assert(lat1.headings.every(x=>/\S+,\s*\S+.*\s\+\s\S+,\s*\S+/.test(x)),
    'Latín I UD2 debe presentar sustantivo y adjetivo: '+lat1.headings.join(' / '));
   assert(lat1.answers.every(rows=>rows.every(cols=>cols.every(x=>x.split(' ').length===2))),
    'Latín I: sustantivo y adjetivo deben declinarse juntos');
@@ -47,7 +47,7 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
   assert(lat4early.headings.every(x=>x.includes(',')),'Latín 4.º UD2 debe conservar el enunciado simple');
   const lat4=await choose('latin4','tablas','UD3');
   assert(lat4.tableCount>0,'Faltan nominales verificados de Latín 4.º UD3');
-  assert(lat4.headings.every(x=>/^[^\s,]+\s+[^\s,]+$/.test(x)),
+  assert(lat4.headings.every(x=>/\S+,\s*\S+.*\s\+\s\S+,\s*\S+/.test(x)),
    'Latín 4.º UD3: debe haber sintagma nominal: '+lat4.headings.join(' / '));
   assert(lat4.answers.every(rows=>rows.every(cols=>cols.every(x=>x.split(' ').length===2))),
    'Latín 4.º: concordancia nominal incompleta');

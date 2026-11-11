@@ -54,6 +54,7 @@ function latinSuite(){
   examQuotaPick:(_groups,_n,defaultPick)=>defaultPick(),
   examMorphQuotasActive:()=>false,
   examMorphQuotaCount:()=>0,
+  examSelectedLexParts:()=>['preverbs','phonetics','prefixes','latinisms'],
   buildLatinLexQuestion:course=>({
     html:course==='latin1'?'<p class="exam-item">a. Modificación preverbial · b. Evolución fonética · c. Prefijos · d. Latinismos</p>':
       '<p class="exam-item">a. Prefijos · b. Evolución fonética</p>',
@@ -70,7 +71,7 @@ function latinSuite(){
  let output=run();
  assert.equal((output.match(/class="exam-question"/g)||[]).length,5,'Latín I completo: cinco preguntas');
  assert(output.includes('exam-nouns')&&output.includes('exam-verbs'));
- assert(output.includes('puella bona'),'Latín I desde UD2: falta sustantivo y adjetivo');
+ assert(output.includes('bonus, –a, –um + puella, –æ'),'Latín I desde UD2: falta el enunciado completo de adjetivo y sustantivo');
  assert(output.includes('Modificación preverbial')&&output.includes('Latinismos'),'Latín I: las cuatro partes del léxico deben estar disponibles');
  assert(output.includes('final-gloss'));
  assert.equal((output.match(/Puella amat \d+\./g)||[]).length,5);
@@ -89,7 +90,7 @@ function latinSuite(){
  assert(output.includes('Declina 2 de los 3 sintagmas propuestos.'),'Latín: enunciado dinámico de sintagmas');
  assert(!output.includes('Elige y declina')&&!output.includes('class="small">Elige'),'Latín: subtítulo duplicado');
  assert(output.includes('(sustantivo) + (adjetivo)'));
- assert(output.includes('(puella, -ae)'),'Latín: falta el enunciado al lado de la forma');
+ assert(output.includes('(<i>puella, –æ</i>)'),'Latín: falta el enunciado al lado de la forma');
  assert.equal(vm.runInContext("latinExamSurface('reginae','regina, –æ')",sandbox),'reginæ');
  assert.equal(vm.runInContext("latinExamSurface('poeta','poeta, –æ')",sandbox),'poeta');
  assert.equal(vm.runInContext("latinExamSurface('poetae','poeta, –æ')",sandbox),'poetæ');

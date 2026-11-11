@@ -33,8 +33,10 @@ assert.match(index,/if\(\/artículo\|articulo\/\.test\(a\)\)return null/,
   await page.goto('http://127.0.0.1:'+server.address().port+'/offline.html',{waitUntil:'load'});
   await page.locator('#examQuestionMenus .exam-question-panel').first().waitFor();
   assert.equal(await page.locator('.vocab-tabbar>button').count(),3);
-  assert.equal(await page.locator('#examQuestionMenus details[data-question]').count(),0,
-   'No debe haber acordeones dentro del acordeón de preguntas');
+  assert.equal(await page.locator('#examQuestionMenus details[data-question]').count(),6,
+   'Cada pregunta debe tener su propio desplegable numerado');
+  assert.equal(await page.locator('#examQuestionSettings').evaluate(el=>el.tagName),'SECTION',
+   'No se debe anidar un gran desplegable que contenga todas las preguntas');
   assert.equal(await page.locator('#regenerateAllQuestions').count(),1);
   await page.evaluate(()=>{
    const paper=document.getElementById('paper');

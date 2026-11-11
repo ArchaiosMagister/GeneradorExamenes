@@ -174,10 +174,10 @@ async function checkFile(browser,filename){
   await page.waitForFunction(()=>document.querySelector('#examScoring .exam-scoring-row input')?.value==='3,25');
   assert.equal((await scoringRows.first().inputValue()),'3,25',
    filename+' '+course+'/'+model+': la edición en la vista previa no actualiza el panel');
-  assert.match(await page.locator('#paper .exam-question').first().textContent(),/\(3,25 p\.\)\.$/,
+  assert.match(await page.locator('#paper .exam-question').first().textContent(),/\(3,25p\.\)\.$/,
    filename+' '+course+'/'+model+': puntos no terminan el enunciado');
   const wordScored=await page.evaluate(()=>wordExamParagraph(document.querySelector('#paper .exam-question')));
-  assert(wordScored.includes('3,25 p.).'),filename+' '+course+'/'+model+': puntuación editada ausente del XML Word');
+  assert(wordScored.includes('3,25p.).'),filename+' '+course+'/'+model+': puntuación editada ausente del XML Word');
   // El valor restaurado queda asociado a su pregunta aunque se regenere.
   await scoringRows.first().fill(scoreValue);
   await page.evaluate(()=>generate());
@@ -360,7 +360,7 @@ async function checkFile(browser,filename){
    }
    await input.fill('FORMA_DE_PRUEBA');
    assert((await page.locator('#paper').textContent()).includes('FORMA_DE_PRUEBA'),filename+' '+course+'/'+model+': la edición no actualiza la vista previa');
-   if(tableEdit)assert(await page.locator('#paper .exam-paradigm thead tr:first-child th[colspan] i').filter({hasText:'FORMA_DE_PRUEBA'}).count()>0,filename+': editar título elimina cursiva');
+   if(tableEdit)assert(await page.locator('#paper .exam-paradigm thead tr:first-child th[colspan] i, #paper .morph-syntagm-item i').filter({hasText:'FORMA_DE_PRUEBA'}).count()>0,filename+': editar título elimina cursiva');
    assert.equal(await page.locator('#paper #answerkey [data-manual-warning]').count(),1,filename+' '+course+'/'+model+': falta advertencia de solucionario');
   }
  }
