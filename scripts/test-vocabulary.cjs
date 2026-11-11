@@ -201,6 +201,44 @@ const historicOrthography=api.analyze(data,'uideo video','lat1',LatinBank);
 assert.equal(historicOrthography.length,1,'La búsqueda latina debe tratar u/v como alógrafos');
 assert.equal(historicOrthography[0].status,'documented');
 
+// -que copulativa vs. -que inseparable en palabras y pronombres.
+const queBank=[
+ {entry:'longus, –a, –um',meaning:'largo/a'},
+ {entry:'Roma, –æ',meaning:'Roma'},
+ {entry:'quis, quid (pron. interr.)',meaning:'quién'},
+ {entry:'uter, utra, utrum (pron. interr.)',meaning:'cuál de dos'}
+];
+const queWords='quoque neque atque itaque denique namque utique ubique undique usque '+
+ 'quisque cuiusque cuique quemque uterque utriusque utraque utrumque '+
+ 'quicumque cuiuscumque ubicumque longisque Romamque';
+const queRows=api.analyze(data,queWords,'lat1',queBank);
+const findQue=form=>queRows.find(row=>row.form===form);
+for(const [form,expected] of [
+ ['quoque','quoque'],['neque','neque'],['atque','atque'],
+ ['itaque','itaque'],['denique','denique'],['namque','namque'],
+ ['utique','utique'],['ubique','ubique'],['undique','undique'],
+ ['usque','usque'],['quisque','quisque'],['cuiusque','quisque'],
+ ['cuique','quisque'],['quemque','quisque'],
+ ['uterque','uterque'],['utriusque','uterque'],['utraque','uterque'],
+ ['utrumque','uterque'],['quicumque','quicumque'],
+ ['cuiuscumque','quicumque'],['ubicumque','ubicumque']]){
+ const found=findQue(form);
+ assert.equal(found?.status,'documented','El compuesto indivisible requiere lema: '+form);
+ assert.equal(ctx.window.ExaminaOfflineLemmatizer.normalize(found.lemma),
+   ctx.window.ExaminaOfflineLemmatizer.normalize(expected),
+   'No separar el final -que en '+form);
+}
+for(const [form,expected] of [['longisque','longus'],['Romamque','roma']]){
+ const found=findQue(form);
+ assert.equal(found?.status,'documented','La verdadera enclítica debe reconocerse: '+form);
+ assert.equal(ctx.window.ExaminaOfflineLemmatizer.normalize(found.lemma),
+  expected,'La base de '+form+' debe ser '+expected);
+}
+for(const form of ['longueque','uterquex','aliquiqueque']){
+ assert.equal(api.analyze(data,form,'lat1',queBank)[0]?.status,'unknown',
+  'No inventar la separación ni flexiones en '+form);
+}
+
 const priorityFixture=JSON.parse(fs.readFileSync(path.join(root,'tests/greek-priority-forms.json'),'utf8'));
 assert.equal(priorityFixture.units.length,14);
 const originals=[...new Set(priorityFixture.units.flatMap(u=>u.forms))];
