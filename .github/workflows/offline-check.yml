@@ -83,6 +83,7 @@ jobs:
         if: github.event_name == 'pull_request'
         run: |
           node scripts/export-eulexis-review.mjs
+          node scripts/audit-greek-eulexis-queue.mjs
           node -e "const f=require('./private/eulexis-review.json'); if(f.schema!=='examina-eulexis-review/v1'||!f.rows?.length)process.exit(1); console.log('Extracto Eulexis comprobado:',f.rows.length,'análisis')"
           rm -rf private
       - name: Verificar HTML autónomo
