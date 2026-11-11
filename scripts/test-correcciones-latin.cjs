@@ -99,7 +99,7 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
   }
 
   // 2 puntos fijos para el léxico, con el banco completo ya disponible.
-  await configure('latin1','tablas','UD10');
+  await configure('latin1','tablas','UD9–10');
   await page.waitForFunction(()=>!!window.ExaminaScoring);
   await page.locator('#examScoring .exam-scoring-heading button').click();
   const score=await page.evaluate(()=>{
