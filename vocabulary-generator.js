@@ -1812,10 +1812,18 @@ function init(){
   render();save();
  };
  const status=s=>{$('vgStatus').textContent=s};
- const save=()=>{
+ const snapshotProject=()=>{
   initWorkspaces();
+  // La asignatura activa ya está representada en el proyecto principal:
+  // no almacenar dos veces diez o catorce unidades enteras.
+  const workspaces={...project.workspaces};
+  delete workspaces[project.course];
+  return {...project,workspaces};
+ };
+ const save=()=>{
   try{
-   const local=readersIndexed?{...project,readerProposals:undefined}:project;
+   const snapshot=snapshotProject();
+   const local=readersIndexed?{...snapshot,readerProposals:undefined}:snapshot;
    localStorage.setItem(storage,JSON.stringify(local));
   }catch{status('Almacenamiento lleno: no se han guardado los cambios. Descarga una copia JSON.')}
  };
@@ -2277,7 +2285,8 @@ function init(){
   finally{controls.forEach(control=>control.disabled=false)}
  }
  $('vgAnalyzeAll').onclick=()=>analyzeUnits();
- $('vgBackup').onclick=()=>downloadBlob('vocabulario-unidades.json',new Blob([JSON.stringify(project,null,2)],{type:'application/json'}));
+ $('vgBackup').onclick=()=>downloadBlob('vocabulario-unidades.json',
+  new Blob([JSON.stringify(snapshotProject(),null,2)],{type:'application/json'}));
  $('vgClearAll').onclick=()=>{
   // Solo se vacía ESTE proyecto local; no modificar el banco de vocabulario
   // compartido, las listas exigibles ni los proyectos exportados en JSON.
