@@ -253,6 +253,23 @@ const server=http.createServer(async(req,res)=>{
   assert(requests.every(url=>url.startsWith(origin+PREFIX)),
    'La PWA contactó un servidor externo: '+JSON.stringify(requests));
   // Regresar online y simular publicación nueva: la app antigua no se recarga.
+  await page.click('#vgShow');
+  for(const [course,sentence,basic] of [
+   ['lat4','Puella dare potest.','potest'],
+   ['lat1','Puella esse potest.','esse'],
+   ['gr1','ὁ θεός ἐστιν.','ἐστιν']
+  ]){
+   await page.selectOption('#vgCourse',course);
+   await page.fill('#vgText',sentence);
+   await page.click('#vgAnalyzeAll');
+   await page.locator('#vgResults summary').filter({hasText:'Formas resueltas'}).waitFor();
+   const rows=await page.evaluate(()=>JSON.parse(localStorage.examina_vocabulary_project_v1).units[0].rows);
+   assert(rows.some(row=>row.form===basic&&row.status==='documented'),'Lematización PWA offline de '+course);
+   const download=page.waitForEvent('download');await page.click('#vgWord');
+   assert.equal((await download).suggestedFilename(),'vocabulario-unidades.docx');
+  }
+  await page.click('#vmShowExam');
+
   await context.setOffline(false);
   release='test-two';
   await page.evaluate(()=>{window.__borradorSinGuardar=77});

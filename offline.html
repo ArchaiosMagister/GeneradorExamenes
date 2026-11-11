@@ -656,9 +656,11 @@ body:has(.vocab-manager.active) .exam-coursebar{display:none}
 <label for="vgLang">Idioma del vocabulario <select id="vgLang"><option value="es">Castellano</option><option value="va">Valencià</option></select></label>
 <label>Título de la unidad<input id="vgTitle"></label><label>Texto de la unidad<textarea id="vgText" rows="8"></textarea></label>
 <label>Enunciado verbal<select id="vgMode"><option value="complete">Completo (según el banco, sin añadir temas ausentes)</option><option value="simple">Simple (forma de cita + conjugación latina disponible)</option></select></label>
-<button id="vgAnalyzeAll" type="button">Analizar todas las unidades</button><button id="vgAnalyze" type="button" class="secondary">Analizar solo esta unidad</button><button id="vgWord">Exportar todas las unidades a Word</button><button id="vgBackup">Guardar copia JSON</button><button id="vgClearAll" type="button" class="vg-danger" title="Vaciar todas las unidades del proyecto">Limpiar todo</button><label>Recuperar copia JSON<input id="vgImport" type="file" accept=".json"></label>
+<label class="check"><input type="checkbox" id="vgWordAlternatives"> Incluir las lecturas posibles en Word, marcadas para revisión</label>
+<div class="buttons"><button id="vgAnalyzeAll" type="button">Analizar y revisar vocabulario</button><button id="vgWord" type="button">Exportar a Word</button></div>
+<div class="buttons" role="group" aria-label="Copias del proyecto"><button id="vgBackup" type="button" class="secondary">Guardar copia JSON</button><button id="vgRestore" type="button" class="secondary">Recuperar copia JSON</button><input id="vgImport" type="file" accept=".json,application/json" hidden><button id="vgClearAll" type="button" class="vg-danger" title="Vaciar todas las unidades del proyecto">Limpiar todo</button></div>
 <p id="vgStatus" role="status" aria-live="polite">Los textos y correcciones se guardan en este navegador. Reducir el número de unidades las oculta sin borrarlas. Editar el texto requiere volver a analizar esa unidad.</p><details id="vgEulexisPanel" class="vg-eulexis-panel"><summary>Griego I · Sugerencias de Eulexis en el vocabulario</summary><p class="vm-help">Instalación opcional de una fuente externa en este dispositivo. Descarga los datos del proyecto original una sola vez (aproximadamente 30 MB) y conserva únicamente las propuestas aplicables al banco de Griego I. No convierte las flexiones en verificadas.</p><div class="buttons"><button type="button" id="vgEulexisInstall">Instalar o actualizar Eulexis</button><button type="button" id="vgEulexisRemove" class="secondary">Borrar índice local</button></div><p class="vm-help" id="vgEulexisStatus" role="status" aria-live="polite">Comprobando Eulexis local…</p><p class="vm-help">Fuente: <a href="https://github.com/genuensis/lector-griego" target="_blank" rel="noopener noreferrer">lector-griego / Eulexis</a>. Las propuestas se revisan junto al contexto real de tus unidades y solo se aceptan manualmente.</p></details><div id="vgResults"></div>
-<details id="vgQualityPanel"><summary><strong>Cobertura del vocabulario y revisión por unidades</strong></summary><p class="vm-help">«Documentada» indica al menos una forma contrastada: no equivale a paradigma completo. Las candidatas no pasan a verificadas automáticamente.</p><button type="button" id="vgQualityRefresh" class="secondary">Actualizar auditoría</button> <button type="button" id="vgQualityExport" class="secondary">Exportar informe JSON</button> <button type="button" id="vgReviewExport" class="secondary">Exportar pendientes JSON</button><p id="vgQualityTotals" class="vm-help" role="status" aria-live="polite">Pulsa «Actualizar auditoría» para consultar el banco.</p><div class="vm-scroll"><table class="vm-table"><thead><tr><th>Unidad</th><th>Fichas</th><th>Con forma contrastada</th><th>Solo candidatas</th><th>Sin flexión contrastada</th><th>Glosas pendientes (ES / VA)</th></tr></thead><tbody id="vgQualityRows"></tbody></table></div><label for="vgReviewUnit">Pendientes de revisión por unidad<select id="vgReviewUnit"><option value="">Todas las unidades</option></select></label><p id="vgQualityQueueSummary" class="vm-help"></p><div id="vgQualityQueue"></div></details></section>
+<details id="vgQualityPanel"><summary><strong>Diagnóstico del banco docente</strong></summary><h3>Cobertura y revisión por unidades</h3><p class="vm-help">«Documentada» indica al menos una forma contrastada: no equivale a paradigma completo. Las candidatas no pasan a verificadas automáticamente.</p><button type="button" id="vgQualityRefresh" class="secondary">Actualizar auditoría</button> <button type="button" id="vgQualityExport" class="secondary">Exportar informe JSON</button> <button type="button" id="vgReviewExport" class="secondary">Exportar pendientes JSON</button><p id="vgQualityTotals" class="vm-help" role="status" aria-live="polite">Pulsa «Actualizar auditoría» para consultar el banco.</p><div class="vm-scroll"><table class="vm-table"><thead><tr><th>Unidad</th><th>Fichas</th><th>Con forma contrastada</th><th>Solo candidatas</th><th>Sin flexión contrastada</th><th>Glosas pendientes (ES / VA)</th></tr></thead><tbody id="vgQualityRows"></tbody></table></div><label for="vgReviewUnit">Pendientes de revisión por unidad<select id="vgReviewUnit"><option value="">Todas las unidades</option></select></label><p id="vgQualityQueueSummary" class="vm-help"></p><div id="vgQualityQueue"></div></details></section>
 <section class="vocab-manager" id="vocabManager" aria-label="Gestor de vocabulario exigible">
 <h2>Vocabulario exigible para examen</h2><p class="vm-help">Este listado es independiente del vocabulario general. Puedes añadir, corregir, cambiar de unidad o eliminar entradas. Las palabras exigibles en esta unidad o anteriores se muestran sin traducción en el vocabulario final del examen.</p>
 <div class="vm-grid"><div><label for="vmCourse">Asignatura</label><select id="vmCourse"><option value="latin4">Latín 4.º ESO</option><option value="latin1">Latín I</option><option value="greek1">Griego I (ático)</option></select></div><div><label for="vmUnit">Unidad</label><select id="vmUnit"></select></div><div><label for="vmSearch">Buscar por lema o enunciado</label><input id="vmSearch" placeholder="Buscar..."></div></div>
@@ -2931,9 +2933,18 @@ UD1;mc;¿Qué lengua se hablaba en Roma?;B;Griego|Latín|Etrusco"></textarea><bu
   "Idioma del vocabulario": "Llengua del vocabulari",
   "Número de unidades (1–100)": "Nombre d’unitats (1–100)",
   "Enunciado verbal": "Enunciat verbal",
-  "Analizar todas las unidades": "Analitzar totes les unitats",
-  "Analizar solo esta unidad": "Analitzar només esta unitat",
-  "Exportar todas las unidades a Word": "Exportar totes les unitats a Word",
+  "Analizar y revisar vocabulario": "Analitzar i revisar vocabulari",
+  "Incluir las lecturas posibles en Word, marcadas para revisión": "Incloure les lectures possibles en Word, marcades per a revisió",
+  "Exportar a Word": "Exportar a Word",
+  "Diagnóstico del banco docente": "Diagnòstic del banc docent",
+  "Cobertura y revisión por unidades": "Cobertura i revisió per unitats",
+  "Aceptar propuestas seleccionadas": "Acceptar les propostes seleccionades",
+  "Lectura para Word": "Lectura per a Word",
+  "Aceptar": "Acceptar",
+  "Editar": "Editar",
+  "Omitir": "Ometre",
+  "Restablecer análisis": "Restablir l’anàlisi",
+  "Guardar corrección": "Guardar la correcció",
   "Guardar copia JSON": "Guardar còpia JSON",
   "Recuperar copia JSON": "Recuperar còpia JSON",
   "Vocabulario de tus unidades": "Vocabulari de les teues unitats",
@@ -8032,6 +8043,11 @@ function latinExpandedForms(bank){
    forms:['possum','potes','potest','possumus','potestis','possunt','poteram','poteras','poterat',
     'poteramus','poteratis','poterant','potero','poteris','poterit','poterimus','poteritis','poterunt',
     'posse','potui','potuit','potuerunt']},
+  {lemma:'do',entry:'do, dedi, datum (1ª)',meaning:'dar',forms:['dare']},
+  // Formas del examen docente de Latín 4.º UD5. El banco activo conserva prioridad.
+  {lemma:'terra',entry:'terra, −æ',meaning:'tierra, territorio',forms:['terra']},
+  {lemma:'timeo',entry:'timeo (2ª)',meaning:'temer',forms:['timebant']},
+  {lemma:'fortitudo',entry:'fortitudo, −dinis (f.)',meaning:'fuerza, fortaleza',forms:['fortitudinem']},
   {lemma:'eo',entry:'eo, ii, itum (irr.)',meaning:'ir',
    forms:['eo','is','it','imus','itis','eunt','ibam','ibas','ibat','ibamus','ibatis','ibant',
     'ibo','ibis','ibit','ibimus','ibitis','ibunt','ire','ii','ivi','iit','ierunt','ierat']},
@@ -8138,7 +8154,7 @@ function latinExpandedForms(bank){
  for(const info of irregular){
   const existing=bank.find(row=>latinKey(head(row.entry))===latinKey(info.lemma));
   const rec={lemma:latinKey(info.lemma),entry:existing?.entry||info.entry,
-   meaning:existing?.meaning||info.meaning,meaning_va:existing?.meaning_va||'',
+   meaning:existing?existing.meaning||'':info.meaning,meaning_va:existing?.meaning_va||'',
    attested:!info.provisional,
    origin:info.provisional?'participio futuro derivado del supino: confirmar con contexto':
     'paradigma irregular escolar explícito; sin nuevas flexiones verificadas en índice'};
@@ -8206,7 +8222,8 @@ function greekReferenceForms(bank){
   }else if(hasInflection&&lemma.endsWith('ομαι')){
    endings(lemma.slice(0,-4),['ομαι','ῃ','εται','όμεθα','εσθε','ονται','εσθαι'],record);
   }else if(hasInflection&&lemma.endsWith('ω')){
-   endings(lemma.slice(0,-1),['ω','εις','ει','ομεν','ετε','ουσι','ουσιν','ειν'],record);
+   endings(lemma.slice(0,-1),['ω','εις','ει','ομεν','ετε','ουσι','ουσιν','ειν',
+    'ομαι','ῃ','εται','όμεθα','εσθε','ονται','εσθαι'],record);
   }
   }
  }
@@ -8256,11 +8273,11 @@ function greekReferenceForms(bank){
  const prepLabel=entry=>entry.replace(/\s+\+\s*(genitivo|acusativo|dativo)(?:\s*\|\s*(genitivo|acusativo|dativo))?(?:\s*\|\s*(genitivo|acusativo|dativo))?$/,
   (_,a,b,c)=>' (prep. + '+[a,b,c].filter(Boolean).map(s=>({genitivo:'gen.',acusativo:'ac.',dativo:'dat.'}[s])).join('/')+')');
  const addIrregular=(forms,entry,meaning)=>{
-  const saved=bankByHead(entry);
+  const saved=bankByHead(head(entry));
   const sourceEntry=saved?.entry||supplementaryEntries[entry]||entry;
-  const outputEntry=/\s+\+\s*(genitivo|acusativo|dativo)/.test(sourceEntry)?prepLabel(sourceEntry):sourceEntry;
+  const outputEntry=saved?.entry||prepLabel(sourceEntry);
   const record={lemma:key(head(saved?.entry||entry)),entry:outputEntry,
-   meaning:saved?.meaning||meaning,attested:true,origin:'paradigma gramatical explícito'};
+   meaning:saved?saved.meaning||'':meaning,meaning_va:saved?.meaning_va||'',attested:true,origin:'paradigma gramatical explícito'};
   for(const form of forms)add(form,record);
  };
  addIrregular(['ὁ','ἡ','τό','τὸ','τοῦ','τῆς','τῷ','τῇ','τόν','τὸν','τήν','τὴν',
@@ -8486,7 +8503,7 @@ function greekReferenceForms(bank){
   ['μένω','permanecer, esperar',['ἔμενον']],
   ['ἐμπίπτω','caer en',['ἐνέπεσεν']],
   ['πάσχω','sufrir',['ἔπαθεν']],
-  ['παιδεύω','educar',['ἐπαίδευε','ἐπαίδευσαν','ἐπαίδευσε','ἐπαίδευσεν','ἐπεπαιδεύκει','παιδεύονται','παιδεύσει','πεπαιδεύκασιν','πεπαίδευκε']],
+  ['παιδεύω','educar',['ἐπαίδευε','ἐπαίδευσαν','ἐπαίδευσε','ἐπαίδευσεν','ἐπεπαιδεύκει','παιδεύεται','παιδεύονται','παιδεύσει','πεπαιδεύκασιν','πεπαίδευκε']],
   ['ἐπαινέω','alabar',['ἐπαινεῖ']],
   ['πείθω','convencer',['ἔπειθον','ἔπεισαν']],
   ['πέμπω','enviar',['ἔπεμπεν','ἐπέμψατε','ἐπέμψεν','πέμποντος']],
@@ -8502,7 +8519,7 @@ function greekReferenceForms(bank){
   ['εἰσβάλλω','invadir',['ἐσέβαλον']],
   ['στρατεύω','hacer una expedición',['ἐστράτευσαν','στρατεύσουσιν']],
   ['ἔχω','tener',['ἔσχον']],
-  ['σῴζω','salvar',['ἐσῴσαν']],
+  ['σῴζω','salvar',['ἐσῴσαν','σῴζονται','σώζονται']],
   ['τέμνω','cortar',['ἔτεμον']],
   ['τιμάω','honrar',['ἐτιμᾶτο','ἐτιμῶμεθα','τιμᾶται']],
   ['τυγχάνω','alcanzar, conseguir',['ἔτυχεν']],
@@ -8631,6 +8648,11 @@ function greekReferenceForms(bank){
  return map;
 }
 const greekSpellingNotes={
+ 'ἀνθρώποι':'ἄνθρωποι (revisar el acento del nominativo plural)',
+ 'νὸμοι':'νόμοι (revisar el acento del nominativo plural)',
+ 'ἀδικόν':'ἄδικον (revisar el acento)',
+ 'οἰ':'οἱ si es el artículo (revisar el espíritu)',
+ 'διδασκὰλου':'διδασκάλου (revisar el acento del genitivo)',
  'Δημοσθήνης':'Δημοσθένης (nominativo del nombre propio; revisar el acento)',
  'εἴς':'εἰς (revisar acentuación de la preposición)',
  'θάλάττῃ':'θαλάττῃ (revisar acentuación)',
@@ -8648,26 +8670,29 @@ const greekSpellingNotes={
  'ἐφεύξεν':'φεύγω: revisar el tiempo; aoristo usual ἔφυγεν'
 };
 const vocabularyIndexCache=new WeakMap(),greekReferenceCache=new WeakMap();
-function analyze(data,text,course,bank){
+const documentedSources=new Set([0,1,5,6,7]);
+function analyze(data,text,course,bank,{contextual=false}={}){
  const lang=course==='gr1'?'grc':'lat';
  let byCourse=vocabularyIndexCache.get(data);
  if(!byCourse){byCourse=new Map();vocabularyIndexCache.set(data,byCourse)}
- let index=byCourse.get(course);
+ const indexKey=contextual?course+'-contextual':course;
+ let index=byCourse.get(indexKey);
  if(!index){
   index=new Map();
   for(const [lemma,surface,tags,source] of data.rows[lang]){
-   if(!data.vocabulary[lang][lemma]?.[course])continue;
+   const indexedEntry=data.vocabulary[lang][lemma]?.[course];
+   if(!indexedEntry&&(!contextual||!documentedSources.has(source)))continue;
    const k=lang==='lat'?latinKey(surface):key(surface);if(!index.has(k))index.set(k,new Map());
    const candidates=index.get(k),old=candidates.get(lemma);
    const lexicalInvariable=source===3&&key(surface)===key(lemma)&&
-    invariableEntry(data.vocabulary[lang][lemma][course].entry);
-   const attested=[0,1,5,6,7].includes(source)||lexicalInvariable;
+    invariableEntry(indexedEntry?.entry);
+   const attested=documentedSources.has(source)||lexicalInvariable;
    const exactForms=old?.exactForms||new Set(),morphTags=old?.morphTags||new Set();
-   if(lang==='grc')exactForms.add(surface.normalize('NFC'));
-   morphTags.add(tags);
+   if(lang==='grc'&&attested)exactForms.add(surface.normalize('NFC'));
+   if(attested)morphTags.add(tags);
    candidates.set(lemma,{lemma,attested:attested||!!old?.attested,exactForms,morphTags});
   }
-  byCourse.set(course,index);
+  byCourse.set(indexKey,index);
  }
  let greek=null;
  if(lang==='grc'){
@@ -8679,29 +8704,37 @@ function analyze(data,text,course,bank){
  const attach=(id,row)=>{if(!bankIndex.has(id))bankIndex.set(id,[]);bankIndex.get(id).push(row)};
  for(const row of bank){attach('E'+normalizeCourse(row.entry),row);attach('H'+normalizeCourse(head(row.entry)),row)}
  const tokens=new Map();
- const cleanText=lang==='grc'?String(text).replace(/([\p{L}\p{M}])[’'](?=[\p{L}\p{M}])/gu,'$1 '):String(text);
- let previous='';
- for(const match of cleanText.matchAll(/[\p{L}\p{M}]+(?:[’'][\p{L}\p{M}]+)*/gu)){
-  const form=match[0],normal=normalizeCourse(form);
-  // En griego, τίς/τις, ὁ/ὅ o ἀλλά/ἄλλα no pueden confundirse.
-  const identity=lang==='grc'?form.normalize('NFC'):normal;
-  if(normal){
-   if(!tokens.has(identity))tokens.set(identity,{normal,form,precededBy:new Set()});
+ const passages=contextual?String(text).split(/[.!?;·;\n]+/u):[String(text)];
+ for(const passage of passages){
+  const context=contextual?passage.trim().replace(/\s+/gu,' ').normalize('NFC'):'';
+  const original=contextual?context:passage;
+  const searchable=lang==='grc'?original.replace(/([\p{L}\p{M}])[’'](?=[\p{L}\p{M}])/gu,'$1 '):original;
+  let previous='';
+  const occurrences=new Map();
+  for(const match of searchable.matchAll(/[\p{L}\p{M}]+(?:[’'][\p{L}\p{M}]+)*/gu)){
+   const form=match[0],normal=normalizeCourse(form);
+   if(!normal)continue;
+   const spelling=lang==='grc'?form.normalize('NFC'):normal;
+   const occurrence=(occurrences.get(spelling)||0)+1;
+   occurrences.set(spelling,occurrence);
+   const identity=contextual?JSON.stringify([context,spelling,occurrence]):spelling;
+   if(!tokens.has(identity))tokens.set(identity,{normal,form,context,identity,offset:match.index,precededBy:new Set()});
    tokens.get(identity).precededBy.add(previous);
    previous=normal;
   }
  }
- return [...tokens.values()].map(({normal,form,precededBy})=>{
+ return [...tokens.values()].map(({normal,form,context,identity,offset,precededBy})=>{
   const indexedCandidates=[...(index.get(normal)?.values()||[])].flatMap(c=>{
-   const original=data.vocabulary[lang][c.lemma][course];
-   const matches=[...new Set([...(bankIndex.get('E'+normalizeCourse(original.entry))||[]),
+   const original=data.vocabulary[lang][c.lemma]?.[course];
+   const matches=[...new Set([...(original?bankIndex.get('E'+normalizeCourse(original.entry))||[]:[]),
     ...(bankIndex.get('H'+normalizeCourse(c.lemma))||[])])];
    // Repetir una misma palabra en distintas UD con glosas ligeramente
    // distintas no constituye una ambigüedad MORFOLÓGICA. Conservamos la
    // entrada docente más completa, dando preferencia a la del índice.
    // Los homógrafos de lemas distintos siguen separados en `candidates`.
+   if(!original&&!matches.length)return [];
    const variants=matches.length?(lang==='lat'?[matches.slice().sort((a,b)=>{
-    const score=x=>(x.entry===original.entry?100:0)+
+    const score=x=>(x.entry===original?.entry?100:0)+
      (x.meaning_va?6:0)+(x.entry.split(',').length*3);
     return score(b)-score(a);
    })[0]]:matches):[{entry:original.entry,meaning:''}];
@@ -8740,11 +8773,38 @@ function analyze(data,text,course,bank){
   const exactGreek=supplement.filter(x=>x.exactForms?.has(form.normalize('NFC')));
   const exactIndexed=lang==='grc'?indexedCandidates.filter(x=>x.exactForms?.has(form.normalize('NFC'))):[];
   const regularLemmas=new Set(regular.map(candidate=>candidate.lemma));
-  const all=exactGreek.length?exactGreek:
+  let all=exactGreek.length?exactGreek:
    [...(exactIndexed.length?exactIndexed:indexedCandidates).filter(x=>
     !(supplement.length&&!x.attested&&!x.meaning)&&
     !(regularLemmas.has(x.lemma)&&!x.attested)),
     ...supplement,...directInvariable,...curated,...regular,...enclitic];
+  if(contextual){
+   for(const row of bankIndex.get('H'+normal)||[]){
+    if(lang==='grc'&&head(row.entry).normalize('NFC')!==form.normalize('NFC'))continue;
+    all.push({...row,lemma:normal,attested:false,lexicalCitation:true,origin:'forma de cita del banco docente'});
+   }
+  }
+  // El banco de Latín 4.º puede no incluir el sustantivo plural bona.
+  // La ficha del índice conserva la alternativa léxica sin tomar una glosa de otro curso.
+  if(contextual&&lang==='lat'&&normal==='bona'&&!all.some(row=>row.lemma==='bona')){
+   const noun=data.vocabulary.lat.bona?.lat1;
+   if(noun)all.push({lemma:'bona',entry:noun.entry,meaning:'',attested:false,
+    origin:'sustantivo plural registrado en el índice léxico'});
+  }
+  // §201 de Allen y Greenough: ēst es variante de edit, de edō.
+  // Sin cantidad explícita, la grafía est admite también sum.
+  if(contextual&&lang==='lat'&&normal==='est'){
+   if(form.normalize('NFC').toLowerCase()==='ēst')
+    all=all.filter(candidate=>latinKey(candidate.lemma)!=='sum');
+   all.push({lemma:'edo',entry:'edō, edere, ēdī, ēsum',meaning:'comer',
+    attested:true,origin:'Allen y Greenough, §201'});
+  }
+  // El superlativo adverbial y el vocativo pueden tener la misma grafía.
+  // La lectura adverbial consta explícitamente en el glosario docente de UD5.
+  if(contextual&&lang==='lat'&&normal==='fortissime'){
+   all.push({lemma:'fortissime',entry:'fortissime (adv.)',meaning:'con mucha fuerza',
+    attested:true,origin:'glosario docente de Latín 4.º UD5'});
+  }
   // Preferimos la evidencia más firme para la misma entrada, sin descartar
   // una segunda lectura posible de un homógrafo.
   const compact=new Map();
@@ -8754,7 +8814,7 @@ function analyze(data,text,course,bank){
    // exclusivamente adjetival como servae no pertenece a esa ficha.
    // Preservamos los análisis N y descartamos solo lecturas ADJ aisladas
    // incompatibles con un enunciado nominal inequívoco en -us, –i.
-   if(lang==='lat'&&/^[a-z]+us,\s*[–−—-]i\b/i.test(candidate.entry||'')){
+   if(lang==='lat'&&/^[a-z]+us,\s*[–−—-]i\b/.test(latinKey(candidate.entry))){
     const tags=[...(candidate.morphTags||[])];
     if(tags.length&&tags.every(tag=>tag.startsWith('ADJ;')))continue;
    }
@@ -8829,6 +8889,19 @@ function analyze(data,text,course,bank){
     [...(candidate.morphTags||[])].some(t=>/^(?:N|ADJ|PRO);(?:[^;]+;)*ABL(?:;|$)/.test(t)));
    if(abl.length===1&&abl[0].attested)candidates=abl;
   }
+  if(contextual){
+   const preferred=new Map();
+   for(const candidate of candidates){
+    const exact=bankIndex.get('E'+normalizeCourse(candidate.entry))||[];
+    const matching=(bankIndex.get('H'+normalizeCourse(head(candidate.entry)))||[])
+     .filter(row=>lang==='lat'||head(row.entry).normalize('NFC')===head(candidate.entry).normalize('NFC'));
+    const teacher=exact.find(row=>row.entry===candidate.entry)||matching[0];
+    const lexical=teacher?{...candidate,entry:teacher.entry,meaning:teacher.meaning||'',meaning_va:teacher.meaning_va||''}:candidate;
+    const id=JSON.stringify([lexical.lemma,lexical.entry,lexical.meaning]);
+    if(!preferred.has(id)||lexical.attested)preferred.set(id,lexical);
+   }
+   candidates=[...preferred.values()];
+  }
   const resolved=candidates.length===1&&candidates[0].attested;
   const spellingHint=lang==='grc'?Object.entries(greekSpellingNotes)
    .find(([sample])=>sample.normalize('NFC')===form.normalize('NFC'))?.[1]:
@@ -8837,7 +8910,7 @@ function analyze(data,text,course,bank){
   // una flexión contrastada. Distinguir sugerencia de evidencia.
   const contextHint=lang==='lat'?latinContextNotes[normal]:undefined;
   const requiresSpellingReview=!!(spellingHint||contextHint);
-  return {form,candidates,status:requiresSpellingReview?'review':resolved?'documented':candidates.length?'review':'unknown',
+  return {form,candidates,...(contextual?{context,identity,offset,safeProposal:!requiresSpellingReview&&candidates.length===1&&!!candidates[0].lexicalCitation}:{}),status:requiresSpellingReview?'review':resolved?'documented':candidates.length?'review':'unknown',
    warning:contextHint?'Necesita contexto: '+contextHint:
     spellingHint?(lang==='grc'?'Posible errata: ':'Revisión de grafía o abreviatura: ')+spellingHint:'',
    // En una forma con -que copulativa se identifican DOS elementos:
@@ -8853,11 +8926,12 @@ function entries(rows){
  // La descomposición del nexo produce una entrada de vocabulario propia,
  // pero nunca para quoque, quisque, uterque ni otros -que lexicalizados.
  // Incluso si bonaque tiene un lema base ambiguo, el nexo sigue siendo «y».
+ rows=rows.filter(r=>r.status!=='omitted');
  const withEnclitic=rows.some(r=>r.encliticQue)?[...rows,{
   form:'-que',lemma:'-que',entry:'–que (conj.)',meaning:'y',meaning_va:'i',
   status:'documented',candidates:[],origin:'conjunción enclítica identificada'}]:rows;
  const seen=new Set();return withEnclitic.filter(r=>{
-  const id=r.status==='manual'||r.status==='documented'?key(r.lemma||head(r.entry))+'|'+r.entry+'|'+r.meaning:'?'+r.form;
+  const id=r.status==='manual'||r.status==='documented'?key(r.lemma||head(r.entry))+'|'+r.entry+'|'+r.meaning:'?'+(r.identity||r.form);
   if(seen.has(id))return false;seen.add(id);return true;
  }).sort((a,b)=>key(a.entry).localeCompare(key(b.entry),'el'));
 }
@@ -8903,9 +8977,9 @@ function formatVocabularyEntry(row,mode,course,language='es'){
  return entry+': '+quoted;
 }
 function vocabularyRequiresReview(row){
-  return !['manual','documented'].includes(row.status)||row.eulexisUnverified===true;
+  return !['manual','documented'].includes(row.status);
  }
- function documentXml(project){
+ function documentXml(project,externalCandidates=()=>[]){
  const unanalysed=project.units.slice(0,project.count).filter(u=>u.text?.trim()&&!u.analyzed&&!u.rows?.length);
  if(unanalysed.length)throw Error('Quedan '+unanalysed.length+' unidades con texto sin analizar.');
  const escape=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&apos;'}[c]));
@@ -8932,7 +9006,9 @@ function vocabularyRequiresReview(row){
  const isLatin=project.course!=='gr1';
  const line=(row,unit)=>{
   const pending=vocabularyRequiresReview(row);
-  const formatted=formatVocabularyEntry(row,unit.mode,project.course,project.lang||'es');
+  const formatted=formatVocabularyEntry(row,unit.mode,project.course,project.lang||'es')+
+   (pending&&row.alternative?' ['+row.form+(row.context?' · '+row.context:'')+']':
+    pending&&row.context?' ['+row.context+']':'');
   if(!isLatin)return paragraph(run((pending?'* ':'')+formatted));
   const italicEntry=displayEntry(row.entry,unit.mode);
   if(formatted.startsWith(italicEntry)){
@@ -8957,13 +9033,60 @@ function vocabularyRequiresReview(row){
   '<w:cols w:num="1" w:space="0"/>';
  const units=project.units.slice(0,project.count);
  const body=units.map(u=>{
-  const all=entries(u.rows||[]),pending=all.filter(vocabularyRequiresReview);
+  const all=entries(typeof u.text==='string'&&!u.text.trim()?[]:u.rows||[]);
+  const pending=all.filter(vocabularyRequiresReview).flatMap(row=>{
+   if(project.wordAlternatives!==true)return [row];
+   const readings=new Map();
+   for(const candidate of [...(row.candidates||[]),...externalCandidates(row)]){
+    if(!candidate.entry)continue;
+    const citation=candidate.entry.normalize('NFC');
+    if(!readings.has(citation))readings.set(citation,candidate);
+   }
+   if(!readings.size)return [row];
+   return [...readings.values()].map(({entry,lemma,meaning,meaning_va})=>
+    ({...row,entry,lemma,meaning:meaning||'',meaning_va,alternative:true}));
+  });
   return p(u.title,true)+all.filter(r=>!vocabularyRequiresReview(r)).map(r=>line(r,u)).join('')+
    (pending.length?p(project.lang==='va'?'Pendents de revisió (*)':'Pendientes de revisión (*)',true)+pending.map(r=>line(r,u)).join(''):'');
  }).join('');
  return '<?xml version="1.0" encoding="UTF-8"?>'+
   '<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>'+
   titleParagraph+body+'<w:sectPr>'+layout+'</w:sectPr></w:body></w:document>';
+}
+const analysisVersion=3;
+function needsAnalysis(unit,course){
+ return !!unit.text?.trim()&&(unit.analysisVersion!==analysisVersion||
+  unit.analyzedCourse!==course||unit.analyzedText!==unit.text);
+}
+function bankSignature(bank){
+ let hash=2166136261;
+ const content=JSON.stringify(bank.map(({entry,meaning,meaning_va})=>[entry,meaning,meaning_va]));
+ for(let i=0;i<content.length;i++)hash=Math.imul(hash^content.charCodeAt(i),16777619);
+ return (hash>>>0).toString(16);
+}
+function reviewedRows(unit,course,data,bank){
+ const decisions=unit.decisions?.[course]||[];
+ const byIdentity=new Map(decisions.map(row=>[row.identity,row]));
+ const legacy=new Map(decisions.filter(row=>!row.identity).map(row=>[row.form,row]));
+ return analyze(data,unit.text,course,bank,{contextual:true}).map(row=>{
+  const decision=byIdentity.get(row.identity)||legacy.get(row.form);
+  return decision?{...row,...decision,identity:row.identity,form:row.form}:row;
+ });
+}
+function migrateProject(project){
+ for(const unit of project.units){
+  const source=unit.decisions,decisions={};
+  for(const course of ['lat1','lat4','gr1']){
+   const legacy=course===project.course&&(!unit.analyzedCourse||unit.analyzedCourse===course);
+   const rows=Array.isArray(source?.[course])?source[course]:legacy?unit.rows||[]:[];
+   decisions[course]=rows.filter(row=>row&&['manual','omitted'].includes(row.status)&&
+    typeof row.form==='string'&&typeof row.entry==='string'&&typeof row.meaning==='string')
+    .map(({identity,form,status,entry,lemma,meaning,meaning_va,eulexisUnverified})=>
+     ({identity,form,status,entry,lemma,meaning,meaning_va,eulexisUnverified}));
+  }
+  unit.decisions=decisions;
+ }
+ return project;
 }
 window.ExaminaVocabulary={analyze,entries,displayEntry,formatVocabularyEntry,documentXml};
 function init(){
@@ -8972,7 +9095,8 @@ function init(){
  try{const saved=JSON.parse(localStorage.getItem(storage));if(saved?.units&&Number.isInteger(saved.count)&&saved.count>=1&&saved.count<=100&&['lat1','lat4','gr1'].includes(saved.course))project=saved}catch{}
  if(!['es','va'].includes(project.lang))project.lang='es';
  const unit=()=>{while(project.units.length<project.count)project.units.push({title:'UD'+(project.units.length+1),text:'',mode:'complete',rows:[],analyzed:false});return project.units[selected]};
- const needsAnalysis=u=>!!u.text?.trim()&&!(u.analyzed||u.rows?.length);
+ migrateProject(project);
+ const stale=u=>needsAnalysis(u,project.course);
  const status=s=>{$('vgStatus').textContent=s};
  const save=()=>{try{localStorage.setItem(storage,JSON.stringify(project))}catch{status('No se pudo guardar en este navegador. Exporta una copia JSON.')}};
 
@@ -8983,30 +9107,24 @@ function init(){
  function eulexisStatus(message){
   const area=$('vgEulexisStatus');if(area)area.textContent=message;
  }
- function contextsOf(u,form){
-  const normalize=eulexisAdapter()?.norm;
-  if(!normalize)return [];
-  const target=normalize(form);
-  return String(u.text||'').split(/[.·;;!?\n]+/u).map(s=>s.trim()).filter(Boolean)
-   .filter(s=>(s.match(/[\p{Script=Greek}\p{M}]+/gu)||[]).some(w=>normalize(w)===target))
-   .slice(0,2).map(s=>s.slice(0,260));
- }
  async function prepareEulexis(install=false){
   const adapter=eulexisAdapter();
   if(!adapter)throw Error('No se encuentra el módulo Eulexis');
   const data=await linguistic().load();
   const result=install?await adapter.install(data,eulexisStatus):await adapter.load(data);
   const catalog=data.vocabulary?.grc||{},mapped=new Map();
-  const teacherGloss=new Map(vocab.filter(row=>courseOf(row)==='greek1')
-   .map(row=>[adapter.norm(head(row.entry)),row.meaning||'']));
+  const teachers=vocab.filter(row=>courseOf(row)==='greek1');
   for(const proposal of result?.rows||[]){
    const entry=catalog[adapter.norm(proposal.lemma)]?.gr1;
-   if(!entry?.entry)continue; // Una glosa pendiente no impide consultar la lectura morfológica.
+   if(!entry?.entry)continue;
+   const teacher=teachers.find(row=>row.entry===entry.entry)||
+    teachers.find(row=>head(row.entry).normalize('NFC')===head(entry.entry).normalize('NFC')); // Una glosa pendiente no impide consultar la lectura morfológica.
    const form=adapter.norm(proposal.form);
    if(!mapped.has(form))mapped.set(form,new Map());
    const signature=entry.entry+'|'+proposal.analysis;
    if(!mapped.get(form).has(signature))mapped.get(form).set(signature,{
-    lemma:proposal.lemma,entry:entry.entry,meaning:teacherGloss.get(adapter.norm(proposal.lemma))||'',analysis:proposal.analysis
+    lemma:proposal.lemma,entry:teacher?.entry||entry.entry,meaning:teacher?.meaning||'',
+    meaning_va:teacher?.meaning_va||'',analysis:proposal.analysis,eulexisUnverified:true
    });
   }
   eulexisByForm=new Map([...mapped].map(([form,values])=>[form,[...values.values()]]));
@@ -9015,36 +9133,6 @@ function init(){
    'Eulexis disponible: '+result.rows.length+' análisis locales; son propuestas sin verificar.':
    'Eulexis no instalado en este navegador. Se conserva la revisión habitual.');
   render();
- }
- function showEulexisCard(box,r,u){
-  if(project.course!=='gr1'||!eulexisAvailable||r.eulexisUnverified)return;
-  const options=(eulexisByForm.get(eulexisAdapter().norm(r.form))||[]).slice(0,16);
-  if(!options.length)return;
-  // Si la fuente docente ya documenta la lectura, solo avisar de alternativas distintas.
-  const conflicting=options.some(candidate=>candidate.entry!==r.entry);
-  if(r.status==='documented'&&!conflicting)return;
-  const card=document.createElement('section');card.className='vg-eulexis-card';
-  const heading=document.createElement('h3');heading.textContent='Propuestas Eulexis · '+r.form;card.append(heading);
-  const note=document.createElement('p');note.className='vm-help';
-  note.textContent='Selecciona un análisis según su contexto. Es una decisión docente: no certifica el paradigma.';
-  card.append(note);
-  for(const context of contextsOf(u,r.form)){
-   const p=document.createElement('p');p.className='vg-eulexis-context';
-   p.textContent='Contexto de la unidad: '+context;card.append(p);
-  }
-  for(const candidate of options){
-   const button=document.createElement('button');button.type='button';button.className='vg-eulexis-choice secondary';
-   const name=document.createElement('strong');name.textContent=candidate.entry;
-   const detail=document.createElement('span');detail.textContent=candidate.analysis+' · '+(candidate.meaning||'traducción pendiente en el banco docente');
-   button.append(name,detail);
-   button.onclick=()=>{Object.assign(r,{lemma:candidate.lemma,entry:candidate.entry,
-    meaning:candidate.meaning,status:'manual',eulexisUnverified:true,
-    warning:'Revisado por el docente usando Eulexis; flexión no certificada'});
-    save();render();
-   };
-   card.append(button);
-  }
-  box.append(card);
  }
  const eulexisInstall=$('vgEulexisInstall'),eulexisRemove=$('vgEulexisRemove');
  if(eulexisInstall)eulexisInstall.onclick=async()=>{
@@ -9108,6 +9196,7 @@ function init(){
   }catch(e){qualitySnapshot=null;area.textContent='No se ha podido auditar el banco: '+e.message}
  }
  $('vgQualityRefresh').onclick=refreshQuality;
+ $('vgQualityPanel').addEventListener('toggle',()=>{if($('vgQualityPanel').open&&!qualitySnapshot)refreshQuality()});
  $('vgReviewUnit').onchange=showQualityQueue;
  $('vgQualityExport').onclick=()=>{
   if(!qualitySnapshot){status('Actualiza primero la auditoría.');return}
@@ -9138,54 +9227,229 @@ function init(){
  }
  function render(){
   unit();$('vgCount').value=project.count;$('vgCourse').value=project.course;$('vgLang').value=project.lang||'es';
+  $('vgWordAlternatives').checked=project.wordAlternatives===true;
   renderUnitButtons();
   if($('vgEulexisPanel'))$('vgEulexisPanel').hidden=project.course!=='gr1';
   $('vgUnit').replaceChildren(...project.units.slice(0,project.count).map((u,i)=>new Option(u.title,i,false,i===selected)));
   $('vgTitle').value=unit().title;$('vgText').value=unit().text;$('vgMode').value=unit().mode;
-  const target=$('vgResults');target.replaceChildren();
-  for(const r of entries(unit().rows)){
-   const box=document.createElement('div');box.style.cssText='padding:10px 0;border-bottom:1px solid #ccd7e6';
-   const states=project.lang==='va'?{documented:'Forma documentada',manual:'Revisat manualment',review:'* Ambigua o candidata sense verificar',unknown:'* Desconeguda'}:{documented:'Forma documentada',manual:'Revisado manualmente',review:'* Ambigua o candidata sin verificar',unknown:'* Desconocida'};
-   const label=document.createElement('p');label.textContent=r.form+' · '+(r.warning||states[r.status]);box.append(label);
-   showEulexisCard(box,r,unit());
-   if(r.candidates.length&&r.status!=='documented'){
-    const select=document.createElement('select');select.append(new Option('Elegir una entrada documentada o candidata…',''));
-    r.candidates.forEach((c,i)=>{const candidateGloss=window.ExaminaValencianGloss?.forEntry(c,project.lang)?.value||c.meaning;select.append(new Option(c.entry+' — '+candidateGloss+(c.attested?'':' [sin verificar]'),i))});
-    select.onchange=()=>{if(select.value==='')return;const c=r.candidates[Number(select.value)];Object.assign(r,{lemma:c.lemma,entry:c.entry,meaning:c.meaning,status:'manual'});save();render()};box.append(select);
-   }
-   for(const [field,name] of [['entry','Enunciado'],[project.lang==='va'?'meaning_va':'meaning',project.lang==='va'?'Traducció':'Traducción']]){
-    const lab=document.createElement('label');lab.textContent=name;const input=document.createElement('input');input.value=field==='meaning_va'?(window.ExaminaValencianGloss?.forEntry(r,'va')?.value||r.meaning_va||''):(r[field]||'');input.onchange=()=>{r[field]=input.value;r.lemma=head(r.entry);r.status='manual';save();render()};lab.append(input);box.append(lab);
-   }
-   const preview=document.createElement('p');preview.textContent=(project.lang==='va'?'Vista d’exportació: ':'Vista de exportación: ')+formatVocabularyEntry(r,unit().mode,project.course,project.lang);box.append(preview);target.append(box);
-  }
+  renderReview();
   window.ExaminaValencianGloss?.translateDom?.($('vocabularyGenerator'),project.lang);
+ }
+ function decide(u,row,choice,decisionStatus){
+  u.decisions||={};
+  const decisions=u.decisions[project.course]||[];
+  const {entry,meaning,meaning_va,lemma,eulexisUnverified}=choice;
+  const decision={identity:row.identity,form:row.form,entry,meaning,meaning_va,lemma,
+   eulexisUnverified,status:decisionStatus};
+  u.decisions[project.course]=decisions.filter(d=>d.identity!==row.identity);
+  u.decisions[project.course].push(decision);
+  Object.assign(row,decision);
+ }
+ function record(u,row,choice,decisionStatus){
+  decide(u,row,choice,decisionStatus);
+  save();render();
+  status(row.form+' · '+(decisionStatus==='omitted'?'Omitida del Word.':'Aceptada para Word.'));
+ }
+ function renderReview(){
+  const target=$('vgResults');target.replaceChildren();
+  const u=unit(),rows=stale(u)||!u.text.trim()?[]:u.rows;
+  const active=project.units.slice(0,project.count).filter(item=>item.text.trim()&&!stale(item));
+  const safe=active.flatMap(item=>item.rows.filter(r=>r.safeProposal&&vocabularyRequiresReview(r)&&r.status!=='omitted')
+   .map(row=>({unit:item,row})));
+  const paragraph=(value)=>{const p=document.createElement('p');p.textContent=value;return p};
+  const button=(label,action)=>{
+   const b=document.createElement('button');b.type='button';b.className='secondary';b.textContent=label;b.onclick=action;return b;
+  };
+  if(safe.length){
+   const batch=document.createElement('details'),summary=document.createElement('summary');
+   summary.textContent='Propuestas seguras del proyecto ('+safe.length+')';
+   batch.append(summary,paragraph('Formas de cita del banco docente. La aceptación incorpora la ficha al Word.'));
+   const checks=safe.map(({unit,row})=>{
+    const label=document.createElement('label'),check=document.createElement('input');
+    check.type='checkbox';check.checked=true;label.className='check';
+    label.append(check,document.createTextNode(unit.title+' · '+row.form+' → '+row.candidates[0].entry+
+     ' · '+(row.candidates[0].meaning||'Sin traducción registrada')+' · '+row.context));batch.append(label);
+    return check;
+   });
+   batch.append(button('Aceptar propuestas seleccionadas',()=>{
+    let accepted=0;
+    safe.forEach(({unit,row},i)=>{if(checks[i].checked){decide(unit,row,row.candidates[0],'manual');accepted++}});
+    save();render();status(accepted+' propuestas aceptadas para Word.');
+   }));
+   target.append(batch);
+  }
+  const pending=rows.filter(r=>vocabularyRequiresReview(r)&&r.status!=='omitted');
+  const resolved=rows.filter(r=>!vocabularyRequiresReview(r)||r.status==='omitted');
+  const unitsWithPending=project.units.slice(0,project.count).flatMap((item,i)=>{
+   if(i===selected||!item.text.trim()||stale(item))return [];
+   const count=item.rows.filter(r=>vocabularyRequiresReview(r)&&r.status!=='omitted').length;
+   return count?[button(item.title+' · '+count+' pendientes',()=>{selected=i;render()})]:[];
+  });
+  if(unitsWithPending.length){
+   const other=document.createElement('details'),summary=document.createElement('summary');
+   summary.textContent='Otras unidades con pendientes ('+unitsWithPending.length+')';
+   other.append(summary,...unitsWithPending);target.append(other);
+  }
+  if(!rows.length)return;
+  target.append(paragraph(u.title+' · '+pending.length+' pendientes · '+
+   resolved.filter(r=>r.status!=='omitted').length+' listas para Word · '+rows.filter(r=>r.status==='omitted').length+' omitidas'));
+  const reviewed=document.createElement('details'),summary=document.createElement('summary');
+  summary.textContent='Formas resueltas y omitidas ('+resolved.length+')';
+  reviewed.append(summary);
+  const relatedByForm=new Map();
+  for(const item of active){
+   for(const row of item.rows){
+    if(!vocabularyRequiresReview(row)||row.status==='omitted')continue;
+    const form=row.form.normalize('NFC').toLowerCase();
+    if(!relatedByForm.has(form))relatedByForm.set(form,[]);
+    relatedByForm.get(form).push({unit:item,row});
+   }
+  }
+  for(const row of pending)target.append(reviewCard(u,row,paragraph,button,relatedByForm));
+  for(const row of resolved){
+   const detail=document.createElement('details'),title=document.createElement('summary');
+   const state={documented:'Identificación automática',manual:'Aceptada para Word',omitted:'Omitida del Word'}[row.status];
+   title.textContent=row.form+' · '+state+' · '+formatVocabularyEntry(row,u.mode,project.course,project.lang);
+   detail.append(title);
+   detail.addEventListener('toggle',()=>{if(detail.open&&detail.children.length===1)detail.append(reviewCard(u,row,paragraph,button))});
+   reviewed.append(detail);
+  }
+  if(resolved.length)target.append(reviewed);
+ }
+ function externalCandidates(row){
+  return project.course==='gr1'&&eulexisAvailable?
+   (eulexisByForm.get(eulexisAdapter().norm(row.form))||[]):[];
+ }
+ function reviewCard(u,row,paragraph,button,relatedByForm){
+  const card=document.createElement('section');card.className='vg-eulexis-card';
+  const heading=document.createElement('h3');heading.textContent=row.form;
+  const context=paragraph(u.title+' · ');
+  const text=row.context||row.form,start=row.offset||0,end=start+row.form.length;
+  const highlight=document.createElement('mark');highlight.textContent=text.slice(start,end);
+  context.append(text.slice(0,start),highlight,text.slice(end));
+  context.className='vg-eulexis-context';card.append(heading,context);
+  if(vocabularyRequiresReview(row)&&row.status!=='omitted'){
+   card.append(paragraph(row.warning||(row.candidates.length>1?'Pendiente: varias lecturas posibles.':'Pendiente de revisión.')));
+  }
+  const external=externalCandidates(row).slice(0,16);
+  const options=[...row.candidates,...external];
+  if(options.length){
+   const label=document.createElement('label'),select=document.createElement('select');
+   label.textContent='Lectura para Word';
+   select.append(new Option('Selecciona una lectura…',''));
+   options.forEach((candidate,i)=>{
+    const gloss=window.ExaminaValencianGloss?.forEntry(candidate,project.lang)?.value||candidate.meaning;
+    select.append(new Option(candidate.entry+' · '+(gloss||'Sin traducción registrada')+
+     (candidate.eulexisUnverified?' · Eulexis: '+candidate.analysis:' · '+(candidate.origin||'índice morfológico')),i));
+   });
+   const related=document.createElement('details');
+   related.hidden=true;
+   const extras=[];
+   const accept=button('Aceptar',()=>{
+    const chosen=options[Number(select.value)];
+    for(const {item,choice,check} of extras){
+     if(check.checked)decide(item.unit,item.row,choice,'manual');
+    }
+    record(u,row,chosen,'manual');
+    const count=extras.filter(extra=>extra.check.checked).length;
+    if(count)status(row.form+' · '+(count+1)+' apariciones aceptadas para Word.');
+   });
+   accept.disabled=true;
+   select.onchange=()=>{
+    accept.disabled=select.value==='';
+    extras.length=0;related.replaceChildren();related.hidden=true;
+    const chosen=options[Number(select.value)];
+    if(!chosen||chosen.eulexisUnverified)return;
+    const peers=relatedByForm?.get(row.form.normalize('NFC').toLowerCase())||[];
+    for(const item of peers){
+     if(item.row===row||item.row.warning!==row.warning)continue;
+     const choice=item.row.candidates.find(c=>c.lemma===chosen.lemma&&c.entry===chosen.entry&&
+      c.meaning===chosen.meaning&&c.meaning_va===chosen.meaning_va);
+     if(!choice)continue;
+     const l=document.createElement('label'),check=document.createElement('input');
+     l.className='check';check.type='checkbox';
+     check.checked=item.row.identity===row.identity;
+     l.append(check,document.createTextNode(item.unit.title+' · '+item.row.context));
+     extras.push({item,choice,check});related.append(l);
+    }
+    if(extras.length){
+     const summary=document.createElement('summary');
+     summary.textContent='Aplicar también a otras apariciones ('+extras.length+')';
+     related.prepend(summary);related.open=true;related.hidden=false;
+    }
+   };
+   label.append(select);card.append(label,related,accept);
+  }
+  if(row.eulexisUnverified||external.length)card.append(paragraph('Eulexis propone lecturas. Aceptar una ficha para Word no acredita la flexión.'));
+  card.append(button('Editar',()=>{
+   if(card.querySelector('form'))return;
+   const form=document.createElement('form');
+   const glossField=project.lang==='va'?'meaning_va':'meaning';
+   const inputs=[['entry','Enunciado'],[glossField,project.lang==='va'?'Traducció':'Traducción']].map(([field,label])=>{
+    const l=document.createElement('label'),input=document.createElement('input');
+    l.textContent=label;input.value=row[field]||'';input.required=field==='entry';
+    l.append(input);form.append(l);return input;
+   });
+   const submit=document.createElement('button');submit.type='submit';submit.textContent='Guardar corrección';
+   form.append(submit,button('Cancelar',()=>form.remove()));
+   form.onsubmit=event=>{
+    event.preventDefault();
+    const entry=inputs[0].value.trim();if(!entry)return;
+    record(u,row,{...row,entry,lemma:head(entry),[glossField]:inputs[1].value.trim()},'manual');
+   };
+   card.append(form);inputs[0].focus();
+  }));
+  if(row.status!=='omitted')card.append(button('Omitir',()=>record(u,row,row,'omitted')));
+  if(['manual','omitted'].includes(row.status))card.append(button('Restablecer análisis',async()=>{
+   u.decisions[project.course]=(u.decisions[project.course]||[]).filter(d=>d.identity!==row.identity&&(d.identity||d.form!==row.form));
+   u.analysisVersion=0;save();await analyzeUnits();
+  }));
+  return card;
  }
  $('vgCount').onchange=()=>{const n=Number($('vgCount').value);if(!Number.isInteger(n)||n<1||n>100){status('Elige entre 1 y 100 unidades.');return}project.count=n;selected=Math.min(selected,n-1);render();save()};
  $('vgUnit').onchange=()=>{selected=Number($('vgUnit').value);render()};
+ $('vgWordAlternatives').onchange=()=>{project.wordAlternatives=$('vgWordAlternatives').checked;save()};
  $('vgLang').onchange=()=>{project.lang=$('vgLang').value;render();save()};
- $('vgCourse').onchange=()=>{project.course=$('vgCourse').value;qualitySnapshot=null;project.units.forEach(u=>{u.rows=[];u.analyzed=false});save();render();status('Banco cambiado. Vuelve a analizar los textos.');refreshQuality();if(project.course==='gr1')prepareEulexis().catch(error=>eulexisStatus(error.message))};
- for(const [id,field] of [['vgTitle','title'],['vgText','text'],['vgMode','mode']])$(id).oninput=()=>{unit()[field]=$(id).value;if(field==='text'){unit().rows=[];unit().analyzed=false;status('Texto modificado. Analiza la unidad antes de exportar.')}save();if(field==='mode')render();else renderUnitButtons()};
- async function analyzeUnits(mode){
-  const button=$('vgAnalyze'),buttonAll=$('vgAnalyzeAll'),word=$('vgWord'),clear=$('vgClearAll');
-  button.disabled=true;buttonAll.disabled=true;word.disabled=true;clear.disabled=true;status('Analizando…');
+ $('vgCourse').onchange=()=>{
+  project.course=$('vgCourse').value;qualitySnapshot=null;
+  $('vgQualityTotals').textContent='Pulsa «Actualizar auditoría» para consultar el banco.';
+  $('vgQualityRows').replaceChildren();$('vgQualityQueue').replaceChildren();
+  $('vgQualityQueueSummary').textContent='';
+  $('vgReviewUnit').replaceChildren(new Option('Todas las unidades',''));
+  save();render();status('Banco cambiado. Analiza el vocabulario para actualizar las lecturas.');
+  if($('vgQualityPanel').open)refreshQuality();
+  if(project.course==='gr1')prepareEulexis().catch(error=>eulexisStatus(error.message));
+ };
+ for(const [id,field] of [['vgTitle','title'],['vgText','text'],['vgMode','mode']])$(id).oninput=()=>{
+  unit()[field]=$(id).value;
+  if(field==='text'){
+   $('vgResults').replaceChildren();
+   status('Texto modificado. El próximo análisis recuperará las decisiones de los contextos conservados.');
+  }
+  save();if(field==='mode')render();else renderUnitButtons();
+ };
+ async function analyzeUnits(){
+  const controls=['vgAnalyzeAll','vgWord','vgClearAll','vgImport','vgRestore','vgCourse','vgText','vgCount'].map($);
+  controls.forEach(control=>control.disabled=true);status('Analizando…');
   try{
-   const targets=mode==='missing'?project.units.slice(0,project.count).filter(needsAnalysis)
-    :mode==='all'?project.units.slice(0,project.count):[unit()];
-   if(!targets.length)return true;
    const data=await linguistic().load();
    const course={lat1:'latin1',lat4:'latin4',gr1:'greek1'}[project.course];
    const bank=vocab.filter(x=>courseOf(x)===course);
-   for(const u of targets){u.rows=analyze(data,u.text,project.course,bank);u.analyzed=true}
+   const units=project.units.slice(0,project.count);
+   const signature=bankSignature(bank);
+   const updates=units.filter(u=>u.text.trim()&&(stale(u)||u.analyzedBank!==signature))
+    .map(u=>({u,rows:reviewedRows(u,project.course,data,bank)}));
+   for(const {u,rows} of updates)Object.assign(u,{rows,analyzed:true,analysisVersion,
+    analyzedText:u.text,analyzedCourse:project.course,analyzedBank:signature});
    save();render();
-   const distinct=targets.reduce((n,u)=>n+u.rows.length,0);
-   const pending=targets.reduce((n,u)=>n+u.rows.filter(r=>r.status!=='documented').length,0);
-   status(targets.length+' unidad(es) analizada(s). '+distinct+' formas distintas. '+pending+' pendientes de revisión. Textos conservados.');
+   const pending=units.filter(u=>u.text.trim()).flatMap(u=>u.rows)
+    .filter(r=>vocabularyRequiresReview(r)&&r.status!=='omitted').length;
+   status(updates.length+' unidades actualizadas · '+pending+' formas pendientes en el proyecto.');
    return true;
   }catch(e){status('No se pudo analizar: '+e.message);return false}
-  finally{button.disabled=false;buttonAll.disabled=false;word.disabled=false;clear.disabled=false}
+  finally{controls.forEach(control=>control.disabled=false)}
  }
- $('vgAnalyze').onclick=()=>analyzeUnits('current');
- $('vgAnalyzeAll').onclick=()=>analyzeUnits('all');
+ $('vgAnalyzeAll').onclick=()=>analyzeUnits();
  $('vgBackup').onclick=()=>downloadBlob('vocabulario-unidades.json',new Blob([JSON.stringify(project,null,2)],{type:'application/json'}));
  $('vgClearAll').onclick=()=>{
   // Solo se vacía ESTE proyecto local; no modificar el banco de vocabulario
@@ -9211,23 +9475,21 @@ function init(){
    'Proyecto limpiado. Puedes empezar por la UD1 o recuperar una copia JSON.');
  };
  $('vgWord').onclick=async()=>{
-  const missing=project.units.slice(0,project.count).filter(needsAnalysis);
-  if(missing.length){
-   status('Hay '+missing.length+' unidad(es) sin analizar. Analizando antes de descargar el Word…');
-   if(!await analyzeUnits('missing'))return;
-  }
+  if(!await analyzeUnits())return;
   try{
-   const xml=documentXml(project);
+   const xml=documentXml(project,externalCandidates);
    downloadBlob('vocabulario-unidades.docx',zip([
     ['[Content_Types].xml','<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/></Types>'],
     ['_rels/.rels','<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>'],
     ['word/document.xml',xml]
    ]));
-   status('Word generado con '+project.count+' unidades. Revisa las formas marcadas con * antes de utilizarlo.');
+   const pending=project.units.slice(0,project.count).some(u=>u.text.trim()&&u.rows.some(r=>r.status!=='omitted'&&vocabularyRequiresReview(r)));
+  status('Word generado con '+project.count+' unidades.'+(pending?' Las formas pendientes aparecen marcadas con *.':''));
   }catch(e){status('No se ha exportado el Word: '+e.message)}
  };
- $('vgImport').onchange=async e=>{try{const p=JSON.parse(await e.target.files[0].text());if(!Number.isInteger(p.count)||p.count<1||p.count>100||!['lat1','lat4','gr1'].includes(p.course)||!Array.isArray(p.units)||p.units.length<p.count||!p.units.every(u=>typeof u.title==='string'&&typeof u.text==='string'&&['simple','complete'].includes(u.mode)&&Array.isArray(u.rows)&&u.rows.every(r=>typeof r.entry==='string'&&typeof r.meaning==='string'&&typeof r.form==='string'&&Array.isArray(r.candidates))))throw Error('Formato incorrecto');project=p;project.lang=['es','va'].includes(p.lang)?p.lang:'es';selected=0;render();save();const pending=project.units.slice(0,project.count).filter(needsAnalysis).length;status('Proyecto importado: '+project.count+' unidades y textos conservados. '+pending+' por analizar. Puedes pulsar «Analizar todas las unidades» o «Exportar Word» (analizará las pendientes).')}catch(e){status('No se pudo importar: '+e.message)}};
- $('vgShow').onclick=()=>{$('examLayout').style.display='none';$('vocabManager').classList.remove('active');$('vocabularyGenerator').classList.add('active');for(const id of ['vmShowExam','vmShowList'])$(id).classList.remove('active');$('vgShow').classList.add('active');render();refreshQuality()};
+ $('vgRestore').onclick=()=>$('vgImport').click();
+ $('vgImport').onchange=async e=>{if(!e.target.files.length)return;try{const p=JSON.parse(await e.target.files[0].text());if(!Number.isInteger(p.count)||p.count<1||p.count>100||!['lat1','lat4','gr1'].includes(p.course)||!Array.isArray(p.units)||p.units.length<p.count||!p.units.every(u=>typeof u.title==='string'&&typeof u.text==='string'&&['simple','complete'].includes(u.mode)&&Array.isArray(u.rows)&&u.rows.every(r=>typeof r.entry==='string'&&typeof r.meaning==='string'&&typeof r.form==='string'&&Array.isArray(r.candidates))))throw Error('Formato incorrecto');project=migrateProject(p);qualitySnapshot=null;project.lang=['es','va'].includes(p.lang)?p.lang:'es';selected=0;render();save();const pending=project.units.slice(0,project.count).filter(stale).length;status('Proyecto importado: '+project.count+' unidades y textos conservados. '+pending+' por analizar. Puedes pulsar «Analizar y revisar vocabulario» o «Exportar Word» (analizará las pendientes).')}catch(e){status('No se pudo importar: '+e.message)}finally{e.target.value=''}};
+ $('vgShow').onclick=()=>{$('examLayout').style.display='none';$('vocabManager').classList.remove('active');$('vocabularyGenerator').classList.add('active');for(const id of ['vmShowExam','vmShowList'])$(id).classList.remove('active');$('vgShow').classList.add('active');render();if($('vgQualityPanel').open)refreshQuality()};
  for(const id of ['vmShowExam','vmShowList'])$(id).addEventListener('click',()=>{$('vocabularyGenerator').classList.remove('active');$('vgShow').classList.remove('active')});
  render();
  if(project.course==='gr1')prepareEulexis().catch(error=>eulexisStatus('No se pudo abrir Eulexis: '+error.message));
