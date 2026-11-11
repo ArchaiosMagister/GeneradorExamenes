@@ -69,14 +69,20 @@ assert.match(index,/if\(\/artículo\|articulo\/\.test\(a\)\)return null/,
   await page.locator('#vgShow').click();
   await page.locator('#vocabularyGenerator.active').waitFor();
   assert.equal(await page.locator('#vgUnitButtons button').count(),Number(await page.locator('#vgCount').inputValue()));
-  await page.locator('#vgText').fill('λόγου καὶ λόγου.');
+  await page.locator('#vgText').fill('Puella amat.');
   assert.equal(await page.locator('#vgUnitButtons button[data-filled="true"]').count(),1,
-   'La unidad con texto conserva el punto verde');
+   'La unidad latina con texto conserva el punto verde');
   await page.evaluate(()=>{
    window.ExaminaEulexisLocal.load=async()=>({rows:[
     {form:'λόγου',lemma:'θεός',analysis:'genitivo singular masculino'}]});
   });
   await page.selectOption('#vgCourse','gr1');
+  // Los textos de los tres cursos ya son espacios independientes:
+  // las formas griegas se escriben DESPUÉS de cambiar de asignatura.
+  assert.equal(await page.locator('#vgText').inputValue(),'');
+  await page.locator('#vgText').fill('λόγου καὶ λόγου.');
+  assert.equal(await page.locator('#vgUnitButtons button[data-filled="true"]').count(),1,
+   'La unidad griega con texto conserva el punto verde');
   await page.waitForFunction(()=>document.getElementById('vgEulexisStatus')?.textContent?.includes('Eulexis disponible'));
   await page.locator('#vgAnalyzeAll').click();
   await page.locator('#vgResults summary').filter({hasText:'Vocabulario listo para Word'}).click();
