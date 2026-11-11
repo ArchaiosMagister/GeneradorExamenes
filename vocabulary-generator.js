@@ -200,7 +200,7 @@ function latinExpandedForms(bank){
   ['tener, tenera, tenerum','tierno/a','tendre'],
   ['certus, –a, –um','seguro/a','segur/a'],
   ['vulpes, vulpis (f.)','zorro','rabosa'],
-  ['parentes, parentum (m./f. pl.)','padres','pares'],
+  ['parens, parentis (m. o f.)','progenitor, padre o madre','progenitor, pare o mare'],
   ['oratio, orationis (f.)','discurso','discurs'],
   ['Martius, –i','marzo, Marcial','març, Marcial'],
   ['Sergius, –i','Sergio','Sergi'],
@@ -216,6 +216,16 @@ function latinExpandedForms(bank){
   ['colloco, collocavi, collocatum (1ª)','colocar','col·locar'],
   ['servo, servavi, servatum (1ª)','guardar, salvar','guardar, salvar'],
   ['indico, indicavi, indicatum (1ª)','indicar','indicar'],
+  ['nego, negavi, negatum (1ª)','negar','negar'],
+  ['neco, necavi, necatum (1ª)','matar','matar'],
+  ['committo, commisi, commissum (3ª)','emprender, cometer','emprendre, cometre'],
+  ['recipio, recepi, receptum (mx.)','recibir','rebre'],
+  ['callidus, –a, –um','astuto/a','astut/a'],
+  ['facilis, –e','fácil','fàcil'],
+  ['similis, –e','semejante','semblant'],
+  ['dives, divitis','rico/a','ric/a'],
+  ['eloquens, eloquentis','elocuente','eloqüent'],
+  ['adventus, –us','llegada','arribada'],
   ['orno, ornavi, ornatum (1ª)','adornar','adornar'],
   ['declaro, declaravi, declaratum (1ª)','declarar','declarar'],
   ['pereo, perii, peritum (irr.)','perecer','perir'],
@@ -243,6 +253,7 @@ function latinExpandedForms(bank){
   const annotated=raw.match(/\((1ª|2ª|3ª|4ª|mx\.)\)\s*$/u);
   const record={lemma:l,entry:raw,meaning:row.meaning,meaning_va:row.meaning_va||'',
    attested:true,origin:'paradigma regular escolar derivado del enunciado (no flexión individual certificada)'};
+  add(l,record); // La forma de cita del propio enunciado es léxica, no inferida.
   const proper=/^\p{Lu}/u.test(raw);
   if(fields.length>=3&&fields[1]==='a'&&fields[2]==='um'){
    let stem='';
@@ -281,6 +292,9 @@ function latinExpandedForms(bank){
    if(proper){
     addMany(root,neuter?['um','i','o']:['us','i','o','um','e'],record);
    }else decl12(root,record,neuter?'n':'m');
+  }else if(fields.length===2&&l.endsWith('us')&&fields[1]==='us'){
+   const stem=l.slice(0,-2);
+   addMany(stem,proper?['us','ui','um','u']:['us','ui','um','u','uum','ibus'],record);
   }else if(fields.length===2&&l.endsWith('is')&&fields[1]==='is'){
    const stem=l.slice(0,-2);
    addMany(stem,proper?['is','em','i','e']:['is','em','i','e','es','ibus'],record);
@@ -310,6 +324,10 @@ function latinExpandedForms(bank){
   };
   const rule=formsByGroup[group];
   add(stem+rule.inf,record);
+  if(l!=='facio')add(stem+({
+   '1ª':'ari','2ª':'eri','3ª':'i','4ª':'iri','mx.':'i'
+  }[group]),record); // infinitivo de presente pasivo
+
   if(!['dico','duco','facio','fero'].includes(l))add(stem+rule.imp,record);
   const participleStem=stem+(group==='1ª'?'ant':['4ª','mx.'].includes(group)?'ient':'ent');
   add(participleStem.slice(0,-1)+'s',record);
