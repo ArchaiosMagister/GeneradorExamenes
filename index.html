@@ -635,6 +635,17 @@ const $=id=>document.getElementById(id);const esc=s=>String(s).replace(/[&<>"']/
 let units=[...new Set(vocab.map(v=>v.unit))];
 const currentCourse=()=>document.getElementById('course').value;
 const courseOf=x=>x.course||'latin1';
+/* Contexto escolar disponible para el revisor griego, sin exponer solucionarios. */
+window.ExaminaGreekSentenceContexts=function(form){
+ const normGreek=value=>String(value||'').toLocaleLowerCase('el').normalize('NFD')
+  .replace(/\u0345/g,'ι').replace(/\p{M}/gu,'').replace(/ς/g,'σ');
+ const wanted=normGreek(form);
+ if(!wanted)return [];
+ return sentences.filter(row=>courseOf(row)==='greek1'&&typeof row.text==='string'&&
+  (row.text.match(/[\p{Script=Greek}\p{M}]+/gu)||[]).some(t=>normGreek(t)===wanted))
+  .slice(0,2).map(row=>row.text);
+};
+
 const courseName=()=>({latin1:'Latín I',latin4:'Latín 4.º ESO',greek1:'Griego I (ático)'})[currentCourse()];
 const T={es:{config:'Configurar examen',language:'Idioma del examen',term:'Trimestre',units:'Unidad o unidades del examen',cumulative:'Incluir vocabulario acumulado hasta la última unidad marcada',all:'Todas',clear:'Limpiar',title:'Título',model:'Modelo de examen',blocks:'Bloques (puedes combinar cualquiera)',decl:'Declinación y concordancia',verb:'Formas verbales',lex:'Léxico',sent:'Oraciones (banco inicial)',culture:'Cultura clásica',cultureTitle:'Cultura clásica: responde a las preguntas',amount:'Elementos por bloque',generate:'Generar examen',print:'Imprimir / PDF',solutions:'Mostrar soluciones',hide:'Ocultar soluciones',name:'Nombre',date:'Fecha',quarter:'trimestre',selection:'Unidades',available:'entradas distintas disponibles',declTitle:'Analiza las formas nominales y adjetivales',declHelp:'Indica caso, número y género cuando corresponda, y el enunciado.',verbTitle:'Analiza las formas verbales',verbHelp:'Indica persona, número, tiempo, modo, voz y enunciado.',lexTitle:'Léxico: traduce al castellano',sentTitle:'Analiza y traduce las oraciones',key:'Solucionario orientativo',empty:'Selecciona al menos un bloque y una unidad.',pres:'presente de indicativo activo',edit:'Puedes editar directamente el texto del examen antes de imprimir.'},va:{config:'Configura l’examen',language:'Llengua de l’examen',term:'Trimestre',units:'Unitat o unitats de l’examen',cumulative:'Incloure el vocabulari acumulat fins a l’última unitat marcada',all:'Totes',clear:'Netejar',title:'Títol',model:'Model d’examen',blocks:'Blocs (pots combinar-ne qualsevol)',decl:'Declinació i concordança',verb:'Formes verbals',lex:'Lèxic',sent:'Oracions (banc inicial)',culture:'Cultura clàssica',cultureTitle:'Cultura clàssica: respon a les preguntes',amount:'Elements per bloc',generate:'Generar examen',print:'Imprimir / PDF',solutions:'Mostrar solucions',hide:'Ocultar solucions',name:'Nom',date:'Data',quarter:'trimestre',selection:'Unitats',available:'entrades diferents disponibles',declTitle:'Analitza les formes nominals i adjectivals',declHelp:'Indica el cas, el nombre i el gènere quan corresponga, i l’enunciat.',verbTitle:'Analitza les formes verbals',verbHelp:'Indica la persona, el nombre, el temps, el mode, la veu i l’enunciat.',lexTitle:'Lèxic: tradueix al valencià',sentTitle:'Analitza i tradueix les oracions',key:'Solucionari orientatiu',empty:'Selecciona almenys un bloc i una unitat.',pres:'present d’indicatiu actiu',edit:'Pots editar directament el text de l’examen abans d’imprimir.'}};
 const tr=k=>T[$('lang').value][k];
@@ -3490,5 +3501,5 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
  else mount();
 })();
 </script><script src="offline-lemmas.js" defer></script>
-<script src="verification-review.js" defer></script><script src="vocabulary-quality.js" defer></script>
+<script src="verification-review.js" defer></script><script src="greek-review.js" defer></script><script src="vocabulary-quality.js" defer></script>
 <script src="vocabulary-generator.js" defer></script><script src="exam-scoring.js" defer></script><script src="pwa.js" defer></script></html>
