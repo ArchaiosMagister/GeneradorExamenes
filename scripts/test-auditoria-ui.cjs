@@ -75,7 +75,7 @@ assert.match(index,/if\(\/artículo\|articulo\/\.test\(a\)\)return null/,
   assert.match(await page.locator('#vgResults .vg-eulexis-context').first().textContent(),/λόγου/);
   assert.ok(await page.locator('#vgResults .vg-eulexis-choice').count()>=1);
   await page.locator('#vgResults .vg-eulexis-choice').first().click();
-  assert.match(await page.locator('#vgResults').textContent(),/Revisado manualmente/);
+  assert.match(await page.locator('#vgResults').textContent(),/flexión no certificada/);
   await page.locator('#vmShowExam').click();
   await page.locator('#examQuestionMenus .exam-question-panel').first().waitFor();
   assert.deepEqual(errors,[],'No debe haber excepciones JavaScript en la interfaz');
