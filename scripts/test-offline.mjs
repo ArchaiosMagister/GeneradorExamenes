@@ -49,6 +49,10 @@ assert(!html.includes('pwa.js')&&!html.includes('manifest.webmanifest'),
 assert(html.includes("if(location.protocol==='file:')return"),'No consultar archivos al abrir file://');
 assert(html.includes('r.length>=4'),'Se admiten filas de cuatro campos UniMorph');
 const network=[...html.matchAll(/\bfetch\(/g)];
-assert.equal(network.length,4,'Revisar nuevos accesos fetch antes de publicar la edición autónoma');
+assert.equal(network.length,5,'Solo se autoriza un nuevo acceso fetch, tras pulsar Instalar Eulexis');
+assert(html.includes('Instalar Eulexis (un clic)'),
+ 'El acceso externo de Eulexis debe depender de una acción explícita del docente');
+assert(!html.includes('src="eulexis-local.js"'),
+ 'El adaptador debe quedar incrustado en el HTML autónomo');
 console.log('Pruebas offline superadas: HTML reproducible, dos scripts válidos y',
  expected.latinRows,'formas latinas.');
