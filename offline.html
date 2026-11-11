@@ -635,9 +635,9 @@ body:has(.vocab-manager.active) .exam-coursebar{display:none}
 #vgResults .vg-review-units{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:8px 0 14px}
 #vgResults .vg-review-units button{margin:0;text-align:left;overflow-wrap:anywhere}
 #vgResults .vg-review-units button[aria-pressed="true"]{outline:2px solid var(--accent,#315c93);outline-offset:-2px;font-weight:750}
-#vgResults .vg-review-checkbox{display:grid;grid-template-columns:20px minmax(0,1fr);gap:8px;align-items:start;margin:4px 0;padding:5px 4px;cursor:pointer;line-height:1.45}
-#vgResults .vg-review-checkbox input{width:20px;height:20px;margin:1px 0 0;accent-color:var(--accent,#315c93)}
-#vgResults .vg-review-checkbox span{overflow-wrap:anywhere}
+#vocabularyGenerator .vg-review-checkbox{display:grid;grid-template-columns:20px minmax(0,1fr);gap:8px;align-items:start;margin:4px 0;padding:5px 4px;cursor:pointer;line-height:1.45}
+#vocabularyGenerator .vg-review-checkbox input{width:20px;height:20px;margin:1px 0 0;accent-color:var(--accent,#315c93)}
+#vocabularyGenerator .vg-review-checkbox span{overflow-wrap:anywhere}
 #vgResults .vg-review-select-all{font-weight:750;border-bottom:1px solid var(--line,#ccd7e6)}
 #vocabularyGenerator label.check:has(#vgWordAlternatives){display:flex;align-items:flex-start;gap:8px}
 #vocabularyGenerator #vgWordAlternatives{width:20px;height:20px;margin:1px 0 0;flex:none}
@@ -666,6 +666,9 @@ body:has(.vocab-manager.active) .exam-coursebar{display:none}
 <label for="vgLang">Idioma del vocabulario <select id="vgLang"><option value="es">Castellano</option><option value="va">Valencià</option></select></label>
 <label>Título de la unidad<input id="vgTitle"></label><label>Texto de la unidad<textarea id="vgText" rows="8"></textarea></label>
 <label>Enunciado verbal<select id="vgMode"><option value="complete">Completo (según el banco, sin añadir temas ausentes)</option><option value="simple">Simple (forma de cita + conjugación latina disponible)</option></select></label>
+<details id="vgVerbModePanel"><summary>Formato verbal por unidades</summary>
+<p class="vm-help">Marca las unidades que quieres en formato simple. Las demás usarán el formato completo.</p>
+<div id="vgVerbModeUnits"></div><button type="button" id="vgApplyVerbModes" class="secondary">Aplicar formato verbal</button></details>
 <label class="check"><input type="checkbox" id="vgWordAlternatives"> Incluir las lecturas posibles en Word, marcadas para revisión</label>
 <div class="buttons"><button id="vgAnalyzeAll" type="button">Analizar y revisar vocabulario</button><button id="vgWord" type="button">Exportar a Word</button></div>
 <div class="buttons" role="group" aria-label="Copias del proyecto"><button id="vgBackup" type="button" class="secondary">Guardar copia JSON</button><button id="vgRestore" type="button" class="secondary">Recuperar copia JSON</button><input id="vgImport" type="file" accept=".json,application/json" hidden><button id="vgClearAll" type="button" class="vg-danger" title="Vaciar todas las unidades del proyecto">Limpiar todo</button></div>
@@ -7492,6 +7495,7 @@ const head=s=>String(s).split(',')[0].replace(/\s*\([^)]*\).*/,'').trim();
  * Los enunciados y glosas específicos del docente tienen prioridad.
  */
 const latinInvariables=[
+ [['vere'],'vere (adv.)','verdaderamente','verdaderament'],
  [['a','ab','abs'],'a, ab (prep. + abl.)','de, desde, por','de, des de, per'],
  [['ad'],'ad (prep. + ac.)','a, hacia','a, cap a'],
  [['ante'],'ante (prep. + ac.)','delante de, antes de','davant de, abans de'],
@@ -7666,7 +7670,8 @@ function latinExpandedForms(bank){
   if(!forms.has(k))forms.set(k,new Map());
   const stored=forms.get(k),existing=stored.get(record.lemma);
   const score=r=>(r.entry.split(',').length*8)+(r.entry.length/100);
-  if(!existing||score(record)>score(existing))stored.set(record.lemma,record);
+  if(!existing||Number(record.attested)>Number(existing.attested)||
+   (record.attested===existing.attested&&score(record)>score(existing)))stored.set(record.lemma,record);
  };
  const addMany=(stem,ends,record)=>{for(const end of ends)add(stem+end,record)};
  const decl12=(stem,record,kind='all')=>{
@@ -8040,10 +8045,9 @@ function latinExpandedForms(bank){
    }
    const sup=fields[2]||'';
    if(sup.endsWith('um')&&sup.length>3){
-    // Un error en el supino docente no puede validar un falso participio.
-    // Ofrecer como hipótesis revisable, conservando el índice contrastado.
-    const proposal={...record,attested:false,
-     origin:'participio deducido del supino docente: revisar individualmente'};
+    // La deducción léxica puede identificar un verbo sin acreditar su flexión.
+    const proposal={...record,attested:false,fromTeacherSupine:true,
+     origin:'participio deducido del supino docente'};
     decl12(sup.slice(0,-2),proposal);
    }
   }
@@ -8058,6 +8062,8 @@ function latinExpandedForms(bank){
    forms:['possum','potes','potest','possumus','potestis','possunt','poteram','poteras','poterat',
     'poteramus','poteratis','poterant','potero','poteris','poterit','poterimus','poteritis','poterunt',
     'posse','potui','potuit','potuerunt']},
+  // Latín 4.º puede registrar solo la cita breve; esta forma está contrastada.
+  {lemma:'aedifico',entry:'aedifico, aedificavi, aedificatum (1ª)',meaning:'edificar',forms:['aedificata']},
   {lemma:'do',entry:'do, dedi, datum (1ª)',meaning:'dar',forms:['dare']},
   // Formas del examen docente de Latín 4.º UD5. El banco activo conserva prioridad.
   {lemma:'terra',entry:'terra, −æ',meaning:'tierra, territorio',forms:['terra']},
@@ -8917,7 +8923,7 @@ function analyze(data,text,course,bank,{contextual=false}={}){
    }
    candidates=[...preferred.values()];
   }
-  const resolved=candidates.length===1&&candidates[0].attested;
+  const resolved=candidates.length===1&&(candidates[0].attested||(contextual&&candidates[0].fromTeacherSupine));
   const spellingHint=lang==='grc'?Object.entries(greekSpellingNotes)
    .find(([sample])=>sample.normalize('NFC')===form.normalize('NFC'))?.[1]:
    lang==='lat'?latinSpellingNotes[normal]:undefined;
@@ -8941,7 +8947,9 @@ function entries(rows){
  // La descomposición del nexo produce una entrada de vocabulario propia,
  // pero nunca para quoque, quisque, uterque ni otros -que lexicalizados.
  // Incluso si bonaque tiene un lema base ambiguo, el nexo sigue siendo «y».
- rows=rows.filter(r=>r.status!=='omitted');
+ rows=rows.filter(r=>r.status!=='omitted').flatMap(row=>
+  row.status==='manual'&&row.readings?.length?
+   row.readings.map(reading=>({...row,...reading})):[row]);
  const withEnclitic=rows.some(r=>r.encliticQue)?[...rows,{
   form:'-que',lemma:'-que',entry:'–que (conj.)',meaning:'y',meaning_va:'i',
   status:'documented',candidates:[],origin:'conjunción enclítica identificada'}]:rows;
@@ -9068,7 +9076,7 @@ function vocabularyRequiresReview(row){
   '<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>'+
   titleParagraph+body+'<w:sectPr>'+layout+'</w:sectPr></w:body></w:document>';
 }
-const analysisVersion=3;
+const analysisVersion=5;
 function needsAnalysis(unit,course){
  return !!unit.text?.trim()&&(unit.analysisVersion!==analysisVersion||
   unit.analyzedCourse!==course||unit.analyzedText!==unit.text);
@@ -9106,6 +9114,17 @@ function readerHead(entry,lang){
  const first=head(entry).normalize('NFC').toLowerCase();
  return lang==='grc'?first:latinKey(first).replace(/j/g,'i');
 }
+function acceptedReadings(value){
+ if(!Array.isArray(value))return undefined;
+ const entries=new Map();
+ for(const reading of value){
+  if(!reading||typeof reading.entry!=='string'||typeof reading.lemma!=='string'||
+   typeof reading.meaning!=='string')continue;
+  const {entry,lemma,meaning,meaning_va,eulexisUnverified}=reading;
+  entries.set(entry.normalize('NFC'),{entry,lemma,meaning,meaning_va,eulexisUnverified});
+ }
+ return entries.size>1?[...entries.values()]:undefined;
+}
 function migrateProject(project){
  for(const unit of project.units){
   const source=unit.decisions,decisions={};
@@ -9114,8 +9133,8 @@ function migrateProject(project){
    const rows=Array.isArray(source?.[course])?source[course]:legacy?unit.rows||[]:[];
    decisions[course]=rows.filter(row=>row&&['manual','omitted'].includes(row.status)&&
     typeof row.form==='string'&&typeof row.entry==='string'&&typeof row.meaning==='string')
-    .map(({identity,form,status,entry,lemma,meaning,meaning_va,eulexisUnverified})=>
-     ({identity,form,status,entry,lemma,meaning,meaning_va,eulexisUnverified}));
+    .map(({identity,form,status,entry,lemma,meaning,meaning_va,eulexisUnverified,readings})=>
+     ({identity,form,status,entry,lemma,meaning,meaning_va,eulexisUnverified,readings:acceptedReadings(readings)}));
   }
   unit.decisions=decisions;
  }
@@ -9303,11 +9322,21 @@ function init(){
    host.append(button);
   });
  }
+ function renderVerbModes(){
+  const host=$('vgVerbModeUnits');
+  host.replaceChildren(...project.units.slice(0,project.count).map(u=>
+   reviewCheckbox(u.title,u.mode==='simple').label));
+ }
+ $('vgApplyVerbModes').onclick=()=>{
+  const checks=[...$('vgVerbModeUnits').querySelectorAll('input')];
+  project.units.slice(0,project.count).forEach((u,i)=>{u.mode=checks[i].checked?'simple':'complete'});
+  save();render();status('Formato verbal aplicado a las '+project.count+' unidades.');
+ };
  function render(){
   unit();$('vgCount').value=project.count;$('vgCourse').value=project.course;$('vgLang').value=project.lang||'es';
   $('vgWordAlternatives').checked=project.wordAlternatives===true;
   refreshReader();
-  renderUnitButtons();
+  renderUnitButtons();renderVerbModes();
   if($('vgEulexisPanel'))$('vgEulexisPanel').hidden=project.course!=='gr1';
   $('vgUnit').replaceChildren(...project.units.slice(0,project.count).map((u,i)=>new Option(u.title,i,false,i===selected)));
   $('vgTitle').value=unit().title;$('vgText').value=unit().text;$('vgMode').value=unit().mode;
@@ -9318,8 +9347,9 @@ function init(){
   u.decisions||={};
   const decisions=u.decisions[project.course]||[];
   const {entry,meaning,meaning_va,lemma,eulexisUnverified}=choice;
+  const readings=decisionStatus==='manual'?acceptedReadings(choice.readings):undefined;
   const decision={identity:row.identity,form:row.form,entry,meaning,meaning_va,lemma,
-   eulexisUnverified,status:decisionStatus};
+   eulexisUnverified,readings,status:decisionStatus};
   u.decisions[project.course]=decisions.filter(d=>d.identity!==row.identity);
   u.decisions[project.course].push(decision);
   Object.assign(row,decision);
@@ -9387,16 +9417,9 @@ function init(){
   if(!rows.length)return;
   target.append(paragraph(u.title+' · '+pending.length+' pendientes · '+
    ready.length+' listas para Word · '+excluded.length+' excluidas'));
-  const relatedByForm=new Map();
-  for(const item of active){
-   for(const row of item.rows){
-    if(!pendingReview(row))continue;
-    const form=row.form.normalize('NFC').toLowerCase();
-    if(!relatedByForm.has(form))relatedByForm.set(form,[]);
-    relatedByForm.get(form).push({unit:item,row});
-   }
-  }
-  for(const row of pending)target.append(reviewCard(u,row,paragraph,button,relatedByForm));
+  const projectAppearances=active.flatMap(item=>item.rows
+   .filter(row=>pendingReview(row)||row.status==='documented').map(row=>({unit:item,row})));
+  for(const row of pending)target.append(reviewCard(u,row,paragraph,button,projectAppearances));
   for(const [label,reviewedRows] of [['Vocabulario listo para Word',ready],['Formas excluidas de Word',excluded]]){
    if(!reviewedRows.length)continue;
    const reviewed=document.createElement('details'),summary=document.createElement('summary');
@@ -9405,7 +9428,8 @@ function init(){
    for(const row of reviewedRows){
     const detail=document.createElement('details'),title=document.createElement('summary');
     const state={documented:'Identificación automática',manual:'Aceptada para Word',omitted:'Omitida del Word'}[row.status];
-    title.textContent=row.form+' · '+state+' · '+formatVocabularyEntry(row,u.mode,project.course,project.lang);
+    title.textContent=row.form+' · '+state+' · '+(row.readings||[row])
+     .map(reading=>formatVocabularyEntry(reading,u.mode,project.course,project.lang)).join(' / ');
     detail.append(title);
     detail.addEventListener('toggle',()=>{
      if(detail.open&&detail.children.length===1)detail.append(reviewCard(u,row,paragraph,button));
@@ -9436,7 +9460,45 @@ function init(){
   }
   return [...distinct.values()];
  }
- function reviewCard(u,row,paragraph,button,relatedByForm){
+ function reviewCard(u,row,paragraph,button,projectAppearances=[]){
+  const createRelated=()=>{
+   const details=document.createElement('details');
+   details.hidden=true;
+   return details;
+  };
+  function relatedSelections(details,items){
+   details.replaceChildren();details.hidden=!items.length;
+   if(!items.length)return [];
+   const summary=document.createElement('summary');
+   summary.textContent='Aplicar también a otras apariciones ('+items.length+')';
+   const all=reviewCheckbox('Marcar todas las apariciones',false);
+   all.label.classList.add('vg-review-select-all');
+   const choices=items.map(item=>{
+    const caption=item.unit.title+' · '+(readerFormKey(item.row.form)!==readerFormKey(row.form)?item.row.form+' · ':'')+
+     (item.row.context||item.row.form)+(item.row.status==='documented'?' · ya identificada':'');
+    const {label,check}=reviewCheckbox(caption,item.row.identity===row.identity);
+    details.append(label);
+    return {...item,check};
+   });
+   const updateAll=()=>{
+    const count=choices.filter(({check})=>check.checked).length;
+    all.check.checked=count===choices.length;
+    all.check.indeterminate=count>0&&count<choices.length;
+   };
+   all.check.onchange=()=>choices.forEach(({check})=>{check.checked=all.check.checked});
+   for(const {check} of choices)check.onchange=updateAll;
+   updateAll();details.prepend(summary,all.label);details.open=true;
+   return choices;
+  }
+  function acceptWithPeers(choice,peers){
+   let count=1;
+   for(const item of peers){
+    if(!item.check.checked)continue;
+    decide(item.unit,item.row,item.choice||choice,'manual');count++;
+   }
+   record(u,row,choice,'manual');
+   if(count>1)status(row.form+' · '+count+' apariciones aceptadas para Word.');
+  }
   const card=document.createElement('section');card.className='vg-eulexis-card';
   const heading=document.createElement('h3');heading.textContent=row.form;
   const context=paragraph(u.title+' · ');
@@ -9444,6 +9506,8 @@ function init(){
   const highlight=document.createElement('mark');highlight.textContent=text.slice(start,end);
   context.append(text.slice(0,start),highlight,text.slice(end));
   context.className='vg-eulexis-context';card.append(heading,context);
+  if(row.status==='documented'&&row.candidates.some(candidate=>candidate.fromTeacherSupine))
+   card.append(paragraph('Lema identificado a partir del supino del banco docente.'));
   if(vocabularyRequiresReview(row)&&row.status!=='omitted'){
    card.append(paragraph(row.warning||(row.candidates.length>1?'Pendiente: varias lecturas posibles.':'Pendiente de revisión.')));
   }
@@ -9458,50 +9522,45 @@ function init(){
     select.append(new Option(candidate.entry+' · '+(gloss||'Sin traducción registrada')+
      (candidate.analysis?' · '+(candidate.origin||'Eulexis')+': '+candidate.analysis:' · '+(candidate.origin||'índice morfológico')),i));
    });
-   const related=document.createElement('details');
-   related.hidden=true;
-   const extras=[];
-   const accept=button('Aceptar',()=>{
-    const chosen=options[Number(select.value)];
-    for(const {item,choice,check} of extras){
-     if(check.checked)decide(item.unit,item.row,choice,'manual');
-    }
-    record(u,row,chosen,'manual');
-    const count=extras.filter(extra=>extra.check.checked).length;
-    if(count)status(row.form+' · '+(count+1)+' apariciones aceptadas para Word.');
-   });
+   const related=createRelated();
+   let extras=[];
+   const accept=button('Aceptar',()=>acceptWithPeers(options[Number(select.value)],extras));
    accept.disabled=true;
    select.onchange=()=>{
-    accept.disabled=select.value==='';
-    extras.length=0;related.replaceChildren();related.hidden=true;
     const chosen=options[Number(select.value)];
-    if(!chosen||external.includes(chosen))return;
-    const peers=relatedByForm?.get(row.form.normalize('NFC').toLowerCase())||[];
-    for(const item of peers){
-     if(item.row===row||item.row.warning!==row.warning)continue;
-     const choice=item.row.candidates.find(c=>c.lemma===chosen.lemma&&c.entry===chosen.entry&&
-      c.meaning===chosen.meaning&&c.meaning_va===chosen.meaning_va);
-     if(!choice)continue;
-     const {label,check}=reviewCheckbox(item.unit.title+' · '+item.row.context,item.row.identity===row.identity);
-     extras.push({item,choice,check});related.append(label);
-    }
-    if(extras.length){
-     const summary=document.createElement('summary');
-     summary.textContent='Aplicar también a otras apariciones ('+extras.length+')';
-     const all=reviewCheckbox('Marcar todas las apariciones',false);
-     all.label.classList.add('vg-review-select-all');
-     const updateAll=()=>{
-      const count=extras.filter(({check})=>check.checked).length;
-      all.check.checked=count===extras.length;
-      all.check.indeterminate=count>0&&count<extras.length;
-     };
-     all.check.onchange=()=>extras.forEach(({check})=>{check.checked=all.check.checked});
-     for(const {check} of extras)check.onchange=updateAll;
-     updateAll();
-     related.prepend(summary,all.label);related.open=true;related.hidden=false;
-    }
+    accept.disabled=!chosen;
+    const matches=chosen?projectAppearances.flatMap(item=>{
+     if(item.row===row||item.row.warning!==row.warning)return [];
+     const choice=(item.row.status==='documented'?[item.row]:[...item.row.candidates,...externalCandidates(item.row)])
+      .find(candidate=>candidate.entry.normalize('NFC')===chosen.entry.normalize('NFC'));
+     return choice?[{...item,choice}]:[];
+    }):[];
+    extras=relatedSelections(related,matches);
    };
    label.append(select);card.append(label,related,accept);
+   const byCitation=new Map();
+   for(const option of options){
+    const citation=option.entry.normalize('NFC');
+    if(!byCitation.has(citation))byCitation.set(citation,option);
+   }
+   if(byCitation.size>1){
+    const multi=document.createElement('details'),summary=document.createElement('summary');
+    summary.textContent='Aceptar varias lecturas';multi.append(summary);
+    const checks=[...byCitation.values()].map(option=>{
+     const {label,check}=reviewCheckbox(formatVocabularyEntry(option,u.mode,project.course,project.lang),
+      row.readings?.some(reading=>reading.entry.normalize('NFC')===option.entry.normalize('NFC')));
+     multi.append(label);return {option,check};
+    });
+    const chosen=()=>checks.filter(({check})=>check.checked).map(({option})=>option);
+    const saveBoth=button('Guardar lecturas seleccionadas',()=>{
+     const readings=chosen();
+     record(u,row,{...readings[0],readings},'manual');
+     status(row.form+' · '+readings.length+' lecturas aceptadas para Word.');
+    });
+    const update=()=>{saveBoth.disabled=chosen().length<2};
+    for(const {check} of checks)check.onchange=update;
+    update();multi.append(saveBoth);card.append(multi);
+   }
   }
   if(row.eulexisUnverified||external.some(candidate=>candidate.eulexisUnverified))
    card.append(paragraph('Eulexis propone lecturas. Aceptar una ficha para Word no acredita la flexión.'));
@@ -9515,12 +9574,17 @@ function init(){
     l.textContent=label;input.value=row[field]||'';input.required=field==='entry';
     l.append(input);form.append(l);return input;
    });
+   form.append(paragraph('La corrección se guarda en este proyecto de vocabulario.'));
+   const related=createRelated();
+   const repeated=relatedSelections(related,projectAppearances.filter(item=>
+    item.row!==row&&pendingReview(item.row)&&readerFormKey(item.row.form)===readerFormKey(row.form)));
+   form.append(related);
    const submit=document.createElement('button');submit.type='submit';submit.textContent='Guardar corrección';
    form.append(submit,button('Cancelar',()=>form.remove()));
    form.onsubmit=event=>{
     event.preventDefault();
     const entry=inputs[0].value.trim();if(!entry)return;
-    record(u,row,{...row,entry,lemma:head(entry),[glossField]:inputs[1].value.trim()},'manual');
+    acceptWithPeers({...row,entry,lemma:head(entry),readings:undefined,[glossField]:inputs[1].value.trim()},repeated);
    };
    card.append(form);inputs[0].focus();
   }));
@@ -9551,7 +9615,7 @@ function init(){
    $('vgResults').replaceChildren();
    status('Texto modificado. El próximo análisis recuperará las decisiones de los contextos conservados.');
   }
-  save();if(field==='mode')render();else renderUnitButtons();
+  save();if(field==='mode')render();else{renderUnitButtons();if(field==='title')renderVerbModes()}
  };
  async function analyzeUnits(){
   const controls=['vgAnalyzeAll','vgWord','vgClearAll','vgImport','vgRestore','vgCourse','vgText','vgCount'].map($);

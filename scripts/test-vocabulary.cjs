@@ -601,6 +601,57 @@ console.log('Vocabulario: prioridad docente, deduplicación por UD, ambigüedad,
  assert.equal(await page.inputValue('#vgText'),'Est panem.');
 
 
+ // El mismo lema enlaza formas distintas y las ediciones enlazan repeticiones.
+ await page.selectOption('#vgCourse','lat1');
+ await page.locator('#vgUnitButtons button').first().click();
+ await page.fill('#vgText','Bellum. Bello. Vere dico. Vere loquor. Ædificata.');
+ await page.click('#vgAnalyzeAll');
+ const reviewForm=form=>page.locator('#vgResults section').filter({has:page.getByRole('heading',{name:form,exact:true})});
+ const bello=reviewForm('Bello');
+ await bello.waitFor();
+ await bello.locator('select').selectOption(await bello.locator('option').filter({hasText:/^bellum,/}).getAttribute('value'));
+ await bello.getByRole('checkbox',{name:/Bellum.*ya identificada/}).check();
+ await bello.getByRole('button',{name:'Aceptar',exact:true}).click();
+ const vere=reviewForm('Vere').first();
+ await vere.getByRole('button',{name:'Editar',exact:true}).click();
+ await vere.getByLabel('Enunciado',{exact:true}).fill('vere (adv.)');
+ await vere.getByLabel('Traducción',{exact:true}).fill('verdaderamente');
+ await vere.locator('form').getByRole('checkbox',{name:'Marcar todas las apariciones'}).check();
+ await vere.getByRole('button',{name:'Guardar corrección'}).click();
+ const lexical=await page.evaluate(()=>JSON.parse(localStorage.examina_vocabulary_project_v1).units[0].rows);
+ assert.equal(lexical.filter(r=>['Bellum','Bello'].includes(r.form)&&r.status==='manual'&&r.lemma==='bellum').length,2);
+ assert.equal(lexical.filter(r=>r.form==='Vere'&&r.status==='manual'&&r.meaning==='verdaderamente').length,2);
+ assert(lexical.some(r=>r.form==='Ædificata'&&r.status==='documented'));
+ await page.locator('#vgVerbModePanel summary').click();
+ await page.locator('#vgVerbModeUnits').getByRole('checkbox',{name:'UD1',exact:true}).check();
+ await page.locator('#vgVerbModeUnits').getByRole('checkbox',{name:'UD2',exact:true}).uncheck();
+ await page.click('#vgApplyVerbModes');
+ const modes=await page.evaluate(()=>JSON.parse(localStorage.examina_vocabulary_project_v1).units.slice(0,2).map(u=>u.mode));
+ assert.deepEqual(modes,['simple','complete']);
+ const modeExport=page.waitForEvent('download');await page.click('#vgWord');
+ const modeDoc=fs.readFileSync(await (await modeExport).path(),'utf8');
+ assert(!/ædificavi/i.test(modeDoc),'UD1 usa la cita verbal breve');
+
+ // Una misma aparición puede conservar ambas fichas, incluso tras importar.
+ await page.fill('#vgText','Filiis.');
+ await page.click('#vgAnalyzeAll');
+ const filiis=reviewForm('Filiis');
+ await filiis.getByText('Aceptar varias lecturas',{exact:true}).click();
+ const multiple=filiis.locator('details').filter({hasText:'Guardar lecturas seleccionadas'});
+ await multiple.getByRole('checkbox',{name:/^filia,/}).check();
+ await multiple.getByRole('checkbox',{name:/^filius,/}).check();
+ await multiple.getByRole('button',{name:'Guardar lecturas seleccionadas'}).click();
+ await page.reload();await page.click('#vgShow');
+ const bothBackup=page.waitForEvent('download');await page.click('#vgBackup');
+ await page.locator('#vgImport').setInputFiles(await (await bothBackup).path());
+ await page.waitForFunction(()=>document.querySelector('#vgStatus').textContent.includes('Proyecto importado'));
+ const both=await page.evaluate(()=>JSON.parse(localStorage.examina_vocabulary_project_v1).units[0].rows[0]);
+ assert.deepEqual(both.readings.map(r=>r.lemma).sort(),['filia','filius']);
+ const bothWord=page.waitForEvent('download');await page.click('#vgWord');
+ const bothXml=require('node:child_process').execFileSync('unzip',['-p',await (await bothWord).path(),'word/document.xml'],{encoding:'utf8'});
+ for(const lemma of ['filia','filius'])
+  assert(bothXml.split('</w:p>').some(p=>p.includes('>'+lemma+',')&&!p.includes('>* ')));
+
  if(process.env.LATIN1_VOCABULARY_CORPUS){
   const corpus=JSON.parse(fs.readFileSync(process.env.LATIN1_VOCABULARY_CORPUS,'utf8'));
   assert.equal(corpus.course,'lat1');assert.equal(corpus.count,10);

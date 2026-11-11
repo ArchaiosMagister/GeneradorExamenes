@@ -634,9 +634,9 @@ body:has(.vocab-manager.active) .exam-coursebar{display:none}
 #vgResults .vg-review-units{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:8px 0 14px}
 #vgResults .vg-review-units button{margin:0;text-align:left;overflow-wrap:anywhere}
 #vgResults .vg-review-units button[aria-pressed="true"]{outline:2px solid var(--accent,#315c93);outline-offset:-2px;font-weight:750}
-#vgResults .vg-review-checkbox{display:grid;grid-template-columns:20px minmax(0,1fr);gap:8px;align-items:start;margin:4px 0;padding:5px 4px;cursor:pointer;line-height:1.45}
-#vgResults .vg-review-checkbox input{width:20px;height:20px;margin:1px 0 0;accent-color:var(--accent,#315c93)}
-#vgResults .vg-review-checkbox span{overflow-wrap:anywhere}
+#vocabularyGenerator .vg-review-checkbox{display:grid;grid-template-columns:20px minmax(0,1fr);gap:8px;align-items:start;margin:4px 0;padding:5px 4px;cursor:pointer;line-height:1.45}
+#vocabularyGenerator .vg-review-checkbox input{width:20px;height:20px;margin:1px 0 0;accent-color:var(--accent,#315c93)}
+#vocabularyGenerator .vg-review-checkbox span{overflow-wrap:anywhere}
 #vgResults .vg-review-select-all{font-weight:750;border-bottom:1px solid var(--line,#ccd7e6)}
 #vocabularyGenerator label.check:has(#vgWordAlternatives){display:flex;align-items:flex-start;gap:8px}
 #vocabularyGenerator #vgWordAlternatives{width:20px;height:20px;margin:1px 0 0;flex:none}
@@ -665,6 +665,9 @@ body:has(.vocab-manager.active) .exam-coursebar{display:none}
 <label for="vgLang">Idioma del vocabulario <select id="vgLang"><option value="es">Castellano</option><option value="va">Valencià</option></select></label>
 <label>Título de la unidad<input id="vgTitle"></label><label>Texto de la unidad<textarea id="vgText" rows="8"></textarea></label>
 <label>Enunciado verbal<select id="vgMode"><option value="complete">Completo (según el banco, sin añadir temas ausentes)</option><option value="simple">Simple (forma de cita + conjugación latina disponible)</option></select></label>
+<details id="vgVerbModePanel"><summary>Formato verbal por unidades</summary>
+<p class="vm-help">Marca las unidades que quieres en formato simple. Las demás usarán el formato completo.</p>
+<div id="vgVerbModeUnits"></div><button type="button" id="vgApplyVerbModes" class="secondary">Aplicar formato verbal</button></details>
 <label class="check"><input type="checkbox" id="vgWordAlternatives"> Incluir las lecturas posibles en Word, marcadas para revisión</label>
 <div class="buttons"><button id="vgAnalyzeAll" type="button">Analizar y revisar vocabulario</button><button id="vgWord" type="button">Exportar a Word</button></div>
 <div class="buttons" role="group" aria-label="Copias del proyecto"><button id="vgBackup" type="button" class="secondary">Guardar copia JSON</button><button id="vgRestore" type="button" class="secondary">Recuperar copia JSON</button><input id="vgImport" type="file" accept=".json,application/json" hidden><button id="vgClearAll" type="button" class="vg-danger" title="Vaciar todas las unidades del proyecto">Limpiar todo</button></div>
