@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - 'index.html'
+      - 'exam-scoring.js'
       - 'culture-lat4.js'
       - 'lexicon-valenciano.js'
       - 'vocabulary-generator.js'
@@ -26,6 +27,7 @@ on:
     branches: [main]
     paths:
       - 'index.html'
+      - 'exam-scoring.js'
       - 'culture-lat4.js'
       - 'vocabulary-generator.js'
       - 'offline.html'
