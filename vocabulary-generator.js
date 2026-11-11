@@ -157,7 +157,7 @@ const latinLexicalQueWords=new Set([
 // Las sospechas ortográficas no son pruebas de que la palabra sea errónea.
 // El docente decide con la frase original: no se sustituye el token ni el lema.
 const latinContextNotes={
- 'avarus':'puede ser avarus, –a, –um («avaro») o un nombre propio; consultar la oración',
+ 'auarus':'puede ser avarus, –a, –um («avaro») o un nombre propio; consultar la oración',
  'medicum':'puede ser medicus, –i (m., «médico») o medicus, –a, –um (adjetivo); consultar la oración'
 };
 const latinSpellingNotes={
