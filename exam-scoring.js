@@ -90,7 +90,7 @@
     const span=item.el.querySelector('.exam-question-points');
     if(span)span.textContent=label(cents);
    }
-   const input=rows.querySelector('input[data-scoring-key="'+CSS.escape(key)+'"]');
+   const input=[...rows.querySelectorAll('input[data-scoring-key]')].find(el=>el.dataset.scoringKey===key);
    if(input&&source!=='field')input.value=value(cents);
   }
   showStatus();return true;
@@ -186,15 +186,24 @@
  });
  observer.observe(paper,{subtree:true,childList:true,characterData:true});
  rows.addEventListener('change',showStatus);
+ // El elemento exterior #paper también es editable; en algunos navegadores
+ // el evento input tiene como target ese contenedor y no el span anidado.
+ const editedSpan=event=>{
+  const element=event.target?.nodeType===1?event.target:event.target?.parentElement;
+  const selected=window.getSelection()?.anchorNode;
+  return element?.closest?.('.exam-question-points')||
+   selected?.parentElement?.closest?.('.exam-question-points')||
+   paper.querySelector('.exam-question-points:focus');
+ };
  paper.addEventListener('input',event=>{
-  const span=event.target.closest?.('.exam-question-points');
+  const span=editedSpan(event);
   if(!span)return;
   const n=number(span.textContent);
   span.setAttribute('aria-invalid',String(n===null));
   if(n!==null)setScore(span.dataset.scoringKey,n,{source:'preview'});
  });
  paper.addEventListener('focusout',event=>{
-  const span=event.target.closest?.('.exam-question-points');
+  const span=editedSpan(event);
   if(!span)return;
   const n=number(span.textContent);
   if(n!==null)setScore(span.dataset.scoringKey,n,{source:'preview'});
