@@ -1386,6 +1386,9 @@ function analyze(data,text,course,bank){
   return {form,candidates,status:requiresSpellingReview?'review':resolved?'documented':candidates.length?'review':'unknown',
    warning:contextHint?'Necesita contexto: '+contextHint:
     spellingHint?'Revisión de grafía o abreviatura: '+spellingHint:'',
+   // En una forma con -que copulativa se identifican DOS elementos:
+   // el lexema base (quizá ambiguo) y la conjunción enclítica -que.
+   encliticQue:lang==='lat'&&enclitic.length>0,
    lemma:resolved&&!requiresSpellingReview?candidates[0].lemma:'',
    entry:resolved&&!requiresSpellingReview?candidates[0].entry:form,
    meaning:resolved&&!requiresSpellingReview?candidates[0].meaning:'',
@@ -1393,7 +1396,13 @@ function analyze(data,text,course,bank){
  });
 }
 function entries(rows){
- const seen=new Set();return rows.filter(r=>{
+ // La descomposición del nexo produce una entrada de vocabulario propia,
+ // pero nunca para quoque, quisque, uterque ni otros -que lexicalizados.
+ // Incluso si bonaque tiene un lema base ambiguo, el nexo sigue siendo «y».
+ const withEnclitic=rows.some(r=>r.encliticQue)?[...rows,{
+  form:'-que',lemma:'-que',entry:'–que (conj.)',meaning:'y',meaning_va:'i',
+  status:'documented',candidates:[],origin:'conjunción enclítica identificada'}]:rows;
+ const seen=new Set();return withEnclitic.filter(r=>{
   const id=r.status==='manual'||r.status==='documented'?key(r.lemma||head(r.entry))+'|'+r.entry+'|'+r.meaning:'?'+r.form;
   if(seen.has(id))return false;seen.add(id);return true;
  }).sort((a,b)=>key(a.entry).localeCompare(key(b.entry),'el'));
