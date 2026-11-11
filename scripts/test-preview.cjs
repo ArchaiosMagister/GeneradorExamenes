@@ -548,10 +548,9 @@ async function checkFile(browser,filename){
   first.value=alternate.value;first.dispatchEvent(new Event('change',{bubbles:true}));
   return {available:true,first:first.value,expected:alternate.value,second:second.value,before};
  });
- if(preverbs.available){
-  assert.equal(preverbs.first,preverbs.expected,filename+': no se seleccionó el verbo elegido');
-  assert.equal(preverbs.second,preverbs.before,filename+': se regeneró el segundo verbo sin solicitarlo');
- }
+ assert(preverbs.available,filename+': deben existir dos verbos de modificación preverbial seleccionables');
+ assert.equal(preverbs.first,preverbs.expected,filename+': no se seleccionó el verbo elegido');
+ assert.equal(preverbs.second,preverbs.before,filename+': se regeneró el segundo verbo sin solicitarlo');
  await page.setViewportSize({width:390,height:844});
  assert(await page.locator('#paper .exam-sheet').isVisible(),filename+': vista previa oculta en móvil');
  assert.deepEqual(errors,[],filename+': errores JavaScript');
