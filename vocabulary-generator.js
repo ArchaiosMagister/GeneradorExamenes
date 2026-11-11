@@ -859,6 +859,84 @@ function init(){
  const status=s=>{$('vgStatus').textContent=s};
  const save=()=>{try{localStorage.setItem(storage,JSON.stringify(project))}catch{status('No se pudo guardar en este navegador. Exporta una copia JSON.')}};
 
+
+ // Eulexis es opcional y local. Una sugerencia nunca valida una flexión.
+ let eulexisByForm=new Map(),eulexisAvailable=false;
+ const eulexisAdapter=()=>window.ExaminaEulexisLocal;
+ function eulexisStatus(message){
+  const area=$('vgEulexisStatus');if(area)area.textContent=message;
+ }
+ function contextsOf(u,form){
+  const normalize=eulexisAdapter()?.norm;
+  if(!normalize)return [];
+  const target=normalize(form);
+  return String(u.text||'').split(/[.·;;!?\n]+/u).map(s=>s.trim()).filter(Boolean)
+   .filter(s=>(s.match(/[\p{Script=Greek}\p{M}]+/gu)||[]).some(w=>normalize(w)===target))
+   .slice(0,2).map(s=>s.slice(0,260));
+ }
+ async function prepareEulexis(install=false){
+  const adapter=eulexisAdapter();
+  if(!adapter)throw Error('No se encuentra el módulo Eulexis');
+  const data=await linguistic().load();
+  const result=install?await adapter.install(data,eulexisStatus):await adapter.load(data);
+  const catalog=data.vocabulary?.grc||{},mapped=new Map();
+  for(const proposal of result?.rows||[]){
+   const entry=catalog[adapter.norm(proposal.lemma)]?.gr1;
+   if(!entry?.entry||!entry?.meaning)continue;
+   const form=adapter.norm(proposal.form);
+   if(!mapped.has(form))mapped.set(form,new Map());
+   const signature=entry.entry+'|'+proposal.analysis;
+   if(!mapped.get(form).has(signature))mapped.get(form).set(signature,{
+    lemma:proposal.lemma,entry:entry.entry,meaning:entry.meaning,analysis:proposal.analysis
+   });
+  }
+  eulexisByForm=new Map([...mapped].map(([form,values])=>[form,[...values.values()]]));
+  eulexisAvailable=!!result;
+  eulexisStatus(result?.rows?.length?
+   'Eulexis disponible: '+result.rows.length+' análisis locales; son propuestas sin verificar.':
+   'Eulexis no instalado en este navegador. Se conserva la revisión habitual.');
+  render();
+ }
+ function showEulexisCard(box,r,u){
+  if(project.course!=='gr1'||!eulexisAvailable||r.status==='documented')return;
+  const options=(eulexisByForm.get(eulexisAdapter().norm(r.form))||[]).slice(0,16);
+  if(!options.length)return;
+  const card=document.createElement('section');card.className='vg-eulexis-card';
+  const heading=document.createElement('h3');heading.textContent='Propuestas Eulexis · '+r.form;card.append(heading);
+  const note=document.createElement('p');note.className='vm-help';
+  note.textContent='Selecciona un análisis según su contexto. Es una decisión docente: no certifica el paradigma.';
+  card.append(note);
+  for(const context of contextsOf(u,r.form)){
+   const p=document.createElement('p');p.className='vg-eulexis-context';
+   p.textContent='Contexto de la unidad: '+context;card.append(p);
+  }
+  for(const candidate of options){
+   const button=document.createElement('button');button.type='button';button.className='vg-eulexis-choice';
+   const name=document.createElement('strong');name.textContent=candidate.entry;
+   const detail=document.createElement('span');detail.textContent=candidate.analysis+' · '+candidate.meaning;
+   button.append(name,detail);
+   button.onclick=()=>{Object.assign(r,{lemma:candidate.lemma,entry:candidate.entry,
+    meaning:candidate.meaning,status:'manual',
+    warning:'Revisado por el docente usando Eulexis; flexión no certificada'});
+    save();render();
+   };
+   card.append(button);
+  }
+  box.append(card);
+ }
+ const eulexisInstall=$('vgEulexisInstall'),eulexisRemove=$('vgEulexisRemove');
+ if(eulexisInstall)eulexisInstall.onclick=async()=>{
+  eulexisInstall.disabled=true;
+  try{await prepareEulexis(true)}
+  catch(error){eulexisStatus('No se pudo instalar Eulexis: '+error.message)}
+  finally{eulexisInstall.disabled=false}
+ };
+ if(eulexisRemove)eulexisRemove.onclick=async()=>{
+  try{await eulexisAdapter().clear();eulexisAvailable=false;eulexisByForm.clear();
+   eulexisStatus('Eulexis borrado. Se conservan las decisiones manuales.');render()}
+  catch(error){eulexisStatus('No se pudo borrar Eulexis: '+error.message)}
+ };
+
  let qualitySnapshot=null;
  function showQualityQueue(){
   const summary=$('vgQualityQueueSummary'),target=$('vgQualityQueue');
@@ -946,6 +1024,7 @@ function init(){
    const box=document.createElement('div');box.style.cssText='padding:10px 0;border-bottom:1px solid #ccd7e6';
    const states=project.lang==='va'?{documented:'Forma documentada',manual:'Revisat manualment',review:'* Ambigua o candidata sense verificar',unknown:'* Desconeguda'}:{documented:'Forma documentada',manual:'Revisado manualmente',review:'* Ambigua o candidata sin verificar',unknown:'* Desconocida'};
    const label=document.createElement('p');label.textContent=r.form+' · '+(r.warning||states[r.status]);box.append(label);
+   showEulexisCard(box,r,unit());
    if(r.candidates.length&&r.status!=='documented'){
     const select=document.createElement('select');select.append(new Option('Elegir una entrada documentada o candidata…',''));
     r.candidates.forEach((c,i)=>{const candidateGloss=window.ExaminaValencianGloss?.forEntry(c,project.lang)?.value||c.meaning;select.append(new Option(c.entry+' — '+candidateGloss+(c.attested?'':' [sin verificar]'),i))});
@@ -961,7 +1040,7 @@ function init(){
  $('vgCount').onchange=()=>{const n=Number($('vgCount').value);if(!Number.isInteger(n)||n<1||n>100){status('Elige entre 1 y 100 unidades.');return}project.count=n;selected=Math.min(selected,n-1);render();save()};
  $('vgUnit').onchange=()=>{selected=Number($('vgUnit').value);render()};
  $('vgLang').onchange=()=>{project.lang=$('vgLang').value;render();save()};
- $('vgCourse').onchange=()=>{project.course=$('vgCourse').value;qualitySnapshot=null;project.units.forEach(u=>{u.rows=[];u.analyzed=false});save();render();status('Banco cambiado. Vuelve a analizar los textos.');refreshQuality()};
+ $('vgCourse').onchange=()=>{project.course=$('vgCourse').value;qualitySnapshot=null;project.units.forEach(u=>{u.rows=[];u.analyzed=false});save();render();status('Banco cambiado. Vuelve a analizar los textos.');refreshQuality();if(project.course==='gr1')prepareEulexis().catch(error=>eulexisStatus(error.message))};
  for(const [id,field] of [['vgTitle','title'],['vgText','text'],['vgMode','mode']])$(id).oninput=()=>{unit()[field]=$(id).value;if(field==='text'){unit().rows=[];unit().analyzed=false;status('Texto modificado. Analiza la unidad antes de exportar.')}save();if(field==='mode')render();else renderUnitButtons()};
  async function analyzeUnits(mode){
   const button=$('vgAnalyze'),buttonAll=$('vgAnalyzeAll'),word=$('vgWord');
@@ -1005,6 +1084,7 @@ function init(){
  $('vgShow').onclick=()=>{$('examLayout').style.display='none';$('vocabManager').classList.remove('active');$('vocabularyGenerator').classList.add('active');for(const id of ['vmShowExam','vmShowList'])$(id).classList.remove('active');$('vgShow').classList.add('active');render();refreshQuality()};
  for(const id of ['vmShowExam','vmShowList'])$(id).addEventListener('click',()=>{$('vocabularyGenerator').classList.remove('active');$('vgShow').classList.remove('active')});
  render();
+ prepareEulexis().catch(error=>eulexisStatus('No se pudo abrir Eulexis: '+error.message));
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
