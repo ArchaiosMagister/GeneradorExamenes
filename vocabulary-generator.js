@@ -848,7 +848,17 @@ function vocabularyRequiresReview(row){
   const italicEntry=displayEntry(row.entry,unit.mode);
   if(formatted.startsWith(italicEntry)){
    const suffix=formatted.slice(italicEntry.length);
-   return paragraph((pending?run('* '):'')+run(italicEntry,{italic:true})+run(suffix));
+   // Solo los elementos del enunciado van en cursiva. Todas las
+   // indicaciones parentéticas (conjugación, género, régimen, etc.)
+   // se componen en redonda incluso cuando forman parte de la ficha.
+   let wordRuns='',position=0;
+   for(const note of italicEntry.matchAll(/\\([^()]*\\)/g)){
+    if(note.index>position)wordRuns+=run(italicEntry.slice(position,note.index),{italic:true});
+    wordRuns+=run(note[0]);
+    position=note.index+note[0].length;
+   }
+   if(position<italicEntry.length)wordRuns+=run(italicEntry.slice(position),{italic:true});
+   return paragraph((pending?run('* '):'')+wordRuns+run(suffix));
   }
   return paragraph(run((pending?'* ':'')+formatted));
  };
