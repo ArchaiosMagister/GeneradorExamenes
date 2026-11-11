@@ -1617,7 +1617,7 @@ function applyLatinEditorialProjectCorrections(project){
   sources.push(project.workspaces.lat1.units);
  for(const units of new Set(sources)){
   for(const u of units){
-   if(!/^UD\\s*10$/iu.test(u.title)||typeof u.text!=='string')continue;
+   if(!/^UD\s*10$/iu.test(u.title)||typeof u.text!=='string')continue;
    const revised='Pecunia carere nonnullis philosophis placebat.';
    for(const prior of ['Pecunia carere nonulli philosophi placebat.',
     'Pecunia carere nonnulli philosophi placebat.']){
