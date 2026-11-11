@@ -41,6 +41,7 @@ assert.match(index,/if\(\/artículo\|articulo\/\.test\(a\)\)return null/,
    window.__glossUpdates=0;
    new MutationObserver(()=>window.__glossUpdates++).observe(paper,{childList:true,subtree:true});
   });
+  await page.locator('#group-vocab').evaluate(el=>el.open=true);
   await page.selectOption('#glossScope','required');
   await page.waitForFunction(()=>window.__glossUpdates>0);
   await page.evaluate(()=>{
