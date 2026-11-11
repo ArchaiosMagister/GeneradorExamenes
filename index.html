@@ -2283,6 +2283,34 @@ function greekExamControls(){
   const regen=document.createElement('button');regen.type='button';regen.className='secondary';regen.textContent='Regenerar '+label.toLowerCase();
   regen.disabled=!pool.length;regen.addEventListener('click',()=>greekRegenerate(kind));row.append(regen);
   for(const id of selected){const item=pool.find(x=>x.id===id);if(!item)continue;
+   const edit=document.createElement('label');edit.style.display='block';edit.style.margin='9px 0';
+   edit.textContent='Palabra seleccionada (editable): ';
+   const input=document.createElement('input');input.type='text';input.style.width='100%';
+   input.value=kind==='conjugation'?headLex(item.lemmas[0]):item.prompt;
+   input.setAttribute('aria-label','Editar '+label+' '+id);
+   input.addEventListener('input',()=>{
+    const paper=$('paper'),node=[...paper.querySelectorAll('[data-corpus-id]')]
+     .find(element=>element.dataset.corpusId===id);
+    if(!node)return;
+    const target=kind==='declension'?node.querySelector('thead th[colspan]'):
+     kind==='conjugation'?node:
+     kind==='forms'||kind==='sentences'?node.querySelector('span:last-child'):
+     kind==='pronouns'?node.querySelector('td:first-child'):node;
+    if(!target)return;
+    const value=input.value.trim();
+    if(kind==='forms')target.textContent=value+':';
+    else if(kind==='etymology'){
+     const prefix=target.textContent.match(/^\s*[a-z]\.\s*/)?.[0]||'';
+     target.textContent=prefix+value+':';
+    }else target.textContent=value;
+    const key=paper.querySelector('#answerkey');
+    if(key&&!key.querySelector('[data-manual-warning]')){
+     const warning=document.createElement('p');warning.dataset.manualWarning='true';
+     warning.textContent='Has modificado palabras manualmente: revisa las soluciones automáticas, que pueden corresponder a las anteriores.';
+     key.prepend(warning);
+    }
+   });
+   edit.append(input);row.append(edit);
    const remove=document.createElement('button');remove.type='button';remove.className='secondary';
    remove.textContent='Quitar '+(kind==='conjugation'?headLex(item.lemmas[0]):item.prompt);
    remove.addEventListener('click',()=>greekRemoveChoice(kind,id));row.append(remove);
