@@ -12,8 +12,8 @@ assert(before('<header class="top">','<nav class="vocab-tabbar'), 'Primero el t�
 assert(before('<nav class="vocab-tabbar','<div class="exam-coursebar'), 'Después los tres apartados');
 assert.match(index,/id="vgUnitButtons"/,'No desaparecerán los botones por unidad');
 assert.match(vocab,/function renderUnitButtons\(\)/,'Los botones deben conservar su renderizado');
-assert.match(index,/for\(const id of \['glossScope','glossNouns','glossVerbs','glossAdjectives','glossOther'\]\)/,
- 'Los filtros deben actualizar el glosario');
+assert.match(index,/for\(const id of \['glossTranslationMode'\]\)/,
+ 'El selector de traducciones debe actualizar el glosario');
 assert.match(index,/if\(\/artículo\|articulo\/\.test\(a\)\)return null/,
  'El artículo no debe identificarse como sustantivo');
 
@@ -49,7 +49,7 @@ assert.match(index,/if\(\/artículo\|articulo\/\.test\(a\)\)return null/,
    editor.dispatchEvent(new Event('input',{bubbles:true}));
    window.__glossUpdates=0;
   });
-  await page.selectOption('#glossScope','required');
+  await page.selectOption('#glossTranslationMode','all');
   await page.waitForFunction(()=>window.__glossUpdates>0);
   await page.evaluate(()=>{
    const model=document.getElementById('model');model.value='morf';
