@@ -70,6 +70,8 @@ jobs:
         run: npm run offline:build
       - name: Probar lematización latina y griega sin red
         run: node scripts/test-lemma-index.mjs
+      - name: Verificar las 17 decisiones griegas, banco, índice y HTML autónomo
+        run: node scripts/test-greek-editorial.cjs
       - name: Auditar incidencias morfológicas y decisiones
         run: node scripts/test-teacher-review.mjs
       - name: Probar la cola griega y el adaptador de importación Eulexis
