@@ -55,7 +55,7 @@ const dictionary={
  indeclform:'indeclinable'
 };
 function describe(raw){
- return String(raw||'').replace(/[a-z]+(?:\/[a-z]+)*/gi,t=>
+ return String(raw||'').replace(/\b(?:[123](?:st|nd|rd)|[a-z]+(?:\/[a-z]+)*)\b/gi,t=>
   t.split('/').map(w=>dictionary[w]||w).join('/')).trim().slice(0,240);
 }
 function fingerprint(data){
