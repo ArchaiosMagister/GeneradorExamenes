@@ -98,8 +98,10 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
     'Regenerar '+kind+' ha alterado otras palabras');
   }
 
-  // 2 puntos fijos para el léxico, aun cuando se intenta editar la puntuación.
+  // 2 puntos fijos para el léxico, con el banco completo ya disponible.
+  await configure('latin1','tablas','UD10');
   await page.waitForFunction(()=>!!window.ExaminaScoring);
+  await page.locator('#examScoring .exam-scoring-heading button').click();
   const score=await page.evaluate(()=>{
    window.ExaminaScoring.sync();
    const all=window.ExaminaScoring.rows(),lex=all.find(x=>/léxico|lexic/i.test(x.caption));
@@ -108,7 +110,7 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
    const enunciado=[...document.querySelectorAll('#paper .exam-question')].find(x=>/léxico/i.test(x.textContent))?.textContent||'';
    return {points,lex,disabled:input?.disabled,total:window.ExaminaScoring.total(),enunciado};
   });
-  assert(score.lex&&score.lex.points===200&&score.disabled,'El léxico debe valer siempre 2p.');
+  assert(score.lex&&score.lex.points===200&&score.disabled,'El léxico debe valer siempre 2p.: '+JSON.stringify(score));
   assert.equal(score.total,1000,'Los demás puntos deben repartirse hasta 10');
   assert(score.points.every(x=>/^\(\d+(?:,\d+)?p\.\)\.$/.test(x)),
    'Sin espacios entre número y p.: '+score.points);
