@@ -1608,6 +1608,24 @@ function reviewedRows(unit,course,data,bank){
   return decision?{...row,...decision,identity:row.identity,form:row.form}:row;
  });
 }
+function parseReaderProposals(payload){
+ if(payload?.schema!=='examina-reader-proposals/v1'||!['lat','grc'].includes(payload.language)||
+  !Array.isArray(payload.rows)||payload.rows.length>20000)
+  throw Error('Formato de propuestas de lector incorrecto');
+ for(const row of payload.rows){
+  if(!row||typeof row.form!=='string'||row.form.length>80||!/^\p{L}[\p{L}\p{M}]*$/u.test(row.form)||
+   typeof row.lemma!=='string'||!row.lemma.trim()||row.lemma.length>160||
+   typeof row.analysis!=='string'||row.analysis.length>500)
+   throw Error('Una lectura del índice de propuestas no es válida');
+ }
+ return {schema:payload.schema,language:payload.language,
+  rows:payload.rows.map(({form,lemma,analysis})=>({form,lemma,analysis}))};
+}
+const readerFormKey=form=>form.normalize('NFC').toLowerCase();
+function readerHead(entry,lang){
+ const first=head(entry).normalize('NFC').toLowerCase();
+ return lang==='grc'?first:latinKey(first).replace(/j/g,'i');
+}
 function migrateProject(project){
  for(const unit of project.units){
   const source=unit.decisions,decisions={};
@@ -1632,6 +1650,51 @@ function init(){
  const unit=()=>{while(project.units.length<project.count)project.units.push({title:'UD'+(project.units.length+1),text:'',mode:'complete',rows:[],analyzed:false});return project.units[selected]};
  migrateProject(project);
  const stale=u=>needsAnalysis(u,project.course);
+ const readerLanguage=()=>project.course==='gr1'?'grc':'lat';
+ let readerByForm=new Map(),readerTeachers=new Map();
+ function refreshReader(){
+  const language=readerLanguage();
+  const stored=project.readerProposals?.[language];
+  readerByForm=new Map();readerTeachers=new Map();
+  let rows=[];
+  if(stored){
+   try{rows=parseReaderProposals(stored).rows}catch{}
+  }
+  const teacherCourse={lat1:'latin1',lat4:'latin4',gr1:'greek1'}[project.course];
+  for(const row of vocab){
+   if(!rows.length||courseOf(row)!==teacherCourse)continue;
+   const id=readerHead(row.entry,language);
+   if(!readerTeachers.has(id))readerTeachers.set(id,[]);
+   readerTeachers.get(id).push(row);
+  }
+  for(const row of rows){
+   const id=readerFormKey(row.form);
+   if(!readerByForm.has(id))readerByForm.set(id,[]);
+   readerByForm.get(id).push(row);
+  }
+  $('vgReaderStatus').textContent=rows.length?
+   rows.length+' propuestas disponibles para '+(language==='lat'?'latín':'griego')+'.':
+   'Todavía no hay propuestas del lector para este idioma.';
+  $('vgReaderRemove').disabled=!stored;
+ }
+ $('vgReaderImport').onchange=async event=>{
+  const file=event.target.files[0];
+  if(!file)return;
+  const target=project,language=readerLanguage();
+  try{
+   if(file.size>4*1024*1024)throw Error('El archivo de propuestas supera 4 MB.');
+   const proposals=parseReaderProposals(JSON.parse(await file.text()));
+   if(proposals.language!==language)throw Error('El archivo corresponde a otra lengua.');
+   if(project!==target||readerLanguage()!==language)return;
+   project.readerProposals={...project.readerProposals,[language]:proposals};
+   render();save();
+  }catch(error){$('vgReaderStatus').textContent=error.message}
+  finally{event.target.value=''}
+ };
+ $('vgReaderRemove').onclick=()=>{
+  delete project.readerProposals[readerLanguage()];
+  render();save();
+ };
  const status=s=>{$('vgStatus').textContent=s};
  const save=()=>{try{localStorage.setItem(storage,JSON.stringify(project))}catch{status('No se pudo guardar en este navegador. Exporta una copia JSON.')}};
 
@@ -1651,14 +1714,14 @@ function init(){
   const teachers=vocab.filter(row=>courseOf(row)==='greek1');
   for(const proposal of result?.rows||[]){
    const entry=catalog[adapter.norm(proposal.lemma)]?.gr1;
-   if(!entry?.entry)continue;
-   const teacher=teachers.find(row=>row.entry===entry.entry)||
-    teachers.find(row=>head(row.entry).normalize('NFC')===head(entry.entry).normalize('NFC')); // Una glosa pendiente no impide consultar la lectura morfológica.
+   const citation=entry?.entry||proposal.lemma;
+   const teacher=teachers.find(row=>row.entry===citation)||
+    teachers.find(row=>readerHead(row.entry,'grc')===readerHead(proposal.lemma,'grc')); // Una glosa pendiente no impide consultar la lectura morfológica.
    const form=adapter.norm(proposal.form);
    if(!mapped.has(form))mapped.set(form,new Map());
-   const signature=entry.entry+'|'+proposal.analysis;
+   const signature=citation+'|'+proposal.analysis;
    if(!mapped.get(form).has(signature))mapped.get(form).set(signature,{
-    lemma:proposal.lemma,entry:teacher?.entry||entry.entry,meaning:teacher?.meaning||'',
+    lemma:proposal.lemma,entry:teacher?.entry||citation,meaning:teacher?.meaning||'',
     meaning_va:teacher?.meaning_va||'',analysis:proposal.analysis,eulexisUnverified:true
    });
   }
@@ -1763,6 +1826,7 @@ function init(){
  function render(){
   unit();$('vgCount').value=project.count;$('vgCourse').value=project.course;$('vgLang').value=project.lang||'es';
   $('vgWordAlternatives').checked=project.wordAlternatives===true;
+  refreshReader();
   renderUnitButtons();
   if($('vgEulexisPanel'))$('vgEulexisPanel').hidden=project.course!=='gr1';
   $('vgUnit').replaceChildren(...project.units.slice(0,project.count).map((u,i)=>new Option(u.title,i,false,i===selected)));
@@ -1852,8 +1916,25 @@ function init(){
   if(resolved.length)target.append(reviewed);
  }
  function externalCandidates(row){
-  return project.course==='gr1'&&eulexisAvailable?
+  const language=readerLanguage();
+  const installed=language==='grc'&&eulexisAvailable?
    (eulexisByForm.get(eulexisAdapter().norm(row.form))||[]):[];
+  const source=language==='lat'?'Collatinus':'Eulexis';
+  const personal=(readerByForm.get(readerFormKey(row.form))||[]).flatMap(proposal=>{
+   const matches=readerTeachers.get(readerHead(proposal.lemma,language))||[];
+   const records=matches.length?matches:[{entry:proposal.lemma,meaning:'',meaning_va:''}];
+   return records.map(teacher=>({
+    lemma:head(teacher.entry),entry:teacher.entry,meaning:teacher.meaning||'',
+    meaning_va:teacher.meaning_va||'',analysis:proposal.analysis,
+    origin:source,eulexisUnverified:source==='Eulexis'
+   }));
+  });
+  const distinct=new Map();
+  for(const candidate of [...personal,...installed]){
+   const id=JSON.stringify([candidate.entry,candidate.analysis]);
+   if(!distinct.has(id))distinct.set(id,candidate);
+  }
+  return [...distinct.values()];
  }
  function reviewCard(u,row,paragraph,button,relatedByForm){
   const card=document.createElement('section');card.className='vg-eulexis-card';
@@ -1866,7 +1947,7 @@ function init(){
   if(vocabularyRequiresReview(row)&&row.status!=='omitted'){
    card.append(paragraph(row.warning||(row.candidates.length>1?'Pendiente: varias lecturas posibles.':'Pendiente de revisión.')));
   }
-  const external=externalCandidates(row).slice(0,16);
+  const external=externalCandidates(row);
   const options=[...row.candidates,...external];
   if(options.length){
    const label=document.createElement('label'),select=document.createElement('select');
@@ -1875,7 +1956,7 @@ function init(){
    options.forEach((candidate,i)=>{
     const gloss=window.ExaminaValencianGloss?.forEntry(candidate,project.lang)?.value||candidate.meaning;
     select.append(new Option(candidate.entry+' · '+(gloss||'Sin traducción registrada')+
-     (candidate.eulexisUnverified?' · Eulexis: '+candidate.analysis:' · '+(candidate.origin||'índice morfológico')),i));
+     (candidate.analysis?' · '+(candidate.origin||'Eulexis')+': '+candidate.analysis:' · '+(candidate.origin||'índice morfológico')),i));
    });
    const related=document.createElement('details');
    related.hidden=true;
@@ -1894,7 +1975,7 @@ function init(){
     accept.disabled=select.value==='';
     extras.length=0;related.replaceChildren();related.hidden=true;
     const chosen=options[Number(select.value)];
-    if(!chosen||chosen.eulexisUnverified)return;
+    if(!chosen||external.includes(chosen))return;
     const peers=relatedByForm?.get(row.form.normalize('NFC').toLowerCase())||[];
     for(const item of peers){
      if(item.row===row||item.row.warning!==row.warning)continue;
@@ -1915,7 +1996,9 @@ function init(){
    };
    label.append(select);card.append(label,related,accept);
   }
-  if(row.eulexisUnverified||external.length)card.append(paragraph('Eulexis propone lecturas. Aceptar una ficha para Word no acredita la flexión.'));
+  if(row.eulexisUnverified||external.some(candidate=>candidate.eulexisUnverified))
+   card.append(paragraph('Eulexis propone lecturas. Aceptar una ficha para Word no acredita la flexión.'));
+  else if(external.length)card.append(paragraph('Collatinus propone lecturas. Aceptar una ficha para Word no acredita la flexión.'));
   card.append(button('Editar',()=>{
    if(card.querySelector('form'))return;
    const form=document.createElement('form');
@@ -2012,6 +2095,7 @@ function init(){
  $('vgWord').onclick=async()=>{
   if(!await analyzeUnits())return;
   try{
+   refreshReader();
    const xml=documentXml(project,externalCandidates);
    downloadBlob('vocabulario-unidades.docx',zip([
     ['[Content_Types].xml','<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/></Types>'],

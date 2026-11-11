@@ -504,6 +504,42 @@ console.log('Vocabulario: prioridad docente, deduplicación por UD, ambigüedad,
  assert.equal(batch.meaning,'');
  console.log('Tres cursos: contexto, cambios incrementales, corrección, omisión, Word, lote y copia JSON.');
 
+ // Se buscan propuestas fuera del curso y luego se enlazan con las fichas docentes.
+ for(const [course,language,known,foreign] of [
+  ['lat1','lat','puella','Xylothera'],['lat4','lat','mare','Xylothera'],
+  ['gr1','grc','λόγος','ξυλόθηρα']
+ ]){
+  await page.selectOption('#vgCourse',course);
+  await page.fill('#vgText','zxyz.');
+  const proposal={schema:'examina-reader-proposals/v1',language,rows:[
+   {form:'zxyz',lemma:known,analysis:'Lectura de prueba'},
+   {form:'zxyz',lemma:foreign,analysis:'Lectura de prueba',meaning:'glosa externa prohibida'}
+  ]};
+  const importFile=page.locator('#vgReaderImport');
+  await importFile.setInputFiles({name:'lector.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(proposal))});
+  await page.waitForFunction(()=>document.querySelector("#vgReaderStatus").textContent.includes("2 propuestas"));
+  assert.match(await page.locator('#vgReaderStatus').textContent(),/2 propuestas/);
+  await page.click('#vgAnalyzeAll');
+  const card=page.locator('#vgResults section').filter({has:page.getByRole('heading',{name:'zxyz',exact:true})});
+  await card.waitFor();
+  const options=await card.locator('option').allTextContents();
+  assert(options.some(x=>x.includes(foreign+' · Sin traducción registrada')));
+  assert(options.some(x=>x.includes('Lectura de prueba')&&!x.includes('Sin traducción registrada')));
+  assert(!options.join(' ').includes('glosa externa prohibida'));
+  await page.locator('#vgWordAlternatives').check();
+  const exported=page.waitForEvent('download');await page.click('#vgWord');
+  const doc=fs.readFileSync(await (await exported).path(),'utf8');
+  assert.match(doc,/Pendientes de revisión/);assert(doc.includes(foreign));
+  assert(!doc.includes('glosa externa prohibida'));
+  await page.reload();await page.click('#vgShow');
+  await page.waitForFunction(()=>document.querySelector("#vgReaderStatus").textContent.includes("2 propuestas"));
+  assert.match(await page.locator('#vgReaderStatus').textContent(),/2 propuestas/);
+  await page.locator('#vgWordAlternatives').uncheck();
+  await page.locator('#vgReaderImport').evaluate(el=>el.closest('details').open=true);
+  await page.click('#vgReaderRemove');
+  assert.match(await page.locator('#vgReaderStatus').textContent(),/Todavía no hay propuestas/);
+ }
+
  // La opción es de proyecto y se aplica a la descarga real sin cambiar las lecturas.
  await page.selectOption('#vgCourse','lat1');
  await page.fill('#vgText','Est bonus.');

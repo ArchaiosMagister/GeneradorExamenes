@@ -272,3 +272,37 @@ Tests:
 **Límite funcional**: la instalación amplía la revisión filológica; **no
 convierte las formas de Eulexis en formas verificadas para exámenes**,
 ni modifica automáticamente las 399 fichas o sus glosas.
+
+## Consultar ambos lectores para un proyecto de vocabulario
+
+El generador por unidades admite propuestas personales de los lectores de
+latín y griego. La consulta se hace para todas las formas de una copia del
+proyecto, con los motores de las revisiones indicadas arriba y sus léxicos
+completos. Los motores y sus datos se usan localmente. El archivo resultante
+contiene forma, lema y análisis, sin glosas de los lectores.
+
+Con Node.js y un checkout local del lector en la revisión fijada:
+
+```sh
+node scripts/prepare-reader-proposals.mjs proyecto.json carpeta-del-lector propuestas.json
+```
+
+En «Propuestas de los lectores de latín y griego», carga `propuestas.json`.
+La aplicación busca una ficha en el banco del curso seleccionado para cada
+lema que propuso el lector. Si la encuentra, toma de ahí el enunciado y las
+glosas. Si falta la ficha, la lectura aparece con el lema externo y sin
+traducción. Las propuestas se conservan en el proyecto y en sus copias JSON.
+Pueden quitarse sin borrar decisiones ya aceptadas. Si añades formas nuevas
+que no figuran en el archivo, vuelve a prepararlo con el proyecto actualizado.
+
+Las propuestas aparecen en las tarjetas y en el bloque de pendientes de Word
+al activar la casilla de lecturas posibles. La consulta de los lectores no
+acredita una flexión ni modifica los ejercicios, los solucionarios o el banco
+exigible. La instalación opcional anterior de Eulexis sigue disponible para
+sus consultas habituales y conserva su alcance curricular.
+
+En los materiales de prueba, el lector latino encontró propuestas para
+1.372 de 1.379 formas escritas distintas del JSON de Latín I, incluidas
+*amica* y *Helvetios*, y para las 28 del examen de Latín 4.º. El lector griego
+encontró propuestas para 33 de 34 formas distintas del examen de Griego I.
+Estas cifras miden si el lector devolvió alguna lectura.
