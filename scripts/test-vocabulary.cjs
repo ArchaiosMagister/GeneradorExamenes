@@ -190,11 +190,19 @@ console.log('Vocabulario: prioridad docente, deduplicación por UD, ambigüedad,
  await page.fill('#vgCount','2');await page.locator('#vgCount').dispatchEvent('change');
  await page.fill('#vgText','Puella puella amamus xyzxyz');await page.click('#vgAnalyze');await page.waitForFunction(()=>document.querySelector('#vgStatus').textContent.includes('pendientes'));
  assert.match(await page.locator('#vgResults').innerText(),/xyzxyz/);
- await page.selectOption('#vgMode','simple');await page.selectOption('#vgUnit','1');assert.equal(await page.inputValue('#vgText'),'');
+ await page.selectOption('#vgMode','simple');await page.locator('#vgUnitButtons .vg-unit-button').nth(1).click();assert.equal(await page.inputValue('#vgText'),'');
  await page.fill('#vgText','Puella');await page.click('#vgAnalyzeAll');await page.waitForFunction(()=>document.querySelector('#vgStatus').textContent.includes('pendientes'));
- await page.selectOption('#vgUnit','0');assert.match(await page.inputValue('#vgText'),/amamus/);
+ await page.locator('#vgUnitButtons .vg-unit-button').first().click();assert.match(await page.inputValue('#vgText'),/amamus/);
  const downloadPromise=page.waitForEvent('download');await page.click('#vgWord');const dl=await downloadPromise;const file=await dl.path();assert.equal(fs.readFileSync(file).readUInt32LE(0),0x04034b50);
  await page.reload();await page.click('#vgShow');assert.equal(await page.inputValue('#vgCount'),'2');
+ assert.equal(await page.locator('#vgUnitButtons .vg-unit-button').count(),2,'Unidades en botones');
+ const units=await page.locator('#vgUnitButtons .vg-unit-button').evaluateAll(nodes=>
+  nodes.map(el=>({filled:el.dataset.filled,selected:el.getAttribute('aria-pressed')})));
+ assert.deepEqual(units.map(x=>x.filled),['true','true'],'Los dos textos escritos se reflejan con marca de contenido');
+ assert.equal(units.filter(x=>x.selected==='true').length,1,'Solo una unidad seleccionada');
+ await page.locator('#vgUnitButtons .vg-unit-button').first().click();
+ assert.equal(await page.locator('#vgUnitButtons .vg-unit-button').first().getAttribute('aria-pressed'),'true');
+ assert.equal(await page.locator('#vgUnitButtons .vg-unit-button').nth(1).getAttribute('aria-pressed'),'false');
  // Reproduce un JSON antiguo de 14 unidades: textos, pero sin ningún análisis.
  const imported={count:14,course:'gr1',units:Array.from({length:14},(_,i)=>({
   title:'UD'+(i+1),text:'ὁ θεός ἐστιν. οἱ ἄνθρωποι.',mode:'complete',rows:[]
