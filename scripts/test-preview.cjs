@@ -417,7 +417,8 @@ async function checkFile(browser,filename){
     examRequired.push({course:'latin1',unit:'UD1',key:examKey('puella'),entry:'puella, -ae'});
    const required=parse(buildFinalLexicon(['UD1'],[{text:'Puella amat.'}]));
    const unknown=parse(buildFinalLexicon(['UD1'],[{text:'FORMADESCONOCIDAXYZ'}]));
-   return {base,required,unknown,defaultScope:previous.scope};
+    const galli=parse(buildFinalLexicon(['UD3'],[{text:'Galli a Romanis semper vincebantur.'}]));
+   return {base,required,unknown,galli,defaultScope:previous.scope};
   }finally{
    course.value=previous.course;model.value=previous.model;scope.value=previous.scope;
    examRequired.length=0;examRequired.push(...previous.required);
@@ -435,6 +436,12 @@ async function checkFile(browser,filename){
  assert(requiredWord&&!requiredWord.includes(':'),filename+': el vocabulario exigible necesita enunciado pero no traducción');
  assert(!glossaryRegression.unknown.printText.includes('FORMADESCONOCIDAXYZ'),filename+': se ha inventado un lema');
  assert(glossaryRegression.unknown.warning.includes('FORMADESCONOCIDAXYZ'),filename+': falta advertencia para forma desconocida');
+ assert(glossaryRegression.galli.rows.some(x=>/^Galli,\s*-orum/i.test(x)),
+  filename+': Galli debe vincularse al enunciado plural del banco docente');
+ assert(!/\bGalli\b/.test(glossaryRegression.galli.warning),
+  filename+': Galli no debe permanecer en pendientes');
+ assert(!glossaryRegression.galli.rows.some(x=>/^a\b/i.test(x)),
+  filename+': se ha incluido la preposición a en el glosario');
 
  const noSentences=await page.evaluate(()=>{
   const key='latin1/mixto/sent',had=Object.hasOwn(examQuestionChoiceState,key),previous=examQuestionChoiceState[key];
