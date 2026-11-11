@@ -1061,6 +1061,19 @@ function morphSyntagmRows(cfg,greek=false){
  return Array.from({length:cfg.offer},(_,i)=>'<p class="exam-item reference-analysis-item">'+String.fromCharCode(97+i)+'. '+esc(lines[i]||(greek?'(artículo) + (sustantivo) + (adjetivo)':'(sustantivo) + (adjetivo)'))+'</p>').join('');
 }
 function morphSyntagmHeading(cfg,va){return (va?'Declina ':'Declina ')+cfg.decline+(va?' dels ':' de los ')+cfg.offer+(va?' sintagmes proposats.':' sintagmas propuestos.')}
+// Grafía de presentación: la normalización morfológica conserva ae/oe para buscar,
+// pero el examen recupera las ligaduras solo cuando son diptongos latinos.
+// oe en poeta, poema y sus derivados es hiato: nunca se sustituye globalmente.
+function latinExamSurface(form,entry){
+ const head=headLex(entry||''),key=normLex(head),surface=String(form||'');
+ const ligature=(match,lower,upper)=>match[0]===match[0].toUpperCase()?upper:lower;
+ const aeHiatus=/^aer(?:$|[a-z])/.test(key);
+ const oeDiphthong=/[œŒ]/.test(head)||
+  /^(?:proel|poen|foed|coep|coet|amoen|moen|croes|phoeb|oedip)/.test(key);
+ let result=aeHiatus?surface:surface.replace(/ae/gi,match=>ligature(match,'æ','Æ'));
+ if(oeDiphthong)result=result.replace(/oe/gi,match=>ligature(match,'œ','Œ'));
+ return result;
+}
 function generateLatinMorphologyReference(){
  const chosen=selectedUnits(),cfg=morphConfig(),va=$('lang').value==='va';
  if(examMorphQuotasActive())cfg.words=examMorphQuotaCount();
@@ -1078,7 +1091,7 @@ function generateLatinMorphologyReference(){
  const second=question(++n,t('Analiza morfológicamente las siguientes formas verbales (1 p.).','Analitza morfològicament les formes verbals següents (1 p.).'))+
   '<table class="exam-paradigm reference-morph-table reference-verb-table" data-col-widths="28,25,24,23">'+
   '<thead><tr><th>'+t('Forma verbal','Forma verbal')+'</th><th>'+t('Persona y número','Persona i nombre')+'</th><th>'+t('Tiempo','Temps')+'</th><th>'+t('Voz','Veu')+'</th></tr></thead>'+
-  '<tbody>'+verbItems.map(x=>'<tr><td><i>'+esc(x.form)+'</i></td><td></td><td></td><td></td></tr>').join('')+'</tbody></table>';
+  '<tbody>'+verbItems.map(x=>'<tr><td><i>'+esc(latinExamSurface(x.form,x.entry))+'</i></td><td></td><td></td><td></td></tr>').join('')+'</tbody></table>';
  let pronSection='';
  if(pronouns.length){
   pronSection=question(++n,t('Analiza los siguientes pronombres: tipo, caso, género y número (1 p.).','Analitza els pronoms següents: tipus, cas, gènere i nombre (1 p.).'))+
@@ -1087,7 +1100,7 @@ function generateLatinMorphologyReference(){
    '</tbody></table>';
  }
  const last=question(++n,t('Analiza morfológicamente las siguientes palabras variables (1 p.).','Analitza morfològicament les paraules variables següents (1 p.).'))+
-  words.map((x,i)=>'<p class="exam-item reference-analysis-item">'+String.fromCharCode(97+i)+'. <i>'+esc(x.form)+'</i>: <span class="reference-answer-line"></span></p>').join('');
+  words.map((x,i)=>'<p class="exam-item reference-analysis-item">'+String.fromCharCode(97+i)+'. <i>'+esc(latinExamSurface(x.form,x.entry))+'</i> ('+esc(x.entry)+'): <span class="reference-answer-line"></span></p>').join('');
  const problems=[];
  if(verbItems.length<cfg.verbs)problems.push('Formas verbales: '+verbItems.length+' de '+cfg.verbs);
  if(words.length<cfg.words)problems.push('Palabras: '+words.length+' de '+cfg.words);
@@ -1219,14 +1232,14 @@ function latinExamDeclensionTable(item,solutions=false){
  return '<table class="exam-paradigm exam-nouns reference-morph-table" data-col-widths="16,42,42">'+
   '<thead><tr><td class="exam-corner"></td><th colspan="2">'+examParadigmHeading(title,'declension')+'</th></tr>'+
   '<tr><td class="exam-corner"></td><th>Singular</th><th>Plural</th></tr></thead><tbody>'+
-  M_CASES.map((name,i)=>'<tr><th>'+esc(name)+'</th><td>'+(solutions?'<i>'+esc(tableForms[0][i])+'</i>':'')+'</td><td>'+(solutions?'<i>'+esc(tableForms[1][i])+'</i>':'')+'</td></tr>').join('')+
+  M_CASES.map((name,i)=>'<tr><th>'+esc(name)+'</th><td>'+(solutions?'<i>'+esc(latinExamSurface(tableForms[0][i],title))+'</i>':'')+'</td><td>'+(solutions?'<i>'+esc(latinExamSurface(tableForms[1][i],title))+'</i>':'')+'</td></tr>').join('')+
   '</tbody></table>';
 }
 function latinExamConjugationTable(items,solutions=false){
  return '<table class="exam-paradigm exam-verbs"><thead><tr><td class="exam-corner"></td>'+
   items.map(x=>'<th colspan="2">'+examParadigmHeading(x.x.entry,'conjugation')+'</th>').join('')+'</tr>'+
   '<tr><td class="exam-corner"></td>'+items.map(()=>'<th>Singular</th><th>Plural</th>').join('')+'</tr></thead><tbody>'+
-  [0,1,2].map(i=>'<tr><th>'+(i+1)+'ª</th>'+items.map(x=>'<td>'+(solutions?'<i>'+esc(x.p.forms[i])+'</i>':'')+'</td><td>'+(solutions?'<i>'+esc(x.p.forms[i+3])+'</i>':'')+'</td>').join('')+'</tr>').join('')+'</tbody></table>';
+  [0,1,2].map(i=>'<tr><th>'+(i+1)+'ª</th>'+items.map(x=>'<td>'+(solutions?'<i>'+esc(latinExamSurface(x.p.forms[i],x.x.entry))+'</i>':'')+'</td><td>'+(solutions?'<i>'+esc(latinExamSurface(x.p.forms[i+3],x.x.entry))+'</i>':'')+'</td>').join('')+'</tr>').join('')+'</tbody></table>';
 }
 function latinExamFormCandidates(chosen){
  const data=latinSharedBank.vocabulary(currentCourse(),chosen),groups=[[],[],[],[]];
@@ -1247,7 +1260,7 @@ function latinExamFormCandidates(chosen){
  if(currentCourse()==='latin1')for(const x of latinExamPronouns(chosen)){
   groups[3].push({entry:x.form,form:x.form,answer:x.type+'; '+x.case+', '+x.gender+', '+x.number});
  }
- return groups;
+ return groups.map(group=>group.map(item=>({...item,form:latinExamSurface(item.form,item.entry)})));
 }
 function latinExamForms(chosen,number){
  const pools=latinExamFormCandidates(chosen).map(x=>sample(x,x.length)),out=[],seen=new Set();
@@ -2128,7 +2141,7 @@ function generateGreekMorphologyFixed(){
    pronouns.map(x=>'<tr data-corpus-id="'+x.id+'"><td><i>'+esc(x.prompt)+'</i></td><td></td><td></td><td></td><td></td></tr>').join('')+'</tbody></table>';
  }
  const last=question(++n,t('Analiza morfológicamente las siguientes palabras variables (1 p.).','Analitza morfològicament les paraules variables següents (1 p.).'))+
-  words.map((x,i)=>'<p class="exam-item reference-analysis-item" data-corpus-id="'+x.id+'">'+String.fromCharCode(97+i)+'. <i>'+esc(x.prompt)+'</i>: <span class="reference-answer-line"></span></p>').join('');
+  words.map((x,i)=>'<p class="exam-item reference-analysis-item" data-corpus-id="'+x.id+'">'+String.fromCharCode(97+i)+'. <i>'+esc(x.prompt)+'</i>'+(Array.isArray(x.lemmas)&&x.lemmas.length?' ('+esc(x.lemmas.filter(Boolean).join(' / '))+')':'')+': <span class="reference-answer-line"></span></p>').join('');
  const problems=[];
  if(verbs.length<cfg.verbs)problems.push('Verbos: '+verbs.length+' de '+cfg.verbs);
  if(words.length<cfg.words)problems.push('Palabras variables: '+words.length+' de '+cfg.words);
