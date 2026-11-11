@@ -505,6 +505,12 @@ html[data-course="greek1"] .paper .exam-sheet *{font-style:normal!important}
  #exam-header-controls button{flex:1;min-width:max-content;padding-inline:9px;font-size:12.5px}
 }
 @media print{#exam-header-controls{display:none!important}}
+</style><style id="examina-question-toggle-style">
+#examQuestionMenus .exam-question-toggle{flex:0 0 auto;width:19px;height:19px;margin:0;accent-color:var(--accent,#315cb1);cursor:pointer}
+#examQuestionMenus .exam-question-name{flex:1;min-width:0}
+#examQuestionMenus details[data-available="false"]{opacity:.5}
+#examQuestionMenus details[data-available="false"]>summary{background:#eceff2!important;color:#68717d!important}
+#examQuestionMenus details[data-available="false"] .exam-question-toggle{cursor:not-allowed}
 </style><style id="examina-question-points-style">
 #examScoring{margin:12px 0;border:1px solid var(--line,#ccd6e3);
  border-radius:10px;padding:12px;background:var(--surface,#fff)}
@@ -2554,12 +2560,26 @@ async function loadTeacherLatinLexBanks(){
  }
 }
 
-function examQuestionEnabled(kind){
+function examQuestionAvailable(kind){
  const course=currentCourse(),model=$('model').value;
- const key=course+'/'+model+'/'+kind;
- if((model==='morf'||model==='morphology')&&kind!=='pronouns')return true;
+ const supported=course==='greek1'?['decl','verb','forms','pronouns','etymology','sent']:
+  course==='latin4'?['decl','verb','forms','lex','culture','sent']:
+  ['decl','verb','forms','pronouns','lex','sent'];
+ if(!supported.includes(kind))return false;
+ if(['morf','morphology'].includes(model)&&!['decl','verb','pronouns','forms'].includes(kind))return false;
+ if(['mixto','translation'].includes(model)&&!['forms','lex','etymology','sent'].includes(kind))return false;
+ if(kind==='pronouns'){
+  if(course==='latin1')return latinExamPronouns(selectedUnits()).length>0;
+  if(course==='greek1')return greekVerifiedCorpus.some(x=>x.verified&&x.kind==='pronouns'&&greekMorphologyEligible(x,greekLimit()));
+  return false;
+ }
+ return true;
+}
+function examQuestionEnabled(kind){
+ if(!examQuestionAvailable(kind))return false;
+ const course=currentCourse(),model=$('model').value,key=course+'/'+model+'/'+kind;
  if(Object.prototype.hasOwnProperty.call(examQuestionChoiceState,key))return examQuestionChoiceState[key];
- return kind!=='pronouns';
+ return kind!=='pronouns'||['morf','morphology'].includes(model);
 }
 function examMorphQuotaValues(){
  return ['nouns','adjectives','verbs','pronouns'].map(kind=>Math.max(0,Math.min(30,Number($('quota-'+kind)?.value)||0)));
@@ -2898,13 +2918,15 @@ loadTeacherLatinLexBanks();
   }
  }
  function questionKeys(){
-  const c=currentCourse(),m=$('model').value;
-  if(c==='latin4')return ['decl','verb','forms','lex','culture','sent'];
-  if(m==='morf'||m==='morphology')return ['decl','verb','pronouns','forms'];
-  if(m==='mixto')return ['forms','lex','sent'];
-  if(m==='translation')return ['forms','etymology','sent'];
-  if(c==='greek1')return ['decl','verb','forms','pronouns','etymology','sent'];
+  const course=currentCourse();
+  if(course==='latin4')return ['decl','verb','forms','lex','culture','sent'];
+  if(course==='greek1')return ['decl','verb','forms','pronouns','etymology','sent'];
   return ['decl','verb','forms','pronouns','lex','sent'];
+ }
+ function questionTitle(kind){
+  const morph=['morf','morphology'].includes($('model').value);
+  if(morph)return ({decl:'Declinación de sintagmas',verb:'Tabla de verbos',pronouns:'Tabla con pronombres'})[kind]||moduleLabels[kind];
+  return ({decl:'Declinación de sustantivos o sintagmas',verb:'Conjugación de verbos'})[kind]||moduleLabels[kind];
  }
  const mono=(id)=>document.createElement('div');
  function makeLabel(text,control){const label=document.createElement('label');label.textContent=text+' ';label.append(control);return label}
@@ -3020,26 +3042,31 @@ loadTeacherLatinLexBanks();
   for(const kind of questionKeys()){
    const detail=document.createElement('details');detail.className='menu-section';detail.dataset.question=kind;
    detail.open=first?false:openKeys.has(kind);
-   const summary=document.createElement('summary');summary.textContent=moduleLabels[kind];detail.append(summary);
+   const summary=document.createElement('summary');detail.append(summary);
    const body=document.createElement('div');body.className='exam-question-config';detail.append(body);
-   const required=morph&&kind!=='pronouns',on=examQuestionEnabled(kind);
-   detail.dataset.included=String(required||on);
+   const available=examQuestionAvailable(kind),on=examQuestionEnabled(kind);
+   detail.dataset.available=String(available);detail.dataset.included=String(on);
+   const check=document.createElement('input');check.type='checkbox';check.className='exam-question-toggle';
+   check.checked=on;check.disabled=!available;check.setAttribute('aria-label','Incluir '+questionTitle(kind));
+   check.addEventListener('click',event=>event.stopPropagation());
    const statusLabel=document.createElement('span');statusLabel.className='exam-question-status';
-   statusLabel.textContent=required?'Fija':on?'Incluida':'Omitida';
-   summary.append(statusLabel);
-   if(required){
-    const label=document.createElement('p');label.className='hint';label.textContent='Obligatoria en el examen de morfología.';body.append(label);
-   }else{
-    const check=document.createElement('input');check.type='checkbox';check.checked=on;
-    check.onchange=()=>{examQuestionChoiceState[currentCourse()+'/'+$('model').value+'/'+kind]=check.checked;detail.dataset.included=String(check.checked);statusLabel.textContent=check.checked?'Incluida':'Omitida';if(currentCourse()==='greek1')greekExamState=null;generate()};
-    body.append(makeLabel('Incluir esta pregunta',check));
+   statusLabel.textContent=!available?'No disponible':on?'Incluida':'Omitida';
+   check.onchange=()=>{examQuestionChoiceState[currentCourse()+'/'+$('model').value+'/'+kind]=check.checked;
+    detail.dataset.included=String(check.checked);statusLabel.textContent=check.checked?'Incluida':'Omitida';
+    if(currentCourse()==='greek1')greekExamState=null;generate()};
+   const name=document.createElement('span');name.className='exam-question-name';name.textContent=questionTitle(kind);
+   summary.append(check,name,statusLabel);
+   if(!available){
+    const note=document.createElement('p');note.className='hint';
+    note.textContent=kind==='pronouns'?'Disponible cuando la unidad incluya pronombres.':'Pregunta incompatible con este tipo de examen.';
+    body.append(note);
    }
-   if(kind==='lex')lexConfig(body);
-   if(kind==='forms')quotaConfig(body);
-   countControl(body,kind,morph);
+   if(available&&kind==='lex')lexConfig(body);
+   if(available&&kind==='forms')quotaConfig(body);
+   if(available)countControl(body,kind,morph);
    if(['decl','verb','forms','pronouns','lex','etymology','sent','culture'].includes(kind)){
     const button=document.createElement('button');button.type='button';button.className='secondary';
-    button.textContent='Regenerar palabras de esta pregunta';button.disabled=kind==='lex'&&!(Object.values(latinLexBanks[currentCourse()]||{}).some(x=>x.length));
+    button.textContent='Regenerar palabras de esta pregunta';button.disabled=!available||(kind==='lex'&&!(Object.values(latinLexBanks[currentCourse()]||{}).some(x=>x.length)));
     button.onclick=()=>regenerateExamQuestion(kind);body.append(button);
    }
    const editor=document.createElement('div');editor.className='question-editor';editor.dataset.editorFor=kind;body.append(editor);
@@ -3073,6 +3100,10 @@ loadTeacherLatinLexBanks();
  };
  document.addEventListener('examina-lex-ready',()=>questionMenus());
  for(const id of ['course','model','lang'])$(id).addEventListener('change',()=>{buttons();questionMenus()});
+ document.addEventListener('change',event=>{
+  if(event.target?.matches?.('#unitChoices .unit-choice, #cumulative'))questionMenus();
+ });
+ for(const id of ['allUnits','clearUnits'])$(id)?.addEventListener('click',()=>queueMicrotask(questionMenus));
  buttons();questionMenus();
  document.addEventListener('DOMContentLoaded',()=>{buttons();questionMenus()},{once:true});
 })();
