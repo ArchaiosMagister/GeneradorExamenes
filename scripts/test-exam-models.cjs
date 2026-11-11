@@ -86,7 +86,15 @@ function latinSuite(){
  output=state.paper.innerHTML.split('<div id="answerkey"')[0];
  assert.equal((output.match(/class="exam-question"/g)||[]).length,4,'Latín I UD3: pronombres como tercera pregunta');
  assert(output.includes('exam-pronouns')&&output.includes('palabras variables'));
- assert(output.includes('sintagmas propuestos')&&output.includes('(sustantivo) + (adjetivo)'));
+ assert(output.includes('Declina 2 de los 3 sintagmas propuestos.'),'Latín: enunciado dinámico de sintagmas');
+ assert(!output.includes('Elige y declina')&&!output.includes('class="small">Elige'),'Latín: subtítulo duplicado');
+ assert(output.includes('(sustantivo) + (adjetivo)'));
+ assert(output.includes('(puella, -ae)'),'Latín: falta el enunciado al lado de la forma');
+ assert.equal(vm.runInContext("latinExamSurface('reginae','regina, –æ')",sandbox),'reginæ');
+ assert.equal(vm.runInContext("latinExamSurface('poeta','poeta, –æ')",sandbox),'poeta');
+ assert.equal(vm.runInContext("latinExamSurface('poetae','poeta, –æ')",sandbox),'poetæ');
+ assert.equal(vm.runInContext("latinExamSurface('proelium','prœlium, –i')",sandbox),'prœlium');
+ assert.equal(vm.runInContext("latinExamSurface('proelia','prœlium, –i')",sandbox),'prœlia');
  scope.units=['UD1'];vm.runInContext('generateLatinMorphologyReference()',sandbox);
  output=state.paper.innerHTML.split('<div id="answerkey"')[0];
  assert.equal((output.match(/class="exam-question"/g)||[]).length,3,'UD1: sin pronombres');
@@ -164,9 +172,15 @@ function greekSuite(){
  output=run('morphology');
  assert.equal((output.match(/class="exam-question"/g)||[]).length,4,'Griego UD7: pronombres');
  assert(output.includes('exam-pronouns')&&output.includes('palabras variables'));
+ assert(output.includes('Declina 1 de los 3 sintagmas propuestos.'),'Griego: enunciado dinámico');
+ assert(!output.includes('Tria i declina')&&!output.includes('Elige y declina'),'Griego: subtítulo duplicado');
  assert(output.includes('(artículo) + (sustantivo) + (adjetivo)'));
+ assert(output.includes('(λύω)'),'Griego: falta enunciado del verbo en análisis');
+ assert(!output.includes('οἵδε ()'),'Griego: no inventar lema para formas sin enunciado');
 }
 latinSuite();greekSuite();
+assert(html.indexOf('<nav class="vocab-tabbar"')<html.indexOf('<header class="top">'),
+ 'La barra de generadores debe estar antes que la cabecera de selectores');
 assert(html.includes("course==='latin4'?['tablas']"),'Latín 4 solamente tiene el modelo completo');
 assert(html.includes("const alphabetic=tag==='ol'"),'Word debe conservar listas a–d');
 assert(html.includes('class="small no-print"'),'Los avisos docentes no deben salir en impresión');
