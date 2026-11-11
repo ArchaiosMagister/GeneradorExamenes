@@ -69,7 +69,11 @@ const latinInvariables=[
  [['ubique'],'ubique (adv.)','en todas partes','pertot arreu'],
  [['undique'],'undique (adv.)','de todas partes','de tot arreu'],
  [['usque'],'usque (adv.)','hasta, continuamente','fins a, contínuament'],
- [['absque'],'absque (prep. + abl.)','sin, lejos de','sense, lluny de']
+ [['absque'],'absque (prep. + abl.)','sin, lejos de','sense, lluny de'],
+ [['ubicumque'],'ubicumque (adv.)','dondequiera que','allà on siga'],
+ [['quandocumque'],'quandocumque (adv.)','cuandoquiera que','quan siga'],
+ [['quandoque'],'quandoque (adv.)','alguna vez, cuandoquiera que','alguna vegada, quan siga'],
+ [['numquam','nunquam'],'numquam (adv.)','nunca','mai']
 ];
 const latinCore=new Map();
 for(const [forms,entry,meaning,meaning_va] of latinInvariables){
@@ -316,7 +320,7 @@ function latinExpandedForms(bank){
   ['hora, –æ','hora','hora'],
   ['multitudo, multitudinis (f.)','multitud','multitud'],
   ['peditatus, –us','infantería','infanteria'],
-  ['pretiosus, –a, –um','precioso/a, valioso/a','preuat/ada, valuós/osa'],
+  ['pretiosus, –a, –um','precioso/a, valioso/a','valuós/valuosa'],
   ['sapiens, sapientis','sabio/a','savi/sàvia'],
   ['postremus, –a, –um','último/a','últim/a'],
   ['egregius, –a, –um','distinguido/a','distingit/ida'],
