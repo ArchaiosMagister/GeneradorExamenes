@@ -898,9 +898,12 @@ function init(){
   render();
  }
  function showEulexisCard(box,r,u){
-  if(project.course!=='gr1'||!eulexisAvailable||r.status==='documented')return;
+  if(project.course!=='gr1'||!eulexisAvailable)return;
   const options=(eulexisByForm.get(eulexisAdapter().norm(r.form))||[]).slice(0,16);
   if(!options.length)return;
+  // Si la fuente docente ya documenta la lectura, solo avisar de alternativas distintas.
+  const conflicting=options.some(candidate=>candidate.entry!==r.entry);
+  if(r.status==='documented'&&!conflicting)return;
   const card=document.createElement('section');card.className='vg-eulexis-card';
   const heading=document.createElement('h3');heading.textContent='Propuestas Eulexis · '+r.form;card.append(heading);
   const note=document.createElement('p');note.className='vm-help';
@@ -911,7 +914,7 @@ function init(){
    p.textContent='Contexto de la unidad: '+context;card.append(p);
   }
   for(const candidate of options){
-   const button=document.createElement('button');button.type='button';button.className='vg-eulexis-choice';
+   const button=document.createElement('button');button.type='button';button.className='vg-eulexis-choice secondary';
    const name=document.createElement('strong');name.textContent=candidate.entry;
    const detail=document.createElement('span');detail.textContent=candidate.analysis+' · '+candidate.meaning;
    button.append(name,detail);
@@ -1084,7 +1087,7 @@ function init(){
  $('vgShow').onclick=()=>{$('examLayout').style.display='none';$('vocabManager').classList.remove('active');$('vocabularyGenerator').classList.add('active');for(const id of ['vmShowExam','vmShowList'])$(id).classList.remove('active');$('vgShow').classList.add('active');render();refreshQuality()};
  for(const id of ['vmShowExam','vmShowList'])$(id).addEventListener('click',()=>{$('vocabularyGenerator').classList.remove('active');$('vgShow').classList.remove('active')});
  render();
- prepareEulexis().catch(error=>eulexisStatus('No se pudo abrir Eulexis: '+error.message));
+ if(project.course==='gr1')prepareEulexis().catch(error=>eulexisStatus('No se pudo abrir Eulexis: '+error.message));
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
