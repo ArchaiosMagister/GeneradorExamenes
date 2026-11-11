@@ -12,6 +12,7 @@ on:
       - 'offline-lemmas.js'
       - 'verification-review.js'
       - 'greek-review.js'
+      - 'eulexis-local.js'
       - 'data/lemmas/**'
       - 'data/unimorph/**'
       - 'scripts/**'
@@ -76,6 +77,8 @@ jobs:
         run: node scripts/test-teacher-review.mjs
       - name: Probar la cola griega y el adaptador de importación Eulexis
         run: node scripts/test-greek-review.mjs
+      - name: Probar conversión y extracción Eulexis sin corpus de terceros
+        run: node scripts/test-eulexis-local.cjs
       - name: Contrastar extractor Eulexis de forma temporal (no publicar corpus)
         if: github.event_name == 'pull_request'
         run: |
@@ -122,3 +125,5 @@ jobs:
         run: node scripts/test-lemma-browser.cjs
       - name: Probar en Chromium las tarjetas griegas y la importación local
         run: node scripts/test-greek-review-browser.cjs
+      - name: Probar instalación y persistencia de Eulexis en Chromium
+        run: node scripts/test-eulexis-browser.cjs
