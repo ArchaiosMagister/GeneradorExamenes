@@ -27,6 +27,10 @@ export async function renderOffline(root=projectRoot){
  const qualityExternal='<script src="vocabulary-quality.js" defer></script>';
  if(!html.includes(qualityExternal))throw new Error('Falta el módulo de auditoría de vocabulario');
  html=html.replace(qualityExternal,'<script>'+qualityModule.replace(/<\/script/gi,'<\\/script')+'</script>');
+ const scoringModule=await readFile(resolve(root,'exam-scoring.js'),'utf8');
+ const scoringExternal='<script src="exam-scoring.js" defer></script>';
+ if(!html.includes(scoringExternal))throw new Error('Falta el gestor de puntuación por pregunta');
+ html=html.replace(scoringExternal,'<script>'+scoringModule.replace(/<\/script/gi,'<\\/script')+'</script>');
  const vocabularyModule=await readFile(resolve(root,'vocabulary-generator.js'),'utf8');
  const vocabularyExternal='<script src="vocabulary-generator.js" defer></script>';
  if(!html.includes(vocabularyExternal))throw new Error('Falta el generador de vocabulario independiente');
