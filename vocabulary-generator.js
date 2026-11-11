@@ -67,6 +67,48 @@ for(const [forms,entry,meaning,meaning_va] of latinInvariables){
  }
 }
 const invariableEntry=entry=>/\((?:adv\.?|conj\.?|prep\.?|part\.?|interj\.?|loc\.|num\.\s*indecl\.)/i.test(String(entry||''));
+/* Reconocimiento independiente de las SEIS formas del presente de indicativo
+ * activo regular, deducibles de un enunciado y una conjugación EXPLÍCITOS.
+ * No extrapola perfecto, aoristo, voz pasiva ni verbos sin clase conocida.
+ * El lema y la traducción proceden siempre del banco del profesor.
+ */
+const latinPresentCache=new WeakMap();
+function latinPresentForms(bank){
+ if(latinPresentCache.has(bank))return latinPresentCache.get(bank);
+ const byForm=new Map();
+ const endings={
+  '1ª':['o','as','at','amus','atis','ant'],
+  '2ª':['eo','es','et','emus','etis','ent'],
+  '3ª':['o','is','it','imus','itis','unt'],
+  '4ª':['io','is','it','imus','itis','iunt'],
+  'mx.':['io','is','it','imus','itis','iunt']
+ };
+ for(const row of bank){
+  const raw=String(row.entry||'').trim();
+  const m=/\((1ª|2ª|3ª|4ª|mx\.)\)\s*$/u.exec(raw);
+  if(!m||!row.meaning)continue;
+  const lemma=head(raw);
+  if(!/^[\p{L}\p{M}]+$/u.test(lemma))continue;
+  const group=m[1],terminal=group==='2ª'?'eo':group==='4ª'||group==='mx.'?'io':'o';
+  if(!lemma.toLowerCase().endsWith(terminal))continue;
+  const stem=lemma.slice(0,-terminal.length);
+  if(!stem)continue;
+  const record={lemma:key(lemma),entry:raw,meaning:row.meaning,
+   meaning_va:row.meaning_va||'',attested:true,
+   origin:'presente regular de la conjugación declarada en el banco docente'};
+  const score=x=>x.entry.split(',').length*10+x.entry.length/100;
+  for(const ending of endings[group]){
+   const form=key(stem+ending);
+   if(!byForm.has(form))byForm.set(form,new Map());
+   const candidates=byForm.get(form),old=candidates.get(record.lemma);
+   if(!old||score(record)>score(old))candidates.set(record.lemma,record);
+  }
+ }
+ const result=new Map([...byForm].map(([k,values])=>[k,[...values.values()]]));
+ latinPresentCache.set(bank,result);
+ return result;
+}
+
 
 /* Paradigmas productivos de declinaciones 1.ª/2.ª y presente griego.
  * Solo se aplican a enunciados que constan en el banco docente, con su
@@ -612,6 +654,7 @@ function analyze(data,text,course,bank){
    })[0]]:matches):[{entry:original.entry,meaning:''}];
    return variants.map(x=>({...c,entry:x.entry,meaning:x.meaning||'',meaning_va:x.meaning_va||''}));
   });
+  const regular=lang==='lat'?(latinPresentForms(bank).get(normal)||[]):[];
   const directInvariable=lang==='lat'?(bankIndex.get('H'+normal)||[]).filter(x=>
    invariableEntry(x.entry)).map(x=>({
     lemma:normal,entry:x.entry,meaning:x.meaning||'',meaning_va:x.meaning_va||'',
@@ -624,9 +667,12 @@ function analyze(data,text,course,bank){
   // diacríticos decide el lema cuando hay coincidencia documentada.
   const exactGreek=supplement.filter(x=>x.exactForms?.has(form.normalize('NFC')));
   const exactIndexed=lang==='grc'?indexedCandidates.filter(x=>x.exactForms?.has(form.normalize('NFC'))):[];
+  const regularLemmas=new Set(regular.map(candidate=>candidate.lemma));
   const all=exactGreek.length?exactGreek:
    [...(exactIndexed.length?exactIndexed:indexedCandidates).filter(x=>
-    !(supplement.length&&!x.attested&&!x.meaning)),...supplement,...directInvariable,...curated];
+    !(supplement.length&&!x.attested&&!x.meaning)&&
+    !(regularLemmas.has(x.lemma)&&!x.attested)),
+    ...supplement,...directInvariable,...curated,...regular];
   // Preferimos la evidencia más firme para la misma entrada, sin descartar
   // una segunda lectura posible de un homógrafo.
   const compact=new Map();
