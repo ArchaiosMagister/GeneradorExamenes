@@ -239,6 +239,21 @@ for(const [form,expected] of [['longisque','longus'],['Romamque','roma']]){
  assert.equal(ctx.window.ExaminaOfflineLemmatizer.normalize(found.lemma),
   expected,'La base de '+form+' debe ser '+expected);
 }
+const withTrueNexus=api.entries(api.analyze(data,
+ 'longisque Romamque bonaque','lat1',queBank));
+assert.equal(withTrueNexus.filter(x=>x.entry==='–que (conj.)').length,1,
+ 'La enclítica genuina se debe mostrar como un solo lema conjunto');
+assert.equal(withTrueNexus.find(x=>x.entry==='–que (conj.)').meaning,'y');
+const withoutNexus=api.entries(api.analyze(data,
+ 'quoque neque atque quisque uterque quicumque','lat1',queBank));
+assert.equal(withoutNexus.some(x=>x.entry==='–que (conj.)'),false,
+ 'Las terminaciones lexicalizadas no son un nexo coordinante');
+const nexusXml=api.documentXml({course:'lat1',lang:'es',count:1,units:[{
+ title:'UD1',mode:'complete',rows:api.analyze(data,'longisque quoque','lat1',queBank)
+}]});
+assert.match(nexusXml,/–que/,'El nexo debe aparecer en el Word de vocabulario');
+assert.match(nexusXml,/<w:t xml:space="preserve">\(conj\.\)<\/w:t>/,
+ 'La categoría del nexo en Word debe quedar en redonda');
 for(const form of ['longueque','uterquex','aliquiqueque']){
  assert.equal(api.analyze(data,form,'lat1',queBank)[0]?.status,'unknown',
   'No inventar la separación ni flexiones en '+form);
