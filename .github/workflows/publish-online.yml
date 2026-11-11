@@ -69,7 +69,7 @@ jobs:
             cp "$source/offline-lemmas.js" "$source/verification-review.js" "$dest/"
             # La vista previa PR29 es anterior a los módulos de Cultura y
             # Valenciano: copiar solo los activos existentes de cada versión.
-            for asset in pwa.js culture-lat4.js lexicon-valenciano.js vocabulary-quality.js vocabulary-generator.js manifest.webmanifest; do
+            for asset in pwa.js culture-lat4.js lexicon-valenciano.js vocabulary-quality.js vocabulary-generator.js exam-scoring.js manifest.webmanifest; do
               if [[ -f "$source/$asset" ]]; then cp "$source/$asset" "$dest/"; fi
             done
             cp -R "$source/icons" "$dest/icons"
