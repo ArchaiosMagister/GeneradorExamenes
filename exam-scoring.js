@@ -159,8 +159,10 @@
     const caption=document.createElement('span');caption.className='exam-question-caption';
     caption.textContent=' '+item.caption+' ';
     const pts=document.createElement('span');pts.className='exam-question-points';
-    pts.contentEditable='true';pts.spellcheck=false;pts.dataset.scoringKey=key;
-    pts.setAttribute('role','textbox');pts.setAttribute('aria-label','Editar puntuación de la pregunta '+(i+1));
+    pts.contentEditable='false';pts.tabIndex=0;pts.dataset.scoringKey=key;
+    pts.setAttribute('role','button');
+    pts.setAttribute('title','Modificar puntuación');
+    pts.setAttribute('aria-label','Modificar puntuación de la pregunta '+(i+1));
     pts.textContent=label(scores[key]);
     strong.append(count,caption,pts);el.replaceChildren(strong);
    }else{
@@ -177,19 +179,6 @@
   Promise.resolve().then(sync);
  }
  observer=new MutationObserver(records=>{
-  // En un elemento contenteditable anidado, Playwright, Safari y algunos
-  // editores pueden cambiar nodos de texto sin emitir input desde el span.
-  // Observar el contenido garantiza que la puntuación escrita a mano se
-  // sincronice también en ese caso (sin regenerar ni perder el enunciado).
-  for(const record of records){
-   const node=record.target?.nodeType===1?record.target:record.target?.parentElement;
-   const span=node?.closest?.('.exam-question-points');
-   if(span?.isConnected&&span.dataset.scoringKey){
-    const cents=number(span.textContent);
-    if(cents!==null&&scores[span.dataset.scoringKey]!==cents)
-     setScore(span.dataset.scoringKey,cents,{source:'preview'});
-   }
-  }
   if(records.some(record=>record.type==='childList'&&(
    [...record.addedNodes].some(node=>node.nodeType===1&&(
     node.classList?.contains('exam-sheet')||node.classList?.contains('exam-question')||node.querySelector?.('.exam-question')
@@ -199,29 +188,36 @@
  });
  observer.observe(paper,{subtree:true,childList:true,characterData:true});
  rows.addEventListener('change',showStatus);
- // El elemento exterior #paper también es editable; en algunos navegadores
- // el evento input tiene como target ese contenedor y no el span anidado.
- const editedSpan=event=>{
-  const element=event.target?.nodeType===1?event.target:event.target?.parentElement;
-  const selected=window.getSelection()?.anchorNode;
-  return element?.closest?.('.exam-question-points')||
-   selected?.parentElement?.closest?.('.exam-question-points')||
-   paper.querySelector('.exam-question-points:focus');
- };
- paper.addEventListener('input',event=>{
-  const span=editedSpan(event);
-  if(!span)return;
-  const n=number(span.textContent);
-  span.setAttribute('aria-invalid',String(n===null));
-  if(n!==null)setScore(span.dataset.scoringKey,n,{source:'preview'});
+ // La vista previa completa es contenteditable, por lo que editar un span
+ // anidado directamente puede insertar texto en el ENUNCIADO equivocado
+ // (constatado en Chromium). Un campo temporal al pulsar el sufijo evita eso.
+ function editInPaper(span){
+  if(!span||span.nextElementSibling?.classList.contains('exam-score-inline-editor'))return;
+  const key=span.dataset.scoringKey,editor=document.createElement('input');
+  editor.type='text';editor.inputMode='decimal';editor.autocomplete='off';
+  editor.className='exam-score-inline-editor';editor.value=value(scores[key]||0);
+  editor.setAttribute('aria-label','Puntos de esta pregunta');
+  span.hidden=true;span.after(editor);
+  let cancelled=false;
+  editor.addEventListener('keydown',event=>{
+   if(event.key==='Enter'){event.preventDefault();editor.blur()}
+   else if(event.key==='Escape'){event.preventDefault();cancelled=true;editor.blur()}
+  });
+  editor.addEventListener('blur',()=>{
+   const parsed=cancelled?null:number(editor.value);
+   editor.remove();span.hidden=false;
+   if(parsed!==null)setScore(key,parsed,{source:'inline'});
+   span.focus({preventScroll:true});
+  },{once:true});
+  editor.focus();editor.select();
+ }
+ paper.addEventListener('click',event=>{
+  const span=event.target?.closest?.('.exam-question-points');
+  if(span)editInPaper(span);
  });
- paper.addEventListener('focusout',event=>{
-  const span=editedSpan(event);
-  if(!span)return;
-  const n=number(span.textContent);
-  if(n!==null)setScore(span.dataset.scoringKey,n,{source:'preview'});
-  span.textContent=label(scores[span.dataset.scoringKey]||0);
-  span.removeAttribute('aria-invalid');
+ paper.addEventListener('keydown',event=>{
+  const span=event.target?.closest?.('.exam-question-points');
+  if(span&&(event.key==='Enter'||event.key===' ')){event.preventDefault();editInPaper(span)}
  });
  reset.addEventListener('click',()=>{
   const entries=previousQuestions;
