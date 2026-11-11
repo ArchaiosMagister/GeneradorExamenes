@@ -673,6 +673,10 @@ body:has(.vocab-manager.active) .exam-coursebar{display:none}
 <div class="buttons" role="group" aria-label="Copias del proyecto"><button id="vgBackup" type="button" class="secondary">Guardar copia JSON</button><button id="vgRestore" type="button" class="secondary">Recuperar copia JSON</button><input id="vgImport" type="file" accept=".json,application/json" hidden><button id="vgClearAll" type="button" class="vg-danger" title="Vaciar todas las unidades del proyecto">Limpiar todo</button></div>
 <p id="vgStatus" role="status" aria-live="polite">Los textos y correcciones se guardan en este navegador. Reducir el número de unidades las oculta sin borrarlas. Editar el texto requiere volver a analizar esa unidad.</p><details id="vgEulexisPanel" class="vg-eulexis-panel"><summary>Griego I · Sugerencias de Eulexis en el vocabulario</summary><p class="vm-help">Instalación opcional de una fuente externa en este dispositivo. Descarga los datos del proyecto original una sola vez (aproximadamente 30 MB) y conserva únicamente las propuestas aplicables al banco de Griego I. No convierte las flexiones en verificadas.</p><div class="buttons"><button type="button" id="vgEulexisInstall">Instalar o actualizar Eulexis</button><button type="button" id="vgEulexisRemove" class="secondary">Borrar índice local</button></div><p class="vm-help" id="vgEulexisStatus" role="status" aria-live="polite">Comprobando Eulexis local…</p><p class="vm-help">Fuente: <a href="https://github.com/genuensis/lector-griego" target="_blank" rel="noopener noreferrer">lector-griego / Eulexis</a>. Las propuestas se revisan junto al contexto real de tus unidades y solo se aceptan manualmente.</p></details><details class="vg-eulexis-panel"><summary>Propuestas de los lectores de latín y griego</summary>
 <p class="vm-help">Carga un índice personal preparado con el lector correspondiente. Las propuestas se consultan sin conexión y aparecen en las tarjetas y en Word si incluyes las lecturas pendientes.</p>
+<p class="vm-help">También puedes consultar en Internet los servicios oficiales:
+<a href="https://outils.biblissima.fr/fr/collatinus-web/" target="_blank" rel="noopener noreferrer">Collatinus-web (latín)</a> y
+<a href="https://outils.biblissima.fr/fr/eulexis-web/" target="_blank" rel="noopener noreferrer">Eulexis-web (griego)</a>.
+Las páginas oficiales permiten comprobar formas; no se usa aquí una API de lematización automática no documentada.</p>
 <label for="vgReaderImport">Cargar propuestas de lector</label><input id="vgReaderImport" type="file" accept=".json,application/json">
 <button id="vgReaderRemove" type="button" class="secondary">Quitar propuestas del curso</button>
 <p id="vgReaderStatus" role="status" aria-live="polite"></p></details>
@@ -950,7 +954,7 @@ function analyzeExamVocabulary(text,course,bank){
  const engine=window.ExaminaVocabulary;
  if(!engine)return [];
  const data=window.ExaminaOfflineLemmatizer.currentData()||emptyExamLemmaIndex;
- return engine.entries(engine.analyze(data,text,({latin1:'lat1',latin4:'lat4',greek1:'gr1'})[course],bank));
+ return engine.entries(engine.analyze(data,text,({latin1:'lat1',latin4:'lat4',greek1:'gr1'})[course],bank,{contextual:true}));
 }
 function buildFinalLexicon(chosen,sentences){
  if(!$('autoGloss').checked)return '';
