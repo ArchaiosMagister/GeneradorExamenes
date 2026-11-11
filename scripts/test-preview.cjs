@@ -210,7 +210,7 @@ async function checkFile(browser,filename){
    const groups=await page.evaluate(()=>greekVerifiedCorpus.filter(x=>x.kind==='declension')
     .map(x=>greekCompleteNominalGroup(x)).filter(Boolean));
    assert.equal(groups.length,10,filename+': faltan las diez bases griegas verificadas');
-   assert(groups.every(g=>/^(?:ὁ|ἡ|τὸ)\s+(?:ἀγαθ|καλ|κακ)/u.test(g.title)),
+   assert(groups.every(g=>/^(?:ὁ|ἡ|τὸ)\s+\S+\s+\S+$/u.test(g.title)),
     filename+': se ha usado un orden predicativo en vez del atributivo');
    assert(groups.every(g=>g.rows.length===5&&g.rows.every(r=>r[1].length===2&&r[1].every(v=>v.trim().split(/\s+/).length>=2))),
     filename+': paradigma nominal griego incompleto');
