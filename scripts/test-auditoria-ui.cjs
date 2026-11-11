@@ -12,7 +12,7 @@ assert(before('<header class="top">','<nav class="vocab-tabbar'), 'Primero el t�
 assert(before('<nav class="vocab-tabbar','<div class="exam-coursebar'), 'Después los tres apartados');
 assert.match(index,/id="vgUnitButtons"/,'No desaparecerán los botones por unidad');
 assert.match(vocab,/function renderUnitButtons\(\)/,'Los botones deben conservar su renderizado');
-assert.match(index,/for\(const id of \['glossScope','glossNouns','glossVerbs','glossAdjectives','glossOther'\]\)/,
+assert.match(index,/for\(const id of \['glossScope','glossNouns','glossVerbs','glossAdjectives','glossPronouns','glossArticles','glossParticles','glossOther','glossHideRequired'\]\)/,
  'Los filtros deben actualizar el glosario');
 assert.match(index,/if\(\/artículo\|articulo\/\.test\(a\)\)return null/,
  'El artículo no debe identificarse como sustantivo');
