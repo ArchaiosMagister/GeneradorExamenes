@@ -1,0 +1,2403 @@
+{
+  "schema": 1,
+  "date": "2026-11-11",
+  "course": "lat1",
+  "source": "183 pending examples after PR #56, analyzed with current GitHub branch",
+  "method": "No original Latin sentences available for each item. Ambiguities are not silently resolved and proposed inflections are not verified.",
+  "summary": {
+    "original": 183,
+    "reconocidas": 82,
+    "pendientes": 101,
+    "porTipo": {
+      "homógrafo": 33,
+      "reconocida": 82,
+      "grafía o abreviatura": 9,
+      "contexto o duplicado": 8,
+      "hipótesis flexiva sin verificar": 51
+    }
+  },
+  "rows": [
+    {
+      "unit": 1,
+      "forma": "bona",
+      "estado": "homógrafo",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "bonus",
+          "enunciado": "bonus, –a, –um",
+          "contrastada": true
+        },
+        {
+          "lema": "bona",
+          "enunciado": "bona, −orum",
+          "contrastada": true
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 1,
+      "forma": "servæ",
+      "estado": "reconocida",
+      "enunciado": "serva, –æ",
+      "lema": "serva",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 1,
+      "forma": "stylum",
+      "estado": "reconocida",
+      "enunciado": "stylus, –i",
+      "lema": "stylus",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 2,
+      "forma": "bello",
+      "estado": "homógrafo",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "bellum",
+          "enunciado": "bellum, –i",
+          "contrastada": true
+        },
+        {
+          "lema": "bello",
+          "enunciado": "bello, bellavi, bellatum (1ª)",
+          "contrastada": true
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 2,
+      "forma": "modo",
+      "estado": "homógrafo",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "modo",
+          "enunciado": "modo (adv.)",
+          "contrastada": true
+        },
+        {
+          "lema": "modus",
+          "enunciado": "modus, –i",
+          "contrastada": true
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 2,
+      "forma": "Nocte",
+      "estado": "homógrafo",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "nocte",
+          "enunciado": "nocte (adv.)",
+          "contrastada": true
+        },
+        {
+          "lema": "nox",
+          "enunciado": "nox, noctis (f)",
+          "contrastada": true
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 2,
+      "forma": "Nostrum",
+      "estado": "homógrafo",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "ego",
+          "enunciado": "ego, mei (pron. pers.)",
+          "contrastada": true
+        },
+        {
+          "lema": "noster",
+          "enunciado": "noster, nostra, nostrum",
+          "contrastada": true
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 2,
+      "forma": "pugna",
+      "estado": "homógrafo",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "pugno",
+          "enunciado": "pugno, pugnavi, pugnatum (1ª)",
+          "contrastada": true
+        },
+        {
+          "lema": "pugna",
+          "enunciado": "pugna, –æ",
+          "contrastada": true
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 2,
+      "forma": "templos",
+      "estado": "grafía o abreviatura",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [],
+      "aviso": "Revisión de grafía o abreviatura: comprobar templa si el sustantivo es templum, –i (n.); exige contexto"
+    },
+    {
+      "unit": 2,
+      "forma": "teneros",
+      "estado": "contexto o duplicado",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "tenerus",
+          "enunciado": "tenerus, –a, –um",
+          "contrastada": true
+        },
+        {
+          "lema": "tener",
+          "enunciado": "tener, tenera, tenerum",
+          "contrastada": true
+        }
+      ],
+      "aviso": "Necesita contexto: coexisten los enunciados tenerus, –a, –um y tener, tenera, tenerum; revisar si son variantes de una sola ficha"
+    },
+    {
+      "unit": 2,
+      "forma": "visimus",
+      "estado": "reconocida",
+      "enunciado": "viso, visi, visum (3ª)",
+      "lema": "uiso",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 3,
+      "forma": "admirabantur",
+      "estado": "reconocida",
+      "enunciado": "admiror, admiratus sum (1ª)",
+      "lema": "admiror",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 3,
+      "forma": "arate",
+      "estado": "hipótesis flexiva sin verificar",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "aro",
+          "enunciado": "aro, aravi, aratum (1ª)",
+          "contrastada": false
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 3,
+      "forma": "Nostri",
+      "estado": "homógrafo",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "ego",
+          "enunciado": "ego, mei (pron. pers.)",
+          "contrastada": true
+        },
+        {
+          "lema": "noster",
+          "enunciado": "noster, nostra, nostrum",
+          "contrastada": true
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 4,
+      "forma": "bona",
+      "estado": "homógrafo",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "bonus",
+          "enunciado": "bonus, –a, –um",
+          "contrastada": true
+        },
+        {
+          "lema": "bona",
+          "enunciado": "bona, −orum",
+          "contrastada": true
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 4,
+      "forma": "commiserat",
+      "estado": "contexto o duplicado",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "commito",
+          "enunciado": "commito, commisi, commissum (3ª)",
+          "contrastada": true
+        },
+        {
+          "lema": "committo",
+          "enunciado": "committo, commisi, commissum (3ª)",
+          "contrastada": true
+        }
+      ],
+      "aviso": "Necesita contexto: el banco propone commito y committo para el mismo tema commis-; contrastar la grafía de la ficha"
+    },
+    {
+      "unit": 4,
+      "forma": "commiserunt",
+      "estado": "contexto o duplicado",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "commito",
+          "enunciado": "commito, commisi, commissum (3ª)",
+          "contrastada": true
+        },
+        {
+          "lema": "committo",
+          "enunciado": "committo, commisi, commissum (3ª)",
+          "contrastada": true
+        }
+      ],
+      "aviso": "Necesita contexto: el banco propone commito y committo para el mismo tema commis-; contrastar la grafía de la ficha"
+    },
+    {
+      "unit": 4,
+      "forma": "dedit",
+      "estado": "homógrafo",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "dedo",
+          "enunciado": "dedo, dedidi, deditum (3ª)",
+          "contrastada": true
+        },
+        {
+          "lema": "do",
+          "enunciado": "do, dedi, datum (1ª)",
+          "contrastada": true
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 4,
+      "forma": "nostri",
+      "estado": "homógrafo",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "ego",
+          "enunciado": "ego, mei (pron. pers.)",
+          "contrastada": true
+        },
+        {
+          "lema": "noster",
+          "enunciado": "noster, nostra, nostrum",
+          "contrastada": true
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 4,
+      "forma": "propinquiis",
+      "estado": "grafía o abreviatura",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [],
+      "aviso": "Revisión de grafía o abreviatura: comprobar propinquis (de propinquus, –a, –um)"
+    },
+    {
+      "unit": 4,
+      "forma": "vera",
+      "estado": "homógrafo",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "ver",
+          "enunciado": "ver, veris (f.)",
+          "contrastada": true
+        },
+        {
+          "lema": "verus",
+          "enunciado": "verus, –a, –um",
+          "contrastada": true
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 5,
+      "forma": "bonaque",
+      "estado": "homógrafo",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "bonus",
+          "enunciado": "bonus, –a, –um",
+          "contrastada": true
+        },
+        {
+          "lema": "bona",
+          "enunciado": "bona, −orum",
+          "contrastada": true
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 5,
+      "forma": "Campo",
+      "estado": "reconocida",
+      "enunciado": "campus, –i",
+      "lema": "campus",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 5,
+      "forma": "certant",
+      "estado": "reconocida",
+      "enunciado": "certo, certavi, certatum (1ª)",
+      "lema": "certo",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 5,
+      "forma": "collocaverat",
+      "estado": "reconocida",
+      "enunciado": "colloco (1ª)",
+      "lema": "colloco",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 5,
+      "forma": "indicavit",
+      "estado": "reconocida",
+      "enunciado": "indico (1ª)",
+      "lema": "indico",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 5,
+      "forma": "Nostri",
+      "estado": "homógrafo",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "ego",
+          "enunciado": "ego, mei (pron. pers.)",
+          "contrastada": true
+        },
+        {
+          "lema": "noster",
+          "enunciado": "noster, nostra, nostrum",
+          "contrastada": true
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 5,
+      "forma": "pares",
+      "estado": "homógrafo",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "par",
+          "enunciado": "par, paris",
+          "contrastada": true
+        },
+        {
+          "lema": "pareo",
+          "enunciado": "pareo, parui, paritum (2ª)",
+          "contrastada": true
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 5,
+      "forma": "servavit",
+      "estado": "reconocida",
+      "enunciado": "servo (1ª)",
+      "lema": "seruo",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 6,
+      "forma": "aperuerunt",
+      "estado": "reconocida",
+      "enunciado": "aperio, aperui, apertum (4ª)",
+      "lema": "aperio",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 6,
+      "forma": "Atuatucos",
+      "estado": "reconocida",
+      "enunciado": "Atuatuci, –orum",
+      "lema": "atuatuci",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 6,
+      "forma": "dedicaverunt",
+      "estado": "reconocida",
+      "enunciado": "dedico, dedicavi, dedicatum (1ª)",
+      "lema": "dedico",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 6,
+      "forma": "fugerant",
+      "estado": "reconocida",
+      "enunciado": "fugio, fugi – (4ª)",
+      "lema": "fugio",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 6,
+      "forma": "gemit",
+      "estado": "reconocida",
+      "enunciado": "gemo, gemui, gemitum (3ª)",
+      "lema": "gemo",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 6,
+      "forma": "regno",
+      "estado": "homógrafo",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "regnum",
+          "enunciado": "regnum, –i",
+          "contrastada": true
+        },
+        {
+          "lema": "regno",
+          "enunciado": "regno, regnavi, regnatum (1ª)",
+          "contrastada": true
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 6,
+      "forma": "reverterunt",
+      "estado": "reconocida",
+      "enunciado": "reverto, reverti, reversum (3ª)",
+      "lema": "reuerto",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 6,
+      "forma": "teste",
+      "estado": "reconocida",
+      "enunciado": "testis, testis (m./f.)",
+      "lema": "testis",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 6,
+      "forma": "turtur",
+      "estado": "reconocida",
+      "enunciado": "turtur, turturis (m.)",
+      "lema": "turtur",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 6,
+      "forma": "vere",
+      "estado": "homógrafo",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "ver",
+          "enunciado": "ver, veris (f.)",
+          "contrastada": true
+        },
+        {
+          "lema": "verus",
+          "enunciado": "verus, –a, –um",
+          "contrastada": true
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 6,
+      "forma": "vivunt",
+      "estado": "reconocida",
+      "enunciado": "vivo, vixi, vivitum (4ª)",
+      "lema": "uiuo",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 7,
+      "forma": "ii",
+      "estado": "homógrafo",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "is",
+          "enunciado": "is, ea, id (pron.)",
+          "contrastada": true
+        },
+        {
+          "lema": "eo",
+          "enunciado": "eo, ii, itum (irr.)",
+          "contrastada": true
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 7,
+      "forma": "opertam",
+      "estado": "hipótesis flexiva sin verificar",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "operio",
+          "enunciado": "operio, operui, opertum (4ª)",
+          "contrastada": false
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 7,
+      "forma": "Paulo",
+      "estado": "homógrafo",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "paulo",
+          "enunciado": "paulo (adv.)",
+          "contrastada": true
+        },
+        {
+          "lema": "paulus",
+          "enunciado": "Paulus, –i",
+          "contrastada": true
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 7,
+      "forma": "solis",
+      "estado": "contexto o duplicado",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "sol",
+          "enunciado": "sol, solis (m.)",
+          "contrastada": true
+        },
+        {
+          "lema": "solis",
+          "enunciado": "solis, –is (m.)",
+          "contrastada": true
+        }
+      ],
+      "aviso": "Necesita contexto: coexisten las fichas sol, solis y solis, –is; contrastar si la segunda es un duplicado editorial"
+    },
+    {
+      "unit": 7,
+      "forma": "vere",
+      "estado": "homógrafo",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "ver",
+          "enunciado": "ver, veris (f.)",
+          "contrastada": true
+        },
+        {
+          "lema": "verus",
+          "enunciado": "verus, –a, –um",
+          "contrastada": true
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 8,
+      "forma": "ædificata",
+      "estado": "hipótesis flexiva sin verificar",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "aedifico",
+          "enunciado": "ædifico, ædificavi, ædificatum (1ª)",
+          "contrastada": false
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 8,
+      "forma": "Bello",
+      "estado": "homógrafo",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "bellum",
+          "enunciado": "bellum, –i",
+          "contrastada": true
+        },
+        {
+          "lema": "bello",
+          "enunciado": "bello, bellavi, bellatum (1ª)",
+          "contrastada": true
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 8,
+      "forma": "egregias",
+      "estado": "reconocida",
+      "enunciado": "egregius, –a, –um",
+      "lema": "egregius",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 8,
+      "forma": "Neapolis",
+      "estado": "reconocida",
+      "enunciado": "Neapolis, Neapolis (f.)",
+      "lema": "neapolis",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 8,
+      "forma": "postrema",
+      "estado": "reconocida",
+      "enunciado": "postremus, –a, –um",
+      "lema": "postremus",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 8,
+      "forma": "volebat",
+      "estado": "reconocida",
+      "enunciado": "volo, volui, – (irr.)",
+      "lema": "uolo",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 9,
+      "forma": "ædificata",
+      "estado": "hipótesis flexiva sin verificar",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "aedifico",
+          "enunciado": "ædifico, ædificavi, ædificatum (1ª)",
+          "contrastada": false
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 9,
+      "forma": "ausus",
+      "estado": "reconocida",
+      "enunciado": "audeo, ausus sum (2ª)",
+      "lema": "audeo",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 9,
+      "forma": "Avarus",
+      "estado": "contexto o duplicado",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [],
+      "aviso": "Necesita contexto: puede ser avarus, –a, –um («avaro») o un nombre propio; consultar la oración"
+    },
+    {
+      "unit": 9,
+      "forma": "Belgæ",
+      "estado": "reconocida",
+      "enunciado": "Belgæ, –arum (m. pl.)",
+      "lema": "belgae",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 9,
+      "forma": "canis",
+      "estado": "homógrafo",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "canis",
+          "enunciado": "canis, −is (m.)",
+          "contrastada": true
+        },
+        {
+          "lema": "cano",
+          "enunciado": "cano, cecini, cantum (3ª)",
+          "contrastada": true
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 9,
+      "forma": "capta",
+      "estado": "hipótesis flexiva sin verificar",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "capio",
+          "enunciado": "capio, cepi, captum (mx.)",
+          "contrastada": false
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 9,
+      "forma": "conati",
+      "estado": "hipótesis flexiva sin verificar",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "conor",
+          "enunciado": "conor, conatus sum (1ª)",
+          "contrastada": false
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 9,
+      "forma": "confisus",
+      "estado": "reconocida",
+      "enunciado": "confido, confisus sum (3ª)",
+      "lema": "confido",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 9,
+      "forma": "creatus",
+      "estado": "hipótesis flexiva sin verificar",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "creo",
+          "enunciado": "creo, creavi, creatum (1ª)",
+          "contrastada": false
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 9,
+      "forma": "cremata",
+      "estado": "hipótesis flexiva sin verificar",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "cremo",
+          "enunciado": "cremo, cremavi, crematum (1ª)",
+          "contrastada": false
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 9,
+      "forma": "dato",
+      "estado": "hipótesis flexiva sin verificar",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "do",
+          "enunciado": "do, dedi, datum (1ª)",
+          "contrastada": false
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 9,
+      "forma": "deleta",
+      "estado": "hipótesis flexiva sin verificar",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "deleo",
+          "enunciado": "deleo, delevi, deletum (2ª)",
+          "contrastada": false
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 9,
+      "forma": "expugnata",
+      "estado": "hipótesis flexiva sin verificar",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "expugno",
+          "enunciado": "expugno, expugnavi, expugnatum (1ª)",
+          "contrastada": false
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 9,
+      "forma": "factus",
+      "estado": "hipótesis flexiva sin verificar",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "facio",
+          "enunciado": "facio, feci, factum (mx.)",
+          "contrastada": false
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 9,
+      "forma": "ferarum",
+      "estado": "reconocida",
+      "enunciado": "fera, –æ",
+      "lema": "fera",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 9,
+      "forma": "filiis",
+      "estado": "homógrafo",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "filia",
+          "enunciado": "filia, –æ",
+          "contrastada": true
+        },
+        {
+          "lema": "filius",
+          "enunciado": "filius, –i",
+          "contrastada": true
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 9,
+      "forma": "horas",
+      "estado": "reconocida",
+      "enunciado": "hora, –æ",
+      "lema": "hora",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 9,
+      "forma": "laudati",
+      "estado": "hipótesis flexiva sin verificar",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "laudo",
+          "enunciado": "laudo, laudavi, laudatum (1ª)",
+          "contrastada": false
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 9,
+      "forma": "longe",
+      "estado": "homógrafo",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "longe",
+          "enunciado": "longe (adv.)",
+          "contrastada": true
+        },
+        {
+          "lema": "longus",
+          "enunciado": "longus, –a, –um",
+          "contrastada": true
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 9,
+      "forma": "mirati",
+      "estado": "hipótesis flexiva sin verificar",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "miror",
+          "enunciado": "miror, miratus sum (1ª)",
+          "contrastada": false
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 9,
+      "forma": "missus",
+      "estado": "hipótesis flexiva sin verificar",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "mitto",
+          "enunciado": "mitto, misi, missum (3ª)",
+          "contrastada": false
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 9,
+      "forma": "multitudine",
+      "estado": "reconocida",
+      "enunciado": "multitudo, multitudinis (f.)",
+      "lema": "multitudo",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 9,
+      "forma": "narratæ",
+      "estado": "hipótesis flexiva sin verificar",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "narro",
+          "enunciado": "narro, narravi, narratum (1ª)",
+          "contrastada": false
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 9,
+      "forma": "occisus",
+      "estado": "hipótesis flexiva sin verificar",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "occido",
+          "enunciado": "occido, occidi, occisum (3ª)",
+          "contrastada": false
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 9,
+      "forma": "ortus",
+      "estado": "homógrafo",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "orior",
+          "enunciado": "orior, ortus sum (4ª)",
+          "contrastada": true
+        },
+        {
+          "lema": "ortus",
+          "enunciado": "ortus, –us",
+          "contrastada": true
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 9,
+      "forma": "Peditatus",
+      "estado": "reconocida",
+      "enunciado": "peditatus, –us",
+      "lema": "peditatus",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 9,
+      "forma": "pretiosius",
+      "estado": "reconocida",
+      "enunciado": "pretiosus, –a, –um",
+      "lema": "pretiosus",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 9,
+      "forma": "profectæ",
+      "estado": "hipótesis flexiva sin verificar",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "proficiscor",
+          "enunciado": "proficiscor, profectus sum (3ª)",
+          "contrastada": false
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 9,
+      "forma": "profectos",
+      "estado": "hipótesis flexiva sin verificar",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "proficiscor",
+          "enunciado": "proficiscor, profectus sum (3ª)",
+          "contrastada": false
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 9,
+      "forma": "pugnatum",
+      "estado": "hipótesis flexiva sin verificar",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "pugno",
+          "enunciado": "pugno, pugnavi, pugnatum (1ª)",
+          "contrastada": false
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 9,
+      "forma": "punitus",
+      "estado": "hipótesis flexiva sin verificar",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "punio",
+          "enunciado": "punio, punivi, punitum (4ª)",
+          "contrastada": false
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 9,
+      "forma": "sapientissimus",
+      "estado": "reconocida",
+      "enunciado": "sapiens, −ntis",
+      "lema": "sapiens",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 9,
+      "forma": "scripta",
+      "estado": "hipótesis flexiva sin verificar",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "scribo",
+          "enunciado": "scribo, scripsi, scriptum (3ª)",
+          "contrastada": false
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 9,
+      "forma": "sepultus",
+      "estado": "hipótesis flexiva sin verificar",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "sepelio",
+          "enunciado": "sepelio, sepelii, sepultum (3ª)",
+          "contrastada": false
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 9,
+      "forma": "Solitus",
+      "estado": "reconocida",
+      "enunciado": "soleo, solitus sum (2ª)",
+      "lema": "soleo",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 9,
+      "forma": "T",
+      "estado": "grafía o abreviatura",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [],
+      "aviso": "Revisión de grafía o abreviatura: inicial o abreviatura, no lema autónomo; consultar la oración"
+    },
+    {
+      "unit": 9,
+      "forma": "vastata",
+      "estado": "hipótesis flexiva sin verificar",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "uasto",
+          "enunciado": "vasto, vastavi, vastatum (1ª)",
+          "contrastada": false
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 9,
+      "forma": "victi",
+      "estado": "hipótesis flexiva sin verificar",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "uinco",
+          "enunciado": "vinco, vici, victum (3ª)",
+          "contrastada": false
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 9,
+      "forma": "vocatus",
+      "estado": "hipótesis flexiva sin verificar",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "uoco",
+          "enunciado": "voco, vocavi, vocatum (1ª)",
+          "contrastada": false
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "aberat",
+      "estado": "reconocida",
+      "enunciado": "absum, abfui – (irr.)",
+      "lema": "absum",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "Acceptis",
+      "estado": "hipótesis flexiva sin verificar",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "accipio",
+          "enunciado": "accipio, accepi, acceptum (mx.)",
+          "contrastada": false
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "aderant",
+      "estado": "reconocida",
+      "enunciado": "adsum, adfui, – (irr.)",
+      "lema": "adsum",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "affirmauerunt",
+      "estado": "reconocida",
+      "enunciado": "affirmo, affirmavi, affirmatum (1ª)",
+      "lema": "affirmo",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "Allobroges",
+      "estado": "reconocida",
+      "enunciado": "Allobroges, –um (m. pl.)",
+      "lema": "allobroges",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "amissa",
+      "estado": "hipótesis flexiva sin verificar",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "amitto",
+          "enunciado": "amitto, amisi, amissum (3ª)",
+          "contrastada": false
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "amore",
+      "estado": "reconocida",
+      "enunciado": "amor, amoris (m.)",
+      "lema": "amor",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "bello",
+      "estado": "homógrafo",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "bellum",
+          "enunciado": "bellum, –i",
+          "contrastada": true
+        },
+        {
+          "lema": "bello",
+          "enunciado": "bello, bellavi, bellatum (1ª)",
+          "contrastada": true
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "Boudicca",
+      "estado": "reconocida",
+      "enunciado": "Boudicca, –æ",
+      "lema": "boudicca",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "Britanni",
+      "estado": "reconocida",
+      "enunciado": "Britannus, –i",
+      "lema": "britannus",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "C",
+      "estado": "grafía o abreviatura",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [],
+      "aviso": "Revisión de grafía o abreviatura: inicial o abreviatura, no lema autónomo; consultar la oración"
+    },
+    {
+      "unit": 10,
+      "forma": "Cannas",
+      "estado": "reconocida",
+      "enunciado": "Cannae, –arum (f. pl.)",
+      "lema": "cannae",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "capta",
+      "estado": "hipótesis flexiva sin verificar",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "capio",
+          "enunciado": "capio, cepi, captum (mx.)",
+          "contrastada": false
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "clasis",
+      "estado": "grafía o abreviatura",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [],
+      "aviso": "Revisión de grafía o abreviatura: comprobar classis, –is (f.), si se refiere a «flota» o «clase»"
+    },
+    {
+      "unit": 10,
+      "forma": "Comitiis",
+      "estado": "reconocida",
+      "enunciado": "comitia, –orum (n. pl.)",
+      "lema": "comitia",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "commiserunt",
+      "estado": "contexto o duplicado",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "commito",
+          "enunciado": "commito, commisi, commissum (3ª)",
+          "contrastada": true
+        },
+        {
+          "lema": "committo",
+          "enunciado": "committo, commisi, commissum (3ª)",
+          "contrastada": true
+        }
+      ],
+      "aviso": "Necesita contexto: el banco propone commito y committo para el mismo tema commis-; contrastar la grafía de la ficha"
+    },
+    {
+      "unit": 10,
+      "forma": "commisit",
+      "estado": "contexto o duplicado",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "commito",
+          "enunciado": "commito, commisi, commissum (3ª)",
+          "contrastada": true
+        },
+        {
+          "lema": "committo",
+          "enunciado": "committo, commisi, commissum (3ª)",
+          "contrastada": true
+        }
+      ],
+      "aviso": "Necesita contexto: el banco propone commito y committo para el mismo tema commis-; contrastar la grafía de la ficha"
+    },
+    {
+      "unit": 10,
+      "forma": "comparatis",
+      "estado": "reconocida",
+      "enunciado": "comparo, comparavi, comparatum (1ª)",
+      "lema": "comparo",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "condiciones",
+      "estado": "reconocida",
+      "enunciado": "condicio, condicionis (f.)",
+      "lema": "condicio",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "condita",
+      "estado": "hipótesis flexiva sin verificar",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "condo",
+          "enunciado": "condo, condidi, conditum (3ª)",
+          "contrastada": false
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "consilo",
+      "estado": "grafía o abreviatura",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [],
+      "aviso": "Revisión de grafía o abreviatura: comprobar consilio (de consilium, –i), según el contexto"
+    },
+    {
+      "unit": 10,
+      "forma": "constantia",
+      "estado": "reconocida",
+      "enunciado": "constantia, –æ",
+      "lema": "constantia",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "consulatum",
+      "estado": "reconocida",
+      "enunciado": "consulatus, –us",
+      "lema": "consulatus",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "creati",
+      "estado": "hipótesis flexiva sin verificar",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "creo",
+          "enunciado": "creo, creavi, creatum (1ª)",
+          "contrastada": false
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "curaque",
+      "estado": "reconocida",
+      "enunciado": "cura, –æ",
+      "lema": "cura",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "decrevit",
+      "estado": "reconocida",
+      "enunciado": "decerno, decrevi, decretum (3ª)",
+      "lema": "decerno",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "deletam",
+      "estado": "hipótesis flexiva sin verificar",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "deleo",
+          "enunciado": "deleo, delevi, deletum (2ª)",
+          "contrastada": false
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "deletum",
+      "estado": "hipótesis flexiva sin verificar",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "deleo",
+          "enunciado": "deleo, delevi, deletum (2ª)",
+          "contrastada": false
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "deliberata",
+      "estado": "hipótesis flexiva sin verificar",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "delibero",
+          "enunciado": "delibero, deliberavi, deliberatum (1ª)",
+          "contrastada": false
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "didici",
+      "estado": "reconocida",
+      "enunciado": "disco, didici – (3ª)",
+      "lema": "disco",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "Duos",
+      "estado": "reconocida",
+      "enunciado": "duo, duae, duo (num.)",
+      "lema": "duo",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "Egressi",
+      "estado": "hipótesis flexiva sin verificar",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "egredior",
+          "enunciado": "egredior, egressus sum (mx.)",
+          "contrastada": false
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "elephantos",
+      "estado": "reconocida",
+      "enunciado": "elephantus, –i",
+      "lema": "elephantus",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "expulsos",
+      "estado": "hipótesis flexiva sin verificar",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "expello",
+          "enunciado": "expello, expuli, expulsum (3ª)",
+          "contrastada": false
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "factus",
+      "estado": "hipótesis flexiva sin verificar",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "facio",
+          "enunciado": "facio, feci, factum (mx.)",
+          "contrastada": false
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "Fœderatæ",
+      "estado": "hipótesis flexiva sin verificar",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "foedero",
+          "enunciado": "fœdero, fœderavi, fœderatum (1ª)",
+          "contrastada": false
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "Græcia",
+      "estado": "reconocida",
+      "enunciado": "Graecia, –æ",
+      "lema": "graecia",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "grammaticam",
+      "estado": "reconocida",
+      "enunciado": "grammatica, –æ",
+      "lema": "grammatica",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "gratulati",
+      "estado": "hipótesis flexiva sin verificar",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "gratulor",
+          "enunciado": "gratulor, gratulatus sum (1ª)",
+          "contrastada": false
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "habitis",
+      "estado": "hipótesis flexiva sin verificar",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "habeo",
+          "enunciado": "habeo, habui, habitum (2ª)",
+          "contrastada": false
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "hasta",
+      "estado": "reconocida",
+      "enunciado": "hasta, –æ",
+      "lema": "hasta",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "hortatus",
+      "estado": "reconocida",
+      "enunciado": "hortor, hortatus sum (1ª)",
+      "lema": "hortor",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "incolumem",
+      "estado": "reconocida",
+      "enunciado": "incolumis, –e",
+      "lema": "incolumis",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "intrauit",
+      "estado": "reconocida",
+      "enunciado": "intro, intravi, intratum (1ª)",
+      "lema": "intro",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "latrauerunt",
+      "estado": "reconocida",
+      "enunciado": "latro, latravi, latratum (1ª)",
+      "lema": "latro",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "ludo",
+      "estado": "homógrafo",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "ludus",
+          "enunciado": "ludus, –i",
+          "contrastada": true
+        },
+        {
+          "lema": "ludo",
+          "enunciado": "ludo, lusi, lusum (3ª)",
+          "contrastada": true
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "M",
+      "estado": "grafía o abreviatura",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [],
+      "aviso": "Revisión de grafía o abreviatura: inicial, cifra o abreviatura, no lema autónomo; consultar la oración"
+    },
+    {
+      "unit": 10,
+      "forma": "medicum",
+      "estado": "contexto o duplicado",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [],
+      "aviso": "Necesita contexto: puede ser medicus, –i (m., «médico») o medicus, –a, –um (adjetivo); consultar la oración"
+    },
+    {
+      "unit": 10,
+      "forma": "milia",
+      "estado": "homógrafo",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "milia",
+          "enunciado": "milia, –orum",
+          "contrastada": true
+        },
+        {
+          "lema": "mille",
+          "enunciado": "mille, milia (num.)",
+          "contrastada": true
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "missos",
+      "estado": "hipótesis flexiva sin verificar",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "mitto",
+          "enunciado": "mitto, misi, missum (3ª)",
+          "contrastada": false
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "morante",
+      "estado": "reconocida",
+      "enunciado": "moror, moratus sum (1ª)",
+      "lema": "moror",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "necaturos",
+      "estado": "hipótesis flexiva sin verificar",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "neco",
+          "enunciado": "neco, necavi, necatum (1ª)",
+          "contrastada": false
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "nonulli",
+      "estado": "grafía o abreviatura",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [],
+      "aviso": "Revisión de grafía o abreviatura: comprobar nonnulli (de nonnullus, –a, –um)"
+    },
+    {
+      "unit": 10,
+      "forma": "Nullo",
+      "estado": "reconocida",
+      "enunciado": "nullus, –a, –um",
+      "lema": "nullus",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "nunquam",
+      "estado": "reconocida",
+      "enunciado": "numquam (adv.)",
+      "lema": "numquam",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "Occiso",
+      "estado": "hipótesis flexiva sin verificar",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "occido",
+          "enunciado": "occido, occidi, occisum (3ª)",
+          "contrastada": false
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "oppugnata",
+      "estado": "hipótesis flexiva sin verificar",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "oppugno",
+          "enunciado": "oppugno, oppugnavi, oppugnatum (1ª)",
+          "contrastada": false
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "parcebant",
+      "estado": "reconocida",
+      "enunciado": "parco, peperci, parsum (3ª)",
+      "lema": "parco",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "parentibus",
+      "estado": "homógrafo",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "pareo",
+          "enunciado": "pareo, parui, paritum (2ª)",
+          "contrastada": true
+        },
+        {
+          "lema": "parens",
+          "enunciado": "parens, parentis (m. o f.)",
+          "contrastada": true
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "passus",
+      "estado": "homógrafo",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "passus",
+          "enunciado": "passus, –us",
+          "contrastada": true
+        },
+        {
+          "lema": "patior",
+          "enunciado": "patior, passus sum (4ª)",
+          "contrastada": true
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "pasuum",
+      "estado": "grafía o abreviatura",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [],
+      "aviso": "Revisión de grafía o abreviatura: comprobar passuum (genitivo plural de passus, –us)"
+    },
+    {
+      "unit": 10,
+      "forma": "patefecit",
+      "estado": "reconocida",
+      "enunciado": "patefacio, patefeci, patefactum (mx.)",
+      "lema": "patefacio",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "patrocinio",
+      "estado": "reconocida",
+      "enunciado": "patrocinium, –i",
+      "lema": "patrocinium",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "Paulo",
+      "estado": "homógrafo",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "paulo",
+          "enunciado": "paulo (adv.)",
+          "contrastada": true
+        },
+        {
+          "lema": "paulus",
+          "enunciado": "Paulus, –i",
+          "contrastada": true
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "perduxit",
+      "estado": "reconocida",
+      "enunciado": "perduco, perduxi, perductum (3ª)",
+      "lema": "perduco",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "piratis",
+      "estado": "reconocida",
+      "enunciado": "pirata, –æ (m.)",
+      "lema": "pirata",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "placebat",
+      "estado": "reconocida",
+      "enunciado": "placeo, placui, placitum (2ª)",
+      "lema": "placeo",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "postulata",
+      "estado": "homógrafo",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "postulatum",
+          "enunciado": "postulatum, –i",
+          "contrastada": true
+        },
+        {
+          "lema": "postulo",
+          "enunciado": "postulo, postulavi, postulatum (1ª)",
+          "contrastada": false
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "præerat",
+      "estado": "reconocida",
+      "enunciado": "praesum, praefui – (irr.)",
+      "lema": "praesum",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "præfuit",
+      "estado": "reconocida",
+      "enunciado": "praesum, praefui – (irr.)",
+      "lema": "praesum",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "prætore",
+      "estado": "reconocida",
+      "enunciado": "praetor, praetoris (m.)",
+      "lema": "praetor",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "procedentes",
+      "estado": "reconocida",
+      "enunciado": "procedo, processi, processum (3ª)",
+      "lema": "procedo",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "prohibente",
+      "estado": "reconocida",
+      "enunciado": "prohibeo, prohibui, prohibitum (2ª)",
+      "lema": "prohibeo",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "pronuntiata",
+      "estado": "hipótesis flexiva sin verificar",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "pronuntio",
+          "enunciado": "pronuntio, pronuntiavi, pronuntiatum (1ª)",
+          "contrastada": false
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "rapta",
+      "estado": "hipótesis flexiva sin verificar",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "rapio",
+          "enunciado": "rapio, rapui, raptum (mx.)",
+          "contrastada": false
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "rebellionem",
+      "estado": "reconocida",
+      "enunciado": "rebellio, rebellionis (f.)",
+      "lema": "rebellio",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "regressi",
+      "estado": "hipótesis flexiva sin verificar",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "regredior",
+          "enunciado": "regredior, regressus sum (mx.)",
+          "contrastada": false
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "relictis",
+      "estado": "hipótesis flexiva sin verificar",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "relinquo",
+          "enunciado": "relinquo, reliqui, relictum (3ª)",
+          "contrastada": false
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "Saguntini",
+      "estado": "reconocida",
+      "enunciado": "Saguntinus, –a, –um",
+      "lema": "saguntinus",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "salutis",
+      "estado": "reconocida",
+      "enunciado": "salus, salutis (f.)",
+      "lema": "salus",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "sexcentos",
+      "estado": "reconocida",
+      "enunciado": "sexcenti, –æ, –a (num.)",
+      "lema": "sexcenti",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "solvebant",
+      "estado": "reconocida",
+      "enunciado": "solvo, solvi, solutum (2ª)",
+      "lema": "soluo",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "superfluum",
+      "estado": "reconocida",
+      "enunciado": "superfluus, –a, –um",
+      "lema": "superfluus",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "terga",
+      "estado": "reconocida",
+      "enunciado": "tergum, –i",
+      "lema": "tergum",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "totam",
+      "estado": "reconocida",
+      "enunciado": "totus, –a, –um",
+      "lema": "totus",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "transgressi",
+      "estado": "hipótesis flexiva sin verificar",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "transgredior",
+          "enunciado": "transgredior, transgressus sum (mx.)",
+          "contrastada": false
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "uagabantur",
+      "estado": "reconocida",
+      "enunciado": "vagor, vagatus sum (1ª)",
+      "lema": "uagor",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "uerterunt",
+      "estado": "reconocida",
+      "enunciado": "verto, verti, versum (3ª)",
+      "lema": "uerto",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "uictis",
+      "estado": "hipótesis flexiva sin verificar",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "uinco",
+          "enunciado": "vinco, vici, victum (3ª)",
+          "contrastada": false
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "uulnerati",
+      "estado": "homógrafo",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "vulneratus",
+          "enunciado": "vulneratus, −a, −um",
+          "contrastada": true
+        },
+        {
+          "lema": "uulnero",
+          "enunciado": "vulnero, vulneravi, vulneratum (1ª)",
+          "contrastada": false
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "uulneratum",
+      "estado": "homógrafo",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "vulneratus",
+          "enunciado": "vulneratus, −a, −um",
+          "contrastada": true
+        },
+        {
+          "lema": "uulnero",
+          "enunciado": "vulnero, vulneravi, vulneratum (1ª)",
+          "contrastada": false
+        }
+      ],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "vescebantur",
+      "estado": "reconocida",
+      "enunciado": "vescor, vesci, – (3ª)",
+      "lema": "uescor",
+      "candidatos": [],
+      "aviso": null
+    },
+    {
+      "unit": 10,
+      "forma": "victa",
+      "estado": "hipótesis flexiva sin verificar",
+      "enunciado": null,
+      "lema": null,
+      "candidatos": [
+        {
+          "lema": "uinco",
+          "enunciado": "vinco, vici, victum (3ª)",
+          "contrastada": false
+        }
+      ],
+      "aviso": null
+    }
+  ]
+}
