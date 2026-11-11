@@ -94,6 +94,8 @@ jobs:
         run: |
           npm install --no-save --ignore-scripts playwright@1.56.1
           npx playwright install --with-deps chromium
+      - name: Comprobar interfaz de preguntas, UD, alcance del glosario y Eulexis contextual
+        run: node scripts/test-auditoria-ui.cjs
       - name: Validar glosas en castellano y valenciano
         run: node scripts/test-valenciano.cjs
       - name: Auditar cobertura y pendientes del vocabulario por unidad
