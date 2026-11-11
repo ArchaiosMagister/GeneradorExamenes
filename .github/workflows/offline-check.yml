@@ -38,7 +38,7 @@ on:
       - '.github/workflows/offline-check.yml'
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   offline:
@@ -102,14 +102,3 @@ jobs:
         run: npm run pwa:test
       - name: Probar en Chromium el lematizador sin conexión
         run: node scripts/test-lemma-browser.cjs
-      - name: Guardar la base offline y el HTML descargable en main
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        run: |
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add data/lemmas/teacher-forms.json data/lemmas/greek-nominal-candidates.json offline.html
-          if ! git diff --cached --quiet; then
-            git commit -m 'Actualizar lematizador autónomo bilingüe'
-            git pull --rebase origin main
-            git push origin HEAD:main
-          fi
