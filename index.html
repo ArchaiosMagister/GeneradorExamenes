@@ -916,6 +916,7 @@ $('paper').addEventListener('change',event=>{
  const select=event.target.closest('.exam-gloss-lemma');
  if(!select)return;
  const identity=select.dataset.identity,row=examGlossCandidates.get(identity);
+ if(select.value==='')return;
  const candidate=row?.candidates?.[Number(select.value)];
  if(!candidate)return;
  examGlossDecisions[identity]={lemma:candidate.lemma,entry:candidate.entry,
