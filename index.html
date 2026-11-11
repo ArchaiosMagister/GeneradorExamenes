@@ -505,6 +505,31 @@ html[data-course="greek1"] .paper .exam-sheet *{font-style:normal!important}
  #exam-header-controls button{flex:1;min-width:max-content;padding-inline:9px;font-size:12.5px}
 }
 @media print{#exam-header-controls{display:none!important}}
+</style><style id="vocabulary-unit-picker-style">
+.vg-unit-picker{margin:14px 0 16px}
+.vg-unit-buttons{display:flex;flex-wrap:wrap;gap:7px;margin-top:8px;max-height:260px;overflow:auto;padding:3px}
+.vg-unit-buttons .vg-unit-button{display:inline-flex;align-items:center;gap:6px;min-width:68px;justify-content:center;
+ background:#eef1f5;color:#4b596e;border:1px solid #cad4e0;border-radius:8px;font:700 13px system-ui,sans-serif;
+ padding:9px 11px;min-height:42px;cursor:pointer}
+.vg-unit-buttons .vg-unit-button[data-filled="true"]{background:#e6f4ea;color:#23603a;border-color:#a9d8b8}
+.vg-unit-buttons .vg-unit-button[aria-pressed="true"]{background:#24568f;color:#fff;border:2px solid #14365f;padding:8px 10px;box-shadow:0 0 0 2px #bad2eb}
+.vg-unit-buttons .vg-unit-dot{width:8px;height:8px;border-radius:50%;background:#aeb7c2;flex-shrink:0}
+.vg-unit-buttons .vg-unit-button[data-filled="true"] .vg-unit-dot{background:#25a45d}
+.vg-unit-buttons .vg-unit-button[aria-pressed="true"] .vg-unit-dot{box-shadow:0 0 0 1px #fff}
+.vg-unit-buttons .vg-unit-button:focus-visible{outline:3px solid #e3a836;outline-offset:2px}
+html[data-appearance="dark"] .vg-unit-buttons .vg-unit-button,html[data-appearance="oled"] .vg-unit-buttons .vg-unit-button{
+ background:#242d39;color:#d5dfec;border-color:#637286}
+html[data-appearance="dark"] .vg-unit-buttons .vg-unit-button[data-filled="true"],html[data-appearance="oled"] .vg-unit-buttons .vg-unit-button[data-filled="true"]{
+ background:#173d2a;color:#baf1cf;border-color:#568b6a}
+html[data-appearance="dark"] .vg-unit-buttons .vg-unit-button[aria-pressed="true"],html[data-appearance="oled"] .vg-unit-buttons .vg-unit-button[aria-pressed="true"]{
+ background:#24568f;color:#fff;border-color:#a7d0ff}
+#vgUnit[hidden]{display:none!important}
+</style><style id="examina-question-toggle-style">
+#examQuestionMenus .exam-question-toggle{flex:0 0 auto;width:19px;height:19px;margin:0;accent-color:var(--accent,#315cb1);cursor:pointer}
+#examQuestionMenus .exam-question-name{flex:1;min-width:0}
+#examQuestionMenus details[data-available="false"]{opacity:.5}
+#examQuestionMenus details[data-available="false"]>summary{background:#eceff2!important;color:#68717d!important}
+#examQuestionMenus details[data-available="false"] .exam-question-toggle{cursor:not-allowed}
 </style><style id="examina-question-points-style">
 #examScoring{margin:12px 0;border:1px solid var(--line,#ccd6e3);
  border-radius:10px;padding:12px;background:var(--surface,#fff)}
@@ -559,7 +584,7 @@ html[data-appearance="oled"] #examScoring .exam-scoring-correct{color:#a0e9cd}
 </script><div class="quick-actions no-print" aria-label="Acciones rápidas"><span class="quick-label">Examen</span><button type="button" id="quickGenerate">Generar</button><button type="button" id="quickWord" class="secondary">Descargar Word</button><button type="button" id="quickWordAnswers" class="secondary">Word con soluciones</button><span class="quick-tip">La vista previa se puede editar antes de exportar.</span></div>
 <section class="vocab-manager" id="vocabularyGenerator" aria-label="Generador de vocabulario independiente">
 <h2>Vocabulario de tus unidades</h2><p>Pega textos completos. Se usan únicamente los recursos locales disponibles; las formas desconocidas, ambiguas y candidatas requieren revisión. No se inventan traducciones. Las repeticiones se eliminan dentro de cada unidad.</p>
-<div class="vm-grid"><label>Banco docente<select id="vgCourse"><option value="lat1">Latín I</option><option value="lat4">Latín 4.º ESO</option><option value="gr1">Griego I</option></select></label><label>Número de unidades (1–100)<input id="vgCount" type="number" min="1" max="100"></label><label>Unidad<select id="vgUnit"></select></label></div>
+<div class="vm-grid"><label>Banco docente<select id="vgCourse"><option value="lat1">Latín I</option><option value="lat4">Latín 4.º ESO</option><option value="gr1">Griego I</option></select></label><label>Número de unidades (1–100)<input id="vgCount" type="number" min="1" max="100"></label></div><div class="vg-unit-picker"><strong>Unidad</strong><p class="vm-help">Azul: seleccionada · Punto verde: contiene texto · Gris: sin texto</p><div id="vgUnitButtons" class="vg-unit-buttons" role="group" aria-label="Elegir unidad de vocabulario"></div><select id="vgUnit" hidden aria-label="Unidad (selección interna)"></select></div>
 <label for="vgLang">Idioma del vocabulario <select id="vgLang"><option value="es">Castellano</option><option value="va">Valencià</option></select></label>
 <label>Título de la unidad<input id="vgTitle"></label><label>Texto de la unidad<textarea id="vgText" rows="8"></textarea></label>
 <label>Enunciado verbal<select id="vgMode"><option value="complete">Completo (según el banco, sin añadir temas ausentes)</option><option value="simple">Simple (forma de cita + conjugación latina disponible)</option></select></label>
@@ -1087,11 +1112,11 @@ function generateLatinMorphologyReference(){
  const words=stickyExamRows('forms',()=>examQuotaPick(latinExamFormCandidates(chosen),cfg.words,()=>latinExamForms(chosen,cfg.words)));
  const question=(index,heading)=>'<p class="exam-question">'+index+'. '+esc(heading)+'</p>';
  let n=0;
- const first=question(++n,morphSyntagmHeading(cfg,va)+' (1 p.).')+morphSyntagmRows(cfg);
- const second=question(++n,t('Analiza morfológicamente las siguientes formas verbales (1 p.).','Analitza morfològicament les formes verbals següents (1 p.).'))+
+ const first=examQuestionEnabled('decl')?question(++n,morphSyntagmHeading(cfg,va)+' (1 p.).')+morphSyntagmRows(cfg):'';
+ const second=examQuestionEnabled('verb')?question(++n,t('Analiza morfológicamente las siguientes formas verbales (1 p.).','Analitza morfològicament les formes verbals següents (1 p.).'))+
   '<table class="exam-paradigm reference-morph-table reference-verb-table" data-col-widths="28,25,24,23">'+
   '<thead><tr><th>'+t('Forma verbal','Forma verbal')+'</th><th>'+t('Persona y número','Persona i nombre')+'</th><th>'+t('Tiempo','Temps')+'</th><th>'+t('Voz','Veu')+'</th></tr></thead>'+
-  '<tbody>'+verbItems.map(x=>'<tr><td><i>'+esc(latinExamSurface(x.form,x.entry))+'</i></td><td></td><td></td><td></td></tr>').join('')+'</tbody></table>';
+  '<tbody>'+verbItems.map(x=>'<tr><td><i>'+esc(latinExamSurface(x.form,x.entry))+'</i></td><td></td><td></td><td></td></tr>').join('')+'</tbody></table>':'';
  let pronSection='';
  if(pronouns.length){
   pronSection=question(++n,t('Analiza los siguientes pronombres: tipo, caso, género y número (1 p.).','Analitza els pronoms següents: tipus, cas, gènere i nombre (1 p.).'))+
@@ -1099,18 +1124,18 @@ function generateLatinMorphologyReference(){
    pronItems.map(x=>'<tr><td><i>'+esc(x.form)+'</i></td><td></td><td></td><td></td><td></td></tr>').join('')+
    '</tbody></table>';
  }
- const last=question(++n,t('Analiza morfológicamente las siguientes palabras variables (1 p.).','Analitza morfològicament les paraules variables següents (1 p.).'))+
-  words.map((x,i)=>'<p class="exam-item reference-analysis-item">'+String.fromCharCode(97+i)+'. <i>'+esc(latinExamSurface(x.form,x.entry))+'</i> ('+esc(x.entry)+'): <span class="reference-answer-line"></span></p>').join('');
+ const last=examQuestionEnabled('forms')?question(++n,t('Analiza morfológicamente las siguientes palabras variables (1 p.).','Analitza morfològicament les paraules variables següents (1 p.).'))+
+  words.map((x,i)=>'<p class="exam-item reference-analysis-item">'+String.fromCharCode(97+i)+'. <i>'+esc(latinExamSurface(x.form,x.entry))+'</i> ('+esc(x.entry)+'): <span class="reference-answer-line"></span></p>').join(''):'';
  const problems=[];
- if(verbItems.length<cfg.verbs)problems.push('Formas verbales: '+verbItems.length+' de '+cfg.verbs);
- if(words.length<cfg.words)problems.push('Palabras: '+words.length+' de '+cfg.words);
+ if(second&&verbItems.length<cfg.verbs)problems.push('Formas verbales: '+verbItems.length+' de '+cfg.verbs);
+ if(last&&words.length<cfg.words)problems.push('Palabras: '+words.length+' de '+cfg.words);
  const notice=problems.length?'<p class="hint">Material verificado insuficiente ('+esc(problems.join('; '))+'). No se han añadido soluciones hipotéticas.</p>':'';
- const total=pronouns.length?4:3;
+ const total=[first,second,pronSection,last].filter(Boolean).length;
  const solution='<div id="answerkey" class="solutions"><h2>'+esc(tr('key'))+'</h2><ol>'+
-  '<li>Sintagmas editables: no se generan soluciones automáticas sin concordancia verificada.</li>'+
-  '<li>'+verbItems.map(x=>'<p>'+esc(x.form+' — '+x.person+', '+x.tense+', voz '+x.voice+'; '+x.entry)+'</p>').join('')+'</li>'+
-  (pronouns.length?'<li>'+pronItems.map(x=>'<p>'+esc(x.form+' — '+x.type+', '+x.case+', '+x.gender+', '+x.number)+'</p>').join('')+'</li>':'')+
-  '<li>'+words.map(x=>'<p>'+esc(x.form+' — '+x.answer)+'</p>').join('')+'</li></ol></div>';
+  (first?'<li>Sintagmas editables: no se generan soluciones automáticas sin concordancia verificada.</li>':'')+
+  (second?'<li>'+verbItems.map(x=>'<p>'+esc(x.form+' — '+x.person+', '+x.tense+', voz '+x.voice+'; '+x.entry)+'</p>').join('')+'</li>':'')+
+  (pronSection?'<li>'+pronItems.map(x=>'<p>'+esc(x.form+' — '+x.type+', '+x.case+', '+x.gender+', '+x.number)+'</p>').join('')+'</li>':'')+
+  (last?'<li>'+words.map(x=>'<p>'+esc(x.form+' — '+x.answer)+'</p>').join('')+'</li>':'')+'</ol></div>';
  $('paper').innerHTML='<div class="exam-sheet reference-morph-exam">'+latinExamHeader(chosen)+first+second+
   pronSection+last+notice+''+
   ''+solution+'</div>';
@@ -2130,28 +2155,28 @@ function generateGreekMorphologyFixed(){
   )),cfg.words));
  const question=(n,txt)=>'<p class="exam-question">'+n+'. '+esc(txt)+'</p>';
  let n=0;
- const first=question(++n,morphSyntagmHeading(cfg,va)+' (1 p.).')+morphSyntagmRows(cfg,true);
- const second=question(++n,t('Analiza las siguientes formas verbales (1 p.).','Analitza les formes verbals següents (1 p.).'))+
+ const first=examQuestionEnabled('decl')?question(++n,morphSyntagmHeading(cfg,va)+' (1 p.).')+morphSyntagmRows(cfg,true):'';
+ const second=examQuestionEnabled('verb')?question(++n,t('Analiza las siguientes formas verbales (1 p.).','Analitza les formes verbals següents (1 p.).'))+
   '<table class="exam-paradigm reference-morph-table"><thead><tr><th>Forma verbal</th><th>Persona y número</th><th>Tiempo</th><th>Voz</th></tr></thead><tbody>'+
-  verbs.map(x=>'<tr><td><i>'+esc(x.prompt)+'</i> ('+esc(x.lemma)+')</td><td></td><td></td><td></td></tr>').join('')+'</tbody></table>';
+  verbs.map(x=>'<tr><td><i>'+esc(x.prompt)+'</i> ('+esc(x.lemma)+')</td><td></td><td></td><td></td></tr>').join('')+'</tbody></table>':'';
  let pronounSection='';
  if(pronPool.length){
   pronounSection=question(++n,t('Analiza los pronombres: tipo, caso, género y número (1 p.).','Analitza els pronoms: tipus, cas, gènere i nombre (1 p.).'))+
    '<table class="exam-paradigm reference-morph-table exam-pronouns"><thead><tr><th>Forma</th><th>Tipo</th><th>Caso</th><th>Género</th><th>Número</th></tr></thead><tbody>'+
    pronouns.map(x=>'<tr data-corpus-id="'+x.id+'"><td><i>'+esc(x.prompt)+'</i></td><td></td><td></td><td></td><td></td></tr>').join('')+'</tbody></table>';
  }
- const last=question(++n,t('Analiza morfológicamente las siguientes palabras variables (1 p.).','Analitza morfològicament les paraules variables següents (1 p.).'))+
-  words.map((x,i)=>'<p class="exam-item reference-analysis-item" data-corpus-id="'+x.id+'">'+String.fromCharCode(97+i)+'. <i>'+esc(x.prompt)+'</i>'+(Array.isArray(x.lemmas)&&x.lemmas.length?' ('+esc(x.lemmas.filter(Boolean).join(' / '))+')':'')+': <span class="reference-answer-line"></span></p>').join('');
+ const last=examQuestionEnabled('forms')?question(++n,t('Analiza morfológicamente las siguientes palabras variables (1 p.).','Analitza morfològicament les paraules variables següents (1 p.).'))+
+  words.map((x,i)=>'<p class="exam-item reference-analysis-item" data-corpus-id="'+x.id+'">'+String.fromCharCode(97+i)+'. <i>'+esc(x.prompt)+'</i>'+(Array.isArray(x.lemmas)&&x.lemmas.length?' ('+esc(x.lemmas.filter(Boolean).join(' / '))+')':'')+': <span class="reference-answer-line"></span></p>').join(''):'';
  const problems=[];
- if(verbs.length<cfg.verbs)problems.push('Verbos: '+verbs.length+' de '+cfg.verbs);
- if(words.length<cfg.words)problems.push('Palabras variables: '+words.length+' de '+cfg.words);
+ if(second&&verbs.length<cfg.verbs)problems.push('Verbos: '+verbs.length+' de '+cfg.verbs);
+ if(last&&words.length<cfg.words)problems.push('Palabras variables: '+words.length+' de '+cfg.words);
  const notice=problems.length?'<p class="hint">Material verificado insuficiente ('+esc(problems.join('; '))+'). No se han inventado análisis.</p>':'';
- const total=pronPool.length?4:3;
+ const total=[first,second,pronounSection,last].filter(Boolean).length;
  const answer='<div id="answerkey" class="solutions"><h2>'+tr('key')+'</h2><ol>'+
-  '<li>Sintagmas editables: no se generan soluciones automáticas sin concordancia verificada.</li>'+
-  '<li>'+verbs.map(x=>'<p>'+esc(x.prompt+' — '+x.answer)+'</p>').join('')+'</li>'+
-  (pronPool.length?'<li>'+pronouns.map(x=>'<p>'+esc(x.prompt+' — '+x.answer)+'</p>').join('')+'</li>':'')+
-  '<li>'+words.map(x=>'<p>'+esc(x.prompt+' — '+x.answer)+'</p>').join('')+'</li></ol></div>';
+  (first?'<li>Sintagmas editables: no se generan soluciones automáticas sin concordancia verificada.</li>':'')+
+  (second?'<li>'+verbs.map(x=>'<p>'+esc(x.prompt+' — '+x.answer)+'</p>').join('')+'</li>':'')+
+  (pronounSection?'<li>'+pronouns.map(x=>'<p>'+esc(x.prompt+' — '+x.answer)+'</p>').join('')+'</li>':'')+
+  (last?'<li>'+words.map(x=>'<p>'+esc(x.prompt+' — '+x.answer)+'</p>').join('')+'</li>':'')+'</ol></div>';
  $('paper').innerHTML='<div class="exam-sheet reference-morph-exam">'+greekExamHeader(marked,greekModes.morphology)+
   first+second+pronounSection+last+notice+
   ''+
@@ -2554,12 +2579,26 @@ async function loadTeacherLatinLexBanks(){
  }
 }
 
-function examQuestionEnabled(kind){
+function examQuestionAvailable(kind){
  const course=currentCourse(),model=$('model').value;
- const key=course+'/'+model+'/'+kind;
- if((model==='morf'||model==='morphology')&&kind!=='pronouns')return true;
+ const supported=course==='greek1'?['decl','verb','forms','pronouns','etymology','sent']:
+  course==='latin4'?['decl','verb','forms','lex','culture','sent']:
+  ['decl','verb','forms','pronouns','lex','sent'];
+ if(!supported.includes(kind))return false;
+ if(['morf','morphology'].includes(model)&&!['decl','verb','pronouns','forms'].includes(kind))return false;
+ if(['mixto','translation'].includes(model)&&!['forms','lex','etymology','sent'].includes(kind))return false;
+ if(kind==='pronouns'){
+  if(course==='latin1')return latinExamPronouns(selectedUnits()).length>0;
+  if(course==='greek1')return greekVerifiedCorpus.some(x=>x.verified&&x.kind==='pronouns'&&greekMorphologyEligible(x,greekLimit()));
+  return false;
+ }
+ return true;
+}
+function examQuestionEnabled(kind){
+ if(!examQuestionAvailable(kind))return false;
+ const course=currentCourse(),model=$('model').value,key=course+'/'+model+'/'+kind;
  if(Object.prototype.hasOwnProperty.call(examQuestionChoiceState,key))return examQuestionChoiceState[key];
- return kind!=='pronouns';
+ return kind!=='pronouns'||['morf','morphology'].includes(model);
 }
 function examMorphQuotaValues(){
  return ['nouns','adjectives','verbs','pronouns'].map(kind=>Math.max(0,Math.min(30,Number($('quota-'+kind)?.value)||0)));
@@ -2898,13 +2937,15 @@ loadTeacherLatinLexBanks();
   }
  }
  function questionKeys(){
-  const c=currentCourse(),m=$('model').value;
-  if(c==='latin4')return ['decl','verb','forms','lex','culture','sent'];
-  if(m==='morf'||m==='morphology')return ['decl','verb','pronouns','forms'];
-  if(m==='mixto')return ['forms','lex','sent'];
-  if(m==='translation')return ['forms','etymology','sent'];
-  if(c==='greek1')return ['decl','verb','forms','pronouns','etymology','sent'];
+  const course=currentCourse();
+  if(course==='latin4')return ['decl','verb','forms','lex','culture','sent'];
+  if(course==='greek1')return ['decl','verb','forms','pronouns','etymology','sent'];
   return ['decl','verb','forms','pronouns','lex','sent'];
+ }
+ function questionTitle(kind){
+  const morph=['morf','morphology'].includes($('model').value);
+  if(morph)return ({decl:'Declinación de sintagmas',verb:'Tabla de verbos',pronouns:'Tabla con pronombres'})[kind]||moduleLabels[kind];
+  return ({decl:'Declinación de sustantivos o sintagmas',verb:'Conjugación de verbos'})[kind]||moduleLabels[kind];
  }
  const mono=(id)=>document.createElement('div');
  function makeLabel(text,control){const label=document.createElement('label');label.textContent=text+' ';label.append(control);return label}
@@ -3020,26 +3061,31 @@ loadTeacherLatinLexBanks();
   for(const kind of questionKeys()){
    const detail=document.createElement('details');detail.className='menu-section';detail.dataset.question=kind;
    detail.open=first?false:openKeys.has(kind);
-   const summary=document.createElement('summary');summary.textContent=moduleLabels[kind];detail.append(summary);
+   const summary=document.createElement('summary');detail.append(summary);
    const body=document.createElement('div');body.className='exam-question-config';detail.append(body);
-   const required=morph&&kind!=='pronouns',on=examQuestionEnabled(kind);
-   detail.dataset.included=String(required||on);
+   const available=examQuestionAvailable(kind),on=examQuestionEnabled(kind);
+   detail.dataset.available=String(available);detail.dataset.included=String(on);
+   const check=document.createElement('input');check.type='checkbox';check.className='exam-question-toggle';
+   check.checked=on;check.disabled=!available;check.setAttribute('aria-label','Incluir '+questionTitle(kind));
+   check.addEventListener('click',event=>event.stopPropagation());
    const statusLabel=document.createElement('span');statusLabel.className='exam-question-status';
-   statusLabel.textContent=required?'Fija':on?'Incluida':'Omitida';
-   summary.append(statusLabel);
-   if(required){
-    const label=document.createElement('p');label.className='hint';label.textContent='Obligatoria en el examen de morfología.';body.append(label);
-   }else{
-    const check=document.createElement('input');check.type='checkbox';check.checked=on;
-    check.onchange=()=>{examQuestionChoiceState[currentCourse()+'/'+$('model').value+'/'+kind]=check.checked;detail.dataset.included=String(check.checked);statusLabel.textContent=check.checked?'Incluida':'Omitida';if(currentCourse()==='greek1')greekExamState=null;generate()};
-    body.append(makeLabel('Incluir esta pregunta',check));
+   statusLabel.textContent=!available?'No disponible':on?'Incluida':'Omitida';
+   check.onchange=()=>{examQuestionChoiceState[currentCourse()+'/'+$('model').value+'/'+kind]=check.checked;
+    detail.dataset.included=String(check.checked);statusLabel.textContent=check.checked?'Incluida':'Omitida';
+    if(currentCourse()==='greek1')greekExamState=null;generate()};
+   const name=document.createElement('span');name.className='exam-question-name';name.textContent=questionTitle(kind);
+   summary.append(check,name,statusLabel);
+   if(!available){
+    const note=document.createElement('p');note.className='hint';
+    note.textContent=kind==='pronouns'?'Disponible cuando la unidad incluya pronombres.':'Pregunta incompatible con este tipo de examen.';
+    body.append(note);
    }
-   if(kind==='lex')lexConfig(body);
-   if(kind==='forms')quotaConfig(body);
-   countControl(body,kind,morph);
+   if(available&&kind==='lex')lexConfig(body);
+   if(available&&kind==='forms')quotaConfig(body);
+   if(available)countControl(body,kind,morph);
    if(['decl','verb','forms','pronouns','lex','etymology','sent','culture'].includes(kind)){
     const button=document.createElement('button');button.type='button';button.className='secondary';
-    button.textContent='Regenerar palabras de esta pregunta';button.disabled=kind==='lex'&&!(Object.values(latinLexBanks[currentCourse()]||{}).some(x=>x.length));
+    button.textContent='Regenerar palabras de esta pregunta';button.disabled=!available||(kind==='lex'&&!(Object.values(latinLexBanks[currentCourse()]||{}).some(x=>x.length)));
     button.onclick=()=>regenerateExamQuestion(kind);body.append(button);
    }
    const editor=document.createElement('div');editor.className='question-editor';editor.dataset.editorFor=kind;body.append(editor);
@@ -3073,6 +3119,10 @@ loadTeacherLatinLexBanks();
  };
  document.addEventListener('examina-lex-ready',()=>questionMenus());
  for(const id of ['course','model','lang'])$(id).addEventListener('change',()=>{buttons();questionMenus()});
+ document.addEventListener('change',event=>{
+  if(event.target?.matches?.('#unitChoices .unit-choice, #cumulative'))questionMenus();
+ });
+ for(const id of ['allUnits','clearUnits'])$(id)?.addEventListener('click',()=>queueMicrotask(questionMenus));
  buttons();questionMenus();
  document.addEventListener('DOMContentLoaded',()=>{buttons();questionMenus()},{once:true});
 })();
@@ -3490,8 +3540,9 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   );
   const examVisible=$('examLayout')?.style.display!=='none'&&!$('examLayout')?.hidden;
   host.hidden=!examVisible;
-  const questionKeys=new Set(Array.from(document.querySelectorAll('#examQuestionMenus [data-question]')).map(x=>x.dataset.question));
-  const isLatin4=c==='latin4',hasSent=questionKeys.has('sent');
+  // Los apartados desactivados permanecen visibles en la lista de preguntas.
+  // No deben hacer aparecer el menú de oraciones de los exámenes de morfología.
+  const isLatin4=c==='latin4',hasSent=!['morf','morphology'].includes(m);
   for(const [id,visible] of [
    ['group-culture',isLatin4],
    ['group-sentences',hasSent],
