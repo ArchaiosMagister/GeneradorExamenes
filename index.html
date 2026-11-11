@@ -508,21 +508,49 @@ html[data-course="greek1"] .paper .exam-sheet *{font-style:normal!important}
 </style><style id="vocabulary-unit-picker-style">
 .vg-unit-picker{margin:14px 0 16px}
 .vg-unit-buttons{display:flex;flex-wrap:wrap;gap:7px;margin-top:8px;max-height:260px;overflow:auto;padding:3px}
-.vg-unit-buttons .vg-unit-button{display:inline-flex;align-items:center;gap:6px;min-width:68px;justify-content:center;
- background:#eef1f5;color:#4b596e;border:1px solid #cad4e0;border-radius:8px;font:700 13px system-ui,sans-serif;
- padding:9px 11px;min-height:42px;cursor:pointer}
-.vg-unit-buttons .vg-unit-button[data-filled="true"]{background:#e6f4ea;color:#23603a;border-color:#a9d8b8}
-.vg-unit-buttons .vg-unit-button[aria-pressed="true"]{background:#24568f;color:#fff;border:2px solid #14365f;padding:8px 10px;box-shadow:0 0 0 2px #bad2eb}
-.vg-unit-buttons .vg-unit-dot{width:8px;height:8px;border-radius:50%;background:#aeb7c2;flex-shrink:0}
-.vg-unit-buttons .vg-unit-button[data-filled="true"] .vg-unit-dot{background:#25a45d}
-.vg-unit-buttons .vg-unit-button[aria-pressed="true"] .vg-unit-dot{box-shadow:0 0 0 1px #fff}
-.vg-unit-buttons .vg-unit-button:focus-visible{outline:3px solid #e3a836;outline-offset:2px}
-html[data-appearance="dark"] .vg-unit-buttons .vg-unit-button,html[data-appearance="oled"] .vg-unit-buttons .vg-unit-button{
- background:#242d39;color:#d5dfec;border-color:#637286}
-html[data-appearance="dark"] .vg-unit-buttons .vg-unit-button[data-filled="true"],html[data-appearance="oled"] .vg-unit-buttons .vg-unit-button[data-filled="true"]{
- background:#173d2a;color:#baf1cf;border-color:#568b6a}
-html[data-appearance="dark"] .vg-unit-buttons .vg-unit-button[aria-pressed="true"],html[data-appearance="oled"] .vg-unit-buttons .vg-unit-button[aria-pressed="true"]{
- background:#24568f;color:#fff;border-color:#a7d0ff}
+/* El ID evita que el color global :root[data-course] button:not(.secondary)
+   prevalezca sobre los tres estados de unidad en modo claro. */
+#vocabularyGenerator .vg-unit-buttons .vg-unit-button{display:inline-flex;align-items:center;gap:7px;min-width:74px;
+ justify-content:center;margin:0;background:#eef3f9;color:#1e334d;border:1px solid #8da7c2;
+ border-radius:8px;font:750 14px/1.35 system-ui,sans-serif;padding:9px 12px;min-height:44px;cursor:pointer}
+#vocabularyGenerator .vg-unit-buttons .vg-unit-button[data-filled="true"]{
+ background:#e0f3e8;color:#15552f;border-color:#72ac89}
+#vocabularyGenerator .vg-unit-buttons .vg-unit-button[aria-pressed="true"]{
+ background:#173f73;color:#fff;border:2px solid #103159;padding:8px 11px;box-shadow:0 0 0 2px #bad2eb}
+#vocabularyGenerator .vg-unit-buttons .vg-unit-button:not([aria-pressed="true"]):hover{
+ filter:none;background:#dce9f8;color:#142b47;border-color:#4c779f}
+#vocabularyGenerator .vg-unit-buttons .vg-unit-button[data-filled="true"]:not([aria-pressed="true"]):hover{
+ background:#cbead7;color:#104526;border-color:#438b5e}
+#vocabularyGenerator .vg-unit-buttons .vg-unit-dot{width:9px;height:9px;border-radius:50%;background:#788ca2;flex-shrink:0}
+#vocabularyGenerator .vg-unit-buttons .vg-unit-button[data-filled="true"] .vg-unit-dot{background:#178447}
+#vocabularyGenerator .vg-unit-buttons .vg-unit-button[aria-pressed="true"] .vg-unit-dot{
+ background:#d3e3f7;box-shadow:0 0 0 1px #fff}
+#vocabularyGenerator .vg-unit-buttons .vg-unit-button[data-filled="true"][aria-pressed="true"] .vg-unit-dot{background:#66e39d}
+#vocabularyGenerator .vg-unit-buttons .vg-unit-button:focus-visible{
+ outline:3px solid #ce8d18;outline-offset:3px}
+html[data-appearance="dark"] #vocabularyGenerator .vg-unit-buttons .vg-unit-button,
+html[data-appearance="oled"] #vocabularyGenerator .vg-unit-buttons .vg-unit-button{
+ background:#253142;color:#f1f5fc;border-color:#7289a3}
+html[data-appearance="dark"] #vocabularyGenerator .vg-unit-buttons .vg-unit-button[data-filled="true"],
+html[data-appearance="oled"] #vocabularyGenerator .vg-unit-buttons .vg-unit-button[data-filled="true"]{
+ background:#174330;color:#d7ffeb;border-color:#73bb94}
+html[data-appearance="dark"] #vocabularyGenerator .vg-unit-buttons .vg-unit-button[aria-pressed="true"],
+html[data-appearance="oled"] #vocabularyGenerator .vg-unit-buttons .vg-unit-button[aria-pressed="true"]{
+ background:#245a99;color:#fff;border-color:#b4d5ff}
+html[data-appearance="dark"] #vocabularyGenerator .vg-unit-buttons .vg-unit-button:not([aria-pressed="true"]):hover,
+html[data-appearance="oled"] #vocabularyGenerator .vg-unit-buttons .vg-unit-button:not([aria-pressed="true"]):hover{
+ background:#344b66;color:#fff;border-color:#91b4d8}
+html[data-appearance="dark"] #vocabularyGenerator .vg-unit-buttons .vg-unit-button[data-filled="true"]:not([aria-pressed="true"]):hover,
+html[data-appearance="oled"] #vocabularyGenerator .vg-unit-buttons .vg-unit-button[data-filled="true"]:not([aria-pressed="true"]):hover{
+ background:#215b40;color:#e6fff2;border-color:#87c9a3}
+#vocabularyGenerator #vgClearAll{
+ background:#fff0f0;color:#8c1616;border:1px solid #bd6363;font-weight:750;min-height:44px}
+#vocabularyGenerator #vgClearAll:hover{background:#ffe0e0;color:#731111}
+html[data-appearance="dark"] #vocabularyGenerator #vgClearAll,
+html[data-appearance="oled"] #vocabularyGenerator #vgClearAll{
+ background:#502727;color:#ffe9e9;border-color:#c77b7b}
+html[data-appearance="dark"] #vocabularyGenerator #vgClearAll:hover,
+html[data-appearance="oled"] #vocabularyGenerator #vgClearAll:hover{background:#683333;color:#fff}
 #vgUnit[hidden]{display:none!important}
 </style><style id="examina-question-toggle-style">
 #examQuestionMenus .exam-question-toggle{flex:0 0 auto;width:19px;height:19px;margin:0;accent-color:var(--accent,#315cb1);cursor:pointer}
@@ -625,7 +653,7 @@ body:has(.vocab-manager.active) .exam-coursebar{display:none}
 <label for="vgLang">Idioma del vocabulario <select id="vgLang"><option value="es">Castellano</option><option value="va">Valencià</option></select></label>
 <label>Título de la unidad<input id="vgTitle"></label><label>Texto de la unidad<textarea id="vgText" rows="8"></textarea></label>
 <label>Enunciado verbal<select id="vgMode"><option value="complete">Completo (según el banco, sin añadir temas ausentes)</option><option value="simple">Simple (forma de cita + conjugación latina disponible)</option></select></label>
-<button id="vgAnalyzeAll" type="button">Analizar todas las unidades</button><button id="vgAnalyze" type="button" class="secondary">Analizar solo esta unidad</button><button id="vgWord">Exportar todas las unidades a Word</button><button id="vgBackup">Guardar copia JSON</button><label>Recuperar copia JSON<input id="vgImport" type="file" accept=".json"></label>
+<button id="vgAnalyzeAll" type="button">Analizar todas las unidades</button><button id="vgAnalyze" type="button" class="secondary">Analizar solo esta unidad</button><button id="vgWord">Exportar todas las unidades a Word</button><button id="vgBackup">Guardar copia JSON</button><button id="vgClearAll" type="button" class="vg-danger" title="Vaciar todas las unidades del proyecto">Limpiar todo</button><label>Recuperar copia JSON<input id="vgImport" type="file" accept=".json"></label>
 <p id="vgStatus" role="status" aria-live="polite">Los textos y correcciones se guardan en este navegador. Reducir el número de unidades las oculta sin borrarlas. Editar el texto requiere volver a analizar esa unidad.</p><details id="vgEulexisPanel" class="vg-eulexis-panel"><summary>Griego I · Sugerencias de Eulexis en el vocabulario</summary><p class="vm-help">Instalación opcional de una fuente externa en este dispositivo. Descarga los datos del proyecto original una sola vez (aproximadamente 30 MB) y conserva únicamente las propuestas aplicables al banco de Griego I. No convierte las flexiones en verificadas.</p><div class="buttons"><button type="button" id="vgEulexisInstall">Instalar o actualizar Eulexis</button><button type="button" id="vgEulexisRemove" class="secondary">Borrar índice local</button></div><p class="vm-help" id="vgEulexisStatus" role="status" aria-live="polite">Comprobando Eulexis local…</p><p class="vm-help">Fuente: <a href="https://github.com/genuensis/lector-griego" target="_blank" rel="noopener noreferrer">lector-griego / Eulexis</a>. Las propuestas se revisan junto al contexto real de tus unidades y solo se aceptan manualmente.</p></details><div id="vgResults"></div>
 <details id="vgQualityPanel"><summary><strong>Cobertura del vocabulario y revisión por unidades</strong></summary><p class="vm-help">«Documentada» indica al menos una forma contrastada: no equivale a paradigma completo. Las candidatas no pasan a verificadas automáticamente.</p><button type="button" id="vgQualityRefresh" class="secondary">Actualizar auditoría</button> <button type="button" id="vgQualityExport" class="secondary">Exportar informe JSON</button> <button type="button" id="vgReviewExport" class="secondary">Exportar pendientes JSON</button><p id="vgQualityTotals" class="vm-help" role="status" aria-live="polite">Pulsa «Actualizar auditoría» para consultar el banco.</p><div class="vm-scroll"><table class="vm-table"><thead><tr><th>Unidad</th><th>Fichas</th><th>Con forma contrastada</th><th>Solo candidatas</th><th>Sin flexión contrastada</th><th>Glosas pendientes (ES / VA)</th></tr></thead><tbody id="vgQualityRows"></tbody></table></div><label for="vgReviewUnit">Pendientes de revisión por unidad<select id="vgReviewUnit"><option value="">Todas las unidades</option></select></label><p id="vgQualityQueueSummary" class="vm-help"></p><div id="vgQualityQueue"></div></details></section>
 <section class="vocab-manager" id="vocabManager" aria-label="Gestor de vocabulario exigible">
