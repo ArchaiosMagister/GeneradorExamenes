@@ -1,0 +1,162 @@
+{
+  "schema": 1,
+  "course": "gr1",
+  "purpose": "17 decisiones filológicas docentes de entradas y glosas; no certifican flexiones ni paradigmas",
+  "verifiedMorphology": false,
+  "decisions": [
+    {
+      "id": "adikos",
+      "course": "gr1",
+      "original": "ἀδικός, –ον",
+      "entry": "ἄδικος, –ον",
+      "sourceEntry": "ἀδικός, –ον",
+      "newMeaning": null,
+      "newMeaningVa": null
+    },
+    {
+      "id": "theos",
+      "course": "gr1",
+      "original": "θέος, –ου",
+      "entry": "θεός, –οῦ (ὁ)",
+      "sourceEntry": "θέος, –ου",
+      "newMeaning": null,
+      "newMeaningVa": null
+    },
+    {
+      "id": "thea",
+      "course": "gr1",
+      "original": "θέα, –ας",
+      "entry": "θεά, –ᾶς (ἡ)",
+      "sourceEntry": "θέα, –ας",
+      "newMeaning": null,
+      "newMeaningVa": null,
+      "candidatePolicy": "suppress-source-4"
+    },
+    {
+      "id": "sophos",
+      "course": "gr1",
+      "original": "σοφός, –ου",
+      "entry": "σοφός, –οῦ (ὁ)",
+      "sourceEntry": "σοφός, –ου",
+      "newMeaning": "sabio (sustantivado)",
+      "newMeaningVa": "savi (substantivat)"
+    },
+    {
+      "id": "barbaros",
+      "course": "gr1",
+      "original": "βάρβαρος, –ου",
+      "entry": "βάρβαρος, –ον",
+      "sourceEntry": "βάρβαρος, –ου",
+      "newMeaning": null,
+      "newMeaningVa": null
+    },
+    {
+      "id": "deipnos",
+      "course": "gr1",
+      "original": "δεῖπνος, –ου",
+      "entry": "δεῖπνον, –ου (τό)",
+      "sourceEntry": "δεῖπνος, –ου",
+      "newMeaning": null,
+      "newMeaningVa": null
+    },
+    {
+      "id": "basileios",
+      "course": "gr1",
+      "original": "βασιλείος, –ου",
+      "entry": "βασίλειον, –ου (τό)",
+      "sourceEntry": "βασιλείος, –ου",
+      "newMeaning": null,
+      "newMeaningVa": null
+    },
+    {
+      "id": "demosthenes",
+      "course": "gr1",
+      "original": "Δημοσθήνης, –ου",
+      "entry": "Δημοσθένης, Δημοσθένους (ὁ)",
+      "sourceEntry": "Δημοσθήνης, –ου",
+      "newMeaning": null,
+      "newMeaningVa": null
+    },
+    {
+      "id": "trieres",
+      "course": "gr1",
+      "original": "τριήρες, –εως (ἡ)",
+      "entry": "τριήρης, –ους (ἡ)",
+      "sourceEntry": "τριήρες, –εως (ἡ)",
+      "newMeaning": null,
+      "newMeaningVa": null
+    },
+    {
+      "id": "penes",
+      "course": "gr1",
+      "original": "πένης, –ετος",
+      "entry": "πένης, –ητος (ὁ)",
+      "sourceEntry": "πένης, –ετος",
+      "newMeaning": null,
+      "newMeaningVa": null
+    },
+    {
+      "id": "ekklesia",
+      "course": "gr1",
+      "original": "ἐκκλεσία, –ας",
+      "entry": "ἐκκλησία, –ας (ἡ)",
+      "sourceEntry": null,
+      "newMeaning": null,
+      "newMeaningVa": null
+    },
+    {
+      "id": "probaton",
+      "course": "gr1",
+      "original": "πρόϐατον, –ου",
+      "entry": "πρόβατον, –ου (τό)",
+      "sourceEntry": null,
+      "newMeaning": null,
+      "newMeaningVa": null
+    },
+    {
+      "id": "nekros",
+      "course": "gr1",
+      "original": "νεκρóς, –οῦ",
+      "entry": "νεκρός, –οῦ (ὁ)",
+      "sourceEntry": "νεκρóς, –οῦ (ὁ)",
+      "newMeaning": null,
+      "newMeaningVa": null
+    },
+    {
+      "id": "huios",
+      "course": "gr1",
+      "original": "ὑιός, –οῦ",
+      "entry": "υἱός, –οῦ (ὁ)",
+      "sourceEntry": "ὑιός, –οῦ",
+      "newMeaning": null,
+      "newMeaningVa": null
+    },
+    {
+      "id": "hyper",
+      "course": "gr1",
+      "original": "ὐπέρ + genitivo | acusativo",
+      "entry": "ὑπέρ + genitivo | acusativo",
+      "sourceEntry": "ὐπέρ + genitivo / acusativo",
+      "newMeaning": null,
+      "newMeaningVa": null
+    },
+    {
+      "id": "hypo",
+      "course": "gr1",
+      "original": "ὐπό + genitivo | acusativo | dativo",
+      "entry": "ὑπό + genitivo | acusativo | dativo",
+      "sourceEntry": "ὐπό + genitivo / acusativo / dativo",
+      "newMeaning": null,
+      "newMeaningVa": null
+    },
+    {
+      "id": "aiteo",
+      "course": "gr1",
+      "original": "αἰτέω",
+      "entry": "αἰτέω",
+      "sourceEntry": "αἰτέω",
+      "newMeaning": "pedir, solicitar",
+      "newMeaningVa": "demanar, sol·licitar"
+    }
+  ]
+}
