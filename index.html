@@ -748,8 +748,8 @@ function refreshManualMorphWords(){
   seen.add(el);targets.push({el,kind});
  };
  // Los siete modelos usan tablas, listas y formas independientes; no las antiguas .forms b.
- paper.querySelectorAll('.exam-nouns thead tr:first-child th[colspan]').forEach(el=>add(el,'Declinación'));
- paper.querySelectorAll('.exam-verbs thead tr:first-child th[colspan]').forEach(el=>add(el,'Conjugación'));
+ paper.querySelectorAll('.exam-nouns thead tr:first-child th[colspan]').forEach(el=>{if(!el.closest('#answerkey'))add(el,'Declinación')});
+ paper.querySelectorAll('.exam-verbs thead tr:first-child th[colspan]').forEach(el=>{if(!el.closest('#answerkey'))add(el,'Conjugación')});
  paper.querySelectorAll('.reference-verb-table tbody td:first-child i').forEach(el=>add(el,'Forma verbal'));
  paper.querySelectorAll('.exam-pronouns tbody td:first-child i').forEach(el=>add(el,'Pronombre'));
  paper.querySelectorAll('.morph-syntagm-item > i').forEach(el=>add(el,'Declinación'));
@@ -1285,6 +1285,10 @@ function examParadigmHeading(value,kind){
  const match=raw.match(indicator),lemma=match?raw.slice(0,match.index).trim():raw;
  return '<i>'+esc(lemma)+'</i>'+(match?' <span class="exam-paradigm-indicator">'+esc(match[1])+'</span>':'');
 }
+function latinDisplayEnunciation(entry){
+ return String(entry||'').replace(/,\s*[-–−—]\s*ae\b/gi,', –æ')
+  .replace(/,\s*[-–−—]\s*([a-z]+)\b/gi,(_,ending)=>', –'+ending);
+}
 function latinVerbExamEnunciation(entry,chosen,paradigm=null){
  // Hasta la unidad de introducción del perfecto se presenta solo el
  // presente con la conjugación; los datos del banco NO se recortan.
@@ -1295,12 +1299,12 @@ function latinVerbExamEnunciation(entry,chosen,paradigm=null){
  const max=Math.max(0,...chosen.map(examUnitNumber).filter(Number.isInteger));
  const perfectIntroduced={latin1:4,latin4:4}[currentCourse()]||Infinity;
  if(max<perfectIntroduced)return lemma+(conj?', '+conj+'ª':'');
- return raw.includes(',')?raw:source||raw;
+ return latinDisplayEnunciation(raw.includes(',')?raw:source||raw);
 }
 function latinMorphologyEnunciation(item,chosen){
  if(item.category==='pronouns')return '';
  if(item.category==='verbs')return latinVerbExamEnunciation(item.entry,chosen,item);
- return item.entry||'';
+ return latinDisplayEnunciation(item.entry||'');
 }
 function latinCompleteCompoundActive(chosen){
  const from={latin1:2,latin4:3}[currentCourse()];
@@ -1340,14 +1344,14 @@ function latinCompleteDeclensionItems(chosen){
   }));
   return {...item,compound:{
    adjective:adjectival.x,gender,
-   title:adjectival.x.entry+' + '+item.x.entry,
+   title:latinDisplayEnunciation(adjectival.x.entry)+' + '+latinDisplayEnunciation(item.x.entry),
    forms:item.p.forms.map((number,i)=>number.map((surface,k)=>surface+' '+adjectiveForms[i][k]))
   }};
  }).filter(Boolean);
 }
 function latinExamDeclensionTable(item,solutions=false){
  const p=item.p,tableForms=item.compound?.forms||p.forms;
- const title=item.compound?.title||item.x.entry;
+ const title=item.compound?.title||latinDisplayEnunciation(item.x.entry);
  return '<table class="exam-paradigm exam-nouns reference-morph-table" data-col-widths="16,42,42">'+
   '<thead><tr><td class="exam-corner"></td><th colspan="2">'+examParadigmHeading(title,'declension')+'</th></tr>'+
   '<tr><td class="exam-corner"></td><th>Singular</th><th>Plural</th></tr></thead><tbody>'+
