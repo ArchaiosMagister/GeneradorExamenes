@@ -177,7 +177,7 @@ async function checkFile(browser,filename){
   assert.match(await page.locator('#paper .exam-question').first().textContent(),/\(3,25 p\.\)\.$/,
    filename+' '+course+'/'+model+': puntos no terminan el enunciado');
   const wordScored=await page.evaluate(()=>wordExamParagraph(document.querySelector('#paper .exam-question')));
-  assert(wordScored.includes('3,25 p.).'),filename+' '+course+'/'+model+': puntuación editada ausente del XML Word');
+  assert(wordScored.includes('3,25p.).'),filename+' '+course+'/'+model+': puntuación editada ausente del XML Word');
   // El valor restaurado queda asociado a su pregunta aunque se regenere.
   await scoringRows.first().fill(scoreValue);
   await page.evaluate(()=>generate());
