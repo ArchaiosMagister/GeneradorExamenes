@@ -525,7 +525,11 @@ html[data-course="greek1"] .paper .exam-sheet *{font-style:normal!important}
 #examScoring .exam-scoring-warning{color:#9c2d1f}
 #examScoring .exam-scoring-correct{color:#175f45}
 .paper .exam-question-points{display:inline;white-space:nowrap;font-weight:700;
- outline-offset:2px;cursor:text}
+ outline-offset:2px;cursor:pointer;border-bottom:1px dotted currentColor}
+.paper .exam-question-points[hidden]{display:none!important}
+.paper .exam-score-inline-editor{font:700 10.5pt Palatino,"Palatino Linotype",serif;
+ width:62px;max-width:80px;padding:1px 3px;border:1px solid #3566a2;border-radius:3px;
+ background:#fff;color:#111}
 .paper .exam-question-points:focus{outline:2px solid #3e73b4;border-radius:2px}
 .paper .exam-question-points[aria-invalid="true"]{outline:2px solid #a32d2d}
 @media print{#examScoring{display:none!important}.paper .exam-question-points{outline:0!important}}
