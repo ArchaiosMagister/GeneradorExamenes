@@ -22,7 +22,7 @@
     },
     {
       "number": 4,
-      "prompt": "accessit o accésit",
+      "prompt": "accessit",
       "answer": "Recompensa inmediatamente inferior al premio en certámenes.",
       "source": "docente: latinismos numerados (definición condensada para examen)"
     },
@@ -52,7 +52,7 @@
     },
     {
       "number": 9,
-      "prompt": "addenda o adenda",
+      "prompt": "addenda",
       "answer": "Apéndice, especialmente de un libro; literalmente, lo que debe añadirse.",
       "source": "docente: latinismos numerados (definición condensada para examen)"
     },
@@ -76,7 +76,7 @@
     },
     {
       "number": 13,
-      "prompt": "ante meridiem (a. m.)",
+      "prompt": "ante meridiem",
       "answer": "Antes del mediodía; para señalar horas anteriores a las doce.",
       "source": "docente: latinismos numerados (definición condensada para examen)"
     },
@@ -118,7 +118,7 @@
     },
     {
       "number": 20,
-      "prompt": "curriculum o currículum; curriculum vitae",
+      "prompt": "curriculum",
       "answer": "Plan de estudios; historial formativo; curriculum vitae: relación de méritos, cargos y datos biográficos.",
       "source": "docente: latinismos numerados (definición condensada para examen)"
     },
@@ -136,7 +136,7 @@
     },
     {
       "number": 23,
-      "prompt": "deficit o déficit",
+      "prompt": "deficit",
       "answer": "Falta o escasez; diferencia negativa entre recursos y obligaciones o gastos.",
       "source": "docente: latinismos numerados (definición condensada para examen)"
     },
@@ -178,13 +178,13 @@
     },
     {
       "number": 30,
-      "prompt": "ex libris o exlibris",
+      "prompt": "ex libris",
       "answer": "Etiqueta o sello que indica la propiedad de un libro.",
       "source": "docente: latinismos numerados (definición condensada para examen)"
     },
     {
       "number": 31,
-      "prompt": "ex professo o ex profeso",
+      "prompt": "ex professo",
       "answer": "De propósito, con intención; también exprofeso.",
       "source": "docente: latinismos numerados (definición condensada para examen)"
     },
@@ -208,7 +208,7 @@
     },
     {
       "number": 35,
-      "prompt": "habitat o hábitat",
+      "prompt": "habitat",
       "answer": "Medio o lugar con condiciones adecuadas para la vida de un organismo; también entorno personal o construido.",
       "source": "docente: latinismos numerados (definición condensada para examen)"
     },
@@ -226,7 +226,7 @@
     },
     {
       "number": 38,
-      "prompt": "idem o ídem",
+      "prompt": "idem",
       "answer": "El mismo, lo mismo.",
       "source": "docente: latinismos numerados (definición condensada para examen)"
     },
@@ -244,7 +244,7 @@
     },
     {
       "number": 41,
-      "prompt": "in fraganti o infraganti",
+      "prompt": "in fraganti",
       "answer": "En el momento mismo de cometer un delito o acto censurable.",
       "source": "docente: latinismos numerados (definición condensada para examen)"
     },
@@ -292,13 +292,13 @@
     },
     {
       "number": 49,
-      "prompt": "lapsus; lapsus calami; lapsus linguae",
+      "prompt": "lapsus",
       "answer": "Error involuntario; lapsus calami: error al escribir; lapsus linguae: error al hablar.",
       "source": "docente: latinismos numerados (definición condensada para examen)"
     },
     {
       "number": 50,
-      "prompt": "mare magnum o maremágnum",
+      "prompt": "mare magnum",
       "answer": "Confusión, desorden o multitud abundante de personas o cosas.",
       "source": "docente: latinismos numerados (definición condensada para examen)"
     },
@@ -310,7 +310,7 @@
     },
     {
       "number": 52,
-      "prompt": "memorandum o memorándum",
+      "prompt": "memorandum",
       "answer": "Informe o nota recordatoria; comunicación diplomática o cuaderno de apuntes.",
       "source": "docente: latinismos numerados (definición condensada para examen)"
     },
@@ -346,7 +346,7 @@
     },
     {
       "number": 58,
-      "prompt": "opera prima u ópera prima",
+      "prompt": "opera prima",
       "answer": "Primera obra de un autor.",
       "source": "docente: latinismos numerados (definición condensada para examen)"
     },
@@ -358,7 +358,7 @@
     },
     {
       "number": 60,
-      "prompt": "per capita o per cápita",
+      "prompt": "per capita",
       "answer": "Por cabeza, por cada individuo.",
       "source": "docente: latinismos numerados (definición condensada para examen)"
     },
@@ -382,7 +382,7 @@
     },
     {
       "number": 64,
-      "prompt": "placet o plácet",
+      "prompt": "placet",
       "answer": "Aprobación u opinión favorable; en diplomacia, consentimiento para la representación de otro Estado.",
       "source": "docente: latinismos numerados (definición condensada para examen)"
     },
@@ -394,7 +394,7 @@
     },
     {
       "number": 66,
-      "prompt": "post meridiem (p. m.)",
+      "prompt": "post meridiem",
       "answer": "Después del mediodía; horas posteriores a las doce.",
       "source": "docente: latinismos numerados (definición condensada para examen)"
     },
@@ -436,13 +436,13 @@
     },
     {
       "number": 73,
-      "prompt": "referendum o referéndum",
+      "prompt": "referendum",
       "answer": "Consulta o procedimiento de votación popular de decisiones trascendentes; también petición diplomática de instrucciones.",
       "source": "docente: latinismos numerados (definición condensada para examen)"
     },
     {
       "number": 74,
-      "prompt": "requiem o réquiem",
+      "prompt": "requiem",
       "answer": "Composición musical de la misa de difuntos.",
       "source": "docente: latinismos numerados (definición condensada para examen)"
     },
@@ -484,19 +484,19 @@
     },
     {
       "number": 81,
-      "prompt": "sui generis o sui géneris",
+      "prompt": "sui generis",
       "answer": "De género singular, peculiar o excepcional.",
       "source": "docente: latinismos numerados (definición condensada para examen)"
     },
     {
       "number": 82,
-      "prompt": "superavit o superávit",
+      "prompt": "superavit",
       "answer": "Exceso de ingresos sobre gastos, de haber sobre debe, o abundancia.",
       "source": "docente: latinismos numerados (definición condensada para examen)"
     },
     {
       "number": 83,
-      "prompt": "ultimatum o ultimátum",
+      "prompt": "ultimatum",
       "answer": "Resolución o exigencia terminante y definitiva.",
       "source": "docente: latinismos numerados (definición condensada para examen)"
     },

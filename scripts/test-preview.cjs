@@ -410,10 +410,10 @@ async function checkFile(browser,filename){
   };
   try{
    course.value='latin1';model.value='tablas';scope.value='all';
-   const base=parse(buildFinalLexicon(['UD1'],[],[{text:'Puellaque amat.'}],[],[],{sentencesOnly:true}));
+   const base=parse(buildFinalLexicon(['UD1'],[{text:'Puellaque amat in villa. Quoque quisque uterque.'}]));
    examRequired.push({course:'latin1',unit:'UD1',key:examKey('puella'),entry:'puella, -ae'});
-   const required=parse(buildFinalLexicon(['UD1'],[],[{text:'Puella amat.'}],[],[],{sentencesOnly:true}));
-   const unknown=parse(buildFinalLexicon(['UD1'],[],[{text:'FORMADESCONOCIDAXYZ'}],[],[],{sentencesOnly:true}));
+   const required=parse(buildFinalLexicon(['UD1'],[{text:'Puella amat.'}]));
+   const unknown=parse(buildFinalLexicon(['UD1'],[{text:'FORMADESCONOCIDAXYZ'}]));
    return {base,required,unknown,defaultScope:previous.scope};
   }finally{
    course.value=previous.course;model.value=previous.model;scope.value=previous.scope;
@@ -423,6 +423,10 @@ async function checkFile(browser,filename){
  assert.equal(glossaryRegression.defaultScope,'all',filename+': se ocultan por defecto las palabras exigibles');
  assert(glossaryRegression.base.rows.some(x=>/puella/i.test(x)),filename+': no se reconoce la base de la enclítica -que');
  assert(glossaryRegression.base.rows.some(x=>/amo/i.test(x)),filename+': no se incorpora un verbo con enunciado');
+ for(const lemma of [/^in \(prep/i,/^quoque/i,/^quisque/i,/^uterque/i,/^[–-]que/i]){
+  assert(glossaryRegression.base.rows.some(x=>lemma.test(x)),filename+': falta '+lemma);
+ }
+ assert(!/\bin\b/i.test(glossaryRegression.base.warning),filename+': «in» figura como forma sin resolver');
  const requiredWord=glossaryRegression.required.rows.find(x=>/puella/i.test(x));
  assert(requiredWord&&!requiredWord.includes(':'),filename+': el vocabulario exigible necesita enunciado pero no traducción');
  assert(!glossaryRegression.unknown.printText.includes('FORMADESCONOCIDAXYZ'),filename+': se ha inventado un lema');

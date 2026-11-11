@@ -1272,7 +1272,7 @@ function analyze(data,text,course,bank){
    const base=normal.slice(0,-3);
    const explicit=(latinExpandedForms(bank).get(base)||[]);
    const indexed=[...(index.get(base)?.values()||[])].map(x=>{
-    const teacher=data.vocabulary.lat[x.lemma]?.lat1;
+    const teacher=data.vocabulary.lat[x.lemma]?.[course];
     if(!teacher)return null;
     const found=(bankIndex.get('H'+latinKey(x.lemma))||[])[0]||teacher;
     return {...x,entry:found.entry,meaning:found.meaning||'',meaning_va:found.meaning_va||''};
@@ -1385,7 +1385,7 @@ function analyze(data,text,course,bank){
   const requiresSpellingReview=!!(spellingHint||contextHint);
   return {form,candidates,status:requiresSpellingReview?'review':resolved?'documented':candidates.length?'review':'unknown',
    warning:contextHint?'Necesita contexto: '+contextHint:
-    spellingHint?'Revisión de grafía o abreviatura: '+spellingHint:'',
+    spellingHint?(lang==='grc'?'Posible errata: ':'Revisión de grafía o abreviatura: ')+spellingHint:'',
    // En una forma con -que copulativa se identifican DOS elementos:
    // el lexema base (quizá ambiguo) y la conjunción enclítica -que.
    encliticQue:lang==='lat'&&enclitic.length>0,

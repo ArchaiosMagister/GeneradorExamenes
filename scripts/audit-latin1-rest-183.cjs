@@ -44,6 +44,18 @@ const byUnit=[...new Set(baseline.rows.map(r=>r.unit))].map(unit=>{
 const summary={original:baseline.rows.length,...byCategory,
  recognizedTotal:records.filter(r=>r.status==='documented').length,
  pendingTotal:records.filter(r=>r.status!=='documented').length,byUnit};
+const report=JSON.parse(read('docs/revision-latin1-183-formas.json'));
+assert.equal(report.rows.length,records.length);
+for(const [i,record] of records.entries()){
+ const published=report.rows[i];
+ assert.equal(published.unit,record.unit);
+ assert.equal(published.forma,record.form);
+ assert.equal(published.lema||'',record.lemma);
+ assert.equal(published.enunciado||'',record.lemma?record.entry:'');
+}
+assert.equal(report.summary.reconocidas,summary.recognizedTotal);
+assert.equal(report.summary.pendientes,summary.pendingTotal);
+assert.equal(summary.unknown,0,'Cada aparición debe conservar al menos una lectura o un aviso editorial');
 console.log('LATIN1_REST_183 '+JSON.stringify(summary));
 console.log('LATIN1_REST_DETAIL '+JSON.stringify(records.filter(x=>x.category!=='recognized')));
 const gate=process.argv.find(a=>a.startsWith('--minimum='));
