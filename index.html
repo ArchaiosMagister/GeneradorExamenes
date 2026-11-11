@@ -3540,8 +3540,9 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   );
   const examVisible=$('examLayout')?.style.display!=='none'&&!$('examLayout')?.hidden;
   host.hidden=!examVisible;
-  const questionKeys=new Set(Array.from(document.querySelectorAll('#examQuestionMenus [data-question]')).map(x=>x.dataset.question));
-  const isLatin4=c==='latin4',hasSent=questionKeys.has('sent');
+  // Los apartados desactivados permanecen visibles en la lista de preguntas.
+  // No deben hacer aparecer el menú de oraciones de los exámenes de morfología.
+  const isLatin4=c==='latin4',hasSent=!['morf','morphology'].includes(m);
   for(const [id,visible] of [
    ['group-culture',isLatin4],
    ['group-sentences',hasSent],
