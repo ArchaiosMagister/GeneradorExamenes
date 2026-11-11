@@ -1637,8 +1637,8 @@ function reviewedRows(unit,course,data,bank){
    .map(d=>{
     let context='';
     try{context=JSON.parse(d.identity)[0]||''}catch{}
-    const oldWords=(context.match(/[\\p{L}\\p{M}]+/gu)||[]).map(key);
-    const newWords=(row.context.match(/[\\p{L}\\p{M}]+/gu)||[]).map(key);
+    const oldWords=(context.match(/[\p{L}\p{M}]+/gu)||[]).map(key);
+    const newWords=(row.context.match(/[\p{L}\p{M}]+/gu)||[]).map(key);
     if(!oldWords.length||!newWords.length)return null;
     const oldSet=new Set(oldWords);
     const overlap=newWords.filter(w=>oldSet.has(w)).length/
