@@ -30,17 +30,17 @@ El **nombre del modelo** (completo, morfología o traducción) no sustituye el t
 
 | Curso y modelo | Apartados |
 | --- | --- |
-| Latín 4.º ESO · completo | Tablas de declinación; tabla para conjugar; análisis de formas variables; **2** apartados de léxico (a, b); **4** preguntas de cultura (a–d), cuando existan en el banco; **4** oraciones por defecto; vocabulario de las oraciones |
-| Latín I · completo | Declinación, conjugación, análisis de formas variables, **3** apartados de léxico (a–c), **5** oraciones por defecto (ajustables de 4 a 6) y vocabulario de oraciones |
+| Latín 4.º ESO · completo | Tablas de declinación; tabla para conjugar; análisis de formas variables; **2** apartados de léxico (a, b); **4** preguntas de cultura (a–d), cuando existan en el banco; **5** huecos por defecto; vocabulario de las oraciones |
+| Latín I · completo | Declinación, conjugación, análisis de formas variables, **3** apartados de léxico (a–c), **5** huecos para oraciones por defecto y vocabulario de oraciones |
 | Latín I · morfología | Tablas de declinación, tabla de análisis verbal, tabla de pronombres a partir de la unidad correspondiente y análisis de palabras variables |
 | Latín I · traducción | Análisis de formas variables, **3** apartados de léxico, **7** oraciones por defecto y vocabulario de oraciones |
-| Griego I · completo | Declinación, conjugación, análisis morfológico, etimología, **5** oraciones por defecto (ajustables de 4 a 6) y vocabulario de oraciones |
+| Griego I · completo | Declinación, conjugación, análisis morfológico, etimología, **5** huecos para oraciones por defecto y vocabulario de oraciones |
 | Griego I · morfología | Declinación, análisis verbal, pronombres desde UD7 y palabras variables, excluidas las invariables |
-| Griego I · traducción | Análisis de formas, derivación etimológica y **7** oraciones como objetivo |
+| Griego I · traducción | Análisis de formas, derivación etimológica y **7** huecos para oraciones por defecto |
 
-**Vocabulario de las oraciones:** por defecto se incluyen los enunciados de los lemas identificados, con traducción únicamente cuando el lema no pertenece al vocabulario exigible para esa unidad. El profesor puede revisar los términos no identificados, importar su vocabulario y modificar el glosario. No se asignan lemas o traducciones ficticios.
+**Vocabulario de las oraciones:** el glosario se actualiza al escribir una oración en la vista previa o en el campo del apartado Oraciones. Por defecto incluye los enunciados de los lemas identificados, excepto las preposiciones, con traducción únicamente para el vocabulario ajeno a la lista exigible acumulada. El profesor puede revisar los términos no identificados, importar su vocabulario y modificar el glosario. No se asignan lemas o traducciones ficticios.
 
-**Bancos pendientes:** no existe todavía un corpus cerrado de preguntas de cultura de Latín 4.º ESO. En su lugar se presenta una advertencia, sin inventar preguntas. Las cifras de oraciones son objetivos: si el banco verificado contiene menos, el examen muestra las disponibles y señala la carencia. Los pronombres de Latín I usan una selección de formas explícitas, limitada al temario de cada unidad. Los bancos Morpheus y AGLDT todavía no están integrados.
+**Bancos pendientes:** no existe todavía un corpus cerrado de preguntas de cultura de Latín 4.º ESO. En su lugar se presenta una advertencia, sin inventar preguntas. El apartado de oraciones empieza con huecos numerados. Escribe una oración por línea en el campo de texto o edita su hueco en la vista previa. Los pronombres de Latín I usan una selección de formas explícitas, limitada al temario de cada unidad. Los bancos Morpheus y AGLDT todavía no están integrados.
 
 ## Lematización offline latina y griega
 

@@ -1213,6 +1213,8 @@
   "Preguntas y cantidades": "Preguntes i quantitats",
   "Generar, descargar y guardar": "Generar, descarregar i guardar",
   "Banco de oraciones": "Banc d’oracions",
+  "Oraciones del examen (una por línea)": "Oracions de l’examen (una per línia)",
+  "También puedes escribirlas en la vista previa. Cada línea corresponde a una letra, incluidas las líneas vacías.": "També pots escriure-les en la vista prèvia. Cada línia correspon a una lletra, incloses les línies buides.",
   "Vocabulario del examen": "Vocabulari de l’examen",
   "Cultura clásica": "Cultura clàssica",
   "Importación y copias de datos": "Importació i còpies de dades",

@@ -15,6 +15,9 @@ const greekCode=morphologyHelpers+part('const greekModes=','// Vista del temario
  part('function generateGreekMorphologyFixed(){','let greekExamState=null;')+
  part('function generateGreekExam(){','const legacyUpdateUnits=');
 
+const sentenceList=vm.runInNewContext(part('function sentenceList(','function sentenceGlossary(')+
+ 'sentenceList',{$:()=>({value:'es'}),esc:String});
+const sentenceGlossary=()=>'<div class="final-gloss">Vocabulario de oraciones</div>';
 function latinSuite(){
  const noun={entry:'puella, -ae',meaning:'niña',unit:'UD3'};
  const adj={entry:'bonus, -a, -um',meaning:'bueno',unit:'UD2'};
@@ -46,7 +49,7 @@ function latinSuite(){
   latinSharedBank:null,
   culture:Array.from({length:4},(_,i)=>({course:'latin4',units:['UD3'],type:'essay',question:'Cultura '+i,answer:'Respuesta '+i})),
   latinExamHeader:()=>'<div class="exam-header">Latín</div>',
-  buildFinalLexicon:()=>'<div class="final-gloss">Vocabulario de oraciones</div>',
+  sentenceList,sentenceGlossary,sentenceLines:()=>[],
   refreshManualMorphWords:()=>{},generateGreekExam:()=>{},syncLatin1PhoneticRuleControls:()=>{},
   morphConfig:()=>({offer:3,decline:2,verbs:2,words:5}),
   examQuestionEnabled:kind=>kind!=='pronouns'||state.model.value==='morf',
@@ -74,20 +77,23 @@ function latinSuite(){
  assert(output.includes('bonus, –a, –um + puella, –æ'),'Latín I desde UD2: falta el enunciado completo de adjetivo y sustantivo');
  assert(output.includes('Modificación preverbial')&&output.includes('Latinismos'),'Latín I: las cuatro partes del léxico deben estar disponibles');
  assert(output.includes('final-gloss'));
- assert.equal((output.match(/Puella amat \d+\./g)||[]).length,5);
+ assert.equal((output.match(/data-sentence-slot=/g)||[]).length,5);
+ assert(!output.includes('Puella amat'),'El banco no rellena los huecos');
  assert(output.includes('exam-sentences'),'Las oraciones latinas carecen de estilo para espaciado');
  assert(!output.includes('<div class="answer"></div>'),'Las oraciones latinas todavía contienen líneas de respuesta');
  assert(!output.includes('Cultura 0'),'Cultura no se incluye en Latín I');
  state.model.value='mixto';state['count-sent'].value=7;output=run();
  assert.equal((output.match(/class="exam-question"/g)||[]).length,3,'Traducción: formas, léxico y oraciones');
  assert(!output.includes('exam-nouns')&&!output.includes('exam-verbs'));
- assert.equal((output.match(/Puella amat \d+\./g)||[]).length,7);
+ assert.equal((output.match(/data-sentence-slot=/g)||[]).length,7);
  assert(output.includes('final-gloss'));
- const fullSentenceBank=sandbox.latinSharedBank.sentences;
- sandbox.latinSharedBank.sentences=()=>fullSentenceBank().slice(0,4);
+ sandbox.sentenceLines=()=>['Puella amat.','','Rosam portat.'];
  output=run();
- assert.equal((output.match(/<li><i><\/i><\/li>/g)||[]).length,3,'Latín: reservar e., f. y g.');
- sandbox.latinSharedBank.sentences=fullSentenceBank;
+ assert.equal((output.match(/data-sentence-slot=/g)||[]).length,7);
+ assert.match(output,/data-sentence-slot="0"[^>]*>Puella amat\./);
+ assert.match(output,/data-sentence-slot="1"[^>]*><\/i>/);
+ assert.match(output,/data-sentence-slot="2"[^>]*>Rosam portat\./);
+ sandbox.sentenceLines=()=>[];
  state.model.value='morf';vm.runInContext('generateLatinMorphologyReference()',sandbox);
  output=state.paper.innerHTML.split('<div id="answerkey"')[0];
  assert.equal((output.match(/class="exam-question"/g)||[]).length,4,'Latín I UD3: pronombres como tercera pregunta');
@@ -108,7 +114,7 @@ function latinSuite(){
  assert.equal((output.match(/class="exam-question"/g)||[]).length,6,'Latín 4: seis apartados');
  assert.equal((output.match(/Cultura \d/g)||[]).length,4,'Latín 4: cuatro preguntas de cultura');
  assert(output.includes('Prefijos')&&output.includes('Evolución fonética'),'Latín 4: dos partes léxicas');
- assert.equal((output.match(/Puella amat \d+\./g)||[]).length,4);
+ assert.equal((output.match(/data-sentence-slot=/g)||[]).length,4);
  sandbox.culture.length=0;output=run();
  assert.equal((output.match(/class="exam-question"/g)||[]).length,5,'Sin banco de cultura no debe exportarse una pregunta vacía');
  assert(output.includes('Banco de cultura pendiente de completar'));
@@ -130,7 +136,7 @@ function greekSuite(){
  const sandbox={
   $:id=>state[id]||(state[id]={checked:true,value:''}),
   sample:(a,n)=>a.slice(0,n),countFor:id=>Number(state['count-'+id]?.value)||5,
-  vocab:[],sentences:[],analyzeExamVocabulary:()=>[],
+  sentenceList,sentenceGlossary,sentenceLines:()=>[],
   greekVerifiedCorpus:rows,greekMorphologyEligible:(x,n)=>x.minUnit<=n,
   // En este test sintético no hay banco nominal ni diccionario de adjetivos.
   greekAvailableSyntagmAdjectives:()=>[],greekSyntagmNounGenders:{},
@@ -168,17 +174,12 @@ function greekSuite(){
  assert(!output.includes('exam-nouns')&&!output.includes('exam-verbs'));
  assert(output.includes('final-gloss'),'Griego traducción debe llevar vocabulario de las oraciones');
  assert.equal(sandbox.window.greekLastExam.total,10);
- // Una oración griega añadida por el docente se ofrece en el banco,
- // y los lemas que el índice no reconoce quedan señalados.
- sandbox.sentences=[{course:'greek1',text:'ὁ δοῦλος λέγει.',sol:'[TRADUCCIÓN PENDIENTE]',
-  units:['UD7'],teacherProvided:true}];
- sandbox.courseOf=x=>x.course||'latin1';
- sandbox.greekSharedBank={lookup:()=>null};
+ assert(!output.includes('ὁ ἄνθρωπος λέγει'),'Griego tampoco rellena el examen desde el banco');
+ sandbox.sentenceLines=()=>['ὁ δοῦλος λέγει.'];
  state['count-sent'].value=12;
  output=run('translation');
- assert(output.includes('ὁ δοῦλος λέγει.'),'La oración griega importada no llegó al examen');
- assert(output.includes('<span class="exam-letter">l.</span> <span></span>'),'Griego: reservar hasta la última letra solicitada');
- assert(output.includes('revisa el vocabulario'),'La oración griega sin lematización necesita revisión');
+ assert.match(output,/data-sentence-slot="0"[^>]*>ὁ δοῦλος λέγει\./);
+ assert.match(output,/data-sentence-slot="11"[^>]*><\/span>/);
  output=run('morphology');
  assert.equal((output.match(/class="exam-question"/g)||[]).length,4,'Griego UD7: pronombres');
  assert(output.includes('exam-pronouns')&&output.includes('palabras variables'));
