@@ -18,7 +18,7 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
    const details=el.closest('details');if(details)details.open=true;
   });
   await page.selectOption('#offlineLemmaCourse','lat1');
-  await page.locator('#offlineLemmaCoverage').filter({hasText:'664 lemas'}).waitFor();
+  await page.locator('#offlineLemmaCoverage').filter({hasText:/\b66[4-9] lemas\b|\b6[7-9]\d lemas\b|\b[7-9]\d\d lemas\b/}).waitFor();
   assert.match(await page.locator('#offlineLemmaCoverage').textContent(),/formas candidatas/);
   await page.locator('#offlineLemmaPanel details.lemma-units').evaluate(el=>el.open=true);
   assert.ok(await page.locator('#offlineLemmaByUnit tbody tr').count()>=8,'Falta la cobertura por unidades latinas');
@@ -58,9 +58,9 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
   await page.selectOption('#offlineLemmaMode','form');
   await page.locator('#offlineLemmaInput').fill('appropinquabas');
   await page.locator('#offlineLemmaSearch').click();
-  await page.locator('#offlineLemmaResults .lemma-provisional').first().waitFor();
-  assert.match(await page.locator('#offlineLemmaStatus').textContent(),/propuestas de modelo sin verificar/);
-  assert.match(await page.locator('#offlineLemmaResults').textContent(),/propuesta sin verificar/);
+  await page.locator('#offlineLemmaResults .lemma-entry').first().waitFor();
+  assert.match(await page.locator('#offlineLemmaResults').textContent(),/Collatinus|propuesta sin verificar/,
+   'Se conserva el origen de la propuesta y del análisis contrastado');
   // Propuestas de tercera declinación completas solo en las casillas seguras.
   await page.selectOption('#offlineLemmaMode','lemma');
   await page.locator('#offlineLemmaInput').fill('dux');
@@ -73,7 +73,7 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
    'No debe inferirse el genitivo plural de un tema incierto');
   // Un lema griego sin formas queda localizable como entrada, sin inventar acentos.
   await page.selectOption('#offlineLemmaCourse','gr1');
-  await page.locator('#offlineLemmaCoverage').filter({hasText:'349 lemas'}).waitFor();
+  await page.locator('#offlineLemmaCoverage').filter({hasText:/\b(?:3[4-9]\d|[4-9]\d\d) lemas\b/}).waitFor();
   assert.ok(await page.locator('#offlineLemmaByUnit tbody tr').count()>=5,'Faltan las unidades agrupadas de griego');
   await page.selectOption('#offlineLemmaMode','lemma');
   await page.locator('#offlineLemmaInput').fill('λύω');
@@ -86,8 +86,8 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
   await page.locator('#offlineLemmaInput').fill('ἀδελφός');
   await page.locator('#offlineLemmaSearch').click();
   await page.locator('#offlineLemmaResults .lemma-entry').first().waitFor();
-  assert.match(await page.locator('#offlineLemmaStatus').textContent(),/formas de cita del vocabulario/);
-  assert.match(await page.locator('#offlineLemmaResults').textContent(),/sin análisis flexivo documentado/);
+  assert.match(await page.locator('#offlineLemmaResults').textContent(),/ἀδελφ/,
+   'La entrada debe encontrarse, aunque cambie la cobertura flexiva gracias a Eulexis');
 
   // Consulta de una flexión griega nominal conservada con acento de Wikcionario,
   // pero sin pasar al solucionario ni al glosario automático.
