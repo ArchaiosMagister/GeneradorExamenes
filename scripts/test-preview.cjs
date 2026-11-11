@@ -29,6 +29,54 @@ async function checkFile(browser,filename){
  const page=await context.newPage(),errors=[];
  page.on('pageerror',error=>errors.push(String(error)));
  await page.goto(pathToFileURL(path.resolve(filename)).href);
+ // El menú siempre muestra todas las preguntas del curso, incluso las que
+ // están deshabilitadas para un modelo particular.
+ const matrix=[
+  ['latin1','morf','UD3',['decl','verb','pronouns','forms'],['lex','sent']],
+  ['latin1','morf','UD1',['decl','verb','forms'],['pronouns','lex','sent']],
+  ['latin1','mixto','UD3',['forms','lex','sent'],['decl','verb','pronouns']],
+  ['latin1','tablas','UD3',['decl','verb','forms','lex','sent'],[]],
+  ['latin4','tablas','UD3',['decl','verb','forms','lex','culture','sent'],[]],
+  ['greek1','morphology','UD7',['decl','verb','pronouns','forms'],['etymology','sent']],
+  ['greek1','translation','UD7',['forms','etymology','sent'],['decl','verb','pronouns']],
+  ['greek1','complete','UD7',['decl','verb','forms','etymology','sent'],[]]
+ ];
+ for(const [course,model,unit,included,disabled] of matrix){
+  const menu=await page.evaluate(({course,model,unit})=>{
+   const c=document.getElementById('course');c.value=course;c.dispatchEvent(new Event('change',{bubbles:true}));
+   const m=document.getElementById('model');m.value=model;m.dispatchEvent(new Event('change',{bubbles:true}));
+   let checked;
+   document.querySelectorAll('.unit-choice').forEach(el=>{el.checked=units[Number(el.value)]===unit;if(el.checked)checked=el});
+   checked?.dispatchEvent(new Event('change',{bubbles:true}));
+   return [...document.querySelectorAll('#examQuestionMenus [data-question]')].map(el=>({
+    kind:el.dataset.question,checked:el.querySelector('.exam-question-toggle')?.checked,
+    disabled:el.querySelector('.exam-question-toggle')?.disabled
+   }));
+  },{course,model,unit});
+  assert.equal(menu.length,6,filename+' '+course+'/'+model+': deben verse seis preguntas posibles');
+  for(const kind of included)assert(menu.some(x=>x.kind===kind&&x.checked&&!x.disabled),
+   filename+' '+course+'/'+model+': pregunta predeterminada '+kind);
+  for(const kind of disabled)assert(menu.some(x=>x.kind===kind&&!x.checked&&x.disabled),
+   filename+' '+course+'/'+model+': pregunta incompatible '+kind);
+ }
+ // Las marcas de morfología deben actuar sobre el examen real.
+ for(const [course,model] of [['latin1','morf'],['greek1','morphology']]){
+  await page.evaluate(({course,model})=>{
+   const c=document.getElementById('course');c.value=course;c.dispatchEvent(new Event('change',{bubbles:true}));
+   const m=document.getElementById('model');m.value=model;m.dispatchEvent(new Event('change',{bubbles:true}));
+   let unit;
+   document.querySelectorAll('.unit-choice').forEach(el=>{el.checked=units[Number(el.value)]==='UD7';if(el.checked)unit=el});
+   unit?.dispatchEvent(new Event('change',{bubbles:true}));
+  },{course,model});
+  const count=await page.locator('#paper .exam-question').count();
+  const toggle=page.locator('#examQuestionMenus [data-question="verb"] .exam-question-toggle');
+  await toggle.uncheck();
+  assert.equal(await page.locator('#paper .exam-question').count(),count-1,
+   filename+' '+course+': quitar tabla verbal debe quitar la pregunta');
+  await toggle.check();
+  assert.equal(await page.locator('#paper .exam-question').count(),count,
+   filename+' '+course+': restaurar la tabla verbal debe restaurar la pregunta');
+ }
  // Tipografía filológica: solo el lexema va en cursiva; la información
  // de género (3.ª declinación) y conjugación permanece en redonda.
  const typographies=await page.evaluate(()=>[
