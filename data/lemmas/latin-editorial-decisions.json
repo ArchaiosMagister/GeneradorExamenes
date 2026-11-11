@@ -1,0 +1,37 @@
+{
+  "schema": 1,
+  "course": "lat1",
+  "verifiedMorphology": false,
+  "purpose": "Decisiones filológicas confirmadas por el profesor; correcciones léxicas y textuales sin certificar flexiones",
+  "decisions": [
+    {
+      "id": "tener",
+      "type": "entry",
+      "fromLemma": "tenerus",
+      "toLemma": "tener",
+      "fromEntry": "tenerus, –a, –um",
+      "toEntry": "tener, tenera, tenerum",
+      "units": [
+        "UD 2",
+        "UD 3"
+      ],
+      "preserveMeaning": true,
+      "reason": "Normalización de la ficha de UD2, propagada a la aparición del mismo adjetivo en UD3",
+      "approved": "2026-11-11",
+      "verifiedMorphology": false
+    }
+  ],
+  "textCorrections": [
+    {
+      "id": "pecunia-carere-placebat",
+      "unit": 10,
+      "variants": [
+        "Pecunia carere nonulli philosophi placebat.",
+        "Pecunia carere nonnulli philosophi placebat."
+      ],
+      "corrected": "Pecunia carere nonnullis philosophis placebat.",
+      "reason": "Nonnullis philosophis es el dativo de la persona a quien agrada algo con placebat",
+      "approved": "2026-11-11"
+    }
+  ]
+}
