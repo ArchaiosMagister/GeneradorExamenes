@@ -3,10 +3,6 @@ name: Publicar webapp online
 on:
   push:
     branches: [main]
-  workflow_run:
-    workflows: ["Comprobar versión autónoma"]
-    types: [completed]
-    branches: [codex/vocabulario-unidades]
   workflow_dispatch:
 
 permissions:
@@ -14,81 +10,59 @@ permissions:
   pages: write
   id-token: write
 
-# Una sola publicación construye la versión estable y la vista previa.
-# Nunca se despliega el contenido de la PR en la raíz.
+# No reconstruir la PR 29: su generador de vocabulario ya está consolidado
+# en main. Una única versión evita código y cachés de una vista obsoleta.
 concurrency:
   group: github-pages
   cancel-in-progress: false
 
 jobs:
   publish:
-    if: github.event_name != 'workflow_run' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'codex/vocabulario-unidades' && github.event.workflow_run.head_repository.full_name == 'ArchaiosMagister/GeneradorExamenes')
     runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Obtener main (versión estable)
+      - name: Obtener versión estable
         uses: actions/checkout@v4
         with:
-          ref: main
-          path: stable
-          persist-credentials: false
-      - name: Obtener PR 29 (versión experimental)
-        uses: actions/checkout@v4
-        with:
-          ref: codex/vocabulario-unidades
-          path: preview
           persist-credentials: false
       - name: Preparar Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Construir versión estable
-        working-directory: stable
+      - name: Construir índices morfológicos de los dos idiomas
         run: |
           node scripts/build-greek-nominal-candidates.mjs
           node scripts/build-lemma-index.mjs
-          npm run offline:build
-      - name: Construir y comprobar versión experimental
-        working-directory: preview
+      - name: Construir y validar versión autónoma
         run: |
-          node scripts/build-greek-nominal-candidates.mjs
-          node scripts/build-lemma-index.mjs
           npm run offline:build
-          node scripts/audit-vocabulary.cjs
-      - name: Preparar ambas versiones para Pages
+          npm run offline:test
+          node scripts/test-lemma-index.mjs
+          node scripts/test-vocabulary-quality.cjs
+      - name: Preparar publicación de main
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p _site/pr-29
-          publish_app() {
-            local source="$1" dest="$2" version="$3"
-            cp "$source/index.html" "$dest/index.html"
-            cp "$source/offline.html" "$dest/offline.html"
-            cp "$source/offline-lemmas.js" "$source/verification-review.js" "$dest/"
-            # La vista previa PR29 es anterior a los módulos de Cultura y
-            # Valenciano: copiar solo los activos existentes de cada versión.
-            for asset in eulexis-local.js greek-review.js pwa.js culture-lat4.js lexicon-valenciano.js vocabulary-quality.js vocabulary-generator.js exam-scoring.js manifest.webmanifest; do
-              if [[ -f "$source/$asset" ]]; then cp "$source/$asset" "$dest/"; fi
-            done
-            cp -R "$source/icons" "$dest/icons"
-            cp -R "$source/data" "$dest/data"
-            if [[ -d "$source/THIRD_PARTY_LICENSES" ]]; then cp -R "$source/THIRD_PARTY_LICENSES" "$dest/THIRD_PARTY_LICENSES"; fi
-            if [[ -f "$source/docs/lematizacion-lectores.md" ]]; then
-              mkdir -p "$dest/docs"
-              cp "$source/docs/lematizacion-lectores.md" "$dest/docs/"
-            fi
-            sed "s/__PWA_BUILD_VERSION__/$version/g" "$source/sw.js" > "$dest/sw.js"
-            test -s "$dest/index.html"
-            test -s "$dest/offline.html"
-            test -s "$dest/sw.js"
-            test -s "$dest/icons/icon-512.png"
-          }
-          publish_app stable _site "${{ github.sha }}"
-          publish_app preview _site/pr-29 "$(git -C preview rev-parse HEAD)"
-          # Evitar que el SW experimental comparta/borre la caché de main.
-          sed -i 's/examina-pwa-/examina-preview-pr29-/g' _site/pr-29/sw.js
+          mkdir -p _site
+          cp index.html offline.html _site/
+          for asset in offline-lemmas.js verification-review.js greek-review.js eulexis-local.js culture-lat4.js lexicon-valenciano.js vocabulary-quality.js vocabulary-generator.js exam-scoring.js pwa.js manifest.webmanifest; do
+            test -f "$asset"
+            cp "$asset" _site/
+          done
+          cp -R icons data _site/
+          if [[ -d THIRD_PARTY_LICENSES ]]; then cp -R THIRD_PARTY_LICENSES _site/; fi
+          if [[ -f docs/lematizacion-lectores.md ]]; then
+            mkdir -p _site/docs
+            cp docs/lematizacion-lectores.md _site/docs/
+          fi
+          sed "s/__PWA_BUILD_VERSION__/${{ github.sha }}/g" sw.js > _site/sw.js
+          test -s _site/index.html
+          test -s _site/offline.html
+          test -s _site/data/lemmas/teacher-forms.json
+          test -s _site/sw.js
+          test -s _site/icons/icon-512.png
           touch _site/.nojekyll
       - name: Configurar GitHub Pages
         uses: actions/configure-pages@v5
