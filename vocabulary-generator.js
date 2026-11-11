@@ -882,12 +882,12 @@ function init(){
   const catalog=data.vocabulary?.grc||{},mapped=new Map();
   for(const proposal of result?.rows||[]){
    const entry=catalog[adapter.norm(proposal.lemma)]?.gr1;
-   if(!entry?.entry||!entry?.meaning)continue;
+   if(!entry?.entry)continue; // Una glosa pendiente no impide consultar la lectura morfológica.
    const form=adapter.norm(proposal.form);
    if(!mapped.has(form))mapped.set(form,new Map());
    const signature=entry.entry+'|'+proposal.analysis;
    if(!mapped.get(form).has(signature))mapped.get(form).set(signature,{
-    lemma:proposal.lemma,entry:entry.entry,meaning:entry.meaning,analysis:proposal.analysis
+    lemma:proposal.lemma,entry:entry.entry,meaning:entry.meaning||'',analysis:proposal.analysis
    });
   }
   eulexisByForm=new Map([...mapped].map(([form,values])=>[form,[...values.values()]]));
