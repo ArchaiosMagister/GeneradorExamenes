@@ -67,11 +67,11 @@ jobs:
             cp "$source/index.html" "$dest/index.html"
             cp "$source/offline.html" "$dest/offline.html"
             cp "$source/offline-lemmas.js" "$source/verification-review.js" "$dest/"
-            cp "$source/pwa.js" "$source/culture-lat4.js" "$source/lexicon-valenciano.js" "$source/vocabulary-generator.js" "$source/manifest.webmanifest" "$dest/"
-            if [[ -f "$source/vocabulary-quality.js" ]]; then cp "$source/vocabulary-quality.js" "$dest/"; fi
-            if [[ -f "$source/vocabulary-generator.js" ]]; then
-              cp "$source/vocabulary-generator.js" "$dest/"
-            fi
+            # La vista previa PR29 es anterior a los módulos de Cultura y
+            # Valenciano: copiar solo los activos existentes de cada versión.
+            for asset in pwa.js culture-lat4.js lexicon-valenciano.js vocabulary-quality.js vocabulary-generator.js manifest.webmanifest; do
+              if [[ -f "$source/$asset" ]]; then cp "$source/$asset" "$dest/"; fi
+            done
             cp -R "$source/icons" "$dest/icons"
             cp -R "$source/data" "$dest/data"
             if [[ -d "$source/THIRD_PARTY_LICENSES" ]]; then cp -R "$source/THIRD_PARTY_LICENSES" "$dest/THIRD_PARTY_LICENSES"; fi
