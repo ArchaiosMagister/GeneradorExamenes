@@ -70,6 +70,8 @@ jobs:
           npx playwright install --with-deps chromium
       - name: Comprobar correcciones filológicas en las 14 unidades griegas
         run: node scripts/test-greek-source-corrections.cjs
+      - name: Auditar todas las formas de las 14 unidades de Griego I
+        run: node scripts/audit-greek-all-units.cjs --require-clean
       - name: Probar generador de vocabulario y DOCX multunidad
         run: npm run vocabulary:test
       - name: Probar las vistas previas de todos los modelos
