@@ -174,7 +174,7 @@ async function checkFile(browser,filename){
   await page.waitForFunction(()=>document.querySelector('#examScoring .exam-scoring-row input')?.value==='3,25');
   assert.equal((await scoringRows.first().inputValue()),'3,25',
    filename+' '+course+'/'+model+': la edición en la vista previa no actualiza el panel');
-  assert.match(await page.locator('#paper .exam-question').first().textContent(),/\(3,25 p\.\)\.$/,
+  assert.match(await page.locator('#paper .exam-question').first().textContent(),/\(3,25p\.\)\.$/,
    filename+' '+course+'/'+model+': puntos no terminan el enunciado');
   const wordScored=await page.evaluate(()=>wordExamParagraph(document.querySelector('#paper .exam-question')));
   assert(wordScored.includes('3,25p.).'),filename+' '+course+'/'+model+': puntuación editada ausente del XML Word');
