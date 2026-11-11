@@ -52,6 +52,46 @@ assert.equal(pending[0].options.length,1,'No se inventan análisis alternativos'
 assert.equal(pending[0].options[0].provisional,true,
  'La lectura de Eulexis no constituye una verificación docente');
 assert.equal(buildCases(single).length,0,'Una mera cita sin Eulexis no es discrepancia');
+// Las variantes regionales NO son diferencias morfológicas: ἀδίκησα
+// sigue siendo 1.ª persona sg. de aoristo indicativo activo en ambas.
+const {analysisParts}=context.window.ExaminaGreekReview;
+assert.equal(analysisParts('aoristo de indicativo activo, 1ª pers. singular · dórico, eólico').core,
+ 'aoristo de indicativo activo, 1ª pers. singular');
+assert.equal(analysisParts('aoristo de indicativo activo, 1.ª persona singular (dórico eólico)').core,
+ 'aoristo de indicativo activo, 1.ª persona singular');
+assert.equal(analysisParts('participio de aoristo activo (uso adverbial)').core,
+ 'participio de aoristo activo (uso adverbial)',
+ 'No se deben ignorar matices gramaticales ni de uso no dialectales');
+const dialectFixture={schema:1,vocabulary:{grc:{
+ αδικεω:{gr1:{entry:'ἀδικέω',units:['UD4']}}
+}},rows:{grc:[]}};
+const aorist=[
+ {form:'ἀδίκησα',lemma:'ἀδικέω',analysis:'aoristo de indicativo activo, 1ª pers. singular · dórico, eólico'},
+ {form:'ἀδίκησα',lemma:'ἀδικέω',analysis:'aoristo de indicativo activo, 1ª pers. singular · homérico, jónico'}
+];
+const oneDialect=buildCases(dialectFixture,aorist);
+assert.equal(oneDialect.length,0,'Dos variedades dialectales del mismo análisis no generan tarjeta');
+const mixed=buildCases(dialectFixture,[...aorist,
+ {form:'ἀδίκησα',lemma:'ἀδικέω',analysis:'participio de aoristo activo, nominativo masculino singular'}
+]);
+assert.equal(mixed.length,1,'La diferencia de categoría morfológica sigue siendo discrepancia');
+assert.equal(mixed[0].options.length,2,'Las variantes dialectales se agrupan, sin eliminar el participio');
+const merged=mixed[0].options.find(x=>x.originalAnalyses.length===2);
+assert.ok(merged,'La agrupación debe conservar las dos lecturas dialectales originales');
+assert.deepEqual(Array.from(merged.dialects).sort(),['dórico','eólico','homérico','jónico'].sort());
+assert.equal(merged.legacyIds.length,2,'Las decisiones anteriores deben conservar sus identificadores');
+assert.ok(merged.provisional,'Eulexis no es una aprobación automática');
+const localDialect=buildCases(dialectFixture,[
+ {form:'ἀδίκησα',lemma:'ἀδικέω',analysis:'aoristo indicativo activo 1.ª persona singular (dórico eólico)'},
+ {form:'ἀδίκησα',lemma:'ἀδικέω',analysis:'aoristo indicativo activo 1.ª persona singular (homérico jónico)'}
+]);
+assert.equal(localDialect.length,0,
+ 'La instalación directa Eulexis también fusiona diferencias exclusivamente dialectales');
+const validAmbiguity=buildCases(dialectFixture,[
+ {form:'ἀδίκησα',lemma:'ἀδικέω',analysis:'indicativo activo 1.ª persona singular'},
+ {form:'ἀδίκησα',lemma:'ἀδικέω',analysis:'indicativo activo 3.ª persona singular'}
+]);
+assert.equal(validAmbiguity.length,1,'Nunca se deben confundir personas verbales distintas');
 const embedded=JSON.parse(JSON.stringify(data));
 embedded.rows.grc.push(['λογοσ','λόγος','EULEXIS;11',7]);
 const fromEnriched=buildCases(embedded,[],{'11':'masc nom sg (attic)'});
