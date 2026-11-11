@@ -90,7 +90,7 @@ function latinSuite(){
  assert(output.includes('Declina 2 de los 3 sintagmas propuestos.'),'Latín: enunciado dinámico de sintagmas');
  assert(!output.includes('Elige y declina')&&!output.includes('class="small">Elige'),'Latín: subtítulo duplicado');
  assert(output.includes('(sustantivo) + (adjetivo)'));
- assert(output.includes('(puella, -ae)'),'Latín: falta el enunciado al lado de la forma');
+ assert(output.includes('(<i>puella, –æ</i>)'),'Latín: falta el enunciado al lado de la forma');
  assert.equal(vm.runInContext("latinExamSurface('reginae','regina, –æ')",sandbox),'reginæ');
  assert.equal(vm.runInContext("latinExamSurface('poeta','poeta, –æ')",sandbox),'poeta');
  assert.equal(vm.runInContext("latinExamSurface('poetae','poeta, –æ')",sandbox),'poetæ');
