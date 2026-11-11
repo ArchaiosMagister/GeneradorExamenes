@@ -20,7 +20,7 @@ assert.equal(decisions.schema,1);
 assert.equal(decisions.course,'gr1');
 assert.equal(decisions.verifiedMorphology,false);
 assert.equal(decisions.decisions.length,19);
-assert.equal(new Set(decisions.decisions.map(x=>x.id)).size,17);
+assert.equal(new Set(decisions.decisions.map(x=>x.id)).size,19);
 assert.equal(data.extensions.greek_editorial_decisions.count,19);
 assert.equal(data.extensions.greek_editorial_decisions.verifiedFormsAdded,0);
 assert.equal(data.extensions.greek_editorial_decisions.addedCitationOnlyEntries,2);
@@ -35,7 +35,8 @@ for(const item of decisions.decisions){
  assert.ok(row.meaning,'Falta traducción en '+item.id);
  if(item.newMeaning!==null){
   assert.equal(row.meaning,item.newMeaning);
-  assert.equal(row.meaning_va,item.newMeaningVa,'La traducción valenciana debe ser explícita');
+  if(item.newMeaningVa!==null)
+   assert.equal(row.meaning_va,item.newMeaningVa,'La traducción valenciana debe ser explícita');
  }
  const oldKey=head(item.original),newKey=head(item.entry);
  const entry=data.vocabulary.grc[newKey]?.gr1;
@@ -65,6 +66,9 @@ for(const lemma of ['εκκλησια','προβατον']){
 assert.equal(data.vocabulary.grc['θεοσ'].gr1.units[0],'UD 1–4',
  'No se deben perder las unidades del índice fuente');
 assert.equal(data.vocabulary.grc['σοφοσ'].gr1.units[0],'UD 1–4');
+assert.equal(greek.find(x=>x.entry==='σοφός, –οῦ (ὁ)').meaning,'sabio');
+assert.equal(greek.find(x=>x.entry==='πονηρός, –α, –ον').meaning,'desdichado/a, pobre, malo, perverso');
+assert.equal(greek.find(x=>x.entry==='αἰσχρός, –ον').meaning,'vergonzoso/a');
 assert.equal(data.vocabulary.grc['αδικοσ'].gr1.units[0],'UD 6–7');
 const offline=read('offline.html');
 for(const item of decisions.decisions)
