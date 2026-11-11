@@ -73,7 +73,8 @@ const latinInvariables=[
  [['ubicumque'],'ubicumque (adv.)','dondequiera que','allà on siga'],
  [['quandocumque'],'quandocumque (adv.)','cuandoquiera que','quan siga'],
  [['quandoque'],'quandoque (adv.)','alguna vez, cuandoquiera que','alguna vegada, quan siga'],
- [['numquam','nunquam'],'numquam (adv.)','nunca','mai']
+ [['numquam','nunquam'],'numquam (adv.)','nunca','mai'],
+ [['modo'],'modo (adv.)','solamente, hace poco, ahora','solament, fa poc, ara']
 ];
 const latinCore=new Map();
 for(const [forms,entry,meaning,meaning_va] of latinInvariables){
@@ -373,7 +374,19 @@ function latinExpandedForms(bank){
   ['regredior, regressus sum (mx.)','regresar','tornar'],
   ['transgredior, transgressus sum (mx.)','atravesar','travessar'],
   ['moror, moratus sum (1ª)','detenerse, demorarse','detindre’s, demorar-se'],
-  ['fugio, fugi, fugitum (mx.)','huir','fugir']
+  ['fugio, fugi, fugitum (mx.)','huir','fugir'],
+  ['modus, –i','modo, manera','manera'],
+  ['viso, visi, visum (3ª)','visitar, ir a ver','visitar, anar a veure'],
+  ['testis, testis (m./f.)','testigo','testimoni'],
+  ['turtur, turturis (m.)','tórtola','tórtora'],
+  ['comparo, comparavi, comparatum (1ª)','preparar, comparar','preparar, comparar'],
+  ['amitto, amisi, amissum (3ª)','perder, dejar marchar','perdre, deixar anar'],
+  ['expello, expuli, expulsum (3ª)','expulsar','expulsar'],
+  ['pronuntio, pronuntiavi, pronuntiatum (1ª)','pronunciar, anunciar','pronunciar, anunciar'],
+  ['patefacio, patefeci, patefactum (mx.)','abrir, descubrir','obrir, descobrir'],
+  ['Saguntinus, –a, –um','saguntino/a','saguntí/ina'],
+  ['audeo, ausus sum (2ª)','atreverse','atrevir-se'],
+  ['confido, confisus sum (3ª)','confiar','confiar']
  ];
  const complete=[...bank];
  for(const [entry,meaning,meaning_va] of supplementary){
@@ -437,14 +450,23 @@ function latinExpandedForms(bank){
      !/\(n\.\)/i.test(raw)&&!['bos','vis','sus','grus','iuppiter'].includes(l)){
    const stem=fields[1].slice(0,-2);
    addMany(stem,proper?['is','em','i','e']:['is','em','i','e','es','ibus'],record);
+   // Comparativos y superlativos regulares de adjetivos en -ens, -entis.
+   if(l.endsWith('ens')&&fields[1].endsWith('entis')&&!/\((?:m|f)\.\)/i.test(raw)){
+    addMany(stem,['ior','ius','iorem','iore','iori','iores','iorum','ioribus','iora'],record);
+    decl12(stem+'issim',record);
+   }
   }
   if(!annotated)continue;
   // Los deponentes dan un participio perfecto activo en su propio enunciado.
   // Las otras formas se proponen sin certificarlas individualmente.
-  if(l.endsWith('or')&&fields[1]&&/^(?:[a-z]+(?:tus|sus)) sum$/.test(fields[1])){
-   const p=fields[1].slice(0,-4),stemP=p.slice(0,-2),group=annotated[1];
-   add(p,record);
-   decl12(stemP,{...record,attested:false,origin:'participio deponente flexionado: pendiente de contraste'});
+  if(l.endsWith('or')&&(fields[1]&&/^(?:[a-z]+(?:tus|sus)) sum$/.test(fields[1])||
+     fields[1]?.endsWith('i')&&/\(\s*(?:[1-4]ª|mx\.)\s*\)/.test(raw))){
+   const group=annotated[1];
+   if(fields[1].endsWith(' sum')){
+    const p=fields[1].slice(0,-4),stemP=p.slice(0,-2);
+    add(p,record);
+    decl12(stemP,{...record,attested:false,origin:'participio deponente flexionado: pendiente de contraste'});
+   }
    // Las desinencias activas NO sirven para los deponentes. El imperfecto
    // deponente sí es productivo y la conjugación está dada por el docente.
    const stem=(group==='2ª'||group==='4ª'||group==='mx.')?
@@ -459,6 +481,9 @@ function latinExpandedForms(bank){
    addMany(stem,deponent.present,record);
    addMany(stem+deponent.imperfect,
     ['ar','aris','atur','amur','amini','antur'],record);
+   const participleStem=stem+(group==='1ª'?'ant':['4ª','mx.'].includes(group)?'ient':'ent');
+   add(participleStem.slice(0,-1)+'s',record);
+   addMany(participleStem,['is','em','i','e','es','ibus'],record);
    continue;
   }
   const group=annotated[1],end=group==='2ª'?'eo':(['4ª','mx.'].includes(group)?'io':'o');
@@ -630,7 +655,18 @@ function latinExpandedForms(bank){
   {lemma:'comitia',entry:'comitia, –orum (n. pl.)',meaning:'comicios',
    forms:['comitia','comitiorum','comitiis']},
   {lemma:'nonnumquam',entry:'nonnumquam (adv.)',meaning:'a veces',
-   forms:['nonnumquam']}
+   forms:['nonnumquam']},
+  {lemma:'disco',entry:'disco, didici, – (3ª)',meaning:'aprender',forms:['didici']},
+  {lemma:'patefacio',entry:'patefacio, patefeci, patefactum (mx.)',meaning:'abrir, descubrir',
+   forms:['patefecit']},
+  {lemma:'audeo',entry:'audeo, ausus sum (2ª)',meaning:'atreverse',forms:['ausus']},
+  {lemma:'confido',entry:'confido, confisus sum (3ª)',meaning:'confiar',forms:['confisus']},
+  {lemma:'colloco',entry:'colloco, collocavi, collocatum (1ª)',meaning:'colocar',
+   forms:['collocaverat']},
+  {lemma:'indico',entry:'indico, indicavi, indicatum (1ª)',meaning:'indicar',
+   forms:['indicavit']},
+  {lemma:'servo',entry:'servo, servavi, servatum (1ª)',meaning:'guardar, salvar',
+   forms:['servavit']}
  ];
  for(const info of irregular){
   const existing=bank.find(row=>latinKey(head(row.entry))===latinKey(info.lemma));
