@@ -45,3 +45,11 @@ En Latín 4.º se añadieron las lecturas de *terra*, *timebant* y *fortitudinem
 En Griego I se reconocieron *σώζονται* y *παιδεύεται*. Se mantuvieron en revisión cinco grafías del texto original con propuestas concretas de corrección. Las lecturas de *γίγνεται* y *χρημάτων* ya se identificaban. El banco activo prevalece si su enunciado o su glosa difieren del glosario impreso. El Word descargado conserva los pendientes en un bloque separado.
 
 La prueba completa del JSON de Latín I mantuvo los recuentos anteriores. Se añadieron pruebas con las formas puntuales que descubrieron los exámenes. Los documentos completos se utilizaron localmente.
+
+## Cobertura por paradigma y revisión de apariciones repetidas
+
+El generador puede usar una flexión documentada en el índice de otro curso de latín si el lema existe en el banco activo. El enunciado y el significado provienen del banco activo. En Griego I, el presente medio-pasivo regular de los verbos temáticos en -ω se reconoce junto al activo. Los contractos siguen sus reglas específicas. Estas reglas sirven para identificar lemas para Word.
+
+La grafía *est* sin indicación de cantidad ofrece *sum* y *edō*. La grafía *ēst* permite identificar *edō*. Véase [Allen y Greenough, §201](https://dcc.dickinson.edu/grammar/latin/irregular-verbs-fer%C5%8D-and-ed%C5%8D). Al elegir una lectura, la tarjeta muestra las demás apariciones pendientes compatibles con esa ficha. Los pasajes distintos se seleccionan de forma explícita. La decisión sigue guardándose para cada aparición seleccionada.
+
+En el JSON de Latín I, el nuevo recuento es 2.047 identificaciones, 218 casos para revisión y 2 formas sin lectura. El cambio se debe a 64 apariciones de *est* que ahora ofrecen las dos lecturas. Hay 23 conjuntos de apariciones con las mismas opciones y advertencias, que permiten evitar hasta 102 confirmaciones separadas si el docente selecciona la misma lectura para todas las apariciones de cada conjunto. Los recuentos de las oraciones de Latín 4.º y Griego I se mantuvieron. Se comprobaron nuevamente el Word y el funcionamiento sin conexión.

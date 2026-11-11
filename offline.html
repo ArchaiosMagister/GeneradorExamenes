@@ -8220,7 +8220,8 @@ function greekReferenceForms(bank){
   }else if(hasInflection&&lemma.endsWith('ομαι')){
    endings(lemma.slice(0,-4),['ομαι','ῃ','εται','όμεθα','εσθε','ονται','εσθαι'],record);
   }else if(hasInflection&&lemma.endsWith('ω')){
-   endings(lemma.slice(0,-1),['ω','εις','ει','ομεν','ετε','ουσι','ουσιν','ειν'],record);
+   endings(lemma.slice(0,-1),['ω','εις','ει','ομεν','ετε','ουσι','ουσιν','ειν',
+    'ομαι','ῃ','εται','όμεθα','εσθε','ονται','εσθαι'],record);
   }
   }
  }
@@ -8667,26 +8668,29 @@ const greekSpellingNotes={
  'ἐφεύξεν':'φεύγω: revisar el tiempo; aoristo usual ἔφυγεν'
 };
 const vocabularyIndexCache=new WeakMap(),greekReferenceCache=new WeakMap();
+const documentedSources=new Set([0,1,5,6,7]);
 function analyze(data,text,course,bank,{contextual=false}={}){
  const lang=course==='gr1'?'grc':'lat';
  let byCourse=vocabularyIndexCache.get(data);
  if(!byCourse){byCourse=new Map();vocabularyIndexCache.set(data,byCourse)}
- let index=byCourse.get(course);
+ const indexKey=contextual?course+'-contextual':course;
+ let index=byCourse.get(indexKey);
  if(!index){
   index=new Map();
   for(const [lemma,surface,tags,source] of data.rows[lang]){
-   if(!data.vocabulary[lang][lemma]?.[course])continue;
+   const indexedEntry=data.vocabulary[lang][lemma]?.[course];
+   if(!indexedEntry&&(!contextual||!documentedSources.has(source)))continue;
    const k=lang==='lat'?latinKey(surface):key(surface);if(!index.has(k))index.set(k,new Map());
    const candidates=index.get(k),old=candidates.get(lemma);
    const lexicalInvariable=source===3&&key(surface)===key(lemma)&&
-    invariableEntry(data.vocabulary[lang][lemma][course].entry);
-   const attested=[0,1,5,6,7].includes(source)||lexicalInvariable;
+    invariableEntry(indexedEntry?.entry);
+   const attested=documentedSources.has(source)||lexicalInvariable;
    const exactForms=old?.exactForms||new Set(),morphTags=old?.morphTags||new Set();
    if(lang==='grc'&&attested)exactForms.add(surface.normalize('NFC'));
    if(attested)morphTags.add(tags);
    candidates.set(lemma,{lemma,attested:attested||!!old?.attested,exactForms,morphTags});
   }
-  byCourse.set(course,index);
+  byCourse.set(indexKey,index);
  }
  let greek=null;
  if(lang==='grc'){
@@ -8719,15 +8723,16 @@ function analyze(data,text,course,bank,{contextual=false}={}){
  }
  return [...tokens.values()].map(({normal,form,context,identity,offset,precededBy})=>{
   const indexedCandidates=[...(index.get(normal)?.values()||[])].flatMap(c=>{
-   const original=data.vocabulary[lang][c.lemma][course];
-   const matches=[...new Set([...(bankIndex.get('E'+normalizeCourse(original.entry))||[]),
+   const original=data.vocabulary[lang][c.lemma]?.[course];
+   const matches=[...new Set([...(original?bankIndex.get('E'+normalizeCourse(original.entry))||[]:[]),
     ...(bankIndex.get('H'+normalizeCourse(c.lemma))||[])])];
    // Repetir una misma palabra en distintas UD con glosas ligeramente
    // distintas no constituye una ambigüedad MORFOLÓGICA. Conservamos la
    // entrada docente más completa, dando preferencia a la del índice.
    // Los homógrafos de lemas distintos siguen separados en `candidates`.
+   if(!original&&!matches.length)return [];
    const variants=matches.length?(lang==='lat'?[matches.slice().sort((a,b)=>{
-    const score=x=>(x.entry===original.entry?100:0)+
+    const score=x=>(x.entry===original?.entry?100:0)+
      (x.meaning_va?6:0)+(x.entry.split(',').length*3);
     return score(b)-score(a);
    })[0]]:matches):[{entry:original.entry,meaning:''}];
@@ -8766,7 +8771,7 @@ function analyze(data,text,course,bank,{contextual=false}={}){
   const exactGreek=supplement.filter(x=>x.exactForms?.has(form.normalize('NFC')));
   const exactIndexed=lang==='grc'?indexedCandidates.filter(x=>x.exactForms?.has(form.normalize('NFC'))):[];
   const regularLemmas=new Set(regular.map(candidate=>candidate.lemma));
-  const all=exactGreek.length?exactGreek:
+  let all=exactGreek.length?exactGreek:
    [...(exactIndexed.length?exactIndexed:indexedCandidates).filter(x=>
     !(supplement.length&&!x.attested&&!x.meaning)&&
     !(regularLemmas.has(x.lemma)&&!x.attested)),
@@ -8783,6 +8788,14 @@ function analyze(data,text,course,bank,{contextual=false}={}){
    const noun=data.vocabulary.lat.bona?.lat1;
    if(noun)all.push({lemma:'bona',entry:noun.entry,meaning:'',attested:false,
     origin:'sustantivo plural registrado en el índice léxico'});
+  }
+  // §201 de Allen y Greenough: ēst es variante de edit, de edō.
+  // Sin cantidad explícita, la grafía est admite también sum.
+  if(contextual&&lang==='lat'&&normal==='est'){
+   if(form.normalize('NFC').toLowerCase()==='ēst')
+    all=all.filter(candidate=>latinKey(candidate.lemma)!=='sum');
+   all.push({lemma:'edo',entry:'edō, edere, ēdī, ēsum',meaning:'comer',
+    attested:true,origin:'Allen y Greenough, §201'});
   }
   // El superlativo adverbial y el vocativo pueden tener la misma grafía.
   // La lectura adverbial consta explícitamente en el glosario docente de UD5.
@@ -9025,7 +9038,7 @@ function vocabularyRequiresReview(row){
   '<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>'+
   titleParagraph+body+'<w:sectPr>'+layout+'</w:sectPr></w:body></w:document>';
 }
-const analysisVersion=2;
+const analysisVersion=3;
 function needsAnalysis(unit,course){
  return !!unit.text?.trim()&&(unit.analysisVersion!==analysisVersion||
   unit.analyzedCourse!==course||unit.analyzedText!==unit.text);
@@ -9267,7 +9280,16 @@ function init(){
   const reviewed=document.createElement('details'),summary=document.createElement('summary');
   summary.textContent='Formas resueltas y omitidas ('+resolved.length+')';
   reviewed.append(summary);
-  for(const row of pending)target.append(reviewCard(u,row,paragraph,button));
+  const relatedByForm=new Map();
+  for(const item of active){
+   for(const row of item.rows){
+    if(!vocabularyRequiresReview(row)||row.status==='omitted')continue;
+    const form=row.form.normalize('NFC').toLowerCase();
+    if(!relatedByForm.has(form))relatedByForm.set(form,[]);
+    relatedByForm.get(form).push({unit:item,row});
+   }
+  }
+  for(const row of pending)target.append(reviewCard(u,row,paragraph,button,relatedByForm));
   for(const row of resolved){
    const detail=document.createElement('details'),title=document.createElement('summary');
    const state={documented:'Identificación automática',manual:'Aceptada para Word',omitted:'Omitida del Word'}[row.status];
@@ -9278,7 +9300,7 @@ function init(){
   }
   if(resolved.length)target.append(reviewed);
  }
- function reviewCard(u,row,paragraph,button){
+ function reviewCard(u,row,paragraph,button,relatedByForm){
   const card=document.createElement('section');card.className='vg-eulexis-card';
   const heading=document.createElement('h3');heading.textContent=row.form;
   const context=paragraph(u.title+' · ');
@@ -9301,9 +9323,43 @@ function init(){
     select.append(new Option(candidate.entry+' · '+(gloss||'Sin traducción registrada')+
      (candidate.eulexisUnverified?' · Eulexis: '+candidate.analysis:' · '+(candidate.origin||'índice morfológico')),i));
    });
-   const accept=button('Aceptar',()=>record(u,row,options[Number(select.value)],'manual'));
-   accept.disabled=true;select.onchange=()=>{accept.disabled=select.value===''};
-   label.append(select);card.append(label,accept);
+   const related=document.createElement('details');
+   related.hidden=true;
+   const extras=[];
+   const accept=button('Aceptar',()=>{
+    const chosen=options[Number(select.value)];
+    for(const {item,choice,check} of extras){
+     if(check.checked)decide(item.unit,item.row,choice,'manual');
+    }
+    record(u,row,chosen,'manual');
+    const count=extras.filter(extra=>extra.check.checked).length;
+    if(count)status(row.form+' · '+(count+1)+' apariciones aceptadas para Word.');
+   });
+   accept.disabled=true;
+   select.onchange=()=>{
+    accept.disabled=select.value==='';
+    extras.length=0;related.replaceChildren();related.hidden=true;
+    const chosen=options[Number(select.value)];
+    if(!chosen||chosen.eulexisUnverified)return;
+    const peers=relatedByForm?.get(row.form.normalize('NFC').toLowerCase())||[];
+    for(const item of peers){
+     if(item.row===row||item.row.warning!==row.warning)continue;
+     const choice=item.row.candidates.find(c=>c.lemma===chosen.lemma&&c.entry===chosen.entry&&
+      c.meaning===chosen.meaning&&c.meaning_va===chosen.meaning_va);
+     if(!choice)continue;
+     const l=document.createElement('label'),check=document.createElement('input');
+     l.className='check';check.type='checkbox';
+     check.checked=item.row.identity===row.identity;
+     l.append(check,document.createTextNode(item.unit.title+' · '+item.row.context));
+     extras.push({item,choice,check});related.append(l);
+    }
+    if(extras.length){
+     const summary=document.createElement('summary');
+     summary.textContent='Aplicar también a otras apariciones ('+extras.length+')';
+     related.prepend(summary);related.open=true;related.hidden=false;
+    }
+   };
+   label.append(select);card.append(label,related,accept);
   }
   if(row.eulexisUnverified||external.length)card.append(paragraph('Eulexis propone lecturas. Aceptar una ficha para Word no acredita la flexión.'));
   card.append(button('Editar',()=>{

@@ -58,6 +58,20 @@ const fromEulexis={course:'gr1',lang:'es',count:1,units:[{
  }]
 }]};
 // Formas aisladas de la regresión con Latín 4.º UD5 y Griego I UD6.
+for(const course of ['lat1','lat4']){
+ const rows=api.analyze(data,'Est. Ēst.',course,[],{contextual:true});
+ assert.equal(rows[0].status,'review');
+ assert.deepEqual(Array.from(rows[0].candidates,c=>c.lemma).sort(),['edo','sum']);
+ assert.equal(rows[1].status,'documented');assert.equal(rows[1].lemma,'edo');
+}
+const crossCourseIndex={rows:{lat:[['scribo','scripsisset','V;SBJV;ACT;PST;3;SG',0]]},
+ vocabulary:{lat:{scribo:{lat1:{entry:'scribo (3ª)'}}}}};
+const crossCourseRows=api.analyze(crossCourseIndex,'scripsisset','lat4',
+ [{entry:'scrībō (3ª)',meaning:'glosa del curso'}],{contextual:true});
+assert.equal(crossCourseRows[0].status,'documented');
+assert.equal(crossCourseRows[0].meaning,'glosa del curso');
+const middle=api.analyze(data,'βάλλεται','gr1',[{entry:'βάλλω',meaning:'lanzar'}],{contextual:true});
+assert.equal(middle[0].status,'documented');assert.equal(middle[0].meaning,'lanzar');
 const latinExamBank=[{entry:'fōrtĭs, –e',meaning:'fuerte'},
  {entry:'terra, −æ',meaning:'glosa del banco de prueba'}];
 const latinExamRows=api.analyze(data,'terra marique fortissime timebant fortitudinem','lat4',latinExamBank,{contextual:true});
@@ -472,6 +486,23 @@ console.log('Vocabulario: prioridad docente, deduplicación por UD, ambigüedad,
  assert.equal(batch.meaning,'');
  console.log('Tres cursos: contexto, cambios incrementales, corrección, omisión, Word, lote y copia JSON.');
 
+ // Compartir una lectura es explícito cuando el pasaje cambia.
+ await page.selectOption('#vgCourse','lat4');
+ await page.fill('#vgText','Est bonus. Est panem. Est puella.');
+ await page.click('#vgAnalyzeAll');
+ const est=page.locator('#vgResults section').filter({has:page.getByRole('heading',{name:'Est',exact:true})});
+ await est.first().waitFor();
+ assert.equal(await est.count(),3);
+ const firstEst=est.first(),sumChoice=firstEst.locator('option').filter({hasText:/^s[uŭ]m/u});
+ await firstEst.locator('select').selectOption(await sumChoice.getAttribute('value'));
+ const peers=firstEst.locator('details').filter({hasText:'Aplicar también'});
+ assert.equal(await peers.locator('input:checked').count(),0);
+ await peers.getByLabel(/Est puella/).check();
+ await firstEst.getByRole('button',{name:'Aceptar',exact:true}).click();
+ assert.match(await page.locator('#vgStatus').textContent(),/2 apariciones aceptadas/);
+ const shared=await page.evaluate(()=>JSON.parse(localStorage.examina_vocabulary_project_v1).units[0].rows.filter(r=>r.form==='Est'));
+ assert.deepEqual(shared.map(r=>r.status),['manual','review','manual']);
+
  if(process.env.LATIN1_VOCABULARY_CORPUS){
   const corpus=JSON.parse(fs.readFileSync(process.env.LATIN1_VOCABULARY_CORPUS,'utf8'));
   assert.equal(corpus.course,'lat1');assert.equal(corpus.count,10);
@@ -485,7 +516,9 @@ console.log('Vocabulario: prioridad docente, deduplicación por UD, ambigüedad,
    assert.equal(unit.text,corpus.units[i].text);
    for(const row of unit.rows)totals[row.status]=(totals[row.status]||0)+1;
   });
-  assert(totals.documented>=2100);
+  assert(totals.documented>=2047);
+  assert.equal(current.units.slice(0,current.count).flatMap(u=>u.rows).filter(r=>
+   r.form.toLowerCase()==='est'&&r.status==='review'&&r.candidates.some(c=>c.lemma==='edo')).length,64);
   assert(totals.unknown<=2);
   const ud1=current.units[0].rows;
   for(const [form,lemma] of [['esse','sum'],['dare','do'],['potest','possum']])
