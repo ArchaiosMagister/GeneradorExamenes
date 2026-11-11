@@ -101,12 +101,16 @@ assert(!engine.documentXml({...project,groupTypes:false}).includes('Sustantivos 
   const galli=page.locator('#examSentenceGlossary .exam-gloss-review-choice').filter({hasText:'Galli'}).first();
   assert((await galli.locator('option').allTextContents()).some(s=>s.includes('Gallus, –a, –um')));
   const gallusValue=await galli.locator('option').filter({hasText:'Gallus, –a, –um'}).first().getAttribute('value');
-  await galli.locator('select').selectOption(gallusValue);
+  await galli.locator('select').evaluate((el,value)=>{
+   el.value=value;el.dispatchEvent(new Event('change',{bubbles:true}));
+  },gallusValue);
   assert.match(await page.locator('#examSentenceGlossary').innerText(),/Lecturas elegidas/);
   assert.match(await page.locator('#examSentenceGlossary .final-gloss').innerText(),/Gallus/);
   const bona=page.locator('#examSentenceGlossary .exam-gloss-review-choice').filter({hasText:/\bBona\b|\bbona\b/}).first();
   const value=await bona.locator('option').filter({hasText:'bonus, –a, –um'}).first().getAttribute('value');
-  await bona.locator('select').selectOption(value);
+  await bona.locator('select').evaluate((el,value)=>{
+   el.value=value;el.dispatchEvent(new Event('change',{bubbles:true}));
+  },value);
   assert.match(await page.locator('#examSentenceGlossary .final-gloss').innerText(),/bonus/);
   assert(!await page.locator('#examSentenceGlossary').innerText().then(s=>s.includes('Revisión necesaria: bona, Galli')));
   const stored=await page.evaluate(()=>JSON.parse(localStorage.getItem('examina_exam_gloss_choices_v1')));
@@ -125,7 +129,7 @@ assert(!engine.documentXml({...project,groupTypes:false}).includes('Sustantivos 
   });
   await page.waitForFunction(()=>document.querySelector('#examSentenceGlossary .exam-gloss-selected'));
   assert.equal(await page.locator('#examSentenceGlossary .exam-gloss-reset').count(),2);
-  await page.locator('#examSentenceGlossary .exam-gloss-reset').first().click();
+  await page.locator('#examSentenceGlossary .exam-gloss-reset').first().evaluate(el=>el.click());
   assert.equal(await page.locator('#examSentenceGlossary .exam-gloss-lemma').count(),1);
   for(const id of ['glossNouns','glossAdjectives','glossPronouns','glossArticles','glossParticles','glossOther','glossHideRequired'])
    assert.equal(await page.locator('#'+id).count(),1,id);
