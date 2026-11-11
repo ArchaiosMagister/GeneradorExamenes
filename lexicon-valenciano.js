@@ -1204,6 +1204,13 @@
   }).join('').trim();
  }
  const UI_TRANSLATIONS={
+  "Adjetivos": "Adjectius",
+  "Artículos (griego)": "Articles (grec)",
+  "Partículas (griego)": "Partícules (grec)",
+  "Adverbios, conjunciones, preposiciones y otros": "Adverbis, conjuncions, preposicions i altres",
+  "Omitir la traducción de las palabras exigibles para el examen (mostrar solo su enunciado)": "Ometre la traducció de les paraules exigibles per a l'examen (mostrar-ne només l'enunciat)",
+  "Agrupar el vocabulario de cada unidad en cuatro categorías en Word": "Agrupar el vocabulari de cada unitat en quatre categories en Word",
+
   "Configurar examen": "Configura l’examen",
   "Preparar el examen": "Preparar l’examen",
   "Crear y exportar": "Crear i exportar",
