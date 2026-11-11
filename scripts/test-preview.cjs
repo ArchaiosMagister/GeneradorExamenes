@@ -1,6 +1,7 @@
 // Prueba real en navegador: vista previa y edición de los siete modelos.
 const assert=require('node:assert/strict');
 const path=require('node:path');
+const fs=require('node:fs');
 const {pathToFileURL}=require('node:url');
 const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
 
@@ -92,6 +93,41 @@ async function checkFile(browser,filename){
    };
   });
   assert(result.visible&&result.height>80&&result.text>80,filename+' '+course+'/'+model+': vista previa ausente '+JSON.stringify(result));
+
+  // Las puntuaciones son campos propios, se reflejan en el enunciado y en Word.
+  await page.waitForFunction(()=>!!window.ExaminaScoring&&
+   [...document.querySelectorAll('#paper .exam-question')].every(el=>!!el.querySelector('.exam-question-points')));
+  const scoringRows=page.locator('#examScoring .exam-scoring-row input');
+  const scoreCount=await page.locator('#paper .exam-question').count();
+  assert.equal(await scoringRows.count(),scoreCount,filename+' '+course+'/'+model+': falta puntuación en una pregunta');
+  const morphScore=['morf','morphology'].includes(model);
+  const scoreValue=await scoringRows.first().inputValue();
+  if(!morphScore){
+   await scoringRows.first().fill('8,75');
+   assert.match(await page.locator('#examScoringTotal').textContent(),/no 10|no 10/i,
+    filename+' '+course+'/'+model+': no se avisa si el total es distinto de diez');
+  }else{
+   await scoringRows.first().fill('2');
+   assert.doesNotMatch(await page.locator('#examScoringTotal').textContent(),/no 10|no 10/i,
+    filename+' '+course+'/'+model+': morfología no debe exigir diez puntos');
+  }
+  const previewScore=page.locator('#paper .exam-question-points').first();
+  await previewScore.click();
+  const inlineScore=page.locator('#paper .exam-score-inline-editor').first();
+  await inlineScore.fill('3,25');
+  await inlineScore.press('Enter');
+  await page.waitForFunction(()=>document.querySelector('#examScoring .exam-scoring-row input')?.value==='3,25');
+  assert.equal((await scoringRows.first().inputValue()),'3,25',
+   filename+' '+course+'/'+model+': la edición en la vista previa no actualiza el panel');
+  assert.match(await page.locator('#paper .exam-question').first().textContent(),/\(3,25 p\.\)\.$/,
+   filename+' '+course+'/'+model+': puntos no terminan el enunciado');
+  const wordScored=await page.evaluate(()=>wordExamParagraph(document.querySelector('#paper .exam-question')));
+  assert(wordScored.includes('3,25 p.).'),filename+' '+course+'/'+model+': puntuación editada ausente del XML Word');
+  // El valor restaurado queda asociado a su pregunta aunque se regenere.
+  await scoringRows.first().fill(scoreValue);
+  await page.evaluate(()=>generate());
+  await page.waitForFunction(expected=>document.querySelector('#examScoring .exam-scoring-row input')?.value===expected,scoreValue);
+
   if(course==='greek1'&&model==='translation'&&result.greekAnalysisItems>=2){
    // El contador del análisis griego es independiente del de conjugación.
    const numberOfForms=await page.evaluate(()=>{
@@ -207,8 +243,13 @@ async function checkFile(browser,filename){
    },answers);
    assert(exported.filename.endsWith('.docx'),caseLabel+': nombre Word incorrecto');
    const bytes=Buffer.from(exported.bytes);
+   if(filename==='index.html'&&course==='latin1'&&model==='tablas'&&!answers){
+    fs.mkdirSync(path.resolve(__dirname,'../test-artifacts'),{recursive:true});
+    fs.writeFileSync(path.resolve(__dirname,'../test-artifacts/examen-puntuaciones-latin1.docx'),bytes);
+   }
    const documentXml=readStoredZipEntry(bytes,'word/document.xml');
    const styleXml=readStoredZipEntry(bytes,'word/styles.xml');
+   assert(documentXml.includes('p.).'),caseLabel+': el enunciado Word no incluye puntuación al final');
    assert(documentXml.includes('<w:document ')&&documentXml.includes('<w:body>')&&documentXml.includes('</w:document>'),
     caseLabel+': XML Word incompleto');
    assert(/Palatino/.test(styleXml),caseLabel+': fuente Palatino ausente en Word');

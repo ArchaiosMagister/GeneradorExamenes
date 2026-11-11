@@ -505,6 +505,41 @@ html[data-course="greek1"] .paper .exam-sheet *{font-style:normal!important}
  #exam-header-controls button{flex:1;min-width:max-content;padding-inline:9px;font-size:12.5px}
 }
 @media print{#exam-header-controls{display:none!important}}
+</style><style id="examina-question-points-style">
+#examScoring{margin:12px 0;border:1px solid var(--line,#ccd6e3);
+ border-radius:10px;padding:12px;background:var(--surface,#fff)}
+#examScoring .exam-scoring-heading{display:flex;align-items:center;gap:10px;
+ justify-content:space-between;flex-wrap:wrap}
+#examScoring h3{font-size:15px;margin:0}
+#examScoring .exam-scoring-heading button{min-height:38px;font-size:12px;padding:6px 9px}
+#examScoring .exam-scoring-rows{display:grid;gap:8px;margin:12px 0}
+#examScoring .exam-scoring-row{display:grid;grid-template-columns:minmax(0,1fr) 74px 24px;
+ gap:8px;align-items:center;font-size:12px;line-height:1.4}
+#examScoring .exam-scoring-row>span:first-child{overflow-wrap:anywhere}
+#examScoring .exam-scoring-row input{box-sizing:border-box;width:100%;
+ border:1px solid var(--line,#a8b4c6);border-radius:6px;padding:8px 6px;
+ font:650 15px/1.2 system-ui,sans-serif;text-align:right}
+#examScoring input[aria-invalid="true"]{outline:2px solid #b43a36}
+#examScoring .exam-scoring-unit{font-weight:650}
+#examScoring .exam-scoring-total{font-size:12.5px;margin:8px 0 0;font-weight:650;line-height:1.45}
+#examScoring .exam-scoring-warning{color:#9c2d1f}
+#examScoring .exam-scoring-correct{color:#175f45}
+.paper .exam-question-points{display:inline;white-space:nowrap;font-weight:700;
+ outline-offset:2px;cursor:pointer;border-bottom:1px dotted currentColor}
+.paper .exam-question-points[hidden]{display:none!important}
+.paper .exam-score-inline-editor{font:700 10.5pt Palatino,"Palatino Linotype",serif;
+ width:62px;max-width:80px;padding:1px 3px;border:1px solid #3566a2;border-radius:3px;
+ background:#fff;color:#111}
+.paper .exam-question-points:focus{outline:2px solid #3e73b4;border-radius:2px}
+.paper .exam-question-points[aria-invalid="true"]{outline:2px solid #a32d2d}
+@media print{#examScoring{display:none!important}.paper .exam-question-points{outline:0!important}}
+html[data-appearance="dark"] #examScoring,
+html[data-appearance="oled"] #examScoring{background:var(--appearance-raised);color:var(--appearance-text);
+ border-color:var(--appearance-border)}
+html[data-appearance="dark"] #examScoring .exam-scoring-warning,
+html[data-appearance="oled"] #examScoring .exam-scoring-warning{color:#ffb0a7}
+html[data-appearance="dark"] #examScoring .exam-scoring-correct,
+html[data-appearance="oled"] #examScoring .exam-scoring-correct{color:#a0e9cd}
 </style><header class="top"><h1>Generador de exámenes · Latín y griego</h1><p>Versión 21 · Genera, revisa y exporta exámenes de Latín y Griego sin conexión · borradores recuperables</p><div id="exam-header-controls" class="no-print" role="region" aria-label="Elecciones principales del examen"></div></header><!-- EXAMINA_PWA_START --><section class="pwa-panel no-print" id="pwaPanel" aria-label="Aplicación sin conexión" hidden><span id="pwaStatus" class="pwa-status" role="status" aria-live="polite">Comprobando disponibilidad sin conexión…</span><span id="pwaNote" class="pwa-note">Guarda copias de tus datos y borradores para evitar pérdidas.</span><button id="pwaInstall" class="secondary" type="button" hidden>Instalar</button><button id="pwaDataBackup" class="secondary" type="button">Copia de datos</button><button id="pwaExamBackup" class="secondary" type="button">Exportar examen</button><button id="pwaPersist" class="secondary" type="button" hidden>Proteger almacenamiento</button><button id="pwaUpdate" class="pwa-update" type="button" hidden>Preparar actualización</button><button id="pwaReload" class="pwa-update" type="button" hidden>Recargar versión nueva</button></section><!-- EXAMINA_PWA_END --><nav class="vocab-tabbar" aria-label="Secciones de la aplicación"><button id="vmShowExam" class="active" type="button">Generador de exámenes</button><button id="vgShow" type="button">Generador de vocabulario</button><button id="vmShowList" type="button">Vocabulario exigible por unidad</button><label class="appearance-picker" for="appearanceMode">Apariencia <select id="appearanceMode" aria-label="Modo de apariencia"><option value="light">Claro</option><option value="dark">Oscuro</option><option value="oled">Oscuro OLED</option></select></label></nav><script>
 (function(){
  const select=document.getElementById('appearanceMode');
@@ -3456,4 +3491,4 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 })();
 </script><script src="offline-lemmas.js" defer></script>
 <script src="verification-review.js" defer></script><script src="vocabulary-quality.js" defer></script>
-<script src="vocabulary-generator.js" defer></script><script src="pwa.js" defer></script></html>
+<script src="vocabulary-generator.js" defer></script><script src="exam-scoring.js" defer></script><script src="pwa.js" defer></script></html>

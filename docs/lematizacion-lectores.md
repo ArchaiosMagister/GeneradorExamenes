@@ -4,8 +4,10 @@
 
 El generador de vocabulario mantiene como fuente **preferente** el banco docente
 (forma de cita, enunciado, traducción castellana y valenciana). Para reconocer
-flexiones que ese banco no registra, el índice se amplía **durante la compilación**
-mediante los sistemas utilizados en `lector-latino` y `lector-griego`.
+flexiones que ese banco no registra, existe una **ampliación experimental**
+con sistemas utilizados en `lector-latino` y `lector-griego`.
+**La compilación y publicación estables no ejecutan esa ampliación**, a la
+espera de comprobar las condiciones de redistribución de cada fuente.
 Los motores originales **no se incluyen en el cliente**: `offline.html` y
 la webapp PWA consultan únicamente `data/lemmas/teacher-forms.json`.
 
@@ -50,10 +52,12 @@ restricciones y comprobaciones particulares del generador de exámenes.
 
 - **Collatinus 11**: autores Yves Ouvrard y Philippe Verkerk, GNU GPL v3.
   Repositorio de referencia: https://github.com/biblissima/collatinus
-- **Eulexis**: adaptación e inventario de Philippe Verkerk y fuentes de
-  Diogenes/Perseus; el repositorio del lector declara GPL v3 para el
-  conjunto de datos usado. Ver https://github.com/genuensis/lector-griego
-  y https://github.com/genuensis/lector-latino.
+- **Eulexis**: Philippe Verkerk, con datos de Diogenes/Perseus. La versión
+  de escritorio actual declara GPL v3; la antigua implementación web indica
+  CC BY-NC 4.0. El repositorio `genuensis/lector-griego` **no contiene una
+  licencia de repositorio explícita que acredite la redistribución exacta
+  de sus fragmentos**. Ver https://github.com/genuensis/lector-griego
+  y https://github.com/biblissima/eulexis.
 - Texto completo de la GNU GPL v3: `THIRD_PARTY_LICENSES/GPL-3.0.txt`.
 
 ### Contraste de licencias (11-11-2026)
@@ -104,6 +108,33 @@ el extracto de Wikcionario (CC BY-SA 4.0) debe revisarse **antes de
 fusionar y redistribuir** el nuevo conjunto. Este cambio permanece en PR
 como propuesta técnica pendiente de ese control jurídico/editorial.
 
+## Decisión de integración (11 de noviembre de 2026)
+
+**Collatinus: técnicamente viable, pero solo con publicación conforme a la GPL v3.**
+La fuente `biblissima/collatinus` incluye licencia GPL-3.0 y la documentación
+oficial la confirma: https://github.com/biblissima/collatinus
+Se puede usar el motor para contrastar lemas sin alterar las glosas docentes.
+Si se distribuye código adaptado, debe acompañarse del código fuente
+correspondiente, avisos de autoría, licencia e indicación de cambios.
+Si se distribuyen índices transformados de sus bases, hay que documentar de
+qué archivos proceden, sus titulares y sus condiciones, manteniendo los
+datos separados del corpus UniMorph y Wikcionario para no afirmar una
+licencia única. Es preferible un recurso independiente y acreditado a
+incorporarlos sin identificación de origen en `data/lemmas/teacher-forms.json`.
+
+**Eulexis: no redistribuir por ahora los fragmentos del lector griego.**
+Aunque el programa actual aparece bajo GPL v3,
+https://github.com/biblissima/eulexis publica el antiguo Eulexis-web
+bajo CC BY-NC 4.0 y el origen de las tablas de formas incluye Diogenes y
+Perseus. El comentario en `greek.js` no es autorización explícita para
+redistribuir la base de datos completa ni sus transformaciones. Hace falta
+una declaración verificable sobre el conjunto concreto de ficheros y
+su licencia; si no está disponible, solicitar aclaración a sus titulares.
+No basta la autorización del profesor, que no es titular de esos datos.
+
+Ambas evaluaciones afectan a la **redistribución pública**, no al
+estudio de salidas de los programas para corregir manualmente el vocabulario.
+Ningún cambio de licencia permite aprobar automáticamente un homógrafo.
 ## Reproducir la integración y probarla
 
 Con acceso a Internet **solo en compilación**:

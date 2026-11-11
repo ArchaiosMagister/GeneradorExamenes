@@ -4,7 +4,7 @@ const CACHE_PREFIX='examina-pwa-';
 const CACHE_NAME=CACHE_PREFIX+'__PWA_BUILD_VERSION__';
 const CORE_FILES=[
  './','./index.html','./offline.html','./offline-lemmas.js','./verification-review.js',
- './culture-lat4.js','./lexicon-valenciano.js','./vocabulary-quality.js','./vocabulary-generator.js','./pwa.js','./manifest.webmanifest',
+ './culture-lat4.js','./lexicon-valenciano.js','./vocabulary-quality.js','./vocabulary-generator.js','./exam-scoring.js','./pwa.js','./manifest.webmanifest',
  './icons/icon-192.png','./icons/icon-512.png',
  './data/unimorph/lat-v.json','./data/lemmas/teacher-forms.json',
  './data/latinismos-docente.json','./data/prefijos-docente.json','./data/modificacion-preverbial-docente.json',

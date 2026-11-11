@@ -94,6 +94,13 @@ jobs:
           if-no-files-found: ignore
       - name: Probar las vistas previas de todos los modelos
         run: node scripts/test-preview.cjs
+      - name: Guardar Word con puntuaciones de examen para inspección
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: examen-puntuaciones-latin1-word
+          path: test-artifacts/examen-puntuaciones-latin1.docx
+          if-no-files-found: ignore
       - name: Validar valenciano en pantalla y Word para los tres cursos
         run: node scripts/test-valenciano-browser.cjs
       - name: Verificar concordancia de tablas y umbrales de unidad
