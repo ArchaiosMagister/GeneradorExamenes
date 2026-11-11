@@ -119,6 +119,23 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
   assert(/elige dos de las [34] cuestiones siguientes/i.test(score.enunciado),
    'Latín I: elegir dos entre 3 o 4 cuestiones: '+score.enunciado);
 
+  // Si el docente desactiva un apartado, el enunciado debe decir tres,
+  // y nunca anunciar cuatro cuando solo se han generado tres ejercicios.
+  const threePartCaption=await page.evaluate(()=>{
+   const key='latin1/latinisms';
+   const prior=latinLexPartEnabled[key];
+   try{
+    latinLexPartEnabled[key]=false;
+    generate();
+    return [...document.querySelectorAll('#paper .exam-question')].find(x=>/léxico/i.test(x.textContent))?.textContent||'';
+   }finally{
+    latinLexPartEnabled[key]=prior;
+    generate();
+   }
+  });
+  assert(/elige dos de las 3 cuestiones siguientes/i.test(threePartCaption),
+   'Al desmarcar un apartado deben ofrecerse exactamente tres: '+threePartCaption);
+
   // La exigencia acumulativa oculta SOLO el significado en el glosario del examen.
   const glossary=await page.evaluate(()=>{
    const words=latinSharedBank.vocabulary('latin1');
