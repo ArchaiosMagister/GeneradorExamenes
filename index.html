@@ -3417,7 +3417,7 @@ loadTeacherLatinLexBanks();
   for(const editor of questionHost.querySelectorAll('[data-editor-for]'))editor.replaceChildren();
   const host=$('manualMorphWords');if(!host)return;
   for(const item of [...host.children]){
-   const caption=(item.querySelector('strong,span')?.textContent||'').toLocaleLowerCase();
+   const caption=(item.querySelector('strong,span,label')?.textContent||'').toLocaleLowerCase();
    let kind=/declina/.test(caption)?'decl':/conjuga|forma verbal|verbo/.test(caption)?'verb':
     /pronombre/.test(caption)?'pronouns':/análisis|morfológic|forma para analizar/.test(caption)?'forms':
     /derivados|etimol/.test(caption)?'etymology':/oraciones/.test(caption)?'sent':null;
