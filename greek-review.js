@@ -94,7 +94,7 @@ function buildCases(data,imported=[],morphologies={},auditOptions={}){
   add(form,lemma,readable(tags,morphologies),VALID_SOURCES[src]||'Fuente local',src,src===4||src===7);
  }
  for(const row of imported)add(row.form,row.lemma,row.analysis,row.source,'imported',true);
- const out=[];
+ const out=[];let autoResolved=0,collapsedReadings=0;
  for(const group of groups.values()){
   const options=[...group.byAnalysis.values()].map(x=>{
    const variants=[...x.originalAnalyses],dialects=[...x.dialects].sort((a,b)=>a.localeCompare(b,'es'));
@@ -111,7 +111,12 @@ function buildCases(data,imported=[],morphologies={},auditOptions={}){
   const verifiedSource=options.some(o=>o.sources.some(x=>[0,1,5].includes(x)));
   const citation=options.some(o=>norm(o.form)===norm(o.entry.split(',')[0]));
   const onlyProposal=options.length===1&&withExternal&&!verifiedSource&&citation;
-  if(options.length<2&&!onlyProposal)continue;
+  const originalAlternatives=options.reduce((n,o)=>n+o.originalAnalyses.length,0);
+  collapsedReadings+=originalAlternatives-options.length;
+  if(options.length<2&&!onlyProposal){
+   if(originalAlternatives>=2)autoResolved++;
+   continue;
+  }
   options.sort((a,b)=>a.provisional-b.provisional||a.lemma.localeCompare(b.lemma,'el')||
    a.analysis.localeCompare(b.analysis,'es'));
   const withEulexis=options.some(x=>x.sources.includes(7)||x.sources.includes('imported'));
@@ -120,9 +125,12 @@ function buildCases(data,imported=[],morphologies={},auditOptions={}){
    kind:onlyProposal?'eulexis-proposal':'discrepancy'});
  }
  // Priorizar discrepancias Eulexis, sin eliminar las homografías preexistentes.
- return out.sort((a,b)=>Number(b.withEulexis)-Number(a.withEulexis)||
+ out.sort((a,b)=>Number(b.withEulexis)-Number(a.withEulexis)||
   a.units.join(',').localeCompare(b.units.join(','),'es',{numeric:true})||
   a.form.localeCompare(b.form,'el'));
+ out.autoResolved=autoResolved;
+ out.collapsedReadings=collapsedReadings;
+ return out;
 }
 function readDecisions(){
  try{
@@ -220,7 +228,9 @@ async function init(){
   const decided=found.filter(x=>validDecision(x,state.decisions[x.id])).length;
   state.current=remaining[0]||null;
   status.textContent=found.length+' formas con discrepancias o propuestas · '+decided+' decididas · '+
-   remaining.length+' pendientes en esta sesión'+(state.external.length?' · '+state.external.length+' análisis Eulexis importados':'');
+   remaining.length+' pendientes en esta sesión'+
+   (state.cases.autoResolved?' · '+state.cases.autoResolved+' falsos conflictos dialectales depurados':'')+
+   (state.external.length?' · '+state.external.length+' análisis Eulexis importados':'');
   card.replaceChildren();
   byId('grReviewSkip').disabled=!state.current;
   byId('grReviewUndo').disabled=!state.last;
