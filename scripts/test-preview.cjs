@@ -77,6 +77,13 @@ async function checkFile(browser,filename){
   assert.equal(await page.locator('#paper .exam-question').count(),count,
    filename+' '+course+': restaurar la tabla verbal debe restaurar la pregunta');
  }
+ // Restablecer el curso para que las pruebas tipográficas latinas sean independientes.
+ await page.evaluate(()=>{
+  const course=document.getElementById('course');course.value='latin1';
+  course.dispatchEvent(new Event('change',{bubbles:true}));
+  const model=document.getElementById('model');model.value='tablas';
+  model.dispatchEvent(new Event('change',{bubbles:true}));
+ });
  // Tipografía filológica: solo el lexema va en cursiva; la información
  // de género (3.ª declinación) y conjugación permanece en redonda.
  const typographies=await page.evaluate(()=>[
