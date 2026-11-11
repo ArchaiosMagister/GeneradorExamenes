@@ -1521,8 +1521,13 @@ function classifyVocabularyEntry(item,course='lat1'){
  if(entry.includes(','))return 'nouns';
  return 'other';
 }
-function vocabularyGroups(rows,course){
- const labels=[
+function vocabularyGroups(rows,course,language='es'){
+ const labels=language==='va'?[
+  ['nouns','Substantius i adjectius'],
+  ['verbs','Verbs'],
+  ['pronouns','Pronoms'],
+  ['other','Adverbis, conjuncions i altres paraules']
+ ]:[
   ['nouns','Sustantivos y adjetivos'],
   ['verbs','Verbos'],
   ['pronouns','Pronombres'],
@@ -1643,7 +1648,7 @@ function vocabularyRequiresReview(row){
   });
   const safe=all.filter(r=>!vocabularyRequiresReview(r));
   const groupedLines=rows=>project.groupTypes===true?
-   vocabularyGroups(rows,project.course).map(group=>
+   vocabularyGroups(rows,project.course,project.lang||'es').map(group=>
     p(group.label,true)+group.rows.map(r=>line(r,u)).join('')).join(''):
    rows.map(r=>line(r,u)).join('');
   return p(u.title,true)+groupedLines(safe)+
@@ -1925,7 +1930,7 @@ function init(){
   }
   for(const row of pending)target.append(reviewCard(u,row,paragraph,button,relatedByForm));
   const resolvedDisplay=project.groupTypes===true?
-   [...vocabularyGroups(resolved.filter(row=>row.status!=='omitted'),project.course)
+   [...vocabularyGroups(resolved.filter(row=>row.status!=='omitted'),project.course,project.lang||'es')
     .flatMap(group=>[{groupLabel:group.label},...group.rows]),
     ...resolved.filter(row=>row.status==='omitted')]:resolved;
   for(const row of resolvedDisplay){
