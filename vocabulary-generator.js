@@ -1386,6 +1386,18 @@ function analyze(data,text,course,bank,{contextual=false}={}){
    if(!previous||score(candidate)>score(previous))compact.set(id,candidate);
   }
   let candidates=[...compact.values()];
+  // Un adjetivo homógrafo no incorporado al banco docente, sin glosa,
+  // puede reflejar únicamente la lexicalización del participio. Cuando
+  // el verbo del profesor tiene un supino coherente, se elige el verbo;
+  // cualquier homógrafo con ficha docente o significado propio se conserva.
+  if(lang==='lat'&&contextual&&candidates.length>1){
+   const participles=candidates.filter(c=>
+    c.fromTeacherSupine&&c.teacherSupinePlausible&&c.meaning);
+   if(participles.length===1&&candidates.every(c=>c===participles[0]||
+    (!c.meaning&&latinKey(c.lemma)===normal&&
+     !(bankIndex.get('H'+latinKey(c.lemma))||[]).length)))
+    candidates=participles;
+  }
   // Distinguir artículos de relativos de idéntica grafía sin acentos.
   if(lang==='grc'&&['ο','η','το'].includes(normal)){
    const accents={ο:['ὁ'],η:['ἡ'],το:['τὸ','τό']};
