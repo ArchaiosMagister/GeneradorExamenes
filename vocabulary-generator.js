@@ -904,9 +904,17 @@ function analyze(data,text,course,bank){
   // una segunda lectura posible de un homógrafo.
   const compact=new Map();
   for(const candidate of all){
-   const id=candidate.lemma+'|'+candidate.entry+'|'+candidate.meaning;
+   // Un único lema latino puede figurar en el banco con distintas rayas,
+   // indicaciones de género o glosas de varias unidades. No son homógrafos:
+   // conservar la ficha más completa en lugar de crear falsa ambigüedad.
+   // Distintos lemas (bona / bonus, bello / bellum) siguen separados.
+   const id=lang==='lat'?latinKey(candidate.lemma):
+    candidate.lemma+'|'+candidate.entry+'|'+candidate.meaning;
    const previous=compact.get(id);
-   if(!previous||(!previous.attested&&candidate.attested))compact.set(id,candidate);
+   const score=x=>(x.attested?100:0)+(x.meaning?3:0)+
+    (x.entry.split(',').length*5)+(/\\([^)]*\\)/.test(x.entry)?4:0)+
+    (/[æœ–−]/.test(x.entry)?2:0);
+   if(!previous||score(candidate)>score(previous))compact.set(id,candidate);
   }
   let candidates=[...compact.values()];
   // Distinguir artículos de relativos de idéntica grafía sin acentos.
