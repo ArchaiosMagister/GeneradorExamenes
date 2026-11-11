@@ -6,14 +6,14 @@
   "method": "No original Latin sentences available for each item. Ambiguities are not silently resolved and proposed inflections are not verified.",
   "summary": {
     "original": 183,
-    "reconocidas": 82,
-    "pendientes": 101,
+    "reconocidas": 84,
+    "pendientes": 99,
     "porTipo": {
       "homógrafo": 33,
-      "reconocida": 82,
+      "reconocida": 84,
       "grafía o abreviatura": 9,
       "contexto o duplicado": 8,
-      "hipótesis flexiva sin verificar": 51
+      "hipótesis flexiva sin verificar": 49
     }
   },
   "rows": [
@@ -690,14 +690,14 @@
     {
       "unit": 8,
       "forma": "ædificata",
-      "estado": "hipótesis flexiva sin verificar",
-      "enunciado": null,
-      "lema": null,
+      "estado": "reconocida",
+      "enunciado": "ædifico, ædificavi, ædificatum (1ª)",
+      "lema": "aedifico",
       "candidatos": [
         {
           "lema": "aedifico",
           "enunciado": "ædifico, ædificavi, ædificatum (1ª)",
-          "contrastada": false
+          "contrastada": true
         }
       ],
       "aviso": null
@@ -761,14 +761,14 @@
     {
       "unit": 9,
       "forma": "ædificata",
-      "estado": "hipótesis flexiva sin verificar",
-      "enunciado": null,
-      "lema": null,
+      "estado": "reconocida",
+      "enunciado": "ædifico, ædificavi, ædificatum (1ª)",
+      "lema": "aedifico",
       "candidatos": [
         {
           "lema": "aedifico",
           "enunciado": "ædifico, ædificavi, ædificatum (1ª)",
-          "contrastada": false
+          "contrastada": true
         }
       ],
       "aviso": null
