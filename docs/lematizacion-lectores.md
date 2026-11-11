@@ -306,3 +306,47 @@ En los materiales de prueba, el lector latino encontró propuestas para
 *amica* y *Helvetios*, y para las 28 del examen de Latín 4.º. El lector griego
 encontró propuestas para 33 de 34 formas distintas del examen de Griego I.
 Estas cifras miden si el lector devolvió alguna lectura.
+
+
+## Salvaguardas de la revisión del generador (11-11-2026)
+
+- **Latín y griego:** cada asignatura conserva sus propios textos, unidades,
+  decisiones, formato verbal y progreso; las copias JSON incluyen los tres
+  espacios de trabajo y pueden importar proyectos antiguos.
+- **Participios latinos:** los supinos docentes permiten identificar de forma
+  automática participios regulares y algunas alternancias léxicas contrastadas
+  sin certificar un paradigma completo. Los supinos incongruentes se muestran
+  como hipótesis. Cuando un adjetivo homógrafo sin ficha ni glosa compite con
+  un participio inequívoco del verbo docente, se prefiere el verbo; las
+  ambigüedades con ficha propia continúan pendientes.
+- **Edición del texto:** una decisión cuyo contexto cambió no se aplica a
+  ciegas. Si la oración mantiene suficiente coincidencia, se ofrece como
+  opción de revisión para evitar repetir toda la corrección.
+- **Contradicciones entre lectores:** si una fuente externa propone otro
+  lema que también existe en el banco docente, la aparición se marca para
+  revisión, incluso cuando antes figuraba como documentada. Aceptar una
+  interpretación no valida todas sus flexiones.
+- **Almacenamiento:** las propuestas importadas se guardan preferentemente
+  en IndexedDB, sin duplicarlas en localStorage. Las copias JSON siguen
+  incorporando esos datos y permiten recuperar el proyecto. Si IndexedDB
+  no está disponible, el navegador avisa de la limitación.
+- **Glosario del examen:** la desambiguación emplea también el criterio
+  contextual del generador por unidades para evitar que las dos vistas
+  atribuyan niveles diferentes de certeza a una misma forma.
+
+### Conexión a Internet
+
+No se exige que el generador funcione siempre sin conexión. Para el
+contraste filológico, la interfaz enlaza las aplicaciones oficiales
+[Collatinus-web](https://outils.biblissima.fr/fr/collatinus-web/) y
+[Eulexis-web](https://outils.biblissima.fr/fr/eulexis-web/).
+
+No se han configurado peticiones programáticas a esos portales: ofrecen
+aplicaciones web, pero esta integración aún no dispone de una API pública
+documentada y verificada (incluidas las restricciones CORS). Las lecturas
+personales preparadas por el procedimiento reproducible anterior sí pueden
+importarse a las tarjetas. Los textos del profesor no se envían
+automáticamente a terceros.
+
+La rama no debe fusionarse mientras sus comprobaciones automáticas o la
+revisión de licencias/atribuciones estén pendientes.
