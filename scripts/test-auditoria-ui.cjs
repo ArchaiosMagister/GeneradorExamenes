@@ -70,7 +70,7 @@ assert.match(index,/if\(\/artículo\|articulo\/\.test\(a\)\)return null/,
     {form:'λόγου',lemma:'θεός',analysis:'genitivo singular masculino'}]});
   });
   await page.selectOption('#vgCourse','gr1');
-  await page.locator('#vgEulexisStatus').filter({hasText:'Eulexis disponible'}).waitFor();
+  await page.waitForFunction(()=>document.getElementById('vgEulexisStatus')?.textContent?.includes('Eulexis disponible'));
   await page.locator('#vgAnalyze').click();
   await page.locator('#vgResults .vg-eulexis-card').first().waitFor();
   assert.match(await page.locator('#vgResults .vg-eulexis-context').first().textContent(),/λόγου/);
