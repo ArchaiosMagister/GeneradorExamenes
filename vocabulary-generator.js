@@ -584,6 +584,7 @@ function greekReferenceForms(bank){
  return map;
 }
 const greekSpellingNotes={
+ 'Δημοσθήνης':'Δημοσθένης (nominativo del nombre propio; revisar el acento)',
  'εἴς':'εἰς (revisar acentuación de la preposición)',
  'θάλάττῃ':'θαλάττῃ (revisar acentuación)',
  'στρατεγός':'στρατηγός (falta η)',
