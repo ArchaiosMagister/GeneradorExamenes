@@ -78,8 +78,10 @@ assert(!engine.documentXml({...project,groupTypes:false}).includes('Sustantivos 
   const errors=[];page.on('pageerror',e=>errors.push(e.message));
   await page.goto('http://127.0.0.1:'+server.address().port+'/offline.html',{waitUntil:'load'});
   await page.locator('#vmShowExam').click();
-  await page.selectOption('#course','latin1');
+  await page.locator('#group-course').evaluate(el=>el.open=true);
+  await page.locator('#group-content').evaluate(el=>el.open=true);
   await page.locator('#group-vocab').evaluate(el=>el.open=true);
+  await page.selectOption('#course','latin1');
   await page.selectOption('#model','mixto');
   await page.fill('#newSentences','Galli pugnant.\nBona sunt.');
   await page.click('#generate');
@@ -103,6 +105,8 @@ assert(!engine.documentXml({...project,groupTypes:false}).includes('Sustantivos 
   assert.equal(Object.keys(stored).length,2,'Las dos decisiones deben persistir');
   await page.reload();
   await page.locator('#vmShowExam').click();
+  await page.locator('#group-course').evaluate(el=>el.open=true);
+  await page.locator('#group-content').evaluate(el=>el.open=true);
   await page.locator('#group-vocab').evaluate(el=>el.open=true);
   await page.selectOption('#model','mixto');
   await page.click('#generate');
