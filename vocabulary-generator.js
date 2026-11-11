@@ -920,8 +920,25 @@ function init(){
    new Blob([JSON.stringify({schema:1,course:project.course,verifiedAutomatically:false,
     items:qualitySnapshot.reviewQueue},null,2)],{type:'application/json'}));
  };
+ function renderUnitButtons(){
+  const host=$('vgUnitButtons');if(!host)return;
+  host.replaceChildren();
+  project.units.slice(0,project.count).forEach((u,i)=>{
+   const filled=!!u.text?.trim(),active=i===selected;
+   const button=document.createElement('button');button.type='button';button.className='vg-unit-button';
+   button.dataset.filled=String(filled);button.setAttribute('aria-pressed',String(active));
+   button.setAttribute('aria-label',(u.title||'UD'+(i+1))+' — '+(filled?'con texto':'sin texto')+(active?', seleccionada':''));
+   button.title=(filled?'Contiene texto':'Sin texto')+(active?' · Seleccionada':'');
+   const dot=document.createElement('span');dot.className='vg-unit-dot';dot.setAttribute('aria-hidden','true');
+   const label=document.createElement('span');label.textContent=u.title||'UD'+(i+1);
+   button.append(dot,label);
+   button.onclick=()=>{selected=i;render()};
+   host.append(button);
+  });
+ }
  function render(){
   unit();$('vgCount').value=project.count;$('vgCourse').value=project.course;$('vgLang').value=project.lang||'es';
+  renderUnitButtons();
   $('vgUnit').replaceChildren(...project.units.slice(0,project.count).map((u,i)=>new Option(u.title,i,false,i===selected)));
   $('vgTitle').value=unit().title;$('vgText').value=unit().text;$('vgMode').value=unit().mode;
   const target=$('vgResults');target.replaceChildren();
@@ -945,7 +962,7 @@ function init(){
  $('vgUnit').onchange=()=>{selected=Number($('vgUnit').value);render()};
  $('vgLang').onchange=()=>{project.lang=$('vgLang').value;render();save()};
  $('vgCourse').onchange=()=>{project.course=$('vgCourse').value;qualitySnapshot=null;project.units.forEach(u=>{u.rows=[];u.analyzed=false});save();render();status('Banco cambiado. Vuelve a analizar los textos.');refreshQuality()};
- for(const [id,field] of [['vgTitle','title'],['vgText','text'],['vgMode','mode']])$(id).oninput=()=>{unit()[field]=$(id).value;if(field==='text'){unit().rows=[];unit().analyzed=false;status('Texto modificado. Analiza la unidad antes de exportar.')}save();if(field==='mode')render()};
+ for(const [id,field] of [['vgTitle','title'],['vgText','text'],['vgMode','mode']])$(id).oninput=()=>{unit()[field]=$(id).value;if(field==='text'){unit().rows=[];unit().analyzed=false;status('Texto modificado. Analiza la unidad antes de exportar.')}save();if(field==='mode')render();else renderUnitButtons()};
  async function analyzeUnits(mode){
   const button=$('vgAnalyze'),buttonAll=$('vgAnalyzeAll'),word=$('vgWord');
   button.disabled=true;buttonAll.disabled=true;word.disabled=true;status('Analizando…');
