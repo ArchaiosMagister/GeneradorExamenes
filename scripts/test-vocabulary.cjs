@@ -22,6 +22,33 @@ assert.match(xml,/Vocabulario por unidades de Latín I/);
 assert.match(xml,/<w:smallCaps\/><w:rFonts[^>]+><w:sz w:val="28"/);
 assert.match(xml,/<w:top w:val="single" w:sz="4"/,'Borde del título de 0,5 pt');
 assert.match(xml,/<w:i\/>[^]*amo, amavi, amatum/,'Enunciado latino en cursiva');
+// El enunciado latino conserva la cursiva, pero cualquier paréntesis es redonda.
+const formatProject={course:'lat1',lang:'es',count:1,units:[{
+ title:'UD1',mode:'complete',rows:[
+ {form:'ad',entry:'ad (prep. + ac.)',meaning:'a, hacia',status:'documented'},
+ {form:'agricola',entry:'agricola, –æ (m.)',meaning:'campesino',status:'documented'},
+ {form:'amo',entry:'amo, amavi, amatum (1ª)',meaning:'amar',status:'documented'},
+ {form:'castra',entry:'castra, –orum (sólo pl.)',meaning:'campamento',status:'documented'},
+ {form:'rex',entry:'rex, regis (m.)',meaning:'rey',status:'documented'},
+ {form:'pendiente',entry:'pendiente (v.)',meaning:'',status:'review'}
+]}]};
+const wordFormat=api.documentXml(formatProject);
+const runs=[...wordFormat.matchAll(/<w:r>(.*?)<\/w:r>/gs)].map(m=>({
+ text:(m[1].match(/<w:t xml:space="preserve">([^<]*)<\/w:t>/)||[])[1]||'',
+ italic:m[1].includes('<w:i/>')
+}));
+function runsWith(text){return runs.filter(r=>r.text.includes(text))}
+for(const citation of ['ad ','agricola, –æ ','amo, amavi, amatum ','castra, –orum ','rex, regis '])
+ assert.ok(runsWith(citation).some(r=>r.italic),'Falta cursiva en '+citation);
+for(const note of ['(prep. + ac.)','(m.)','(1ª)','(sólo pl.)','(v.)'])
+ assert.ok(runsWith(note).some(r=>!r.italic),'Debe ir en redonda '+note);
+assert.ok(!runs.some(r=>/\([^)]*\)/.test(r.text)&&r.italic),'Algún paréntesis latino conserva cursiva');
+const simpleProject={...formatProject,units:[{...formatProject.units[0],mode:'simple'}]};
+const simpleRuns=[...api.documentXml(simpleProject).matchAll(/<w:r>(.*?)<\/w:r>/gs)]
+ .map(m=>({text:(m[1].match(/<w:t xml:space="preserve">([^<]*)<\/w:t>/)||[])[1]||'',italic:m[1].includes('<w:i/>')}));
+assert.ok(simpleRuns.some(r=>r.text==='amo '&&r.italic));
+assert.ok(simpleRuns.some(r=>r.text==='(1ª)'&&!r.italic));
+
 assert.match(xml,/<w:sectPr><w:pgSz[^]*<w:cols w:num="1"[^]*<\/w:body>/);
 assert.match(xml,/<w:t xml:space="preserve">\* <\/w:t>/);assert.match(xml,/xyzxyz/);
 const fromEulexis={course:'gr1',lang:'es',count:1,units:[{
@@ -153,6 +180,27 @@ const bankStart=originalHTML.indexOf('let vocab=')+10;
 const sourceBank=JSON.parse(originalHTML.slice(bankStart,originalHTML.indexOf(';',bankStart)));
 for(const m of originalHTML.matchAll(/vocab\.push\(\.\.\.(\[.*\])\);/g))sourceBank.push(...JSON.parse(m[1]));
 const GreekBank=sourceBank.filter(x=>x.course==='greek1');
+
+// La cobertura extra de Latín I usa paradigmas escolares pero no modifica
+// registros source=0/1/5 ni resuelve arbitrariamente lemas homógrafos.
+const LatinBank=sourceBank.filter(x=>!x.course||x.course==='latin1');
+const latinCorpusGuards=api.analyze(data,
+ 'alta humanum tuæ mihi me esse potest dare docebat longisque fecerant Romamque',
+ 'lat1',LatinBank);
+for(const form of ['alta','humanum','tuæ','mihi','me','esse','potest',
+ 'dare','docebat','longisque','fecerant','Romamque']){
+ const item=latinCorpusGuards.find(x=>x.form===form);
+ assert.equal(item?.status,'documented','Forma escolar habitual no reconocida: '+form);
+}
+const realHomographs=api.analyze(data,'bona bello','lat1',LatinBank);
+for(const form of ['bona','bello']){
+ assert.equal(realHomographs.find(x=>x.form===form)?.status,'review',
+  'No elegir arbitrariamente entre lemas homógrafos: '+form);
+}
+const historicOrthography=api.analyze(data,'uideo video','lat1',LatinBank);
+assert.equal(historicOrthography.length,1,'La búsqueda latina debe tratar u/v como alógrafos');
+assert.equal(historicOrthography[0].status,'documented');
+
 const priorityFixture=JSON.parse(fs.readFileSync(path.join(root,'tests/greek-priority-forms.json'),'utf8'));
 assert.equal(priorityFixture.units.length,14);
 const originals=[...new Set(priorityFixture.units.flatMap(u=>u.forms))];
