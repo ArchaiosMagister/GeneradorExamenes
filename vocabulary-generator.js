@@ -1104,7 +1104,8 @@ function init(){
   if(!window.confirm(warning))return;
   // Reiniciar a una única UD1 vacía y persistir inmediatamente.
   // Mantener la asignatura y el idioma evita cambios inesperados de contexto.
-  project={count:1,course:project.course,lang:project.lang,units:[]};
+  project={count:1,course:project.course,lang:project.lang,
+   units:[{title:'UD1',text:'',mode:'complete',rows:[],analyzed:false}]};
   selected=0;
   save();render();
   status(project.lang==='va'?'Projecte net. Pots començar amb la UD1 o recuperar una còpia JSON.':
