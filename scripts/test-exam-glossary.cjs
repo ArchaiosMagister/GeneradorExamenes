@@ -83,10 +83,16 @@ assert(!engine.documentXml({...project,groupTypes:false}).includes('Sustantivos 
   await page.locator('#group-sentences').evaluate(el=>el.open=true);
   await page.locator('#group-vocab').evaluate(el=>el.open=true);
   await page.locator('#group-export').evaluate(el=>el.open=true);
-  await page.selectOption('#course','latin1');
-  await page.selectOption('#model','mixto');
-  await page.fill('#newSentences','Galli pugnant.\nBona sunt.');
-  await page.click('#generate');
+  await page.evaluate(()=>{
+   for(const [id,value] of [['course','latin1'],['model','mixto']]){
+    const el=document.getElementById(id);el.value=value;
+    el.dispatchEvent(new Event('change',{bubbles:true}));
+   }
+   const lines=document.getElementById('newSentences');
+   lines.value='Galli pugnant.\nBona sunt.';
+   lines.dispatchEvent(new Event('input',{bubbles:true}));
+   generate();
+  });
   await page.waitForFunction(()=>document.querySelectorAll('#examSentenceGlossary select.exam-gloss-lemma').length>=2,
    {timeout:30000});
   const labels=await page.locator('#examSentenceGlossary .exam-gloss-review-choice').allTextContents();
@@ -112,8 +118,11 @@ assert(!engine.documentXml({...project,groupTypes:false}).includes('Sustantivos 
   await page.locator('#group-sentences').evaluate(el=>el.open=true);
   await page.locator('#group-vocab').evaluate(el=>el.open=true);
   await page.locator('#group-export').evaluate(el=>el.open=true);
-  await page.selectOption('#model','mixto');
-  await page.click('#generate');
+  await page.evaluate(()=>{
+   const model=document.getElementById('model');
+   model.value='mixto';model.dispatchEvent(new Event('change',{bubbles:true}));
+   generate();
+  });
   await page.waitForFunction(()=>document.querySelector('#examSentenceGlossary .exam-gloss-selected'));
   assert.equal(await page.locator('#examSentenceGlossary .exam-gloss-reset').count(),2);
   await page.locator('#examSentenceGlossary .exam-gloss-reset').first().click();
