@@ -49,14 +49,12 @@ jobs:
         run: |
           node scripts/build-greek-nominal-candidates.mjs
           node scripts/build-lemma-index.mjs
-          if [[ -f scripts/enrich-from-readers.mjs ]]; then node scripts/enrich-from-readers.mjs; fi
           npm run offline:build
       - name: Construir y comprobar versión experimental
         working-directory: preview
         run: |
           node scripts/build-greek-nominal-candidates.mjs
           node scripts/build-lemma-index.mjs
-          if [[ -f scripts/enrich-from-readers.mjs ]]; then node scripts/enrich-from-readers.mjs; fi
           npm run offline:build
           node scripts/audit-vocabulary.cjs
       - name: Preparar ambas versiones para Pages
