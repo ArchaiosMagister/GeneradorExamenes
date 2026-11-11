@@ -3294,6 +3294,15 @@ loadTeacherLatinLexBanks();
  const regenerateAll=document.createElement('button');regenerateAll.id='regenerateAllQuestions';regenerateAll.type='button';regenerateAll.className='secondary';regenerateAll.textContent='Regenerar todas las preguntas';
  regenerateAll.addEventListener('click',()=>{examSelectionCache.clear();if(currentCourse()==='greek1')greekExamState=null;generate();});
  questionHost.after(regenerateAll);
+ const questionHelp=document.createElement('details');questionHelp.id='examQuestionHelp';questionHelp.className='exam-question-panel';
+ const helpHeading=document.createElement('summary');helpHeading.textContent='Explicación de las preguntas';
+ const helpContent=document.createElement('div');helpContent.className='exam-question-config';
+ questionHelp.append(helpHeading,helpContent);regenerateAll.after(questionHelp);
+ function appendQuestionExplanation(heading,body){
+  const label=document.createElement('strong');label.textContent=heading;
+  const description=document.createElement('p');description.className='hint';description.textContent=body;
+  helpContent.append(label,description);
+ }
  const legacyCountArea=$('count-decl').closest('.count-grid');
  const greekFormCount=document.createElement('label');
  greekFormCount.className='legacy-question-fields';
@@ -3353,19 +3362,12 @@ loadTeacherLatinLexBanks();
  }
  function lexConfig(box){
   const course=currentCourse(),data=latinLexBanks[course]||{};
-  const state=document.createElement('p');state.className='hint';
-  state.textContent=Object.values(data).reduce((n,x)=>n+x.length,0)+' fichas disponibles. Modificación preverbial: dos verbos (3 + 2 derivados); los demás apartados: cuatro formas, con regeneración individual.';
-  if(course==='latin1'){
-   const intro=document.createElement('p');intro.className='hint';
-   intro.textContent='Evolución fonética: 73 étimos de UD0–UD10, con leyes acumulativas. Las correspondencias pendientes de revisión no se sortean. La opción UD9–10 abarca ambas unidades.';
-   box.append(intro);
-  }
-  if(course==='latin4'){
-   const intro=document.createElement('p');intro.className='hint';
-   intro.textContent='Latín 4.º: los ejercicios de clase son ejemplos, no un banco cerrado. El generador sortea del banco general según los prefijos y las normas estudiadas hasta la última unidad seleccionada.';
-   box.append(intro);
-  }
-  box.append(state);
+  appendQuestionExplanation('Léxico',Object.values(data).reduce((n,x)=>n+x.length,0)+
+   ' fichas disponibles. Modificación preverbial: dos verbos (3 + 2 derivados); los demás apartados: cuatro formas con regeneración individual.');
+  if(course==='latin1')appendQuestionExplanation('Evolución fonética',
+   '73 étimos de UD0–UD10, con leyes acumulativas. Las correspondencias pendientes de revisión no se sortean. La opción UD9–10 abarca ambas unidades.');
+  if(course==='latin4')appendQuestionExplanation('Léxico de Latín 4.º',
+   'Los ejercicios de clase son ejemplos, no un banco cerrado. Se sortean formas según los prefijos y las normas estudiadas hasta la última unidad seleccionada.');
   for(const kind of latinLexModules[course]||[]){
    const group=document.createElement('div');group.className='lex-subparts';
    const check=document.createElement('input');check.type='checkbox';check.checked=latinLexPartEnabled[course+'/'+kind]!==false;
@@ -3448,6 +3450,9 @@ loadTeacherLatinLexBanks();
  const quotaMemory={nouns:0,adjectives:0,verbs:0,pronouns:0};
  function questionMenus(){
   questionHost.replaceChildren();
+  helpContent.replaceChildren();
+  appendQuestionExplanation('Edición y regeneración',
+   'Los cambios realizados en el examen y en el menú afectan a la misma forma. Regenerar una posición no altera las demás.');
   const morph=['morf','morphology'].includes($('model').value);
   for(const [index,kind] of questionKeys().entries()){
    const detail=document.createElement('details');detail.className='exam-question-panel';detail.dataset.question=kind;
