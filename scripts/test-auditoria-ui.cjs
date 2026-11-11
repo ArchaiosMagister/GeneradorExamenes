@@ -79,7 +79,7 @@ assert.match(index,/if\(\/artículo\|articulo\/\.test\(a\)\)return null/,
   await page.selectOption('#vgCourse','gr1');
   await page.waitForFunction(()=>document.getElementById('vgEulexisStatus')?.textContent?.includes('Eulexis disponible'));
   await page.locator('#vgAnalyzeAll').click();
-  await page.locator('#vgResults summary').filter({hasText:'Formas resueltas'}).click();
+  await page.locator('#vgResults summary').filter({hasText:'Vocabulario listo para Word'}).click();
   await page.locator('#vgResults summary').filter({hasText:/^λόγου ·/}).first().click();
   const card=page.locator('#vgResults .vg-eulexis-card').filter({hasText:'Eulexis propone'});
   assert.match(await card.locator('.vg-eulexis-context').textContent(),/λόγου/);

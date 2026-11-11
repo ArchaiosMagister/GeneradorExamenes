@@ -392,7 +392,7 @@ console.log('Vocabulario: prioridad docente, deduplicación por UD, ambigüedad,
  await page.fill('#vgText',latinCorpus.join('\n'));
  await page.click('#vgAnalyzeAll');
  await page.waitForFunction(()=>document.querySelector('#vgStatus')?.textContent.includes('pendientes'));
- await page.locator('#vgResults summary').filter({hasText:'Formas resueltas'}).click();
+ await page.locator('#vgResults summary').filter({hasText:'Vocabulario listo para Word'}).click();
  const vocabularyPreview=await page.locator('#vgResults').innerText();
  assert.match(vocabularyPreview,/ab · Identificación automática/,'La UI debe reconocer ab sin revisión');
  assert.match(vocabularyPreview,/puella/i,'La UI debe identificar los lemas del texto');
@@ -487,7 +487,7 @@ console.log('Vocabulario: prioridad docente, deduplicación por UD, ambigüedad,
   const doc=fs.readFileSync(await (await exported).path(),'utf8');
   assert.match(doc,/Glosa docente/);assert.match(doc,/Pendientes de revisión \(\*\)/);
   assert.doesNotMatch(doc,course==='gr1'?/ψξζ/:/xyzomit/);
-  await page.locator('#vgResults summary').filter({hasText:'Formas resueltas'}).click();
+  await page.locator('#vgResults summary').filter({hasText:'Vocabulario listo para Word'}).click();
   await page.locator('#vgResults summary').filter({hasText:'Cita docente '+course}).click();
   await page.getByRole('button',{name:'Restablecer análisis',exact:true}).click();
   await page.waitForFunction(()=>document.querySelector('#vgStatus').textContent.startsWith('1 unidades actualizadas'));
@@ -570,12 +570,36 @@ console.log('Vocabulario: prioridad docente, deduplicación por UD, ambigüedad,
  const firstEst=est.first(),sumChoice=firstEst.locator('option').filter({hasText:/^s[uŭ]m/u});
  await firstEst.locator('select').selectOption(await sumChoice.getAttribute('value'));
  const peers=firstEst.locator('details').filter({hasText:'Aplicar también'});
+ const markAll=peers.getByRole('checkbox',{name:'Marcar todas las apariciones'});
+ const grid=page.getByRole('group',{name:'Unidades pendientes de revisión'});
+ const currentUnit=grid.locator('[aria-pressed="true"]');
+ const firstCount=Number((await currentUnit.textContent()).match(/· (\d+)/)[1]);
+ assert(firstCount>=3);
+ assert.equal(await peers.locator('input:checked').count(),0);
+ await markAll.check();
+ assert.equal(await peers.locator('input:checked').count(),3);
+ await markAll.uncheck();
  assert.equal(await peers.locator('input:checked').count(),0);
  await peers.getByLabel(/Est puella/).check();
+ assert.equal(await markAll.evaluate(el=>el.indeterminate),true);
+ const spacing=await peers.getByLabel(/Est puella/).evaluate(el=>{
+  const label=el.closest('label'),checkbox=el.getBoundingClientRect(),caption=label.lastElementChild.getBoundingClientRect();
+  return caption.left-checkbox.right;
+ });
+ assert(spacing>=0&&spacing<=12,'La casilla queda junto a su frase');
  await firstEst.getByRole('button',{name:'Aceptar',exact:true}).click();
  assert.match(await page.locator('#vgStatus').textContent(),/2 apariciones aceptadas/);
  const shared=await page.evaluate(()=>JSON.parse(localStorage.examina_vocabulary_project_v1).units[0].rows.filter(r=>r.form==='Est'));
  assert.deepEqual(shared.map(r=>r.status),['manual','review','manual']);
+ assert.equal(Number((await currentUnit.textContent()).match(/· (\d+)/)[1]),firstCount-2);
+ await page.locator('#vgUnitButtons button').nth(1).click();
+ await page.fill('#vgText','Est panem.');
+ await page.click('#vgAnalyzeAll');
+ await grid.getByRole('button',{name:/^UD1 ·/}).click();
+ assert.equal(await page.inputValue('#vgText'),'Est bonus. Est panem. Est puella.');
+ await grid.getByRole('button',{name:/^UD2 ·/}).click();
+ assert.equal(await page.inputValue('#vgText'),'Est panem.');
+
 
  if(process.env.LATIN1_VOCABULARY_CORPUS){
   const corpus=JSON.parse(fs.readFileSync(process.env.LATIN1_VOCABULARY_CORPUS,'utf8'));

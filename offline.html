@@ -632,6 +632,16 @@ body:has(.vocab-manager.active) .exam-coursebar{display:none}
 .vocab-manager .vg-eulexis-choice{display:block;width:100%;margin:8px 0;text-align:left;padding:10px;border:1px solid var(--soft-border,#b0c6da);border-radius:7px;background:var(--secondary-bg,#edf3fa);color:var(--secondary-ink,#223d5e)}
 .vocab-manager .vg-eulexis-choice strong,.vocab-manager .vg-eulexis-choice span{display:block}
 .vocab-manager .vg-eulexis-choice span{font-size:12px;margin-top:4px}
+#vgResults .vg-review-units{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:8px 0 14px}
+#vgResults .vg-review-units button{margin:0;text-align:left;overflow-wrap:anywhere}
+#vgResults .vg-review-units button[aria-pressed="true"]{outline:2px solid var(--accent,#315c93);outline-offset:-2px;font-weight:750}
+#vgResults .vg-review-checkbox{display:grid;grid-template-columns:20px minmax(0,1fr);gap:8px;align-items:start;margin:4px 0;padding:5px 4px;cursor:pointer;line-height:1.45}
+#vgResults .vg-review-checkbox input{width:20px;height:20px;margin:1px 0 0;accent-color:var(--accent,#315c93)}
+#vgResults .vg-review-checkbox span{overflow-wrap:anywhere}
+#vgResults .vg-review-select-all{font-weight:750;border-bottom:1px solid var(--line,#ccd7e6)}
+#vocabularyGenerator label.check:has(#vgWordAlternatives){display:flex;align-items:flex-start;gap:8px}
+#vocabularyGenerator #vgWordAlternatives{width:20px;height:20px;margin:1px 0 0;flex:none}
+@media(max-width:550px){#vgResults .vg-review-units{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media print{.vg-eulexis-panel,.vg-eulexis-card{display:none!important}}
 </style><header class="top"><h1>Generador de exámenes · Latín y griego</h1><p>Genera, revisa y exporta exámenes y vocabulario de Latín y Griego · disponible sin conexión · borradores recuperables</p></header><nav class="vocab-tabbar no-print" aria-label="Secciones de la aplicación"><button id="vmShowExam" class="active" type="button">Generación de exámenes</button><button id="vgShow" type="button">Generación de vocabulario</button><button id="vmShowList" type="button">Vocabulario exigible por unidad</button><label class="appearance-picker" for="appearanceMode">Apariencia <select id="appearanceMode" aria-label="Modo de apariencia"><option value="light">Claro</option><option value="dark">Oscuro</option><option value="oled">Oscuro OLED</option></select></label></nav><div class="exam-coursebar no-print"><div id="exam-header-controls" role="region" aria-label="Elecciones principales del examen"></div></div><script>
 (function(){
@@ -9319,11 +9329,18 @@ function init(){
   save();render();
   status(row.form+' · '+(decisionStatus==='omitted'?'Omitida del Word.':'Aceptada para Word.'));
  }
+ function reviewCheckbox(text,checked){
+  const label=document.createElement('label'),check=document.createElement('input'),caption=document.createElement('span');
+  label.className='vg-review-checkbox';check.type='checkbox';check.checked=checked;
+  caption.textContent=text;label.append(check,caption);
+  return {label,check};
+ }
+ const pendingReview=row=>vocabularyRequiresReview(row)&&row.status!=='omitted';
  function renderReview(){
   const target=$('vgResults');target.replaceChildren();
   const u=unit(),rows=stale(u)||!u.text.trim()?[]:u.rows;
   const active=project.units.slice(0,project.count).filter(item=>item.text.trim()&&!stale(item));
-  const safe=active.flatMap(item=>item.rows.filter(r=>r.safeProposal&&vocabularyRequiresReview(r)&&r.status!=='omitted')
+  const safe=active.flatMap(item=>item.rows.filter(r=>r.safeProposal&&pendingReview(r))
    .map(row=>({unit:item,row})));
   const paragraph=(value)=>{const p=document.createElement('p');p.textContent=value;return p};
   const button=(label,action)=>{
@@ -9334,10 +9351,9 @@ function init(){
    summary.textContent='Propuestas seguras del proyecto ('+safe.length+')';
    batch.append(summary,paragraph('Formas de cita del banco docente. La aceptación incorpora la ficha al Word.'));
    const checks=safe.map(({unit,row})=>{
-    const label=document.createElement('label'),check=document.createElement('input');
-    check.type='checkbox';check.checked=true;label.className='check';
-    label.append(check,document.createTextNode(unit.title+' · '+row.form+' → '+row.candidates[0].entry+
-     ' · '+(row.candidates[0].meaning||'Sin traducción registrada')+' · '+row.context));batch.append(label);
+    const {label,check}=reviewCheckbox(unit.title+' · '+row.form+' → '+row.candidates[0].entry+
+     ' · '+(row.candidates[0].meaning||'Sin traducción registrada')+' · '+row.context,true);
+    batch.append(label);
     return check;
    });
    batch.append(button('Aceptar propuestas seleccionadas',()=>{
@@ -9347,43 +9363,57 @@ function init(){
    }));
    target.append(batch);
   }
-  const pending=rows.filter(r=>vocabularyRequiresReview(r)&&r.status!=='omitted');
-  const resolved=rows.filter(r=>!vocabularyRequiresReview(r)||r.status==='omitted');
+  const pending=rows.filter(pendingReview);
+  const ready=rows.filter(r=>!vocabularyRequiresReview(r));
+  const excluded=rows.filter(r=>r.status==='omitted');
   const unitsWithPending=project.units.slice(0,project.count).flatMap((item,i)=>{
-   if(i===selected||!item.text.trim()||stale(item))return [];
-   const count=item.rows.filter(r=>vocabularyRequiresReview(r)&&r.status!=='omitted').length;
-   return count?[button(item.title+' · '+count+' pendientes',()=>{selected=i;render()})]:[];
+   if(!item.text.trim()||stale(item))return [];
+   const count=item.rows.filter(pendingReview).length;
+   if(!count)return [];
+   const itemButton=button(item.title+' · '+count+(count===1?' pendiente':' pendientes'),()=>{
+    selected=i;render();
+    $('vgResults').querySelector('.vg-review-units [aria-pressed="true"]')?.focus();
+   });
+   itemButton.setAttribute('aria-pressed',String(i===selected));
+   return [itemButton];
   });
   if(unitsWithPending.length){
-   const other=document.createElement('details'),summary=document.createElement('summary');
-   summary.textContent='Otras unidades con pendientes ('+unitsWithPending.length+')';
-   other.append(summary,...unitsWithPending);target.append(other);
+   const heading=document.createElement('h3'),grid=document.createElement('div');
+   heading.id='vgPendingUnitsHeading';heading.textContent='Unidades pendientes de revisión';
+   grid.className='vg-review-units';grid.setAttribute('role','group');
+   grid.setAttribute('aria-labelledby',heading.id);
+   grid.append(...unitsWithPending);target.append(heading,grid);
   }
   if(!rows.length)return;
   target.append(paragraph(u.title+' · '+pending.length+' pendientes · '+
-   resolved.filter(r=>r.status!=='omitted').length+' listas para Word · '+rows.filter(r=>r.status==='omitted').length+' omitidas'));
-  const reviewed=document.createElement('details'),summary=document.createElement('summary');
-  summary.textContent='Formas resueltas y omitidas ('+resolved.length+')';
-  reviewed.append(summary);
+   ready.length+' listas para Word · '+excluded.length+' excluidas'));
   const relatedByForm=new Map();
   for(const item of active){
    for(const row of item.rows){
-    if(!vocabularyRequiresReview(row)||row.status==='omitted')continue;
+    if(!pendingReview(row))continue;
     const form=row.form.normalize('NFC').toLowerCase();
     if(!relatedByForm.has(form))relatedByForm.set(form,[]);
     relatedByForm.get(form).push({unit:item,row});
    }
   }
   for(const row of pending)target.append(reviewCard(u,row,paragraph,button,relatedByForm));
-  for(const row of resolved){
-   const detail=document.createElement('details'),title=document.createElement('summary');
-   const state={documented:'Identificación automática',manual:'Aceptada para Word',omitted:'Omitida del Word'}[row.status];
-   title.textContent=row.form+' · '+state+' · '+formatVocabularyEntry(row,u.mode,project.course,project.lang);
-   detail.append(title);
-   detail.addEventListener('toggle',()=>{if(detail.open&&detail.children.length===1)detail.append(reviewCard(u,row,paragraph,button))});
-   reviewed.append(detail);
+  for(const [label,reviewedRows] of [['Vocabulario listo para Word',ready],['Formas excluidas de Word',excluded]]){
+   if(!reviewedRows.length)continue;
+   const reviewed=document.createElement('details'),summary=document.createElement('summary');
+   summary.textContent=label+' ('+reviewedRows.length+')';
+   reviewed.append(summary);
+   for(const row of reviewedRows){
+    const detail=document.createElement('details'),title=document.createElement('summary');
+    const state={documented:'Identificación automática',manual:'Aceptada para Word',omitted:'Omitida del Word'}[row.status];
+    title.textContent=row.form+' · '+state+' · '+formatVocabularyEntry(row,u.mode,project.course,project.lang);
+    detail.append(title);
+    detail.addEventListener('toggle',()=>{
+     if(detail.open&&detail.children.length===1)detail.append(reviewCard(u,row,paragraph,button));
+    });
+    reviewed.append(detail);
+   }
+   target.append(reviewed);
   }
-  if(resolved.length)target.append(reviewed);
  }
  function externalCandidates(row){
   const language=readerLanguage();
@@ -9452,16 +9482,23 @@ function init(){
      const choice=item.row.candidates.find(c=>c.lemma===chosen.lemma&&c.entry===chosen.entry&&
       c.meaning===chosen.meaning&&c.meaning_va===chosen.meaning_va);
      if(!choice)continue;
-     const l=document.createElement('label'),check=document.createElement('input');
-     l.className='check';check.type='checkbox';
-     check.checked=item.row.identity===row.identity;
-     l.append(check,document.createTextNode(item.unit.title+' · '+item.row.context));
-     extras.push({item,choice,check});related.append(l);
+     const {label,check}=reviewCheckbox(item.unit.title+' · '+item.row.context,item.row.identity===row.identity);
+     extras.push({item,choice,check});related.append(label);
     }
     if(extras.length){
      const summary=document.createElement('summary');
      summary.textContent='Aplicar también a otras apariciones ('+extras.length+')';
-     related.prepend(summary);related.open=true;related.hidden=false;
+     const all=reviewCheckbox('Marcar todas las apariciones',false);
+     all.label.classList.add('vg-review-select-all');
+     const updateAll=()=>{
+      const count=extras.filter(({check})=>check.checked).length;
+      all.check.checked=count===extras.length;
+      all.check.indeterminate=count>0&&count<extras.length;
+     };
+     all.check.onchange=()=>extras.forEach(({check})=>{check.checked=all.check.checked});
+     for(const {check} of extras)check.onchange=updateAll;
+     updateAll();
+     related.prepend(summary,all.label);related.open=true;related.hidden=false;
     }
    };
    label.append(select);card.append(label,related,accept);

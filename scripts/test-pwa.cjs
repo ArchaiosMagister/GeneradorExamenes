@@ -262,7 +262,7 @@ const server=http.createServer(async(req,res)=>{
    await page.selectOption('#vgCourse',course);
    await page.fill('#vgText',sentence);
    await page.click('#vgAnalyzeAll');
-   await page.locator('#vgResults summary').filter({hasText:'Formas resueltas'}).waitFor();
+   await page.locator('#vgResults summary').filter({hasText:'Vocabulario listo para Word'}).waitFor();
    const rows=await page.evaluate(()=>JSON.parse(localStorage.examina_vocabulary_project_v1).units[0].rows);
    assert(rows.some(row=>row.form===basic&&row.status==='documented'),'Lematización PWA offline de '+course);
    const download=page.waitForEvent('download');await page.click('#vgWord');
