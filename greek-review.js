@@ -18,6 +18,31 @@ function readable(tag,morphologies){
  }
  return window.ExaminaOfflineLemmatizer?.describe?.(tag)||tag.split(';').join(' · ');
 }
+// Eulexis enumera por separado variantes regionales que comparten exactamente
+// la misma interpretación morfológica. Se agrupan EN LA PRESENTACIÓN, sin
+// borrar ninguno de los testimonios ni dar como resuelta una ambigüedad real.
+// Solo se descartan del identificador etiquetas dialectales inequívocas.
+// Otros paréntesis (grado, enclisis, irregularidad, etc.) siguen siendo rasgos.
+const DIALECTS=new Set(['ático','épico','dórico','jónico','eólico','homérico']);
+function dialectOnly(raw){
+ const words=String(raw||'').toLocaleLowerCase('es').trim()
+  .split(/[\s,;]+/u).filter(Boolean);
+ return words.length&&words.every(x=>DIALECTS.has(x))?words:[];
+}
+function analysisParts(raw){
+ const original=String(raw||'').trim();
+ let match=original.match(/^(.*?)\s+·\s+(.+)$/u);
+ if(match){
+  const dialects=dialectOnly(match[2]);
+  if(dialects.length)return {original,core:match[1].trim(),dialects};
+ }
+ match=original.match(/^(.*?)\s+\(([^()]*)\)$/u);
+ if(match){
+  const dialects=dialectOnly(match[2]);
+  if(dialects.length)return {original,core:match[1].trim(),dialects};
+ }
+ return {original,core:original,dialects:[]};
+}
 function parseImport(input){
  if(!input||input.schema!==SCHEMA||!Array.isArray(input.rows)||input.rows.length>200000)
   throw Error('El fichero no tiene el formato examina-eulexis-review/v1');
@@ -45,12 +70,17 @@ function buildCases(data,imported=[],morphologies={}){
   const key=norm(form),lk=norm(lemma),entry=vocab[lk]?.gr1;
   if(!key||!entry)return; // No introducir palabras ajenas al temario.
   if(!groups.has(key))groups.set(key,{key,form,byAnalysis:new Map(),units:new Set()});
-  const group=groups.get(key),signature=lk+'|'+norm(tags);
+  const group=groups.get(key),parts=analysisParts(tags);
+  const signature=lk+'|'+norm(parts.core),legacy=lk+'|'+norm(tags);
   if(!group.byAnalysis.has(signature)){
-   group.byAnalysis.set(signature,{id:signature,lemma,form,analysis:tags,
+   group.byAnalysis.set(signature,{id:signature,lemma,form,analysis:parts.core,
+    originalAnalyses:new Set(),dialects:new Set(),legacyIds:new Set(),
     labels:new Set(),sources:new Set(),provisional:!!provisional,entry:entry.entry||lemma});
   }
   const option=group.byAnalysis.get(signature);
+  option.originalAnalyses.add(parts.original);
+  option.legacyIds.add(legacy);
+  for(const dialect of parts.dialects)option.dialects.add(dialect);
   option.sources.add(source);
   option.labels.add(origin);
   option.provisional=option.provisional&&!!provisional;
@@ -65,9 +95,13 @@ function buildCases(data,imported=[],morphologies={}){
  for(const row of imported)add(row.form,row.lemma,row.analysis,row.source,'imported',true);
  const out=[];
  for(const group of groups.values()){
-  const options=[...group.byAnalysis.values()].map(x=>({
-   ...x,sources:[...x.sources],labels:[...x.labels]
-  }));
+  const options=[...group.byAnalysis.values()].map(x=>{
+   const variants=[...x.originalAnalyses],dialects=[...x.dialects].sort((a,b)=>a.localeCompare(b,'es'));
+   const analysis=variants.length===1?variants[0]:
+    x.analysis+(dialects.length?' · dialectos atestiguados: '+dialects.join(', '):'');
+   return {...x,analysis,dialects,legacyIds:[...x.legacyIds],
+    originalAnalyses:variants,sources:[...x.sources],labels:[...x.labels]};
+  });
   // Una discrepancia exige análisis distintos. Si hay un único análisis Eulexis
   // de una forma de cita aún sin contraste docente, también ofrecer una tarjeta:
   // es una propuesta, NO un paradigma verificado. No mostrar las miles de flexiones
@@ -162,7 +196,7 @@ async function init(){
  const status=byId('grReviewStatus'),card=byId('grReviewCard');
  function validDecision(x,d){
   if(!d||!['choose','all','exclude'].includes(d.action))return false;
-  return d.action!=='choose'||x.options.some(o=>o.id===d.selected);
+  return d.action!=='choose'||x.options.some(o=>o.id===d.selected||o.legacyIds.includes(d.selected));
  }
  function visible(){
   const unit=byId('grReviewUnit').value,word=norm(byId('grReviewSearch').value);
@@ -310,7 +344,7 @@ async function init(){
   refresh();
  }catch(error){status.textContent='No se pudo abrir el índice local: '+error.message}
 }
-window.ExaminaGreekReview={norm,buildCases,parseImport,contextParts};
+window.ExaminaGreekReview={norm,buildCases,parseImport,contextParts,analysisParts};
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);
 else init();
 })();
