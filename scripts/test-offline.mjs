@@ -42,6 +42,8 @@ assert(!html.includes('EXAMINA_PWA_START')&&!html.includes('id="pwaPanel"'),
  'La versión HTML de archivo único no necesita controles PWA');
 assert(html.includes('Revisión filológica y decisiones docentes'),'Falta revisión docente offline');
 assert(!html.includes('verification-review.js'),'El panel no se incrustó en HTML autónomo');
+assert(html.includes('Resolver discrepancias por tarjetas'),'Falta la interfaz de revisión griega offline');
+assert(!html.includes('greek-review.js'),'La revisión griega depende de un script externo');
 assert(!html.includes('pwa.js')&&!html.includes('manifest.webmanifest'),
  'El HTML autónomo no debe depender de recursos PWA');
 assert(html.includes("if(location.protocol==='file:')return"),'No consultar archivos al abrir file://');
