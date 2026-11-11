@@ -141,13 +141,13 @@ const latinLexicalQueWords=new Set([
  'quisque','quidque','quodque','quique','cuiusque','cuique','quemque',
  'quamque','quosque','quasque','quorumque','quarumque','quibusque',
  'uterque','utraque','utrumque','utriusque','utrique','utrumque',
- 'utrumque','utramque','utroque','utraque','utrorumque','utrarumque',
+ 'utramque','utroque','utraque','utrorumque','utrarumque',
  'utrisque','utrosque','utrasque',
  'quicumque','quaecumque','quodcumque','cuiuscumque','cuicumque',
  'quemcumque','quamcumque','quocumque','quacumque','quibuscumque',
  'quorumcumque','quarumcumque','quoscumque','quascumque',
  'ubicumque','undecumque','quandocumque','qualiscumque',
- 'quandocumque','quantuscumque'
+ 'quantuscumque'
 ].map(latinKey));
 const latinExpandedCache=new WeakMap();
 function latinExpandedForms(bank){
@@ -174,7 +174,7 @@ function latinExpandedForms(bank){
   {head:'quisque',entry:'quisque, quaeque, quidque (pron. indef.)',
    meaning:'cada uno/a, cada cual',forms:[
     'quisque','quique','quaeque','quidque','quodque','cuiusque','cuique',
-    'quemque','quamque','quaque','quosque','quasques','quasque',
+    'quemque','quamque','quaque','quosque','quasque',
     'quorumque','quarumque','quibusque']},
   {head:'uterque',entry:'uterque, utraque, utrumque (pron. indef.)',
    meaning:'uno y otro, ambos',forms:[
