@@ -197,6 +197,11 @@ for(const form of ['bona','bello']){
  assert.equal(realHomographs.find(x=>x.form===form)?.status,'review',
   'No elegir arbitrariamente entre lemas homógrafos: '+form);
 }
+const servaCandidate=api.analyze(data,'servæ','lat1',LatinBank)[0];
+assert.equal(servaCandidate?.status,'documented',
+ 'servæ debe ser flexión nominal de serva, –æ, no del sustantivo servus, –i');
+assert.equal(ctx.window.ExaminaOfflineLemmatizer.normalize(servaCandidate.lemma),'serva');
+assert.equal(api.analyze(data,'servus','lat1',LatinBank)[0]?.status,'documented');
 const historicOrthography=api.analyze(data,'uideo video','lat1',LatinBank);
 assert.equal(historicOrthography.length,1,'La búsqueda latina debe tratar u/v como alógrafos');
 assert.equal(historicOrthography[0].status,'documented');
