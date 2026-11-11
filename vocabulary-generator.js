@@ -158,7 +158,12 @@ const latinLexicalQueWords=new Set([
 // El docente decide con la frase original: no se sustituye el token ni el lema.
 const latinContextNotes={
  'auarus':'puede ser avarus, –a, –um («avaro») o un nombre propio; consultar la oración',
- 'medicum':'puede ser medicus, –i (m., «médico») o medicus, –a, –um (adjetivo); consultar la oración'
+ 'medicum':'puede ser medicus, –i (m., «médico») o medicus, –a, –um (adjetivo); consultar la oración',
+ 'commiserat':'el banco propone commito y committo para el mismo tema commis-; contrastar la grafía de la ficha',
+ 'commiserunt':'el banco propone commito y committo para el mismo tema commis-; contrastar la grafía de la ficha',
+ 'commisit':'el banco propone commito y committo para el mismo tema commis-; contrastar la grafía de la ficha',
+ 'teneros':'coexisten los enunciados tenerus, –a, –um y tener, tenera, tenerum; revisar si son variantes de una sola ficha',
+ 'solis':'coexisten las fichas sol, solis y solis, –is; contrastar si la segunda es un duplicado editorial'
 };
 const latinSpellingNotes={
  'clasis':'comprobar classis, –is (f.), si se refiere a «flota» o «clase»',
