@@ -351,9 +351,13 @@ function greekReferenceForms(bank){
  // Pronominales interrogativos e indefinidos. La acentuación del original
  // distingue las formas coincidentes tras quitar tildes del índice.
  addIrregular(['τίς','τίς','τί','τί','τίνα','τίνα','τίνος','τίνος','τίνι','τίνι',
-  'τίνες','τίνες','τίνας','τίνας','τίσι','τίσιν','τίσιν'],'τίς','quién, cuál, qué');
- addIrregular(['τις','τι','τινά','τινὰ','τινάς','τινὰς','τινός','τινὸς','τινί','τινὶ',
-  'τινές','τινὲς','τισι','τισιν','τινα','τινες'],'τις','alguien, alguno, cierto');
+  'τίνες','τίνες','τίνας','τίνας','τίνων','τίνων','τίσι','τίσιν','τίσιν'],'τίς','quién, cuál, qué');
+ // Indefinido enclítico: sin tilde, con acento final o grave en contexto.
+ // Nunca asimilar una grafía interrogativa con acento inicial.
+ addIrregular(['τις','τὶς','τι','τὶ','τινά','τινὰ','τινα','τινάς','τινὰς','τινας',
+  'τινός','τινὸς','τινος','τινί','τινὶ','τινι',
+  'τινές','τινὲς','τινες','τινῶν','τινων',
+  'τισί','τισὶ','τισίν','τισὶν','τισι','τισιν'],'τις','alguien, alguno, cierto');
  addIrregular(['ἀγρός','ἀγρὸς','ἀγροῦ','ἀγρὸν','ἀγρόν','ἀγροὺς','ἀγρούς','ἀγροῖς'],
   'ἀγρός','campo');
  addIrregular(['δειλός','δειλὸς','δειλοῦ','δειλόν'],'δειλός','cobarde');
@@ -705,9 +709,11 @@ function analyze(data,text,course,bank){
    // τίς (interrogativo) frente a τις (indefinido); ambas entradas
    // conservan su lema y traducción original.
    const interrogative=['τίς','τίς','τί','τί','τίνα','τίνα','τίνος','τίνος','τίνι','τίνι',
-    'τίνες','τίνες','τίνας','τίνας','τίσι','τίσιν','τίσιν'];
-   const indefinite=['τις','τι','τινά','τινὰ','τινάς','τινὰς','τινός','τινὸς',
-    'τινί','τινὶ','τινές','τινὲς','τισι','τισιν'];
+    'τίνες','τίνες','τίνας','τίνας','τίνων','τίνων','τίσι','τίσιν','τίσιν'];
+   const indefinite=['τις','τὶς','τι','τὶ','τινά','τινὰ','τινα','τινάς','τινὰς','τινας',
+    'τινός','τινὸς','τινος','τινί','τινὶ','τινι',
+    'τινές','τινὲς','τινες','τινῶν','τινων',
+    'τισί','τισὶ','τισίν','τισὶν','τισι','τισιν'];
    if(interrogative.includes(spelled))candidates=candidates.filter(x=>head(x.entry).normalize('NFC')==='τίς');
    else if(indefinite.includes(spelled))candidates=candidates.filter(x=>head(x.entry).normalize('NFC')==='τις');
   }
