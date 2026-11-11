@@ -108,6 +108,10 @@ jobs:
         run: node scripts/test-greek-audit-fixture.cjs
       - name: Auditar las 100 formas más frecuentes de Griego I
         run: node scripts/audit-greek-frequent-100.cjs
+      - name: Verificar las 15 correcciones persistentes de Griego I
+        run: node scripts/test-greek-source-corrections.cjs
+      - name: Auditar todas las formas poco frecuentes de Griego I
+        run: node scripts/audit-greek-all-units.cjs --require-clean
       - name: Guardar Word de diez frases para comprobación visual
         if: always()
         uses: actions/upload-artifact@v4
