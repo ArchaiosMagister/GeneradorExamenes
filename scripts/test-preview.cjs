@@ -470,7 +470,9 @@ async function checkFile(browser,filename){
  assert.equal(await requiredRow.count(),1);
  assert(!/[:‘“]/.test(await requiredRow.textContent()),'La entrada exigible debe ir sin significado');
  assert.equal(await gloss.locator('.gloss-item').filter({hasText:/^in\b/i}).count(),0);
- assert(await gloss.locator('.gloss-item').filter({hasText:/^villa.+:/i}).count());
+ const villaRow=gloss.locator('.gloss-item').filter({hasText:/^villa/i});
+ assert.equal(await villaRow.count(),1);
+ assert(!/[:‘“]/.test(await villaRow.textContent()),'Villa ya está estudiada en UD2 y no debe traducirse');
  await slots.nth(1).fill('Puella amat.');
  assert.equal(await editor.inputValue(),'Puella in villa laborat.\nPuella amat.\nNauta navigat.');
  assert(await gloss.locator('.gloss-item').filter({hasText:/^amo[ ,]/i}).count());
@@ -496,6 +498,53 @@ async function checkFile(browser,filename){
  const downloaded=await doc;
  const xml=readStoredZipEntry(fs.readFileSync(await downloaded.path()),'word/document.xml');
  assert(xml.includes('Puella amat.')&&xml.includes('Nauta navigat.')&&xml.includes('g.'));
+ // La edición de palabras funciona en ambas direcciones y sobrevive a un
+ // refresco normal de la vista previa, sin modificar otros ejercicios.
+ const editorRegression=await page.evaluate(()=>{
+  const course=document.getElementById('course'),model=document.getElementById('model');
+  course.value='latin1';course.dispatchEvent(new Event('change',{bubbles:true}));
+  model.value='tablas';model.dispatchEvent(new Event('change',{bubbles:true}));
+  document.querySelectorAll('.unit-choice').forEach(el=>el.checked=units[Number(el.value)]==='UD3');
+  generate();
+  const paper=document.getElementById('paper');
+  const target=paper.querySelector('[data-exam-edit-key]');
+  const findInput=()=>[...document.querySelectorAll('input[data-exam-edit-key]')]
+    .find(x=>x.dataset.examEditKey===target?.dataset.examEditKey);
+  const input=findInput();
+  if(!target||!input)return {ok:false,reason:'Sin editor enlazado'};
+  target.textContent='FORMA_DE_PRUEBA';
+  target.dispatchEvent(new InputEvent('input',{bubbles:true,inputType:'insertText'}));
+  const fromPaper=input.value==='FORMA_DE_PRUEBA';
+  input.value='FORMA_EDITADA';input.dispatchEvent(new Event('input',{bubbles:true}));
+  const fromMenu=target.textContent.includes('FORMA_EDITADA');
+  generate();
+  const persisted=paper.textContent.includes('FORMA_EDITADA');
+  return {ok:true,fromPaper,fromMenu,persisted};
+ });
+ assert(editorRegression.ok&&editorRegression.fromPaper&&editorRegression.fromMenu&&editorRegression.persisted,
+  filename+': fallo de sincronización bidireccional '+JSON.stringify(editorRegression));
+ // En la modificación preverbial, seleccionar otro verbo no altera el segundo.
+ const preverbs=await page.evaluate(()=>{
+  const course=document.getElementById('course'),model=document.getElementById('model');
+  course.value='latin1';course.dispatchEvent(new Event('change',{bubbles:true}));
+  model.value='tablas';model.dispatchEvent(new Event('change',{bubbles:true}));
+  document.querySelectorAll('.unit-choice').forEach(el=>{
+   el.checked=units[Number(el.value)]==='UD9–10';
+   if(el.checked)el.dispatchEvent(new Event('change',{bubbles:true}));
+  });
+  generate();
+  const first=document.getElementById('lex-verb-0'),second=document.getElementById('lex-verb-1');
+  if(!first||!second||!first.value||!second.value)return {available:false};
+  const before=second.value;
+  const alternate=[...first.options].find(o=>o.value&&o.value!==first.value&&o.value!==second.value);
+  if(!alternate)return {available:false};
+  first.value=alternate.value;first.dispatchEvent(new Event('change',{bubbles:true}));
+  return {available:true,first:first.value,expected:alternate.value,second:second.value,before};
+ });
+ if(preverbs.available){
+  assert.equal(preverbs.first,preverbs.expected,filename+': no se seleccionó el verbo elegido');
+  assert.equal(preverbs.second,preverbs.before,filename+': se regeneró el segundo verbo sin solicitarlo');
+ }
  await page.setViewportSize({width:390,height:844});
  assert(await page.locator('#paper .exam-sheet').isVisible(),filename+': vista previa oculta en móvil');
  assert.deepEqual(errors,[],filename+': errores JavaScript');
