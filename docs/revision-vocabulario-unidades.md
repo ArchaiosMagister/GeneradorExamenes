@@ -1,0 +1,32 @@
+# Revisión del vocabulario por unidades
+
+El flujo se aplica a Latín 4.º ESO, Latín I y Griego I. «Analizar y revisar vocabulario» actualiza las unidades cuyo texto, curso o banco haya cambiado. Las propuestas de cita docente admiten revisión por lotes. Cada tarjeta muestra el pasaje y resalta la aparición que se está revisando. Las lecturas pendientes de otras unidades se pueden abrir desde el mismo panel.
+
+Aceptar, editar u omitir guarda una decisión por curso, unidad, forma y contexto. Las decisiones persisten en el navegador y en la copia JSON. «Restablecer análisis» devuelve la aparición a la lectura automática. Si se modifica el pasaje, el contexto modificado se vuelve a evaluar. Una copia antigua con decisiones por forma se interpreta según el alcance que tenía al guardarse. Las frases idénticas repetidas en una unidad comparten las decisiones de las apariciones correspondientes.
+
+La ficha del curso seleccionado determina el enunciado y la glosa cuando hay correspondencia con el banco docente. Una ficha sin glosa se conserva así. En Latín 4.º, la lectura sustantiva de *bona* se ofrece como alternativa léxica sin trasladar la traducción de Latín I. *Servae* se vincula con *serva* en ambos cursos. La lectura adjetival de UniMorph asociada a *servus* es incompatible con la ficha nominal del docente, incluso cuando el enunciado lleva marcas de cantidad.
+
+Las reglas escolares y las fuentes morfológicas existentes aportan evidencia para identificar entradas. La aprobación léxica solo controla el vocabulario de Word. Las propuestas opcionales de Eulexis mantienen su procedencia y carecen de acreditación morfológica automática. El diagnóstico conserva los criterios de cobertura del banco. Las dudas de grafía, los homógrafos y las formas sin lectura siguen disponibles para revisión. Las fichas aprobadas aparecen sin asterisco y las omisiones se excluyen. Las pendientes llevan asterisco y contexto en un bloque propio de cada unidad.
+
+## Regresión con el JSON docente de Latín I
+
+Se importaron las 10 unidades en Chromium desde la versión autónoma y se conservaron sus textos íntegros. El recuento nuevo usa forma y contexto, por lo que sus cifras no representan el mismo conjunto que los recuentos históricos por forma y unidad.
+
+| Resultado por forma y contexto | Casos |
+| --- | ---: |
+| Identificación automática | 2.111 |
+| Pendientes con revisión | 154 |
+| Sin lectura | 2 |
+| Total | 2.267 |
+
+La copia original marcaba *esse*, *dare* y *potest* como desconocidas. La base reciente del repositorio ya reconoce estas formas en Latín I y la prueba protege ese comportamiento. *Bona* conserva las dos lecturas. La grafía *servæ* del corpus se identifica como *serva*. También se comprobó *servae* con una prueba explícita en los dos cursos de latín. El JSON adjunto se utiliza localmente y queda fuera del repositorio.
+
+Para reproducir el análisis completo, con Playwright y Chromium instalados:
+
+```sh
+LATIN1_VOCABULARY_CORPUS='/ruta/vocabulario-unidades(1).json' npm run vocabulary:test
+npm run offline:test
+npm run pwa:test
+```
+
+Las pruebas comprueban decisiones contextuales, edición, omisión, revisión por lotes, recarga, importación de copias, exportación DOCX y los tres cursos con la PWA sin red. El DOCX conserva una columna, título en versalita a 14 pt y bordes de 0,5 pt. Las pruebas inspeccionan el archivo descargado y su XML. La validación local se realizó en Chromium.

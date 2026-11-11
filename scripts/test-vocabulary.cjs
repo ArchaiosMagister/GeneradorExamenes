@@ -58,10 +58,10 @@ const fromEulexis={course:'gr1',lang:'es',count:1,units:[{
  }]
 }]};
 const greekDocx=api.documentXml(fromEulexis);
-assert.match(greekDocx,/Pendientes de revisión \(\*\)/,
- 'La elección de Eulexis no certifica una flexión griega');
-assert.match(greekDocx,/<w:t xml:space="preserve">\* θεός/,
- 'La lectura de Eulexis conserva asterisco de revisión');
+assert.doesNotMatch(greekDocx,/Pendientes de revisión|\* θεός/,
+ 'La decisión léxica docente pasa a Word sin asterisco');
+assert.equal(fromEulexis.units[0].rows[0].eulexisUnverified,true,
+ 'La aceptación léxica conserva el origen morfológico sin certificar');
 
 assert.throws(()=>api.documentXml({count:1,units:[{title:'UD1',text:'ὁ θεός',rows:[]}]}),/sin analizar/);
 const greekRows=api.analyze(data,'λύω ἄγνωστον','gr1',[]);
@@ -312,7 +312,7 @@ console.log('Pendientes restantes prioritarios sin índice:',JSON.stringify(topP
 console.log('Pendientes con lecturas alternativas:',JSON.stringify(topPending(review)));
 
 
-console.log('Vocabulario: prioridad docente, deduplicación por UD, ambigüedad, desconocidas, griego y XML de dos columnas correctos.');
+console.log('Vocabulario: prioridad docente, deduplicación por UD, ambigüedad, desconocidas, griego y XML de una columna correctos.');
 (async()=>{
  const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
  const browser=await chromium.launch({headless:true,...(process.env.BROWSER_PATH?{executablePath:process.env.BROWSER_PATH}:{})});
@@ -331,17 +331,18 @@ console.log('Vocabulario: prioridad docente, deduplicación por UD, ambigüedad,
  assert.equal(qualityJSON.totals.rows,1106);
  console.log('Panel de cobertura por UD, filtro de pendientes y exportación JSON operativos.');
  const analyzeAll=page.locator('#vgAnalyzeAll');
- assert.equal(await analyzeAll.innerText(),'Analizar todas las unidades');
- assert.ok(await analyzeAll.evaluate(el=>!!el.previousElementSibling?.querySelector('#vgMode')));
+ assert.equal(await analyzeAll.innerText(),'Analizar y revisar vocabulario');
+ assert.equal(await page.locator('#vgAnalyze').count(),0);
  assert.equal(await analyzeAll.evaluate(el=>getComputedStyle(el).fontWeight),'800');
 
  // Prueba real de interfaz: diez frases escolares, incluida la preposición «ab».
  const latinCorpus=JSON.parse(fs.readFileSync(path.join(root,'tests/latin-vocabulary-sentences.json'),'utf8')).sentences;
  await page.fill('#vgText',latinCorpus.join('\n'));
- await page.click('#vgAnalyze');
+ await page.click('#vgAnalyzeAll');
  await page.waitForFunction(()=>document.querySelector('#vgStatus')?.textContent.includes('pendientes'));
+ await page.locator('#vgResults summary').filter({hasText:'Formas resueltas'}).click();
  const vocabularyPreview=await page.locator('#vgResults').innerText();
- assert.match(vocabularyPreview,/ab · Forma documentada/,'La UI debe reconocer ab sin revisión');
+ assert.match(vocabularyPreview,/ab · Identificación automática/,'La UI debe reconocer ab sin revisión');
  assert.match(vocabularyPreview,/puella/i,'La UI debe identificar los lemas del texto');
  const sampleDownload=page.waitForEvent('download');await page.click('#vgWord');
  const sample=await sampleDownload;const samplePath=await sample.path();
@@ -350,7 +351,7 @@ console.log('Vocabulario: prioridad docente, deduplicación por UD, ambigüedad,
  console.log('Word real de diez frases guardado para revisión visual.');
  await page.fill('#vgText','');
  await page.fill('#vgCount','2');await page.locator('#vgCount').dispatchEvent('change');
- await page.fill('#vgText','Puella puella amamus xyzxyz');await page.click('#vgAnalyze');await page.waitForFunction(()=>document.querySelector('#vgStatus').textContent.includes('pendientes'));
+ await page.fill('#vgText','Puella puella amamus xyzxyz');await page.click('#vgAnalyzeAll');await page.waitForFunction(()=>document.querySelector('#vgStatus').textContent.includes('pendientes'));
  assert.match(await page.locator('#vgResults').innerText(),/xyzxyz/);
  await page.selectOption('#vgMode','simple');await page.locator('#vgUnitButtons .vg-unit-button').nth(1).click();assert.equal(await page.inputValue('#vgText'),'');
  await page.fill('#vgText','Puella');await page.click('#vgAnalyzeAll');await page.waitForFunction(()=>document.querySelector('#vgStatus').textContent.includes('pendientes'));
@@ -385,6 +386,94 @@ console.log('Vocabulario: prioridad docente, deduplicación por UD, ambigüedad,
  assert.ok(persisted.units.every(u=>u.text.includes('θεός')&&u.rows.length>0));
  console.log('Importación JSON con 14 unidades sin analizar: Word completo y textos conservados.');
  
+ // Cada decisión se guarda por curso, unidad, forma y contexto.
+ for(const [course,text,word,basic,lemma] of [
+  ['lat1','Bona manent. Bona puella. Esse dare potest. Servae adsunt. xyzomit. xyzpending.','Bona','potest','possum'],
+  ['lat4','Bona manent. Bona puella. Esse dare potest. Servae adsunt. xyzomit. xyzpending.','Bona','esse','sum'],
+  ['gr1','ξψζ ἐστίν. ξψζ εἶναι. ψξζ. ζψξ.','ξψζ','εἶναι','ειμι']
+ ]){
+  await page.selectOption('#vgCourse',course);
+  await page.fill('#vgCount','2');await page.locator('#vgCount').dispatchEvent('change');
+  await page.locator('#vgUnitButtons button').first().click();
+  await page.fill('#vgText',text);
+  await page.locator('#vgUnitButtons button').nth(1).click();
+  await page.fill('#vgText',course==='gr1'?'ὁ θεός':'Puella amat');
+  await page.locator('#vgUnitButtons button').first().click();
+  await page.click('#vgAnalyzeAll');
+  const card=form=>page.locator('#vgResults section').filter({has:page.getByRole('heading',{name:form,exact:true})});
+  const ambiguity=card(word);
+  await ambiguity.first().waitFor();
+  assert.equal(await ambiguity.count(),2,'La misma forma debe tener dos contextos');
+  assert.equal(await ambiguity.first().locator('mark').textContent(),word);
+  if(course!=='gr1'){
+   const readings=await ambiguity.first().locator('option').allTextContents();
+   assert(readings.some(x=>/b[oŏ]nus/u.test(x))&&readings.some(x=>x.startsWith('bona, ')));
+  }
+  await ambiguity.first().getByRole('button',{name:'Editar',exact:true}).click();
+  await ambiguity.first().getByLabel('Enunciado',{exact:true}).fill('Cita docente '+course);
+  await ambiguity.first().getByLabel('Traducción',{exact:true}).fill('Glosa docente');
+  await ambiguity.first().getByRole('button',{name:'Guardar corrección'}).click();
+  await card(course==='gr1'?'ψξζ':'xyzomit').getByRole('button',{name:'Omitir',exact:true}).click();
+  await page.fill('#vgText',text+(course==='gr1'?' καί.':' et.'));
+  await page.click('#vgAnalyzeAll');
+  await page.waitForFunction(()=>document.querySelector('#vgStatus').textContent.startsWith('1 unidades actualizadas'));
+  await page.click('#vgAnalyzeAll');
+  await page.waitForFunction(()=>document.querySelector('#vgStatus').textContent.startsWith('0 unidades actualizadas'));
+  const readProject=()=>page.evaluate(()=>JSON.parse(localStorage.examina_vocabulary_project_v1));
+  const after=await readProject(),rows=after.units[0].rows;
+  assert.equal(rows.filter(r=>r.form===word&&r.status==='manual').length,1);
+  assert.equal(rows.filter(r=>r.form===word&&['unknown','review'].includes(r.status)).length,1);
+  assert(rows.some(r=>r.form.toLowerCase()===basic&&r.status==='documented'&&r.lemma===lemma));
+  if(course!=='gr1')assert(rows.some(r=>r.form==='Servae'&&['serva','serua'].includes(r.lemma)&&r.status==='documented'));
+  await page.reload();await page.click('#vgShow');
+  const backup=page.waitForEvent('download');await page.click('#vgBackup');
+  const copy=await backup;
+  await page.locator('#vgImport').setInputFiles(await copy.path());
+  await page.waitForFunction(()=>document.querySelector('#vgStatus').textContent.includes('Proyecto importado'));
+  assert.deepEqual((await readProject()).units[0].decisions[course],after.units[0].decisions[course]);
+  const exported=page.waitForEvent('download');await page.click('#vgWord');
+  const doc=fs.readFileSync(await (await exported).path(),'utf8');
+  assert.match(doc,/Glosa docente/);assert.match(doc,/Pendientes de revisión \(\*\)/);
+  assert.doesNotMatch(doc,course==='gr1'?/ψξζ/:/xyzomit/);
+  await page.locator('#vgResults summary').filter({hasText:'Formas resueltas'}).click();
+  await page.locator('#vgResults summary').filter({hasText:'Cita docente '+course}).click();
+  await page.getByRole('button',{name:'Restablecer análisis',exact:true}).click();
+  await page.waitForFunction(()=>document.querySelector('#vgStatus').textContent.startsWith('1 unidades actualizadas'));
+  assert.equal((await readProject()).units[0].decisions[course].length,1);
+ }
+ // Una forma de cita explícita sin análisis morfológico queda como propuesta de lote.
+ await page.evaluate(()=>vocab.push({course:'greek1',entry:'ξψβ',meaning:'',unit:'UD1'}));
+ await page.fill('#vgText','ξψβ.');
+ await page.click('#vgAnalyzeAll');
+ await page.locator('#vgResults summary').filter({hasText:'Propuestas seguras'}).click();
+ await page.getByRole('button',{name:'Aceptar propuestas seleccionadas'}).click();
+ const batch=await page.evaluate(()=>JSON.parse(localStorage.examina_vocabulary_project_v1).units[0].rows[0]);
+ assert.equal(batch.status,'manual');assert.equal(batch.candidates[0].attested,false);
+ assert.equal(batch.meaning,'');
+ console.log('Tres cursos: contexto, cambios incrementales, corrección, omisión, Word, lote y copia JSON.');
+
+ if(process.env.LATIN1_VOCABULARY_CORPUS){
+  const corpus=JSON.parse(fs.readFileSync(process.env.LATIN1_VOCABULARY_CORPUS,'utf8'));
+  assert.equal(corpus.course,'lat1');assert.equal(corpus.count,10);
+  await page.locator('#vgImport').setInputFiles(process.env.LATIN1_VOCABULARY_CORPUS);
+  await page.waitForFunction(()=>document.querySelector('#vgStatus').textContent.includes('10 por analizar'));
+  await page.click('#vgAnalyzeAll');
+  await page.waitForFunction(()=>document.querySelector('#vgStatus').textContent.startsWith('10 unidades actualizadas'));
+  const current=await page.evaluate(()=>JSON.parse(localStorage.examina_vocabulary_project_v1));
+  const totals={};
+  current.units.slice(0,current.count).forEach((unit,i)=>{
+   assert.equal(unit.text,corpus.units[i].text);
+   for(const row of unit.rows)totals[row.status]=(totals[row.status]||0)+1;
+  });
+  assert(totals.documented>=2100);
+  assert(totals.unknown<=2);
+  const ud1=current.units[0].rows;
+  for(const [form,lemma] of [['esse','sum'],['dare','do'],['potest','possum']])
+   assert(ud1.some(r=>r.form.toLowerCase()===form&&r.lemma===lemma&&r.status==='documented'));
+  assert(ud1.some(r=>r.form.toLowerCase()==='bona'&&r.status==='review'));
+  console.log('JSON docente de Latín I · 10 unidades · '+JSON.stringify(totals));
+ }
+
  await page.click('#vmShowExam');assert.equal(await page.locator('#vocabularyGenerator').isVisible(),false);
  assert.deepEqual(errors,[]);console.log('Navegador offline: pestañas, unidades, persistencia y descarga DOCX correctas.');
  }finally{await browser.close()}

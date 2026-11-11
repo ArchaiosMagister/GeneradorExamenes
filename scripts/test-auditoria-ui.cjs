@@ -12,7 +12,6 @@ assert(before('<header class="top">','<nav class="vocab-tabbar'), 'Primero el t�
 assert(before('<nav class="vocab-tabbar','<div class="exam-coursebar'), 'Después los tres apartados');
 assert.match(index,/id="vgUnitButtons"/,'No desaparecerán los botones por unidad');
 assert.match(vocab,/function renderUnitButtons\(\)/,'Los botones deben conservar su renderizado');
-assert.match(vocab,/showEulexisCard\(box,r,unit\(\)\)/,'Las propuestas deben aparecer junto a cada forma');
 assert.match(index,/for\(const id of \['glossScope','glossNouns','glossVerbs','glossAdjectives','glossOther'\]\)/,
  'Los filtros deben actualizar el glosario');
 assert.match(index,/if\(\/artículo\|articulo\/\.test\(a\)\)return null/,
@@ -79,12 +78,17 @@ assert.match(index,/if\(\/artículo\|articulo\/\.test\(a\)\)return null/,
   });
   await page.selectOption('#vgCourse','gr1');
   await page.waitForFunction(()=>document.getElementById('vgEulexisStatus')?.textContent?.includes('Eulexis disponible'));
-  await page.locator('#vgAnalyze').click();
-  await page.locator('#vgResults .vg-eulexis-card').first().waitFor();
-  assert.match(await page.locator('#vgResults .vg-eulexis-context').first().textContent(),/λόγου/);
-  assert.ok(await page.locator('#vgResults .vg-eulexis-choice').count()>=1);
-  await page.locator('#vgResults .vg-eulexis-choice').first().click();
-  assert.match(await page.locator('#vgResults').textContent(),/flexión no certificada/);
+  await page.locator('#vgAnalyzeAll').click();
+  await page.locator('#vgResults summary').filter({hasText:'Formas resueltas'}).click();
+  await page.locator('#vgResults summary').filter({hasText:/^λόγου ·/}).first().click();
+  const card=page.locator('#vgResults .vg-eulexis-card').filter({hasText:'Eulexis propone'});
+  assert.match(await card.locator('.vg-eulexis-context').textContent(),/λόγου/);
+  const external=card.locator('select option').filter({hasText:'Eulexis:'});
+  await card.locator('select').selectOption(await external.first().getAttribute('value'));
+  await card.getByRole('button',{name:'Aceptar',exact:true}).click();
+  assert.match(await page.locator('#vgStatus').textContent(),/Aceptada para Word/);
+  const decision=await page.evaluate(()=>JSON.parse(localStorage.examina_vocabulary_project_v1).units[0].decisions.gr1[0]);
+  assert.equal(decision.eulexisUnverified,true);
   await page.locator('#vmShowExam').click();
   await page.locator('#examQuestionMenus .exam-question-panel').first().waitFor();
   assert.deepEqual(errors,[],'No debe haber excepciones JavaScript en la interfaz');
