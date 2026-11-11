@@ -61,7 +61,15 @@ const latinInvariables=[
  [['at'],'at (conj.)','pero, en cambio','però, en canvi'],
  [['statim'],'statim (adv.)','inmediatamente','immediatament'],
  [['illic'],'illic (adv.)','allí','allí'],
- [['longe'],'longe (adv.)','lejos','lluny']
+ [['longe'],'longe (adv.)','lejos','lluny'],
+ [['itaque'],'itaque (conj.)','así pues, por tanto','per tant'],
+ [['denique'],'denique (adv.)','finalmente, en suma','finalment, en suma'],
+ [['namque'],'namque (conj.)','pues, en efecto','perquè, en efecte'],
+ [['utique'],'utique (adv.)','en todo caso, ciertamente','en tot cas, certament'],
+ [['ubique'],'ubique (adv.)','en todas partes','pertot arreu'],
+ [['undique'],'undique (adv.)','de todas partes','de tot arreu'],
+ [['usque'],'usque (adv.)','hasta, continuamente','fins a, contínuament'],
+ [['absque'],'absque (prep. + abl.)','sin, lejos de','sense, lluny de']
 ];
 const latinCore=new Map();
 for(const [forms,entry,meaning,meaning_va] of latinInvariables){
@@ -123,6 +131,24 @@ function latinPresentForms(bank){
  * Cada propuesta conserva exactamente el enunciado y la glosa docentes;
  * una homografía entre lemas distintos sigue necesitando revisión.
  */
+// -que coordinante es productivo, pero el mismo segmento puede ser parte
+// inseparable de un pronombre compuesto o de un adverbio/conjunción.
+ // No descomponer nunca un lexema completo reconocido por su paradigma.
+const latinLexicalQueWords=new Set([
+ 'quoque','neque','atque','itaque','denique','namque','utique','ubique',
+ 'undique','usque','absque','quandoque','quaque','quaeque',
+ // Pronombres compuestos: los casos oblicuos también son unidades léxicas.
+ 'quisque','quidque','quodque','quique','cuiusque','cuique','quemque',
+ 'quamque','quosque','quasque','quorumque','quarumque','quibusque',
+ 'uterque','utraque','utrumque','utriusque','utrique','utrumque',
+ 'utrumque','utramque','utroque','utraque','utrorumque','utrarumque',
+ 'utrisque','utrosque','utrasque',
+ 'quicumque','quaecumque','quodcumque','cuiuscumque','cuicumque',
+ 'quemcumque','quamcumque','quocumque','quacumque','quibuscumque',
+ 'quorumcumque','quarumcumque','quoscumque','quascumque',
+ 'ubicumque','undecumque','quandocumque','qualiscumque',
+ 'quandocumque','quantuscumque'
+].map(latinKey));
 const latinExpandedCache=new WeakMap();
 function latinExpandedForms(bank){
  if(latinExpandedCache.has(bank))return latinExpandedCache.get(bank);
@@ -142,6 +168,31 @@ function latinExpandedForms(bank){
   if(kind==='all'||kind==='f')addMany(stem,['a','ae','am','arum','is','as'],record);
   if(kind==='all'||kind==='n')addMany(stem,['um','i','o','a','orum','is'],record);
  };
+ // Formas pronominales lexicalizadas: -que NO es la conjunción copulativa.
+ // No se infieren otras flexiones a partir de los tres últimos caracteres.
+ const lexicalCompounds=[
+  {head:'quisque',entry:'quisque, quaeque, quidque (pron. indef.)',
+   meaning:'cada uno/a, cada cual',forms:[
+    'quisque','quique','quaeque','quidque','quodque','cuiusque','cuique',
+    'quemque','quamque','quaque','quosque','quasques','quasque',
+    'quorumque','quarumque','quibusque']},
+  {head:'uterque',entry:'uterque, utraque, utrumque (pron. indef.)',
+   meaning:'uno y otro, ambos',forms:[
+    'uterque','utraque','utrumque','utriusque','utrique','utroque',
+    'utramque','utrosque','utrasque','utrorumque','utrarumque','utrisque']},
+  {head:'quicumque',entry:'quicumque, quaecumque, quodcumque (pron. rel. indef.)',
+   meaning:'cualquiera que, quienquiera que',forms:[
+    'quicumque','quaecumque','quodcumque','cuiuscumque','cuicumque',
+    'quemcumque','quamcumque','quocumque','quacumque','quorumcumque',
+    'quarumcumque','quibuscumque','quoscumque','quascumque']}
+ ];
+ for(const compound of lexicalCompounds){
+  const teacher=bank.find(r=>latinKey(head(r.entry))===latinKey(compound.head));
+  const record={lemma:latinKey(compound.head),entry:teacher?.entry||compound.entry,
+   meaning:teacher?.meaning||compound.meaning,meaning_va:teacher?.meaning_va||'',
+   attested:true,origin:'paradigma pronominal compuesto, -que inseparable'};
+  for(const surface of compound.forms)add(surface,record);
+ }
  // Paradigmas pronominales cerrados: no se infieren a partir de sufijos.
  const personal=[
   [['ego','mei','mihi','me','nos','nostri','nostrum','nobis'],
@@ -1017,7 +1068,9 @@ function analyze(data,text,course,bank){
   // registrado o un paradigma regular explícito; nunca por sufijo solo.
   let enclitic=[];
   if(lang==='lat'&&normal.endsWith('que')&&normal.length>5&&
-    !indexedCandidates.length&&!regular.length&&!directInvariable.length){
+    !latinLexicalQueWords.has(normal)&&
+    !indexedCandidates.length&&!regular.length&&!directInvariable.length&&
+    !curated.length){
    const base=normal.slice(0,-3);
    const explicit=(latinExpandedForms(bank).get(base)||[]);
    const indexed=[...(index.get(base)?.values()||[])].map(x=>{
