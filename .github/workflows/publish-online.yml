@@ -76,6 +76,11 @@ jobs:
             fi
             cp -R "$source/icons" "$dest/icons"
             cp -R "$source/data" "$dest/data"
+            if [[ -d "$source/THIRD_PARTY_LICENSES" ]]; then cp -R "$source/THIRD_PARTY_LICENSES" "$dest/THIRD_PARTY_LICENSES"; fi
+            if [[ -f "$source/docs/lematizacion-lectores.md" ]]; then
+              mkdir -p "$dest/docs"
+              cp "$source/docs/lematizacion-lectores.md" "$dest/docs/"
+            fi
             sed "s/__PWA_BUILD_VERSION__/$version/g" "$source/sw.js" > "$dest/sw.js"
             test -s "$dest/index.html"
             test -s "$dest/offline.html"
