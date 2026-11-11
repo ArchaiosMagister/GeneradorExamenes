@@ -60,21 +60,29 @@ function buildCases(data,imported=[],morphologies={}){
   if(!Array.isArray(row)||row.length!==4)continue;
   const [lemma,form,tags,src]=row;
   if(src===3||src===2||typeof tags!=='string')continue;
-  add(form,lemma,readable(tags,morphologies),VALID_SOURCES[src]||'Fuente local',src,src===4);
+  add(form,lemma,readable(tags,morphologies),VALID_SOURCES[src]||'Fuente local',src,src===4||src===7);
  }
- for(const row of imported)add(row.form,row.lemma,row.analysis,row.source,'imported',false);
+ for(const row of imported)add(row.form,row.lemma,row.analysis,row.source,'imported',true);
  const out=[];
  for(const group of groups.values()){
   const options=[...group.byAnalysis.values()].map(x=>({
    ...x,sources:[...x.sources],labels:[...x.labels]
   }));
-  // Una discrepancia exige análisis distintos; jamás se muestra por mera duplicación de fuentes.
-  if(options.length<2)continue;
+  // Una discrepancia exige análisis distintos. Si hay un único análisis Eulexis
+  // de una forma de cita aún sin contraste docente, también ofrecer una tarjeta:
+  // es una propuesta, NO un paradigma verificado. No mostrar las miles de flexiones
+  // individuales de un lema no validado: limitar esta modalidad al lema de cita.
+  const withExternal=options.some(o=>o.sources.includes(7)||o.sources.includes('imported'));
+  const verifiedSource=options.some(o=>o.sources.some(x=>[0,1,5].includes(x)));
+  const citation=options.some(o=>norm(o.form)===norm(o.entry.split(',')[0]));
+  const onlyProposal=options.length===1&&withExternal&&!verifiedSource&&citation;
+  if(options.length<2&&!onlyProposal)continue;
   options.sort((a,b)=>a.provisional-b.provisional||a.lemma.localeCompare(b.lemma,'el')||
    a.analysis.localeCompare(b.analysis,'es'));
   const withEulexis=options.some(x=>x.sources.includes(7)||x.sources.includes('imported'));
   const units=[...group.units].sort((a,b)=>a.localeCompare(b,'es',{numeric:true}));
-  out.push({id:'gr1|'+group.key,form:group.form,units,options,withEulexis});
+  out.push({id:'gr1|'+group.key,form:group.form,units,options,withEulexis,
+   kind:onlyProposal?'eulexis-proposal':'discrepancy'});
  }
  // Priorizar discrepancias Eulexis, sin eliminar las homografías preexistentes.
  return out.sort((a,b)=>Number(b.withEulexis)-Number(a.withEulexis)||
@@ -108,7 +116,7 @@ async function init(){
  const section=document.createElement('section');
  section.id='greekDiscrepancyReview';section.className='field';
  section.innerHTML='<details><summary><strong>Griego I · Resolver discrepancias por tarjetas</strong></summary>'+
-  '<p class="hint">Una forma cada vez: elige un análisis, conserva todas las interpretaciones o excluye la forma. La siguiente tarjeta aparece al decidir. Ninguna elección modifica por sí sola las preguntas ni convierte una forma en verificada.</p>'+
+  '<p class="hint">Una forma cada vez: elige un análisis y aparecerá la siguiente tarjeta. Ninguna elección modifica por sí sola las preguntas ni certifica paradigmas.</p>'+
   '<div class="greek-review-tools"><label>Unidad<select id="grReviewUnit"><option value="">Todas</option></select></label>'+
   '<label>Filtrar forma<input id="grReviewSearch" type="search" placeholder="λόγος, λύω…"></label></div>'+
   '<p id="grReviewStatus" role="status" aria-live="polite">Cargando índice griego…</p>'+
@@ -117,7 +125,14 @@ async function init(){
   '<button type="button" id="grReviewUndo" class="secondary">Deshacer última decisión</button></div>'+
   '<div class="greek-review-tools"><button type="button" id="grReviewExport" class="secondary">Exportar decisiones</button>'+
   '<label class="greek-file-label">Importar decisiones<input type="file" id="grReviewDecisionsFile" accept=".json,application/json"></label></div>'+
-  '<details><summary>Índice Eulexis local (opcional)</summary>'+
+  '<details><summary>Activar Eulexis en este dispositivo</summary>'+
+  '<p class="hint">Una única descarga aproximada de 30 MB desde el repositorio original de lector-griego. Solo se guardan los análisis correspondientes a Griego I. Una vez instalado funcionará sin red, también en la PWA. Es una fuente externa de propuestas, no un solucionario.</p>'+
+  '<div class="greek-review-tools"><button type="button" id="grReviewInstallEulexis">Instalar Eulexis (un clic)</button>'+
+  '<button type="button" id="grReviewRemoveEulexis" class="secondary">Borrar datos de Eulexis</button></div>'+
+  '<p id="grReviewInstallStatus" class="hint" role="status" aria-live="polite">Sin instalación local detectada.</p>'+
+  '<p class="hint">Descarga directamente de genuensis/lector-griego (revisión fijada). La app no republica sus tablas; se muestran <a href="https://github.com/genuensis/lector-griego" target="_blank" rel="noopener noreferrer">procedencia y atribución</a>. Las decisiones docentes se guardan aparte.</p>'+
+  '</details>'+
+  '<details><summary>Importar manualmente un índice JSON (alternativa)</summary>'+
   '<p class="hint">Los análisis de Eulexis no se descargan de servidores externos. Puedes cargar un JSON local con esquema examina-eulexis-review/v1 y filas form, lemma, analysis. No se almacena el corpus: las decisiones sí quedan en este navegador. La procedencia y la licencia del corpus deben ser comprobadas antes de redistribuirlo.</p>'+
   '<label class="greek-file-label">Cargar índice Eulexis<input id="grReviewEulexisFile" type="file" accept=".json,application/json"></label>'+
   '<p id="grReviewImportStatus" class="hint"></p></details>'+
@@ -143,6 +158,7 @@ async function init(){
  document.head.append(style);
  const byId=id=>document.getElementById(id);
  const state={data:null,external:[],cases:[],decisions:readDecisions(),skipped:new Set(),last:null,current:null};
+ const installed=byId('grReviewInstallStatus');
  const status=byId('grReviewStatus'),card=byId('grReviewCard');
  function validDecision(x,d){
   if(!d||!['choose','all','exclude'].includes(d.action))return false;
@@ -168,7 +184,7 @@ async function init(){
   const found=visible(),remaining=found.filter(x=>!validDecision(x,state.decisions[x.id])&&!state.skipped.has(x.id));
   const decided=found.filter(x=>validDecision(x,state.decisions[x.id])).length;
   state.current=remaining[0]||null;
-  status.textContent=found.length+' formas con discrepancias · '+decided+' decididas · '+
+  status.textContent=found.length+' formas con discrepancias o propuestas · '+decided+' decididas · '+
    remaining.length+' pendientes en esta sesión'+(state.external.length?' · '+state.external.length+' análisis Eulexis importados':'');
   card.replaceChildren();
   byId('grReviewSkip').disabled=!state.current;
@@ -181,7 +197,9 @@ async function init(){
   article.className='greek-review-card';
   const title=document.createElement('h3');title.textContent=x.form;article.append(title);
   const label=document.createElement('p');label.className='greek-review-meta';
-  label.textContent=x.units.join(', ')+' · '+x.options.length+' análisis alternativos'+(x.withEulexis?' · con datos Eulexis':'');
+  label.textContent=(x.units.join(', ')||'Banco general')+' · '+
+   (x.kind==='eulexis-proposal'?'Propuesta única de Eulexis pendiente de contraste':
+    x.options.length+' análisis alternativos')+(x.withEulexis?' · con datos Eulexis':'');
   article.append(label);
   const contexts=typeof window.ExaminaGreekSentenceContexts==='function'
    ?window.ExaminaGreekSentenceContexts(x.form).slice(0,2):[];
@@ -244,6 +262,28 @@ async function init(){
   }catch(error){status.textContent='No se pudo importar: '+error.message}
   e.target.value='';
  });
+ const eulexis=window.ExaminaEulexisLocal;
+ byId('grReviewInstallEulexis').addEventListener('click',async()=>{
+  const button=byId('grReviewInstallEulexis');button.disabled=true;
+  try{
+   if(!eulexis)throw Error('No se ha cargado el adaptador de Eulexis');
+   const result=await eulexis.install(state.data,msg=>{installed.textContent=msg;});
+   state.external=result.rows;
+   installed.textContent='Eulexis instalado: '+result.count+
+    ' análisis del vocabulario de Griego I, disponibles sin conexión en este navegador.';
+   refresh();
+  }catch(e){installed.textContent='No se ha instalado Eulexis: '+e.message+
+   '. Comprueba la conexión y el almacenamiento del navegador.'}
+  finally{button.disabled=false}
+ });
+ byId('grReviewRemoveEulexis').addEventListener('click',async()=>{
+  try{
+   if(!eulexis)throw Error('No está disponible el adaptador');
+   await eulexis.clear();
+   state.external=[];refresh();
+   installed.textContent='Datos personales de Eulexis borrados. Las decisiones docentes se han conservado.';
+  }catch(e){installed.textContent='No se pudieron borrar los datos: '+e.message}
+ });
  byId('grReviewEulexisFile').addEventListener('change',async e=>{
   try{
    const file=e.target.files?.[0];if(!file)return;
@@ -257,6 +297,16 @@ async function init(){
  });
  try{
   state.data=await window.ExaminaOfflineLemmatizer.load();
+  if(eulexis){
+   try{
+    const cached=await eulexis.load(state.data);
+    if(cached){
+     state.external=cached.rows;
+     installed.textContent='Eulexis preparado: '+cached.count+
+      ' análisis del temario disponibles sin conexión.';
+    }
+   }catch(e){installed.textContent='El índice Eulexis no está disponible: '+e.message}
+  }
   refresh();
  }catch(error){status.textContent='No se pudo abrir el índice local: '+error.message}
 }

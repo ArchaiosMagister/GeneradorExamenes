@@ -38,6 +38,20 @@ assert.ok(logos.withEulexis,'Eulexis debe figurar como fuente contrastable');
 assert.equal(logos.options.length,3);
 assert.ok(!withEulexis.some(x=>norm(x.form)===norm('σῶμα')),
  'Los lemas ajenos a las unidades no deben entrar en la cola');
+const single={
+ schema:1,vocabulary:{grc:{προβατον:{gr1:{entry:'πρόβατον, –ου (τό)',units:['UD2']}}}},
+ rows:{grc:[['προβατον','πρόβατον','LEX;ENTRY',3]]}
+};
+const one=parseImport({schema:'examina-eulexis-review/v1',rows:[
+ {form:'πρόβατον',lemma:'πρόβατον',analysis:'neutro nominativo singular'}
+]});
+const pending=buildCases(single,one);
+assert.equal(pending.length,1,'Eulexis debe permitir revisar una entrada sin flexiones contrastadas');
+assert.equal(pending[0].kind,'eulexis-proposal');
+assert.equal(pending[0].options.length,1,'No se inventan análisis alternativos');
+assert.equal(pending[0].options[0].provisional,true,
+ 'La lectura de Eulexis no constituye una verificación docente');
+assert.equal(buildCases(single).length,0,'Una mera cita sin Eulexis no es discrepancia');
 const embedded=JSON.parse(JSON.stringify(data));
 embedded.rows.grc.push(['λογοσ','λόγος','EULEXIS;11',7]);
 const fromEnriched=buildCases(embedded,[],{'11':'masc nom sg (attic)'});
