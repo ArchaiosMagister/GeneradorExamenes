@@ -119,13 +119,6 @@ jobs:
         run: node scripts/test-greek-source-corrections.cjs
       - name: Auditar todas las formas poco frecuentes de Griego I
         run: node scripts/audit-greek-all-units.cjs --require-clean
-      - name: Guardar Word de diez frases para comprobación visual
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: vocabulario-diez-frases-word
-          path: test-artifacts/vocabulario-latin-10-frases.docx
-          if-no-files-found: ignore
       - name: Probar las vistas previas de todos los modelos
         run: node scripts/test-preview.cjs
       - name: Guardar Word con puntuaciones de examen para inspección
@@ -151,3 +144,13 @@ jobs:
         run: node scripts/test-greek-review-browser.cjs
       - name: Probar instalación y persistencia de Eulexis en Chromium
         run: node scripts/test-eulexis-browser.cjs
+      # Los artefactos son auxiliares: no deben bloquear las pruebas de regresión.
+      - name: Guardar Word de diez frases para comprobación visual
+        if: always()
+        timeout-minutes: 2
+        continue-on-error: true
+        uses: actions/upload-artifact@v4
+        with:
+          name: vocabulario-diez-frases-word
+          path: test-artifacts/vocabulario-latin-10-frases.docx
+          if-no-files-found: ignore
