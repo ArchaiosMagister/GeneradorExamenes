@@ -711,7 +711,7 @@ function examClearEditedPart(kind,index=null){
   }
  }
 }
-$('paper').addEventListener('input',event=>{
+document.getElementById('paper').addEventListener('input',event=>{
  if(event.target.closest?.('[data-sentence-slot]'))return;
  const selection=window.getSelection();
  const selected=selection?.anchorNode?.nodeType===1?selection.anchorNode:selection?.anchorNode?.parentElement;
