@@ -1,6 +1,7 @@
 // Prueba real en navegador: vista previa y edición de los siete modelos.
 const assert=require('node:assert/strict');
 const path=require('node:path');
+const fs=require('node:fs');
 const {pathToFileURL}=require('node:url');
 const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
 
@@ -242,6 +243,10 @@ async function checkFile(browser,filename){
    },answers);
    assert(exported.filename.endsWith('.docx'),caseLabel+': nombre Word incorrecto');
    const bytes=Buffer.from(exported.bytes);
+   if(filename==='index.html'&&course==='latin1'&&model==='tablas'&&!answers){
+    fs.mkdirSync(path.resolve(__dirname,'../test-artifacts'),{recursive:true});
+    fs.writeFileSync(path.resolve(__dirname,'../test-artifacts/examen-puntuaciones-latin1.docx'),bytes);
+   }
    const documentXml=readStoredZipEntry(bytes,'word/document.xml');
    const styleXml=readStoredZipEntry(bytes,'word/styles.xml');
    assert(documentXml.includes('p.).'),caseLabel+': el enunciado Word no incluye puntuación al final');
