@@ -162,27 +162,28 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
   assert(/elige dos de las 3 cuestiones siguientes/i.test(threePartCaption),
    'Al desmarcar un apartado deben ofrecerse exactamente tres: '+threePartCaption);
 
-  // La exigencia acumulativa oculta SOLO el significado en el glosario del examen.
+  // El vocabulario de unidades posteriores todavía se traduce; añadirlo
+  // explícitamente como exigible adelanta la fecha desde la que se oculta.
   const glossary=await page.evaluate(()=>{
    const words=latinSharedBank.vocabulary('latin1');
-   const row=words.find(x=>examKey(x.entry)==='oppidum');
-   if(!row)throw Error('Falta oppidum en vocabulario de Latín I');
-   const backup=examRequired;
-   const course='latin1',key=examKey(row.entry),chosen=['UD4'];
+   const row=words.find(x=>examKey(x.entry)==='rex');
+   if(!row)throw Error('Falta rex en vocabulario de Latín I');
+   const backup=examRequired,mode=document.getElementById('glossTranslationMode');
+   const oldMode=mode.value,course='latin1',key=examKey(row.entry),chosen=['UD1'];
    try{
+    mode.value='unlearned';
     examRequired=backup.filter(x=>!(x.course===course&&(x.key||examKey(x.entry))===key));
-    const before=buildFinalLexicon(chosen,[{text:'oppidum'}]);
+    const before=buildFinalLexicon(chosen,[{text:'rex'}]);
     examRequired.push({course,unit:'UD1',entry:row.entry,key,meaning:row.meaning});
-    const after=buildFinalLexicon(chosen,[{text:'oppidum'}]);
-    return {entry:row.entry,meaning:row.meaning,before,after,
-     isRequired:isRequired(row.entry,chosen)};
-   }finally{examRequired=backup}
+    const after=buildFinalLexicon(chosen,[{text:'rex'}]);
+    return {entry:row.entry,meaning:row.meaning,before,after,isRequired:isRequired(row.entry,chosen)};
+   }finally{examRequired=backup;mode.value=oldMode}
   });
   assert(glossary.isRequired);
   assert(glossary.before.includes('gloss-item')&&glossary.after.includes('gloss-item'));
   assert(glossary.after.includes(glossary.entry.replace(/\s*\((?:adv\.?|conj\.?)\)\s*/gi,' ').trim()));
-  assert(!glossary.after.includes(''+glossary.meaning),'La palabra exigible no debe llevar traducción');
-  assert(glossary.before.includes(''+glossary.meaning),'Las palabras no exigibles sí deben traducirse');
+  assert(!glossary.after.includes(''+glossary.meaning),'El vocabulario exigible no debe llevar traducción');
+  assert(glossary.before.includes(''+glossary.meaning),'Las palabras aún no estudiadas sí deben traducirse');
 
   await configure('latin4','tablas','UD2');
   const early4=await page.evaluate(()=>({

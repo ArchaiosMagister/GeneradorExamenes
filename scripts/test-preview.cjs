@@ -400,7 +400,7 @@ async function checkFile(browser,filename){
  // con enunciado solamente, y una enclítica se analiza sin inventar lemas.
  const glossaryRegression=await page.evaluate(()=>{
   const course=document.getElementById('course'),model=document.getElementById('model');
-  const scope=document.getElementById('glossScope');
+  const scope=document.getElementById('glossTranslationMode');
   const previous={course:course.value,model:model.value,scope:scope.value,required:examRequired.slice()};
   const parse=html=>{
    const el=document.createElement('div');el.innerHTML=html;
@@ -413,16 +413,18 @@ async function checkFile(browser,filename){
   try{
    course.value='latin1';model.value='tablas';scope.value='all';
    const base=parse(buildFinalLexicon(['UD1'],[{text:'Puellaque amat in villa. Quoque quisque uterque.'}]));
-   examRequired.push({course:'latin1',unit:'UD1',key:examKey('puella'),entry:'puella, -ae'});
+   scope.value='unlearned';
+    examRequired.push({course:'latin1',unit:'UD1',key:examKey('puella'),entry:'puella, -ae'});
    const required=parse(buildFinalLexicon(['UD1'],[{text:'Puella amat.'}]));
    const unknown=parse(buildFinalLexicon(['UD1'],[{text:'FORMADESCONOCIDAXYZ'}]));
-   return {base,required,unknown,defaultScope:previous.scope};
+    const galli=parse(buildFinalLexicon(['UD3'],[{text:'Galli a Romanis semper vincebantur.'}]));
+   return {base,required,unknown,galli,defaultScope:previous.scope};
   }finally{
    course.value=previous.course;model.value=previous.model;scope.value=previous.scope;
    examRequired.length=0;examRequired.push(...previous.required);
   }
  });
- assert.equal(glossaryRegression.defaultScope,'all',filename+': se ocultan por defecto las palabras exigibles');
+ assert.equal(glossaryRegression.defaultScope,'unlearned',filename+': las traducciones de lo estudiado se ocultan por defecto');
  assert(glossaryRegression.base.rows.some(x=>/puella/i.test(x)),filename+': no se reconoce la base de la enclítica -que');
  assert(glossaryRegression.base.rows.some(x=>/amo/i.test(x)),filename+': no se incorpora un verbo con enunciado');
  for(const lemma of [/^quoque/i,/^quisque/i,/^uterque/i,/^[–-]que/i]){
@@ -434,6 +436,12 @@ async function checkFile(browser,filename){
  assert(requiredWord&&!requiredWord.includes(':'),filename+': el vocabulario exigible necesita enunciado pero no traducción');
  assert(!glossaryRegression.unknown.printText.includes('FORMADESCONOCIDAXYZ'),filename+': se ha inventado un lema');
  assert(glossaryRegression.unknown.warning.includes('FORMADESCONOCIDAXYZ'),filename+': falta advertencia para forma desconocida');
+ assert(glossaryRegression.galli.rows.some(x=>/^Galli,\s*-orum/i.test(x)),
+  filename+': Galli debe vincularse al enunciado plural del banco docente');
+ assert(!/\bGalli\b/.test(glossaryRegression.galli.warning),
+  filename+': Galli no debe permanecer en pendientes');
+ assert(!glossaryRegression.galli.rows.some(x=>/^a\b/i.test(x)),
+  filename+': se ha incluido la preposición a en el glosario');
 
  const noSentences=await page.evaluate(()=>{
   const key='latin1/mixto/sent',had=Object.hasOwn(examQuestionChoiceState,key),previous=examQuestionChoiceState[key];
@@ -469,13 +477,16 @@ async function checkFile(browser,filename){
  assert.equal(await requiredRow.count(),1);
  assert(!/[:‘“]/.test(await requiredRow.textContent()),'La entrada exigible debe ir sin significado');
  assert.equal(await gloss.locator('.gloss-item').filter({hasText:/^in\b/i}).count(),0);
- assert(await gloss.locator('.gloss-item').filter({hasText:/^villa.+:/i}).count());
+ const villaRow=gloss.locator('.gloss-item').filter({hasText:/^villa/i});
+ assert.equal(await villaRow.count(),1);
+ assert(!/[:‘“]/.test(await villaRow.textContent()),'Villa ya está estudiada en UD2 y no debe traducirse');
  await slots.nth(1).fill('Puella amat.');
  assert.equal(await editor.inputValue(),'Puella in villa laborat.\nPuella amat.\nNauta navigat.');
  assert(await gloss.locator('.gloss-item').filter({hasText:/^amo[ ,]/i}).count());
  const previewIdentity=await slots.first().elementHandle();
- await page.selectOption('#glossScope','outside');
- assert.equal(await requiredRow.count(),0);
+ await page.selectOption('#glossTranslationMode','all');
+ assert.equal(await requiredRow.count(),1);
+  assert((await requiredRow.textContent()).includes(':'),'Traducir todas debe mostrar la traducción del vocabulario estudiado');
  assert(await previewIdentity.evaluate(el=>el.isConnected),'El filtro reconstruyó la vista previa');
  assert.equal(await editor.inputValue(),'Puella in villa laborat.\nPuella amat.\nNauta navigat.');
  await page.evaluate(()=>{
@@ -494,6 +505,52 @@ async function checkFile(browser,filename){
  const downloaded=await doc;
  const xml=readStoredZipEntry(fs.readFileSync(await downloaded.path()),'word/document.xml');
  assert(xml.includes('Puella amat.')&&xml.includes('Nauta navigat.')&&xml.includes('g.'));
+ // La edición de palabras funciona en ambas direcciones y sobrevive a un
+ // refresco normal de la vista previa, sin modificar otros ejercicios.
+ const editorRegression=await page.evaluate(()=>{
+  const course=document.getElementById('course'),model=document.getElementById('model');
+  course.value='latin1';course.dispatchEvent(new Event('change',{bubbles:true}));
+  model.value='tablas';model.dispatchEvent(new Event('change',{bubbles:true}));
+  document.querySelectorAll('.unit-choice').forEach(el=>el.checked=units[Number(el.value)]==='UD3');
+  generate();
+  const paper=document.getElementById('paper');
+  const target=paper.querySelector('[data-exam-edit-key]');
+  const findInput=()=>[...document.querySelectorAll('input[data-exam-edit-key]')]
+    .find(x=>x.dataset.examEditKey===target?.dataset.examEditKey);
+  const input=findInput();
+  if(!target||!input)return {ok:false,reason:'Sin editor enlazado'};
+  target.textContent='FORMA_DE_PRUEBA';
+  target.dispatchEvent(new InputEvent('input',{bubbles:true,inputType:'insertText'}));
+  const fromPaper=input.value==='FORMA_DE_PRUEBA';
+  input.value='FORMA_EDITADA';input.dispatchEvent(new Event('input',{bubbles:true}));
+  const fromMenu=target.textContent.includes('FORMA_EDITADA');
+  generate();
+  const persisted=paper.textContent.includes('FORMA_EDITADA');
+  return {ok:true,fromPaper,fromMenu,persisted};
+ });
+ assert(editorRegression.ok&&editorRegression.fromPaper&&editorRegression.fromMenu&&editorRegression.persisted,
+  filename+': fallo de sincronización bidireccional '+JSON.stringify(editorRegression));
+ // En la modificación preverbial, seleccionar otro verbo no altera el segundo.
+ const preverbs=await page.evaluate(()=>{
+  const course=document.getElementById('course'),model=document.getElementById('model');
+  course.value='latin1';course.dispatchEvent(new Event('change',{bubbles:true}));
+  model.value='tablas';model.dispatchEvent(new Event('change',{bubbles:true}));
+  document.querySelectorAll('.unit-choice').forEach(el=>{
+   el.checked=units[Number(el.value)]==='UD6';
+   if(el.checked)el.dispatchEvent(new Event('change',{bubbles:true}));
+  });
+  generate();
+  const first=document.getElementById('lex-verb-0'),second=document.getElementById('lex-verb-1');
+  if(!first||!second||!first.value||!second.value)return {available:false,selected:selectedUnits(),firstValue:first?.value,secondValue:second?.value,options:first?.options.length};
+  const before=second.value;
+  const alternate=[...first.options].find(o=>o.value&&o.value!==first.value&&o.value!==second.value);
+  if(!alternate)return {available:false,selected:selectedUnits(),firstValue:first.value,secondValue:second.value,options:first.options.length};
+  first.value=alternate.value;first.dispatchEvent(new Event('change',{bubbles:true}));
+  return {available:true,first:first.value,expected:alternate.value,second:second.value,before};
+ });
+ assert(preverbs.available,filename+': deben existir dos verbos de modificación preverbial seleccionables: '+JSON.stringify(preverbs));
+ assert.equal(preverbs.first,preverbs.expected,filename+': no se seleccionó el verbo elegido');
+ assert.equal(preverbs.second,preverbs.before,filename+': se regeneró el segundo verbo sin solicitarlo');
  await page.setViewportSize({width:390,height:844});
  assert(await page.locator('#paper .exam-sheet').isVisible(),filename+': vista previa oculta en móvil');
  assert.deepEqual(errors,[],filename+': errores JavaScript');

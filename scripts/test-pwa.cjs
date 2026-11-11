@@ -156,14 +156,22 @@ const server=http.createServer(async(req,res)=>{
   const afterAll=await page.evaluate(()=>[...document.querySelector('#paper [data-lex-kind="latinisms"]').querySelectorAll('i')].map(x=>x.textContent));
   assert(afterAll.some((x,i)=>x!==before.find(x=>x.kind==='latinisms').terms[i]),
    'Regenerar subpregunta no ha sustituido las cuatro formas');
-  const freeVerbs=await page.evaluate(()=>{
-   const input=document.getElementById('lex-verb-0');
-   input.value='VERBO_PERSONALIZADO';input.dispatchEvent(new Event('change',{bubbles:true}));
-   const result=buildLatinLexQuestion('latin1',['UD6'])?.html||'';
-   input.value='';input.dispatchEvent(new Event('change',{bubbles:true}));
-   return result;
+  const preverbChoice=await page.evaluate(()=>{
+   const first=document.getElementById('lex-verb-0'),second=document.getElementById('lex-verb-1');
+   if(!first||!second)return {available:false};
+   const old=first.value,other=second.value;
+   const candidate=[...first.options].find(option=>option.value&&option.value!==old&&option.value!==other);
+   if(!candidate)return {available:false};
+   first.value=candidate.value;first.dispatchEvent(new Event('change',{bubbles:true}));
+   const html=buildLatinLexQuestion('latin1',['UD6'])?.html||'';
+   const stable=second.value===other;
+   first.value=old;first.dispatchEvent(new Event('change',{bubbles:true}));
+   return {available:true,html,chosen:candidate.value.toLowerCase(),stable};
   });
-  assert(freeVerbs.includes('<i>verbo_personalizado</i> (3)'),'El primer verbo manual debe aparecer en minúscula y con tres derivados');
+  assert(preverbChoice.available,'Los verbos preverbiales deben elegirse del menú según la unidad');
+  assert(preverbChoice.stable,'Cambiar un verbo preverbial no puede regenerar el segundo');
+  assert(preverbChoice.html.includes('<i>'+preverbChoice.chosen+'</i> (3)'),
+   'El primer verbo seleccionado debe aparecer en minúscula y con tres derivados');
   const preverbButtons=await page.evaluate(()=>({
     twoSlots:document.querySelectorAll('#lex-slot-preverbs-0, #lex-slot-preverbs-1').length,
     nonexistent:!!document.getElementById('lex-slot-preverbs-2'),
