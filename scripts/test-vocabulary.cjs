@@ -10,6 +10,24 @@ assert.equal(api.entries(rows).length,2);
 assert.equal(api.displayEntry(bank[0].entry,'simple'),'amo (1ª)');
 assert.equal(api.displayEntry('amo','complete'),'amo');
 assert.equal(api.displayEntry('λύω','simple'),'λύω');
+// La deducción de participios coherentes evita revisiones innecesarias;
+// las erratas en supinos no deben convertirse en lematizaciones seguras.
+for(const [form,entry,lemma] of [
+ ['laudati','laudo, laudavi, laudatum (1ª)','laudo'],
+ ['ædificata','ædifico, ædificavi, ædificatum (1ª)','aedifico']
+]){
+ const row=api.analyze(data,form,'lat1',[{entry,meaning:'traducción docente'}],{contextual:true})[0];
+ assert.equal(row.status,'documented',form+' debe lematizarse sin pedir confirmación');
+ assert.equal(row.lemma,lemma);
+ assert.equal(row.meaning,'traducción docente');
+}
+const fakeParticiple=api.analyze(data,'fantoma','lat1',
+ [{entry:'amo, amavi, fantomum (1ª)',meaning:'amar'}],{contextual:true})[0];
+assert.equal(fakeParticiple.status,'review','El supino incoherente no debe admitirse automáticamente');
+assert(fakeParticiple.candidates.some(c=>c.fromTeacherSupine&&!c.teacherSupinePlausible));
+const examSource=fs.readFileSync(path.join(root,'index.html'),'utf8');
+assert.match(examSource,/engine\.analyze\(data,text,\(\{latin1:.*?\}\)\[course\],bank,\{contextual:true\}\)/,
+ 'Los glosarios de examen y vocabulario deben usar el mismo criterio contextual');
 const fixture={rows:{lat:[['amo','test','V',0],['bellum','test','N',2]]},vocabulary:{lat:data.vocabulary.lat}};
 const ambiguous=api.analyze(fixture,'test','lat1',[])[0];assert.equal(ambiguous.status,'review');
 const project={course:'lat1',lang:'es',count:2,units:[1,2].map(i=>({title:'UD'+i,mode:'complete',rows}))};
