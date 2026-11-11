@@ -53,5 +53,14 @@ const summary={totalDistinct:cases.length,top100:{
 console.log('GREEK_FREQUENCY_AUDIT '+JSON.stringify(summary));
 console.log('GREEK_TOP_100 '+JSON.stringify(selected.map(x=>({form:x.form,frequency:x.frequency,status:x.status,entry:x.entry,warning:x.warning}))));
 console.log('GREEK_PENDING_100 '+JSON.stringify(unresolved.slice(0,100).map(x=>({form:x.form,frequency:x.frequency,status:x.status,units:x.units,options:x.candidates.map(c=>c.entry),warning:x.warning}))));
-if(process.argv.includes('--require-clean')&&selected.some(x=>x.status!=='documented'))
- throw Error('Hay formas frecuentes pendientes; consulta GREEK_PENDING_100');
+// Regression gates: distinguish runtime coverage from philological verification.
+ // Reviewable spelling anomalies remain flagged; unidentified frequent forms do not.
+if(selected.length!==100||selected.some(x=>x.status!=='documented'))
+ throw Error('Regresión en las 100 formas más recurrentes');
+if(cases.some(x=>x.status==='unknown'))
+ throw Error('Quedan formas sin diagnóstico: revisar GREEK_PENDING_100');
+if(unresolved.some(x=>x.status==='review'&&!x.warning&&
+ new Set(x.candidates.map(c=>c.lemma)).size<=1))
+ throw Error('Revisión sin explicación ni verdadera ambigüedad');
+if(process.argv.includes('--require-clean')&&unresolved.length)
+ throw Error('Persisten erratas o ambigüedades docentes: consulta GREEK_PENDING_100');
