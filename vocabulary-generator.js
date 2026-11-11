@@ -110,6 +110,197 @@ function latinPresentForms(bank){
 }
 
 
+
+/* Reconocimiento de formas latinas escolares por PARADIGMAS DECLARADOS.
+ * No modifica el índice de flexiones contrastadas, no genera solucionarios
+ * y no aplica los modelos a verbos con enunciados insuficientes.
+ * Cada propuesta conserva exactamente el enunciado y la glosa docentes;
+ * una homografía entre lemas distintos sigue necesitando revisión.
+ */
+const latinKey=s=>key(s).replace(/v/g,'u'); // u/v, æ/ae y œ/oe son alógrafos ortográficos.
+const latinExpandedCache=new WeakMap();
+function latinExpandedForms(bank){
+ if(latinExpandedCache.has(bank))return latinExpandedCache.get(bank);
+ const forms=new Map();
+ const add=(form,record)=>{
+  const k=latinKey(form);
+  if(!k||!/^[a-z]+$/.test(k))return;
+  if(!forms.has(k))forms.set(k,new Map());
+  const stored=forms.get(k),existing=stored.get(record.lemma);
+  const score=r=>(r.entry.split(',').length*8)+(r.entry.length/100);
+  if(!existing||score(record)>score(existing))stored.set(record.lemma,record);
+ };
+ const addMany=(stem,ends,record)=>{for(const end of ends)add(stem+end,record)};
+ const decl12=(stem,record,kind='all')=>{
+  // Sólo terminaciones de primera/segunda y concordancia transparente.
+  if(kind==='all'||kind==='m')addMany(stem,['us','i','o','um','e','orum','is','os'],record);
+  if(kind==='all'||kind==='f')addMany(stem,['a','ae','am','arum','is','as'],record);
+  if(kind==='all'||kind==='n')addMany(stem,['um','i','o','a','orum','is'],record);
+ };
+ // Paradigmas pronominales cerrados: no se infieren a partir de sufijos.
+ const personal=[
+  [['ego','mei','mihi','me','nos','nostri','nostrum','nobis'],
+    'ego, mei (pron. pers.)','yo','jo'],
+  [['tu','tui','tibi','te','vos','vestri','vestrum','vobis'],
+    'tu, tui (pron. pers.)','tú','tu'],
+  [['se','sui','sibi','sese'],
+    'sui, sibi, se (pron. refl.)','sí, se','si, es'],
+  [['is','ea','id','eius','ei','eum','eam','eo','ii','i','eae','eorum','earum','eis','iis','eos','eas'],
+    'is, ea, id (pron.)','él, ella, ello','ell, ella, això'],
+  [['hic','haec','hoc','huius','huic','hunc','hanc','hac','hi','hae','horum','harum','his','hos','has'],
+    'hic, haec, hoc (pron. dem.)','este, esta, esto','este, esta, açò'],
+  [['ille','illa','illud','illius','illi','illum','illam','illo','illae','illorum','illarum','illis','illos','illas'],
+    'ille, illa, illud (pron. dem.)','aquel, aquella, aquello','aquell, aquella, allò'],
+  [['iste','ista','istud','istius','isti','istum','istam','isto','istae','istorum','istarum','istis','istos','istas'],
+    'iste, ista, istud (pron. dem.)','ese, esa, eso','eixe, eixa, això'],
+  [['ipse','ipsa','ipsum','ipsius','ipsi','ipsum','ipsam','ipso','ipsorum','ipsarum','ipsis','ipsos','ipsas'],
+    'ipse, ipsa, ipsum (pron.)','mismo, propio','mateix, propi'],
+  [['qui','quae','quod','cuius','cui','quem','quam','quo','qua','quos','quas','quorum','quarum','quibus'],
+    'qui, quae, quod (pron. rel.)','que, el cual','que, el qual']
+ ];
+ for(const [surfaces,entry,meaning,meaning_va] of personal){
+  const lemma=latinKey(surfaces[0]),record={lemma,entry,meaning,meaning_va,attested:true,
+   origin:'paradigma pronominal explícito de gramática escolar (no índice verificado)'};
+  for(const form of surfaces)add(form,record);
+ }
+ const supplementary=[
+  ['meus, –a, –um','mío/a','meu/meua'],
+  ['tuus, –a, –um','tuyo/a','teu/teua'],
+  ['suus, –a, –um','suyo/a','seu/seua'],
+  ['noster, nostra, nostrum','nuestro/a','nostre/nostra'],
+  ['vester, vestra, vestrum','vuestro/a','vostre/vostra'],
+  ['altus, –a, –um','alto/a','alt/alta'],
+  ['humanus, –a, –um','humano/a','humà/humana']
+ ];
+ const complete=[...bank];
+ for(const [entry,meaning,meaning_va] of supplementary){
+  const lemma=latinKey(head(entry));
+  if(!bank.some(x=>latinKey(head(x.entry))===lemma))
+   complete.push({entry,meaning,meaning_va});
+ }
+ for(const row of complete){
+  const raw=String(row.entry||'').trim(),lemma=head(raw),l=latinKey(lemma);
+  if(!l||!row.meaning||!(/^[a-z]+$/.test(l)))continue;
+  const fields=raw.split(',').map(x=>latinKey(x.replace(/\([^)]*\)/g,'').replace(/^[–−—-]+/,'').trim()));
+  const annotated=raw.match(/\((1ª|2ª|3ª|4ª|mx\.)\)\s*$/u);
+  const record={lemma:l,entry:raw,meaning:row.meaning,meaning_va:row.meaning_va||'',
+   attested:true,origin:'paradigma regular escolar derivado del enunciado (no flexión individual certificada)'};
+  const proper=/^\p{Lu}/u.test(raw);
+  if(fields.length>=3&&fields[1]==='a'&&fields[2]==='um'){
+   let stem='';
+   if(l.endsWith('us'))stem=l.slice(0,-2);
+   else if(l.endsWith('er')){
+    const female=fields[1]; // en -er los enunciados suelen indicar -ra o -era
+    stem=l.endsWith('er')?l.slice(0,-2)+'r':'';
+   }
+   if(stem)decl12(stem,record);
+   // Grado superlativo regular, evitando todos los positivos irregulares.
+   if(stem&&!['bonus','malus','magnus','parvus','multus','vetus'].includes(l)&&l.endsWith('us')){
+    decl12(stem+'issim',record);
+    addMany(stem,['ior','ius','iorem','iore','iori','iores','iorum','ioribus','iora'],record);
+   }
+  }else if(fields.length>=3&&l.endsWith('er')&&/^(?:ra|era)$/.test(fields[1])&&/^(?:rum|erum)$/.test(fields[2])){
+   const stem=fields[1]==='ra'?l.slice(0,-2)+'r':l;
+   decl12(stem,record);
+  }else if(fields.length===2&&fields[1]==='e'&&l.endsWith('is')){
+   const stem=l.slice(0,-2);
+   addMany(stem,['is','e','em','i','es','ia','ium','ibus'],record);
+   if(!['facilis','difficilis','similis','humilis','gracilis'].includes(l)){
+    decl12(stem+'issim',record);
+    addMany(stem,['ior','ius','iorem','iore','iori','iores','iorum','ioribus','iora'],record);
+   }
+  }else if(fields.length===2&&l.endsWith('a')&&fields[1]==='ae'){
+   addMany(l.slice(0,-1),proper?['a','ae','am','is']:['a','ae','am','arum','is','as'],record);
+  }else if(fields.length===2&&['us','um'].some(e=>l.endsWith(e))&&fields[1]==='i'){
+   decl12(l.slice(0,-2),record,l.endsWith('um')?'n':'m');
+  }else if(fields.length===2&&l.endsWith('is')&&fields[1]==='is'){
+   const stem=l.slice(0,-2);
+   addMany(stem,proper?['is','em','i','e']:['is','em','i','e','es','ibus'],record);
+  }else if(fields.length===2&&fields[1].endsWith('is')&&fields[1].length>4&&
+     !['bos','vis','sus','grus','iuppiter'].includes(l)){
+   const stem=fields[1].slice(0,-2);
+   addMany(stem,proper?['is','em','i','e']:['is','em','i','e','es','ibus'],record);
+  }
+  if(!annotated)continue;
+  const group=annotated[1],end=group==='2ª'?'eo':(['4ª','mx.'].includes(group)?'io':'o');
+  if(!l.endsWith(end)||!l.slice(0,-end.length))continue;
+  const stem=l.slice(0,-end.length);
+  const formsByGroup={
+   '1ª':{inf:'are',imp:'a',imperf:'ab',future:'ab',passive:'1'},
+   '2ª':{inf:'ere',imp:'e',imperf:'eb',future:'eb',passive:'2'},
+   '3ª':{inf:'ere',imp:'e',imperf:'eb',future:'3',passive:'3'},
+   '4ª':{inf:'ire',imp:'i',imperf:'ieb',future:'4',passive:'4'},
+   'mx.':{inf:'ere',imp:'e',imperf:'ieb',future:'4',passive:'4'}
+  };
+  const rule=formsByGroup[group];
+  add(stem+rule.inf,record);
+  if(!['dico','duco','facio','fero'].includes(l))add(stem+rule.imp,record);
+  const endingActive=['am','as','at','amus','atis','ant'];
+  for(const ending of endingActive)add(stem+rule.imperf+ending,record);
+  // Pasiva de presente e imperfecto: no se extrapola a facio -> fio.
+  if(l!=='facio'){
+   const pres={
+    '1ª':['or','aris','atur','amur','amini','antur'],
+    '2ª':['eor','eris','etur','emur','emini','entur'],
+    '3ª':['or','eris','itur','imur','imini','untur'],
+    '4ª':['ior','iris','itur','imur','imini','iuntur'],
+    'mx.':['ior','eris','itur','imur','imini','iuntur']
+   }[group];
+   const ipf=['ar','aris','atur','amur','amini','antur'];
+   const pfx=rule.imperf;
+   for(const form of pres)add(stem+form,record);
+   for(const form of ipf)add(stem+pfx+form,record);
+  }
+  if(rule.future==='ab'||rule.future==='eb'){
+   const p=rule.future;
+   for(const end of ['o','is','it','imus','itis','unt'])add(stem+p+end,record);
+   if(l!=='facio')for(const end of ['or','eris','itur','imur','imini','untur'])add(stem+p+end,record);
+  }else{
+   const p=group==='3ª'?'':'i';
+   for(const end of ['am','es','et','emus','etis','ent'])add(stem+p+end,record);
+   if(l!=='facio')for(const end of ['ar','eris','etur','emur','emini','entur'])add(stem+p+end,record);
+  }
+  // Perfecto y pluscuamperfecto únicamente cuando el enunciado trae
+  // explícitamente la segunda forma (no se adivina el tema).
+  const perf=fields[1]||'';
+  if(fields.length>=3&&perf.endsWith('i')&&perf.length>2){
+   const root=perf.slice(0,-1);
+   for(const end of ['i','isti','it','imus','istis','erunt','eram','eras','erat','eramus','eratis','erant','ero','eris','erit','erimus','eritis','erint','isse']){
+    add(root+end,record);
+   }
+   const sup=fields[2]||'';
+   if(sup.endsWith('um')&&sup.length>3)decl12(sup.slice(0,-2),record);
+  }
+ }
+ // Modos y perfectos irregulares de enorme frecuencia, explícitos.
+ const irregular=[
+  {lemma:'sum',entry:'sum, fui, – (irr.)',meaning:'ser, estar, haber',
+   forms:['sum','es','est','sumus','estis','sunt','eram','eras','erat','eramus','eratis','erant',
+    'ero','eris','erit','erimus','eritis','erunt','esse','fui','fuisti','fuit','fuimus','fuistis','fuerunt',
+    'fueram','fueras','fuerat','fueramus','fueratis','fuerant','fuisse']},
+  {lemma:'possum',entry:'possum, potui, – (irr.)',meaning:'poder',
+   forms:['possum','potes','potest','possumus','potestis','possunt','poteram','poteras','poterat',
+    'poteramus','poteratis','poterant','potero','poteris','poterit','poterimus','poteritis','poterunt',
+    'posse','potui','potuit','potuerunt']},
+  {lemma:'eo',entry:'eo, ii, itum (irr.)',meaning:'ir',
+   forms:['eo','is','it','imus','itis','eunt','ibam','ibas','ibat','ibamus','ibatis','ibant',
+    'ibo','ibis','ibit','ibimus','ibitis','ibunt','ire','ii','ivi','iit','ierunt','ierat']},
+  {lemma:'dico',entry:'dico, dixi, dictum (3ª)',meaning:'decir',forms:['dic']},
+  {lemma:'duco',entry:'duco, duxi, ductum (3ª)',meaning:'conducir',forms:['duc']},
+  {lemma:'facio',entry:'facio, feci, factum (mx.)',meaning:'hacer',forms:['fac']}
+ ];
+ for(const info of irregular){
+  const existing=bank.find(row=>latinKey(head(row.entry))===latinKey(info.lemma));
+  const rec={lemma:latinKey(info.lemma),entry:existing?.entry||info.entry,
+   meaning:existing?.meaning||info.meaning,meaning_va:existing?.meaning_va||'',
+   attested:true,origin:'paradigma irregular escolar explícito; sin nuevas flexiones verificadas en índice'};
+  for(const form of info.forms)add(form,rec);
+ }
+ const out=new Map([...forms].map(([f,rows])=>[f,[...rows.values()]]));
+ latinExpandedCache.set(bank,out);
+ return out;
+}
+
 /* Paradigmas productivos de declinaciones 1.ª/2.ª y presente griego.
  * Solo se aplican a enunciados que constan en el banco docente, con su
  * traducción intacta. No se extrapolan flexiones irregulares ni temas
