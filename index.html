@@ -3213,7 +3213,12 @@ function selectLatinPreverb(index,form){
  generate();
 }
 function latinLexChosenRows(course,kind,chosen){
- const rows=stickyExamRows('lex-'+kind,()=>latinLexRandomFour(kind,latinLexPool(course,kind,chosen),course));
+ const pool=latinLexPool(course,kind,chosen),cacheKey=examCacheSignature('lex-'+kind);
+ let rows=stickyExamRows('lex-'+kind,()=>latinLexRandomFour(kind,pool,course));
+ if(rows.length!==latinLexExpectedCount(kind)&&pool.length>=latinLexExpectedCount(kind)){
+  examSelectionCache.delete(cacheKey);
+  rows=stickyExamRows('lex-'+kind,()=>latinLexRandomFour(kind,pool,course));
+ }
  return rows.length===latinLexExpectedCount(kind)&&rows.every(Boolean)?rows:[];
 }
 function latinLexStatus(kind,rows,message=''){
@@ -3414,7 +3419,7 @@ loadTeacherLatinLexBanks();
     const row=document.createElement('div');row.className='lex-word-control';
     const span=document.createElement('span');span.id='lex-slot-'+kind+'-'+i;span.textContent='Forma '+(i+1);
     const button=document.createElement('button');button.type='button';button.className='secondary';
-    button.textContent='Cambiar solo esta forma';
+    button.textContent=kind==='preverbs'?'Aleatorio (solo este verbo)':'Cambiar solo esta forma';
     button.setAttribute('aria-label','Regenerar forma '+(i+1)+' de '+latinLexTitles[kind]);
     button.onclick=()=>regenerateLatinLexWord(kind,i);
     row.append(span,button);group.append(row);
@@ -3423,6 +3428,7 @@ loadTeacherLatinLexBanks();
     appendQuestionExplanation('Modificación preverbial',
      'Dos verbos, el primero con tres derivados y el segundo con dos; solo se sortean verbos explicados hasta la unidad seleccionada.');
     const pool=latinLexPool('latin1','preverbs',selectedUnits());
+    const chosen=latinLexChosenRows('latin1','preverbs',selectedUnits());
     for(let i=0;i<2;i++){
      const select=document.createElement('select');select.id='lex-verb-'+i;
      const placeholder=document.createElement('option');placeholder.value='';placeholder.textContent='Sin verbo disponible';select.append(placeholder);
@@ -3431,6 +3437,7 @@ loadTeacherLatinLexBanks();
       select.append(option);
      }
      select.disabled=!pool.length;
+     select.value=chosen[i]?.prompt||'';
      select.onchange=()=>selectLatinPreverb(i,select.value);
      group.append(makeLabel('Verbo '+(i+1)+' ('+(i===0?3:2)+' derivados)',select));
     }
