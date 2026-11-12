@@ -5,13 +5,16 @@
   "objetivo": "Revisar exactamente 100 entradas ausentes del banco general; ninguna ficha pendiente se incorpora automáticamente.",
   "total_revisadas": 100,
   "resumen": {
-    "INCORPORADA": 3,
-    "DECISION_DOCENTE": 6,
+    "INCORPORADA": 4,
+    "EXCLUIDA_DOCENTE": 2,
+    "CORREGIDA_PENDIENTE": 1,
+    "VARIANTE_CORREGIDA": 1,
     "PENDIENTE_VERIFICACION": 62,
     "DUPLICADA_O_VARIANTE": 3,
-    "EXCLUIDA_CULTISMO": 26
+    "INCORPORADA_CULTA": 6,
+    "REVISION_CULTA_CONDICIONADA": 21
   },
-  "politica": "INCORPORADA está en el banco; DECISION_DOCENTE y PENDIENTE_VERIFICACION quedan fuera del sorteo; EXCLUIDA_CULTISMO y DUPLICADA_O_VARIANTE no son aptas. Las fichas ya presentes en el programa docente de Latín I se excluyen de la muestra de candidatas nuevas.",
+  "politica": "Solo las fichas INCORPORADA e INCORPORADA_CULTA constan en banco_examenes.json. Estas últimas han de conservar una etiqueta explícita de transmisión culta. EXCLUIDA_DOCENTE no se reconsidera sin aprobación; CORREGIDA_PENDIENTE y REVISION_CULTA_CONDICIONADA no son sorteables. Las demás siguen sin validar.",
   "items": [
     {
       "fila_origen": 281,
@@ -59,9 +62,10 @@
         "PALAT",
         "PRÓT"
       ],
-      "estado": "DECISION_DOCENTE",
-      "motivo": "Resultado histórico o étimo susceptible de elección docente; mantener fuera del sorteo.",
-      "idBanco": null
+      "estado": "EXCLUIDA_DOCENTE",
+      "motivo": "Decisión docente: excluir la voz histórica escriño del sorteo; no reconsiderar sin decisión expresa.",
+      "idBanco": null,
+      "decisionDocente": "excluir"
     },
     {
       "fila_origen": 854,
@@ -71,9 +75,10 @@
       "normasExcel": [
         "PALAT"
       ],
-      "estado": "DECISION_DOCENTE",
-      "motivo": "Resultado histórico o étimo susceptible de elección docente; mantener fuera del sorteo.",
-      "idBanco": null
+      "estado": "EXCLUIDA_DOCENTE",
+      "motivo": "Decisión docente: excluir quiñón del sorteo por su escasa frecuencia; no reconsiderar sin decisión expresa.",
+      "idBanco": null,
+      "decisionDocente": "excluir"
     },
     {
       "fila_origen": 559,
@@ -83,9 +88,12 @@
       "normasExcel": [
         "DIPT"
       ],
-      "estado": "DECISION_DOCENTE",
-      "motivo": "Resultado histórico o étimo susceptible de elección docente; mantener fuera del sorteo.",
-      "idBanco": null
+      "estado": "INCORPORADA",
+      "motivo": "Aceptación docente únicamente en la acepción cuento² = contera/extremo de lanza o bastón. Diptongación de ŏ tónica > ue; no confundir con cuento¹ 'relato' (< computum).",
+      "idBanco": "EVF-1074",
+      "decisionDocente": "aceptar_acepcion",
+      "acepcion": "contera o extremo de un bastón/lanza",
+      "fuenteRevision": "https://iedra.es/palabras/cuento"
     },
     {
       "fila_origen": 292,
@@ -95,9 +103,19 @@
       "normasExcel": [
         "DIPT"
       ],
-      "estado": "DECISION_DOCENTE",
-      "motivo": "Resultado histórico o étimo susceptible de elección docente; mantener fuera del sorteo.",
-      "idBanco": null
+      "estado": "CORREGIDA_PENDIENTE",
+      "motivo": "Se aprueba rectificar el masculino original a la variante vulgar femenina SŎCRAM (ac. de SOCRA) > suegra; Ø revisión de la sonorización de -cr- a -gr- no encaja en N17, definida para consonantes sordas intervocálicas. No se sortea hasta revisar la cadena y las reglas.",
+      "idBanco": null,
+      "decisionDocente": "corregir_femenino",
+      "latinCorregido": "sŏcram",
+      "castellanoCorregido": "suegra",
+      "normasPropuestas": [
+        "N07"
+      ],
+      "fuentesRevision": [
+        "https://iedra.es/palabras/suegra",
+        "https://ghcl.ub.edu/diccaxv/listings/WordsByFrequencyIndex/page%3A1174/sort%3Acontexto_count/direction%3Aasc/myLanguage%3Aes"
+      ]
     },
     {
       "fila_origen": 308,
@@ -108,9 +126,12 @@
         "GRIE",
         "PRÓT"
       ],
-      "estado": "DECISION_DOCENTE",
-      "motivo": "Confluyen las variantes del étimo STILUM; debe corregirse la forma y valorar su carácter culto.",
-      "idBanco": null
+      "estado": "VARIANTE_CORREGIDA",
+      "motivo": "Forma latinizante con y no usada aquí: se corrige a STILUM. La ficha canónica aparece en otra fila del Excel y se incorpora con etiqueta de adaptación culta.",
+      "idBanco": null,
+      "decisionDocente": "corregir",
+      "latinCorregido": "stilum",
+      "idBancoReferencia": "EVF-1075"
     },
     {
       "fila_origen": 52,
@@ -719,9 +740,12 @@
       "normasExcel": [
         "PRÓT"
       ],
-      "estado": "DECISION_DOCENTE",
-      "motivo": "Confluyen las variantes del étimo STILUM; debe corregirse la forma y valorar su carácter culto.",
-      "idBanco": null
+      "estado": "INCORPORADA_CULTA",
+      "motivo": "Étimo STILUM contrastado, pero introducción española culta; se examina solo la e- protética, con etiqueta visible «adaptación culta».",
+      "idBanco": "EVF-1075",
+      "decisionDocente": "corregir",
+      "etiqueta": "Adaptación culta",
+      "fuenteRevision": "https://ghcl.ub.edu/diccaxv/dictionary/ViewLema/8922"
     },
     {
       "fila_origen": 890,
@@ -939,9 +963,10 @@
         "ABER",
         "PALAT"
       ],
-      "estado": "EXCLUIDA_CULTISMO",
-      "motivo": "Transmisión culta, topónimo o adaptación gráfica; no se acredita evolución patrimonial completa; revisable si el profesor amplía el criterio.",
-      "idBanco": null
+      "estado": "REVISION_CULTA_CONDICIONADA",
+      "motivo": "La inclusión por vía culta está permitida solo después de contraste individual y con etiqueta visible; por ahora no participa en el sorteo.",
+      "idBanco": null,
+      "decisionDocente": "inclusion_condicionada"
     },
     {
       "fila_origen": 381,
@@ -951,9 +976,10 @@
       "normasExcel": [
         "ABER"
       ],
-      "estado": "EXCLUIDA_CULTISMO",
-      "motivo": "Transmisión culta, topónimo o adaptación gráfica; no se acredita evolución patrimonial completa; revisable si el profesor amplía el criterio.",
-      "idBanco": null
+      "estado": "REVISION_CULTA_CONDICIONADA",
+      "motivo": "La inclusión por vía culta está permitida solo después de contraste individual y con etiqueta visible; por ahora no participa en el sorteo.",
+      "idBanco": null,
+      "decisionDocente": "inclusion_condicionada"
     },
     {
       "fila_origen": 504,
@@ -964,9 +990,10 @@
         "PRÓT",
         "SIMPL"
       ],
-      "estado": "EXCLUIDA_CULTISMO",
-      "motivo": "Transmisión culta, topónimo o adaptación gráfica; no se acredita evolución patrimonial completa; revisable si el profesor amplía el criterio.",
-      "idBanco": null
+      "estado": "REVISION_CULTA_CONDICIONADA",
+      "motivo": "La inclusión por vía culta está permitida solo después de contraste individual y con etiqueta visible; por ahora no participa en el sorteo.",
+      "idBanco": null,
+      "decisionDocente": "inclusion_condicionada"
     },
     {
       "fila_origen": 616,
@@ -976,9 +1003,10 @@
       "normasExcel": [
         "GRIE"
       ],
-      "estado": "EXCLUIDA_CULTISMO",
-      "motivo": "Transmisión culta, topónimo o adaptación gráfica; no se acredita evolución patrimonial completa; revisable si el profesor amplía el criterio.",
-      "idBanco": null
+      "estado": "REVISION_CULTA_CONDICIONADA",
+      "motivo": "La inclusión por vía culta está permitida solo después de contraste individual y con etiqueta visible; por ahora no participa en el sorteo.",
+      "idBanco": null,
+      "decisionDocente": "inclusion_condicionada"
     },
     {
       "fila_origen": 617,
@@ -989,9 +1017,10 @@
         "GRIE",
         "MONOP"
       ],
-      "estado": "EXCLUIDA_CULTISMO",
-      "motivo": "Transmisión culta, topónimo o adaptación gráfica; no se acredita evolución patrimonial completa; revisable si el profesor amplía el criterio.",
-      "idBanco": null
+      "estado": "REVISION_CULTA_CONDICIONADA",
+      "motivo": "La inclusión por vía culta está permitida solo después de contraste individual y con etiqueta visible; por ahora no participa en el sorteo.",
+      "idBanco": null,
+      "decisionDocente": "inclusion_condicionada"
     },
     {
       "fila_origen": 618,
@@ -1002,9 +1031,10 @@
         "GRIE",
         "MONOP"
       ],
-      "estado": "EXCLUIDA_CULTISMO",
-      "motivo": "Transmisión culta, topónimo o adaptación gráfica; no se acredita evolución patrimonial completa; revisable si el profesor amplía el criterio.",
-      "idBanco": null
+      "estado": "REVISION_CULTA_CONDICIONADA",
+      "motivo": "La inclusión por vía culta está permitida solo después de contraste individual y con etiqueta visible; por ahora no participa en el sorteo.",
+      "idBanco": null,
+      "decisionDocente": "inclusion_condicionada"
     },
     {
       "fila_origen": 619,
@@ -1015,9 +1045,10 @@
         "GRIE",
         "MONOP"
       ],
-      "estado": "EXCLUIDA_CULTISMO",
-      "motivo": "Transmisión culta, topónimo o adaptación gráfica; no se acredita evolución patrimonial completa; revisable si el profesor amplía el criterio.",
-      "idBanco": null
+      "estado": "REVISION_CULTA_CONDICIONADA",
+      "motivo": "La inclusión por vía culta está permitida solo después de contraste individual y con etiqueta visible; por ahora no participa en el sorteo.",
+      "idBanco": null,
+      "decisionDocente": "inclusion_condicionada"
     },
     {
       "fila_origen": 620,
@@ -1028,9 +1059,10 @@
         "GRIE",
         "MONOP"
       ],
-      "estado": "EXCLUIDA_CULTISMO",
-      "motivo": "Transmisión culta, topónimo o adaptación gráfica; no se acredita evolución patrimonial completa; revisable si el profesor amplía el criterio.",
-      "idBanco": null
+      "estado": "REVISION_CULTA_CONDICIONADA",
+      "motivo": "La inclusión por vía culta está permitida solo después de contraste individual y con etiqueta visible; por ahora no participa en el sorteo.",
+      "idBanco": null,
+      "decisionDocente": "inclusion_condicionada"
     },
     {
       "fila_origen": 621,
@@ -1040,9 +1072,12 @@
       "normasExcel": [
         "GRIE"
       ],
-      "estado": "EXCLUIDA_CULTISMO",
-      "motivo": "Transmisión culta, topónimo o adaptación gráfica; no se acredita evolución patrimonial completa; revisable si el profesor amplía el criterio.",
-      "idBanco": null
+      "estado": "INCORPORADA_CULTA",
+      "motivo": "Etimología, vía culta y norma griega revisadas individualmente; la etiqueta visible es obligatoria.",
+      "idBanco": "EVF-1078",
+      "decisionDocente": "inclusion_condicionada",
+      "etiqueta": "Adaptación culta",
+      "fuenteRevision": "https://iedra.es/palabras/arquitecto"
     },
     {
       "fila_origen": 622,
@@ -1052,9 +1087,12 @@
       "normasExcel": [
         "GRIE"
       ],
-      "estado": "EXCLUIDA_CULTISMO",
-      "motivo": "Transmisión culta, topónimo o adaptación gráfica; no se acredita evolución patrimonial completa; revisable si el profesor amplía el criterio.",
-      "idBanco": null
+      "estado": "INCORPORADA_CULTA",
+      "motivo": "Etimología, vía culta y norma griega revisadas individualmente; la etiqueta visible es obligatoria.",
+      "idBanco": "EVF-1079",
+      "decisionDocente": "inclusion_condicionada",
+      "etiqueta": "Adaptación culta",
+      "fuenteRevision": "https://iedra.es/palabras/asfalto"
     },
     {
       "fila_origen": 623,
@@ -1064,9 +1102,10 @@
       "normasExcel": [
         "GRIE"
       ],
-      "estado": "EXCLUIDA_CULTISMO",
-      "motivo": "Transmisión culta, topónimo o adaptación gráfica; no se acredita evolución patrimonial completa; revisable si el profesor amplía el criterio.",
-      "idBanco": null
+      "estado": "REVISION_CULTA_CONDICIONADA",
+      "motivo": "La inclusión por vía culta está permitida solo después de contraste individual y con etiqueta visible; por ahora no participa en el sorteo.",
+      "idBanco": null,
+      "decisionDocente": "inclusion_condicionada"
     },
     {
       "fila_origen": 624,
@@ -1076,9 +1115,12 @@
       "normasExcel": [
         "GRIE"
       ],
-      "estado": "EXCLUIDA_CULTISMO",
-      "motivo": "Transmisión culta, topónimo o adaptación gráfica; no se acredita evolución patrimonial completa; revisable si el profesor amplía el criterio.",
-      "idBanco": null
+      "estado": "INCORPORADA_CULTA",
+      "motivo": "ATHLETAM > atleta: préstamo culto de la grafía griega θ > th > t, contrastado individualmente.",
+      "idBanco": "EVF-1076",
+      "decisionDocente": "inclusion_condicionada",
+      "etiqueta": "Adaptación culta",
+      "fuenteRevision": "https://iedra.es/palabras/atleta"
     },
     {
       "fila_origen": 625,
@@ -1088,9 +1130,12 @@
       "normasExcel": [
         "GRIE"
       ],
-      "estado": "EXCLUIDA_CULTISMO",
-      "motivo": "Transmisión culta, topónimo o adaptación gráfica; no se acredita evolución patrimonial completa; revisable si el profesor amplía el criterio.",
-      "idBanco": null
+      "estado": "INCORPORADA_CULTA",
+      "motivo": "BLASPHEMIAM > blasfemia: helenismo latino tardío con ph > f, contrastado individualmente.",
+      "idBanco": "EVF-1077",
+      "decisionDocente": "inclusion_condicionada",
+      "etiqueta": "Adaptación culta",
+      "fuenteRevision": "https://iedra.es/palabras/blasfemia"
     },
     {
       "fila_origen": 626,
@@ -1100,9 +1145,10 @@
       "normasExcel": [
         "GRIE"
       ],
-      "estado": "EXCLUIDA_CULTISMO",
-      "motivo": "Transmisión culta, topónimo o adaptación gráfica; no se acredita evolución patrimonial completa; revisable si el profesor amplía el criterio.",
-      "idBanco": null
+      "estado": "REVISION_CULTA_CONDICIONADA",
+      "motivo": "La inclusión por vía culta está permitida solo después de contraste individual y con etiqueta visible; por ahora no participa en el sorteo.",
+      "idBanco": null,
+      "decisionDocente": "inclusion_condicionada"
     },
     {
       "fila_origen": 627,
@@ -1112,9 +1158,10 @@
       "normasExcel": [
         "GRIE"
       ],
-      "estado": "EXCLUIDA_CULTISMO",
-      "motivo": "Transmisión culta, topónimo o adaptación gráfica; no se acredita evolución patrimonial completa; revisable si el profesor amplía el criterio.",
-      "idBanco": null
+      "estado": "REVISION_CULTA_CONDICIONADA",
+      "motivo": "La inclusión por vía culta está permitida solo después de contraste individual y con etiqueta visible; por ahora no participa en el sorteo.",
+      "idBanco": null,
+      "decisionDocente": "inclusion_condicionada"
     },
     {
       "fila_origen": 628,
@@ -1125,9 +1172,10 @@
         "GRIE",
         "MONOP"
       ],
-      "estado": "EXCLUIDA_CULTISMO",
-      "motivo": "Transmisión culta, topónimo o adaptación gráfica; no se acredita evolución patrimonial completa; revisable si el profesor amplía el criterio.",
-      "idBanco": null
+      "estado": "REVISION_CULTA_CONDICIONADA",
+      "motivo": "La inclusión por vía culta está permitida solo después de contraste individual y con etiqueta visible; por ahora no participa en el sorteo.",
+      "idBanco": null,
+      "decisionDocente": "inclusion_condicionada"
     },
     {
       "fila_origen": 629,
@@ -1137,9 +1185,10 @@
       "normasExcel": [
         "GRIE"
       ],
-      "estado": "EXCLUIDA_CULTISMO",
-      "motivo": "Transmisión culta, topónimo o adaptación gráfica; no se acredita evolución patrimonial completa; revisable si el profesor amplía el criterio.",
-      "idBanco": null
+      "estado": "REVISION_CULTA_CONDICIONADA",
+      "motivo": "La inclusión por vía culta está permitida solo después de contraste individual y con etiqueta visible; por ahora no participa en el sorteo.",
+      "idBanco": null,
+      "decisionDocente": "inclusion_condicionada"
     },
     {
       "fila_origen": 630,
@@ -1149,9 +1198,10 @@
       "normasExcel": [
         "GRIE"
       ],
-      "estado": "EXCLUIDA_CULTISMO",
-      "motivo": "Transmisión culta, topónimo o adaptación gráfica; no se acredita evolución patrimonial completa; revisable si el profesor amplía el criterio.",
-      "idBanco": null
+      "estado": "REVISION_CULTA_CONDICIONADA",
+      "motivo": "La inclusión por vía culta está permitida solo después de contraste individual y con etiqueta visible; por ahora no participa en el sorteo.",
+      "idBanco": null,
+      "decisionDocente": "inclusion_condicionada"
     },
     {
       "fila_origen": 631,
@@ -1161,9 +1211,10 @@
       "normasExcel": [
         "GRIE"
       ],
-      "estado": "EXCLUIDA_CULTISMO",
-      "motivo": "Transmisión culta, topónimo o adaptación gráfica; no se acredita evolución patrimonial completa; revisable si el profesor amplía el criterio.",
-      "idBanco": null
+      "estado": "REVISION_CULTA_CONDICIONADA",
+      "motivo": "La inclusión por vía culta está permitida solo después de contraste individual y con etiqueta visible; por ahora no participa en el sorteo.",
+      "idBanco": null,
+      "decisionDocente": "inclusion_condicionada"
     },
     {
       "fila_origen": 633,
@@ -1174,9 +1225,12 @@
         "GRIE",
         "MONOP"
       ],
-      "estado": "EXCLUIDA_CULTISMO",
-      "motivo": "Transmisión culta, topónimo o adaptación gráfica; no se acredita evolución patrimonial completa; revisable si el profesor amplía el criterio.",
-      "idBanco": null
+      "estado": "INCORPORADA_CULTA",
+      "motivo": "Etimología, vía culta y norma griega revisadas individualmente; la etiqueta visible es obligatoria.",
+      "idBanco": "EVF-1080",
+      "decisionDocente": "inclusion_condicionada",
+      "etiqueta": "Adaptación culta",
+      "fuenteRevision": "https://iedra.es/palabras/quimera"
     },
     {
       "fila_origen": 634,
@@ -1186,9 +1240,10 @@
       "normasExcel": [
         "GRIE"
       ],
-      "estado": "EXCLUIDA_CULTISMO",
-      "motivo": "Transmisión culta, topónimo o adaptación gráfica; no se acredita evolución patrimonial completa; revisable si el profesor amplía el criterio.",
-      "idBanco": null
+      "estado": "REVISION_CULTA_CONDICIONADA",
+      "motivo": "La inclusión por vía culta está permitida solo después de contraste individual y con etiqueta visible; por ahora no participa en el sorteo.",
+      "idBanco": null,
+      "decisionDocente": "inclusion_condicionada"
     },
     {
       "fila_origen": 635,
@@ -1198,9 +1253,10 @@
       "normasExcel": [
         "GRIE"
       ],
-      "estado": "EXCLUIDA_CULTISMO",
-      "motivo": "Transmisión culta, topónimo o adaptación gráfica; no se acredita evolución patrimonial completa; revisable si el profesor amplía el criterio.",
-      "idBanco": null
+      "estado": "REVISION_CULTA_CONDICIONADA",
+      "motivo": "La inclusión por vía culta está permitida solo después de contraste individual y con etiqueta visible; por ahora no participa en el sorteo.",
+      "idBanco": null,
+      "decisionDocente": "inclusion_condicionada"
     },
     {
       "fila_origen": 636,
@@ -1210,9 +1266,10 @@
       "normasExcel": [
         "GRIE"
       ],
-      "estado": "EXCLUIDA_CULTISMO",
-      "motivo": "Transmisión culta, topónimo o adaptación gráfica; no se acredita evolución patrimonial completa; revisable si el profesor amplía el criterio.",
-      "idBanco": null
+      "estado": "REVISION_CULTA_CONDICIONADA",
+      "motivo": "La inclusión por vía culta está permitida solo después de contraste individual y con etiqueta visible; por ahora no participa en el sorteo.",
+      "idBanco": null,
+      "decisionDocente": "inclusion_condicionada"
     },
     {
       "fila_origen": 637,
@@ -1222,9 +1279,10 @@
       "normasExcel": [
         "GRIE"
       ],
-      "estado": "EXCLUIDA_CULTISMO",
-      "motivo": "Transmisión culta, topónimo o adaptación gráfica; no se acredita evolución patrimonial completa; revisable si el profesor amplía el criterio.",
-      "idBanco": null
+      "estado": "REVISION_CULTA_CONDICIONADA",
+      "motivo": "La inclusión por vía culta está permitida solo después de contraste individual y con etiqueta visible; por ahora no participa en el sorteo.",
+      "idBanco": null,
+      "decisionDocente": "inclusion_condicionada"
     },
     {
       "fila_origen": 638,
@@ -1235,9 +1293,10 @@
         "GRIE",
         "MONOP"
       ],
-      "estado": "EXCLUIDA_CULTISMO",
-      "motivo": "Transmisión culta, topónimo o adaptación gráfica; no se acredita evolución patrimonial completa; revisable si el profesor amplía el criterio.",
-      "idBanco": null
+      "estado": "REVISION_CULTA_CONDICIONADA",
+      "motivo": "La inclusión por vía culta está permitida solo después de contraste individual y con etiqueta visible; por ahora no participa en el sorteo.",
+      "idBanco": null,
+      "decisionDocente": "inclusion_condicionada"
     },
     {
       "fila_origen": 641,
@@ -1247,9 +1306,27 @@
       "normasExcel": [
         "GRIE"
       ],
-      "estado": "EXCLUIDA_CULTISMO",
-      "motivo": "Transmisión culta, topónimo o adaptación gráfica; no se acredita evolución patrimonial completa; revisable si el profesor amplía el criterio.",
-      "idBanco": null
+      "estado": "REVISION_CULTA_CONDICIONADA",
+      "motivo": "La inclusión por vía culta está permitida solo después de contraste individual y con etiqueta visible; por ahora no participa en el sorteo.",
+      "idBanco": null,
+      "decisionDocente": "inclusion_condicionada"
     }
-  ]
+  ],
+  "revision_docente": {
+    "fecha": "2026-11-12",
+    "decisiones": {
+      "scrinium": "excluir",
+      "quinionem": "excluir",
+      "contum": "aceptar_acepcion",
+      "socrum": "corregir_femenino",
+      "stilum": "corregir",
+      "cultismos": "inclusion_condicionada"
+    },
+    "nota": "Se mantienen 100 filas de origen. La corrección del étimo no inventa otra fila del Excel.",
+    "nuevas_verificaciones_cultas": [
+      "architectum",
+      "asphaltum",
+      "Chimæram"
+    ]
+  }
 }

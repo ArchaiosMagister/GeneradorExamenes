@@ -2,7 +2,7 @@
   "esquema": "evoluciones-latin-castellano/v1",
   "revision": "2026-11-12",
   "origen": "Banco docente de evoluciones fonéticas y ampliaciones auditadas a partir del Excel final de 1058 formas.",
-  "criterio": "526 fichas APTO_PROPUESTO tras auditoría de 100 candidatos; el resto de las 100 queda documentado como pendiente, excluido o variante. Ninguna ficha en revisión se sortea.",
+  "criterio": "533 entradas aptas. Las adaptaciones cultas solo se activan tras revisión etimológica individual y se etiquetan en examen/Word; las excluidas y pendientes siguen fuera del sorteo.",
   "idioma_origen": "la",
   "idioma_destino": "es",
   "normas": [
@@ -6911,6 +6911,119 @@
       "lote": 15,
       "revision": "2026-11-12",
       "auditoria": "data/fonetica/auditoria-excel-lote-100-20261112.json"
+    },
+    {
+      "id": "EVF-1074",
+      "latin": "contum",
+      "castellano": "cuento",
+      "normas": [
+        "N07"
+      ],
+      "fila_origen": 559,
+      "observacion": "CONTUM (acusativo de CONTUS, latín de origen griego) > cuento²: 'contera, punta opuesta a la punta de una lanza, bastón o pica; puntal'. No es cuento¹ 'relato', que procede de COMPUTUM. Diptongación de ŏ tónica > ue; esta acepción histórica debe permanecer explícita.",
+      "fuente": "https://iedra.es/palabras/cuento",
+      "estado": "APTO_PROPUESTO",
+      "lote": 16,
+      "revision_docente": "aceptar_acepcion",
+      "tipoTransmision": "PATRIMONIAL",
+      "etiquetaAcepcion": "contera o extremo de bastón/lanza"
+    },
+    {
+      "id": "EVF-1075",
+      "latin": "stilum",
+      "castellano": "estilo",
+      "normas": [
+        "N14"
+      ],
+      "fila_origen": 889,
+      "observacion": "STILUM, acusativo de STILUS 'punzón para escribir', no STYLUM con y griega. De transmisión culta, no evolución patrimonial integral: se estudia solo la adaptación/protesis e- ante st-. Su carácter culto se mostrará expresamente en el examen.",
+      "fuente": "https://ghcl.ub.edu/diccaxv/dictionary/ViewLema/8922",
+      "estado": "APTO_PROPUESTO",
+      "lote": 16,
+      "revision_docente": "corregir",
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta"
+    },
+    {
+      "id": "EVF-1076",
+      "latin": "athletam",
+      "castellano": "atleta",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 624,
+      "observacion": "ATHLETAM, acusativo de ATHLETA, préstamo latino del griego ἀθλητής. Adaptación culta de la grafía th > t; no se presenta como evolución fonética patrimonial. Correspondencia y mecanismo comprobados individualmente.",
+      "fuente": "https://iedra.es/palabras/atleta",
+      "estado": "APTO_PROPUESTO",
+      "lote": 16,
+      "revision_docente": "inclusion_condicionada",
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta"
+    },
+    {
+      "id": "EVF-1077",
+      "latin": "blasphemiam",
+      "castellano": "blasfemia",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 625,
+      "observacion": "BLASPHEMIAM, acusativo del latín tardío BLASPHEMIA, procedente del griego βλασφημία. Adaptación de ph > f en transmisión culta; no debe tratarse como evolución patrimonial integral. Comprobación etimológica individual.",
+      "fuente": "https://iedra.es/palabras/blasfemia",
+      "estado": "APTO_PROPUESTO",
+      "lote": 16,
+      "revision_docente": "inclusion_condicionada",
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta"
+    },
+    {
+      "id": "EVF-1078",
+      "latin": "architectum",
+      "castellano": "arquitecto",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 621,
+      "observacion": "ARCHITECTUM, acusativo de ARCHITECTUS (gr. ἀρχιτέκτων): préstamo culto en el que la grafía ch se adapta como qu ante i. Se conserva -ct-, de modo que no se presenta como resultado patrimonial; solo se analiza N10.",
+      "fuente": "https://iedra.es/palabras/arquitecto",
+      "estado": "APTO_PROPUESTO",
+      "lote": 17,
+      "revision_docente": "inclusion_condicionada",
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta"
+    },
+    {
+      "id": "EVF-1079",
+      "latin": "asphaltum",
+      "castellano": "asfalto",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 622,
+      "observacion": "ASPHALTUM, acusativo del latín tardío ASPHALTUS, del griego ἄσφαλτος: helenismo culto, ph > f. Sin cambios populares adicionales exigibles: solo adaptación gráfica N10.",
+      "fuente": "https://iedra.es/palabras/asfalto",
+      "estado": "APTO_PROPUESTO",
+      "lote": 17,
+      "revision_docente": "inclusion_condicionada",
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta"
+    },
+    {
+      "id": "EVF-1080",
+      "latin": "Chimæram",
+      "castellano": "quimera",
+      "normas": [
+        "N10",
+        "N12"
+      ],
+      "fila_origen": 633,
+      "observacion": "CHIMÆRAM, acusativo del latín CHIMAERA, del griego χίμαιρα: adaptación culta ch > qu, y monoptongación de ae > e. Se mantiene la etiqueta por ser helenismo incorporado por vía escrita.",
+      "fuente": "https://iedra.es/palabras/quimera",
+      "estado": "APTO_PROPUESTO",
+      "lote": 17,
+      "revision_docente": "inclusion_condicionada",
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta"
     }
   ],
   "ampliacion": {
@@ -7047,6 +7160,33 @@
       "excluidas_cultismo": 26,
       "duplicadas_o_variantes": 3,
       "registro": "data/fonetica/auditoria-excel-lote-100-20261112.json"
+    },
+    "lote_16": {
+      "fecha": "2026-11-12",
+      "agregadas": 4,
+      "aprobadaAcepcion": "contum > cuento² (contera, no relato)",
+      "correccion": "stylum > stilum (transmisión culta)",
+      "cultismosIndividuales": [
+        "athletam",
+        "blasphemiam",
+        "stilum"
+      ],
+      "noAptas": [
+        "scrinium",
+        "quinionem"
+      ],
+      "correccionPendiente": "sŏcrum > sŏcram > suegra, pendiente de encaje completo de normas",
+      "registro": "data/fonetica/decisiones-docentes.json"
+    },
+    "lote_17": {
+      "fecha": "2026-11-12",
+      "cantidad": 3,
+      "candidatas_condicionadas_verificadas": [
+        "architectum",
+        "asphaltum",
+        "Chimæram"
+      ],
+      "motivo": "Continuación progresiva del cotejo del Excel, con clasificación como adaptación culta y comprobación de las normas"
     }
   }
 }
