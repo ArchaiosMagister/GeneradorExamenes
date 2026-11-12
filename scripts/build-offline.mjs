@@ -65,9 +65,9 @@ export async function renderOffline(root=projectRoot){
     syllabus.units.reduce((n,x)=>n+(x.verbs?.length||0),0)!==28)
   throw new Error('Programa docente de modificación preverbial incompleto');
  const phonetics=JSON.parse(await readFile(resolve(root,'data/fonetica/banco_examenes.json'),'utf8'));
- if(phonetics.esquema!=='evoluciones-latin-castellano/v1'||phonetics.items?.length!==510||
-  new Set(phonetics.items.map(x=>x.id)).size!==510)
-  throw new Error('El banco fonético integrado debe contener 510 fichas distintas');
+ if(phonetics.esquema!=='evoluciones-latin-castellano/v1'||phonetics.items?.length<510||
+  new Set(phonetics.items.map(x=>x.id)).size!==phonetics.items.length)
+  throw new Error('El banco fonético integrado debe contener al menos 510 fichas distintas');
  const lat1PhoneticsPath='data/fonetica/lat1-programacion.json';
  const lat1Phonetics=JSON.parse(await readFile(resolve(root,lat1PhoneticsPath),'utf8'));
  if(lat1Phonetics.schema!==1||lat1Phonetics.course!=='latin1'||lat1Phonetics.unidades?.length!==11||

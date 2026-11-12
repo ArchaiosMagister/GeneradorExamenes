@@ -1,8 +1,8 @@
 {
   "esquema": "evoluciones-latin-castellano/v1",
-  "revision": "2026-11-10",
-  "origen": "Banco docente de evoluciones fonéticas: 330 iniciales, ampliación 100, ampliación PAU 30 y nueva ampliación 50.",
-  "criterio": "510 candidatas a examen (APTO_PROPUESTO). Los étimos y etiquetas se ofrecen como preselección didáctica y no como garantía de probabilidad de aparición en PAU.",
+  "revision": "2026-11-12",
+  "origen": "Banco docente de evoluciones fonéticas: 510 candidatas previas y lote 11 con 3 fichas nuevas revisadas contra el Excel final.",
+  "criterio": "513 candidatas a examen (APTO_PROPUESTO); preselección didáctica, no certificación lexicográfica definitiva.",
   "idioma_origen": "la",
   "idioma_destino": "es",
   "normas": [
@@ -6671,6 +6671,49 @@
       "estado": "APTO_PROPUESTO",
       "criterio_pau": "Voz de uso reconocible o útil para explicar cambios fonéticos de Latín II; sin predicción de aparición en PAU.",
       "lote": 3
+    },
+    {
+      "id": "EVF-1058",
+      "fila_origen": 431,
+      "latin": "sagittam",
+      "castellano": "saeta",
+      "normas": [
+        "N01",
+        "N15",
+        "N16"
+      ],
+      "observacion": "Sagittam > saeta: simplificación de -tt-, pérdida de -g- intervocálica y evolución del vocalismo interior. Se conserva la correspondencia del Excel docente; las etapas históricas se presentan como propuesta didáctica.",
+      "fuente": "Excel docente: banco_evolucion_fonetica_final_10_lotes.xlsx, fila 431",
+      "estado": "APTO_PROPUESTO",
+      "lote": 11
+    },
+    {
+      "id": "EVF-1059",
+      "fila_origen": 343,
+      "latin": "vivite",
+      "castellano": "vivid",
+      "normas": [
+        "N03",
+        "N17"
+      ],
+      "observacion": "Vivite > vivid: sonorización de la dental -t- de la terminación del imperativo plural y pérdida de -e final. Forma verbal, no derivación léxica nominal.",
+      "fuente": "Excel docente: banco_evolucion_fonetica_final_10_lotes.xlsx, fila 343",
+      "estado": "APTO_PROPUESTO",
+      "lote": 11
+    },
+    {
+      "id": "EVF-1060",
+      "fila_origen": 447,
+      "latin": "tripedem",
+      "castellano": "trébede",
+      "normas": [
+        "N01",
+        "N17"
+      ],
+      "observacion": "Trĭpedem > trébede: abertura de ĭ breve y sonorización de -p- intervocálica en -b-; resultado lexicalizado femenino. El étimo procede del paradigma de tripes, tripedis.",
+      "fuente": "Excel docente: banco_evolucion_fonetica_final_10_lotes.xlsx, fila 447",
+      "estado": "APTO_PROPUESTO",
+      "lote": 11
     }
   ],
   "ampliacion": {
@@ -6771,6 +6814,12 @@
         975
       ],
       "criterio": "Evoluciones de vocabulario común o escolar, sin duplicados; corrección documentada de plannum a planum."
+    },
+    "lote_11": {
+      "fecha": "2026-11-12",
+      "cantidad": 3,
+      "origen": "Excel docente final de 1058 formas",
+      "criterio": "Revisión individual de formas no presentes en el banco"
     }
   }
 }

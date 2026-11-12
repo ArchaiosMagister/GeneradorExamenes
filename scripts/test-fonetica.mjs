@@ -7,8 +7,8 @@ import {PALABRAS_POR_EXAMEN,seleccionarEvoluciones} from '../data/fonetica/selec
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const banco=JSON.parse(readFileSync(resolve(root,'data/fonetica/banco_examenes.json'),'utf8'));
 const ids=banco.items.map(x=>x.id);
-assert.equal(banco.items.length,510);
-assert.equal(new Set(ids).size,510,'Identificadores duplicados');
+assert.equal(banco.items.length,513);
+assert.equal(new Set(ids).size,banco.items.length,'Identificadores duplicados');
 assert.equal(banco.normas.length,20);
 assert.equal(PALABRAS_POR_EXAMEN,4);
 const loteCincuenta=banco.items.filter(x=>x.lote===3);
@@ -23,6 +23,19 @@ const validas=new Set(banco.normas.map(x=>x.id));
 for(const e of banco.items){
  assert(e.latin&&e.castellano&&e.estado==='APTO_PROPUESTO','Ficha incompleta');
  assert(e.normas.length>0&&e.normas.every(n=>validas.has(n)),'Normas inexistentes');
+}
+const loteOnce=banco.items.filter(e=>e.lote===11);
+assert.equal(loteOnce.length,3,'El primer lote del Excel debe contener tres fichas');
+for(const [latin,castellano,normas] of [
+ ['sagittam','saeta',['N01','N15','N16']],
+ ['vivite','vivid',['N03','N17']],
+ ['tripedem','trébede',['N01','N17']]
+]){
+ const row=loteOnce.find(e=>e.latin===latin);
+ assert(row,'Falta en el banco '+latin);
+ assert.equal(row.castellano,castellano);
+ assert.deepEqual(row.normas,normas);
+ assert.equal(row.estado,'APTO_PROPUESTO');
 }
 const todas=banco.normas.map(n=>n.id);
 const caso=seleccionarEvoluciones(banco,{normasSeleccionadas:todas,semilla:'mismo-examen'});
@@ -40,4 +53,4 @@ for(const n of todas){
  assert(r.ejercicios.length===0||r.ejercicios.length===4,'Cantidad distinta de cuatro');
  assert(r.controlDocente.every(x=>x.normas.every(c=>c===n)),'Filtrado incorrecto');
 }
-console.log('OK: 510 fichas, 20 normas, 4 palabras o ninguna.');
+console.log('OK: '+banco.items.length+' fichas, 20 normas, 4 palabras o ninguna.');
