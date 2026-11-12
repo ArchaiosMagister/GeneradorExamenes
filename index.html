@@ -1637,7 +1637,7 @@ function latinVerbExamEnunciation(entry,chosen,paradigm=null){
  const lemma=headLex(raw)||headLex(source);
  const max=Math.max(0,...chosen.map(examUnitNumber).filter(Number.isInteger));
  const perfectIntroduced={latin1:4,latin4:4}[currentCourse()]||Infinity;
- if(max<perfectIntroduced)return lemma+(conj?', '+conj+'ª':'');
+ if(max<perfectIntroduced)return lemma+(conj?', '+conj+'ª':/\(mx\.\)/i.test(raw)?', mixta':'');
  return latinDisplayEnunciation(raw.includes(',')?raw:source||raw);
 }
 function latinMorphologyEnunciation(item,chosen){
@@ -1799,6 +1799,27 @@ function latinSchoolVerbRows(chosen){
   for(const [id,min,tense,voice] of LATIN_SCHOOL_SCHEDULE){
    const forms=LATIN_SUM_SCHOOL[id];
    if(limit>=min&&forms)add(x,p,id,tense,voice,forms);
+  }
+ }
+ // «capio» es 3.ª conjugación mixta y NO se infiere con mVerb.
+ // Se incorporan solo sus formas escolares documentadas, por lista cerrada.
+ const capioForms={
+  'present-active':['capio','capis','capit','capimus','capitis','capiunt'],
+  'imperfect-active':['capiebam','capiebas','capiebat','capiebamus','capiebatis','capiebant'],
+  'present-passive':['capior','caperis','capitur','capimur','capimini','capiuntur'],
+  'imperfect-passive':['capiebar','capiebaris','capiebatur','capiebamur','capiebamini','capiebantur'],
+  'perfect-active':['cepi','cepisti','cepit','cepimus','cepistis','ceperunt'],
+  'pluperfect-active':['ceperam','ceperas','ceperat','ceperamus','ceperatis','ceperant'],
+  'future-active':['capiam','capies','capiet','capiemus','capietis','capient'],
+  'future-passive':['capiar','capieris','capietur','capiemur','capiemini','capientur'],
+  'perfect-passive':['captus sum','captus es','captus est','capti sumus','capti estis','capti sunt']
+ };
+ if(course==='latin1')for(const x of latinSharedBank.vocabulary(course,chosen)){
+  if(!/^capio,\s*cepi,\s*captum\s*\(mx\.\)/i.test(mNormalize(x.entry)))continue;
+  for(const [id,min,tense,voice] of LATIN_SCHOOL_SCHEDULE){
+   if(limit<min)continue;
+   const forms=capioForms[id];
+   if(forms)add(x,{forms,sourceEntry:x.entry},id,tense,voice,forms,x.entry);
   }
  }
  return out;
@@ -2699,7 +2720,9 @@ const GREEK_SCHOOL_VERB_TABLES=[
  {key:'λυω',lemma:'λύω',unit:12,tense:'aoristo sigmático',voice:'activa',
   forms:['ἔλυσα','ἔλυσας','ἔλυσε(ν)','ἐλύσαμεν','ἐλύσατε','ἔλυσαν']},
  {key:'λυω',lemma:'λύω',unit:13,tense:'perfecto',voice:'activa',
-  forms:['λέλυκα','λέλυκας','λέλυκε(ν)','λελύκαμεν','λελύκατε','λελύκασι(ν)']}
+  forms:['λέλυκα','λέλυκας','λέλυκε(ν)','λελύκαμεν','λελύκατε','λελύκασι(ν)']},
+ {key:'λειπω',lemma:'λείπω',unit:12,tense:'aoristo temático',voice:'activa',
+  forms:['ἔλιπον','ἔλιπες','ἔλιπε(ν)','ἐλίπομεν','ἐλίπετε','ἔλιπον']}
 ];
 const GREEK_SCHOOL_NOUN_TABLES=[
  {key:'πολις',unit:8,lemma:'πόλις, πόλεως (ἡ)',
