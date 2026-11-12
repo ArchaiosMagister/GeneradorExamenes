@@ -1708,7 +1708,7 @@ const LATIN_SCHOOL_SCHEDULE=[
 function latinRegularPassiveForms(paradigm,tense){
  const conjugation=paradigm.conj,lemma=paradigm.lemma;
  if(![1,2,3,4].includes(conjugation)||!/^[A-Za-z]+$/.test(lemma))return null;
- const base=lemma.slice(0,conjugation===2||conjugation===4?2:1);
+ const base=lemma.slice(0,conjugation===2||conjugation===4?-2:-1);
  const endings={
   1:{present:['or','aris','atur','amur','amini','antur'],
      imperfect:['abar','abaris','abatur','abamur','abamini','abantur'],
