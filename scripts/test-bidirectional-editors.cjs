@@ -57,11 +57,18 @@ function readZipEntry(bytes,name){
     },{course,model,unit});
     await page.waitForFunction(()=>!!document.querySelector('#paper .exam-sheet'));
    }
+   async function reveal(locator){
+    await locator.evaluate(el=>{
+     for(let node=el;node;node=node.parentElement)
+      if(node.tagName==='DETAILS')node.open=true;
+    });
+   }
    const summary=[];
    let serial=0;
    async function pair(kind,editorSelector,attr){
     const editor=page.locator(editorSelector).first();
     assert(await editor.count()>0,filename+': no aparece el editor '+kind);
+    await reveal(editor);
     const id=await editor.getAttribute('data-'+attr);
     assert(id,filename+': falta identidad en el editor '+kind);
     const locator=page.locator('#paper [data-'+attr+'="'+id+'"]').first();
@@ -128,6 +135,7 @@ function readZipEntry(bytes,name){
    ]){
     const input=page.locator('#'+inputId),slot=page.locator('#paper [data-lex-slot="'+kind+':0"] i');
     assert(await input.count()&&await slot.count(),filename+': falta editor o forma de '+kind);
+    await reveal(input);
     const before=await page.evaluate(()=>Object.fromEntries(['preverbs','phonetics','prefixes','latinisms']
      .map(kind=>[kind,(examSelectionCache.get(examCacheSignature('lex-'+kind))||[])
       .map(x=>x.prompt)])));
@@ -149,6 +157,7 @@ function readZipEntry(bytes,name){
    // Las oraciones mantienen su editor multilinea y el vocabulario automático.
    await configure('latin1','mixto','UD4');
    const sentences=page.locator('#newSentences'),first=page.locator('#paper [data-sentence-slot="0"]');
+   await reveal(sentences);
    await sentences.fill('Puella ambulat.\nNauta laborat.');
    assert.equal(await first.textContent(),'Puella ambulat.');
    await first.fill('Poeta scribit.');
@@ -159,6 +168,7 @@ function readZipEntry(bytes,name){
    // El textarea de sintagmas y el editor individual trabajan sobre el mismo papel.
    await configure('latin1','morf','UD7');
    const syntagms=page.locator('#morphSyntagms');
+   await reveal(syntagms);
    await syntagms.fill('magnus, –a, –um + puer, –i\nbonus, –a, –um + servus, –i');
    const syntagm=page.locator('#paper [data-syntagm-slot="0"] i');
    assert.equal(await syntagm.textContent(),'magnus, –a, –um + puer, –i');
