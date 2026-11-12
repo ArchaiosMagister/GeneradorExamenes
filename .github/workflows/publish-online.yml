@@ -47,7 +47,7 @@ jobs:
           set -euo pipefail
           mkdir -p _site
           cp index.html offline.html _site/
-          for asset in offline-lemmas.js verification-review.js greek-review.js eulexis-local.js culture-lat4.js lexicon-valenciano.js vocabulary-quality.js vocabulary-generator.js exam-scoring.js pwa.js manifest.webmanifest; do
+          for asset in offline-lemmas.js verification-review.js greek-review.js eulexis-local.js culture-lat4.js lexicon-valenciano.js required-latin-units.js vocabulary-quality.js vocabulary-generator.js exam-scoring.js pwa.js manifest.webmanifest; do
             test -f "$asset"
             cp "$asset" _site/
           done
