@@ -4055,7 +4055,10 @@ window.ExaminaMorphology={lookup,stats,importText};
   if(glossaryGroup)glossaryGroup.hidden=isMorph;
   if(isMorph){const offered=$('morphOffer'),declined=$('morphDecline');for(const option of declined.options)option.disabled=+option.value>+offered.value;if(+declined.value>+offered.value)declined.value=offered.value}
  };
- block.addEventListener('change',()=>{update();generate()});
+ block.addEventListener('change',event=>{
+  if(event.target.id==='morphSyntagms')return;
+  update();generate();
+ });
  // El campo multilinea modifica solamente los sintagmas, sin sortear de nuevo
  // el resto del examen; el editor individual refleja esa misma selección.
  block.querySelector('#morphSyntagms').addEventListener('input',event=>{
