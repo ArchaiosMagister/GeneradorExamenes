@@ -467,6 +467,237 @@
       "form": "parentibus",
       "tags": "N;ABL;PL",
       "reference": "https://en.wiktionary.org/wiki/parens"
+    },
+    {
+      "lang": "lat",
+      "lemma": "sum",
+      "form": "esse",
+      "tags": "V;INF;ACT;PRS",
+      "reference": "https://en.wiktionary.org/wiki/sum"
+    },
+    {
+      "lang": "lat",
+      "lemma": "lego",
+      "form": "lege",
+      "tags": "V;IMP;ACT;PRS;2;SG",
+      "reference": "https://en.wiktionary.org/wiki/lego"
+    },
+    {
+      "lang": "lat",
+      "lemma": "curro",
+      "form": "currere",
+      "tags": "V;INF;ACT;PRS",
+      "reference": "https://en.wiktionary.org/wiki/curro"
+    },
+    {
+      "lang": "lat",
+      "lemma": "capio",
+      "form": "cepit",
+      "tags": "V;IND;ACT;PRF;3;SG",
+      "reference": "https://en.wiktionary.org/wiki/cepit"
+    },
+    {
+      "lang": "lat",
+      "lemma": "capio",
+      "form": "ceperunt",
+      "tags": "V;IND;ACT;PRF;3;PL",
+      "reference": "https://en.wiktionary.org/wiki/ceperunt"
+    },
+    {
+      "lang": "lat",
+      "lemma": "facio",
+      "form": "fecerant",
+      "tags": "V;IND;ACT;PSTP;3;PL",
+      "reference": "https://en.wiktionary.org/wiki/facio"
+    },
+    {
+      "lang": "lat",
+      "lemma": "pugno",
+      "form": "pugnaverant",
+      "tags": "V;IND;ACT;PSTP;3;PL",
+      "reference": "https://en.wiktionary.org/wiki/pugno"
+    },
+    {
+      "lang": "lat",
+      "lemma": "pugno",
+      "form": "pugnaverat",
+      "tags": "V;IND;ACT;PSTP;3;SG",
+      "reference": "https://en.wiktionary.org/wiki/pugno"
+    },
+    {
+      "lang": "lat",
+      "lemma": "duco",
+      "form": "duc",
+      "tags": "V;IMP;ACT;PRS;2;SG",
+      "reference": "https://en.wiktionary.org/wiki/duco"
+    },
+    {
+      "lang": "lat",
+      "lemma": "eo",
+      "form": "ibat",
+      "tags": "V;IND;ACT;PST;IPFV;3;SG",
+      "reference": "https://en.wiktionary.org/wiki/ibat"
+    },
+    {
+      "lang": "lat",
+      "lemma": "possum",
+      "form": "potest",
+      "tags": "V;IND;ACT;PRS;3;SG",
+      "reference": "https://en.wiktionary.org/wiki/potest"
+    },
+    {
+      "lang": "lat",
+      "lemma": "scribo",
+      "form": "scripsit",
+      "tags": "V;IND;ACT;PRF;3;SG",
+      "reference": "https://en.wiktionary.org/wiki/scribo"
+    },
+    {
+      "lang": "lat",
+      "lemma": "deleo",
+      "form": "delebantur",
+      "tags": "V;IND;PASS;PST;IPFV;3;PL",
+      "reference": "https://en.wiktionary.org/wiki/deleo"
+    },
+    {
+      "lang": "lat",
+      "lemma": "doceo",
+      "form": "docebat",
+      "tags": "V;IND;ACT;PST;IPFV;3;SG",
+      "reference": "https://en.wiktionary.org/wiki/doceo"
+    },
+    {
+      "lang": "lat",
+      "lemma": "sum",
+      "form": "fuisse",
+      "tags": "V;INF;ACT;PRF",
+      "reference": "https://en.wiktionary.org/wiki/sum"
+    },
+    {
+      "lang": "lat",
+      "lemma": "do",
+      "form": "dare",
+      "tags": "V;INF;ACT;PRS",
+      "reference": "https://en.wiktionary.org/wiki/do"
+    },
+    {
+      "lang": "lat",
+      "lemma": "audio",
+      "form": "audiet",
+      "tags": "V;IND;ACT;FUT;3;SG",
+      "reference": "https://en.wiktionary.org/wiki/audio"
+    },
+    {
+      "lang": "lat",
+      "lemma": "audio",
+      "form": "audietis",
+      "tags": "V;IND;ACT;FUT;2;PL",
+      "reference": "https://en.wiktionary.org/wiki/audietis"
+    },
+    {
+      "lang": "lat",
+      "lemma": "lego",
+      "form": "legemus",
+      "tags": "V;IND;ACT;FUT;1;PL",
+      "reference": "https://en.wiktionary.org/wiki/legemus"
+    },
+    {
+      "lang": "lat",
+      "lemma": "disco",
+      "form": "disce",
+      "tags": "V;IMP;ACT;PRS;2;SG",
+      "reference": "https://en.wiktionary.org/wiki/disce"
+    },
+    {
+      "lang": "lat",
+      "lemma": "migro",
+      "form": "migrabant",
+      "tags": "V;IND;ACT;PST;IPFV;3;PL",
+      "reference": "https://en.wiktionary.org/wiki/migro"
+    },
+    {
+      "lang": "lat",
+      "lemma": "contineo",
+      "form": "continebant",
+      "tags": "V;IND;ACT;PST;IPFV;3;PL",
+      "reference": "https://en.wiktionary.org/wiki/contineo"
+    },
+    {
+      "lang": "lat",
+      "lemma": "voco",
+      "form": "vocabat",
+      "tags": "V;IND;ACT;PST;IPFV;3;SG",
+      "reference": "https://en.wiktionary.org/wiki/voco"
+    },
+    {
+      "lang": "lat",
+      "lemma": "sentio",
+      "form": "senserunt",
+      "tags": "V;IND;ACT;PRF;3;PL",
+      "reference": "https://en.wiktionary.org/wiki/sentio"
+    },
+    {
+      "lang": "lat",
+      "lemma": "sentio",
+      "form": "sensit",
+      "tags": "V;IND;ACT;PRF;3;SG",
+      "reference": "https://en.wiktionary.org/wiki/sentio"
+    },
+    {
+      "lang": "lat",
+      "lemma": "accipio",
+      "form": "accepit",
+      "tags": "V;IND;ACT;PRF;3;SG",
+      "reference": "https://en.wiktionary.org/wiki/accipio"
+    },
+    {
+      "lang": "lat",
+      "lemma": "deleo",
+      "form": "delevit",
+      "tags": "V;IND;ACT;PRF;3;SG",
+      "reference": "https://en.wiktionary.org/wiki/deleo"
+    },
+    {
+      "lang": "lat",
+      "lemma": "gero",
+      "form": "gessit",
+      "tags": "V;IND;ACT;PRF;3;SG",
+      "reference": "https://en.wiktionary.org/wiki/gero"
+    },
+    {
+      "lang": "lat",
+      "lemma": "virtus",
+      "form": "virtute",
+      "tags": "N;ABL;SG;FEM",
+      "reference": "https://en.wiktionary.org/wiki/virtute"
+    },
+    {
+      "lang": "lat",
+      "lemma": "urbs",
+      "form": "urbs",
+      "tags": "N;NOM;SG;FEM",
+      "reference": "https://en.wiktionary.org/wiki/urbs"
+    },
+    {
+      "lang": "lat",
+      "lemma": "urbs",
+      "form": "urbe",
+      "tags": "N;ABL;SG;FEM",
+      "reference": "https://en.wiktionary.org/wiki/urbs"
+    },
+    {
+      "lang": "lat",
+      "lemma": "scribo",
+      "form": "scribere",
+      "tags": "V;INF;ACT;PRS",
+      "reference": "https://en.wiktionary.org/wiki/scribo"
+    },
+    {
+      "lang": "lat",
+      "lemma": "duco",
+      "form": "duxerat",
+      "tags": "V;IND;ACT;PSTP;3;SG",
+      "reference": "https://en.wiktionary.org/wiki/duco"
     }
   ]
 }
