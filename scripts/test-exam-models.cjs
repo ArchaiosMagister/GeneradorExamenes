@@ -131,7 +131,7 @@ function latinSuite(){
  assert.equal((output.match(/data-sentence-slot=/g)||[]).length,4);
  sandbox.culture.length=0;output=run();
  assert.equal((output.match(/class="exam-question"/g)||[]).length,5,'Sin banco de cultura no debe exportarse una pregunta vacía');
- assert(output.includes('Banco de cultura pendiente de completar'));
+ assert(output.includes('No hay preguntas de cultura del tipo elegido en las unidades marcadas'));
 }
 function greekSuite(){
  const state={model:{value:'complete'},lang:{value:'es'},paper:{innerHTML:'',setAttribute(){}},

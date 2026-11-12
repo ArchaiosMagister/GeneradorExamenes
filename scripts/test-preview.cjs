@@ -24,6 +24,63 @@ function readStoredZipEntry(bytes,wanted){
  throw new Error('Falta '+wanted+' en el documento Word');
 }
 
+async function checkCulture(page,filename){
+ const report=await page.evaluate(()=>{
+  $('course').value='latin4';
+  $('course').dispatchEvent(new Event('change',{bubbles:true}));
+  $('model').value='tablas';
+  $('model').dispatchEvent(new Event('change',{bubbles:true}));
+  examQuestionChoiceState['latin4/tablas/culture']=true;
+  const select=(marked,cumulative,type='all',lang='es')=>{
+   for(const input of document.querySelectorAll('.unit-choice'))input.checked=marked.includes(units[Number(input.value)]);
+   $('cumulative').checked=cumulative;
+   $('cultureType').value=type;
+   $('lang').value=lang;
+   $('lang').dispatchEvent(new Event('change',{bubbles:true}));
+   generate();
+   const picked=examSelectionCache.get(examCacheSignature('culture'));
+   const heading=[...$('paper').querySelectorAll('.exam-question')].find(node=>/Cultura cl[áà]ss?ica/.test(node.textContent));
+   const preview=heading?.nextElementSibling;
+   return {ids:picked.map(row=>row.id),effective:selectedUnits(),questions:preview?.textContent||'',
+    key:$('paper').querySelector('#answerkey').textContent};
+  };
+  const accumulated=select(['UD3'],true);
+  updateUnits();
+  const markedAfterRefresh=selectedUnits(false);
+  const isolated=select(['UD3'],false);
+  const explicit=select(['UD1','UD3'],true);
+  const empty=select([],true);
+  const es=select(['UD3'],true,'mc');
+  const va=select(['UD3'],true,'mc','va');
+  return {accumulated,isolated,markedAfterRefresh,explicit,empty,es,va};
+ });
+ assert.deepEqual(report.accumulated.effective,['UD1','UD2','UD3'],filename+': se perdió la acumulación general');
+ assert.deepEqual(report.markedAfterRefresh,['UD3'],filename+': se marcaron unidades anteriores al refrescar');
+ assert.equal(report.accumulated.ids.length,4);
+ assert(report.accumulated.ids.every(id=>id.startsWith('LAT4-CUL-UD3-')),filename+': se acumuló cultura');
+ assert.deepEqual(report.isolated.ids,report.accumulated.ids,filename+': cambiar la acumulación alteró el sorteo de cultura');
+ assert.equal(report.explicit.ids.length,4);
+ assert(report.explicit.ids.every(id=>/^LAT4-CUL-UD[13]-/.test(id)),filename+': entró una unidad sin marcar');
+ assert.deepEqual(report.empty.ids,[]);
+ assert.equal(report.es.ids.length,1,filename+': el cambio de tipo reutilizó el sorteo anterior');
+ assert.deepEqual(report.va.ids,report.es.ids,filename+': el cambio de idioma alteró el sorteo');
+ assert.match(report.es.questions,/último rey de Roma.*Tarquinio el Soberbio/);
+ assert.match(report.va.questions,/últim rei de Roma.*Tarquini el Superb/);
+ assert.match(report.va.key,/últim rei de Roma\? — C/);
+ const xml=await page.evaluate(async()=>{
+  const previous=downloadBlob;
+  let blob;
+  try{
+   downloadBlob=(_name,output)=>{blob=output};
+   $('docxAnswers').click();
+  }finally{downloadBlob=previous}
+  return Array.from(new Uint8Array(await blob.arrayBuffer()));
+ });
+ const word=readStoredZipEntry(Buffer.from(xml),'word/document.xml');
+ assert(word.includes('<w:t xml:space="preserve">Data: </w:t>'),filename+': falta Data: en el Word valenciano');
+ assert(word.includes('Tarquini el Superb')&&word.includes('últim rei de Roma? — C'),filename+': cultura valenciana incompleta en Word');
+}
+
 async function checkFile(browser,filename){
  const context=await browser.newContext({viewport:{width:1440,height:960},acceptDownloads:true});
  const page=await context.newPage(),errors=[];
@@ -158,6 +215,18 @@ async function checkFile(browser,filename){
    document.querySelectorAll('.unit-choice').forEach(el=>el.checked=units[Number(el.value)]===value);
    generate();
   },unit);
+  const dateLabels=await page.evaluate(()=>{
+   const previous=$('lang').value;
+   return ['es','va'].map(lang=>{
+    $('lang').value=lang;
+    generate();
+    const label=$('paper').querySelector('.exam-header-line:last-child span:last-child').textContent;
+    $('lang').value=previous;
+    generate();
+    return label;
+   });
+  });
+  assert.deepEqual(dateLabels,['Fecha: ','Data: '],filename+' '+course+'/'+model+': etiquetas de fecha');
   const result=await page.evaluate(()=>{
    const paper=document.querySelector('#paper'),sheet=paper.querySelector('.exam-sheet');
    return {
@@ -327,6 +396,7 @@ async function checkFile(browser,filename){
    }
    const documentXml=readStoredZipEntry(bytes,'word/document.xml');
    const styleXml=readStoredZipEntry(bytes,'word/styles.xml');
+   assert(documentXml.includes('<w:t xml:space="preserve">Fecha: </w:t>'),caseLabel+': etiqueta de fecha en Word');
    assert(documentXml.includes('p.).'),caseLabel+': el enunciado Word no incluye puntuación al final');
    assert(documentXml.includes('<w:document ')&&documentXml.includes('<w:body>')&&documentXml.includes('</w:document>'),
     caseLabel+': XML Word incompleto');
@@ -524,6 +594,7 @@ async function checkFile(browser,filename){
  assert(xml.includes('Puella amat.')&&xml.includes('Nauta navigat.')&&xml.includes('g.'));
  await page.setViewportSize({width:390,height:844});
  assert(await page.locator('#paper .exam-sheet').isVisible(),filename+': vista previa oculta en móvil');
+ await checkCulture(page,filename);
  assert.deepEqual(errors,[],filename+': errores JavaScript');
  await context.close();
 }
