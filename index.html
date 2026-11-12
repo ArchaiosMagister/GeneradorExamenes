@@ -773,9 +773,59 @@ function examinaTranslateConfiguration(){
 function translateUI(){examinaTranslateConfiguration();document.documentElement.lang=$('lang').value==='va'?'ca-valencia':'es';document.querySelectorAll('[data-i18n]').forEach(e=>e.textContent=tr(e.dataset.i18n));$('term').querySelectorAll('option').forEach((o,i)=>o.textContent=($('lang').value==='va'?['1r trimestre','2n trimestre','3r trimestre']:['1.er trimestre','2.º trimestre','3.er trimestre'])[i]);$('name').placeholder=courseName();document.querySelectorAll('.vocab-tabbar,.quick-actions,#examLayout aside.panel,#vocabManager').forEach(el=>window.ExaminaValencianGloss?.translateDom?.(el,$('lang').value));}
 
 $('sheetType').addEventListener('change',()=>{const c=currentCourse();$('name').value=($('sheetType').value==='review'?($('lang').value==='va'?'Fitxa de repàs de ':'Ficha de repaso de '):($('lang').value==='va'?'Examen de ':'Examen de '))+({'latin1':$('lang').value==='va'?'Llatí I':'Latín I','latin4':$('lang').value==='va'?'Llatí 4t ESO':'Latín 4.º ESO','greek1':$('lang').value==='va'?'Grec I':'Griego I'})[c];generate()});
+// Un solo vínculo por palabra editable: conserva la vista previa como fuente
+// de verdad y evita generar de nuevo otras preguntas al escribir.
+let examEditorLinks=new WeakMap(),examEditorLinkSerial=0;
+function examEditorPreviewValue(target,mode='plain'){
+ let value=target.textContent.trim();
+ if(mode==='etymology')value=value.replace(/^[a-z]\.\s*/iu,'').replace(/:\s*$/u,'');
+ else if(mode==='colon')value=value.replace(/:\s*$/u,'');
+ return value.trim();
+}
+function linkExamWordEditor(target,input,mode='plain'){
+ if(!target||!input)return;
+ const id='exam-word-link-'+(++examEditorLinkSerial);
+ target.dataset.examEditorLink=id;input.dataset.examEditorLink=id;
+ examEditorLinks.set(target,{input,mode});
+}
+function warnExamManualSolution(){
+ const key=$('paper').querySelector('#answerkey');
+ if(!key||key.querySelector('[data-manual-warning]'))return;
+ const note=document.createElement('p');note.dataset.manualWarning='true';
+ note.textContent='ATENCIÓN: se han modificado formas manualmente. Revisa las soluciones correspondientes.';
+ key.prepend(note);
+}
+function syncMorphSyntagmTextarea(){
+ const input=$('morphSyntagms'),slots=[...$('paper').querySelectorAll('[data-syntagm-slot] > i')];
+ if(input&&slots.length)input.value=slots.map(el=>el.textContent.trim()).join('\n');
+}
+$('paper').addEventListener('input',event=>{
+ const paper=$('paper');
+ const locate=(node)=>{
+  if(node?.nodeType===3)node=node.parentElement;
+  for(;node&&node!==paper;node=node.parentElement){
+   const link=examEditorLinks.get(node);
+   if(link)return {target:node,...link};
+  }
+  return null;
+ };
+ let active=null;
+ for(const node of event.composedPath?.()||[event.target]){
+  active=locate(node);
+  if(active)break;
+ }
+ // Cuando el elemento editable es el propio "paper", el objetivo del
+ // evento puede ser el contenedor y no el <i>, <th> o <span> modificado.
+ if(!active&&event.target===paper)active=locate(window.getSelection()?.anchorNode);
+ if(!active)return;
+ active.input.value=examEditorPreviewValue(active.target,active.mode);
+ if(active.target.closest('[data-syntagm-slot]'))syncMorphSyntagmTextarea();
+ warnExamManualSolution();
+});
 function refreshManualMorphWords(){
  const host=$('manualMorphWords');
  if(!host)return;
+ examEditorLinks=new WeakMap();examEditorLinkSerial=0;
  host.replaceChildren();
  if(currentCourse()==='greek1'&&$('model').value==='complete')return; // Tiene editor de corpus propio.
  const paper=$('paper'),targets=[],seen=new Set();
@@ -787,7 +837,9 @@ function refreshManualMorphWords(){
  paper.querySelectorAll('.exam-nouns thead tr:first-child th[colspan]').forEach(el=>{if(!el.closest('#answerkey'))add(el,'Declinación')});
  paper.querySelectorAll('.exam-verbs thead tr:first-child th[colspan]').forEach(el=>{if(!el.closest('#answerkey'))add(el,'Conjugación')});
  paper.querySelectorAll('.reference-verb-table tbody td:first-child i').forEach(el=>add(el,'Forma verbal'));
- paper.querySelectorAll('.exam-pronouns tbody td:first-child i').forEach(el=>add(el,'Pronombre'));
+ paper.querySelectorAll('.exam-pronouns tbody td:first-child').forEach(cell=>{
+  if(!cell.closest('#answerkey'))add(cell.querySelector('i')||cell,'Pronombre');
+ });
  paper.querySelectorAll('.morph-syntagm-item > i').forEach(el=>add(el,'Declinación'));
  paper.querySelectorAll('[data-analysis-slot] > i:first-child, .exam-form > span:last-child')
   .forEach(el=>add(el,'Análisis morfológico'));
@@ -804,19 +856,19 @@ function refreshManualMorphWords(){
   const caption=document.createElement('label');caption.textContent=kind+' '+(i+1);
   caption.style.display='block';
   const input=document.createElement('input');input.type='text';
-  input.value=el.textContent.replace(/:$/,'').trim();
+  const mode=kind==='Etimología'?'etymology':el.textContent.trim().endsWith(':')?'colon':'plain';
+  input.value=examEditorPreviewValue(el,mode);
   input.setAttribute('aria-label',kind+' '+(i+1));
-  const original=el.textContent;
+  linkExamWordEditor(el,input,mode);
   input.addEventListener('input',()=>{
    if(el.matches('.exam-nouns thead tr:first-child th[colspan], .exam-verbs thead tr:first-child th[colspan]')){
     el.innerHTML=examParadigmHeading(input.value,kind==='Conjugación'?'conjugation':'declension');
-   }else el.textContent=input.value+(original.endsWith(':')?':':'');
-   const key=paper.querySelector('#answerkey');
-   if(key&&!key.querySelector('[data-manual-warning]')){
-    const note=document.createElement('p');note.dataset.manualWarning='true';
-    note.textContent='ATENCIÓN: se han modificado formas manualmente. Comprueba y corrige las soluciones correspondientes antes de entregar el solucionario.';
-    key.prepend(note);
-   }
+   }else if(mode==='etymology'){
+    const prefix=el.textContent.match(/^\s*[a-z]\.\s*/iu)?.[0]||'';
+    el.textContent=prefix+input.value+':';
+   }else el.textContent=input.value+(mode==='colon'?':':'');
+   if(el.closest('[data-syntagm-slot]'))syncMorphSyntagmTextarea();
+   warnExamManualSolution();
   });
   caption.append(input);row.append(caption);
   const cacheKind=kind==='Declinación'?'decl':
