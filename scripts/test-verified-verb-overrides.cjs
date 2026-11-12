@@ -12,8 +12,8 @@ const latinMatch=html.match(/const latinExplicitVerbEvidence=(\{[^\n]+\});\nfunc
 const greekMatch=html.match(/const greekExplicitVerbEvidence=(\{[^\n]+\});\nfunction greekCorpus/);
 assert(latinMatch&&greekMatch,'La app debe contener solo extractos de los paradigmas contrastados');
 const latin=JSON.parse(latinMatch[1]),greek=JSON.parse(greekMatch[1]);
-const records=source.paradigms.filter(x=>['possum','confero','loquor','sequor','βουλομαι'].includes(x.lemma));
-assert.equal(records.length,5);
+const records=source.paradigms.filter(x=>['possum','confero','loquor','sequor','βουλομαι','ερχομαι'].includes(x.lemma));
+assert.equal(records.length,6);
 const translate={
  'V;IND;ACT;PRS':'presente','V;IND;ACT;PST;IPFV':'imperfecto',
  'V;IND;ACT;FUT':'futuro','V;IND;ACT;PRF':'perfecto',
@@ -27,7 +27,7 @@ for(const x of records){
  assert(!index.rows[x.lang].some(row=>row[0]===x.lemma&&row[2]==='LEX;ENTRY'),
   'Una ficha con flexiones contrastadas no puede quedar como cita léxica');
  const selected=x.lang==='lat'?latin[x.lemma]:null;
- for(const block of x.blocks){
+ for(const block of x.blocks.filter(b=>!(x.lemma==='ερχομαι'&&b.tags==='V;IND;MID;PRS'))){
   if(selected){
    const entry=selected.find(y=>y.tense===translate[block.tags]&&
     y.voice===(block.tags.includes('DEP')?'deponente':'activa'));
@@ -35,11 +35,13 @@ for(const x of records){
    assert.deepEqual(entry.forms,block.forms);
    assert.equal(entry.sourceCode,5);
   }else{
-   assert.equal(x.lemma,'βουλομαι');
-   assert.deepEqual(greek.βουλομαι.forms,block.forms);
-   assert.equal(greek.βουλομαι.sourceCode,5);
-   assert.equal(greek.βουλομαι.voice,'media');
-   assert.equal(greek.βουλομαι.unit,6);
+   const selectedGreek=greek[x.lemma];
+   assert(selectedGreek,'Falta el modelo griego explícito '+x.lemma);
+   assert.deepEqual(selectedGreek.forms,block.forms);
+   assert.equal(selectedGreek.sourceCode,5);
+   assert.equal(selectedGreek.unit,x.lemma==='βουλομαι'?6:12);
+   assert.equal(selectedGreek.voice,x.lemma==='βουλομαι'?'medio (deponente)':'activo');
+   if(x.lemma==='ερχομαι')assert.equal(selectedGreek.tense,'aoristo segundo');
   }
   assert.equal(block.forms.length,6);
   for(let i=0;i<6;i++){
@@ -51,7 +53,7 @@ for(const x of records){
   }
  }
 }
-assert.equal(newForms,78);
+assert.equal(newForms,84);
 for(const lang of ['lat','grc']){
  const sum=Object.values(index.counts[lang]).reduce((a,b)=>a+b,0);
  assert.equal(sum,index.rows[lang].length,'Desajuste de contadores: '+lang);
@@ -61,4 +63,4 @@ const currentBuilder=fs.readFileSync(path.join(root,'scripts/build-lemma-index.m
 assert(currentBuilder.includes('ACT|MID|DEP'),'La regeneración perdería la etiqueta latina deponente');
 assert(!greek.βουλομαι.forms.includes('βούλῃ'),
  'Una variante no aprobada para el modelo no puede colarse como la lectura elegida');
-console.log('Cotejo positivo: 78 casillas nuevas (72 latinas y 6 griegas), referencia por lema, índice persistente, enunciado y totales.');
+console.log('Cotejo positivo: 84 casillas nuevas (72 latinas y 12 griegas), referencia por lema, índice persistente, enunciado y totales.');
