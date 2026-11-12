@@ -62,6 +62,8 @@ jobs:
         run: node scripts/test-cultura-lat4.cjs
       - name: Probar modelos regulares sin incorporación a los exámenes
         run: node scripts/test-regular-latin.mjs
+      - name: Verificar evidencia persistente y conjugación mixta de Latín I
+        run: node scripts/test-latin-verb-evidence.cjs
       - name: Probar nominales griegos con corpus sintético etiquetado
         run: node scripts/test-greek-nominal-import.mjs
       - name: Extraer nominales griegos reales para consulta offline
@@ -106,6 +108,15 @@ jobs:
         run: node scripts/test-auditoria-ui.cjs
       - name: Verificar autorizaciones académicas y bloqueo DOCX en Chromium sin conexión
         run: node scripts/test-academic-evidence-browser.cjs
+      - name: Auditar cada unidad y exportar inventario morfológico grecolatino
+        run: node scripts/test-verb-curriculum-browser.cjs
+      - name: Conservar matriz curricular para revisión filológica
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fase-ii-inventario-morfologico
+          path: test-artifacts/fase-ii-inventario-morfologico.json
+          if-no-files-found: ignore
       - name: Validar glosas en castellano y valenciano
         run: node scripts/test-valenciano.cjs
       - name: Auditar cobertura y pendientes del vocabulario por unidad
