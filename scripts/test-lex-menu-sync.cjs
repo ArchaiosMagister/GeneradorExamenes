@@ -76,6 +76,7 @@ function readStoredZipEntry(bytes,wanted){
    // La reconstrucción de los paneles no puede dejar los inputs en blanco.
    const rebuilt=await page.evaluate(()=>{
     document.dispatchEvent(new Event('examina-lex-ready'));
+    document.querySelector('#examQuestionMenus [data-question="lex"]').open=true;
     return [document.getElementById('lex-verb-0')?.value,
      document.getElementById('lex-verb-1')?.value];
    });
