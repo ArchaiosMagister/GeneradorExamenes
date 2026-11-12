@@ -121,7 +121,13 @@ if(process.argv.includes('--check')){
     s.tags===decision.tags&&s.reference===decision.reference),'Falta respaldo editorial de '+x.form);
    assert(d.rows.lat.some(s=>s[0]===decision.lemma&&key(s[1])===key(x.form)&&
     s[2]===decision.tags&&s[3]===5),'Falta índice contrastado de '+x.form);
-   assert(now.candidates.some(c=>c.lemma===decision.lemma&&c.attested),'No se reconoce la lectura acreditada: '+x.form);
+   assert(now.candidates.some(c=>key(c.lemma)===key(decision.lemma)&&c.attested),'No se reconoce la lectura acreditada: '+x.form);
+  }else if(decision.status==='needs-teacher-editorial-review'){
+   assert.equal(now.status,'documented','No se conserva la lectura existente: '+x.form);
+   assert(now.candidates.some(c=>key(c.lemma)===key(decision.lemma)),
+    'La variante poética registrada ha desaparecido: '+x.form);
+   // La forma latina alternativa puede ser correcta; el usuario decide
+   // si normalizar la ficha al lema clásico en otro cambio filológico.
   }else if(decision.status==='already-recognized'){
    assert.equal(x.initialStatus,'documented');
    assert.equal(now.status,'documented','Retroceso en una forma documentada: '+x.form);
