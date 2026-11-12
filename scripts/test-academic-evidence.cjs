@@ -105,7 +105,7 @@ decisions=api.evidenceRevoke('lat1',imperfect,decisions);
 assert.equal(api.evidenceCheckExam(paper,'lat1',decisions).ok,false,
  'La revocación debe bloquear una forma ya seleccionada');
 assert.equal(api.evidenceApproved('lat1',imperfect,decisions),false);
-assert.deepEqual(api.evidenceRows(data,'lat1',1).map(x=>x[1]).sort(),
+assert.deepEqual(Array.from(api.evidenceRows(data,'lat1',1),x=>x[1]).sort(),
  ['amabam','amabitur','amatus sum','amavi','aves','puellae'].sort(),
  'Las propuestas conservan su trazabilidad aunque aún no sean curriculares');
 assert.equal(api.evidenceState(lexical[3]),'no_disponible');
