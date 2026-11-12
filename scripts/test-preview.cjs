@@ -191,6 +191,9 @@ async function checkFile(browser,filename){
    return {unit,rows,picked: picked.map(({form,entry,voice,tense})=>({form,entry,voice,tense})),
     allVoices:[...new Set(pool.map(item=>item.voice))],
     allTenses:[...new Set(pool.map(item=>item.tense))],
+    duco:pool.filter(x=>examKey(x.entry)==='duco').map(x=>({form:x.form,tense:x.tense,voice:x.voice})),
+    moneo:pool.filter(x=>examKey(x.entry)==='moneo'&&x.voice==='pasiva').map(x=>x.form),
+    audio:pool.filter(x=>examKey(x.entry)==='audio'&&x.voice==='pasiva').map(x=>x.form),
     wordXml:wordExamTable(tbl)};
   });
  });
@@ -217,6 +220,16 @@ async function checkFile(browser,filename){
     filename+': falta perfecto a partir de UD4');
    if(unit==='UD7')assert(allTenses.includes('futuro de indicativo'),
     filename+': falta futuro a partir de UD7');
+   if(unit==='UD7'){
+    assert(sample.duco.some(x=>x.form==='ducitur'&&x.voice==='pasiva'&&x.tense==='presente de indicativo'),
+     filename+': forma de duco en presente pasivo incorrecta');
+    assert(sample.duco.some(x=>x.form==='ducetur'&&x.voice==='pasiva'&&x.tense==='futuro de indicativo'),
+     filename+': forma de duco en futuro pasivo incorrecta');
+    assert(!sample.duco.some(x=>x.form==='duceris'),
+     filename+': duceris es ambiguo sin contexto (presente/futuro pasivos)');
+    assert(sample.moneo.includes('monetur')&&sample.audio.includes('auditur'),
+     filename+': faltan 2.ª/4.ª conjugación en pasiva');
+   }
   }
  }
  // La exportación Word conserva cursiva solo en los vocablos y no en
