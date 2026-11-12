@@ -2581,7 +2581,7 @@ function generateGreekMorphologyFixed(){
  let n=0;
  const first=examQuestionEnabled('decl')?question(++n,morphSyntagmHeading(cfg,va)+' (1 p.).')+morphSyntagmRows(cfg,true):'';
  const second=examQuestionEnabled('verb')?question(++n,t('Analiza las siguientes formas verbales (1 p.).','Analitza les formes verbals següents (1 p.).'))+
-  '<table class="exam-paradigm reference-morph-table"><thead><tr><th>Forma verbal</th><th>Persona y número</th><th>Tiempo</th><th>Voz</th></tr></thead><tbody>'+
+  '<table class="exam-paradigm reference-morph-table reference-verb-table"><thead><tr><th>Forma verbal</th><th>Persona y número</th><th>Tiempo</th><th>Voz</th></tr></thead><tbody>'+
   verbs.map(x=>'<tr><td><i>'+esc(x.prompt)+'</i> ('+esc(x.lemma)+')</td><td></td><td></td><td></td></tr>').join('')+'</tbody></table>':'';
  let pronounSection='';
  if(pronPool.length){
@@ -3090,6 +3090,54 @@ function stickyExamRows(kind,factory){
  if(!examSelectionCache.has(key))examSelectionCache.set(key,factory());
  return examSelectionCache.get(key);
 }
+// Una sustitución individual no reconstruye el contenido que ya ha retocado el profesor.
+// El motor calcula la nueva entrada y su clave, pero solo trasladamos su nodo al
+// examen anterior: permanecen intactos otros ejercicios, glosarios y ediciones.
+function examRegenerationSlot(sheet,kind,index){
+ if(!sheet)return null;
+ const morph=['morf','morphology'].includes($('model').value);
+ const greek=currentCourse()==='greek1';
+ if(morph){
+  if(kind==='decl')return sheet.querySelector('[data-syntagm-slot="'+index+'"]');
+  if(kind==='verb')return sheet.querySelectorAll('.reference-verb-table tbody tr')[index]||null;
+  if(kind==='forms')return sheet.querySelector('[data-analysis-slot="'+index+'"]');
+ }else{
+  if(kind==='decl')return sheet.querySelectorAll('.exam-nouns')[index]||null;
+  if(kind==='verb')return sheet.querySelectorAll('.exam-verbs thead tr:first-child th[colspan]')[index]||null;
+  if(kind==='forms')return greek?
+   sheet.querySelectorAll('.exam-form')[index]||null:
+   sheet.querySelector('[data-analysis-slot="'+index+'"]');
+ }
+ if(kind.startsWith('lex-')){
+  const [part]=kind.slice(4).split(':');
+  return sheet.querySelector('[data-lex-slot="'+part+':'+index+'"] > i');
+ }
+ return null;
+}
+function renderOnlyRegeneratedExamWord(kind,index,render){
+ const paper=$('paper'),original=paper.querySelector('.exam-sheet');
+ const previous=examRegenerationSlot(original,kind,index);
+ if(!original||!previous){render();return}
+ const oldKey=original.querySelector('#answerkey');
+ render();
+ const fresh=paper.querySelector('.exam-sheet');
+ const replacement=examRegenerationSlot(fresh,kind,index);
+ if(!replacement)return; // Conserva el examen nuevo si ha cambiado su estructura.
+ previous.replaceWith(replacement.cloneNode(true));
+ const newKey=fresh?.querySelector('#answerkey');
+ if(oldKey&&newKey){
+  const key=newKey.cloneNode(true);
+  if(oldKey.classList.contains('show'))key.classList.add('show');
+  const warning=oldKey.querySelector('[data-manual-warning]');
+  if(warning&&!key.querySelector('[data-manual-warning]'))key.prepend(warning.cloneNode(true));
+  oldKey.replaceWith(key);
+ }
+ paper.replaceChildren(original);
+ // Los enlaces bidireccionales apuntaban al HTML recién generado y deben
+ // volver a enlazarse con el examen preservado, sin alterar sus textos.
+ if(currentCourse()==='greek1'&&$('model').value==='complete')greekExamControls();
+ else refreshManualMorphWords();
+}
 // Regeneración de una sola palabra, sin descartar las otras del apartado.
 // Mantiene las restricciones de la unidad y las lecturas verificadas del banco.
 function regenerateExamWord(kind,index){
@@ -3112,7 +3160,7 @@ function regenerateExamWord(kind,index){
      delete greekExamState.adjectiveChoices[next.id];
     }
    }
-   generateGreekExam();
+   renderOnlyRegeneratedExamWord(kind,index,generateGreekExam);
   }else if(gkind==='declension'){
    // Si las bases están agotadas, un nuevo adjetivo también cambia el sintagma.
    const noun=pool.find(x=>x.id===ids[index]);
@@ -3120,7 +3168,7 @@ function regenerateExamWord(kind,index){
    const available=greekAvailableSyntagmAdjectives(greekLimit())
     .filter(x=>x.lemma!==allocated[ids[index]]);
    const alternate=sample(available,1)[0];
-   if(noun&&alternate){allocated[ids[index]]=alternate.lemma;generateGreekExam()}
+   if(noun&&alternate){allocated[ids[index]]=alternate.lemma;renderOnlyRegeneratedExamWord(kind,index,generateGreekExam)}
   }
   return;
  }
@@ -3170,7 +3218,14 @@ function regenerateExamWord(kind,index){
  const next=sample(alternatives,1)[0],updated=current.slice();
  updated[index]=next;
  examSelectionCache.set(cacheKey,updated);
- generate();
+ if(morph&&kind==='decl'){
+  const textarea=$('morphSyntagms'),title=next?.title||next?.compound?.title;
+  if(textarea&&title){
+   const entries=[...$('paper').querySelectorAll('[data-syntagm-slot] > i')].map(node=>node.textContent.trim());
+   entries[index]=title;textarea.value=entries.join('\n');
+  }
+ }
+ renderOnlyRegeneratedExamWord(kind,index,generate);
 }
 function regenerateExamQuestion(kind){
  const key=examCacheSignature(kind);examSelectionCache.delete(key);
@@ -3416,7 +3471,7 @@ function regenerateLatinLexWord(kind,index){
  if(index<0||index>=latinLexExpectedCount(kind))return;
  const course=currentCourse(),chosen=selectedUnits(),oldKey=examCacheSignature('lex-'+kind);
  const previous=examSelectionCache.get(oldKey);
- if(!Array.isArray(previous)||previous.length!==latinLexExpectedCount(kind)){regenerateLatinLexPart(kind);return}
+ if(!Array.isArray(previous)||previous.length!==latinLexExpectedCount(kind))return;
  const used=new Set(previous.filter((_,i)=>i!==index).map(latinLexTermKey));
  const candidates=latinLexPool(course,kind,chosen).filter(x=>
   !used.has(latinLexTermKey(x))&&latinLexTermKey(x)!==latinLexTermKey(previous[index]));
@@ -3428,7 +3483,7 @@ function regenerateLatinLexWord(kind,index){
   const input=$('lex-verb-'+index);
   if(input)input.value=latinLexDisplayPrompt(kind,next);
  }
- generate();
+ renderOnlyRegeneratedExamWord('lex-'+kind,index,generate);
 }
 function buildLatinLexQuestion(course,chosen){
  const html=[],parts=examSelectedLexParts(course),va=$('lang').value==='va',italic=(x,kind,index)=>
