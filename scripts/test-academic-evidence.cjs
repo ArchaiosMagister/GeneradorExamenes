@@ -77,6 +77,11 @@ let available=api.approvedExamForms(data,'lat1',2,decisions);
 assert.equal(available.length,1);
 assert.equal(available[0].form,'amabam');
 assert.equal(available[0].evidenceSource,'Modelo regular · forma candidata');
+const ambiguousData=JSON.parse(JSON.stringify(data));
+ambiguousData.rows.lat.push(['amo','amabam','V;IND;ACT;PST;IPFV;3;SG',2]);
+assert.equal(api.evidenceUniqueReading(ambiguousData,'lat1',imperfect),false);
+assert(!api.approvedExamForms(ambiguousData,'lat1',2,decisions).some(x=>x.form==='amabam'),
+ 'Una autorización no elimina las lecturas morfológicas alternativas');
 assert(available[0].answer.includes('no verificada'));
 assert.equal(api.approvedExamForms(data,'lat1',9,decisions).some(x=>x.form==='amatus sum'),false);
 decisions=api.evidenceGrant('lat1',puella,decisions);
