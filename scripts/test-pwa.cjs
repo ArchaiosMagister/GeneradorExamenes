@@ -163,7 +163,8 @@ const server=http.createServer(async(req,res)=>{
    input.value='';input.dispatchEvent(new Event('change',{bubbles:true}));
    return result;
   });
-  assert(freeVerbs.includes('<i>verbo_personalizado</i> (3)'),'El primer verbo manual debe aparecer en minúscula y con tres derivados');
+  assert(/<i(?:\s[^>]*)?>verbo_personalizado<\/i>(?:<\/span>)? \(3\)/.test(freeVerbs),
+   'El primer verbo manual debe aparecer en minúscula, en cursiva y con tres derivados');
   const preverbButtons=await page.evaluate(()=>({
     twoSlots:document.querySelectorAll('#lex-slot-preverbs-0, #lex-slot-preverbs-1').length,
     nonexistent:!!document.getElementById('lex-slot-preverbs-2'),
