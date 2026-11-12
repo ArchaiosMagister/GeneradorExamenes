@@ -12,7 +12,7 @@ assert.ok(start>10,'No se encuentra el banco de la aplicación');
 const bank=JSON.parse(html.slice(start,html.indexOf(';',start)));
 for(const m of html.matchAll(/vocab\.push\(\.\.\.(\[.*\])\);/g))bank.push(...JSON.parse(m[1]));
 let total=0;
-for(const [course,expected] of [['lat1',1106],['lat4',541],['gr1',399]]){
+for(const [course,expected] of [['lat1',1107],['lat4',541],['gr1',399]]){
  const result=audit(data,bank,course,translator),t=result.totals;
  assert.equal(result.schema,1);
  assert.equal(t.rows,expected,course+': se han perdido entradas');
@@ -34,7 +34,7 @@ for(const [course,expected] of [['lat1',1106],['lat4',541],['gr1',399]]){
  total+=t.rows;
  console.log(course+': '+JSON.stringify(t)+'; '+result.units.length+' unidades');
 }
-assert.equal(total,2046);
+assert.equal(total,2047);
 const mock={vocabulary:{lat:{amo:{lat1:{entry:'amo, amavi, amatum (1ª)'}}}},rows:{lat:[['amo','amamus','V;PRS',2]]}};
 const proposal=audit(mock,[{course:'latin1',unit:'UD1',entry:'amo, amavi, amatum (1ª)',meaning:'amar',meaning_va:'amar'}],'lat1');
 assert.equal(proposal.totals.documented,0,'No elevar propuestas regulares a verificadas');
