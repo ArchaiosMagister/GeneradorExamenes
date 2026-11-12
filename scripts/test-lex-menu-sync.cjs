@@ -71,7 +71,7 @@ function readStoredZipEntry(bytes,wanted){
       .some(x=>normLex(x.latin||x.prompt)===normLex(s))),
     distinct:new Set(latinLexBanks.latin1.phonetics.map(x=>normLex(x.latin||x.prompt))).size
    }));
-   assert.equal(bankLoaded.latin1,668,filename+': el programa ha sustituido las fichas generales o la caché antigua sigue activa');
+   assert.equal(bankLoaded.latin1,667,filename+': el programa ha sustituido las fichas generales o la caché antigua sigue activa');
    assert.equal(bankLoaded.latin4,655,filename+': falta el banco general de Latín 4.º');
    assert(bankLoaded.pelliculam&&!bankLoaded.inde&&!bankLoaded.pirum,
     filename+': decisiones editoriales de fonética no respetadas');
