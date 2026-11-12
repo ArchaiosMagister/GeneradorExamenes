@@ -3124,6 +3124,24 @@ function renderOnlyRegeneratedExamWord(kind,index,render){
  const replacement=examRegenerationSlot(fresh,kind,index);
  if(!replacement)return; // Conserva el examen nuevo si ha cambiado su estructura.
  previous.replaceWith(replacement.cloneNode(true));
+ if(kind.startsWith('lex-')){
+  // Los términos de léxico se imprimen ordenados. Reordenamos los nodos
+  // existentes (sin recrearlos) para mantener tanto el orden alfabético como
+  // todas las ediciones que se hayan hecho en las otras palabras.
+  const part=kind.slice(4);
+  const selector='.lex-subquestion[data-lex-kind="'+part+'"] [data-lex-slot]';
+  const ordered=[...fresh.querySelectorAll(selector)].map(node=>node.dataset.lexSlot);
+  const slots=[...original.querySelectorAll(selector)];
+  if(ordered.length===slots.length&&ordered.every(id=>slots.some(node=>node.dataset.lexSlot===id))){
+   const byId=new Map(slots.map(node=>[node.dataset.lexSlot,node]));
+   const places=slots.map(node=>{
+    const marker=document.createComment('posición léxica');
+    node.replaceWith(marker);
+    return marker;
+   });
+   places.forEach((marker,i)=>marker.replaceWith(byId.get(ordered[i])));
+  }
+ }
  const newKey=fresh?.querySelector('#answerkey');
  if(oldKey&&newKey){
   const key=newKey.cloneNode(true);
