@@ -40,7 +40,7 @@ function latinSuite(){
   mNormalize:x=>String(x||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim(),
   headLex:x=>String(x||'').split(',')[0].trim(),
   isProperNounLemma:()=>false,isExcludedExamMorphLemma:()=>false,
-  mNoun:x=>x===noun.entry?{lemma:'puella',gender:'f',forms:[
+  mNoun:x=>x===noun.entry?{lemma:'puella',kind:'1',gender:'f',forms:[
     ['puella','puella','puellam','puellae','puellae','puella'],
     ['puellae','puellae','puellas','puellarum','puellis','puellis']
   ]}:null,

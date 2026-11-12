@@ -1400,8 +1400,13 @@ function latinExamPronouns(chosen){
  return latinPronounRows.filter(x=>x.unit<=limit);
 }
 function latinExamNominals(chosen){
+ // En Latín I la tercera declinación se introduce en UD4: puede haber
+ // sustantivos posteriores en el vocabulario de UD1–3, pero todavía no
+ // son candidatos válidos para una tabla de declinación.
+ const limit=Math.max(0,...chosen.map(examUnitNumber).filter(Number.isInteger));
  return latinSharedBank.vocabulary(currentCourse(),chosen).map(x=>({x,p:mNoun(x.entry)}))
-  .filter(y=>y.p&&!isProperNounLemma(y.x.entry));
+  .filter(y=>y.p&&!isProperNounLemma(y.x.entry)&&
+   (currentCourse()!=='latin1'||limit>=4||/^[12]/.test(y.p.kind)));
 }
 // Los lemas y sintagmas de los paradigmas van en cursiva; las marcas
 // metalingüísticas de conjugación o género permanecen en redonda.

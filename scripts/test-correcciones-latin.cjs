@@ -39,6 +39,9 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
    verbs:[...document.querySelectorAll('#paper .exam-verbs thead th[colspan]')].filter(el=>!el.closest('#answerkey')).map(x=>x.textContent),
    hasWordRegens:[...document.querySelectorAll('#examQuestionMenus [data-editor-for="decl"] .exam-regenerate-word')].length
   }));
+  const beforeThird=await page.evaluate(()=>latinExamNominals(['UD2']).map(row=>row.p.kind));
+  assert(beforeThird.length>0&&beforeThird.every(kind=>/^[12]/.test(kind)),
+   'UD2: se han sorteado temas de tercera declinación antes de la unidad de introducción');
   assert(latin.nouns.length>0);
   assert(latin.nouns.every(s=>/^[^+]+,\s*–\S+.*\s\+\s[^+]+,\s*–\S+/u.test(s)),
    'UD2: enunciados completos de adjetivo + sustantivo: '+latin.nouns.join(' | '));
