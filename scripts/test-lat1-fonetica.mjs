@@ -9,7 +9,7 @@ const generic=JSON.parse(readFileSync(resolve(root,'data/fonetica/banco_examenes
 assert.equal(curriculum.schema,1);
 assert.equal(curriculum.course,'latin1');
 assert.equal(curriculum.unidades.length,11);
-assert.equal(generic.items.length,510,'El programa de Latín I no sustituye el catálogo general de Latín 4.º');
+assert.equal(generic.items.length,510,'El banco general es elegible también en Latín I');
 const known=new Set(generic.normas.map(n=>n.id));
 const introduced=new Set(),seen=new Set();
 let total=0,valid=0,revisar=0,previous=0;
@@ -43,6 +43,12 @@ assert.deepEqual(curriculum.unidades.map(u=>u.nuevas.length),[5,7,4,2,0,0,0,1,0,
 const rulesThrough=unit=>new Set(curriculum.unidades.filter(x=>x.unit<=unit).flatMap(x=>x.nuevas));
 const availableThrough=unit=>curriculum.unidades.filter(x=>x.unit<=unit).flatMap(x=>x.palabras)
  .filter(x=>x.estado==='APTO_PROPUESTO'&&x.normas.every(n=>rulesThrough(unit).has(n)));
+const eligibleGlobal=unit=>generic.items.filter(x=>x.estado==='APTO_PROPUESTO'&&
+ x.normas?.length&&x.normas.every(n=>rulesThrough(unit).has(n)));
+assert.equal(eligibleGlobal(0).length,103,'UD0 debe admitir étimos del banco general');
+assert.equal(eligibleGlobal(3).length,505,'UD3 debe admitir étimos de cualquier unidad con normas impartidas');
+assert.equal(eligibleGlobal(10).length,510,'UD10 debe admitir todo el banco general');
+assert(eligibleGlobal(0).some(x=>x.latin==='advocatum'),'El banco general no debe restringirse a los tres étimos de UD0');
 const lesson0=availableThrough(0),lesson1=availableThrough(1);
 assert.deepEqual(lesson0.map(x=>x.latin),['terram','apotheca','farinam']);
 assert.equal(lesson1.length,10,'UD1 debe incluir las tres palabras de UD0 y las siete nuevas');
@@ -58,6 +64,11 @@ assert(!availableThrough(10).some(x=>['impignum','vaxillam','lignam','æqualitat
  'Se están sorteando étimos pendientes de revisión');
 const html=readFileSync(resolve(root,'index.html'),'utf8');
 for(const marker of ['parseLatin1PhoneticCurriculum','latin1PhoneticMaxUnit','latin1PhoneticAllowed',
- 'lat1-programacion.json','row.unidad>latin1PhoneticMaxUnit(chosen)','input.disabled=!allowed.has('])
+ 'lat1-programacion.json',"if(row.unit&&kind!=='phonetics')",'input.disabled=!allowed.has('])
  assert(html.includes(marker),'Falta la integración en la web: '+marker);
-console.log('Latín I: 73 étimos, 67 elegibles, 6 para revisión; 20 leyes acumulativas de UD0 a UD10.');
+assert(html.includes('latinLexBanks.latin1.phonetics=parsed.rows;'),'Debe conservarse el programa docente');
+assert(html.includes('for(const course of [\'prefixes\',\'phonetics\'].includes(kind)?[\'latin1\',\'latin4\']'),
+ 'El banco general debe cargarse en Latín I y 4.º');
+assert(!html.includes('row.unidad>latin1PhoneticMaxUnit(chosen)'),
+ 'La unidad original de una palabra no debe limitar su selección');
+console.log('Latín I: 510 candidatas generales según normas acumulativas; 73 étimos docentes conservados.');
