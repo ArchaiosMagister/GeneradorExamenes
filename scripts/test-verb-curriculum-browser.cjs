@@ -114,6 +114,7 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
    latin1:latin.items,latin4:latin4.items,greek1:greek.items
   },null,2)+'\n');
   const last=latin.items[latin.items.length-1];
+  assert.equal(last.attestedForms,42,'Las 42 formas explícitas deben conservar su procedencia en el inventario final');
   console.log('Auditoría curricular: Latín I '+latin.items.length+' etapas, Latín 4.º '+latin4.items.length+
    ', Griego I '+greek.items.length+' · máximo '+last.verbForms+' formas verbales posibles ('+
    last.attestedForms+' explícitas, '+last.regularDerivedForms+' derivadas por reglas).');
