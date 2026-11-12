@@ -160,6 +160,53 @@ const sourceHtml=readFileSync(resolve(root,'index.html'),'utf8');
 assert(sourceHtml.includes('phonetic-origin-label'),'No se muestra la etiqueta de cultismo');
 assert(sourceHtml.includes("slot.querySelector('i')?.textContent"),
  'La etiqueta no debe contaminar el campo de texto editable de la palabra');
+// La tanda nueva conserva las 100 entradas sin activar dudas pendientes.
+// Las adaptaciones cultas son elegibles solamente con su clasificación visible.
+const greekBatch=JSON.parse(readFileSync(resolve(root,
+ 'data/fonetica/auditoria-grafias-griegas-lote-100-20261112.json'),'utf8'));
+assert.equal(greekBatch.incorporadasNuevas,100);
+assert.equal(greekBatch.items.length,100,'Se deben incorporar 100 étimos nuevos distintos');
+assert.equal(greekBatch.revisadasNuevas,106,'Las seis dudas necesitan tarjetas');
+assert.equal(greekBatch.pendientesNuevasDetalle.length,6);
+assert.equal(greekBatch.itemsRevisadosAnteriores.length,17);
+assert.equal(greekBatch.pendientesAnteriores.length,4);
+const newGreek=banco.items.filter(x=>x.lote===18);
+const recoveredGreek=banco.items.filter(x=>x.lote===19);
+assert.equal(newGreek.length,100,'El siguiente lote debe añadir exactamente cien palabras nuevas');
+assert.equal(recoveredGreek.length,17,'Deben recuperarse 17 fichas griegas pendientes');
+const auditedIds=new Set(greekBatch.items.map(x=>x.id));
+const recoveredIds=new Set(greekBatch.itemsRevisadosAnteriores.map(x=>x.id));
+assert.equal(auditedIds.size,100,'Identificadores repetidos entre las 100 nuevas');
+assert.equal(recoveredIds.size,17,'Identificadores repetidos entre recuperadas');
+for(const item of [...newGreek,...recoveredGreek]){
+ assert.equal(item.estado,'APTO_PROPUESTO');
+ assert.equal(item.tipoTransmision,'ADAPTACION_CULTA',
+  'Se intenta sortear sin etiquetar una adaptación culta: '+item.latin);
+ assert(item.normas.length&&item.normas.every(n=>validas.has(n)),
+  'Normas desconocidas en grafía grecolatina: '+item.latin);
+ assert(Number.isInteger(item.fila_origen)&&item.fuente?.includes('Excel docente'),
+  'Falta trazabilidad del Excel: '+item.latin);
+ assert(item.validacion==='CORRESPONDENCIA_GRAFICA_REVISADA',
+  'No debe presumirse validación lexicográfica completa: '+item.latin);
+ assert((item.lote===18?auditedIds:recoveredIds).has(item.id),
+  'El banco difiere del registro: '+item.latin);
+}
+const keyGreek=x=>String(x||'').normalize('NFD').replace(/\\p{M}/gu,'')
+ .replace(/[æÆ]/g,'ae').replace(/[œŒ]/g,'oe').toLowerCase();
+const impossible=new Set([...greekBatch.pendientesNuevasDetalle,
+ ...greekBatch.pendientesAnteriores].map(x=>keyGreek(x.latin)));
+assert.equal(impossible.size,10,'Diez tarjetas pendientes sin duplicaciones');
+assert(!banco.items.some(x=>impossible.has(keyGreek(x.latin))),
+ 'La versión publicable contiene una candidatura reservada para el docente');
+for(const x of greekBatch.items)assert(newGreek.some(y=>y.id===x.id&&y.latin===x.latin));
+for(const x of greekBatch.itemsRevisadosAnteriores)
+ assert(recoveredGreek.some(y=>y.id===x.id&&y.latin===x.latin));
+for(const x of ['inde','pirum','scrinium','quinionem']){
+ assert(!banco.items.some(item=>keyGreek(item.latin)===x),'Exclusión docente vulnerada: '+x);
+}
+assert(newGreek.some(x=>x.normas.includes('N10')),'Deben haber más ejemplos de grafías griegas');
+assert(newGreek.some(x=>x.normas.includes('N12')),'Deben haber ejemplos de diptongos grecolatinos');
+
 const todas=banco.normas.map(n=>n.id);
 const caso=seleccionarEvoluciones(banco,{normasSeleccionadas:todas,semilla:'mismo-examen'});
 assert.equal(caso.ejercicios.length,4);
