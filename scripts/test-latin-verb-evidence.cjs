@@ -12,7 +12,7 @@ const match=html.match(/const latinExplicitVerbEvidence=(\{[^\n]+\});\nfunction 
 assert(match,'Falta la tabla explícita de evidencia verbal');
 const evidence=JSON.parse(match[1]);
 assert.deepEqual(Object.keys(evidence).sort(),
- ['confero','conor','eo','loquor','possum','sequor','sum']);
+ ['audeo','confero','conor','eo','loquor','possum','sequor','sum']);
 const overrides=JSON.parse(readFileSync(resolve(root,'data/lemmas/verified-overrides.json'),'utf8'));
 let total=0;
 for(const [lemma,series]of Object.entries(evidence)){
@@ -22,7 +22,8 @@ for(const [lemma,series]of Object.entries(evidence)){
   assert.equal(item.forms.length,6);
   const suffixes=item.sourceCode===1?['1.sg','2.sg','3.sg','1.pl','2.pl','3.pl']:
    ['1;SG','2;SG','3;SG','1;PL','2;PL','3;PL'];
-  const category=item.sourceCode===1?'DOCENTE;presente de indicativo deponente':
+  const category=item.sourceCode===1?
+   (item.voice==='semideponente'?'DOCENTE;perfecto de indicativo, sujeto masculino':'DOCENTE;presente de indicativo deponente'):
    item.voice==='deponente'?'V;IND;DEP;PRS':
    item.tense==='presente'?'V;IND;ACT;PRS':
    item.tense==='imperfecto'?'V;IND;ACT;PST;IPFV':
@@ -41,7 +42,10 @@ for(const [lemma,series]of Object.entries(evidence)){
   });
  }
 }
-assert.equal(total,114,'Cantidad de fichas contrastadas registrada inesperada');
+assert.equal(total,120,'Cantidad de fichas contrastadas registrada inesperada');
+assert.equal(evidence.audeo?.[0]?.voice,'semideponente');
+assert.equal(evidence.audeo?.[0]?.tense,'perfecto');
+assert(!evidence.audeo.some(x=>x.tense==='presente'),'No generalizar el infectum de audeo');
 assert.equal(corpus.rows.lat.filter(row=>row[0]==='possum'&&row[3]===5).length,30);
 assert.equal(corpus.rows.lat.filter(row=>row[0]==='confero'&&row[3]===5).length,30);
 assert(!evidence.fero,'No incorporar el lema fero: no consta en el vocabulario docente');
@@ -74,4 +78,4 @@ assert(html.includes("const latinPersonalPresentPassiveLemmas=new Set([...latinP
  'Falta la excepción de facio y el inventario de pasivas personales');
 assert(html.includes("if(latinPersonalPresentPassiveLemmas.has(examKey(entry)))"),
  'La pasiva no está condicionada a la transitividad admitida');
-console.log('Latín I: 114 fichas contrastadas (sum, eo, conor, possum, confero, loquor, sequor); cinco conjugaciones y mixta sin pasivas ficticias.');
+console.log('Latín I: 120 fichas contrastadas (incluido el perfecto semideponente docente de audeo); cinco conjugaciones y mixta sin pasivas ficticias.');
