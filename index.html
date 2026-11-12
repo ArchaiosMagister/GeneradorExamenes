@@ -918,7 +918,7 @@ function verb(x){
 }
 function sentenceGapPoints(){const value=Number($('sentence-gap-pt')?.value);return Number.isFinite(value)&&value>0?Math.max(12,Math.min(100,Math.round(value))):42}
 function applySentenceGap(){const paper=$('paper');if(paper?.style)paper.style.setProperty('--exam-sentence-gap',sentenceGapPoints()+'pt')}
-function countFor(id){const input=$('count-'+id);const fallback=id==='forms'?6:5;return Math.max(1,Math.min(id==='sent'?15:30,Number(input?.value)||fallback))}
+function countFor(id){const input=$('count-'+id);const fallback=['forms','greek-forms'].includes(id)?4:5;return Math.max(1,Math.min(id==='sent'?15:30,Number(input?.value)||fallback))}
 let sentences=[{text:'Puella rosam amat.',sol:'La niña ama la rosa.',units:['UD1']},{text:'Servi in villa laborant.',sol:'Los esclavos trabajan en la finca.',units:['UD1','UD2']},{text:'Nauta terram videt.',sol:'El marinero ve la tierra.',units:['UD1','UD2']},{text:'Romani oppidum oppugnant.',sol:'Los romanos asedian la ciudad.',units:['UD2']},{text:'Magister discipulos laudat.',sol:'El maestro elogia a los alumnos.',units:['UD2']}];
 // Vocabulario exigible, separado del banco general y de la unidad de aparición del lema.
 let examRequired=[];
@@ -1278,7 +1278,7 @@ function allowedProperNounForm(lemma,features){
 function morphConfigNumber(id,fallback,min,max){const value=Number($(id)?.value);return Number.isFinite(value)?Math.max(min,Math.min(max,Math.floor(value))):fallback}
 function morphConfig(){
  return {offer:morphConfigNumber('morphOffer',3,1,12),decline:morphConfigNumber('morphDecline',2,1,12),
- verbs:morphConfigNumber('morphVerbs',10,1,30),words:morphConfigNumber('morphWords',10,1,30)};
+ verbs:morphConfigNumber('morphVerbs',10,1,30),words:morphConfigNumber('morphWords',4,1,30)};
 }
 /* Banco compartido de Latín I y Latín 4.º ESO (sin backend ni migración destructiva).
    La fuente sigue siendo el vocabulario editable. El índice es una vista dinámica:
@@ -1503,14 +1503,62 @@ function latinExamPronouns(chosen){
  const limit=Math.max(0,...chosen.map(examUnitNumber).filter(Number.isInteger));
  return latinPronounRows.filter(x=>x.unit<=limit);
 }
+// Matriz curricular (Latín I y Griego I). La presencia de un lema en
+// un banco no autoriza a examinar flexiones aún no estudiadas.
+const EXAM_MORPHOLOGY_MILESTONES=Object.freeze({
+ latin1:Object.freeze({nominal3:4,nominal4:7,adjective12:2,adjective3:5,
+  pronounsPersonal:3,pronounsAnaphoric:5,pronounsDemonstrative:6,
+  present:1,imperfect:2,passive:3,perfect:4,future:7,perfectPassive:9,participle:10}),
+ greek1:Object.freeze({nominal2:1,nominal2Neuter:2,nominal1:3,article:3,
+  adjectives:5,middlePassive:6,pronouns:7,nominal3:8,participle:10,
+  imperfect:11,future:11,aorist:12,perfect:13})
+});
+function examGrammarLimit(chosen){return Math.max(-1,...chosen.map(examUnitNumber).filter(Number.isInteger))}
+function examGrammarAllows(feature,chosen,course=currentCourse()){
+ const minUnit=EXAM_MORPHOLOGY_MILESTONES[course]?.[feature];
+ return minUnit===undefined||examGrammarLimit(chosen)>=minUnit;
+}
+function latinNounAllowedForExam(paradigm,chosen){
+ if(!paradigm)return false;
+ const kind=String(paradigm.kind||'');
+ if(kind.startsWith('3'))return examGrammarAllows('nominal3',chosen);
+ if(kind.startsWith('4')||kind==='5')return examGrammarAllows('nominal4',chosen);
+ return true;
+}
+function latinAdjectiveAllowedForExam(kind,chosen){
+ // Latín 4.º carece de una secuenciación contrastada de tercera declinación.
+ if(kind==='third-two'&&currentCourse()==='latin4')return false;
+ return examGrammarAllows(kind==='third-two'?'adjective3':'adjective12',chosen);
+}
+// Tercera declinación REGULAR de dos terminaciones (brevis, -e).
+// Formas en -er/-ris/-e, comparativos y paradigmas excepcionales pendientes.
+function latinThirdAdjective(x){
+ const raw=mNormalize(x?.entry||'').replace(/\s+/g,' ');
+ const match=/^([A-Za-z]+is),\s*-?e(?:\s|$)/i.exec(raw);
+ if(!match)return null;
+ const lemma=match[1],stem=lemma.slice(0,-2);
+ if(stem.length<2)return null;
+ const forms=[],labels=[];
+ const singularMF=[stem+'is',stem+'is',stem+'em',stem+'is',stem+'i',stem+'i'];
+ const singularN=[stem+'e',stem+'e',stem+'e',stem+'is',stem+'i',stem+'i'];
+ const pluralMF=[stem+'es',stem+'es',stem+'es',stem+'ium',stem+'ibus',stem+'ibus'];
+ const pluralN=[stem+'ia',stem+'ia',stem+'ia',stem+'ium',stem+'ibus',stem+'ibus'];
+ const all=[
+  ['masculino o femenino','singular',singularMF],
+  ['neutro','singular',singularN],
+  ['masculino o femenino','plural',pluralMF],
+  ['neutro','plural',pluralN]
+ ];
+ for(const [gender,number,values] of all){
+  values.forEach((form,i)=>{forms.push(form);labels.push(M_CASES[i]+', '+number+', '+gender)});
+ }
+ return {entry:x.entry,kind:'third-two',stem,forms,labels,byGender:{
+  m:[singularMF,pluralMF],f:[singularMF,pluralMF],n:[singularN,pluralN]
+ }};
+}
 function latinExamNominals(chosen){
- // En Latín I la tercera declinación se introduce en UD4: puede haber
- // sustantivos posteriores en el vocabulario de UD1–3, pero todavía no
- // son candidatos válidos para una tabla de declinación.
- const limit=Math.max(0,...chosen.map(examUnitNumber).filter(Number.isInteger));
  return latinSharedBank.vocabulary(currentCourse(),chosen).map(x=>({x,p:mNoun(x.entry)}))
-  .filter(y=>y.p&&!isProperNounLemma(y.x.entry)&&
-   (currentCourse()!=='latin1'||limit>=4||/^[12]/.test(y.p.kind)));
+  .filter(y=>y.p&&!isProperNounLemma(y.x.entry)&&latinNounAllowedForExam(y.p,chosen));
 }
 // Los lemas y sintagmas de los paradigmas van en cursiva; las marcas
 // metalingüísticas de conjugación o género permanecen en redonda.
@@ -1549,14 +1597,17 @@ function latinCompleteCompoundActive(chosen){
  return Number.isInteger(from)&&Math.max(0,...chosen.map(examUnitNumber).filter(Number.isInteger))>=from;
 }
 function latinCompleteAdjectives(chosen){
- const until=Math.max(0,...chosen.map(examUnitNumber).filter(Number.isInteger));
+ const until=examGrammarLimit(chosen);
  return latinSharedBank.vocabulary(currentCourse())
   .filter(x=>examUnitNumber(x.unit)!==null&&examUnitNumber(x.unit)<=until&&!isExcludedExamMorphLemma(x.entry,x.meaning))
-  .map(x=>({x,p:adjective(x)})).filter(item=>{
-   const lemma=mNormalize(headLex(item.x.entry)).toLowerCase();
-   // meus > mi y los adjetivos en -ius requieren vocativos propios.
-   return item.p&&/^[a-z]+us$/.test(lemma)&&lemma!=='meus'&&!lemma.endsWith('ius');
-  });
+  .map(x=>{
+   const first=adjective(x),third=latinThirdAdjective(x);
+   const lemma=mNormalize(headLex(x.entry)).toLowerCase();
+   const regularFirst=first&&/^[a-z]+us$/.test(lemma)&&lemma!=='meus'&&!lemma.endsWith('ius');
+   const p=regularFirst&&latinAdjectiveAllowedForExam('first-second',chosen)?first:
+    third&&latinAdjectiveAllowedForExam('third-two',chosen)?third:null;
+   return {x,p};
+  }).filter(item=>!!item.p);
 }
 function latinCompleteNounGender(item){
  const lemma=mNormalize(item.p.lemma).toLowerCase();
@@ -1574,12 +1625,17 @@ function latinCompleteDeclensionItems(chosen){
   const adjectival=orderedAdjectives[index%orderedAdjectives.length],gender=latinCompleteNounGender(item);
   const lemma=mNormalize(headLex(adjectival.x.entry)),stem=lemma.slice(0,-2);
   const key={m:'2m',f:'1',n:'2n'}[gender];
-  if(!key||!lemma.endsWith('us'))return null;
-  const endings=M_END[key];
-  const adjectiveForms=endings.map((number,i)=>number.map((ending,k)=>{
-   if(i===0&&k===0)return stem+({m:'us',f:'a',n:'um'}[gender]);
-   return stem+ending;
-  }));
+  if(!key)return null;
+  let adjectiveForms;
+  if(adjectival.p.kind==='third-two')adjectiveForms=adjectival.p.byGender[gender];
+  else{
+   if(!lemma.endsWith('us'))return null;
+   const endings=M_END[key];
+   adjectiveForms=endings.map((number,i)=>number.map((ending,k)=>{
+    if(i===0&&k===0)return stem+({m:'us',f:'a',n:'um'}[gender]);
+    return stem+ending;
+   }));
+  }
   return {...item,compound:{
    adjective:adjectival.x,gender,
    title:latinDisplayEnunciation(adjectival.x.entry)+' + '+latinDisplayEnunciation(item.x.entry),
@@ -1613,9 +1669,13 @@ function latinExamFormCandidates(chosen,allForms=false){
  const indexedVerbs=new Set();
  for(const x of data){
   if(isExcludedExamMorphLemma(x.entry,x.meaning))continue;
-  const n=mNoun(x.entry),a=adjective(x),v=verb(x);
-  if(n)add(0,n.forms.flat(),['singular','plural'].flatMap(number=>M_CASES.map(c=>c+', '+number)),'nouns',x.entry);
-  else if(a)add(1,a.forms,a.labels,'adjectives',x.entry);
+  const n=mNoun(x.entry),a=adjective(x),third=latinThirdAdjective(x),v=verb(x);
+  if(n&&latinNounAllowedForExam(n,chosen))
+   add(0,n.forms.flat(),['singular','plural'].flatMap(number=>M_CASES.map(c=>c+', '+number)),'nouns',x.entry);
+  else if(a&&latinAdjectiveAllowedForExam('first-second',chosen))
+   add(1,a.forms,a.labels,'adjectives',x.entry);
+  else if(third&&latinAdjectiveAllowedForExam('third-two',chosen))
+   add(1,third.forms,third.labels,'adjectives',x.entry);
   else if(v){
    add(2,v.forms,v.labels.map(label=>label+', presente de indicativo activo'),'verbs',x.entry);
    indexedVerbs.add(examKey(x.entry));
@@ -2312,7 +2372,11 @@ function greekMorphologyEligible(item,limit){
   if(/tercera declinación/.test(answer))return limit>=8;
   if(/adjetivo/.test(answer))return limit>=5;
   if(/demostrativo|pronombre|personal|anafórico/.test(answer))return limit>=7;
-  if(/medio|pasiv|deponente/.test(answer))return limit>=6;
+  if(/medio|pasiv|deponente/.test(answer)&&limit<6)return false;
+  if(/participio|participial/.test(answer)&&limit<10)return false;
+  if(/imperfecto|futuro/.test(answer)&&limit<11)return false;
+  if(/aoristo/.test(answer)&&limit<12)return false;
+  if(/perfecto/.test(answer)&&limit<13)return false;
   return item.minUnit<=limit;
  }
  return true;
@@ -2836,7 +2900,7 @@ for(const k of greekKinds)$('greek-points-'+k).onchange=()=>generate();
 /* Cantidades específicas de los apartados de cada examen. */
 const latinFormsControl=document.createElement('label');
 latinFormsControl.id='latinFormsCountControl';
-latinFormsControl.innerHTML='Formas sueltas <input type="number" id="count-forms" min="1" max="30" value="6">';
+latinFormsControl.innerHTML='Formas sueltas <input type="number" id="count-forms" min="1" max="30" value="4">';
 $('count-decl').closest('.count-grid').append(latinFormsControl);
 const sentenceSpaceControl=document.createElement('label');
 sentenceSpaceControl.id='sentenceSpacingControl';
@@ -2886,7 +2950,7 @@ function latinDefaultCounts(){
  $('count-verb').value=2;
  $('count-lex').value=course==='latin4'?2:3;
  $('count-culture').value=4;
- $('count-forms').value=model==='mixto'?8:6;
+ $('count-forms').value=4;
 }
 function configureExamGlossary(){
  const enabled=currentCourse()==='greek1'?['complete','translation'].includes($('model').value):$('model').value!=='morf';
@@ -3666,7 +3730,7 @@ loadTeacherLatinLexBanks();
  if(!panel||document.getElementById('morphOptions'))return;
  const host=document.createElement('div');host.id='morphOptions';host.hidden=true;host.className='legacy-question-fields';
  host.innerHTML='<input id="morphOffer" type="number" value="3"><input id="morphDecline" type="number" value="2">'+
-  '<input id="morphVerbs" type="number" value="10"><input id="morphWords" type="number" value="10">'+
+  '<input id="morphVerbs" type="number" value="10"><input id="morphWords" type="number" value="4">'+
   '<input id="morphCategory-n" type="checkbox" checked><input id="morphCategory-adj" type="checkbox" checked>'+
   '<input id="morphCategory-pro" type="checkbox" checked>';
  host.addEventListener('change',()=>generate());
@@ -3755,7 +3819,7 @@ loadTeacherLatinLexBanks();
   if(!id)return;
   const original=$(id),number=document.createElement('input');
   number.type='number';number.min='1';number.max='30';
-  number.value=original?.value||(kind==='forms'?'6':'2');
+  number.value=original?.value||(kind==='forms'?'4':'2');
   number.addEventListener('change',()=>{
    if(original){original.value=number.value;original.dispatchEvent(new Event('change',{bubbles:true}))}
    else generate();
@@ -4223,7 +4287,7 @@ window.ExaminaMorphology={lookup,stats,importText};
  const legacy=document.getElementById('morphOptions');
  if(legacy?.classList.contains('legacy-question-fields'))legacy.remove();else if(legacy)return;
  const block=document.createElement('div');block.className='field';block.id='morphOptions';
- block.innerHTML='<h3>Examen de morfología · 1 p. por pregunta</h3><p class="hint">Pregunta 1: sintagmas (artículo + sustantivo + adjetivo en griego). Configura las opciones; la generación automática de sintagmas queda pendiente.</p><div class="count-grid"><label>Sintagmas ofrecidos<select id="morphOffer">'+Array.from({length:11},(_,i)=>'<option value="'+(i+2)+'"'+(i===1?' selected':'')+'>'+(i+2)+'</option>').join('')+'</select></label><label>Sintagmas que se declinan<select id="morphDecline">'+Array.from({length:12},(_,i)=>'<option value="'+(i+1)+'"'+(i===1?' selected':'')+'>'+(i+1)+'</option>').join('')+'</select></label><label>Formas verbales (pregunta 2)<input id="morphVerbs" type="number" min="1" max="30" value="10"></label><label>Palabras (pregunta 3)<input id="morphWords" type="number" min="1" max="30" value="10"></label></div><label for="morphSyntagms">Sintagmas editables (uno por línea)</label><textarea id="morphSyntagms" rows="3" placeholder="magnus, –a, –um + oppidum, –i"></textarea><p class="hint">Si el banco contiene sustantivos y adjetivos adecuados a las unidades, se propondrán sintagmas automáticamente. Puedes sustituirlos escribiendo uno por línea. Si todavía no se ha estudiado el adjetivo, se conservan huecos editables.</p><p class="hint">Categorías de la pregunta 3</p><label class="check"><input type="checkbox" id="morphCategory-n" checked>Sustantivos</label><label class="check"><input type="checkbox" id="morphCategory-adj" checked>Adjetivos</label><label class="check"><input type="checkbox" id="morphCategory-pro" checked>Pronombres</label>';
+ block.innerHTML='<h3>Examen de morfología · 1 p. por pregunta</h3><p class="hint">Pregunta 1: sintagmas (artículo + sustantivo + adjetivo en griego). Configura las opciones; la generación automática de sintagmas queda pendiente.</p><div class="count-grid"><label>Sintagmas ofrecidos<select id="morphOffer">'+Array.from({length:11},(_,i)=>'<option value="'+(i+2)+'"'+(i===1?' selected':'')+'>'+(i+2)+'</option>').join('')+'</select></label><label>Sintagmas que se declinan<select id="morphDecline">'+Array.from({length:12},(_,i)=>'<option value="'+(i+1)+'"'+(i===1?' selected':'')+'>'+(i+1)+'</option>').join('')+'</select></label><label>Formas verbales (pregunta 2)<input id="morphVerbs" type="number" min="1" max="30" value="10"></label><label>Palabras (pregunta 3)<input id="morphWords" type="number" min="1" max="30" value="4"></label></div><label for="morphSyntagms">Sintagmas editables (uno por línea)</label><textarea id="morphSyntagms" rows="3" placeholder="magnus, –a, –um + oppidum, –i"></textarea><p class="hint">Si el banco contiene sustantivos y adjetivos adecuados a las unidades, se propondrán sintagmas automáticamente. Puedes sustituirlos escribiendo uno por línea. Si todavía no se ha estudiado el adjetivo, se conservan huecos editables.</p><p class="hint">Categorías de la pregunta 3</p><label class="check"><input type="checkbox" id="morphCategory-n" checked>Sustantivos</label><label class="check"><input type="checkbox" id="morphCategory-adj" checked>Adjetivos</label><label class="check"><input type="checkbox" id="morphCategory-pro" checked>Pronombres</label>';
  group.insertBefore(block,group.querySelector('#examQuestionMenus')||group.children[1]||null);
  const update=()=>{
   const latinMorph=currentCourse()!=='greek1'&&$('model').value==='morf';
