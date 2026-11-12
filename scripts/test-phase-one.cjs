@@ -22,6 +22,8 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
   await page.waitForFunction(()=>
    window.ExaminaScoring?.rows().length>2&&
    !!document.querySelector('#examQuestionMenus [data-question="forms"] .exam-question-score-row input'));
+  await page.locator('#examQuestionSettings').evaluate(el=>el.open=true);
+  await page.locator('#examQuestionMenus [data-question="forms"]').evaluate(el=>el.open=true);
   const field=page.locator('#examQuestionMenus [data-question="forms"] .exam-question-score-row input');
   const rowKey=await field.getAttribute('data-scoring-key');
   const preview=page.locator('#paper .exam-question').filter({hasText:/Analiza morfol/i}).first();
