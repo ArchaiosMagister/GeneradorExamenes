@@ -496,7 +496,18 @@ function latinExpandedForms(bank){
    continue;
   }
   const group=annotated[1],end=group==='2ª'?'eo':(['4ª','mx.'].includes(group)?'io':'o');
-  if(!l.endsWith(end)||!l.slice(0,-end.length))continue;
+  if(!l.endsWith(end)||!l.slice(0,-end.length)){
+   // Solo para dos etiquetas discordantes comprobadas en el banco docente.
+   // No proponer formas de presente ni participios a partir de un supino dudoso.
+   if(['soluo','uiuo'].includes(l)&&fields.length>=3&&
+      fields[1].endsWith('i')&&fields[1].length>2){
+    const root=fields[1].slice(0,-1);
+    for(const suffix of ['i','isti','it','imus','istis','erunt','eram',
+      'eras','erat','eramus','eratis','erant','ero','eris','erit',
+      'erimus','eritis','erint','isse'])add(root+suffix,record);
+   }
+   continue;
+  }
   const stem=l.slice(0,-end.length);
   const formsByGroup={
    '1ª':{inf:'are',imp:'a',imperf:'ab',future:'ab',passive:'1'},
@@ -550,8 +561,8 @@ function latinExpandedForms(bank){
    for(const end of ['am','es','et','emus','etis','ent'])add(stem+p+end,record);
    if(l!=='facio')for(const end of ['ar','eris','etur','emur','emini','entur'])add(stem+p+end,record);
   }
-  // Perfecto y pluscuamperfecto únicamente cuando el enunciado trae
-  // explícitamente la segunda forma (no se adivina el tema).
+
+  // Perfecto y pluscuamperfecto solo con el tema expresamente aportado.
   const perf=fields[1]||'';
   if(fields.length>=3&&perf.endsWith('i')&&perf.length>2){
    const root=perf.slice(0,-1);
@@ -567,6 +578,7 @@ function latinExpandedForms(bank){
     decl12(sup.slice(0,-2),proposal);
    }
   }
+
  }
  // Modos y perfectos irregulares de enorme frecuencia, explícitos.
  const irregular=[
