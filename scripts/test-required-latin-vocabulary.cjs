@@ -26,6 +26,7 @@ const perCourse={latin1:bank.filter(x=>(x.course||'latin1')==='latin1'),
 const expectedCounts={latin1:1106,latin4:541};
 const normal=value=>String(value||'').normalize('NFD').replace(/\p{M}/gu,'')
  .replace(/æ/g,'ae').replace(/œ/g,'oe').toLowerCase();
+const normalizedLemma=value=>normal(value).replace(/v/g,'u'); // alternancia gráfica u/v en el lematizador
 for(const course of ['latin1','latin4']){
  const document=source.courses[course];
  assert(document&&typeof document==='object');
@@ -79,7 +80,7 @@ const cases=[
 for(const [course,form,lemma,desc] of cases){
  const row=engine.analyze(data,form,course==='latin1'?'lat1':'lat4',perCourse[course],{contextual:true})[0];
  assert(row,course+' '+form+': no se produjo un análisis');
- assert(row.candidates.some(x=>normal(x.lemma)===lemma),
+ assert(row.candidates.some(x=>normalizedLemma(x.lemma)===normalizedLemma(lemma)),
   course+' '+form+' ('+desc+'): no se localizó el lema '+lemma+
   '; propuestas: '+row.candidates.map(x=>x.lemma).join(', '));
 }
@@ -96,13 +97,13 @@ for(const [course,items] of Object.entries(perCourse)){
   seen.add(lemma);verbHeads++;
   const form=perf.slice(0,-1)+'erunt';
   const result=engine.analyze(data,form,course==='latin1'?'lat1':'lat4',items,{contextual:true})[0];
-  if(result?.candidates.some(x=>normal(x.lemma)===lemma))supported++;
+  if(result?.candidates.some(x=>normalizedLemma(x.lemma)===normalizedLemma(lemma)))supported++;
   else absent.push(course+': '+row.entry+' → '+form);
  }
 }
 assert(verbHeads>=100,'No se han auditado suficientes paradigmas completos');
-assert(supported/verbHeads>=0.95,
- 'No alcanza el 95 % de recuperación de perfectos docentes: '+supported+'/'+verbHeads+
+assert(supported/verbHeads>=0.98,
+ 'No alcanza el 98 % de recuperación de perfectos docentes: '+supported+'/'+verbHeads+
  ' pendientes: '+absent.slice(0,20).join('; '));
 // No añadir filas al índice verificado por el simple hecho de que el documento
 // incluye el tema de perfecto; las flexiones extrapoladas se distinguen por origen.
