@@ -77,6 +77,45 @@ assert(!engine.documentXml({...project,groupTypes:false}).includes('Sustantivos 
   const page=await browser.newPage({viewport:{width:1200,height:850}});
   const errors=[];page.on('pageerror',e=>errors.push(e.message));
   await page.goto('http://127.0.0.1:'+server.address().port+'/offline.html',{waitUntil:'load'});
+  const requirements=await page.evaluate(()=>{
+   const stored=JSON.parse(localStorage.getItem('examina_required_v9')||'[]');
+   const course=document.getElementById('course');
+   course.value='latin1';course.dispatchEvent(new Event('change',{bubbles:true}));
+   const lat1={
+    early:isRequired('ambulo, ambulavi, ambulatum (1ª)',['UD1']),
+    blockNotYet:isRequired('absum, abfui – (irr.)',['UD9']),
+    blockReady:isRequired('absum, abfui – (irr.)',['UD10']),
+    futureBlockNotYet:isRequired('abeo, abii, abitum (irr.)',['UD10']),
+    futureBlockReady:isRequired('abeo, abii, abitum (irr.)',['UD12'])
+   };
+   course.value='latin4';course.dispatchEvent(new Event('change',{bubbles:true}));
+   const lat4={
+    early:isRequired('Æmĭlĭa, –æ',['UD1']),
+    pending:isRequired('admīror, admīrātus sum (1ª)',['UD9']),
+    ready:isRequired('admīror, admīrātus sum (1ª)',['UD10'])
+   };
+   return {count1:stored.filter(x=>x.course==='latin1').length,
+    count4:stored.filter(x=>x.course==='latin4').length,
+    seed:localStorage.getItem('examina_required_latin_docentes_v1'),
+    lat1,lat4};
+  });
+  assert(requirements.count1>=1100&&requirements.count4===541, 'El exigible debe inicializarse');
+  assert.equal(requirements.seed,'1');
+  assert.deepEqual(requirements.lat1,{early:true,blockNotYet:false,blockReady:true,
+   futureBlockNotYet:false,futureBlockReady:true});
+  assert.deepEqual(requirements.lat4,{early:true,pending:false,ready:true});
+  await page.evaluate(()=>{
+   const rows=JSON.parse(localStorage.getItem('examina_required_v9'));
+   const remaining=rows.filter(x=>!(x.course==='latin4'&&
+    x.entry.startsWith('admīror')&&x.unit==='UD10'));
+   localStorage.setItem('examina_required_v9',JSON.stringify(remaining));
+  });
+  await page.reload();
+  const stillRemoved=await page.evaluate(()=>JSON.parse(
+   localStorage.getItem('examina_required_v9')).some(x=>
+   x.course==='latin4'&&x.entry.startsWith('admīror')&&x.unit==='UD10'));
+  assert.equal(stillRemoved,false,
+   'Una corrección docente no puede revertirse al recargar la lista exigible');
   await page.locator('#vmShowExam').click();
   await page.locator('#group-course').evaluate(el=>el.open=true);
   await page.locator('#group-content').evaluate(el=>el.open=true);
