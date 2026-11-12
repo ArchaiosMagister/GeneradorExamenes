@@ -827,6 +827,13 @@ $('paper').addEventListener('input',event=>{
  if(active.target.closest('[data-syntagm-slot]'))syncMorphSyntagmTextarea();
  warnExamManualSolution();
 });
+$('name').addEventListener('input',()=>{
+ const title=$('paper').querySelector('.exam-header-line:first-child > span:first-child');
+ if(!title)return;
+ const requested=$('name').value.trim();
+ const suffix=title.textContent.match(/\s+[–—-]\s+UDs?\s*\d[\d\s,–-]*/i)?.[0]||'';
+ title.textContent=requested+(suffix&&!requested.includes(suffix.trim())?suffix:'');
+});
 function refreshManualMorphWords(){
  const host=$('manualMorphWords');
  if(!host)return;
@@ -835,6 +842,10 @@ function refreshManualMorphWords(){
  // También reconstruye editores genéricos para borradores griegos restaurados.
  // En la generación normal los controles del corpus sustituyen estos editores.
  const paper=$('paper'),targets=[],seen=new Set();
+ // La cabecera también es editable desde el Word; vincularla con su campo.
+ const headerTitle=paper.querySelector('.exam-header-line:first-child > span:first-child');
+ if(headerTitle)linkExamWordEditor(headerTitle,$('name'));
+
  const add=(el,kind)=>{
   if(!el||seen.has(el))return;
   seen.add(el);targets.push({el,kind});
