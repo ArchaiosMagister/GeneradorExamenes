@@ -32,7 +32,7 @@ assert.equal(data.extensions.latin_editorial_decisions.verifiedFormsAdded,0,
  'La corrección de un enunciado no acredita nuevas flexiones');
 assert.equal(data.vocabulary.lat.moveo.lat1.entry,'moveo, movi, motum (2ª)');
 assert.equal(data.vocabulary.lat.eripio.lat1.entry,'eripio, eripui, ereptum (mx.)');
-assert.equal(data.rows.lat.filter(x=>x[3]===5).length,79);
+assert.equal(data.rows.lat.filter(x=>x[3]===5).length,112);
 assert(data.rows.lat.some(x=>x[0]==='vinco'&&x[1]==='vicerunt'&&x[2]==='V;IND;ACT;PRF;3;PL'&&x[3]===5));
 assert.equal(data.rows.grc.filter(x=>x[3]===5).length,24);
 assert.equal(data.rows.lat.filter(x=>x[0]==='sum'&&x[3]===5).length,30);
@@ -40,8 +40,8 @@ assert.equal(data.rows.grc.filter(x=>x[0]==='γιγνομαι'&&x[3]===5).length
 assert.equal(data.rows.grc.filter(x=>x[0]==='ερχομαι'&&x[3]===5).length,6);
 assert.equal(data.rows.grc.filter(x=>x[0]==='διδασκω'&&x[3]===5).length,6);
 assert.equal(data.rows.grc.filter(x=>x[0]==='ακουω'&&x[3]===5).length,6);
-assert.equal(data.source.externalVerification.length,44);
-assert.equal(data.extensions.verifiedIndividualForms,37);
+assert.equal(data.source.externalVerification.length,77);
+assert.equal(data.extensions.verifiedIndividualForms,70);
 assert.equal(data.vocabulary.lat.milia.lat1.entry,'milia, –ium');
 assert.equal(data.vocabulary.lat.parens.lat1.entry,'parens, –ntis');
 for(const [lemma,form,tags] of [
