@@ -106,6 +106,15 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
   assert(later?.types['perfecto de indicativo | pasiva']>0,'UD9: falta perfectum pasivo');
   assert(later?.types['pluscuamperfecto de indicativo | pasiva']>0,'UD9: falta pluscuamperfecto pasivo');
   assert.deepEqual(errors,[],'Errores JavaScript detectados');
+  // Conjugar con un tiempo explicitado permite presentar loqueris; un
+  // ejercicio de análisis aislado no puede resolver sin contexto su doble tiempo.
+  const syncretic=await page.evaluate(()=>{
+   const chosen=latinSharedBank.vocabulary('latin1');
+   return ['loquor','sequor'].map(lemma=>({
+    lemma,source:latinExplicitVerbEvidence[lemma][0].forms[1]
+   }));
+  });
+  assert(syncretic.every(x=>x.source.endsWith('eris')));
   const out=resolve(__dirname,'../test-artifacts/fase-ii-inventario-morfologico.json');
   mkdirSync(resolve(__dirname,'../test-artifacts'),{recursive:true});
   writeFileSync(out,JSON.stringify({
@@ -114,7 +123,7 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
    latin1:latin.items,latin4:latin4.items,greek1:greek.items
   },null,2)+'\n');
   const last=latin.items[latin.items.length-1];
-  assert.equal(last.attestedForms,42,'Las 42 formas explícitas deben conservar su procedencia en el inventario final');
+  assert.equal(last.attestedForms,112,'Las 114 formas latinas deben conservar su procedencia; 2 lecturas sincréticas se excluyen del análisis aislado');
   console.log('Auditoría curricular: Latín I '+latin.items.length+' etapas, Latín 4.º '+latin4.items.length+
    ', Griego I '+greek.items.length+' · máximo '+last.verbForms+' formas verbales posibles ('+
    last.attestedForms+' explícitas, '+last.regularDerivedForms+' derivadas por reglas).');
