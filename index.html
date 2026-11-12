@@ -1360,8 +1360,8 @@ const latinSharedBank=(()=>{
   return [];
  };
  const exercises=(course,selectedUnits=null)=>[
-  ...paradigms(course,selectedUnits,'nominal').map(({x,p})=>({kind:'declension',entry:x.entry,unit:x.unit,paradigm:p,verified:true,source:'regla morfológica contrastada'})),
-  ...paradigms(course,selectedUnits,'verb').map(({x,p})=>({kind:'conjugation',entry:x.entry,unit:x.unit,paradigm:p,verified:true,source:'regla morfológica contrastada'})),
+  ...paradigms(course,selectedUnits,'nominal').map(({x,p})=>({kind:'declension',entry:x.entry,unit:x.unit,paradigm:p,verified:false,generatedByRule:true,evidenceStatus:'derivada curricular',source:'regla interna sin contraste individual'})),
+  ...paradigms(course,selectedUnits,'verb').map(({x,p})=>({kind:'conjugation',entry:x.entry,unit:x.unit,paradigm:p,verified:false,generatedByRule:true,evidenceStatus:'derivada curricular',source:'regla interna sin contraste individual'})),
   ...sentencesFor(course,selectedUnits).filter(x=>x.text&&x.sol).map(x=>({kind:'sentence',entry:x.text,unit:x.units||[],answer:x.sol,verified:true,source:'oración del banco'}))
  ];
  return {
@@ -1604,7 +1604,7 @@ function generateLatinMorphologyReference(){
  const problems=[];
  if(second&&verbItems.length<cfg.verbs)problems.push('Formas verbales: '+verbItems.length+' de '+cfg.verbs);
  if(last&&words.length<cfg.words)problems.push('Palabras: '+words.length+' de '+cfg.words);
- const notice=problems.length?'<p class="hint">Material verificado insuficiente ('+esc(problems.join('; '))+'). No se han añadido soluciones hipotéticas.</p>':'';
+ const notice=problems.length?'<p class="hint">Material morfológico disponible insuficiente ('+esc(problems.join('; '))+'). No se han añadido soluciones hipotéticas.</p>':'';
  const total=[first,second,pronSection,last].filter(Boolean).length;
  const solution='<div id="answerkey" class="solutions"><h2>'+esc(tr('key'))+'</h2><ol>'+
   (first?'<li>Sintagmas editables: no se generan soluciones automáticas sin concordancia verificada.</li>':'')+
@@ -1885,13 +1885,13 @@ function generate(){
  if(!translation&&examQuestionEnabled('decl')){
   const nouns=stickyExamRows('decl',()=>sample(latinCompleteDeclensionItems(chosen),Math.min(3,countFor('decl'))));
   add(latinCompleteCompoundActive(chosen)?t('Declina los siguientes sintagmas nominales.','Declina els sintagmes nominals següents.'):t('Declina las siguientes palabras.','Declina les paraules següents.'),
-   nouns.length?nouns.map(x=>latinExamDeclensionTable(x)).join(''):missing('No hay paradigmas nominales verificados en las unidades seleccionadas.'),
+   nouns.length?nouns.map(x=>latinExamDeclensionTable(x)).join(''):missing('No hay paradigmas nominales admitidos para las unidades seleccionadas.'),
    nouns.map(x=>latinExamDeclensionTable(x,true)).join(''));
  }
  if(!translation&&examQuestionEnabled('verb')){
   const verbs=stickyExamRows('verb',()=>sample(latinSharedBank.paradigms(course,chosen,'verb').filter(x=>Array.isArray(x.p.forms)&&x.p.forms.length===6),Math.min(3,countFor('verb'))));
   add(t('Conjuga en presente de indicativo activo.','Conjuga en present d’indicatiu actiu.'),
-   verbs.length?latinExamConjugationTable(verbs):missing('No hay paradigmas verbales verificados en las unidades seleccionadas.'),
+   verbs.length?latinExamConjugationTable(verbs):missing('No hay paradigmas verbales admitidos para las unidades seleccionadas.'),
    verbs.length?latinExamConjugationTable(verbs,true):'');
  }
  const forms=stickyExamRows('forms',()=>examQuotaPick(latinExamFormCandidates(chosen),formsCount,()=>latinExamForms(chosen,formsCount)));
@@ -2879,7 +2879,7 @@ function generateGreekMorphologyFixed(){
  const problems=[];
  if(second&&verbs.length<cfg.verbs)problems.push('Verbos: '+verbs.length+' de '+cfg.verbs);
  if(last&&words.length<cfg.words)problems.push('Palabras variables: '+words.length+' de '+cfg.words);
- const notice=problems.length?'<p class="hint">Material verificado insuficiente ('+esc(problems.join('; '))+'). No se han inventado análisis.</p>':'';
+ const notice=problems.length?'<p class="hint">Material morfológico disponible insuficiente ('+esc(problems.join('; '))+'). No se han inventado análisis.</p>':'';
  const total=[first,second,pronounSection,last].filter(Boolean).length;
  const answer='<div id="answerkey" class="solutions"><h2>'+tr('key')+'</h2><ol>'+
   (first?'<li>Sintagmas editables: no se generan soluciones automáticas sin concordancia verificada.</li>':'')+
