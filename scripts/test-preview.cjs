@@ -175,7 +175,7 @@ async function checkFile(browser,filename){
   const course=document.getElementById('course'),model=document.getElementById('model');
   course.value='latin1';course.dispatchEvent(new Event('change',{bubbles:true}));
   model.value='morf';model.dispatchEvent(new Event('change',{bubbles:true}));
-  return ['UD2','UD3','UD4','UD7'].map(unit=>{
+  return ['UD2','UD3','UD4','UD7','UD8','UD9–10'].map(unit=>{
    document.querySelectorAll('.unit-choice').forEach(el=>el.checked=units[Number(el.value)]===unit);
    examSelectionCache.clear();generate();
    const tbl=document.querySelector('#paper .reference-verb-table');
@@ -220,6 +220,25 @@ async function checkFile(browser,filename){
     filename+': falta perfecto a partir de UD4');
    if(unit==='UD7')assert(allTenses.includes('futuro de indicativo'),
     filename+': falta futuro a partir de UD7');
+   const passiveCompounds=picked.filter(x=>x.voice==='pasiva'&&
+    /^(?:perfecto|pluscuamperfecto) de indicativo$/.test(x.tense));
+   if(unit==='UD8')assert.equal(passiveCompounds.length,0,
+    filename+': perfectum pasivo antes de UD9');
+   if(unit==='UD9–10'){
+    assert(picked.length>=3,filename+': faltan filas en tabla de UD9–10');
+    assert(passiveCompounds.some(x=>x.tense==='perfecto de indicativo'),
+     filename+': no aparece perfecto pasivo en UD9–10');
+    assert(passiveCompounds.some(x=>x.tense==='pluscuamperfecto de indicativo'),
+     filename+': no aparece pluscuamperfecto pasivo en UD9–10');
+    assert(rows.some(x=>/\s(?:sum|es|est|sumus|estis|sunt|eram|eras|erat|eramus|eratis|erant)\b/.test(x.form)),
+     filename+': la forma compuesta pasiva no se presenta correctamente');
+    assert(sample.duco.some(x=>x.form==='ductus est'&&x.voice==='pasiva'&&x.tense==='perfecto de indicativo'),
+     filename+': el perfecto pasivo de duco debe usar ductus');
+    assert(!sample.moneo.includes('monetus est'),
+     filename+': forma hipotética ajena al supino de moneo');
+    assert(sample.duco.some(x=>x.form==='ductae erant'&&x.voice==='pasiva'&&x.tense==='pluscuamperfecto de indicativo'),
+     filename+': el pluscuamperfecto pasivo debe concordar en femenino plural');
+   }
    if(unit==='UD7'){
     assert(sample.duco.some(x=>x.form==='ducitur'&&x.voice==='pasiva'&&x.tense==='presente de indicativo'),
      filename+': forma de duco en presente pasivo incorrecta');
@@ -267,7 +286,7 @@ async function checkFile(browser,filename){
  }
 
  const cases=[
-  ['latin1','tablas','UD3'],['latin1','morf','UD3'],['latin1','mixto','UD3'],
+  ['latin1','tablas','UD3'],['latin1','morf','UD3'],['latin1','morf','UD9–10'],['latin1','mixto','UD3'],
   ['latin4','tablas','UD3'],
   ['greek1','complete','UD7'],['greek1','morphology','UD7'],['greek1','translation','UD7']
  ];
