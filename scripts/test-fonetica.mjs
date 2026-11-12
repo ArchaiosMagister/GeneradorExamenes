@@ -191,7 +191,8 @@ for(const item of [...newGreek,...recoveredGreek]){
  assert((item.lote===18?auditedIds:recoveredIds).has(item.id),
   'El banco difiere del registro: '+item.latin);
 }
-const keyGreek=x=>String(x||'').normalize('NFD').replace(/\\p{M}/gu,'')
+const keyGreek=x=>[...String(x||'').normalize('NFD')]
+ .filter(ch=>ch.charCodeAt(0)<0x300||ch.charCodeAt(0)>0x36f).join('')
  .replace(/[æÆ]/g,'ae').replace(/[œŒ]/g,'oe').toLowerCase();
 const impossible=new Set([...greekBatch.pendientesNuevasDetalle,
  ...greekBatch.pendientesAnteriores].map(x=>keyGreek(x.latin)));
