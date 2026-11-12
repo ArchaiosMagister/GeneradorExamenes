@@ -51,7 +51,7 @@ const eligibleGlobal=unit=>generic.items.filter(x=>x.estado==='APTO_PROPUESTO'&&
 assert.equal(eligibleGlobal(0).length,103,'UD0 filtra N01: 103 étimos ya explicados');
 assert.equal(eligibleGlobal(3).length,650,'UD3 debe admitir étimos de cualquier unidad con normas impartidas');
 assert.equal(eligibleGlobal(10).length,655,'UD10 debe admitir todo el banco general');
-assert(eligibleGlobal(0).some(x=>x.latin==='advocatum'),'El banco general no debe restringirse a los tres étimos de UD0');
+assert(eligibleGlobal(0).some(x=>x.latin==='patrem'),'El banco general no debe limitarse a los tres étimos de UD0');
 const lesson0=availableThrough(0),lesson1=availableThrough(1);
 assert.deepEqual(lesson0.map(x=>x.latin),['terram','apotheca','farinam']);
 assert.equal(lesson1.length,10,'UD1 debe incluir las tres palabras de UD0 y las siete nuevas');
