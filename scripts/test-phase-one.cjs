@@ -40,17 +40,17 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
 
   const before=await page.evaluate(()=>{
    const target=document.querySelector('#paper [data-analysis-slot] > i:first-child');
-   assert(target,'No hay palabra de análisis para probar');
+   if(!target)throw Error('No hay palabra de análisis para probar');
    const id=target.dataset.examEditorLink;
    const editor=[...document.querySelectorAll('input[data-exam-editor-link]')]
     .find(el=>el.dataset.examEditorLink===id);
-   assert(editor,'Falta editor enlazado a la palabra');
+   if(!editor)throw Error('Falta editor enlazado a la palabra');
    target.textContent='FORMA_PRUEBA_1';
    target.dispatchEvent(new Event('input',{bubbles:true}));
-   assert.equal(editor.value,'FORMA_PRUEBA_1','Vista previa no sincroniza su campo de texto');
+   if(editor.value!=='FORMA_PRUEBA_1')throw Error('Vista previa no sincroniza su campo de texto');
    document.getElementById('saveDraft').click();
    const snapshot=JSON.parse(localStorage.getItem('examina_draft_v14'));
-   assert(snapshot?.scores&&snapshot?.units,'El borrador omite puntuaciones o unidades');
+   if(!snapshot?.scores||!snapshot?.units)throw Error('El borrador omite puntuaciones o unidades');
    return {rowKey,id};
   });
   await field.fill('3,5');
@@ -68,9 +68,9 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
    const id=target.dataset.examEditorLink;
    const editor=[...document.querySelectorAll('input[data-exam-editor-link]')]
     .find(el=>el.dataset.examEditorLink===id);
-   assert(editor,'No se han reconstruido los editores después del borrador');
+   if(!editor)throw Error('No se han reconstruido los editores después del borrador');
    target.textContent='FORMA_PRUEBA_2';target.dispatchEvent(new Event('input',{bubbles:true}));
-   assert.equal(editor.value,'FORMA_PRUEBA_2','El vínculo restaurado no es bidireccional');
+   if(editor.value!=='FORMA_PRUEBA_2')throw Error('El vínculo restaurado no es bidireccional');
    const values=[...document.querySelectorAll('#paper [data-analysis-slot]')].map(el=>el.textContent);
    regenerateExamWord('verb',0);
    return values;
