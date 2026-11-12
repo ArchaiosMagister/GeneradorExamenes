@@ -196,6 +196,192 @@
           ]
         }
       ]
+    },
+    {
+      "lang": "lat",
+      "lemma": "possum",
+      "reference": "https://www.nationalarchives.gov.uk/latin/stage-2-latin/resources/stage-2-latin-grammar-resource/",
+      "type": "Indicativo irregular de possum; cinco tiempos, sin pasiva",
+      "blocks": [
+        {
+          "tags": "V;IND;ACT;PRS",
+          "forms": [
+            "possum",
+            "potes",
+            "potest",
+            "possumus",
+            "potestis",
+            "possunt"
+          ]
+        },
+        {
+          "tags": "V;IND;ACT;PST;IPFV",
+          "forms": [
+            "poteram",
+            "poteras",
+            "poterat",
+            "poteramus",
+            "poteratis",
+            "poterant"
+          ]
+        },
+        {
+          "tags": "V;IND;ACT;FUT",
+          "forms": [
+            "potero",
+            "poteris",
+            "poterit",
+            "poterimus",
+            "poteritis",
+            "poterunt"
+          ]
+        },
+        {
+          "tags": "V;IND;ACT;PRF",
+          "forms": [
+            "potui",
+            "potuisti",
+            "potuit",
+            "potuimus",
+            "potuistis",
+            "potuerunt"
+          ]
+        },
+        {
+          "tags": "V;IND;ACT;PSTP",
+          "forms": [
+            "potueram",
+            "potueras",
+            "potuerat",
+            "potueramus",
+            "potueratis",
+            "potuerant"
+          ]
+        }
+      ]
+    },
+    {
+      "lang": "lat",
+      "lemma": "confero",
+      "reference": "https://www.nihilscio.it/Manuali/Lingua%20latina/Verbi/Coniugazione_latino.aspx?lang=ES_&verbo=confero",
+      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/irregular-verbs-fer%C5%8D-and-ed%C5%8D",
+      "type": "Compuesto irregular de fero, formas de indicativo activo contrastadas",
+      "blocks": [
+        {
+          "tags": "V;IND;ACT;PRS",
+          "forms": [
+            "confero",
+            "confers",
+            "confert",
+            "conferimus",
+            "confertis",
+            "conferunt"
+          ]
+        },
+        {
+          "tags": "V;IND;ACT;PST;IPFV",
+          "forms": [
+            "conferebam",
+            "conferebas",
+            "conferebat",
+            "conferebamus",
+            "conferebatis",
+            "conferebant"
+          ]
+        },
+        {
+          "tags": "V;IND;ACT;FUT",
+          "forms": [
+            "conferam",
+            "conferes",
+            "conferet",
+            "conferemus",
+            "conferetis",
+            "conferent"
+          ]
+        },
+        {
+          "tags": "V;IND;ACT;PRF",
+          "forms": [
+            "contuli",
+            "contulisti",
+            "contulit",
+            "contulimus",
+            "contulistis",
+            "contulerunt"
+          ]
+        },
+        {
+          "tags": "V;IND;ACT;PSTP",
+          "forms": [
+            "contuleram",
+            "contuleras",
+            "contulerat",
+            "contuleramus",
+            "contuleratis",
+            "contulerant"
+          ]
+        }
+      ]
+    },
+    {
+      "lang": "lat",
+      "lemma": "loquor",
+      "reference": "https://www.thelatinlibrary.com/101/Deponent.pdf",
+      "secondaryReference": "https://elon.io/grammar/latin/verb-reference/loquor",
+      "type": "Presente indicativo deponente: morfología pasiva, sentido activo",
+      "blocks": [
+        {
+          "tags": "V;IND;DEP;PRS",
+          "forms": [
+            "loquor",
+            "loqueris",
+            "loquitur",
+            "loquimur",
+            "loquimini",
+            "loquuntur"
+          ]
+        }
+      ]
+    },
+    {
+      "lang": "lat",
+      "lemma": "sequor",
+      "reference": "https://elon.io/grammar/latin/verb-reference/sequor",
+      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/deponent-verbs",
+      "type": "Presente indicativo deponente: morfología pasiva, sentido activo",
+      "blocks": [
+        {
+          "tags": "V;IND;DEP;PRS",
+          "forms": [
+            "sequor",
+            "sequeris",
+            "sequitur",
+            "sequimur",
+            "sequimini",
+            "sequuntur"
+          ]
+        }
+      ]
+    },
+    {
+      "lang": "grc",
+      "lemma": "βουλομαι",
+      "reference": "https://logeion.uchicago.edu/morpho/%CE%B2%CE%BF%CF%8D%CE%BB%CE%B5%CE%B9",
+      "type": "Presente indicativo medio de βούλομαι, una variante documental por persona; se conservan variantes no elegidas para revisión",
+      "blocks": [
+        {
+          "tags": "V;IND;MID;PRS",
+          "forms": [
+            "βούλομαι",
+            "βούλει",
+            "βούλεται",
+            "βουλόμεθα",
+            "βούλεσθε",
+            "βούλονται"
+          ]
+        }
+      ]
     }
   ],
   "sourceCode": 5,
