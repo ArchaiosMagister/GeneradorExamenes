@@ -2681,29 +2681,34 @@ try{if(!localStorage.getItem('examina_greek_materials_v20')){for(const x of gree
 function greekLexKey(entry){return examKey(String(entry).split('+')[0].trim())}
 function greekLemma(head){const item=greekSharedBank.lookup(head);return item?{entry:item.entry,meaning:item.meaning||'[Traducción pendiente de revisión]',meaning_va:item.meaning_va||''}:{entry:head,meaning:'[Traducción pendiente de revisión]'}}
 /* Extracto de las formas contrastadas del índice; sin inferencia de tiempos. */
-const greekExplicitVerbEvidence={"βουλομαι":{"forms":["βούλομαι","βούλει","βούλεται","βουλόμεθα","βούλεσθε","βούλονται"],"voice":"media","sourceCode":5,"unit":6}};
+const greekExplicitVerbEvidence={"βουλομαι":{"forms":["βούλομαι","βούλει","βούλεται","βουλόμεθα","βούλεσθε","βούλονται"],"lemma":"βούλομαι","voice":"medio (deponente)","tense":"presente","sourceCode":5,"unit":6},"ερχομαι":{"forms":["ἦλθον","ἦλθες","ἦλθε","ἤλθομεν","ἤλθετε","ἦλθον"],"lemma":"ἔρχομαι","voice":"activo","tense":"aoristo segundo","sourceCode":5,"unit":12}};
 function greekCorpus(){
  const items=[];
  const add=(kind,id,minUnit,contentUnits,prompt,answer,lemmas=[],table=null)=>items.push({kind,id,minUnit,contentUnits,prompt,answer,lemmas,table,verified:true});
  for(const [key,forms] of Object.entries(greekNounData)){const u=greekNounUnits[key];if(u===undefined)continue;const lemma=greekLemma(forms[0]);add('declension','n-'+key,u,[u],'Declina '+lemma.entry,greekCaseLabels.map((l,i)=>l+': '+forms[i]).join('; '),[lemma.entry],{headers:['Caso','Singular','Plural'],rows:[0,4,3,1,2].map(i=>[greekCaseLabels[i].split(' ')[0],forms[i],forms[i+5]])})}
  for(const [key,forms] of Object.entries(greekVerbData)){const u=greekVerbUnits[key];if(u===undefined)continue;const lemma=greekLemma(forms[0]);add('conjugation','v-'+key,u,[u],'Conjuga '+lemma.entry+' en presente de indicativo activo.',greekPersonLabels.map((l,i)=>l+': '+forms[i]).join('; '),[lemma.entry],{headers:['Persona','Singular','Plural'],rows:[0,1,2].map(i=>[(i+1)+'.ª',forms[i],forms[i+3]])})}
- // El verbo deponente βούλομαι tiene desinencias medias y traducción activa.
+ // Paradigmas explícitos: medio deponente desde UD6 y aoristo segundo desde UD12.
+ // No inferir otros tiempos. El sincretismo ἦλθον se explica completo.
  for(const [key,record] of Object.entries(greekExplicitVerbEvidence)){
-  const entry=greekSharedBank.lookup(record.forms[0])?.entry;
+  const entry=greekSharedBank.lookup(record.lemma)?.entry;
   if(!entry)continue;
   const forms=record.forms;
   add('conjugation','ev-'+key,record.unit,[record.unit],
-   'Conjuga '+entry+' en presente de indicativo medio (deponente).',
+   'Conjuga '+entry+' en '+record.tense+' de indicativo '+record.voice+'.',
    greekPersonLabels.map((label,i)=>label+': '+forms[i]).join('; '),[entry],
    {headers:['Persona','Singular','Plural'],rows:[0,1,2].map(i=>[(i+1)+'.ª',forms[i],forms[i+3]])});
-  items[items.length-1].verbVoice='medio (deponente)';
+  items[items.length-1].verbVoice=record.voice;
+  items[items.length-1].verbTense=record.tense;
+  items[items.length-1].verbLabel=record.tense+' de indicativo '+record.voice;
   items[items.length-1].sourceCode=record.sourceCode;
+  const recorded=new Set();
   forms.forEach((form,i)=>{
-   // El material docente ya incluía βούλονται: no duplicar esa casilla.
-   if(greekFormRows.some(row=>row[0].normalize('NFC')===form.normalize('NFC')))return;
+   if(recorded.has(form)||greekFormRows.some(row=>row[0].normalize('NFC')===form.normalize('NFC')))return;
+   recorded.add(form);
+   const persons=forms.flatMap((other,j)=>other===form?[j]:[]);
+   const identity=persons.map(j=>['primera','segunda','tercera'][j%3]+' persona del '+(j<3?'singular':'plural')).join(' o ');
    add('forms','ef-'+key+'-'+i,record.unit,[record.unit],form,
-    ['Primera','Segunda','Tercera'][i%3]+' persona del '+(i<3?'singular':'plural')+
-    ' del presente de indicativo medio, verbo deponente.',[entry]);
+    identity+' del '+record.tense+' de indicativo '+record.voice+'.',[entry]);
    items[items.length-1].category='verbs';
    items[items.length-1].sourceCode=record.sourceCode;
   });
@@ -2879,7 +2884,7 @@ function greekTable(item,answers=false){
 }
 function greekVerbTable(items){
  const widths=[500,...items.flatMap(()=>[4000/items.length,4000/items.length])].map(Math.round);
- return '<table class="exam-paradigm exam-verbs" data-col-widths="'+widths.join(',')+'"><colgroup>'+widths.map(()=>'<col>').join('')+'</colgroup><thead><tr><td class="exam-corner"></td>'+items.map(x=>'<th colspan="2" scope="colgroup" data-corpus-id="'+x.id+'">'+examParadigmHeading(headLex(x.lemmas[0]),'conjugation')+'</th>').join('')+'</tr><tr><td class="exam-corner"></td>'+items.map(()=>'<th scope="col">Singular</th><th scope="col">Plural</th>').join('')+'</tr></thead><tbody>'+[0,1,2].map(i=>'<tr><th scope="row">'+(i+1)+'ª</th>'+items.map(()=>'<td></td><td></td>').join('')+'</tr>').join('')+'</tbody></table>';
+ return '<table class="exam-paradigm exam-verbs" data-col-widths="'+widths.join(',')+'"><colgroup>'+widths.map(()=>'<col>').join('')+'</colgroup><thead><tr><td class="exam-corner"></td>'+items.map(x=>'<th colspan="2" scope="colgroup" data-corpus-id="'+x.id+'">'+examParadigmHeading(headLex(x.lemmas[0]),'conjugation')+(x.verbLabel?' <span class="exam-paradigm-indicator">('+esc(x.verbLabel)+')</span>':'')+'</th>').join('')+'</tr><tr><td class="exam-corner"></td>'+items.map(()=>'<th scope="col">Singular</th><th scope="col">Plural</th>').join('')+'</tr></thead><tbody>'+[0,1,2].map(i=>'<tr><th scope="row">'+(i+1)+'ª</th>'+items.map(()=>'<td></td><td></td>').join('')+'</tr>').join('')+'</tbody></table>';
 }
 function greekExamHeader(chosen,mode){
  const va=$('lang').value==='va';
@@ -2899,7 +2904,7 @@ function generateGreekMorphologyFixed(){
   !(x.kind==='forms'&&(x.lemmas||[]).some(lemma=>isExcludedExamMorphLemma(lemma))));
  const verbs=stickyExamRows('verb',()=>sample(eligible.filter(x=>x.kind==='conjugation'&&x.table)
   .flatMap(x=>x.table.rows.flatMap((row,i)=>[row[1],row[2]].map((form,j)=>({
-   prompt:form,answer:(i+1)+'ª persona '+(j===0?'singular':'plural')+' del presente de indicativo '+(x.verbVoice||'activo'),
+   prompt:form,answer:(i+1)+'ª persona '+(j===0?'singular':'plural')+' del '+(x.verbTense||'presente')+' de indicativo '+(x.verbVoice||'activo'),
    lemma:x.lemmas[0],person:(i+1)+'ª '+(j===0?'singular':'plural')
   })).filter(x=>x.prompt))),cfg.verbs));
  const pronPool=examQuestionEnabled('pronouns')?eligible.filter(x=>x.kind==='pronouns'):[];
