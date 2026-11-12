@@ -102,6 +102,7 @@ for(const [course,items] of Object.entries(perCourse)){
  }
 }
 assert(verbHeads>=100,'No se han auditado suficientes paradigmas completos');
+if(absent.length)console.log('Perfectos docentes aún sin candidato automático:',absent);
 assert(supported/verbHeads>=0.98,
  'No alcanza el 98 % de recuperación de perfectos docentes: '+supported+'/'+verbHeads+
  ' pendientes: '+absent.slice(0,20).join('; '));
