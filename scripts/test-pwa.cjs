@@ -51,7 +51,7 @@ const server=http.createServer(async(req,res)=>{
    preverbs:latinLexBanks.latin1.preverbs.length,
    phonetics:latinLexBanks.latin1.phonetics.length
   }));
-  assert.deepEqual([lex.latinisms,lex.prefixes,lex.preverbs,lex.phonetics],[87,286,120,546],
+  assert.deepEqual([lex.latinisms,lex.prefixes,lex.preverbs,lex.phonetics],[87,286,120,663],
    'No han cargado todos los bancos léxicos docentes');
   const expanded=await page.evaluate(()=>latinLexBanks.latin4.phonetics.some(x=>x.id==='EVF-0008'));
   assert(expanded,'Las ampliaciones del banco general no han llegado a Latín 4.º: falta EVF-0008');
