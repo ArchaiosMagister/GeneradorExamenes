@@ -207,6 +207,10 @@ async function main(){
    throw Error('Referencia externa desconocida: '+record.lemma);
   externalReferences.push({lang:record.lang,lemma:record.lemma,reference:record.reference});
   for(const block of record.blocks){
+   if(block.reference){
+    if(!/^https:\/\//.test(block.reference))throw Error('Referencia del bloque morfológico inválida: '+record.lemma);
+    externalReferences.push({lang:record.lang,lemma:record.lemma,tags:block.tags,reference:block.reference});
+   }
    if(!/^V;IND;(?:ACT|MID|DEP);(?:PRS|PST;IPFV|PST;PFV|FUT|PRF|PSTP)$/.test(block.tags)||block.forms.length!==6||
        (block.tags.includes(';DEP;')&&record.lang!=='lat')||
        (block.tags.includes('PST;PFV')&&record.lang!=='grc'))
