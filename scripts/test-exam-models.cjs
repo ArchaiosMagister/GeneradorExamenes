@@ -138,6 +138,53 @@ function latinSuite(){
  // Una misma forma ambigua nunca debe recibir dos tiempos posibles.
  const identical=ud7.filter(x=>x.entry==='amo, amavi, amatum (1ª)'&&x.form==='amatur');
  assert.equal(identical.length,1);
+ // UD9 introduce el perfectum pasivo, nunca UD8.
+ const ud8=poolFor(['UD8']),ud9=poolFor(['UD9']),
+  ud10=poolFor(['UD10']),udCombined=poolFor(['UD9–10']);
+ const isCompoundPassive=item=>item.voice==='pasiva'&&
+  /^(?:perfecto|pluscuamperfecto) de indicativo$/.test(item.tense);
+ assert(ud8.every(x=>!isCompoundPassive(x)),'UD8: perfectum pasivo adelantado');
+ assert(ud9.some(isCompoundPassive)&&ud10.some(isCompoundPassive)&&udCombined.some(isCompoundPassive),
+  'UD9, UD10 y UD9–10 deben incorporar el perfectum pasivo');
+ const expected=[
+  ['amatus sum','perfecto de indicativo','masculino','1.ª persona singular'],
+  ['amatus est','perfecto de indicativo','masculino','3.ª persona singular'],
+  ['amata est','perfecto de indicativo','femenino','3.ª persona singular'],
+  ['amatum est','perfecto de indicativo','neutro','3.ª persona singular'],
+  ['amati sunt','perfecto de indicativo','masculino','3.ª persona plural'],
+  ['amatae sunt','perfecto de indicativo','femenino','3.ª persona plural'],
+  ['amata sunt','perfecto de indicativo','neutro','3.ª persona plural'],
+  ['amatus erat','pluscuamperfecto de indicativo','masculino','3.ª persona singular'],
+  ['amatae erant','pluscuamperfecto de indicativo','femenino','3.ª persona plural']
+ ];
+ for(const [form,tense,gender,person] of expected){
+  assert(ud9.some(x=>x.form===form&&x.entry===vb.entry&&
+   x.tense===tense&&x.voice==='pasiva'&&x.participleGender===gender&&x.person===person),
+   'UD9: forma compuesta incorrecta '+form);
+ }
+ const genders={masculino:['us','i'],femenino:['a','ae'],neutro:['um','a']};
+ const auxPerfect=['sum','es','est','sumus','estis','sunt'],
+  auxPluperfect=['eram','eras','erat','eramus','eratis','erant'];
+ const persons=['1.ª persona singular','2.ª persona singular','3.ª persona singular',
+  '1.ª persona plural','2.ª persona plural','3.ª persona plural'];
+ for(const row of ud9.filter(isCompoundPassive)){
+  const [participle,aux]=row.form.split(' ');
+  const i=persons.indexOf(row.person);
+  assert(i>=0,'Perfectum pasivo sin persona y número válidos');
+  assert(participle.endsWith(genders[row.participleGender][i>=3?1:0]),
+   'Concordancia incorrecta del participio: '+row.form);
+  assert.equal(aux,(row.tense==='perfecto de indicativo'?auxPerfect:auxPluperfect)[i],
+   'Auxiliar incorrecto: '+row.form);
+ }
+ // Con 3 filas, los dos tiempos pasivos nuevos y una activa son obligatorios.
+ scope.units=['UD9'];
+ const selected=Array.from(vm.runInContext(
+  'latinMorphologyVerbSelection(latinMorphologyVerbPool(["UD9"]),3)',sandbox));
+ assert.equal(selected.length,3);
+ assert(selected.some(x=>x.tense==='perfecto de indicativo'&&x.voice==='pasiva'));
+ assert(selected.some(x=>x.tense==='pluscuamperfecto de indicativo'&&x.voice==='pasiva'));
+ assert(selected.some(x=>x.voice==='activa'));
+ scope.units=['UD3'];
 
 
  assert.equal(vm.runInContext("latinExamSurface('reginae','regina, –æ')",sandbox),'reginæ');
