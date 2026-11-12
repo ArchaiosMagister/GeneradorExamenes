@@ -787,7 +787,8 @@ function refreshManualMorphWords(){
  paper.querySelectorAll('.exam-nouns thead tr:first-child th[colspan]').forEach(el=>{if(!el.closest('#answerkey'))add(el,'Declinación')});
  paper.querySelectorAll('.exam-verbs thead tr:first-child th[colspan]').forEach(el=>{if(!el.closest('#answerkey'))add(el,'Conjugación')});
  paper.querySelectorAll('.reference-verb-table tbody td:first-child i').forEach(el=>add(el,'Forma verbal'));
- paper.querySelectorAll('.exam-pronouns tbody td:first-child i').forEach(el=>add(el,'Pronombre'));
+ paper.querySelectorAll('.exam-pronouns tbody td:first-child').forEach(cell=>
+  add(cell.querySelector('i')||cell,'Pronombre'));
  paper.querySelectorAll('.morph-syntagm-item > i').forEach(el=>add(el,'Declinación'));
  paper.querySelectorAll('[data-analysis-slot] > i:first-child, .exam-form > span:last-child')
   .forEach(el=>add(el,'Análisis morfológico'));
@@ -797,8 +798,10 @@ function refreshManualMorphWords(){
   return;
  }
  const counters=Object.create(null);
- targets.forEach(({el,kind})=>{
+ targets.forEach(({el,kind},editorIndex)=>{
   const i=counters[kind]||0;counters[kind]=i+1;
+  const editorId=String(editorIndex);
+  el.dataset.examEditorId=editorId;
   const row=document.createElement('div');row.className='exam-word-editor';
   row.style.display='block';row.style.margin='7px 0';
   const caption=document.createElement('label');caption.textContent=kind+' '+(i+1);
@@ -806,11 +809,13 @@ function refreshManualMorphWords(){
   const input=document.createElement('input');input.type='text';
   input.value=el.textContent.replace(/:$/,'').trim();
   input.setAttribute('aria-label',kind+' '+(i+1));
+  input.dataset.examEditorId=editorId;
   const original=el.textContent;
   input.addEventListener('input',()=>{
    if(el.matches('.exam-nouns thead tr:first-child th[colspan], .exam-verbs thead tr:first-child th[colspan]')){
     el.innerHTML=examParadigmHeading(input.value,kind==='Conjugación'?'conjugation':'declension');
    }else el.textContent=input.value+(original.endsWith(':')?':':'');
+   if(el.closest('.morph-syntagm-item'))syncMorphSyntagmsFromPreview();
    const key=paper.querySelector('#answerkey');
    if(key&&!key.querySelector('[data-manual-warning]')){
     const note=document.createElement('p');note.dataset.manualWarning='true';
@@ -833,6 +838,30 @@ function refreshManualMorphWords(){
   host.append(row);
  });
 }
+// Los editores de morfología se conectan por identidad con la forma concreta
+// de la vista previa. Editar en papel actualiza el campo existente sin regenerar.
+function syncMorphSyntagmsFromPreview(){
+ const field=$('morphSyntagms');
+ if(!field)return;
+ const nodes=[...$('paper').querySelectorAll('.morph-syntagm-item > i')];
+ if(nodes.length)field.value=nodes.map(node=>node.textContent).join('\n');
+}
+$('paper').addEventListener('input',event=>{
+ const target=event.target?.closest?.('[data-exam-editor-id]');
+ if(!target)return;
+ const input=$('manualMorphWords')?.querySelector(
+  'input[data-exam-editor-id="'+target.dataset.examEditorId+'"]');
+ if(!input)return;
+ const value=target.textContent.replace(/:$/,'').trim();
+ if(input.value!==value)input.value=value;
+ if(target.closest('.morph-syntagm-item'))syncMorphSyntagmsFromPreview();
+ const key=$('paper').querySelector('#answerkey');
+ if(key&&!key.querySelector('[data-manual-warning]')){
+  const note=document.createElement('p');note.dataset.manualWarning='true';
+  note.textContent='ATENCIÓN: se han modificado formas manualmente. Comprueba y corrige las soluciones correspondientes antes de entregar el solucionario.';
+  key.prepend(note);
+ }
+});
 const models={tablas:['decl','verb','lex','sent'],morf:['decl','verb'],mixto:['sent']};$('model').onchange=()=>{for(const id of ['decl','verb','lex','sent'])$(id).checked=models[$('model').value].includes(id);$('cultureOption').hidden=currentCourse()!=='latin4'||$('model').value!=='tablas';$('culture').disabled=$('cultureOption').hidden;if($('cultureOption').hidden)$('culture').checked=false;if(currentCourse()==='greek1')$('lex').checked=false;generate()};
 function noun(x){let e=x.entry.replace(/[–−]/g,'-').replace(/æ/g,'ae');let m=e.match(/^([A-Za-zÀ-ÿ]+),\s*-(ae|i)\b/i);if(!m)return null;let word=m[1],g=m[2].toLowerCase(),stem=word.slice(0,g==='ae'?1:(word.endsWith('us')||word.endsWith('um')?2:1));if(g==='ae'&&!word.endsWith('a'))return null;if(g==='i'&&!(word.endsWith('us')||word.endsWith('um')))return null;let neutral=word.endsWith('um');let endings=g==='ae'?['a','ae','ae','am','a','a','ae','arum','is','as','ae','is']:neutral?['um','i','o','um','um','o','a','orum','is','a','a','is']:['us','i','o','um','e','o','i','orum','is','os','i','is'];let labels=['nominativo singular','genitivo singular','dativo singular','acusativo singular','vocativo singular','ablativo singular','nominativo plural','genitivo plural','dativo plural','acusativo plural','vocativo plural','ablativo plural'];return {word,forms:endings.map(a=>stem+a),labels,entry:x.entry};}
 function adjective(x){let e=String(x.entry||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[–−—]/g,'-').replace(/æ/gi,'ae');let m=e.match(/^([A-Za-zÀ-ÿ]+),\s*-a,\s*-um\b/i);if(!m||!m[1].endsWith('us'))return null;let stem=m[1].slice(0,-2);return {entry:x.entry,forms:[stem+'us',stem+'a',stem+'um',stem+'i',stem+'ae',stem+'o',stem+'os',stem+'as',stem+'a',stem+'orum',stem+'arum'],labels:['nominativo masculino singular','nominativo femenino singular','nominativo neutro singular','genitivo masculino singular','genitivo femenino singular','dativo masculino singular','acusativo masculino plural','acusativo femenino plural','acusativo neutro plural','genitivo masculino plural','genitivo femenino plural']};}
@@ -3980,7 +4009,17 @@ window.ExaminaMorphology={lookup,stats,importText};
   if(isMorph){const offered=$('morphOffer'),declined=$('morphDecline');for(const option of declined.options)option.disabled=+option.value>+offered.value;if(+declined.value>+offered.value)declined.value=offered.value}
  };
  block.addEventListener('change',()=>{update();generate()});
- block.querySelector('#morphSyntagms').addEventListener('input',generate);
+ // El campo multilinea modifica solamente los sintagmas, sin sortear de nuevo
+ // el resto del examen; el editor individual refleja esa misma selección.
+ block.querySelector('#morphSyntagms').addEventListener('input',event=>{
+  const lines=event.target.value.split(/\r?\n/);
+  $('paper').querySelectorAll('.morph-syntagm-item > i').forEach((node,i)=>{
+   node.textContent=lines[i]||'';
+   const editor=$('manualMorphWords')?.querySelector(
+    'input[data-exam-editor-id="'+node.dataset.examEditorId+'"]');
+   if(editor)editor.value=node.textContent;
+  });
+ });
  document.addEventListener('change',e=>{if(e.target.matches('#course,#model'))queueMicrotask(update)});
  update();
 }
