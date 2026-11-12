@@ -396,6 +396,7 @@ html[data-course="greek1"] .paper .exam-sheet *{font-style:normal!important}
 /* The preview precedes the form in the DOM; desktop keeps the form at left. */
 @media screen and (min-width:801px){#examLayout>.panel{grid-column:1;grid-row:1}#examLayout>.paper{grid-column:2;grid-row:1}}
 @media screen and (max-width:800px){#examLayout{display:flex!important;flex-direction:column!important}#examLayout>.paper{order:0!important;width:100%}#examLayout>.panel{order:1!important;width:100%}}
+#examLayout[hidden],body:has(.vocab-manager.active) #examLayout{display:none!important}
 
 /* PWA: estado de conexión, instalación y actualización voluntaria. */
 .pwa-panel{display:flex;align-items:center;flex-wrap:wrap;gap:8px 12px;
@@ -1971,9 +1972,21 @@ let body=$v('vmRows');body.replaceChildren();for(const x of rows){let tr=documen
 function feedback(t){$v('vmFeedback').textContent=t}
 function add(unit,entry,meaning){let c=$v('vmCourse').value,key=examKey(entry);if(!unit||!key)return false;if(examRequired.some(x=>x.course===c&&x.unit===unit&&x.key===key))return false;examRequired.push({course:c,unit,entry,key,meaning:meaning||''});return true}
 function download(name,contents,type){let blob=new Blob([contents],{type});let a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
-$v('vmShowList').onclick=()=>{$v('examLayout').style.display='none';$v('vocabManager').classList.add('active');$v('vmShowList').classList.add('active');$v('vmShowExam').classList.remove('active');$v('vmCourse').value=currentCourse();refreshUnits()};
-$v('vmShowExam').onclick=()=>{$v('examLayout').style.display='';$v('vocabManager').classList.remove('active');$v('vmShowExam').classList.add('active');$v('vmShowList').classList.remove('active');$v('course').value=$v('vmCourse').value;$v('course').dispatchEvent(new Event('change'))};
+$v('vmShowList').onclick=()=>{$v('examLayout').hidden=true;$v('examLayout').style.display='none';$v('vocabManager').classList.add('active');$v('vmShowList').classList.add('active');$v('vmShowExam').classList.remove('active');$v('vmCourse').value=currentCourse();refreshUnits()};
+$v('vmShowExam').onclick=()=>{$v('examLayout').hidden=false;$v('examLayout').style.display='';$v('vocabManager').classList.remove('active');$v('vmShowExam').classList.add('active');$v('vmShowList').classList.remove('active');$v('course').value=$v('vmCourse').value;$v('course').dispatchEvent(new Event('change'))};
 $v('vmCourse').onchange=refreshUnits;$v('vmUnit').onchange=render;$v('vmSearch').oninput=render;
+const suggest=document.createElement('button');suggest.id='vmSuggestUnit';suggest.type='button';suggest.className='secondary';
+suggest.textContent='Importar léxico de esta unidad como exigible (revisar)';
+$v('vmAdd').parentElement.append(suggest);
+suggest.onclick=()=>{
+ const course=$v('vmCourse').value,selected=$v('vmUnit').value;
+ const candidates=vocab.filter(row=>courseOf(row)===course&&row.unit===selected);
+ if(!candidates.length){feedback('Esta unidad no tiene un banco docente adscrito expresamente: hace falta un listado del profesor.');return}
+ if(!confirm('Se añadirán '+candidates.length+' fichas del banco general de '+selected+' al listado exigible. El banco general no acredita por sí mismo que todas sean exigibles. ¿Continuar para revisarlas?'))return;
+ let n=0;for(const row of candidates)if(add(selected,row.entry,row.meaning))n++;
+ saveRequired();render();renderReview();
+ feedback(n+' entradas importadas para revisar como exigibles. Comprueba la lista y elimina las que no correspondan.');
+};
 $v('vmAdd').onclick=()=>{let entry=$v('vmNewEntry').value.trim();if(!entry)return feedback('Introduce el enunciado.');if(add($v('vmUnit').value,entry,$v('vmNewMeaning').value.trim())){saveRequired();$v('vmNewEntry').value='';$v('vmNewMeaning').value='';render();feedback('Palabra añadida.')}else feedback('Entrada duplicada o no válida.')};
 $v('vmImport').onclick=()=>{let n=0,invalid=0;for(const line of $v('vmBulk').value.split(/\r?\n/)){if(!line.trim())continue;let [unit,entry,...rest]=line.split(';');if(!unit||!entry){invalid++;continue}if(add(unit.trim(),entry.trim(),rest.join(';').trim()))n++;else invalid++}saveRequired();refreshUnits();feedback(`${n} entradas añadidas; ${invalid} duplicadas o inválidas.`)};
 $v('vmExport').onclick=()=>download('vocabulario_exigible_todos_cursos.json',JSON.stringify({format:'examina-required-v1',entries:examRequired},null,2),'application/json');
@@ -3232,8 +3245,43 @@ function latinLexStatus(kind,rows,message=''){
   status.textContent=message||(!rows.length?'No hay formas compatibles.':rows.map((x,i)=>(i+1)+'. '+latinLexDisplayPrompt(kind,x)).join(' · '));
   status.dataset.resultState=message||!rows.length?'missing':rows.some(x=>x.reviewRequired)?'review':'available';
  }
- for(let i=0;i<latinLexExpectedCount(kind);i++){const node=$('lex-slot-'+kind+'-'+i);if(node)node.textContent=rows[i]?latinLexDisplayPrompt(kind,rows[i]):'Sin forma'}
+ for(let i=0;i<latinLexExpectedCount(kind);i++){
+  const label=$('lex-slot-'+kind+'-'+i);
+  if(label)label.textContent=rows[i]?latinLexDisplayPrompt(kind,rows[i]):'Sin forma';
+  if(kind==='phonetics'){
+   const input=$('lex-edit-phonetics-'+i);
+   if(input&&document.activeElement!==input)input.value=rows[i]?latinLexDisplayPrompt(kind,rows[i]):'';
+  }
+ }
 }
+function setLatinPhoneticWord(index,value,fromPreview=false){
+ const key=examCacheSignature('lex-phonetics'),previous=examSelectionCache.get(key);
+ if(!Array.isArray(previous)||index<0||index>=previous.length)return;
+ const prompt=String(value||'').trim(),normalized=latinLexLower(prompt);
+ const matching=latinLexPool(currentCourse(),'phonetics',selectedUnits())
+  .filter(row=>latinLexDisplayPrompt('phonetics',row)===normalized);
+ const next=matching.length===1?matching[0]:
+  {...previous[index],prompt:normalized,answer:'',reviewRequired:true};
+ const updated=previous.slice();updated[index]=next;examSelectionCache.set(key,updated);
+ const displayed=latinLexDisplayPrompt('phonetics',next);
+ const label=$('lex-slot-phonetics-'+index);
+ if(label)label.textContent=displayed||'Sin forma';
+ const input=$('lex-edit-phonetics-'+index);
+ if(fromPreview&&input)input.value=prompt;
+ if(!fromPreview)$('paper').querySelectorAll('[data-lex-slot="phonetics:'+index+'"] i')
+  .forEach(node=>{node.textContent=displayed});
+ const status=$('lex-status-phonetics');
+ if(status){
+  status.textContent=updated.map((row,i)=>(i+1)+'. '+latinLexDisplayPrompt('phonetics',row)).join(' · ');
+  status.dataset.resultState=updated.some(row=>row.reviewRequired)?'review':'available';
+ }
+}
+$('paper').addEventListener('input',event=>{
+ const slot=event.target?.closest?.('[data-lex-slot^="phonetics:"]');
+ if(!slot)return;
+ const index=Number(slot.dataset.lexSlot.split(':')[1]);
+ if(Number.isInteger(index))setLatinPhoneticWord(index,slot.textContent,true);
+});
 function regenerateLatinLexPart(kind){
  if(kind==='preverbs')for(let i=0;i<2;i++){const input=$('lex-verb-'+i);if(input)input.value=''}
  examSelectionCache.delete(examCacheSignature('lex-'+kind));
@@ -3255,7 +3303,9 @@ function regenerateLatinLexWord(kind,index){
  generate();
 }
 function buildLatinLexQuestion(course,chosen){
- const html=[],parts=examSelectedLexParts(course),va=$('lang').value==='va',italic=(x,kind)=>'<i>'+esc(latinLexDisplayPrompt(kind,x))+'</i>';
+ const html=[],parts=examSelectedLexParts(course),va=$('lang').value==='va',italic=(x,kind,index)=>
+  kind==='phonetics'?'<span data-lex-slot="phonetics:'+index+'" contenteditable="true" aria-label="Editar forma de evolución fonética"><i>'+esc(latinLexDisplayPrompt(kind,x))+'</i></span>':
+   '<i>'+esc(latinLexDisplayPrompt(kind,x))+'</i>';
  for(const kind of parts){
   const available=latinLexPool(course,kind,chosen),rows=latinLexChosenRows(course,kind,chosen);
   const letter=String.fromCharCode(97+(latinLexModules[course]||[]).indexOf(kind));
@@ -3268,7 +3318,7 @@ function buildLatinLexQuestion(course,chosen){
   }
   const examRows=kind==='preverbs'?rows:rows.slice().sort((a,b)=>
    latinLexDisplayPrompt(kind,a).localeCompare(latinLexDisplayPrompt(kind,b),'es'));
-  const partsHtml=examRows.map(x=>italic(x,kind)),four=partsHtml.join(', ');
+  const partsHtml=examRows.map(x=>italic(x,kind,rows.indexOf(x))),four=partsHtml.join(', ');
   let question;
   if(kind==='preverbs'&&course==='latin1')
    question=(va?'Modificació preverbial a partir de ':'Modificación preverbial a partir de ')+partsHtml[0]+(va?' (3) i de ':' (3) y de ')+partsHtml[1]+(va?' (2). Cinc derivats en total en llengua pròpia.':' (2). Cinco derivados en total en lengua propia.');
@@ -3410,7 +3460,7 @@ loadTeacherLatinLexBanks();
   }
   box.append(state);
   for(const kind of latinLexModules[course]||[]){
-   const group=document.createElement('div');group.className='lex-subparts';
+   const group=document.createElement('div');group.className='lex-subparts';group.dataset.lexPart=kind;
    const check=document.createElement('input');check.type='checkbox';check.checked=latinLexPartEnabled[course+'/'+kind]!==false;
    check.onchange=()=>{latinLexPartEnabled[course+'/'+kind]=check.checked;generate()};
    group.append(makeLabel(latinLexTitles[kind]+' ('+(data[kind]?.length||0)+')',check));
@@ -3423,7 +3473,15 @@ loadTeacherLatinLexBanks();
     button.textContent='Cambiar solo esta forma';
     button.setAttribute('aria-label','Regenerar forma '+(i+1)+' de '+latinLexTitles[kind]);
     button.onclick=()=>regenerateLatinLexWord(kind,i);
-    row.append(span,button);group.append(row);
+    row.append(span,button);
+    if(kind==='phonetics'){
+     const input=document.createElement('input');input.type='text';
+     input.id='lex-edit-phonetics-'+i;input.autocomplete='off';
+     input.setAttribute('aria-label','Editar forma '+(i+1)+' de evolución fonética');
+     input.addEventListener('input',()=>setLatinPhoneticWord(i,input.value));
+     row.append(input);
+    }
+    group.append(row);
    }
    if(kind==='preverbs'&&course==='latin1'){
     const note=document.createElement('p');note.className='hint';
@@ -3461,7 +3519,8 @@ loadTeacherLatinLexBanks();
      examSelectionCache.delete(examCacheSignature('lex-phonetics'));generate()};
     field.append(makeLabel(rule.id+' · '+rule.name,input));
    }
-   box.append(field);
+   const phoneticGroup=box.querySelector('[data-lex-part="phonetics"]');
+   if(phoneticGroup)phoneticGroup.append(field);
    syncLatin1PhoneticRuleControls();
   }
   if(course==='latin1'){
