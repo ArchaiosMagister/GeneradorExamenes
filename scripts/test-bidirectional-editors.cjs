@@ -183,6 +183,7 @@ async function checkFile(browser,filename){
 
  // Las oraciones deben conservar su sincronización previa en ambas direcciones.
  await configure(page,'latin1','mixto','UD6');
+ await page.locator('#group-sentences').evaluate(el=>el.open=true);
  await page.locator('#newSentences').fill('Puella in villa laborat.\nNauta navigat.');
  const sentence=page.locator('#paper [data-sentence-slot="0"]');
  assert.equal(await sentence.textContent(),'Puella in villa laborat.');
