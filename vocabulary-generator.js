@@ -496,6 +496,25 @@ function latinExpandedForms(bank){
    continue;
   }
   const group=annotated[1],end=group==='2ª'?'eo':(['4ª','mx.'].includes(group)?'io':'o');
+  // El tema de perfecto consta literalmente en el enunciado: se reconoce
+  // aunque el profesor haya etiquetado el presente con otra conjugación.
+  // Ello NO autoriza inferir formas del tema de presente ni a verificar
+  // individualmente las flexiones del índice morfológico.
+  const perf=fields[1]||'';
+  if(fields.length>=3&&perf.endsWith('i')&&perf.length>2){
+   const root=perf.slice(0,-1);
+   for(const end of ['i','isti','it','imus','istis','erunt','eram','eras','erat','eramus','eratis','erant','ero','eris','erit','erimus','eritis','erint','isse']){
+    add(root+end,record);
+   }
+   const sup=fields[2]||'';
+   if(sup.endsWith('um')&&sup.length>3){
+    // Un error en el supino docente no puede validar un falso participio.
+    // Ofrecer como hipótesis revisable, conservando el índice contrastado.
+    const proposal={...record,attested:false,
+     origin:'participio deducido del supino docente: revisar individualmente'};
+    decl12(sup.slice(0,-2),proposal);
+   }
+  }
   if(!l.endsWith(end)||!l.slice(0,-end.length))continue;
   const stem=l.slice(0,-end.length);
   const formsByGroup={
@@ -550,23 +569,7 @@ function latinExpandedForms(bank){
    for(const end of ['am','es','et','emus','etis','ent'])add(stem+p+end,record);
    if(l!=='facio')for(const end of ['ar','eris','etur','emur','emini','entur'])add(stem+p+end,record);
   }
-  // Perfecto y pluscuamperfecto únicamente cuando el enunciado trae
-  // explícitamente la segunda forma (no se adivina el tema).
-  const perf=fields[1]||'';
-  if(fields.length>=3&&perf.endsWith('i')&&perf.length>2){
-   const root=perf.slice(0,-1);
-   for(const end of ['i','isti','it','imus','istis','erunt','eram','eras','erat','eramus','eratis','erant','ero','eris','erit','erimus','eritis','erint','isse']){
-    add(root+end,record);
-   }
-   const sup=fields[2]||'';
-   if(sup.endsWith('um')&&sup.length>3){
-    // Un error en el supino docente no puede validar un falso participio.
-    // Ofrecer como hipótesis revisable, conservando el índice contrastado.
-    const proposal={...record,attested:false,
-     origin:'participio deducido del supino docente: revisar individualmente'};
-    decl12(sup.slice(0,-2),proposal);
-   }
-  }
+
  }
  // Modos y perfectos irregulares de enorme frecuencia, explícitos.
  const irregular=[
