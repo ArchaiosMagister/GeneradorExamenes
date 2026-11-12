@@ -7,7 +7,7 @@ import {PALABRAS_POR_EXAMEN,seleccionarEvoluciones} from '../data/fonetica/selec
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const banco=JSON.parse(readFileSync(resolve(root,'data/fonetica/banco_examenes.json'),'utf8'));
 const ids=banco.items.map(x=>x.id);
-assert.equal(banco.items.length,521);
+assert.equal(banco.items.length,523);
 assert.equal(new Set(ids).size,banco.items.length,'Identificadores duplicados');
 assert.equal(banco.normas.length,20);
 assert.equal(PALABRAS_POR_EXAMEN,4);
@@ -36,6 +36,17 @@ for(const [latin,castellano,normas] of [
  assert.equal(row.castellano,castellano);
  assert.deepEqual(row.normas,normas);
  assert.equal(row.estado,'APTO_PROPUESTO');
+}
+const audited14=banco.items.filter(x=>x.lote===14);
+assert.equal(audited14.length,2,'Faltan las dos nuevas fichas auditadas');
+for(const [latin,spanish,normas] of [
+ ['gannitum','gañido',['N13','N17']],
+ ['laicum','lego',['N12','N17']]
+]){
+ const row=audited14.find(x=>x.latin===latin);
+ assert(row&&row.castellano===spanish,latin+': correspondencia incorrecta');
+ assert.deepEqual(row.normas,normas,latin+': normas incorrectas');
+ assert(row.fuente.startsWith('https://')&&row.estado==='APTO_PROPUESTO');
 }
 const accepted=banco.items.find(x=>x.latin==='pelliculam');
 assert(accepted&&accepted.castellano==='pelleja'&&accepted.estado==='APTO_PROPUESTO');
