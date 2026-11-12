@@ -17,6 +17,15 @@
       "from": "eripio, eripui, eripitum (4ª)",
       "to": "eripio, eripui, ereptum (mx.)",
       "reference": "https://logeion.uchicago.edu/eriperer"
+    },
+    {
+      "lang": "lat",
+      "lemma": "milia",
+      "course": "lat1",
+      "from": "milia, –orum",
+      "to": "milia, –ium",
+      "reference": "https://dcc.dickinson.edu/grammar/latin/declension-cardinals-and-ordinals",
+      "type": "lexical-entry-only"
     }
   ],
   "paradigms": [
@@ -430,6 +439,34 @@
       "form": "servae",
       "tags": "N;GEN;SG",
       "reference": "https://en.wiktionary.org/wiki/servae"
+    },
+    {
+      "lang": "lat",
+      "lemma": "milia",
+      "form": "milia",
+      "tags": "N;NOM;PL;NEUT",
+      "reference": "https://dcc.dickinson.edu/grammar/latin/declension-cardinals-and-ordinals"
+    },
+    {
+      "lang": "lat",
+      "lemma": "milia",
+      "form": "milia",
+      "tags": "N;ACC;PL;NEUT",
+      "reference": "https://dcc.dickinson.edu/grammar/latin/declension-cardinals-and-ordinals"
+    },
+    {
+      "lang": "lat",
+      "lemma": "parens",
+      "form": "parentibus",
+      "tags": "N;DAT;PL",
+      "reference": "https://en.wiktionary.org/wiki/parens"
+    },
+    {
+      "lang": "lat",
+      "lemma": "parens",
+      "form": "parentibus",
+      "tags": "N;ABL;PL",
+      "reference": "https://en.wiktionary.org/wiki/parens"
     }
   ]
 }
