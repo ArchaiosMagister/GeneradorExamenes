@@ -76,8 +76,9 @@ const audit=JSON.parse(readFileSync(resolve(root,'data/fonetica/auditoria-excel-
 assert.equal(audit.total_revisadas,100,'La auditoría debe documentar exactamente 100 entradas nuevas');
 assert.equal(audit.items.length,100,'Auditoría incompleta');
 assert.equal(new Set(audit.items.map(x=>x.fila_origen)).size,100,'Filas de Excel duplicadas');
-const expectedStatus={INCORPORADA:3,DECISION_DOCENTE:6,PENDIENTE_VERIFICACION:62,
- DUPLICADA_O_VARIANTE:3,EXCLUIDA_CULTISMO:26};
+const expectedStatus={INCORPORADA:4,EXCLUIDA_DOCENTE:2,CORREGIDA_PENDIENTE:1,
+ VARIANTE_CORREGIDA:1,PENDIENTE_VERIFICACION:62,DUPLICADA_O_VARIANTE:3,
+ INCORPORADA_CULTA:3,REVISION_CULTA_CONDICIONADA:24};
 assert.deepEqual(audit.resumen,expectedStatus,'Estados de auditoría alterados');
 const normalizeAudit=s=>String(s||'').normalize('NFD').replace(/\p{M}/gu,'')
  .replace(/[æÆ]/g,'ae').replace(/[œŒ]/g,'oe').toLowerCase();
@@ -85,10 +86,21 @@ for(const row of audit.items){
  assert(row.latin&&row.castellano&&row.normasExcel.length&&row.observacionExcel,
   'Fila de auditoría sin trazabilidad');
  const found=banco.items.find(x=>normalizeAudit(x.latin)===normalizeAudit(row.latin));
- if(row.estado==='INCORPORADA'){
-  assert(found&&found.id===row.idBanco&&found.lote===15,'La ficha auditada apta no está en banco: '+row.latin);
+ if(row.estado==='INCORPORADA'||row.estado==='INCORPORADA_CULTA'){
+  assert(found&&found.id===row.idBanco,'Ficha aprobada ausente: '+row.latin);
+  assert(found.lote===(row.idBanco==='EVF-1074'||row.estado==='INCORPORADA_CULTA'?16:15),
+   'Lote incorrecto para '+row.latin);
+  assert(row.estado!=='INCORPORADA_CULTA'||found.tipoTransmision==='ADAPTACION_CULTA',
+   'Cultismo aprobado sin etiqueta: '+row.latin);
  }else{
   assert(!found,'Se ha activado una ficha no aprobada: '+row.latin);
+  if(row.estado==='CORREGIDA_PENDIENTE'){
+   assert(!banco.items.some(x=>normalizeAudit(x.latin)===normalizeAudit(row.latinCorregido)),
+    'La corrección sin validación fonética no puede sortearse: '+row.latinCorregido);
+  }
+  if(row.estado==='VARIANTE_CORREGIDA')
+   assert(banco.items.some(x=>x.id===row.idBancoReferencia&&x.latin===row.latinCorregido),
+    'La corrección del étimo estilum no está registrada');
  }
 }
 const loteCien=banco.items.filter(x=>x.lote===15);
@@ -103,6 +115,37 @@ for(const [latin,castellano,normas] of [
  assert.deepEqual(row.normas,normas,'Normas inesperadas en '+latin);
  assert(row.fuente.startsWith('https://'),'Fuente no documentada: '+latin);
 }
+const decisiones=JSON.parse(readFileSync(resolve(root,'data/fonetica/decisiones-docentes.json'),'utf8'));
+const decisions=new Map(decisiones.decisiones.filter(x=>x.latin).map(x=>[x.latin,x]));
+assert.equal(decisions.get('scrinium').estado,'EXCLUIDA','Escriño debe permanecer excluido');
+assert.equal(decisions.get('quinionem').estado,'EXCLUIDA','Quiñón debe permanecer excluido');
+assert.equal(decisions.get('contum').decision,'aceptar_acepcion');
+assert.equal(decisions.get('sŏcrum').latinCorregido,'sŏcram');
+assert.equal(decisions.get('sŏcrum').estado,'CORREGIDA_PENDIENTE');
+assert.equal(decisions.get('stylum').latinCorregido,'stilum');
+assert(banco.items.some(x=>x.latin==='socerum'&&x.castellano==='suegro'),
+ 'La corrección femenina no debe eliminar el suegro patrimonial');
+const cultismos=decisiones.decisiones.find(x=>x.grupo==='cultismos');
+assert.equal(cultismos.decision,'inclusion_condicionada');
+assert.equal(cultismos.restantes_auditadas,24);
+const cuatro=banco.items.filter(x=>x.lote===16);
+assert.equal(cuatro.length,4,'Lote 16 incompleto');
+for(const [latin,spanish,normas,tipo] of [
+ ['contum','cuento',['N07'],'PATRIMONIAL'],
+ ['stilum','estilo',['N14'],'ADAPTACION_CULTA'],
+ ['athletam','atleta',['N10'],'ADAPTACION_CULTA'],
+ ['blasphemiam','blasfemia',['N10'],'ADAPTACION_CULTA']
+]){
+ const row=cuatro.find(x=>x.latin===latin);
+ assert(row&&row.castellano===spanish,'No incorporada: '+latin);
+ assert.deepEqual(row.normas,normas,'Normas incorrectas en '+latin);
+ assert.equal(row.tipoTransmision,tipo,'Sin clasificación de transmisión: '+latin);
+ assert(row.fuente.startsWith('https://'),'Falta verificación filológica en '+latin);
+}
+const sourceHtml=readFileSync(resolve(root,'index.html'),'utf8');
+assert(sourceHtml.includes('phonetic-origin-label'),'No se muestra la etiqueta de cultismo');
+assert(sourceHtml.includes("slot.querySelector('i')?.textContent"),
+ 'La etiqueta no debe contaminar el campo de texto editable de la palabra');
 const todas=banco.normas.map(n=>n.id);
 const caso=seleccionarEvoluciones(banco,{normasSeleccionadas:todas,semilla:'mismo-examen'});
 assert.equal(caso.ejercicios.length,4);
