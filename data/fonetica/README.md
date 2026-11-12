@@ -9,7 +9,7 @@ En Latín I la programación de 73 étimos determina **qué normas están explic
 Las leyes se activan por unidad y se pueden desmarcar dentro de las ya impartidas. Las normas que todavía no han sido explicadas no se pueden activar. Pruebas: `node scripts/test-lat1-fonetica.mjs`.
 
 
-El fichero [banco_examenes.json](./banco_examenes.json) contiene 526 candidatas para ejercicios: 330 iniciales, 100 de la primera ampliación, 30 de la segunda, 50 de la tercera, 3 de la revisión del Excel final, 1 aceptación editorial, 7 del lote 13, 2 del lote 14 y 3 del lote 15, sin duplicación de identificadores.
+El fichero [banco_examenes.json](./banco_examenes.json) contiene 530 candidatas para ejercicios: 330 iniciales, 100 de la primera ampliación, 30 de la segunda, 50 de la tercera, 3 de la revisión del Excel final, 1 aceptación editorial, 7 del lote 13, 2 del lote 14, 3 del lote 15 y 4 del lote 16, sin duplicación de identificadores.
 
 Esquema: evoluciones-latin-castellano/v1. Campos por ficha: id, latin, castellano, normas (N01–N20), observacion, fila_origen, fuente y estado.
 
@@ -34,3 +34,9 @@ La ampliación 3 queda identificada con el campo `lote: 3` y mantiene `fila_orig
 ## Auditoría individual de 100 fichas (lote 15)
 
 El archivo [auditoria-excel-lote-100-20261112.json](./auditoria-excel-lote-100-20261112.json) registra **exactamente 100 entradas nuevas** del Excel original, con su fila, correspondencia, normas marcadas, observación y decisión editorial: 3 incorporadas, 6 para decisión docente, 62 pendientes de contraste, 26 apartadas por transmisión culta y 3 variantes o duplicados. Las 97 no incorporadas **no son elegibles para el sorteo**. Las formas inicialmente presentes en el programa propio de Latín I no se han contabilizado como candidatas nuevas. La revisión de las pendientes debe continuar con pruebas individuales; la marca de una norma en el Excel no basta para considerarla verificada.
+
+## Decisiones docentes y adaptaciones cultas (lote 16)
+
+Las decisiones aprobadas se conservan en [decisiones-docentes.json](./decisiones-docentes.json) y se aplican individualmente al [registro de auditoría de 100 fichas](./auditoria-excel-lote-100-20261112.json). `scrinium` y `quinionem` se excluyen por decisión expresa. `contum` → `cuento²` se admite **solo** como «contera / extremo de bastón o lanza», y no como «relato». La antigua `sŏcrum` se corrige a `sŏcram` → `suegra`, pero **permanece fuera del sorteo** porque `-cr- > -gr-` no coincide sin matices con N17 (sonorización intervocálica); la ficha antigua `socerum` → `suegro` no se modifica. `stylum` se corrige a `stilum` y se incorpora solo como adaptación culta de e- protética.
+
+La elección `inclusion_condicionada` **no importa los cultismos en bloque**. Los tres verificados por ahora (`stilum` → `estilo`, `athletam` → `atleta` y `blasphemiam` → `blasfemia`) llevan `tipoTransmision: ADAPTACION_CULTA` y se distinguen con la etiqueta **«adaptación culta»** (o «adaptació culta») en la vista previa y el Word. Se limita el análisis a las reglas de grafía / prótesis indicadas en cada ficha, sin atribuir una evolución patrimonial completa. Otras 24 candidatas cultas del lote de 100 permanecen pendientes de comprobación y **no participan en el sorteo**. La edición y regeneración de una forma deben actualizar su etiqueta sin alterar las demás.
