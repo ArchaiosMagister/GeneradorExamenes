@@ -7,7 +7,7 @@ import {PALABRAS_POR_EXAMEN,seleccionarEvoluciones} from '../data/fonetica/selec
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const banco=JSON.parse(readFileSync(resolve(root,'data/fonetica/banco_examenes.json'),'utf8'));
 const ids=banco.items.map(x=>x.id);
-assert.equal(banco.items.length,514);
+assert.equal(banco.items.length,521);
 assert.equal(new Set(ids).size,banco.items.length,'Identificadores duplicados');
 assert.equal(banco.normas.length,20);
 assert.equal(PALABRAS_POR_EXAMEN,4);
@@ -36,6 +36,25 @@ for(const [latin,castellano,normas] of [
  assert.equal(row.castellano,castellano);
  assert.deepEqual(row.normas,normas);
  assert.equal(row.estado,'APTO_PROPUESTO');
+}
+const audited=banco.items.filter(x=>x.lote===13);
+const newWords=[
+ ['audīte','oíd',['N03','N12','N17']],
+ ['date','dad',['N03','N17']],
+ ['gannitum','gañido',['N13','N17']],
+ ['laicum','lego',['N12','N17']],
+ ['octavum','ochavo',['N13']],
+ ['pelagum','piélago',['N07']],
+ ['folliculum','hollejo',['N01','N05','N13','N20']]
+];
+assert.equal(audited.length,7,'La nueva tanda del Excel debe contener 7 fichas');
+for(const [latin,es,normas] of newWords){
+ const row=audited.find(x=>x.latin===latin);
+ assert(row,'Falta una ficha auditada: '+latin);
+ assert.equal(row.castellano,es);
+ assert.deepEqual(row.normas,normas);
+ assert.equal(row.estado,'APTO_PROPUESTO');
+ assert(/^https:\/\//.test(row.fuente),'Falta fuente contrastable para '+latin);
 }
 const accepted=banco.items.find(x=>x.latin==='pelliculam');
 assert(accepted&&accepted.castellano==='pelleja'&&accepted.estado==='APTO_PROPUESTO');
