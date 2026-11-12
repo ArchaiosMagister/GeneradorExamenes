@@ -68,6 +68,15 @@ jobs:
         run: node scripts/test-verified-verb-overrides.cjs
       - name: Registrar incidencias de verbos irregulares y deponentes sin certificar paradigmas
         run: node scripts/audit-verbs-evidence.cjs
+      - name: Auditar cobertura de tiempos y voces por lema individual
+        run: node scripts/audit-verb-coverage.cjs
+      - name: Guardar lagunas filológicas por lema para decisión docente
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fase-ii-cobertura-verbal-por-lema
+          path: test-artifacts/fase-ii-cobertura-verbal-por-lema.json
+          if-no-files-found: ignore
       - name: Conservar cola filológica de verbos para decisiones docentes
         if: always()
         uses: actions/upload-artifact@v4
