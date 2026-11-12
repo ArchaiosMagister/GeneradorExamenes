@@ -10,7 +10,8 @@ function part(start,end){
 }
 const morphologyHelpers=part('/* Editable syntagm slots;','function generateLatinMorphologyReference(){');
 const latinCode=part('const latinPronounRows=','let culture=')+morphologyHelpers+
- part('function generateLatinMorphologyReference(){','/* El título refleja las unidades');
+ part('function generateLatinMorphologyReference(){','/* El título refleja las unidades')+
+ part('function mVerb(','function mTable(');
 const greekCode=morphologyHelpers+part('const greekModes=','// Vista del temario:')+
  part('function generateGreekMorphologyFixed(){','let greekExamState=null;')+
  part('function generateGreekExam(){','const legacyUpdateUnits=');
@@ -115,6 +116,29 @@ function latinSuite(){
  assert.equal(morphologyMarkup('verbs','invenio, inveni, inventum',['UD4']),' (<i>invenio, inveni, inventum</i>)');
  assert.equal(morphologyMarkup('nouns','puella, –æ',['UD3']),' (<i>puella, –æ</i>)');
  assert.match(output,/\(<i>amo<\/i>, 1ª\)/,'Latín UD3: enunciado verbal en examen de morfología');
+ // No basta con verificar la lista de palabras: la PRUEBA 2 de morfología
+ // debe incluir los lemas de cada fila de la tabla verbal y ambas voces desde UD3.
+ const verbTable=output.match(/class="exam-paradigm reference-morph-table reference-verb-table"[^]*?<\/table>/)?.[0]||'';
+ assert(verbTable.includes('(<i>amo</i>, 1ª)'),'La tabla de verbos debe mostrar el enunciado al lado de cada forma');
+ assert(verbTable.includes('<i>amor</i>')&&verbTable.includes('<i>amo</i>'),
+  'Desde UD3 debe seleccionar al menos un verbo pasivo y uno activo');
+ const poolFor=units=>Array.from(vm.runInContext(
+  'latinMorphologyVerbPool('+JSON.stringify(units)+')',sandbox));
+ const ud2=poolFor(['UD2']),ud3=poolFor(['UD3']),
+  ud4=poolFor(['UD4']),ud7=poolFor(['UD7']);
+ assert(ud2.length>0&&ud2.every(x=>x.voice==='activa'&&!/futuro|perfecto/.test(x.tense)),
+  'UD2 debe contener presente e imperfecto activos, no pasivos');
+ assert(ud2.some(x=>x.tense==='imperfecto de indicativo'));
+ assert(ud3.some(x=>x.form==='amatur'&&x.voice==='pasiva'&&x.tense==='presente de indicativo'));
+ assert(ud3.some(x=>x.form==='amabatur'&&x.voice==='pasiva'&&x.tense==='imperfecto de indicativo'));
+ assert(ud3.every(x=>!x.tense.includes('perfecto')&&!x.tense.includes('futuro')));
+ assert(ud4.some(x=>x.form==='amavit'&&x.tense==='perfecto de indicativo'));
+ assert(ud4.some(x=>x.form==='amaverat'&&x.tense==='pluscuamperfecto de indicativo'));
+ assert(ud7.some(x=>x.form==='amabitur'&&x.voice==='pasiva'&&x.tense==='futuro de indicativo'));
+ // Una misma forma ambigua nunca debe recibir dos tiempos posibles.
+ const identical=ud7.filter(x=>x.entry==='amo, amavi, amatum (1ª)'&&x.form==='amatur');
+ assert.equal(identical.length,1);
+
 
  assert.equal(vm.runInContext("latinExamSurface('reginae','regina, –æ')",sandbox),'reginæ');
  assert.equal(vm.runInContext("latinExamSurface('poeta','poeta, –æ')",sandbox),'poeta');
