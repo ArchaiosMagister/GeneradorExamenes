@@ -75,3 +75,16 @@ Se mantienen las **655 fichas del banco general** y los **73 étimos de Latín I
 La implementación en `data/fonetica/criterios-docentes.mjs` ofrece `normalizarFichaFonetica` / `prepararAltaFonetica` para entradas futuras y detectores de errores. El selector fonético y la construcción del HTML autónomo rechazan fichas que incumplan los criterios; los workflows de revisión y publicación ejecutan las pruebas. Las fichas con correspondencia dudosa deben seguir en REVISAR, sin atribuirles validación filológica automática.
 
 Detalles, alcance y pruebas: [docs/criterios-foneticos-2026-11-12.md](../../docs/criterios-foneticos-2026-11-12.md).
+
+## Conciliación del Excel PAU con las decisiones de 29 fichas (12-11-2026)
+
+Fuente: `banco_evolucion_fonetica_PAU_2026_decisiones_29_aplicadas.xlsx` (1.055 registros).
+El cotejo normalizado da 701 coincidencias de étimo con el banco existente de 655 fichas y 354 entradas sin coincidencia. Entre las coincidencias hay 18 discrepancias de etiquetas de norma y una de resultado (*regulam*: «reja» frente a «regla»); se mantienen sin sobrescribir y pendientes de cotejo individual.
+
+- `data/fonetica/imports/excel-pau-2026-lote-01.json` a `...-05.json`: copia completa y trazable de la fuente, en cinco lotes de 211 filas cada uno.
+- `data/fonetica/imports/excel-pau-2026-pendientes.json`: 354 fichas no incorporadas, con clasificación original, normas propuestas, fuente y motivo de exclusión o revisión.
+- `data/fonetica/decisiones-excel-pau-2026.json`: 29 decisiones docentes, 24 patrimoniales y 5 exclusiones.
+- Diez fichas activas ya existentes reciben identificación de transmisión patrimonial docente sin cambios en étimo, resultado, normas ni estado. Catorce patrimoniales nuevas permanecen en revisión.
+- Cinco exclusiones docentes quedan bloqueadas en `data/fonetica/criterios-docentes.mjs` y en la validación anterior al despliegue.
+
+El material del Excel queda disponible para ampliar el generador en posteriores lotes verificados. **No se activa automáticamente ninguna de las 354 nuevas**: el Excel no prueba por sí solo su filiación histórica o la corrección íntegra de las normas para un examen. Los exámenes siguen seleccionando únicamente entre las 655 entradas existentes. `GeneradorExamenes` no altera el Excel ni `EvolucionFonetica`.

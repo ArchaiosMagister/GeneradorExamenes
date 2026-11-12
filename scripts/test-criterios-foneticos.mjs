@@ -88,3 +88,30 @@ assert(selected.ejercicios.every(x=>!('castellano' in x)));
 const corrupted={...banco,items:[{...row('sponsum'),normas:['N14','N16']}]};
 assert.throws(()=>seleccionarEvoluciones(corrupted,{normasSeleccionadas:['N14','N16']}),/no homologado/);
 console.log('Criterios docentes comprobados en 655 fichas y 73 de Latín I. FIX_M, N01, N15 y cuatro decisiones persistentes correctos.');
+
+const aprobacionesExcel=load('data/fonetica/decisiones-excel-pau-2026.json');
+const conciliacion=load('data/fonetica/imports/excel-pau-2026-pendientes.json');
+assert.equal(aprobacionesExcel.decisiones.length,29);
+assert.equal(aprobacionesExcel.decisiones.filter(x=>x.decision==='patrimonial').length,24);
+assert.equal(aprobacionesExcel.decisiones.filter(x=>x.decision==='excluir').length,5);
+assert.equal(conciliacion.items.length,354);
+assert.equal(conciliacion.baseActiveCount,655);
+for(const w of aprobacionesExcel.decisiones){
+ const found=banco.items.find(row=>claveFonetica(row.latin)===claveFonetica(w.latin));
+ if(w.decision==='excluir'){
+  assert.equal(found,undefined,'Excluida en el banco activo: '+w.latin);
+  assert(erroresCriteriosFoneticos({id:'TEST-'+w.filaBanco,latin:w.latin,castellano:w.castellano,normas:['N01'],normasFijas:claveFonetica(w.latin).endsWith('m')?['FIX_M']:[],estado:'APTO_PROPUESTO'}).some(e=>e.includes('exclusión docente PAU')),w.latin);
+ }else if(found){
+  assert.equal(found.tipoTransmision,'PATRIMONIAL',w.latin);
+  assert.ok(found.decisionDocentePAU,w.latin);
+ }else{
+  assert(conciliacion.items.some(row=>claveFonetica(row.latin)===claveFonetica(w.latin)&&row.estadoIntegracion==='PENDIENTE_VERIFICACION'),w.latin);
+ }
+}
+for(let n=1;n<=5;n++){
+ const num=String(n).padStart(2,'0');
+ const segment=load('data/fonetica/imports/excel-pau-2026-lote-'+num+'.json');
+ assert.equal(segment.items.length,211,'Lote '+n+' del Excel incompleto');
+}
+assert.deepEqual(erroresBancoFonetico(banco),[],'La nueva fuente no puede modificar el banco ya validado');
+console.log('Conciliación PAU 2026: 1.055 registros, 29 decisiones, 354 candidatas externas y cinco exclusiones protegidas.');

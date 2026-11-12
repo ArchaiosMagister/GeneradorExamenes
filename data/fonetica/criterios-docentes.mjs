@@ -1,6 +1,8 @@
 // Criterios docentes para todas las altas de evolución fonética (PAU).
 // No se añade una norma 21: FIX_M es fija y NO seleccionable.
 export const NORMA_M_FINAL='FIX_M';
+// Exclusiones expresas del Excel PAU: no pueden habilitarse mediante importaciones futuras.
+export const EXCLUSIONES_PAU_2026=Object.freeze(['adpodiare','adripare','brochum','stuppaculum','refectum']);
 export const RESOLUCIONES_DOCENTES=Object.freeze({
  seniorem: Object.freeze({castellano:'senor',normas:['N03','N13']}),
  sensum:   Object.freeze({castellano:'seso',normas:['N01','N15']}),
@@ -43,6 +45,7 @@ export function erroresCriteriosFoneticos(row){
  const errors=[],latin=claveFonetica(row.latin),esp=claveFonetica(row.castellano);
  const prefix=row.id||row.latin||'(sin identificador)';
  const normas=Array.isArray(row.normas)?row.normas:[];
+ if(EXCLUSIONES_PAU_2026.includes(latin)&&row.estado==='APTO_PROPUESTO')errors.push(prefix+': exclusión docente PAU 2026; fuera del sorteo');
  const fijas=Array.isArray(row.normasFijas)?row.normasFijas:[];
  if(finalM(row.latin)){
   if(fijas.length!==1||fijas[0]!==NORMA_M_FINAL)errors.push(prefix+': falta FIX_M fija (sin N03)');
