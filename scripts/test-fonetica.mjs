@@ -254,4 +254,15 @@ for(const n of todas){
  assert(r.ejercicios.length===0||r.ejercicios.length===4,'Cantidad distinta de cuatro');
  assert(r.controlDocente.every(x=>x.normas.every(c=>c===n)),'Filtrado incorrecto');
 }
+const revisionPosterior=JSON.parse(readFileSync(resolve(root,'data/fonetica/auditoria-continuacion-excel-20261112.json'),'utf8'));
+assert.equal(revisionPosterior.revisadas,17);
+assert.equal(revisionPosterior.incorporadas,0);
+assert.equal(new Set(revisionPosterior.items.map(x=>x.fila_origen)).size,17);
+for(const pendiente of revisionPosterior.items){
+ assert(pendiente.eligibilidad==='FUERA_DEL_SORTEO','Una nueva ficha ha recibido aprobación automática');
+ assert(!banco.items.some(x=>normalizeAudit(x.latin)===normalizeAudit(pendiente.latin)),
+  'Candidata del lote 21 incorporada sin permiso: '+pendiente.latin);
+ assert(audit.items.some(x=>x.fila_origen===pendiente.fila_origen&&x.estado==='PENDIENTE_VERIFICACION'),
+  'No proviene de una ficha reservada del Excel: '+pendiente.latin);
+}
 console.log('OK: '+banco.items.length+' fichas, 20 normas, 4 palabras o ninguna.');
