@@ -84,6 +84,7 @@
  }
  function setScore(key,cents,{source='field',activeInput=null}={}){
   if(cents===null)return false;
+  if(state().course!=='greek1'&&previousQuestions.some(item=>item.key===key&&kind(item.caption)==='lex'))cents=200;
   scores[key]=cents;persist();
   for(const item of previousQuestions.filter(item=>item.key===key)){
    if(source!=='preview'){
@@ -114,6 +115,9 @@
    control.dataset.scoringKey=item.key;
    control.setAttribute('aria-label','Puntos de la pregunta '+(i+1)+': '+item.caption);
    control.value=value(scores[item.key]||0);
+   if(state().course!=='greek1'&&kind(item.caption)==='lex'){
+    control.disabled=true;control.title='El léxico tiene puntuación fija de 2p.';
+   }
    control.addEventListener('input',()=>{
     const n=number(control.value);
     control.setAttribute('aria-invalid',String(n===null));
@@ -155,6 +159,9 @@
    input.setAttribute('aria-label','Puntuación de '+item.caption);
    input.style.width='90px';input.style.maxWidth='90px';
    input.value=value(scores[item.key]||0);
+   if(state().course!=='greek1'&&target==='lex'){
+    input.disabled=true;input.title='Léxico: 2p. fijos';
+   }
    input.addEventListener('input',()=>{
     const parsed=number(input.value);
     input.setAttribute('aria-invalid',String(parsed===null));
@@ -193,7 +200,8 @@
    const base=kind(item.caption);
    const duplicate=seen.get(base)||0;seen.set(base,duplicate+1);
    const key=storageKey(base+(duplicate?'#'+duplicate:''));
-   if(!Object.prototype.hasOwnProperty.call(scores,key))scores[key]=defaults[i];
+   if(state().course!=='greek1'&&base==='lex')scores[key]=200;
+   else if(!Object.prototype.hasOwnProperty.call(scores,key))scores[key]=defaults[i];
    const el=item.el;
    if(item.original!==null&&!el.dataset.scoringOriginal)el.dataset.scoringOriginal=String(item.original/100);
    el.dataset.scoringCaption=item.caption;
@@ -211,6 +219,9 @@
     pts.setAttribute('title','Modificar puntuación');
     pts.setAttribute('aria-label','Modificar puntuación de la pregunta '+(i+1));
     pts.textContent=label(scores[key]);
+    if(state().course!=='greek1'&&base==='lex'){
+     pts.tabIndex=-1;pts.title='Léxico: 2p. fijos';
+    }
     strong.append(count,caption,pts);el.replaceChildren(strong);
    }else{
     const span=el.querySelector('.exam-question-points');
@@ -263,13 +274,13 @@
  }
  paper.addEventListener('click',event=>{
   const span=event.target?.closest?.('.exam-question-points');
-  if(span)editInPaper(span);
+  if(span&&!(state().course!=='greek1'&&kind(previousQuestions.find(q=>q.key===span.dataset.scoringKey)?.caption||'')==='lex'))editInPaper(span);
  });
  paper.addEventListener('keydown',event=>{
   const span=event.target?.closest?.('.exam-question-points');
   if(span&&(event.key==='Enter'||event.key===' ')){
    event.preventDefault();
-   editInPaper(span);
+   if(!(state().course!=='greek1'&&kind(previousQuestions.find(q=>q.key===span.dataset.scoringKey)?.caption||'')==='lex'))editInPaper(span);
   }
  });
  reset.addEventListener('click',()=>{
