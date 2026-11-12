@@ -421,7 +421,7 @@ console.log('Vocabulario: prioridad docente, deduplicación por UD, ambigüedad,
  const qualityFile=await qualityDownload;
  const qualityJSON=JSON.parse(fs.readFileSync(await qualityFile.path(),'utf8'));
  assert.equal(qualityJSON.course,'lat1');
- assert.equal(qualityJSON.totals.rows,1106);
+ assert.equal(qualityJSON.totals.rows,1107);
  console.log('Panel de cobertura por UD, filtro de pendientes y exportación JSON operativos.');
  const analyzeAll=page.locator('#vgAnalyzeAll');
  assert.equal(await analyzeAll.innerText(),'Analizar y revisar vocabulario');
