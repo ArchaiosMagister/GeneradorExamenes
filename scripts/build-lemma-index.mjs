@@ -207,7 +207,8 @@ async function main(){
    throw Error('Referencia externa desconocida: '+record.lemma);
   externalReferences.push({lang:record.lang,lemma:record.lemma,reference:record.reference});
   for(const block of record.blocks){
-   if(!/^V;IND;(?:ACT|MID);(?:PRS|PST;IPFV|FUT|PRF|PSTP)$/.test(block.tags)||block.forms.length!==6)
+   if(!/^V;IND;(?:ACT|MID|DEP);(?:PRS|PST;IPFV|FUT|PRF|PSTP)$/.test(block.tags)||block.forms.length!==6||
+       (block.tags.includes(';DEP;')&&record.lang!=='lat'))
     throw Error('Paradigma contrastado sin seis casillas completas: '+record.lemma);
    for(let i=0;i<6;i++){
     const form=block.forms[i];
