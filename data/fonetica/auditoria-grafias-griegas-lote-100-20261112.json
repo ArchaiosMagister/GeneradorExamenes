@@ -927,76 +927,7 @@
       "fila_origen": 921
     }
   ],
-  "pendientesNuevasDetalle": [
-    {
-      "fila_origen": 686,
-      "latin": "pyram",
-      "castellano": "pira",
-      "normasExcel": [
-        "GRIE"
-      ],
-      "observacionExcel": "pyram → pira: cultismo en el sentido de «hoguera», no pira como plural de pera. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular.",
-      "estado": "REVISION_DOCENTE",
-      "idBanco": null
-    },
-    {
-      "fila_origen": 689,
-      "latin": "Scytiam",
-      "castellano": "Escitia",
-      "normasExcel": [
-        "GRIE",
-        "PRÓT"
-      ],
-      "observacionExcel": "«Escitia» procede del topónimo latino Scythia, Scythiam, con th. La entrada «Scytiam» del banco omite h; corregir la forma antes de usarla como modelo.",
-      "estado": "REVISION_DOCENTE",
-      "idBanco": null
-    },
-    {
-      "fila_origen": 757,
-      "latin": "chœrilum",
-      "castellano": "Quérilo",
-      "normasExcel": [
-        "GRIE",
-        "MONOP"
-      ],
-      "observacionExcel": "Choerilum > Quérilo (nombre de poeta griego): ch > qu y oe > e; adaptación onomástica culta, con grafía latina no uniforme.",
-      "estado": "REVISION_DOCENTE",
-      "idBanco": null
-    },
-    {
-      "fila_origen": 774,
-      "latin": "œagrum",
-      "castellano": "Eagro",
-      "normasExcel": [
-        "MONOP"
-      ],
-      "observacionExcel": "Oeagrum > Eagro: antropónimo mitológico griego (padre de Orfeo), oe > e; no es común en el léxico actual.",
-      "estado": "REVISION_DOCENTE",
-      "idBanco": null
-    },
-    {
-      "fila_origen": 778,
-      "latin": "œnomaum",
-      "castellano": "Enómao",
-      "normasExcel": [
-        "MONOP"
-      ],
-      "observacionExcel": "Oenomaum > Enómao: antropónimo mitológico, oe > e; acentuación culta.",
-      "estado": "REVISION_DOCENTE",
-      "idBanco": null
-    },
-    {
-      "fila_origen": 780,
-      "latin": "œtam",
-      "castellano": "Eta",
-      "normasExcel": [
-        "MONOP"
-      ],
-      "observacionExcel": "Oetam > Eta, nombre del monte griego (Oeta); oe > e por adaptación culta, no la letra griega η.",
-      "estado": "REVISION_DOCENTE",
-      "idBanco": null
-    }
-  ],
+  "pendientesNuevasDetalle": [],
   "itemsRevisadosAnteriores": [
     {
       "id": "EVF-1181",
@@ -1164,6 +1095,86 @@
       "castellano": "cerco",
       "observacionExcel": "circum > cerco: ĭ pretónica/tónica del tema se abre en e; el cambio de la primera c ante vocal anterior se explica por palatalización (c- > ce-). La vocal final se convierte en -o. No confundir cerco con círculo (cultismo).",
       "estado": "REVISION_DOCENTE"
+    }
+  ],
+  "regla": "Las cinco decisiones admitidas pasan al lote 20; cuatro excluidas y circum siguen fuera del sorteo. Las diez fichas originales permanecen en pendientesNuevasOriginales y pendientesAnterioresOriginales.",
+  "pendientesNuevasOriginales": [
+    {
+      "fila_origen": 686,
+      "latin": "pyram",
+      "castellano": "pira",
+      "normasExcel": [
+        "GRIE"
+      ],
+      "observacionExcel": "pyram → pira: cultismo en el sentido de «hoguera», no pira como plural de pera. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular.",
+      "estado": "REVISION_DOCENTE",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 689,
+      "latin": "Scytiam",
+      "castellano": "Escitia",
+      "normasExcel": [
+        "GRIE",
+        "PRÓT"
+      ],
+      "observacionExcel": "«Escitia» procede del topónimo latino Scythia, Scythiam, con th. La entrada «Scytiam» del banco omite h; corregir la forma antes de usarla como modelo.",
+      "estado": "REVISION_DOCENTE",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 757,
+      "latin": "chœrilum",
+      "castellano": "Quérilo",
+      "normasExcel": [
+        "GRIE",
+        "MONOP"
+      ],
+      "observacionExcel": "Choerilum > Quérilo (nombre de poeta griego): ch > qu y oe > e; adaptación onomástica culta, con grafía latina no uniforme.",
+      "estado": "REVISION_DOCENTE",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 774,
+      "latin": "œagrum",
+      "castellano": "Eagro",
+      "normasExcel": [
+        "MONOP"
+      ],
+      "observacionExcel": "Oeagrum > Eagro: antropónimo mitológico griego (padre de Orfeo), oe > e; no es común en el léxico actual.",
+      "estado": "REVISION_DOCENTE",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 778,
+      "latin": "œnomaum",
+      "castellano": "Enómao",
+      "normasExcel": [
+        "MONOP"
+      ],
+      "observacionExcel": "Oenomaum > Enómao: antropónimo mitológico, oe > e; acentuación culta.",
+      "estado": "REVISION_DOCENTE",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 780,
+      "latin": "œtam",
+      "castellano": "Eta",
+      "normasExcel": [
+        "MONOP"
+      ],
+      "observacionExcel": "Oetam > Eta, nombre del monte griego (Oeta); oe > e por adaptación culta, no la letra griega η.",
+      "estado": "REVISION_DOCENTE",
+      "idBanco": null
+    }
+  ],
+  "pendientesAnterioresOriginales": [
+    {
+      "fila_origen": 58,
+      "latin": "circum",
+      "castellano": "cerco",
+      "observacionExcel": "circum > cerco: ĭ pretónica/tónica del tema se abre en e; el cambio de la primera c ante vocal anterior se explica por palatalización (c- > ce-). La vocal final se convierte en -o. No confundir cerco con círculo (cultismo).",
+      "estado": "REVISION_DOCENTE"
     },
     {
       "fila_origen": 381,
@@ -1187,5 +1198,124 @@
       "estado": "REVISION_DOCENTE"
     }
   ],
-  "regla": "Ninguna entrada REVISION_DOCENTE figura en el banco sorteable. La etiqueta ADAPTACION_CULTA es obligatoria; no se infiere una evolución patrimonial."
+  "pendientesNuevasActuales": 0,
+  "pendientesAnterioresActuales": 1,
+  "revisionesDocentesLote20": [
+    {
+      "entrada": "pyram",
+      "fila_origen": 686,
+      "decision": "aceptar_hoguera",
+      "estado": "APTO_PROPUESTO",
+      "latinCorregido": "pyram",
+      "castellano": "pira",
+      "normas": [
+        "N10"
+      ],
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "fuente": "https://iedra.es/palabras/pira",
+      "idBanco": "EVF-1198",
+      "motivo": "PYRAM > pira¹, hoguera funeraria o sacrificial, del griego πυρά vía el latín pyra; solo se examina y > i. No confundir con otros usos de pira."
+    },
+    {
+      "entrada": "Scytiam",
+      "fila_origen": 689,
+      "decision": "corregir_scythiam",
+      "estado": "APTO_PROPUESTO",
+      "latinCorregido": "Scythiam",
+      "castellano": "Escitia",
+      "normas": [
+        "N10",
+        "N14"
+      ],
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "fuente": "https://en.wiktionary.org/wiki/Scythia",
+      "idBanco": "EVF-1199",
+      "motivo": "Se corrige a SCYTHIAM, acusativo de Scythia; adaptación gráfica culta de th > t y prótesis e- ante sc-. No se atribuye evolución patrimonial integral."
+    },
+    {
+      "entrada": "chœrilum",
+      "fila_origen": 757,
+      "decision": "excluir",
+      "estado": "EXCLUIDA",
+      "motivo": "Excluir definitivamente del sorteo por decisión docente expresa"
+    },
+    {
+      "entrada": "œagrum",
+      "fila_origen": 774,
+      "decision": "excluir",
+      "estado": "EXCLUIDA",
+      "motivo": "Excluir definitivamente del sorteo por decisión docente expresa"
+    },
+    {
+      "entrada": "œnomaum",
+      "fila_origen": 778,
+      "decision": "excluir",
+      "estado": "EXCLUIDA",
+      "motivo": "Excluir definitivamente del sorteo por decisión docente expresa"
+    },
+    {
+      "entrada": "œtam",
+      "fila_origen": 780,
+      "decision": "excluir",
+      "estado": "EXCLUIDA",
+      "motivo": "Excluir definitivamente del sorteo por decisión docente expresa"
+    },
+    {
+      "entrada": "circum",
+      "fila_origen": 58,
+      "decision": "investigar_circus",
+      "estado": "REVISION_DOCENTE",
+      "motivo": "DiCCA XV registra cerco < CIRCUM, vinculado a CIRCUS, pero se reserva la explicación exacta de las normas fonéticas exigibles antes de la inclusión.",
+      "fuente": "https://ghcl.ub.edu/diccaxv/listings/WordsByFrequencyIndex/page%3A1042/sort%3Avocablo/direction%3Adesc/myLanguage%3Aes"
+    },
+    {
+      "entrada": "gulam",
+      "fila_origen": 381,
+      "decision": "aceptar_regional",
+      "estado": "APTO_PROPUESTO",
+      "latinCorregido": "gulam",
+      "castellano": "gola",
+      "normas": [
+        "N01"
+      ],
+      "tipoTransmision": "REGIONAL_HISTORICA",
+      "fuente": "https://iedra.es/palabras/gola",
+      "idBanco": "EVF-1200",
+      "motivo": "GŬLAM > gola (garganta) es voz regional/histórica con documentación dialectal; apertura ŭ > o (N01). No equivale al cultismo gula 'glotonería'."
+    },
+    {
+      "entrada": "sculptorem",
+      "fila_origen": 504,
+      "decision": "aceptar_culta_latina",
+      "estado": "APTO_PROPUESTO",
+      "latinCorregido": "sculptorem",
+      "castellano": "escultor",
+      "normas": [
+        "N14",
+        "N15"
+      ],
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "fuente": "https://iedra.es/palabras/escultor",
+      "idBanco": "EVF-1201",
+      "motivo": "SCULPTŌREM > escultor, latinismo culto: prótesis e- ante sc- y simplificación gráfica -lpt- > -lt-. No se afirma transmisión patrimonial de la voz."
+    },
+    {
+      "entrada": "Chlœm",
+      "fila_origen": 638,
+      "decision": "corregir_chloe",
+      "estado": "APTO_PROPUESTO",
+      "latinCorregido": "Chloen",
+      "castellano": "Cloe",
+      "normas": [
+        "N10"
+      ],
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "fuente": "https://www.mobot.org/mobot/latindict/keyDetail.aspx?keyWord=-chloe",
+      "idBanco": "EVF-1202",
+      "motivo": "Se corrige a CHLOEN, acusativo del nombre Chloe; la forma castellana Cloe procede de la adaptación del nombre griego. Ch > c; la secuencia o-e es hiato, no diptongo œ: no corresponde N12."
+    }
+  ],
+  "incorporadasLote20": 5,
+  "excluidasLote20": 4,
+  "pendientesLote20": 1
 }

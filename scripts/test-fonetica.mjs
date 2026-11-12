@@ -7,7 +7,7 @@ import {PALABRAS_POR_EXAMEN,seleccionarEvoluciones} from '../data/fonetica/selec
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const banco=JSON.parse(readFileSync(resolve(root,'data/fonetica/banco_examenes.json'),'utf8'));
 const ids=banco.items.map(x=>x.id);
-assert.equal(banco.items.length,650);
+assert.equal(banco.items.length,655);
 assert.equal(new Set(ids).size,banco.items.length,'Identificadores duplicados');
 assert.equal(banco.normas.length,20);
 assert.equal(PALABRAS_POR_EXAMEN,4);
@@ -82,6 +82,7 @@ const expectedStatus={INCORPORADA:4,EXCLUIDA_DOCENTE:2,CORREGIDA_PENDIENTE:1,
 assert.deepEqual(audit.resumen,expectedStatus,'Estados de auditoría alterados');
 const normalizeAudit=s=>String(s||'').normalize('NFD').replace(/\p{M}/gu,'')
  .replace(/[æÆ]/g,'ae').replace(/[œŒ]/g,'oe').toLowerCase();
+const decisionesLote20Aprobadas=new Set(['gulam','sculptorem']);
 for(const row of audit.items){
  assert(row.latin&&row.castellano&&row.normasExcel.length&&row.observacionExcel,
   'Fila de auditoría sin trazabilidad');
@@ -95,7 +96,9 @@ for(const row of audit.items){
   assert(row.estado!=='INCORPORADA_CULTA'||found.tipoTransmision==='ADAPTACION_CULTA',
    'Cultismo aprobado sin etiqueta: '+row.latin);
  }else{
-  assert(!found,'Se ha activado una ficha no aprobada: '+row.latin);
+  const approvedLater=found?.lote===20&&['gulam','sculptorem'].includes(row.latin)&&
+   decisionesLote20Aprobadas.has(normalizeAudit(row.latin));
+  assert(!found||approvedLater,'Se ha activado una ficha no aprobada: '+row.latin);
   if(row.estado==='CORREGIDA_PENDIENTE'){
    assert(!banco.items.some(x=>normalizeAudit(x.latin)===normalizeAudit(row.latinCorregido)),
     'La corrección sin validación fonética no puede sortearse: '+row.latinCorregido);
@@ -159,6 +162,7 @@ for(const [latin,spanish,normas] of [
 }
 const sourceHtml=readFileSync(resolve(root,'index.html'),'utf8');
 assert(sourceHtml.includes('phonetic-origin-label'),'No se muestra la etiqueta de cultismo');
+assert(sourceHtml.includes('REGIONAL_HISTORICA'),'La voz regional debe etiquetarse');
 assert(sourceHtml.includes("slot.querySelector('i')?.textContent"),
  'La etiqueta no debe contaminar el campo de texto editable de la palabra');
 // La tanda nueva conserva las 100 entradas sin activar dudas pendientes.
@@ -168,9 +172,11 @@ const greekBatch=JSON.parse(readFileSync(resolve(root,
 assert.equal(greekBatch.incorporadasNuevas,100);
 assert.equal(greekBatch.items.length,100,'Se deben incorporar 100 étimos nuevos distintos');
 assert.equal(greekBatch.revisadasNuevas,106,'Las seis dudas necesitan tarjetas');
-assert.equal(greekBatch.pendientesNuevasDetalle.length,6);
+assert.equal(greekBatch.pendientesNuevasOriginales.length,6);
 assert.equal(greekBatch.itemsRevisadosAnteriores.length,17);
-assert.equal(greekBatch.pendientesAnteriores.length,4);
+assert.equal(greekBatch.pendientesAnterioresOriginales.length,4);
+assert.equal(greekBatch.pendientesNuevasDetalle.length,0);
+assert.equal(greekBatch.pendientesAnteriores.length,1);
 const newGreek=banco.items.filter(x=>x.lote===18);
 const recoveredGreek=banco.items.filter(x=>x.lote===19);
 assert.equal(newGreek.length,100,'El siguiente lote debe añadir exactamente cien palabras nuevas');
@@ -196,10 +202,33 @@ const keyGreek=x=>[...String(x||'').normalize('NFD')]
  .filter(ch=>ch.charCodeAt(0)<0x300||ch.charCodeAt(0)>0x36f).join('')
  .replace(/[æÆ]/g,'ae').replace(/[œŒ]/g,'oe').toLowerCase();
 const impossible=new Set([...greekBatch.pendientesNuevasDetalle,
- ...greekBatch.pendientesAnteriores].map(x=>keyGreek(x.latin)));
-assert.equal(impossible.size,10,'Diez tarjetas pendientes sin duplicaciones');
-assert(!banco.items.some(x=>impossible.has(keyGreek(x.latin))),
- 'La versión publicable contiene una candidatura reservada para el docente');
+ ...greekBatch.pendientesAnteriores,...greekBatch.revisionesDocentesLote20.filter(x=>x.estado==='EXCLUIDA')]
+ .map(x=>keyGreek(x.entrada||x.latin)));
+assert.equal(impossible.size,5,'Cuatro exclusiones y circum deben seguir fuera del sorteo');
+assert(!banco.items.some(x=>impossible.has(keyGreek(x.latin))),'Se sortean formas excluidas');
+assert(!banco.items.some(x=>['Scytiam','Chlœm'].some(old=>keyGreek(old)===keyGreek(x.latin))),
+ 'Pervive una forma incorrecta del Excel');
+assert.equal(greekBatch.revisionesDocentesLote20.length,10);
+assert.equal(greekBatch.incorporadasLote20,5);
+assert.equal(greekBatch.excluidasLote20,4);
+assert.equal(greekBatch.pendientesLote20,1);
+const loteDocente=banco.items.filter(x=>x.lote===20);
+assert.equal(loteDocente.length,5);
+for(const [latin,castellano,normas,clase] of [
+ ['Scythiam','Escitia',['N10','N14'],'ADAPTACION_CULTA'],
+ ['pyram','pira',['N10'],'ADAPTACION_CULTA'],
+ ['Chloen','Cloe',['N10'],'ADAPTACION_CULTA'],
+ ['gulam','gola',['N01'],'REGIONAL_HISTORICA'],
+ ['sculptorem','escultor',['N14','N15'],'ADAPTACION_CULTA']
+]){
+ const row=loteDocente.find(x=>x.latin===latin);
+ assert(row&&row.castellano===castellano,'Decisión no aplicada: '+latin);
+ assert.deepEqual(row.normas,normas);
+ assert.equal(row.tipoTransmision,clase);
+ assert(row.fuente.startsWith('https://'));
+ assert(greekBatch.revisionesDocentesLote20.some(x=>x.idBanco===row.id));
+}
+assert(!loteDocente.find(x=>x.latin==='Chloen').normas.includes('N12'));
 for(const x of greekBatch.items)assert(newGreek.some(y=>y.id===x.id&&y.latin===x.latin));
 for(const x of greekBatch.itemsRevisadosAnteriores)
  assert(recoveredGreek.some(y=>y.id===x.id&&y.latin===x.latin));
@@ -224,5 +253,16 @@ for(const n of todas){
  const r=seleccionarEvoluciones(banco,{normasSeleccionadas:[n],semilla:2026});
  assert(r.ejercicios.length===0||r.ejercicios.length===4,'Cantidad distinta de cuatro');
  assert(r.controlDocente.every(x=>x.normas.every(c=>c===n)),'Filtrado incorrecto');
+}
+const revisionPosterior=JSON.parse(readFileSync(resolve(root,'data/fonetica/auditoria-continuacion-excel-20261112.json'),'utf8'));
+assert.equal(revisionPosterior.revisadas,17);
+assert.equal(revisionPosterior.incorporadas,0);
+assert.equal(new Set(revisionPosterior.items.map(x=>x.fila_origen)).size,17);
+for(const pendiente of revisionPosterior.items){
+ assert(pendiente.eligibilidad==='FUERA_DEL_SORTEO','Una nueva ficha ha recibido aprobación automática');
+ assert(!banco.items.some(x=>normalizeAudit(x.latin)===normalizeAudit(pendiente.latin)),
+  'Candidata del lote 21 incorporada sin permiso: '+pendiente.latin);
+ assert(audit.items.some(x=>x.fila_origen===pendiente.fila_origen&&x.estado==='PENDIENTE_VERIFICACION'),
+  'No proviene de una ficha reservada del Excel: '+pendiente.latin);
 }
 console.log('OK: '+banco.items.length+' fichas, 20 normas, 4 palabras o ninguna.');

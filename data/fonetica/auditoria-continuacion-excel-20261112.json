@@ -1,0 +1,267 @@
+{
+  "schema": "auditoria-continuacion-excel/v1",
+  "revision": "2026-11-12",
+  "archivoFuente": "banco_evolucion_fonetica_final_10_lotes.xlsx",
+  "auditoriaAnterior": "data/fonetica/auditoria-excel-lote-100-20261112.json",
+  "lote": 21,
+  "revisadas": 17,
+  "incorporadas": 0,
+  "sinAprobacionDocente": 17,
+  "criterio": "Cotejo lexicográfico preliminar y reservas didácticas: NO equivale a verificación etimológica plena ni habilita sorteo. Ninguna de las diecisiete se incorpora a banco_examenes.json.",
+  "items": [
+    {
+      "fila_origen": 680,
+      "latin": "philtrum",
+      "castellano": "filtro",
+      "normasExcel": [
+        "GRIE"
+      ],
+      "estadoRevision": "ACEPCION_RESTRINGIDA",
+      "eligibilidad": "FUERA_DEL_SORTEO",
+      "analisis": "Solo filtro² 'bebedizo amoroso' deriva de PHILTRUM; filtro¹ como dispositivo viene de fieltro. Requiere acepción visible.",
+      "fuentes": [
+        "https://iedra.es/palabras/filtro"
+      ],
+      "nota": "Las marcas de reglas del Excel siguen siendo orientativas hasta verificación individual."
+    },
+    {
+      "fila_origen": 714,
+      "latin": "trophæum",
+      "castellano": "trofeo",
+      "normasExcel": [
+        "GRIE",
+        "MONOP"
+      ],
+      "estadoRevision": "CULTISMO_PENDIENTE",
+      "eligibilidad": "FUERA_DEL_SORTEO",
+      "analisis": "La etimología en el bajo latín trophaeum está acreditada. Verificar ph > f y ae > e para la etiqueta de adaptación culta; no patrimonial.",
+      "fuentes": [
+        "https://iedra.es/palabras/trofeo"
+      ],
+      "nota": "Las marcas de reglas del Excel siguen siendo orientativas hasta verificación individual."
+    },
+    {
+      "fila_origen": 720,
+      "latin": "crocodilum",
+      "castellano": "cocodrilo",
+      "normasExcel": [
+        "DISIMIL",
+        "METÁT"
+      ],
+      "estadoRevision": "CADENA_HISTORICA_PENDIENTE",
+      "eligibilidad": "FUERA_DEL_SORTEO",
+      "analisis": "El castellano pasa por el latín medieval cocodrillus desde crocodīlus; no presentar crocodilum > cocodrilo como salto fonético lineal sin etapa intermedia.",
+      "fuentes": [
+        "https://iedra.es/palabras/cocodrilo"
+      ],
+      "nota": "Las marcas de reglas del Excel siguen siendo orientativas hasta verificación individual."
+    },
+    {
+      "fila_origen": 737,
+      "latin": "ædilem",
+      "castellano": "edil",
+      "normasExcel": [
+        "MONOP"
+      ],
+      "estadoRevision": "CULTISMO_PENDIENTE",
+      "eligibilidad": "FUERA_DEL_SORTEO",
+      "analisis": "Edil procede de latín aedīlis. El acusativo ædilem del Excel es posible, pero debe identificarse como préstamo culto con ae > e.",
+      "fuentes": [
+        "https://iedra.es/palabras/edil"
+      ],
+      "nota": "Las marcas de reglas del Excel siguen siendo orientativas hasta verificación individual."
+    },
+    {
+      "fila_origen": 797,
+      "latin": "æquinoctialem",
+      "castellano": "equinoccial",
+      "normasExcel": [
+        "MONOP"
+      ],
+      "estadoRevision": "PENDIENTE_CONTRASTE",
+      "eligibilidad": "FUERA_DEL_SORTEO",
+      "analisis": "Estructura culta de equinoccial; no se ha contrastado aquí la forma precisa æquinoctialem ni toda la simplificación -cti-.",
+      "fuentes": [],
+      "nota": "Las marcas de reglas del Excel siguen siendo orientativas hasta verificación individual."
+    },
+    {
+      "fila_origen": 804,
+      "latin": "Artaxerxes",
+      "castellano": "Artajerjes",
+      "normasExcel": [
+        "PALAT"
+      ],
+      "estadoRevision": "PENDIENTE_CONTRASTE",
+      "eligibilidad": "FUERA_DEL_SORTEO",
+      "analisis": "Nombre propio persa: comprobar el itinerario griego/latino y la adecuación de la norma de palatalización; no es léxico patrimonial ordinario.",
+      "fuentes": [],
+      "nota": "Las marcas de reglas del Excel siguen siendo orientativas hasta verificación individual."
+    },
+    {
+      "fila_origen": 807,
+      "latin": "bellum",
+      "castellano": "bello",
+      "normasExcel": [
+        "PALAT"
+      ],
+      "estadoRevision": "LEMA_AMBIGUO",
+      "eligibilidad": "FUERA_DEL_SORTEO",
+      "analisis": "BELLUM puede ser acusativo de BELLUS 'hermoso', que da bello, o el sustantivo BELLUM 'guerra': no mezclar ambos lemas.",
+      "fuentes": [
+        "https://iedra.es/palabras/bello"
+      ],
+      "nota": "Las marcas de reglas del Excel siguen siendo orientativas hasta verificación individual."
+    },
+    {
+      "fila_origen": 878,
+      "latin": "Spartam",
+      "castellano": "Esparta",
+      "normasExcel": [
+        "PRÓT"
+      ],
+      "estadoRevision": "TOPONIMO_PENDIENTE",
+      "eligibilidad": "FUERA_DEL_SORTEO",
+      "analisis": "Adaptación del topónimo griego Esparta: validar la forma latina Spartam y señalar que la prótesis es onomástica/culta.",
+      "fuentes": [
+        "https://www.alianzaeditorial.es/primer_capitulo/esparta.pdf"
+      ],
+      "nota": "Las marcas de reglas del Excel siguen siendo orientativas hasta verificación individual."
+    },
+    {
+      "fila_origen": 880,
+      "latin": "spectrum",
+      "castellano": "espectro",
+      "normasExcel": [
+        "PRÓT"
+      ],
+      "estadoRevision": "CULTISMO_PENDIENTE",
+      "eligibilidad": "FUERA_DEL_SORTEO",
+      "analisis": "Espectro procede del latín spectrum, con e- protética; conservar -ct- delata transmisión culta, no fonética patrimonial.",
+      "fuentes": [
+        "https://dicciomed.usal.es/palabra/espectro"
+      ],
+      "nota": "Las marcas de reglas del Excel siguen siendo orientativas hasta verificación individual."
+    },
+    {
+      "fila_origen": 881,
+      "latin": "spermam",
+      "castellano": "esperma",
+      "normasExcel": [
+        "PRÓT"
+      ],
+      "estadoRevision": "FORMA_LATINA_DUDOSA",
+      "eligibilidad": "FUERA_DEL_SORTEO",
+      "analisis": "El grecolatino sperma es neutro; la forma spermam del Excel requiere revisión morfológica antes de habilitarla como acusativo. La palabra castellana no basta.",
+      "fuentes": [
+        "https://iedra.es/palabras/esperma"
+      ],
+      "nota": "Las marcas de reglas del Excel siguen siendo orientativas hasta verificación individual."
+    },
+    {
+      "fila_origen": 885,
+      "latin": "stadium",
+      "castellano": "estadio",
+      "normasExcel": [
+        "PRÓT"
+      ],
+      "estadoRevision": "CULTISMO_PENDIENTE",
+      "eligibilidad": "FUERA_DEL_SORTEO",
+      "analisis": "Estadio procede de stadium (del griego στάδιον): e- inicial ante st-, adaptar como helenismo culto.",
+      "fuentes": [
+        "https://iedra.es/palabras/estadio"
+      ],
+      "nota": "Las marcas de reglas del Excel siguen siendo orientativas hasta verificación individual."
+    },
+    {
+      "fila_origen": 888,
+      "latin": "stelam",
+      "castellano": "estela",
+      "normasExcel": [
+        "PRÓT"
+      ],
+      "estadoRevision": "ACEPCION_RESTRINGIDA",
+      "eligibilidad": "FUERA_DEL_SORTEO",
+      "analisis": "Estela³ (piedra funeraria) procede del latín stela, pero estela¹ 'estela marina' procede de aestuaria. Solo admitir la acepción epigráfica.",
+      "fuentes": [
+        "https://iedra.es/palabras/estela"
+      ],
+      "nota": "Las marcas de reglas del Excel siguen siendo orientativas hasta verificación individual."
+    },
+    {
+      "fila_origen": 890,
+      "latin": "stirpem",
+      "castellano": "estirpe",
+      "normasExcel": [
+        "PRÓT"
+      ],
+      "estadoRevision": "CULTISMO_PENDIENTE",
+      "eligibilidad": "FUERA_DEL_SORTEO",
+      "analisis": "Estirpe deriva de stirps, stirpis; e- protética ante st-. Requiere determinar tipo de transmisión antes de considerar que ejemplifica evolución popular.",
+      "fuentes": [
+        "https://iedra.es/palabras/estirpe"
+      ],
+      "nota": "Las marcas de reglas del Excel siguen siendo orientativas hasta verificación individual."
+    },
+    {
+      "fila_origen": 894,
+      "latin": "strigilem",
+      "castellano": "estrígil",
+      "normasExcel": [
+        "PRÓT"
+      ],
+      "estadoRevision": "CULTISMO_PENDIENTE",
+      "eligibilidad": "FUERA_DEL_SORTEO",
+      "analisis": "El término de la Antigüedad es estrígil/estrígilo; el latín strigilis respalda la base, pero hay que distinguir el instrumento del motivo ornamental.",
+      "fuentes": [
+        "https://www.etymonline.com/es/word/strigil"
+      ],
+      "nota": "Las marcas de reglas del Excel siguen siendo orientativas hasta verificación individual."
+    },
+    {
+      "fila_origen": 895,
+      "latin": "studium",
+      "castellano": "estudio",
+      "normasExcel": [
+        "PRÓT"
+      ],
+      "estadoRevision": "CULTISMO_PENDIENTE",
+      "eligibilidad": "FUERA_DEL_SORTEO",
+      "analisis": "Estudio procede del latín studium: ejemplo de e- inicial, con etiqueta de latinismo y sin postular cadena patrimonial completa.",
+      "fuentes": [
+        "https://iedra.es/palabras/estudio"
+      ],
+      "nota": "Las marcas de reglas del Excel siguen siendo orientativas hasta verificación individual."
+    },
+    {
+      "fila_origen": 896,
+      "latin": "stuprum",
+      "castellano": "estupro",
+      "normasExcel": [
+        "PRÓT"
+      ],
+      "estadoRevision": "CULTISMO_PENDIENTE",
+      "eligibilidad": "FUERA_DEL_SORTEO",
+      "analisis": "Estupro procede de latín stuprum, latinismo jurídico; conviene glosa histórica/contextual sin confundir definiciones jurídicas actuales.",
+      "fuentes": [
+        "https://iedra.es/palabras/estupro"
+      ],
+      "nota": "Las marcas de reglas del Excel siguen siendo orientativas hasta verificación individual."
+    },
+    {
+      "fila_origen": 941,
+      "latin": "tyrannum",
+      "castellano": "tirano",
+      "normasExcel": [
+        "GRIE",
+        "SIMPL"
+      ],
+      "estadoRevision": "CULTISMO_PENDIENTE",
+      "eligibilidad": "FUERA_DEL_SORTEO",
+      "analisis": "Tirano deriva de latín tyrannus y griego τύραννος: y > i, nn > n. Clasificar como helenismo y no patrimonial sin contraste adicional.",
+      "fuentes": [
+        "https://iedra.es/palabras/tirano"
+      ],
+      "nota": "Las marcas de reglas del Excel siguen siendo orientativas hasta verificación individual."
+    }
+  ]
+}

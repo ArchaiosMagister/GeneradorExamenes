@@ -9,7 +9,7 @@ En Latín I la programación de 73 étimos determina **qué normas están explic
 Las leyes se activan por unidad y se pueden desmarcar dentro de las ya impartidas. Las normas que todavía no han sido explicadas no se pueden activar. Pruebas: `node scripts/test-lat1-fonetica.mjs`.
 
 
-El fichero [banco_examenes.json](./banco_examenes.json) contiene 650 candidatas para ejercicios: 330 iniciales, 100 de la primera ampliación, 30 de la segunda, 50 de la tercera, 3 de la revisión del Excel final, 1 aceptación editorial, 7 del lote 13, 2 del lote 14, 3 del lote 15, 4 del lote 16, 3 del lote 17, 100 del lote 18 y 17 recuperadas del lote 19, sin duplicación de identificadores.
+El fichero [banco_examenes.json](./banco_examenes.json) contiene 655 candidatas para ejercicios: 330 iniciales, 100 de la primera ampliación, 30 de la segunda, 50 de la tercera, 3 de la revisión del Excel final, 1 aceptación editorial, 7 del lote 13, 2 del lote 14, 3 del lote 15, 4 del lote 16, 3 del lote 17, 100 del lote 18 y 17 recuperadas del lote 19 y 5 aprobaciones del lote 20, sin duplicación de identificadores.
 
 Esquema: evoluciones-latin-castellano/v1. Campos por ficha: id, latin, castellano, normas (N01–N20), observacion, fila_origen, fuente y estado.
 
@@ -54,3 +54,11 @@ Las seis candidatas de esta tanda que requieren resolver forma latina, acepción
 ## Lote 19 — 17 entradas de grafía griega recuperadas
 
 Se han integrado otras **17 fichas** que permanecían en `REVISION_CULTA_CONDICIONADA` en el lote de 100 anterior, sin contabilizarlas como nuevas entre las 100 de esta tanda. Permanecen fuera del sorteo `circum`, `gulam` y `sculptorem` (no son casos de grafía griega) y `Chlœm` (forma de acusativo latino por comprobar). Las exclusiones expresas de `inde`, `pirum`, `scrinium` y `quinionem` siguen intactas.
+
+## Lote 20: resolución docente del 12 de noviembre de 2026
+
+Se resuelven las diez tarjetas: cinco altas individualizadas (Scythiam → Escitia, pyram → pira¹ «hoguera», Chloen → Cloe, gulam → gola «garganta» como voz regional/histórica y sculptorem → escultor como adaptación culta latina), cuatro exclusiones (œagrum, œnomaum, œtam y chœrilum) y una pendiente (circum → cerco). Las grafías originales Scytiam y Chlœm no son elegibles; el hiato de Chloe no se trata como N12. DiCCA XV registra cerco < CIRCUM, relacionado con CIRCUS, pero la correspondencia de normas sigue en investigación: https://ghcl.ub.edu/diccaxv/listings/WordsByFrequencyIndex/page%3A1042/sort%3Avocablo/direction%3Adesc/myLanguage%3Aes . Las 62 entradas anteriores en revisión quedan fuera del sorteo. Total: 655 fichas del banco general; la versión de archivo único y PWA se sincronizarán con este banco.
+
+## Continuación de la auditoría (lote 21, 17 fichas sin alta)
+
+El registro [auditoria-continuacion-excel-20261112.json](./auditoria-continuacion-excel-20261112.json) contiene 17 candidatas del Excel original cotejadas de forma preliminar; se describen las fuentes y las reservas sobre acepción, forma latina o transmisión. Por ejemplo, «filtro» tiene dos etimologías, «estela» tres y *bellum* debe desambiguarse de *bellus*. Ninguna de las 17 entra aún en el sorteo. Las 62 candidatas del lote anterior siguen formalmente pendientes; 17 disponen ahora de un análisis adicional sin considerarse verificadas ni aprobadas.

@@ -66,19 +66,19 @@ function readStoredZipEntry(bytes,wanted){
     recoveredGreek:latinLexBanks.latin1.phonetics.filter(x=>x.id?.startsWith('EVF-')&&
      Number(x.id.slice(4))>=1181&&Number(x.id.slice(4))<=1197&&
      x.tipoTransmision==='ADAPTACION_CULTA').length,
-    greekPotentiallyDubious:['Scytiam','pyram','œagrum','œnomaum','œtam','chœrilum','Chlœm',
-     'circum','gulam','sculptorem'].some(s=>latinLexBanks.latin1.phonetics
+    greekPotentiallyDubious:['Scytiam','œagrum','œnomaum','œtam','chœrilum','Chlœm',
+     'circum'].some(s=>latinLexBanks.latin1.phonetics
       .some(x=>normLex(x.latin||x.prompt)===normLex(s))),
     distinct:new Set(latinLexBanks.latin1.phonetics.map(x=>normLex(x.latin||x.prompt))).size
    }));
-   assert.equal(bankLoaded.latin1,663,filename+': el programa ha sustituido las fichas generales o la caché antigua sigue activa');
-   assert.equal(bankLoaded.latin4,650,filename+': falta el banco general de Latín 4.º');
+   assert.equal(bankLoaded.latin1,668,filename+': el programa ha sustituido las fichas generales o la caché antigua sigue activa');
+   assert.equal(bankLoaded.latin4,655,filename+': falta el banco general de Latín 4.º');
    assert(bankLoaded.pelliculam&&!bankLoaded.inde&&!bankLoaded.pirum,
     filename+': decisiones editoriales de fonética no respetadas');
    assert.equal(bankLoaded.distinct,bankLoaded.latin1,filename+': étimos duplicados en el sorteo');
    assert.equal(bankLoaded.newGreek,100,filename+': faltan adaptaciones gráficas de la siguiente tanda');
    assert.equal(bankLoaded.recoveredGreek,17,filename+': falta recuperar grafías griegas anteriormente pendientes');
-   assert(!bankLoaded.greekPotentiallyDubious,filename+': las diez candidatas con dudas deben esperar la elección docente');
+   assert(!bankLoaded.greekPotentiallyDubious,filename+': las opciones excluidas y circum deben permanecer fuera del sorteo');
 
    // Las adaptaciones cultas aprobadas deben distinguirse de las evoluciones
    // patrimoniales también en el Word. Su etiqueta no es parte del campo editable.

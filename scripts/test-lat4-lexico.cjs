@@ -18,7 +18,7 @@ function phoneticEligible(row,lessons,allowed){
  // La unidad define las normas, no un subconjunto de palabras por patrón.
  return true;
 }
-const expectedAvailable={1:96,2:121,4:196,8:371};
+const expectedAvailable={1:97,2:122,4:197,8:372};
 for(let last=1;last<=8;last++){
  const taught=curriculum.units.filter(x=>x.unit<=last);
  const prefixCodes=new Set(taught.flatMap(x=>x.prefixGroups));
