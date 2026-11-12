@@ -3345,7 +3345,8 @@ function latinLexStatus(kind,rows,message=''){
   const label=$('lex-slot-'+kind+'-'+i);
   if(label)label.textContent=rows[i]?latinLexDisplayPrompt(kind,rows[i]):'Sin forma';
   const input=kind==='phonetics'?$('lex-edit-phonetics-'+i):
-   kind==='preverbs'?$('lex-verb-'+i):null;
+   kind==='preverbs'?$('lex-verb-'+i):
+   ['prefixes','latinisms'].includes(kind)?$('lex-edit-'+kind+'-'+i):null;
   if(input&&document.activeElement!==input)
    input.value=rows[i]?latinLexDisplayPrompt(kind,rows[i]):'';
  }
@@ -3385,6 +3386,25 @@ function setLatinPhoneticWord(index,value,fromPreview=false){
   .forEach(node=>{node.textContent=displayed});
  latinLexStatus('phonetics',updated);
 }
+// Prefijos y latinismos usan también el editor actual, sin un segundo banco
+// y sin sustituir las otras tres formas al corregir una.
+function setLatinLexEditableWord(kind,index,value,fromPreview=false){
+ const key=examCacheSignature('lex-'+kind),previous=examSelectionCache.get(key);
+ if(!Array.isArray(previous)||index<0||index>=previous.length)return;
+ const normalized=latinLexLower(String(value||'').trim());
+ const matching=latinLexPool(currentCourse(),kind,selectedUnits())
+  .filter(row=>normLex(latinLexDisplayPrompt(kind,row))===normLex(normalized));
+ const next=matching.length===1?matching[0]:{
+  ...previous[index],prompt:normalized,
+  ...(kind==='prefixes'&&$('lang').value==='va'?{prompt_va:normalized}:{}),
+  answer:'',reviewRequired:true
+ };
+ const updated=previous.slice();updated[index]=next;
+ examSelectionCache.set(key,updated);
+ if(!fromPreview)$('paper').querySelectorAll('[data-lex-slot="'+kind+':'+index+'"] i')
+  .forEach(node=>{node.textContent=normalized});
+ latinLexStatus(kind,updated);
+}
 $('paper').addEventListener('input',event=>{
  const slot=event.target?.closest?.('[data-lex-slot]');
  if(!slot)return;
@@ -3392,6 +3412,8 @@ $('paper').addEventListener('input',event=>{
  if(!Number.isInteger(index))return;
  if(kind==='phonetics')setLatinPhoneticWord(index,slot.textContent,true);
  else if(kind==='preverbs')setLatinPreverbWord(index,slot.textContent,true);
+ else if(['prefixes','latinisms'].includes(kind))
+  setLatinLexEditableWord(kind,index,slot.textContent,true);
 });
 function regenerateLatinLexPart(kind){
  if(kind==='preverbs')for(let i=0;i<2;i++){const input=$('lex-verb-'+i);if(input)input.value=''}
@@ -3417,12 +3439,9 @@ function regenerateLatinLexWord(kind,index){
  generate();
 }
 function buildLatinLexQuestion(course,chosen){
- const html=[],parts=examSelectedLexParts(course),va=$('lang').value==='va',italic=(x,kind,index)=>
-  ['phonetics','preverbs'].includes(kind)?
-   '<span data-lex-slot="'+kind+':'+index+'" contenteditable="false"><i contenteditable="true" spellcheck="false" aria-label="'+
-    (kind==='preverbs'?'Editar verbo de modificación preverbial':'Editar forma de evolución fonética')+'">'+
-    esc(latinLexDisplayPrompt(kind,x))+'</i></span>':
-   '<i>'+esc(latinLexDisplayPrompt(kind,x))+'</i>';
+ const html=[],parts=examSelectedLexParts(course),va=$('lang').value==='va',
+ italic=(x,kind,index)=>
+  '<span data-lex-slot="'+kind+':'+index+'" contenteditable="false"><i contenteditable="true" spellcheck="false" aria-label="Editar forma de '+esc(latinLexTitles[kind])+'">'+esc(latinLexDisplayPrompt(kind,x))+'</i></span>';
  for(const kind of parts){
   const available=latinLexPool(course,kind,chosen),rows=latinLexChosenRows(course,kind,chosen);
   const letter=String.fromCharCode(97+(latinLexModules[course]||[]).indexOf(kind));
@@ -3578,11 +3597,12 @@ loadTeacherLatinLexBanks();
     button.setAttribute('aria-label','Regenerar forma '+(i+1)+' de '+latinLexTitles[kind]);
     button.onclick=()=>regenerateLatinLexWord(kind,i);
     row.append(span,button);
-    if(kind==='phonetics'){
+    if(['phonetics','prefixes','latinisms'].includes(kind)){
      const input=document.createElement('input');input.type='text';
-     input.id='lex-edit-phonetics-'+i;input.autocomplete='off';
-     input.setAttribute('aria-label','Editar forma '+(i+1)+' de evolución fonética');
-     input.addEventListener('input',()=>setLatinPhoneticWord(i,input.value));
+     input.id='lex-edit-'+kind+'-'+i;input.autocomplete='off';
+     input.setAttribute('aria-label','Editar forma '+(i+1)+' de '+latinLexTitles[kind]);
+     input.addEventListener('input',()=>kind==='phonetics'?
+      setLatinPhoneticWord(i,input.value):setLatinLexEditableWord(kind,i,input.value));
      row.append(input);
     }
     group.append(row);
