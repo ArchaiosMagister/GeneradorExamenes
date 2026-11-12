@@ -66,7 +66,8 @@ const html=readFileSync(resolve(root,'index.html'),'utf8');
 for(const marker of ['parseLatin1PhoneticCurriculum','latin1PhoneticMaxUnit','latin1PhoneticAllowed',
  'lat1-programacion.json',"if(row.unit&&kind!=='phonetics')",'input.disabled=!allowed.has('])
  assert(html.includes(marker),'Falta la integración en la web: '+marker);
-assert(html.includes('latinLexBanks.latin1.phonetics=parsed.rows;'),'Debe conservarse el programa docente');
+assert(html.includes('latin1PhoneticCurriculum=parsed;'),'Debe conservarse el programa docente');
+assert(!html.includes('latinLexBanks.latin1.phonetics=parsed.rows;'),'El programa de 73 no puede sustituir el banco general');
 assert(html.includes('for(const course of [\'prefixes\',\'phonetics\'].includes(kind)?[\'latin1\',\'latin4\']'),
  'El banco general debe cargarse en Latín I y 4.º');
 assert(!html.includes('row.unidad>latin1PhoneticMaxUnit(chosen)'),
