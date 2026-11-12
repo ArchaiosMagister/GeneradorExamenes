@@ -834,13 +834,14 @@ $('name').addEventListener('input',()=>{
  const suffix=title.textContent.match(/\s+[–—-]\s+UDs?\s*\d[\d\s,–-]*/i)?.[0]||'';
  title.textContent=requested+(suffix&&!requested.includes(suffix.trim())?suffix:'');
 });
-function refreshManualMorphWords(){
+function refreshManualMorphWords(forceGreekDraft=false){
  const host=$('manualMorphWords');
  if(!host)return;
  examEditorLinks=new WeakMap();examEditorLinkSerial=0;
  host.replaceChildren();
- // También reconstruye editores genéricos para borradores griegos restaurados.
- // En la generación normal los controles del corpus sustituyen estos editores.
+ // Griego completo mantiene su editor especializado en generación normal.
+ // Solo la restauración fuerza enlaces genéricos al HTML conservado.
+ if(currentCourse()==='greek1'&&$('model').value==='complete'&&!forceGreekDraft)return;
  const paper=$('paper'),targets=[],seen=new Set();
  // La cabecera también es editable desde el Word; vincularla con su campo.
  const headerTitle=paper.querySelector('.exam-header-line:first-child > span:first-child');
@@ -2177,7 +2178,7 @@ function restoreDraft(d){
  $('paper').setAttribute('contenteditable','true');$('paper').setAttribute('spellcheck','false');
  // Los WeakMap de edición no sobreviven a innerHTML: regenerar enlaces
  // de edición, pero no las preguntas ni sus valores.
- refreshManualMorphWords();
+ refreshManualMorphWords(true);
  if(d.scores)window.ExaminaScoring?.restore?.(d.scores);
  else window.ExaminaScoring?.sync?.(); // Borradores de versiones anteriores.
  $('draftStatus').textContent='Borrador recuperado ('+d.course+', '+new Date(d.created).toLocaleString()+'). Campos editables y puntuaciones restaurados.';
@@ -3911,7 +3912,7 @@ loadTeacherLatinLexBanks();
   }
  }
  const prevRefresh=refreshManualMorphWords;
- refreshManualMorphWords=function(){prevRefresh();distributeEditors()};
+ refreshManualMorphWords=function(...args){prevRefresh(...args);distributeEditors()};
  const prevGreekControls=greekExamControls;
  greekExamControls=function(){
   // Solo el examen completo crea controles de selección adicionales.
