@@ -2157,6 +2157,7 @@ function exportWord(includeAnswers){
  if(!paper||!paper.textContent.trim()){alert('Genera primero un examen.');return;}
  if(window.ExaminaTeacherReview?.evidenceMayExport?.(paper,
   {latin1:'lat1',latin4:'lat4',greek1:'gr1'}[currentCourse()])===false)return;
+ if(window.ExaminaScoring?.canExport?.()===false)return;
  const copy=paper.cloneNode(true),key=copy.querySelector('#answerkey');
  if(key&&!includeAnswers)key.remove();
  if(key&&includeAnswers)key.classList.remove('solutions');
@@ -2182,7 +2183,7 @@ function exportWord(includeAnswers){
  downloadBlob(filename,zip(files));
 }
 $('docx').onclick=()=>exportWord(false);
-$('docxAnswers').onclick=()=>exportWord(true);$('generate').onclick=generate;$('print').onclick=()=>{if(window.ExaminaTeacherReview?.evidenceMayExport?.($('paper'),{latin1:'lat1',latin4:'lat4',greek1:'gr1'}[currentCourse()])!==false)window.print()};$('solutions').onclick=()=>{let el=$('answerkey');el.classList.toggle('show');$('solutions').textContent=el.classList.contains('show')?tr('hide'):tr('solutions')};$('lang').onchange=()=>{translateUI();generate()};$('term').onchange=generate;$('cumulative').onchange=generate;document.querySelectorAll('.unit-choice').forEach(e=>e.onchange=generate);$('allUnits').onclick=()=>{document.querySelectorAll('.unit-choice').forEach(e=>e.checked=true);generate()};$('clearUnits').onclick=()=>{document.querySelectorAll('.unit-choice').forEach(e=>e.checked=false);generate()};$('amount').onchange=generate;for(const id of ['decl','verb','lex','sent'])$('count-'+id).onchange=generate;for(let id of ['decl','verb','lex','sent'])$(id).onchange=generate;translateUI();
+$('docxAnswers').onclick=()=>exportWord(true);$('generate').onclick=generate;$('print').onclick=()=>{if(window.ExaminaTeacherReview?.evidenceMayExport?.($('paper'),{latin1:'lat1',latin4:'lat4',greek1:'gr1'}[currentCourse()])!==false&&window.ExaminaScoring?.canExport?.()!==false)window.print()};$('solutions').onclick=()=>{let el=$('answerkey');el.classList.toggle('show');$('solutions').textContent=el.classList.contains('show')?tr('hide'):tr('solutions')};$('lang').onchange=()=>{translateUI();generate()};$('term').onchange=generate;$('cumulative').onchange=generate;document.querySelectorAll('.unit-choice').forEach(e=>e.onchange=generate);$('allUnits').onclick=()=>{document.querySelectorAll('.unit-choice').forEach(e=>e.checked=true);generate()};$('clearUnits').onclick=()=>{document.querySelectorAll('.unit-choice').forEach(e=>e.checked=false);generate()};$('amount').onchange=generate;for(const id of ['decl','verb','lex','sent'])$('count-'+id).onchange=generate;for(let id of ['decl','verb','lex','sent'])$(id).onchange=generate;translateUI();
 // V4: conservative, inspectable, dependency-free morphology workbench.
 // These are implemented rules, NOT imported Collatinus/Morpheus/Eulexis datasets.
 const M_CASES=['Nominativo','Vocativo','Acusativo','Genitivo','Dativo','Ablativo'];
