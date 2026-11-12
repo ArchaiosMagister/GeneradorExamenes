@@ -46,6 +46,8 @@ function makeQueue(course,lang){
    'presente medio y aoristo segundo contrastados individualmente (otros tiempos y variantes pendientes)':
    type==='greekMiddle'&&contrasted>=6?
    'solo presente medio documentado individualmente (variantes y otros tiempos pendientes)':
+   type==='semideponent'&&lemma==='audeo'&&verified>=6?
+   'solo perfecto semideponente, sujeto masculino, documentado individualmente':
    'revisión filológica pendiente';
   const decisions=type==='deponent'||type==='greekMiddle'?
    ['Mantener sin nuevas formas de examen','Contrastar individualmente presente y variantes de 2.ª singular',
