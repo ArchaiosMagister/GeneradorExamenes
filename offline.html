@@ -4879,7 +4879,7 @@ const courseName=()=>({latin1:'Latín I',latin4:'Latín 4.º ESO',greek1:'Griego
 const T={es:{config:'Configurar examen',language:'Idioma del examen',term:'Trimestre',units:'Unidad o unidades del examen',cumulative:'Incluir vocabulario acumulado hasta la última unidad marcada',all:'Todas',clear:'Limpiar',title:'Título',model:'Modelo de examen',blocks:'Bloques (puedes combinar cualquiera)',decl:'Declinación y concordancia',verb:'Formas verbales',lex:'Léxico',sent:'Oraciones (banco inicial)',culture:'Cultura clásica',cultureTitle:'Cultura clásica: responde a las preguntas',amount:'Elementos por bloque',generate:'Generar examen',print:'Imprimir / PDF',solutions:'Mostrar soluciones',hide:'Ocultar soluciones',name:'Nombre',date:'Fecha',quarter:'trimestre',selection:'Unidades',available:'entradas distintas disponibles',declTitle:'Analiza las formas nominales y adjetivales',declHelp:'Indica caso, número y género cuando corresponda, y el enunciado.',verbTitle:'Analiza las formas verbales',verbHelp:'Indica persona, número, tiempo, modo, voz y enunciado.',lexTitle:'Léxico: traduce al castellano',sentTitle:'Analiza y traduce las oraciones',key:'Solucionario orientativo',empty:'Selecciona al menos un bloque y una unidad.',pres:'presente de indicativo activo',edit:'Puedes editar directamente el texto del examen antes de imprimir.'},va:{config:'Configura l’examen',language:'Llengua de l’examen',term:'Trimestre',units:'Unitat o unitats de l’examen',cumulative:'Incloure el vocabulari acumulat fins a l’última unitat marcada',all:'Totes',clear:'Netejar',title:'Títol',model:'Model d’examen',blocks:'Blocs (pots combinar-ne qualsevol)',decl:'Declinació i concordança',verb:'Formes verbals',lex:'Lèxic',sent:'Oracions (banc inicial)',culture:'Cultura clàssica',cultureTitle:'Cultura clàssica: respon a les preguntes',amount:'Elements per bloc',generate:'Generar examen',print:'Imprimir / PDF',solutions:'Mostrar solucions',hide:'Ocultar solucions',name:'Nom',date:'Data',quarter:'trimestre',selection:'Unitats',available:'entrades diferents disponibles',declTitle:'Analitza les formes nominals i adjectivals',declHelp:'Indica el cas, el nombre i el gènere quan corresponga, i l’enunciat.',verbTitle:'Analitza les formes verbals',verbHelp:'Indica la persona, el nombre, el temps, el mode, la veu i l’enunciat.',lexTitle:'Lèxic: tradueix al valencià',sentTitle:'Analitza i tradueix les oracions',key:'Solucionari orientatiu',empty:'Selecciona almenys un bloc i una unitat.',pres:'present d’indicatiu actiu',edit:'Pots editar directament el text de l’examen abans d’imprimir.'}};
 const tr=k=>T[$('lang').value][k];
 $('unitChoices').innerHTML=units.map((u,i)=>`<label><input type="checkbox" class="unit-choice" value="${i}" >${esc(u)}</label>`).join('');
-function selectedUnits(){const ix=[...document.querySelectorAll('.unit-choice:checked')].map(x=>+x.value);return $('cumulative').checked&&ix.length?units.filter((_,i)=>i<=Math.max(...ix)):ix.map(i=>units[i]);}
+function selectedUnits(cumulative=$('cumulative').checked){const ix=[...document.querySelectorAll('.unit-choice:checked')].map(x=>+x.value);return cumulative&&ix.length?units.filter((_,i)=>i<=Math.max(...ix)):ix.map(i=>units[i]);}
 function trimesterHeading(){const n=Math.max(1,Math.min(3,Number($('term').value)||1));return ($('lang').value==='va'?['1r trimestre','2n trimestre','3r trimestre']:['1.er trimestre','2.º trimestre','3.er trimestre'])[n-1]}
 function examinaTranslateConfiguration(){
  const va=$('lang').value==='va';
@@ -5531,24 +5531,48 @@ function latinExamSurface(form,entry){
  if(oeDiphthong)result=result.replace(/oe/gi,match=>ligature(match,'œ','Œ'));
  return result;
 }
+// Tabla de identificación verbal con todas las formas realmente admisibles.
+// Se excluye una homografía con análisis incompatible, como duceris,
+// que podría indicar presente o futuro pasivo.
+function latinMorphologyVerbPool(chosen){
+ const result=latinSchoolVerbRows(chosen).flatMap(item=>item.forms.map((form,i)=>({
+  form,entry:item.x.entry,sourceEntry:item.p.sourceEntry||item.x.entry,
+  person:item.labels[i],tense:item.tense,voice:item.voice
+ })));
+ const senses=new Map();
+ for(const item of result){
+  const key=examKey(item.entry)+'/'+normLex(item.form);
+  if(!senses.has(key))senses.set(key,new Set());
+  senses.get(key).add(item.person+'/'+item.tense+'/'+item.voice);
+ }
+ return result.filter(item=>senses.get(examKey(item.entry)+'/'+normLex(item.form)).size===1);
+}
+function latinMorphologyVerbSelection(pool,count){
+ const max=Math.max(0,...selectedUnits().map(examUnitNumber).filter(Number.isInteger));
+ if(max<3||count<2)return sample(pool,count);
+ const passive=pool.filter(item=>item.voice==='pasiva'),active=pool.filter(item=>item.voice==='activa');
+ if(!passive.length||!active.length)return sample(pool,count);
+ const chosen=[...sample(passive,Math.max(1,Math.floor(count/3))),...sample(active,1)];
+ const used=new Set(chosen.map(x=>x.entry+'|'+x.form+'|'+x.tense+'|'+x.voice));
+ const rest=sample(pool.filter(x=>!used.has(x.entry+'|'+x.form+'|'+x.tense+'|'+x.voice)),
+  Math.max(0,count-chosen.length));
+ return sample(chosen.concat(rest),count);
+}
 function generateLatinMorphologyReference(){
  const chosen=selectedUnits(),cfg=morphConfig(),va=$('lang').value==='va';
  if(examMorphQuotasActive())cfg.words=examMorphQuotaCount();
  const t=(es,vl)=>va?vl:es;
- const verbPool=latinSharedBank.paradigms(currentCourse(),chosen,'verb').filter(x=>Array.isArray(x.p.forms)&&x.p.forms.length===6);
- const allVerbs=verbPool.flatMap(({x,p})=>p.forms.map((form,i)=>({
-  form,entry:x.entry,person:p.labels[i],tense:'presente de indicativo',voice:'activa'
- })));
- const verbItems=stickyExamRows('verb',()=>sample(allVerbs,cfg.verbs));
+ const allVerbs=latinMorphologyVerbPool(chosen);
+ const verbItems=stickyExamRows('verb',()=>latinMorphologyVerbSelection(allVerbs,cfg.verbs));
  const pronouns=examQuestionEnabled('pronouns')?latinExamPronouns(chosen):[],pronItems=stickyExamRows('pronouns',()=>sample(pronouns,Math.min(6,pronouns.length)));
  const words=stickyExamRows('forms',()=>examQuotaPick(latinExamFormCandidates(chosen),cfg.words,()=>latinExamForms(chosen,cfg.words)));
  const question=(index,heading)=>'<p class="exam-question">'+index+'. '+esc(heading)+'</p>';
  let n=0;
  const first=examQuestionEnabled('decl')?question(++n,morphSyntagmHeading(cfg,va)+' (1 p.).')+morphSyntagmRows(cfg):'';
  const second=examQuestionEnabled('verb')?question(++n,t('Analiza morfológicamente las siguientes formas verbales (1 p.).','Analitza morfològicament les formes verbals següents (1 p.).'))+
-  '<table class="exam-paradigm reference-morph-table reference-verb-table" data-col-widths="28,25,24,23">'+
+  '<table class="exam-paradigm reference-morph-table reference-verb-table" data-col-widths="42,20,19,19">'+
   '<thead><tr><th>'+t('Forma verbal','Forma verbal')+'</th><th>'+t('Persona y número','Persona i nombre')+'</th><th>'+t('Tiempo','Temps')+'</th><th>'+t('Voz','Veu')+'</th></tr></thead>'+
-  '<tbody>'+verbItems.map(x=>'<tr><td><i>'+esc(latinExamSurface(x.form,x.entry))+'</i></td><td></td><td></td><td></td></tr>').join('')+'</tbody></table>':'';
+  '<tbody>'+verbItems.map(x=>'<tr><td><i>'+esc(latinExamSurface(x.form,x.entry))+'</i>'+latinMorphologyEnunciationHtml({...x,category:'verbs'},chosen)+'</td><td></td><td></td><td></td></tr>').join('')+'</tbody></table>':'';
  let pronSection='';
  if(pronouns.length){
   pronSection=question(++n,t('Analiza los siguientes pronombres: tipo, caso, género y número (1 p.).','Analitza els pronoms següents: tipus, cas, gènere i nombre (1 p.).'))+
@@ -5556,10 +5580,10 @@ function generateLatinMorphologyReference(){
    pronItems.map(x=>'<tr><td><i>'+esc(x.form)+'</i></td><td></td><td></td><td></td><td></td></tr>').join('')+
    '</tbody></table>';
  }
- const last=examQuestionEnabled('forms')?question(++n,t('Analiza morfológicamente las siguientes palabras variables (1 p.).','Analitza morfològicament les paraules variables següents (1 p.).'))+
+ const last=examQuestionEnabled('forms')?question(++n,t('Analiza morfológicamente las siguientes palabras (1 p.).','Analitza morfològicament les paraules següents (1 p.).'))+
   words.map((x,i)=>'<p class="exam-item reference-analysis-item" data-analysis-slot="'+i+'">'+String.fromCharCode(97+i)+'. <i>'+
   esc(latinExamSurface(x.form,x.entry))+'</i>'+
-  (latinMorphologyEnunciation(x,chosen)?' (<i>'+esc(latinMorphologyEnunciation(x,chosen))+'</i>)':'')+
+  latinMorphologyEnunciationHtml(x,chosen)+
   ': <span class="reference-answer-line"></span></p>').join(''):'';
  const problems=[];
  if(second&&verbItems.length<cfg.verbs)problems.push('Formas verbales: '+verbItems.length+' de '+cfg.verbs);
@@ -5592,6 +5616,7 @@ function examHeadingWithUnits(title,chosen){
  if(!suffix||/\s[–—-]\sUDs?\s*\d[\d\s,–-]*$/i.test(title))return title;
  return title+' – '+suffix;
 }
+function examDateLabel(va){return (va?'Data':'Fecha')+': '}
 function latinExamHeader(chosen){
  const va=$('lang').value==='va';
  const titleInput=$('name').value.trim();
@@ -5604,7 +5629,7 @@ function latinExamHeader(chosen){
  const seed=$('seed').value.trim();
  return '<div class="exam-header">'+
   '<p class="exam-header-line"><span>'+esc(title)+(seed?' · '+esc(seed):'')+'</span><span>'+esc(term)+'</span></p>'+
-  '<p class="exam-header-line"><span>'+(va?'Nom i cognoms:':'Nombre y apellidos:')+'</span><span>'+(va?'Data:':'Fecha:')+'</span></p>'+
+  '<p class="exam-header-line"><span>'+(va?'Nom i cognoms:':'Nombre y apellidos:')+'</span><span>'+examDateLabel(va)+'</span></p>'+
   '</div>';
 }
 /* Apartados académicos de los modelos de Latín. Las tablas solo se generan
@@ -5622,7 +5647,31 @@ const latinPronounRows=[
  {unit:6,form:'hic',type:'demostrativo',case:'nominativo',gender:'masculino',number:'singular'},
  {unit:6,form:'haec',type:'demostrativo',case:'nominativo singular o nominativo/acusativo plural',gender:'femenino singular o neutro plural',number:'singular o plural'},
  {unit:6,form:'ille',type:'demostrativo',case:'nominativo',gender:'masculino',number:'singular'},
- {unit:6,form:'quī',type:'relativo',case:'nominativo',gender:'masculino',number:'singular o plural'}
+ {unit:6,form:'quī',type:'relativo',case:'nominativo',gender:'masculino',number:'singular o plural'},
+ // Análisis personal y reflexivo: formas aisladas, no paradigmas inferidos.
+ {unit:3,form:'mihi',type:'personal de 1.ª persona',case:'dativo',gender:'sin género',number:'singular'},
+ {unit:3,form:'tibi',type:'personal de 2.ª persona',case:'dativo',gender:'sin género',number:'singular'},
+ {unit:3,form:'nōbīs',type:'personal de 1.ª persona',case:'dativo o ablativo',gender:'sin género',number:'plural'},
+ {unit:3,form:'vōbīs',type:'personal de 2.ª persona',case:'dativo o ablativo',gender:'sin género',number:'plural'},
+ {unit:3,form:'sē',type:'reflexivo de 3.ª persona',case:'acusativo o ablativo',gender:'sin género',number:'singular o plural'},
+ {unit:5,form:'eius',type:'fórico',case:'genitivo',gender:'masculino, femenino o neutro',number:'singular'},
+ {unit:5,form:'eī',type:'fórico',case:'dativo',gender:'masculino, femenino o neutro',number:'singular'},
+ {unit:5,form:'eōs',type:'fórico',case:'acusativo',gender:'masculino',number:'plural'},
+ {unit:5,form:'eīs',type:'fórico',case:'dativo o ablativo',gender:'masculino, femenino o neutro',number:'plural'},
+ {unit:6,form:'hunc',type:'demostrativo de proximidad',case:'acusativo',gender:'masculino',number:'singular'},
+ {unit:6,form:'hanc',type:'demostrativo de proximidad',case:'acusativo',gender:'femenino',number:'singular'},
+ {unit:6,form:'hoc',type:'demostrativo de proximidad',case:'nominativo o acusativo',gender:'neutro',number:'singular'},
+ {unit:6,form:'huius',type:'demostrativo de proximidad',case:'genitivo',gender:'masculino, femenino o neutro',number:'singular'},
+ {unit:6,form:'illīus',type:'demostrativo de lejanía',case:'genitivo',gender:'masculino, femenino o neutro',number:'singular'},
+ {unit:6,form:'quem',type:'relativo',case:'acusativo',gender:'masculino',number:'singular'},
+ {unit:6,form:'quam',type:'relativo',case:'acusativo',gender:'femenino',number:'singular'},
+ {unit:6,form:'quibus',type:'relativo',case:'dativo o ablativo',gender:'masculino, femenino o neutro',number:'plural'},
+ // Se introducen únicamente desde los pronombres de identidad de UD8.
+ {unit:8,form:'ipse',type:'enfático',case:'nominativo',gender:'masculino',number:'singular'},
+ {unit:8,form:'ipsa',type:'enfático',case:'nominativo',gender:'femenino',number:'singular'},
+ {unit:8,form:'ipsum',type:'enfático',case:'nominativo o acusativo',gender:'neutro',number:'singular'},
+ {unit:8,form:'idem',type:'de identidad',case:'nominativo',gender:'masculino',number:'singular'},
+ {unit:8,form:'eadem',type:'de identidad',case:'nominativo',gender:'femenino',number:'singular'}
 ];
 function latinExamPronouns(chosen){
  if(currentCourse()!=='latin1')return [];
@@ -5736,11 +5785,11 @@ function latinVerbExamEnunciation(entry,chosen,paradigm=null){
  // presente con la conjugación; los datos del banco NO se recortan.
  const raw=String(entry||''),source=String(paradigm?.sourceEntry||'');
  const evidence=/\([1-4]ª\)/.test(raw)?raw:source||raw;
- const conj=(evidence.match(/\(([1-4])ª\)/)||[])[1];
+ const conj=(evidence.match(/\(\s*((?:[1-4]ª|mx\.|irr\.))\s*\)/i)||[])[1];
  const lemma=headLex(raw)||headLex(source);
  const max=Math.max(0,...chosen.map(examUnitNumber).filter(Number.isInteger));
  const perfectIntroduced={latin1:4,latin4:4}[currentCourse()]||Infinity;
- if(max<perfectIntroduced)return lemma+(conj?', '+conj+'ª':'');
+ if(max<perfectIntroduced)return lemma+(conj?', '+conj:'');
  return latinDisplayEnunciation(raw.includes(',')?raw:source||raw);
 }
 function latinMorphologyEnunciation(item,chosen){
@@ -5748,6 +5797,18 @@ function latinMorphologyEnunciation(item,chosen){
  if(item.category==='verbs')return latinVerbExamEnunciation(item.entry,chosen,item);
  return latinDisplayEnunciation(item.entry||'');
 }
+ // En el enunciado de análisis el lema va en cursiva, mientras la
+ // categoría metalingüística queda en redonda dentro de un solo paréntesis.
+function latinMorphologyEnunciationHtml(item,chosen){
+ const enunciation=latinMorphologyEnunciation(item,chosen);
+ if(!enunciation)return '';
+ if(item.category!=='verbs')return ' (<i>'+esc(enunciation)+'</i>)';
+ const match=enunciation.match(/^(.*?)\s*(?:\(\s*([1-4]ª|mx\.|irr\.)\s*\)|,\s*([1-4]ª|mx\.|irr\.))$/i);
+ const forms=match?match[1].trim():enunciation;
+ const conjugation=match?(match[2]||match[3]):'';
+ return ' (<i>'+esc(forms)+'</i>'+(conjugation?', '+esc(conjugation):'')+')';
+}
+
 function latinCompleteCompoundActive(chosen){
  const from={latin1:2,latin4:3}[currentCourse()];
  return Number.isInteger(from)&&Math.max(0,...chosen.map(examUnitNumber).filter(Number.isInteger))>=from;
@@ -5808,9 +5869,128 @@ function latinExamDeclensionTable(item,solutions=false){
   M_CASES.map((name,i)=>'<tr><th>'+esc(name)+'</th><td>'+(solutions?'<i>'+esc(latinExamSurface(tableForms[0][i],title))+'</i>':'')+'</td><td>'+(solutions?'<i>'+esc(latinExamSurface(tableForms[1][i],title))+'</i>':'')+'</td></tr>').join('')+
   '</tbody></table>';
 }
+// Formas escolares de indicativo: exclusivamente lemas con seis personas
+// del presente comprobadas y tres partes principales compatibles con mVerb.
+// Las voces/tiempos nuevos NO se infieren de verbos deponentes o de
+// conjugaciones mixtas que requieren un paradigma diferente.
+const LATIN_SCHOOL_PERSONS=['1.ª persona singular','2.ª persona singular','3.ª persona singular',
+ '1.ª persona plural','2.ª persona plural','3.ª persona plural'];
+const LATIN_SUM_SCHOOL=Object.freeze({
+ 'present-active':['sum','es','est','sumus','estis','sunt'],
+ 'imperfect-active':['eram','eras','erat','eramus','eratis','erant'],
+ 'perfect-active':['fui','fuisti','fuit','fuimus','fuistis','fuerunt'],
+ 'pluperfect-active':['fueram','fueras','fuerat','fueramus','fueratis','fuerant'],
+ 'future-active':['ero','eris','erit','erimus','eritis','erunt']
+});
+const LATIN_SCHOOL_SCHEDULE=[
+ ['present-active',1,'presente de indicativo','activa'],
+ ['imperfect-active',2,'imperfecto de indicativo','activa'],
+ ['present-passive',3,'presente de indicativo','pasiva'],
+ ['imperfect-passive',3,'imperfecto de indicativo','pasiva'],
+ ['perfect-active',4,'perfecto de indicativo','activa'],
+ ['pluperfect-active',4,'pluscuamperfecto de indicativo','activa'],
+ ['future-active',7,'futuro de indicativo','activa'],
+ ['future-passive',7,'futuro de indicativo','pasiva'],
+ ['perfect-passive',9,'perfecto de indicativo','pasiva (participio masculino)']
+];
+function latinRegularPassiveForms(paradigm,tense){
+ const conjugation=paradigm.conj,lemma=paradigm.lemma;
+ if(![1,2,3,4].includes(conjugation)||!/^[A-Za-z]+$/.test(lemma))return null;
+ const base=lemma.slice(0,conjugation===2||conjugation===4?-2:-1);
+ const endings={
+  1:{present:['or','aris','atur','amur','amini','antur'],
+     imperfect:['abar','abaris','abatur','abamur','abamini','abantur'],
+     future:['abor','aberis','abitur','abimur','abimini','abuntur']},
+  2:{present:['eor','eris','etur','emur','emini','entur'],
+     imperfect:['ebar','ebaris','ebatur','ebamur','ebamini','ebantur'],
+     future:['ebor','eberis','ebitur','ebimur','ebimini','ebuntur']},
+  3:{present:['or','eris','itur','imur','imini','untur'],
+     imperfect:['ebar','ebaris','ebatur','ebamur','ebamini','ebantur'],
+     future:['ar','eris','etur','emur','emini','entur']},
+  4:{present:['ior','iris','itur','imur','imini','iuntur'],
+     imperfect:['iebar','iebaris','iebatur','iebamur','iebamini','iebantur'],
+     future:['iar','ieris','ietur','iemur','iemini','ientur']}
+ };
+ return endings[conjugation][tense]?.map(ending=>base+ending)||null;
+}
+function latinRegularPerfectPassive(raw){
+ // Construcción explícita a partir del supino documentado, masculino:
+ // participio nominativo y presente de sum. No propone otros géneros.
+ const match=mNormalize(raw).match(/^([A-Za-z]+),\s*([A-Za-z]+),\s*([A-Za-z]+um)\s*\([1234]ª\)/);
+ if(!match)return null;
+ const stem=match[3].slice(0,-2);
+ const participle=['us','us','us','i','i','i'];
+ return participle.map((end,i)=>stem+end+' '+LATIN_SUM_SCHOOL['present-active'][i]);
+}
+function latinSchoolVerbRows(chosen){
+ const course=currentCourse(),limit=examGrammarLimit(chosen),out=[],seen=new Set();
+ const add=(x,p,id,tense,voice,forms,sourceEntry='')=>{
+  if(!Array.isArray(forms)||forms.length!==6||forms.some(y=>!y||typeof y!=='string'))return;
+  const key=examKey(x.entry)+'|'+id;
+  if(seen.has(key))return;
+  seen.add(key);
+  out.push({x,p:{...p,forms,sourceEntry:sourceEntry||p.sourceEntry||''},
+   id,tense,voice,forms,labels:LATIN_SCHOOL_PERSONS,
+   provisional:false,source:'Paradigma regular contrastado'});
+ };
+ const base=latinSharedBank.paradigms(course,chosen,'verb');
+ for(const {x,p} of base){
+  if(isExcludedExamMorphLemma(x.entry,x.meaning)||!Array.isArray(p.forms)||p.forms.length!==6)continue;
+  add(x,p,'present-active','presente de indicativo','activa',p.forms);
+  if(course!=='latin1')continue; // No anticipar programa de Latín 4.º.
+  const source=p.sourceEntry||x.entry,regular=typeof mVerb==='function'?mVerb(source):null;
+  if(!regular||regular.tenses[0][1].some((f,i)=>normLex(f)!==normLex(p.forms[i])))
+   continue;
+  for(const [id,min,tense,voice] of LATIN_SCHOOL_SCHEDULE.slice(1)){
+   if(limit<min)continue;
+   let forms=null;
+   if(id==='imperfect-active')forms=regular.tenses[1][1];
+   else if(id==='future-active')forms=regular.tenses[2][1];
+   else if(id==='perfect-active')forms=regular.tenses[3][1];
+   else if(id==='pluperfect-active')forms=regular.tenses[4][1];
+   else if(id==='present-passive')forms=latinRegularPassiveForms(regular,'present');
+   else if(id==='imperfect-passive')forms=latinRegularPassiveForms(regular,'imperfect');
+   else if(id==='future-passive')forms=latinRegularPassiveForms(regular,'future');
+   else if(id==='perfect-passive')forms=latinRegularPerfectPassive(source);
+   add(x,p,id,tense,voice,forms,source);
+  }
+ }
+ // «sum»: enunciado y tablas de las unidades de Latín I. No se conjuga
+ // por analogía con ninguna conjugación regular.
+ if(course==='latin1'&&limit>=1){
+  const x={entry:'sum, fui, – (irr.)',unit:'UD1',meaning:'ser, estar'};
+  const p={forms:LATIN_SUM_SCHOOL['present-active'],sourceEntry:'sum, fui, – (irr.)'};
+  for(const [id,min,tense,voice] of LATIN_SCHOOL_SCHEDULE){
+   const forms=LATIN_SUM_SCHOOL[id];
+   if(limit>=min&&forms)add(x,p,id,tense,voice,forms);
+  }
+ }
+ // «capio» es 3.ª conjugación mixta y NO se infiere con mVerb.
+ // Se incorporan solo sus formas escolares documentadas, por lista cerrada.
+ const capioForms={
+  'present-active':['capio','capis','capit','capimus','capitis','capiunt'],
+  'imperfect-active':['capiebam','capiebas','capiebat','capiebamus','capiebatis','capiebant'],
+  'present-passive':['capior','caperis','capitur','capimur','capimini','capiuntur'],
+  'imperfect-passive':['capiebar','capiebaris','capiebatur','capiebamur','capiebamini','capiebantur'],
+  'perfect-active':['cepi','cepisti','cepit','cepimus','cepistis','ceperunt'],
+  'pluperfect-active':['ceperam','ceperas','ceperat','ceperamus','ceperatis','ceperant'],
+  'future-active':['capiam','capies','capiet','capiemus','capietis','capient'],
+  'future-passive':['capiar','capieris','capietur','capiemur','capiemini','capientur'],
+  'perfect-passive':['captus sum','captus es','captus est','capti sumus','capti estis','capti sunt']
+ };
+ if(course==='latin1')for(const x of latinSharedBank.vocabulary(course,chosen)){
+  if(!/^capio,\s*cepi,\s*captum\s*\(mx\.\)/i.test(mNormalize(x.entry)))continue;
+  for(const [id,min,tense,voice] of LATIN_SCHOOL_SCHEDULE){
+   if(limit<min)continue;
+   const forms=capioForms[id];
+   if(forms)add(x,{forms,sourceEntry:x.entry},id,tense,voice,forms,x.entry);
+  }
+ }
+ return out;
+}
 function latinExamConjugationTable(items,solutions=false){
  return '<table class="exam-paradigm exam-verbs"><thead><tr><td class="exam-corner"></td>'+
-  items.map(x=>'<th colspan="2">'+examParadigmHeading(latinVerbExamEnunciation(x.x.entry,selectedUnits(),x.p),'conjugation')+'</th>').join('')+'</tr>'+
+  items.map(x=>'<th colspan="2">'+examParadigmHeading(latinVerbExamEnunciation(x.x.entry,selectedUnits(),x.p),'conjugation')+(x.id&&x.id!=='present-active'?' <span class="exam-paradigm-indicator">— '+esc(x.tense+', voz '+x.voice)+'</span>':'')+'</th>').join('')+'</tr>'+
   '<tr><td class="exam-corner"></td>'+items.map(()=>'<th>Singular</th><th>Plural</th>').join('')+'</tr></thead><tbody>'+
   [0,1,2].map(i=>'<tr><th>'+(i+1)+'ª</th>'+items.map(x=>'<td>'+(solutions?'<i>'+esc(latinExamSurface(x.p.forms[i],x.x.entry))+'</i>':'')+'</td><td>'+(solutions?'<i>'+esc(latinExamSurface(x.p.forms[i+3],x.x.entry))+'</i>':'')+'</td>').join('')+'</tr>').join('')+'</tbody></table>';
 }
@@ -5822,28 +6002,23 @@ function latinExamFormCandidates(chosen,allForms=false){
    category,entry,sourceEntry,form:forms[i],answer:labels[i]+'; '+entry
   });
  };
- const indexedVerbs=new Set();
  for(const x of data){
   if(isExcludedExamMorphLemma(x.entry,x.meaning))continue;
-  const n=mNoun(x.entry),a=adjective(x),third=latinThirdAdjective(x),v=verb(x);
+  const n=mNoun(x.entry),a=adjective(x),third=latinThirdAdjective(x);
   if(n&&latinNounAllowedForExam(n,chosen))
    add(0,n.forms.flat(),['singular','plural'].flatMap(number=>M_CASES.map(c=>c+', '+number)),'nouns',x.entry);
   else if(a&&latinAdjectiveAllowedForExam('first-second',chosen))
    add(1,a.forms,a.labels,'adjectives',x.entry);
   else if(third&&latinAdjectiveAllowedForExam('third-two',chosen,x.entry))
    add(1,third.forms,third.labels,'adjectives',x.entry);
-  else if(v){
-   add(2,v.forms,v.labels.map(label=>label+', presente de indicativo activo'),'verbs',x.entry);
-   indexedVerbs.add(examKey(x.entry));
-  }
  }
- for(const {x,p} of latinSharedBank.paradigms(currentCourse(),chosen,'verb')){
-  if(isExcludedExamMorphLemma(x.entry,x.meaning))continue;
-  if(indexedVerbs.has(examKey(x.entry))||!Array.isArray(p.forms)||p.forms.length!==6)continue;
-  add(2,p.forms,p.labels.map(label=>label+', presente de indicativo activo'),'verbs',x.entry,p.sourceEntry);
+ for(const item of latinSchoolVerbRows(chosen)){
+  add(2,item.forms,item.labels.map(label=>label+', '+item.tense+', voz '+item.voice),
+   'verbs',item.x.entry,item.p.sourceEntry);
  }
  if(currentCourse()==='latin1')for(const x of latinExamPronouns(chosen)){
-  groups[3].push({category:'pronouns',entry:x.form,form:x.form,answer:x.type+'; '+x.case+', '+x.gender+', '+x.number});
+  groups[3].push({category:'pronouns',entry:x.form,form:x.form,
+   answer:x.type+'; '+x.case+', '+x.gender+', '+x.number});
  }
  return groups.map(group=>group.map(item=>({...item,form:latinExamSurface(item.form,item.entry)})));
 }
@@ -5887,15 +6062,15 @@ function generate(){
    nouns.map(x=>latinExamDeclensionTable(x,true)).join(''));
  }
  if(!translation&&examQuestionEnabled('verb')){
-  const verbs=stickyExamRows('verb',()=>sample(latinSharedBank.paradigms(course,chosen,'verb').filter(x=>Array.isArray(x.p.forms)&&x.p.forms.length===6),Math.min(3,countFor('verb'))));
-  add(t('Conjuga en presente de indicativo activo.','Conjuga en present d’indicatiu actiu.'),
+  const verbs=stickyExamRows('verb',()=>sample(latinSchoolVerbRows(chosen),Math.min(3,countFor('verb'))));
+  add(verbs.every(x=>x.id==='present-active')?t('Conjuga en presente de indicativo activo.','Conjuga en present d’indicatiu actiu.'):t('Conjuga los verbos en el tiempo y la voz indicados.','Conjuga els verbs en el temps i la veu indicats.'),
    verbs.length?latinExamConjugationTable(verbs):missing('No hay paradigmas verbales verificados en las unidades seleccionadas.'),
    verbs.length?latinExamConjugationTable(verbs,true):'');
  }
  const forms=stickyExamRows('forms',()=>examQuotaPick(latinExamFormCandidates(chosen),formsCount,()=>latinExamForms(chosen,formsCount)));
  if(examQuestionEnabled('forms'))add(t('Analiza morfológicamente las siguientes formas.','Analitza morfològicament les formes següents.'),
   forms.length?'<ol class="task" type="a">'+forms.map((x,i)=>'<li data-analysis-slot="'+i+'"><i>'+esc(x.form)+'</i>'+
-   (latinMorphologyEnunciation(x,chosen)?' (<i>'+esc(latinMorphologyEnunciation(x,chosen))+'</i>)':'')+
+   latinMorphologyEnunciationHtml(x,chosen)+
    ': <span class="reference-answer-line"></span></li>').join('')+'</ol>':missing('No hay formas variables verificadas para estas unidades.'),
   '<ol>'+forms.map(x=>'<li>'+esc(x.form)+' — '+esc(x.answer)+'</li>').join('')+'</ol>');
  if(course==='latin1'&&examQuestionEnabled('pronouns')){
@@ -5913,17 +6088,18 @@ function generate(){
    lexQuestion.html,lexQuestion.solution);
  }
  if(course==='latin4'&&!translation&&examQuestionEnabled('culture')){
-  const kind=$('cultureType')?.value||'all',pool=culture.filter(x=>x.course==='latin4'&&x.units?.some(u=>chosen.includes(u))&&(kind==='all'||kind===x.type)&&x.question&&x.answer);
+  const marked=selectedUnits(false),kind=$('cultureType')?.value||'all';
+  const pool=culture.filter(x=>x.course==='latin4'&&x.units?.some(u=>marked.includes(u))&&(kind==='all'||kind===x.type)&&x.question&&x.answer);
   const picked=stickyExamRows('culture',()=>sample(pool,4));
+  const question=x=>va&&x.question_va?x.question_va:x.question;
   const html=picked.length?'<ol class="task" type="a">'+picked.map(x=>{
-   const question=va&&x.question_va?x.question_va:x.question;
    const mcOptions=va&&x.options_va?.length?x.options_va:x.options;
    const opts=x.type==='mc'&&mcOptions?.length?'<ol type="a">'+mcOptions.map(o=>'<li>'+esc(o)+'</li>').join('')+'</ol>':'';
-   return '<li>'+esc(question)+opts+'<div class="answer"></div></li>';
-  }).join('')+'</ol>':missing('Banco de cultura pendiente de completar. No se han inventado preguntas.');
+   return '<li>'+esc(question(x))+opts+'<div class="answer"></div></li>';
+  }).join('')+'</ol>':missing(t('No hay preguntas de cultura del tipo elegido en las unidades marcadas.','No hi ha preguntes de cultura del tipus triat en les unitats marcades.'));
   add(t('Cultura clásica: responde a las preguntas.','Cultura clàssica: respon les preguntes.'),
-   html+(picked.length>0&&picked.length<4?missing('Solo hay '+picked.length+' de 4 preguntas de cultura verificadas.'):''),
-   '<ol>'+picked.map(x=>'<li>'+esc(x.question)+' — '+esc(va&&x.answer_va?x.answer_va:x.answer)+'</li>').join('')+'</ol>');
+   html+(picked.length>0&&picked.length<4?missing(t('Solo hay '+picked.length+' de 4 preguntas de cultura verificadas.','Només hi ha '+picked.length+' de 4 preguntes de cultura verificades.')):''),
+   '<ol>'+picked.map(x=>'<li>'+esc(question(x))+' — '+esc(va&&x.answer_va?x.answer_va:x.answer)+'</li>').join('')+'</ol>');
  }
  const withSentences=examQuestionEnabled('sent');
  if(withSentences)add(t('Analiza y traduce las siguientes oraciones.','Analitza i tradueix les oracions següents.'),
@@ -5945,7 +6121,7 @@ vocab.push(...[{"course": "latin4", "unit": "UD1", "entry": "Æmĭlĭa, –æ", 
 vocab.push(...[{"course":"greek1","unit":"Banco general","entry":"ἀγαθός, –η, –ον","meaning":"bueno/a"},{"course":"greek1","unit":"Banco general","entry":"ἄγαλμα, –ατος (τό)","meaning":"estatua"},{"course":"greek1","unit":"Banco general","entry":"Ἀγαμέμνων, –ονος (ὁ)","meaning":"Agamenón"},{"course":"greek1","unit":"Banco general","entry":"ἀγορά, –ας","meaning":"plaza"},{"course":"greek1","unit":"Banco general","entry":"ἀδελφός, –ου","meaning":"hermano"},{"course":"greek1","unit":"Banco general","entry":"ἀδικία, –ας","meaning":"injusticia"},{"course":"greek1","unit":"Banco general","entry":"ἄδικος, –ον","meaning":"injusto/a"},{"course":"greek1","unit":"Banco general","entry":"ἀθάνατος, –ον","meaning":"inmortal"},{"course":"greek1","unit":"Banco general","entry":"Ἀθηνᾶ, –ᾶς","meaning":"Atenea"},{"course":"greek1","unit":"Banco general","entry":"Ἀθῆναι, –ῶν","meaning":"Atenas' (sólo pl.)"},{"course":"greek1","unit":"Banco general","entry":"Ἀθηναῖος, –α, –ον","meaning":"ateniense","meaning_va":"atenenc/atenenca"},{"course":"greek1","unit":"Banco general","entry":"Αἰγίνα, –ης","meaning":"Egina"},{"course":"greek1","unit":"Banco general","entry":"αἰθήρ, αἰθέρος","meaning":"cielo"},{"course":"greek1","unit":"Banco general","entry":"αἷμα, αἵματος","meaning":"sangre"},{"course":"greek1","unit":"Banco general","entry":"αἰξ, αἰγός","meaning":"cabra"},{"course":"greek1","unit":"Banco general","entry":"αἰσχρός, –ον","meaning":"vergonzoso/a"},{"course":"greek1","unit":"Banco general","entry":"ἀκόλουθος, –ου","meaning":"seguidor"},{"course":"greek1","unit":"Banco general","entry":"ἀκρόαμα, –ματος","meaning":"placentero al oído"},{"course":"greek1","unit":"Banco general","entry":"Ἀκροπόλις, –εως (ἡ)","meaning":"Acrópolis"},{"course":"greek1","unit":"Banco general","entry":"ἀληθεία, –ας","meaning":"verdad"},{"course":"greek1","unit":"Banco general","entry":"Ἀλκιβιάδης, –ου","meaning":"Alcibíades"},{"course":"greek1","unit":"Banco general","entry":"ἄλλος, –η, –ο","meaning":"otro/a"},{"course":"greek1","unit":"Banco general","entry":"ἀνήρ, ἀνδρός (ὁ)","meaning":"hombre"},{"course":"greek1","unit":"Banco general","entry":"ἄνθρωπος, –ου","meaning":"hombre"},{"course":"greek1","unit":"Banco general","entry":"ἄντρον, –ου","meaning":"gruta’, ‘cueva"},{"course":"greek1","unit":"Banco general","entry":"Ἄραψ, Ἄραβος (ὁ o ἡ)","meaning":"árabe"},{"course":"greek1","unit":"Banco general","entry":"ἀρετή, –ης","meaning":"virtud"},{"course":"greek1","unit":"Banco general","entry":"ἀριθμός, –ου","meaning":"cantidad’, ‘número"},{"course":"greek1","unit":"Banco general","entry":"ἁρμονία, –ας","meaning":"harmonía"},{"course":"greek1","unit":"Banco general","entry":"ἀρχή, –ῆς","meaning":"gobierno’, ‘origen"},{"course":"greek1","unit":"Banco general","entry":"ἄρχων, –οντος (ὁ)","meaning":"líder"},{"course":"greek1","unit":"Banco general","entry":"ἀσπίς, –ίδος (ἡ)","meaning":"escudo"},{"course":"greek1","unit":"Banco general","entry":"Ἀττική, –ης","meaning":"Ática"},{"course":"greek1","unit":"Banco general","entry":"αὐλητρίς, –ίδος (ἡ)","meaning":"flautista"},{"course":"greek1","unit":"Banco general","entry":"αὐτόνομος, –ον","meaning":"autónomo"},{"course":"greek1","unit":"Banco general","entry":"Ἀχαῖος, –α, –ον","meaning":"aqueo"},{"course":"greek1","unit":"Banco general","entry":"βάρβαρος, –ον","meaning":"bárbaro"},{"course":"greek1","unit":"Banco general","entry":"βασίλειον, –ου (τό)","meaning":"palacio real"},{"course":"greek1","unit":"Banco general","entry":"βασιλεύς, –έως (ὁ)","meaning":"rey"},{"course":"greek1","unit":"Banco general","entry":"βιβλίον, –ου","meaning":"libro"},{"course":"greek1","unit":"Banco general","entry":"βίος, –ου","meaning":"vida"},{"course":"greek1","unit":"Banco general","entry":"γένος, –εος (τὸ)","meaning":"linaje’, ‘tipo"},{"course":"greek1","unit":"Banco general","entry":"γέρων, –οντος (ὁ)","meaning":"anciano"},{"course":"greek1","unit":"Banco general","entry":"γεωργός, –ου","meaning":"campesino"},{"course":"greek1","unit":"Banco general","entry":"γή, –ης","meaning":"tierra"},{"course":"greek1","unit":"Banco general","entry":"γίγας, –αντος (ὁ)","meaning":"gigante"},{"course":"greek1","unit":"Banco general","entry":"γλαῦξ, γλαυκός (ἡ)","meaning":"lechuza"},{"course":"greek1","unit":"Banco general","entry":"γυνή, γυναικός (ἡ)","meaning":"mujer"},{"course":"greek1","unit":"Banco general","entry":"Δαρεῖος, –ου","meaning":"Darío"},{"course":"greek1","unit":"Banco general","entry":"δεῖπνον, –ου (τό)","meaning":"cena"},{"course":"greek1","unit":"Banco general","entry":"δέρμα, –ματος","meaning":"piel"},{"course":"greek1","unit":"Banco general","entry":"δεσπότης, –ου","meaning":"amo, señor"},{"course":"greek1","unit":"Banco general","entry":"δημοκρατία, –ας","meaning":"democracia"},{"course":"greek1","unit":"Banco general","entry":"δῆμος, –ου","meaning":"pueblo"},{"course":"greek1","unit":"Banco general","entry":"Δημοσθένης, Δημοσθένους (ὁ)","meaning":"Demóstenes"},{"course":"greek1","unit":"Banco general","entry":"διδάσκαλος, –ου","meaning":"profesor"},{"course":"greek1","unit":"Banco general","entry":"δίκαιος, –α, –ον","meaning":"justo/a"},{"course":"greek1","unit":"Banco general","entry":"δίκη, –ης","meaning":"justicia"},{"course":"greek1","unit":"Banco general","entry":"δόξα, –ης","meaning":"opinión’, ‘fama"},{"course":"greek1","unit":"Banco general","entry":"δουλεία, –ας","meaning":"esclavitud"},{"course":"greek1","unit":"Banco general","entry":"δοῦλος, –ου","meaning":"esclavo"},{"course":"greek1","unit":"Banco general","entry":"δύναμις, –εως (ἡ)","meaning":"poder’, ‘fuerza"},{"course":"greek1","unit":"Banco general","entry":"δώδεκα (num. indecl.)","meaning":"doce"},{"course":"greek1","unit":"Banco general","entry":"δῶρον, –ου","meaning":"regalo"},{"course":"greek1","unit":"Banco general","entry":"εἰκών, –όνος (ἡ)","meaning":"imagen"},{"course":"greek1","unit":"Banco general","entry":"εἰρήνη, –ης","meaning":"paz"},{"course":"greek1","unit":"Banco general","entry":"ἐκκλησία, –ας (ἡ)","meaning":"asamblea"},{"course":"greek1","unit":"Banco general","entry":"ἐλευθερία, –ας","meaning":"libertad"},{"course":"greek1","unit":"Banco general","entry":"ἐλέφας, –αντος (ὁ)","meaning":"marfil’, ‘elefante"},{"course":"greek1","unit":"Banco general","entry":"Ἑλλάς, Ἑλλάδος (ἡ)","meaning":"Grecia"},{"course":"greek1","unit":"Banco general","entry":"Ἕλλην, Ἕλληνος (ὁ o ἡ)","meaning":"griego/a"},{"course":"greek1","unit":"Banco general","entry":"Ἑλληνικός, –η, ον","meaning":"griego/a"},{"course":"greek1","unit":"Banco general","entry":"ἐλπίς, ἐλπίδος (ἡ)","meaning":"esperanza"},{"course":"greek1","unit":"Banco general","entry":"ἔνδοξος, –ον","meaning":"famoso"},{"course":"greek1","unit":"Banco general","entry":"ἐπιστολή, –ης","meaning":"carta"},{"course":"greek1","unit":"Banco general","entry":"ἔργον, –ου","meaning":"acción’, ‘trabajo’, ‘obra"},{"course":"greek1","unit":"Banco general","entry":"εὐδαιμονία, –ας","meaning":"felicidad"},{"course":"greek1","unit":"Banco general","entry":"Εὐρώπη, –ης","meaning":"Europa"},{"course":"greek1","unit":"Banco general","entry":"εὐτυχία","meaning":"buena suerte"},{"course":"greek1","unit":"Banco general","entry":"ἐχθρός, –ον","meaning":"enemigo/a"},{"course":"greek1","unit":"Banco general","entry":"Ζεὺς, Διός (ὁ)","meaning":"Zeus"},{"course":"greek1","unit":"Banco general","entry":"ζῷον, –ου","meaning":"animal"},{"course":"greek1","unit":"Banco general","entry":"ἡγεμών, –ονος (ὁ)","meaning":"soberano"},{"course":"greek1","unit":"Banco general","entry":"ἡδονή, –ης","meaning":"placer"},{"course":"greek1","unit":"Banco general","entry":"ἥλιος, –ου","meaning":"sol"},{"course":"greek1","unit":"Banco general","entry":"ἡμέρα, –ας","meaning":"día"},{"course":"greek1","unit":"Banco general","entry":"ἡμετέρος, –α, –ον","meaning":"nuestro/a"},{"course":"greek1","unit":"Banco general","entry":"θάλαττα, –ης","meaning":"mar"},{"course":"greek1","unit":"Banco general","entry":"θάνατος, –ου","meaning":"muerte"},{"course":"greek1","unit":"Banco general","entry":"θεά, –ᾶς (ἡ)","meaning":"diosa"},{"course":"greek1","unit":"Banco general","entry":"θεός, –οῦ (ὁ)","meaning":"dios"},{"course":"greek1","unit":"Banco general","entry":"θεράπων, –οντος (ὁ)","meaning":"servidor"},{"course":"greek1","unit":"Banco general","entry":"Θηβαῖος, –α, –ον","meaning":"tebano/a"},{"course":"greek1","unit":"Banco general","entry":"θήρ, θηρός (ὁ o ἡ)","meaning":"fiera"},{"course":"greek1","unit":"Banco general","entry":"θνητός, –ον","meaning":"mortal"},{"course":"greek1","unit":"Banco general","entry":"θώραξ, –ακος (ὁ)","meaning":"coraza"},{"course":"greek1","unit":"Banco general","entry":"ἰατρός, –ου","meaning":"médico"},{"course":"greek1","unit":"Banco general","entry":"Ἱέραξ, –ακος (ὁ)","meaning":"Hiérax","meaning_va":"Hiérax"},{"course":"greek1","unit":"Banco general","entry":"ἱερεύς, –εως (ὁ)","meaning":"sacerdote"},{"course":"greek1","unit":"Banco general","entry":"ἱερόν, –ου","meaning":"templo"},{"course":"greek1","unit":"Banco general","entry":"Ἴκαρος, –ου","meaning":"Ícaro"},{"course":"greek1","unit":"Banco general","entry":"Ἴλιον, –ου","meaning":"Troya"},{"course":"greek1","unit":"Banco general","entry":"ἱππεύς, –έως (ὁ)","meaning":"caballero"},{"course":"greek1","unit":"Banco general","entry":"ἵππος, –ου","meaning":"caballo"},{"course":"greek1","unit":"Banco general","entry":"κακός, –η, –ον","meaning":"malo/a"},{"course":"greek1","unit":"Banco general","entry":"καλός, –η, –ον","meaning":"bonito/a"},{"course":"greek1","unit":"Banco general","entry":"κένος, –η, ον","meaning":"vacío/a"},{"course":"greek1","unit":"Banco general","entry":"κεφαλῆ, –ῆς","meaning":"cabeza"},{"course":"greek1","unit":"Banco general","entry":"κηρός, –ου","meaning":"cera"},{"course":"greek1","unit":"Banco general","entry":"κῆρυξ, –υκος (ὁ)","meaning":"mensajero"},{"course":"greek1","unit":"Banco general","entry":"κιθαριστής, –ου","meaning":"citarista"},{"course":"greek1","unit":"Banco general","entry":"κίνδυνος, –ου","meaning":"peligro"},{"course":"greek1","unit":"Banco general","entry":"κοινός, –η, –ον","meaning":"común"},{"course":"greek1","unit":"Banco general","entry":"κόσμος, –ου","meaning":"orden’, ‘belleza"},{"course":"greek1","unit":"Banco general","entry":"Κρήτη, –ης","meaning":"Creta"},{"course":"greek1","unit":"Banco general","entry":"κύριος, –ου","meaning":"señor’, ‘soberano"},{"course":"greek1","unit":"Banco general","entry":"κώμη, –ης","meaning":"aldea"},{"course":"greek1","unit":"Banco general","entry":"Λακεδαιμονίος, –α, –ον","meaning":"espartano/a"},{"course":"greek1","unit":"Banco general","entry":"λειμών, –ῶνος (ὁ)","meaning":"prado"},{"course":"greek1","unit":"Banco general","entry":"λέων, λεόντος (ὁ)","meaning":"león"},{"course":"greek1","unit":"Banco general","entry":"λίθος, –ου","meaning":"piedra"},{"course":"greek1","unit":"Banco general","entry":"λιμήν, ένος (ὁ)","meaning":"puerto"},{"course":"greek1","unit":"Banco general","entry":"λόγος, –ου","meaning":"palabra"},{"course":"greek1","unit":"Banco general","entry":"Λύσανδρος, –ου","meaning":"Lisandro"},{"course":"greek1","unit":"Banco general","entry":"μαθητής, –ου","meaning":"alumno"},{"course":"greek1","unit":"Banco general","entry":"Μαραθών, –ῶνος (ὁ)","meaning":"Maratón"},{"course":"greek1","unit":"Banco general","entry":"μάχη, –ης","meaning":"batalla"},{"course":"greek1","unit":"Banco general","entry":"Μέγαρα, –ων","meaning":"Mégara"},{"course":"greek1","unit":"Banco general","entry":"μέγας, μεγάλη, μέγα","meaning":"grande"},{"course":"greek1","unit":"Banco general","entry":"Μενέλαος, –ου","meaning":"Menelao' (rey espartano)"},{"course":"greek1","unit":"Banco general","entry":"μήν, μηνός (ὁ)","meaning":"mes’, ‘luna"},{"course":"greek1","unit":"Banco general","entry":"μήτηρ, μητρός (ἡ)","meaning":"madre"},{"course":"greek1","unit":"Banco general","entry":"μίκρος, –α, –ον","meaning":"pequeño/a"},{"course":"greek1","unit":"Banco general","entry":"μόνος, –η, –ον","meaning":"único/a"},{"course":"greek1","unit":"Banco general","entry":"μῦθος, –ου","meaning":"mito"},{"course":"greek1","unit":"Banco general","entry":"ναῦς, νεώς (ἡ)","meaning":"nave"},{"course":"greek1","unit":"Banco general","entry":"ναύτης, –ου","meaning":"marinero"},{"course":"greek1","unit":"Banco general","entry":"νεανίας, –ου","meaning":"joven"},{"course":"greek1","unit":"Banco general","entry":"νεκρός, –οῦ (ὁ)","meaning":"cadáver"},{"course":"greek1","unit":"Banco general","entry":"νέος, –α, –ον","meaning":"nuevo/a’, ‘joven"},{"course":"greek1","unit":"Banco general","entry":"νήσος, –ου (ἡ)","meaning":"isla"},{"course":"greek1","unit":"Banco general","entry":"νίκη, –ης","meaning":"victoria"},{"course":"greek1","unit":"Banco general","entry":"νόμος, –ου","meaning":"ley"},{"course":"greek1","unit":"Banco general","entry":"νόσος, –ου","meaning":"enfermedad"},{"course":"greek1","unit":"Banco general","entry":"νύξ, νυκτός (ἡ)","meaning":"noche"},{"course":"greek1","unit":"Banco general","entry":"ξένος, –ου","meaning":"extranjero"},{"course":"greek1","unit":"Banco general","entry":"ξύλον, –ου","meaning":"madera"},{"course":"greek1","unit":"Banco general","entry":"ὄγκος, –ου","meaning":"montón"},{"course":"greek1","unit":"Banco general","entry":"ὁδός, –ου (ἡ)","meaning":"camino"},{"course":"greek1","unit":"Banco general","entry":"οἰκέτης, –ου","meaning":"habitante"},{"course":"greek1","unit":"Banco general","entry":"οἰκία, –ας","meaning":"casa"},{"course":"greek1","unit":"Banco general","entry":"ὀλιγός, –η, –ον","meaning":"poco/a"},{"course":"greek1","unit":"Banco general","entry":"ὅλος, –η, –ον","meaning":"completo/a’, ‘todo/a"},{"course":"greek1","unit":"Banco general","entry":"Ὅμηρος, –ου","meaning":"Homero"},{"course":"greek1","unit":"Banco general","entry":"ὄνομα, –ματος","meaning":"nombre"},{"course":"greek1","unit":"Banco general","entry":"ὄνυξ, –υχος (ὁ)","meaning":"uña"},{"course":"greek1","unit":"Banco general","entry":"ὁπλίτης, –ου","meaning":"hoplita"},{"course":"greek1","unit":"Banco general","entry":"ὅπλον, –ου","meaning":"arma"},{"course":"greek1","unit":"Banco general","entry":"ὀργίλος, –η, –ον","meaning":"enfadado/a"},{"course":"greek1","unit":"Banco general","entry":"ὀρθός, –η, ον","meaning":"recto/a"},{"course":"greek1","unit":"Banco general","entry":"οὐδεῖς, οὐδεμία, οὐδέν","meaning":"nadie, ‘nada"},{"course":"greek1","unit":"Banco general","entry":"οὐράνος, –ου","meaning":"cielo"},{"course":"greek1","unit":"Banco general","entry":"παιδεία, –ας","meaning":"educación"},{"course":"greek1","unit":"Banco general","entry":"παῖς, παιδός (ὁ o ἡ)","meaning":"niño/a"},{"course":"greek1","unit":"Banco general","entry":"Πανταλέων, –οντος (ὁ)","meaning":"Pantaleón"},{"course":"greek1","unit":"Banco general","entry":"παροιμία, –ας","meaning":"proverbio"},{"course":"greek1","unit":"Banco general","entry":"πᾶς, πᾶσα, πᾶν","meaning":"todo/a"},{"course":"greek1","unit":"Banco general","entry":"πατήρ, πατρός (ὁ)","meaning":"padre"},{"course":"greek1","unit":"Banco general","entry":"πατρίς, πατρίδος (ἡ)","meaning":"patria"},{"course":"greek1","unit":"Banco general","entry":"πεδίον, –ου","meaning":"llanura"},{"course":"greek1","unit":"Banco general","entry":"πέλαγος, –εος (τό)","meaning":"mar"},{"course":"greek1","unit":"Banco general","entry":"πένης, –ητος (ὁ)","meaning":"pobre"},{"course":"greek1","unit":"Banco general","entry":"πενία, –ας","meaning":"pobreza"},{"course":"greek1","unit":"Banco general","entry":"πέρδιξ, ικος (ὁ o ἡ)","meaning":"perdiz"},{"course":"greek1","unit":"Banco general","entry":"Περικλῆς, –έους (ὁ)","meaning":"Pericles"},{"course":"greek1","unit":"Banco general","entry":"Περσαί, –ων","meaning":"persa"},{"course":"greek1","unit":"Banco general","entry":"πέτρα, –ας","meaning":"piedra"},{"course":"greek1","unit":"Banco general","entry":"πλοῦτος, –ου","meaning":"riqueza"},{"course":"greek1","unit":"Banco general","entry":"ποιητής, –ου","meaning":"poeta"},{"course":"greek1","unit":"Banco general","entry":"ποιμήν, –ένος (ὁ)","meaning":"pastor"},{"course":"greek1","unit":"Banco general","entry":"πολεμίος, –ου","meaning":"enemigo"},{"course":"greek1","unit":"Banco general","entry":"πόλεμος, –ου","meaning":"guerra"},{"course":"greek1","unit":"Banco general","entry":"πόλις, –εως (ἡ)","meaning":"ciudad"},{"course":"greek1","unit":"Banco general","entry":"πολιτεία, –ας","meaning":"ciudadanía’, ‘política"},{"course":"greek1","unit":"Banco general","entry":"πολίτης, –ου","meaning":"ciudadano"},{"course":"greek1","unit":"Banco general","entry":"πολιτικός, –η, ον","meaning":"político/a"},{"course":"greek1","unit":"Banco general","entry":"πολύς, πολλή, πολύ","meaning":"mucho/a"},{"course":"greek1","unit":"Banco general","entry":"πονηρός, –α, –ον","meaning":"desdichado/a, pobre, malo, perverso","meaning_va":"desgraciat/ada, pobre, dolent/a, pervers/a"},{"course":"greek1","unit":"Banco general","entry":"ποταμός, –ου","meaning":"río"},{"course":"greek1","unit":"Banco general","entry":"πράγμα, πραγμάτος (N)","meaning":"asunto"},{"course":"greek1","unit":"Banco general","entry":"πρόβατον, –ου (τό)","meaning":"animal’ (pl. ‘ganado’)"},{"course":"greek1","unit":"Banco general","entry":"προσέρχομαι","meaning":"acercarse"},{"course":"greek1","unit":"Banco general","entry":"Προταγόρας, –ου","meaning":"Protágoras"},{"course":"greek1","unit":"Banco general","entry":"πρῶτος, –η, –ον","meaning":"primero/a"},{"course":"greek1","unit":"Banco general","entry":"πτερόν, –ου","meaning":"ala"},{"course":"greek1","unit":"Banco general","entry":"Πυθαγορείος, –α, ον","meaning":"pitagórico/a"},{"course":"greek1","unit":"Banco general","entry":"ῥήτωρ, –ορος (ὁ)","meaning":"orador"},{"course":"greek1","unit":"Banco general","entry":"ῥίς, ῥινός (ἡ)","meaning":"nariz"},{"course":"greek1","unit":"Banco general","entry":"σάρξ, σάρκος (ἡ)","meaning":"carne"},{"course":"greek1","unit":"Banco general","entry":"Σόλων, Σολόνος (ὁ)","meaning":"Solón"},{"course":"greek1","unit":"Banco general","entry":"σοφία, –ας","meaning":"sabiduría"},{"course":"greek1","unit":"Banco general","entry":"σοφίστης, –ου","meaning":"sofista"},{"course":"greek1","unit":"Banco general","entry":"σοφός, –οῦ (ὁ)","meaning":"sabio","meaning_va":"savi"},{"course":"greek1","unit":"Banco general","entry":"Σπάρτη, –ης","meaning":"Esparta"},{"course":"greek1","unit":"Banco general","entry":"σπονδή, –ης","meaning":"libación"},{"course":"greek1","unit":"Banco general","entry":"στράτευμα, –ατος","meaning":"ejército"},{"course":"greek1","unit":"Banco general","entry":"στρατηγός, –ου","meaning":"estratego","meaning_va":"estrateg (general)"},{"course":"greek1","unit":"Banco general","entry":"στρατιώτης, –ου","meaning":"soldado"},{"course":"greek1","unit":"Banco general","entry":"στρατόπεδον, –ου","meaning":"campamento"},{"course":"greek1","unit":"Banco general","entry":"σύμμαχος, –ον","meaning":"aliado/a"},{"course":"greek1","unit":"Banco general","entry":"Σωκράτης, –έος","meaning":"Sócrates"},{"course":"greek1","unit":"Banco general","entry":"σῶμα, –ματος","meaning":"cuerpo"},{"course":"greek1","unit":"Banco general","entry":"τείχος, –εος (τό)","meaning":"muralla"},{"course":"greek1","unit":"Banco general","entry":"τελευτή, –ης","meaning":"final"},{"course":"greek1","unit":"Banco general","entry":"τέχνη, –ης","meaning":"arte’, ‘técnica"},{"course":"greek1","unit":"Banco general","entry":"τόπος, –ου","meaning":"lugar"},{"course":"greek1","unit":"Banco general","entry":"τριήρης, –ους (ἡ)","meaning":"trirreme"},{"course":"greek1","unit":"Banco general","entry":"τυραννίς, –ίδος (ἡ)","meaning":"tiranía"},{"course":"greek1","unit":"Banco general","entry":"τύραννος, –ου","meaning":"tirano"},{"course":"greek1","unit":"Banco general","entry":"τύχη, –ης","meaning":"suerte"},{"course":"greek1","unit":"Banco general","entry":"ὕδωρ, ὑδάτος (τό)","meaning":"agua"},{"course":"greek1","unit":"Banco general","entry":"υἱός, –οῦ (ὁ)","meaning":"hijo"},{"course":"greek1","unit":"Banco general","entry":"φάλαγξ, φάλαγγος (ἡ)","meaning":"falange"},{"course":"greek1","unit":"Banco general","entry":"φιλία, –ας","meaning":"amistad"},{"course":"greek1","unit":"Banco general","entry":"Φίλιππος, –ου","meaning":"Filipo"},{"course":"greek1","unit":"Banco general","entry":"φίλος, –ου","meaning":"amigo"},{"course":"greek1","unit":"Banco general","entry":"φιλόσοφος, –ου","meaning":"filósofo"},{"course":"greek1","unit":"Banco general","entry":"φλέψ, φλεβός (ἡ)","meaning":"vena"},{"course":"greek1","unit":"Banco general","entry":"φόβος, –ου","meaning":"miedo"},{"course":"greek1","unit":"Banco general","entry":"φρόνησις, –εως (ἡ)","meaning":"inteligencia"},{"course":"greek1","unit":"Banco general","entry":"φύλαξ, –ακος (ὁ o ἡ)","meaning":"guardián/a"},{"course":"greek1","unit":"Banco general","entry":"φύσις, –εως (ἡ)","meaning":"naturaleza"},{"course":"greek1","unit":"Banco general","entry":"φωνή, −ης","meaning":"sonido’, ‘voz"},{"course":"greek1","unit":"Banco general","entry":"χειμών, χειμῶνος (ὁ)","meaning":"invierno"},{"course":"greek1","unit":"Banco general","entry":"χιών, χιόνος (ἡ)","meaning":"nieve"},{"course":"greek1","unit":"Banco general","entry":"χρῆμα, –ατος (τὸ)","meaning":"cosa’ (sing.), ‘riqueza’ (pl.)"},{"course":"greek1","unit":"Banco general","entry":"χρόνος, –ου","meaning":"tiempo"},{"course":"greek1","unit":"Banco general","entry":"χρύσος, –ου","meaning":"oro"},{"course":"greek1","unit":"Banco general","entry":"χώρα, –ας","meaning":"región"},{"course":"greek1","unit":"Banco general","entry":"ψυχή, –ης","meaning":"alma"},{"course":"greek1","unit":"Banco general","entry":"ὤνιος, –η, –ον","meaning":"en venta’ (n. pl.: ‘bienes’)"},{"course":"greek1","unit":"Banco general","entry":"ἀγαπάω","meaning":"amar"},{"course":"greek1","unit":"Banco general","entry":"ἀγγέλλω","meaning":"anunciar"},{"course":"greek1","unit":"Banco general","entry":"ἄγω","meaning":"conducir"},{"course":"greek1","unit":"Banco general","entry":"ἀδικέω","meaning":"ser injusto"},{"course":"greek1","unit":"Banco general","entry":"αἰτέω","meaning":"pedir, solicitar","meaning_va":"demanar, sol·licitar"},{"course":"greek1","unit":"Banco general","entry":"ἀκούω","meaning":"escuchar’ (+ gen. CRV)"},{"course":"greek1","unit":"Banco general","entry":"ἀναγιγνώσκω","meaning":"leer"},{"course":"greek1","unit":"Banco general","entry":"ἀνακράζω","meaning":"gritar"},{"course":"greek1","unit":"Banco general","entry":"ἀποθνῄσκω","meaning":"morir"},{"course":"greek1","unit":"Banco general","entry":"ἀποκτείνω","meaning":"matar"},{"course":"greek1","unit":"Banco general","entry":"ἀποπλέω","meaning":"zarpar"},{"course":"greek1","unit":"Banco general","entry":"ἁρπάζω","meaning":"raptar’, ‘arrebatar"},{"course":"greek1","unit":"Banco general","entry":"ἄρχω","meaning":"gobernar’ (+ gen. CRV)"},{"course":"greek1","unit":"Banco general","entry":"ἀσκέω","meaning":"dar forma"},{"course":"greek1","unit":"Banco general","entry":"αὐλέω","meaning":"tocar la flauta"},{"course":"greek1","unit":"Banco general","entry":"ἀφικνέομαι","meaning":"llegar"},{"course":"greek1","unit":"Banco general","entry":"βάλλω","meaning":"lanzar"},{"course":"greek1","unit":"Banco general","entry":"βασιλεύω","meaning":"reinar’ (+ gen. CRV)"},{"course":"greek1","unit":"Banco general","entry":"βούλομαι","meaning":"querer"},{"course":"greek1","unit":"Banco general","entry":"γίγνομαι","meaning":"llegar a ser’ (copulativo)"},{"course":"greek1","unit":"Banco general","entry":"γιγνώσκω","meaning":"conocer"},{"course":"greek1","unit":"Banco general","entry":"γράφω","meaning":"escribir"},{"course":"greek1","unit":"Banco general","entry":"δεῖ (impers.)","meaning":"es necesario"},{"course":"greek1","unit":"Banco general","entry":"διάγω","meaning":"pasar"},{"course":"greek1","unit":"Banco general","entry":"διαφέρω","meaning":"diferir de"},{"course":"greek1","unit":"Banco general","entry":"διαφθείρω","meaning":"destruir’, ‘matar"},{"course":"greek1","unit":"Banco general","entry":"διδάσκω","meaning":"enseñar"},{"course":"greek1","unit":"Banco general","entry":"διώκω","meaning":"perseguir"},{"course":"greek1","unit":"Banco general","entry":"δοκέω","meaning":"parecer"},{"course":"greek1","unit":"Banco general","entry":"δουλεύω","meaning":"ser esclavo"},{"course":"greek1","unit":"Banco general","entry":"δύναμαι","meaning":"poder"},{"course":"greek1","unit":"Banco general","entry":"ἐθέλω","meaning":"querer"},{"course":"greek1","unit":"Banco general","entry":"εἰμί","meaning":"ser’, ‘estar’, ‘haber"},{"course":"greek1","unit":"Banco general","entry":"εἰσβάλλω","meaning":"lanzar’, ‘atacar"},{"course":"greek1","unit":"Banco general","entry":"εἰσφέρω","meaning":"introducir"},{"course":"greek1","unit":"Banco general","entry":"ἐπιθυμέω","meaning":"desear’ (+ gen. CRV)"},{"course":"greek1","unit":"Banco general","entry":"ἐπιμελέομαι","meaning":"encargarse de"},{"course":"greek1","unit":"Banco general","entry":"ἔρχομαι","meaning":"ir"},{"course":"greek1","unit":"Banco general","entry":"ἐρωτάω","meaning":"preguntar"},{"course":"greek1","unit":"Banco general","entry":"εὐδαιμονέω","meaning":"ser feliz"},{"course":"greek1","unit":"Banco general","entry":"εὑρίσκω","meaning":"encontrar"},{"course":"greek1","unit":"Banco general","entry":"εὐφραίνω","meaning":"alegrarse de’ (+ gen. CRV)"},{"course":"greek1","unit":"Banco general","entry":"ἔχω","meaning":"tener"},{"course":"greek1","unit":"Banco general","entry":"ζάω","meaning":"vivir"},{"course":"greek1","unit":"Banco general","entry":"ζητέω","meaning":"buscar"},{"course":"greek1","unit":"Banco general","entry":"ἡγέομαι","meaning":"liderar’, ‘pensar"},{"course":"greek1","unit":"Banco general","entry":"ἥκω","meaning":"llegar"},{"course":"greek1","unit":"Banco general","entry":"θαυμάζω","meaning":"admirar"},{"course":"greek1","unit":"Banco general","entry":"θεραπεύω","meaning":"curar’, ‘venerar"},{"course":"greek1","unit":"Banco general","entry":"θύω","meaning":"hacer sacrificios’ (+ dat. CI)"},{"course":"greek1","unit":"Banco general","entry":"ἱδρύω","meaning":"construir"},{"course":"greek1","unit":"Banco general","entry":"καλέω","meaning":"llamar","meaning_va":"cridar, anomenar"},{"course":"greek1","unit":"Banco general","entry":"καταλείπω","meaning":"abandonar"},{"course":"greek1","unit":"Banco general","entry":"καταφρονέω","meaning":"despreciar"},{"course":"greek1","unit":"Banco general","entry":"κατέχω","meaning":"retener"},{"course":"greek1","unit":"Banco general","entry":"κελεύω","meaning":"ordenar"},{"course":"greek1","unit":"Banco general","entry":"κιθαρίζω","meaning":"tocar la cítara"},{"course":"greek1","unit":"Banco general","entry":"κομίζω","meaning":"llevarse"},{"course":"greek1","unit":"Banco general","entry":"κυβερνάω","meaning":"dirigir’, ‘gobernar"},{"course":"greek1","unit":"Banco general","entry":"λαμβάνω","meaning":"coger, tomar"},{"course":"greek1","unit":"Banco general","entry":"λέγω","meaning":"decir’, ‘hablar"},{"course":"greek1","unit":"Banco general","entry":"λείπω","meaning":"dejar"},{"course":"greek1","unit":"Banco general","entry":"λύω","meaning":"liberar"},{"course":"greek1","unit":"Banco general","entry":"μανθάνω","meaning":"estudiar"},{"course":"greek1","unit":"Banco general","entry":"μάχομαι","meaning":"luchar"},{"course":"greek1","unit":"Banco general","entry":"μένω","meaning":"esperar"},{"course":"greek1","unit":"Banco general","entry":"μετέχω","meaning":"participar en’ (+ gen. CRV)"},{"course":"greek1","unit":"Banco general","entry":"νικάω","meaning":"vencer"},{"course":"greek1","unit":"Banco general","entry":"νομίζω","meaning":"pensar’, ‘considerar"},{"course":"greek1","unit":"Banco general","entry":"οἰκέω","meaning":"habitar"},{"course":"greek1","unit":"Banco general","entry":"ὁράω","meaning":"ver"},{"course":"greek1","unit":"Banco general","entry":"ὁρμάομαι","meaning":"atacar"},{"course":"greek1","unit":"Banco general","entry":"παιδεύω","meaning":"educar"},{"course":"greek1","unit":"Banco general","entry":"παραλαμβάνω","meaning":"recibir"},{"course":"greek1","unit":"Banco general","entry":"παρέχω","meaning":"proporcionar’, ‘dar"},{"course":"greek1","unit":"Banco general","entry":"πάσχω","meaning":"sufrir"},{"course":"greek1","unit":"Banco general","entry":"πείθω","meaning":"convencer"},{"course":"greek1","unit":"Banco general","entry":"πέμπω","meaning":"enviar"},{"course":"greek1","unit":"Banco general","entry":"πλέω","meaning":"navegar"},{"course":"greek1","unit":"Banco general","entry":"πλουτέω","meaning":"ser rico"},{"course":"greek1","unit":"Banco general","entry":"ποιέω","meaning":"hacer"},{"course":"greek1","unit":"Banco general","entry":"πράττω o πράσσω","meaning":"hacer"},{"course":"greek1","unit":"Banco general","entry":"προσβάλλω","meaning":"atacar"},{"course":"greek1","unit":"Banco general","entry":"πιστεύω","meaning":"confiar en’ (+ dat. CRV)"},{"course":"greek1","unit":"Banco general","entry":"ῥίπτω","meaning":"lanzar"},{"course":"greek1","unit":"Banco general","entry":"σκοπέω","meaning":"observar"},{"course":"greek1","unit":"Banco general","entry":"στέργω","meaning":"amar"},{"course":"greek1","unit":"Banco general","entry":"στρατεύω","meaning":"dirigir al ejército"},{"course":"greek1","unit":"Banco general","entry":"σῴζω","meaning":"salvar"},{"course":"greek1","unit":"Banco general","entry":"τελευτάω","meaning":"acabar’, ‘morir"},{"course":"greek1","unit":"Banco general","entry":"τέμνω","meaning":"cortar"},{"course":"greek1","unit":"Banco general","entry":"τέρπω","meaning":"alegrar’, ‘satisfacer"},{"course":"greek1","unit":"Banco general","entry":"τήκω","meaning":"fundirse"},{"course":"greek1","unit":"Banco general","entry":"τιμάω","meaning":"honrar"},{"course":"greek1","unit":"Banco general","entry":"τρέχω","meaning":"correr"},{"course":"greek1","unit":"Banco general","entry":"φαίνω","meaning":"aparecer’, ‘iluminar"},{"course":"greek1","unit":"Banco general","entry":"φέρω","meaning":"llevar"},{"course":"greek1","unit":"Banco general","entry":"φεύγω","meaning":"rechazar’, ‘huir"},{"course":"greek1","unit":"Banco general","entry":"φθείρω","meaning":"matar’, ‘destruir"},{"course":"greek1","unit":"Banco general","entry":"φιλέω","meaning":"amar"},{"course":"greek1","unit":"Banco general","entry":"φοβέω","meaning":"asustar"},{"course":"greek1","unit":"Banco general","entry":"φονεύω","meaning":"matar"},{"course":"greek1","unit":"Banco general","entry":"φρονέω","meaning":"pensar"},{"course":"greek1","unit":"Banco general","entry":"φρόνιμος, –ον","meaning":"inteligente"},{"course":"greek1","unit":"Banco general","entry":"φυλάσσω o φυλάττω","meaning":"proteger"},{"course":"greek1","unit":"Banco general","entry":"φύω","meaning":"engendrar"},{"course":"greek1","unit":"Banco general","entry":"χρή (impers.)","meaning":"es necesario"},{"course":"greek1","unit":"Banco general","entry":"ἀδίκως (adv.)","meaning":"injustamente"},{"course":"greek1","unit":"Banco general","entry":"ἀεί (adv.)","meaning":"siempre"},{"course":"greek1","unit":"Banco general","entry":"ἆρα (adv.)","meaning":"acaso"},{"course":"greek1","unit":"Banco general","entry":"ἀσκέπτως (adv.)","meaning":"temerariamente"},{"course":"greek1","unit":"Banco general","entry":"ἔτι (adv.)","meaning":"ya’, ‘aún"},{"course":"greek1","unit":"Banco general","entry":"εὖ (adv.)","meaning":"bien"},{"course":"greek1","unit":"Banco general","entry":"μᾶλα (adv.)","meaning":"muy"},{"course":"greek1","unit":"Banco general","entry":"μάλιστα (adv.)","meaning":"muy","meaning_va":"moltíssim, especialment"},{"course":"greek1","unit":"Banco general","entry":"μᾶλλον (adv.)","meaning":"más"},{"course":"greek1","unit":"Banco general","entry":"μή (adv.)","meaning":"no"},{"course":"greek1","unit":"Banco general","entry":"μόνον (adv.)","meaning":"sólo"},{"course":"greek1","unit":"Banco general","entry":"νῦν (adv.)","meaning":"ahora"},{"course":"greek1","unit":"Banco general","entry":"οὐ, οὐκ, οὐχ (adv.)","meaning":"no"},{"course":"greek1","unit":"Banco general","entry":"οὔποτε (adv.)","meaning":"nunca"},{"course":"greek1","unit":"Banco general","entry":"οὕτω (adv.)","meaning":"así"},{"course":"greek1","unit":"Banco general","entry":"ποῖ (adv.)","meaning":"a dónde"},{"course":"greek1","unit":"Banco general","entry":"πολλάκις (adv.)","meaning":"muchas veces"},{"course":"greek1","unit":"Banco general","entry":"ποῦ (adv.)","meaning":"dónde"},{"course":"greek1","unit":"Banco general","entry":"πρῶτον (adv.)","meaning":"en primer lugar"},{"course":"greek1","unit":"Banco general","entry":"πῶς (adv.)","meaning":"cómo"},{"course":"greek1","unit":"Banco general","entry":"ταχέως (adv.)","meaning":"rápidamente"},{"course":"greek1","unit":"Banco general","entry":"τότε (adv.)","meaning":"entonces"},{"course":"greek1","unit":"Banco general","entry":"ἀλλά (conj.)","meaning":"pero’, ‘sino"},{"course":"greek1","unit":"Banco general","entry":"γάρ (part.)","meaning":"pues"},{"course":"greek1","unit":"Banco general","entry":"ἐπεί (conj.)","meaning":"cuando"},{"course":"greek1","unit":"Banco general","entry":"ἤ (conj.)","meaning":"o"},{"course":"greek1","unit":"Banco general","entry":"καί","meaning":"y"},{"course":"greek1","unit":"Banco general","entry":"μέν… δέ (part.)","meaning":"por un lado… por otro"},{"course":"greek1","unit":"Banco general","entry":"οὐ μόνον ἀλλὰ καὶ","meaning":"no sólo, sino también"},{"course":"greek1","unit":"Banco general","entry":"οὐδέ (conj.)","meaning":"y no"},{"course":"greek1","unit":"Banco general","entry":"οὖν (part.)","meaning":"así pues"},{"course":"greek1","unit":"Banco general","entry":"οὔτε… οὔτε (conj.)","meaning":"ni… ni"},{"course":"greek1","unit":"Banco general","entry":"ἀμφί + genitivo | acusativo | dativo","meaning":"a ambos lados, alrededor de"},{"course":"greek1","unit":"Banco general","entry":"ἀνά + acusativo","meaning":"hacia (arriba)"},{"course":"greek1","unit":"Banco general","entry":"ἄνευ + genitivo","meaning":"sin"},{"course":"greek1","unit":"Banco general","entry":"ἀντί + genitivo","meaning":"en vez de"},{"course":"greek1","unit":"Banco general","entry":"ἀπό + genitivo","meaning":"de, desde"},{"course":"greek1","unit":"Banco general","entry":"διά + genitivo | acusativo","meaning":"a través de, por, a causa de"},{"course":"greek1","unit":"Banco general","entry":"εἰς + acusativo","meaning":"a, hacia"},{"course":"greek1","unit":"Banco general","entry":"ἐκ/ἐξ + genitivo","meaning":"de, desde"},{"course":"greek1","unit":"Banco general","entry":"ἐν + dativo","meaning":"en"},{"course":"greek1","unit":"Banco general","entry":"ἐπί + genitivo | acusativo | dativo","meaning":"a, hacia, contra"},{"course":"greek1","unit":"Banco general","entry":"κατά + genitivo | acusativo","meaning":"bajo, hacia abajo, por"},{"course":"greek1","unit":"Banco general","entry":"μετά + genitivo | acusativo","meaning":"entre, con’ (+gen.), ‘después de’ (+ac.)"},{"course":"greek1","unit":"Banco general","entry":"παρά + genitivo | acusativo | dativo","meaning":"junto a, a lado de, en, a lo largo de"},{"course":"greek1","unit":"Banco general","entry":"περί + genitivo | acusativo | dativo","meaning":"alrededor de, sobre"},{"course":"greek1","unit":"Banco general","entry":"πρό + genitivo","meaning":"delante de"},{"course":"greek1","unit":"Banco general","entry":"πρός + genitivo | acusativo | dativo","meaning":"a, hacia, junto a"},{"course":"greek1","unit":"Banco general","entry":"σύν + dativo","meaning":"con"},{"course":"greek1","unit":"Banco general","entry":"ὑπέρ + genitivo | acusativo","meaning":"sobre, más allá de, por"},{"course":"greek1","unit":"Banco general","entry":"ὑπό + genitivo | acusativo | dativo","meaning":"debajo de, por"}]);
 const initialVocab=vocab.slice(),initialSentences=sentences.slice();
 function saveLocal(){try{localStorage.setItem('examina_extra',JSON.stringify({vocab:vocab.slice(initialVocab.length),sentences:sentences.slice(initialSentences.length),culture:culture.slice(initialCulture.length)}));$('dataStatus').textContent='Datos guardados en este navegador.'}catch(e){$('dataStatus').textContent='No se pudo guardar; exporta una copia JSON.'}}
-function updateUnits(){const checked=new Set(selectedUnits());units=[...new Set((currentCourse()==='greek1'?vocab.filter(x=>courseOf(x)==='greek1'&&v.unit!=='UD0').map(v=>v.unit):latinSharedBank.units(currentCourse())).concat(culture.filter(x=>x.course==='latin4'&&currentCourse()==='latin4').flatMap(x=>x.units)))].sort((a,b)=>{let aa=+(a.match(/\d+/)||[0])[0],bb=+(b.match(/\d+/)||[0])[0];return aa-bb});$('unitChoices').innerHTML=units.map((u,i)=>`<label><input type="checkbox" class="unit-choice" value="${i}" ${checked.has(u)?'checked':''}>${esc(u)}</label>`).join('');document.querySelectorAll('.unit-choice').forEach(e=>e.onchange=generate)}
+function updateUnits(){const checked=new Set(selectedUnits(false));units=[...new Set((currentCourse()==='greek1'?vocab.filter(x=>courseOf(x)==='greek1'&&v.unit!=='UD0').map(v=>v.unit):latinSharedBank.units(currentCourse())).concat(culture.filter(x=>x.course==='latin4'&&currentCourse()==='latin4').flatMap(x=>x.units)))].sort((a,b)=>{let aa=+(a.match(/\d+/)||[0])[0],bb=+(b.match(/\d+/)||[0])[0];return aa-bb});$('unitChoices').innerHTML=units.map((u,i)=>`<label><input type="checkbox" class="unit-choice" value="${i}" ${checked.has(u)?'checked':''}>${esc(u)}</label>`).join('');document.querySelectorAll('.unit-choice').forEach(e=>e.onchange=generate)}
 function importLines(text,kind){let added=0;for(const line of text.split(/\r?\n/)){if(!line.trim())continue;const c=line.split(';').map(s=>s.trim());if(kind==='v'){if(c.length<3||!c[0]||!c[1]||!c[2])continue;if(!vocab.some(x=>courseOf(x)===currentCourse()&&x.unit===c[0]&&x.entry===c[1])){vocab.push({course:currentCourse(),unit:c[0],entry:c[1],meaning:c.slice(2).join(';')});added++}}else{const units=(c[2]?c[2].split(',').map(s=>s.trim()).filter(Boolean):selectedUnits());if(!c[0]||!units.length)continue;if(!sentences.some(x=>courseOf(x)===currentCourse()&&x.text===c[0])){sentences.push({course:currentCourse(),text:c[0],sol:c[1]||'[TRADUCCIÓN PENDIENTE]',units,teacherProvided:true});added++}}}saveLocal();updateUnits();if(kind!=='v'){examSelectionCache.clear();if(typeof greekExamState!=='undefined')greekExamState=null}generate();$('dataStatus').textContent=added+' entradas importadas.'}
 $('importCulture').onclick=()=>{if(currentCourse()!=='latin4')return;let added=0,errors=0;for(const line of $('newCulture').value.split(/\r?\n/)){if(!line.trim())continue;const c=line.split(';').map(v=>v.trim());if(c.length<4||!['short','essay','tf','mc'].includes(c[1])||!c[0]||!c[2]||!c[3]){errors++;continue}let options=c[4]?c[4].split('|').map(x=>x.trim()).filter(Boolean):[];if(c[1]==='mc'&&options.length<2){errors++;continue}let item={course:'latin4',units:c[0].split(',').map(x=>x.trim()),type:c[1],question:c[2],answer:c[3],options};if(!culture.some(x=>x.course==='latin4'&&x.question===item.question)){culture.push(item);added++}}saveLocal();$('cultureStatus').textContent=added+' preguntas importadas; '+errors+' líneas omitidas.';generate()};
 $('importVocab').onclick=()=>importLines($('newvocab').value,'v');
@@ -5969,8 +6145,8 @@ function refreshCourse(){
  $('cultureType').disabled=!isLatin4;$('newCulture').disabled=!isLatin4;$('importCulture').disabled=!isLatin4;
  $('decl').disabled=false;$('verb').disabled=false;
  $('morphAnalyze').disabled=isGreek;$('auditMorph').disabled=isGreek;
- $('courseStatus').textContent=isGreek?'Griego I: vocabulario incorporado como banco general. La flexión se limita a paradigmas áticos explícitos; si no hay coincidencias, se muestra un aviso.':isLatin4?'Latín 4.º ESO: vocabulario original incorporado por unidades. Cultura solo se habilita aquí; su banco está vacío hasta recibir tus temas cerrados.':'Latín I: vocabulario original incorporado. Cultura no está disponible en este curso.';
- $('cultureHint').textContent=isLatin4?'Banco de cultura exclusivo de Latín 4.º ESO; pendiente de tus temas cerrados.':'Cultura solo se utiliza en Latín 4.º ESO.';
+ $('courseStatus').textContent=isGreek?'Griego I: vocabulario incorporado como banco general. La flexión se limita a paradigmas áticos explícitos; si no hay coincidencias, se muestra un aviso.':isLatin4?'Latín 4.º ESO: vocabulario y banco docente de cultura incorporados por unidades.':'Latín I: vocabulario original incorporado. Cultura no está disponible en este curso.';
+ $('cultureHint').textContent=isLatin4?'Cultura de Latín 4.º ESO: solo se incluyen las unidades marcadas.':'Cultura solo se utiliza en Latín 4.º ESO.';
  $('name').value=({'latin1':$('lang').value==='va'?'Examen de Llatí I':'Examen de Latín I','latin4':$('lang').value==='va'?'Examen de Llatí 4t ESO':'Examen de Latín 4.º ESO','greek1':$('lang').value==='va'?'Examen de Grec I':'Examen de Griego I'})[c];
  updateUnits();if(isGreek){$('courseStatus').textContent+=' Entradas en este curso: '+vocab.filter(x=>courseOf(x)===c).length+'.'}else{const bank=latinSharedBank;const indexed=[...bank.entries.values()].filter(x=>x.courses.has(c));$('courseStatus').textContent+=' Banco compartido: '+indexed.length+' lemas del curso; '+bank.vocabulary(c).length+' entradas distintas. Solo las formas con paradigma comprobado se usan en morfología.';mRefreshEntries();}generate();
 }
@@ -6167,7 +6343,54 @@ const M_END={
  '5':[['es','es','em','ei','ei','e'],['es','es','es','erum','ebus','ebus']]
 };
 function mNormalize(s){return String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[–−—]/g,'-').replace(/æ/gi,'ae').replace(/œ/gi,'oe').trim()}
+// Paradigmas NOMINALES EXPLÍCITOS: no aplicar reglas de -is/-us a todos
+// los lemas de tercera y cuarta. Las formas de estos vocablos se contrastan
+// con sus paradigmas completos (i-temas, temas en -u y res).
+const LATIN_SCHOOL_NOUNS={
+ civis:{gen:['is','civis'],kind:'3mf',gender:'m',
+  singular:['civis','civis','civem','civis','civi','cive'],
+  plural:['cives','cives','cives','civium','civibus','civibus']},
+ hostis:{gen:['is','hostis'],kind:'3mf',gender:'m',
+  singular:['hostis','hostis','hostem','hostis','hosti','hoste'],
+  plural:['hostes','hostes','hostes','hostium','hostibus','hostibus']},
+ urbs:{gen:['urbis'],kind:'3mf',gender:'f',
+  singular:['urbs','urbs','urbem','urbis','urbi','urbe'],
+  plural:['urbes','urbes','urbes','urbium','urbibus','urbibus']},
+ pars:{gen:['partis'],kind:'3mf',gender:'f',
+  singular:['pars','pars','partem','partis','parti','parte'],
+  plural:['partes','partes','partes','partium','partibus','partibus']},
+ mare:{gen:['maris','is'],kind:'3n',gender:'n',
+  singular:['mare','mare','mare','maris','mari','mari'],
+  plural:['maria','maria','maria','marium','maribus','maribus']},
+ animal:{gen:['alis','animalis'],kind:'3n',gender:'n',
+  singular:['animal','animal','animal','animalis','animali','animali'],
+  plural:['animalia','animalia','animalia','animalium','animalibus','animalibus']},
+ manus:{gen:['us','manus'],kind:'4m',gender:'f',
+  singular:['manus','manus','manum','manus','manui','manu'],
+  plural:['manus','manus','manus','manuum','manibus','manibus']},
+ exercitus:{gen:['us','exercitus'],kind:'4m',gender:'m',
+  singular:['exercitus','exercitus','exercitum','exercitus','exercitui','exercitu'],
+  plural:['exercitus','exercitus','exercitus','exercituum','exercitibus','exercitibus']},
+ cornu:{gen:['us','cornus'],kind:'4n',gender:'n',
+  singular:['cornu','cornu','cornu','cornus','cornu','cornu'],
+  plural:['cornua','cornua','cornua','cornuum','cornibus','cornibus']},
+ res:{gen:['ei','rei'],kind:'5',gender:'f',
+  singular:['res','res','rem','rei','rei','re'],
+  plural:['res','res','res','rerum','rebus','rebus']}
+};
+function latinAttestedNoun(raw){
+ const parts=mNormalize(raw).replace(/\s+/g,' ').split(',').map(x=>x.trim());
+ const lemma=parts[0]?.toLowerCase(),data=LATIN_SCHOOL_NOUNS[lemma];
+ if(!data||!parts[1])return null;
+ const gen=parts[1].replace(/\s*\(.*$/,'').replace(/^-+/,'').trim().toLowerCase();
+ if(!data.gen.includes(gen))return null;
+ return {lemma,kind:data.kind,gender:data.gender,
+  forms:[data.singular.slice(),data.plural.slice()],
+  source:'Paradigma nominal explícito individual; no inferido de la terminación'};
+}
 function mNoun(raw){
+ const attested=latinAttestedNoun(raw);
+ if(attested)return attested;
  const s=mNormalize(raw).replace(/\s+/g,' '),parts=s.split(',').map(x=>x.trim());if(parts.length<2)return null;
  const nom=parts[0],tail=parts[1].split(/\s*\(/)[0].trim();
  const gender=(s.match(/\(([mfn])\.?\)/i)||[])[1]?.toLowerCase();
@@ -6647,11 +6870,56 @@ isRequired=function(entry,chosen){if(currentCourse()!=='greek1')return legacyIsR
 try{if(!localStorage.getItem('examina_greek_materials_v20')){for(const x of greekMaterials.required){if(!examRequired.some(y=>y.course==='greek1'&&y.unit===x.unit&&y.key===examKey(x.entry)))examRequired.push({...x,course:'greek1',key:examKey(x.entry)})}saveRequired();localStorage.setItem('examina_greek_materials_v20','1')}}catch(e){for(const x of greekMaterials.required)if(!examRequired.some(y=>y.course==='greek1'&&y.unit===x.unit&&y.key===examKey(x.entry)))examRequired.push({...x,course:'greek1',key:examKey(x.entry)})}
 function greekLexKey(entry){return examKey(String(entry).split('+')[0].trim())}
 function greekLemma(head){const item=greekSharedBank.lookup(head);return item?{entry:item.entry,meaning:item.meaning||'[Traducción pendiente de revisión]',meaning_va:item.meaning_va||''}:{entry:head,meaning:'[Traducción pendiente de revisión]'}}
+// Paradigmas griegos introducidos únicamente como series EXPLÍCITAS,
+// cotejables con Smyth, Grammar §§ 368, 369 y 627-628. No se extrapolan
+// futuros, aoristos ni perfectos a verbos con otros temas principales.
+const GREEK_SCHOOL_VERB_TABLES=[
+ {key:'ειμι',lemma:'εἰμί',unit:1,tense:'presente',voice:'activa',
+  forms:['εἰμί','εἶ','ἐστί(ν)','ἐσμέν','ἐστέ','εἰσί(ν)']},
+ {key:'λυω',lemma:'λύω',unit:6,tense:'presente',voice:'media y pasiva',
+  forms:['λύομαι','λύῃ','λύεται','λυόμεθα','λύεσθε','λύονται']},
+ {key:'λυω',lemma:'λύω',unit:11,tense:'imperfecto',voice:'activa',
+  forms:['ἔλυον','ἔλυες','ἔλυε(ν)','ἐλύομεν','ἐλύετε','ἔλυον']},
+ {key:'λυω',lemma:'λύω',unit:11,tense:'futuro',voice:'activa',
+  forms:['λύσω','λύσεις','λύσει','λύσομεν','λύσετε','λύσουσι(ν)']},
+ {key:'λυω',lemma:'λύω',unit:12,tense:'aoristo sigmático',voice:'activa',
+  forms:['ἔλυσα','ἔλυσας','ἔλυσε(ν)','ἐλύσαμεν','ἐλύσατε','ἔλυσαν']},
+ {key:'λυω',lemma:'λύω',unit:13,tense:'perfecto',voice:'activa',
+  forms:['λέλυκα','λέλυκας','λέλυκε(ν)','λελύκαμεν','λελύκατε','λελύκασι(ν)']},
+ {key:'λειπω',lemma:'λείπω',unit:12,tense:'aoristo temático',voice:'activa',
+  forms:['ἔλιπον','ἔλιπες','ἔλιπε(ν)','ἐλίπομεν','ἐλίπετε','ἔλιπον']}
+];
+const GREEK_SCHOOL_NOUN_TABLES=[
+ {key:'πολις',unit:8,lemma:'πόλις, πόλεως (ἡ)',
+  forms:['πόλις','πόλεως','πόλει','πόλιν','πόλι','πόλεις','πόλεων','πόλεσι(ν)','πόλεις','πόλεις']},
+ {key:'σωμα',unit:8,lemma:'σῶμα, σώματος (τό)',
+  forms:['σῶμα','σώματος','σώματι','σῶμα','σῶμα','σώματα','σωμάτων','σώμασι(ν)','σώματα','σώματα']}
+];
+for(const item of GREEK_SCHOOL_NOUN_TABLES){
+ const found=greekSharedBank.lookup(item.forms[0]);
+ // Un lema escolar existente puede proceder de un curso posterior, pero
+ // el paradigma solo se ofrece desde su introducción efectiva en UD8.
+ if(!found)continue;
+ greekNounData[item.key]=item.forms;
+ greekNounUnits[item.key]=item.unit;
+}
 function greekCorpus(){
  const items=[];
  const add=(kind,id,minUnit,contentUnits,prompt,answer,lemmas=[],table=null)=>items.push({kind,id,minUnit,contentUnits,prompt,answer,lemmas,table,verified:true});
  for(const [key,forms] of Object.entries(greekNounData)){const u=greekNounUnits[key];if(u===undefined)continue;const lemma=greekLemma(forms[0]);add('declension','n-'+key,u,[u],'Declina '+lemma.entry,greekCaseLabels.map((l,i)=>l+': '+forms[i]).join('; '),[lemma.entry],{headers:['Caso','Singular','Plural'],rows:[0,4,3,1,2].map(i=>[greekCaseLabels[i].split(' ')[0],forms[i],forms[i+5]])})}
  for(const [key,forms] of Object.entries(greekVerbData)){const u=greekVerbUnits[key];if(u===undefined)continue;const lemma=greekLemma(forms[0]);add('conjugation','v-'+key,u,[u],'Conjuga '+lemma.entry+' en presente de indicativo activo.',greekPersonLabels.map((l,i)=>l+': '+forms[i]).join('; '),[lemma.entry],{headers:['Persona','Singular','Plural'],rows:[0,1,2].map(i=>[(i+1)+'.ª',forms[i],forms[i+3]])})}
+ for(const item of GREEK_SCHOOL_VERB_TABLES){
+  const id='school-'+item.key+'-'+item.tense.replace(/\s+/g,'-')+'-'+item.voice.replace(/\s+/g,'-');
+  const label=item.tense+' de indicativo, voz '+item.voice;
+  const table={headers:['Persona','Singular','Plural'],
+   rows:[0,1,2].map(i=>[(i+1)+'.ª',item.forms[i],item.forms[i+3]])};
+  add('conjugation','v-'+id,item.unit,[item.unit],
+   'Conjuga '+item.lemma+' en '+label+'.',
+   item.forms.map((form,i)=>greekPersonLabels[i]+': '+form).join('; '),
+   [item.lemma],table);
+  item.forms.forEach((form,i)=>add('forms','vf-'+id+'-'+i,item.unit,[item.unit],
+   form,greekPersonLabels[i]+', '+label+' de '+item.lemma+'.',[item.lemma]));
+ }
  greekFormRows.forEach(([form,min,us,lemma,answer],i)=>add('forms','f-'+i,min,us,form,answer,[lemma]));
  greekPronounRows.forEach(([form,answer],i)=>{add('pronouns','p-'+i,7,[7],form,answer);add('forms','pf-'+i,7,[7],form,answer)});
  greekEtymology.forEach(([word,min,us,answer],i)=>add('etymology','e-'+i,min,us,word,answer,[greekSharedBank.lookup(word)?.entry||word]));
@@ -6825,14 +7093,14 @@ function greekTable(item,answers=false){
 }
 function greekVerbTable(items){
  const widths=[500,...items.flatMap(()=>[4000/items.length,4000/items.length])].map(Math.round);
- return '<table class="exam-paradigm exam-verbs" data-col-widths="'+widths.join(',')+'"><colgroup>'+widths.map(()=>'<col>').join('')+'</colgroup><thead><tr><td class="exam-corner"></td>'+items.map(x=>'<th colspan="2" scope="colgroup" data-corpus-id="'+x.id+'">'+examParadigmHeading(headLex(x.lemmas[0]),'conjugation')+'</th>').join('')+'</tr><tr><td class="exam-corner"></td>'+items.map(()=>'<th scope="col">Singular</th><th scope="col">Plural</th>').join('')+'</tr></thead><tbody>'+[0,1,2].map(i=>'<tr><th scope="row">'+(i+1)+'ª</th>'+items.map(()=>'<td></td><td></td>').join('')+'</tr>').join('')+'</tbody></table>';
+ return '<table class="exam-paradigm exam-verbs" data-col-widths="'+widths.join(',')+'"><colgroup>'+widths.map(()=>'<col>').join('')+'</colgroup><thead><tr><td class="exam-corner"></td>'+items.map(x=>'<th colspan="2" scope="colgroup" data-corpus-id="'+x.id+'">'+examParadigmHeading(headLex(x.lemmas[0]),'conjugation')+(' <span class="exam-paradigm-indicator">— '+esc(x.id.startsWith('v-school-')?x.prompt.replace(/^Conjuga .*? en /,'').replace(/\.$/,''):'presente de indicativo, voz activa')+'</span>')+'</th>').join('')+'</tr><tr><td class="exam-corner"></td>'+items.map(()=>'<th scope="col">Singular</th><th scope="col">Plural</th>').join('')+'</tr></thead><tbody>'+[0,1,2].map(i=>'<tr><th scope="row">'+(i+1)+'ª</th>'+items.map(()=>'<td></td><td></td>').join('')+'</tr>').join('')+'</tbody></table>';
 }
 function greekExamHeader(chosen,mode){
  const va=$('lang').value==='va';
  const titleInput=$('name').value.trim(),custom=titleInput&&!['Examen de Griego I','Examen de Grec I','Ficha de repaso de Griego I','Fitxa de repàs de Grec I'].includes(titleInput);
  const prefix=$('sheetType').value==='review'?(va?'Fitxa de repàs de ':'Ficha de repaso de '):$('model').value==='morphology'?(va?'Examen de morfologia de ':'Examen de morfología de '):$('model').value==='translation'?(va?'Examen de traducció de ':'Examen de traducción de '):'Examen de ';
  const title=examHeadingWithUnits(custom?titleInput:prefix+(va?'Grec I':'Griego I'),chosen)+($('seed').value?' · '+$('seed').value:'');
- return '<div class="exam-header"><p class="exam-header-line"><span>'+esc(title)+'</span><span>'+trimesterHeading()+'</span></p><p class="exam-header-line"><span>'+(va?'Nom i cognoms:':'Nombre y apellidos:')+'</span><span>'+(va?'Data:':'Fecha')+'</span></p></div>';
+ return '<div class="exam-header"><p class="exam-header-line"><span>'+esc(title)+'</span><span>'+trimesterHeading()+'</span></p><p class="exam-header-line"><span>'+(va?'Nom i cognoms:':'Nombre y apellidos:')+'</span><span>'+examDateLabel(va)+'</span></p></div>';
 }
 function greekQuestionLabel(kind){if(kind==='declension'&&$('model').value==='complete'&&greekLimit()>=5)return $('lang').value==='va'?'Declina els sintagmes: article, substantiu i adjectiu':'Declina los sintagmas: artículo, sustantivo y adjetivo';if(kind==='sentences'&&$('model').value==='translation')return $('lang').value==='va'?'Tradueix les oracions següents':'Traduce las siguientes oraciones';return ({es:{declension:'Declina',conjugation:'Conjuga',forms:'Analiza morfológicamente',pronouns:'Completa la tabla con el análisis morfológico adecuado',etymology:'Escribe dos derivados etimológicos de cada una de estas palabras griegas',sentences:'Analiza y traduce las siguientes oraciones'},va:{declension:'Declina',conjugation:'Conjuga',forms:'Analitza morfològicament',pronouns:'Completa la taula amb l’anàlisi morfològica adequada',etymology:'Escriu dos derivats etimològics de cadascuna d’aquestes paraules gregues',sentences:'Analitza i tradueix les oracions següents'}})[$('lang').value][kind]}
 function greekPoints(kind){const v=Number($('greek-points-'+kind).value);if(kind==='pronouns'&&$('model').value==='complete'&&examQuestionEnabled('pronouns')&&v===0)return 1;return Number.isFinite(v)?Math.max(0,Math.min(100,v)):0}
@@ -6845,7 +7113,7 @@ function generateGreekMorphologyFixed(){
   !(x.kind==='forms'&&(x.lemmas||[]).some(lemma=>isExcludedExamMorphLemma(lemma))));
  const verbs=stickyExamRows('verb',()=>sample(eligible.filter(x=>x.kind==='conjugation'&&x.table)
   .flatMap(x=>x.table.rows.flatMap((row,i)=>[row[1],row[2]].map((form,j)=>({
-   prompt:form,answer:(i+1)+'ª persona '+(j===0?'singular':'plural')+' del presente de indicativo activo',
+   prompt:form,answer:(i+1)+'ª persona '+(j===0?'singular':'plural')+' del '+(x.id.startsWith('v-school-')?x.prompt.replace(/^Conjuga .*? en /,'').replace(/\.$/,''):'presente de indicativo activo'),
    lemma:x.lemmas[0],person:(i+1)+'ª '+(j===0?'singular':'plural')
   })).filter(x=>x.prompt))),cfg.verbs));
  const pronPool=examQuestionEnabled('pronouns')?eligible.filter(x=>x.kind==='pronouns'):[];
@@ -6869,7 +7137,7 @@ function generateGreekMorphologyFixed(){
    '<table class="exam-paradigm reference-morph-table exam-pronouns"><thead><tr><th>Forma</th><th>Tipo</th><th>Caso</th><th>Género</th><th>Número</th></tr></thead><tbody>'+
    pronouns.map(x=>'<tr data-corpus-id="'+x.id+'"><td><i>'+esc(x.prompt)+'</i></td><td></td><td></td><td></td><td></td></tr>').join('')+'</tbody></table>';
  }
- const last=examQuestionEnabled('forms')?question(++n,t('Analiza morfológicamente las siguientes palabras variables (1 p.).','Analitza morfològicament les paraules variables següents (1 p.).'))+
+ const last=examQuestionEnabled('forms')?question(++n,t('Analiza morfológicamente las siguientes palabras (1 p.).','Analitza morfològicament les paraules següents (1 p.).'))+
   words.map((x,i)=>'<p class="exam-item reference-analysis-item" data-analysis-slot="'+i+'" data-corpus-id="'+x.id+'">'+String.fromCharCode(97+i)+'. <i>'+esc(x.prompt)+'</i>'+(Array.isArray(x.lemmas)&&x.lemmas.length?' ('+esc(x.lemmas.filter(Boolean).join(' / '))+')':'')+': <span class="reference-answer-line"></span></p>').join(''):'';
  const problems=[];
  if(second&&verbs.length<cfg.verbs)problems.push('Verbos: '+verbs.length+' de '+cfg.verbs);
@@ -7369,6 +7637,7 @@ function examQuotaGreek(pool,count){
  return picked;
 }
 function examCacheSignature(kind){
+ if(kind==='culture')return JSON.stringify([kind,selectedUnits(false),$('cultureType')?.value||'all']);
  const unitsKey=[...document.querySelectorAll('.unit-choice:checked')].map(x=>x.value).join(',');
  const morph=['morf','morphology'].includes($('model').value);
  const countId=kind==='decl'?(morph?'morphDecline':'count-decl'):
@@ -7510,15 +7779,11 @@ function regenerateExamWord(kind,index){
    candidates=greekVerifiedCorpus.filter(x=>x.verified&&x.kind==='conjugation'&&
     greekMorphologyEligible(x,limit)&&x.table).flatMap(x=>x.table.rows.flatMap((row,i)=>
     [row[1],row[2]].map((form,j)=>({
-     prompt:form,answer:(i+1)+'ª persona '+(j===0?'singular':'plural')+' del presente de indicativo activo',
+     prompt:form,answer:(i+1)+'ª persona '+(j===0?'singular':'plural')+' del '+(x.id.startsWith('v-school-')?x.prompt.replace(/^Conjuga .*? en /,'').replace(/\.$/,''):'presente de indicativo activo'),
      lemma:x.lemmas[0],person:(i+1)+'ª '+(j===0?'singular':'plural')
     })).filter(item=>item.prompt)));
-  }else if(morph)candidates=latinSharedBank.paradigms(currentCourse(),chosen,'verb')
-   .filter(x=>Array.isArray(x.p.forms)&&x.p.forms.length===6)
-   .flatMap(({x,p})=>p.forms.map((form,i)=>({form,entry:x.entry,person:p.labels[i],
-     tense:'presente de indicativo',voice:'activa'})));
-  else candidates=latinSharedBank.paradigms(currentCourse(),chosen,'verb')
-   .filter(x=>Array.isArray(x.p.forms)&&x.p.forms.length===6);
+  }else if(morph)candidates=latinMorphologyVerbPool(chosen);
+  else candidates=latinSchoolVerbRows(chosen);
  }else if(kind==='forms'){
   if(greek)candidates=greekVerifiedCorpus.filter(x=>x.verified&&x.kind==='forms'&&
    greekMorphologyEligible(x,limit)&&!x.prompt.includes(' ')&&
@@ -7526,6 +7791,7 @@ function regenerateExamWord(kind,index){
   else candidates=latinExamFormCandidates(chosen,true).flat();
  }
  const identity=item=>kind==='forms'?normLex(item?.prompt||item?.form||''):
+  kind==='verb'&&!greek&&!morph?examKey(item?.x?.entry||item?.entry||'')+'|'+(item?.id||'present-active'):
   String(item?.id||item?.title||item?.x?.entry||item?.prompt||item?.form||'');
  const previous=current[index],used=new Set(current.filter((_,i)=>i!==index).map(identity));
  let alternatives=candidates.filter(item=>identity(item)!==identity(previous)&&!used.has(identity(item)));
