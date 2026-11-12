@@ -2,7 +2,7 @@
   "esquema": "evoluciones-latin-castellano/v1",
   "revision": "2026-11-12",
   "origen": "Banco docente de evoluciones fonéticas, con ampliaciones y decisiones editoriales documentadas.",
-  "criterio": "514 candidatas APTO_PROPUESTO; solo formas revisadas y reglas expresas, excluidas inde y pirum por decisión docente.",
+  "criterio": "521 candidatas APTO_PROPUESTO para sorteo por normas impartidas; quedan excluidas las decisiones inde y pirum; los cultismos y las relaciones dudosas no se incorporan por analogía.",
   "idioma_origen": "la",
   "idioma_destino": "es",
   "normas": [
@@ -6730,6 +6730,112 @@
       "estado": "APTO_PROPUESTO",
       "lote": 12,
       "revision_docente": "aceptar"
+    },
+    {
+      "id": "EVF-1062",
+      "latin": "audīte",
+      "castellano": "oíd",
+      "normas": [
+        "N03",
+        "N12",
+        "N17"
+      ],
+      "fila_origen": 27,
+      "observacion": "Imperativo plural latino audīte > oíd: au > o, -t- intervocálica > -d- y pérdida de la -e final. Es una forma verbal; no confundir con el infinitivo oír.",
+      "fuente": "https://fegalaz.usc.es/~gamallo/aulas/etim/mater_fonetica.htm",
+      "estado": "APTO_PROPUESTO",
+      "lote": 13,
+      "criterio_pau": "Filiación léxica contrastada, normas individualizadas; no predice su aparición en PAU."
+    },
+    {
+      "id": "EVF-1063",
+      "latin": "date",
+      "castellano": "dad",
+      "normas": [
+        "N03",
+        "N17"
+      ],
+      "fila_origen": 83,
+      "observacion": "Imperativo plural latino date > dad: sonorización de -t- intervocálica en -d- y apócope de la -e final. Forma verbal en un paradigma irregular castellano.",
+      "fuente": "https://www.apuntes-selectividad.com/latin/evolucion-del-latin-al-castellano/",
+      "estado": "APTO_PROPUESTO",
+      "lote": 13,
+      "criterio_pau": "Filiación léxica contrastada, normas individualizadas; no predice su aparición en PAU."
+    },
+    {
+      "id": "EVF-1064",
+      "latin": "gannitum",
+      "castellano": "gañido",
+      "normas": [
+        "N13",
+        "N17"
+      ],
+      "fila_origen": 140,
+      "observacion": "Gannītum > gañido: el grupo nasal -nn- palataliza a ñ y -t- intervocálica sonoriza en d. No describir la geminada como mera simplificación.",
+      "fuente": "https://iedra.es/palabras/ga%C3%B1ido",
+      "estado": "APTO_PROPUESTO",
+      "lote": 13,
+      "criterio_pau": "Filiación léxica contrastada, normas individualizadas; no predice su aparición en PAU."
+    },
+    {
+      "id": "EVF-1065",
+      "latin": "laicum",
+      "castellano": "lego",
+      "normas": [
+        "N12",
+        "N17"
+      ],
+      "fila_origen": 171,
+      "observacion": "Laicum > lego, 'sin órdenes clericales' o 'sin instrucción': reducción romance del encuentro vocálico ai (cf. antiguo leygo) y sonorización de -c- en -g-. Diferenciar de laico, forma de transmisión culta.",
+      "fuente": "https://ghcl.ub.edu/diccaxv/dictionary/ViewLema/12497",
+      "estado": "APTO_PROPUESTO",
+      "lote": 13,
+      "criterio_pau": "Filiación léxica contrastada, normas individualizadas; no predice su aparición en PAU."
+    },
+    {
+      "id": "EVF-1066",
+      "latin": "octavum",
+      "castellano": "ochavo",
+      "normas": [
+        "N13"
+      ],
+      "fila_origen": 217,
+      "observacion": "Octavum > ochavo: evolución palatalizante de -ct- a -ch-; la forma castellana puede significar fracción o antigua moneda, no confundir con el cultismo octavo.",
+      "fuente": "https://iedra.es/palabras/ochavo",
+      "estado": "APTO_PROPUESTO",
+      "lote": 13,
+      "criterio_pau": "Filiación léxica contrastada, normas individualizadas; no predice su aparición en PAU."
+    },
+    {
+      "id": "EVF-1067",
+      "latin": "pelagum",
+      "castellano": "piélago",
+      "normas": [
+        "N07"
+      ],
+      "fila_origen": 584,
+      "observacion": "Pĕlagum > piélago: diptongación de ĕ tónica en ie; conserva la vocal postónica. Voz literaria documentada, de origen griego transmitido por el latín.",
+      "fuente": "https://stel.ub.edu/diccaxv/dictionary/ViewLema/16158",
+      "estado": "APTO_PROPUESTO",
+      "lote": 13,
+      "criterio_pau": "Filiación léxica contrastada, normas individualizadas; no predice su aparición en PAU."
+    },
+    {
+      "id": "EVF-1068",
+      "latin": "folliculum",
+      "castellano": "hollejo",
+      "normas": [
+        "N01",
+        "N05",
+        "N13",
+        "N20"
+      ],
+      "fila_origen": 1048,
+      "observacion": "Follĭcŭlum > hollejo, 'piel fina de frutas o legumbres': f- > h-, ĭ breve > e, resultado palatal de la lateral geminada y evolución de -cŭl- > -j-. No confundir con el cultismo folículo.",
+      "fuente": "https://iedra.es/palabras/hollejo",
+      "estado": "APTO_PROPUESTO",
+      "lote": 13,
+      "criterio_pau": "Filiación léxica contrastada, normas individualizadas; no predice su aparición en PAU."
     }
   ],
   "ampliacion": {
@@ -6841,6 +6947,20 @@
       "fecha": "2026-11-12",
       "cantidad": 1,
       "decisiones": "pelliculam incorporar; inde y pirum excluir"
+    },
+    "lote_13": {
+      "fecha": "2026-11-12",
+      "cantidad": 7,
+      "filas_excel": [
+        27,
+        83,
+        140,
+        171,
+        217,
+        584,
+        1048
+      ],
+      "criterio": "Revisión por forma latina, resultado castellano, estatus patrimonial, normas y fuente; sin importar masivamente cultismos ni formas sin norma."
     }
   }
 }
