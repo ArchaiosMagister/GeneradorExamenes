@@ -64,6 +64,15 @@ jobs:
         run: node scripts/test-regular-latin.mjs
       - name: Verificar evidencia persistente y conjugación mixta de Latín I
         run: node scripts/test-latin-verb-evidence.cjs
+      - name: Registrar incidencias de verbos irregulares y deponentes sin certificar paradigmas
+        run: node scripts/audit-verbs-evidence.cjs
+      - name: Conservar cola filológica de verbos para decisiones docentes
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fase-ii-irregulares-deponentes
+          path: test-artifacts/fase-ii-revision-irregulares-deponentes.json
+          if-no-files-found: ignore
       - name: Probar nominales griegos con corpus sintético etiquetado
         run: node scripts/test-greek-nominal-import.mjs
       - name: Extraer nominales griegos reales para consulta offline
