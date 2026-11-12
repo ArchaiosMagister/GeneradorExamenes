@@ -129,6 +129,8 @@ jobs:
           name: vocabulario-diez-frases-word
           path: test-artifacts/vocabulario-latin-10-frases.docx
           if-no-files-found: ignore
+      - name: Comprobar menús léxicos, modificación preverbial y Word
+        run: node scripts/test-lex-menu-sync.cjs
       - name: Probar las vistas previas de todos los modelos
         run: node scripts/test-preview.cjs
       - name: Guardar Word con puntuaciones de examen para inspección
