@@ -857,8 +857,8 @@ function syncMorphSyntagmsFromPreview(){
 $('paper').addEventListener('input',event=>{
  const target=event.target?.closest?.('[data-exam-editor-id]');
  if(!target)return;
- const input=$('manualMorphWords')?.querySelector(
-  'input[data-exam-editor-id="'+target.dataset.examEditorId+'"]');
+ const input=document.querySelector(
+  '#examQuestionMenus input[data-exam-editor-id="'+target.dataset.examEditorId+'"]');
  if(!input)return;
  const value=target.textContent.replace(/:$/,'').trim()
   .replace(target.dataset.examEditorKind==='Etimología'?/^\s*[a-z]\.\s*/i:/^$/, '');
@@ -2649,8 +2649,8 @@ function greekExamEditorValue(kind,target){
 $('paper').addEventListener('input',event=>{
  const target=event.target?.closest?.('[data-greek-editor-id]');
  if(!target)return;
- const input=$('manualMorphWords')?.querySelector(
-  'input[data-greek-editor-id="'+target.dataset.greekEditorId+'"]');
+ const input=document.querySelector(
+  '#examQuestionMenus input[data-greek-editor-id="'+target.dataset.greekEditorId+'"]');
  if(input)input.value=greekExamEditorValue(target.dataset.greekEditorKind,target);
 });
 function greekExamControls(){
@@ -4076,8 +4076,8 @@ window.ExaminaMorphology={lookup,stats,importText};
   const lines=event.target.value.split(/\r?\n/);
   $('paper').querySelectorAll('.morph-syntagm-item > i').forEach((node,i)=>{
    node.textContent=lines[i]||'';
-   const editor=$('manualMorphWords')?.querySelector(
-    'input[data-exam-editor-id="'+node.dataset.examEditorId+'"]');
+   const editor=document.querySelector(
+    '#examQuestionMenus input[data-exam-editor-id="'+node.dataset.examEditorId+'"]');
    if(editor)editor.value=node.textContent;
   });
  });
