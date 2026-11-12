@@ -88,6 +88,11 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
    const l=document.getElementById('lang');l.value='va';l.dispatchEvent(new Event('change',{bubbles:true}));
   });
   await page.waitForFunction(()=>document.getElementById('examFinalHelp').textContent.includes('Examen definitiu'));
+  // La aprobación del modo definitivo nunca se hereda tras recargar.
+  await page.reload({waitUntil:'load'});
+  await page.waitForFunction(()=>!!window.ExaminaScoring?.preflight&&!!document.getElementById('examFinalMode'));
+  assert.equal(await page.evaluate(()=>window.ExaminaScoring.finalMode()),false,
+   'Al reabrir el generador el modo definitivo debe permanecer desactivado');
   assert.deepEqual(errors,[],'Errores JavaScript del panel definitivo');
   console.log('Definitivo: puntos exactos, bloqueo Word/impresión, borradores sin cambios y morfología normalizada, ES/VA.');
  }finally{await browser.close()}
