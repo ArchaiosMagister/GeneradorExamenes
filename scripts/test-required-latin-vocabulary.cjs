@@ -30,8 +30,13 @@ const normalizedLemma=value=>normal(value).replace(/v/g,'u'); // alternancia gr�
 for(const course of ['latin1','latin4']){
  const document=source.courses[course];
  assert(document&&typeof document==='object');
- const original=perCourse[course];
- assert.equal(original.length,expectedCounts[course],course+': total de origen');
+ const all=perCourse[course];
+ // La nueva ficha parens pertenece al banco GENERAL, no automáticamente
+ // al vocabulario exigible, que conserva exactamente el documento docente.
+ const supplementary=course==='latin1'?all.filter(x=>x.entry==='parens, –ntis'&&x.unit==='UD9–10'):[];
+ if(course==='latin1')assert.equal(supplementary.length,1,'Falta la nueva ficha parens del banco general');
+ const original=all.filter(x=>!supplementary.includes(x));
+ assert.equal(original.length,expectedCounts[course],course+': total exigible sin extras del banco general');
  const originalByUnit=new Map();
  for(const row of original){
   if(!originalByUnit.has(row.unit))originalByUnit.set(row.unit,[]);

@@ -130,6 +130,14 @@ if(process.argv.includes('--check')){
    assert(data.source.externalVerification.some(x=>x.lemma===d.lemma&&
     key(x.form)===key(row.form)&&x.reference===d.reference),
     'Falta la referencia en el índice: '+row.form);
+  }else if(d.status==='teacher-context-approved'){
+   assert.equal(row.course,'lat1');
+   assert.equal(row.firstUnit,10);
+   assert(now.candidates.some(c=>c.lemma===d.lemma&&c.entry===d.entry),
+    'La elección docente ya no existe entre las alternativas: '+row.form);
+   // La aprobación del docente se refiere al corpus auditado, no a todas
+   // las futuras oraciones que incluyan el mismo homógrafo.
+   assert.equal(now.status,'review','No descartar otros lemas por una decisión contextual: '+row.form);
   }else if(d.status==='already-recognized'){
    assert.equal(row.previousStatus,'documented');
    assert.equal(now.status,'documented','Regresión de reconocimiento: '+row.form);

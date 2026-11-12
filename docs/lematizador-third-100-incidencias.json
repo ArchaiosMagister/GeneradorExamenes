@@ -1,0 +1,2231 @@
+{
+  "schema": 1,
+  "date": "2026-11-12",
+  "source": {
+    "teacherCorpus": "tests/latin1-revision-forms-20261111.json",
+    "previousBatches": [
+      "docs/lematizador-top-50-incidencias.json",
+      "docs/lematizador-next-100-incidencias.json"
+    ]
+  },
+  "scope": "100 formas reales todavía no auditadas; todas ya tenían reconocimiento funcional, que no es idéntico a verificación filológica",
+  "scoring": {
+    "frequency": 30,
+    "curricular": 25,
+    "morphological": 20,
+    "evidence": 15,
+    "incident": 10
+  },
+  "summary": {
+    "reviewed": 100,
+    "states": {
+      "already-recognized": 66,
+      "needs-teacher-editorial-review": 1,
+      "newly-verified": 33
+    },
+    "verificationPolicy": "Acreditar solo superficie/lectura exacta con referencia; no deducir paradigma"
+  },
+  "rows": [
+    {
+      "rank": 1,
+      "course": "lat1",
+      "form": "esse",
+      "firstUnit": 1,
+      "frequency": 4,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 72.99,
+      "initialLemmas": [
+        "sum"
+      ],
+      "initialSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "newly-verified",
+        "lemma": "sum",
+        "tags": "V;INF;ACT;PRS",
+        "reference": "https://en.wiktionary.org/wiki/sum",
+        "note": "Se acredita una sola lectura morfológica, no se cierra toda la homografía."
+      }
+    },
+    {
+      "rank": 2,
+      "course": "lat1",
+      "form": "alta",
+      "firstUnit": 1,
+      "frequency": 1,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 66.98,
+      "initialLemmas": [
+        "altus"
+      ],
+      "initialSourceCodes": [
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Reconocimiento funcional conservado. No se certifica una nueva flexión individual."
+      }
+    },
+    {
+      "rank": 3,
+      "course": "lat1",
+      "form": "alti",
+      "firstUnit": 3,
+      "frequency": 1,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 61.98,
+      "initialLemmas": [
+        "altus"
+      ],
+      "initialSourceCodes": [
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Reconocimiento funcional conservado. No se certifica una nueva flexión individual."
+      }
+    },
+    {
+      "rank": 4,
+      "course": "lat1",
+      "form": "Romulus",
+      "firstUnit": 6,
+      "frequency": 2,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 58.93,
+      "initialLemmas": [
+        "romulus"
+      ],
+      "initialSourceCodes": [
+        [
+          2,
+          0
+        ]
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Reconocimiento funcional conservado. No se certifica una nueva flexión individual."
+      }
+    },
+    {
+      "rank": 5,
+      "course": "lat1",
+      "form": "aula",
+      "firstUnit": 3,
+      "frequency": 1,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 58.33,
+      "initialLemmas": [
+        "aula"
+      ],
+      "initialSourceCodes": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Reconocimiento funcional conservado. No se certifica una nueva flexión individual."
+      }
+    },
+    {
+      "rank": 6,
+      "course": "lat1",
+      "form": "lege",
+      "firstUnit": 3,
+      "frequency": 1,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 58.33,
+      "initialLemmas": [
+        "lego"
+      ],
+      "initialSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "newly-verified",
+        "lemma": "lego",
+        "tags": "V;IMP;ACT;PRS;2;SG",
+        "reference": "https://en.wiktionary.org/wiki/lego",
+        "note": "Se acredita una sola lectura morfológica, no se cierra toda la homografía."
+      }
+    },
+    {
+      "rank": 7,
+      "course": "lat1",
+      "form": "Tabula",
+      "firstUnit": 3,
+      "frequency": 1,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 58.33,
+      "initialLemmas": [
+        "tabula"
+      ],
+      "initialSourceCodes": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Reconocimiento funcional conservado. No se certifica una nueva flexión individual."
+      }
+    },
+    {
+      "rank": 8,
+      "course": "lat1",
+      "form": "publicam",
+      "firstUnit": 5,
+      "frequency": 1,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 56.98,
+      "initialLemmas": [
+        "publicus"
+      ],
+      "initialSourceCodes": [
+        [
+          0
+        ]
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Reconocimiento funcional conservado. No se certifica una nueva flexión individual."
+      }
+    },
+    {
+      "rank": 9,
+      "course": "lat1",
+      "form": "currere",
+      "firstUnit": 1,
+      "frequency": 2,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 56.61,
+      "initialLemmas": [
+        "curro"
+      ],
+      "initialSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "newly-verified",
+        "lemma": "curro",
+        "tags": "V;INF;ACT;PRS",
+        "reference": "https://en.wiktionary.org/wiki/curro",
+        "note": "Se acredita una sola lectura morfológica, no se cierra toda la homografía."
+      }
+    },
+    {
+      "rank": 10,
+      "course": "lat1",
+      "form": "cepit",
+      "firstUnit": 5,
+      "frequency": 2,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 54.71,
+      "initialLemmas": [
+        "capio"
+      ],
+      "initialSourceCodes": [
+        [
+          2
+        ]
+      ],
+      "decision": {
+        "status": "newly-verified",
+        "lemma": "capio",
+        "tags": "V;IND;ACT;PRF;3;SG",
+        "reference": "https://en.wiktionary.org/wiki/cepit",
+        "note": "Se acredita una sola lectura morfológica, no se cierra toda la homografía."
+      }
+    },
+    {
+      "rank": 11,
+      "course": "lat1",
+      "form": "se",
+      "firstUnit": 3,
+      "frequency": 5,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 53,
+      "initialLemmas": [
+        "se"
+      ],
+      "initialSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Reconocimiento funcional conservado. No se certifica una nueva flexión individual."
+      }
+    },
+    {
+      "rank": 12,
+      "course": "lat1",
+      "form": "Iuppiter",
+      "firstUnit": 6,
+      "frequency": 1,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 52.15,
+      "initialLemmas": [
+        "iuppiter"
+      ],
+      "initialSourceCodes": [
+        [
+          0,
+          0
+        ]
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Reconocimiento funcional conservado. No se certifica una nueva flexión individual."
+      }
+    },
+    {
+      "rank": 13,
+      "course": "lat1",
+      "form": "Vrbs",
+      "firstUnit": 9,
+      "frequency": 2,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 51.43,
+      "initialLemmas": [
+        "urbs"
+      ],
+      "initialSourceCodes": [
+        [
+          0,
+          0
+        ]
+      ],
+      "decision": {
+        "status": "newly-verified",
+        "lemma": "urbs",
+        "tags": "N;NOM;SG;FEM",
+        "reference": "https://en.wiktionary.org/wiki/urbs",
+        "note": "Se acredita una sola lectura morfológica, no se cierra toda la homografía."
+      }
+    },
+    {
+      "rank": 14,
+      "course": "lat1",
+      "form": "longisque",
+      "firstUnit": 2,
+      "frequency": 1,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 50.98,
+      "initialLemmas": [
+        "longus"
+      ],
+      "initialSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Reconocimiento funcional conservado. No se certifica una nueva flexión individual."
+      }
+    },
+    {
+      "rank": 15,
+      "course": "lat1",
+      "form": "signa",
+      "firstUnit": 6,
+      "frequency": 1,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 50.83,
+      "initialLemmas": [
+        "signum"
+      ],
+      "initialSourceCodes": [
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Reconocimiento funcional conservado. No se certifica una nueva flexión individual."
+      }
+    },
+    {
+      "rank": 16,
+      "course": "lat1",
+      "form": "Tarenti",
+      "firstUnit": 2,
+      "frequency": 1,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 50.61,
+      "initialLemmas": [
+        "tarentus"
+      ],
+      "initialSourceCodes": [
+        [
+          2
+        ]
+      ],
+      "decision": {
+        "status": "needs-teacher-editorial-review",
+        "lemma": "tarentus",
+        "alternative": "tarentum",
+        "reference": "https://www.alatius.com/ls/index.php?l=Tarentinis",
+        "note": "Tarentus existe como variante poética, mientras Tarentum es la forma normal; no reescribir sin autorización."
+      }
+    },
+    {
+      "rank": 17,
+      "course": "lat1",
+      "form": "fecerant",
+      "firstUnit": 4,
+      "frequency": 2,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 49.82,
+      "initialLemmas": [
+        "facio"
+      ],
+      "initialSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "newly-verified",
+        "lemma": "facio",
+        "tags": "V;IND;ACT;PSTP;3;PL",
+        "reference": "https://en.wiktionary.org/wiki/facio",
+        "note": "Se acredita una sola lectura morfológica, no se cierra toda la homografía."
+      }
+    },
+    {
+      "rank": 18,
+      "course": "lat1",
+      "form": "pugnaverant",
+      "firstUnit": 4,
+      "frequency": 2,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 49.11,
+      "initialLemmas": [
+        "pugno"
+      ],
+      "initialSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "newly-verified",
+        "lemma": "pugno",
+        "tags": "V;IND;ACT;PSTP;3;PL",
+        "reference": "https://en.wiktionary.org/wiki/pugno",
+        "note": "Se acredita una sola lectura morfológica, no se cierra toda la homografía."
+      }
+    },
+    {
+      "rank": 19,
+      "course": "lat1",
+      "form": "altissimi",
+      "firstUnit": 3,
+      "frequency": 1,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 48.48,
+      "initialLemmas": [
+        "altus"
+      ],
+      "initialSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Reconocimiento funcional conservado. No se certifica una nueva flexión individual."
+      }
+    },
+    {
+      "rank": 20,
+      "course": "lat1",
+      "form": "multaque",
+      "firstUnit": 3,
+      "frequency": 1,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 48.48,
+      "initialLemmas": [
+        "multus"
+      ],
+      "initialSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Reconocimiento funcional conservado. No se certifica una nueva flexión individual."
+      }
+    },
+    {
+      "rank": 21,
+      "course": "lat1",
+      "form": "duc",
+      "firstUnit": 3,
+      "frequency": 1,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 48.09,
+      "initialLemmas": [
+        "duco"
+      ],
+      "initialSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "newly-verified",
+        "lemma": "duco",
+        "tags": "V;IMP;ACT;PRS;2;SG",
+        "reference": "https://en.wiktionary.org/wiki/duco",
+        "note": "Se acredita una sola lectura morfológica, no se cierra toda la homografía."
+      }
+    },
+    {
+      "rank": 22,
+      "course": "lat1",
+      "form": "ceperunt",
+      "firstUnit": 5,
+      "frequency": 1,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 47.93,
+      "initialLemmas": [
+        "capio"
+      ],
+      "initialSourceCodes": [
+        [
+          2
+        ]
+      ],
+      "decision": {
+        "status": "newly-verified",
+        "lemma": "capio",
+        "tags": "V;IND;ACT;PRF;3;PL",
+        "reference": "https://en.wiktionary.org/wiki/ceperunt",
+        "note": "Se acredita una sola lectura morfológica, no se cierra toda la homografía."
+      }
+    },
+    {
+      "rank": 23,
+      "course": "lat1",
+      "form": "ibat",
+      "firstUnit": 2,
+      "frequency": 1,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 47.33,
+      "initialLemmas": [
+        "eo"
+      ],
+      "initialSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "newly-verified",
+        "lemma": "eo",
+        "tags": "V;IND;ACT;PST;IPFV;3;SG",
+        "reference": "https://en.wiktionary.org/wiki/ibat",
+        "note": "Se acredita una sola lectura morfológica, no se cierra toda la homografía."
+      }
+    },
+    {
+      "rank": 24,
+      "course": "lat1",
+      "form": "pugnaverat",
+      "firstUnit": 5,
+      "frequency": 2,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 46.61,
+      "initialLemmas": [
+        "pugno"
+      ],
+      "initialSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "newly-verified",
+        "lemma": "pugno",
+        "tags": "V;IND;ACT;PSTP;3;SG",
+        "reference": "https://en.wiktionary.org/wiki/pugno",
+        "note": "Se acredita una sola lectura morfológica, no se cierra toda la homografía."
+      }
+    },
+    {
+      "rank": 25,
+      "course": "lat1",
+      "form": "me",
+      "firstUnit": 1,
+      "frequency": 2,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 46.39,
+      "initialLemmas": [
+        "ego"
+      ],
+      "initialSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Reconocimiento funcional conservado. No se certifica una nueva flexión individual."
+      }
+    },
+    {
+      "rank": 26,
+      "course": "lat1",
+      "form": "potest",
+      "firstUnit": 1,
+      "frequency": 2,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 46.39,
+      "initialLemmas": [
+        "possum"
+      ],
+      "initialSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "newly-verified",
+        "lemma": "possum",
+        "tags": "V;IND;ACT;PRS;3;SG",
+        "reference": "https://en.wiktionary.org/wiki/potest",
+        "note": "Se acredita una sola lectura morfológica, no se cierra toda la homografía."
+      }
+    },
+    {
+      "rank": 27,
+      "course": "lat1",
+      "form": "mihi",
+      "firstUnit": 3,
+      "frequency": 3,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 46.21,
+      "initialLemmas": [
+        "ego"
+      ],
+      "initialSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Reconocimiento funcional conservado. No se certifica una nueva flexión individual."
+      }
+    },
+    {
+      "rank": 28,
+      "course": "lat1",
+      "form": "suis",
+      "firstUnit": 3,
+      "frequency": 3,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 46.21,
+      "initialLemmas": [
+        "suus"
+      ],
+      "initialSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Reconocimiento funcional conservado. No se certifica una nueva flexión individual."
+      }
+    },
+    {
+      "rank": 29,
+      "course": "lat1",
+      "form": "tibi",
+      "firstUnit": 3,
+      "frequency": 3,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 46.21,
+      "initialLemmas": [
+        "tu"
+      ],
+      "initialSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Reconocimiento funcional conservado. No se certifica una nueva flexión individual."
+      }
+    },
+    {
+      "rank": 30,
+      "course": "lat1",
+      "form": "Vos",
+      "firstUnit": 3,
+      "frequency": 3,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 46.21,
+      "initialLemmas": [
+        "tu"
+      ],
+      "initialSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Reconocimiento funcional conservado. No se certifica una nueva flexión individual."
+      }
+    },
+    {
+      "rank": 31,
+      "course": "lat1",
+      "form": "bovesque",
+      "firstUnit": 4,
+      "frequency": 1,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 44.21,
+      "initialLemmas": [
+        "bos"
+      ],
+      "initialSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Reconocimiento funcional conservado. No se certifica una nueva flexión individual."
+      }
+    },
+    {
+      "rank": 32,
+      "course": "lat1",
+      "form": "dicere",
+      "firstUnit": 4,
+      "frequency": 3,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 43.71,
+      "initialLemmas": [
+        "dico"
+      ],
+      "initialSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Reconocimiento funcional conservado. No se certifica una nueva flexión individual."
+      }
+    },
+    {
+      "rank": 33,
+      "course": "lat1",
+      "form": "nostris",
+      "firstUnit": 4,
+      "frequency": 3,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 43.71,
+      "initialLemmas": [
+        "noster"
+      ],
+      "initialSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Reconocimiento funcional conservado. No se certifica una nueva flexión individual."
+      }
+    },
+    {
+      "rank": 34,
+      "course": "lat1",
+      "form": "senserunt",
+      "firstUnit": 5,
+      "frequency": 1,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 43.58,
+      "initialLemmas": [
+        "sentio"
+      ],
+      "initialSourceCodes": [
+        [
+          2
+        ]
+      ],
+      "decision": {
+        "status": "newly-verified",
+        "lemma": "sentio",
+        "tags": "V;IND;ACT;PRF;3;PL",
+        "reference": "https://en.wiktionary.org/wiki/sentio",
+        "note": "Se acredita una sola lectura morfológica, no se cierra toda la homografía."
+      }
+    },
+    {
+      "rank": 35,
+      "course": "lat1",
+      "form": "sensit",
+      "firstUnit": 5,
+      "frequency": 1,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 43.58,
+      "initialLemmas": [
+        "sentio"
+      ],
+      "initialSourceCodes": [
+        [
+          2
+        ]
+      ],
+      "decision": {
+        "status": "newly-verified",
+        "lemma": "sentio",
+        "tags": "V;IND;ACT;PRF;3;SG",
+        "reference": "https://en.wiktionary.org/wiki/sentio",
+        "note": "Se acredita una sola lectura morfológica, no se cierra toda la homografía."
+      }
+    },
+    {
+      "rank": 36,
+      "course": "lat1",
+      "form": "signo",
+      "firstUnit": 9,
+      "frequency": 1,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 43.33,
+      "initialLemmas": [
+        "signum"
+      ],
+      "initialSourceCodes": [
+        [
+          0,
+          0
+        ]
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Reconocimiento funcional conservado. No se certifica una nueva flexión individual."
+      }
+    },
+    {
+      "rank": 37,
+      "course": "lat1",
+      "form": "Iuuenem",
+      "firstUnit": 10,
+      "frequency": 1,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 42.71,
+      "initialLemmas": [
+        "iuvenis"
+      ],
+      "initialSourceCodes": [
+        [
+          0,
+          0
+        ]
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Reconocimiento funcional conservado. No se certifica una nueva flexión individual."
+      }
+    },
+    {
+      "rank": 38,
+      "course": "lat1",
+      "form": "delegit",
+      "firstUnit": 4,
+      "frequency": 2,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 42.64,
+      "initialLemmas": [
+        "deligo"
+      ],
+      "initialSourceCodes": [
+        [
+          2
+        ]
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Reconocimiento funcional conservado. No se certifica una nueva flexión individual."
+      }
+    },
+    {
+      "rank": 39,
+      "course": "lat1",
+      "form": "Hasdrubal",
+      "firstUnit": 4,
+      "frequency": 2,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 42.64,
+      "initialLemmas": [
+        "hasdrubal"
+      ],
+      "initialSourceCodes": [
+        [
+          3,
+          2,
+          2
+        ]
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Reconocimiento funcional conservado. No se certifica una nueva flexión individual."
+      }
+    },
+    {
+      "rank": 40,
+      "course": "lat1",
+      "form": "scripsit",
+      "firstUnit": 4,
+      "frequency": 2,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 42.64,
+      "initialLemmas": [
+        "scribo"
+      ],
+      "initialSourceCodes": [
+        [
+          2
+        ]
+      ],
+      "decision": {
+        "status": "newly-verified",
+        "lemma": "scribo",
+        "tags": "V;IND;ACT;PRF;3;SG",
+        "reference": "https://en.wiktionary.org/wiki/scribo",
+        "note": "Se acredita una sola lectura morfológica, no se cierra toda la homografía."
+      }
+    },
+    {
+      "rank": 41,
+      "course": "lat1",
+      "form": "Quod",
+      "firstUnit": 6,
+      "frequency": 4,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 42.45,
+      "initialLemmas": [
+        "qui"
+      ],
+      "initialSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Reconocimiento funcional conservado. No se certifica una nueva flexión individual."
+      }
+    },
+    {
+      "rank": 42,
+      "course": "lat1",
+      "form": "uirtute",
+      "firstUnit": 10,
+      "frequency": 1,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 42.15,
+      "initialLemmas": [
+        "virtus"
+      ],
+      "initialSourceCodes": [
+        [
+          0
+        ]
+      ],
+      "decision": {
+        "status": "newly-verified",
+        "lemma": "virtus",
+        "tags": "N;ABL;SG;FEM",
+        "reference": "https://en.wiktionary.org/wiki/virtute",
+        "note": "Se acredita una sola lectura morfológica, no se cierra toda la homografía."
+      }
+    },
+    {
+      "rank": 43,
+      "course": "lat1",
+      "form": "Vrbe",
+      "firstUnit": 10,
+      "frequency": 1,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 42.15,
+      "initialLemmas": [
+        "urbs"
+      ],
+      "initialSourceCodes": [
+        [
+          0
+        ]
+      ],
+      "decision": {
+        "status": "newly-verified",
+        "lemma": "urbs",
+        "tags": "N;ABL;SG;FEM",
+        "reference": "https://en.wiktionary.org/wiki/urbs",
+        "note": "Se acredita una sola lectura morfológica, no se cierra toda la homografía."
+      }
+    },
+    {
+      "rank": 44,
+      "course": "lat1",
+      "form": "delebantur",
+      "firstUnit": 3,
+      "frequency": 1,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 41.89,
+      "initialLemmas": [
+        "deleo"
+      ],
+      "initialSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "newly-verified",
+        "lemma": "deleo",
+        "tags": "V;IND;PASS;PST;IPFV;3;PL",
+        "reference": "https://en.wiktionary.org/wiki/deleo",
+        "note": "Se acredita una sola lectura morfológica, no se cierra toda la homografía."
+      }
+    },
+    {
+      "rank": 45,
+      "course": "lat1",
+      "form": "civitatesque",
+      "firstUnit": 5,
+      "frequency": 1,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 41.71,
+      "initialLemmas": [
+        "civitas"
+      ],
+      "initialSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Reconocimiento funcional conservado. No se certifica una nueva flexión individual."
+      }
+    },
+    {
+      "rank": 46,
+      "course": "lat1",
+      "form": "nos",
+      "firstUnit": 3,
+      "frequency": 2,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 41.39,
+      "initialLemmas": [
+        "ego"
+      ],
+      "initialSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Reconocimiento funcional conservado. No se certifica una nueva flexión individual."
+      }
+    },
+    {
+      "rank": 47,
+      "course": "lat1",
+      "form": "sæpe",
+      "firstUnit": 3,
+      "frequency": 2,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 41.39,
+      "initialLemmas": [
+        "saepe"
+      ],
+      "initialSourceCodes": [
+        [
+          3
+        ]
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Reconocimiento funcional conservado. No se certifica una nueva flexión individual."
+      }
+    },
+    {
+      "rank": 48,
+      "course": "lat1",
+      "form": "ea",
+      "firstUnit": 5,
+      "frequency": 3,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 41.21,
+      "initialLemmas": [
+        "is"
+      ],
+      "initialSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Reconocimiento funcional conservado. No se certifica una nueva flexión individual."
+      }
+    },
+    {
+      "rank": 49,
+      "course": "lat1",
+      "form": "hanc",
+      "firstUnit": 5,
+      "frequency": 3,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 41.21,
+      "initialLemmas": [
+        "hic"
+      ],
+      "initialSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Reconocimiento funcional conservado. No se certifica una nueva flexión individual."
+      }
+    },
+    {
+      "rank": 50,
+      "course": "lat1",
+      "form": "meus",
+      "firstUnit": 5,
+      "frequency": 3,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 41.21,
+      "initialLemmas": [
+        "meus"
+      ],
+      "initialSourceCodes": [
+        [
+          3
+        ]
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Reconocimiento funcional conservado. No se certifica una nueva flexión individual."
+      }
+    },
+    {
+      "rank": 51,
+      "course": "lat1",
+      "form": "docebat",
+      "firstUnit": 2,
+      "frequency": 1,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 40.86,
+      "initialLemmas": [
+        "doceo"
+      ],
+      "initialSourceCodes": [
+        [
+          2
+        ]
+      ],
+      "decision": {
+        "status": "newly-verified",
+        "lemma": "doceo",
+        "tags": "V;IND;ACT;PST;IPFV;3;SG",
+        "reference": "https://en.wiktionary.org/wiki/doceo",
+        "note": "Se acredita una sola lectura morfológica, no se cierra toda la homografía."
+      }
+    },
+    {
+      "rank": 52,
+      "course": "lat1",
+      "form": "uiam",
+      "firstUnit": 10,
+      "frequency": 1,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 40.83,
+      "initialLemmas": [
+        "via"
+      ],
+      "initialSourceCodes": [
+        [
+          0
+        ]
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Reconocimiento funcional conservado. No se certifica una nueva flexión individual."
+      }
+    },
+    {
+      "rank": 53,
+      "course": "lat1",
+      "form": "fuisse",
+      "firstUnit": 8,
+      "frequency": 1,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 40.15,
+      "initialLemmas": [
+        "sum"
+      ],
+      "initialSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "newly-verified",
+        "lemma": "sum",
+        "tags": "V;INF;ACT;PRF",
+        "reference": "https://en.wiktionary.org/wiki/sum",
+        "note": "Se acredita una sola lectura morfológica, no se cierra toda la homografía."
+      }
+    },
+    {
+      "rank": 54,
+      "course": "lat1",
+      "form": "dare",
+      "firstUnit": 1,
+      "frequency": 1,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 39.61,
+      "initialLemmas": [
+        "do"
+      ],
+      "initialSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "newly-verified",
+        "lemma": "do",
+        "tags": "V;INF;ACT;PRS",
+        "reference": "https://en.wiktionary.org/wiki/do",
+        "note": "Se acredita una sola lectura morfológica, no se cierra toda la homografía."
+      }
+    },
+    {
+      "rank": 55,
+      "course": "lat1",
+      "form": "humanum",
+      "firstUnit": 1,
+      "frequency": 1,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 39.61,
+      "initialLemmas": [
+        "humanus"
+      ],
+      "initialSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Reconocimiento funcional conservado. No se certifica una nueva flexión individual."
+      }
+    },
+    {
+      "rank": 56,
+      "course": "lat1",
+      "form": "tuæ",
+      "firstUnit": 1,
+      "frequency": 1,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 39.61,
+      "initialLemmas": [
+        "tuus"
+      ],
+      "initialSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Reconocimiento funcional conservado. No se certifica una nueva flexión individual."
+      }
+    },
+    {
+      "rank": 57,
+      "course": "lat1",
+      "form": "ibique",
+      "firstUnit": 4,
+      "frequency": 2,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 38.89,
+      "initialLemmas": [
+        "ibi"
+      ],
+      "initialSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Reconocimiento funcional conservado. No se certifica una nueva flexión individual."
+      }
+    },
+    {
+      "rank": 58,
+      "course": "lat1",
+      "form": "Hic",
+      "firstUnit": 6,
+      "frequency": 3,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 38.71,
+      "initialLemmas": [
+        "hic"
+      ],
+      "initialSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Reconocimiento funcional conservado. No se certifica una nueva flexión individual."
+      }
+    },
+    {
+      "rank": 59,
+      "course": "lat1",
+      "form": "quæ",
+      "firstUnit": 6,
+      "frequency": 3,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 38.71,
+      "initialLemmas": [
+        "qui"
+      ],
+      "initialSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Reconocimiento funcional conservado. No se certifica una nueva flexión individual."
+      }
+    },
+    {
+      "rank": 60,
+      "course": "lat1",
+      "form": "qui",
+      "firstUnit": 6,
+      "frequency": 3,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 38.71,
+      "initialLemmas": [
+        "qui"
+      ],
+      "initialSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Reconocimiento funcional conservado. No se certifica una nueva flexión individual."
+      }
+    },
+    {
+      "rank": 61,
+      "course": "lat1",
+      "form": "continebant",
+      "firstUnit": 3,
+      "frequency": 1,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 38.36,
+      "initialLemmas": [
+        "contineo"
+      ],
+      "initialSourceCodes": [
+        [
+          2
+        ]
+      ],
+      "decision": {
+        "status": "newly-verified",
+        "lemma": "contineo",
+        "tags": "V;IND;ACT;PST;IPFV;3;PL",
+        "reference": "https://en.wiktionary.org/wiki/contineo",
+        "note": "Se acredita una sola lectura morfológica, no se cierra toda la homografía."
+      }
+    },
+    {
+      "rank": 62,
+      "course": "lat1",
+      "form": "migrabant",
+      "firstUnit": 3,
+      "frequency": 1,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 38.36,
+      "initialLemmas": [
+        "migro"
+      ],
+      "initialSourceCodes": [
+        [
+          2
+        ]
+      ],
+      "decision": {
+        "status": "newly-verified",
+        "lemma": "migro",
+        "tags": "V;IND;ACT;PST;IPFV;3;PL",
+        "reference": "https://en.wiktionary.org/wiki/migro",
+        "note": "Se acredita una sola lectura morfológica, no se cierra toda la homografía."
+      }
+    },
+    {
+      "rank": 63,
+      "course": "lat1",
+      "form": "vocabat",
+      "firstUnit": 3,
+      "frequency": 1,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 38.36,
+      "initialLemmas": [
+        "uoco"
+      ],
+      "initialSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "newly-verified",
+        "lemma": "voco",
+        "tags": "V;IND;ACT;PST;IPFV;3;SG",
+        "reference": "https://en.wiktionary.org/wiki/voco",
+        "note": "Se acredita una sola lectura morfológica, no se cierra toda la homografía."
+      }
+    },
+    {
+      "rank": 64,
+      "course": "lat1",
+      "form": "delevit",
+      "firstUnit": 6,
+      "frequency": 1,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 38.14,
+      "initialLemmas": [
+        "deleo"
+      ],
+      "initialSourceCodes": [
+        [
+          2
+        ]
+      ],
+      "decision": {
+        "status": "newly-verified",
+        "lemma": "deleo",
+        "tags": "V;IND;ACT;PRF;3;SG",
+        "reference": "https://en.wiktionary.org/wiki/deleo",
+        "note": "Se acredita una sola lectura morfológica, no se cierra toda la homografía."
+      }
+    },
+    {
+      "rank": 65,
+      "course": "lat1",
+      "form": "adventu",
+      "firstUnit": 7,
+      "frequency": 1,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 38.11,
+      "initialLemmas": [
+        "aduentus"
+      ],
+      "initialSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Reconocimiento funcional conservado. No se certifica una nueva flexión individual."
+      }
+    },
+    {
+      "rank": 66,
+      "course": "lat1",
+      "form": "audiet",
+      "firstUnit": 7,
+      "frequency": 1,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 38.09,
+      "initialLemmas": [
+        "audio"
+      ],
+      "initialSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "newly-verified",
+        "lemma": "audio",
+        "tags": "V;IND;ACT;FUT;3;SG",
+        "reference": "https://en.wiktionary.org/wiki/audio",
+        "note": "Se acredita una sola lectura morfológica, no se cierra toda la homografía."
+      }
+    },
+    {
+      "rank": 67,
+      "course": "lat1",
+      "form": "audietis",
+      "firstUnit": 7,
+      "frequency": 1,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 38.09,
+      "initialLemmas": [
+        "audio"
+      ],
+      "initialSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "newly-verified",
+        "lemma": "audio",
+        "tags": "V;IND;ACT;FUT;2;PL",
+        "reference": "https://en.wiktionary.org/wiki/audietis",
+        "note": "Se acredita una sola lectura morfológica, no se cierra toda la homografía."
+      }
+    },
+    {
+      "rank": 68,
+      "course": "lat1",
+      "form": "gessit",
+      "firstUnit": 6,
+      "frequency": 2,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 37.64,
+      "initialLemmas": [
+        "gero"
+      ],
+      "initialSourceCodes": [
+        [
+          2
+        ]
+      ],
+      "decision": {
+        "status": "newly-verified",
+        "lemma": "gero",
+        "tags": "V;IND;ACT;PRF;3;SG",
+        "reference": "https://en.wiktionary.org/wiki/gero",
+        "note": "Se acredita una sola lectura morfológica, no se cierra toda la homografía."
+      }
+    },
+    {
+      "rank": 69,
+      "course": "lat1",
+      "form": "militiæque",
+      "firstUnit": 6,
+      "frequency": 1,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 37.33,
+      "initialLemmas": [
+        "militia"
+      ],
+      "initialSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Reconocimiento funcional conservado. No se certifica una nueva flexión individual."
+      }
+    },
+    {
+      "rank": 70,
+      "course": "lat1",
+      "form": "humi",
+      "firstUnit": 2,
+      "frequency": 1,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 37.11,
+      "initialLemmas": [
+        "humus"
+      ],
+      "initialSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Reconocimiento funcional conservado. No se certifica una nueva flexión individual."
+      }
+    },
+    {
+      "rank": 71,
+      "course": "lat1",
+      "form": "Priscus",
+      "firstUnit": 2,
+      "frequency": 1,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 37.11,
+      "initialLemmas": [
+        "priscus"
+      ],
+      "initialSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Reconocimiento funcional conservado. No se certifica una nueva flexión individual."
+      }
+    },
+    {
+      "rank": 72,
+      "course": "lat1",
+      "form": "accepit",
+      "firstUnit": 5,
+      "frequency": 1,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 37,
+      "initialLemmas": [
+        "accipio"
+      ],
+      "initialSourceCodes": [
+        [
+          2
+        ]
+      ],
+      "decision": {
+        "status": "newly-verified",
+        "lemma": "accipio",
+        "tags": "V;IND;ACT;PRF;3;SG",
+        "reference": "https://en.wiktionary.org/wiki/accipio",
+        "note": "Se acredita una sola lectura morfológica, no se cierra toda la homografía."
+      }
+    },
+    {
+      "rank": 73,
+      "course": "lat1",
+      "form": "Romamque",
+      "firstUnit": 5,
+      "frequency": 1,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 36.89,
+      "initialLemmas": [
+        "roma"
+      ],
+      "initialSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Reconocimiento funcional conservado. No se certifica una nueva flexión individual."
+      }
+    },
+    {
+      "rank": 74,
+      "course": "lat1",
+      "form": "earum",
+      "firstUnit": 5,
+      "frequency": 2,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 36.39,
+      "initialLemmas": [
+        "is"
+      ],
+      "initialSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Reconocimiento funcional conservado. No se certifica una nueva flexión individual."
+      }
+    },
+    {
+      "rank": 75,
+      "course": "lat1",
+      "form": "eius",
+      "firstUnit": 5,
+      "frequency": 2,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 36.39,
+      "initialLemmas": [
+        "is"
+      ],
+      "initialSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Reconocimiento funcional conservado. No se certifica una nueva flexión individual."
+      }
+    },
+    {
+      "rank": 76,
+      "course": "lat1",
+      "form": "eum",
+      "firstUnit": 5,
+      "frequency": 2,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 36.39,
+      "initialLemmas": [
+        "is"
+      ],
+      "initialSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Reconocimiento funcional conservado. No se certifica una nueva flexión individual."
+      }
+    },
+    {
+      "rank": 77,
+      "course": "lat1",
+      "form": "nobis",
+      "firstUnit": 5,
+      "frequency": 2,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 36.39,
+      "initialLemmas": [
+        "ego"
+      ],
+      "initialSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Reconocimiento funcional conservado. No se certifica una nueva flexión individual."
+      }
+    },
+    {
+      "rank": 78,
+      "course": "lat1",
+      "form": "noster",
+      "firstUnit": 5,
+      "frequency": 2,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 36.39,
+      "initialLemmas": [
+        "noster"
+      ],
+      "initialSourceCodes": [
+        [
+          3
+        ]
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Reconocimiento funcional conservado. No se certifica una nueva flexión individual."
+      }
+    },
+    {
+      "rank": 79,
+      "course": "lat1",
+      "form": "Tu",
+      "firstUnit": 5,
+      "frequency": 2,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 36.39,
+      "initialLemmas": [
+        "tu"
+      ],
+      "initialSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Reconocimiento funcional conservado. No se certifica una nueva flexión individual."
+      }
+    },
+    {
+      "rank": 80,
+      "course": "lat1",
+      "form": "tua",
+      "firstUnit": 5,
+      "frequency": 2,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 36.39,
+      "initialLemmas": [
+        "tuus"
+      ],
+      "initialSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Reconocimiento funcional conservado. No se certifica una nueva flexión individual."
+      }
+    },
+    {
+      "rank": 81,
+      "course": "lat1",
+      "form": "rapuerunt",
+      "firstUnit": 4,
+      "frequency": 1,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 35.86,
+      "initialLemmas": [
+        "rapio"
+      ],
+      "initialSourceCodes": [
+        [
+          2
+        ]
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Reconocimiento funcional conservado. No se certifica una nueva flexión individual."
+      }
+    },
+    {
+      "rank": 82,
+      "course": "lat1",
+      "form": "reduxit",
+      "firstUnit": 4,
+      "frequency": 1,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 35.86,
+      "initialLemmas": [
+        "reduco"
+      ],
+      "initialSourceCodes": [
+        [
+          2
+        ]
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Reconocimiento funcional conservado. No se certifica una nueva flexión individual."
+      }
+    },
+    {
+      "rank": 83,
+      "course": "lat1",
+      "form": "toleraverunt",
+      "firstUnit": 4,
+      "frequency": 1,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 35.86,
+      "initialLemmas": [
+        "tolero"
+      ],
+      "initialSourceCodes": [
+        [
+          2
+        ]
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Reconocimiento funcional conservado. No se certifica una nueva flexión individual."
+      }
+    },
+    {
+      "rank": 84,
+      "course": "lat1",
+      "form": "vidimus",
+      "firstUnit": 4,
+      "frequency": 1,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 35.86,
+      "initialLemmas": [
+        "uideo"
+      ],
+      "initialSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Reconocimiento funcional conservado. No se certifica una nueva flexión individual."
+      }
+    },
+    {
+      "rank": 85,
+      "course": "lat1",
+      "form": "vidistis",
+      "firstUnit": 4,
+      "frequency": 1,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 35.86,
+      "initialLemmas": [
+        "uideo"
+      ],
+      "initialSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Reconocimiento funcional conservado. No se certifica una nueva flexión individual."
+      }
+    },
+    {
+      "rank": 86,
+      "course": "lat1",
+      "form": "oppugnaverant",
+      "firstUnit": 4,
+      "frequency": 1,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 35.75,
+      "initialLemmas": [
+        "oppugno"
+      ],
+      "initialSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Reconocimiento funcional conservado. No se certifica una nueva flexión individual."
+      }
+    },
+    {
+      "rank": 87,
+      "course": "lat1",
+      "form": "reliquerat",
+      "firstUnit": 4,
+      "frequency": 1,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 35.75,
+      "initialLemmas": [
+        "relinquo"
+      ],
+      "initialSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Reconocimiento funcional conservado. No se certifica una nueva flexión individual."
+      }
+    },
+    {
+      "rank": 88,
+      "course": "lat1",
+      "form": "duxerat",
+      "firstUnit": 8,
+      "frequency": 1,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 35.59,
+      "initialLemmas": [
+        "duco"
+      ],
+      "initialSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "newly-verified",
+        "lemma": "duco",
+        "tags": "V;IND;ACT;PSTP;3;SG",
+        "reference": "https://en.wiktionary.org/wiki/duco",
+        "note": "Se acredita una sola lectura morfológica, no se cierra toda la homografía."
+      }
+    },
+    {
+      "rank": 89,
+      "course": "lat1",
+      "form": "latior",
+      "firstUnit": 9,
+      "frequency": 1,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 35.35,
+      "initialLemmas": [
+        "latus"
+      ],
+      "initialSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Reconocimiento funcional conservado. No se certifica una nueva flexión individual."
+      }
+    },
+    {
+      "rank": 90,
+      "course": "lat1",
+      "form": "legemus",
+      "firstUnit": 7,
+      "frequency": 1,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 34.83,
+      "initialLemmas": [
+        "lego"
+      ],
+      "initialSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "newly-verified",
+        "lemma": "lego",
+        "tags": "V;IND;ACT;FUT;1;PL",
+        "reference": "https://en.wiktionary.org/wiki/legemus",
+        "note": "Se acredita una sola lectura morfológica, no se cierra toda la homografía."
+      }
+    },
+    {
+      "rank": 91,
+      "course": "lat1",
+      "form": "carpere",
+      "firstUnit": 3,
+      "frequency": 1,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 34.61,
+      "initialLemmas": [
+        "carpo"
+      ],
+      "initialSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Reconocimiento funcional conservado. No se certifica una nueva flexión individual."
+      }
+    },
+    {
+      "rank": 92,
+      "course": "lat1",
+      "form": "disce",
+      "firstUnit": 3,
+      "frequency": 1,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 34.61,
+      "initialLemmas": [
+        "disco"
+      ],
+      "initialSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "newly-verified",
+        "lemma": "disco",
+        "tags": "V;IMP;ACT;PRS;2;SG",
+        "reference": "https://en.wiktionary.org/wiki/disce",
+        "note": "Se acredita una sola lectura morfológica, no se cierra toda la homografía."
+      }
+    },
+    {
+      "rank": 93,
+      "course": "lat1",
+      "form": "Ego",
+      "firstUnit": 3,
+      "frequency": 1,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 34.61,
+      "initialLemmas": [
+        "ego"
+      ],
+      "initialSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Reconocimiento funcional conservado. No se certifica una nueva flexión individual."
+      }
+    },
+    {
+      "rank": 94,
+      "course": "lat1",
+      "form": "movebatur",
+      "firstUnit": 3,
+      "frequency": 1,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 34.61,
+      "initialLemmas": [
+        "moueo"
+      ],
+      "initialSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Reconocimiento funcional conservado. No se certifica una nueva flexión individual."
+      }
+    },
+    {
+      "rank": 95,
+      "course": "lat1",
+      "form": "salutabatur",
+      "firstUnit": 3,
+      "frequency": 1,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 34.61,
+      "initialLemmas": [
+        "saluto"
+      ],
+      "initialSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Reconocimiento funcional conservado. No se certifica una nueva flexión individual."
+      }
+    },
+    {
+      "rank": 96,
+      "course": "lat1",
+      "form": "scribere",
+      "firstUnit": 3,
+      "frequency": 1,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 34.61,
+      "initialLemmas": [
+        "scribo"
+      ],
+      "initialSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "newly-verified",
+        "lemma": "scribo",
+        "tags": "V;INF;ACT;PRS",
+        "reference": "https://en.wiktionary.org/wiki/scribo",
+        "note": "Se acredita una sola lectura morfológica, no se cierra toda la homografía."
+      }
+    },
+    {
+      "rank": 97,
+      "course": "lat1",
+      "form": "vestros",
+      "firstUnit": 3,
+      "frequency": 1,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 34.61,
+      "initialLemmas": [
+        "uester"
+      ],
+      "initialSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Reconocimiento funcional conservado. No se certifica una nueva flexión individual."
+      }
+    },
+    {
+      "rank": 98,
+      "course": "lat1",
+      "form": "vincebamur",
+      "firstUnit": 3,
+      "frequency": 1,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 34.61,
+      "initialLemmas": [
+        "uinco"
+      ],
+      "initialSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Reconocimiento funcional conservado. No se certifica una nueva flexión individual."
+      }
+    },
+    {
+      "rank": 99,
+      "course": "lat1",
+      "form": "vobis",
+      "firstUnit": 3,
+      "frequency": 1,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 34.61,
+      "initialLemmas": [
+        "tu"
+      ],
+      "initialSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Reconocimiento funcional conservado. No se certifica una nueva flexión individual."
+      }
+    },
+    {
+      "rank": 100,
+      "course": "lat1",
+      "form": "vulnerabamur",
+      "firstUnit": 3,
+      "frequency": 1,
+      "initialStatus": "documented",
+      "category": "recognized-awaits-individual-check",
+      "score": 34.61,
+      "initialLemmas": [
+        "uulnero"
+      ],
+      "initialSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Reconocimiento funcional conservado. No se certifica una nueva flexión individual."
+      }
+    }
+  ]
+}

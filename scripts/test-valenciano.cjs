@@ -9,7 +9,7 @@ assert.ok(start>10);
 const end=html.indexOf('];',start)+1;
 const initial=JSON.parse(html.slice(start,end));
 for(const m of html.matchAll(/vocab\.push\(\.\.\.(\[.*\])\);/g))initial.push(...JSON.parse(m[1]));
-assert.equal(initial.length,2046,'La comprobación debe cubrir todo el léxico inicial.');
+assert.equal(initial.length,2047,'La comprobación debe cubrir todo el léxico inicial, incluida la ficha parens de UD9–10.');
 const pending=initial.filter(item=>!dictionary.lookup(item.meaning).ready);
 assert.deepEqual(pending.map(x=>x.entry),[],'Significados pendientes de versión valenciana');
 for(const item of initial){
