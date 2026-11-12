@@ -139,6 +139,30 @@ async function audit(page,filename){
    report.greek.push({unit,available:available.length});
    for(const model of ['complete','morphology','translation'])select('greek1',model,unit);
   }
+  // Tercera declinación: artículo explícito, género y concordancia,
+  // sin generar sintagmas si no está documentado el sustantivo o adjetivo.
+  for(const [key,gender,article] of [['πολις','f','ἡ'],['σωμα','n','τὸ']]){
+   const noun=greekVerifiedCorpus.find(x=>x.id==='n-'+key);
+   if(!noun)continue;
+   fail(greekSyntagmNounGenders[key]===gender,'Género no contrastado: '+key);
+   fail(greekTable(noun).includes(article),'Falta artículo en la tabla de '+key);
+   if(greekAvailableSyntagmAdjectives(14).length){
+    const phrase=greekCompleteNominalGroup(noun,true);
+    fail(!!phrase,'El paradigma de '+key+' no forma sintagma acordado');
+    if(phrase){
+     fail(phrase.title.startsWith(article+' '),'Orden artículo + adjetivo + sustantivo: '+key);
+     fail(phrase.rows.length===5,'Tabla de casos incompleta para '+key);
+     fail(phrase.rows.every(row=>row[1].length===2),'Número singular/plural incompleto: '+key);
+    }
+   }
+  }
+  // Enunciados metalingüísticos (conj. mixta/irregular) en redonda,
+  // sin cursiva indiscriminada en las tablas Word.
+  for(const label of ['capio, cepi, captum (mx.)','sum, fui, – (irr.)']){
+   const html=examParadigmHeading(label,'conjugation');
+   fail(/<span class="exam-paradigm-indicator">/.test(html),
+    'Indicador irregular/mixto en cursiva para '+label);
+  }
   const eimi=greekVerifiedCorpus.find(x=>x.id==='v-school-ειμι-presente-activa');
   fail(!!eimi,'Falta εἰμί en Griego I');
   const lyso=greekVerifiedCorpus.find(x=>x.id==='v-school-λυω-futuro-activa');
