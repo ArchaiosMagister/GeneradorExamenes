@@ -32,7 +32,8 @@ assert.equal(data.extensions.latin_editorial_decisions.verifiedFormsAdded,0,
  'La corrección de un enunciado no acredita nuevas flexiones');
 assert.equal(data.vocabulary.lat.moveo.lat1.entry,'moveo, movi, motum (2ª)');
 assert.equal(data.vocabulary.lat.eripio.lat1.entry,'eripio, eripui, ereptum (mx.)');
-assert.equal(data.rows.lat.filter(x=>x[3]===5).length,36);
+assert.equal(data.rows.lat.filter(x=>x[3]===5).length,42);
+assert(data.rows.lat.some(x=>x[0]==='vinco'&&x[1]==='vicerunt'&&x[2]==='V;IND;ACT;PRF;3;PL'&&x[3]===5));
 assert.equal(data.rows.grc.filter(x=>x[3]===5).length,24);
 assert.equal(data.rows.lat.filter(x=>x[0]==='sum'&&x[3]===5).length,30);
 assert.equal(data.rows.grc.filter(x=>x[0]==='γιγνομαι'&&x[3]===5).length,6);
