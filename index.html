@@ -2079,6 +2079,8 @@ function wordExamGloss(el){
 function exportWord(includeAnswers){
  const paper=$('paper');
  if(!paper||!paper.textContent.trim()){alert('Genera primero un examen.');return;}
+ if(window.ExaminaTeacherReview?.evidenceMayExport?.(paper,
+  {latin1:'lat1',latin4:'lat4',greek1:'gr1'}[currentCourse()])===false)return;
  const copy=paper.cloneNode(true),key=copy.querySelector('#answerkey');
  if(key&&!includeAnswers)key.remove();
  if(key&&includeAnswers)key.classList.remove('solutions');
@@ -2104,7 +2106,7 @@ function exportWord(includeAnswers){
  downloadBlob(filename,zip(files));
 }
 $('docx').onclick=()=>exportWord(false);
-$('docxAnswers').onclick=()=>exportWord(true);$('generate').onclick=generate;$('print').onclick=()=>window.print();$('solutions').onclick=()=>{let el=$('answerkey');el.classList.toggle('show');$('solutions').textContent=el.classList.contains('show')?tr('hide'):tr('solutions')};$('lang').onchange=()=>{translateUI();generate()};$('term').onchange=generate;$('cumulative').onchange=generate;document.querySelectorAll('.unit-choice').forEach(e=>e.onchange=generate);$('allUnits').onclick=()=>{document.querySelectorAll('.unit-choice').forEach(e=>e.checked=true);generate()};$('clearUnits').onclick=()=>{document.querySelectorAll('.unit-choice').forEach(e=>e.checked=false);generate()};$('amount').onchange=generate;for(const id of ['decl','verb','lex','sent'])$('count-'+id).onchange=generate;for(let id of ['decl','verb','lex','sent'])$(id).onchange=generate;translateUI();
+$('docxAnswers').onclick=()=>exportWord(true);$('generate').onclick=generate;$('print').onclick=()=>{if(window.ExaminaTeacherReview?.evidenceMayExport?.($('paper'),{latin1:'lat1',latin4:'lat4',greek1:'gr1'}[currentCourse()])!==false)window.print()};$('solutions').onclick=()=>{let el=$('answerkey');el.classList.toggle('show');$('solutions').textContent=el.classList.contains('show')?tr('hide'):tr('solutions')};$('lang').onchange=()=>{translateUI();generate()};$('term').onchange=generate;$('cumulative').onchange=generate;document.querySelectorAll('.unit-choice').forEach(e=>e.onchange=generate);$('allUnits').onclick=()=>{document.querySelectorAll('.unit-choice').forEach(e=>e.checked=true);generate()};$('clearUnits').onclick=()=>{document.querySelectorAll('.unit-choice').forEach(e=>e.checked=false);generate()};$('amount').onchange=generate;for(const id of ['decl','verb','lex','sent'])$('count-'+id).onchange=generate;for(let id of ['decl','verb','lex','sent'])$(id).onchange=generate;translateUI();
 // V4: conservative, inspectable, dependency-free morphology workbench.
 // These are implemented rules, NOT imported Collatinus/Morpheus/Eulexis datasets.
 const M_CASES=['Nominativo','Vocativo','Acusativo','Genitivo','Dativo','Ablativo'];
@@ -2798,11 +2800,11 @@ function generateGreekMorphologyFixed(){
  const pronPool=examQuestionEnabled('pronouns')?eligible.filter(x=>x.kind==='pronouns'):[];
  const pronouns=stickyExamRows('pronouns',()=>sample(pronPool,Math.min(6,pronPool.length)));
  const categories={n:$('morphCategory-n')?.checked!==false,adj:$('morphCategory-adj')?.checked!==false,pro:$('morphCategory-pro')?.checked!==false};
- const words=stickyExamRows('forms',()=>examQuotaGreek(eligible.filter(x=>x.kind==='forms'&&!x.prompt.includes(' ')&&(
-  (/pronombre|demostrativo|anafórico|personal|interrogativo/i.test(x.answer)&&categories.pro)||
-  (/adjetivo/i.test(x.answer)&&categories.adj)||
-  (/declinación|sustantivo|artículo/i.test(x.answer)&&categories.n)||
-  (/verbo|persona|indicativo|deponente|infinitivo|participio|aoristo|imperativo|voz media/i.test(x.answer))
+ const words=stickyExamRows('forms',()=>examQuotaGreek(eligible.concat(examAuthorizedProposals('greek1',limit)).filter(x=>x.kind==='forms'&&!x.prompt.includes(' ')&&(
+  ((x.category==='pronouns'||/pronombre|demostrativo|anafórico|personal|interrogativo/i.test(x.answer))&&categories.pro)||
+  ((x.category==='adjectives'||/adjetivo/i.test(x.answer))&&categories.adj)||
+  ((x.category==='nouns'||/declinación|sustantivo|artículo/i.test(x.answer))&&categories.n)||
+  (x.category==='verbs'||/verbo|persona|indicativo|deponente|infinitivo|participio|aoristo|imperativo|voz media/i.test(x.answer))
   )),cfg.words));
  const question=(n,txt)=>'<p class="exam-question">'+n+'. '+esc(txt)+'</p>';
  let n=0;
@@ -2817,7 +2819,7 @@ function generateGreekMorphologyFixed(){
    pronouns.map(x=>'<tr data-corpus-id="'+x.id+'"><td><i>'+esc(x.prompt)+'</i></td><td></td><td></td><td></td><td></td></tr>').join('')+'</tbody></table>';
  }
  const last=examQuestionEnabled('forms')?question(++n,t('Analiza morfológicamente las siguientes palabras (1 p.).','Analitza morfològicament les paraules següents (1 p.).'))+
-  words.map((x,i)=>'<p class="exam-item reference-analysis-item" data-analysis-slot="'+i+'" data-corpus-id="'+x.id+'">'+String.fromCharCode(97+i)+'. <i>'+esc(x.prompt)+'</i>'+(Array.isArray(x.lemmas)&&x.lemmas.length?' ('+esc(x.lemmas.filter(Boolean).join(' / '))+')':'')+': <span class="reference-answer-line"></span></p>').join(''):'';
+  words.map((x,i)=>'<p class="exam-item reference-analysis-item" data-analysis-slot="'+i+'" data-corpus-id="'+x.id+'">'+String.fromCharCode(97+i)+'. <i'+examAcademicAttrs(x)+'>'+esc(x.prompt)+'</i>'+(Array.isArray(x.lemmas)&&x.lemmas.length?' ('+esc(x.lemmas.filter(Boolean).join(' / '))+')':'')+': <span class="reference-answer-line"></span></p>').join(''):'';
  const problems=[];
  if(second&&verbs.length<cfg.verbs)problems.push('Verbos: '+verbs.length+' de '+cfg.verbs);
  if(last&&words.length<cfg.words)problems.push('Palabras variables: '+words.length+' de '+cfg.words);
@@ -2839,8 +2841,9 @@ function generateGreekMorphologyFixed(){
 
 let greekExamState=null;
 function greekChoicePool(kind){
- return greekVerifiedCorpus.filter(x=>x.verified&&x.kind===kind&&greekMorphologyEligible(x,greekLimit())&&
+ const curated=greekVerifiedCorpus.filter(x=>x.verified&&x.kind===kind&&greekMorphologyEligible(x,greekLimit())&&
   (kind!=='forms'||!(x.lemmas||[]).some(lemma=>isExcludedExamMorphLemma(lemma))));
+ return kind==='forms'?curated.concat(examAuthorizedProposals('greek1',greekLimit())):curated;
 }
 function greekSelectedItems(pool,chosen,counts){
  const signature=JSON.stringify([chosen.map(examUnitNumber),$('model').value,counts,examMorphQuotaValues()]);
@@ -2966,7 +2969,8 @@ function generateGreekExam(){
  const chosen=greekMarkedUnits(),max=greekLimit(),mode=greekModes[$('model').value]||greekModes.complete;
  const enabled=greekKinds.filter((k,i)=>(mode.points[i]>0||(k==='pronouns'&&$('model').value==='complete'))&&examQuestionEnabled(k==='conjugation'?'verb':k==='declension'?'decl':k==='sentences'?'sent':k==='etymology'?'etymology':k));
  const pool=greekVerifiedCorpus.filter(x=>x.verified&&x.kind!=='sentences'&&greekMorphologyEligible(x,max)&&enabled.includes(x.kind)&&
-  (x.kind!=='forms'||!(x.lemmas||[]).some(lemma=>isExcludedExamMorphLemma(lemma))));
+  (x.kind!=='forms'||!(x.lemmas||[]).some(lemma=>isExcludedExamMorphLemma(lemma))))
+  .concat(enabled.includes('forms')?examAuthorizedProposals('greek1',max):[]);
  const counts={declension:Math.min(2,countFor('decl')),conjugation:Math.min(2,countFor('verb')),forms:examMorphQuotasActive()?examMorphQuotaCount():countFor('greek-forms'),pronouns:6,etymology:Math.min($('model').value==='translation'?3:2,countFor('lex')),sentences:countFor('sent')};
  const result=greekSelectedItems(pool,chosen,counts),sections=[],answers=[];
 
@@ -2982,7 +2986,7 @@ function generateGreekExam(){
   else if(kind==='conjugation')sections.push(greekVerbTable(items));
   else if(kind==='pronouns')sections.push('<table class="exam-pronouns" data-col-widths="1500,3500,3500"><thead><tr><th>Forma</th><th>'+($('lang').value==='va'?'Cas, gènere, nombre':'Caso, género, número')+'</th><th>'+($('lang').value==='va'?'Tipus de pronom':'Tipo de pronombre')+'</th></tr></thead><tbody>'+items.map(x=>'<tr data-corpus-id="'+x.id+'"><td>'+esc(x.prompt)+'</td><td></td><td></td></tr>').join('')+'</tbody></table>');
   else if(kind==='etymology')sections.push('<p class="exam-etymology">'+items.map((x,j)=>'<span data-corpus-id="'+x.id+'">'+String.fromCharCode(97+j)+'. '+esc(x.prompt)+':</span>').join('')+'</p>');
-  else sections.push(items.map((x,j)=>'<p class="exam-item exam-form" data-corpus-id="'+x.id+'"><span class="exam-letter">'+String.fromCharCode(97+j)+'.</span> <span>'+esc(x.prompt)+':</span></p>').join(''));
+  else sections.push(items.map((x,j)=>'<p class="exam-item exam-form" data-corpus-id="'+x.id+'"><span class="exam-letter">'+String.fromCharCode(97+j)+'.</span> <span'+examAcademicAttrs(x)+'>'+esc(x.prompt)+'</span>:</p>').join(''));
   if(items.length)answers.push('<h3>'+esc(title)+'</h3>'+items.map(x=>'<p><b>'+esc(x.prompt)+'</b> — '+esc(x.answer)+'</p>').join(''));
  }
  const missing=result.missing.map(u=>'UD'+u),notice=!chosen.length?'Selecciona al menos una unidad.':missing.length?'Sin material verificado para cubrir: '+missing.join(', ')+'. No se han inventado ejercicios.':'Cobertura verificada de todas las unidades seleccionadas.';
@@ -3300,6 +3304,7 @@ function examQuotaPick(groups,count,fallback){
  return picked;
 }
 function examGreekWordClass(item){
+ if(item?.category)return item.category;
  const a=String(item?.answer||'').toLocaleLowerCase();
  if(/verbo|indicativo|infinitivo|participio|aoristo|imperativo|voz media|deponente/.test(a))return 'verbs';
  if(/pronombre|demostrativo|anafórico|personal|interrogativo/.test(a))return 'pronouns';
