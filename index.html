@@ -803,6 +803,9 @@ function refreshManualMorphWords(){
   const editorId=String(editorIndex);
   el.dataset.examEditorId=editorId;
   el.dataset.examEditorKind=kind;
+  // Debe ser el destino real del evento input, no el contenedor #paper.
+  el.setAttribute('contenteditable','true');
+  el.setAttribute('spellcheck','false');
   const row=document.createElement('div');row.className='exam-word-editor';
   row.style.display='block';row.style.margin='7px 0';
   const caption=document.createElement('label');caption.textContent=kind+' '+(i+1);
@@ -2701,6 +2704,8 @@ function greekExamControls(){
    if(target){
     target.dataset.greekEditorId=editorId;
     target.dataset.greekEditorKind=kind;
+    target.setAttribute('contenteditable','true');
+    target.setAttribute('spellcheck','false');
    }
    input.addEventListener('input',()=>{
     const paper=$('paper'),target=greekExamEditorTarget(kind,id);
