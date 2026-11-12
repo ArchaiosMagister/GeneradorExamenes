@@ -1525,10 +1525,40 @@ function latinNounAllowedForExam(paradigm,chosen){
  if(kind.startsWith('4')||kind==='5')return examGrammarAllows('nominal4',chosen);
  return true;
 }
-function latinAdjectiveAllowedForExam(kind,chosen){
- // Latín 4.º carece de una secuenciación contrastada de tercera declinación.
- if(kind==='third-two'&&currentCourse()==='latin4')return false;
- return examGrammarAllows(kind==='third-two'?'adjective3':'adjective12',chosen);
+const EXAM_THIRD_REVIEW_STORAGE='examina_third_adjective_review_v1';
+const examThirdReviewState=Object.create(null);
+try{
+ const saved=JSON.parse(localStorage.getItem(EXAM_THIRD_REVIEW_STORAGE)||'{}');
+ if(saved&&typeof saved==='object'&&!Array.isArray(saved))
+  for(const [key,row] of Object.entries(saved)){
+   if(/^[a-z]{2,64}$/.test(key)&&['approved','excluded'].includes(row?.decision))
+    examThirdReviewState[key]={decision:row.decision,source:'decisión docente',verified:false,date:String(row.date||'')};
+  }
+}catch(error){}
+function latinThirdReviewKey(entry){return normLex(headLex(entry)).replace(/[^a-z]/g,'')}
+function latinThirdReviewStatus(entry){return examThirdReviewState[latinThirdReviewKey(entry)]?.decision||'pending'}
+function latinThirdReviewDecision(entry,decision){
+ const key=latinThirdReviewKey(entry);
+ if(!key||!['pending','approved','excluded'].includes(decision))return false;
+ if(decision==='pending')delete examThirdReviewState[key];
+ else examThirdReviewState[key]={decision,verified:false,source:'decisión docente',date:new Date().toISOString()};
+ try{localStorage.setItem(EXAM_THIRD_REVIEW_STORAGE,JSON.stringify(examThirdReviewState))}
+ catch(error){console.warn('No se pudo persistir la decisión de morfología:',error)}
+ document.dispatchEvent(new CustomEvent('examina:third-review-changed'));
+ return true;
+}
+function latinThirdReviewDigest(){
+ return JSON.stringify(Object.entries(examThirdReviewState).sort(([a],[b])=>a.localeCompare(b))
+  .map(([key,row])=>[key,row.decision]));
+}
+function latinAdjectiveAllowedForExam(kind,chosen,entry=''){
+ if(kind==='third-two'){
+  // La regla puede ser regular, pero el lema sigue pendiente de verificación
+  // individual. Solo se sortea si el docente lo ha aceptado expresamente.
+  return currentCourse()==='latin1'&&examGrammarAllows('adjective3',chosen)&&
+   latinThirdReviewStatus(entry)==='approved';
+ }
+ return examGrammarAllows('adjective12',chosen);
 }
 // Tercera declinación REGULAR de dos terminaciones (brevis, -e).
 // Formas en -er/-ris/-e, comparativos y paradigmas excepcionales pendientes.
@@ -1605,7 +1635,7 @@ function latinCompleteAdjectives(chosen){
    const lemma=mNormalize(headLex(x.entry)).toLowerCase();
    const regularFirst=first&&/^[a-z]+us$/.test(lemma)&&lemma!=='meus'&&!lemma.endsWith('ius');
    const p=regularFirst&&latinAdjectiveAllowedForExam('first-second',chosen)?first:
-    third&&latinAdjectiveAllowedForExam('third-two',chosen)?third:null;
+    third&&latinAdjectiveAllowedForExam('third-two',chosen,x.entry)?third:null;
    return {x,p};
   }).filter(item=>!!item.p);
 }
@@ -1674,7 +1704,7 @@ function latinExamFormCandidates(chosen,allForms=false){
    add(0,n.forms.flat(),['singular','plural'].flatMap(number=>M_CASES.map(c=>c+', '+number)),'nouns',x.entry);
   else if(a&&latinAdjectiveAllowedForExam('first-second',chosen))
    add(1,a.forms,a.labels,'adjectives',x.entry);
-  else if(third&&latinAdjectiveAllowedForExam('third-two',chosen))
+  else if(third&&latinAdjectiveAllowedForExam('third-two',chosen,x.entry))
    add(1,third.forms,third.labels,'adjectives',x.entry);
   else if(v){
    add(2,v.forms,v.labels.map(label=>label+', presente de indicativo activo'),'verbs',x.entry);
@@ -3219,7 +3249,9 @@ function examCacheSignature(kind){
   kind==='sent'?'count-sent':'count-lex';
  return JSON.stringify([currentCourse(),$('model').value,unitsKey,$('cumulative').checked,kind,
   $(countId)?.value,morph&&kind==='decl'?$('morphOffer')?.value:null,
-  kind==='forms'?examMorphQuotaValues():null,kind.startsWith('lex-')?[
+  kind==='forms'?examMorphQuotaValues():null,
+  currentCourse()==='latin1'&&['decl','forms'].includes(kind)?latinThirdReviewDigest():null,
+  kind.startsWith('lex-')?[
    kind==='lex-prefixes'?$('lex-prefix')?.value:null,
    kind==='lex-phonetics'?$('lex-phenomenon')?.value:null,
    kind==='lex-latinisms'?[$('lex-parity')?.value,$('lex-from')?.value,$('lex-to')?.value].join(':'):null,
