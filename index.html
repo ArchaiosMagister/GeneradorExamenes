@@ -1673,7 +1673,13 @@ function latinMorphologyEnunciation(item,chosen){
 function latinMorphologyEnunciationHtml(item,chosen){
  const enunciation=latinMorphologyEnunciation(item,chosen);
  if(!enunciation)return '';
- if(item.category!=='verbs')return ' (<i>'+esc(enunciation)+'</i>)';
+ if(item.category!=='verbs'){
+  // El género es una etiqueta metalingüística, no parte flexionable del lema:
+  // igual que la conjugación, se imprime en redonda y dentro de un solo paréntesis.
+  const gender=enunciation.match(/^(.*?)\s*\(\s*([mfn]\.?)\s*\)$/i);
+  return gender?' (<i>'+esc(gender[1].trim())+'</i>, '+esc(gender[2])+')':
+   ' (<i>'+esc(enunciation)+'</i>)';
+ }
  const match=enunciation.match(/^(.*?)\s*(?:\(\s*([1-4]ª|mx\.|irr\.)\s*\)|,\s*([1-4]ª|mx\.|irr\.))$/i);
  const forms=match?match[1].trim():enunciation;
  const conjugation=match?(match[2]||match[3]):'';
