@@ -71,7 +71,7 @@
     {
       "grupo": "cultismos",
       "decision": "inclusion_condicionada",
-      "motivo": "No importar masivamente. Verificar cada étimo y la norma N10/N12/N14, etiquetar en la pregunta como adaptación culta y dejar las demás candidatas pendientes fuera del sorteo.",
+      "motivo": "No importar masivamente. Verificar cada étimo y la norma N10/N12/N14, etiquetar en la pregunta como adaptación culta y dejar las demás candidatas pendientes fuera del sorteo. Continuación progresiva: architectum, asphaltum y Chimæram verificados individualmente.",
       "estado": "REVISION_CONDICIONADA",
       "aprobadas": [
         {
@@ -85,9 +85,21 @@
         {
           "latin": "blasphemiam",
           "id": "EVF-1077"
+        },
+        {
+          "latin": "architectum",
+          "id": "EVF-1078"
+        },
+        {
+          "latin": "asphaltum",
+          "id": "EVF-1079"
+        },
+        {
+          "latin": "Chimæram",
+          "id": "EVF-1080"
         }
       ],
-      "restantes_auditadas": 24
+      "restantes_auditadas": 21
     }
   ],
   "politica": "Las exclusiones docentes son vinculantes para futuros lotes. Las sustituciones de étimo no certifican por sí solas normas no verificadas. Las adaptaciones cultas solo se sortearán tras comprobación y con etiqueta visible."
