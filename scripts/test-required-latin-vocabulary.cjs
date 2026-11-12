@@ -67,6 +67,8 @@ const cases=[
  ['latin1','miserunt','mitto','perfecto en -s-'],
  ['latin1','scripserunt','scribo','perfecto en -ps-'],
  ['latin1','vicerunt','vinco','perfecto en -c-'],
+ ['latin1','solverunt','solvo','perfecto explícito con conjugación mal anotada'],
+ ['latin1','vixerunt','vivo','perfecto explícito con conjugación mal anotada'],
  ['latin1','fuerant','sum','pluscuamperfecto irregular'],
  ['latin4','laudaverunt','laudo','perfecto de 1.ª'],
  ['latin4','pugnaverat','pugno','pluscuamperfecto de 1.ª'],
@@ -103,8 +105,8 @@ for(const [course,items] of Object.entries(perCourse)){
 }
 assert(verbHeads>=100,'No se han auditado suficientes paradigmas completos');
 if(absent.length)console.log('Perfectos docentes aún sin candidato automático:',absent);
-assert(supported/verbHeads>=0.98,
- 'No alcanza el 98 % de recuperación de perfectos docentes: '+supported+'/'+verbHeads+
+assert.equal(supported,verbHeads,
+ 'No se recuperan todos los perfectos docentes con tema explícito: '+supported+'/'+verbHeads+
  ' pendientes: '+absent.slice(0,20).join('; '));
 // No añadir filas al índice verificado por el simple hecho de que el documento
 // incluye el tema de perfecto; las flexiones extrapoladas se distinguen por origen.
