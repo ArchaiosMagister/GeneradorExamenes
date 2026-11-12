@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import {erroresBancoFonetico} from '../data/fonetica/criterios-docentes.mjs';
 import {readFileSync} from 'node:fs';
 import {fileURLToPath} from 'node:url';
 import {dirname,resolve} from 'node:path';
@@ -6,6 +7,7 @@ import {PALABRAS_POR_EXAMEN,seleccionarEvoluciones} from '../data/fonetica/selec
 
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const banco=JSON.parse(readFileSync(resolve(root,'data/fonetica/banco_examenes.json'),'utf8'));
+assert.deepEqual(erroresBancoFonetico(banco),[], 'La importación de fichas no respeta los criterios docentes');
 const ids=banco.items.map(x=>x.id);
 assert.equal(banco.items.length,655);
 assert.equal(new Set(ids).size,banco.items.length,'Identificadores duplicados');
@@ -40,8 +42,8 @@ for(const [latin,castellano,normas] of [
 const audited14=banco.items.filter(x=>x.lote===14);
 assert.equal(audited14.length,2,'Faltan las dos nuevas fichas auditadas');
 for(const [latin,spanish,normas] of [
- ['gannitum','gañido',['N13','N17']],
- ['laicum','lego',['N12','N17']]
+ ['gannitum','gañido',['N01','N13','N17']],
+ ['laicum','lego',['N01','N12','N17']]
 ]){
  const row=audited14.find(x=>x.latin===latin);
  assert(row&&row.castellano===spanish,latin+': correspondencia incorrecta');
@@ -54,11 +56,11 @@ assert.deepEqual(accepted.normas,['N01','N13','N16','N20']);
 assert(!banco.items.some(x=>['inde','pirum'].includes(x.latin)),'Decisiones editoriales excluidas del sorteo');
 const loteTrece=[
  ['audīte','oíd',['N03','N12','N17']],
- ['audītum','oído',['N12','N16','N17']],
+ ['audītum','oído',['N01','N12','N16','N17']],
  ['date','dad',['N03','N17']],
- ['octavum','ochavo',['N13']],
+ ['octavum','ochavo',['N01','N13']],
  ['fluxum','flojo',['N01','N13']],
- ['pelagum','piélago',['N07']],
+ ['pelagum','piélago',['N01','N07']],
  ['folliculum','hollejo',['N01','N05','N13','N20']]
 ];
 assert.equal(banco.items.filter(x=>x.lote===13).length,7,'Lote 13 incompleto');
@@ -111,8 +113,8 @@ for(const row of audit.items){
 const loteCien=banco.items.filter(x=>x.lote===15);
 assert.equal(loteCien.length,3,'Solo tres étimos han superado el lote de 100');
 for(const [latin,castellano,normas] of [
- ['senatum','senado',['N17']],
- ['rixosum','rijoso',['N13']],
+ ['senatum','senado',['N01','N17']],
+ ['rixosum','rijoso',['N01','N13']],
  ['virilia','verija',['N01','N13']]
 ]){
  const row=loteCien.find(x=>x.latin===latin);
@@ -136,8 +138,8 @@ assert.equal(cultismos.restantes_auditadas,4);
 const cuatro=banco.items.filter(x=>x.lote===16);
 assert.equal(cuatro.length,4,'Lote 16 incompleto');
 for(const [latin,spanish,normas,tipo] of [
- ['contum','cuento',['N07'],'PATRIMONIAL'],
- ['stilum','estilo',['N14'],'ADAPTACION_CULTA'],
+ ['contum','cuento',['N01','N07'],'PATRIMONIAL'],
+ ['stilum','estilo',['N01','N14'],'ADAPTACION_CULTA'],
  ['athletam','atleta',['N10'],'ADAPTACION_CULTA'],
  ['blasphemiam','blasfemia',['N10'],'ADAPTACION_CULTA']
 ]){
@@ -150,8 +152,8 @@ for(const [latin,spanish,normas,tipo] of [
 const nextCultos=banco.items.filter(x=>x.lote===17);
 assert.equal(nextCultos.length,3,'La continuación culta no consta como lote 17');
 for(const [latin,spanish,normas] of [
- ['architectum','arquitecto',['N10']],
- ['asphaltum','asfalto',['N10']],
+ ['architectum','arquitecto',['N01','N10']],
+ ['asphaltum','asfalto',['N01','N10']],
  ['Chimæram','quimera',['N10','N12']]
 ]){
  const row=nextCultos.find(x=>x.latin===latin);

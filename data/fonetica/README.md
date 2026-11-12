@@ -62,3 +62,16 @@ Se resuelven las diez tarjetas: cinco altas individualizadas (Scythiam → Escit
 ## Continuación de la auditoría (lote 21, 17 fichas sin alta)
 
 El registro [auditoria-continuacion-excel-20261112.json](./auditoria-continuacion-excel-20261112.json) contiene 17 candidatas del Excel original cotejadas de forma preliminar; se describen las fuentes y las reservas sobre acepción, forma latina o transmisión. Por ejemplo, «filtro» tiene dos etimologías, «estela» tres y *bellum* debe desambiguarse de *bellus*. Ninguna de las 17 entra aún en el sorteo. Las 62 candidatas del lote anterior siguen formalmente pendientes; 17 disponen ahora de un análisis adicional sin considerarse verificadas ni aprobadas.
+
+
+## Homologación docente con EvolucionFonetica — 12 de noviembre de 2026
+
+Por decisión docente se conservan las anotaciones de **seniorem → señor** (N03 apócope de -e + N13 palatalización), **sensum → seso** (N01 abertura + N15 simplificación), **sponsam → esposa** (N14 prótesis + N15 simplificación) y **sponsum → esposo** (N01 abertura + N14 prótesis + N15 simplificación). No se marca N16 por la pérdida de n del grupo -ns-; solo se admite N16 si existe otra síncopa independiente.
+
+Para todas las fichas se registra **FIX_M**, pérdida fija de -m final, como metadato `normasFijas: ["FIX_M"]` no seleccionable. Es independiente de la norma N03 (apócope). Todas las formas elegibles en **-um → -o** incorporan N01 (u → o), también cuando se trata de adaptaciones cultas etiquetadas: no se altera la clasificación histórica de la transmisión.
+
+Se mantienen las **655 fichas del banco general** y los **73 étimos de Latín I**; no se activa ninguna entrada pendiente. Los cambios incluyen 202 altas de N01 en el banco general, 27 en las fichas aptas del programa y una corrección de *iam → ya*, donde la caída de -m no debe contabilizarse como apócope. El TSV histórico de 330 filas se sincroniza con la clasificación del JSON, que sigue siendo la fuente activa.
+
+La implementación en `data/fonetica/criterios-docentes.mjs` ofrece `normalizarFichaFonetica` / `prepararAltaFonetica` para entradas futuras y detectores de errores. El selector fonético y la construcción del HTML autónomo rechazan fichas que incumplan los criterios; los workflows de revisión y publicación ejecutan las pruebas. Las fichas con correspondencia dudosa deben seguir en REVISAR, sin atribuirles validación filológica automática.
+
+Detalles, alcance y pruebas: [docs/criterios-foneticos-2026-11-12.md](../../docs/criterios-foneticos-2026-11-12.md).

@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import {erroresBancoFonetico,erroresProgramacionFonetica} from '../data/fonetica/criterios-docentes.mjs';
 import {readFileSync} from 'node:fs';
 import {resolve,dirname} from 'node:path';
 import {fileURLToPath} from 'node:url';
@@ -6,6 +7,8 @@ import {fileURLToPath} from 'node:url';
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const curriculum=JSON.parse(readFileSync(resolve(root,'data/fonetica/lat1-programacion.json'),'utf8'));
 const generic=JSON.parse(readFileSync(resolve(root,'data/fonetica/banco_examenes.json'),'utf8'));
+assert.deepEqual(erroresBancoFonetico(generic),[]);
+assert.deepEqual(erroresProgramacionFonetica(curriculum),[]);
 assert.equal(curriculum.schema,1);
 assert.equal(curriculum.course,'latin1');
 assert.equal(curriculum.unidades.length,11);
@@ -45,10 +48,10 @@ const availableThrough=unit=>curriculum.unidades.filter(x=>x.unit<=unit).flatMap
  .filter(x=>x.estado==='APTO_PROPUESTO'&&x.normas.every(n=>rulesThrough(unit).has(n)));
 const eligibleGlobal=unit=>generic.items.filter(x=>x.estado==='APTO_PROPUESTO'&&
  x.normas?.length&&x.normas.every(n=>rulesThrough(unit).has(n)));
-assert.equal(eligibleGlobal(0).length,175,'UD0 debe admitir étimos del banco general');
+assert.equal(eligibleGlobal(0).length,103,'UD0 filtra N01: 103 étimos ya explicados');
 assert.equal(eligibleGlobal(3).length,650,'UD3 debe admitir étimos de cualquier unidad con normas impartidas');
 assert.equal(eligibleGlobal(10).length,655,'UD10 debe admitir todo el banco general');
-assert(eligibleGlobal(0).some(x=>x.latin==='advocatum'),'El banco general no debe restringirse a los tres étimos de UD0');
+assert(eligibleGlobal(0).some(x=>x.latin==='patrem'),'El banco general no debe limitarse a los tres étimos de UD0');
 const lesson0=availableThrough(0),lesson1=availableThrough(1);
 assert.deepEqual(lesson0.map(x=>x.latin),['terram','apotheca','farinam']);
 assert.equal(lesson1.length,10,'UD1 debe incluir las tres palabras de UD0 y las siete nuevas');

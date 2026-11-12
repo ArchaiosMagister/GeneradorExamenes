@@ -17,6 +17,8 @@ on:
       - 'eulexis-local.js'
       - 'data/lemmas/**'
       - 'data/unimorph/**'
+      - 'data/fonetica/**'
+      - 'data/fonetica/**'
       - 'scripts/**'
       - 'pwa.js'
       - 'sw.js'
@@ -69,7 +71,7 @@ jobs:
       # La ampliación externa se mantiene en la PR experimental hasta
       # resolver la procedencia/licencias de los datos morfológicos.
       - name: Validar banco ampliable de evolución fonética y programa de Latín I
-        run: node scripts/test-fonetica.mjs && node scripts/test-lat1-fonetica.mjs
+        run: node scripts/test-criterios-foneticos.mjs && node scripts/test-fonetica.mjs && node scripts/test-lat1-fonetica.mjs
       - name: Regenerar archivo autónomo
         run: npm run offline:build
       - name: Probar lematización latina y griega sin red

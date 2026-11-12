@@ -1,6 +1,7 @@
 import {readFile,writeFile,mkdir} from 'node:fs/promises';
 import {dirname,resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
+import {erroresBancoFonetico,erroresProgramacionFonetica} from '../data/fonetica/criterios-docentes.mjs';
 
 const projectRoot=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 
@@ -75,6 +76,8 @@ export async function renderOffline(root=projectRoot){
  if(lat1Phonetics.schema!==1||lat1Phonetics.course!=='latin1'||lat1Phonetics.unidades?.length!==11||
   lat1Phonetics.unidades.reduce((n,u)=>n+(u.palabras?.length||0),0)!==73)
   throw new Error('Falta la programación acumulativa de las 73 evoluciones de Latín I');
+ const erroresFon=[...erroresBancoFonetico(phonetics),...erroresProgramacionFonetica(lat1Phonetics)];
+ if(erroresFon.length)throw new Error('Criterios docentes fonéticos: '+erroresFon.slice(0,12).join('; '));
  const assets={'data/unimorph/lat-v.json':latin,'data/lemmas/teacher-forms.json':lemmatizer,...lexicalAssets,[syllabusPath]:syllabus,[latin4ProgressPath]:latin4Progress,[lat1PhoneticsPath]:lat1Phonetics,'data/fonetica/banco_examenes.json':phonetics};
  // Evita cerrar prematuramente el elemento HTML script inerte.
  const json=JSON.stringify(assets).replace(/</g,'\\u003c');

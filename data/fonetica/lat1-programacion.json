@@ -21,7 +21,10 @@
           "normas": [
             "N07"
           ],
-          "estado": "APTO_PROPUESTO"
+          "estado": "APTO_PROPUESTO",
+          "normasFijas": [
+            "FIX_M"
+          ]
         },
         {
           "id": "LAT1-FON-002",
@@ -41,7 +44,10 @@
           "normas": [
             "N05"
           ],
-          "estado": "APTO_PROPUESTO"
+          "estado": "APTO_PROPUESTO",
+          "normasFijas": [
+            "FIX_M"
+          ]
         }
       ]
     },
@@ -62,11 +68,15 @@
           "latin": "iocum",
           "castellano": "juego",
           "normas": [
+            "N01",
             "N06",
             "N07",
             "N17"
           ],
-          "estado": "APTO_PROPUESTO"
+          "estado": "APTO_PROPUESTO",
+          "normasFijas": [
+            "FIX_M"
+          ]
         },
         {
           "id": "LAT1-FON-005",
@@ -75,17 +85,24 @@
           "normas": [
             "N15"
           ],
-          "estado": "APTO_PROPUESTO"
+          "estado": "APTO_PROPUESTO",
+          "normasFijas": [
+            "FIX_M"
+          ]
         },
         {
           "id": "LAT1-FON-006",
           "latin": "focum",
           "castellano": "fuego",
           "normas": [
+            "N01",
             "N07",
             "N17"
           ],
-          "estado": "APTO_PROPUESTO"
+          "estado": "APTO_PROPUESTO",
+          "normasFijas": [
+            "FIX_M"
+          ]
         },
         {
           "id": "LAT1-FON-007",
@@ -95,7 +112,10 @@
             "N01",
             "N17"
           ],
-          "estado": "APTO_PROPUESTO"
+          "estado": "APTO_PROPUESTO",
+          "normasFijas": [
+            "FIX_M"
+          ]
         },
         {
           "id": "LAT1-FON-008",
@@ -105,7 +125,10 @@
             "N01",
             "N13"
           ],
-          "estado": "APTO_PROPUESTO"
+          "estado": "APTO_PROPUESTO",
+          "normasFijas": [
+            "FIX_M"
+          ]
         },
         {
           "id": "LAT1-FON-009",
@@ -116,7 +139,10 @@
             "N16",
             "N19"
           ],
-          "estado": "APTO_PROPUESTO"
+          "estado": "APTO_PROPUESTO",
+          "normasFijas": [
+            "FIX_M"
+          ]
         },
         {
           "id": "LAT1-FON-010",
@@ -125,7 +151,10 @@
           "normas": [
             "N10"
           ],
-          "estado": "APTO_PROPUESTO"
+          "estado": "APTO_PROPUESTO",
+          "normasFijas": [
+            "FIX_M"
+          ]
         }
       ]
     },
@@ -145,16 +174,23 @@
           "normas": [
             "N10"
           ],
-          "estado": "APTO_PROPUESTO"
+          "estado": "APTO_PROPUESTO",
+          "normasFijas": [
+            "FIX_M"
+          ]
         },
         {
           "id": "LAT1-FON-012",
           "latin": "theatrum",
           "castellano": "teatro",
           "normas": [
+            "N01",
             "N10"
           ],
-          "estado": "APTO_PROPUESTO"
+          "estado": "APTO_PROPUESTO",
+          "normasFijas": [
+            "FIX_M"
+          ]
         },
         {
           "id": "LAT1-FON-013",
@@ -163,7 +199,10 @@
           "normas": [
             "N10"
           ],
-          "estado": "APTO_PROPUESTO"
+          "estado": "APTO_PROPUESTO",
+          "normasFijas": [
+            "FIX_M"
+          ]
         },
         {
           "id": "LAT1-FON-014",
@@ -174,16 +213,23 @@
             "N15"
           ],
           "estado": "REVISAR",
-          "observacion": "El étimo preferente se documenta como crocodilus/crocodilum; comprobar la geminada de la forma propuesta."
+          "observacion": "El étimo preferente se documenta como crocodilus/crocodilum; comprobar la geminada de la forma propuesta.",
+          "normasFijas": [
+            "FIX_M"
+          ]
         },
         {
           "id": "LAT1-FON-015",
           "latin": "aurum",
           "castellano": "oro",
           "normas": [
+            "N01",
             "N12"
           ],
-          "estado": "APTO_PROPUESTO"
+          "estado": "APTO_PROPUESTO",
+          "normasFijas": [
+            "FIX_M"
+          ]
         },
         {
           "id": "LAT1-FON-016",
@@ -204,7 +250,10 @@
             "N16",
             "N20"
           ],
-          "estado": "APTO_PROPUESTO"
+          "estado": "APTO_PROPUESTO",
+          "normasFijas": [
+            "FIX_M"
+          ]
         }
       ]
     },
@@ -222,28 +271,39 @@
           "normas": [
             "N13"
           ],
-          "estado": "APTO_PROPUESTO"
+          "estado": "APTO_PROPUESTO",
+          "normasFijas": [
+            "FIX_M"
+          ]
         },
         {
           "id": "LAT1-FON-019",
           "latin": "multum",
           "castellano": "mucho",
           "normas": [
+            "N01",
             "N13",
             "N18"
           ],
-          "estado": "APTO_PROPUESTO"
+          "estado": "APTO_PROPUESTO",
+          "normasFijas": [
+            "FIX_M"
+          ]
         },
         {
           "id": "LAT1-FON-020",
           "latin": "speculum",
           "castellano": "espejo",
           "normas": [
+            "N01",
             "N14",
             "N16",
             "N20"
           ],
-          "estado": "APTO_PROPUESTO"
+          "estado": "APTO_PROPUESTO",
+          "normasFijas": [
+            "FIX_M"
+          ]
         },
         {
           "id": "LAT1-FON-021",
@@ -253,16 +313,23 @@
             "N13",
             "N15"
           ],
-          "estado": "APTO_PROPUESTO"
+          "estado": "APTO_PROPUESTO",
+          "normasFijas": [
+            "FIX_M"
+          ]
         },
         {
           "id": "LAT1-FON-022",
           "latin": "annum",
           "castellano": "año",
           "normas": [
+            "N01",
             "N13"
           ],
-          "estado": "APTO_PROPUESTO"
+          "estado": "APTO_PROPUESTO",
+          "normasFijas": [
+            "FIX_M"
+          ]
         },
         {
           "id": "LAT1-FON-023",
@@ -272,7 +339,10 @@
             "N01",
             "N13"
           ],
-          "estado": "APTO_PROPUESTO"
+          "estado": "APTO_PROPUESTO",
+          "normasFijas": [
+            "FIX_M"
+          ]
         },
         {
           "id": "LAT1-FON-024",
@@ -282,7 +352,10 @@
             "N07",
             "N15"
           ],
-          "estado": "APTO_PROPUESTO"
+          "estado": "APTO_PROPUESTO",
+          "normasFijas": [
+            "FIX_M"
+          ]
         }
       ]
     },
@@ -298,7 +371,10 @@
             "N03",
             "N17"
           ],
-          "estado": "APTO_PROPUESTO"
+          "estado": "APTO_PROPUESTO",
+          "normasFijas": [
+            "FIX_M"
+          ]
         },
         {
           "id": "LAT1-FON-026",
@@ -315,11 +391,15 @@
           "latin": "alterum",
           "castellano": "otro",
           "normas": [
+            "N01",
             "N12",
             "N16",
             "N18"
           ],
-          "estado": "APTO_PROPUESTO"
+          "estado": "APTO_PROPUESTO",
+          "normasFijas": [
+            "FIX_M"
+          ]
         },
         {
           "id": "LAT1-FON-028",
@@ -329,18 +409,25 @@
             "N16",
             "N20"
           ],
-          "estado": "APTO_PROPUESTO"
+          "estado": "APTO_PROPUESTO",
+          "normasFijas": [
+            "FIX_M"
+          ]
         },
         {
           "id": "LAT1-FON-029",
           "latin": "miraculum",
           "castellano": "milagro",
           "normas": [
+            "N01",
             "N11",
             "N16",
             "N17"
           ],
-          "estado": "APTO_PROPUESTO"
+          "estado": "APTO_PROPUESTO",
+          "normasFijas": [
+            "FIX_M"
+          ]
         },
         {
           "id": "LAT1-FON-030",
@@ -350,17 +437,24 @@
             "N03",
             "N13"
           ],
-          "estado": "APTO_PROPUESTO"
+          "estado": "APTO_PROPUESTO",
+          "normasFijas": [
+            "FIX_M"
+          ]
         },
         {
           "id": "LAT1-FON-031",
           "latin": "dictum",
           "castellano": "dicho",
           "normas": [
+            "N01",
             "N13",
             "N18"
           ],
-          "estado": "APTO_PROPUESTO"
+          "estado": "APTO_PROPUESTO",
+          "normasFijas": [
+            "FIX_M"
+          ]
         }
       ]
     },
@@ -376,7 +470,10 @@
             "N13"
           ],
           "estado": "REVISAR",
-          "observacion": "La evolución de -x- a -j- no se reduce a una palatalización simple; revisar antes de examinar."
+          "observacion": "La evolución de -x- a -j- no se reduce a una palatalización simple; revisar antes de examinar.",
+          "normasFijas": [
+            "FIX_M"
+          ]
         },
         {
           "id": "LAT1-FON-033",
@@ -386,7 +483,10 @@
             "N01",
             "N15"
           ],
-          "estado": "APTO_PROPUESTO"
+          "estado": "APTO_PROPUESTO",
+          "normasFijas": [
+            "FIX_M"
+          ]
         },
         {
           "id": "LAT1-FON-034",
@@ -394,17 +494,24 @@
           "castellano": "empeño",
           "normas": [],
           "estado": "REVISAR",
-          "observacion": "El castellano se relaciona con pignus / in pignus; impignum no es étimo directo seguro."
+          "observacion": "El castellano se relaciona con pignus / in pignus; impignum no es étimo directo seguro.",
+          "normasFijas": [
+            "FIX_M"
+          ]
         },
         {
           "id": "LAT1-FON-035",
           "latin": "fœdum",
           "castellano": "feo",
           "normas": [
+            "N01",
             "N12",
             "N16"
           ],
-          "estado": "APTO_PROPUESTO"
+          "estado": "APTO_PROPUESTO",
+          "normasFijas": [
+            "FIX_M"
+          ]
         },
         {
           "id": "LAT1-FON-036",
@@ -413,16 +520,23 @@
           "normas": [
             "N17"
           ],
-          "estado": "APTO_PROPUESTO"
+          "estado": "APTO_PROPUESTO",
+          "normasFijas": [
+            "FIX_M"
+          ]
         },
         {
           "id": "LAT1-FON-037",
           "latin": "pugnum",
           "castellano": "puño",
           "normas": [
+            "N01",
             "N13"
           ],
-          "estado": "APTO_PROPUESTO"
+          "estado": "APTO_PROPUESTO",
+          "normasFijas": [
+            "FIX_M"
+          ]
         },
         {
           "id": "LAT1-FON-038",
@@ -445,9 +559,13 @@
           "latin": "testum",
           "castellano": "tiesto",
           "normas": [
+            "N01",
             "N07"
           ],
-          "estado": "APTO_PROPUESTO"
+          "estado": "APTO_PROPUESTO",
+          "normasFijas": [
+            "FIX_M"
+          ]
         },
         {
           "id": "LAT1-FON-040",
@@ -457,16 +575,24 @@
             "N14",
             "N15"
           ],
-          "estado": "APTO_PROPUESTO"
+          "estado": "APTO_PROPUESTO",
+          "observacion": "Prótesis de e- ante s + consonante (N14), simplificación -ns- > -s- (N15) y caída fija de la -m del acusativo; no es síncopa.",
+          "normasFijas": [
+            "FIX_M"
+          ]
         },
         {
           "id": "LAT1-FON-041",
           "latin": "pannum",
           "castellano": "paño",
           "normas": [
+            "N01",
             "N13"
           ],
-          "estado": "APTO_PROPUESTO"
+          "estado": "APTO_PROPUESTO",
+          "normasFijas": [
+            "FIX_M"
+          ]
         },
         {
           "id": "LAT1-FON-042",
@@ -477,7 +603,10 @@
             "N15",
             "N16"
           ],
-          "estado": "APTO_PROPUESTO"
+          "estado": "APTO_PROPUESTO",
+          "normasFijas": [
+            "FIX_M"
+          ]
         },
         {
           "id": "LAT1-FON-043",
@@ -486,28 +615,39 @@
           "normas": [
             "N07"
           ],
-          "estado": "APTO_PROPUESTO"
+          "estado": "APTO_PROPUESTO",
+          "normasFijas": [
+            "FIX_M"
+          ]
         },
         {
           "id": "LAT1-FON-044",
           "latin": "cæcum",
           "castellano": "ciego",
           "normas": [
+            "N01",
             "N07",
             "N12",
             "N17"
           ],
-          "estado": "APTO_PROPUESTO"
+          "estado": "APTO_PROPUESTO",
+          "normasFijas": [
+            "FIX_M"
+          ]
         },
         {
           "id": "LAT1-FON-045",
           "latin": "cultellum",
           "castellano": "cuchillo",
           "normas": [
+            "N01",
             "N13",
             "N18"
           ],
-          "estado": "APTO_PROPUESTO"
+          "estado": "APTO_PROPUESTO",
+          "normasFijas": [
+            "FIX_M"
+          ]
         }
       ]
     },
@@ -535,7 +675,10 @@
           "castellano": "igualdad",
           "normas": [],
           "estado": "REVISAR",
-          "observacion": "Igualdad es un derivado de igual (< aequalem) con sufijo -dad, no evolución fonética directa."
+          "observacion": "Igualdad es un derivado de igual (< aequalem) con sufijo -dad, no evolución fonética directa.",
+          "normasFijas": [
+            "FIX_M"
+          ]
         },
         {
           "id": "LAT1-FON-048",
@@ -552,9 +695,13 @@
           "latin": "hortum",
           "castellano": "huerto",
           "normas": [
+            "N01",
             "N07"
           ],
-          "estado": "APTO_PROPUESTO"
+          "estado": "APTO_PROPUESTO",
+          "normasFijas": [
+            "FIX_M"
+          ]
         },
         {
           "id": "LAT1-FON-050",
@@ -564,7 +711,10 @@
             "N01",
             "N13"
           ],
-          "estado": "APTO_PROPUESTO"
+          "estado": "APTO_PROPUESTO",
+          "normasFijas": [
+            "FIX_M"
+          ]
         },
         {
           "id": "LAT1-FON-051",
@@ -574,17 +724,24 @@
             "N16",
             "N17"
           ],
-          "estado": "APTO_PROPUESTO"
+          "estado": "APTO_PROPUESTO",
+          "normasFijas": [
+            "FIX_M"
+          ]
         },
         {
           "id": "LAT1-FON-052",
           "latin": "scutum",
           "castellano": "escudo",
           "normas": [
+            "N01",
             "N14",
             "N17"
           ],
-          "estado": "APTO_PROPUESTO"
+          "estado": "APTO_PROPUESTO",
+          "normasFijas": [
+            "FIX_M"
+          ]
         }
       ]
     },
@@ -597,19 +754,27 @@
           "latin": "rapum",
           "castellano": "rabo",
           "normas": [
+            "N01",
             "N17"
           ],
-          "estado": "APTO_PROPUESTO"
+          "estado": "APTO_PROPUESTO",
+          "normasFijas": [
+            "FIX_M"
+          ]
         },
         {
           "id": "LAT1-FON-054",
           "latin": "stabulum",
           "castellano": "establo",
           "normas": [
+            "N01",
             "N14",
             "N16"
           ],
-          "estado": "APTO_PROPUESTO"
+          "estado": "APTO_PROPUESTO",
+          "normasFijas": [
+            "FIX_M"
+          ]
         },
         {
           "id": "LAT1-FON-055",
@@ -620,7 +785,10 @@
             "N10",
             "N14"
           ],
-          "estado": "APTO_PROPUESTO"
+          "estado": "APTO_PROPUESTO",
+          "normasFijas": [
+            "FIX_M"
+          ]
         },
         {
           "id": "LAT1-FON-056",
@@ -628,7 +796,10 @@
           "castellano": "vajilla",
           "normas": [],
           "estado": "REVISAR",
-          "observacion": "Forma latina no acreditada para vajilla; se relaciona con vascella y transmisión romance."
+          "observacion": "Forma latina no acreditada para vajilla; se relaciona con vascella y transmisión romance.",
+          "normasFijas": [
+            "FIX_M"
+          ]
         },
         {
           "id": "LAT1-FON-057",
@@ -637,27 +808,38 @@
           "normas": [
             "N17"
           ],
-          "estado": "APTO_PROPUESTO"
+          "estado": "APTO_PROPUESTO",
+          "normasFijas": [
+            "FIX_M"
+          ]
         },
         {
           "id": "LAT1-FON-058",
           "latin": "taurum",
           "castellano": "toro",
           "normas": [
+            "N01",
             "N12"
           ],
-          "estado": "APTO_PROPUESTO"
+          "estado": "APTO_PROPUESTO",
+          "normasFijas": [
+            "FIX_M"
+          ]
         },
         {
           "id": "LAT1-FON-059",
           "latin": "periculum",
           "castellano": "peligro",
           "normas": [
+            "N01",
             "N11",
             "N16",
             "N17"
           ],
-          "estado": "APTO_PROPUESTO"
+          "estado": "APTO_PROPUESTO",
+          "normasFijas": [
+            "FIX_M"
+          ]
         }
       ]
     },
@@ -672,10 +854,14 @@
           "latin": "rancidum",
           "castellano": "rancio",
           "normas": [
+            "N01",
             "N13",
             "N16"
           ],
-          "estado": "APTO_PROPUESTO"
+          "estado": "APTO_PROPUESTO",
+          "normasFijas": [
+            "FIX_M"
+          ]
         },
         {
           "id": "LAT1-FON-061",
@@ -685,7 +871,10 @@
             "N11",
             "N16"
           ],
-          "estado": "APTO_PROPUESTO"
+          "estado": "APTO_PROPUESTO",
+          "normasFijas": [
+            "FIX_M"
+          ]
         },
         {
           "id": "LAT1-FON-062",
@@ -695,7 +884,10 @@
             "N03",
             "N08"
           ],
-          "estado": "APTO_PROPUESTO"
+          "estado": "APTO_PROPUESTO",
+          "normasFijas": [
+            "FIX_M"
+          ]
         },
         {
           "id": "LAT1-FON-063",
@@ -706,27 +898,38 @@
             "N08",
             "N13"
           ],
-          "estado": "APTO_PROPUESTO"
+          "estado": "APTO_PROPUESTO",
+          "normasFijas": [
+            "FIX_M"
+          ]
         },
         {
           "id": "LAT1-FON-064",
           "latin": "filium",
           "castellano": "hijo",
           "normas": [
+            "N01",
             "N05",
             "N13"
           ],
-          "estado": "APTO_PROPUESTO"
+          "estado": "APTO_PROPUESTO",
+          "normasFijas": [
+            "FIX_M"
+          ]
         },
         {
           "id": "LAT1-FON-065",
           "latin": "ferrum",
           "castellano": "hierro",
           "normas": [
+            "N01",
             "N05",
             "N07"
           ],
-          "estado": "APTO_PROPUESTO"
+          "estado": "APTO_PROPUESTO",
+          "normasFijas": [
+            "FIX_M"
+          ]
         },
         {
           "id": "LAT1-FON-066",
@@ -753,7 +956,10 @@
             "N13"
           ],
           "estado": "REVISAR",
-          "observacion": "La forma latina correcta es ligna (neutro plural de lignum), no lignam."
+          "observacion": "La forma latina correcta es ligna (neutro plural de lignum), no lignam.",
+          "normasFijas": [
+            "FIX_M"
+          ]
         },
         {
           "id": "LAT1-FON-068",
@@ -762,7 +968,10 @@
           "normas": [
             "N13"
           ],
-          "estado": "APTO_PROPUESTO"
+          "estado": "APTO_PROPUESTO",
+          "normasFijas": [
+            "FIX_M"
+          ]
         },
         {
           "id": "LAT1-FON-069",
@@ -772,25 +981,36 @@
             "N13",
             "N16"
           ],
-          "estado": "APTO_PROPUESTO"
+          "estado": "APTO_PROPUESTO",
+          "normasFijas": [
+            "FIX_M"
+          ]
         },
         {
           "id": "LAT1-FON-070",
           "latin": "podium",
           "castellano": "poyo",
           "normas": [
+            "N01",
             "N13"
           ],
-          "estado": "APTO_PROPUESTO"
+          "estado": "APTO_PROPUESTO",
+          "normasFijas": [
+            "FIX_M"
+          ]
         },
         {
           "id": "LAT1-FON-071",
           "latin": "calidum",
           "castellano": "caldo",
           "normas": [
+            "N01",
             "N16"
           ],
-          "estado": "APTO_PROPUESTO"
+          "estado": "APTO_PROPUESTO",
+          "normasFijas": [
+            "FIX_M"
+          ]
         },
         {
           "id": "LAT1-FON-072",
@@ -800,7 +1020,10 @@
             "N01",
             "N16"
           ],
-          "estado": "APTO_PROPUESTO"
+          "estado": "APTO_PROPUESTO",
+          "normasFijas": [
+            "FIX_M"
+          ]
         },
         {
           "id": "LAT1-FON-073",
