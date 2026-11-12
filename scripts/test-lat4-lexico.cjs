@@ -15,9 +15,10 @@ const norm=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').repl
 function phoneticEligible(row,lessons,allowed){
  if(row.estado!=='APTO_PROPUESTO'||!Array.isArray(row.normas)||!row.normas.length)return false;
  if(!row.normas.every(code=>allowed.has(code)))return false;
- const src=norm(row.latin||row.prompt||'');
- return lessons.some(x=>row.normas.includes(x.code)&&(!x.sourcePattern||new RegExp(x.sourcePattern,'i').test(src)));
+ // La unidad define las normas, no un subconjunto de palabras por patrón.
+ return true;
 }
+const expectedAvailable={1:94,2:119,4:192,8:328};
 for(let last=1;last<=8;last++){
  const taught=curriculum.units.filter(x=>x.unit<=last);
  const prefixCodes=new Set(taught.flatMap(x=>x.prefixGroups));
@@ -29,6 +30,8 @@ for(let last=1;last<=8;last++){
  assert.ok(es.length>=4,'Prefijos ES: UD'+last);
  assert.ok(va.length>=4,'Prefijos VA: UD'+last);
  assert.ok(phon.length>=4,'Fonética: UD'+last);
+ if(expectedAvailable[last]!==undefined)
+  assert.equal(phon.length,expectedAvailable[last],'El banco general debe ser elegible según normas en UD'+last);
  for(const word of va)assert.ok(word.prompt_va && word.prefix,'Prefijo sin equivalencia: '+word.prompt);
  for(const word of phon)assert.ok(word.normas.every(code=>rules.has(code)),'Norma no enseñada: '+word.latin);
  console.log('UD'+last+': '+es.length+' prefijos ES, '+va.length+' VA, '+phon.length+' evoluciones fonéticas compatibles.');
