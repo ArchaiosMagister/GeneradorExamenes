@@ -73,6 +73,13 @@ function readStoredZipEntry(bytes,wanted){
    assert(initial.words.every(Boolean)&&initial.words.every((x,i)=>x===initial.inputs[i]),
     filename+': verbos aleatorios deben constar por escrito en menú y vista previa');
    assert(initial.next,'No hay verbo alternativo en UD9–10');
+   // La reconstrucción de los paneles no puede dejar los inputs en blanco.
+   const rebuilt=await page.evaluate(()=>{
+    document.dispatchEvent(new Event('examina-lex-ready'));
+    return [document.getElementById('lex-verb-0')?.value,
+     document.getElementById('lex-verb-1')?.value];
+   });
+   assert.deepEqual(rebuilt,initial.words,filename+': reconstrucción de menús vacía los verbos');
    for(const phrase of ['73 étimos','fichas disponibles','Las correspondencias pendientes',
     'Solo se sortean verbos ya explicados','La opción UD9–10 abarca']){
     assert(!initial.sidebar.includes(phrase),filename+': permanece explicación '+phrase);
