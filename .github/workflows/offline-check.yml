@@ -106,6 +106,8 @@ jobs:
         run: node scripts/test-vocabulary-quality.cjs
       - name: Probar generador de vocabulario por unidades y Word
         run: npm run vocabulary:test
+      - name: Auditar lematización de oraciones y decisiones guardadas
+        run: node scripts/audit-sentence-lemmas.cjs
       - name: Probar lemas ambiguos y formato del glosario de oraciones
         run: node scripts/test-exam-glossary.cjs
       - name: Auditar las 612 formas pendientes aportadas para Latín I
