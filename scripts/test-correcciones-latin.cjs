@@ -45,7 +45,19 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
   assert(latin.nouns.length>0);
   assert(latin.nouns.every(s=>/^[^+]+,\s*–\S+.*\s\+\s[^+]+,\s*–\S+/u.test(s)),
    'UD2: enunciados completos de adjetivo + sustantivo: '+latin.nouns.join(' | '));
-  assert(latin.verbs.every(s=>!/,.*,.*/.test(s)&&/, [1-4]ª$/.test(s)),'UD2: solo presente y conjugación: '+latin.verbs);
+  // UD2 incluye ya el imperfecto activo. La cabecera conserva solo el
+  // presente del enunciado y la conjugación (o «sum, irr.»), con
+  // indicación de tiempo/voz si no se pide presente activo.
+  assert(latin.verbs.every(text=>{
+   const [lemma,description='']=text.split(/\s+—\s+/);
+   const enunciation=/^.+,\s*(?:[1-4]ª|mx\.|irr\.)$/.test(lemma)&&!/^.+,.+,/.test(lemma);
+   const tense=!description||/^imperfecto de indicativo, voz activa$/.test(description);
+   return enunciation&&tense;
+  }),'UD2: lema y conjugación con tiempos explicados: '+latin.verbs);
+  const ud2Tenses=await page.evaluate(()=>latinSchoolVerbRows(['UD2']).map(x=>x.id));
+  assert(ud2Tenses.includes('imperfect-active'),'UD2 debe incluir imperfecto activo');
+  assert(ud2Tenses.every(x=>['present-active','imperfect-active'].includes(x)),
+   'UD2 contiene formas de tiempos o voces no explicados: '+ud2Tenses);
   assert(latin.hasWordRegens>0,'Falta regeneración individual de sustantivos');
   await configure('latin1','tablas','UD4');
   latin=await page.evaluate(()=>({
