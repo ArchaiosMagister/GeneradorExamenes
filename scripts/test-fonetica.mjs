@@ -7,7 +7,7 @@ import {PALABRAS_POR_EXAMEN,seleccionarEvoluciones} from '../data/fonetica/selec
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const banco=JSON.parse(readFileSync(resolve(root,'data/fonetica/banco_examenes.json'),'utf8'));
 const ids=banco.items.map(x=>x.id);
-assert.equal(banco.items.length,526);
+assert.equal(banco.items.length,530);
 assert.equal(new Set(ids).size,banco.items.length,'Identificadores duplicados');
 assert.equal(banco.normas.length,20);
 assert.equal(PALABRAS_POR_EXAMEN,4);
