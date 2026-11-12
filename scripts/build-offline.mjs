@@ -13,7 +13,9 @@ export async function renderOffline(root=projectRoot){
  // Los enlaces y controles PWA no deben aparecer en el HTML de archivo único.
  const metadata=['<meta name="theme-color" content="#16355d">',
   '<link rel="manifest" href="./manifest.webmanifest">',
-  '<link rel="icon" href="./icons/icon-192.png" type="image/png">'];
+  '<link rel="icon" href="./icons/icon-192.png" type="image/png">',
+  '<link rel="icon" href="./icons/favicon-48.png" type="image/png" sizes="48x48">',
+  '<link rel="apple-touch-icon" href="./icons/apple-touch-icon-180.png" sizes="180x180">'];
  const begin='<!-- EXAMINA_PWA_START -->',end='<!-- EXAMINA_PWA_END -->';
  const first=sourceHtml.indexOf(begin),last=sourceHtml.indexOf(end,first);
  if(!metadata.every(tag=>sourceHtml.includes(tag))||first<0||last<0||

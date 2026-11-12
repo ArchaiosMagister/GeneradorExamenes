@@ -33,7 +33,24 @@ const server=http.createServer(async(req,res)=>{
  }
  const manifest=JSON.parse(await fs.readFile(path.join(ROOT,'manifest.webmanifest'),'utf8'));
  assert.equal(manifest.scope,'./');assert.equal(manifest.start_url,'./');
- assert.equal(manifest.icons.length,2);
+ assert.equal(manifest.icons.length,3);
+ assert(manifest.icons.some(icon=>icon.src==='./icons/icon-512.png'&&icon.purpose==='any'),
+   'Falta icono estándar de 512 px');
+ assert(manifest.icons.some(icon=>icon.src==='./icons/icon-maskable-512.png'&&icon.purpose==='maskable'),
+   'Falta icono adaptable para Android');
+ const extraIcons=[['icon-maskable-512.png',512],['apple-touch-icon-180.png',180],['favicon-48.png',48]];
+ for(const [name,size] of extraIcons){
+  const png=await fs.readFile(path.join(ROOT,'icons',name));
+  assert.equal(png.subarray(0,8).toString('hex'),'89504e470d0a1a0a','Icono adicional PNG inválido: '+name);
+  assert.equal(png.readUInt32BE(16),size,'Dimensión incorrecta: '+name);
+  assert.equal(png.readUInt32BE(20),size,'Dimensión incorrecta: '+name);
+ }
+ const html=await fs.readFile(path.join(ROOT,'index.html'),'utf8');
+ assert(html.includes('rel="apple-touch-icon" href="./icons/apple-touch-icon-180.png"'),
+   'iPhone y iPad no tienen icono específico');
+ const sw=await fs.readFile(path.join(ROOT,'sw.js'),'utf8');
+ assert(extraIcons.every(([name])=>sw.includes('./icons/'+name)),
+   'Los iconos de Apple, Android y navegador deben quedar disponibles sin conexión');
  await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
  const origin='http://127.0.0.1:'+server.address().port;
  const browser=await chromium.launch({headless:true,
