@@ -1445,7 +1445,7 @@ const latinPersonalPresentPassiveLemmas=new Set([...latinPersonalPerfectPassiveL
  * Fuente 5: contraste externo individual; fuente 1: paradigma docente explícito.
  * Ningún irregular o deponente se construye mediante una analogía no documentada.
  */
-const latinExplicitVerbEvidence={"sum":[{"tense":"presente","voice":"activa","forms":["sum","es","est","sumus","estis","sunt"],"sourceCode":5},{"tense":"imperfecto","voice":"activa","forms":["eram","eras","erat","eramus","eratis","erant"],"sourceCode":5},{"tense":"futuro","voice":"activa","forms":["ero","eris","erit","erimus","eritis","erunt"],"sourceCode":5},{"tense":"perfecto","voice":"activa","forms":["fui","fuisti","fuit","fuimus","fuistis","fuerunt"],"sourceCode":5},{"tense":"pluscuamperfecto","voice":"activa","forms":["fueram","fueras","fuerat","fueramus","fueratis","fuerant"],"sourceCode":5}],"eo":[{"tense":"presente","voice":"activa","forms":["eo","is","it","imus","itis","eunt"],"sourceCode":5}],"conor":[{"tense":"presente","voice":"deponente","forms":["conor","conaris","conatur","conamur","conamini","conantur"],"sourceCode":1}]};
+const latinExplicitVerbEvidence={"sum":[{"tense":"presente","voice":"activa","forms":["sum","es","est","sumus","estis","sunt"],"sourceCode":5},{"tense":"imperfecto","voice":"activa","forms":["eram","eras","erat","eramus","eratis","erant"],"sourceCode":5},{"tense":"futuro","voice":"activa","forms":["ero","eris","erit","erimus","eritis","erunt"],"sourceCode":5},{"tense":"perfecto","voice":"activa","forms":["fui","fuisti","fuit","fuimus","fuistis","fuerunt"],"sourceCode":5},{"tense":"pluscuamperfecto","voice":"activa","forms":["fueram","fueras","fuerat","fueramus","fueratis","fuerant"],"sourceCode":5}],"eo":[{"tense":"presente","voice":"activa","forms":["eo","is","it","imus","itis","eunt"],"sourceCode":5}],"conor":[{"tense":"presente","voice":"deponente","forms":["conor","conaris","conatur","conamur","conamini","conantur"],"sourceCode":1}],"possum":[{"tense":"presente","voice":"activa","forms":["possum","potes","potest","possumus","potestis","possunt"],"sourceCode":5},{"tense":"imperfecto","voice":"activa","forms":["poteram","poteras","poterat","poteramus","poteratis","poterant"],"sourceCode":5},{"tense":"futuro","voice":"activa","forms":["potero","poteris","poterit","poterimus","poteritis","poterunt"],"sourceCode":5},{"tense":"perfecto","voice":"activa","forms":["potui","potuisti","potuit","potuimus","potuistis","potuerunt"],"sourceCode":5},{"tense":"pluscuamperfecto","voice":"activa","forms":["potueram","potueras","potuerat","potueramus","potueratis","potuerant"],"sourceCode":5}],"confero":[{"tense":"presente","voice":"activa","forms":["confero","confers","confert","conferimus","confertis","conferunt"],"sourceCode":5},{"tense":"imperfecto","voice":"activa","forms":["conferebam","conferebas","conferebat","conferebamus","conferebatis","conferebant"],"sourceCode":5},{"tense":"futuro","voice":"activa","forms":["conferam","conferes","conferet","conferemus","conferetis","conferent"],"sourceCode":5},{"tense":"perfecto","voice":"activa","forms":["contuli","contulisti","contulit","contulimus","contulistis","contulerunt"],"sourceCode":5},{"tense":"pluscuamperfecto","voice":"activa","forms":["contuleram","contuleras","contulerat","contuleramus","contuleratis","contulerant"],"sourceCode":5}],"loquor":[{"tense":"presente","voice":"deponente","forms":["loquor","loqueris","loquitur","loquimur","loquimini","loquuntur"],"sourceCode":5}],"sequor":[{"tense":"presente","voice":"deponente","forms":["sequor","sequeris","sequitur","sequimur","sequimini","sequuntur"],"sourceCode":5}]};
 function latinExplicitVerbRows(chosen){
  if(currentCourse()!=='latin1')return [];
  const max=Math.max(0,...chosen.map(examUnitNumber).filter(Number.isInteger));
@@ -1469,15 +1469,15 @@ function latinMorphologyVerbPool(chosen){
   if(!Array.isArray(p.forms)||p.forms.length!==6)continue;
   const entry=x.entry,sourceEntry=p.sourceEntry||entry,paradigm=mVerb(sourceEntry);
   const explicitPresent=latinExplicitVerbEvidence[examKey(entry)]?.find(x=>
-   x.tense==='presente'&&x.voice==='activa');
+   x.tense==='presente'&&x.voice===(p.evidenceVoice||'activa'));
   const add=(forms,tense,voice)=>forms.forEach((form,i)=>{
    if(!form)return;
-   const documented=tense==='presente'&&voice==='activa'&&explicitPresent?.forms[i]===form;
+   const documented=tense==='presente'&&voice===(p.evidenceVoice||'activa')&&explicitPresent?.forms[i]===form;
    result.push({form,entry,sourceEntry,person:p.labels[i],
     tense:tense+' de indicativo',voice,
     ...(documented?{sourceCode:explicitPresent.sourceCode,evidence:'forma documentada individualmente'}:{})});
   });
-  add(p.forms,'presente','activa');
+  add(p.forms,'presente',p.evidenceVoice||'activa');
   if(!paradigm)continue; // No construir otras formas desde paradigmas incompletos.
   if(max>=2)add(paradigm.tenses[1][1],'imperfecto','activa');
   if(max>=4){
@@ -1830,7 +1830,7 @@ function latinExamFormCandidates(chosen,allForms=false){
   else if(a){if(permitted('adjectives')&&(currentCourse()!=='latin1'||limit>=2))
    add(1,a.forms,a.labels,'adjectives',x.entry)}
   else if(v){
-   add(2,v.forms,v.labels.map(label=>label+', presente de indicativo activo'),'verbs',x.entry);
+   add(2,v.forms,v.labels.map(label=>label+', presente de indicativo '+(v.evidenceVoice==='deponente'?'deponente':'activo')),'verbs',x.entry);
    indexedVerbs.add(examKey(x.entry));
   }
  }
@@ -2276,8 +2276,10 @@ function noun(x){const p=mNoun(x.entry);if(!p)return null;
  return {word:p.lemma,entry:x.entry,forms:order.map(([n,i])=>p.forms[n][i]),labels};
 }
 function verb(x){
- const explicit=latinExplicitVerbEvidence[examKey(x.entry)]?.find(row=>row.tense==='presente'&&row.voice==='activa');
+ const explicit=latinExplicitVerbEvidence[examKey(x.entry)]?.find(row=>row.tense==='presente'&&
+  (row.voice==='activa'||row.voice==='deponente'));
  if(explicit)return {entry:x.entry,sourceEntry:x.entry,forms:explicit.forms,
+  evidenceVoice:explicit.voice,sourceCode:explicit.sourceCode,
   labels:['1.ª persona singular','2.ª persona singular','3.ª persona singular',
    '1.ª persona plural','2.ª persona plural','3.ª persona plural'],
   evidence:'seis formas explícitas del índice · fuente '+explicit.sourceCode};
