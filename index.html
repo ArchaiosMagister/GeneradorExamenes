@@ -3403,7 +3403,10 @@ function setLatinPreverbWord(index,value,fromPreview=false){
   {prompt:normalized,answer:'',reviewRequired:true};
  const updated=previous.slice();updated[index]=next;
  examSelectionCache.set(key,updated);
- if(!fromPreview)$('paper').querySelectorAll('[data-lex-slot="preverbs:'+index+'"] i')
+ if(fromPreview){
+  const input=$('lex-verb-'+index);
+  if(input)input.value=normalized;
+ }else $('paper').querySelectorAll('[data-lex-slot="preverbs:'+index+'"] i')
   .forEach(node=>{node.textContent=normalized});
  latinLexStatus('preverbs',updated);
 }
@@ -3440,7 +3443,10 @@ function setLatinLexEditableWord(kind,index,value,fromPreview=false){
  };
  const updated=previous.slice();updated[index]=next;
  examSelectionCache.set(key,updated);
- if(!fromPreview)$('paper').querySelectorAll('[data-lex-slot="'+kind+':'+index+'"] i')
+ if(fromPreview){
+  const input=$('lex-edit-'+kind+'-'+index);
+  if(input)input.value=normalized;
+ }else $('paper').querySelectorAll('[data-lex-slot="'+kind+':'+index+'"] i')
   .forEach(node=>{node.textContent=normalized});
  latinLexStatus(kind,updated);
 }
