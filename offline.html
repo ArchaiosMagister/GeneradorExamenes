@@ -5531,6 +5531,16 @@ function latinExamSurface(form,entry){
  if(oeDiphthong)result=result.replace(/oe/gi,match=>ligature(match,'œ','Œ'));
  return result;
 }
+// Solo verbos transitivos con pasiva personal clara; el supino por sí solo
+// no autoriza pasivas personales de intransitivos como venio o curro.
+// Esta lista de admisión es curricular, no certifica formas individuales.
+const latinPersonalPerfectPassiveLemmas=new Set([
+ 'amo','moneo','duco','mitto','scribo','voco','pulso','video','lego',
+ 'doceo','moveo','ago','vinco','vulnero','saluto','monstro','nuntio',
+ 'oppugno','expugno','libero','importo','aro','tolero','sentio','deleo',
+ 'laudo','creo','cremo','narro','paro','vasto','orno','dico','relinquo',
+ 'rego','pono','audio','cogo','habeo','reddo','recito','peto'
+]);
 // Banco de análisis verbal: únicamente indicativo y formas regulares obtenidas
 // de los paradigmas admitidos para el vocabulario y las unidades seleccionadas.
 // El índice UniMorph genérico no acredita por sí solo una flexión para examen.
@@ -5578,7 +5588,8 @@ function latinMorphologyVerbPool(chosen){
   // sujeto (género y número) + presente / imperfecto de sum. Se deriva
   // únicamente del supino -um declarado para un verbo ya admitido por mVerb;
   // esta regla no equivale a certificar individualmente las formas en el banco.
-  if(max>=9&&/^[a-z]+um$/i.test(paradigm.supine||'')){
+  if(max>=9&&latinPersonalPerfectPassiveLemmas.has(examKey(entry))&&
+   /^[a-z]+um$/i.test(paradigm.supine||'')){
    const participialStem=paradigm.supine.slice(0,-2);
    const genderEndings=[
     ['masculino','us','i'],['femenino','a','ae'],['neutro','um','a']
