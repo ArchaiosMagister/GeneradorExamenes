@@ -84,6 +84,11 @@ export async function renderOffline(root=projectRoot){
  const eulexisModule=await readFile(resolve(root,'eulexis-local.js'),'utf8');
  const cultureModule=await readFile(resolve(root,'culture-lat4.js'),'utf8');
  const valencianModule=await readFile(resolve(root,'lexicon-valenciano.js'),'utf8');
+ const requiredLatinExternal='<script src="required-latin-units.js"></script>';
+ const requiredLatinModule=await readFile(resolve(root,'required-latin-units.js'),'utf8');
+ if(!html.includes(requiredLatinExternal))throw new Error('Faltan listas exigibles latinas');
+ html=html.replace(requiredLatinExternal,
+  '<script>'+requiredLatinModule.replace(/<\\/script/gi,'<\\\\/script')+'</script>');
  const valencianExternal='<script src="lexicon-valenciano.js"></script>';
  if(!html.includes(valencianExternal))throw new Error('Falta el léxico valenciano en index.html');
  html=html.replace(valencianExternal,'<script>'+valencianModule.replace(/<\/script/gi,'<\\/script')+'</script>');
