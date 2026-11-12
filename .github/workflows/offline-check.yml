@@ -119,6 +119,8 @@ jobs:
         run: node scripts/test-auditoria-ui.cjs
       - name: Verificar autorizaciones académicas y bloqueo DOCX en Chromium sin conexión
         run: node scripts/test-academic-evidence-browser.cjs
+      - name: Verificar exportación definitiva sin romper descargas de borradores
+        run: node scripts/test-final-export-preflight.cjs
       - name: Auditar cada unidad y exportar inventario morfológico grecolatino
         run: node scripts/test-verb-curriculum-browser.cjs
       - name: Conservar matriz curricular para revisión filológica
