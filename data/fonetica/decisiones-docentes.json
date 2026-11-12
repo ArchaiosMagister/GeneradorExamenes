@@ -21,6 +21,74 @@
       "motivo": "Patrimonial, distinguir del cultismo película",
       "estado": "APTO_PROPUESTO",
       "id": "EVF-1061"
+    },
+    {
+      "latin": "scrinium",
+      "decision": "excluir",
+      "motivo": "No incorporar escriño ni reabrir la decisión en ampliaciones automáticas.",
+      "estado": "EXCLUIDA"
+    },
+    {
+      "latin": "quinionem",
+      "decision": "excluir",
+      "motivo": "No incorporar quiñón ni reabrir la decisión en ampliaciones automáticas.",
+      "estado": "EXCLUIDA"
+    },
+    {
+      "latin": "contum",
+      "decision": "aceptar_acepcion",
+      "castellano": "cuento",
+      "acepcion": "cuento²: contera, puntal o extremo opuesto a la punta de una lanza/bastón; no el cuento narrativo",
+      "normas": [
+        "N07"
+      ],
+      "estado": "APTO_PROPUESTO",
+      "id": "EVF-1074",
+      "fuente": "https://iedra.es/palabras/cuento"
+    },
+    {
+      "latin": "sŏcrum",
+      "decision": "corregir_femenino",
+      "latinCorregido": "sŏcram",
+      "castellanoCorregido": "suegra",
+      "motivo": "Sŏcram (acusativo de SOCRA, lat. vulgar) es el étimo femenino. Pendiente de encaje de -cr- > -gr- en las 20 normas existentes; no activar aún.",
+      "estado": "CORREGIDA_PENDIENTE",
+      "fuentes": [
+        "https://iedra.es/palabras/suegra",
+        "https://ghcl.ub.edu/diccaxv/listings/WordsByFrequencyIndex/page%3A1174/sort%3Acontexto_count/direction%3Aasc/myLanguage%3Aes"
+      ]
+    },
+    {
+      "latin": "stylum",
+      "decision": "corregir",
+      "latinCorregido": "stilum",
+      "castellano": "estilo",
+      "motivo": "Se corrige y elimina la variante con y del registro; el étimo clásico es STILUS, -I, acusativo STILUM. Vía culta, con etiqueta.",
+      "estado": "CORREGIDA_INCORPORADA_CULTA",
+      "id": "EVF-1075",
+      "fuente": "https://ghcl.ub.edu/diccaxv/dictionary/ViewLema/8922"
+    },
+    {
+      "grupo": "cultismos",
+      "decision": "inclusion_condicionada",
+      "motivo": "No importar masivamente. Verificar cada étimo y la norma N10/N12/N14, etiquetar en la pregunta como adaptación culta y dejar las demás candidatas pendientes fuera del sorteo.",
+      "estado": "REVISION_CONDICIONADA",
+      "aprobadas": [
+        {
+          "latin": "stilum",
+          "id": "EVF-1075"
+        },
+        {
+          "latin": "athletam",
+          "id": "EVF-1076"
+        },
+        {
+          "latin": "blasphemiam",
+          "id": "EVF-1077"
+        }
+      ],
+      "restantes_auditadas": 24
     }
-  ]
+  ],
+  "politica": "Las exclusiones docentes son vinculantes para futuros lotes. Las sustituciones de étimo no certifican por sí solas normas no verificadas. Las adaptaciones cultas solo se sortearán tras comprobación y con etiqueta visible."
 }
