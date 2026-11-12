@@ -2647,8 +2647,9 @@ function greekRegenerate(kind){
 function greekExamControls(){
  const host=$('manualMorphWords');
  if(!host||currentCourse()!=='greek1'||$('model').value!=='complete'||!greekExamState)return;
+ examEditorLinks=new WeakMap();examEditorLinkSerial=0;
  host.replaceChildren();
- const labels={declension:'Declinación',conjugation:'Conjugación',forms:'Análisis morfológico',etymology:'Derivados etimológicos'};
+ const labels={declension:'Declinación',conjugation:'Conjugación',forms:'Análisis morfológico',pronouns:'Pronombres',etymology:'Derivados etimológicos'};
  for(const [kind,label] of Object.entries(labels)){
   const pool=greekChoicePool(kind),selected=greekExamState.ids[kind]||[];
   const row=document.createElement('div');row.style.margin='12px 0';row.style.padding='9px';row.style.border='1px solid #dce3ec';row.style.borderRadius='8px';
@@ -2686,29 +2687,28 @@ function greekExamControls(){
    const edit=document.createElement('label');edit.style.display='block';edit.style.margin='9px 0';
    edit.textContent=label+' '+(index+1)+' (editable): ';
    const input=document.createElement('input');input.type='text';input.style.width='100%';
-   input.value=kind==='conjugation'?headLex(item.lemmas[0]):item.prompt;
+   const node=[...$('paper').querySelectorAll('[data-corpus-id]')]
+    .find(element=>element.dataset.corpusId===id);
+   const target=kind==='declension'?node?.querySelector('thead th[colspan]'):
+    kind==='conjugation'?node:
+    kind==='forms'?node?.querySelector('span:last-child'):
+    kind==='pronouns'?node?.querySelector('td:first-child'):node;
+   const mode=kind==='etymology'?'etymology':kind==='forms'?'colon':'plain';
+   input.value=target?examEditorPreviewValue(target,mode):
+    kind==='conjugation'?headLex(item.lemmas[0]):item.prompt;
    input.setAttribute('aria-label','Editar '+label+' '+id);
+   linkExamWordEditor(target,input,mode);
    input.addEventListener('input',()=>{
-    const paper=$('paper'),node=[...paper.querySelectorAll('[data-corpus-id]')]
-     .find(element=>element.dataset.corpusId===id);
-    if(!node)return;
-    const target=kind==='declension'?node.querySelector('thead th[colspan]'):
-     kind==='conjugation'?node:
-     kind==='forms'||kind==='sentences'?node.querySelector('span:last-child'):
-     kind==='pronouns'?node.querySelector('td:first-child'):node;
     if(!target)return;
     const value=input.value.trim();
-    if(kind==='forms')target.textContent=value+':';
+    if(kind==='declension'||kind==='conjugation')
+     target.innerHTML=examParadigmHeading(value,kind==='conjugation'?'conjugation':'declension');
+    else if(kind==='forms')target.textContent=value+':';
     else if(kind==='etymology'){
-     const prefix=target.textContent.match(/^\s*[a-z]\.\s*/)?.[0]||'';
+     const prefix=target.textContent.match(/^\s*[a-z]\.\s*/iu)?.[0]||'';
      target.textContent=prefix+value+':';
     }else target.textContent=value;
-    const key=paper.querySelector('#answerkey');
-    if(key&&!key.querySelector('[data-manual-warning]')){
-     const warning=document.createElement('p');warning.dataset.manualWarning='true';
-     warning.textContent='Has modificado palabras manualmente: revisa las soluciones automáticas, que pueden corresponder a las anteriores.';
-     key.prepend(warning);
-    }
+    warnExamManualSolution();
    });
    edit.append(input);row.append(edit);
    if(['declension','conjugation','forms'].includes(kind)){
