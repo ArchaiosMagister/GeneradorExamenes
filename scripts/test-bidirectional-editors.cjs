@@ -181,8 +181,13 @@ function readZipEntry(bytes,name){
    const syntagm=page.locator('#paper [data-syntagm-slot="0"] i');
    assert.equal(await syntagm.textContent(),'magnus, –a, –um + puer, –i');
    await syntagm.fill('clarus, –a, –um + agricola, –ae');
-   assert((await syntagms.inputValue()).startsWith('clarus, –a, –um + agricola, –ae'),
-    filename+': modificar sintagma en papel no actualiza textarea');
+   const detail=await page.evaluate(()=>({
+    textarea:document.getElementById('morphSyntagms').value,
+    target:document.querySelector('#paper [data-syntagm-slot="0"] i')?.outerHTML,
+    editor:document.querySelector('#examQuestionMenus input[data-exam-editor-id="0"]')?.value
+   }));
+   assert(detail.textarea.startsWith('clarus, –a, –um + agricola, –ae'),
+    filename+': modificar sintagma en papel no actualiza textarea: '+JSON.stringify(detail));
    const syntagmId=await syntagm.getAttribute('data-exam-editor-id');
    const individual=page.locator('#examQuestionMenus input[data-exam-editor-id="'+syntagmId+'"]');
    assert.equal(await individual.inputValue(),'clarus, –a, –um + agricola, –ae');
