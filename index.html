@@ -1430,10 +1430,10 @@ function generateLatinMorphologyReference(){
    pronItems.map(x=>'<tr><td><i>'+esc(x.form)+'</i></td><td></td><td></td><td></td><td></td></tr>').join('')+
    '</tbody></table>';
  }
- const last=examQuestionEnabled('forms')?question(++n,t('Analiza morfológicamente las siguientes palabras variables (1 p.).','Analitza morfològicament les paraules variables següents (1 p.).'))+
+ const last=examQuestionEnabled('forms')?question(++n,t('Analiza morfológicamente las siguientes palabras (1 p.).','Analitza morfològicament les paraules següents (1 p.).'))+
   words.map((x,i)=>'<p class="exam-item reference-analysis-item" data-analysis-slot="'+i+'">'+String.fromCharCode(97+i)+'. <i>'+
   esc(latinExamSurface(x.form,x.entry))+'</i>'+
-  (latinMorphologyEnunciation(x,chosen)?' (<i>'+esc(latinMorphologyEnunciation(x,chosen))+'</i>)':'')+
+  latinMorphologyEnunciationHtml(x,chosen)+
   ': <span class="reference-answer-line"></span></p>').join(''):'';
  const problems=[];
  if(second&&verbItems.length<cfg.verbs)problems.push('Formas verbales: '+verbItems.length+' de '+cfg.verbs);
@@ -1532,17 +1532,28 @@ function latinVerbExamEnunciation(entry,chosen,paradigm=null){
  // presente con la conjugación; los datos del banco NO se recortan.
  const raw=String(entry||''),source=String(paradigm?.sourceEntry||'');
  const evidence=/\([1-4]ª\)/.test(raw)?raw:source||raw;
- const conj=(evidence.match(/\(([1-4])ª\)/)||[])[1];
+ const conj=(evidence.match(/\(\s*((?:[1-4]ª|mx\.|irr\.))\s*\)/i)||[])[1];
  const lemma=headLex(raw)||headLex(source);
  const max=Math.max(0,...chosen.map(examUnitNumber).filter(Number.isInteger));
  const perfectIntroduced={latin1:4,latin4:4}[currentCourse()]||Infinity;
- if(max<perfectIntroduced)return lemma+(conj?', '+conj+'ª':'');
+ if(max<perfectIntroduced)return lemma+(conj?', '+conj:'');
  return latinDisplayEnunciation(raw.includes(',')?raw:source||raw);
 }
 function latinMorphologyEnunciation(item,chosen){
  if(item.category==='pronouns')return '';
  if(item.category==='verbs')return latinVerbExamEnunciation(item.entry,chosen,item);
  return latinDisplayEnunciation(item.entry||'');
+}
+// En el enunciado de análisis, las formas latinas van en cursiva, pero
+// el tipo de conjugación es una indicación en redonda dentro del mismo paréntesis.
+function latinMorphologyEnunciationHtml(item,chosen){
+ const enunciation=latinMorphologyEnunciation(item,chosen);
+ if(!enunciation)return '';
+ if(item.category!=='verbs')return ' (<i>'+esc(enunciation)+'</i>)';
+ const match=enunciation.match(/^(.*?)\s*(?:\(\s*([1-4]ª|mx\.|irr\.)\s*\)|,\s*([1-4]ª|mx\.|irr\.))$/i);
+ const forms=match?match[1].trim():enunciation;
+ const conjugation=match?(match[2]||match[3]):'';
+ return ' (<i>'+esc(forms)+'</i>'+(conjugation?', '+esc(conjugation):'')+')';
 }
 function latinCompleteCompoundActive(chosen){
  const from={latin1:2,latin4:3}[currentCourse()];
@@ -1679,7 +1690,7 @@ function generate(){
  const forms=stickyExamRows('forms',()=>examQuotaPick(latinExamFormCandidates(chosen),formsCount,()=>latinExamForms(chosen,formsCount)));
  if(examQuestionEnabled('forms'))add(t('Analiza morfológicamente las siguientes formas.','Analitza morfològicament les formes següents.'),
   forms.length?'<ol class="task" type="a">'+forms.map((x,i)=>'<li data-analysis-slot="'+i+'"><i>'+esc(x.form)+'</i>'+
-   (latinMorphologyEnunciation(x,chosen)?' (<i>'+esc(latinMorphologyEnunciation(x,chosen))+'</i>)':'')+
+   latinMorphologyEnunciationHtml(x,chosen)+
    ': <span class="reference-answer-line"></span></li>').join('')+'</ol>':missing('No hay formas variables verificadas para estas unidades.'),
   '<ol>'+forms.map(x=>'<li>'+esc(x.form)+' — '+esc(x.answer)+'</li>').join('')+'</ol>');
  if(course==='latin1'&&examQuestionEnabled('pronouns')){
@@ -2646,7 +2657,7 @@ function generateGreekMorphologyFixed(){
    '<table class="exam-paradigm reference-morph-table exam-pronouns"><thead><tr><th>Forma</th><th>Tipo</th><th>Caso</th><th>Género</th><th>Número</th></tr></thead><tbody>'+
    pronouns.map(x=>'<tr data-corpus-id="'+x.id+'"><td><i>'+esc(x.prompt)+'</i></td><td></td><td></td><td></td><td></td></tr>').join('')+'</tbody></table>';
  }
- const last=examQuestionEnabled('forms')?question(++n,t('Analiza morfológicamente las siguientes palabras variables (1 p.).','Analitza morfològicament les paraules variables següents (1 p.).'))+
+ const last=examQuestionEnabled('forms')?question(++n,t('Analiza morfológicamente las siguientes palabras (1 p.).','Analitza morfològicament les paraules següents (1 p.).'))+
   words.map((x,i)=>'<p class="exam-item reference-analysis-item" data-analysis-slot="'+i+'" data-corpus-id="'+x.id+'">'+String.fromCharCode(97+i)+'. <i>'+esc(x.prompt)+'</i>'+(Array.isArray(x.lemmas)&&x.lemmas.length?' ('+esc(x.lemmas.filter(Boolean).join(' / '))+')':'')+': <span class="reference-answer-line"></span></p>').join(''):'';
  const problems=[];
  if(second&&verbs.length<cfg.verbs)problems.push('Verbos: '+verbs.length+' de '+cfg.verbs);

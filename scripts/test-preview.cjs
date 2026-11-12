@@ -123,6 +123,29 @@ async function checkFile(browser,filename){
  assert(lexWord.includes('<w:i/>'),filename+': falta cursiva del estímulo léxico en Word');
  assert(lexWord.includes('inmortal'),filename+': término léxico omitido en Word');
  assert(lexWord.indexOf('c.')<lexWord.indexOf('<w:i/>'),filename+': letra de apartado en cursiva');
+ // El lema verbal debe exportarse en cursiva, pero el tipo de conjugación
+ // en redonda: comprobar HTML y runs reales del exportador Word.
+ const morphologyWord=await page.evaluate(()=>{
+  return ['UD3','UD4'].map(unit=>{
+   const item=document.createElement('p');item.className='exam-item';
+   item.innerHTML='<span class="exam-letter">a.</span> ducit'+
+    latinMorphologyEnunciationHtml({category:'verbs',entry:'duco, duxi, ductum (3ª)'},[unit]);
+   const lexeme=item.querySelector('i'),suffix=lexeme?.nextSibling;
+   return {unit,italicText:lexeme?.textContent,suffix:suffix?.textContent,
+    italicWord:wordInline(lexeme),suffixWord:wordInline(suffix),
+    paragraph:wordExamParagraph(item),fullText:item.textContent};
+  });
+ });
+ for(const item of morphologyWord){
+  const full=item.unit==='UD3'?'duco':'duco, duxi, ductum';
+  assert.equal(item.italicText,full,filename+': lema incorrecto en '+item.unit);
+  assert.equal(item.suffix,', 3ª)',filename+': conjugación mal separada en '+item.unit);
+  assert(item.italicWord.includes('<w:i/>'),filename+': lexema sin cursiva en Word '+item.unit);
+  assert(!item.suffixWord.includes('<w:i/>'),filename+': conjugación en cursiva en Word '+item.unit);
+  assert(item.paragraph.includes('3ª')&&item.paragraph.includes('<w:i/>'),
+   filename+': falta lema/conjugación en el documento Word '+item.unit);
+ }
+
  const cases=[
   ['latin1','tablas','UD3'],['latin1','morf','UD3'],['latin1','mixto','UD3'],
   ['latin4','tablas','UD3'],
