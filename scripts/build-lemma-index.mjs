@@ -61,7 +61,8 @@ async function main(){
   ...arrayLiteral(greekSource,'window.GRAMMAR_PARADIGMS.push(...')
  ];
  const overrides=JSON.parse(await fs.readFile(verifiedOverridesPath,'utf8'));
- if(overrides.schema!==1||overrides.sourceCode!==5||!Array.isArray(overrides.entryCorrections)||!Array.isArray(overrides.paradigms))
+ if(overrides.schema!==1||overrides.sourceCode!==5||!Array.isArray(overrides.entryCorrections)||!Array.isArray(overrides.paradigms)||
+    !Array.isArray(overrides.singleForms))
   throw Error('Listado de formas contrastadas inválido');
  const catalog={lat:{},grc:{}};
  for(const entry of vocabulary){
@@ -217,6 +218,22 @@ async function main(){
    }
   }
  }
+ // Revisiones individuales: una única superficie, un lema y una lectura
+ // respaldada por una referencia explícita. No completar otras casillas del
+ // paradigma por analogía ni modificar los enunciados del profesor.
+ const verifiedSingleKeys=new Set();
+ for(const record of overrides.singleForms){
+  if(record.lang!=='lat'||!catalog[record.lang]?.[record.lemma]||
+     typeof record.form!=='string'||!/^https:\/\//.test(record.reference)||
+     !/^V;(?:IMP;ACT;PRS;2;PL|PTCP;(?:ACT|PASS);PRF;(?:NOM;SG;FEM|NOM;SG;MASC|NOM;PL;MASC|NOM;PL;FEM|ACC;PL;MASC))$/.test(record.tags))
+   throw Error('Incidencia individual sin documentación o rasgos explícitos: '+record.lemma);
+  const k=record.lemma+'|'+norm(record.form);
+  if(verifiedSingleKeys.has(k))throw Error('Forma duplicada en la revisión individual: '+k);
+  verifiedSingleKeys.add(k);
+  externalReferences.push({lang:record.lang,lemma:record.lemma,form:record.form,
+   reference:record.reference});
+  add(record.lang,record.lemma,record.form,record.tags,'contrastado');
+ }
  // Preserve lexicon citation forms even when a lemma has no attested
  // inflections. Citation is NOT a verified morphological analysis.
  const verifiedByLang={
@@ -226,6 +243,7 @@ async function main(){
  const extensions={candidate_lemmas:0,candidate_rows:0,rejected_for_conflict:[],
   citation_only:{lat:0,grc:0},
   warning:'Generated forms are provisional lookup suggestions, NEVER exam solutions.'};
+ extensions.verifiedIndividualForms=overrides.singleForms.length;
  const verifiedCells=new Map();
  for(const [lemma,surface,features]of rows.lat){
   const id=lemma+'|'+features;
