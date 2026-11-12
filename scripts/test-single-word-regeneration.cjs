@@ -61,11 +61,17 @@ async function checkSingle(page,course,model,kind,index=0){
   const untouched=()=>{
    const clone=paper.querySelector('.exam-sheet').cloneNode(true);
    clone.querySelector('#answerkey')?.remove();
-   examRegenerationSlot(clone,kind,index)?.replaceWith(document.createComment('solo-esta-palabra'));
+   if(kind.startsWith('lex-'))clone.querySelector('.lex-subquestion[data-lex-kind="'+kind.slice(4)+'"]')
+    ?.replaceWith(document.createComment('apartado-léxico-ordenado'));
+   else examRegenerationSlot(clone,kind,index)?.replaceWith(document.createComment('solo-esta-palabra'));
    // Los identificadores de enlace de los editores se crean al redibujar.
    clone.querySelectorAll('[data-exam-editor-link]').forEach(el=>el.removeAttribute('data-exam-editor-link'));
    return clone.innerHTML;
   };
+  const lexPart=kind.startsWith('lex-')?kind.slice(4):null;
+  const lexSelector=lexPart?'.lex-subquestion[data-lex-kind="'+lexPart+'"] [data-lex-slot]':null;
+  const lexOthers=lexSelector?[...root.querySelectorAll(lexSelector)].filter(node=>node.dataset.lexSlot!==lexPart+':'+index)
+   .map(node=>[node.dataset.lexSlot,node.textContent]):null;
   const originalHTML=untouched(),originalNode=root;
   const former=slot.textContent,formerValue=ids?ids[index]:beforeRows?.[index];
   if(kind.startsWith('lex-'))regenerateLatinLexWord(kind.slice(4),index);
@@ -75,6 +81,12 @@ async function checkSingle(page,course,model,kind,index=0){
   const newRows=examSelectionCache.get(cacheKey);
   const afterOtherCaches=[...examSelectionCache].filter(([k])=>k!==cacheKey)
    .map(([k,v])=>[k,JSON.stringify(v)]);
+  const lexSpans=lexSelector?[...afterRoot.querySelectorAll(lexSelector)]:null;
+  const lexOthersStable=!lexOthers||lexOthers.every(([id,value])=>
+   lexSpans.find(node=>node.dataset.lexSlot===id)?.textContent===value);
+  const lexOrdered=!lexSpans||lexPart==='preverbs'||
+   JSON.stringify(lexSpans.map(node=>node.textContent))===JSON.stringify(
+    lexSpans.map(node=>node.textContent).sort((a,b)=>a.localeCompare(b,'es')));
   const modified=ids?JSON.stringify(afterIds[index])!==JSON.stringify(formerValue):
     JSON.stringify(newRows?.[index])!==JSON.stringify(formerValue);
   return {kind,model,missing:false,modified,former,newText:afterSlot?.textContent||'',
@@ -85,6 +97,7 @@ async function checkSingle(page,course,model,kind,index=0){
    }):before===JSON.stringify(newRows?.filter((_,i)=>i!==index)||[]),
    marker:afterRoot?.querySelector('.exam-header span')?.textContent.includes('MARCA-DOCENTE'),
    formsMarker:afterRoot?.textContent.includes('MARCA-FORMA'),
+   lexOthersStable,lexOrdered,
    editorBroken:!!afterRoot?.querySelector('[data-exam-editor-link]')&&
     !document.querySelector('input[data-exam-editor-link]'),
    beforeCount:beforeRows?.length,afterCount:newRows?.length};
@@ -96,6 +109,8 @@ async function checkSingle(page,course,model,kind,index=0){
  assert(result.sameRoot,label+': se perdió el documento editado');
  assert(result.sameRows,label+': se modificó otra fila de la misma pregunta');
  assert(result.othersCacheUnchanged,label+': se alteró la caché de otra pregunta');
+ assert(result.lexOthersStable,label+': se modificó otra forma léxica');
+ assert(result.lexOrdered,label+': se perdió el orden alfabético del léxico');
  assert(result.marker&&result.formsMarker,label+': se perdieron correcciones manuales');
  assert(!result.editorBroken,label+': se rompió la sincronización del editor');
  return true;
@@ -107,7 +122,7 @@ async function runPage(browser,filename){
  page.on('pageerror',error=>errors.push(error.message));
  await page.goto('http://127.0.0.1:'+server.address().port+'/'+filename,{waitUntil:'load'});
  await page.waitForFunction(()=>!!document.getElementById('course')&&!!document.getElementById('examQuestionMenus'));
- await page.waitForFunction(()=>!!window.ExaminaTeacherLexBankReady,{timeout:15000}).catch(()=>{});
+ await page.waitForFunction(()=>!!window.ExaminaTeacherLexBankReady,null,{timeout:15000}).catch(()=>{});
  const cases=[
   ['latin1','tablas','UD7',['decl','verb','forms']],
   ['latin1','morf','UD7',['decl','verb','forms']],
