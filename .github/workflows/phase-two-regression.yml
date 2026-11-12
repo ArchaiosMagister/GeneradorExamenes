@@ -1,0 +1,45 @@
+name: Phase II grammar and curricular coverage (no deployment)
+
+on:
+  pull_request:
+    paths:
+      - 'index.html'
+      - 'offline.html'
+      - 'scripts/test-phase-two.cjs'
+      - 'scripts/test-phase-two-coverage.cjs'
+      - '.github/workflows/phase-two-regression.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  curriculum:
+    name: Curriculum, morphology, DOCX and PWA
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser regression tools
+        run: |
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+      - name: Rebuild standalone HTML in the CI workspace
+        run: npm run offline:build
+      - name: Curricular forms and paradigms
+        run: node scripts/test-phase-two.cjs
+      - name: Full unit and model coverage
+        run: node scripts/test-phase-two-coverage.cjs
+      - name: Phase I bidirectional editor regression
+        run: node scripts/test-phase-one.cjs
+      - name: Document export and seven exam models
+        run: npm run preview:test
+      - name: Bank and lemmatization regressions
+        run: npm run vocabulary:test
+      - name: Offline reproducibility
+        run: npm run offline:test
+      - name: PWA offline and update regression
+        run: npm run pwa:test
