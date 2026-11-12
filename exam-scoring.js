@@ -194,8 +194,8 @@
    const duplicate=seen.get(base)||0;seen.set(base,duplicate+1);
    const key=storageKey(base+(duplicate?'#'+duplicate:''));
    if(!Object.prototype.hasOwnProperty.call(scores,key))scores[key]=defaults[i];
-   if(item.original!==null&&!el.dataset.scoringOriginal)el.dataset.scoringOriginal=String(item.original/100);
    const el=item.el;
+   if(item.original!==null&&!el.dataset.scoringOriginal)el.dataset.scoringOriginal=String(item.original/100);
    el.dataset.scoringCaption=item.caption;
    el.dataset.scoringKey=key;
    if(!el.querySelector('.exam-question-points')){
