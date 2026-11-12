@@ -42,6 +42,8 @@ function makeQueue(course,lang){
    'solo presente documentado individualmente':
    type==='deponent'&&((lemma==='conor'&&verified>=6)||contrasted>=6)?
    'solo presente deponente documentado individualmente (otras variantes y tiempos pendientes)':
+   type==='greekMiddle'&&lemma==='ερχομαι'&&contrasted>=12?
+   'presente medio y aoristo segundo contrastados individualmente (otros tiempos y variantes pendientes)':
    type==='greekMiddle'&&contrasted>=6?
    'solo presente medio documentado individualmente (variantes y otros tiempos pendientes)':
    'revisión filológica pendiente';
