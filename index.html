@@ -1750,7 +1750,7 @@ function latinSchoolVerbRows(chosen){
   if(isExcludedExamMorphLemma(x.entry,x.meaning)||!Array.isArray(p.forms)||p.forms.length!==6)continue;
   add(x,p,'present-active','presente de indicativo','activa',p.forms);
   if(course!=='latin1')continue; // No anticipar programa de Latín 4.º.
-  const source=p.sourceEntry||x.entry,regular=mVerb(source);
+  const source=p.sourceEntry||x.entry,regular=typeof mVerb==='function'?mVerb(source):null;
   if(!regular||regular.tenses[0][1].some((f,i)=>normLex(f)!==normLex(p.forms[i])))
    continue;
   for(const [id,min,tense,voice] of LATIN_SCHOOL_SCHEDULE.slice(1)){
