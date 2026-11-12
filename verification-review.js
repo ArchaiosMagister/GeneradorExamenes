@@ -265,9 +265,19 @@ function evidenceCurricular(course,tags,limit){
   if(has('N'))return has('SG')||has('PL');
   if(has('ADJ'))return limit>=2&&(has('SG')||has('PL'));
   if(has('PRO'))return limit>=3;
-  // Las formas sintéticas externas solo se admiten en presente activo:
-  // no anticipar perfectum, voz pasiva, futuro ni flexiones ambiguas.
-  if(has('V'))return has('IND')&&has('PRS')&&has('ACT')&&limit>=1;
+  if(has('V')){
+   if(!has('IND'))return false;
+   const voice=has('ACT')?'ACT':has('PASS')?'PASS':null;
+   if(!voice)return false;
+   const present=has('PRS'),imperfect=has('PST')&&has('IPFV'),
+    future=has('FUT'),perfect=has('PRF');
+   if(voice==='PASS'&&limit<3)return false;
+   if(present)return true;
+   if(imperfect)return limit>=2&&(voice==='ACT'||limit>=3);
+   if(future)return limit>=7;
+   if(perfect)return limit>=4&&voice==='ACT'; // Perfectum pasivo compuesto solo desde UD9 y contrastado.
+   return false;
+  }
   return false;
  }
  if(course==='gr1'){
@@ -350,7 +360,8 @@ function evidenceCheckExam(paper,course,all=evidenceDecisions()){
     node.textContent?.trim()||'';
   if(!Array.isArray(parsed)||parsed.length!==6||parsed[0]!==EVIDENCE_SCHEMA||
     parsed[1]!==course||!evidenceApproved(course,parsed.slice(2),all)||
-    current.normalize('NFC')!==form.normalize('NFC')){
+    current.replace(/[æÆ]/g,c=>c==='Æ'?'AE':'ae').replace(/[œŒ]/g,c=>c==='Œ'?'OE':'oe').normalize('NFC')!==
+    form.replace(/[æÆ]/g,c=>c==='Æ'?'AE':'ae').replace(/[œŒ]/g,c=>c==='Œ'?'OE':'oe').normalize('NFC')){
    problems.push('Propuesta modificada, revocada o sin autorización: '+form);
   }
  }
