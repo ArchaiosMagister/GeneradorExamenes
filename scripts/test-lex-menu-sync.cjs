@@ -68,6 +68,65 @@ function readStoredZipEntry(bytes,wanted){
     filename+': decisiones editoriales de fonética no respetadas');
    assert.equal(bankLoaded.distinct,bankLoaded.latin1,filename+': étimos duplicados en el sorteo');
 
+   // Las adaptaciones cultas aprobadas deben distinguirse de las evoluciones
+   // patrimoniales también en el Word. Su etiqueta no es parte del campo editable.
+   const cultured=await page.evaluate(()=>{
+    const course=$('course');course.value='latin1';course.dispatchEvent(new Event('change',{bubbles:true}));
+    const model=$('model');model.value='tablas';model.dispatchEvent(new Event('change',{bubbles:true}));
+    document.querySelectorAll('.unit-choice').forEach(input=>{
+     input.checked=units[Number(input.value)]==='UD3';
+    });
+    examSelectionCache.clear();generate();
+    const key=examCacheSignature('lex-phonetics');
+    const before=examSelectionCache.get(key);
+    if(!Array.isArray(before)||before.length!==4)return {missing:true};
+    const originalOther=before.slice(1).map(latinLexTermKey);
+    setLatinPhoneticWord(0,'athletam');
+    const after=examSelectionCache.get(key);
+    const slot=$('paper').querySelector('[data-lex-slot="phonetics:0"]');
+    return {missing:false,word:after[0]?.latin,
+     classified:after[0]?.tipoTransmision,otherStable:JSON.stringify(after.slice(1).map(latinLexTermKey))===JSON.stringify(originalOther),
+     label:slot?.querySelector('.phonetic-origin-label')?.textContent,
+     editable:slot?.querySelector('i')?.textContent,
+     editor:$('lex-edit-phonetics-0')?.value};
+   });
+   assert(!cultured.missing&&cultured.word==='athletam',filename+': no se cargó el cultismo verificado');
+   assert.equal(cultured.classified,'ADAPTACION_CULTA');
+   assert(cultured.label?.includes('adaptación culta'),filename+': cultismo sin etiqueta en vista previa');
+   assert.equal(cultured.editable,'athletam',filename+': la etiqueta contaminó el étimo');
+   assert.equal(cultured.editor,'athletam',filename+': la etiqueta contaminó el editor');
+   assert(cultured.otherStable,filename+': cambiar a cultismo modificó las demás formas');
+   const culturedDownload=page.waitForEvent('download');
+   await page.evaluate(()=>exportWord(false));
+   const culturedFile=await culturedDownload;
+   const culturedXml=readStoredZipEntry(fs.readFileSync(await culturedFile.path()),'word/document.xml');
+   assert(culturedXml.includes('adaptación culta'),filename+': el Word no identifica la adaptación culta');
+   const editedCultism=await page.evaluate(()=>{
+    const node=$('paper').querySelector('[data-lex-slot="phonetics:0"] i');
+    node.textContent='contum';
+    node.dispatchEvent(new InputEvent('input',{bubbles:true}));
+    const slot=$('paper').querySelector('[data-lex-slot="phonetics:0"]');
+    const key=examCacheSignature('lex-phonetics');
+    const after=examSelectionCache.get(key);
+    return {latin:after[0]?.latin,spanish:after[0]?.castellano,
+     label:!!slot?.querySelector('.phonetic-origin-label'),
+     editor:$('lex-edit-phonetics-0')?.value,
+     otherRows:after.slice(1).map(latinLexTermKey)};
+   });
+   assert.equal(editedCultism.latin,'contum',filename+': no se puede editar desde Word/HTML a un étimo patrimonial');
+   assert.equal(editedCultism.spanish,'cuento');
+   assert.equal(editedCultism.label,false,filename+': la etiqueta culta persistió tras cambiar la palabra');
+   assert.equal(editedCultism.editor,'contum',filename+': editor lateral desincronizado tras retirar cultismo');
+   const restoreCultism=await page.evaluate(()=>{
+    setLatinPhoneticWord(0,'blasphemiam');
+    const slot=$('paper').querySelector('[data-lex-slot="phonetics:0"]');
+    return {label:slot?.querySelector('.phonetic-origin-label')?.textContent,
+     editor:$('lex-edit-phonetics-0')?.value};
+   });
+   assert(restoreCultism.label?.includes('adaptación culta'),
+    filename+': editar desde el menú no recupera la etiqueta culta');
+   assert.equal(restoreCultism.editor,'blasphemiam');
+
    // Regresión real: UD3 debe sortear centenares de palabras, no reservar las
    // cuatro plazas a aféresis/epéntesis y otros fenómenos con pocos ejemplos.
    const variety=await page.evaluate(()=>{
