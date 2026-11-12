@@ -215,6 +215,9 @@
    }else{
     const span=el.querySelector('.exam-question-points');
     span.dataset.scoringKey=key;
+    // Al recuperar un borrador, el texto del Word y el estado numérico
+    // deben proceder del mismo valor restaurado.
+    span.textContent=label(scores[key]);
    }
    return {el,key,caption:item.caption};
   });
