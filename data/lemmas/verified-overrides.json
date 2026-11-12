@@ -198,5 +198,91 @@
       ]
     }
   ],
-  "sourceCode": 5
+  "sourceCode": 5,
+  "singleForms": [
+    {
+      "lang": "lat",
+      "lemma": "aro",
+      "form": "arate",
+      "tags": "V;IMP;ACT;PRS;2;PL",
+      "reference": "https://en.wiktionary.org/wiki/arate"
+    },
+    {
+      "lang": "lat",
+      "lemma": "capio",
+      "form": "capta",
+      "tags": "V;PTCP;PASS;PRF;NOM;SG;FEM",
+      "reference": "https://en.wiktionary.org/wiki/captus"
+    },
+    {
+      "lang": "lat",
+      "lemma": "conor",
+      "form": "conati",
+      "tags": "V;PTCP;ACT;PRF;NOM;PL;MASC",
+      "reference": "https://en.wiktionary.org/wiki/conatus"
+    },
+    {
+      "lang": "lat",
+      "lemma": "miror",
+      "form": "mirati",
+      "tags": "V;PTCP;ACT;PRF;NOM;PL;MASC",
+      "reference": "https://en.wiktionary.org/wiki/miratus"
+    },
+    {
+      "lang": "lat",
+      "lemma": "proficiscor",
+      "form": "profectae",
+      "tags": "V;PTCP;ACT;PRF;NOM;PL;FEM",
+      "reference": "https://en.wiktionary.org/wiki/proficiscor"
+    },
+    {
+      "lang": "lat",
+      "lemma": "proficiscor",
+      "form": "profectos",
+      "tags": "V;PTCP;ACT;PRF;ACC;PL;MASC",
+      "reference": "https://en.wiktionary.org/wiki/profectus"
+    },
+    {
+      "lang": "lat",
+      "lemma": "facio",
+      "form": "factus",
+      "tags": "V;PTCP;PASS;PRF;NOM;SG;MASC",
+      "reference": "https://dcc.dickinson.edu/it/grammar/latin/irregular-verbs-f%C4%AB%C5%8D"
+    },
+    {
+      "lang": "lat",
+      "lemma": "aedifico",
+      "form": "aedificata",
+      "tags": "V;PTCP;PASS;PRF;NOM;SG;FEM",
+      "reference": "https://en.wiktionary.org/wiki/aedificatus"
+    },
+    {
+      "lang": "lat",
+      "lemma": "creo",
+      "form": "creatus",
+      "tags": "V;PTCP;PASS;PRF;NOM;SG;MASC",
+      "reference": "https://en.wiktionary.org/wiki/creatus"
+    },
+    {
+      "lang": "lat",
+      "lemma": "cremo",
+      "form": "cremata",
+      "tags": "V;PTCP;PASS;PRF;NOM;SG;FEM",
+      "reference": "https://en.wiktionary.org/wiki/crematus"
+    },
+    {
+      "lang": "lat",
+      "lemma": "deleo",
+      "form": "deleta",
+      "tags": "V;PTCP;PASS;PRF;NOM;SG;FEM",
+      "reference": "https://en.wiktionary.org/wiki/deletus"
+    },
+    {
+      "lang": "lat",
+      "lemma": "expugno",
+      "form": "expugnata",
+      "tags": "V;PTCP;PASS;PRF;NOM;SG;FEM",
+      "reference": "https://en.wiktionary.org/wiki/expugnata"
+    }
+  ]
 }

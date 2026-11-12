@@ -106,6 +106,8 @@ jobs:
         run: node scripts/test-vocabulary-quality.cjs
       - name: Probar generador de vocabulario por unidades y Word
         run: npm run vocabulary:test
+      - name: Priorizar 50 incidencias reales del lematizador
+        run: node scripts/audit-top-50-lemmas.cjs --check
       - name: Auditar lematización de oraciones y decisiones guardadas
         run: node scripts/audit-sentence-lemmas.cjs
       - name: Probar lemas ambiguos y formato del glosario de oraciones
