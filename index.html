@@ -1412,8 +1412,10 @@ function latinMorphologyVerbPool(chosen){
  const course=currentCourse(),max=examGrammarLimit(chosen);
  // La gramática es acumulativa: UD9 también puede utilizar verbos de UD1–8.
  // Los bloques docentes UD9–10 solo se incorporan cuando se llega a UD10.
+ const availableUnits=typeof latinSharedBank.units==='function'?latinSharedBank.units(course):
+  latinSharedBank.vocabulary(course).map(row=>row.unit).filter(Boolean);
  const effective=course==='latin1'
-  ?[...new Set([...latinSharedBank.units(course).filter(unit=>{
+  ?[...new Set([...availableUnits.filter(unit=>{
     const ns=String(unit).match(/\d+/g)?.map(Number)||[];
     return ns.length&&Math.max(...ns)<=max;
    }),...chosen])]
