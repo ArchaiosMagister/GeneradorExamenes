@@ -1,0 +1,1141 @@
+{
+  "schema": 1,
+  "date": "2026-11-12",
+  "coursePriority": "lat1 (Griego I: 1035 formas distintas reconocidas funcionalmente; no hay pendientes en las 14 unidades)",
+  "scope": "50 incidencias reales de un corpus histórico de 612 formas originalmente pendientes. Los criterios ordenan el trabajo, no acreditan morfología.",
+  "sources": {
+    "latin": "tests/latin1-revision-forms-20261111.json",
+    "latinPending": "tests/latin1-pending-183-baseline.json",
+    "greek": "data/vocabulary/greek1-units-corrected.json"
+  },
+  "weights": {
+    "frequency": 30,
+    "curricular": 25,
+    "morphological": 20,
+    "evidence": 15,
+    "incident": 10
+  },
+  "preAudit": {
+    "latinPendingDistinct": 90,
+    "greekPendingDistinct": 0,
+    "priorByType": {
+      "ambiguous-lemmata": 24,
+      "spelling-or-context": 9,
+      "only-candidate-needs-evidence": 17,
+      "no-candidate": 0
+    }
+  },
+  "summary": {
+    "reviewed": 50,
+    "verified-individual-form": 12,
+    "teacher-context-needed": 24,
+    "teacher-orthography-needed": 9,
+    "external-proof-needed": 5
+  },
+  "rows": [
+    {
+      "rank": 1,
+      "course": "lat1",
+      "form": "bona",
+      "firstUnit": 1,
+      "frequency": 2,
+      "score": 78.76,
+      "priorCategory": "ambiguous-lemmata",
+      "priorLemmas": [
+        "bonus",
+        "bona"
+      ],
+      "priorSourceCodes": [
+        [
+          0,
+          1
+        ],
+        []
+      ],
+      "decision": {
+        "status": "teacher-context-needed",
+        "reason": "Homógrafos; no decidir sin frase original."
+      }
+    },
+    {
+      "rank": 2,
+      "course": "lat1",
+      "form": "bello",
+      "firstUnit": 2,
+      "frequency": 3,
+      "score": 77.43,
+      "priorCategory": "ambiguous-lemmata",
+      "priorLemmas": [
+        "bellum",
+        "bello"
+      ],
+      "priorSourceCodes": [
+        [
+          0,
+          1
+        ],
+        [
+          2
+        ]
+      ],
+      "decision": {
+        "status": "teacher-context-needed",
+        "reason": "Homógrafos; no decidir sin frase original."
+      }
+    },
+    {
+      "rank": 3,
+      "course": "lat1",
+      "form": "Nocte",
+      "firstUnit": 2,
+      "frequency": 1,
+      "score": 67.15,
+      "priorCategory": "ambiguous-lemmata",
+      "priorLemmas": [
+        "nocte",
+        "nox"
+      ],
+      "priorSourceCodes": [
+        [],
+        [
+          0
+        ]
+      ],
+      "decision": {
+        "status": "teacher-context-needed",
+        "reason": "Homógrafos; no decidir sin frase original."
+      }
+    },
+    {
+      "rank": 4,
+      "course": "lat1",
+      "form": "vere",
+      "firstUnit": 6,
+      "frequency": 2,
+      "score": 66.26,
+      "priorCategory": "ambiguous-lemmata",
+      "priorLemmas": [
+        "ver",
+        "verus"
+      ],
+      "priorSourceCodes": [
+        [
+          0
+        ],
+        [
+          0
+        ]
+      ],
+      "decision": {
+        "status": "teacher-context-needed",
+        "reason": "Homógrafos; no decidir sin frase original."
+      }
+    },
+    {
+      "rank": 5,
+      "course": "lat1",
+      "form": "vera",
+      "firstUnit": 4,
+      "frequency": 1,
+      "score": 64.48,
+      "priorCategory": "ambiguous-lemmata",
+      "priorLemmas": [
+        "ver",
+        "verus"
+      ],
+      "priorSourceCodes": [
+        [
+          0
+        ],
+        [
+          0
+        ]
+      ],
+      "decision": {
+        "status": "teacher-context-needed",
+        "reason": "Homógrafos; no decidir sin frase original."
+      }
+    },
+    {
+      "rank": 6,
+      "course": "lat1",
+      "form": "Paulo",
+      "firstUnit": 7,
+      "frequency": 2,
+      "score": 63.76,
+      "priorCategory": "ambiguous-lemmata",
+      "priorLemmas": [
+        "paulo",
+        "paulus"
+      ],
+      "priorSourceCodes": [
+        [],
+        [
+          0,
+          2
+        ]
+      ],
+      "decision": {
+        "status": "teacher-context-needed",
+        "reason": "Homógrafos; no decidir sin frase original."
+      }
+    },
+    {
+      "rank": 7,
+      "course": "lat1",
+      "form": "pares",
+      "firstUnit": 5,
+      "frequency": 1,
+      "score": 59.65,
+      "priorCategory": "ambiguous-lemmata",
+      "priorLemmas": [
+        "par",
+        "pareo"
+      ],
+      "priorSourceCodes": [
+        [
+          0
+        ],
+        [
+          2
+        ]
+      ],
+      "decision": {
+        "status": "teacher-context-needed",
+        "reason": "Homógrafos; no decidir sin frase original."
+      }
+    },
+    {
+      "rank": 8,
+      "course": "lat1",
+      "form": "ortus",
+      "firstUnit": 9,
+      "frequency": 1,
+      "score": 58.11,
+      "priorCategory": "ambiguous-lemmata",
+      "priorLemmas": [
+        "orior",
+        "ortus"
+      ],
+      "priorSourceCodes": [
+        [
+          0
+        ],
+        [
+          0
+        ]
+      ],
+      "decision": {
+        "status": "teacher-context-needed",
+        "reason": "Homógrafos; no decidir sin frase original."
+      }
+    },
+    {
+      "rank": 9,
+      "course": "lat1",
+      "form": "pugna",
+      "firstUnit": 2,
+      "frequency": 1,
+      "score": 56.08,
+      "priorCategory": "ambiguous-lemmata",
+      "priorLemmas": [
+        "pugno",
+        "pugna"
+      ],
+      "priorSourceCodes": [
+        [],
+        [
+          2
+        ]
+      ],
+      "decision": {
+        "status": "teacher-context-needed",
+        "reason": "Homógrafos; no decidir sin frase original."
+      }
+    },
+    {
+      "rank": 10,
+      "course": "lat1",
+      "form": "regno",
+      "firstUnit": 6,
+      "frequency": 1,
+      "score": 55.83,
+      "priorCategory": "ambiguous-lemmata",
+      "priorLemmas": [
+        "regnum",
+        "regno"
+      ],
+      "priorSourceCodes": [
+        [
+          0
+        ],
+        [
+          2
+        ]
+      ],
+      "decision": {
+        "status": "teacher-context-needed",
+        "reason": "Homógrafos; no decidir sin frase original."
+      }
+    },
+    {
+      "rank": 11,
+      "course": "lat1",
+      "form": "solis",
+      "firstUnit": 7,
+      "frequency": 1,
+      "score": 55.65,
+      "priorCategory": "spelling-or-context",
+      "priorLemmas": [
+        "sol",
+        "solis"
+      ],
+      "priorSourceCodes": [
+        [
+          0
+        ],
+        []
+      ],
+      "warning": "Necesita contexto: coexisten las fichas sol, solis y solis, –is; contrastar si la segunda es un duplicado editorial",
+      "decision": {
+        "status": "teacher-orthography-needed",
+        "reason": "La grafía o el contexto original requieren revisión filológica."
+      }
+    },
+    {
+      "rank": 12,
+      "course": "lat1",
+      "form": "passus",
+      "firstUnit": 10,
+      "frequency": 1,
+      "score": 55.61,
+      "priorCategory": "ambiguous-lemmata",
+      "priorLemmas": [
+        "passus",
+        "patior"
+      ],
+      "priorSourceCodes": [
+        [
+          0
+        ],
+        [
+          0
+        ]
+      ],
+      "decision": {
+        "status": "teacher-context-needed",
+        "reason": "Homógrafos; no decidir sin frase original."
+      }
+    },
+    {
+      "rank": 13,
+      "course": "lat1",
+      "form": "longe",
+      "firstUnit": 9,
+      "frequency": 1,
+      "score": 51.98,
+      "priorCategory": "ambiguous-lemmata",
+      "priorLemmas": [
+        "longe",
+        "longus"
+      ],
+      "priorSourceCodes": [
+        [],
+        [
+          0
+        ]
+      ],
+      "decision": {
+        "status": "teacher-context-needed",
+        "reason": "Homógrafos; no decidir sin frase original."
+      }
+    },
+    {
+      "rank": 14,
+      "course": "lat1",
+      "form": "Nostri",
+      "firstUnit": 3,
+      "frequency": 3,
+      "score": 51.21,
+      "priorCategory": "ambiguous-lemmata",
+      "priorLemmas": [
+        "ego",
+        "noster"
+      ],
+      "priorSourceCodes": [
+        [],
+        []
+      ],
+      "decision": {
+        "status": "teacher-context-needed",
+        "reason": "Homógrafos; no decidir sin frase original."
+      }
+    },
+    {
+      "rank": 15,
+      "course": "lat1",
+      "form": "filiis",
+      "firstUnit": 9,
+      "frequency": 1,
+      "score": 49.65,
+      "priorCategory": "ambiguous-lemmata",
+      "priorLemmas": [
+        "filia",
+        "filius"
+      ],
+      "priorSourceCodes": [
+        [
+          0
+        ],
+        [
+          0
+        ]
+      ],
+      "decision": {
+        "status": "teacher-context-needed",
+        "reason": "Homógrafos; no decidir sin frase original."
+      }
+    },
+    {
+      "rank": 16,
+      "course": "lat1",
+      "form": "canis",
+      "firstUnit": 9,
+      "frequency": 1,
+      "score": 49.04,
+      "priorCategory": "ambiguous-lemmata",
+      "priorLemmas": [
+        "canis",
+        "cano"
+      ],
+      "priorSourceCodes": [
+        [
+          0
+        ],
+        [
+          2
+        ]
+      ],
+      "decision": {
+        "status": "teacher-context-needed",
+        "reason": "Homógrafos; no decidir sin frase original."
+      }
+    },
+    {
+      "rank": 17,
+      "course": "lat1",
+      "form": "arate",
+      "firstUnit": 3,
+      "frequency": 1,
+      "score": 48.83,
+      "priorCategory": "only-candidate-needs-evidence",
+      "priorLemmas": [
+        "aro"
+      ],
+      "priorSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "verified-individual-form",
+        "lemma": "aro",
+        "tags": "V;IMP;ACT;PRS;2;PL",
+        "reference": "https://en.wiktionary.org/wiki/arate",
+        "note": "Solo esta flexión y lectura; no valida el paradigma completo."
+      }
+    },
+    {
+      "rank": 18,
+      "course": "lat1",
+      "form": "commiserunt",
+      "firstUnit": 4,
+      "frequency": 2,
+      "score": 48.64,
+      "priorCategory": "spelling-or-context",
+      "priorLemmas": [
+        "commito",
+        "committo"
+      ],
+      "priorSourceCodes": [
+        [
+          2
+        ],
+        [
+          2
+        ]
+      ],
+      "warning": "Necesita contexto: el banco propone commito y committo para el mismo tema commis-; contrastar la grafía de la ficha",
+      "decision": {
+        "status": "teacher-orthography-needed",
+        "reason": "La grafía o el contexto original requieren revisión filológica."
+      }
+    },
+    {
+      "rank": 19,
+      "course": "lat1",
+      "form": "bonaque",
+      "firstUnit": 5,
+      "frequency": 1,
+      "score": 48.48,
+      "priorCategory": "ambiguous-lemmata",
+      "priorLemmas": [
+        "bonus",
+        "bona"
+      ],
+      "priorSourceCodes": [
+        [],
+        []
+      ],
+      "decision": {
+        "status": "teacher-context-needed",
+        "reason": "Homógrafos; no decidir sin frase original."
+      }
+    },
+    {
+      "rank": 20,
+      "course": "lat1",
+      "form": "ludo",
+      "firstUnit": 10,
+      "frequency": 1,
+      "score": 47.15,
+      "priorCategory": "ambiguous-lemmata",
+      "priorLemmas": [
+        "ludus",
+        "ludo"
+      ],
+      "priorSourceCodes": [
+        [
+          0
+        ],
+        [
+          2
+        ]
+      ],
+      "decision": {
+        "status": "teacher-context-needed",
+        "reason": "Homógrafos; no decidir sin frase original."
+      }
+    },
+    {
+      "rank": 21,
+      "course": "lat1",
+      "form": "capta",
+      "firstUnit": 9,
+      "frequency": 2,
+      "score": 44.62,
+      "priorCategory": "only-candidate-needs-evidence",
+      "priorLemmas": [
+        "capio"
+      ],
+      "priorSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "verified-individual-form",
+        "lemma": "capio",
+        "tags": "V;PTCP;PASS;PRF;NOM;SG;FEM",
+        "reference": "https://en.wiktionary.org/wiki/captus",
+        "note": "Solo esta flexión y lectura; no valida el paradigma completo."
+      }
+    },
+    {
+      "rank": 22,
+      "course": "lat1",
+      "form": "conati",
+      "firstUnit": 9,
+      "frequency": 1,
+      "score": 43.61,
+      "priorCategory": "only-candidate-needs-evidence",
+      "priorLemmas": [
+        "conor"
+      ],
+      "priorSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "verified-individual-form",
+        "lemma": "conor",
+        "tags": "V;PTCP;ACT;PRF;NOM;PL;MASC",
+        "reference": "https://en.wiktionary.org/wiki/conatus",
+        "note": "Solo esta flexión y lectura; no valida el paradigma completo."
+      }
+    },
+    {
+      "rank": 23,
+      "course": "lat1",
+      "form": "mirati",
+      "firstUnit": 9,
+      "frequency": 1,
+      "score": 43.61,
+      "priorCategory": "only-candidate-needs-evidence",
+      "priorLemmas": [
+        "miror"
+      ],
+      "priorSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "verified-individual-form",
+        "lemma": "miror",
+        "tags": "V;PTCP;ACT;PRF;NOM;PL;MASC",
+        "reference": "https://en.wiktionary.org/wiki/miratus",
+        "note": "Solo esta flexión y lectura; no valida el paradigma completo."
+      }
+    },
+    {
+      "rank": 24,
+      "course": "lat1",
+      "form": "profectæ",
+      "firstUnit": 9,
+      "frequency": 1,
+      "score": 43.61,
+      "priorCategory": "only-candidate-needs-evidence",
+      "priorLemmas": [
+        "proficiscor"
+      ],
+      "priorSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "verified-individual-form",
+        "lemma": "proficiscor",
+        "tags": "V;PTCP;ACT;PRF;NOM;PL;FEM",
+        "reference": "https://en.wiktionary.org/wiki/proficiscor",
+        "note": "Solo esta flexión y lectura; no valida el paradigma completo."
+      }
+    },
+    {
+      "rank": 25,
+      "course": "lat1",
+      "form": "profectos",
+      "firstUnit": 9,
+      "frequency": 1,
+      "score": 43.61,
+      "priorCategory": "only-candidate-needs-evidence",
+      "priorLemmas": [
+        "proficiscor"
+      ],
+      "priorSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "verified-individual-form",
+        "lemma": "proficiscor",
+        "tags": "V;PTCP;ACT;PRF;ACC;PL;MASC",
+        "reference": "https://en.wiktionary.org/wiki/profectus",
+        "note": "Solo esta flexión y lectura; no valida el paradigma completo."
+      }
+    },
+    {
+      "rank": 26,
+      "course": "lat1",
+      "form": "templos",
+      "firstUnit": 2,
+      "frequency": 1,
+      "score": 43.11,
+      "priorCategory": "spelling-or-context",
+      "priorLemmas": [],
+      "priorSourceCodes": [],
+      "warning": "Revisión de grafía o abreviatura: comprobar templa si el sustantivo es templum, –i (n.); exige contexto",
+      "decision": {
+        "status": "teacher-orthography-needed",
+        "reason": "La grafía o el contexto original requieren revisión filológica."
+      }
+    },
+    {
+      "rank": 27,
+      "course": "lat1",
+      "form": "teneros",
+      "firstUnit": 2,
+      "frequency": 1,
+      "score": 43.11,
+      "priorCategory": "spelling-or-context",
+      "priorLemmas": [
+        "tener"
+      ],
+      "priorSourceCodes": [
+        []
+      ],
+      "warning": "Necesita contexto: coexisten los enunciados tenerus, –a, –um y tener, tenera, tenerum; revisar si son variantes de una sola ficha",
+      "decision": {
+        "status": "teacher-orthography-needed",
+        "reason": "La grafía o el contexto original requieren revisión filológica."
+      }
+    },
+    {
+      "rank": 28,
+      "course": "lat1",
+      "form": "modo",
+      "firstUnit": 2,
+      "frequency": 1,
+      "score": 42.11,
+      "priorCategory": "ambiguous-lemmata",
+      "priorLemmas": [
+        "modo",
+        "modus"
+      ],
+      "priorSourceCodes": [
+        [],
+        []
+      ],
+      "decision": {
+        "status": "teacher-context-needed",
+        "reason": "Homógrafos; no decidir sin frase original."
+      }
+    },
+    {
+      "rank": 29,
+      "course": "lat1",
+      "form": "Nostrum",
+      "firstUnit": 2,
+      "frequency": 1,
+      "score": 42.11,
+      "priorCategory": "ambiguous-lemmata",
+      "priorLemmas": [
+        "ego",
+        "noster"
+      ],
+      "priorSourceCodes": [
+        [],
+        []
+      ],
+      "decision": {
+        "status": "teacher-context-needed",
+        "reason": "Homógrafos; no decidir sin frase original."
+      }
+    },
+    {
+      "rank": 30,
+      "course": "lat1",
+      "form": "gratulati",
+      "firstUnit": 10,
+      "frequency": 1,
+      "score": 41.11,
+      "priorCategory": "only-candidate-needs-evidence",
+      "priorLemmas": [
+        "gratulor"
+      ],
+      "priorSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "external-proof-needed",
+        "reason": "Una sola hipótesis flexiva no constituye evidencia individual."
+      }
+    },
+    {
+      "rank": 31,
+      "course": "lat1",
+      "form": "dedit",
+      "firstUnit": 4,
+      "frequency": 1,
+      "score": 40.86,
+      "priorCategory": "ambiguous-lemmata",
+      "priorLemmas": [
+        "dedo",
+        "do"
+      ],
+      "priorSourceCodes": [
+        [
+          2
+        ],
+        [
+          2
+        ]
+      ],
+      "decision": {
+        "status": "teacher-context-needed",
+        "reason": "Homógrafos; no decidir sin frase original."
+      }
+    },
+    {
+      "rank": 32,
+      "course": "lat1",
+      "form": "factus",
+      "firstUnit": 9,
+      "frequency": 2,
+      "score": 40.61,
+      "priorCategory": "only-candidate-needs-evidence",
+      "priorLemmas": [
+        "facio"
+      ],
+      "priorSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "verified-individual-form",
+        "lemma": "facio",
+        "tags": "V;PTCP;PASS;PRF;NOM;SG;MASC",
+        "reference": "https://dcc.dickinson.edu/it/grammar/latin/irregular-verbs-f%C4%AB%C5%8D",
+        "note": "Solo esta flexión y lectura; no valida el paradigma completo."
+      }
+    },
+    {
+      "rank": 33,
+      "course": "lat1",
+      "form": "ii",
+      "firstUnit": 7,
+      "frequency": 1,
+      "score": 39.83,
+      "priorCategory": "ambiguous-lemmata",
+      "priorLemmas": [
+        "is",
+        "eo"
+      ],
+      "priorSourceCodes": [
+        [],
+        []
+      ],
+      "decision": {
+        "status": "teacher-context-needed",
+        "reason": "Homógrafos; no decidir sin frase original."
+      }
+    },
+    {
+      "rank": 34,
+      "course": "lat1",
+      "form": "commiserat",
+      "firstUnit": 4,
+      "frequency": 1,
+      "score": 38.11,
+      "priorCategory": "spelling-or-context",
+      "priorLemmas": [
+        "commito",
+        "committo"
+      ],
+      "priorSourceCodes": [
+        [],
+        []
+      ],
+      "warning": "Necesita contexto: el banco propone commito y committo para el mismo tema commis-; contrastar la grafía de la ficha",
+      "decision": {
+        "status": "teacher-orthography-needed",
+        "reason": "La grafía o el contexto original requieren revisión filológica."
+      }
+    },
+    {
+      "rank": 35,
+      "course": "lat1",
+      "form": "propinquiis",
+      "firstUnit": 4,
+      "frequency": 1,
+      "score": 38.11,
+      "priorCategory": "spelling-or-context",
+      "priorLemmas": [],
+      "priorSourceCodes": [],
+      "warning": "Revisión de grafía o abreviatura: comprobar propinquis (de propinquus, –a, –um)",
+      "decision": {
+        "status": "teacher-orthography-needed",
+        "reason": "La grafía o el contexto original requieren revisión filológica."
+      }
+    },
+    {
+      "rank": 36,
+      "course": "lat1",
+      "form": "uulnerati",
+      "firstUnit": 10,
+      "frequency": 1,
+      "score": 35.98,
+      "priorCategory": "ambiguous-lemmata",
+      "priorLemmas": [
+        "vulneratus",
+        "uulnero"
+      ],
+      "priorSourceCodes": [
+        [],
+        []
+      ],
+      "decision": {
+        "status": "teacher-context-needed",
+        "reason": "Homógrafos; no decidir sin frase original."
+      }
+    },
+    {
+      "rank": 37,
+      "course": "lat1",
+      "form": "uulneratum",
+      "firstUnit": 10,
+      "frequency": 1,
+      "score": 35.98,
+      "priorCategory": "ambiguous-lemmata",
+      "priorLemmas": [
+        "vulneratus",
+        "uulnero"
+      ],
+      "priorSourceCodes": [
+        [],
+        []
+      ],
+      "decision": {
+        "status": "teacher-context-needed",
+        "reason": "Homógrafos; no decidir sin frase original."
+      }
+    },
+    {
+      "rank": 38,
+      "course": "lat1",
+      "form": "habitis",
+      "firstUnit": 10,
+      "frequency": 1,
+      "score": 34.59,
+      "priorCategory": "only-candidate-needs-evidence",
+      "priorLemmas": [
+        "habeo"
+      ],
+      "priorSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "external-proof-needed",
+        "reason": "Una sola hipótesis flexiva no constituye evidencia individual."
+      }
+    },
+    {
+      "rank": 39,
+      "course": "lat1",
+      "form": "pugnatum",
+      "firstUnit": 9,
+      "frequency": 1,
+      "score": 33.83,
+      "priorCategory": "only-candidate-needs-evidence",
+      "priorLemmas": [
+        "pugno"
+      ],
+      "priorSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "external-proof-needed",
+        "reason": "Una sola hipótesis flexiva no constituye evidencia individual."
+      }
+    },
+    {
+      "rank": 40,
+      "course": "lat1",
+      "form": "ædificata",
+      "firstUnit": 8,
+      "frequency": 2,
+      "score": 32.89,
+      "priorCategory": "only-candidate-needs-evidence",
+      "priorLemmas": [
+        "aedifico"
+      ],
+      "priorSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "verified-individual-form",
+        "lemma": "aedifico",
+        "tags": "V;PTCP;PASS;PRF;NOM;SG;FEM",
+        "reference": "https://en.wiktionary.org/wiki/aedificatus",
+        "note": "Solo esta flexión y lectura; no valida el paradigma completo."
+      }
+    },
+    {
+      "rank": 41,
+      "course": "lat1",
+      "form": "opertam",
+      "firstUnit": 7,
+      "frequency": 1,
+      "score": 28.61,
+      "priorCategory": "only-candidate-needs-evidence",
+      "priorLemmas": [
+        "operio"
+      ],
+      "priorSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "external-proof-needed",
+        "reason": "Una sola hipótesis flexiva no constituye evidencia individual."
+      }
+    },
+    {
+      "rank": 42,
+      "course": "lat1",
+      "form": "commisit",
+      "firstUnit": 10,
+      "frequency": 1,
+      "score": 26.86,
+      "priorCategory": "spelling-or-context",
+      "priorLemmas": [
+        "commito",
+        "committo"
+      ],
+      "priorSourceCodes": [
+        [
+          2
+        ],
+        [
+          2
+        ]
+      ],
+      "warning": "Necesita contexto: el banco propone commito y committo para el mismo tema commis-; contrastar la grafía de la ficha",
+      "decision": {
+        "status": "teacher-orthography-needed",
+        "reason": "La grafía o el contexto original requieren revisión filológica."
+      }
+    },
+    {
+      "rank": 43,
+      "course": "lat1",
+      "form": "postulata",
+      "firstUnit": 10,
+      "frequency": 1,
+      "score": 25.86,
+      "priorCategory": "ambiguous-lemmata",
+      "priorLemmas": [
+        "postulatum",
+        "postulo"
+      ],
+      "priorSourceCodes": [
+        [
+          2
+        ],
+        []
+      ],
+      "decision": {
+        "status": "teacher-context-needed",
+        "reason": "Homógrafos; no decidir sin frase original."
+      }
+    },
+    {
+      "rank": 44,
+      "course": "lat1",
+      "form": "Avarus",
+      "firstUnit": 9,
+      "frequency": 1,
+      "score": 25.61,
+      "priorCategory": "spelling-or-context",
+      "priorLemmas": [],
+      "priorSourceCodes": [],
+      "warning": "Necesita contexto: puede ser avarus, –a, –um («avaro») o un nombre propio; consultar la oración",
+      "decision": {
+        "status": "teacher-orthography-needed",
+        "reason": "La grafía o el contexto original requieren revisión filológica."
+      }
+    },
+    {
+      "rank": 45,
+      "course": "lat1",
+      "form": "T",
+      "firstUnit": 9,
+      "frequency": 1,
+      "score": 25.61,
+      "priorCategory": "spelling-or-context",
+      "priorLemmas": [],
+      "priorSourceCodes": [],
+      "warning": "Revisión de grafía o abreviatura: inicial o abreviatura, no lema autónomo; consultar la oración",
+      "decision": {
+        "status": "teacher-orthography-needed",
+        "reason": "La grafía o el contexto original requieren revisión filológica."
+      }
+    },
+    {
+      "rank": 46,
+      "course": "lat1",
+      "form": "creatus",
+      "firstUnit": 9,
+      "frequency": 1,
+      "score": 23.61,
+      "priorCategory": "only-candidate-needs-evidence",
+      "priorLemmas": [
+        "creo"
+      ],
+      "priorSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "verified-individual-form",
+        "lemma": "creo",
+        "tags": "V;PTCP;PASS;PRF;NOM;SG;MASC",
+        "reference": "https://en.wiktionary.org/wiki/creatus",
+        "note": "Solo esta flexión y lectura; no valida el paradigma completo."
+      }
+    },
+    {
+      "rank": 47,
+      "course": "lat1",
+      "form": "cremata",
+      "firstUnit": 9,
+      "frequency": 1,
+      "score": 23.61,
+      "priorCategory": "only-candidate-needs-evidence",
+      "priorLemmas": [
+        "cremo"
+      ],
+      "priorSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "verified-individual-form",
+        "lemma": "cremo",
+        "tags": "V;PTCP;PASS;PRF;NOM;SG;FEM",
+        "reference": "https://en.wiktionary.org/wiki/crematus",
+        "note": "Solo esta flexión y lectura; no valida el paradigma completo."
+      }
+    },
+    {
+      "rank": 48,
+      "course": "lat1",
+      "form": "dato",
+      "firstUnit": 9,
+      "frequency": 1,
+      "score": 23.61,
+      "priorCategory": "only-candidate-needs-evidence",
+      "priorLemmas": [
+        "do"
+      ],
+      "priorSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "external-proof-needed",
+        "reason": "Una sola hipótesis flexiva no constituye evidencia individual."
+      }
+    },
+    {
+      "rank": 49,
+      "course": "lat1",
+      "form": "deleta",
+      "firstUnit": 9,
+      "frequency": 1,
+      "score": 23.61,
+      "priorCategory": "only-candidate-needs-evidence",
+      "priorLemmas": [
+        "deleo"
+      ],
+      "priorSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "verified-individual-form",
+        "lemma": "deleo",
+        "tags": "V;PTCP;PASS;PRF;NOM;SG;FEM",
+        "reference": "https://en.wiktionary.org/wiki/deletus",
+        "note": "Solo esta flexión y lectura; no valida el paradigma completo."
+      }
+    },
+    {
+      "rank": 50,
+      "course": "lat1",
+      "form": "expugnata",
+      "firstUnit": 9,
+      "frequency": 1,
+      "score": 23.61,
+      "priorCategory": "only-candidate-needs-evidence",
+      "priorLemmas": [
+        "expugno"
+      ],
+      "priorSourceCodes": [
+        []
+      ],
+      "decision": {
+        "status": "verified-individual-form",
+        "lemma": "expugno",
+        "tags": "V;PTCP;PASS;PRF;NOM;SG;FEM",
+        "reference": "https://en.wiktionary.org/wiki/expugnata",
+        "note": "Solo esta flexión y lectura; no valida el paradigma completo."
+      }
+    }
+  ]
+}
