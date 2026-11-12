@@ -143,7 +143,10 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
    latin1:latin.items,latin4:latin4.items,greek1:greek.items
   },null,2)+'\n');
   const last=latin.items[latin.items.length-1];
-  assert.equal(last.attestedForms,112,'Las 114 formas latinas deben conservar su procedencia; 2 lecturas sincréticas se excluyen del análisis aislado');
+  const expectedBacked=await page.evaluate(()=>Object.values(latinExplicitVerbEvidence)
+   .flat().reduce((n,block)=>n+block.forms.length,0)-latinDeponentSyncretisms.size);
+  assert.equal(last.attestedForms,expectedBacked,
+   'Las formas individuales deben conservar su procedencia; los sincretismos se excluyen del análisis aislado');
   console.log('Auditoría curricular: Latín I '+latin.items.length+' etapas, Latín 4.º '+latin4.items.length+
    ', Griego I '+greek.items.length+' · máximo '+last.verbForms+' formas verbales posibles ('+
    last.attestedForms+' explícitas, '+last.regularDerivedForms+' derivadas por reglas).');
