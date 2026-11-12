@@ -94,6 +94,28 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
   });
   await page.waitForFunction(()=>document.querySelector('#paper [data-analysis-slot] > i:first-child')?.textContent==='FORMA_PRUEBA_2');
   assert.equal(await field.inputValue(),'2,25','La regeneración individual borra puntos editados');
+
+  // El editor específico de Griego I completo también debe vincular el título.
+  await page.evaluate(()=>{
+   const course=document.getElementById('course');
+   course.value='greek1';course.dispatchEvent(new Event('change',{bubbles:true}));
+   const model=document.getElementById('model');
+   model.value='complete';model.dispatchEvent(new Event('change',{bubbles:true}));
+   document.querySelectorAll('#unitChoices .unit-choice').forEach(el=>
+    el.checked=units[Number(el.value)]==='UD7');
+   generate();
+   const title=document.querySelector('#paper .exam-header-line:first-child > span:first-child');
+   const input=document.getElementById('name');
+   if(!title||!input)throw Error('El título griego no existe');
+   const linkId=title.dataset.examEditorLink;
+   if(!linkId||input.dataset.examEditorLink!==linkId)throw Error('Griego completo no enlaza su título');
+   title.textContent='Examen de griego editado';
+   title.dispatchEvent(new Event('input',{bubbles:true}));
+   if(input.value!=='Examen de griego editado')throw Error('Griego no sincroniza del Word al menú');
+   input.value='Griego desde el menú';
+   input.dispatchEvent(new Event('input',{bubbles:true}));
+   if(!title.textContent.includes('Griego desde el menú'))throw Error('Griego no sincroniza del menú al Word');
+  });
   assert.equal(errors.length,0,'Errores de JavaScript: '+errors.join('; '));
   await page.close();
   console.log('Fase I: puntuación y edición bidireccional, borradores y regeneración individual correctos.');
