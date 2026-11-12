@@ -60,6 +60,15 @@ function readStoredZipEntry(bytes,wanted){
     pelliculam:latinLexBanks.latin1.phonetics.some(x=>x.latin==='pelliculam'),
     inde:latinLexBanks.latin1.phonetics.some(x=>x.latin==='inde'),
     pirum:latinLexBanks.latin1.phonetics.some(x=>x.latin==='pirum'),
+    newGreek:latinLexBanks.latin1.phonetics.filter(x=>x.id?.startsWith('EVF-')&&
+     Number(x.id.slice(4))>=1081&&Number(x.id.slice(4))<=1180&&
+     x.tipoTransmision==='ADAPTACION_CULTA').length,
+    recoveredGreek:latinLexBanks.latin1.phonetics.filter(x=>x.id?.startsWith('EVF-')&&
+     Number(x.id.slice(4))>=1181&&Number(x.id.slice(4))<=1197&&
+     x.tipoTransmision==='ADAPTACION_CULTA').length,
+    greekPotentiallyDubious:['Scytiam','pyram','œagrum','œnomaum','œtam','chœrilum','Chlœm',
+     'circum','gulam','sculptorem'].some(s=>latinLexBanks.latin1.phonetics
+      .some(x=>normLex(x.latin||x.prompt)===normLex(s))),
     distinct:new Set(latinLexBanks.latin1.phonetics.map(x=>normLex(x.latin||x.prompt))).size
    }));
    assert.equal(bankLoaded.latin1,663,filename+': el programa ha sustituido las fichas generales o la caché antigua sigue activa');
@@ -67,6 +76,9 @@ function readStoredZipEntry(bytes,wanted){
    assert(bankLoaded.pelliculam&&!bankLoaded.inde&&!bankLoaded.pirum,
     filename+': decisiones editoriales de fonética no respetadas');
    assert.equal(bankLoaded.distinct,bankLoaded.latin1,filename+': étimos duplicados en el sorteo');
+   assert.equal(bankLoaded.newGreek,100,filename+': faltan adaptaciones gráficas de la siguiente tanda');
+   assert.equal(bankLoaded.recoveredGreek,17,filename+': falta recuperar grafías griegas anteriormente pendientes');
+   assert(!bankLoaded.greekPotentiallyDubious,filename+': las diez candidatas con dudas deben esperar la elección docente');
 
    // Las adaptaciones cultas aprobadas deben distinguirse de las evoluciones
    // patrimoniales también en el Word. Su etiqueta no es parte del campo editable.
