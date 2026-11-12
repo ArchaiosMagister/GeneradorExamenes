@@ -267,6 +267,16 @@ const GreekBank=sourceBank.filter(x=>x.course==='greek1');
 // La cobertura extra de Latín I usa paradigmas escolares pero no modifica
 // registros source=0/1/5 ni resuelve arbitrariamente lemas homógrafos.
 const LatinBank=sourceBank.filter(x=>!x.course||x.course==='latin1');
+// El perfecto de vinco es una forma contrastada, no una propuesta de modelo.
+const latinVictory=api.analyze(data,'vicerunt','lat1',LatinBank)[0];
+assert.equal(latinVictory.status,'documented','vicerunt no se ha reconocido automáticamente');
+assert.equal(latinVictory.lemma,'vinco');
+assert.match(latinVictory.entry,/vinco, vici, victum/);
+const Latin4Bank=sourceBank.filter(row=>row.course==='latin4');
+const latin4Victory=api.analyze(data,'vicerunt','lat4',Latin4Bank)[0];
+assert.equal(latin4Victory.status,'documented','vicerunt debe reconocerse también con el enunciado breve de 4.º');
+assert.equal(latin4Victory.lemma,'vinco');
+assert.equal(data.rows.lat.filter(row=>row[0]==='vinco'&&row[2]==='V;IND;ACT;PRF;3;PL'&&row[3]===5).length,1);
 const latinCorpusGuards=api.analyze(data,
  'alta humanum tuæ mihi me esse potest dare docebat longisque fecerant Romamque',
  'lat1',LatinBank);
@@ -596,7 +606,26 @@ console.log('Vocabulario: prioridad docente, deduplicación por UD, ambigüedad,
   console.log('JSON docente de Latín I · 10 unidades · '+JSON.stringify(totals));
  }
 
- await page.click('#vmShowExam');assert.equal(await page.locator('#vocabularyGenerator').isVisible(),false);
+ // Regresión iPhone: la pestaña de vocabulario no debe mostrar papel ni panel del examen.
+  await page.setViewportSize({width:390,height:844});
+  await page.click('#vgShow');
+  assert.equal(await page.locator('#examLayout').isVisible(),false,'Se ve el examen en el generador de vocabulario móvil');
+  assert.equal(await page.locator('#exam-header-controls').isVisible(),false,'Se ven los menús del examen en vocabulario móvil');
+  assert.equal(await page.locator('#vocabularyGenerator').isVisible(),true);
+  await page.click('#vmShowList');
+  assert.equal(await page.locator('#examLayout').isVisible(),false,'Se ve el examen en el gestor exigible móvil');
+  assert.equal(await page.locator('#vmSuggestUnit').count(),1,'Falta importación docente revisable');
+  // No se añaden exigibles automáticamente por confundir banco general y lista exigible.
+  const requiredBefore=await page.evaluate(()=>JSON.parse(localStorage.getItem('examina_required_v9')||'[]').length);
+  await page.selectOption('#vmCourse','latin1');
+  await page.selectOption('#vmUnit','UD3');
+  page.once('dialog',dialog=>dialog.accept());
+  await page.click('#vmSuggestUnit');
+  const requiredAfter=await page.evaluate(()=>JSON.parse(localStorage.getItem('examina_required_v9')||'[]').length);
+  assert(requiredAfter>requiredBefore,'No se ha importado el vocabulario docente bajo confirmación del profesor');
+  await page.click('#vmShowExam');
+  assert.equal(await page.locator('#vocabularyGenerator').isVisible(),false);
+  assert.equal(await page.locator('#examLayout').isVisible(),true,'No se ha restaurado el examen al volver desde vocabulario');
  assert.deepEqual(errors,[]);console.log('Navegador offline: pestañas, unidades, persistencia y descarga DOCX correctas.');
  }finally{await browser.close()}
 })().catch(e=>{console.error(e);process.exitCode=1});
