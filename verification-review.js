@@ -306,17 +306,24 @@ function evidenceRows(data,course,limit=99){
 }
 // En el análisis escolar una misma forma no debe sortearse con una sola
 // solución cuando existen lecturas homógrafas o sincréticas diferentes.
+const evidenceReadingIndexes=new WeakMap();
 function evidenceUniqueReading(data,course,row){
- const lang=course==='gr1'?'grc':'lat',surface=String(row[1]).normalize('NFC').toLocaleLowerCase();
- const readings=new Set();
- for(const candidate of data?.rows?.[lang]||[]){
-  if(![0,1,2,4,5].includes(candidate[3])||
-   String(candidate[1]).normalize('NFC').toLocaleLowerCase()!==surface||
-   !data.vocabulary?.[lang]?.[candidate[0]]?.[course])continue;
-  readings.add(candidate[0]+'|'+candidate[2]);
-  if(readings.size>1)return false;
+ if(!data||!EVIDENCE_COURSES[course])return false;
+ let index=evidenceReadingIndexes.get(data);
+ if(!index){index=new Map();evidenceReadingIndexes.set(data,index)}
+ if(!index.has(course)){
+  const lang=course==='gr1'?'grc':'lat',bySurface=new Map();
+  for(const candidate of data.rows?.[lang]||[]){
+   if(![0,1,2,4,5].includes(candidate[3])||
+    !data.vocabulary?.[lang]?.[candidate[0]]?.[course])continue;
+   const surface=String(candidate[1]).normalize('NFC').toLocaleLowerCase();
+   if(!bySurface.has(surface))bySurface.set(surface,new Set());
+   bySurface.get(surface).add(candidate[0]+'|'+candidate[2]);
+  }
+  index.set(course,bySurface);
  }
- return readings.size===1;
+ const surface=String(row[1]).normalize('NFC').toLocaleLowerCase();
+ return index.get(course).get(surface)?.size===1;
 }
 // Se añaden EXCLUSIVAMENTE fichas autorizadas que superan la matriz curricular.
 // Los registros fuente 3/6/7 no aportan análisis; las fuentes 0/1/5 mantienen
