@@ -469,7 +469,12 @@ async function checkFile(browser,filename){
  assert.equal(await requiredRow.count(),1);
  assert(!/[:‘“]/.test(await requiredRow.textContent()),'La entrada exigible debe ir sin significado');
  assert.equal(await gloss.locator('.gloss-item').filter({hasText:/^in\b/i}).count(),0);
- assert(await gloss.locator('.gloss-item').filter({hasText:/^villa.+:/i}).count());
+ // villa, –æ ya figura explícitamente en el listado docente de UD2:
+ // debe imprimirse como exigible, sin traducción, no como palabra nueva.
+ const villaRow=gloss.locator('.gloss-item').filter({hasText:/^villa/i});
+ assert.equal(await villaRow.count(),1,'Villa debe figurar en el glosario');
+ assert(!/[:‘“]/.test(await villaRow.textContent()),
+  'Villa es exigible desde UD2 y debe imprimirse sin traducción');
  await slots.nth(1).fill('Puella amat.');
  assert.equal(await editor.inputValue(),'Puella in villa laborat.\nPuella amat.\nNauta navigat.');
  assert(await gloss.locator('.gloss-item').filter({hasText:/^amo[ ,]/i}).count());
