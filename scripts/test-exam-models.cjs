@@ -97,11 +97,25 @@ function latinSuite(){
  state.model.value='morf';vm.runInContext('generateLatinMorphologyReference()',sandbox);
  output=state.paper.innerHTML.split('<div id="answerkey"')[0];
  assert.equal((output.match(/class="exam-question"/g)||[]).length,4,'Latín I UD3: pronombres como tercera pregunta');
- assert(output.includes('exam-pronouns')&&output.includes('palabras variables'));
+ assert(output.includes('exam-pronouns')&&output.includes('Analiza morfológicamente las siguientes palabras (1 p.).'));
  assert(output.includes('Declina 2 de los 3 sintagmas propuestos.'),'Latín: enunciado dinámico de sintagmas');
  assert(!output.includes('Elige y declina')&&!output.includes('class="small">Elige'),'Latín: subtítulo duplicado');
  assert(output.includes('(sustantivo) + (adjetivo)'));
  assert(output.includes('(<i>puella, –æ</i>)'),'Latín: falta el enunciado al lado de la forma');
+ // El perfecto no se pide hasta UD4; conjugación siempre en redonda y
+ // dentro de un único paréntesis exterior, también en modelos no morfológicos.
+ const morphologyMarkup=(category,entry,units)=>vm.runInContext(
+  'latinMorphologyEnunciationHtml('+JSON.stringify({category,entry})+','+JSON.stringify(units)+')',sandbox);
+ assert.equal(morphologyMarkup('verbs','duco, duxi, ductum (3ª)',['UD3']),' (<i>duco</i>, 3ª)');
+ assert.equal(morphologyMarkup('verbs','duco, duxi, ductum (3ª)',['UD4']),' (<i>duco, duxi, ductum</i>, 3ª)');
+ assert.equal(morphologyMarkup('verbs','duco, duxi, ductum (3ª)',['UD2','UD4']),' (<i>duco, duxi, ductum</i>, 3ª)');
+ assert.equal(morphologyMarkup('verbs','capio, cepi, captum (mx.)',['UD3']),' (<i>capio</i>, mx.)');
+ assert.equal(morphologyMarkup('verbs','sum, fui, – (irr.)',['UD3']),' (<i>sum</i>, irr.)');
+ assert.equal(morphologyMarkup('verbs','amo, amavi, amatum (1ª)',['UD4']),' (<i>amo, amavi, amatum</i>, 1ª)');
+ assert.equal(morphologyMarkup('verbs','invenio, inveni, inventum',['UD4']),' (<i>invenio, inveni, inventum</i>)');
+ assert.equal(morphologyMarkup('nouns','puella, –æ',['UD3']),' (<i>puella, –æ</i>)');
+ assert.match(output,/\(<i>amo<\/i>, 1ª\)/,'Latín UD3: enunciado verbal en examen de morfología');
+
  assert.equal(vm.runInContext("latinExamSurface('reginae','regina, –æ')",sandbox),'reginæ');
  assert.equal(vm.runInContext("latinExamSurface('poeta','poeta, –æ')",sandbox),'poeta');
  assert.equal(vm.runInContext("latinExamSurface('poetae','poeta, –æ')",sandbox),'poetæ');
@@ -182,7 +196,7 @@ function greekSuite(){
  assert.match(output,/data-sentence-slot="11"[^>]*><\/span>/);
  output=run('morphology');
  assert.equal((output.match(/class="exam-question"/g)||[]).length,4,'Griego UD7: pronombres');
- assert(output.includes('exam-pronouns')&&output.includes('palabras variables'));
+ assert(output.includes('exam-pronouns')&&output.includes('Analiza morfológicamente las siguientes palabras (1 p.).'));
  assert(output.includes('Declina 1 de los 3 sintagmas propuestos.'),'Griego: enunciado dinámico');
  assert(!output.includes('Tria i declina')&&!output.includes('Elige y declina'),'Griego: subtítulo duplicado');
  assert(output.includes('(artículo) + (sustantivo) + (adjetivo)'));
