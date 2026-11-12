@@ -2672,11 +2672,34 @@ isRequired=function(entry,chosen){if(currentCourse()!=='greek1')return legacyIsR
 try{if(!localStorage.getItem('examina_greek_materials_v20')){for(const x of greekMaterials.required){if(!examRequired.some(y=>y.course==='greek1'&&y.unit===x.unit&&y.key===examKey(x.entry)))examRequired.push({...x,course:'greek1',key:examKey(x.entry)})}saveRequired();localStorage.setItem('examina_greek_materials_v20','1')}}catch(e){for(const x of greekMaterials.required)if(!examRequired.some(y=>y.course==='greek1'&&y.unit===x.unit&&y.key===examKey(x.entry)))examRequired.push({...x,course:'greek1',key:examKey(x.entry)})}
 function greekLexKey(entry){return examKey(String(entry).split('+')[0].trim())}
 function greekLemma(head){const item=greekSharedBank.lookup(head);return item?{entry:item.entry,meaning:item.meaning||'[Traducción pendiente de revisión]',meaning_va:item.meaning_va||''}:{entry:head,meaning:'[Traducción pendiente de revisión]'}}
+/* Extracto de las formas contrastadas del índice; sin inferencia de tiempos. */
+const greekExplicitVerbEvidence={"βουλομαι":{"forms":["βούλομαι","βούλει","βούλεται","βουλόμεθα","βούλεσθε","βούλονται"],"voice":"media","sourceCode":5,"unit":6}};
 function greekCorpus(){
  const items=[];
  const add=(kind,id,minUnit,contentUnits,prompt,answer,lemmas=[],table=null)=>items.push({kind,id,minUnit,contentUnits,prompt,answer,lemmas,table,verified:true});
  for(const [key,forms] of Object.entries(greekNounData)){const u=greekNounUnits[key];if(u===undefined)continue;const lemma=greekLemma(forms[0]);add('declension','n-'+key,u,[u],'Declina '+lemma.entry,greekCaseLabels.map((l,i)=>l+': '+forms[i]).join('; '),[lemma.entry],{headers:['Caso','Singular','Plural'],rows:[0,4,3,1,2].map(i=>[greekCaseLabels[i].split(' ')[0],forms[i],forms[i+5]])})}
  for(const [key,forms] of Object.entries(greekVerbData)){const u=greekVerbUnits[key];if(u===undefined)continue;const lemma=greekLemma(forms[0]);add('conjugation','v-'+key,u,[u],'Conjuga '+lemma.entry+' en presente de indicativo activo.',greekPersonLabels.map((l,i)=>l+': '+forms[i]).join('; '),[lemma.entry],{headers:['Persona','Singular','Plural'],rows:[0,1,2].map(i=>[(i+1)+'.ª',forms[i],forms[i+3]])})}
+ // El verbo deponente βούλομαι tiene desinencias medias y traducción activa.
+ for(const [key,record] of Object.entries(greekExplicitVerbEvidence)){
+  const entry=greekSharedBank.lookup(record.forms[0])?.entry;
+  if(!entry)continue;
+  const forms=record.forms;
+  add('conjugation','ev-'+key,record.unit,[record.unit],
+   'Conjuga '+entry+' en presente de indicativo medio (deponente).',
+   greekPersonLabels.map((label,i)=>label+': '+forms[i]).join('; '),[entry],
+   {headers:['Persona','Singular','Plural'],rows:[0,1,2].map(i=>[(i+1)+'.ª',forms[i],forms[i+3]])});
+  items[items.length-1].verbVoice='medio (deponente)';
+  items[items.length-1].sourceCode=record.sourceCode;
+  forms.forEach((form,i)=>{
+   // El material docente ya incluía βούλονται: no duplicar esa casilla.
+   if(greekFormRows.some(row=>row[0].normalize('NFC')===form.normalize('NFC')))return;
+   add('forms','ef-'+key+'-'+i,record.unit,[record.unit],form,
+    ['Primera','Segunda','Tercera'][i%3]+' persona del '+(i<3?'singular':'plural')+
+    ' del presente de indicativo medio, verbo deponente.',[entry]);
+   items[items.length-1].category='verbs';
+   items[items.length-1].sourceCode=record.sourceCode;
+  });
+ }
  greekFormRows.forEach(([form,min,us,lemma,answer],i)=>add('forms','f-'+i,min,us,form,answer,[lemma]));
  greekPronounRows.forEach(([form,answer],i)=>{add('pronouns','p-'+i,7,[7],form,answer);add('forms','pf-'+i,7,[7],form,answer)});
  greekEtymology.forEach(([word,min,us,answer],i)=>add('etymology','e-'+i,min,us,word,answer,[greekSharedBank.lookup(word)?.entry||word]));
@@ -2868,7 +2891,7 @@ function generateGreekMorphologyFixed(){
   !(x.kind==='forms'&&(x.lemmas||[]).some(lemma=>isExcludedExamMorphLemma(lemma))));
  const verbs=stickyExamRows('verb',()=>sample(eligible.filter(x=>x.kind==='conjugation'&&x.table)
   .flatMap(x=>x.table.rows.flatMap((row,i)=>[row[1],row[2]].map((form,j)=>({
-   prompt:form,answer:(i+1)+'ª persona '+(j===0?'singular':'plural')+' del presente de indicativo activo',
+   prompt:form,answer:(i+1)+'ª persona '+(j===0?'singular':'plural')+' del presente de indicativo '+(x.verbVoice||'activo'),
    lemma:x.lemmas[0],person:(i+1)+'ª '+(j===0?'singular':'plural')
   })).filter(x=>x.prompt))),cfg.verbs));
  const pronPool=examQuestionEnabled('pronouns')?eligible.filter(x=>x.kind==='pronouns'):[];
