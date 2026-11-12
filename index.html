@@ -3432,7 +3432,7 @@ function regenerateLatinLexWord(kind,index){
 }
 function buildLatinLexQuestion(course,chosen){
  const html=[],parts=examSelectedLexParts(course),va=$('lang').value==='va',italic=(x,kind,index)=>
-  '<span data-lex-slot="'+kind+':'+index+'" contenteditable="false"><i contenteditable="true" spellcheck="false" aria-label="'+
+  '<span data-lex-slot="'+kind+':'+index+'" contenteditable="false"><i contenteditable="plaintext-only" spellcheck="false" aria-label="'+
    (kind==='preverbs'?'Editar verbo de modificación preverbial':
     kind==='phonetics'?'Editar forma de evolución fonética':
     kind==='prefixes'?'Editar prefijo':'Editar latinismo')+'">'+
