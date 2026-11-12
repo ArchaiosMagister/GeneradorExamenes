@@ -42,7 +42,7 @@ assert(data.rows.grc.filter(x=>x[3]===5).length>=30,
  'Deben mantenerse los presentes medios griegos documentados');
 assert.equal(data.rows.lat.filter(x=>x[0]==='sum'&&x[3]===5).length,30);
 assert.equal(data.rows.grc.filter(x=>x[0]==='γιγνομαι'&&x[3]===5).length,6);
-assert.equal(data.rows.grc.filter(x=>x[0]==='ερχομαι'&&x[3]===5).length,6);
+assert.equal(data.rows.grc.filter(x=>x[0]==='ερχομαι'&&x[3]===5).length,12);
 assert.equal(data.rows.grc.filter(x=>x[0]==='διδασκω'&&x[3]===5).length,6);
 assert.equal(data.rows.grc.filter(x=>x[0]==='ακουω'&&x[3]===5).length,6);
 assert.equal(data.source.externalVerification.length,overrides.paradigms.length+overrides.singleForms.length);
