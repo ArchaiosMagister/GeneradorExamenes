@@ -62,8 +62,8 @@ function readStoredZipEntry(bytes,wanted){
     pirum:latinLexBanks.latin1.phonetics.some(x=>x.latin==='pirum'),
     distinct:new Set(latinLexBanks.latin1.phonetics.map(x=>normLex(x.latin||x.prompt))).size
    }));
-   assert.equal(bankLoaded.latin1,546,filename+': el programa ha sustituido las fichas generales o la caché antigua sigue activa');
-   assert.equal(bankLoaded.latin4,533,filename+': falta el banco general de Latín 4.º');
+   assert.equal(bankLoaded.latin1,663,filename+': el programa ha sustituido las fichas generales o la caché antigua sigue activa');
+   assert.equal(bankLoaded.latin4,650,filename+': falta el banco general de Latín 4.º');
    assert(bankLoaded.pelliculam&&!bankLoaded.inde&&!bankLoaded.pirum,
     filename+': decisiones editoriales de fonética no respetadas');
    assert.equal(bankLoaded.distinct,bankLoaded.latin1,filename+': étimos duplicados en el sorteo');
