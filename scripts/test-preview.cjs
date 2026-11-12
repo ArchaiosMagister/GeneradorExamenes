@@ -169,6 +169,56 @@ async function checkFile(browser,filename){
   assert.equal(sample.indicatorItalic,false,filename+': metadato en cursiva '+sample.source);
   assert.equal(sample.fullText,sample.source,filename+': se ha perdido contenido '+sample.source);
  }
+ // Prueba real: el cuadro de análisis verbal debe mostrar enunciados y
+ // tener formas pasivas a partir de UD3, respetando los umbrales curriculares.
+ const latinVerbMorphology=await page.evaluate(()=>{
+  const course=document.getElementById('course'),model=document.getElementById('model');
+  course.value='latin1';course.dispatchEvent(new Event('change',{bubbles:true}));
+  model.value='morf';model.dispatchEvent(new Event('change',{bubbles:true}));
+  return ['UD2','UD3','UD4','UD7'].map(unit=>{
+   document.querySelectorAll('.unit-choice').forEach(el=>el.checked=units[Number(el.value)]===unit);
+   examSelectionCache.clear();generate();
+   const tbl=document.querySelector('#paper .reference-verb-table');
+   const rows=[...tbl.querySelectorAll('tbody tr')].map(tr=>{
+    const cell=tr.querySelector('td:first-child'),terms=cell.querySelectorAll('i');
+    return {form:terms[0]?.textContent,lemma:terms[1]?.textContent,
+     text:cell.textContent,
+     lemmaItalic:wordInline(terms[1]).includes('<w:i/>'),
+     conjugationItalic:wordInline(terms[1].nextSibling).includes('<w:i/>')};
+   });
+   const pool=latinMorphologyVerbPool(selectedUnits());
+   const picked=examSelectionCache.get(examCacheSignature('verb'))||[];
+   return {unit,rows,picked: picked.map(({form,entry,voice,tense})=>({form,entry,voice,tense})),
+    allVoices:[...new Set(pool.map(item=>item.voice))],
+    allTenses:[...new Set(pool.map(item=>item.tense))],
+    wordXml:wordExamTable(tbl)};
+  });
+ });
+ for(const sample of latinVerbMorphology){
+  const {unit,rows,picked,allVoices,allTenses,wordXml}=sample;
+  assert(rows.length>=2,filename+' '+unit+': tabla verbal vacía');
+  assert(rows.every(x=>x.form&&x.lemma&&x.lemmaItalic&&!x.conjugationItalic),
+   filename+' '+unit+': falta lema en cursiva o hay conjugación en cursiva');
+  assert(rows.every(x=>x.text.includes('(')&&x.text.includes(')')),
+   filename+' '+unit+': enunciado sin paréntesis');
+  assert(picked.some(x=>x.voice==='activa'),filename+' '+unit+': falta voz activa');
+  assert(wordXml.includes('<w:i/>')&&wordXml.includes('ª'),
+   filename+' '+unit+': exportación Word sin cursiva o conjugación');
+  if(unit==='UD2'){
+   assert.deepEqual(allVoices,['activa'],filename+': pasiva adelantada en UD2');
+   assert(!allTenses.some(x=>/futuro|perfecto/.test(x)),filename+': tiempos adelantados en UD2');
+   assert(rows.every(x=>!x.text.includes(', amavi, amatum')),
+    filename+': UD2 no debe mostrar perfectum en los lemas');
+  }else{
+   assert(picked.some(x=>x.voice==='pasiva'),filename+' '+unit+': falta pasiva en la tabla');
+   if(unit==='UD3')assert(rows.every(x=>!x.text.includes(', amavi, amatum')),
+    filename+': UD3 no debe mostrar perfectum en los lemas');
+   if(unit==='UD4')assert(allTenses.includes('perfecto de indicativo'),
+    filename+': falta perfecto a partir de UD4');
+   if(unit==='UD7')assert(allTenses.includes('futuro de indicativo'),
+    filename+': falta futuro a partir de UD7');
+  }
+ }
  // La exportación Word conserva cursiva solo en los vocablos y no en
  // las letras a./c./d. ni en las consignas.
  const lexWord=await page.evaluate(()=>{
