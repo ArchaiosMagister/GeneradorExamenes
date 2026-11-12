@@ -1,8 +1,8 @@
 {
   "esquema": "evoluciones-latin-castellano/v1",
   "revision": "2026-11-12",
-  "origen": "Banco docente de evoluciones fonéticas, con ampliaciones y decisiones editoriales documentadas.",
-  "criterio": "514 candidatas APTO_PROPUESTO; solo formas revisadas y reglas expresas, excluidas inde y pirum por decisión docente.",
+  "origen": "Banco docente de evoluciones fonéticas y ampliaciones auditadas a partir del Excel final de 1058 formas.",
+  "criterio": "521 fichas APTO_PROPUESTO con al menos una de 20 normas; exclusiones docentes y etimologías dudosas no entran en sorteos.",
   "idioma_origen": "la",
   "idioma_destino": "es",
   "normas": [
@@ -6730,6 +6730,113 @@
       "estado": "APTO_PROPUESTO",
       "lote": 12,
       "revision_docente": "aceptar"
+    },
+    {
+      "id": "EVF-1062",
+      "latin": "audīte",
+      "castellano": "oíd",
+      "normas": [
+        "N03",
+        "N12",
+        "N17"
+      ],
+      "fila_origen": 27,
+      "observacion": "Audīte > oíd: au > o, sonorización de -t- intervocálica > d y apócope de -e. Forma verbal de imperativo plural.",
+      "fuente": "https://fegalaz.usc.es/~gamallo/aulas/etim/mater_fonetica.htm",
+      "estado": "APTO_PROPUESTO",
+      "lote": 13,
+      "criterio_pau": "Ficha patrimonial contrastada con el Excel docente y fuente documentada; sin predicción de selectividad."
+    },
+    {
+      "id": "EVF-1063",
+      "latin": "audītum",
+      "castellano": "oído",
+      "normas": [
+        "N12",
+        "N16",
+        "N17"
+      ],
+      "fila_origen": 28,
+      "observacion": "Audītum > oído: monoptongación au > o, pérdida de -d- interior y sonorización de -t- > d. La síncopa alude aquí a la consonante, no a una vocal.",
+      "fuente": "https://fegalaz.usc.es/~gamallo/aulas/etim/mater_fonetica.htm",
+      "estado": "APTO_PROPUESTO",
+      "lote": 13,
+      "criterio_pau": "Ficha patrimonial contrastada con el Excel docente y fuente documentada; sin predicción de selectividad."
+    },
+    {
+      "id": "EVF-1064",
+      "latin": "date",
+      "castellano": "dad",
+      "normas": [
+        "N03",
+        "N17"
+      ],
+      "fila_origen": 83,
+      "observacion": "Date > dad: imperativo plural del latín dare; -t- > d y desaparición de la -e final. El resultado es una forma verbal.",
+      "fuente": "https://www.apuntes-selectividad.com/latin/evolucion-del-latin-al-castellano/",
+      "estado": "APTO_PROPUESTO",
+      "lote": 13,
+      "criterio_pau": "Ficha patrimonial contrastada con el Excel docente y fuente documentada; sin predicción de selectividad."
+    },
+    {
+      "id": "EVF-1065",
+      "latin": "octavum",
+      "castellano": "ochavo",
+      "normas": [
+        "N13"
+      ],
+      "fila_origen": 217,
+      "observacion": "Octavum > ochavo: evolución patrimonial del grupo -ct- > ch. Ochavo designa históricamente una moneda o fracción; distinguir de octavo, cultismo.",
+      "fuente": "https://ghcl.ub.edu/diccaxv/dictionary/ViewLema/14027",
+      "estado": "APTO_PROPUESTO",
+      "lote": 13,
+      "criterio_pau": "Ficha patrimonial contrastada con el Excel docente y fuente documentada; sin predicción de selectividad."
+    },
+    {
+      "id": "EVF-1066",
+      "latin": "fluxum",
+      "castellano": "flojo",
+      "normas": [
+        "N01",
+        "N13"
+      ],
+      "fila_origen": 378,
+      "observacion": "Fluxum > flojo: ŭ > o y evolución de x /ks/ > antigua palatal x > j. No confundir con flujo, forma culta.",
+      "fuente": "https://ghcl.ub.edu/diccaxv/dictionary/ViewLema/9706",
+      "estado": "APTO_PROPUESTO",
+      "lote": 13,
+      "criterio_pau": "Ficha patrimonial contrastada con el Excel docente y fuente documentada; sin predicción de selectividad."
+    },
+    {
+      "id": "EVF-1067",
+      "latin": "pelagum",
+      "castellano": "piélago",
+      "normas": [
+        "N07"
+      ],
+      "fila_origen": 584,
+      "observacion": "Pĕlagum > piélago: diptongación ĕ tónica > ie. Se conserva la vocal postónica, sin síncopa que justificar.",
+      "fuente": "https://stel.ub.edu/diccaxv/dictionary/ViewLema/16158",
+      "estado": "APTO_PROPUESTO",
+      "lote": 13,
+      "criterio_pau": "Ficha patrimonial contrastada con el Excel docente y fuente documentada; sin predicción de selectividad."
+    },
+    {
+      "id": "EVF-1068",
+      "latin": "folliculum",
+      "castellano": "hollejo",
+      "normas": [
+        "N01",
+        "N05",
+        "N13",
+        "N20"
+      ],
+      "fila_origen": 1048,
+      "observacion": "Follicŭlum > hollejo: f- > h-, ĭ breve > e, evolución de -ll- y del grupo -cŭl- > j. Doblete culto: folículo.",
+      "fuente": "https://ghcl.ub.edu/diccaxv/listings/WordsByFrequencyIndex/page%3A544/sort%3Aocurrencias/direction%3Adesc/myLanguage%3Aes",
+      "estado": "APTO_PROPUESTO",
+      "lote": 13,
+      "criterio_pau": "Ficha patrimonial contrastada con el Excel docente y fuente documentada; sin predicción de selectividad."
     }
   ],
   "ampliacion": {
@@ -6841,6 +6948,12 @@
       "fecha": "2026-11-12",
       "cantidad": 1,
       "decisiones": "pelliculam incorporar; inde y pirum excluir"
+    },
+    "lote_13": {
+      "fecha": "2026-11-12",
+      "cantidad": 7,
+      "origen": "banco_evolucion_fonetica_final_10_lotes.xlsx",
+      "criterio": "Solo etimologías y fenómenos contrastados; otras candidatas quedan pendientes de revisión filológica."
     }
   }
 }
