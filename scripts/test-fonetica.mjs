@@ -7,7 +7,7 @@ import {PALABRAS_POR_EXAMEN,seleccionarEvoluciones} from '../data/fonetica/selec
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const banco=JSON.parse(readFileSync(resolve(root,'data/fonetica/banco_examenes.json'),'utf8'));
 const ids=banco.items.map(x=>x.id);
-assert.equal(banco.items.length,523);
+assert.equal(banco.items.length,526);
 assert.equal(new Set(ids).size,banco.items.length,'Identificadores duplicados');
 assert.equal(banco.normas.length,20);
 assert.equal(PALABRAS_POR_EXAMEN,4);
@@ -72,6 +72,37 @@ for(const [latin,castellano,normas] of loteTrece){
 assert.equal(new Set(banco.items.map(x=>x.latin.normalize('NFD')
  .replace(/[\u0300-\u036f]/g,'').toLowerCase())).size,banco.items.length,
  'No deben duplicarse étimos equivalentes por acento de cantidad');
+const audit=JSON.parse(readFileSync(resolve(root,'data/fonetica/auditoria-excel-lote-100-20261112.json'),'utf8'));
+assert.equal(audit.total_revisadas,100,'La auditoría debe documentar exactamente 100 entradas nuevas');
+assert.equal(audit.items.length,100,'Auditoría incompleta');
+assert.equal(new Set(audit.items.map(x=>x.fila_origen)).size,100,'Filas de Excel duplicadas');
+const expectedStatus={INCORPORADA:3,DECISION_DOCENTE:6,PENDIENTE_VERIFICACION:62,
+ DUPLICADA_O_VARIANTE:3,EXCLUIDA_CULTISMO:26};
+assert.deepEqual(audit.resumen,expectedStatus,'Estados de auditoría alterados');
+const normalizeAudit=s=>String(s||'').normalize('NFD').replace(/\p{M}/gu,'')
+ .replace(/[æÆ]/g,'ae').replace(/[œŒ]/g,'oe').toLowerCase();
+for(const row of audit.items){
+ assert(row.latin&&row.castellano&&row.normasExcel.length&&row.observacionExcel,
+  'Fila de auditoría sin trazabilidad');
+ const found=banco.items.find(x=>normalizeAudit(x.latin)===normalizeAudit(row.latin));
+ if(row.estado==='INCORPORADA'){
+  assert(found&&found.id===row.idBanco&&found.lote===15,'La ficha auditada apta no está en banco: '+row.latin);
+ }else{
+  assert(!found,'Se ha activado una ficha no aprobada: '+row.latin);
+ }
+}
+const loteCien=banco.items.filter(x=>x.lote===15);
+assert.equal(loteCien.length,3,'Solo tres étimos han superado el lote de 100');
+for(const [latin,castellano,normas] of [
+ ['senatum','senado',['N17']],
+ ['rixosum','rijoso',['N13']],
+ ['virilia','verija',['N01','N13']]
+]){
+ const row=loteCien.find(x=>x.latin===latin);
+ assert(row&&row.castellano===castellano,'Etimología auditada ausente: '+latin);
+ assert.deepEqual(row.normas,normas,'Normas inesperadas en '+latin);
+ assert(row.fuente.startsWith('https://'),'Fuente no documentada: '+latin);
+}
 const todas=banco.normas.map(n=>n.id);
 const caso=seleccionarEvoluciones(banco,{normasSeleccionadas:todas,semilla:'mismo-examen'});
 assert.equal(caso.ejercicios.length,4);

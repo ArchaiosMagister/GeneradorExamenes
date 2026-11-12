@@ -2,7 +2,7 @@
   "esquema": "evoluciones-latin-castellano/v1",
   "revision": "2026-11-12",
   "origen": "Banco docente de evoluciones fonéticas y ampliaciones auditadas a partir del Excel final de 1058 formas.",
-  "criterio": "523 fichas APTO_PROPUESTO con normas compatibles con el currículo; excluir decisiones docentes y etimologías dudosas del sorteo.",
+  "criterio": "526 fichas APTO_PROPUESTO tras auditoría de 100 candidatos; el resto de las 100 queda documentado como pendiente, excluido o variante. Ninguna ficha en revisión se sortea.",
   "idioma_origen": "la",
   "idioma_destino": "es",
   "normas": [
@@ -6865,6 +6865,52 @@
       "fuente": "https://ghcl.ub.edu/diccaxv/dictionary/ViewLema/12497",
       "estado": "APTO_PROPUESTO",
       "lote": 14
+    },
+    {
+      "id": "EVF-1071",
+      "latin": "senatum",
+      "castellano": "senado",
+      "normas": [
+        "N17"
+      ],
+      "fila_origen": 281,
+      "observacion": "El lat. SENĀTUM está documentado como étimo de senado. La dental intervocálica -t- > -d- permite trabajar N17; se trata de una voz institucional de transmisión latina, sin presumir una evolución patrimonial completa de todos sus segmentos.",
+      "fuente": "https://ghcl.ub.edu/diccaxv/dictionary/ViewLema/19260",
+      "estado": "APTO_PROPUESTO",
+      "lote": 15,
+      "revision": "2026-11-12",
+      "auditoria": "data/fonetica/auditoria-excel-lote-100-20261112.json"
+    },
+    {
+      "id": "EVF-1072",
+      "latin": "rixosum",
+      "castellano": "rijoso",
+      "normas": [
+        "N13"
+      ],
+      "fila_origen": 859,
+      "observacion": "Rixōsum > rijoso: evolución histórica del grupo escrito x (/ks/) a la palatal medieval y la fricativa moderna representada por j. Significa 'pendenciero' o 'lascivo', no 'riesgoso'. Regla N13 para la palatalización, con referencia didáctica sobre /ks/ > /x/.",
+      "fuente": "https://es.wiktionary.org/wiki/rijoso",
+      "estado": "APTO_PROPUESTO",
+      "lote": 15,
+      "revision": "2026-11-12",
+      "auditoria": "data/fonetica/auditoria-excel-lote-100-20261112.json"
+    },
+    {
+      "id": "EVF-1073",
+      "latin": "virilia",
+      "castellano": "verija",
+      "normas": [
+        "N01",
+        "N13"
+      ],
+      "fila_origen": 870,
+      "observacion": "VIRILIA, plural neutro > verija, 'región púbica': abertura de ĭ a e y evolución de -li- ante vocal a consonante palatal que acabó en j. El resultado es hoy poco frecuente o regional, pero está documentado en el castellano medieval.",
+      "fuente": "https://ghcl.ub.edu/diccaxv/dictionary/ViewLema/21690",
+      "estado": "APTO_PROPUESTO",
+      "lote": 15,
+      "revision": "2026-11-12",
+      "auditoria": "data/fonetica/auditoria-excel-lote-100-20261112.json"
     }
   ],
   "ampliacion": {
@@ -6991,6 +7037,16 @@
         171
       ],
       "criterio": "Contraste individual con vocabulario patrimonial y documentación lexicográfica"
+    },
+    "lote_15": {
+      "fecha": "2026-11-12",
+      "revisadas": 100,
+      "incorporadas": 3,
+      "pendientes_docente": 6,
+      "pendientes_verificacion": 62,
+      "excluidas_cultismo": 26,
+      "duplicadas_o_variantes": 3,
+      "registro": "data/fonetica/auditoria-excel-lote-100-20261112.json"
     }
   }
 }

@@ -1,0 +1,1255 @@
+{
+  "esquema": "auditoria-fonetica-lote-100/v1",
+  "fecha": "2026-11-12",
+  "archivo_fuente": "banco_evolucion_fonetica_final_10_lotes.xlsx",
+  "objetivo": "Revisar exactamente 100 entradas ausentes del banco general; ninguna ficha pendiente se incorpora automáticamente.",
+  "total_revisadas": 100,
+  "resumen": {
+    "INCORPORADA": 3,
+    "DECISION_DOCENTE": 6,
+    "PENDIENTE_VERIFICACION": 62,
+    "DUPLICADA_O_VARIANTE": 3,
+    "EXCLUIDA_CULTISMO": 26
+  },
+  "politica": "INCORPORADA está en el banco; DECISION_DOCENTE y PENDIENTE_VERIFICACION quedan fuera del sorteo; EXCLUIDA_CULTISMO y DUPLICADA_O_VARIANTE no son aptas. Las fichas ya presentes en el programa docente de Latín I se excluyen de la muestra de candidatas nuevas.",
+  "items": [
+    {
+      "fila_origen": 281,
+      "latin": "senatum",
+      "castellano": "senado",
+      "observacionExcel": "La -t- intervocálica pasa a -d- en senatum > senado.",
+      "normasExcel": [
+        "SONOR"
+      ],
+      "estado": "INCORPORADA",
+      "motivo": "Correspondencia y fenómeno fonético individualizados; fuente lexicográfica externa.",
+      "idBanco": "EVF-1071"
+    },
+    {
+      "fila_origen": 859,
+      "latin": "rixosum",
+      "castellano": "rijoso",
+      "observacionExcel": "Rixosum > rijoso: x (/ks/) > j en voz tradicional; significa 'propenso a riñas' o 'lascivo'.",
+      "normasExcel": [
+        "PALAT"
+      ],
+      "estado": "INCORPORADA",
+      "motivo": "Correspondencia y fenómeno fonético individualizados; fuente lexicográfica externa.",
+      "idBanco": "EVF-1072"
+    },
+    {
+      "fila_origen": 870,
+      "latin": "virilia",
+      "castellano": "verija",
+      "observacionExcel": "Virilia > verija: ĭ > e en la primera sílaba y -li- ante vocal evoluciona a palatal y luego j. El plural neutro da un singular femenino.",
+      "normasExcel": [
+        "ABER",
+        "PALAT"
+      ],
+      "estado": "INCORPORADA",
+      "motivo": "Correspondencia y fenómeno fonético individualizados; fuente lexicográfica externa.",
+      "idBanco": "EVF-1073"
+    },
+    {
+      "fila_origen": 861,
+      "latin": "scrinium",
+      "castellano": "escriño",
+      "observacionExcel": "Scrinium > escriño: prótesis e- ante s + consonante y palatalización de -ni- ante vocal > ñ; existe escrinio como forma culta de otro uso.",
+      "normasExcel": [
+        "PALAT",
+        "PRÓT"
+      ],
+      "estado": "DECISION_DOCENTE",
+      "motivo": "Resultado histórico o étimo susceptible de elección docente; mantener fuera del sorteo.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 854,
+      "latin": "quinionem",
+      "castellano": "quiñón",
+      "observacionExcel": "Quinionem > quiñón: -ni- ante vocal > ñ; nombre antiguo de porción de terreno repartida.",
+      "normasExcel": [
+        "PALAT"
+      ],
+      "estado": "DECISION_DOCENTE",
+      "motivo": "Resultado histórico o étimo susceptible de elección docente; mantener fuera del sorteo.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 559,
+      "latin": "contum",
+      "castellano": "cuento",
+      "observacionExcel": "Cŏntum > cuento 'extremo o cabo de algo': ŏ > ue. No confundir con cuento 'relato', que procede de computum.",
+      "normasExcel": [
+        "DIPT"
+      ],
+      "estado": "DECISION_DOCENTE",
+      "motivo": "Resultado histórico o étimo susceptible de elección docente; mantener fuera del sorteo.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 292,
+      "latin": "sŏcrum",
+      "castellano": "suegro",
+      "observacionExcel": "La ŏ tónica pasa a ue; el grupo -cr- se reestructura como -gr- (sin atribuirlo a la sonorización estrictamente intervocálica).",
+      "normasExcel": [
+        "DIPT"
+      ],
+      "estado": "DECISION_DOCENTE",
+      "motivo": "Resultado histórico o étimo susceptible de elección docente; mantener fuera del sorteo.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 308,
+      "latin": "stylum",
+      "castellano": "estilo",
+      "observacionExcel": "Prótesis e- ante st-; la grafía griega y se adapta a i. La grafía latina clásica habitual es stilus (acusativo stilum).",
+      "normasExcel": [
+        "GRIE",
+        "PRÓT"
+      ],
+      "estado": "DECISION_DOCENTE",
+      "motivo": "Confluyen las variantes del étimo STILUM; debe corregirse la forma y valorar su carácter culto.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 52,
+      "latin": "cathedram",
+      "castellano": "cadera",
+      "observacionExcel": "La voz «cadera» es patrimonial, pero la etimología señala una variante vulgar lat. cathegra / catecra de cathedra, con disimilación de dentales. La grafía griega -th- corresponde a -t-. No convertir cathedram > cadera en una evolución directa sin explicar la variante y pasos intermedios.",
+      "normasExcel": [
+        "DISIMIL",
+        "GRIE"
+      ],
+      "estado": "PENDIENTE_VERIFICACION",
+      "motivo": "Requiere contrastar cadena etimológica, acepción, forma base y/o normas antes de autorizar sorteo.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 67,
+      "latin": "consecrare",
+      "castellano": "consagrar",
+      "observacionExcel": "consecrare > consagrar: se relaciona con una variante vulgar *consacrare, por recomposición sobre sacrare; -cr- > -gr- responde a sonorización en grupo de oclusiva + r. No atribuir mecánicamente e > a a una ley vocálica regular ni considerar N17 solo intervocálica sin ampliar la definición.",
+      "normasExcel": [
+        "ASMIL",
+        "SONOR"
+      ],
+      "estado": "PENDIENTE_VERIFICACION",
+      "motivo": "Requiere contrastar cadena etimológica, acepción, forma base y/o normas antes de autorizar sorteo.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 85,
+      "latin": "dĕcimāre",
+      "castellano": "diezmar",
+      "observacionExcel": "decimāre > diezmar: la pérdida de la vocal átona interna y la evolución del grupo ci- ayudan a explicar dezmar; el diptongo ie de «diezmar» puede deberse a analogía con diez/diezmo, pues la e inicial del verbo latino no era tónica. No marcar DIPT regular de ĕ tónica.",
+      "normasExcel": [
+        "PALAT",
+        "SÍNC"
+      ],
+      "estado": "PENDIENTE_VERIFICACION",
+      "motivo": "Requiere contrastar cadena etimológica, acepción, forma base y/o normas antes de autorizar sorteo.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 91,
+      "latin": "digĭtālem",
+      "castellano": "dedal",
+      "observacionExcel": "digĭtālem > dedal es una filiación etimológica documentada, pero exige aclarar la reducción del segmento átono -gi- y los reajustes vocálicos; las etiquetas propuestas son apertura i > e, pérdida interior y t > d. No dar el análisis como completo sin cadena intermedia comprobada.",
+      "normasExcel": [
+        "ABER",
+        "SÍNC",
+        "SONOR"
+      ],
+      "estado": "PENDIENTE_VERIFICACION",
+      "motivo": "Requiere contrastar cadena etimológica, acepción, forma base y/o normas antes de autorizar sorteo.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 101,
+      "latin": "exemplum",
+      "castellano": "ejemplo",
+      "observacionExcel": "exemplum > ejemplo tiene relación etimológica, con x > j; pero el castellano medieval documenta enxiemplo/ensiemplo, con diptongación que la forma moderna no conserva. No presentar el resultado moderno como cadena fonética regular sin explicar la nivelación posterior.",
+      "normasExcel": [
+        "PALAT"
+      ],
+      "estado": "PENDIENTE_VERIFICACION",
+      "motivo": "Requiere contrastar cadena etimológica, acepción, forma base y/o normas antes de autorizar sorteo.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 169,
+      "latin": "lacus",
+      "castellano": "lagos",
+      "observacionExcel": "lacus > lagos si se entiende lacus como forma de plural (4.ª declinación): c intervocálica > g y acomodación de la flexión a -os. No presentar el singular latino lacus como étimo directo de un plural sin esta precisión.",
+      "normasExcel": [
+        "SONOR"
+      ],
+      "estado": "PENDIENTE_VERIFICACION",
+      "motivo": "Requiere contrastar cadena etimológica, acepción, forma base y/o normas antes de autorizar sorteo.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 177,
+      "latin": "lego",
+      "castellano": "leo",
+      "observacionExcel": "lego > leo: la -g- intervocálica se pierde; es la primera persona del presente de legere, no un sustantivo.",
+      "normasExcel": [
+        "SÍNC"
+      ],
+      "estado": "PENDIENTE_VERIFICACION",
+      "motivo": "Requiere contrastar cadena etimológica, acepción, forma base y/o normas antes de autorizar sorteo.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 307,
+      "latin": "stagnum",
+      "castellano": "estaño",
+      "observacionExcel": "Se añade e- ante st- y el grupo -gn- evoluciona a ñ. El étimo stagnum se documenta también con la variante stannum en el significado de metal.",
+      "normasExcel": [
+        "PALAT",
+        "PRÓT"
+      ],
+      "estado": "DUPLICADA_O_VARIANTE",
+      "motivo": "Existe ya una ficha con el mismo resultado léxico o variante latina; evitar doble representación sin revisión de homónimos.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 373,
+      "latin": "curvare",
+      "castellano": "corvar",
+      "observacionExcel": "Curvāre > corvar: variante histórica y hoy rara del verbo curvar; u breve > o. No presentar corvar como la forma corriente actual.",
+      "normasExcel": [
+        "ABER"
+      ],
+      "estado": "PENDIENTE_VERIFICACION",
+      "motivo": "Requiere contrastar cadena etimológica, acepción, forma base y/o normas antes de autorizar sorteo.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 434,
+      "latin": "sitem",
+      "castellano": "sed",
+      "observacionExcel": "Sĭtem > sed: ĭ > e, -t- intervocálica > -d- y caída de -e final.",
+      "normasExcel": [
+        "ABER",
+        "APÓC",
+        "SONOR"
+      ],
+      "estado": "PENDIENTE_VERIFICACION",
+      "motivo": "Requiere contrastar cadena etimológica, acepción, forma base y/o normas antes de autorizar sorteo.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 500,
+      "latin": "postpositum",
+      "castellano": "pospuesto",
+      "observacionExcel": "Postpositum se relaciona formalmente con pospuesto, pero en español funciona como participio de «posponer»; el componente «puesto» refleja positum con diptongación y síncopa. No asumir transmisión directa de todo el compuesto.",
+      "normasExcel": [
+        "DIPT",
+        "SÍNC"
+      ],
+      "estado": "PENDIENTE_VERIFICACION",
+      "motivo": "Requiere contrastar cadena etimológica, acepción, forma base y/o normas antes de autorizar sorteo.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 554,
+      "latin": "antepositum",
+      "castellano": "antepuesto",
+      "observacionExcel": "Antepositum se relaciona con antepuesto, pero la forma castellana puede explicarse como participio del verbo anteponer: «puesto» procede de positum con ŏ > ue y síncopa.",
+      "normasExcel": [
+        "DIPT",
+        "SÍNC"
+      ],
+      "estado": "PENDIENTE_VERIFICACION",
+      "motivo": "Requiere contrastar cadena etimológica, acepción, forma base y/o normas antes de autorizar sorteo.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 606,
+      "latin": "stercorare",
+      "castellano": "estercolar",
+      "observacionExcel": "Hay dos análisis lexicográficos: del lat. stercorāre y derivado de «estiércol». Es segura la e- protética ante st-, pero hay que distinguir la voz heredada de la formación derivativa.",
+      "normasExcel": [
+        "PRÓT"
+      ],
+      "estado": "PENDIENTE_VERIFICACION",
+      "motivo": "Requiere contrastar cadena etimológica, acepción, forma base y/o normas antes de autorizar sorteo.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 610,
+      "latin": "foliatilem",
+      "castellano": "hojaldre",
+      "observacionExcel": "Foliatĭlem > hojalde > hojaldre: f- > h-, palatalización de -li- y adición/repercusión de r en la forma moderna; conviene explicar que hay etapas intermedias.",
+      "normasExcel": [
+        "ASPIR",
+        "EPÉNT",
+        "PALAT"
+      ],
+      "estado": "PENDIENTE_VERIFICACION",
+      "motivo": "Requiere contrastar cadena etimológica, acepción, forma base y/o normas antes de autorizar sorteo.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 651,
+      "latin": "echinum",
+      "castellano": "equino",
+      "observacionExcel": "Echinum > equino solo en el sentido «erizo de mar» o «moldura del capitel». El adjetivo equino 'del caballo' procede de equīnus (< equus), no de echinus. Adaptación grecolatina, no patrimonial.",
+      "normasExcel": [
+        "GRIE"
+      ],
+      "estado": "PENDIENTE_VERIFICACION",
+      "motivo": "Requiere contrastar cadena etimológica, acepción, forma base y/o normas antes de autorizar sorteo.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 680,
+      "latin": "philtrum",
+      "castellano": "filtro",
+      "observacionExcel": "Philtrum > filtro solo con el valor 'bebedizo/hechizo amoroso'; no mezclar con «filtro» como dispositivo para filtrar, de origen distinto. Adaptación ph > f.",
+      "normasExcel": [
+        "GRIE"
+      ],
+      "estado": "PENDIENTE_VERIFICACION",
+      "motivo": "Requiere contrastar cadena etimológica, acepción, forma base y/o normas antes de autorizar sorteo.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 714,
+      "latin": "trophæum",
+      "castellano": "trofeo",
+      "observacionExcel": "Helenismo culto a partir de trophaeum: ph > f y ae > e; la adaptación gráfica no constituye una evolución patrimonial.",
+      "normasExcel": [
+        "GRIE",
+        "MONOP"
+      ],
+      "estado": "PENDIENTE_VERIFICACION",
+      "motivo": "Requiere contrastar cadena etimológica, acepción, forma base y/o normas antes de autorizar sorteo.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 720,
+      "latin": "crocodilum",
+      "castellano": "cocodrilo",
+      "observacionExcel": "El castellano cocodrilo se relaciona con crocodilus, voz tomada del griego; presenta reordenación de r y disimilación, pero no es un ejemplo transparente de transmisión patrimonial regular.",
+      "normasExcel": [
+        "DISIMIL",
+        "METÁT"
+      ],
+      "estado": "PENDIENTE_VERIFICACION",
+      "motivo": "Requiere contrastar cadena etimológica, acepción, forma base y/o normas antes de autorizar sorteo.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 722,
+      "latin": "graphium",
+      "castellano": "garfio",
+      "observacionExcel": "De graphium, helenismo latino: ph > f y alteración del orden de r por influencia de garra; la historia de grafio/garfio incluye cruce léxico y no es una evolución regular simple.",
+      "normasExcel": [
+        "GRIE",
+        "METÁT"
+      ],
+      "estado": "PENDIENTE_VERIFICACION",
+      "motivo": "Requiere contrastar cadena etimológica, acepción, forma base y/o normas antes de autorizar sorteo.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 724,
+      "latin": "integratum",
+      "castellano": "entregado",
+      "observacionExcel": "Integratum puede dar formalmente entregado, pero en español es asimismo participio regular de entregar; distinguir continuidad del participio latino y formación morfológica romance.",
+      "normasExcel": [
+        "ABER",
+        "METÁT"
+      ],
+      "estado": "PENDIENTE_VERIFICACION",
+      "motivo": "Requiere contrastar cadena etimológica, acepción, forma base y/o normas antes de autorizar sorteo.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 737,
+      "latin": "ædilem",
+      "castellano": "edil",
+      "observacionExcel": "Latín aedilem > edil mediante adaptación del diptongo escrito ae > e; latinismo institucional.",
+      "normasExcel": [
+        "MONOP"
+      ],
+      "estado": "PENDIENTE_VERIFICACION",
+      "motivo": "Requiere contrastar cadena etimológica, acepción, forma base y/o normas antes de autorizar sorteo.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 747,
+      "latin": "aullam",
+      "castellano": "olla",
+      "observacionExcel": "Aullam/aulam > olla: au > o y palatalización de la geminada -ll-; la forma aulla se relaciona con aula.",
+      "normasExcel": [
+        "MONOP",
+        "PALAT"
+      ],
+      "estado": "PENDIENTE_VERIFICACION",
+      "motivo": "Requiere contrastar cadena etimológica, acepción, forma base y/o normas antes de autorizar sorteo.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 748,
+      "latin": "aurificem",
+      "castellano": "orífice",
+      "observacionExcel": "Aurificem > orífice: conserva la base y la estructura cultas, aunque au > o; designa a quien trabaja el oro, y no debe confundirse con orificio.",
+      "normasExcel": [
+        "MONOP"
+      ],
+      "estado": "PENDIENTE_VERIFICACION",
+      "motivo": "Requiere contrastar cadena etimológica, acepción, forma base y/o normas antes de autorizar sorteo.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 751,
+      "latin": "baucalem",
+      "castellano": "bocal",
+      "observacionExcel": "El latín medieval baucalem se documenta con el significado de vasija; su relación con bocal no permite asegurar una derivación castellana directa sin interferencia árabe o románica.",
+      "normasExcel": [
+        "MONOP"
+      ],
+      "estado": "PENDIENTE_VERIFICACION",
+      "motivo": "Requiere contrastar cadena etimológica, acepción, forma base y/o normas antes de autorizar sorteo.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 755,
+      "latin": "caudam",
+      "castellano": "cola",
+      "observacionExcel": "Caudam > latín vulgar *coda; el castellano cola presenta -l- de explicación debatida (probable cruce con culo o variante *cola). No es evolución fonética regular directa.",
+      "normasExcel": [
+        "MONOP"
+      ],
+      "estado": "PENDIENTE_VERIFICACION",
+      "motivo": "Requiere contrastar cadena etimológica, acepción, forma base y/o normas antes de autorizar sorteo.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 765,
+      "latin": "dæmonium",
+      "castellano": "demonio",
+      "observacionExcel": "Daemonium > demonio: ae > e; helenismo religioso que conserva en lo sustancial la estructura latina.",
+      "normasExcel": [
+        "MONOP"
+      ],
+      "estado": "PENDIENTE_VERIFICACION",
+      "motivo": "Requiere contrastar cadena etimológica, acepción, forma base y/o normas antes de autorizar sorteo.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 767,
+      "latin": "fœnum",
+      "castellano": "heno",
+      "observacionExcel": "Foenum/faenum > heno: diptongo histórico ae/oe > e y f- latina > h- (hoy muda); el latín clásico ofrece variantes ortográficas.",
+      "normasExcel": [
+        "ASPIR",
+        "MONOP"
+      ],
+      "estado": "DUPLICADA_O_VARIANTE",
+      "motivo": "Existe ya una ficha con el mismo resultado léxico o variante latina; evitar doble representación sin revisión de homónimos.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 770,
+      "latin": "lautianum",
+      "castellano": "lozano",
+      "observacionExcel": "Lautianum se propone como base de lozano, con au > o y -ti- > z; conviene verificar la forma latina y la cronología de la derivación.",
+      "normasExcel": [
+        "MONOP",
+        "PALAT"
+      ],
+      "estado": "PENDIENTE_VERIFICACION",
+      "motivo": "Requiere contrastar cadena etimológica, acepción, forma base y/o normas antes de autorizar sorteo.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 780,
+      "latin": "œstrum",
+      "castellano": "estro",
+      "observacionExcel": "Oestrum > estro, ‘inspiración’ o ‘celo’: oe > e; helenismo culto, no confundir con estrofas.",
+      "normasExcel": [
+        "MONOP"
+      ],
+      "estado": "PENDIENTE_VERIFICACION",
+      "motivo": "Requiere contrastar cadena etimológica, acepción, forma base y/o normas antes de autorizar sorteo.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 790,
+      "latin": "præmonitorium",
+      "castellano": "premonitorio",
+      "observacionExcel": "Praemonitorium > premonitorio: ae > e; latinismo culto.",
+      "normasExcel": [
+        "MONOP"
+      ],
+      "estado": "PENDIENTE_VERIFICACION",
+      "motivo": "Requiere contrastar cadena etimológica, acepción, forma base y/o normas antes de autorizar sorteo.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 792,
+      "latin": "solœcismum",
+      "castellano": "solecismo",
+      "observacionExcel": "Soloecismum > solecismo: oe > e; helenismo gramatical culto.",
+      "normasExcel": [
+        "MONOP"
+      ],
+      "estado": "PENDIENTE_VERIFICACION",
+      "motivo": "Requiere contrastar cadena etimológica, acepción, forma base y/o normas antes de autorizar sorteo.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 797,
+      "latin": "æquinoctialem",
+      "castellano": "equinoccial",
+      "observacionExcel": "Aequinoctialem > equinoccial: ae > e; adjetivo culto de equinoccio, con simplificación ortográfica de -cti-.",
+      "normasExcel": [
+        "MONOP"
+      ],
+      "estado": "PENDIENTE_VERIFICACION",
+      "motivo": "Requiere contrastar cadena etimológica, acepción, forma base y/o normas antes de autorizar sorteo.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 802,
+      "latin": "allocutionem",
+      "castellano": "alocución",
+      "observacionExcel": "Allocutionem > alocución: latinismo, con reducción ortográfica de la doble -ll-; no es un resultado patrimonial de -tionem.",
+      "normasExcel": [
+        "SIMPL"
+      ],
+      "estado": "PENDIENTE_VERIFICACION",
+      "motivo": "Requiere contrastar cadena etimológica, acepción, forma base y/o normas antes de autorizar sorteo.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 804,
+      "latin": "Artaxerxes",
+      "castellano": "Artajerjes",
+      "observacionExcel": "Artaxerxes > Artajerjes: adaptación del nombre del rey persa vía latín y griego; el grupo x antiguo origina el sonido que se escribe j, pero no es una evolución patrimonial del léxico común.",
+      "normasExcel": [
+        "PALAT"
+      ],
+      "estado": "PENDIENTE_VERIFICACION",
+      "motivo": "Requiere contrastar cadena etimológica, acepción, forma base y/o normas antes de autorizar sorteo.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 807,
+      "latin": "bellum",
+      "castellano": "bello",
+      "observacionExcel": "Bellum puede ser el acusativo de bellus 'hermoso' (> bello), pero también el sustantivo bellum 'guerra', sin descendiente patrimonial homónimo. Exige desambiguar el lema latino.",
+      "normasExcel": [
+        "PALAT"
+      ],
+      "estado": "PENDIENTE_VERIFICACION",
+      "motivo": "Requiere contrastar cadena etimológica, acepción, forma base y/o normas antes de autorizar sorteo.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 811,
+      "latin": "cæpullam",
+      "castellano": "cebolla",
+      "observacionExcel": "Caepullam > cebolla: ae > e, -p- intervocálica > b, ŭ > o y -ll- > ll palatal.",
+      "normasExcel": [
+        "ABER",
+        "MONOP",
+        "PALAT",
+        "SONOR"
+      ],
+      "estado": "DUPLICADA_O_VARIANTE",
+      "motivo": "Existe ya una ficha con el mismo resultado léxico o variante latina; evitar doble representación sin revisión de homónimos.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 815,
+      "latin": "circumflexum",
+      "castellano": "circunflejo",
+      "observacionExcel": "Circumflexum > circunflejo: x (/ks/) > j, adaptación de un adjetivo técnico culto; la m ante f se conserva como articulación nasal aunque se escriba n.",
+      "normasExcel": [
+        "PALAT"
+      ],
+      "estado": "PENDIENTE_VERIFICACION",
+      "motivo": "Requiere contrastar cadena etimológica, acepción, forma base y/o normas antes de autorizar sorteo.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 838,
+      "latin": "hæsitationem",
+      "castellano": "hesitación",
+      "observacionExcel": "Haesitationem > hesitación: latinismo poco usual, ae > e; no confundir con vacilación ni con el adjetivo hesitante.",
+      "normasExcel": [
+        "MONOP"
+      ],
+      "estado": "PENDIENTE_VERIFICACION",
+      "motivo": "Requiere contrastar cadena etimológica, acepción, forma base y/o normas antes de autorizar sorteo.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 842,
+      "latin": "luctatorem",
+      "castellano": "luchador",
+      "observacionExcel": "Luctatorem > luchador: -ct- > ch y -t- intervocálica > d en -torem > -dor; también es analizable sincrónicamente como luchar + -dor.",
+      "normasExcel": [
+        "PALAT",
+        "SONOR"
+      ],
+      "estado": "PENDIENTE_VERIFICACION",
+      "motivo": "Requiere contrastar cadena etimológica, acepción, forma base y/o normas antes de autorizar sorteo.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 844,
+      "latin": "magnum",
+      "castellano": "maño",
+      "observacionExcel": "Magnum > maño (uso antiguo 'grande', base de tamaño): -gn- > ñ; no confundir con maño como gentilicio aragonés en sus usos modernos.",
+      "normasExcel": [
+        "PALAT"
+      ],
+      "estado": "PENDIENTE_VERIFICACION",
+      "motivo": "Requiere contrastar cadena etimológica, acepción, forma base y/o normas antes de autorizar sorteo.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 853,
+      "latin": "puntionem",
+      "castellano": "punzón",
+      "observacionExcel": "La base exacta es el latín punctio, -onis (acusativo punctionem), no puntionem: falta la c de -nct-. Es necesario corregir el étimo antes de fijar -cti- > z en esta fila.",
+      "normasExcel": [
+        "PALAT"
+      ],
+      "estado": "PENDIENTE_VERIFICACION",
+      "motivo": "Requiere contrastar cadena etimológica, acepción, forma base y/o normas antes de autorizar sorteo.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 866,
+      "latin": "thallum",
+      "castellano": "talo",
+      "observacionExcel": "Helenismo culto: th- griega > t- en talo; la adaptación de th no es evolución patrimonial latina.",
+      "normasExcel": [
+        "GRIE"
+      ],
+      "estado": "PENDIENTE_VERIFICACION",
+      "motivo": "Requiere contrastar cadena etimológica, acepción, forma base y/o normas antes de autorizar sorteo.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 878,
+      "latin": "Spartam",
+      "castellano": "Esparta",
+      "observacionExcel": "Spartam > Esparta: adaptación toponímica con e- inicial ante sp-.",
+      "normasExcel": [
+        "PRÓT"
+      ],
+      "estado": "PENDIENTE_VERIFICACION",
+      "motivo": "Requiere contrastar cadena etimológica, acepción, forma base y/o normas antes de autorizar sorteo.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 880,
+      "latin": "spectrum",
+      "castellano": "espectro",
+      "observacionExcel": "Spectrum > espectro: e- protética ante sp-; el mantenimiento de -ct- muestra su carácter culto.",
+      "normasExcel": [
+        "PRÓT"
+      ],
+      "estado": "PENDIENTE_VERIFICACION",
+      "motivo": "Requiere contrastar cadena etimológica, acepción, forma base y/o normas antes de autorizar sorteo.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 881,
+      "latin": "spermam",
+      "castellano": "esperma",
+      "observacionExcel": "Del grecolatino sperma: e- ante sp-; helenismo científico.",
+      "normasExcel": [
+        "PRÓT"
+      ],
+      "estado": "PENDIENTE_VERIFICACION",
+      "motivo": "Requiere contrastar cadena etimológica, acepción, forma base y/o normas antes de autorizar sorteo.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 885,
+      "latin": "stadium",
+      "castellano": "estadio",
+      "observacionExcel": "Stadium > estadio: e- ante st-; helenismo tomado del latín, no evolución patrimonial ordinaria.",
+      "normasExcel": [
+        "PRÓT"
+      ],
+      "estado": "PENDIENTE_VERIFICACION",
+      "motivo": "Requiere contrastar cadena etimológica, acepción, forma base y/o normas antes de autorizar sorteo.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 886,
+      "latin": "stateram",
+      "castellano": "estatera",
+      "observacionExcel": "Stateram > estatera: préstamo culto con e- inicial; la voz antigua designa una balanza.",
+      "normasExcel": [
+        "PRÓT"
+      ],
+      "estado": "PENDIENTE_VERIFICACION",
+      "motivo": "Requiere contrastar cadena etimológica, acepción, forma base y/o normas antes de autorizar sorteo.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 888,
+      "latin": "stelam",
+      "castellano": "estela",
+      "observacionExcel": "Stelam > estela: helenismo culto transmitido por latín, con e- protética ante st-.",
+      "normasExcel": [
+        "PRÓT"
+      ],
+      "estado": "PENDIENTE_VERIFICACION",
+      "motivo": "Requiere contrastar cadena etimológica, acepción, forma base y/o normas antes de autorizar sorteo.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 889,
+      "latin": "stilum",
+      "castellano": "estilo",
+      "observacionExcel": "Stilum > estilo: adaptación grecolatina con e- inicial y conservación del lexema; no ejemplo de evolución popular íntegra.",
+      "normasExcel": [
+        "PRÓT"
+      ],
+      "estado": "DECISION_DOCENTE",
+      "motivo": "Confluyen las variantes del étimo STILUM; debe corregirse la forma y valorar su carácter culto.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 890,
+      "latin": "stirpem",
+      "castellano": "estirpe",
+      "observacionExcel": "Stirpem > estirpe: e- protética; la terminación conserva el grupo consonántico, por lo que se usa con cautela como patrimonial.",
+      "normasExcel": [
+        "PRÓT"
+      ],
+      "estado": "PENDIENTE_VERIFICACION",
+      "motivo": "Requiere contrastar cadena etimológica, acepción, forma base y/o normas antes de autorizar sorteo.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 891,
+      "latin": "stoicum",
+      "castellano": "estoico",
+      "observacionExcel": "Stoicum > estoico: e- inicial ante st-; préstamo de escuela filosófica de origen griego.",
+      "normasExcel": [
+        "PRÓT"
+      ],
+      "estado": "PENDIENTE_VERIFICACION",
+      "motivo": "Requiere contrastar cadena etimológica, acepción, forma base y/o normas antes de autorizar sorteo.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 894,
+      "latin": "strigilem",
+      "castellano": "estrígil",
+      "observacionExcel": "Strigilem > estrígil: e- protética; latinismo arqueológico, no resultado patrimonial regular.",
+      "normasExcel": [
+        "PRÓT"
+      ],
+      "estado": "PENDIENTE_VERIFICACION",
+      "motivo": "Requiere contrastar cadena etimológica, acepción, forma base y/o normas antes de autorizar sorteo.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 895,
+      "latin": "studium",
+      "castellano": "estudio",
+      "observacionExcel": "Studium > estudio: e- protética y mantenimiento del grupo estudi-, propio de latinismo.",
+      "normasExcel": [
+        "PRÓT"
+      ],
+      "estado": "PENDIENTE_VERIFICACION",
+      "motivo": "Requiere contrastar cadena etimológica, acepción, forma base y/o normas antes de autorizar sorteo.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 896,
+      "latin": "stuprum",
+      "castellano": "estupro",
+      "observacionExcel": "Stuprum > estupro: e- inicial ante st-; latinismo jurídico.",
+      "normasExcel": [
+        "PRÓT"
+      ],
+      "estado": "PENDIENTE_VERIFICACION",
+      "motivo": "Requiere contrastar cadena etimológica, acepción, forma base y/o normas antes de autorizar sorteo.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 897,
+      "latin": "affinem",
+      "castellano": "afín",
+      "observacionExcel": "Affinem > afín: simplificación gráfica de la geminada -ff-, sin evolución romance patrimonial completa.",
+      "normasExcel": [
+        "SIMPL"
+      ],
+      "estado": "PENDIENTE_VERIFICACION",
+      "motivo": "Requiere contrastar cadena etimológica, acepción, forma base y/o normas antes de autorizar sorteo.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 899,
+      "latin": "affrontare",
+      "castellano": "afrontar",
+      "observacionExcel": "Affrontare > afrontar: reducción de -ff-. Se documenta como formación románica; verificar la vía de transmisión antes de etiquetarla como patrimonial directa.",
+      "normasExcel": [
+        "SIMPL"
+      ],
+      "estado": "PENDIENTE_VERIFICACION",
+      "motivo": "Requiere contrastar cadena etimológica, acepción, forma base y/o normas antes de autorizar sorteo.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 900,
+      "latin": "aggravare",
+      "castellano": "agravar",
+      "observacionExcel": "Aggravare > agravar: simplificación de la geminada -gg-, conservando la composición latina; latinismo.",
+      "normasExcel": [
+        "SIMPL"
+      ],
+      "estado": "PENDIENTE_VERIFICACION",
+      "motivo": "Requiere contrastar cadena etimológica, acepción, forma base y/o normas antes de autorizar sorteo.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 902,
+      "latin": "allegoriam",
+      "castellano": "alegoría",
+      "observacionExcel": "Allegoriam > alegoría: helenismo culto con -ll- gráfica simplificada.",
+      "normasExcel": [
+        "SIMPL"
+      ],
+      "estado": "PENDIENTE_VERIFICACION",
+      "motivo": "Requiere contrastar cadena etimológica, acepción, forma base y/o normas antes de autorizar sorteo.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 903,
+      "latin": "alluvionem",
+      "castellano": "aluvión",
+      "observacionExcel": "Alluvionem > aluvión: -ll- se simplifica, conservando el sufijo latino culto -ión.",
+      "normasExcel": [
+        "SIMPL"
+      ],
+      "estado": "PENDIENTE_VERIFICACION",
+      "motivo": "Requiere contrastar cadena etimológica, acepción, forma base y/o normas antes de autorizar sorteo.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 906,
+      "latin": "bacillum",
+      "castellano": "bacilo",
+      "observacionExcel": "Bacillum > bacilo: -ll- escrita se simplifica sin la palatalización patrimonial; latinismo científico.",
+      "normasExcel": [
+        "SIMPL"
+      ],
+      "estado": "PENDIENTE_VERIFICACION",
+      "motivo": "Requiere contrastar cadena etimológica, acepción, forma base y/o normas antes de autorizar sorteo.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 907,
+      "latin": "bellicum",
+      "castellano": "bélico",
+      "observacionExcel": "Bellicum > bélico: latinismo con -ll- reducida, sin palatalización a ll.",
+      "normasExcel": [
+        "SIMPL"
+      ],
+      "estado": "PENDIENTE_VERIFICACION",
+      "motivo": "Requiere contrastar cadena etimológica, acepción, forma base y/o normas antes de autorizar sorteo.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 924,
+      "latin": "scissionem",
+      "castellano": "escisión",
+      "observacionExcel": "Scissionem > escisión: e- ante sc- y reducción -ss-; latinismo de registro técnico.",
+      "normasExcel": [
+        "PRÓT",
+        "SIMPL"
+      ],
+      "estado": "PENDIENTE_VERIFICACION",
+      "motivo": "Requiere contrastar cadena etimológica, acepción, forma base y/o normas antes de autorizar sorteo.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 935,
+      "latin": "transgressionem",
+      "castellano": "transgresión",
+      "observacionExcel": "Transgressionem > transgresión: geminada latina -ss- reducida en un latinismo.",
+      "normasExcel": [
+        "SIMPL"
+      ],
+      "estado": "PENDIENTE_VERIFICACION",
+      "motivo": "Requiere contrastar cadena etimológica, acepción, forma base y/o normas antes de autorizar sorteo.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 941,
+      "latin": "tyrannum",
+      "castellano": "tirano",
+      "observacionExcel": "Tyrannum > tirano: y griega > i y -nn- gráfica reducida; helenismo.",
+      "normasExcel": [
+        "GRIE",
+        "SIMPL"
+      ],
+      "estado": "PENDIENTE_VERIFICACION",
+      "motivo": "Requiere contrastar cadena etimológica, acepción, forma base y/o normas antes de autorizar sorteo.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 942,
+      "latin": "æquiparabilem",
+      "castellano": "equiparable",
+      "observacionExcel": "Æquiparabilem > equiparable: monoptongación gráfica de ae; se usa como adjetivo culto, relacionado con equiparar.",
+      "normasExcel": [
+        "MONOP"
+      ],
+      "estado": "PENDIENTE_VERIFICACION",
+      "motivo": "Requiere contrastar cadena etimológica, acepción, forma base y/o normas antes de autorizar sorteo.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 956,
+      "latin": "crudelitatem",
+      "castellano": "crueldad",
+      "observacionExcel": "Crudelitatem es étimo último de crueldad, pero se analiza mejor como cruel + -dad en romance. No debe tratarse como evolución fonética directa simple.",
+      "normasExcel": [
+        "SÍNC",
+        "SONOR"
+      ],
+      "estado": "PENDIENTE_VERIFICACION",
+      "motivo": "Requiere contrastar cadena etimológica, acepción, forma base y/o normas antes de autorizar sorteo.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 58,
+      "latin": "circum",
+      "castellano": "cerco",
+      "observacionExcel": "circum > cerco: ĭ pretónica/tónica del tema se abre en e; el cambio de la primera c ante vocal anterior se explica por palatalización (c- > ce-). La vocal final se convierte en -o. No confundir cerco con círculo (cultismo).",
+      "normasExcel": [
+        "ABER",
+        "PALAT"
+      ],
+      "estado": "EXCLUIDA_CULTISMO",
+      "motivo": "Transmisión culta, topónimo o adaptación gráfica; no se acredita evolución patrimonial completa; revisable si el profesor amplía el criterio.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 381,
+      "latin": "gulam",
+      "castellano": "gola",
+      "observacionExcel": "Gŭlam > gola: la vocal ŭ breve > o. Gola (‘garganta’) es voz histórica y dialectal; no confundir con gula culta (‘glotonería’).",
+      "normasExcel": [
+        "ABER"
+      ],
+      "estado": "EXCLUIDA_CULTISMO",
+      "motivo": "Transmisión culta, topónimo o adaptación gráfica; no se acredita evolución patrimonial completa; revisable si el profesor amplía el criterio.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 504,
+      "latin": "sculptorem",
+      "castellano": "escultor",
+      "observacionExcel": "Sculptorem > escultor: aparece e- inicial y se simplifica -lpt-; la tradición artística culta aconseja prudencia al clasificar toda la palabra como patrimonial.",
+      "normasExcel": [
+        "PRÓT",
+        "SIMPL"
+      ],
+      "estado": "EXCLUIDA_CULTISMO",
+      "motivo": "Transmisión culta, topónimo o adaptación gráfica; no se acredita evolución patrimonial completa; revisable si el profesor amplía el criterio.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 616,
+      "latin": "Acherontem",
+      "castellano": "Aqueronte",
+      "observacionExcel": "Acherontem → Aqueronte: topónimo mitológico; ch grecolatina > qu. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular.",
+      "normasExcel": [
+        "GRIE"
+      ],
+      "estado": "EXCLUIDA_CULTISMO",
+      "motivo": "Transmisión culta, topónimo o adaptación gráfica; no se acredita evolución patrimonial completa; revisable si el profesor amplía el criterio.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 617,
+      "latin": "ægisthum",
+      "castellano": "Egisto",
+      "observacionExcel": "ægisthum → Egisto: antropónimo mitológico; ae > e y th > t. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular.",
+      "normasExcel": [
+        "GRIE",
+        "MONOP"
+      ],
+      "estado": "EXCLUIDA_CULTISMO",
+      "motivo": "Transmisión culta, topónimo o adaptación gráfica; no se acredita evolución patrimonial completa; revisable si el profesor amplía el criterio.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 618,
+      "latin": "ægyptum",
+      "castellano": "Egipto",
+      "observacionExcel": "ægyptum → Egipto: topónimo; æ > e e y > i. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular.",
+      "normasExcel": [
+        "GRIE",
+        "MONOP"
+      ],
+      "estado": "EXCLUIDA_CULTISMO",
+      "motivo": "Transmisión culta, topónimo o adaptación gráfica; no se acredita evolución patrimonial completa; revisable si el profesor amplía el criterio.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 619,
+      "latin": "æschylum",
+      "castellano": "Esquilo",
+      "observacionExcel": "æschylum → Esquilo: antropónimo; æ > e y ch > qu, con e- inicial. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular.",
+      "normasExcel": [
+        "GRIE",
+        "MONOP"
+      ],
+      "estado": "EXCLUIDA_CULTISMO",
+      "motivo": "Transmisión culta, topónimo o adaptación gráfica; no se acredita evolución patrimonial completa; revisable si el profesor amplía el criterio.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 620,
+      "latin": "ætherem",
+      "castellano": "éter",
+      "observacionExcel": "ætherem → éter: tecnicismo/cultismo; æ > e y th > t. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular.",
+      "normasExcel": [
+        "GRIE",
+        "MONOP"
+      ],
+      "estado": "EXCLUIDA_CULTISMO",
+      "motivo": "Transmisión culta, topónimo o adaptación gráfica; no se acredita evolución patrimonial completa; revisable si el profesor amplía el criterio.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 621,
+      "latin": "architectum",
+      "castellano": "arquitecto",
+      "observacionExcel": "architectum → arquitecto: cultismo grecolatino; ch > qu. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular.",
+      "normasExcel": [
+        "GRIE"
+      ],
+      "estado": "EXCLUIDA_CULTISMO",
+      "motivo": "Transmisión culta, topónimo o adaptación gráfica; no se acredita evolución patrimonial completa; revisable si el profesor amplía el criterio.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 622,
+      "latin": "asphaltum",
+      "castellano": "asfalto",
+      "observacionExcel": "asphaltum → asfalto: cultismo; ph > f. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular.",
+      "normasExcel": [
+        "GRIE"
+      ],
+      "estado": "EXCLUIDA_CULTISMO",
+      "motivo": "Transmisión culta, topónimo o adaptación gráfica; no se acredita evolución patrimonial completa; revisable si el profesor amplía el criterio.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 623,
+      "latin": "asphodelum",
+      "castellano": "asfódelo",
+      "observacionExcel": "asphodelum → asfódelo: nombre botánico culto; ph > f. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular.",
+      "normasExcel": [
+        "GRIE"
+      ],
+      "estado": "EXCLUIDA_CULTISMO",
+      "motivo": "Transmisión culta, topónimo o adaptación gráfica; no se acredita evolución patrimonial completa; revisable si el profesor amplía el criterio.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 624,
+      "latin": "athletam",
+      "castellano": "atleta",
+      "observacionExcel": "athletam → atleta: cultismo; th > t. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular.",
+      "normasExcel": [
+        "GRIE"
+      ],
+      "estado": "EXCLUIDA_CULTISMO",
+      "motivo": "Transmisión culta, topónimo o adaptación gráfica; no se acredita evolución patrimonial completa; revisable si el profesor amplía el criterio.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 625,
+      "latin": "blasphemiam",
+      "castellano": "blasfemia",
+      "observacionExcel": "blasphemiam → blasfemia: cultismo; ph > f. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular.",
+      "normasExcel": [
+        "GRIE"
+      ],
+      "estado": "EXCLUIDA_CULTISMO",
+      "motivo": "Transmisión culta, topónimo o adaptación gráfica; no se acredita evolución patrimonial completa; revisable si el profesor amplía el criterio.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 626,
+      "latin": "catharticum",
+      "castellano": "catártico",
+      "observacionExcel": "catharticum → catártico: cultismo; th > t. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular.",
+      "normasExcel": [
+        "GRIE"
+      ],
+      "estado": "EXCLUIDA_CULTISMO",
+      "motivo": "Transmisión culta, topónimo o adaptación gráfica; no se acredita evolución patrimonial completa; revisable si el profesor amplía el criterio.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 627,
+      "latin": "catholicum",
+      "castellano": "católico",
+      "observacionExcel": "catholicum → católico: cultismo religioso; th > t. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular.",
+      "normasExcel": [
+        "GRIE"
+      ],
+      "estado": "EXCLUIDA_CULTISMO",
+      "motivo": "Transmisión culta, topónimo o adaptación gráfica; no se acredita evolución patrimonial completa; revisable si el profesor amplía el criterio.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 628,
+      "latin": "Chaldæam",
+      "castellano": "Caldea",
+      "observacionExcel": "Chaldæam → Caldea: topónimo; ch > c y æ > e. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular.",
+      "normasExcel": [
+        "GRIE",
+        "MONOP"
+      ],
+      "estado": "EXCLUIDA_CULTISMO",
+      "motivo": "Transmisión culta, topónimo o adaptación gráfica; no se acredita evolución patrimonial completa; revisable si el profesor amplía el criterio.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 629,
+      "latin": "characterem",
+      "castellano": "carácter",
+      "observacionExcel": "characterem → carácter: cultismo; ch > c. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular.",
+      "normasExcel": [
+        "GRIE"
+      ],
+      "estado": "EXCLUIDA_CULTISMO",
+      "motivo": "Transmisión culta, topónimo o adaptación gráfica; no se acredita evolución patrimonial completa; revisable si el profesor amplía el criterio.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 630,
+      "latin": "charisma",
+      "castellano": "carisma",
+      "observacionExcel": "charisma → carisma: cultismo; ch > c. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular.",
+      "normasExcel": [
+        "GRIE"
+      ],
+      "estado": "EXCLUIDA_CULTISMO",
+      "motivo": "Transmisión culta, topónimo o adaptación gráfica; no se acredita evolución patrimonial completa; revisable si el profesor amplía el criterio.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 631,
+      "latin": "Charontem",
+      "castellano": "Caronte",
+      "observacionExcel": "Charontem → Caronte: antropónimo mitológico; ch > c. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular.",
+      "normasExcel": [
+        "GRIE"
+      ],
+      "estado": "EXCLUIDA_CULTISMO",
+      "motivo": "Transmisión culta, topónimo o adaptación gráfica; no se acredita evolución patrimonial completa; revisable si el profesor amplía el criterio.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 633,
+      "latin": "Chimæram",
+      "castellano": "quimera",
+      "observacionExcel": "Chimæram → quimera: helenismo; ch > qu y æ > e. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular.",
+      "normasExcel": [
+        "GRIE",
+        "MONOP"
+      ],
+      "estado": "EXCLUIDA_CULTISMO",
+      "motivo": "Transmisión culta, topónimo o adaptación gráfica; no se acredita evolución patrimonial completa; revisable si el profesor amplía el criterio.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 634,
+      "latin": "chirographum",
+      "castellano": "quirógrafo",
+      "observacionExcel": "chirographum → quirógrafo: tecnicismo jurídico; ch > qu y ph > f. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular.",
+      "normasExcel": [
+        "GRIE"
+      ],
+      "estado": "EXCLUIDA_CULTISMO",
+      "motivo": "Transmisión culta, topónimo o adaptación gráfica; no se acredita evolución patrimonial completa; revisable si el profesor amplía el criterio.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 635,
+      "latin": "Chironem",
+      "castellano": "Quirón",
+      "observacionExcel": "Chironem → Quirón: antropónimo; ch > qu. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular.",
+      "normasExcel": [
+        "GRIE"
+      ],
+      "estado": "EXCLUIDA_CULTISMO",
+      "motivo": "Transmisión culta, topónimo o adaptación gráfica; no se acredita evolución patrimonial completa; revisable si el profesor amplía el criterio.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 636,
+      "latin": "chirurgicum",
+      "castellano": "quirúrgico",
+      "observacionExcel": "chirurgicum → quirúrgico: tecnicismo; ch > qu. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular.",
+      "normasExcel": [
+        "GRIE"
+      ],
+      "estado": "EXCLUIDA_CULTISMO",
+      "motivo": "Transmisión culta, topónimo o adaptación gráfica; no se acredita evolución patrimonial completa; revisable si el profesor amplía el criterio.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 637,
+      "latin": "chlamydem",
+      "castellano": "clámide",
+      "observacionExcel": "chlamydem → clámide: nombre de prenda antiguo; ch > c y y > i. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular.",
+      "normasExcel": [
+        "GRIE"
+      ],
+      "estado": "EXCLUIDA_CULTISMO",
+      "motivo": "Transmisión culta, topónimo o adaptación gráfica; no se acredita evolución patrimonial completa; revisable si el profesor amplía el criterio.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 638,
+      "latin": "Chlœm",
+      "castellano": "Cloe",
+      "observacionExcel": "Chlœm → Cloe: antropónimo; ch > c y œ > e. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular.",
+      "normasExcel": [
+        "GRIE",
+        "MONOP"
+      ],
+      "estado": "EXCLUIDA_CULTISMO",
+      "motivo": "Transmisión culta, topónimo o adaptación gráfica; no se acredita evolución patrimonial completa; revisable si el profesor amplía el criterio.",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 641,
+      "latin": "chorographiam",
+      "castellano": "corografía",
+      "observacionExcel": "chorographiam → corografía: cultismo; ch > c y ph > f. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular.",
+      "normasExcel": [
+        "GRIE"
+      ],
+      "estado": "EXCLUIDA_CULTISMO",
+      "motivo": "Transmisión culta, topónimo o adaptación gráfica; no se acredita evolución patrimonial completa; revisable si el profesor amplía el criterio.",
+      "idBanco": null
+    }
+  ]
+}

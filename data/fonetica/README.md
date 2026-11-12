@@ -9,7 +9,7 @@ En Latín I la programación de 73 étimos determina **qué normas están explic
 Las leyes se activan por unidad y se pueden desmarcar dentro de las ya impartidas. Las normas que todavía no han sido explicadas no se pueden activar. Pruebas: `node scripts/test-lat1-fonetica.mjs`.
 
 
-El fichero [banco_examenes.json](./banco_examenes.json) contiene 523 candidatas para ejercicios: 330 iniciales, 100 de la primera ampliación, 30 de la segunda, 50 de la tercera, 3 de la revisión del Excel final, 1 aceptación editorial, 7 del lote 13 y 2 del lote 14, sin duplicación de identificadores.
+El fichero [banco_examenes.json](./banco_examenes.json) contiene 526 candidatas para ejercicios: 330 iniciales, 100 de la primera ampliación, 30 de la segunda, 50 de la tercera, 3 de la revisión del Excel final, 1 aceptación editorial, 7 del lote 13, 2 del lote 14 y 3 del lote 15, sin duplicación de identificadores.
 
 Esquema: evoluciones-latin-castellano/v1. Campos por ficha: id, latin, castellano, normas (N01–N20), observacion, fila_origen, fuente y estado.
 
@@ -30,3 +30,7 @@ La segunda ampliación incluye palabras de uso común como autumnum > otoño, ce
 Se han incorporado 50 fichas nuevas basadas en el Excel docente, seleccionando voces frecuentes o reconocibles para Latín II (por ejemplo: `dicere` → `decir`, `piscare` → `pescar`, `operare` → `obrar`, `temperare` → `templar` y `dominicum` → `domingo`). No existe garantía de que aparezcan en la PAU. Se mantiene el estado `APTO_PROPUESTO`, por lo que se recomienda validar la cadena etimológica antes de usar el material en evaluaciones. El étimo erróneo `plannum` del Excel se ha corregido a `plānum` para «llano», anotándolo expresamente.
 
 La ampliación 3 queda identificada con el campo `lote: 3` y mantiene `fila_origen`, `normas` y observaciones. El selector sigue exigiendo exactamente cuatro palabras. La interfaz del generador todavía no ofrece el selector fonético; este cambio amplía el fichero de datos del repositorio.
+
+## Auditoría individual de 100 fichas (lote 15)
+
+El archivo [auditoria-excel-lote-100-20261112.json](./auditoria-excel-lote-100-20261112.json) registra **exactamente 100 entradas nuevas** del Excel original, con su fila, correspondencia, normas marcadas, observación y decisión editorial: 3 incorporadas, 6 para decisión docente, 62 pendientes de contraste, 26 apartadas por transmisión culta y 3 variantes o duplicados. Las 97 no incorporadas **no son elegibles para el sorteo**. Las formas inicialmente presentes en el programa propio de Latín I no se han contabilizado como candidatas nuevas. La revisión de las pendientes debe continuar con pruebas individuales; la marca de una norma en el Excel no basta para considerarla verificada.
