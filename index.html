@@ -1495,7 +1495,31 @@ const latinPronounRows=[
  {unit:6,form:'hic',type:'demostrativo',case:'nominativo',gender:'masculino',number:'singular'},
  {unit:6,form:'haec',type:'demostrativo',case:'nominativo singular o nominativo/acusativo plural',gender:'femenino singular o neutro plural',number:'singular o plural'},
  {unit:6,form:'ille',type:'demostrativo',case:'nominativo',gender:'masculino',number:'singular'},
- {unit:6,form:'quī',type:'relativo',case:'nominativo',gender:'masculino',number:'singular o plural'}
+ {unit:6,form:'quī',type:'relativo',case:'nominativo',gender:'masculino',number:'singular o plural'},
+ // Análisis personal y reflexivo: formas aisladas, no paradigmas inferidos.
+ {unit:3,form:'mihi',type:'personal de 1.ª persona',case:'dativo',gender:'sin género',number:'singular'},
+ {unit:3,form:'tibi',type:'personal de 2.ª persona',case:'dativo',gender:'sin género',number:'singular'},
+ {unit:3,form:'nōbīs',type:'personal de 1.ª persona',case:'dativo o ablativo',gender:'sin género',number:'plural'},
+ {unit:3,form:'vōbīs',type:'personal de 2.ª persona',case:'dativo o ablativo',gender:'sin género',number:'plural'},
+ {unit:3,form:'sē',type:'reflexivo de 3.ª persona',case:'acusativo o ablativo',gender:'sin género',number:'singular o plural'},
+ {unit:5,form:'eius',type:'fórico',case:'genitivo',gender:'masculino, femenino o neutro',number:'singular'},
+ {unit:5,form:'eī',type:'fórico',case:'dativo',gender:'masculino, femenino o neutro',number:'singular'},
+ {unit:5,form:'eōs',type:'fórico',case:'acusativo',gender:'masculino',number:'plural'},
+ {unit:5,form:'eīs',type:'fórico',case:'dativo o ablativo',gender:'masculino, femenino o neutro',number:'plural'},
+ {unit:6,form:'hunc',type:'demostrativo de proximidad',case:'acusativo',gender:'masculino',number:'singular'},
+ {unit:6,form:'hanc',type:'demostrativo de proximidad',case:'acusativo',gender:'femenino',number:'singular'},
+ {unit:6,form:'hoc',type:'demostrativo de proximidad',case:'nominativo o acusativo',gender:'neutro',number:'singular'},
+ {unit:6,form:'huius',type:'demostrativo de proximidad',case:'genitivo',gender:'masculino, femenino o neutro',number:'singular'},
+ {unit:6,form:'illīus',type:'demostrativo de lejanía',case:'genitivo',gender:'masculino, femenino o neutro',number:'singular'},
+ {unit:6,form:'quem',type:'relativo',case:'acusativo',gender:'masculino',number:'singular'},
+ {unit:6,form:'quam',type:'relativo',case:'acusativo',gender:'femenino',number:'singular'},
+ {unit:6,form:'quibus',type:'relativo',case:'dativo o ablativo',gender:'masculino, femenino o neutro',number:'plural'},
+ // Se introducen únicamente desde los pronombres de identidad de UD8.
+ {unit:8,form:'ipse',type:'enfático',case:'nominativo',gender:'masculino',number:'singular'},
+ {unit:8,form:'ipsa',type:'enfático',case:'nominativo',gender:'femenino',number:'singular'},
+ {unit:8,form:'ipsum',type:'enfático',case:'nominativo o acusativo',gender:'neutro',number:'singular'},
+ {unit:8,form:'idem',type:'de identidad',case:'nominativo',gender:'masculino',number:'singular'},
+ {unit:8,form:'eadem',type:'de identidad',case:'nominativo',gender:'femenino',number:'singular'}
 ];
 function latinExamPronouns(chosen){
  if(currentCourse()!=='latin1')return [];
