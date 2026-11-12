@@ -7,7 +7,7 @@ import {PALABRAS_POR_EXAMEN,seleccionarEvoluciones} from '../data/fonetica/selec
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const banco=JSON.parse(readFileSync(resolve(root,'data/fonetica/banco_examenes.json'),'utf8'));
 const ids=banco.items.map(x=>x.id);
-assert.equal(banco.items.length,530);
+assert.equal(banco.items.length,533);
 assert.equal(new Set(ids).size,banco.items.length,'Identificadores duplicados');
 assert.equal(banco.normas.length,20);
 assert.equal(PALABRAS_POR_EXAMEN,4);
@@ -78,7 +78,7 @@ assert.equal(audit.items.length,100,'Auditoría incompleta');
 assert.equal(new Set(audit.items.map(x=>x.fila_origen)).size,100,'Filas de Excel duplicadas');
 const expectedStatus={INCORPORADA:4,EXCLUIDA_DOCENTE:2,CORREGIDA_PENDIENTE:1,
  VARIANTE_CORREGIDA:1,PENDIENTE_VERIFICACION:62,DUPLICADA_O_VARIANTE:3,
- INCORPORADA_CULTA:3,REVISION_CULTA_CONDICIONADA:24};
+ INCORPORADA_CULTA:6,REVISION_CULTA_CONDICIONADA:21};
 assert.deepEqual(audit.resumen,expectedStatus,'Estados de auditoría alterados');
 const normalizeAudit=s=>String(s||'').normalize('NFD').replace(/\p{M}/gu,'')
  .replace(/[æÆ]/g,'ae').replace(/[œŒ]/g,'oe').toLowerCase();
@@ -127,7 +127,7 @@ assert(banco.items.some(x=>x.latin==='socerum'&&x.castellano==='suegro'),
  'La corrección femenina no debe eliminar el suegro patrimonial');
 const cultismos=decisiones.decisiones.find(x=>x.grupo==='cultismos');
 assert.equal(cultismos.decision,'inclusion_condicionada');
-assert.equal(cultismos.restantes_auditadas,24);
+assert.equal(cultismos.restantes_auditadas,21);
 const cuatro=banco.items.filter(x=>x.lote===16);
 assert.equal(cuatro.length,4,'Lote 16 incompleto');
 for(const [latin,spanish,normas,tipo] of [
@@ -141,6 +141,19 @@ for(const [latin,spanish,normas,tipo] of [
  assert.deepEqual(row.normas,normas,'Normas incorrectas en '+latin);
  assert.equal(row.tipoTransmision,tipo,'Sin clasificación de transmisión: '+latin);
  assert(row.fuente.startsWith('https://'),'Falta verificación filológica en '+latin);
+}
+const nextCultos=banco.items.filter(x=>x.lote===17);
+assert.equal(nextCultos.length,3,'La continuación culta no consta como lote 17');
+for(const [latin,spanish,normas] of [
+ ['architectum','arquitecto',['N10']],
+ ['asphaltum','asfalto',['N10']],
+ ['Chimæram','quimera',['N10','N12']]
+]){
+ const row=nextCultos.find(x=>x.latin===latin);
+ assert(row&&row.castellano===spanish,'No incorporada la culta: '+latin);
+ assert.deepEqual(row.normas,normas,'Normas incorrectas en '+latin);
+ assert(row.fuente.startsWith('https://'),'Sin respaldo en '+latin);
+ assert.equal(row.tipoTransmision,'ADAPTACION_CULTA','La adaptación no está etiquetada: '+latin);
 }
 const sourceHtml=readFileSync(resolve(root,'index.html'),'utf8');
 assert(sourceHtml.includes('phonetic-origin-label'),'No se muestra la etiqueta de cultismo');
