@@ -177,6 +177,25 @@
           ]
         }
       ]
+    },
+    {
+      "lang": "lat",
+      "lemma": "vinco",
+      "reference": "https://es.wiktionary.org/wiki/vinco",
+      "type": "perfecto de indicativo activo del tema vīc- documentado en el enunciado docente",
+      "blocks": [
+        {
+          "tags": "V;IND;ACT;PRF",
+          "forms": [
+            "vici",
+            "vicisti",
+            "vicit",
+            "vicimus",
+            "vicistis",
+            "vicerunt"
+          ]
+        }
+      ]
     }
   ],
   "sourceCode": 5
