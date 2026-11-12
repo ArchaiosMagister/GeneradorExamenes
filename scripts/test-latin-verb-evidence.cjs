@@ -29,8 +29,7 @@ for(const [lemma,series]of Object.entries(evidence)){
    item.tense==='futuro'?'V;IND;ACT;FUT':
    item.tense==='perfecto'?'V;IND;ACT;PRF':'V;IND;ACT;PSTP';
   if(item.sourceCode===5){
-   const verified=overrides.paradigms.find(x=>x.lang==='lat'&&x.lemma===lemma)?
-    .blocks.find(x=>x.tags===category);
+   const verified=overrides.paradigms.find(x=>x.lang==='lat'&&x.lemma===lemma)?.blocks.find(x=>x.tags===category);
    assert(verified,lemma+': falta la fuente persistente del tiempo '+item.tense);
    assert.deepEqual(item.forms,verified.forms,'El enunciado debe reflejar las casillas contrastadas');
   }
