@@ -209,7 +209,7 @@ async function checkFile(browser,filename){
    filename+' '+unit+': exportación Word sin cursiva o conjugación');
   if(unit==='UD2'){
    assert.deepEqual(allVoices,['activa'],filename+': pasiva adelantada en UD2');
-   assert(!allTenses.some(x=>/futuro|perfecto/.test(x)),filename+': tiempos adelantados en UD2');
+   assert(!allTenses.some(x=>/^(?:futuro|perfecto|pluscuamperfecto) de indicativo$/.test(x)),filename+': tiempos adelantados en UD2');
    assert(rows.every(x=>!x.text.includes(', amavi, amatum')),
     filename+': UD2 no debe mostrar perfectum en los lemas');
   }else{
