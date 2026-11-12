@@ -786,7 +786,8 @@ function refreshManualMorphWords(){
  // Los siete modelos usan tablas, listas y formas independientes; no las antiguas .forms b.
  paper.querySelectorAll('.exam-nouns thead tr:first-child th[colspan]').forEach(el=>{if(!el.closest('#answerkey'))add(el,'Declinación')});
  paper.querySelectorAll('.exam-verbs thead tr:first-child th[colspan]').forEach(el=>{if(!el.closest('#answerkey'))add(el,'Conjugación')});
- paper.querySelectorAll('.reference-verb-table tbody td:first-child i').forEach(el=>add(el,'Forma verbal'));
+ paper.querySelectorAll('.reference-verb-table tbody td:first-child i, .reference-morph-table:not(.exam-pronouns) tbody td:first-child i')
+  .forEach(el=>add(el,'Forma verbal'));
  paper.querySelectorAll('.exam-pronouns tbody td:first-child').forEach(cell=>
   add(cell.querySelector('i')||cell,'Pronombre'));
  paper.querySelectorAll('.morph-syntagm-item > i').forEach(el=>add(el,'Declinación'));
