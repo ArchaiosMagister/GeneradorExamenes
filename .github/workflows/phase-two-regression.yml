@@ -6,6 +6,7 @@ on:
       - 'index.html'
       - 'offline.html'
       - 'scripts/test-phase-two.cjs'
+      - 'scripts/test-phase-two-coverage.cjs'
       - '.github/workflows/phase-two-regression.yml'
   workflow_dispatch:
 
@@ -30,6 +31,8 @@ jobs:
         run: npm run offline:build
       - name: Curricular forms and paradigms
         run: node scripts/test-phase-two.cjs
+      - name: Full unit and model coverage
+        run: node scripts/test-phase-two-coverage.cjs
       - name: Phase I bidirectional editor regression
         run: node scripts/test-phase-one.cjs
       - name: Document export and seven exam models
