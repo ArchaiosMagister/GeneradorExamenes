@@ -5535,28 +5535,73 @@ function latinExamSurface(form,entry){
 // Se excluye una homografía con análisis incompatible, como duceris,
 // que podría indicar presente o futuro pasivo.
 function latinMorphologyVerbPool(chosen){
- const result=latinSchoolVerbRows(chosen).flatMap(item=>item.forms.map((form,i)=>({
-  form,entry:item.x.entry,sourceEntry:item.p.sourceEntry||item.x.entry,
-  person:item.labels[i],tense:item.tense,voice:item.voice
- })));
+ const course=currentCourse(),max=examGrammarLimit(chosen);
+ // La gramática es acumulativa: UD9 también puede utilizar verbos de UD1–8.
+ // Los bloques docentes UD9–10 solo se incorporan cuando se llega a UD10.
+ const effective=course==='latin1'
+  ?[...new Set([...latinSharedBank.units(course).filter(unit=>{
+    const ns=String(unit).match(/\d+/g)?.map(Number)||[];
+    return ns.length&&Math.max(...ns)<=max;
+   }),...chosen])]
+  :chosen;
+ const rows=latinSchoolVerbRows(effective);
+ const result=rows.filter(item=>!['perfect-passive','pluperfect-passive'].includes(item.id))
+  .flatMap(item=>item.forms.map((form,i)=>({
+   form,entry:item.x.entry,sourceEntry:item.p.sourceEntry||item.x.entry,
+   person:item.labels[i],tense:item.tense,voice:item.voice
+  })));
+ if(course==='latin1'&&max>=9){
+  const seen=new Set();
+  for(const item of rows.filter(row=>row.id==='present-active')){
+   const source=item.p.sourceEntry||item.x.entry;
+   const parts=latinDocumentedSupine(source),key=examKey(item.x.entry);
+   if(!parts||seen.has(key))continue;
+   seen.add(key);
+   for(const [gender,singular,plural] of [
+    ['masculino','us','i'],['femenino','a','ae'],['neutro','um','a']
+   ])for(const [tense,auxiliary] of [
+    ['perfecto de indicativo',LATIN_SUM_SCHOOL['present-active']],
+    ['pluscuamperfecto de indicativo',LATIN_SUM_SCHOOL['imperfect-active']]
+   ])for(let i=0;i<6;i++){
+    const participle=parts.stem+(i<3?singular:plural);
+    result.push({
+     form:participle+' '+auxiliary[i],entry:item.x.entry,sourceEntry:source,
+     person:LATIN_SCHOOL_PERSONS[i],tense,voice:'pasiva',participleGender:gender,
+     source:'participio formado desde supino documentado + sum',
+     provisional:false
+    });
+   }
+  }
+ }
+ // Sin contexto, una misma forma puede tener dos análisis (duceris:
+ // presente o futuro pasivo). No adjudicar una lectura al azar.
  const senses=new Map();
  for(const item of result){
   const key=examKey(item.entry)+'/'+normLex(item.form);
   if(!senses.has(key))senses.set(key,new Set());
-  senses.get(key).add(item.person+'/'+item.tense+'/'+item.voice);
+  senses.get(key).add(item.person+'/'+item.tense+'/'+item.voice+
+   '/'+(item.participleGender||''));
  }
  return result.filter(item=>senses.get(examKey(item.entry)+'/'+normLex(item.form)).size===1);
 }
 function latinMorphologyVerbSelection(pool,count){
- const max=Math.max(0,...selectedUnits().map(examUnitNumber).filter(Number.isInteger));
- if(max<3||count<2)return sample(pool,count);
- const passive=pool.filter(item=>item.voice==='pasiva'),active=pool.filter(item=>item.voice==='activa');
- if(!passive.length||!active.length)return sample(pool,count);
- const chosen=[...sample(passive,Math.max(1,Math.floor(count/3))),...sample(active,1)];
- const used=new Set(chosen.map(x=>x.entry+'|'+x.form+'|'+x.tense+'|'+x.voice));
- const rest=sample(pool.filter(x=>!used.has(x.entry+'|'+x.form+'|'+x.tense+'|'+x.voice)),
+ const max=examGrammarLimit(selectedUnits());
+ if(count<2||max<3)return sample(pool,count);
+ const active=pool.filter(x=>x.voice==='activa');
+ const passive=pool.filter(x=>x.voice==='pasiva');
+ const chosen=[];
+ // Tras UD9, ambos tiempos del perfectum pasivo deben poder identificarse.
+ if(max>=9&&count>=3){
+  const p=pool.filter(x=>x.voice==='pasiva'&&x.tense==='perfecto de indicativo');
+  const q=pool.filter(x=>x.voice==='pasiva'&&x.tense==='pluscuamperfecto de indicativo');
+  if(p.length&&q.length&&active.length)chosen.push(sample(p,1)[0],sample(q,1)[0],sample(active,1)[0]);
+ }
+ if(!chosen.length&&passive.length&&active.length)
+  chosen.push(...sample(passive,Math.min(count-1,Math.max(1,Math.floor(count/3)))),sample(active,1)[0]);
+ const used=new Set(chosen.map(x=>x.entry+'|'+x.form+'|'+x.tense+'|'+x.voice+'|'+(x.participleGender||'')));
+ const extra=sample(pool.filter(x=>!used.has(x.entry+'|'+x.form+'|'+x.tense+'|'+x.voice+'|'+(x.participleGender||''))),
   Math.max(0,count-chosen.length));
- return sample(chosen.concat(rest),count);
+ return sample(chosen.concat(extra),count);
 }
 function generateLatinMorphologyReference(){
  const chosen=selectedUnits(),cfg=morphConfig(),va=$('lang').value==='va';
@@ -5891,7 +5936,8 @@ const LATIN_SCHOOL_SCHEDULE=[
  ['pluperfect-active',4,'pluscuamperfecto de indicativo','activa'],
  ['future-active',7,'futuro de indicativo','activa'],
  ['future-passive',7,'futuro de indicativo','pasiva'],
- ['perfect-passive',9,'perfecto de indicativo','pasiva (participio masculino)']
+ ['perfect-passive',9,'perfecto de indicativo','pasiva (participio masculino)'],
+ ['pluperfect-passive',9,'pluscuamperfecto de indicativo','pasiva (participio masculino)']
 ];
 function latinRegularPassiveForms(paradigm,tense){
  const conjugation=paradigm.conj,lemma=paradigm.lemma;
@@ -5913,14 +5959,26 @@ function latinRegularPassiveForms(paradigm,tense){
  };
  return endings[conjugation][tense]?.map(ending=>base+ending)||null;
 }
-function latinRegularPerfectPassive(raw){
- // Construcción explícita a partir del supino documentado, masculino:
- // participio nominativo y presente de sum. No propone otros géneros.
- const match=mNormalize(raw).match(/^([A-Za-z]+),\s*([A-Za-z]+),\s*([A-Za-z]+um)\s*\([1234]ª\)/);
- if(!match)return null;
- const stem=match[3].slice(0,-2);
+// La flexión personal del perfectum pasivo no se ofrece automáticamente a
+// verbos de uso intransitivo (laboro, venio, curro...) ni a deponentes.
+// Las únicas candidatas son lemas transitivos de este listado contrastado
+// que además tengan en el banco sus tres partes principales.
+const LATIN_PERSONAL_PASSIVE_VERBS=new Set([
+ 'amo','audio','capio','duco','lego','laudo','mitto','moneo',
+ 'monstro','porto','rego','scribo','servo','teneo','video',
+ 'vinco','voco','doceo','moveo','occupo','supero','oppugno'
+]);
+function latinDocumentedSupine(raw){
+ const parts=mNormalize(raw).match(/^([A-Za-z]+),\s*([A-Za-z]+),\s*([A-Za-z]+um)\s*\(([1-4]ª|mx\.)\)/i);
+ if(!parts||!LATIN_PERSONAL_PASSIVE_VERBS.has(parts[1].toLowerCase()))return null;
+ return {lemma:parts[1].toLowerCase(),stem:parts[3].slice(0,-2)};
+}
+function latinRegularPerfectPassive(raw,tense='perfect'){
+ const parts=latinDocumentedSupine(raw);
+ if(!parts)return null;
+ const auxiliary=LATIN_SUM_SCHOOL[tense==='pluperfect'?'imperfect-active':'present-active'];
  const participle=['us','us','us','i','i','i'];
- return participle.map((end,i)=>stem+end+' '+LATIN_SUM_SCHOOL['present-active'][i]);
+ return participle.map((ending,i)=>parts.stem+ending+' '+auxiliary[i]);
 }
 function latinSchoolVerbRows(chosen){
  const course=currentCourse(),limit=examGrammarLimit(chosen),out=[],seen=new Set();
@@ -5952,6 +6010,7 @@ function latinSchoolVerbRows(chosen){
    else if(id==='imperfect-passive')forms=latinRegularPassiveForms(regular,'imperfect');
    else if(id==='future-passive')forms=latinRegularPassiveForms(regular,'future');
    else if(id==='perfect-passive')forms=latinRegularPerfectPassive(source);
+   else if(id==='pluperfect-passive')forms=latinRegularPerfectPassive(source,'pluperfect');
    add(x,p,id,tense,voice,forms,source);
   }
  }
@@ -5976,7 +6035,8 @@ function latinSchoolVerbRows(chosen){
   'pluperfect-active':['ceperam','ceperas','ceperat','ceperamus','ceperatis','ceperant'],
   'future-active':['capiam','capies','capiet','capiemus','capietis','capient'],
   'future-passive':['capiar','capieris','capietur','capiemur','capiemini','capientur'],
-  'perfect-passive':['captus sum','captus es','captus est','capti sumus','capti estis','capti sunt']
+  'perfect-passive':['captus sum','captus es','captus est','capti sumus','capti estis','capti sunt'],
+  'pluperfect-passive':['captus eram','captus eras','captus erat','capti eramus','capti eratis','capti erant']
  };
  if(course==='latin1')for(const x of latinSharedBank.vocabulary(course,chosen)){
   if(!/^capio,\s*cepi,\s*captum\s*\(mx\.\)/i.test(mNormalize(x.entry)))continue;
