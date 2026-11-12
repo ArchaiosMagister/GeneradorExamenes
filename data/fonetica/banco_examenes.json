@@ -142,7 +142,9 @@
       "estado": "APTO_PROPUESTO",
       "normasFijas": [
         "FIX_M"
-      ]
+      ],
+      "tipoTransmision": "PATRIMONIAL",
+      "decisionDocentePAU": "2026-11-12: patrimonial (clasificación, no verificación adicional)"
     },
     {
       "id": "EVF-0007",
@@ -158,7 +160,9 @@
       "estado": "APTO_PROPUESTO",
       "normasFijas": [
         "FIX_M"
-      ]
+      ],
+      "tipoTransmision": "PATRIMONIAL",
+      "decisionDocentePAU": "2026-11-12: patrimonial (clasificación, no verificación adicional)"
     },
     {
       "id": "EVF-0008",
@@ -174,7 +178,9 @@
       "estado": "APTO_PROPUESTO",
       "normasFijas": [
         "FIX_M"
-      ]
+      ],
+      "tipoTransmision": "PATRIMONIAL",
+      "decisionDocentePAU": "2026-11-12: patrimonial (clasificación, no verificación adicional)"
     },
     {
       "id": "EVF-0009",
@@ -189,7 +195,9 @@
       "estado": "APTO_PROPUESTO",
       "normasFijas": [
         "FIX_M"
-      ]
+      ],
+      "tipoTransmision": "PATRIMONIAL",
+      "decisionDocentePAU": "2026-11-12: patrimonial (clasificación, no verificación adicional)"
     },
     {
       "id": "EVF-0015",
@@ -204,7 +212,9 @@
       "estado": "APTO_PROPUESTO",
       "normasFijas": [
         "FIX_M"
-      ]
+      ],
+      "tipoTransmision": "PATRIMONIAL",
+      "decisionDocentePAU": "2026-11-12: patrimonial (clasificación, no verificación adicional)"
     },
     {
       "id": "EVF-0016",
@@ -219,7 +229,9 @@
       "estado": "APTO_PROPUESTO",
       "normasFijas": [
         "FIX_M"
-      ]
+      ],
+      "tipoTransmision": "PATRIMONIAL",
+      "decisionDocentePAU": "2026-11-12: patrimonial (clasificación, no verificación adicional)"
     },
     {
       "id": "EVF-0022",
@@ -234,7 +246,9 @@
       "estado": "APTO_PROPUESTO",
       "normasFijas": [
         "FIX_M"
-      ]
+      ],
+      "tipoTransmision": "PATRIMONIAL",
+      "decisionDocentePAU": "2026-11-12: patrimonial (clasificación, no verificación adicional)"
     },
     {
       "id": "EVF-0024",
@@ -6598,7 +6612,9 @@
       "estado": "APTO_PROPUESTO",
       "normasFijas": [
         "FIX_M"
-      ]
+      ],
+      "tipoTransmision": "PATRIMONIAL",
+      "decisionDocentePAU": "2026-11-12: patrimonial (clasificación, no verificación adicional)"
     },
     {
       "id": "EVF-1039",
@@ -6632,7 +6648,9 @@
       "estado": "APTO_PROPUESTO",
       "normasFijas": [
         "FIX_M"
-      ]
+      ],
+      "tipoTransmision": "PATRIMONIAL",
+      "decisionDocentePAU": "2026-11-12: patrimonial (clasificación, no verificación adicional)"
     },
     {
       "id": "EVF-1041",
@@ -7076,7 +7094,9 @@
       "fila_origen": 946,
       "fuente": "https://dle.rae.es/abrir",
       "estado": "APTO_PROPUESTO",
-      "criterio_pau": "Voz habitual o de fácil reconocimiento y cambios fonéticos de interés PAU; no implica una predicción estadística"
+      "criterio_pau": "Voz habitual o de fácil reconocimiento y cambios fonéticos de interés PAU; no implica una predicción estadística",
+      "tipoTransmision": "PATRIMONIAL",
+      "decisionDocentePAU": "2026-11-12: patrimonial (clasificación, no verificación adicional)"
     },
     {
       "id": "EVF-0950",

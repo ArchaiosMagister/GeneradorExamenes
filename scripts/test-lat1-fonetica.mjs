@@ -40,8 +40,8 @@ for(let unit=0;unit<=10;unit++){
 }
 assert.equal(total,73);
 assert.equal(introduced.size,20);
-assert.equal(valid,67);
-assert.equal(revisar,6);
+assert.equal(valid,66);
+assert.equal(revisar,7);
 assert.deepEqual(curriculum.unidades.map(u=>u.nuevas.length),[5,7,4,2,0,0,0,1,0,1,0]);
 const rulesThrough=unit=>new Set(curriculum.unidades.filter(x=>x.unit<=unit).flatMap(x=>x.nuevas));
 const availableThrough=unit=>curriculum.unidades.filter(x=>x.unit<=unit).flatMap(x=>x.palabras)
@@ -56,11 +56,11 @@ const lesson0=availableThrough(0),lesson1=availableThrough(1);
 assert.deepEqual(lesson0.map(x=>x.latin),['terram','apotheca','farinam']);
 assert.equal(lesson1.length,10,'UD1 debe incluir las tres palabras de UD0 y las siete nuevas');
 assert(lesson1.length>=4,'UD1 debe poder proponer cuatro étimos');
-assert.equal(availableThrough(10).length,67);
+assert.equal(availableThrough(10).length,66);
 for(let unit=1;unit<=10;unit++)
  assert(availableThrough(unit).length>=availableThrough(unit-1).length,'El vocabulario no es acumulativo');
 assert(!availableThrough(6).some(x=>x.latin==='adpodiare'),'Asimilación introducida antes de UD7');
-assert(availableThrough(7).some(x=>x.latin==='adpodiare'),'Falta la asimilación de UD7');
+assert(!availableThrough(7).some(x=>x.latin==='adpodiare'),'Exclusión docente de adpodiare vulnerada en UD7');
 assert(!availableThrough(8).some(x=>x.latin==='arborem'),'Disimilación introducida antes de UD9');
 assert(availableThrough(9).some(x=>x.latin==='arborem'),'Falta la disimilación de UD9');
 assert(!availableThrough(10).some(x=>['impignum','vaxillam','lignam','æqualitatem','complexum','crocodillum'].includes(x.latin)),
