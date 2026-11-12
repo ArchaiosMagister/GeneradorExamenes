@@ -304,6 +304,20 @@ function evidenceRows(data,course,limit=99){
   return info?.[course]&&evidenceUnitAt(info,course)<=limit;
  });
 }
+// En el análisis escolar una misma forma no debe sortearse con una sola
+// solución cuando existen lecturas homógrafas o sincréticas diferentes.
+function evidenceUniqueReading(data,course,row){
+ const lang=course==='gr1'?'grc':'lat',surface=String(row[1]).normalize('NFC').toLocaleLowerCase();
+ const readings=new Set();
+ for(const candidate of data?.rows?.[lang]||[]){
+  if(![0,1,2,4,5].includes(candidate[3])||
+   String(candidate[1]).normalize('NFC').toLocaleLowerCase()!==surface||
+   !data.vocabulary?.[lang]?.[candidate[0]]?.[course])continue;
+  readings.add(candidate[0]+'|'+candidate[2]);
+  if(readings.size>1)return false;
+ }
+ return readings.size===1;
+}
 // Se añaden EXCLUSIVAMENTE fichas autorizadas que superan la matriz curricular.
 // Los registros fuente 3/6/7 no aportan análisis; las fuentes 0/1/5 mantienen
 // sus rutas verificadas ya existentes, sin crear aquí un segundo banco paralelo.
@@ -311,7 +325,8 @@ function approvedExamForms(data,course,limit,all=evidenceDecisions()){
  if(!data)return [];
  const lang=course==='gr1'?'grc':'lat',found=[],seen=new Set();
  for(const row of evidenceRows(data,course,limit)){
-  if(!evidenceApproved(course,row,all)||!evidenceCurricular(course,row[2],limit))continue;
+  if(!evidenceApproved(course,row,all)||!evidenceCurricular(course,row[2],limit)||
+   !evidenceUniqueReading(data,course,row))continue;
   const [lemma,form,tags,source]=row,entry=data.vocabulary[lang]?.[lemma]?.[course]?.entry;
   if(!entry)continue;
   const type=tags.split(';')[0];
@@ -389,7 +404,8 @@ function initAcademicEvidence(){
   '<div class="review-controls"><label>Curso <select id="academicEvidenceCourse"><option value="lat1">Latín I</option><option value="lat4">Latín 4.º ESO</option><option value="gr1">Griego I</option></select></label>'+
   '<label>Hasta la unidad <input id="academicEvidenceUnit" type="number" min="1" max="14" value="4"></label>'+
   '<label>Buscar forma o lema <input id="academicEvidenceQuery" type="text" autocomplete="off" placeholder="duco / λόγου"></label></div>'+
-  '<p id="academicEvidenceSummary" role="status" aria-live="polite">Cargando evidencias locales…</p>'+
+  '<p id="academicEvidenceSummary" role="status" aria-live="polite">Cargando evidencias locales…</p>'+ 
+  '<div id="academicEvidenceLookup" class="hint" aria-live="polite"></div>'+
   '<div id="academicEvidenceRows"></div><button type="button" class="secondary" id="academicEvidenceMore">Mostrar más</button>'+
   '<div class="review-actions"><button type="button" class="secondary" id="academicEvidenceExport">Exportar autorizaciones</button>'+
   '<button type="button" class="secondary" id="academicEvidenceImport">Importar autorizaciones</button>'+
@@ -417,24 +433,39 @@ function initAcademicEvidence(){
    const course=get('academicEvidenceCourse').value,
     max=Math.max(1,Math.min(14,Number(get('academicEvidenceUnit').value)||1)),
     query=norm(get('academicEvidenceQuery').value);
+   const lang=course==='gr1'?'grc':'lat';
+   const exact=query?(data.rows[lang]||[]).filter(row=>
+    data.vocabulary[lang]?.[row[0]]?.[course]&&
+    evidenceUnitAt(data.vocabulary[lang][row[0]],course)<=max&&
+    (norm(row[1])===query||norm(row[0])===query)): [];
+   const lookup=get('academicEvidenceLookup');
+   if(!query)lookup.textContent='Busca una forma para comparar registros verificados, documentados, propuestas y ausencia de análisis.';
+   else if(!exact.length)lookup.textContent='No disponible: no hay forma ni análisis registrado para esta consulta en la unidad seleccionada.';
+   else lookup.textContent='Evidencia de la forma consultada: '+exact.slice(0,12).map(row=>
+    row[1]+' ('+row[0]+'): '+
+    ({verificada:'verificada individualmente',documentada:'documentada externamente, sin verificación curricular',
+      propuesta:'propuesta sin verificación',no_disponible:'sin análisis flexivo'}[evidenceState(row[3])])+
+    ' · '+evidenceSource[row[3]]+' · '+row[2]).join(' | ')+
+    (exact.length>12?' · '+(exact.length-12)+' lecturas adicionales':'');
    const rows=evidenceRows(data,course,max).filter(row=>!query||
     norm(row[0]+' '+row[1]+' '+data.vocabulary[course==='gr1'?'grc':'lat']?.[row[0]]?.[course]?.entry).includes(query));
    const approved=rows.filter(row=>evidenceApproved(course,row,all)).length,
-    held=rows.filter(row=>!evidenceCurricular(course,row[2],max)).length;
+    held=rows.filter(row=>!evidenceCurricular(course,row[2],max)||
+     !evidenceUniqueReading(data,course,row)).length;
    get('academicEvidenceSummary').textContent=rows.length+' propuestas concretas · '+approved+
     ' autorizadas solo para uso docente · '+held+' sin autorización curricular en esta unidad.'+
     (query&&!rows.length?' No hay propuestas registradas: consulta el lematizador para comprobar evidencias documentadas o ausencia de análisis.':'');
    const host=get('academicEvidenceRows');host.replaceChildren();
    for(const row of rows.slice(0,limit)){
     const key=evidenceKey(course,row),approved=evidenceApproved(course,row,all),
-     eligible=evidenceCurricular(course,row[2],max);
+     eligible=evidenceCurricular(course,row[2],max)&&evidenceUniqueReading(data,course,row);
     const entry=data.vocabulary[course==='gr1'?'grc':'lat']?.[row[0]]?.[course]?.entry||row[0];
     const card=document.createElement('article');card.className='evidence-card';
     const title=document.createElement('strong');title.textContent=row[1]+' — '+entry;
     const description=document.createElement('p');description.textContent=row[2]+' · '+evidenceSource[row[3]];
     const status=document.createElement('p');status.textContent=approved?'Propuesta autorizada para uso docente (no verificada)':
      eligible?'Propuesta sin verificar; excluida del sorteo hasta autorizarla.':
-     'Propuesta no curricular; excluida aunque se autorice.';
+     'Propuesta sin encaje curricular o con lecturas ambiguas; no se sortea aunque se autorice.';
     const check=document.createElement('label');check.className='check';
     const consent=document.createElement('input');consent.type='checkbox';
     check.append(consent,document.createTextNode('He revisado esta forma, su análisis y su procedencia.'));
@@ -496,7 +527,7 @@ function initAcademicEvidence(){
 
 window.ExaminaTeacherReview={buildCases,evidenceState,evidenceKey,evidenceApproved,
  evidenceGrant,evidenceRevoke,evidenceRows,approvedExamForms,evidenceAttributes,
- evidenceCheckExam,evidenceMayExport,evidenceCurricular};
+ evidenceCheckExam,evidenceMayExport,evidenceCurricular,evidenceUniqueReading};
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initAcademicEvidence);
 else initAcademicEvidence();
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
