@@ -7,7 +7,7 @@ import {PALABRAS_POR_EXAMEN,seleccionarEvoluciones} from '../data/fonetica/selec
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const banco=JSON.parse(readFileSync(resolve(root,'data/fonetica/banco_examenes.json'),'utf8'));
 const ids=banco.items.map(x=>x.id);
-assert.equal(banco.items.length,514);
+assert.equal(banco.items.length,521);
 assert.equal(new Set(ids).size,banco.items.length,'Identificadores duplicados');
 assert.equal(banco.normas.length,20);
 assert.equal(PALABRAS_POR_EXAMEN,4);
@@ -41,6 +41,26 @@ const accepted=banco.items.find(x=>x.latin==='pelliculam');
 assert(accepted&&accepted.castellano==='pelleja'&&accepted.estado==='APTO_PROPUESTO');
 assert.deepEqual(accepted.normas,['N01','N13','N16','N20']);
 assert(!banco.items.some(x=>['inde','pirum'].includes(x.latin)),'Decisiones editoriales excluidas del sorteo');
+const loteTrece=[
+ ['audīte','oíd',['N03','N12','N17']],
+ ['audītum','oído',['N12','N16','N17']],
+ ['date','dad',['N03','N17']],
+ ['octavum','ochavo',['N13']],
+ ['fluxum','flojo',['N01','N13']],
+ ['pelagum','piélago',['N07']],
+ ['folliculum','hollejo',['N01','N05','N13','N20']]
+];
+assert.equal(banco.items.filter(x=>x.lote===13).length,7,'Lote 13 incompleto');
+for(const [latin,castellano,normas] of loteTrece){
+ const row=banco.items.find(x=>x.latin===latin);
+ assert(row&&row.castellano===castellano,'Étimo incorporado incorrecto: '+latin);
+ assert.deepEqual(row.normas,normas,'Normas inexactas: '+latin);
+ assert.equal(row.estado,'APTO_PROPUESTO');
+ assert(row.fila_origen&&row.fuente,'Falta trazabilidad: '+latin);
+}
+assert.equal(new Set(banco.items.map(x=>x.latin.normalize('NFD')
+ .replace(/[\u0300-\u036f]/g,'').toLowerCase())).size,banco.items.length,
+ 'No deben duplicarse étimos equivalentes por acento de cantidad');
 const todas=banco.normas.map(n=>n.id);
 const caso=seleccionarEvoluciones(banco,{normasSeleccionadas:todas,semilla:'mismo-examen'});
 assert.equal(caso.ejercicios.length,4);

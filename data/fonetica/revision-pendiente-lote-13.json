@@ -1,0 +1,57 @@
+{
+  "schema": 1,
+  "revision": "2026-11-12",
+  "origen": "banco_evolucion_fonetica_final_10_lotes.xlsx",
+  "politica": "REVISAR: las entradas de este archivo no se cargan en el sorteo; requieren decisión docente y verificación antes de moverlas al banco_examenes.json.",
+  "pendientes": [
+    {
+      "latin": "doctum",
+      "castellano": "ducho",
+      "estado": "REVISAR",
+      "problema": "Étimo discutido; ductum > ducho ya figura en el banco. Una fuente reciente y registros lexicográficos favorecen ductum, mientras otras propuestas admiten doctus.",
+      "fuentes": [
+        "https://iedra.es/palabras/ducho",
+        "https://www.elcastellano.org/node/91225"
+      ]
+    },
+    {
+      "latin": "cabannam",
+      "propuesta": "cabaña",
+      "estado": "REVISAR",
+      "problema": "La forma documentada es latín tardío CAPANNAM, con p; el Excel propone CABANNAM con b, por lo que hay que aprobar o no la corrección del étimo.",
+      "fuentes": [
+        "https://stel.ub.edu/diccaxv/dictionary/ViewLema/3864"
+      ]
+    },
+    {
+      "latin": "vinciculum",
+      "propuesta": "vencejo (ligadura, no ave)",
+      "estado": "REVISAR",
+      "problema": "La base que proponen las fuentes es el latín vulgar reconstruido *VINCICULUM, no el clásico VINCULUM ni el VINCICULUM sin marca de reconstrucción.",
+      "fuentes": [
+        "https://iedra.es/palabras/vencejo",
+        "https://bibliamedieval.es/bibliateca.es/corominas/DATA/HTML/vencejo%20i.html"
+      ]
+    },
+    {
+      "grupo": [
+        "crudelem",
+        "fidelem",
+        "legalem",
+        "pedonem",
+        "radere",
+        "regalem",
+        "rumigare",
+        "turbidum"
+      ],
+      "estado": "REVISAR",
+      "problema": "Evoluciones patrimoniales documentadas con pérdida de -d- o -g- intervocálicas, pero el catálogo de 20 leyes no contiene una regla específica para ese fenómeno; no forzar N16 sin decisión docente.",
+      "fuentes": [
+        "https://ghcl.ub.edu/diccaxv/dictionary/ViewLema/6362",
+        "https://ghcl.ub.edu/diccaxv/dictionary/ViewLema/12452",
+        "https://ghcl.ub.edu/diccaxv/dictionary/ViewLema/17309",
+        "https://ghcl.ub.edu/diccaxv/dictionary/ViewLema/17435"
+      ]
+    }
+  ]
+}
