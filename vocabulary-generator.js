@@ -496,10 +496,11 @@ function latinExpandedForms(bank){
    continue;
   }
   const group=annotated[1],end=group==='2ª'?'eo':(['4ª','mx.'].includes(group)?'io':'o');
-  // El tema de perfecto consta literalmente en el enunciado: se reconoce
-  // aunque el profesor haya etiquetado el presente con otra conjugación.
-  // Ello NO autoriza inferir formas del tema de presente ni a verificar
-  // individualmente las flexiones del índice morfológico.
+  // Mantener la validación previa del tema de presente. Las dos fichas
+  // inequívocamente discordantes del profesor (solvo 2.ª, vivo 4.ª)
+  // pueden aprovechar su perfecto explícito, sin inventar su presente.
+  // No relajar la regla para otros enunciados: generaría falsos homógrafos.
+  if((l.endsWith(end)&&!!l.slice(0,-end.length))||['soluo','uiuo'].includes(l)){
   const perf=fields[1]||'';
   if(fields.length>=3&&perf.endsWith('i')&&perf.length>2){
    const root=perf.slice(0,-1);
@@ -514,6 +515,7 @@ function latinExpandedForms(bank){
      origin:'participio deducido del supino docente: revisar individualmente'};
     decl12(sup.slice(0,-2),proposal);
    }
+  }
   }
   if(!l.endsWith(end)||!l.slice(0,-end.length))continue;
   const stem=l.slice(0,-end.length);
