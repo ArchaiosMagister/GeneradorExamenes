@@ -25,7 +25,7 @@ function makeQueue(course,lang){
   if(!counts.has(lemma))counts.set(lemma,{bySource:{},presentSet:new Set(),total:0,source0LabelConflict:0});
   const c=counts.get(lemma);c.total++;c.bySource[row[3]]=(c.bySource[row[3]]||0)+1;
   if([1,5].includes(row[3])&&(/DOCENTE;presente de indicativo deponente/.test(row[2])||
-   /^V;IND;(?:ACT|MID|PASS);PRS;[1-3];(?:SG|PL)$/.test(row[2])))c.presentSet.add(row[1]);
+   /^V;IND;(?:ACT|MID|DEP|PASS);PRS;[1-3];(?:SG|PL)$/.test(row[2])))c.presentSet.add(row[1]);
   if(lang==='lat'&&row[3]===0&&row[2].startsWith('V;IND;ACT;')&&
    latinType(lemma,vocab[lemma][course].entry)==='deponent')c.source0LabelConflict++;
  }
@@ -36,12 +36,14 @@ function makeQueue(course,lang){
   if(!type)continue;
   const countsRow=counts.get(lemma)||{bySource:{},presentSet:new Set(),total:0,source0LabelConflict:0};
   const verified=countsRow.bySource[1]||0,contrasted=countsRow.bySource[5]||0;
-  const state=type==='irregular'&&lemma==='sum'&&contrasted>=30?
-   'presente y varios tiempos ya documentados en fichas individuales':
+  const state=type==='irregular'&&['sum','possum','confero'].includes(lemma)&&contrasted>=30?
+   'cinco tiempos de indicativo respaldados por casillas individuales (otros tiempos no contrastados)':
    type==='irregular'&&lemma==='eo'&&contrasted>=6?
    'solo presente documentado individualmente':
-   type==='deponent'&&lemma==='conor'&&verified>=6?
-   'presente deponente documentado individualmente':
+   type==='deponent'&&((lemma==='conor'&&verified>=6)||contrasted>=6)?
+   'solo presente deponente documentado individualmente (otras variantes y tiempos pendientes)':
+   type==='greekMiddle'&&contrasted>=6?
+   'solo presente medio documentado individualmente (variantes y otros tiempos pendientes)':
    'revisión filológica pendiente';
   const decisions=type==='deponent'||type==='greekMiddle'?
    ['Mantener sin nuevas formas de examen','Contrastar individualmente presente y variantes de 2.ª singular',
@@ -61,10 +63,14 @@ function makeQueue(course,lang){
   a.lemma.localeCompare(b.lemma,'es'));
 }
 const latin=makeQueue('lat1','lat'),greek=makeQueue('gr1','grc');
-assert(latin.some(x=>x.lemma==='sum'&&x.state.includes('documentados')));
+assert(latin.some(x=>x.lemma==='sum'&&x.state.includes('respaldados')));
 assert(latin.some(x=>x.lemma==='eo'&&x.individuallyBackedPresent===6));
 assert(latin.some(x=>x.lemma==='conor'&&x.individuallyBackedPresent===6));
-assert(latin.some(x=>x.lemma==='possum'&&x.state==='revisión filológica pendiente'));
+assert(latin.some(x=>x.lemma==='possum'&&x.state.includes('respaldados')));
+assert(latin.some(x=>x.lemma==='confero'&&x.state.includes('respaldados')));
+assert(latin.some(x=>x.lemma==='loquor'&&x.individuallyBackedPresent>=6));
+assert(latin.some(x=>x.lemma==='sequor'&&x.individuallyBackedPresent>=6));
+assert(greek.some(x=>x.lemma==='βουλομαι'&&x.individuallyBackedPresent===6));
 assert(latin.some(x=>x.lemma==='loquor'&&x.externalVoiceMismatch>0),
  'Las etiquetas ACT de UniMorph para deponentes no deben darse por voz escolar activa');
 const target=path.join(root,'test-artifacts/fase-ii-revision-irregulares-deponentes.json');
