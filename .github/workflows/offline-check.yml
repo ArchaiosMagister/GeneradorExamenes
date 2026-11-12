@@ -131,6 +131,8 @@ jobs:
           if-no-files-found: ignore
       - name: Comprobar menús léxicos, modificación preverbial y Word
         run: node scripts/test-lex-menu-sync.cjs
+      - name: Verificar editores bidireccionales en todas las materias, modelos y Word
+        run: node scripts/test-bidirectional-editors.cjs
       - name: Probar las vistas previas de todos los modelos
         run: node scripts/test-preview.cjs
       - name: Guardar Word con puntuaciones de examen para inspección
