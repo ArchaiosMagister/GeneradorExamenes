@@ -32,6 +32,19 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
      if(course==='latin1'){
       const verbs=latinMorphologyVerbPool(chosen);
       const morph=latinExamFormCandidates(chosen,true).flat();
+      const selectedVerbs=latinMorphologyVerbSelection(verbs,10);
+      if(limit>=3&&verbs.some(v=>v.voice==='pasiva')&&!selectedVerbs.some(v=>v.voice==='pasiva'))
+       violations.push(selected.unit+': la tabla no reserva ninguna pasiva');
+      if(limit>=3&&verbs.some(v=>v.voice==='activa')&&!selectedVerbs.some(v=>v.voice==='activa'))
+       violations.push(selected.unit+': la tabla no contrasta formas activas');
+      if(limit>=7&&verbs.some(v=>v.voice==='deponente')&&!selectedVerbs.some(v=>v.voice==='deponente'))
+       violations.push(selected.unit+': la tabla no reserva ningún deponente documentado');
+      if(limit>=9&&verbs.some(v=>v.voice==='pasiva'&&v.tense==='perfecto de indicativo')&&
+       !selectedVerbs.some(v=>v.voice==='pasiva'&&v.tense==='perfecto de indicativo'))
+       violations.push(selected.unit+': falta un perfecto pasivo en la tabla');
+      if(limit>=9&&verbs.some(v=>v.voice==='pasiva'&&v.tense==='pluscuamperfecto de indicativo')&&
+       !selectedVerbs.some(v=>v.voice==='pasiva'&&v.tense==='pluscuamperfecto de indicativo'))
+       violations.push(selected.unit+': falta un pluscuamperfecto pasivo en la tabla');
       const kinds={};
       for(const v of verbs){
        const k=v.tense+' | '+v.voice;kinds[k]=(kinds[k]||0)+1;
