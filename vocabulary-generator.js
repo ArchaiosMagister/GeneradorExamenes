@@ -1252,7 +1252,11 @@ function analyze(data,text,course,bank,{contextual=false}={}){
  for(const row of bank){attach('E'+normalizeCourse(row.entry),row);attach('H'+normalizeCourse(head(row.entry)),row)}
  const tokens=new Map();
  const passages=contextual?String(text).split(/[.!?;·;\n]+/u):[String(text)];
- for(const passage of passages){
+ // Distintas apariciones de una misma oración no pueden compartir la
+ // decisión del profesor. Para el primer contexto mantenemos la clave antigua,
+ // de modo que las decisiones existentes siguen siendo compatibles.
+ const seenContexts=new Set();
+ for(const [passageIndex,passage] of passages.entries()){
   const context=contextual?passage.trim().replace(/\s+/gu,' ').normalize('NFC'):'';
   const original=contextual?context:passage;
   const searchable=lang==='grc'?original.replace(/([\p{L}\p{M}])[’'](?=[\p{L}\p{M}])/gu,'$1 '):original;
@@ -1264,11 +1268,13 @@ function analyze(data,text,course,bank,{contextual=false}={}){
    const spelling=lang==='grc'?form.normalize('NFC'):normal;
    const occurrence=(occurrences.get(spelling)||0)+1;
    occurrences.set(spelling,occurrence);
-   const identity=contextual?JSON.stringify([context,spelling,occurrence]):spelling;
+   const identity=contextual?JSON.stringify(seenContexts.has(context)?
+    [context,spelling,occurrence,passageIndex]:[context,spelling,occurrence]):spelling;
    if(!tokens.has(identity))tokens.set(identity,{normal,form,context,identity,offset:match.index,precededBy:new Set()});
    tokens.get(identity).precededBy.add(previous);
    previous=normal;
   }
+  if(contextual&&context)seenContexts.add(context);
  }
  return [...tokens.values()].map(({normal,form,context,identity,offset,precededBy})=>{
   const indexedCandidates=[...(index.get(normal)?.values()||[])].flatMap(c=>{
@@ -1670,7 +1676,7 @@ function vocabularyRequiresReview(row){
   '<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>'+
   titleParagraph+body+'<w:sectPr>'+layout+'</w:sectPr></w:body></w:document>';
 }
-const analysisVersion=3;
+const analysisVersion=4;
 function needsAnalysis(unit,course){
  return !!unit.text?.trim()&&(unit.analysisVersion!==analysisVersion||
   unit.analyzedCourse!==course||unit.analyzedText!==unit.text);
