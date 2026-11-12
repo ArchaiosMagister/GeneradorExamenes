@@ -2133,7 +2133,54 @@ const M_END={
  '5':[['es','es','em','ei','ei','e'],['es','es','es','erum','ebus','ebus']]
 };
 function mNormalize(s){return String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[–−—]/g,'-').replace(/æ/gi,'ae').replace(/œ/gi,'oe').trim()}
+// Paradigmas NOMINALES EXPLÍCITOS: no aplicar reglas de -is/-us a todos
+// los lemas de tercera y cuarta. Las formas de estos vocablos se contrastan
+// con sus paradigmas completos (i-temas, temas en -u y res).
+const LATIN_SCHOOL_NOUNS={
+ civis:{gen:['is','civis'],kind:'3mf',gender:'m',
+  singular:['civis','civis','civem','civis','civi','cive'],
+  plural:['cives','cives','cives','civium','civibus','civibus']},
+ hostis:{gen:['is','hostis'],kind:'3mf',gender:'m',
+  singular:['hostis','hostis','hostem','hostis','hosti','hoste'],
+  plural:['hostes','hostes','hostes','hostium','hostibus','hostibus']},
+ urbs:{gen:['urbis'],kind:'3mf',gender:'f',
+  singular:['urbs','urbs','urbem','urbis','urbi','urbe'],
+  plural:['urbes','urbes','urbes','urbium','urbibus','urbibus']},
+ pars:{gen:['partis'],kind:'3mf',gender:'f',
+  singular:['pars','pars','partem','partis','parti','parte'],
+  plural:['partes','partes','partes','partium','partibus','partibus']},
+ mare:{gen:['maris','is'],kind:'3n',gender:'n',
+  singular:['mare','mare','mare','maris','mari','mari'],
+  plural:['maria','maria','maria','marium','maribus','maribus']},
+ animal:{gen:['alis','animalis'],kind:'3n',gender:'n',
+  singular:['animal','animal','animal','animalis','animali','animali'],
+  plural:['animalia','animalia','animalia','animalium','animalibus','animalibus']},
+ manus:{gen:['us','manus'],kind:'4m',gender:'f',
+  singular:['manus','manus','manum','manus','manui','manu'],
+  plural:['manus','manus','manus','manuum','manibus','manibus']},
+ exercitus:{gen:['us','exercitus'],kind:'4m',gender:'m',
+  singular:['exercitus','exercitus','exercitum','exercitus','exercitui','exercitu'],
+  plural:['exercitus','exercitus','exercitus','exercituum','exercitibus','exercitibus']},
+ cornu:{gen:['us','cornus'],kind:'4n',gender:'n',
+  singular:['cornu','cornu','cornu','cornus','cornu','cornu'],
+  plural:['cornua','cornua','cornua','cornuum','cornibus','cornibus']},
+ res:{gen:['ei','rei'],kind:'5',gender:'f',
+  singular:['res','res','rem','rei','rei','re'],
+  plural:['res','res','res','rerum','rebus','rebus']}
+};
+function latinAttestedNoun(raw){
+ const parts=mNormalize(raw).replace(/\s+/g,' ').split(',').map(x=>x.trim());
+ const lemma=parts[0]?.toLowerCase(),data=LATIN_SCHOOL_NOUNS[lemma];
+ if(!data||!parts[1])return null;
+ const gen=parts[1].replace(/\s*\(.*$/,'').replace(/^-+/,'').trim().toLowerCase();
+ if(!data.gen.includes(gen))return null;
+ return {lemma,kind:data.kind,gender:data.gender,
+  forms:[data.singular.slice(),data.plural.slice()],
+  source:'Paradigma nominal explícito individual; no inferido de la terminación'};
+}
 function mNoun(raw){
+ const attested=latinAttestedNoun(raw);
+ if(attested)return attested;
  const s=mNormalize(raw).replace(/\s+/g,' '),parts=s.split(',').map(x=>x.trim());if(parts.length<2)return null;
  const nom=parts[0],tail=parts[1].split(/\s*\(/)[0].trim();
  const gender=(s.match(/\(([mfn])\.?\)/i)||[])[1]?.toLowerCase();
