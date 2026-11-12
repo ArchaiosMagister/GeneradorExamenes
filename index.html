@@ -1541,15 +1541,26 @@ function latinMorphologyVerbPool(chosen){
  for(const item of latinExplicitVerbRows(chosen)){
   if(!result.some(x=>x.form===item.form&&x.entry===item.entry&&x.tense===item.tense&&x.voice===item.voice))result.push(item);
  }
+ // Un lema puede repetirse en varias unidades del vocabulario. No duplicar
+ // por ello una misma ficha flexiva ni multiplicar su peso en el sorteo.
+ // Ante registros coincidentes, preferir el que conserva evidencia individual.
+ const unique=new Map();
+ for(const item of result){
+  const id=[examKey(item.entry),normLex(item.form),item.person,
+   item.tense,item.voice,item.participleGender||''].join('|');
+  const previous=unique.get(id);
+  if(!previous||(!previous.sourceCode&&item.sourceCode))unique.set(id,item);
+ }
+ const candidates=[...unique.values()];
  // Sin contexto, una misma forma de un lema no debe exigir tiempos distintos:
  // p. ej. duceris = presente o futuro pasivos (2.ª singular).
  const senses=new Map();
- for(const item of result){
+ for(const item of candidates){
   const key=examKey(item.entry)+'/'+normLex(item.form);
   if(!senses.has(key))senses.set(key,new Set());
   senses.get(key).add(item.person+'/'+item.tense+'/'+item.voice);
  }
- return result.filter(item=>senses.get(examKey(item.entry)+'/'+normLex(item.form)).size===1);
+ return candidates.filter(item=>senses.get(examKey(item.entry)+'/'+normLex(item.form)).size===1);
 }
 function latinMorphologyVerbSelection(pool,count){
  const max=Math.max(0,...selectedUnits().map(examUnitNumber).filter(Number.isInteger));
