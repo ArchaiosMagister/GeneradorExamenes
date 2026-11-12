@@ -79,7 +79,7 @@ assert.equal(new Set(audit.items.map(x=>x.fila_origen)).size,100,'Filas de Excel
 const expectedStatus={INCORPORADA:3,DECISION_DOCENTE:6,PENDIENTE_VERIFICACION:62,
  DUPLICADA_O_VARIANTE:3,EXCLUIDA_CULTISMO:26};
 assert.deepEqual(audit.resumen,expectedStatus,'Estados de auditoría alterados');
-const normalizeAudit=s=>String(s||'').normalize('NFD').replace(/[\\u0300-\\u036f]/g,'')
+const normalizeAudit=s=>String(s||'').normalize('NFD').replace(/\p{M}/gu,'')
  .replace(/[æÆ]/g,'ae').replace(/[œŒ]/g,'oe').toLowerCase();
 for(const row of audit.items){
  assert(row.latin&&row.castellano&&row.normasExcel.length&&row.observacionExcel,
