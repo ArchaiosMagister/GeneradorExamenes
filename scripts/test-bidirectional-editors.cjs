@@ -153,6 +153,7 @@ function readZipEntry(bytes,name){
     // En un <i> editable dentro de un span no editable, Chromium puede anexar
     // el texto al hacer locator.fill. Simular el reemplazo real del nodo y su
     // evento input comprueba la sincronización sin ese efecto de Playwright.
+    await slot.click();
     await slot.evaluate((node,text)=>{
      node.textContent=text;
      node.dispatchEvent(new InputEvent('input',{bubbles:true}));
