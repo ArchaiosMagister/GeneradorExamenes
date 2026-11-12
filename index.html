@@ -954,6 +954,14 @@ if(!latinRequiredSeeded){
 $('importExamVocab').onclick=()=>{let count=0,bad=0;for(const line of $('examVocabInput').value.split(/\r?\n/)){if(!line.trim())continue;let i=line.indexOf(';');if(i<0){bad++;continue}let unit=line.slice(0,i).trim(),entry=line.slice(i+1).trim(),key=examKey(entry);if(!unit||!key){bad++;continue}if(!examRequired.some(x=>x.course===currentCourse()&&x.unit===unit&&x.key===key)){examRequired.push({course:currentCourse(),unit,key,entry});count++}}saveRequired();generate();$('examVocabStatus').textContent+=' Añadidas: '+count+'. Omitidas: '+bad+'.'};
 $('clearExamVocab').onclick=()=>{if(!confirm('¿Vaciar el vocabulario exigible de este curso?'))return;examRequired=examRequired.filter(x=>x.course!==currentCourse());saveRequired();generate()};
 function examUnitNumber(s){let m=String(s).match(/\d+/);return m?Number(m[0]):null}
+function examAuthorizedProposals(course,limit){
+ const review=window.ExaminaTeacherReview,lemmatizer=window.ExaminaOfflineLemmatizer;
+ const code={latin1:'lat1',latin4:'lat4',greek1:'gr1'}[course];
+ return review?.approvedExamForms&&code?review.approvedExamForms(lemmatizer?.currentData?.(),code,limit):[];
+}
+function examAcademicAttrs(item){
+ return window.ExaminaTeacherReview?.evidenceAttributes?.(item)||'';
+}
 // Un bloque compartido se exige al completar su ULTIMA unidad, no la primera.
 function latinRequiredStart(unit){const ns=String(unit||'').match(/\d+/g);return ns?Math.max(...ns.map(Number)):Infinity}
 function isRequired(entry,chosen){let key=examKey(entry),max=Math.max(-1,...chosen.map(examUnitNumber).filter(x=>x!==null));return examRequired.some(x=>x.course===currentCourse()&&(x.key||examKey(x.entry))===key&&latinRequiredStart(x.unit)<=max)}
@@ -1543,7 +1551,7 @@ function generateLatinMorphologyReference(){
  const second=examQuestionEnabled('verb')?question(++n,t('Analiza morfológicamente las siguientes formas verbales (1 p.).','Analitza morfològicament les formes verbals següents (1 p.).'))+
   '<table class="exam-paradigm reference-morph-table reference-verb-table" data-col-widths="42,20,19,19">'+
   '<thead><tr><th>'+t('Forma verbal','Forma verbal')+'</th><th>'+t('Persona y número','Persona i nombre')+'</th><th>'+t('Tiempo','Temps')+'</th><th>'+t('Voz','Veu')+'</th></tr></thead>'+
-  '<tbody>'+verbItems.map(x=>'<tr><td><i>'+esc(latinExamSurface(x.form,x.entry))+'</i>'+
+  '<tbody>'+verbItems.map(x=>'<tr><td><i'+examAcademicAttrs(x)+'>'+esc(latinExamSurface(x.form,x.entry))+'</i>'+
    latinMorphologyEnunciationHtml({...x,category:'verbs'},chosen)+
    '</td><td></td><td></td><td></td></tr>').join('')+'</tbody></table>':'';
  let pronSection='';
@@ -1554,7 +1562,7 @@ function generateLatinMorphologyReference(){
    '</tbody></table>';
  }
  const last=examQuestionEnabled('forms')?question(++n,t('Analiza morfológicamente las siguientes palabras (1 p.).','Analitza morfològicament les paraules següents (1 p.).'))+
-  words.map((x,i)=>'<p class="exam-item reference-analysis-item" data-analysis-slot="'+i+'">'+String.fromCharCode(97+i)+'. <i>'+
+  words.map((x,i)=>'<p class="exam-item reference-analysis-item" data-analysis-slot="'+i+'">'+String.fromCharCode(97+i)+'. <i'+examAcademicAttrs(x)+'>'+
   esc(latinExamSurface(x.form,x.entry))+'</i>'+
   latinMorphologyEnunciationHtml(x,chosen)+
   ': <span class="reference-answer-line"></span></p>').join(''):'';
@@ -1780,6 +1788,11 @@ function latinExamFormCandidates(chosen,allForms=false){
   if(indexedVerbs.has(examKey(x.entry))||!Array.isArray(p.forms)||p.forms.length!==6)continue;
   add(2,p.forms,p.labels.map(label=>label+', presente de indicativo activo'),'verbs',x.entry,p.sourceEntry);
  }
+ for(const x of examAuthorizedProposals(currentCourse(),limit)){
+  if(!permitted(x.category))continue;
+  const group={nouns:0,adjectives:1,verbs:2,pronouns:3}[x.category];
+  if(group!==undefined)groups[group].push(x);
+ }
  if(currentCourse()==='latin1'&&permitted('pronouns'))for(const x of latinExamPronouns(chosen)){
   groups[3].push({category:'pronouns',entry:x.form,form:x.form,answer:x.type+'; '+x.case+', '+x.gender+', '+x.number});
  }
@@ -1832,7 +1845,7 @@ function generate(){
  }
  const forms=stickyExamRows('forms',()=>examQuotaPick(latinExamFormCandidates(chosen),formsCount,()=>latinExamForms(chosen,formsCount)));
  if(examQuestionEnabled('forms'))add(t('Analiza morfológicamente las siguientes formas.','Analitza morfològicament les formes següents.'),
-  forms.length?'<ol class="task" type="a">'+forms.map((x,i)=>'<li data-analysis-slot="'+i+'"><i>'+esc(x.form)+'</i>'+
+  forms.length?'<ol class="task" type="a">'+forms.map((x,i)=>'<li data-analysis-slot="'+i+'"><i'+examAcademicAttrs(x)+'>'+esc(x.form)+'</i>'+
    latinMorphologyEnunciationHtml(x,chosen)+
    ': <span class="reference-answer-line"></span></li>').join('')+'</ol>':missing('No hay formas variables verificadas para estas unidades.'),
   '<ol>'+forms.map(x=>'<li>'+esc(x.form)+' — '+esc(x.answer)+'</li>').join('')+'</ol>');
