@@ -29,7 +29,7 @@ const latin=JSON.parse(read('tests/latin1-revision-forms-20261111.json'));
 const greek=JSON.parse(read('data/vocabulary/greek1-units-corrected.json'));
 const latinPendingBaseline=JSON.parse(read('tests/latin1-pending-183-baseline.json'));
 assert(latin.units.length===10&&greek.units.length===14);
-const id=(course,form)=>course+'|'+normal(form).replace(course==='lat1'?/v/g:/\u0000/g,'u');
+const id=(course,form)=>course+'|'+(course==='lat1'?normal(form).replace(/v/g,'u'):String(form).toLowerCase().normalize('NFC'));
 const forms=new Map();
 const insert=(course,unit,form,line='')=>{
  const key=id(course,form),old=forms.get(key);
