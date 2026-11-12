@@ -126,12 +126,12 @@ function latinSuite(){
   'latinMorphologyVerbPool('+JSON.stringify(units)+')',sandbox));
  const ud2=poolFor(['UD2']),ud3=poolFor(['UD3']),
   ud4=poolFor(['UD4']),ud7=poolFor(['UD7']);
- assert(ud2.length>0&&ud2.every(x=>x.voice==='activa'&&!/futuro|perfecto/.test(x.tense)),
+ assert(ud2.length>0&&ud2.every(x=>x.voice==='activa'&&!/^(?:futuro|perfecto|pluscuamperfecto) de indicativo$/.test(x.tense)),
   'UD2 debe contener presente e imperfecto activos, no pasivos');
  assert(ud2.some(x=>x.tense==='imperfecto de indicativo'));
  assert(ud3.some(x=>x.form==='amatur'&&x.voice==='pasiva'&&x.tense==='presente de indicativo'));
  assert(ud3.some(x=>x.form==='amabatur'&&x.voice==='pasiva'&&x.tense==='imperfecto de indicativo'));
- assert(ud3.every(x=>!x.tense.includes('perfecto')&&!x.tense.includes('futuro')));
+ assert(ud3.every(x=>!/^(?:futuro|perfecto|pluscuamperfecto) de indicativo$/.test(x.tense)));
  assert(ud4.some(x=>x.form==='amavit'&&x.tense==='perfecto de indicativo'));
  assert(ud4.some(x=>x.form==='amaverat'&&x.tense==='pluscuamperfecto de indicativo'));
  assert(ud7.some(x=>x.form==='amabitur'&&x.voice==='pasiva'&&x.tense==='futuro de indicativo'));
