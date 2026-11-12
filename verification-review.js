@@ -367,7 +367,8 @@ function evidenceAttributes(item){
  if(!item?.evidenceKey)return '';
  // Los atributos son identificadores técnicos: no se imprimen en el Word.
  return ' data-academic-key="'+encodeURIComponent(item.evidenceKey)+
-  '" data-academic-form="'+encodeURIComponent(item.evidenceForm)+'"';
+  '" data-academic-form="'+encodeURIComponent(item.evidenceForm)+
+  '" title="Propuesta autorizada por el docente; sigue sin verificar"';
 }
 function evidenceCheckExam(paper,course,all=evidenceDecisions()){
  const problems=[];
@@ -430,7 +431,8 @@ function initAcademicEvidence(){
   '#academicEvidenceReview .evidence-card button{margin-top:6px;min-height:42px}'+
   '#academicEvidenceReview .review-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}'+
   '@media(max-width:660px){#academicEvidenceReview .review-controls{grid-template-columns:1fr}}'+
-  '@media print{#academicEvidenceReview{display:none!important}}';
+  '#paper [data-academic-key]{text-decoration:underline dotted var(--accent,#315c93);text-underline-offset:3px}'+
+  '@media print{#academicEvidenceReview{display:none!important}#paper [data-academic-key]{text-decoration:none!important}}';
  document.head.append(css);
  const get=id=>document.getElementById(id);
  let all=evidenceDecisions(),limit=20;
