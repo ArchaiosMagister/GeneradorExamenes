@@ -116,6 +116,8 @@ function latinSuite(){
  assert.equal(morphologyMarkup('verbs','amo, amavi, amatum (1ª)',['UD4']),' (<i>amo, amavi, amatum</i>, 1ª)');
  assert.equal(morphologyMarkup('verbs','invenio, inveni, inventum',['UD4']),' (<i>invenio, inveni, inventum</i>)');
  assert.equal(morphologyMarkup('nouns','puella, –æ',['UD3']),' (<i>puella, –æ</i>)');
+ assert.equal(morphologyMarkup('nouns','rex, regis (m.)',['UD4']),' (<i>rex, regis</i>, m.)');
+ assert.equal(morphologyMarkup('nouns','tempus, temporis (n.)',['UD4']),' (<i>tempus, temporis</i>, n.)');
  assert.match(output,/\(<i>amo<\/i>, 1ª\)/,'Latín UD3: enunciado verbal en examen de morfología');
  // No basta con verificar la lista de palabras: la PRUEBA 2 de morfología
  // debe incluir los lemas de cada fila de la tabla verbal y ambas voces desde UD3.
