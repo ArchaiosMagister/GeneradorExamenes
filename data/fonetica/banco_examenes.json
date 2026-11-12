@@ -2,7 +2,7 @@
   "esquema": "evoluciones-latin-castellano/v1",
   "revision": "2026-11-12",
   "origen": "Banco docente de evoluciones fonéticas y ampliaciones auditadas a partir del Excel final de 1058 formas.",
-  "criterio": "521 fichas APTO_PROPUESTO con al menos una de 20 normas; exclusiones docentes y etimologías dudosas no entran en sorteos.",
+  "criterio": "523 fichas APTO_PROPUESTO con normas compatibles con el currículo; excluir decisiones docentes y etimologías dudosas del sorteo.",
   "idioma_origen": "la",
   "idioma_destino": "es",
   "normas": [
@@ -6837,6 +6837,34 @@
       "estado": "APTO_PROPUESTO",
       "lote": 13,
       "criterio_pau": "Ficha patrimonial contrastada con el Excel docente y fuente documentada; sin predicción de selectividad."
+    },
+    {
+      "id": "EVF-1069",
+      "latin": "gannitum",
+      "castellano": "gañido",
+      "normas": [
+        "N13",
+        "N17"
+      ],
+      "observacion": "Del lat. gannītum (de gannītus): el grupo nasal -nn- palataliza en ñ y -t- intervocálica sonoriza en -d-. Forma de acusativo; no equiparar ñ con simple eliminación de una geminada.",
+      "fila_origen": 140,
+      "fuente": "https://iedra.es/palabras/ga%C3%B1ido",
+      "estado": "APTO_PROPUESTO",
+      "lote": 14
+    },
+    {
+      "id": "EVF-1070",
+      "latin": "laicum",
+      "castellano": "lego",
+      "normas": [
+        "N12",
+        "N17"
+      ],
+      "observacion": "Laicum > lego, en el sentido de 'seglar, no clérigo' (también 'no instruido'): reducción de ai en la tradición romance y sonorización de -c- intervocálica a -g-. Distinguir del cultismo laico y de lego ('yo lego').",
+      "fila_origen": 171,
+      "fuente": "https://ghcl.ub.edu/diccaxv/dictionary/ViewLema/12497",
+      "estado": "APTO_PROPUESTO",
+      "lote": 14
     }
   ],
   "ampliacion": {
@@ -6954,6 +6982,15 @@
       "cantidad": 7,
       "origen": "banco_evolucion_fonetica_final_10_lotes.xlsx",
       "criterio": "Solo etimologías y fenómenos contrastados; otras candidatas quedan pendientes de revisión filológica."
+    },
+    "lote_14": {
+      "fecha": "2026-11-12",
+      "cantidad": 2,
+      "filas_excel": [
+        140,
+        171
+      ],
+      "criterio": "Contraste individual con vocabulario patrimonial y documentación lexicográfica"
     }
   }
 }
