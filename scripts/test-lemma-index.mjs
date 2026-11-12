@@ -35,7 +35,7 @@ assert.equal(data.vocabulary.lat.eripio.lat1.entry,'eripio, eripui, ereptum (mx.
 assert.equal(data.rows.lat.filter(x=>x[3]===5).length,112);
 assert(data.rows.lat.some(x=>x[0]==='vinco'&&x[1]==='vicerunt'&&x[2]==='V;IND;ACT;PRF;3;PL'&&x[3]===5));
 assert.equal(data.rows.grc.filter(x=>x[3]===5).length,24);
-assert.equal(data.rows.lat.filter(x=>x[0]==='sum'&&x[3]===5).length,30);
+assert.equal(data.rows.lat.filter(x=>x[0]==='sum'&&x[3]===5).length,32);
 assert.equal(data.rows.grc.filter(x=>x[0]==='γιγνομαι'&&x[3]===5).length,6);
 assert.equal(data.rows.grc.filter(x=>x[0]==='ερχομαι'&&x[3]===5).length,6);
 assert.equal(data.rows.grc.filter(x=>x[0]==='διδασκω'&&x[3]===5).length,6);
