@@ -176,7 +176,7 @@ function readZipEntry(bytes,name){
    assert((await syntagms.inputValue()).startsWith('clarus, –a, –um + agricola, –ae'),
     filename+': modificar sintagma en papel no actualiza textarea');
    const syntagmId=await syntagm.getAttribute('data-exam-editor-id');
-   const individual=page.locator('#manualMorphWords input[data-exam-editor-id="'+syntagmId+'"]');
+   const individual=page.locator('#examQuestionMenus input[data-exam-editor-id="'+syntagmId+'"]');
    assert.equal(await individual.inputValue(),'clarus, –a, –um + agricola, –ae');
    summary.push('sintagmas');
 
