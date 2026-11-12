@@ -4,12 +4,12 @@
 
 El fichero [lat1-programacion.json](./lat1-programacion.json) contiene las 73 palabras docentes en el orden original: tres en UD0 y siete en cada unidad UD1–UD10. Cada entrada conserva el resultado castellano, los códigos de normas N01–N20, su unidad y, cuando procede, una observación. Las normas son **acumulativas**: la selección de una unidad permite utilizar las palabras y los fenómenos de todas las unidades precedentes, aunque el selector global de vocabulario no esté en modo «acumulativo».
 
-En Latín I se sortea exclusivamente este repertorio específico, con cuatro palabras por ejercicio y sin mostrar respuestas al alumno. Se excluyen automáticamente las fichas `REVISAR`, que permanecen disponibles para control docente. Las unidades UD9–10 agrupadas por el vocabulario general se interpretan como UD10 para la progresión fonética. En Latín 4.º se conserva el banco general abierto y su propia progresión.
+En Latín I la programación de 73 étimos determina **qué normas están explicadas por unidad**, pero no limita qué palabras pueden aparecer: el sorteo utiliza todo el banco general apto que respete esas normas, más las fichas propias del programa no duplicadas. Se seleccionan cuatro étimos distintos, sin respuestas y evitando las últimas tandas cuando existen alternativas. Las fichas `REVISAR` quedan fuera. La agrupación UD9–10 se interpreta como UD10. En Latín 4.º también se utiliza el banco general con sus filtros curriculares.
 
 Las leyes se activan por unidad y se pueden desmarcar dentro de las ya impartidas. Las normas que todavía no han sido explicadas no se pueden activar. Pruebas: `node scripts/test-lat1-fonetica.mjs`.
 
 
-El fichero [banco_examenes.json](./banco_examenes.json) contiene 521 candidatas para ejercicios: 330 iniciales, 100 de la primera ampliación, 30 de la segunda, 50 de la tercera, 3 de la revisión del Excel final, 1 aceptación editorial y 7 del lote 13, sin duplicación de identificadores.
+El fichero [banco_examenes.json](./banco_examenes.json) contiene 523 candidatas para ejercicios: 330 iniciales, 100 de la primera ampliación, 30 de la segunda, 50 de la tercera, 3 de la revisión del Excel final, 1 aceptación editorial, 7 del lote 13 y 2 del lote 14, sin duplicación de identificadores.
 
 Esquema: evoluciones-latin-castellano/v1. Campos por ficha: id, latin, castellano, normas (N01–N20), observacion, fila_origen, fuente y estado.
 
