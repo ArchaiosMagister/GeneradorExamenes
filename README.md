@@ -170,3 +170,8 @@ Ajuste actual de márgenes: 3 cm a la derecha y 2,5 cm arriba, izquierda y abajo
 La rama de integración incluye el **generador de vocabulario por unidades** de la PR 29 y las mejoras de configuración, Cultura de Latín 4.º, prefijos y fonética de la PR 30. El trabajo continúa en una PR de borrador independiente. El modo valenciano utiliza una capa de traducciones propia; no sustituye los significados castellanos del banco docente.
 
 Lee [la guía del generador por unidades](docs/generador-vocabulario.md) y [el informe de optimización](docs/optimizacion-inicial-2026-11-10.md). Se revisarán los resultados en navegador, Word y PWA antes de fusionar.
+
+
+## Criterios fonéticos homologados (12-11-2026)
+
+Las cuatro decisiones sobre `seniorem`, `sensum`, `sponsam` y `sponsum` se han aplicado también a GeneradorExamenes, además de las reglas generales para *-ns- → -s-* (N15), *-um → -o* (N01) y la pérdida fija de *-m* (FIX_M, **no seleccionable** y distinta de N03). El banco de 655 palabras y las 73 fichas del programa de Latín I conservan sus étimos, resultados y estados. Se han incorporado validaciones automáticas para las fichas futuras, incluidas en el flujo de publicación. Véase `data/fonetica/criterios-docentes.mjs` y [el informe docente](docs/criterios-foneticos-2026-11-12.md).

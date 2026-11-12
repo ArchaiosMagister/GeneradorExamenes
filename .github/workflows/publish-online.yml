@@ -31,6 +31,11 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Bloquear publicación si se revierten decisiones fonéticas docentes
+        run: |
+          node scripts/test-criterios-foneticos.mjs
+          node scripts/test-fonetica.mjs
+          node scripts/test-lat1-fonetica.mjs
       - name: Construir índices morfológicos de los dos idiomas
         run: |
           node scripts/build-greek-nominal-candidates.mjs

@@ -303,7 +303,71 @@
       "idBanco": "EVF-1202",
       "motivo": "Se corrige a CHLOEN, acusativo del nombre Chloe; la forma castellana Cloe procede de la adaptación del nombre griego. Ch > c; la secuencia o-e es hiato, no diptongo œ: no corresponde N12.",
       "latin": "Chlœm"
+    },
+    {
+      "latin": "seniorem",
+      "decision": "conservar_criterio_evolucion_fonetica",
+      "estado": "APTO_PROPUESTO",
+      "normasAnteriores": [
+        "N13",
+        "N16"
+      ],
+      "normasFinales": [
+        "N03",
+        "N13"
+      ],
+      "motivo": "El grupo -ni- ante vocal se palataliza en ñ (N13); se pierde la -e final por apócope (N03) y cae la -m final fija. La i no se cuenta de nuevo como síncopa.",
+      "origen": "Resolución docente del conflicto con ArchaiosMagister/EvolucionFonetica, 12-11-2026",
+      "id": "EVF-0282"
+    },
+    {
+      "latin": "sensum",
+      "decision": "conservar_criterio_evolucion_fonetica",
+      "estado": "APTO_PROPUESTO",
+      "normasAnteriores": [
+        "N16"
+      ],
+      "normasFinales": [
+        "N01",
+        "N15"
+      ],
+      "motivo": "Simplificación de -ns- a -s- (N15), abertura de -u- a -o- en -um (N01) y pérdida fija de la -m del acusativo; no es síncopa.",
+      "origen": "Resolución docente del conflicto con ArchaiosMagister/EvolucionFonetica, 12-11-2026",
+      "id": "EVF-0283"
+    },
+    {
+      "latin": "sponsam",
+      "decision": "conservar_criterio_evolucion_fonetica",
+      "estado": "APTO_PROPUESTO",
+      "normasAnteriores": [
+        "N14",
+        "N16"
+      ],
+      "normasFinales": [
+        "N14",
+        "N15"
+      ],
+      "motivo": "Prótesis de e- ante s + consonante (N14), simplificación -ns- > -s- (N15) y caída fija de la -m del acusativo; no es síncopa.",
+      "origen": "Resolución docente del conflicto con ArchaiosMagister/EvolucionFonetica, 12-11-2026",
+      "id": "EVF-0303"
+    },
+    {
+      "latin": "sponsum",
+      "decision": "conservar_criterio_evolucion_fonetica",
+      "estado": "APTO_PROPUESTO",
+      "normasAnteriores": [
+        "N14",
+        "N16"
+      ],
+      "normasFinales": [
+        "N01",
+        "N14",
+        "N15"
+      ],
+      "motivo": "Prótesis de e- (N14), simplificación -ns- > -s- (N15), abertura final -u- > -o (N01) y caída fija de -m; no es síncopa.",
+      "origen": "Resolución docente del conflicto con ArchaiosMagister/EvolucionFonetica, 12-11-2026",
+      "id": "EVF-0304"
     }
   ],
-  "politica": "Las grafías de origen griego y la monoptongación de ae/oe pueden incorporarse como ejemplos de adaptación culta aunque no sean patrimoniales, preservando etiqueta de vía culta en el examen. Excepciones con étimo, acepción o forma problemática quedan pendientes de decisión; las exclusiones docentes previas se mantienen. Lote 20: cinco aprobaciones individualizadas, cuatro exclusiones y circum bajo investigación; la relación histórica con CIRCUS no activa automáticamente una ficha."
+  "politica": "Las grafías de origen griego y la monoptongación de ae/oe pueden incorporarse como ejemplos de adaptación culta aunque no sean patrimoniales, preservando etiqueta de vía culta en el examen. Excepciones con étimo, acepción o forma problemática quedan pendientes de decisión; las exclusiones docentes previas se mantienen. Lote 20: cinco aprobaciones individualizadas, cuatro exclusiones y circum bajo investigación; la relación histórica con CIRCUS no activa automáticamente una ficha. Homologación fonética (12-11-2026): pérdida -m final identificada siempre como FIX_M independiente (no seleccionable ni N03); -um > -o lleva abertura N01; -ns- > -s- lleva simplificación N15 (no síncopa N16 por ese fenómeno). La i de -ni- en seniorem pertenece a N13, con e final perdida por N03. Las nuevas fichas se normalizan y validan antes de integrarlas; las dudas quedan fuera."
 }
