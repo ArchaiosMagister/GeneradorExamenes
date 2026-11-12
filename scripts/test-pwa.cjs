@@ -128,7 +128,7 @@ const server=http.createServer(async(req,res)=>{
    'Modificación preverbial requiere dos verbos (3 + 2 derivados)');
   assert(examLex.exam.filter(x=>x.kind!=='preverbs').every(x=>x.terms.length===4),
    'Las demás subpreguntas deben tener cuatro formas');
-  assert.equal((examLex.html.match(/<i>/g)||[]).length,14,'Deben imprimirse catorce términos en cursiva');
+  assert.equal((examLex.html.match(/<i(?:\s[^>]*)?>/g)||[]).length,14,'Deben imprimirse catorce términos en cursiva');
   assert(examLex.html.includes('(3) y de ')&&examLex.html.includes('(2). Cinco derivados'),
    'La modificación preverbial debe pedir primero tres derivados y después dos');
   assert(examLex.exam.every(x=>x.terms.every(term=>term===term.toLocaleLowerCase('es'))),
