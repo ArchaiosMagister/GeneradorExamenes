@@ -9,7 +9,7 @@ En Latín I la programación de 73 étimos determina **qué normas están explic
 Las leyes se activan por unidad y se pueden desmarcar dentro de las ya impartidas. Las normas que todavía no han sido explicadas no se pueden activar. Pruebas: `node scripts/test-lat1-fonetica.mjs`.
 
 
-El fichero [banco_examenes.json](./banco_examenes.json) contiene 533 candidatas para ejercicios: 330 iniciales, 100 de la primera ampliación, 30 de la segunda, 50 de la tercera, 3 de la revisión del Excel final, 1 aceptación editorial, 7 del lote 13, 2 del lote 14, 3 del lote 15, 4 del lote 16 y 3 del lote 17, sin duplicación de identificadores.
+El fichero [banco_examenes.json](./banco_examenes.json) contiene 650 candidatas para ejercicios: 330 iniciales, 100 de la primera ampliación, 30 de la segunda, 50 de la tercera, 3 de la revisión del Excel final, 1 aceptación editorial, 7 del lote 13, 2 del lote 14, 3 del lote 15, 4 del lote 16, 3 del lote 17, 100 del lote 18 y 17 recuperadas del lote 19, sin duplicación de identificadores.
 
 Esquema: evoluciones-latin-castellano/v1. Campos por ficha: id, latin, castellano, normas (N01–N20), observacion, fila_origen, fuente y estado.
 
@@ -33,7 +33,7 @@ La ampliación 3 queda identificada con el campo `lote: 3` y mantiene `fila_orig
 
 ## Auditoría individual de 100 fichas (lote 15)
 
-El archivo [auditoria-excel-lote-100-20261112.json](./auditoria-excel-lote-100-20261112.json) registra **exactamente 100 entradas nuevas** del Excel original, con su fila, correspondencia, normas marcadas, observación y decisión editorial. Tras las decisiones docentes y la validación individual posterior, hay 10 incorporadas (4 patrimoniales y 6 adaptaciones cultas etiquetadas), 2 excluidas expresamente, 62 pendientes de contraste, 21 pendientes de revisión culta condicionada, 3 variantes/duplicados, 1 étimo femenino corregido pero pendiente y 1 grafía antigua corregida por otra ya incorporada. Las 90 entradas no incorporadas **no son elegibles para el sorteo**. Las formas inicialmente presentes en el programa propio de Latín I no se han contabilizado como candidatas nuevas. La revisión de las pendientes debe continuar con pruebas individuales; la marca de una norma en el Excel no basta para considerarla verificada.
+El archivo [auditoria-excel-lote-100-20261112.json](./auditoria-excel-lote-100-20261112.json) registra **exactamente 100 entradas nuevas** del Excel original, con su fila, correspondencia, normas marcadas, observación y decisión editorial. Tras las decisiones docentes y la validación individual posterior, hay 27 incorporadas (4 patrimoniales y 23 adaptaciones cultas etiquetadas), 2 excluidas expresamente, 62 pendientes de contraste, 4 pendientes de revisión culta condicionada, 3 variantes/duplicados, 1 étimo femenino corregido pero pendiente y 1 grafía antigua corregida por otra ya incorporada. Las 73 entradas no incorporadas **no son elegibles para el sorteo**. Las formas inicialmente presentes en el programa propio de Latín I no se han contabilizado como candidatas nuevas. La revisión de las pendientes debe continuar con pruebas individuales; la marca de una norma en el Excel no basta para considerarla verificada.
 
 ## Decisiones docentes y adaptaciones cultas (lote 16)
 
@@ -43,4 +43,14 @@ La elección `inclusion_condicionada` **no importa los cultismos en bloque**. Lo
 
 ### Continuación del cotejo cultista (lote 17)
 
-Se han cotejado tres nuevas candidatas del mismo Excel: `architectum` → `arquitecto` (ch > qu), `asphaltum` → `asfalto` (ph > f) y `Chimæram` → `quimera` (ch > qu, ae > e). Todas conservan referencia lexicográfica y tipo `ADAPTACION_CULTA`, sin reconstruir una transmisión popular inexistente. Las 21 cultas restantes del lote previo no son elegibles.
+Se han cotejado tres nuevas candidatas del mismo Excel: `architectum` → `arquitecto` (ch > qu), `asphaltum` → `asfalto` (ph > f) y `Chimæram` → `quimera` (ch > qu, ae > e). Todas conservan referencia lexicográfica y tipo `ADAPTACION_CULTA`, sin reconstruir una transmisión popular inexistente. Las cuatro entradas aún pendientes del lote previo siguen fuera del sorteo.
+
+## Lote 18 — 100 adaptaciones grecolatinas añadidas, con seis dudas separadas
+
+El nuevo [registro de 100 entradas](./auditoria-grafias-griegas-lote-100-20261112.json) recoge **exactamente 100 nuevas fichas** para grafías griegas y monoptongación. Proceden del Excel docente: `ch → c/qu`, `th → t`, `ph → f`, `y → i`, `ae/oe → e`, y cuando corresponde la `e-` protética o la simplificación de geminada. La transformación que se examina es **gráfica o culta**, no una falsa cadena de cambios fonéticos populares. Todas llevan `tipoTransmision: ADAPTACION_CULTA`, `estado: APTO_PROPUESTO` y trazabilidad de la fila de origen; este estado indica elegibilidad didáctica, **no certificación exhaustiva de todas las etimologías**. La etiqueta «adaptación culta» aparece en la vista previa y en Word.
+
+Las seis candidatas de esta tanda que requieren resolver forma latina, acepción o conveniencia didáctica (`Scytiam`, `pyram`, `œagrum`, `œnomaum`, `œtam`, `chœrilum`) **no se han incorporado**, y quedan documentadas para decisión del profesor en el mismo registro.
+
+## Lote 19 — 17 entradas de grafía griega recuperadas
+
+Se han integrado otras **17 fichas** que permanecían en `REVISION_CULTA_CONDICIONADA` en el lote de 100 anterior, sin contabilizarlas como nuevas entre las 100 de esta tanda. Permanecen fuera del sorteo `circum`, `gulam` y `sculptorem` (no son casos de grafía griega) y `Chlœm` (forma de acusativo latino por comprobar). Las exclusiones expresas de `inde`, `pirum`, `scrinium` y `quinionem` siguen intactas.
