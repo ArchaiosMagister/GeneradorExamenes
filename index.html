@@ -4052,8 +4052,22 @@ window.ExaminaMorphology={lookup,stats,importText};
   if(glossaryGroup)glossaryGroup.hidden=isMorph;
   if(isMorph){const offered=$('morphOffer'),declined=$('morphDecline');for(const option of declined.options)option.disabled=+option.value>+offered.value;if(+declined.value>+offered.value)declined.value=offered.value}
  };
- block.addEventListener('change',()=>{update();generate()});
- block.querySelector('#morphSyntagms').addEventListener('input',generate);
+ block.addEventListener('change',event=>{
+  if(event.target.id==='morphSyntagms')return;
+  update();generate();
+ });
+ block.querySelector('#morphSyntagms').addEventListener('input',event=>{
+  const slots=[...document.querySelectorAll('#paper [data-syntagm-slot] > i')];
+  if(!slots.length)return;
+  const lines=event.target.value.split(/\r?\n/u);
+  slots.forEach((node,i)=>{
+   if(lines[i]===undefined)return;
+   node.textContent=lines[i].trim();
+   const link=examEditorLinks.get(node);
+   if(link)link.input.value=node.textContent;
+  });
+  warnExamManualSolution();
+ });
  document.addEventListener('change',e=>{if(e.target.matches('#course,#model'))queueMicrotask(update)});
  update();
 }
