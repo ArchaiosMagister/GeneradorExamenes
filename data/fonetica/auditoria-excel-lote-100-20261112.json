@@ -11,8 +11,8 @@
     "VARIANTE_CORREGIDA": 1,
     "PENDIENTE_VERIFICACION": 62,
     "DUPLICADA_O_VARIANTE": 3,
-    "INCORPORADA_CULTA": 3,
-    "REVISION_CULTA_CONDICIONADA": 24
+    "INCORPORADA_CULTA": 6,
+    "REVISION_CULTA_CONDICIONADA": 21
   },
   "politica": "Solo las fichas INCORPORADA e INCORPORADA_CULTA constan en banco_examenes.json. Estas últimas han de conservar una etiqueta explícita de transmisión culta. EXCLUIDA_DOCENTE no se reconsidera sin aprobación; CORREGIDA_PENDIENTE y REVISION_CULTA_CONDICIONADA no son sorteables. Las demás siguen sin validar.",
   "items": [
@@ -1072,10 +1072,12 @@
       "normasExcel": [
         "GRIE"
       ],
-      "estado": "REVISION_CULTA_CONDICIONADA",
-      "motivo": "La inclusión por vía culta está permitida solo después de contraste individual y con etiqueta visible; por ahora no participa en el sorteo.",
-      "idBanco": null,
-      "decisionDocente": "inclusion_condicionada"
+      "estado": "INCORPORADA_CULTA",
+      "motivo": "Etimología, vía culta y norma griega revisadas individualmente; la etiqueta visible es obligatoria.",
+      "idBanco": "EVF-1078",
+      "decisionDocente": "inclusion_condicionada",
+      "etiqueta": "Adaptación culta",
+      "fuenteRevision": "https://iedra.es/palabras/arquitecto"
     },
     {
       "fila_origen": 622,
@@ -1085,10 +1087,12 @@
       "normasExcel": [
         "GRIE"
       ],
-      "estado": "REVISION_CULTA_CONDICIONADA",
-      "motivo": "La inclusión por vía culta está permitida solo después de contraste individual y con etiqueta visible; por ahora no participa en el sorteo.",
-      "idBanco": null,
-      "decisionDocente": "inclusion_condicionada"
+      "estado": "INCORPORADA_CULTA",
+      "motivo": "Etimología, vía culta y norma griega revisadas individualmente; la etiqueta visible es obligatoria.",
+      "idBanco": "EVF-1079",
+      "decisionDocente": "inclusion_condicionada",
+      "etiqueta": "Adaptación culta",
+      "fuenteRevision": "https://iedra.es/palabras/asfalto"
     },
     {
       "fila_origen": 623,
@@ -1221,10 +1225,12 @@
         "GRIE",
         "MONOP"
       ],
-      "estado": "REVISION_CULTA_CONDICIONADA",
-      "motivo": "La inclusión por vía culta está permitida solo después de contraste individual y con etiqueta visible; por ahora no participa en el sorteo.",
-      "idBanco": null,
-      "decisionDocente": "inclusion_condicionada"
+      "estado": "INCORPORADA_CULTA",
+      "motivo": "Etimología, vía culta y norma griega revisadas individualmente; la etiqueta visible es obligatoria.",
+      "idBanco": "EVF-1080",
+      "decisionDocente": "inclusion_condicionada",
+      "etiqueta": "Adaptación culta",
+      "fuenteRevision": "https://iedra.es/palabras/quimera"
     },
     {
       "fila_origen": 634,
@@ -1316,6 +1322,11 @@
       "stilum": "corregir",
       "cultismos": "inclusion_condicionada"
     },
-    "nota": "Se mantienen 100 filas de origen. La corrección del étimo no inventa otra fila del Excel."
+    "nota": "Se mantienen 100 filas de origen. La corrección del étimo no inventa otra fila del Excel.",
+    "nuevas_verificaciones_cultas": [
+      "architectum",
+      "asphaltum",
+      "Chimæram"
+    ]
   }
 }
