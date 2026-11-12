@@ -45,7 +45,8 @@ assert.equal(data.rows.grc.filter(x=>x[0]==='γιγνομαι'&&x[3]===5).length
 assert.equal(data.rows.grc.filter(x=>x[0]==='ερχομαι'&&x[3]===5).length,12);
 assert.equal(data.rows.grc.filter(x=>x[0]==='διδασκω'&&x[3]===5).length,6);
 assert.equal(data.rows.grc.filter(x=>x[0]==='ακουω'&&x[3]===5).length,6);
-assert.equal(data.source.externalVerification.length,overrides.paradigms.length+overrides.singleForms.length);
+assert.equal(data.source.externalVerification.length,overrides.paradigms.length+overrides.singleForms.length+
+ overrides.paradigms.reduce((n,p)=>n+p.blocks.filter(b=>b.reference).length,0));
 assert.equal(data.extensions.verifiedIndividualForms,overrides.singleForms.length);
 for(const row of overrides.singleForms){
  assert(data.rows[row.lang].some(x=>x[0]===row.lemma&&x[1]===row.form&&x[2]===row.tags&&x[3]===5),
