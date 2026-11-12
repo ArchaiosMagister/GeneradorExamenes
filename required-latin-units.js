@@ -910,7 +910,7 @@ window.ExaminaRequiredLatinUnits={
         "maneo, mansi, mansum (2ª)",
         "mare, –is (n.)",
         "Marius, –i",
-        "milia, –orum",
+        "milia, –ium",
         "miror, miratus sum (1ª)",
         "mitto, misi, missum (3ª)",
         "mortuus, –a, –um",
