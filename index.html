@@ -2376,7 +2376,8 @@ function greekMorphologyEligible(item,limit){
   if(/participio|participial/.test(answer)&&limit<10)return false;
   if(/imperfecto|futuro/.test(answer)&&limit<11)return false;
   if(/aoristo/.test(answer)&&limit<12)return false;
-  if(/perfecto/.test(answer)&&limit<13)return false;
+  // «imperfecto» contiene «perfecto»: exigir límite de palabra.
+  if(/\bperfecto\b|pluscuamperfecto/u.test(answer)&&limit<13)return false;
   return item.minUnit<=limit;
  }
  return true;
