@@ -3304,7 +3304,7 @@ function regenerateLatinLexWord(kind,index){
 }
 function buildLatinLexQuestion(course,chosen){
  const html=[],parts=examSelectedLexParts(course),va=$('lang').value==='va',italic=(x,kind,index)=>
-  kind==='phonetics'?'<span data-lex-slot="phonetics:'+index+'" contenteditable="true" aria-label="Editar forma de evolución fonética"><i>'+esc(latinLexDisplayPrompt(kind,x))+'</i></span>':
+  kind==='phonetics'?'<span data-lex-slot="phonetics:'+index+'" contenteditable="false"><i contenteditable="true" spellcheck="false" aria-label="Editar forma de evolución fonética">'+esc(latinLexDisplayPrompt(kind,x))+'</i></span>':
    '<i>'+esc(latinLexDisplayPrompt(kind,x))+'</i>';
  for(const kind of parts){
   const available=latinLexPool(course,kind,chosen),rows=latinLexChosenRows(course,kind,chosen);
