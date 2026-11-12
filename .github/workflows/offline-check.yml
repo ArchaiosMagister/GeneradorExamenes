@@ -109,7 +109,7 @@ jobs:
       - name: Priorizar 50 incidencias reales del lematizador
         run: node scripts/audit-top-50-lemmas.cjs --check
       - name: Revisar otro lote de 100 fichas reales del lematizador
-        run: node scripts/audit-next-100-lemmas.cjs --print
+        run: node scripts/audit-next-100-lemmas.cjs --check
       - name: Auditar lematización de oraciones y decisiones guardadas
         run: node scripts/audit-sentence-lemmas.cjs
       - name: Probar lemas ambiguos y formato del glosario de oraciones
