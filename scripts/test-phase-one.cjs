@@ -53,7 +53,7 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
    document.getElementById('saveDraft').click();
    const snapshot=JSON.parse(localStorage.getItem('examina_draft_v14'));
    if(!snapshot?.scores||!snapshot?.units)throw Error('El borrador omite puntuaciones o unidades');
-   return {rowKey,id};
+   return {id};
   });
   await field.fill('3,5');
   await page.evaluate(()=>{
