@@ -71,7 +71,7 @@
     {
       "grupo": "cultismos",
       "decision": "inclusion_condicionada",
-      "motivo": "No importar masivamente. Verificar cada étimo y la norma N10/N12/N14, etiquetar en la pregunta como adaptación culta y dejar las demás candidatas pendientes fuera del sorteo. Continuación progresiva: architectum, asphaltum y Chimæram verificados individualmente.",
+      "motivo": "No importar masivamente. Verificar cada étimo y la norma N10/N12/N14, etiquetar en la pregunta como adaptación culta y dejar las demás candidatas pendientes fuera del sorteo. Continuación progresiva: architectum, asphaltum y Chimæram verificados individualmente. Nueva decisión docente: incluir grafías griegas ya registradas; se mantienen cuatro dudas etimológicas o de uso.",
       "estado": "REVISION_CONDICIONADA",
       "aprobadas": [
         {
@@ -97,10 +97,87 @@
         {
           "latin": "Chimæram",
           "id": "EVF-1080"
+        },
+        {
+          "latin": "Acherontem",
+          "id": "EVF-1181"
+        },
+        {
+          "latin": "ægisthum",
+          "id": "EVF-1182"
+        },
+        {
+          "latin": "ægyptum",
+          "id": "EVF-1183"
+        },
+        {
+          "latin": "æschylum",
+          "id": "EVF-1184"
+        },
+        {
+          "latin": "ætherem",
+          "id": "EVF-1185"
+        },
+        {
+          "latin": "asphodelum",
+          "id": "EVF-1186"
+        },
+        {
+          "latin": "catharticum",
+          "id": "EVF-1187"
+        },
+        {
+          "latin": "catholicum",
+          "id": "EVF-1188"
+        },
+        {
+          "latin": "Chaldæam",
+          "id": "EVF-1189"
+        },
+        {
+          "latin": "characterem",
+          "id": "EVF-1190"
+        },
+        {
+          "latin": "charisma",
+          "id": "EVF-1191"
+        },
+        {
+          "latin": "Charontem",
+          "id": "EVF-1192"
+        },
+        {
+          "latin": "chirographum",
+          "id": "EVF-1193"
+        },
+        {
+          "latin": "Chironem",
+          "id": "EVF-1194"
+        },
+        {
+          "latin": "chirurgicum",
+          "id": "EVF-1195"
+        },
+        {
+          "latin": "chlamydem",
+          "id": "EVF-1196"
+        },
+        {
+          "latin": "chorographiam",
+          "id": "EVF-1197"
         }
       ],
-      "restantes_auditadas": 21
+      "restantes_auditadas": 4
+    },
+    {
+      "grupo": "lote_18_grafias_griegas",
+      "decision": "incluir_normas_grecas",
+      "fecha": "2026-11-12",
+      "resultado": "100 entradas nuevas incorporadas y 17 pendientes anteriores recuperadas",
+      "auditoria": "data/fonetica/auditoria-grafias-griegas-lote-100-20261112.json",
+      "estado": "APROBACION_DOCENTE_GENERAL",
+      "pendientes": 10
     }
   ],
-  "politica": "Las exclusiones docentes son vinculantes para futuros lotes. Las sustituciones de étimo no certifican por sí solas normas no verificadas. Las adaptaciones cultas solo se sortearán tras comprobación y con etiqueta visible."
+  "politica": "Las grafías de origen griego y la monoptongación de ae/oe pueden incorporarse como ejemplos de adaptación culta aunque no sean patrimoniales, preservando etiqueta de vía culta en el examen. Excepciones con étimo, acepción o forma problemática quedan pendientes de decisión; las exclusiones docentes previas se mantienen."
 }

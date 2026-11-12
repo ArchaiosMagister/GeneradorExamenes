@@ -2,7 +2,7 @@
   "esquema": "evoluciones-latin-castellano/v1",
   "revision": "2026-11-12",
   "origen": "Banco docente de evoluciones fonéticas y ampliaciones auditadas a partir del Excel final de 1058 formas.",
-  "criterio": "533 entradas aptas. Las adaptaciones cultas solo se activan tras revisión etimológica individual y se etiquetan en examen/Word; las excluidas y pendientes siguen fuera del sorteo.",
+  "criterio": "650 fichas APTO_PROPUESTO: se incluyen de forma didáctica las adaptaciones de grafías griegas y monoptongaciones transparentes, diferenciadas de cambios patrimoniales por etiqueta. Las etimologías debatidas siguen en revisión; no equivalen a una certificación lexicográfica de toda la voz.",
   "idioma_origen": "la",
   "idioma_destino": "es",
   "normas": [
@@ -7024,6 +7024,2018 @@
       "revision_docente": "inclusion_condicionada",
       "tipoTransmision": "ADAPTACION_CULTA",
       "etiqueta": "Adaptación culta"
+    },
+    {
+      "id": "EVF-1081",
+      "latin": "Christum",
+      "castellano": "Cristo",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 641,
+      "observacion": "Christum → Cristo: antropónimo/título religioso; ch > c. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 641; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1082",
+      "latin": "chronicum",
+      "castellano": "crónico",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 642,
+      "observacion": "chronicum → crónico: cultismo; ch > c. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 642; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1083",
+      "latin": "chrysolithum",
+      "castellano": "crisólito",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 643,
+      "observacion": "chrysolithum → crisólito: tecnicismo mineralógico; ch > c, y > i y th > t. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 643; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1084",
+      "latin": "citharistam",
+      "castellano": "citarista",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 644,
+      "observacion": "citharistam → citarista: helenismo musical; th > t. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 644; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1085",
+      "latin": "Clytæmnestram",
+      "castellano": "Clitemnestra",
+      "normas": [
+        "N10",
+        "N12"
+      ],
+      "fila_origen": 645,
+      "observacion": "Clytæmnestram → Clitemnestra: antropónimo; y > i y æ > e. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 645; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1086",
+      "latin": "cyclicum",
+      "castellano": "cíclico",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 646,
+      "observacion": "cyclicum → cíclico: cultismo; y > i. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 646; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1087",
+      "latin": "cyclopem",
+      "castellano": "cíclope",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 647,
+      "observacion": "cyclopem → cíclope: helenismo mitológico; y > i. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 647; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1088",
+      "latin": "cynicum",
+      "castellano": "cínico",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 648,
+      "observacion": "cynicum → cínico: cultismo filosófico; y > i. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 648; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1089",
+      "latin": "dyspepsiam",
+      "castellano": "dispepsia",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 649,
+      "observacion": "dyspepsiam → dispepsia: tecnicismo médico; y > i. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 649; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1090",
+      "latin": "epithalamium",
+      "castellano": "epitalamio",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 651,
+      "observacion": "epithalamium → epitalamio: helenismo literario; th > t. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 651; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1091",
+      "latin": "epithetum",
+      "castellano": "epíteto",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 652,
+      "observacion": "epithetum → epíteto: cultismo; th > t. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 652; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1092",
+      "latin": "graphicum",
+      "castellano": "gráfico",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 653,
+      "observacion": "graphicum → gráfico: cultismo; ph > f. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 653; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1093",
+      "latin": "gryphum",
+      "castellano": "grifo",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 654,
+      "observacion": "gryphum → grifo: animal mitológico; y > i y ph > f; no confundir con otras etimologías del homónimo. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 654; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1094",
+      "latin": "gymnasium",
+      "castellano": "gimnasio",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 655,
+      "observacion": "gymnasium → gimnasio: cultismo; y > i. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 655; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1095",
+      "latin": "gynæceum",
+      "castellano": "gineceo",
+      "normas": [
+        "N10",
+        "N12"
+      ],
+      "fila_origen": 656,
+      "observacion": "gynæceum → gineceo: cultismo; y > i y æ > e. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 656; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1096",
+      "latin": "hæresiarcham",
+      "castellano": "heresiarca",
+      "normas": [
+        "N10",
+        "N12"
+      ],
+      "fila_origen": 657,
+      "observacion": "hæresiarcham → heresiarca: helenismo eclesiástico; æ > e y ch > c. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 657; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1097",
+      "latin": "hydram",
+      "castellano": "hidra",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 658,
+      "observacion": "hydram → hidra: mitología/zoología; y > i. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 658; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1098",
+      "latin": "hydropicum",
+      "castellano": "hidrópico",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 659,
+      "observacion": "hydropicum → hidrópico: cultismo médico; y > i. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 659; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1099",
+      "latin": "hyperboreum",
+      "castellano": "hiperbóreo",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 660,
+      "observacion": "hyperboreum → hiperbóreo: cultismo geográfico; y > i. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 660; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1100",
+      "latin": "Hyperionem",
+      "castellano": "Hiperión",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 661,
+      "observacion": "Hyperionem → Hiperión: antropónimo mitológico; y > i. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 661; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1101",
+      "latin": "hypnoticum",
+      "castellano": "hipnótico",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 662,
+      "observacion": "hypnoticum → hipnótico: cultismo médico; y > i. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 662; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1102",
+      "latin": "hypogeum",
+      "castellano": "hipogeo",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 663,
+      "observacion": "hypogeum → hipogeo: cultismo; y > i. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 663; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1103",
+      "latin": "hypotenusam",
+      "castellano": "hipotenusa",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 664,
+      "observacion": "hypotenusam → hipotenusa: cultismo matemático; y > i. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 664; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1104",
+      "latin": "Lycæum",
+      "castellano": "liceo",
+      "normas": [
+        "N10",
+        "N12"
+      ],
+      "fila_origen": 665,
+      "observacion": "Lycæum → liceo: cultismo/topónimo; y > i y æ > e. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 665; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1105",
+      "latin": "myopem",
+      "castellano": "miope",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 667,
+      "observacion": "myopem → miope: cultismo médico; y > i. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 667; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1106",
+      "latin": "Phædonem",
+      "castellano": "Fedón",
+      "normas": [
+        "N10",
+        "N12"
+      ],
+      "fila_origen": 668,
+      "observacion": "Phædonem → Fedón: antropónimo; ph > f y æ > e. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 668; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1107",
+      "latin": "Phædram",
+      "castellano": "Fedra",
+      "normas": [
+        "N10",
+        "N12"
+      ],
+      "fila_origen": 669,
+      "observacion": "Phædram → Fedra: antropónimo; ph > f y æ > e. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 669; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1108",
+      "latin": "Phædrum",
+      "castellano": "Fedro",
+      "normas": [
+        "N10",
+        "N12"
+      ],
+      "fila_origen": 670,
+      "observacion": "Phædrum → Fedro: antropónimo; ph > f y æ > e. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 670; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1109",
+      "latin": "phalangem",
+      "castellano": "falange",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 671,
+      "observacion": "phalangem → falange: helenismo anatómico/militar; ph > f. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 671; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1110",
+      "latin": "phantasmam",
+      "castellano": "fantasma",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 672,
+      "observacion": "phantasmam → fantasma: helenismo; ph > f. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 672; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1111",
+      "latin": "pharaonem",
+      "castellano": "faraón",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 673,
+      "observacion": "pharaonem → faraón: título egipcio transmitido por el griego y el latín; ph > f. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 673; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1112",
+      "latin": "pharmacum",
+      "castellano": "fármaco",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 674,
+      "observacion": "pharmacum → fármaco: cultismo; ph > f. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 674; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1113",
+      "latin": "Pharsaliam",
+      "castellano": "Farsalia",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 675,
+      "observacion": "Pharsaliam → Farsalia: topónimo de tradición grecolatina; ph > f. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 675; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1114",
+      "latin": "Pharum",
+      "castellano": "faro",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 676,
+      "observacion": "Pharum → faro: helenismo transmitido por el latín pharus, no conviene suponer una evolución regular de ph. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 676; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1115",
+      "latin": "philologiam",
+      "castellano": "filología",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 677,
+      "observacion": "philologiam → filología: cultismo; ph > f. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 677; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1116",
+      "latin": "phosphorum",
+      "castellano": "fósforo",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 680,
+      "observacion": "phosphorum → fósforo: cultismo; ph > f en ambas posiciones. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 680; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1117",
+      "latin": "phreneticum",
+      "castellano": "frenético",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 681,
+      "observacion": "phreneticum → frenético: cultismo; ph > f. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 681; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1118",
+      "latin": "Phrygiam",
+      "castellano": "Frigia",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 682,
+      "observacion": "Phrygiam → Frigia: topónimo; ph > f y y > i. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 682; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1119",
+      "latin": "physiologiam",
+      "castellano": "fisiología",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 683,
+      "observacion": "physiologiam → fisiología: cultismo; ph > f y y > i. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 683; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1120",
+      "latin": "Pygmalionem",
+      "castellano": "Pigmalión",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 685,
+      "observacion": "Pygmalionem → Pigmalión: antropónimo; y > i. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 685; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1121",
+      "latin": "schemam",
+      "castellano": "esquema",
+      "normas": [
+        "N10",
+        "N14"
+      ],
+      "fila_origen": 687,
+      "observacion": "schemam → esquema: cultismo; sch > esqu- (e- protética y adaptación de ch). La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 687; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1122",
+      "latin": "scholasticum",
+      "castellano": "escolástico",
+      "normas": [
+        "N10",
+        "N14"
+      ],
+      "fila_origen": 688,
+      "observacion": "scholasticum → escolástico: cultismo; sch > esc- (e- protética y adaptación gráfica). La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 688; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1123",
+      "latin": "sphæram",
+      "castellano": "esfera",
+      "normas": [
+        "N10",
+        "N12",
+        "N14"
+      ],
+      "fila_origen": 690,
+      "observacion": "sphæram → esfera: cultismo; sph > esf- con e- inicial. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 690; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1124",
+      "latin": "sphingem",
+      "castellano": "esfinge",
+      "normas": [
+        "N10",
+        "N14"
+      ],
+      "fila_origen": 691,
+      "observacion": "sphingem → esfinge: cultismo; sph > esf- con e- inicial. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 691; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1125",
+      "latin": "stropham",
+      "castellano": "estrofa",
+      "normas": [
+        "N10",
+        "N14"
+      ],
+      "fila_origen": 692,
+      "observacion": "stropham → estrofa: cultismo; st- > est- y ph > f. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 692; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1126",
+      "latin": "symposium",
+      "castellano": "simposio",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 693,
+      "observacion": "symposium → simposio: cultismo; y > i. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 693; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1127",
+      "latin": "synagogam",
+      "castellano": "sinagoga",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 694,
+      "observacion": "synagogam → sinagoga: cultismo; y > i. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 694; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1128",
+      "latin": "syndicum",
+      "castellano": "síndico",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 695,
+      "observacion": "syndicum → síndico: cultismo; y > i. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 695; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1129",
+      "latin": "synodum",
+      "castellano": "sínodo",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 696,
+      "observacion": "synodum → sínodo: cultismo; y > i. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 696; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1130",
+      "latin": "thalamum",
+      "castellano": "tálamo",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 697,
+      "observacion": "thalamum → tálamo: cultismo; th > t. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 697; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1131",
+      "latin": "thapsiam",
+      "castellano": "tapsia",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 698,
+      "observacion": "thapsiam → tapsia: nombre botánico culto; th > t. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 698; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1132",
+      "latin": "thecam",
+      "castellano": "teca",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 700,
+      "observacion": "thecam → teca: cultismo técnico; th > t. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 700; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1133",
+      "latin": "themam",
+      "castellano": "tema",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 701,
+      "observacion": "themam → tema: cultismo; th > t. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 701; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1134",
+      "latin": "Theocritum",
+      "castellano": "Teócrito",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 702,
+      "observacion": "Theocritum → Teócrito: antropónimo; th > t. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 702; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1135",
+      "latin": "theogoniam",
+      "castellano": "teogonía",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 703,
+      "observacion": "theogoniam → teogonía: cultismo; th > t. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 703; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1136",
+      "latin": "theologum",
+      "castellano": "teólogo",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 704,
+      "observacion": "theologum → teólogo: cultismo; th > t. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 704; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1137",
+      "latin": "theoriam",
+      "castellano": "teoría",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 705,
+      "observacion": "theoriam → teoría: cultismo; th > t. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 705; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1138",
+      "latin": "Theseum",
+      "castellano": "Teseo",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 706,
+      "observacion": "Theseum → Teseo: antropónimo mitológico; th > t. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 706; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1139",
+      "latin": "theurgum",
+      "castellano": "teúrgo",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 707,
+      "observacion": "theurgum → teúrgo: helenismo religioso; th > t. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 707; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1140",
+      "latin": "thiasum",
+      "castellano": "tíaso",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 708,
+      "observacion": "thiasum → tíaso: helenismo de religión griega; th > t; voz poco usual. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 708; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1141",
+      "latin": "Thraciam",
+      "castellano": "Tracia",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 710,
+      "observacion": "Thraciam → Tracia: topónimo; th > t. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 710; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1142",
+      "latin": "Thrasybulum",
+      "castellano": "Trasíbulo",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 711,
+      "observacion": "Thrasybulum → Trasíbulo: antropónimo; th > t y y > i. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 711; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1143",
+      "latin": "thyrsum",
+      "castellano": "tirso",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 712,
+      "observacion": "thyrsum → tirso: helenismo de culto báquico; th > t y y > i. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 712; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1144",
+      "latin": "æginam",
+      "castellano": "Egina",
+      "normas": [
+        "N12"
+      ],
+      "fila_origen": 737,
+      "observacion": "Topónimo griego transmitido por el latín Aeginam; ae > e en la adaptación culta. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 737; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1145",
+      "latin": "æmulum",
+      "castellano": "émulo",
+      "normas": [
+        "N12"
+      ],
+      "fila_origen": 738,
+      "observacion": "Latín aemulum > émulo: ae > e en un cultismo, con acentuación castellana. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 738; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1146",
+      "latin": "æolum",
+      "castellano": "Eolo",
+      "normas": [
+        "N12"
+      ],
+      "fila_origen": 739,
+      "observacion": "Nombre mitológico latino Aeolum > Eolo: ae > e; no es voz patrimonial. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 739; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1147",
+      "latin": "ærarium",
+      "castellano": "erario",
+      "normas": [
+        "N12"
+      ],
+      "fila_origen": 740,
+      "observacion": "Aerarium > erario: cultismo administrativo con reducción gráfica/histórica ae > e. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 740; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1148",
+      "latin": "æsculapium",
+      "castellano": "Esculapio",
+      "normas": [
+        "N12"
+      ],
+      "fila_origen": 741,
+      "observacion": "Aesculapium > Esculapio: nombre mitológico, adaptación culta ae > e. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 741; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1149",
+      "latin": "æsopum",
+      "castellano": "Esopo",
+      "normas": [
+        "N12"
+      ],
+      "fila_origen": 742,
+      "observacion": "Aesopum > Esopo: antropónimo griego de transmisión escrita; ae > e. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 742; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1150",
+      "latin": "ætnam",
+      "castellano": "Etna",
+      "normas": [
+        "N12"
+      ],
+      "fila_origen": 744,
+      "observacion": "Aetnam > Etna: topónimo de adaptación literaria, ae > e. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 744; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1151",
+      "latin": "Bæticam",
+      "castellano": "Bética",
+      "normas": [
+        "N12"
+      ],
+      "fila_origen": 749,
+      "observacion": "Baeticam > Bética: topónimo clásico con ae > e; no se ha transmitido como voz patrimonial. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 749; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1152",
+      "latin": "Bœotiam",
+      "castellano": "Beocia",
+      "normas": [
+        "N12"
+      ],
+      "fila_origen": 751,
+      "observacion": "Boeotiam > Beocia: topónimo adaptado por vía culta, oe > e. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 751; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1153",
+      "latin": "Cæsarem",
+      "castellano": "César",
+      "normas": [
+        "N12"
+      ],
+      "fila_origen": 752,
+      "observacion": "Caesarem > César: antropónimo/título transmitido culturalmente; ae > e. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 752; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1154",
+      "latin": "cæsuram",
+      "castellano": "cesura",
+      "normas": [
+        "N12"
+      ],
+      "fila_origen": 753,
+      "observacion": "Caesuram > cesura: latinismo literario con ae > e. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 753; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1155",
+      "latin": "coætaneum",
+      "castellano": "coetáneo",
+      "normas": [
+        "N12"
+      ],
+      "fila_origen": 758,
+      "observacion": "Coaetaneum > coetáneo: ae > e; cultismo, no evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 758; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1156",
+      "latin": "cœliacum",
+      "castellano": "celíaco",
+      "normas": [
+        "N12"
+      ],
+      "fila_origen": 759,
+      "observacion": "Coeliacum > celíaco: oe > e; tecnicismo médico de origen griego. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 759; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1157",
+      "latin": "cœnobitam",
+      "castellano": "cenobita",
+      "normas": [
+        "N12"
+      ],
+      "fila_origen": 760,
+      "observacion": "Coenobitam > cenobita: oe > e; helenismo eclesiástico incorporado por vía culta. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 760; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1158",
+      "latin": "comœdiam",
+      "castellano": "comedia",
+      "normas": [
+        "N12"
+      ],
+      "fila_origen": 761,
+      "observacion": "Comoediam > comedia: oe > e; helenismo literario transmitido por el latín. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 761; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1159",
+      "latin": "Crœsum",
+      "castellano": "Creso",
+      "normas": [
+        "N12"
+      ],
+      "fila_origen": 762,
+      "observacion": "Croesum > Creso: nombre propio histórico con oe > e. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 762; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1160",
+      "latin": "Dædalum",
+      "castellano": "Dédalo",
+      "normas": [
+        "N12"
+      ],
+      "fila_origen": 763,
+      "observacion": "Daedalum > Dédalo: nombre mitológico, ae > e; su acento refleja la forma castellana culta. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 763; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1161",
+      "latin": "fœderare",
+      "castellano": "federar",
+      "normas": [
+        "N12"
+      ],
+      "fila_origen": 765,
+      "observacion": "Foederare > federar: oe > e por adaptación culta; término político moderno. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 765; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1162",
+      "latin": "fœtidum",
+      "castellano": "fétido",
+      "normas": [
+        "N12"
+      ],
+      "fila_origen": 767,
+      "observacion": "Foetidum > fétido: oe > e; cultismo que conserva f- y -t-; hediondo tiene otra historia derivativa. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 767; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1163",
+      "latin": "mænadem",
+      "castellano": "ménade",
+      "normas": [
+        "N12"
+      ],
+      "fila_origen": 770,
+      "observacion": "Maenadem > ménade: helenismo mitológico, ae > e. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 770; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1164",
+      "latin": "Mænandrum",
+      "castellano": "Menandro",
+      "normas": [
+        "N12"
+      ],
+      "fila_origen": 771,
+      "observacion": "Maenandrum > Menandro: antropónimo de origen griego, ae > e. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 771; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1165",
+      "latin": "Mœsiam",
+      "castellano": "Mesia",
+      "normas": [
+        "N12"
+      ],
+      "fila_origen": 772,
+      "observacion": "Moesiam > Mesia: topónimo histórico, oe > e. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 772; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1166",
+      "latin": "obœdientem",
+      "castellano": "obediente",
+      "normas": [
+        "N12"
+      ],
+      "fila_origen": 773,
+      "observacion": "Oboedientem > obediente: oe > e; voz próxima a la base latina e incorporada por vía eclesiástica/culta. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 773; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1167",
+      "latin": "œconomicum",
+      "castellano": "económico",
+      "normas": [
+        "N12"
+      ],
+      "fila_origen": 775,
+      "observacion": "Oeconomicum > económico: oe > e; cultismo de origen griego. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 775; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1168",
+      "latin": "œcumenicum",
+      "castellano": "ecuménico",
+      "normas": [
+        "N12"
+      ],
+      "fila_origen": 776,
+      "observacion": "Oecumenicum > ecuménico: oe > e; tecnicismo religioso de origen griego. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 776; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1169",
+      "latin": "œdipum",
+      "castellano": "Edipo",
+      "normas": [
+        "N12"
+      ],
+      "fila_origen": 777,
+      "observacion": "Oedipum > Edipo: nombre mitológico, oe > e. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 777; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1170",
+      "latin": "pædagogum",
+      "castellano": "pedagogo",
+      "normas": [
+        "N12"
+      ],
+      "fila_origen": 781,
+      "observacion": "Paedagogum > pedagogo: ae > e; voz griega incorporada por vía culta. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 781; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1171",
+      "latin": "Phœbum",
+      "castellano": "Febo",
+      "normas": [
+        "N10",
+        "N12"
+      ],
+      "fila_origen": 784,
+      "observacion": "Phoebum > Febo: ph > f y oe > e; nombre mitológico de Apolo. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 784; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1172",
+      "latin": "Phœniciam",
+      "castellano": "Fenicia",
+      "normas": [
+        "N10",
+        "N12"
+      ],
+      "fila_origen": 785,
+      "observacion": "Phoeniciam > Fenicia: ph > f y oe > e; topónimo de tradición culta. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 785; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1173",
+      "latin": "præfectum",
+      "castellano": "prefecto",
+      "normas": [
+        "N12"
+      ],
+      "fila_origen": 786,
+      "observacion": "Praefectum > prefecto: ae > e; cultismo administrativo, conserva -ct-. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 786; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1174",
+      "latin": "præludium",
+      "castellano": "preludio",
+      "normas": [
+        "N12"
+      ],
+      "fila_origen": 787,
+      "observacion": "Praeludium > preludio: ae > e; cultismo musical, no resultado popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 787; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1175",
+      "latin": "præmaturum",
+      "castellano": "prematuro",
+      "normas": [
+        "N12"
+      ],
+      "fila_origen": 788,
+      "observacion": "Praematurum > prematuro: ae > e; cultismo que mantiene la estructura del adjetivo latino. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 788; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1176",
+      "latin": "scænam",
+      "castellano": "escena",
+      "normas": [
+        "N12",
+        "N14"
+      ],
+      "fila_origen": 790,
+      "observacion": "Scaenam > escena: prótesis e- ante sc- y ae > e; helenismo de transmisión culta, no equivalente a evolución patrimonial regular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 790; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1177",
+      "latin": "tragœdiam",
+      "castellano": "tragedia",
+      "normas": [
+        "N12"
+      ],
+      "fila_origen": 793,
+      "observacion": "Tragoediam > tragedia: oe > e; préstamo literario culto de origen griego. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 793; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1178",
+      "latin": "æquationem",
+      "castellano": "ecuación",
+      "normas": [
+        "N12"
+      ],
+      "fila_origen": 795,
+      "observacion": "Aequationem > ecuación: ae > e; cultismo matemático derivado de aequare, no palabra patrimonial. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 795; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1179",
+      "latin": "crystallinum",
+      "castellano": "cristalino",
+      "normas": [
+        "N10",
+        "N15"
+      ],
+      "fila_origen": 909,
+      "observacion": "Crystallinum > cristalino: y griega > i y -ll- latina reducida; formación culta a partir de cristal. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 909; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1180",
+      "latin": "prædecessorem",
+      "castellano": "predecesor",
+      "normas": [
+        "N12",
+        "N15"
+      ],
+      "fila_origen": 921,
+      "observacion": "Prædecessorem > predecesor: æ > e y simplificación de la geminada -ss-; tecnicismo culto. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 921; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 18,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1181",
+      "latin": "Acherontem",
+      "castellano": "Aqueronte",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 616,
+      "observacion": "Acherontem → Aqueronte: topónimo mitológico; ch grecolatina > qu. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 616; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 19,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1182",
+      "latin": "ægisthum",
+      "castellano": "Egisto",
+      "normas": [
+        "N10",
+        "N12"
+      ],
+      "fila_origen": 617,
+      "observacion": "ægisthum → Egisto: antropónimo mitológico; ae > e y th > t. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 617; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 19,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1183",
+      "latin": "ægyptum",
+      "castellano": "Egipto",
+      "normas": [
+        "N10",
+        "N12"
+      ],
+      "fila_origen": 618,
+      "observacion": "ægyptum → Egipto: topónimo; æ > e e y > i. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 618; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 19,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1184",
+      "latin": "æschylum",
+      "castellano": "Esquilo",
+      "normas": [
+        "N10",
+        "N12"
+      ],
+      "fila_origen": 619,
+      "observacion": "æschylum → Esquilo: antropónimo; æ > e y ch > qu, con e- inicial. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 619; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 19,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1185",
+      "latin": "ætherem",
+      "castellano": "éter",
+      "normas": [
+        "N10",
+        "N12"
+      ],
+      "fila_origen": 620,
+      "observacion": "ætherem → éter: tecnicismo/cultismo; æ > e y th > t. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 620; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 19,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1186",
+      "latin": "asphodelum",
+      "castellano": "asfódelo",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 623,
+      "observacion": "asphodelum → asfódelo: nombre botánico culto; ph > f. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 623; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 19,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1187",
+      "latin": "catharticum",
+      "castellano": "catártico",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 626,
+      "observacion": "catharticum → catártico: cultismo; th > t. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 626; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 19,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1188",
+      "latin": "catholicum",
+      "castellano": "católico",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 627,
+      "observacion": "catholicum → católico: cultismo religioso; th > t. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 627; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 19,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1189",
+      "latin": "Chaldæam",
+      "castellano": "Caldea",
+      "normas": [
+        "N10",
+        "N12"
+      ],
+      "fila_origen": 628,
+      "observacion": "Chaldæam → Caldea: topónimo; ch > c y æ > e. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 628; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 19,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1190",
+      "latin": "characterem",
+      "castellano": "carácter",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 629,
+      "observacion": "characterem → carácter: cultismo; ch > c. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 629; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 19,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1191",
+      "latin": "charisma",
+      "castellano": "carisma",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 630,
+      "observacion": "charisma → carisma: cultismo; ch > c. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 630; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 19,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1192",
+      "latin": "Charontem",
+      "castellano": "Caronte",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 631,
+      "observacion": "Charontem → Caronte: antropónimo mitológico; ch > c. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 631; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 19,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1193",
+      "latin": "chirographum",
+      "castellano": "quirógrafo",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 634,
+      "observacion": "chirographum → quirógrafo: tecnicismo jurídico; ch > qu y ph > f. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 634; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 19,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1194",
+      "latin": "Chironem",
+      "castellano": "Quirón",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 635,
+      "observacion": "Chironem → Quirón: antropónimo; ch > qu. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 635; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 19,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1195",
+      "latin": "chirurgicum",
+      "castellano": "quirúrgico",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 636,
+      "observacion": "chirurgicum → quirúrgico: tecnicismo; ch > qu. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 636; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 19,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1196",
+      "latin": "chlamydem",
+      "castellano": "clámide",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 637,
+      "observacion": "chlamydem → clámide: nombre de prenda antiguo; ch > c y y > i. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 637; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 19,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1197",
+      "latin": "chorographiam",
+      "castellano": "corografía",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 641,
+      "observacion": "chorographiam → corografía: cultismo; ch > c y ph > f. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular. [Tratamiento didáctico: adaptación de grafías o diptongos grecolatinos; no se afirma evolución patrimonial completa.]",
+      "fuente": "Excel docente «banco_evolucion_fonetica_final_10_lotes.xlsx», fila 641; cotejo de grafías latinas y españolas",
+      "estado": "APTO_PROPUESTO",
+      "lote": 19,
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
+      "revision": "2026-11-12"
     }
   ],
   "ampliacion": {
@@ -7187,6 +9199,19 @@
         "Chimæram"
       ],
       "motivo": "Continuación progresiva del cotejo del Excel, con clasificación como adaptación culta y comprobación de las normas"
+    },
+    "lote_18": {
+      "fecha": "2026-11-12",
+      "cantidad": 100,
+      "origen": "Excel docente original: 100 entradas nuevas, excluidas las 6 elegidas para tarjetas",
+      "registro": "data/fonetica/auditoria-grafias-griegas-lote-100-20261112.json",
+      "criterio": "Grafías griegas y monoptongación, admitidas como adaptaciones cultas sin simular evolución patrimonial"
+    },
+    "lote_19": {
+      "fecha": "2026-11-12",
+      "cantidad": 17,
+      "origen": "21 pendientes de revisión culta del lote 15, revalidadas según la nueva decisión docente",
+      "nota": "Se aplazan 4 por tratarse de no griegos o por forma latina problemática"
     }
   }
 }

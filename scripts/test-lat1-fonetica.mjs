@@ -9,7 +9,7 @@ const generic=JSON.parse(readFileSync(resolve(root,'data/fonetica/banco_examenes
 assert.equal(curriculum.schema,1);
 assert.equal(curriculum.course,'latin1');
 assert.equal(curriculum.unidades.length,11);
-assert.equal(generic.items.length,533,'El banco general es elegible también en Latín I');
+assert.equal(generic.items.length,650,'El banco general es elegible también en Latín I');
 const known=new Set(generic.normas.map(n=>n.id));
 const introduced=new Set(),seen=new Set();
 let total=0,valid=0,revisar=0,previous=0;
@@ -45,9 +45,9 @@ const availableThrough=unit=>curriculum.unidades.filter(x=>x.unit<=unit).flatMap
  .filter(x=>x.estado==='APTO_PROPUESTO'&&x.normas.every(n=>rulesThrough(unit).has(n)));
 const eligibleGlobal=unit=>generic.items.filter(x=>x.estado==='APTO_PROPUESTO'&&
  x.normas?.length&&x.normas.every(n=>rulesThrough(unit).has(n)));
-assert.equal(eligibleGlobal(0).length,110,'UD0 debe admitir étimos del banco general');
-assert.equal(eligibleGlobal(3).length,528,'UD3 debe admitir étimos de cualquier unidad con normas impartidas');
-assert.equal(eligibleGlobal(10).length,533,'UD10 debe admitir todo el banco general');
+assert.equal(eligibleGlobal(0).length,173,'UD0 debe admitir étimos del banco general');
+assert.equal(eligibleGlobal(3).length,645,'UD3 debe admitir étimos de cualquier unidad con normas impartidas');
+assert.equal(eligibleGlobal(10).length,650,'UD10 debe admitir todo el banco general');
 assert(eligibleGlobal(0).some(x=>x.latin==='advocatum'),'El banco general no debe restringirse a los tres étimos de UD0');
 const lesson0=availableThrough(0),lesson1=availableThrough(1);
 assert.deepEqual(lesson0.map(x=>x.latin),['terram','apotheca','farinam']);
@@ -72,4 +72,4 @@ assert(html.includes('for(const course of [\'prefixes\',\'phonetics\'].includes(
  'El banco general debe cargarse en Latín I y 4.º');
 assert(!html.includes('row.unidad>latin1PhoneticMaxUnit(chosen)'),
  'La unidad original de una palabra no debe limitar su selección');
-console.log('Latín I: 533 candidatas generales según normas acumulativas; 73 étimos docentes conservados.');
+console.log('Latín I: 650 candidatas generales según normas acumulativas; 73 étimos docentes conservados.');

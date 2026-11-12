@@ -1,0 +1,1191 @@
+{
+  "esquema": "auditoria-grafias-grecas-100/v1",
+  "fecha": "2026-11-12",
+  "archivo_fuente": "banco_evolucion_fonetica_final_10_lotes.xlsx",
+  "meta": "100 fichas nuevas, separadas de 17 recuperadas de revisión anterior",
+  "revisadasNuevas": 106,
+  "incorporadasNuevas": 100,
+  "pendientesNuevas": 6,
+  "incorporadasRevisadasAnteriores": 17,
+  "items": [
+    {
+      "id": "EVF-1081",
+      "latin": "Christum",
+      "castellano": "Cristo",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 641
+    },
+    {
+      "id": "EVF-1082",
+      "latin": "chronicum",
+      "castellano": "crónico",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 642
+    },
+    {
+      "id": "EVF-1083",
+      "latin": "chrysolithum",
+      "castellano": "crisólito",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 643
+    },
+    {
+      "id": "EVF-1084",
+      "latin": "citharistam",
+      "castellano": "citarista",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 644
+    },
+    {
+      "id": "EVF-1085",
+      "latin": "Clytæmnestram",
+      "castellano": "Clitemnestra",
+      "normas": [
+        "N10",
+        "N12"
+      ],
+      "fila_origen": 645
+    },
+    {
+      "id": "EVF-1086",
+      "latin": "cyclicum",
+      "castellano": "cíclico",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 646
+    },
+    {
+      "id": "EVF-1087",
+      "latin": "cyclopem",
+      "castellano": "cíclope",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 647
+    },
+    {
+      "id": "EVF-1088",
+      "latin": "cynicum",
+      "castellano": "cínico",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 648
+    },
+    {
+      "id": "EVF-1089",
+      "latin": "dyspepsiam",
+      "castellano": "dispepsia",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 649
+    },
+    {
+      "id": "EVF-1090",
+      "latin": "epithalamium",
+      "castellano": "epitalamio",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 651
+    },
+    {
+      "id": "EVF-1091",
+      "latin": "epithetum",
+      "castellano": "epíteto",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 652
+    },
+    {
+      "id": "EVF-1092",
+      "latin": "graphicum",
+      "castellano": "gráfico",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 653
+    },
+    {
+      "id": "EVF-1093",
+      "latin": "gryphum",
+      "castellano": "grifo",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 654
+    },
+    {
+      "id": "EVF-1094",
+      "latin": "gymnasium",
+      "castellano": "gimnasio",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 655
+    },
+    {
+      "id": "EVF-1095",
+      "latin": "gynæceum",
+      "castellano": "gineceo",
+      "normas": [
+        "N10",
+        "N12"
+      ],
+      "fila_origen": 656
+    },
+    {
+      "id": "EVF-1096",
+      "latin": "hæresiarcham",
+      "castellano": "heresiarca",
+      "normas": [
+        "N10",
+        "N12"
+      ],
+      "fila_origen": 657
+    },
+    {
+      "id": "EVF-1097",
+      "latin": "hydram",
+      "castellano": "hidra",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 658
+    },
+    {
+      "id": "EVF-1098",
+      "latin": "hydropicum",
+      "castellano": "hidrópico",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 659
+    },
+    {
+      "id": "EVF-1099",
+      "latin": "hyperboreum",
+      "castellano": "hiperbóreo",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 660
+    },
+    {
+      "id": "EVF-1100",
+      "latin": "Hyperionem",
+      "castellano": "Hiperión",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 661
+    },
+    {
+      "id": "EVF-1101",
+      "latin": "hypnoticum",
+      "castellano": "hipnótico",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 662
+    },
+    {
+      "id": "EVF-1102",
+      "latin": "hypogeum",
+      "castellano": "hipogeo",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 663
+    },
+    {
+      "id": "EVF-1103",
+      "latin": "hypotenusam",
+      "castellano": "hipotenusa",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 664
+    },
+    {
+      "id": "EVF-1104",
+      "latin": "Lycæum",
+      "castellano": "liceo",
+      "normas": [
+        "N10",
+        "N12"
+      ],
+      "fila_origen": 665
+    },
+    {
+      "id": "EVF-1105",
+      "latin": "myopem",
+      "castellano": "miope",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 667
+    },
+    {
+      "id": "EVF-1106",
+      "latin": "Phædonem",
+      "castellano": "Fedón",
+      "normas": [
+        "N10",
+        "N12"
+      ],
+      "fila_origen": 668
+    },
+    {
+      "id": "EVF-1107",
+      "latin": "Phædram",
+      "castellano": "Fedra",
+      "normas": [
+        "N10",
+        "N12"
+      ],
+      "fila_origen": 669
+    },
+    {
+      "id": "EVF-1108",
+      "latin": "Phædrum",
+      "castellano": "Fedro",
+      "normas": [
+        "N10",
+        "N12"
+      ],
+      "fila_origen": 670
+    },
+    {
+      "id": "EVF-1109",
+      "latin": "phalangem",
+      "castellano": "falange",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 671
+    },
+    {
+      "id": "EVF-1110",
+      "latin": "phantasmam",
+      "castellano": "fantasma",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 672
+    },
+    {
+      "id": "EVF-1111",
+      "latin": "pharaonem",
+      "castellano": "faraón",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 673
+    },
+    {
+      "id": "EVF-1112",
+      "latin": "pharmacum",
+      "castellano": "fármaco",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 674
+    },
+    {
+      "id": "EVF-1113",
+      "latin": "Pharsaliam",
+      "castellano": "Farsalia",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 675
+    },
+    {
+      "id": "EVF-1114",
+      "latin": "Pharum",
+      "castellano": "faro",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 676
+    },
+    {
+      "id": "EVF-1115",
+      "latin": "philologiam",
+      "castellano": "filología",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 677
+    },
+    {
+      "id": "EVF-1116",
+      "latin": "phosphorum",
+      "castellano": "fósforo",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 680
+    },
+    {
+      "id": "EVF-1117",
+      "latin": "phreneticum",
+      "castellano": "frenético",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 681
+    },
+    {
+      "id": "EVF-1118",
+      "latin": "Phrygiam",
+      "castellano": "Frigia",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 682
+    },
+    {
+      "id": "EVF-1119",
+      "latin": "physiologiam",
+      "castellano": "fisiología",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 683
+    },
+    {
+      "id": "EVF-1120",
+      "latin": "Pygmalionem",
+      "castellano": "Pigmalión",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 685
+    },
+    {
+      "id": "EVF-1121",
+      "latin": "schemam",
+      "castellano": "esquema",
+      "normas": [
+        "N10",
+        "N14"
+      ],
+      "fila_origen": 687
+    },
+    {
+      "id": "EVF-1122",
+      "latin": "scholasticum",
+      "castellano": "escolástico",
+      "normas": [
+        "N10",
+        "N14"
+      ],
+      "fila_origen": 688
+    },
+    {
+      "id": "EVF-1123",
+      "latin": "sphæram",
+      "castellano": "esfera",
+      "normas": [
+        "N10",
+        "N12",
+        "N14"
+      ],
+      "fila_origen": 690
+    },
+    {
+      "id": "EVF-1124",
+      "latin": "sphingem",
+      "castellano": "esfinge",
+      "normas": [
+        "N10",
+        "N14"
+      ],
+      "fila_origen": 691
+    },
+    {
+      "id": "EVF-1125",
+      "latin": "stropham",
+      "castellano": "estrofa",
+      "normas": [
+        "N10",
+        "N14"
+      ],
+      "fila_origen": 692
+    },
+    {
+      "id": "EVF-1126",
+      "latin": "symposium",
+      "castellano": "simposio",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 693
+    },
+    {
+      "id": "EVF-1127",
+      "latin": "synagogam",
+      "castellano": "sinagoga",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 694
+    },
+    {
+      "id": "EVF-1128",
+      "latin": "syndicum",
+      "castellano": "síndico",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 695
+    },
+    {
+      "id": "EVF-1129",
+      "latin": "synodum",
+      "castellano": "sínodo",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 696
+    },
+    {
+      "id": "EVF-1130",
+      "latin": "thalamum",
+      "castellano": "tálamo",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 697
+    },
+    {
+      "id": "EVF-1131",
+      "latin": "thapsiam",
+      "castellano": "tapsia",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 698
+    },
+    {
+      "id": "EVF-1132",
+      "latin": "thecam",
+      "castellano": "teca",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 700
+    },
+    {
+      "id": "EVF-1133",
+      "latin": "themam",
+      "castellano": "tema",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 701
+    },
+    {
+      "id": "EVF-1134",
+      "latin": "Theocritum",
+      "castellano": "Teócrito",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 702
+    },
+    {
+      "id": "EVF-1135",
+      "latin": "theogoniam",
+      "castellano": "teogonía",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 703
+    },
+    {
+      "id": "EVF-1136",
+      "latin": "theologum",
+      "castellano": "teólogo",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 704
+    },
+    {
+      "id": "EVF-1137",
+      "latin": "theoriam",
+      "castellano": "teoría",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 705
+    },
+    {
+      "id": "EVF-1138",
+      "latin": "Theseum",
+      "castellano": "Teseo",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 706
+    },
+    {
+      "id": "EVF-1139",
+      "latin": "theurgum",
+      "castellano": "teúrgo",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 707
+    },
+    {
+      "id": "EVF-1140",
+      "latin": "thiasum",
+      "castellano": "tíaso",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 708
+    },
+    {
+      "id": "EVF-1141",
+      "latin": "Thraciam",
+      "castellano": "Tracia",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 710
+    },
+    {
+      "id": "EVF-1142",
+      "latin": "Thrasybulum",
+      "castellano": "Trasíbulo",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 711
+    },
+    {
+      "id": "EVF-1143",
+      "latin": "thyrsum",
+      "castellano": "tirso",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 712
+    },
+    {
+      "id": "EVF-1144",
+      "latin": "æginam",
+      "castellano": "Egina",
+      "normas": [
+        "N12"
+      ],
+      "fila_origen": 737
+    },
+    {
+      "id": "EVF-1145",
+      "latin": "æmulum",
+      "castellano": "émulo",
+      "normas": [
+        "N12"
+      ],
+      "fila_origen": 738
+    },
+    {
+      "id": "EVF-1146",
+      "latin": "æolum",
+      "castellano": "Eolo",
+      "normas": [
+        "N12"
+      ],
+      "fila_origen": 739
+    },
+    {
+      "id": "EVF-1147",
+      "latin": "ærarium",
+      "castellano": "erario",
+      "normas": [
+        "N12"
+      ],
+      "fila_origen": 740
+    },
+    {
+      "id": "EVF-1148",
+      "latin": "æsculapium",
+      "castellano": "Esculapio",
+      "normas": [
+        "N12"
+      ],
+      "fila_origen": 741
+    },
+    {
+      "id": "EVF-1149",
+      "latin": "æsopum",
+      "castellano": "Esopo",
+      "normas": [
+        "N12"
+      ],
+      "fila_origen": 742
+    },
+    {
+      "id": "EVF-1150",
+      "latin": "ætnam",
+      "castellano": "Etna",
+      "normas": [
+        "N12"
+      ],
+      "fila_origen": 744
+    },
+    {
+      "id": "EVF-1151",
+      "latin": "Bæticam",
+      "castellano": "Bética",
+      "normas": [
+        "N12"
+      ],
+      "fila_origen": 749
+    },
+    {
+      "id": "EVF-1152",
+      "latin": "Bœotiam",
+      "castellano": "Beocia",
+      "normas": [
+        "N12"
+      ],
+      "fila_origen": 751
+    },
+    {
+      "id": "EVF-1153",
+      "latin": "Cæsarem",
+      "castellano": "César",
+      "normas": [
+        "N12"
+      ],
+      "fila_origen": 752
+    },
+    {
+      "id": "EVF-1154",
+      "latin": "cæsuram",
+      "castellano": "cesura",
+      "normas": [
+        "N12"
+      ],
+      "fila_origen": 753
+    },
+    {
+      "id": "EVF-1155",
+      "latin": "coætaneum",
+      "castellano": "coetáneo",
+      "normas": [
+        "N12"
+      ],
+      "fila_origen": 758
+    },
+    {
+      "id": "EVF-1156",
+      "latin": "cœliacum",
+      "castellano": "celíaco",
+      "normas": [
+        "N12"
+      ],
+      "fila_origen": 759
+    },
+    {
+      "id": "EVF-1157",
+      "latin": "cœnobitam",
+      "castellano": "cenobita",
+      "normas": [
+        "N12"
+      ],
+      "fila_origen": 760
+    },
+    {
+      "id": "EVF-1158",
+      "latin": "comœdiam",
+      "castellano": "comedia",
+      "normas": [
+        "N12"
+      ],
+      "fila_origen": 761
+    },
+    {
+      "id": "EVF-1159",
+      "latin": "Crœsum",
+      "castellano": "Creso",
+      "normas": [
+        "N12"
+      ],
+      "fila_origen": 762
+    },
+    {
+      "id": "EVF-1160",
+      "latin": "Dædalum",
+      "castellano": "Dédalo",
+      "normas": [
+        "N12"
+      ],
+      "fila_origen": 763
+    },
+    {
+      "id": "EVF-1161",
+      "latin": "fœderare",
+      "castellano": "federar",
+      "normas": [
+        "N12"
+      ],
+      "fila_origen": 765
+    },
+    {
+      "id": "EVF-1162",
+      "latin": "fœtidum",
+      "castellano": "fétido",
+      "normas": [
+        "N12"
+      ],
+      "fila_origen": 767
+    },
+    {
+      "id": "EVF-1163",
+      "latin": "mænadem",
+      "castellano": "ménade",
+      "normas": [
+        "N12"
+      ],
+      "fila_origen": 770
+    },
+    {
+      "id": "EVF-1164",
+      "latin": "Mænandrum",
+      "castellano": "Menandro",
+      "normas": [
+        "N12"
+      ],
+      "fila_origen": 771
+    },
+    {
+      "id": "EVF-1165",
+      "latin": "Mœsiam",
+      "castellano": "Mesia",
+      "normas": [
+        "N12"
+      ],
+      "fila_origen": 772
+    },
+    {
+      "id": "EVF-1166",
+      "latin": "obœdientem",
+      "castellano": "obediente",
+      "normas": [
+        "N12"
+      ],
+      "fila_origen": 773
+    },
+    {
+      "id": "EVF-1167",
+      "latin": "œconomicum",
+      "castellano": "económico",
+      "normas": [
+        "N12"
+      ],
+      "fila_origen": 775
+    },
+    {
+      "id": "EVF-1168",
+      "latin": "œcumenicum",
+      "castellano": "ecuménico",
+      "normas": [
+        "N12"
+      ],
+      "fila_origen": 776
+    },
+    {
+      "id": "EVF-1169",
+      "latin": "œdipum",
+      "castellano": "Edipo",
+      "normas": [
+        "N12"
+      ],
+      "fila_origen": 777
+    },
+    {
+      "id": "EVF-1170",
+      "latin": "pædagogum",
+      "castellano": "pedagogo",
+      "normas": [
+        "N12"
+      ],
+      "fila_origen": 781
+    },
+    {
+      "id": "EVF-1171",
+      "latin": "Phœbum",
+      "castellano": "Febo",
+      "normas": [
+        "N10",
+        "N12"
+      ],
+      "fila_origen": 784
+    },
+    {
+      "id": "EVF-1172",
+      "latin": "Phœniciam",
+      "castellano": "Fenicia",
+      "normas": [
+        "N10",
+        "N12"
+      ],
+      "fila_origen": 785
+    },
+    {
+      "id": "EVF-1173",
+      "latin": "præfectum",
+      "castellano": "prefecto",
+      "normas": [
+        "N12"
+      ],
+      "fila_origen": 786
+    },
+    {
+      "id": "EVF-1174",
+      "latin": "præludium",
+      "castellano": "preludio",
+      "normas": [
+        "N12"
+      ],
+      "fila_origen": 787
+    },
+    {
+      "id": "EVF-1175",
+      "latin": "præmaturum",
+      "castellano": "prematuro",
+      "normas": [
+        "N12"
+      ],
+      "fila_origen": 788
+    },
+    {
+      "id": "EVF-1176",
+      "latin": "scænam",
+      "castellano": "escena",
+      "normas": [
+        "N12",
+        "N14"
+      ],
+      "fila_origen": 790
+    },
+    {
+      "id": "EVF-1177",
+      "latin": "tragœdiam",
+      "castellano": "tragedia",
+      "normas": [
+        "N12"
+      ],
+      "fila_origen": 793
+    },
+    {
+      "id": "EVF-1178",
+      "latin": "æquationem",
+      "castellano": "ecuación",
+      "normas": [
+        "N12"
+      ],
+      "fila_origen": 795
+    },
+    {
+      "id": "EVF-1179",
+      "latin": "crystallinum",
+      "castellano": "cristalino",
+      "normas": [
+        "N10",
+        "N15"
+      ],
+      "fila_origen": 909
+    },
+    {
+      "id": "EVF-1180",
+      "latin": "prædecessorem",
+      "castellano": "predecesor",
+      "normas": [
+        "N12",
+        "N15"
+      ],
+      "fila_origen": 921
+    }
+  ],
+  "pendientesNuevasDetalle": [
+    {
+      "fila_origen": 686,
+      "latin": "pyram",
+      "castellano": "pira",
+      "normasExcel": [
+        "GRIE"
+      ],
+      "observacionExcel": "pyram → pira: cultismo en el sentido de «hoguera», no pira como plural de pera. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular.",
+      "estado": "REVISION_DOCENTE",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 689,
+      "latin": "Scytiam",
+      "castellano": "Escitia",
+      "normasExcel": [
+        "GRIE",
+        "PRÓT"
+      ],
+      "observacionExcel": "«Escitia» procede del topónimo latino Scythia, Scythiam, con th. La entrada «Scytiam» del banco omite h; corregir la forma antes de usarla como modelo.",
+      "estado": "REVISION_DOCENTE",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 757,
+      "latin": "chœrilum",
+      "castellano": "Quérilo",
+      "normasExcel": [
+        "GRIE",
+        "MONOP"
+      ],
+      "observacionExcel": "Choerilum > Quérilo (nombre de poeta griego): ch > qu y oe > e; adaptación onomástica culta, con grafía latina no uniforme.",
+      "estado": "REVISION_DOCENTE",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 774,
+      "latin": "œagrum",
+      "castellano": "Eagro",
+      "normasExcel": [
+        "MONOP"
+      ],
+      "observacionExcel": "Oeagrum > Eagro: antropónimo mitológico griego (padre de Orfeo), oe > e; no es común en el léxico actual.",
+      "estado": "REVISION_DOCENTE",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 778,
+      "latin": "œnomaum",
+      "castellano": "Enómao",
+      "normasExcel": [
+        "MONOP"
+      ],
+      "observacionExcel": "Oenomaum > Enómao: antropónimo mitológico, oe > e; acentuación culta.",
+      "estado": "REVISION_DOCENTE",
+      "idBanco": null
+    },
+    {
+      "fila_origen": 780,
+      "latin": "œtam",
+      "castellano": "Eta",
+      "normasExcel": [
+        "MONOP"
+      ],
+      "observacionExcel": "Oetam > Eta, nombre del monte griego (Oeta); oe > e por adaptación culta, no la letra griega η.",
+      "estado": "REVISION_DOCENTE",
+      "idBanco": null
+    }
+  ],
+  "itemsRevisadosAnteriores": [
+    {
+      "id": "EVF-1181",
+      "latin": "Acherontem",
+      "castellano": "Aqueronte",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 616
+    },
+    {
+      "id": "EVF-1182",
+      "latin": "ægisthum",
+      "castellano": "Egisto",
+      "normas": [
+        "N10",
+        "N12"
+      ],
+      "fila_origen": 617
+    },
+    {
+      "id": "EVF-1183",
+      "latin": "ægyptum",
+      "castellano": "Egipto",
+      "normas": [
+        "N10",
+        "N12"
+      ],
+      "fila_origen": 618
+    },
+    {
+      "id": "EVF-1184",
+      "latin": "æschylum",
+      "castellano": "Esquilo",
+      "normas": [
+        "N10",
+        "N12"
+      ],
+      "fila_origen": 619
+    },
+    {
+      "id": "EVF-1185",
+      "latin": "ætherem",
+      "castellano": "éter",
+      "normas": [
+        "N10",
+        "N12"
+      ],
+      "fila_origen": 620
+    },
+    {
+      "id": "EVF-1186",
+      "latin": "asphodelum",
+      "castellano": "asfódelo",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 623
+    },
+    {
+      "id": "EVF-1187",
+      "latin": "catharticum",
+      "castellano": "catártico",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 626
+    },
+    {
+      "id": "EVF-1188",
+      "latin": "catholicum",
+      "castellano": "católico",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 627
+    },
+    {
+      "id": "EVF-1189",
+      "latin": "Chaldæam",
+      "castellano": "Caldea",
+      "normas": [
+        "N10",
+        "N12"
+      ],
+      "fila_origen": 628
+    },
+    {
+      "id": "EVF-1190",
+      "latin": "characterem",
+      "castellano": "carácter",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 629
+    },
+    {
+      "id": "EVF-1191",
+      "latin": "charisma",
+      "castellano": "carisma",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 630
+    },
+    {
+      "id": "EVF-1192",
+      "latin": "Charontem",
+      "castellano": "Caronte",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 631
+    },
+    {
+      "id": "EVF-1193",
+      "latin": "chirographum",
+      "castellano": "quirógrafo",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 634
+    },
+    {
+      "id": "EVF-1194",
+      "latin": "Chironem",
+      "castellano": "Quirón",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 635
+    },
+    {
+      "id": "EVF-1195",
+      "latin": "chirurgicum",
+      "castellano": "quirúrgico",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 636
+    },
+    {
+      "id": "EVF-1196",
+      "latin": "chlamydem",
+      "castellano": "clámide",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 637
+    },
+    {
+      "id": "EVF-1197",
+      "latin": "chorographiam",
+      "castellano": "corografía",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 641
+    }
+  ],
+  "pendientesAnteriores": [
+    {
+      "fila_origen": 58,
+      "latin": "circum",
+      "castellano": "cerco",
+      "observacionExcel": "circum > cerco: ĭ pretónica/tónica del tema se abre en e; el cambio de la primera c ante vocal anterior se explica por palatalización (c- > ce-). La vocal final se convierte en -o. No confundir cerco con círculo (cultismo).",
+      "estado": "REVISION_DOCENTE"
+    },
+    {
+      "fila_origen": 381,
+      "latin": "gulam",
+      "castellano": "gola",
+      "observacionExcel": "Gŭlam > gola: la vocal ŭ breve > o. Gola (‘garganta’) es voz histórica y dialectal; no confundir con gula culta (‘glotonería’).",
+      "estado": "REVISION_DOCENTE"
+    },
+    {
+      "fila_origen": 504,
+      "latin": "sculptorem",
+      "castellano": "escultor",
+      "observacionExcel": "Sculptorem > escultor: aparece e- inicial y se simplifica -lpt-; la tradición artística culta aconseja prudencia al clasificar toda la palabra como patrimonial.",
+      "estado": "REVISION_DOCENTE"
+    },
+    {
+      "fila_origen": 638,
+      "latin": "Chlœm",
+      "castellano": "Cloe",
+      "observacionExcel": "Chlœm → Cloe: antropónimo; ch > c y œ > e. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular.",
+      "estado": "REVISION_DOCENTE"
+    }
+  ],
+  "regla": "Ninguna entrada REVISION_DOCENTE figura en el banco sorteable. La etiqueta ADAPTACION_CULTA es obligatoria; no se infiere una evolución patrimonial."
+}
