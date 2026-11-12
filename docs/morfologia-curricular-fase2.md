@@ -21,10 +21,27 @@ separados de la procedencia y de las verificaciones filológicas de los bancos.
 | Participios | UD10 |
 
 **La matriz de enseñanza no sustituye a la verificación morfológica individual.**
-El motor solo genera actualmente tablas para los paradigmas que ya conoce.
-Por ejemplo, la introducción del futuro en UD7 no autoriza construir automáticamente
-todos los futuros de los lemas del banco. Esos tiempos y voces permanecen pendientes
-de ampliar con paradigmas contrastados, sin completar huecos inventando formas.
+En los exámenes se sortean seis personas de los paradigmas que el motor puede
+respaldar con las partes principales conocidas y una conjugación compatible.
+En **Latín I** se admite presente activo (UD1), imperfecto activo (UD2),
+presente e imperfecto pasivos (UD3), perfecto y pluscuamperfecto activos (UD4),
+futuro activo/pasivo (UD7) y perfecto pasivo (UD9; ejemplo expresamente
+**masculino** con participio de perfecto y `sum`).
+
+Se ha incluido `sum` como irregular mediante **tablas explícitas** y `capio`
+como ejemplo de tercera mixta mediante nueve series completas, sin aplicar
+la regla regular a otros mixtos. En el perfecto pasivo la concordancia
+femenina y neutra no se presupone: la construcción propuesta se identifica
+como masculino. Las formas de deponentes, semideponentes, verbos defectivos,
+pasivas irregulares y cualquier lema cuyas partes principales no permitan
+un paradigma respaldado **siguen excluidas**; no se rellenan por analogía.
+
+Estas ampliaciones llegan tanto a las tablas de conjugación del examen
+completo como a la identificación de persona, número, tiempo y voz del modelo
+de morfología y a las palabras variables del análisis. Los encabezados
+muestran el tiempo y la voz realmente seleccionados. En **Latín de 4.º**
+se preserva la selección anterior de presente, ya que su secuenciación
+docente no está suficientemente acreditada para añadir otros tiempos.
 
 **Adjetivos -is, -e:** Se propone, previa aceptación docente explícita, la flexión regular de dos terminaciones
 con genitivo plural -ium, ablativo singular -i y nominativo, vocativo y
@@ -42,9 +59,12 @@ estado filológico original de los bancos. Cambiar una decisión no
 regenera ni borra el examen abierto; afecta a los sorteos posteriores.
 
 
-**Sustantivos excepcionales:** El motor conserva sus restricciones
-sobre temas en -i, nominativos ambiguos y cuarta y quinta declinación
-que no cuenten con paradigmas suficientes para una tabla segura.
+**Sustantivos de paradigmas particulares:** Se han incorporado únicamente
+las tablas completas de `civis`, `hostis`, `urbs`, `pars`, `mare`,
+`animal`, `manus`, `exercitus`, `cornu` y `res`, siempre con
+su enunciado compatible y con el umbral de enseñanza pertinente. El resto
+de temas en *-i*, casos de cuarta/quinta y nominativos irregulares
+continúan fuera del generador automático, sin asumir terminaciones.
 
 ### Griego I
 
@@ -66,6 +86,18 @@ Se conserva el corpus de formas documentadas y su filtro por unidad.
 Las etiquetas de análisis, cuando señalen explícitamente un tiempo o
 una forma posterior, no permiten anticiparla al sorteo.
 
+**Ampliaciones explícitas:** seis formas personales de `εἰμί` desde UD1;
+presente medio/pasivo de `λύω` desde UD6; imperfecto y futuro activos
+de `λύω` desde UD11; aoristo sigmático `ἔλυσα` y aoristo temático
+`ἔλιπον` desde UD12; perfecto `λέλυκα` desde UD13. Cada una
+está transcrita por completo, no inferida a partir del presente de otros
+verbos. Se añaden los paradigmas completos de `πόλις` y `σῶμα`
+desde UD8 **si el lema está presente en el banco real**.
+
+No se han añadido aoristos temáticos, perfectos ni futuros de cualquier
+otro verbo por semejanza: el griego exige temas principales distintos,
+con acentuación y alternancias que requieren comprobación.
+
 ### Latín 4.º ESO
 
 Se preserva el comportamiento anterior en los apartados que todavía
@@ -82,7 +114,13 @@ cupos.
 
 ## Pruebas y edición
 
-El script `scripts/test-phase-two.cjs` comprueba la matriz por unidades,
+Los scripts `scripts/test-phase-two.cjs` y `scripts/test-phase-two-coverage.cjs`
+comprueban también todas las unidades y modelos de examen,
+las formas concretas de las cuatro conjugaciones escolares,
+los paradigmas particulares grecolatinos, los pronombres
+progresivos y la ausencia de tiempos anticipados.
+
+El primero comprueba la matriz por unidades,
 el paradigma *brevis*, la aceptación docente persistente y reversible,
 los filtros griegos de tiempos verbales y los valores
 predeterminados en `index.html` y `offline.html`.
@@ -93,6 +131,9 @@ son obligatorias antes de fusionar esta etapa.
 
 - The National Archives, [Latin: Lesson 7, Third declension nouns and adjectives](https://www.nationalarchives.gov.uk/latin/stage-1-latin/lessons/lesson-7-third-declension-nouns-and-adjectives/).
 - The National Archives, [Latin adjectives](https://www.nationalarchives.gov.uk/latin/stage-1-latin/resources/stage-1-latin-grammar-resource/adjectives/).
+- Dickinson College Commentaries, [Latin Stems](https://dcc.dickinson.edu/grammar/latin/stems) (sistemas de presente, perfecto y supino).
+- Herbert Weir Smyth, [Greek Grammar: Tense-stems and principal parts](https://grammars.alpheios.net/smyth/xhtml/body.1_div1.2_div2.9.html).
+- Herbert Weir Smyth, [Greek Grammar: Present and Imperfect Active and Middle](https://grammars.alpheios.net/smyth/xhtml/body.1_div1.2_div2.10.html).
 
 Las normas curriculares por unidad siguen siendo los materiales del profesor,
 no las fuentes externas.
