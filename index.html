@@ -1075,10 +1075,16 @@ function analyzeExamVocabulary(text,course,bank){
  return engine.entries(analyzed.map(row=>{
   examGlossCandidates.set(examGlossIdentity(course,row.identity||row.form),row);
   const selected=examGlossDecisions[examGlossIdentity(course,row.identity||row.form)];
-  if(!selected||!row.candidates?.some(c=>c.lemma===selected.lemma&&c.entry===selected.entry))
-   return row;
-  return {...row,lemma:selected.lemma,entry:selected.entry,meaning:selected.meaning,
-   meaning_va:selected.meaning_va||'',status:'manual'};
+  // La decisión guarda QUÉ lema escogió el docente, no congela las glosas:
+  // si el banco se actualiza, recuperar su enunciado y traducciones vigentes.
+  // El cambio de enunciado se acepta solo si el lema continúa siendo único.
+  if(!selected)return row;
+  const sameLemma=row.candidates?.filter(c=>c.lemma===selected.lemma)||[];
+  const chosen=sameLemma.find(c=>c.entry===selected.entry)||
+   (sameLemma.length===1?sameLemma[0]:null);
+  if(!chosen)return row;
+  return {...row,lemma:chosen.lemma,entry:chosen.entry,meaning:chosen.meaning||'',
+   meaning_va:chosen.meaning_va||'',status:'manual'};
  }));
 }
 function buildFinalLexicon(chosen,sentences){
