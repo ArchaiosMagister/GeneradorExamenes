@@ -1825,7 +1825,7 @@ function latinExamFormCandidates(chosen,allForms=false){
   if(group!==undefined)groups[group].push(x);
  }
  if(currentCourse()==='latin1'){
-  const extra=latinExplicitVerbRows(chosen).filter(x=>!indexedVerbs.has(examKey(x.entry)));
+  const extra=latinExplicitVerbRows(chosen).filter(x=>!indexedVerbs.has(examKey(x.entry))||x.tense!=='presente de indicativo');
   const grouped=new Map();
   for(const row of extra){
    const id=examKey(row.entry);
