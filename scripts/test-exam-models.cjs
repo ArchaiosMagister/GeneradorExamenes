@@ -223,6 +223,7 @@ function greekSuite(){
   $:id=>state[id]||(state[id]={checked:true,value:''}),
   sample:(a,n)=>a.slice(0,n),countFor:id=>Number(state['count-'+id]?.value)||5,
   sentenceList,sentenceGlossary,sentenceLines:()=>[],
+  currentCourse:()=> 'greek1',
   greekVerifiedCorpus:rows,greekMorphologyEligible:(x,n)=>x.minUnit<=n,
   // En este test sintético no hay banco nominal ni diccionario de adjetivos.
   greekAvailableSyntagmAdjectives:()=>[],greekSyntagmNounGenders:{},
