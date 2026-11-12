@@ -11,7 +11,9 @@ const corpus=JSON.parse(readFileSync(resolve(root,'data/lemmas/teacher-forms.jso
 const match=html.match(/const latinExplicitVerbEvidence=(\{[^\n]+\});\nfunction latinExplicitVerbRows/);
 assert(match,'Falta la tabla explícita de evidencia verbal');
 const evidence=JSON.parse(match[1]);
-assert.deepEqual(Object.keys(evidence).sort(),['conor','eo','sum']);
+assert.deepEqual(Object.keys(evidence).sort(),
+ ['confero','conor','eo','loquor','possum','sequor','sum']);
+const overrides=JSON.parse(readFileSync(resolve(root,'data/lemmas/verified-overrides.json'),'utf8'));
 let total=0;
 for(const [lemma,series]of Object.entries(evidence)){
  const entry=corpus.vocabulary.lat[lemma]?.lat1;
@@ -21,10 +23,17 @@ for(const [lemma,series]of Object.entries(evidence)){
   const suffixes=item.sourceCode===1?['1.sg','2.sg','3.sg','1.pl','2.pl','3.pl']:
    ['1;SG','2;SG','3;SG','1;PL','2;PL','3;PL'];
   const category=item.sourceCode===1?'DOCENTE;presente de indicativo deponente':
+   item.voice==='deponente'?'V;IND;DEP;PRS':
    item.tense==='presente'?'V;IND;ACT;PRS':
    item.tense==='imperfecto'?'V;IND;ACT;PST;IPFV':
    item.tense==='futuro'?'V;IND;ACT;FUT':
    item.tense==='perfecto'?'V;IND;ACT;PRF':'V;IND;ACT;PSTP';
+  if(item.sourceCode===5){
+   const verified=overrides.paradigms.find(x=>x.lang==='lat'&&x.lemma===lemma)?
+    .blocks.find(x=>x.tags===category);
+   assert(verified,lemma+': falta la fuente persistente del tiempo '+item.tense);
+   assert.deepEqual(item.forms,verified.forms,'El enunciado debe reflejar las casillas contrastadas');
+  }
   item.forms.forEach((form,i)=>{
    const matches=corpus.rows.lat.filter(row=>row[0]===lemma&&row[1]===form&&
     row[2]===category+';'+suffixes[i]&&row[3]===item.sourceCode);
@@ -33,9 +42,11 @@ for(const [lemma,series]of Object.entries(evidence)){
   });
  }
 }
-assert.equal(total,42,'Número de fichas explícitas inesperado');
-assert.equal(corpus.rows.lat.filter(row=>row[0]==='possum'&&row[3]===5).length,0,
- 'Si se contrasta possum, será necesario revisar esta prueba');
+assert.equal(total,114,'Cantidad de fichas contrastadas registrada inesperada');
+assert.equal(corpus.rows.lat.filter(row=>row[0]==='possum'&&row[3]===5).length,30);
+assert.equal(corpus.rows.lat.filter(row=>row[0]==='confero'&&row[3]===5).length,30);
+assert(!evidence.fero,'No incorporar el lema fero: no consta en el vocabulario docente');
+assert(evidence.loquor[0].voice==='deponente'&&evidence.sequor[0].voice==='deponente');
 
 const start=html.indexOf('function mVerb(raw){');
 const end=html.indexOf('// Corrections for conjugation:',start);
@@ -64,4 +75,4 @@ assert(html.includes("const latinPersonalPresentPassiveLemmas=new Set([...latinP
  'Falta la excepción de facio y el inventario de pasivas personales');
 assert(html.includes("if(latinPersonalPresentPassiveLemmas.has(examKey(entry)))"),
  'La pasiva no está condicionada a la transitividad admitida');
-console.log('Latín I: 42 formas individuales verificadas frente al índice persistente; cinco conjugaciones y mixta sin pasivas ficticias.');
+console.log('Latín I: 114 fichas contrastadas (sum, eo, conor, possum, confero, loquor, sequor); cinco conjugaciones y mixta sin pasivas ficticias.');
