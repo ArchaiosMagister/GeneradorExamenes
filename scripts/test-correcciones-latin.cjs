@@ -45,7 +45,7 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
   assert(latin.nouns.length>0);
   assert(latin.nouns.every(s=>/^[^+]+,\s*–\S+.*\s\+\s[^+]+,\s*–\S+/u.test(s)),
    'UD2: enunciados completos de adjetivo + sustantivo: '+latin.nouns.join(' | '));
-  assert(latin.verbs.every(s=>!/,.*,.*/.test(s)&&/, [1-4]ª$/.test(s)),'UD2: solo presente y conjugación: '+latin.verbs);
+  assert(latin.verbs.every(s=>!/,.*,.*/.test(s)&&/, (?:[1-4]ª|mx\.|irr\.)$/.test(s)),'UD2: solo presente y tipo verbal (regulares, mixtos o irregulares): '+latin.verbs);
   assert(latin.hasWordRegens>0,'Falta regeneración individual de sustantivos');
   await configure('latin1','tablas','UD4');
   latin=await page.evaluate(()=>({
