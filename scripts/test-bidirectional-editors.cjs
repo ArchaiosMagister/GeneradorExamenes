@@ -169,7 +169,12 @@ async function checkFile(browser,filename){
  assert.deepEqual(typed.slice(0,2),syllabi,filename+': textarea no actualiza sintagmas');
  assert.deepEqual(typed.slice(2),morph.terms.slice(2),filename+': textarea alteró otros sintagmas');
  const linked=page.locator('#paper [data-syntagm-slot="0"]>i');
- await linked.fill('pulcher, –chra, –chrum + puella, –æ');
+ await linked.focus();
+ await linked.evaluate(node=>{
+  const selection=window.getSelection(),range=document.createRange();
+  range.selectNodeContents(node);selection.removeAllRanges();selection.addRange(range);
+ });
+ await page.keyboard.insertText('pulcher, –chra, –chrum + puella, –æ');
  assert((await textarea.inputValue()).startsWith('pulcher, –chra, –chrum + puella, –æ'),
   filename+': editar sintagma en vista previa no actualiza el textarea');
  const linkedId=await linked.getAttribute('data-exam-editor-link');
