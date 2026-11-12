@@ -3802,6 +3802,70 @@ loadTeacherLatinLexBanks();
  const regenerateAll=document.createElement('button');regenerateAll.id='regenerateAllQuestions';regenerateAll.type='button';regenerateAll.className='secondary';regenerateAll.textContent='Regenerar todas las preguntas';
  regenerateAll.addEventListener('click',()=>{examSelectionCache.clear();if(currentCourse()==='greek1')greekExamState=null;generate();});
  questionHost.after(regenerateAll);
+ // Las propuestas regulares de 3.ª declinación requieren aceptación
+ // docente explícita. Se conservan entre exámenes, sin elevarlas a verificadas.
+ const review=document.createElement('details');
+ review.id='examThirdAdjectiveReview';review.className='menu-section exam-accordion';
+ const reviewHeading=document.createElement('summary');
+ const reviewBody=document.createElement('div');reviewBody.className='field';
+ review.append(reviewHeading,reviewBody);regenerateAll.after(review);
+ function renderThirdAdjectiveReview(){
+  const relevant=currentCourse()==='latin1'&&examGrammarLimit(selectedUnits())>=5;
+  review.hidden=!relevant;if(!relevant)return;
+  const until=examGrammarLimit(selectedUnits()),available=new Map();
+  for(const item of latinSharedBank.vocabulary('latin1')){
+   const n=examUnitNumber(item.unit),paradigm=latinThirdAdjective(item);
+   if(n===null||n>until||!paradigm||isExcludedExamMorphLemma(item.entry,item.meaning))continue;
+   const key=latinThirdReviewKey(item.entry);
+   if(!available.has(key))available.set(key,item);
+  }
+  const candidates=[...available.values()].sort((a,b)=>a.entry.localeCompare(b.entry,'es'));
+  const approved=candidates.filter(x=>latinThirdReviewStatus(x.entry)==='approved').length;
+  reviewHeading.textContent='Adjetivos de tercera declinación · '+approved+' aceptados de '+candidates.length+' propuestos';
+  reviewBody.replaceChildren();
+  const note=document.createElement('p');note.className='hint';
+  note.textContent='Acepta cada lema antes de incluir sus flexiones regulares en sorteos. La decisión se recuerda para otros exámenes, pero NO equivale a verificación filológica individual. El examen abierto no se modifica.';
+  reviewBody.append(note);
+  for(const item of candidates){
+   const field=document.createElement('label');field.className='field';
+   field.style.display='flex';field.style.flexWrap='wrap';field.style.gap='10px';field.style.alignItems='center';
+   const lemma=document.createElement('span');lemma.textContent=item.entry;
+   const select=document.createElement('select');
+   select.setAttribute('aria-label','Decisión sobre '+item.entry);
+   select.dataset.thirdReviewEntry=item.entry;
+   for(const [value,label] of [
+    ['pending','Pendiente: fuera del sorteo'],
+    ['approved','Aceptado por el profesor · pendiente de verificar'],
+    ['excluded','Excluido del sorteo']
+   ]){
+    const option=document.createElement('option');option.value=value;option.textContent=label;
+    select.append(option);
+   }
+   select.value=latinThirdReviewStatus(item.entry);
+   select.addEventListener('change',()=>{
+    latinThirdReviewDecision(item.entry,select.value);
+   });
+   field.append(lemma,select);reviewBody.append(field);
+  }
+  const exportButton=document.createElement('button');exportButton.type='button';
+  exportButton.className='secondary';exportButton.textContent='Exportar decisiones docentes (JSON)';
+  exportButton.addEventListener('click',()=>{
+   const payload={schema:'examina-latin3-adjective-review',version:1,exportedAt:new Date().toISOString(),
+    decisions:Object.fromEntries(Object.entries(examThirdReviewState).map(([key,row])=>[key,{...row,verified:false}]))};
+   downloadBlob('revisiones_adjetivos_latin3.json',new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}));
+  });
+  reviewBody.append(exportButton);
+ }
+ document.addEventListener('examina:third-review-changed',renderThirdAdjectiveReview);
+ document.addEventListener('change',event=>{
+  if(event.target.matches('#course,#model,#cumulative,.unit-choice'))
+   queueMicrotask(renderThirdAdjectiveReview);
+ });
+ window.ExaminaThirdReview={
+  get:latinThirdReviewStatus,set:latinThirdReviewDecision,
+  snapshot:()=>Object.fromEntries(Object.entries(examThirdReviewState).map(([key,row])=>[key,{...row,verified:false}]))
+ };
+ queueMicrotask(renderThirdAdjectiveReview);
  const legacyCountArea=$('count-decl').closest('.count-grid');
  const greekFormCount=document.createElement('label');
  greekFormCount.className='legacy-question-fields';
