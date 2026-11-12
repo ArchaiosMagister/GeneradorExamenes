@@ -5531,24 +5531,90 @@ function latinExamSurface(form,entry){
  if(oeDiphthong)result=result.replace(/oe/gi,match=>ligature(match,'œ','Œ'));
  return result;
 }
+// Banco de análisis verbal: únicamente indicativo y formas regulares obtenidas
+// de los paradigmas admitidos para el vocabulario y las unidades seleccionadas.
+// El índice UniMorph genérico no acredita por sí solo una flexión para examen.
+function latinMorphologyVerbPool(chosen){
+ const max=Math.max(0,...chosen.map(examUnitNumber).filter(Number.isInteger));
+ const result=[];
+ for(const {x,p} of latinSharedBank.paradigms(currentCourse(),chosen,'verb')){
+  if(!Array.isArray(p.forms)||p.forms.length!==6)continue;
+  const entry=x.entry,sourceEntry=p.sourceEntry||entry,paradigm=mVerb(sourceEntry);
+  const add=(forms,tense,voice)=>forms.forEach((form,i)=>{
+   if(form)result.push({form,entry,sourceEntry,person:p.labels[i],
+    tense:tense+' de indicativo',voice});
+  });
+  add(p.forms,'presente','activa');
+  if(!paradigm)continue; // No construir otras formas desde paradigmas incompletos.
+  if(max>=2)add(paradigm.tenses[1][1],'imperfecto','activa');
+  if(max>=4){
+   add(paradigm.tenses[3][1],'perfecto','activa');
+   add(paradigm.tenses[4][1],'pluscuamperfecto','activa');
+  }
+  if(max>=7)add(paradigm.tenses[2][1],'futuro','activa');
+  if(max<3)continue; // En Latín I la voz pasiva se introduce en UD3.
+  const present=paradigm.lemma,conj=paradigm.conj;
+  const stem=present.slice(0,conj===2||conj===4?-2:-1);
+  const passivePresent={
+   1:['or','aris','atur','amur','amini','antur'],
+   2:['eor','eris','etur','emur','emini','entur'],
+   3:['or','eris','itur','imur','imini','untur'],
+   4:['ior','iris','itur','imur','imini','iuntur']
+  }[conj];
+  add(passivePresent.map(ending=>stem+ending),'presente','pasiva');
+  const imperfectStem=stem+({1:'aba',2:'eba',3:'eba',4:'ieba'}[conj]);
+  add(['r','ris','tur','mur','mini','ntur'].map(ending=>imperfectStem+ending),
+   'imperfecto','pasiva');
+  if(max>=7){
+   const passiveFuture={
+    1:['abor','aberis','abitur','abimur','abimini','abuntur'],
+    2:['ebor','eberis','ebitur','ebimur','ebimini','ebuntur'],
+    3:['ar','eris','etur','emur','emini','entur'],
+    4:['iar','ieris','ietur','iemur','iemini','ientur']
+   }[conj];
+   add(passiveFuture.map(ending=>stem+ending),'futuro','pasiva');
+  }
+  // El perfectum pasivo requiere formas compuestas y concordancia del participio:
+  // no se inventan aquí análisis que aún no estén contrastados individualmente.
+ }
+ // Sin contexto, una misma forma de un lema no debe exigir tiempos distintos:
+ // p. ej. duceris = presente o futuro pasivos (2.ª singular).
+ const senses=new Map();
+ for(const item of result){
+  const key=examKey(item.entry)+'/'+normLex(item.form);
+  if(!senses.has(key))senses.set(key,new Set());
+  senses.get(key).add(item.person+'/'+item.tense+'/'+item.voice);
+ }
+ return result.filter(item=>senses.get(examKey(item.entry)+'/'+normLex(item.form)).size===1);
+}
+function latinMorphologyVerbSelection(pool,count){
+ const max=Math.max(0,...selectedUnits().map(examUnitNumber).filter(Number.isInteger));
+ if(max<3||count<2)return sample(pool,count);
+ const passive=pool.filter(item=>item.voice==='pasiva'),active=pool.filter(item=>item.voice==='activa');
+ if(!passive.length||!active.length)return sample(pool,count);
+ const chosen=[...sample(passive,Math.max(1,Math.floor(count/3))),...sample(active,1)];
+ const used=new Set(chosen.map(x=>x.entry+'|'+x.form+'|'+x.tense+'|'+x.voice));
+ const rest=sample(pool.filter(x=>!used.has(x.entry+'|'+x.form+'|'+x.tense+'|'+x.voice)),
+  Math.max(0,count-chosen.length));
+ return sample(chosen.concat(rest),count);
+}
 function generateLatinMorphologyReference(){
  const chosen=selectedUnits(),cfg=morphConfig(),va=$('lang').value==='va';
  if(examMorphQuotasActive())cfg.words=examMorphQuotaCount();
  const t=(es,vl)=>va?vl:es;
- const verbPool=latinSharedBank.paradigms(currentCourse(),chosen,'verb').filter(x=>Array.isArray(x.p.forms)&&x.p.forms.length===6);
- const allVerbs=verbPool.flatMap(({x,p})=>p.forms.map((form,i)=>({
-  form,entry:x.entry,person:p.labels[i],tense:'presente de indicativo',voice:'activa'
- })));
- const verbItems=stickyExamRows('verb',()=>sample(allVerbs,cfg.verbs));
+ const allVerbs=latinMorphologyVerbPool(chosen);
+ const verbItems=stickyExamRows('verb',()=>latinMorphologyVerbSelection(allVerbs,cfg.verbs));
  const pronouns=examQuestionEnabled('pronouns')?latinExamPronouns(chosen):[],pronItems=stickyExamRows('pronouns',()=>sample(pronouns,Math.min(6,pronouns.length)));
  const words=stickyExamRows('forms',()=>examQuotaPick(latinExamFormCandidates(chosen),cfg.words,()=>latinExamForms(chosen,cfg.words)));
  const question=(index,heading)=>'<p class="exam-question">'+index+'. '+esc(heading)+'</p>';
  let n=0;
  const first=examQuestionEnabled('decl')?question(++n,morphSyntagmHeading(cfg,va)+' (1 p.).')+morphSyntagmRows(cfg):'';
  const second=examQuestionEnabled('verb')?question(++n,t('Analiza morfológicamente las siguientes formas verbales (1 p.).','Analitza morfològicament les formes verbals següents (1 p.).'))+
-  '<table class="exam-paradigm reference-morph-table reference-verb-table" data-col-widths="28,25,24,23">'+
+  '<table class="exam-paradigm reference-morph-table reference-verb-table" data-col-widths="42,20,19,19">'+
   '<thead><tr><th>'+t('Forma verbal','Forma verbal')+'</th><th>'+t('Persona y número','Persona i nombre')+'</th><th>'+t('Tiempo','Temps')+'</th><th>'+t('Voz','Veu')+'</th></tr></thead>'+
-  '<tbody>'+verbItems.map(x=>'<tr><td><i>'+esc(latinExamSurface(x.form,x.entry))+'</i></td><td></td><td></td><td></td></tr>').join('')+'</tbody></table>':'';
+  '<tbody>'+verbItems.map(x=>'<tr><td><i>'+esc(latinExamSurface(x.form,x.entry))+'</i>'+
+   latinMorphologyEnunciationHtml({...x,category:'verbs'},chosen)+
+   '</td><td></td><td></td><td></td></tr>').join('')+'</tbody></table>':'';
  let pronSection='';
  if(pronouns.length){
   pronSection=question(++n,t('Analiza los siguientes pronombres: tipo, caso, género y número (1 p.).','Analitza els pronoms següents: tipus, cas, gènere i nombre (1 p.).'))+
@@ -7430,10 +7496,7 @@ function regenerateExamWord(kind,index){
      prompt:form,answer:(i+1)+'ª persona '+(j===0?'singular':'plural')+' del presente de indicativo activo',
      lemma:x.lemmas[0],person:(i+1)+'ª '+(j===0?'singular':'plural')
     })).filter(item=>item.prompt)));
-  }else if(morph)candidates=latinSharedBank.paradigms(currentCourse(),chosen,'verb')
-   .filter(x=>Array.isArray(x.p.forms)&&x.p.forms.length===6)
-   .flatMap(({x,p})=>p.forms.map((form,i)=>({form,entry:x.entry,person:p.labels[i],
-     tense:'presente de indicativo',voice:'activa'})));
+   }else if(morph)candidates=latinMorphologyVerbPool(chosen);
   else candidates=latinSharedBank.paradigms(currentCourse(),chosen,'verb')
    .filter(x=>Array.isArray(x.p.forms)&&x.p.forms.length===6);
  }else if(kind==='forms'){
