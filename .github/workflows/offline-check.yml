@@ -80,6 +80,8 @@ jobs:
         run: node scripts/test-greek-editorial.cjs
       - name: Auditar incidencias morfológicas y decisiones
         run: node scripts/test-teacher-review.mjs
+      - name: Validar evidencia y autorizaciones docentes por forma
+        run: node scripts/test-academic-evidence.cjs
       - name: Probar la cola griega y el adaptador de importación Eulexis
         run: node scripts/test-greek-review.mjs
       - name: Probar conversión y extracción Eulexis sin corpus de terceros
