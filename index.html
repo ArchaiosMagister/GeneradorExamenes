@@ -2985,7 +2985,7 @@ function generateGreekMorphologyFixed(){
   !(x.kind==='forms'&&(x.lemmas||[]).some(lemma=>isExcludedExamMorphLemma(lemma))));
  const verbs=stickyExamRows('verb',()=>sample(eligible.filter(x=>x.kind==='conjugation'&&x.table)
   .flatMap(x=>x.table.rows.flatMap((row,i)=>[row[1],row[2]].map((form,j)=>({
-   prompt:form,answer:(i+1)+'ª persona '+(j===0?'singular':'plural')+' del presente de indicativo activo',
+   prompt:form,answer:(i+1)+'ª persona '+(j===0?'singular':'plural')+' del '+(x.id.startsWith('v-school-')?x.prompt.replace(/^Conjuga .*? en /,'').replace(/\.$/,''):'presente de indicativo activo'),
    lemma:x.lemmas[0],person:(i+1)+'ª '+(j===0?'singular':'plural')
   })).filter(x=>x.prompt))),cfg.verbs));
  const pronPool=examQuestionEnabled('pronouns')?eligible.filter(x=>x.kind==='pronouns'):[];
@@ -3653,12 +3653,8 @@ function regenerateExamWord(kind,index){
      prompt:form,answer:(i+1)+'ª persona '+(j===0?'singular':'plural')+' del presente de indicativo activo',
      lemma:x.lemmas[0],person:(i+1)+'ª '+(j===0?'singular':'plural')
     })).filter(item=>item.prompt)));
-  }else if(morph)candidates=latinSharedBank.paradigms(currentCourse(),chosen,'verb')
-   .filter(x=>Array.isArray(x.p.forms)&&x.p.forms.length===6)
-   .flatMap(({x,p})=>p.forms.map((form,i)=>({form,entry:x.entry,person:p.labels[i],
-     tense:'presente de indicativo',voice:'activa'})));
-  else candidates=latinSharedBank.paradigms(currentCourse(),chosen,'verb')
-   .filter(x=>Array.isArray(x.p.forms)&&x.p.forms.length===6);
+  }else if(morph)candidates=latinMorphologyVerbPool(chosen);
+  else candidates=latinSchoolVerbRows(chosen);
  }else if(kind==='forms'){
   if(greek)candidates=greekVerifiedCorpus.filter(x=>x.verified&&x.kind==='forms'&&
    greekMorphologyEligible(x,limit)&&!x.prompt.includes(' ')&&
