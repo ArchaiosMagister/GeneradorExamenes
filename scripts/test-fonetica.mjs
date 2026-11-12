@@ -7,7 +7,7 @@ import {PALABRAS_POR_EXAMEN,seleccionarEvoluciones} from '../data/fonetica/selec
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const banco=JSON.parse(readFileSync(resolve(root,'data/fonetica/banco_examenes.json'),'utf8'));
 const ids=banco.items.map(x=>x.id);
-assert.equal(banco.items.length,513);
+assert.equal(banco.items.length,514);
 assert.equal(new Set(ids).size,banco.items.length,'Identificadores duplicados');
 assert.equal(banco.normas.length,20);
 assert.equal(PALABRAS_POR_EXAMEN,4);
@@ -37,6 +37,10 @@ for(const [latin,castellano,normas] of [
  assert.deepEqual(row.normas,normas);
  assert.equal(row.estado,'APTO_PROPUESTO');
 }
+const accepted=banco.items.find(x=>x.latin==='pelliculam');
+assert(accepted&&accepted.castellano==='pelleja'&&accepted.estado==='APTO_PROPUESTO');
+assert.deepEqual(accepted.normas,['N01','N13','N16','N20']);
+assert(!banco.items.some(x=>['inde','pirum'].includes(x.latin)),'Decisiones editoriales excluidas del sorteo');
 const todas=banco.normas.map(n=>n.id);
 const caso=seleccionarEvoluciones(banco,{normasSeleccionadas:todas,semilla:'mismo-examen'});
 assert.equal(caso.ejercicios.length,4);
