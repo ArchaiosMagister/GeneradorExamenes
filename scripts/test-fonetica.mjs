@@ -24,6 +24,19 @@ for(const e of banco.items){
  assert(e.latin&&e.castellano&&e.estado==='APTO_PROPUESTO','Ficha incompleta');
  assert(e.normas.length>0&&e.normas.every(n=>validas.has(n)),'Normas inexistentes');
 }
+const loteOnce=banco.items.filter(e=>e.lote===11);
+assert.equal(loteOnce.length,3,'El primer lote del Excel debe contener tres fichas');
+for(const [latin,castellano,normas] of [
+ ['sagittam','saeta',['N01','N15','N16']],
+ ['vivite','vivid',['N03','N17']],
+ ['tripedem','trébede',['N01','N17']]
+]){
+ const row=loteOnce.find(e=>e.latin===latin);
+ assert(row,'Falta en el banco '+latin);
+ assert.equal(row.castellano,castellano);
+ assert.deepEqual(row.normas,normas);
+ assert.equal(row.estado,'APTO_PROPUESTO');
+}
 const todas=banco.normas.map(n=>n.id);
 const caso=seleccionarEvoluciones(banco,{normasSeleccionadas:todas,semilla:'mismo-examen'});
 assert.equal(caso.ejercicios.length,4);
