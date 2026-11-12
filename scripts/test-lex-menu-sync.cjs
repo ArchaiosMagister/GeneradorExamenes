@@ -2,7 +2,7 @@
 const assert=require('node:assert/strict');
 const fs=require('node:fs');
 const path=require('node:path');
-const {pathToFileURL}=require('node:url');
+const http=require('node:http');
 const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
 
 function readStoredZipEntry(bytes,wanted){
@@ -22,13 +22,29 @@ function readStoredZipEntry(bytes,wanted){
 }
 
 (async()=>{
+ const root=path.resolve(__dirname,'..');
+ const server=http.createServer((request,response)=>{
+  const route=decodeURIComponent((request.url||'/').split('?')[0]).replace(/^\/+/, '')||'index.html';
+  const filename=path.resolve(root,route);
+  if(filename!==root&&!filename.startsWith(root+path.sep)){
+   response.writeHead(403);response.end('Forbidden');return;
+  }
+  fs.readFile(filename,(error,bytes)=>{
+   if(error){response.writeHead(404);response.end('Not found');return}
+   const type=filename.endsWith('.html')?'text/html':filename.endsWith('.json')?'application/json':
+    filename.endsWith('.js')||filename.endsWith('.mjs')?'text/javascript':'application/octet-stream';
+   response.setHeader('Content-Type',type+'; charset=utf-8');
+   response.end(bytes);
+  });
+ });
+ await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
  const browser=await chromium.launch({headless:true});
  try{
   for(const filename of ['index.html','offline.html']){
    const context=await browser.newContext({viewport:{width:1300,height:940},acceptDownloads:true});
    const page=await context.newPage(),errors=[];
    page.on('pageerror',error=>errors.push(error.message));
-   await page.goto(pathToFileURL(path.resolve(__dirname,'..',filename)).href,{waitUntil:'load'});
+   await page.goto('http://127.0.0.1:'+server.address().port+'/'+filename,{waitUntil:'load'});
    await page.waitForFunction(()=>!!latin1PreverbCurriculum&&!!latin1PhoneticCurriculum&&
     latinLexBanks.latin1.preverbs.length>0&&latinLexBanks.latin1.phonetics.length>0,null,{timeout:15000});
    await page.evaluate(()=>{
@@ -160,5 +176,5 @@ function readStoredZipEntry(bytes,wanted){
    await context.close();
   }
   console.log('OK: menús léxicos, normas desplegables, edición bidireccional, Word y regeneración individual (online y offline).');
- }finally{await browser.close()}
+ }finally{await browser.close();await new Promise(resolve=>server.close(resolve))}
 })().catch(error=>{console.error(error);process.exitCode=1});
