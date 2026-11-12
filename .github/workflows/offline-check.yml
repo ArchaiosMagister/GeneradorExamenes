@@ -68,6 +68,8 @@ jobs:
         run: node scripts/build-lemma-index.mjs
       # La ampliación externa se mantiene en la PR experimental hasta
       # resolver la procedencia/licencias de los datos morfológicos.
+      - name: Auditar el tercer centenar sin repetir formas anteriores
+        run: node scripts/audit-third-100-lemmas.cjs --print
       - name: Validar banco de 510 evoluciones fonéticas y programa de Latín I
         run: node scripts/test-fonetica.mjs && node scripts/test-lat1-fonetica.mjs
       - name: Regenerar archivo autónomo
@@ -110,8 +112,6 @@ jobs:
         run: node scripts/audit-top-50-lemmas.cjs --check
       - name: Revisar otro lote de 100 fichas reales del lematizador
         run: node scripts/audit-next-100-lemmas.cjs --check
-      - name: Auditar el tercer centenar sin repetir formas anteriores
-        run: node scripts/audit-third-100-lemmas.cjs --print
       - name: Auditar lematización de oraciones y decisiones guardadas
         run: node scripts/audit-sentence-lemmas.cjs
       - name: Probar lemas ambiguos y formato del glosario de oraciones
