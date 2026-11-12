@@ -32,7 +32,7 @@ assert.equal(data.extensions.latin_editorial_decisions.verifiedFormsAdded,0,
  'La corrección de un enunciado no acredita nuevas flexiones');
 assert.equal(data.vocabulary.lat.moveo.lat1.entry,'moveo, movi, motum (2ª)');
 assert.equal(data.vocabulary.lat.eripio.lat1.entry,'eripio, eripui, ereptum (mx.)');
-assert.equal(data.rows.lat.filter(x=>x[3]===5).length,75);
+assert.equal(data.rows.lat.filter(x=>x[3]===5).length,79);
 assert(data.rows.lat.some(x=>x[0]==='vinco'&&x[1]==='vicerunt'&&x[2]==='V;IND;ACT;PRF;3;PL'&&x[3]===5));
 assert.equal(data.rows.grc.filter(x=>x[3]===5).length,24);
 assert.equal(data.rows.lat.filter(x=>x[0]==='sum'&&x[3]===5).length,30);
@@ -40,8 +40,16 @@ assert.equal(data.rows.grc.filter(x=>x[0]==='γιγνομαι'&&x[3]===5).length
 assert.equal(data.rows.grc.filter(x=>x[0]==='ερχομαι'&&x[3]===5).length,6);
 assert.equal(data.rows.grc.filter(x=>x[0]==='διδασκω'&&x[3]===5).length,6);
 assert.equal(data.rows.grc.filter(x=>x[0]==='ακουω'&&x[3]===5).length,6);
-assert.equal(data.source.externalVerification.length,40);
-assert.equal(data.extensions.verifiedIndividualForms,33);
+assert.equal(data.source.externalVerification.length,44);
+assert.equal(data.extensions.verifiedIndividualForms,37);
+assert.equal(data.vocabulary.lat.milia.lat1.entry,'milia, –ium');
+assert.equal(data.vocabulary.lat.parens.lat1.entry,'parens, –ntis');
+for(const [lemma,form,tags] of [
+ ['milia','milia','N;NOM;PL;NEUT'],['milia','milia','N;ACC;PL;NEUT'],
+ ['parens','parentibus','N;DAT;PL'],['parens','parentibus','N;ABL;PL']
+])assert(data.rows.lat.some(x=>x[0]===lemma&&x[1]===form&&x[2]===tags&&x[3]===5),
+ 'Falta respaldo morfológico para '+lemma+'/'+form+'/'+tags);
+
 for(const row of JSON.parse(fs.readFileSync(path.join(root,'data/lemmas/verified-overrides.json'),'utf8')).singleForms){
  assert(data.rows[row.lang].some(x=>x[0]===row.lemma&&x[1]===row.form&&x[2]===row.tags&&x[3]===5),
   'Falta la comprobación individual de '+row.form);
