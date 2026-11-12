@@ -212,6 +212,281 @@ async function init(){
   {schema:1,course:byId('reviewCourse').value,description:'Incidencias automáticas; propuestas sin aprobación',cases:state.cases}));
  reload();
 }
-window.ExaminaTeacherReview={buildCases};
+
+// Control de evidencia por FORMA individual, independiente de las decisiones por lema.
+// Una autorización permite usar una propuesta concreta en exámenes; no la verifica,
+// no cambia el índice filológico y no se hereda por analogía a otras flexiones.
+const EVIDENCE_STORE='examina-academic-evidence-v1';
+const EVIDENCE_SCHEMA='examina-academic-evidence/v1';
+const EVIDENCE_COURSES={lat1:'lat1',lat4:'lat4',gr1:'gr1'};
+const evidenceSource={
+ 0:'UniMorph · registro externo',1:'Paradigma docente · forma explícita',
+ 2:'Modelo regular · forma candidata',3:'Solo cita léxica',
+ 4:'Wikcionario · forma griega candidata',5:'Contraste externo · forma documentada',
+ 6:'Collatinus · referencia léxica',7:'Eulexis · referencia léxica'
+};
+function evidenceState(source){
+ if(source===1||source===5)return 'verificada';
+ if(source===0)return 'documentada';
+ if(source===2||source===4)return 'propuesta';
+ return 'no_disponible';
+}
+function evidenceKey(course,row){
+ if(!EVIDENCE_COURSES[course]||!Array.isArray(row)||row.length!==4)throw Error('Ficha de evidencia incorrecta');
+ const [lemma,form,tags,source]=row;
+ return JSON.stringify([EVIDENCE_SCHEMA,course,String(lemma).normalize('NFC'),
+  String(form).normalize('NFC'),String(tags).normalize('NFC'),source]);
+}
+function evidenceDecisions(){
+ try{
+  const saved=JSON.parse(localStorage.getItem(EVIDENCE_STORE)||'{}');
+  return saved&&typeof saved==='object'&&!Array.isArray(saved)?saved:{};
+ }catch{return {}}
+}
+function evidenceApproved(course,row,all=evidenceDecisions()){
+ if(evidenceState(row[3])!=='propuesta')return false;
+ const key=evidenceKey(course,row),decision=all[key];
+ return !!decision&&decision.action==='autorizar_uso'&&decision.schema===EVIDENCE_SCHEMA&&
+  decision.key===key&&decision.verified===false;
+}
+function evidenceGrant(course,row,all=evidenceDecisions(),timestamp=new Date().toISOString()){
+ if(evidenceState(row[3])!=='propuesta')throw Error('Solo pueden autorizarse propuestas individuales');
+ const key=evidenceKey(course,row);
+ return {...all,[key]:{schema:EVIDENCE_SCHEMA,key,action:'autorizar_uso',verified:false,
+  course,lemma:row[0],form:row[1],tags:row[2],source:row[3],approvedAt:timestamp}};
+}
+function evidenceRevoke(course,row,all=evidenceDecisions()){
+ const next={...all};delete next[evidenceKey(course,row)];return next;
+}
+function evidenceCurricular(course,tags,limit){
+ const bits=String(tags).split(';'),has=tag=>bits.includes(tag);
+ if(!Number.isInteger(limit)||limit<1)return false;
+ if(course==='lat1'){
+  if(has('N'))return has('SG')||has('PL');
+  if(has('ADJ'))return limit>=2&&(has('SG')||has('PL'));
+  if(has('PRO'))return limit>=3;
+  // Las formas sintéticas externas solo se admiten en presente activo:
+  // no anticipar perfectum, voz pasiva, futuro ni flexiones ambiguas.
+  if(has('V'))return has('IND')&&has('PRS')&&has('ACT')&&limit>=1;
+  return false;
+ }
+ if(course==='gr1'){
+  if(has('N'))return limit>=1;
+  if(has('ADJ'))return limit>=5;
+  if(has('PRO'))return limit>=7;
+  if(has('V'))return has('IND')&&has('PRS')&&
+   ((has('ACT')&&limit>=2)||((has('MID')||has('PASS'))&&limit>=6));
+  return false;
+ }
+ return false; // Sin matriz contrastada para Latín 4.º en esta extensión.
+}
+function evidenceUnitAt(info,course){
+ const units=info?.[course]?.units||[];
+ const numbers=units.flatMap(u=>[...String(u).matchAll(/\d+/g)].map(m=>+m[0]));
+ return numbers.length?Math.min(...numbers):Infinity;
+}
+function evidenceRows(data,course,limit=99){
+ if(!EVIDENCE_COURSES[course]||!data?.rows||!data?.vocabulary)return [];
+ const language=course==='gr1'?'grc':'lat';
+ return (data.rows[language]||[]).filter(row=>{
+  if(!Array.isArray(row)||row.length!==4||evidenceState(row[3])!=='propuesta')return false;
+  const info=data.vocabulary[language]?.[row[0]];
+  return info?.[course]&&evidenceUnitAt(info,course)<=limit;
+ });
+}
+// Se añaden EXCLUSIVAMENTE fichas autorizadas que superan la matriz curricular.
+// Los registros fuente 3/6/7 no aportan análisis; las fuentes 0/1/5 mantienen
+// sus rutas verificadas ya existentes, sin crear aquí un segundo banco paralelo.
+function approvedExamForms(data,course,limit,all=evidenceDecisions()){
+ if(!data)return [];
+ const lang=course==='gr1'?'grc':'lat',found=[],seen=new Set();
+ for(const row of evidenceRows(data,course,limit)){
+  if(!evidenceApproved(course,row,all)||!evidenceCurricular(course,row[2],limit))continue;
+  const [lemma,form,tags,source]=row,entry=data.vocabulary[lang]?.[lemma]?.[course]?.entry;
+  if(!entry)continue;
+  const type=tags.split(';')[0];
+  // Para los sustantivos latinos se exige una declinación reconocible en
+  // la unidad: los irregulares sin clasificación no son candidatos de examen.
+  if(course==='lat1'&&type==='N'){
+   const stem=String(entry).split(',')[0];
+   const secondOrFirst=/,\s*[–-]?(?:ae|æ|i)\b/i.test(entry);
+   if(limit<4&&!secondOrFirst)continue;
+   if(!stem||!tags.split(';').some(x=>['NOM','GEN','DAT','ACC','VOC','ABL'].includes(x)))continue;
+  }
+  const category=({N:'nouns',ADJ:'adjectives',V:'verbs',PRO:'pronouns'})[type];
+  if(!category)continue;
+  const key=evidenceKey(course,row);
+  if(seen.has(key))continue;seen.add(key);
+  const analysis=String(tags).split(';').join(' · ');
+  if(course==='gr1'){
+   found.push({id:'academic-'+encodeURIComponent(key),kind:'forms',minUnit:evidenceUnitAt(data.vocabulary[lang][lemma],course),
+    contentUnits:[evidenceUnitAt(data.vocabulary[lang][lemma],course)],prompt:form,
+    answer:analysis+' · propuesta autorizada (no verificada)',lemmas:[entry],
+    teacherAuthorized:true,verified:false,category,evidenceKey:key,evidenceForm:form,
+    evidenceSource:evidenceSource[source],sourceCode:source});
+  }else{
+   found.push({form,entry,category,answer:analysis+' · propuesta autorizada (no verificada)',
+    evidenceKey:key,evidenceForm:form,evidenceSource:evidenceSource[source],sourceCode:source});
+  }
+ }
+ return found;
+}
+function evidenceAttributes(item){
+ if(!item?.evidenceKey)return '';
+ // Los atributos son identificadores técnicos: no se imprimen en el Word.
+ return ' data-academic-key="'+encodeURIComponent(item.evidenceKey)+
+  '" data-academic-form="'+encodeURIComponent(item.evidenceForm)+'"';
+}
+function evidenceCheckExam(paper,course,all=evidenceDecisions()){
+ const problems=[];
+ for(const node of paper?.querySelectorAll?.('[data-academic-key]')||[]){
+  let key,form,parsed;
+  try{
+   key=decodeURIComponent(node.dataset.academicKey);
+   form=decodeURIComponent(node.dataset.academicForm);
+   parsed=JSON.parse(key);
+  }catch{problems.push('Metadatos de evidencia ilegibles');continue}
+  const current=node.querySelector('i')?.textContent?.trim()||
+    node.textContent?.trim()||'';
+  if(!Array.isArray(parsed)||parsed.length!==6||parsed[0]!==EVIDENCE_SCHEMA||
+    parsed[1]!==course||!evidenceApproved(course,parsed.slice(2),all)||
+    current.normalize('NFC')!==form.normalize('NFC')){
+   problems.push('Propuesta modificada, revocada o sin autorización: '+form);
+  }
+ }
+ return {ok:!problems.length,problems};
+}
+function evidenceMayExport(paper,course){
+ const validation=evidenceCheckExam(paper,course);
+ if(validation.ok)return true;
+ const section=document.getElementById('academicEvidenceReview');
+ if(section?.tagName==='DETAILS')section.open=true;
+ section?.scrollIntoView?.({block:'start',behavior:'smooth'});
+ const status=document.getElementById('academicEvidenceSummary');
+ if(status)status.textContent='Exportación bloqueada: '+validation.problems.slice(0,3).join(' · ')+
+  '. Confirma de nuevo la forma concreta o regenera ese elemento.';
+ return false;
+}
+function initAcademicEvidence(){
+ if(document.getElementById('academicEvidenceReview'))return;
+ const anchor=document.getElementById('morphTeacherReview')||document.getElementById('offlineLemmaPanel');
+ if(!anchor)return;
+ const root=document.createElement('details');root.id='academicEvidenceReview';
+ root.className='field no-print';
+ root.innerHTML='<summary><strong>Evidencia académica por forma</strong></summary>'+
+  '<p class="hint">Verificada: ficha docente o contraste individual. Documentada: registro externo sin aprobación automática del análisis. Propuesta: requiere tu autorización individual para entrar en el sorteo. Sin registro flexivo: no disponible. La autorización nunca convierte la propuesta en verificada ni modifica los bancos.</p>'+
+  '<div class="review-controls"><label>Curso <select id="academicEvidenceCourse"><option value="lat1">Latín I</option><option value="lat4">Latín 4.º ESO</option><option value="gr1">Griego I</option></select></label>'+
+  '<label>Hasta la unidad <input id="academicEvidenceUnit" type="number" min="1" max="14" value="4"></label>'+
+  '<label>Buscar forma o lema <input id="academicEvidenceQuery" type="text" autocomplete="off" placeholder="duco / λόγου"></label></div>'+
+  '<p id="academicEvidenceSummary" role="status" aria-live="polite">Cargando evidencias locales…</p>'+
+  '<div id="academicEvidenceRows"></div><button type="button" class="secondary" id="academicEvidenceMore">Mostrar más</button>'+
+  '<div class="review-actions"><button type="button" class="secondary" id="academicEvidenceExport">Exportar autorizaciones</button>'+
+  '<button type="button" class="secondary" id="academicEvidenceImport">Importar autorizaciones</button>'+
+  '<input id="academicEvidenceFile" type="file" accept=".json,application/json" hidden></div>'+
+  '<p class="hint">Autorizar una propuesta permite seleccionarla en una generación posterior, únicamente cuando la unidad y su análisis sean curriculares. Una revocación impide exportar un examen que todavía contenga esa propuesta.</p>';
+ anchor.after(root);
+ const css=document.createElement('style');
+ css.textContent='#academicEvidenceReview{border:1px solid var(--line,#cbd5e1);border-radius:9px;padding:12px;margin:12px 0;background:var(--surface,#fff);color:var(--ink,#17243b)}'+
+  '#academicEvidenceReview>summary{cursor:pointer;font-weight:700}'+
+  '#academicEvidenceReview .review-controls{display:grid;grid-template-columns:1fr 100px 1fr;gap:9px;margin:12px 0}'+
+  '#academicEvidenceReview .review-controls label{font-size:12px;font-weight:650}'+
+  '#academicEvidenceReview .review-controls :is(input,select){width:100%;min-width:0}'+
+  '#academicEvidenceReview .evidence-card{border:1px solid var(--line,#cbd5e1);padding:10px;border-radius:8px;margin:10px 0}'+
+  '#academicEvidenceReview .evidence-card p{font-size:12px;margin:5px 0;overflow-wrap:anywhere}'+
+  '#academicEvidenceReview .evidence-card button{margin-top:6px;min-height:42px}'+
+  '#academicEvidenceReview .review-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}'+
+  '@media(max-width:660px){#academicEvidenceReview .review-controls{grid-template-columns:1fr}}'+
+  '@media print{#academicEvidenceReview{display:none!important}}';
+ document.head.append(css);
+ const get=id=>document.getElementById(id);
+ let all=evidenceDecisions(),limit=20;
+ async function render(){
+  try{
+   const data=await window.ExaminaOfflineLemmatizer.load();
+   const course=get('academicEvidenceCourse').value,
+    max=Math.max(1,Math.min(14,Number(get('academicEvidenceUnit').value)||1)),
+    query=norm(get('academicEvidenceQuery').value);
+   const rows=evidenceRows(data,course,max).filter(row=>!query||
+    norm(row[0]+' '+row[1]+' '+data.vocabulary[course==='gr1'?'grc':'lat']?.[row[0]]?.[course]?.entry).includes(query));
+   const approved=rows.filter(row=>evidenceApproved(course,row,all)).length,
+    held=rows.filter(row=>!evidenceCurricular(course,row[2],max)).length;
+   get('academicEvidenceSummary').textContent=rows.length+' propuestas concretas · '+approved+
+    ' autorizadas solo para uso docente · '+held+' sin autorización curricular en esta unidad.'+
+    (query&&!rows.length?' No hay propuestas registradas: consulta el lematizador para comprobar evidencias documentadas o ausencia de análisis.':'');
+   const host=get('academicEvidenceRows');host.replaceChildren();
+   for(const row of rows.slice(0,limit)){
+    const key=evidenceKey(course,row),approved=evidenceApproved(course,row,all),
+     eligible=evidenceCurricular(course,row[2],max);
+    const entry=data.vocabulary[course==='gr1'?'grc':'lat']?.[row[0]]?.[course]?.entry||row[0];
+    const card=document.createElement('article');card.className='evidence-card';
+    const title=document.createElement('strong');title.textContent=row[1]+' — '+entry;
+    const description=document.createElement('p');description.textContent=row[2]+' · '+evidenceSource[row[3]];
+    const status=document.createElement('p');status.textContent=approved?'Propuesta autorizada para uso docente (no verificada)':
+     eligible?'Propuesta sin verificar; excluida del sorteo hasta autorizarla.':
+     'Propuesta no curricular; excluida aunque se autorice.';
+    const check=document.createElement('label');check.className='check';
+    const consent=document.createElement('input');consent.type='checkbox';
+    check.append(consent,document.createTextNode('He revisado esta forma, su análisis y su procedencia.'));
+    const button=document.createElement('button');button.type='button';button.className='secondary';
+    button.textContent=approved?'Revocar autorización':'Autorizar esta propuesta';
+    button.disabled=!approved&&(!eligible||!consent.checked);
+    consent.onchange=()=>{button.disabled=!approved&&(!eligible||!consent.checked)};
+    button.onclick=()=>{
+     if(approved)all=evidenceRevoke(course,row,all);
+     else if(consent.checked&&eligible)all=evidenceGrant(course,row,all);
+     else return;
+     try{localStorage.setItem(EVIDENCE_STORE,JSON.stringify(all))}catch{
+      get('academicEvidenceSummary').textContent='No se pudo guardar. Exporta una copia de las decisiones.';
+      return;
+     }
+     document.dispatchEvent(new Event('examina-academic-evidence-changed'));
+     // No se regenera el examen ni se borra una edición manual.
+     render();
+    };
+    card.append(title,description,status,check,button);host.append(card);
+   }
+   get('academicEvidenceMore').hidden=rows.length<=limit;
+  }catch(error){get('academicEvidenceSummary').textContent='No se pudo consultar el índice local: '+error.message}
+ }
+ for(const id of ['academicEvidenceCourse','academicEvidenceUnit','academicEvidenceQuery']){
+  get(id).addEventListener(id==='academicEvidenceQuery'?'input':'change',()=>{limit=20;render()});
+ }
+ get('academicEvidenceMore').onclick=()=>{limit+=20;render()};
+ get('academicEvidenceExport').onclick=()=>download('autorizaciones-formas-morfologicas.json',
+  {schema:EVIDENCE_SCHEMA,description:'Autorizaciones docentes individuales: no certifican formas ni corrigen los bancos',
+   exported:new Date().toISOString(),decisions:all});
+ get('academicEvidenceImport').onclick=()=>get('academicEvidenceFile').click();
+ get('academicEvidenceFile').onchange=async event=>{
+  const file=event.target.files?.[0];if(!file)return;
+  try{
+   if(file.size>1000000)throw Error('Archivo demasiado grande');
+   const payload=JSON.parse(await file.text());
+   if(payload?.schema!==EVIDENCE_SCHEMA||!payload.decisions||Array.isArray(payload.decisions))
+    throw Error('Formato de autorizaciones desconocido');
+   const entries=Object.entries(payload.decisions);
+   const valid=entries.every(([key,x])=>{
+    try{
+     const parsed=JSON.parse(key);
+     return Array.isArray(parsed)&&parsed.length===6&&parsed[0]===EVIDENCE_SCHEMA&&
+      EVIDENCE_COURSES[parsed[1]]&&evidenceApproved(parsed[1],parsed.slice(2),{[key]:x});
+    }catch{return false}
+   });
+   if(!valid)throw Error('El archivo contiene registros incompletos o no individuales');
+   if(!window.confirm('¿Importar '+entries.length+' autorizaciones docentes? No verifican los paradigmas.'))return;
+   all={...all,...payload.decisions};
+   localStorage.setItem(EVIDENCE_STORE,JSON.stringify(all));
+   document.dispatchEvent(new Event('examina-academic-evidence-changed'));
+   render();
+  }catch(error){get('academicEvidenceSummary').textContent='Importación rechazada: '+error.message}
+  finally{event.target.value=''}
+ };
+ render();
+}
+
+window.ExaminaTeacherReview={buildCases,evidenceState,evidenceKey,evidenceApproved,
+ evidenceGrant,evidenceRevoke,evidenceRows,approvedExamForms,evidenceAttributes,
+ evidenceCheckExam,evidenceMayExport,evidenceCurricular};
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initAcademicEvidence);
+else initAcademicEvidence();
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
