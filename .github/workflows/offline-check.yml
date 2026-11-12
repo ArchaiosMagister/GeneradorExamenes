@@ -104,6 +104,8 @@ jobs:
           npx playwright install chromium
       - name: Comprobar interfaz de preguntas, UD, alcance del glosario y Eulexis contextual
         run: node scripts/test-auditoria-ui.cjs
+      - name: Verificar autorizaciones académicas y bloqueo DOCX en Chromium sin conexión
+        run: node scripts/test-academic-evidence-browser.cjs
       - name: Validar glosas en castellano y valenciano
         run: node scripts/test-valenciano.cjs
       - name: Auditar cobertura y pendientes del vocabulario por unidad
