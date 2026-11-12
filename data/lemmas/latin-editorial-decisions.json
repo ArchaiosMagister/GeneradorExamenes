@@ -33,5 +33,20 @@
       "reason": "Nonnullis philosophis es el dativo de la persona a quien agrada algo con placebat",
       "approved": "2026-11-11"
     }
+  ],
+  "addedEntries": [
+    {
+      "id": "parens-ud10",
+      "lemma": "parens",
+      "entry": "parens, –ntis",
+      "course": "lat1",
+      "units": [
+        "UD 9–10"
+      ],
+      "meaning": "padre, madre",
+      "reason": "Decisión contextual del docente: parentibus de parens (dativo o ablativo plural); no eliminar pareo en otros contextos",
+      "approved": "2026-11-12",
+      "verifiedMorphology": false
+    }
   ]
 }
