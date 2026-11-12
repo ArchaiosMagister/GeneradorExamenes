@@ -1363,8 +1363,8 @@ function morphSyntagmRows(cfg,greek=false){
    .map(x=>({title:x.compound.title}));
  });
  return Array.from({length:cfg.offer},(_,i)=>
-  '<p class="exam-item reference-analysis-item morph-syntagm-item" data-syntagm-slot="'+i+'">'+
-  String.fromCharCode(97+i)+'. <i>'+esc(lines[i]||proposed[i]?.title||
+  '<p class="exam-item reference-analysis-item morph-syntagm-item" data-syntagm-slot="'+i+'" contenteditable="false">'+
+  String.fromCharCode(97+i)+'. <i contenteditable="plaintext-only" spellcheck="false">'+esc(lines[i]||proposed[i]?.title||
   (greek?'(artículo) + (sustantivo) + (adjetivo)':'(sustantivo) + (adjetivo)'))+'</i></p>').join('');
 }
 function morphSyntagmHeading(cfg,va){return (va?'Declina ':'Declina ')+cfg.decline+(va?' dels ':' de los ')+cfg.offer+(va?' sintagmes proposats.':' sintagmas propuestos.')}
