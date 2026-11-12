@@ -98,6 +98,8 @@ jobs:
           npm install --no-save --ignore-scripts playwright@1.56.1
           # El runner de Ubuntu ya incluye las bibliotecas para Chromium.
           npx playwright install chromium
+      - name: Comprobar sincronización bidireccional en todos los modelos
+        run: node scripts/test-bidirectional-editors.cjs
       - name: Comprobar interfaz de preguntas, UD, alcance del glosario y Eulexis contextual
         run: node scripts/test-auditoria-ui.cjs
       - name: Validar glosas en castellano y valenciano
