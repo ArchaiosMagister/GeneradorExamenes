@@ -57,7 +57,7 @@ for(const row of JSON.parse(fs.readFileSync(path.join(root,'data/lemmas/verified
 }
 
 assert.ok(data.extensions.rejected_for_conflict.every(x=>x.lemma&&x.features.length>0));
-assert.equal(Object.keys(data.vocabulary.lat).length,772+(data.extensions?.readerEnrichment?.additions?.lat||0),
+assert.equal(Object.keys(data.vocabulary.lat).length,772+(data.extensions?.latin_editorial_decisions?.newLexicalEntries||0)+(data.extensions?.readerEnrichment?.additions?.lat||0),
  'El enriquecimiento solo puede añadir lemas presentes en el banco docente');
 assert.equal(Object.keys(data.vocabulary.grc).length,351+(data.extensions?.readerEnrichment?.additions?.grc||0),
  'El enriquecimiento griego solo puede añadir lemas presentes en el banco docente');
