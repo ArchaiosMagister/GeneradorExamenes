@@ -1,0 +1,26 @@
+{
+  "schema": 1,
+  "revision": "2026-11-12",
+  "decisiones": [
+    {
+      "latin": "inde",
+      "decision": "excluir",
+      "motivo": "Exclusión docente del sorteo; no añadir aunque conste en el Excel",
+      "estado": "EXCLUIDA"
+    },
+    {
+      "latin": "pirum",
+      "decision": "excluir",
+      "motivo": "Exclusión docente por acepción ambigua; no añadir al sorteo",
+      "estado": "EXCLUIDA"
+    },
+    {
+      "latin": "pelliculam",
+      "decision": "aceptar",
+      "castellano": "pelleja",
+      "motivo": "Patrimonial, distinguir del cultismo película",
+      "estado": "APTO_PROPUESTO",
+      "id": "EVF-1061"
+    }
+  ]
+}
