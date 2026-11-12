@@ -69,7 +69,7 @@ function profile(lang,course,lemma,record){
     documentary.some(y=>y.tags.includes('perfecto de indicativo, sujeto masculino')):false;
   const state=byBlock?'contrastado de forma individual':
    byTeacher?'solo formas explícitas docentes, no paradigma':'pendiente de contraste';
-  return {...x,state,formCount:byBlock?.readings.length||byTeacher?6:0,
+  return {...x,state,formCount:byBlock?byBlock.readings.length:(byTeacher?6:0),
    sortearAutomaticamente:!!byBlock||byTeacher,
    note:x.threshold?'Contenido no elegible antes de UD'+x.threshold:undefined};
  });
