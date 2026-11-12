@@ -3626,6 +3626,12 @@ loadTeacherLatinLexBanks();
    const editor=document.createElement('div');editor.className='question-editor';editor.dataset.editorFor=kind;body.append(editor);
    questionHost.append(detail);
   }
+  // Reconstruir el menú (al cambiar curso, idioma o cargar bancos) no debe
+  // dejar vacíos los campos de verbos que ya aparecen en el examen.
+  for(const kind of latinLexModules[currentCourse()]||[]){
+   const rows=examSelectionCache.get(examCacheSignature('lex-'+kind));
+   if(Array.isArray(rows))latinLexStatus(kind,rows);
+  }
   /* Después de mover los editores a cada pregunta, conserva las referencias al
      examen actual para que cada cambio manual se refleje en vista previa y Word. */
   refreshManualMorphWords();
