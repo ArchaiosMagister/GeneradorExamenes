@@ -1549,23 +1549,27 @@ function latinMorphologyVerbPool(chosen){
 function latinMorphologyVerbSelection(pool,count){
  const max=Math.max(0,...selectedUnits().map(examUnitNumber).filter(Number.isInteger));
  if(max<3||count<2)return sample(pool,count);
- const passive=pool.filter(item=>item.voice==='pasiva'),active=pool.filter(item=>item.voice==='activa');
+ const passive=pool.filter(item=>item.voice==='pasiva'),active=pool.filter(item=>item.voice==='activa'),
+  deponent=pool.filter(item=>item.voice==='deponente');
  if(!passive.length||!active.length)return sample(pool,count);
- // Desde UD9, reservar un perfectum pasivo cuando haya al menos dos
- // formas; con tres o más se incluyen perfecto y pluscuamperfecto.
+ // UD7: si el banco dispone de una forma deponente explícita, reservar una
+ // casilla a partir de cuatro filas. No presentar nunca un deponente como activo.
+ const wantedDeponent=max>=7&&count>=4&&deponent.length?sample(deponent,1):[];
+ // UD9: perfecto y pluscuamperfecto pasivos garantizados si hay 3+ filas,
+ // sin expulsar la forma activa ni la deponente que el alumno debe reconocer.
  const perfect=passive.filter(x=>x.tense==='perfecto de indicativo');
  const pluperfect=passive.filter(x=>x.tense==='pluscuamperfecto de indicativo');
  const identity=x=>x.entry+'|'+x.form+'|'+x.tense+'|'+x.voice;
  const required=max>=9&&perfect.length?[...sample(perfect,1),
   ...(count>=3&&pluperfect.length?sample(pluperfect,1):[])]:[];
- const used=new Set(required.map(identity));
- const passiveCount=Math.max(required.length,Math.max(1,Math.floor(count/3)));
+ const used=new Set([...required,...wantedDeponent].map(identity));
+ const passiveSlots=Math.min(count-wantedDeponent.length-1,
+  Math.max(required.length,Math.max(1,Math.floor(count/3))));
  const morePassive=sample(passive.filter(x=>!used.has(identity(x))),
-  passiveCount-required.length);
- const chosen=[...required,...morePassive,...sample(active,1)];
+  Math.max(0,passiveSlots-required.length));
+ const chosen=[...required,...wantedDeponent,...morePassive,...sample(active,1)];
  for(const item of chosen)used.add(identity(item));
- const rest=sample(pool.filter(x=>!used.has(identity(x))),
-  Math.max(0,count-chosen.length));
+ const rest=sample(pool.filter(x=>!used.has(identity(x))),Math.max(0,count-chosen.length));
  return sample(chosen.concat(rest),count);
 }
 function generateLatinMorphologyReference(){
