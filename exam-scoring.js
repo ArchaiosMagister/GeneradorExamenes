@@ -72,7 +72,7 @@
    status.textContent=lang?'No hi ha preguntes per a puntuar.':'No hay preguntas que puntuar.';
   }else if(isMorph){
    status.className='exam-scoring-total';
-   status.textContent=(lang?'Total: ':'Total: ')+totalString+' / '+(lang?'examen de morfologia (sense mínim de 10 punts)':'examen de morfología (sin exigencia de 10 puntos)');
+   status.textContent=(lang?'Puntuació bruta: ':'Puntuación bruta: ')+totalString+(lang?' punts. La nota sobre 10 es calcula sobre aquest màxim.':' puntos. La nota sobre 10 se calcula sobre este máximo.');
   }else if(total!==1000){
    status.className='exam-scoring-total exam-scoring-warning';
    status.textContent=(lang?'Avís: la puntuació suma ':'Aviso: la puntuación suma ')+
@@ -82,7 +82,7 @@
    status.textContent=lang?'Total: 10 punts.':'Total: 10 puntos.';
   }
  }
- function setScore(key,cents,{source='field'}={}){
+ function setScore(key,cents,{source='field',activeInput=null}={}){
   if(cents===null)return false;
   if(state().course!=='greek1'&&previousQuestions.some(item=>item.key===key&&kind(item.caption)==='lex'))cents=200;
   scores[key]=cents;persist();
@@ -91,8 +91,15 @@
     const span=item.el.querySelector('.exam-question-points');
     if(span)span.textContent=label(cents);
    }
-   const input=[...rows.querySelectorAll('input[data-scoring-key]')].find(el=>el.dataset.scoringKey===key);
-   if(input&&source!=='field')input.value=value(cents);
+   for(const input of panel.querySelectorAll('input[data-scoring-key]')){
+    if(input.dataset.scoringKey===key&&input!==activeInput)input.value=value(cents);
+   }
+   if(state().course==='greek1'){
+    const scoreKind=key.split('/').pop().replace(/#\d+$/,'');
+    const aliases={decl:'declension',verb:'conjugation',verbforms:'conjugation',sent:'sentences'};
+    const legacy=document.getElementById('greek-points-'+(aliases[scoreKind]||scoreKind));
+    if(legacy)legacy.value=value(cents).replace(',','.');
+   }
   }
   showStatus();return true;
  }
@@ -109,13 +116,12 @@
    control.setAttribute('aria-label','Puntos de la pregunta '+(i+1)+': '+item.caption);
    control.value=value(scores[item.key]||0);
    if(state().course!=='greek1'&&kind(item.caption)==='lex'){
-    control.disabled=true;
-    control.title='El léxico tiene puntuación fija de 2p.';
+    control.disabled=true;control.title='El léxico tiene puntuación fija de 2p.';
    }
    control.addEventListener('input',()=>{
     const n=number(control.value);
     control.setAttribute('aria-invalid',String(n===null));
-    if(n!==null)setScore(item.key,n);
+    if(n!==null)setScore(item.key,n,{activeInput:control});
    });
    control.addEventListener('blur',()=>{
     const n=number(control.value);
@@ -133,9 +139,46 @@
   heading.textContent=state().language==='va'?'Puntuació per pregunta':'Puntuación por pregunta';
   showStatus();
  }
+
+ // Cada pregunta muestra su propia puntuación, además del resumen general.
+ // Se enlaza a la misma clave que el Word, sin reconstruir el examen.
+ function renderQuestionScores(){
+  const host=document.getElementById('examQuestionMenus');if(!host)return;
+  host.querySelectorAll('.exam-question-score-row').forEach(row=>row.remove());
+  for(const item of previousQuestions){
+   const base=item.key.split('/').pop().replace(/#\d+$/,'');
+   const target=base==='verbforms'?'verb':base;
+   const detail=[...host.querySelectorAll('[data-question]')].find(el=>el.dataset.question===target);
+   if(!detail||detail.dataset.available==='false'||detail.dataset.included==='false')continue;
+   const body=detail.querySelector('.exam-question-config');if(!body)continue;
+   const label=document.createElement('label');label.className='exam-question-score-row';
+   label.style.display='flex';label.style.alignItems='center';label.style.gap='10px';
+   label.textContent=state().language==='va'?'Puntuació (p.)':'Puntuación (p.)';
+   const input=document.createElement('input');input.type='text';input.inputMode='decimal';
+   input.autocomplete='off';input.dataset.scoringKey=item.key;
+   input.setAttribute('aria-label','Puntuación de '+item.caption);
+   input.style.width='90px';input.style.maxWidth='90px';
+   input.value=value(scores[item.key]||0);
+   if(state().course!=='greek1'&&target==='lex'){
+    input.disabled=true;input.title='Léxico: 2p. fijos';
+   }
+   input.addEventListener('input',()=>{
+    const parsed=number(input.value);
+    input.setAttribute('aria-invalid',String(parsed===null));
+    if(parsed!==null)setScore(item.key,parsed,{source:'question',activeInput:input});
+   });
+   input.addEventListener('blur',()=>{
+    input.value=value(scores[item.key]||0);input.removeAttribute('aria-invalid');
+   });
+   label.append(input);body.prepend(label);
+  }
+ }
+ const menuHost=document.getElementById('examQuestionMenus');
+ if(menuHost)new MutationObserver(()=>renderQuestionScores()).observe(menuHost,{childList:true});
+
  function sync(){
   renderPending=false;
-  if(!paper.querySelector('.exam-sheet')){previousQuestions=[];renderRows();return}
+  if(!paper.querySelector('.exam-sheet')){previousQuestions=[];renderRows();renderQuestionScores();return}
   if(observer)observer.disconnect();
   const elements=find(),raw=elements.map(el=>{
    const text=el.dataset.scoringCaption||clean(el.textContent);
@@ -160,6 +203,7 @@
    if(state().course!=='greek1'&&base==='lex')scores[key]=200;
    else if(!Object.prototype.hasOwnProperty.call(scores,key))scores[key]=defaults[i];
    const el=item.el;
+   if(item.original!==null&&!el.dataset.scoringOriginal)el.dataset.scoringOriginal=String(item.original/100);
    el.dataset.scoringCaption=item.caption;
    el.dataset.scoringKey=key;
    if(!el.querySelector('.exam-question-points')){
@@ -182,10 +226,13 @@
    }else{
     const span=el.querySelector('.exam-question-points');
     span.dataset.scoringKey=key;
+    // Al recuperar un borrador, el texto del Word y el estado numérico
+    // deben proceder del mismo valor restaurado.
+    span.textContent=label(scores[key]);
    }
    return {el,key,caption:item.caption};
   });
-  persist();renderRows();
+  persist();renderRows();renderQuestionScores();
   if(observer)observer.observe(paper,{subtree:true,childList:true,characterData:true});
  }
  function schedule(){
@@ -259,7 +306,24 @@
  }
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',sync,{once:true});
  else sync();
+ function restoreScores(saved){
+  if(!saved||typeof saved!=='object'||Array.isArray(saved))return;
+  const current=state(),prefix=current.course+'/'+current.model+'/';
+  for(const [key,cents] of Object.entries(saved)){
+   if(key.startsWith(prefix)&&Number.isInteger(cents)&&cents>=0&&cents<=10000)scores[key]=cents;
+  }
+  persist();sync();
+ }
+ document.addEventListener('change',event=>{
+  const match=/^greek-points-(declension|conjugation|forms|pronouns|etymology|sentences)$/.exec(event.target?.id||'');
+  if(!match)return;
+  const aliases={declension:'decl',conjugation:'verb',sentences:'sent'};
+  const base=aliases[match[1]]||match[1],item=previousQuestions.find(x=>
+   x.key.split('/').pop().replace(/#\d+$/,'')===base);
+  if(item)setScore(item.key,number(event.target.value));
+ },true);
  window.ExaminaScoring={sync,parse:number,format:value,total:()=>sum(),
   rows:()=>previousQuestions.map(x=>({key:x.key,points:scores[x.key],caption:x.caption})),
-  isMorph:morph};
+  snapshot:()=>Object.fromEntries(previousQuestions.map(x=>[x.key,scores[x.key]])),
+  restore:restoreScores,isMorph:morph};
 })();

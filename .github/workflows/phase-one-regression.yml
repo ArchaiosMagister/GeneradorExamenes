@@ -1,0 +1,40 @@
+name: Phase I regression (no deployment)
+
+on:
+  pull_request:
+    paths:
+      - 'index.html'
+      - 'exam-scoring.js'
+      - 'scripts/test-phase-one.cjs'
+      - '.github/workflows/phase-one-regression.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: Word, preview, drafts, morphology and PWA
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser test tools
+        run: |
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+      - name: Rebuild offline distribution in CI workspace
+        run: npm run offline:build
+      - name: Phase I synchronization regressions
+        run: node scripts/test-phase-one.cjs
+      - name: All existing Word preview regressions
+        run: npm run preview:test
+      - name: Vocabulary regressions
+        run: npm run vocabulary:test
+      - name: Offline consistency
+        run: npm run offline:test
+      - name: PWA browser regressions
+        run: npm run pwa:test

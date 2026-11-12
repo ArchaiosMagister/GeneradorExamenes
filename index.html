@@ -827,13 +827,26 @@ $('paper').addEventListener('input',event=>{
  if(active.target.closest('[data-syntagm-slot]'))syncMorphSyntagmTextarea();
  warnExamManualSolution();
 });
-function refreshManualMorphWords(){
+$('name').addEventListener('input',()=>{
+ const title=$('paper').querySelector('.exam-header-line:first-child > span:first-child');
+ if(!title)return;
+ const requested=$('name').value.trim();
+ const suffix=title.textContent.match(/\s+[–—-]\s+UDs?\s*\d[\d\s,–-]*/i)?.[0]||'';
+ title.textContent=requested+(suffix&&!requested.includes(suffix.trim())?suffix:'');
+});
+function refreshManualMorphWords(forceGreekDraft=false){
  const host=$('manualMorphWords');
  if(!host)return;
- examEditorLinks=new WeakMap();examEditorLinkSerial=0;
+ examEditorLinks=new WeakMap(); // IDs persist to prevent stale menu-field collisions.
  host.replaceChildren();
- if(currentCourse()==='greek1'&&$('model').value==='complete')return; // Tiene editor de corpus propio.
+ // Griego completo mantiene su editor especializado en generación normal.
+ // Solo la restauración fuerza enlaces genéricos al HTML conservado.
+ if(currentCourse()==='greek1'&&$('model').value==='complete'&&!forceGreekDraft)return;
  const paper=$('paper'),targets=[],seen=new Set();
+ // La cabecera también es editable desde el Word; vincularla con su campo.
+ const headerTitle=paper.querySelector('.exam-header-line:first-child > span:first-child');
+ if(headerTitle)linkExamWordEditor(headerTitle,$('name'));
+
  const add=(el,kind)=>{
   if(!el||seen.has(el))return;
   seen.add(el);targets.push({el,kind});
@@ -2120,7 +2133,14 @@ renderReview();
 // Borradores del examen: copia fiel del contenido editable, incluida la clave de respuestas.
 // La copia automática antes de regenerar protege las modificaciones manuales accidentales.
 const DRAFT_KEY='examina_draft_v14', PREVIOUS_KEY='examina_previous_v14';
-function snapshotExam(){return {schema:'examina-exam-draft',version:1,course:currentCourse(),model:$('model').value,language:$('lang').value,created:new Date().toISOString(),title:$('name').value,html:$('paper').innerHTML};}
+function snapshotExam(){return {
+ schema:'examina-exam-draft',version:1,course:currentCourse(),model:$('model').value,
+ language:$('lang').value,created:new Date().toISOString(),title:$('name').value,
+ html:$('paper').innerHTML,
+ scores:window.ExaminaScoring?.snapshot?.()||null,
+ units:[...document.querySelectorAll('#unitChoices .unit-choice:checked')].map(el=>units[Number(el.value)]).filter(Boolean),
+ cumulative:$('cumulative')?.checked===true
+};}
 function validDraft(d){return d&&d.schema==='examina-exam-draft'&&d.version===1&&typeof d.html==='string'&&d.html.length<2000000&&['latin4','latin1','greek1'].includes(d.course)}
 function cleanDraftHtml(raw){
  const doc=new DOMParser().parseFromString('<div id="root">'+raw+'</div>','text/html');const root=doc.getElementById('root');
@@ -2130,13 +2150,39 @@ function cleanDraftHtml(raw){
  return root.innerHTML;
 }
 function saveDraftTo(key){try{localStorage.setItem(key,JSON.stringify(snapshotExam()));return true}catch(e){$('draftStatus').textContent='No se pudo guardar localmente. Exporta el borrador JSON.';return false}}
-function restoreDraft(d){if(!validDraft(d))throw Error('Formato de borrador no reconocido');$('paper').innerHTML=cleanDraftHtml(d.html);
- const restoredSlots=[...$('paper').querySelectorAll('[data-sentence-slot]')];
- if(restoredSlots.length&&d.course===currentCourse()&&(!d.model||d.model===$('model').value)){
-  saveSentenceLines(restoredSlots.map(node=>node.textContent));
-  syncSentenceEditor();
+function restoreDraft(d){
+ if(!validDraft(d))throw Error('Formato de borrador no reconocido');
+ // Ajustar el contexto ANTES de reponer el HTML: los selectores pueden
+ // generar un examen intermedio, pero nunca sobrescribirán el borrador final.
+ if(d.course!==currentCourse()){
+  $('course').value=d.course;$('course').dispatchEvent(new Event('change',{bubbles:true}));
  }
- $('paper').setAttribute('contenteditable','true');$('paper').setAttribute('spellcheck','false');$('draftStatus').textContent='Borrador recuperado ('+d.course+', '+new Date(d.created).toLocaleString()+'). Revisa curso y unidades antes de regenerar.';}
+ if(d.model&&d.model!==$('model').value&&[...$('model').options].some(x=>x.value===d.model)){
+  $('model').value=d.model;$('model').dispatchEvent(new Event('change',{bubbles:true}));
+ }
+ if(d.language&&d.language!==$('lang').value&&['es','va'].includes(d.language)){
+  $('lang').value=d.language;$('lang').dispatchEvent(new Event('change',{bubbles:true}));
+ }
+ if(Array.isArray(d.units)){
+  const selected=new Set(d.units);
+  for(const input of document.querySelectorAll('#unitChoices .unit-choice'))
+   input.checked=selected.has(units[Number(input.value)]);
+  const control=document.querySelector('#unitChoices .unit-choice');
+  control?.dispatchEvent(new Event('change',{bubbles:true}));
+ }
+ if(typeof d.cumulative==='boolean')$('cumulative').checked=d.cumulative;
+ $('paper').innerHTML=cleanDraftHtml(d.html);
+ if(typeof d.title==='string')$('name').value=d.title;
+ const restoredSlots=[...$('paper').querySelectorAll('[data-sentence-slot]')];
+ if(restoredSlots.length){saveSentenceLines(restoredSlots.map(node=>node.textContent));syncSentenceEditor()}
+ $('paper').setAttribute('contenteditable','true');$('paper').setAttribute('spellcheck','false');
+ // Los WeakMap de edición no sobreviven a innerHTML: regenerar enlaces
+ // de edición, pero no las preguntas ni sus valores.
+ refreshManualMorphWords(true);
+ if(d.scores)window.ExaminaScoring?.restore?.(d.scores);
+ else window.ExaminaScoring?.sync?.(); // Borradores de versiones anteriores.
+ $('draftStatus').textContent='Borrador recuperado ('+d.course+', '+new Date(d.created).toLocaleString()+'). Campos editables y puntuaciones restaurados.';
+}
 $('saveDraft').onclick=()=>{if(saveDraftTo(DRAFT_KEY))$('draftStatus').textContent='Borrador guardado en este navegador. Incluye tus cambios manuales.'};
 $('restoreDraft').onclick=()=>{try{const d=JSON.parse(localStorage.getItem(DRAFT_KEY)||'null');if(!d)throw Error('No hay borrador guardado');restoreDraft(d)}catch(e){$('draftStatus').textContent=e.message}};
 $('downloadDraft').onclick=()=>downloadBlob('examen_borrador_'+currentCourse()+'.json',new Blob([JSON.stringify(snapshotExam(),null,2)],{type:'application/json'}));
@@ -2658,8 +2704,12 @@ function greekRegenerate(kind){
 function greekExamControls(){
  const host=$('manualMorphWords');
  if(!host||currentCourse()!=='greek1'||$('model').value!=='complete'||!greekExamState)return;
- examEditorLinks=new WeakMap();examEditorLinkSerial=0;
+ examEditorLinks=new WeakMap(); // IDs persist to prevent stale menu-field collisions.
  host.replaceChildren();
+ // El editor especializado de Griego completo debe conservar también el
+ // enlace bidireccional entre el título del Word y su campo de menú.
+ const headerTitle=$('paper').querySelector('.exam-header-line:first-child > span:first-child');
+ if(headerTitle)linkExamWordEditor(headerTitle,$('name'));
  const labels={declension:'Declinación',conjugation:'Conjugación',forms:'Análisis morfológico',pronouns:'Pronombres',etymology:'Derivados etimológicos'};
  for(const [kind,label] of Object.entries(labels)){
   const pool=greekChoicePool(kind),selected=greekExamState.ids[kind]||[];
@@ -3866,7 +3916,7 @@ loadTeacherLatinLexBanks();
   }
  }
  const prevRefresh=refreshManualMorphWords;
- refreshManualMorphWords=function(){prevRefresh();distributeEditors()};
+ refreshManualMorphWords=function(...args){prevRefresh(...args);distributeEditors()};
  const prevGreekControls=greekExamControls;
  greekExamControls=function(){
   // Solo el examen completo crea controles de selección adicionales.
