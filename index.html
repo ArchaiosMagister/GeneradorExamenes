@@ -2019,8 +2019,8 @@ function refreshCourse(){
  $('cultureType').disabled=!isLatin4;$('newCulture').disabled=!isLatin4;$('importCulture').disabled=!isLatin4;
  $('decl').disabled=false;$('verb').disabled=false;
  $('morphAnalyze').disabled=isGreek;$('auditMorph').disabled=isGreek;
- $('courseStatus').textContent=isGreek?'Griego I: vocabulario incorporado como banco general. La flexión se limita a paradigmas áticos explícitos; si no hay coincidencias, se muestra un aviso.':isLatin4?'Latín 4.º ESO: vocabulario original incorporado por unidades. Cultura solo se habilita aquí; su banco está vacío hasta recibir tus temas cerrados.':'Latín I: vocabulario original incorporado. Cultura no está disponible en este curso.';
- $('cultureHint').textContent=isLatin4?'Banco de cultura exclusivo de Latín 4.º ESO; pendiente de tus temas cerrados.':'Cultura solo se utiliza en Latín 4.º ESO.';
+ $('courseStatus').textContent=isGreek?'Griego I: vocabulario incorporado como banco general. La flexión se limita a paradigmas áticos explícitos; si no hay coincidencias, se muestra un aviso.':isLatin4?'Latín 4.º ESO: vocabulario y banco docente de cultura incorporados por unidades.':'Latín I: vocabulario original incorporado. Cultura no está disponible en este curso.';
+ $('cultureHint').textContent=isLatin4?'Cultura de Latín 4.º ESO: solo se incluyen las unidades marcadas.':'Cultura solo se utiliza en Latín 4.º ESO.';
  $('name').value=({'latin1':$('lang').value==='va'?'Examen de Llatí I':'Examen de Latín I','latin4':$('lang').value==='va'?'Examen de Llatí 4t ESO':'Examen de Latín 4.º ESO','greek1':$('lang').value==='va'?'Examen de Grec I':'Examen de Griego I'})[c];
  updateUnits();if(isGreek){$('courseStatus').textContent+=' Entradas en este curso: '+vocab.filter(x=>courseOf(x)===c).length+'.'}else{const bank=latinSharedBank;const indexed=[...bank.entries.values()].filter(x=>x.courses.has(c));$('courseStatus').textContent+=' Banco compartido: '+indexed.length+' lemas del curso; '+bank.vocabulary(c).length+' entradas distintas. Solo las formas con paradigma comprobado se usan en morfología.';mRefreshEntries();}generate();
 }
@@ -2972,7 +2972,7 @@ function greekExamHeader(chosen,mode){
  const titleInput=$('name').value.trim(),custom=titleInput&&!['Examen de Griego I','Examen de Grec I','Ficha de repaso de Griego I','Fitxa de repàs de Grec I'].includes(titleInput);
  const prefix=$('sheetType').value==='review'?(va?'Fitxa de repàs de ':'Ficha de repaso de '):$('model').value==='morphology'?(va?'Examen de morfologia de ':'Examen de morfología de '):$('model').value==='translation'?(va?'Examen de traducció de ':'Examen de traducción de '):'Examen de ';
  const title=examHeadingWithUnits(custom?titleInput:prefix+(va?'Grec I':'Griego I'),chosen)+($('seed').value?' · '+$('seed').value:'');
- return '<div class="exam-header"><p class="exam-header-line"><span>'+esc(title)+'</span><span>'+trimesterHeading()+'</span></p><p class="exam-header-line"><span>'+(va?'Nom i cognoms:':'Nombre y apellidos:')+'</span><span>'+(va?'Data:':'Fecha')+'</span></p></div>';
+ return '<div class="exam-header"><p class="exam-header-line"><span>'+esc(title)+'</span><span>'+trimesterHeading()+'</span></p><p class="exam-header-line"><span>'+(va?'Nom i cognoms:':'Nombre y apellidos:')+'</span><span>'+examDateLabel(va)+'</span></p></div>';
 }
 function greekQuestionLabel(kind){if(kind==='declension'&&$('model').value==='complete'&&greekLimit()>=5)return $('lang').value==='va'?'Declina els sintagmes: article, substantiu i adjectiu':'Declina los sintagmas: artículo, sustantivo y adjetivo';if(kind==='sentences'&&$('model').value==='translation')return $('lang').value==='va'?'Tradueix les oracions següents':'Traduce las siguientes oraciones';return ({es:{declension:'Declina',conjugation:'Conjuga',forms:'Analiza morfológicamente',pronouns:'Completa la tabla con el análisis morfológico adecuado',etymology:'Escribe dos derivados etimológicos de cada una de estas palabras griegas',sentences:'Analiza y traduce las siguientes oraciones'},va:{declension:'Declina',conjugation:'Conjuga',forms:'Analitza morfològicament',pronouns:'Completa la taula amb l’anàlisi morfològica adequada',etymology:'Escriu dos derivats etimològics de cadascuna d’aquestes paraules gregues',sentences:'Analitza i tradueix les oracions següents'}})[$('lang').value][kind]}
 function greekPoints(kind){const v=Number($('greek-points-'+kind).value);if(kind==='pronouns'&&$('model').value==='complete'&&examQuestionEnabled('pronouns')&&v===0)return 1;return Number.isFinite(v)?Math.max(0,Math.min(100,v)):0}
@@ -3509,6 +3509,7 @@ function examQuotaGreek(pool,count){
  return picked;
 }
 function examCacheSignature(kind){
+ if(kind==='culture')return JSON.stringify([kind,selectedUnits(false),$('cultureType')?.value||'all']);
  const unitsKey=[...document.querySelectorAll('.unit-choice:checked')].map(x=>x.value).join(',');
  const morph=['morf','morphology'].includes($('model').value);
  const countId=kind==='decl'?(morph?'morphDecline':'count-decl'):
