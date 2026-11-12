@@ -32,17 +32,22 @@ assert.equal(data.extensions.latin_editorial_decisions.verifiedFormsAdded,0,
  'La corrección de un enunciado no acredita nuevas flexiones');
 assert.equal(data.vocabulary.lat.moveo.lat1.entry,'moveo, movi, motum (2ª)');
 assert.equal(data.vocabulary.lat.eripio.lat1.entry,'eripio, eripui, ereptum (mx.)');
-assert.equal(data.rows.lat.filter(x=>x[3]===5).length,75);
+const overrides=JSON.parse(fs.readFileSync(path.join(root,'data/lemmas/verified-overrides.json'),'utf8'));
+const expectedOverridden=overrides.paradigms.reduce((n,p)=>n+p.blocks.reduce((sum,b)=>sum+b.forms.length,0),0)+overrides.singleForms.length;
+assert.equal(data.rows.lat.filter(x=>x[3]===5).length+
+ data.rows.grc.filter(x=>x[3]===5).length,expectedOverridden,
+ 'El número de formas individualmente contrastadas debe calcularse desde la fuente persistente');
 assert(data.rows.lat.some(x=>x[0]==='vinco'&&x[1]==='vicerunt'&&x[2]==='V;IND;ACT;PRF;3;PL'&&x[3]===5));
-assert.equal(data.rows.grc.filter(x=>x[3]===5).length,24);
+assert(data.rows.grc.filter(x=>x[3]===5).length>=30,
+ 'Deben mantenerse los presentes medios griegos documentados');
 assert.equal(data.rows.lat.filter(x=>x[0]==='sum'&&x[3]===5).length,30);
 assert.equal(data.rows.grc.filter(x=>x[0]==='γιγνομαι'&&x[3]===5).length,6);
 assert.equal(data.rows.grc.filter(x=>x[0]==='ερχομαι'&&x[3]===5).length,6);
 assert.equal(data.rows.grc.filter(x=>x[0]==='διδασκω'&&x[3]===5).length,6);
 assert.equal(data.rows.grc.filter(x=>x[0]==='ακουω'&&x[3]===5).length,6);
-assert.equal(data.source.externalVerification.length,40);
-assert.equal(data.extensions.verifiedIndividualForms,33);
-for(const row of JSON.parse(fs.readFileSync(path.join(root,'data/lemmas/verified-overrides.json'),'utf8')).singleForms){
+assert.equal(data.source.externalVerification.length,overrides.paradigms.length+overrides.singleForms.length);
+assert.equal(data.extensions.verifiedIndividualForms,overrides.singleForms.length);
+for(const row of overrides.singleForms){
  assert(data.rows[row.lang].some(x=>x[0]===row.lemma&&x[1]===row.form&&x[2]===row.tags&&x[3]===5),
   'Falta la comprobación individual de '+row.form);
  assert(data.source.externalVerification.some(x=>x.lemma===row.lemma&&x.form===row.form&&x.reference===row.reference));
