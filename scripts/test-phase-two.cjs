@@ -33,10 +33,18 @@ async function inspect(page,filename){
    noAdjectivesAt1:latinExamFormCandidates(['UD1'],true).flat().every(item=>item.category!=='adjectives'),
    noThirdAdjectivesAt4:latinExamFormCandidates(['UD4'],true).flat()
     .every(item=>item.category!=='adjectives'||!/^brevis,\s*[–−-]e/.test(item.entry)),
-   thirdAdjectivesAt5:latinExamFormCandidates(['UD5'],true).flat()
-    .filter(item=>item.category==='adjectives'&&/^brevis,\s*[–−-]e/.test(item.entry)).length,
+   thirdAdjectivesAt5:0,initialThirdAdjectivesAt5:0,approvedLocally:false,approvalNotVerification:false,
    greek:{}
   };
+  const thirdForms=()=>latinExamFormCandidates(['UD5'],true).flat()
+   .filter(item=>item.category==='adjectives'&&/^brevis,\s*[–−-]e/.test(item.entry)).length;
+  window.ExaminaThirdReview.set('brevis, –e','pending');
+  output.initialThirdAdjectivesAt5=thirdForms();
+  window.ExaminaThirdReview.set('brevis, –e','approved');
+  output.thirdAdjectivesAt5=thirdForms();
+  const decision=window.ExaminaThirdReview.snapshot().brevis;
+  output.approvedLocally=window.ExaminaThirdReview.get('brevis, –e')==='approved';
+  output.approvalNotVerification=decision?.verified===false&&decision?.decision==='approved';
   c.value='greek1';c.dispatchEvent(new Event('change',{bubbles:true}));
   m.value='morphology';m.dispatchEvent(new Event('change',{bubbles:true}));
   const make=(label)=>{
@@ -73,7 +81,9 @@ async function inspect(page,filename){
  assert(diagnostics.excluded3rd&&diagnostics.included3rd,'El filtro nominal ignora el nivel curricular');
  assert(diagnostics.noAdjectivesAt1,'Se sortearon adjetivos en UD1');
  assert(diagnostics.noThirdAdjectivesAt4,'Se sortearon adjetivos de 3.ª antes de UD5');
- assert(diagnostics.thirdAdjectivesAt5>0,'No se ofrecen los adjetivos regulares de 3.ª al introducirse');
+ assert.equal(diagnostics.initialThirdAdjectivesAt5,0,'No deben sortearse propuestas sin aceptar');
+ assert(diagnostics.approvedLocally&&diagnostics.approvalNotVerification,'Aceptar no equivale a verificar');
+ assert(diagnostics.thirdAdjectivesAt5>0,'No se ofrecen los adjetivos aprobados desde UD5');
  assert.equal(diagnostics.forms.length,24,'Brevis debe tener 4 series de 6 casos');
  assert(diagnostics.examples.every(x=>diagnostics.forms.includes(x)),
   'Falta una forma básica de brevis: '+JSON.stringify(diagnostics.forms));
@@ -94,6 +104,25 @@ async function inspect(page,filename){
  assert.equal(greek.perfect[6],true,'Perfecto desde UD13');
  assert.deepEqual(diagnostics.defaultCount,{forms:4,greekForms:4,morphology:4},
   'Los tres contadores de análisis deben proponer 4 formas');
+ await page.evaluate(()=>{
+  const c=document.getElementById('course');
+  c.value='latin1';c.dispatchEvent(new Event('change',{bubbles:true}));
+  document.querySelectorAll('.unit-choice').forEach(el=>el.checked=units[Number(el.value)]==='UD5');
+  document.querySelector('.unit-choice:checked')?.dispatchEvent(new Event('change',{bubbles:true}));
+ });
+ await page.waitForFunction(()=>!document.getElementById('examThirdAdjectiveReview')?.hidden&&
+  document.querySelectorAll('#examThirdAdjectiveReview select[data-third-review-entry]').length>0);
+ const review=page.locator('#examThirdAdjectiveReview');
+ await review.evaluate(el=>el.open=true);
+ const field=review.locator('select[data-third-review-entry^="brevis"]').first();
+ assert.equal(await field.inputValue(),'approved','Se ha perdido la decisión del profesor');
+ await field.selectOption('excluded');
+ assert.equal(await page.evaluate(()=>window.ExaminaThirdReview.get('brevis, –e')),'excluded');
+ await review.locator('select[data-third-review-entry^="brevis"]').first().selectOption('approved');
+ assert.equal(await page.evaluate(()=>window.ExaminaThirdReview.snapshot().brevis.verified),false);
+ await page.reload();
+ assert.equal(await page.evaluate(()=>window.ExaminaThirdReview.get('brevis, –e')),'approved',
+  'La aceptación no se recuerda al abrir otro examen');
  assert.deepEqual(errors,[],'Errores JavaScript: '+errors.join('; '));
  console.log('OK curricular morphology in '+filename+'; regular -is/-e adjectives and four-word defaults.');
 }
