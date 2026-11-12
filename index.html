@@ -2646,6 +2646,33 @@ function greekExamEditorValue(kind,target){
  return kind==='etymology'?text.replace(/^\s*[a-z]\.\s*/,'').replace(/:\s*$/,''):
   kind==='forms'?text.replace(/:\s*$/,''):text;
 }
+// Algunos navegadores atribuyen los eventos input de tablas al contenedor
+// contenteditable del examen. Las mutaciones identifican la celda modificada
+// sin sustituir el resto del documento ni depender de ese comportamiento.
+new MutationObserver(mutations=>{
+ const editedGeneric=new Set(),editedGreek=new Set();
+ for(const mutation of mutations){
+  const node=mutation.target.nodeType===1?mutation.target:mutation.target.parentElement;
+  if(!node?.closest)continue;
+  const generic=node.closest('[data-exam-editor-id]');
+  const greek=node.closest('[data-greek-editor-id]');
+  if(generic)editedGeneric.add(generic);
+  if(greek)editedGreek.add(greek);
+ }
+ for(const target of editedGeneric){
+  const input=document.querySelector(
+   '#examQuestionMenus input[data-exam-editor-id="'+target.dataset.examEditorId+'"]');
+  if(!input)continue;
+  input.value=target.textContent.replace(/:$/,'').trim()
+   .replace(target.dataset.examEditorKind==='Etimología'?/^\s*[a-z]\.\s*/i:/^$/, '');
+  if(target.closest('.morph-syntagm-item'))syncMorphSyntagmsFromPreview();
+ }
+ for(const target of editedGreek){
+  const input=document.querySelector(
+   '#examQuestionMenus input[data-greek-editor-id="'+target.dataset.greekEditorId+'"]');
+  if(input)input.value=greekExamEditorValue(target.dataset.greekEditorKind,target);
+ }
+}).observe($('paper'),{subtree:true,childList:true,characterData:true});
 $('paper').addEventListener('input',event=>{
  const target=event.target?.closest?.('[data-greek-editor-id]');
  if(!target)return;
