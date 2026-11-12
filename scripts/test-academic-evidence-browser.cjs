@@ -13,7 +13,12 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
   await page.waitForFunction(()=>!!window.ExaminaTeacherReview?.evidenceApproved);
   const form='accipimus';
   await page.evaluate(()=>{
-   document.getElementById('academicEvidenceReview').open=true;
+   const details=document.getElementById('academicEvidenceReview');
+   details.open=true;
+   for(let parent=details.parentElement;parent;parent=parent.parentElement){
+    if(parent.tagName==='DETAILS')parent.open=true;
+    if(parent.hidden)parent.hidden=false;
+   }
    document.getElementById('academicEvidenceCourse').value='lat1';
    const unit=document.getElementById('academicEvidenceUnit');unit.value='10';
    unit.dispatchEvent(new Event('change',{bubbles:true}));
