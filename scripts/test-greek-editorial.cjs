@@ -27,7 +27,11 @@ assert.equal(data.extensions.greek_editorial_decisions.addedCitationOnlyEntries,
 assert.equal(data.extensions.greek_editorial_decisions.rekeyedLemmas,5);
 assert.deepEqual(data.extensions.greek_editorial_decisions.suspendedCandidateLemmas,['θεα']);
 assert.equal(Object.keys(data.vocabulary.grc).length,351);
-assert.equal(data.rows.grc.filter(x=>x[3]===5).length,24,'No añadir análisis automáticamente verificados');
+const verifiedOverrides=JSON.parse(read('data/lemmas/verified-overrides.json'));
+const greekEvidence=verifiedOverrides.paradigms.filter(x=>x.lang==='grc')
+ .reduce((n,p)=>n+p.blocks.reduce((a,b)=>a+b.forms.length,0),0);
+assert.equal(data.rows.grc.filter(x=>x[3]===5).length,greekEvidence,
+ 'Solo incorporar casillas griegas contrastadas individualmente');
 for(const item of decisions.decisions){
  const matching=greek.filter(x=>x.entry===item.entry);
  assert.equal(matching.length,1,'No hay exactamente una ficha griega para '+item.id);
