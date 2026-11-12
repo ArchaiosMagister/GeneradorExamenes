@@ -837,7 +837,7 @@ $('name').addEventListener('input',()=>{
 function refreshManualMorphWords(forceGreekDraft=false){
  const host=$('manualMorphWords');
  if(!host)return;
- examEditorLinks=new WeakMap();examEditorLinkSerial=0;
+ examEditorLinks=new WeakMap(); // IDs persist to prevent stale menu-field collisions.
  host.replaceChildren();
  // Griego completo mantiene su editor especializado en generación normal.
  // Solo la restauración fuerza enlaces genéricos al HTML conservado.
@@ -2704,7 +2704,7 @@ function greekRegenerate(kind){
 function greekExamControls(){
  const host=$('manualMorphWords');
  if(!host||currentCourse()!=='greek1'||$('model').value!=='complete'||!greekExamState)return;
- examEditorLinks=new WeakMap();examEditorLinkSerial=0;
+ examEditorLinks=new WeakMap(); // IDs persist to prevent stale menu-field collisions.
  host.replaceChildren();
  const labels={declension:'Declinación',conjugation:'Conjugación',forms:'Análisis morfológico',pronouns:'Pronombres',etymology:'Derivados etimológicos'};
  for(const [kind,label] of Object.entries(labels)){
