@@ -46,7 +46,8 @@ function latinSuite(){
     ['puellae','puellae','puellas','puellarum','puellis','puellis']
   ]}:null,
   adjective:x=>x.entry===adj.entry?{forms:['bonus','bona'],labels:['nom. masc sg','nom. fem sg']}:null,
-  verb:x=>x.entry===vb.entry?{forms:['amo','amas','amat','amamus','amatis','amant'],labels:['1sg','2sg','3sg','1pl','2pl','3pl']}:null,
+  verb:x=>x.entry===vb.entry?{forms:['amo','amas','amat','amamus','amatis','amant'],labels:['1.ª persona singular','2.ª persona singular','3.ª persona singular',
+    '1.ª persona plural','2.ª persona plural','3.ª persona plural']}:null,
   latinSharedBank:null,
   culture:Array.from({length:4},(_,i)=>({course:'latin4',units:['UD3'],type:'essay',question:'Cultura '+i,answer:'Respuesta '+i})),
   latinExamHeader:()=>'<div class="exam-header">Latín</div>',
