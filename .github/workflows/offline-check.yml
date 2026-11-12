@@ -69,7 +69,7 @@ jobs:
       # La ampliación externa se mantiene en la PR experimental hasta
       # resolver la procedencia/licencias de los datos morfológicos.
       - name: Auditar el tercer centenar sin repetir formas anteriores
-        run: node scripts/audit-third-100-lemmas.cjs --print
+        run: node scripts/audit-third-100-lemmas.cjs --check
       - name: Validar banco de 510 evoluciones fonéticas y programa de Latín I
         run: node scripts/test-fonetica.mjs && node scripts/test-lat1-fonetica.mjs
       - name: Regenerar archivo autónomo
