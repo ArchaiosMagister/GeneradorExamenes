@@ -802,18 +802,23 @@ function refreshManualMorphWords(){
   const i=counters[kind]||0;counters[kind]=i+1;
   const editorId=String(editorIndex);
   el.dataset.examEditorId=editorId;
+  el.dataset.examEditorKind=kind;
   const row=document.createElement('div');row.className='exam-word-editor';
   row.style.display='block';row.style.margin='7px 0';
   const caption=document.createElement('label');caption.textContent=kind+' '+(i+1);
   caption.style.display='block';
   const input=document.createElement('input');input.type='text';
-  input.value=el.textContent.replace(/:$/,'').trim();
+  input.value=el.textContent.replace(/:$/,'').trim()
+   .replace(kind==='Etimología'?/^\s*[a-z]\.\s*/i:/^$/, '');
   input.setAttribute('aria-label',kind+' '+(i+1));
   input.dataset.examEditorId=editorId;
   const original=el.textContent;
   input.addEventListener('input',()=>{
    if(el.matches('.exam-nouns thead tr:first-child th[colspan], .exam-verbs thead tr:first-child th[colspan]')){
     el.innerHTML=examParadigmHeading(input.value,kind==='Conjugación'?'conjugation':'declension');
+   }else if(kind==='Etimología'){
+    const prefix=original.match(/^\s*[a-z]\.\s*/i)?.[0]||'';
+    el.textContent=prefix+input.value+':';
    }else el.textContent=input.value+(original.endsWith(':')?':':'');
    if(el.closest('.morph-syntagm-item'))syncMorphSyntagmsFromPreview();
    const key=paper.querySelector('#answerkey');
@@ -852,7 +857,8 @@ $('paper').addEventListener('input',event=>{
  const input=$('manualMorphWords')?.querySelector(
   'input[data-exam-editor-id="'+target.dataset.examEditorId+'"]');
  if(!input)return;
- const value=target.textContent.replace(/:$/,'').trim();
+ const value=target.textContent.replace(/:$/,'').trim()
+  .replace(target.dataset.examEditorKind==='Etimología'?/^\s*[a-z]\.\s*/i:/^$/, '');
  if(input.value!==value)input.value=value;
  if(target.closest('.morph-syntagm-item'))syncMorphSyntagmsFromPreview();
  const key=$('paper').querySelector('#answerkey');
