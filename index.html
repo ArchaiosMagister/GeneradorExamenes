@@ -1468,9 +1468,14 @@ function latinMorphologyVerbPool(chosen){
  for(const {x,p} of latinSharedBank.paradigms(currentCourse(),chosen,'verb')){
   if(!Array.isArray(p.forms)||p.forms.length!==6)continue;
   const entry=x.entry,sourceEntry=p.sourceEntry||entry,paradigm=mVerb(sourceEntry);
+  const explicitPresent=latinExplicitVerbEvidence[examKey(entry)]?.find(x=>
+   x.tense==='presente'&&x.voice==='activa');
   const add=(forms,tense,voice)=>forms.forEach((form,i)=>{
-   if(form)result.push({form,entry,sourceEntry,person:p.labels[i],
-    tense:tense+' de indicativo',voice});
+   if(!form)return;
+   const documented=tense==='presente'&&voice==='activa'&&explicitPresent?.forms[i]===form;
+   result.push({form,entry,sourceEntry,person:p.labels[i],
+    tense:tense+' de indicativo',voice,
+    ...(documented?{sourceCode:explicitPresent.sourceCode,evidence:'forma documentada individualmente'}:{})});
   });
   add(p.forms,'presente','activa');
   if(!paradigm)continue; // No construir otras formas desde paradigmas incompletos.
