@@ -271,7 +271,7 @@ function evidenceCurricular(course,tags,limit){
   return false;
  }
  if(course==='gr1'){
-  if(has('N'))return limit>=1;
+  if(has('N'))return limit>=8; // Sin clase de declinación contrastada, no anticipar la tercera.
   if(has('ADJ'))return limit>=5;
   if(has('PRO'))return limit>=7;
   if(has('V'))return has('IND')&&has('PRS')&&
@@ -310,7 +310,7 @@ function approvedExamForms(data,course,limit,all=evidenceDecisions()){
   if(course==='lat1'&&type==='N'){
    const stem=String(entry).split(',')[0];
    const secondOrFirst=/,\s*[–-]?(?:ae|æ|i)\b/i.test(entry);
-   if(limit<4&&!secondOrFirst)continue;
+   if(!secondOrFirst)continue; // Otras declinaciones requieren contraste individual del paradigma.
    if(!stem||!tags.split(';').some(x=>['NOM','GEN','DAT','ACC','VOC','ABL'].includes(x)))continue;
   }
   const category=({N:'nouns',ADJ:'adjectives',V:'verbs',PRO:'pronouns'})[type];
