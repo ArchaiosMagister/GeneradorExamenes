@@ -1,0 +1,1903 @@
+{
+  "schema": 1,
+  "reviewedAt": "2026-11-12",
+  "scope": "Segundo lote, sin repetir las 50 incidencias precedentes",
+  "sourceCorpus": "tests/latin1-revision-forms-20261111.json",
+  "baseline": "tests/latin1-pending-183-baseline.json",
+  "weights": {
+    "frequency": 30,
+    "curricular": 25,
+    "morphological": 20,
+    "evidence": 15,
+    "incident": 10
+  },
+  "summary": {
+    "reviewed": 100,
+    "states": {
+      "unverified-proposal": 11,
+      "verified-individual-form": 21,
+      "teacher-orthography-needed": 7,
+      "teacher-context-needed": 2,
+      "already-recognized": 59
+    }
+  },
+  "rows": [
+    {
+      "rank": 1,
+      "course": "lat1",
+      "form": "rapta",
+      "firstUnit": 10,
+      "frequency": 1,
+      "score": 33.86,
+      "previousStatus": "review",
+      "previousCategory": "unverified-proposal",
+      "initialLemmas": [
+        "rapio"
+      ],
+      "initialSources": [
+        0
+      ],
+      "decision": {
+        "status": "unverified-proposal",
+        "note": "Falta una prueba externa individual; no se certifica por regularidad"
+      }
+    },
+    {
+      "rank": 2,
+      "course": "lat1",
+      "form": "creati",
+      "firstUnit": 10,
+      "frequency": 1,
+      "score": 24.75,
+      "previousStatus": "review",
+      "previousCategory": "unverified-proposal",
+      "initialLemmas": [
+        "creo"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "verified-individual-form",
+        "lemma": "creo",
+        "tags": "V;PTCP;PASS;PRF;NOM;PL;MASC",
+        "reference": "https://en.wiktionary.org/wiki/creatus",
+        "previousStatus": "review"
+      }
+    },
+    {
+      "rank": 3,
+      "course": "lat1",
+      "form": "deletam",
+      "firstUnit": 10,
+      "frequency": 1,
+      "score": 24.75,
+      "previousStatus": "review",
+      "previousCategory": "unverified-proposal",
+      "initialLemmas": [
+        "deleo"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "verified-individual-form",
+        "lemma": "deleo",
+        "tags": "V;PTCP;PASS;PRF;ACC;SG;FEM",
+        "reference": "https://en.wiktionary.org/wiki/deletus",
+        "previousStatus": "review"
+      }
+    },
+    {
+      "rank": 4,
+      "course": "lat1",
+      "form": "deletum",
+      "firstUnit": 10,
+      "frequency": 1,
+      "score": 24.75,
+      "previousStatus": "review",
+      "previousCategory": "unverified-proposal",
+      "initialLemmas": [
+        "deleo"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "verified-individual-form",
+        "lemma": "deleo",
+        "tags": "V;PTCP;PASS;PRF;ACC;SG;NEUT",
+        "reference": "https://en.wiktionary.org/wiki/deletus",
+        "previousStatus": "review"
+      }
+    },
+    {
+      "rank": 5,
+      "course": "lat1",
+      "form": "laudati",
+      "firstUnit": 9,
+      "frequency": 1,
+      "score": 23.61,
+      "previousStatus": "review",
+      "previousCategory": "unverified-proposal",
+      "initialLemmas": [
+        "laudo"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "verified-individual-form",
+        "lemma": "laudo",
+        "tags": "V;PTCP;PASS;PRF;NOM;PL;MASC",
+        "reference": "https://en.wiktionary.org/wiki/laudatus",
+        "previousStatus": "review"
+      }
+    },
+    {
+      "rank": 6,
+      "course": "lat1",
+      "form": "missus",
+      "firstUnit": 9,
+      "frequency": 1,
+      "score": 23.61,
+      "previousStatus": "review",
+      "previousCategory": "unverified-proposal",
+      "initialLemmas": [
+        "mitto"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "unverified-proposal",
+        "note": "Falta una prueba externa individual; no se certifica por regularidad"
+      }
+    },
+    {
+      "rank": 7,
+      "course": "lat1",
+      "form": "narratæ",
+      "firstUnit": 9,
+      "frequency": 1,
+      "score": 23.61,
+      "previousStatus": "review",
+      "previousCategory": "unverified-proposal",
+      "initialLemmas": [
+        "narro"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "verified-individual-form",
+        "lemma": "narro",
+        "tags": "V;PTCP;PASS;PRF;NOM;PL;FEM",
+        "reference": "https://en.wiktionary.org/wiki/narratus",
+        "previousStatus": "review"
+      }
+    },
+    {
+      "rank": 8,
+      "course": "lat1",
+      "form": "occisus",
+      "firstUnit": 9,
+      "frequency": 1,
+      "score": 23.61,
+      "previousStatus": "review",
+      "previousCategory": "unverified-proposal",
+      "initialLemmas": [
+        "occido"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "verified-individual-form",
+        "lemma": "occido",
+        "tags": "V;PTCP;PASS;PRF;NOM;SG;MASC",
+        "reference": "https://en.wiktionary.org/wiki/occisus",
+        "previousStatus": "review"
+      }
+    },
+    {
+      "rank": 9,
+      "course": "lat1",
+      "form": "punitus",
+      "firstUnit": 9,
+      "frequency": 1,
+      "score": 23.61,
+      "previousStatus": "review",
+      "previousCategory": "unverified-proposal",
+      "initialLemmas": [
+        "punio"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "verified-individual-form",
+        "lemma": "punio",
+        "tags": "V;PTCP;PASS;PRF;NOM;SG;MASC",
+        "reference": "https://en.wiktionary.org/wiki/punitus",
+        "previousStatus": "review"
+      }
+    },
+    {
+      "rank": 10,
+      "course": "lat1",
+      "form": "scripta",
+      "firstUnit": 9,
+      "frequency": 1,
+      "score": 23.61,
+      "previousStatus": "review",
+      "previousCategory": "unverified-proposal",
+      "initialLemmas": [
+        "scribo"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "unverified-proposal",
+        "note": "Falta una prueba externa individual; no se certifica por regularidad"
+      }
+    },
+    {
+      "rank": 11,
+      "course": "lat1",
+      "form": "sepultus",
+      "firstUnit": 9,
+      "frequency": 1,
+      "score": 23.61,
+      "previousStatus": "review",
+      "previousCategory": "unverified-proposal",
+      "initialLemmas": [
+        "sepelio"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "verified-individual-form",
+        "lemma": "sepelio",
+        "tags": "V;PTCP;PASS;PRF;NOM;SG;MASC",
+        "reference": "https://en.wiktionary.org/wiki/sepultus",
+        "previousStatus": "review"
+      }
+    },
+    {
+      "rank": 12,
+      "course": "lat1",
+      "form": "vastata",
+      "firstUnit": 9,
+      "frequency": 1,
+      "score": 23.61,
+      "previousStatus": "review",
+      "previousCategory": "unverified-proposal",
+      "initialLemmas": [
+        "uasto"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "verified-individual-form",
+        "lemma": "vasto",
+        "tags": "V;PTCP;PASS;PRF;NOM;SG;FEM",
+        "reference": "https://en.wiktionary.org/wiki/vastatus",
+        "previousStatus": "review"
+      }
+    },
+    {
+      "rank": 13,
+      "course": "lat1",
+      "form": "victi",
+      "firstUnit": 9,
+      "frequency": 1,
+      "score": 23.61,
+      "previousStatus": "review",
+      "previousCategory": "unverified-proposal",
+      "initialLemmas": [
+        "uinco"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "verified-individual-form",
+        "lemma": "vinco",
+        "tags": "V;PTCP;PASS;PRF;NOM;PL;MASC",
+        "reference": "https://en.wiktionary.org/wiki/victus",
+        "previousStatus": "review"
+      }
+    },
+    {
+      "rank": 14,
+      "course": "lat1",
+      "form": "vocatus",
+      "firstUnit": 9,
+      "frequency": 1,
+      "score": 23.61,
+      "previousStatus": "review",
+      "previousCategory": "unverified-proposal",
+      "initialLemmas": [
+        "uoco"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "verified-individual-form",
+        "lemma": "voco",
+        "tags": "V;PTCP;PASS;PRF;NOM;SG;MASC",
+        "reference": "https://en.wiktionary.org/wiki/vocatus",
+        "previousStatus": "review"
+      }
+    },
+    {
+      "rank": 15,
+      "course": "lat1",
+      "form": "C",
+      "firstUnit": 10,
+      "frequency": 1,
+      "score": 23.11,
+      "previousStatus": "review",
+      "previousCategory": "spelling-or-context",
+      "initialLemmas": [],
+      "initialSources": [],
+      "warning": "Revisión de grafía o abreviatura: inicial o abreviatura, no lema autónomo; consultar la oración",
+      "decision": {
+        "status": "teacher-orthography-needed",
+        "note": "Revisión de grafía o abreviatura: inicial o abreviatura, no lema autónomo; consultar la oración"
+      }
+    },
+    {
+      "rank": 16,
+      "course": "lat1",
+      "form": "clasis",
+      "firstUnit": 10,
+      "frequency": 1,
+      "score": 23.11,
+      "previousStatus": "review",
+      "previousCategory": "spelling-or-context",
+      "initialLemmas": [],
+      "initialSources": [],
+      "warning": "Revisión de grafía o abreviatura: comprobar classis, –is (f.), si se refiere a «flota» o «clase»",
+      "decision": {
+        "status": "teacher-orthography-needed",
+        "note": "Revisión de grafía o abreviatura: comprobar classis, –is (f.), si se refiere a «flota» o «clase»"
+      }
+    },
+    {
+      "rank": 17,
+      "course": "lat1",
+      "form": "consilo",
+      "firstUnit": 10,
+      "frequency": 1,
+      "score": 23.11,
+      "previousStatus": "review",
+      "previousCategory": "spelling-or-context",
+      "initialLemmas": [],
+      "initialSources": [],
+      "warning": "Revisión de grafía o abreviatura: comprobar consilio (de consilium, –i), según el contexto",
+      "decision": {
+        "status": "teacher-orthography-needed",
+        "note": "Revisión de grafía o abreviatura: comprobar consilio (de consilium, –i), según el contexto"
+      }
+    },
+    {
+      "rank": 18,
+      "course": "lat1",
+      "form": "M",
+      "firstUnit": 10,
+      "frequency": 1,
+      "score": 23.11,
+      "previousStatus": "review",
+      "previousCategory": "spelling-or-context",
+      "initialLemmas": [],
+      "initialSources": [],
+      "warning": "Revisión de grafía o abreviatura: inicial, cifra o abreviatura, no lema autónomo; consultar la oración",
+      "decision": {
+        "status": "teacher-orthography-needed",
+        "note": "Revisión de grafía o abreviatura: inicial, cifra o abreviatura, no lema autónomo; consultar la oración"
+      }
+    },
+    {
+      "rank": 19,
+      "course": "lat1",
+      "form": "medicum",
+      "firstUnit": 10,
+      "frequency": 1,
+      "score": 23.11,
+      "previousStatus": "review",
+      "previousCategory": "spelling-or-context",
+      "initialLemmas": [],
+      "initialSources": [],
+      "warning": "Necesita contexto: puede ser medicus, –i (m., «médico») o medicus, –a, –um (adjetivo); consultar la oración",
+      "decision": {
+        "status": "teacher-orthography-needed",
+        "note": "Necesita contexto: puede ser medicus, –i (m., «médico») o medicus, –a, –um (adjetivo); consultar la oración"
+      }
+    },
+    {
+      "rank": 20,
+      "course": "lat1",
+      "form": "nonulli",
+      "firstUnit": 10,
+      "frequency": 1,
+      "score": 23.11,
+      "previousStatus": "review",
+      "previousCategory": "spelling-or-context",
+      "initialLemmas": [],
+      "initialSources": [],
+      "warning": "Revisión de grafía o abreviatura: comprobar nonnulli (de nonnullus, –a, –um)",
+      "decision": {
+        "status": "teacher-orthography-needed",
+        "note": "Revisión de grafía o abreviatura: comprobar nonnulli (de nonnullus, –a, –um)"
+      }
+    },
+    {
+      "rank": 21,
+      "course": "lat1",
+      "form": "pasuum",
+      "firstUnit": 10,
+      "frequency": 1,
+      "score": 23.11,
+      "previousStatus": "review",
+      "previousCategory": "spelling-or-context",
+      "initialLemmas": [],
+      "initialSources": [],
+      "warning": "Revisión de grafía o abreviatura: comprobar passuum (genitivo plural de passus, –us)",
+      "decision": {
+        "status": "teacher-orthography-needed",
+        "note": "Revisión de grafía o abreviatura: comprobar passuum (genitivo plural de passus, –us)"
+      }
+    },
+    {
+      "rank": 22,
+      "course": "lat1",
+      "form": "milia",
+      "firstUnit": 10,
+      "frequency": 1,
+      "score": 22.11,
+      "previousStatus": "review",
+      "previousCategory": "ambiguous",
+      "initialLemmas": [
+        "milia",
+        "mille"
+      ],
+      "initialSources": [
+        3
+      ],
+      "decision": {
+        "status": "teacher-context-needed",
+        "note": "La lectura de la oración es imprescindible antes de elegir un lema."
+      }
+    },
+    {
+      "rank": 23,
+      "course": "lat1",
+      "form": "parentibus",
+      "firstUnit": 10,
+      "frequency": 1,
+      "score": 22.11,
+      "previousStatus": "review",
+      "previousCategory": "ambiguous",
+      "initialLemmas": [
+        "pareo",
+        "parens"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "teacher-context-needed",
+        "note": "La lectura de la oración es imprescindible antes de elegir un lema."
+      }
+    },
+    {
+      "rank": 24,
+      "course": "lat1",
+      "form": "Acceptis",
+      "firstUnit": 10,
+      "frequency": 1,
+      "score": 21.11,
+      "previousStatus": "review",
+      "previousCategory": "unverified-proposal",
+      "initialLemmas": [
+        "accipio"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "verified-individual-form",
+        "lemma": "accipio",
+        "tags": "V;PTCP;PASS;PRF;ABL;PL",
+        "reference": "https://en.wiktionary.org/wiki/acceptus",
+        "previousStatus": "review"
+      }
+    },
+    {
+      "rank": 25,
+      "course": "lat1",
+      "form": "amissa",
+      "firstUnit": 10,
+      "frequency": 1,
+      "score": 21.11,
+      "previousStatus": "review",
+      "previousCategory": "unverified-proposal",
+      "initialLemmas": [
+        "amitto"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "unverified-proposal",
+        "note": "Falta una prueba externa individual; no se certifica por regularidad"
+      }
+    },
+    {
+      "rank": 26,
+      "course": "lat1",
+      "form": "condita",
+      "firstUnit": 10,
+      "frequency": 1,
+      "score": 21.11,
+      "previousStatus": "review",
+      "previousCategory": "unverified-proposal",
+      "initialLemmas": [
+        "condo"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "unverified-proposal",
+        "note": "Falta una prueba externa individual; no se certifica por regularidad"
+      }
+    },
+    {
+      "rank": 27,
+      "course": "lat1",
+      "form": "deliberata",
+      "firstUnit": 10,
+      "frequency": 1,
+      "score": 21.11,
+      "previousStatus": "review",
+      "previousCategory": "unverified-proposal",
+      "initialLemmas": [
+        "delibero"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "verified-individual-form",
+        "lemma": "delibero",
+        "tags": "V;PTCP;PASS;PRF;NOM;SG;FEM",
+        "reference": "https://en.wiktionary.org/wiki/deliberatus",
+        "previousStatus": "review"
+      }
+    },
+    {
+      "rank": 28,
+      "course": "lat1",
+      "form": "Egressi",
+      "firstUnit": 10,
+      "frequency": 1,
+      "score": 21.11,
+      "previousStatus": "review",
+      "previousCategory": "unverified-proposal",
+      "initialLemmas": [
+        "egredior"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "unverified-proposal",
+        "note": "Falta una prueba externa individual; no se certifica por regularidad"
+      }
+    },
+    {
+      "rank": 29,
+      "course": "lat1",
+      "form": "expulsos",
+      "firstUnit": 10,
+      "frequency": 1,
+      "score": 21.11,
+      "previousStatus": "review",
+      "previousCategory": "unverified-proposal",
+      "initialLemmas": [
+        "expello"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "unverified-proposal",
+        "note": "Falta una prueba externa individual; no se certifica por regularidad"
+      }
+    },
+    {
+      "rank": 30,
+      "course": "lat1",
+      "form": "Fœderatæ",
+      "firstUnit": 10,
+      "frequency": 1,
+      "score": 21.11,
+      "previousStatus": "review",
+      "previousCategory": "unverified-proposal",
+      "initialLemmas": [
+        "foedero"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "verified-individual-form",
+        "lemma": "foedero",
+        "tags": "V;PTCP;PASS;PRF;NOM;PL;FEM",
+        "reference": "https://en.wiktionary.org/wiki/foederatus",
+        "previousStatus": "review"
+      }
+    },
+    {
+      "rank": 31,
+      "course": "lat1",
+      "form": "missos",
+      "firstUnit": 10,
+      "frequency": 1,
+      "score": 21.11,
+      "previousStatus": "review",
+      "previousCategory": "unverified-proposal",
+      "initialLemmas": [
+        "mitto"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "verified-individual-form",
+        "lemma": "mitto",
+        "tags": "V;PTCP;PASS;PRF;ACC;PL;MASC",
+        "reference": "https://en.wiktionary.org/wiki/missus",
+        "previousStatus": "review"
+      }
+    },
+    {
+      "rank": 32,
+      "course": "lat1",
+      "form": "necaturos",
+      "firstUnit": 10,
+      "frequency": 1,
+      "score": 21.11,
+      "previousStatus": "review",
+      "previousCategory": "unverified-proposal",
+      "initialLemmas": [
+        "neco"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "unverified-proposal",
+        "note": "Falta una prueba externa individual; no se certifica por regularidad"
+      }
+    },
+    {
+      "rank": 33,
+      "course": "lat1",
+      "form": "Occiso",
+      "firstUnit": 10,
+      "frequency": 1,
+      "score": 21.11,
+      "previousStatus": "review",
+      "previousCategory": "unverified-proposal",
+      "initialLemmas": [
+        "occido"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "verified-individual-form",
+        "lemma": "occido",
+        "tags": "V;PTCP;PASS;PRF;ABL;SG;MASC",
+        "reference": "https://en.wiktionary.org/wiki/occisus",
+        "previousStatus": "review"
+      }
+    },
+    {
+      "rank": 34,
+      "course": "lat1",
+      "form": "oppugnata",
+      "firstUnit": 10,
+      "frequency": 1,
+      "score": 21.11,
+      "previousStatus": "review",
+      "previousCategory": "unverified-proposal",
+      "initialLemmas": [
+        "oppugno"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "verified-individual-form",
+        "lemma": "oppugno",
+        "tags": "V;PTCP;PASS;PRF;NOM;SG;FEM",
+        "reference": "https://en.wiktionary.org/wiki/oppugnatus",
+        "previousStatus": "review"
+      }
+    },
+    {
+      "rank": 35,
+      "course": "lat1",
+      "form": "pronuntiata",
+      "firstUnit": 10,
+      "frequency": 1,
+      "score": 21.11,
+      "previousStatus": "review",
+      "previousCategory": "unverified-proposal",
+      "initialLemmas": [
+        "pronuntio"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "unverified-proposal",
+        "note": "Falta una prueba externa individual; no se certifica por regularidad"
+      }
+    },
+    {
+      "rank": 36,
+      "course": "lat1",
+      "form": "regressi",
+      "firstUnit": 10,
+      "frequency": 1,
+      "score": 21.11,
+      "previousStatus": "review",
+      "previousCategory": "unverified-proposal",
+      "initialLemmas": [
+        "regredior"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "unverified-proposal",
+        "note": "Falta una prueba externa individual; no se certifica por regularidad"
+      }
+    },
+    {
+      "rank": 37,
+      "course": "lat1",
+      "form": "relictis",
+      "firstUnit": 10,
+      "frequency": 1,
+      "score": 21.11,
+      "previousStatus": "review",
+      "previousCategory": "unverified-proposal",
+      "initialLemmas": [
+        "relinquo"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "verified-individual-form",
+        "lemma": "relinquo",
+        "tags": "V;PTCP;PASS;PRF;ABL;PL",
+        "reference": "https://en.wiktionary.org/wiki/relictus",
+        "previousStatus": "review"
+      }
+    },
+    {
+      "rank": 38,
+      "course": "lat1",
+      "form": "transgressi",
+      "firstUnit": 10,
+      "frequency": 1,
+      "score": 21.11,
+      "previousStatus": "review",
+      "previousCategory": "unverified-proposal",
+      "initialLemmas": [
+        "transgredior"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "unverified-proposal",
+        "note": "Falta una prueba externa individual; no se certifica por regularidad"
+      }
+    },
+    {
+      "rank": 39,
+      "course": "lat1",
+      "form": "uictis",
+      "firstUnit": 10,
+      "frequency": 1,
+      "score": 21.11,
+      "previousStatus": "review",
+      "previousCategory": "unverified-proposal",
+      "initialLemmas": [
+        "uinco"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "verified-individual-form",
+        "lemma": "vinco",
+        "tags": "V;PTCP;PASS;PRF;ABL;PL",
+        "reference": "https://en.wiktionary.org/wiki/victus",
+        "previousStatus": "review"
+      }
+    },
+    {
+      "rank": 40,
+      "course": "lat1",
+      "form": "victa",
+      "firstUnit": 10,
+      "frequency": 1,
+      "score": 21.11,
+      "previousStatus": "review",
+      "previousCategory": "unverified-proposal",
+      "initialLemmas": [
+        "uinco"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "verified-individual-form",
+        "lemma": "vinco",
+        "tags": "V;PTCP;PASS;PRF;NOM;SG;FEM",
+        "reference": "https://en.wiktionary.org/wiki/victus",
+        "previousStatus": "review"
+      }
+    },
+    {
+      "rank": 41,
+      "course": "lat1",
+      "form": "admirabantur",
+      "firstUnit": 3,
+      "frequency": 1,
+      "score": 67.36,
+      "previousStatus": "documented",
+      "previousCategory": "recognized-awaits-independent-check",
+      "initialLemmas": [
+        "admiror"
+      ],
+      "initialSources": [
+        0
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Identificada funcionalmente, sin nueva acreditación individual en este lote."
+      }
+    },
+    {
+      "rank": 42,
+      "course": "lat1",
+      "form": "servæ",
+      "firstUnit": 1,
+      "frequency": 1,
+      "score": 62.58,
+      "previousStatus": "documented",
+      "previousCategory": "recognized-awaits-independent-check",
+      "initialLemmas": [
+        "serva"
+      ],
+      "initialSources": [
+        0
+      ],
+      "decision": {
+        "status": "verified-individual-form",
+        "lemma": "serva",
+        "tags": "N;GEN;SG",
+        "reference": "https://en.wiktionary.org/wiki/servae",
+        "previousStatus": "documented"
+      }
+    },
+    {
+      "rank": 43,
+      "course": "lat1",
+      "form": "Nullo",
+      "firstUnit": 10,
+      "frequency": 1,
+      "score": 44.09,
+      "previousStatus": "documented",
+      "previousCategory": "recognized-awaits-independent-check",
+      "initialLemmas": [
+        "nullus"
+      ],
+      "initialSources": [
+        0
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Identificada funcionalmente, sin nueva acreditación individual en este lote."
+      }
+    },
+    {
+      "rank": 44,
+      "course": "lat1",
+      "form": "horas",
+      "firstUnit": 9,
+      "frequency": 1,
+      "score": 42.58,
+      "previousStatus": "documented",
+      "previousCategory": "recognized-awaits-independent-check",
+      "initialLemmas": [
+        "hora"
+      ],
+      "initialSources": [
+        0
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Identificada funcionalmente, sin nueva acreditación individual en este lote."
+      }
+    },
+    {
+      "rank": 45,
+      "course": "lat1",
+      "form": "Peditatus",
+      "firstUnit": 9,
+      "frequency": 1,
+      "score": 42.58,
+      "previousStatus": "documented",
+      "previousCategory": "recognized-awaits-independent-check",
+      "initialLemmas": [
+        "peditatus"
+      ],
+      "initialSources": [
+        0
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Identificada funcionalmente, sin nueva acreditación individual en este lote."
+      }
+    },
+    {
+      "rank": 46,
+      "course": "lat1",
+      "form": "piratis",
+      "firstUnit": 10,
+      "frequency": 1,
+      "score": 40.08,
+      "previousStatus": "documented",
+      "previousCategory": "recognized-awaits-independent-check",
+      "initialLemmas": [
+        "pirata"
+      ],
+      "initialSources": [
+        0
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Identificada funcionalmente, sin nueva acreditación individual en este lote."
+      }
+    },
+    {
+      "rank": 47,
+      "course": "lat1",
+      "form": "stylum",
+      "firstUnit": 1,
+      "frequency": 1,
+      "score": 39.61,
+      "previousStatus": "documented",
+      "previousCategory": "recognized-awaits-independent-check",
+      "initialLemmas": [
+        "stylus"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Identificada funcionalmente, sin nueva acreditación individual en este lote."
+      }
+    },
+    {
+      "rank": 48,
+      "course": "lat1",
+      "form": "Græcia",
+      "firstUnit": 10,
+      "frequency": 1,
+      "score": 37.14,
+      "previousStatus": "documented",
+      "previousCategory": "recognized-awaits-independent-check",
+      "initialLemmas": [
+        "graecia"
+      ],
+      "initialSources": [
+        0,
+        2
+      ],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Identificada funcionalmente, sin nueva acreditación individual en este lote."
+      }
+    },
+    {
+      "rank": 49,
+      "course": "lat1",
+      "form": "visimus",
+      "firstUnit": 2,
+      "frequency": 1,
+      "score": 37.11,
+      "previousStatus": "documented",
+      "previousCategory": "recognized-awaits-independent-check",
+      "initialLemmas": [
+        "uiso"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Identificada funcionalmente, sin nueva acreditación individual en este lote."
+      }
+    },
+    {
+      "rank": 50,
+      "course": "lat1",
+      "form": "morante",
+      "firstUnit": 10,
+      "frequency": 1,
+      "score": 37.11,
+      "previousStatus": "documented",
+      "previousCategory": "recognized-awaits-independent-check",
+      "initialLemmas": [
+        "moror"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Identificada funcionalmente, sin nueva acreditación individual en este lote."
+      }
+    },
+    {
+      "rank": 51,
+      "course": "lat1",
+      "form": "sapientissimus",
+      "firstUnit": 9,
+      "frequency": 1,
+      "score": 31.71,
+      "previousStatus": "documented",
+      "previousCategory": "recognized-awaits-independent-check",
+      "initialLemmas": [
+        "sapiens"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Identificada funcionalmente, sin nueva acreditación individual en este lote."
+      }
+    },
+    {
+      "rank": 52,
+      "course": "lat1",
+      "form": "ausus",
+      "firstUnit": 9,
+      "frequency": 1,
+      "score": 29.83,
+      "previousStatus": "documented",
+      "previousCategory": "recognized-awaits-independent-check",
+      "initialLemmas": [
+        "audeo"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Identificada funcionalmente, sin nueva acreditación individual en este lote."
+      }
+    },
+    {
+      "rank": 53,
+      "course": "lat1",
+      "form": "Campo",
+      "firstUnit": 5,
+      "frequency": 1,
+      "score": 29.61,
+      "previousStatus": "documented",
+      "previousCategory": "recognized-awaits-independent-check",
+      "initialLemmas": [
+        "campus"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Identificada funcionalmente, sin nueva acreditación individual en este lote."
+      }
+    },
+    {
+      "rank": 54,
+      "course": "lat1",
+      "form": "certant",
+      "firstUnit": 5,
+      "frequency": 1,
+      "score": 29.61,
+      "previousStatus": "documented",
+      "previousCategory": "recognized-awaits-independent-check",
+      "initialLemmas": [
+        "certo"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Identificada funcionalmente, sin nueva acreditación individual en este lote."
+      }
+    },
+    {
+      "rank": 55,
+      "course": "lat1",
+      "form": "collocaverat",
+      "firstUnit": 5,
+      "frequency": 1,
+      "score": 29.61,
+      "previousStatus": "documented",
+      "previousCategory": "recognized-awaits-independent-check",
+      "initialLemmas": [
+        "colloco"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Identificada funcionalmente, sin nueva acreditación individual en este lote."
+      }
+    },
+    {
+      "rank": 56,
+      "course": "lat1",
+      "form": "indicavit",
+      "firstUnit": 5,
+      "frequency": 1,
+      "score": 29.61,
+      "previousStatus": "documented",
+      "previousCategory": "recognized-awaits-independent-check",
+      "initialLemmas": [
+        "indico"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Identificada funcionalmente, sin nueva acreditación individual en este lote."
+      }
+    },
+    {
+      "rank": 57,
+      "course": "lat1",
+      "form": "servavit",
+      "firstUnit": 5,
+      "frequency": 1,
+      "score": 29.61,
+      "previousStatus": "documented",
+      "previousCategory": "recognized-awaits-independent-check",
+      "initialLemmas": [
+        "seruo"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Identificada funcionalmente, sin nueva acreditación individual en este lote."
+      }
+    },
+    {
+      "rank": 58,
+      "course": "lat1",
+      "form": "curaque",
+      "firstUnit": 10,
+      "frequency": 1,
+      "score": 27.33,
+      "previousStatus": "documented",
+      "previousCategory": "recognized-awaits-independent-check",
+      "initialLemmas": [
+        "cura"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Identificada funcionalmente, sin nueva acreditación individual en este lote."
+      }
+    },
+    {
+      "rank": 59,
+      "course": "lat1",
+      "form": "aperuerunt",
+      "firstUnit": 6,
+      "frequency": 1,
+      "score": 27.11,
+      "previousStatus": "documented",
+      "previousCategory": "recognized-awaits-independent-check",
+      "initialLemmas": [
+        "aperio"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Identificada funcionalmente, sin nueva acreditación individual en este lote."
+      }
+    },
+    {
+      "rank": 60,
+      "course": "lat1",
+      "form": "Atuatucos",
+      "firstUnit": 6,
+      "frequency": 1,
+      "score": 27.11,
+      "previousStatus": "documented",
+      "previousCategory": "recognized-awaits-independent-check",
+      "initialLemmas": [
+        "atuatuci"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Identificada funcionalmente, sin nueva acreditación individual en este lote."
+      }
+    },
+    {
+      "rank": 61,
+      "course": "lat1",
+      "form": "dedicaverunt",
+      "firstUnit": 6,
+      "frequency": 1,
+      "score": 27.11,
+      "previousStatus": "documented",
+      "previousCategory": "recognized-awaits-independent-check",
+      "initialLemmas": [
+        "dedico"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Identificada funcionalmente, sin nueva acreditación individual en este lote."
+      }
+    },
+    {
+      "rank": 62,
+      "course": "lat1",
+      "form": "fugerant",
+      "firstUnit": 6,
+      "frequency": 1,
+      "score": 27.11,
+      "previousStatus": "documented",
+      "previousCategory": "recognized-awaits-independent-check",
+      "initialLemmas": [
+        "fugio"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Identificada funcionalmente, sin nueva acreditación individual en este lote."
+      }
+    },
+    {
+      "rank": 63,
+      "course": "lat1",
+      "form": "gemit",
+      "firstUnit": 6,
+      "frequency": 1,
+      "score": 27.11,
+      "previousStatus": "documented",
+      "previousCategory": "recognized-awaits-independent-check",
+      "initialLemmas": [
+        "gemo"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Identificada funcionalmente, sin nueva acreditación individual en este lote."
+      }
+    },
+    {
+      "rank": 64,
+      "course": "lat1",
+      "form": "reverterunt",
+      "firstUnit": 6,
+      "frequency": 1,
+      "score": 27.11,
+      "previousStatus": "documented",
+      "previousCategory": "recognized-awaits-independent-check",
+      "initialLemmas": [
+        "reuerto"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Identificada funcionalmente, sin nueva acreditación individual en este lote."
+      }
+    },
+    {
+      "rank": 65,
+      "course": "lat1",
+      "form": "teste",
+      "firstUnit": 6,
+      "frequency": 1,
+      "score": 27.11,
+      "previousStatus": "documented",
+      "previousCategory": "recognized-awaits-independent-check",
+      "initialLemmas": [
+        "testis"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Identificada funcionalmente, sin nueva acreditación individual en este lote."
+      }
+    },
+    {
+      "rank": 66,
+      "course": "lat1",
+      "form": "turtur",
+      "firstUnit": 6,
+      "frequency": 1,
+      "score": 27.11,
+      "previousStatus": "documented",
+      "previousCategory": "recognized-awaits-independent-check",
+      "initialLemmas": [
+        "turtur"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Identificada funcionalmente, sin nueva acreditación individual en este lote."
+      }
+    },
+    {
+      "rank": 67,
+      "course": "lat1",
+      "form": "vivunt",
+      "firstUnit": 6,
+      "frequency": 1,
+      "score": 27.11,
+      "previousStatus": "documented",
+      "previousCategory": "recognized-awaits-independent-check",
+      "initialLemmas": [
+        "uiuo"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Identificada funcionalmente, sin nueva acreditación individual en este lote."
+      }
+    },
+    {
+      "rank": 68,
+      "course": "lat1",
+      "form": "egregias",
+      "firstUnit": 8,
+      "frequency": 1,
+      "score": 22.11,
+      "previousStatus": "documented",
+      "previousCategory": "recognized-awaits-independent-check",
+      "initialLemmas": [
+        "egregius"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Identificada funcionalmente, sin nueva acreditación individual en este lote."
+      }
+    },
+    {
+      "rank": 69,
+      "course": "lat1",
+      "form": "Neapolis",
+      "firstUnit": 8,
+      "frequency": 1,
+      "score": 22.11,
+      "previousStatus": "documented",
+      "previousCategory": "recognized-awaits-independent-check",
+      "initialLemmas": [
+        "neapolis"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Identificada funcionalmente, sin nueva acreditación individual en este lote."
+      }
+    },
+    {
+      "rank": 70,
+      "course": "lat1",
+      "form": "postrema",
+      "firstUnit": 8,
+      "frequency": 1,
+      "score": 22.11,
+      "previousStatus": "documented",
+      "previousCategory": "recognized-awaits-independent-check",
+      "initialLemmas": [
+        "postremus"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Identificada funcionalmente, sin nueva acreditación individual en este lote."
+      }
+    },
+    {
+      "rank": 71,
+      "course": "lat1",
+      "form": "volebat",
+      "firstUnit": 8,
+      "frequency": 1,
+      "score": 22.11,
+      "previousStatus": "documented",
+      "previousCategory": "recognized-awaits-independent-check",
+      "initialLemmas": [
+        "uolo"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Identificada funcionalmente, sin nueva acreditación individual en este lote."
+      }
+    },
+    {
+      "rank": 72,
+      "course": "lat1",
+      "form": "Belgæ",
+      "firstUnit": 9,
+      "frequency": 1,
+      "score": 19.61,
+      "previousStatus": "documented",
+      "previousCategory": "recognized-awaits-independent-check",
+      "initialLemmas": [
+        "belgae"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Identificada funcionalmente, sin nueva acreditación individual en este lote."
+      }
+    },
+    {
+      "rank": 73,
+      "course": "lat1",
+      "form": "confisus",
+      "firstUnit": 9,
+      "frequency": 1,
+      "score": 19.61,
+      "previousStatus": "documented",
+      "previousCategory": "recognized-awaits-independent-check",
+      "initialLemmas": [
+        "confido"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Identificada funcionalmente, sin nueva acreditación individual en este lote."
+      }
+    },
+    {
+      "rank": 74,
+      "course": "lat1",
+      "form": "ferarum",
+      "firstUnit": 9,
+      "frequency": 1,
+      "score": 19.61,
+      "previousStatus": "documented",
+      "previousCategory": "recognized-awaits-independent-check",
+      "initialLemmas": [
+        "fera"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Identificada funcionalmente, sin nueva acreditación individual en este lote."
+      }
+    },
+    {
+      "rank": 75,
+      "course": "lat1",
+      "form": "multitudine",
+      "firstUnit": 9,
+      "frequency": 1,
+      "score": 19.61,
+      "previousStatus": "documented",
+      "previousCategory": "recognized-awaits-independent-check",
+      "initialLemmas": [
+        "multitudo"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Identificada funcionalmente, sin nueva acreditación individual en este lote."
+      }
+    },
+    {
+      "rank": 76,
+      "course": "lat1",
+      "form": "pretiosius",
+      "firstUnit": 9,
+      "frequency": 1,
+      "score": 19.61,
+      "previousStatus": "documented",
+      "previousCategory": "recognized-awaits-independent-check",
+      "initialLemmas": [
+        "pretiosus"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Identificada funcionalmente, sin nueva acreditación individual en este lote."
+      }
+    },
+    {
+      "rank": 77,
+      "course": "lat1",
+      "form": "Solitus",
+      "firstUnit": 9,
+      "frequency": 1,
+      "score": 19.61,
+      "previousStatus": "documented",
+      "previousCategory": "recognized-awaits-independent-check",
+      "initialLemmas": [
+        "soleo"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Identificada funcionalmente, sin nueva acreditación individual en este lote."
+      }
+    },
+    {
+      "rank": 78,
+      "course": "lat1",
+      "form": "aberat",
+      "firstUnit": 10,
+      "frequency": 1,
+      "score": 17.11,
+      "previousStatus": "documented",
+      "previousCategory": "recognized-awaits-independent-check",
+      "initialLemmas": [
+        "absum"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Identificada funcionalmente, sin nueva acreditación individual en este lote."
+      }
+    },
+    {
+      "rank": 79,
+      "course": "lat1",
+      "form": "aderant",
+      "firstUnit": 10,
+      "frequency": 1,
+      "score": 17.11,
+      "previousStatus": "documented",
+      "previousCategory": "recognized-awaits-independent-check",
+      "initialLemmas": [
+        "adsum"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Identificada funcionalmente, sin nueva acreditación individual en este lote."
+      }
+    },
+    {
+      "rank": 80,
+      "course": "lat1",
+      "form": "affirmauerunt",
+      "firstUnit": 10,
+      "frequency": 1,
+      "score": 17.11,
+      "previousStatus": "documented",
+      "previousCategory": "recognized-awaits-independent-check",
+      "initialLemmas": [
+        "affirmo"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Identificada funcionalmente, sin nueva acreditación individual en este lote."
+      }
+    },
+    {
+      "rank": 81,
+      "course": "lat1",
+      "form": "Allobroges",
+      "firstUnit": 10,
+      "frequency": 1,
+      "score": 17.11,
+      "previousStatus": "documented",
+      "previousCategory": "recognized-awaits-independent-check",
+      "initialLemmas": [
+        "allobroges"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Identificada funcionalmente, sin nueva acreditación individual en este lote."
+      }
+    },
+    {
+      "rank": 82,
+      "course": "lat1",
+      "form": "amore",
+      "firstUnit": 10,
+      "frequency": 1,
+      "score": 17.11,
+      "previousStatus": "documented",
+      "previousCategory": "recognized-awaits-independent-check",
+      "initialLemmas": [
+        "amor"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Identificada funcionalmente, sin nueva acreditación individual en este lote."
+      }
+    },
+    {
+      "rank": 83,
+      "course": "lat1",
+      "form": "Boudicca",
+      "firstUnit": 10,
+      "frequency": 1,
+      "score": 17.11,
+      "previousStatus": "documented",
+      "previousCategory": "recognized-awaits-independent-check",
+      "initialLemmas": [
+        "boudicca"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Identificada funcionalmente, sin nueva acreditación individual en este lote."
+      }
+    },
+    {
+      "rank": 84,
+      "course": "lat1",
+      "form": "Britanni",
+      "firstUnit": 10,
+      "frequency": 1,
+      "score": 17.11,
+      "previousStatus": "documented",
+      "previousCategory": "recognized-awaits-independent-check",
+      "initialLemmas": [
+        "britannus"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Identificada funcionalmente, sin nueva acreditación individual en este lote."
+      }
+    },
+    {
+      "rank": 85,
+      "course": "lat1",
+      "form": "Cannas",
+      "firstUnit": 10,
+      "frequency": 1,
+      "score": 17.11,
+      "previousStatus": "documented",
+      "previousCategory": "recognized-awaits-independent-check",
+      "initialLemmas": [
+        "cannae"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Identificada funcionalmente, sin nueva acreditación individual en este lote."
+      }
+    },
+    {
+      "rank": 86,
+      "course": "lat1",
+      "form": "Comitiis",
+      "firstUnit": 10,
+      "frequency": 1,
+      "score": 17.11,
+      "previousStatus": "documented",
+      "previousCategory": "recognized-awaits-independent-check",
+      "initialLemmas": [
+        "comitia"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Identificada funcionalmente, sin nueva acreditación individual en este lote."
+      }
+    },
+    {
+      "rank": 87,
+      "course": "lat1",
+      "form": "comparatis",
+      "firstUnit": 10,
+      "frequency": 1,
+      "score": 17.11,
+      "previousStatus": "documented",
+      "previousCategory": "recognized-awaits-independent-check",
+      "initialLemmas": [
+        "comparo"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Identificada funcionalmente, sin nueva acreditación individual en este lote."
+      }
+    },
+    {
+      "rank": 88,
+      "course": "lat1",
+      "form": "condiciones",
+      "firstUnit": 10,
+      "frequency": 1,
+      "score": 17.11,
+      "previousStatus": "documented",
+      "previousCategory": "recognized-awaits-independent-check",
+      "initialLemmas": [
+        "condicio"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Identificada funcionalmente, sin nueva acreditación individual en este lote."
+      }
+    },
+    {
+      "rank": 89,
+      "course": "lat1",
+      "form": "constantia",
+      "firstUnit": 10,
+      "frequency": 1,
+      "score": 17.11,
+      "previousStatus": "documented",
+      "previousCategory": "recognized-awaits-independent-check",
+      "initialLemmas": [
+        "constantia"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Identificada funcionalmente, sin nueva acreditación individual en este lote."
+      }
+    },
+    {
+      "rank": 90,
+      "course": "lat1",
+      "form": "consulatum",
+      "firstUnit": 10,
+      "frequency": 1,
+      "score": 17.11,
+      "previousStatus": "documented",
+      "previousCategory": "recognized-awaits-independent-check",
+      "initialLemmas": [
+        "consulatus"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Identificada funcionalmente, sin nueva acreditación individual en este lote."
+      }
+    },
+    {
+      "rank": 91,
+      "course": "lat1",
+      "form": "decrevit",
+      "firstUnit": 10,
+      "frequency": 1,
+      "score": 17.11,
+      "previousStatus": "documented",
+      "previousCategory": "recognized-awaits-independent-check",
+      "initialLemmas": [
+        "decerno"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Identificada funcionalmente, sin nueva acreditación individual en este lote."
+      }
+    },
+    {
+      "rank": 92,
+      "course": "lat1",
+      "form": "didici",
+      "firstUnit": 10,
+      "frequency": 1,
+      "score": 17.11,
+      "previousStatus": "documented",
+      "previousCategory": "recognized-awaits-independent-check",
+      "initialLemmas": [
+        "disco"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Identificada funcionalmente, sin nueva acreditación individual en este lote."
+      }
+    },
+    {
+      "rank": 93,
+      "course": "lat1",
+      "form": "Duos",
+      "firstUnit": 10,
+      "frequency": 1,
+      "score": 17.11,
+      "previousStatus": "documented",
+      "previousCategory": "recognized-awaits-independent-check",
+      "initialLemmas": [
+        "duo"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Identificada funcionalmente, sin nueva acreditación individual en este lote."
+      }
+    },
+    {
+      "rank": 94,
+      "course": "lat1",
+      "form": "elephantos",
+      "firstUnit": 10,
+      "frequency": 1,
+      "score": 17.11,
+      "previousStatus": "documented",
+      "previousCategory": "recognized-awaits-independent-check",
+      "initialLemmas": [
+        "elephantus"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Identificada funcionalmente, sin nueva acreditación individual en este lote."
+      }
+    },
+    {
+      "rank": 95,
+      "course": "lat1",
+      "form": "grammaticam",
+      "firstUnit": 10,
+      "frequency": 1,
+      "score": 17.11,
+      "previousStatus": "documented",
+      "previousCategory": "recognized-awaits-independent-check",
+      "initialLemmas": [
+        "grammatica"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Identificada funcionalmente, sin nueva acreditación individual en este lote."
+      }
+    },
+    {
+      "rank": 96,
+      "course": "lat1",
+      "form": "hasta",
+      "firstUnit": 10,
+      "frequency": 1,
+      "score": 17.11,
+      "previousStatus": "documented",
+      "previousCategory": "recognized-awaits-independent-check",
+      "initialLemmas": [
+        "hasta"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Identificada funcionalmente, sin nueva acreditación individual en este lote."
+      }
+    },
+    {
+      "rank": 97,
+      "course": "lat1",
+      "form": "hortatus",
+      "firstUnit": 10,
+      "frequency": 1,
+      "score": 17.11,
+      "previousStatus": "documented",
+      "previousCategory": "recognized-awaits-independent-check",
+      "initialLemmas": [
+        "hortor"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Identificada funcionalmente, sin nueva acreditación individual en este lote."
+      }
+    },
+    {
+      "rank": 98,
+      "course": "lat1",
+      "form": "incolumem",
+      "firstUnit": 10,
+      "frequency": 1,
+      "score": 17.11,
+      "previousStatus": "documented",
+      "previousCategory": "recognized-awaits-independent-check",
+      "initialLemmas": [
+        "incolumis"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Identificada funcionalmente, sin nueva acreditación individual en este lote."
+      }
+    },
+    {
+      "rank": 99,
+      "course": "lat1",
+      "form": "intrauit",
+      "firstUnit": 10,
+      "frequency": 1,
+      "score": 17.11,
+      "previousStatus": "documented",
+      "previousCategory": "recognized-awaits-independent-check",
+      "initialLemmas": [
+        "intro"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Identificada funcionalmente, sin nueva acreditación individual en este lote."
+      }
+    },
+    {
+      "rank": 100,
+      "course": "lat1",
+      "form": "latrauerunt",
+      "firstUnit": 10,
+      "frequency": 1,
+      "score": 17.11,
+      "previousStatus": "documented",
+      "previousCategory": "recognized-awaits-independent-check",
+      "initialLemmas": [
+        "latro"
+      ],
+      "initialSources": [],
+      "decision": {
+        "status": "already-recognized",
+        "note": "Identificada funcionalmente, sin nueva acreditación individual en este lote."
+      }
+    }
+  ]
+}
