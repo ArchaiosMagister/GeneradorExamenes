@@ -1434,8 +1434,10 @@ const latinPersonalPerfectPassiveLemmas=new Set([
  'doceo','moveo','ago','vinco','vulnero','saluto','monstro','nuntio',
  'oppugno','expugno','libero','importo','aro','tolero','sentio','deleo',
  'laudo','creo','cremo','narro','paro','vasto','orno','dico','relinquo',
- 'rego','pono','audio','cogo','habeo','reddo','recito','peto'
+ 'rego','pono','audio','cogo','habeo','reddo','recito','peto',
+ 'capio','accipio','recipio','eripio','rapio','diripio','percipio','interficio','facio'
 ]);
+const latinPersonalPresentPassiveLemmas=new Set([...latinPersonalPerfectPassiveLemmas].filter(x=>x!=='facio'));
 // Banco de análisis verbal: únicamente indicativo y formas regulares obtenidas
 // de los paradigmas admitidos para el vocabulario y las unidades seleccionadas.
 // El índice UniMorph genérico no acredita por sí solo una flexión para examen.
@@ -1459,15 +1461,18 @@ function latinMorphologyVerbPool(chosen){
   if(max>=7)add(paradigm.tenses[2][1],'futuro','activa');
   if(max<3)continue; // En Latín I la voz pasiva se introduce en UD3.
   const present=paradigm.lemma,conj=paradigm.conj;
-  const stem=present.slice(0,conj===2||conj===4?-2:-1);
+  // No generar pasiva personal de intransitivos ni *facior para facio.
+  if(latinPersonalPresentPassiveLemmas.has(examKey(entry))){
+  const stem=present.slice(0,conj===2||conj===4||conj==='mx'?-2:-1);
   const passivePresent={
    1:['or','aris','atur','amur','amini','antur'],
    2:['eor','eris','etur','emur','emini','entur'],
    3:['or','eris','itur','imur','imini','untur'],
-   4:['ior','iris','itur','imur','imini','iuntur']
+   4:['ior','iris','itur','imur','imini','iuntur'],
+   mx:['ior','eris','itur','imur','imini','iuntur']
   }[conj];
   add(passivePresent.map(ending=>stem+ending),'presente','pasiva');
-  const imperfectStem=stem+({1:'aba',2:'eba',3:'eba',4:'ieba'}[conj]);
+  const imperfectStem=stem+({1:'aba',2:'eba',3:'eba',4:'ieba',mx:'ieba'}[conj]);
   add(['r','ris','tur','mur','mini','ntur'].map(ending=>imperfectStem+ending),
    'imperfecto','pasiva');
   if(max>=7){
@@ -1475,10 +1480,12 @@ function latinMorphologyVerbPool(chosen){
     1:['abor','aberis','abitur','abimur','abimini','abuntur'],
     2:['ebor','eberis','ebitur','ebimur','ebimini','ebuntur'],
     3:['ar','eris','etur','emur','emini','entur'],
-    4:['iar','ieris','ietur','iemur','iemini','ientur']
+    4:['iar','ieris','ietur','iemur','iemini','ientur'],
+    mx:['iar','ieris','ietur','iemur','iemini','ientur']
    }[conj];
    add(passiveFuture.map(ending=>stem+ending),'futuro','pasiva');
   }
+  } // Cierre del filtro de pasiva personal de infectum.
   // Perfectum pasivo desde UD9: participio perfecto concordado con el
   // sujeto (género y número) + presente / imperfecto de sum. Se deriva
   // únicamente del supino -um declarado para un verbo ya admitido por mVerb;
@@ -2160,25 +2167,24 @@ function mNoun(raw){
  return {lemma:nom,kind,gender:gender|| (kind==='2n'?'n':kind==='1'?'f':'m'),forms,source:'Regla interna, revisión docente recomendada'};
 }
 function mVerb(raw){
- const s=mNormalize(raw),match=s.match(/^([A-Za-z]+),\s*([A-Za-z]+),\s*([A-Za-z]+)\s*\(([1234])ª\)/);
+ const s=mNormalize(raw),match=s.match(/^([A-Za-z]+),\s*([A-Za-z]+),\s*([A-Za-z]+)\s*\((?:([1234])ª|(mx\.))\)/);
  if(!match)return null;
- const [_,present,perfect,supine,c]=match;
+ const [_,present,perfect,supine,c,mixedClass]=match;
  if(['do','sto','sum','possum','fero','eo','volo','nolo','malo','fio'].includes(present.toLowerCase()))return null;
  if(!perfect.endsWith('i')||!supine.endsWith('um'))return null;
- const conj=Number(c),base=conj===1?present.slice(0,-1):conj===2?present.slice(0,-2):conj===3?present.slice(0,-1):present.slice(0,-2);
- if(conj===1&&!present.endsWith('o')||conj===2&&!present.endsWith('eo')||conj===3&&(!present.endsWith('o')||present.endsWith('io'))||conj===4&&!present.endsWith('io'))return null;
+ const conj=mixedClass?'mx':Number(c),base=conj===2||conj===4||conj==='mx'?present.slice(0,-2):present.slice(0,-1);
+ if(conj===1&&!present.endsWith('o')||conj===2&&!present.endsWith('eo')||conj===3&&(!present.endsWith('o')||present.endsWith('io'))||conj===4&&!present.endsWith('io')||conj==='mx'&&!present.endsWith('io'))return null;
  const ps=perfect.slice(0,-1);
- const now={1:[base+'o',base+'as',base+'at',base+'amus',base+'atis',base+'ant'],2:[base+'eo',base+'es',base+'et',base+'emus',base+'etis',base+'ent'],3:[base+'o',base+'is',base+'it',base+'imus',base+'itis',base+'unt'],4:[base+'io',base+'is',base+'it',base+'imus',base+'itis',base+'iunt']}[conj];
- const imperfect={1:'aba',2:'eba',3:'eba',4:'ieba'}[conj];
- const future={1:['abo','abis','abit','abimus','abitis','abunt'],2:['ebo','ebis','ebit','ebimus','ebitis','ebunt'],3:['am','es','et','emus','etis','ent'],4:['iam','ies','iet','iemus','ietis','ient']}[conj];
+ const now={1:[base+'o',base+'as',base+'at',base+'amus',base+'atis',base+'ant'],2:[base+'eo',base+'es',base+'et',base+'emus',base+'etis',base+'ent'],3:[base+'o',base+'is',base+'it',base+'imus',base+'itis',base+'unt'],4:[base+'io',base+'is',base+'it',base+'imus',base+'itis',base+'iunt'],mx:[base+'io',base+'is',base+'it',base+'imus',base+'itis',base+'iunt']}[conj];
+ const imperfect={1:'aba',2:'eba',3:'eba',4:'ieba',mx:'ieba'}[conj];
+ const future={1:['abo','abis','abit','abimus','abitis','abunt'],2:['ebo','ebis','ebit','ebimus','ebitis','ebunt'],3:['am','es','et','emus','etis','ent'],4:['iam','ies','iet','iemus','ietis','ient'],mx:['iam','ies','iet','iemus','ietis','ient']}[conj];
  const imperfectBase=conj===1?base:conj===2?base:conj===3?base:base;
  const imperfectForms=['m','s','t','mus','tis','nt'].map(x=>imperfectBase+imperfect+x);
  const fut=conj<=2?future.map(x=>base+x):future.map(x=>base+x);
  const perfectForms=['i','isti','it','imus','istis','erunt'].map(x=>ps+x);
  const pluperfect=['eram','eras','erat','eramus','eratis','erant'].map(x=>ps+x);
  const futurePerfect=['ero','eris','erit','erimus','eritis','erint'].map(x=>ps+x);
- // Suppress verbs whose principal parts indicate non-regular present stems.
- if(['capio','facio','iacio','rapio','accipio','recipio','efficio','cupio'].includes(present.toLowerCase()))return null;
+ // Mixta activa admitida con enunciado explícito; facio tiene infectum pasivo irregular.
  return {lemma:present,conj,supine,source:'Regla interna: indicativo activo (seis tiempos)',tenses:[['Presente',now],['Imperfecto',imperfectForms],['Futuro',fut],['Perfecto',perfectForms],['Pluscuamperfecto',pluperfect],['Futuro perfecto',futurePerfect]]};
 }
 // Corrections for conjugation: 1st conjugation imperfect is -abam, not -abam with duplicate a;
