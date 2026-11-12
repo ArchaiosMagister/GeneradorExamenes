@@ -26,12 +26,21 @@ Por ejemplo, la introducción del futuro en UD7 no autoriza construir automátic
 todos los futuros de los lemas del banco. Esos tiempos y voces permanecen pendientes
 de ampliar con paradigmas contrastados, sin completar huecos inventando formas.
 
-**Adjetivos -is, -e:** Se admite la flexión regular de dos terminaciones
+**Adjetivos -is, -e:** Se propone, previa aceptación docente explícita, la flexión regular de dos terminaciones
 con genitivo plural -ium, ablativo singular -i y nominativo, vocativo y
 acusativo neutro plural -ia. Los tipos -er/-ris/-e, los de una terminación,
 comparativos e irregularidades quedan fuera de esta nueva regla.
 La concordancia del adjetivo se realiza en género, número y caso,
 con el sustantivo en primer lugar en los sintagmas latinos.
+
+**Revisión docente:** Todas las formas de nuevos adjetivos de tercera declinación
+quedan inicialmente excluidas. En el menú «Adjetivos de tercera declinación»
+pueden marcarse como aceptadas (pendientes de verificación individual),
+excluidas o pendientes. El estado se conserva en el almacenamiento local
+para próximos exámenes, puede exportarse como JSON y nunca modifica el
+estado filológico original de los bancos. Cambiar una decisión no
+regenera ni borra el examen abierto; afecta a los sorteos posteriores.
+
 
 **Sustantivos excepcionales:** El motor conserva sus restricciones
 sobre temas en -i, nominativos ambiguos y cuarta y quinta declinación
@@ -74,7 +83,8 @@ cupos.
 ## Pruebas y edición
 
 El script `scripts/test-phase-two.cjs` comprueba la matriz por unidades,
-el paradigma *brevis*, los filtros griegos de tiempos verbales y los valores
+el paradigma *brevis*, la aceptación docente persistente y reversible,
+los filtros griegos de tiempos verbales y los valores
 predeterminados en `index.html` y `offline.html`.
 Las pruebas existentes de Word, selección aleatoria, léxico y PWA
 son obligatorias antes de fusionar esta etapa.
