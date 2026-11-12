@@ -11,7 +11,7 @@
     "DUPLICADA_O_VARIANTE": 3,
     "EXCLUIDA_CULTISMO": 26
   },
-  "politica": "INCORPORADA está en el banco; DECISION_DOCENTE y PENDIENTE_VERIFICACION quedan fuera del sorteo; EXCLUIDA_CULTISMO y DUPLICADA_O_VARIANTE no son aptas.",
+  "politica": "INCORPORADA está en el banco; DECISION_DOCENTE y PENDIENTE_VERIFICACION quedan fuera del sorteo; EXCLUIDA_CULTISMO y DUPLICADA_O_VARIANTE no son aptas. Las fichas ya presentes en el programa docente de Latín I se excluyen de la muestra de candidatas nuevas.",
   "items": [
     {
       "fila_origen": 281,
@@ -1240,10 +1240,10 @@
       "idBanco": null
     },
     {
-      "fila_origen": 639,
-      "latin": "choleram",
-      "castellano": "cólera",
-      "observacionExcel": "choleram → cólera: helenismo; ch > c. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular.",
+      "fila_origen": 641,
+      "latin": "chorographiam",
+      "castellano": "corografía",
+      "observacionExcel": "chorographiam → corografía: cultismo; ch > c y ph > f. La adaptación gráfica es culta o propia de un nombre transmitido por escrito; no equivale a una evolución fonética popular.",
       "normasExcel": [
         "GRIE"
       ],
