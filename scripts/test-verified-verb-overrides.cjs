@@ -58,7 +58,14 @@ for(const lang of ['lat','grc']){
  const sum=Object.values(index.counts[lang]).reduce((a,b)=>a+b,0);
  assert.equal(sum,index.rows[lang].length,'Desajuste de contadores: '+lang);
 }
-assert.equal(index.source.externalVerification.length,45);
+assert.equal(index.source.externalVerification.length,source.paradigms.length+source.singleForms.length+
+ source.paradigms.reduce((n,p)=>n+p.blocks.filter(b=>b.reference).length,0));
+for(const record of source.paradigms){
+ for(const block of record.blocks.filter(b=>b.reference)){
+  assert(index.source.externalVerification.some(x=>x.lang===record.lang&&x.lemma===record.lemma&&
+   x.tags===block.tags&&x.reference===block.reference),'Falta la referencia particular de '+record.lemma);
+ }
+}
 const currentBuilder=fs.readFileSync(path.join(root,'scripts/build-lemma-index.mjs'),'utf8');
 assert(currentBuilder.includes('ACT|MID|DEP'),'La regeneración perdería la etiqueta latina deponente');
 assert(!greek.βουλομαι.forms.includes('βούλῃ'),
