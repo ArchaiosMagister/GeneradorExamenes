@@ -37,6 +37,11 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
        violations.push(selected.unit+': la tabla no reserva ninguna pasiva');
       if(limit>=3&&verbs.some(v=>v.voice==='activa')&&!selectedVerbs.some(v=>v.voice==='activa'))
        violations.push(selected.unit+': la tabla no contrasta formas activas');
+      if(limit<9&&verbs.some(v=>v.voice==='semideponente'))
+       violations.push(selected.unit+': semideponente anticipado');
+      if(limit>=9&&verbs.some(v=>v.entry.startsWith('audeo')&&v.voice==='semideponente')&&
+       !verbs.some(v=>v.form==='ausus sum'&&v.tense==='perfecto de indicativo'))
+       violations.push(selected.unit+': falta el perfecto semideponente documentado');
       if(limit>=7&&verbs.some(v=>v.voice==='deponente')&&!selectedVerbs.some(v=>v.voice==='deponente'))
        violations.push(selected.unit+': la tabla no reserva ningún deponente documentado');
       if(limit>=9&&verbs.some(v=>v.voice==='pasiva'&&v.tense==='perfecto de indicativo')&&
@@ -119,6 +124,7 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
   const later=latin.items.find(x=>x.limit>=9);
   assert(later?.types['perfecto de indicativo | pasiva']>0,'UD9: falta perfectum pasivo');
   assert(later?.types['pluscuamperfecto de indicativo | pasiva']>0,'UD9: falta pluscuamperfecto pasivo');
+  assert(later?.types['perfecto de indicativo | semideponente']>0,'UD9: falta perfecto semideponente documentado de audeo');
   assert.deepEqual(errors,[],'Errores JavaScript detectados');
   // Conjugar con un tiempo explicitado permite presentar loqueris; un
   // ejercicio de análisis aislado no puede resolver sin contexto su doble tiempo.
