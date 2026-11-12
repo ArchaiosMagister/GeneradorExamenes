@@ -105,7 +105,15 @@ async function checkLex(page,course='latin1'){
   await input.fill(manual);
   assert.equal(await preview.textContent(),manual,kind+': entrada de menú no cambia vista');
   const reverse='desde_vista_'+kind;
-  await preview.fill(reverse);
+  // Simular la sustitución completa por teclado en el área editable.
+  // Los <i> son hosts anidados: fill() no siempre selecciona su contenido.
+  await preview.focus();
+  await preview.evaluate(node=>{
+   const selection=window.getSelection(),range=document.createRange();
+   range.selectNodeContents(node);selection.removeAllRanges();selection.addRange(range);
+  });
+  await page.keyboard.insertText(reverse);
+  assert.equal(await preview.textContent(),reverse,kind+': el navegador no sustituyó la forma');
   assert.equal(await input.inputValue(),reverse,kind+': vista no actualiza el campo');
   const after=await page.evaluate(()=>Object.fromEntries([...examSelectionCache].filter(([key])=>key.includes('lex-'))));
   assert.deepEqual(Object.keys(after).sort(),Object.keys(before).sort(),kind+': edición cambió firmas de filtros');
