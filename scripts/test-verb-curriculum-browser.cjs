@@ -95,6 +95,20 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
   assert.equal(latin.violations.length,0,latin.violations.slice(0,15).join('\n'));
   assert.equal(latin4.violations.length,0);
   assert.equal(greek.violations.length,0,greek.violations.slice(0,15).join('\n'));
+  const greekDocumented=await page.evaluate(()=>{
+   const boulomai=greekVerifiedCorpus.find(x=>x.id==='ev-βουλομαι'),
+     erchomai=greekVerifiedCorpus.find(x=>x.id==='ev-ερχομαι'),
+     aorist=greekVerifiedCorpus.find(x=>x.id==='ef-ερχομαι-0'),
+     aoristConjugation=greekVerifiedCorpus.filter(x=>x.id.startsWith('ef-ερχομαι'));
+   return {boulomai:boulomai&&{min:boulomai.minUnit,voice:boulomai.verbVoice,forms:boulomai.table.rows.length},
+    erchomai:erchomai&&{min:erchomai.minUnit,tense:erchomai.verbTense,forms:erchomai.table.rows.length},
+    aorist:aorist?.answer,uniqueAoristForms:aoristConjugation.length};
+  });
+  assert.deepEqual(greekDocumented.boulomai,{min:6,voice:'medio (deponente)',forms:3});
+  assert.deepEqual(greekDocumented.erchomai,{min:12,tense:'aoristo segundo',forms:3});
+  assert.match(greekDocumented.aorist,/primera persona del singular o tercera persona del plural/);
+  assert.equal(greekDocumented.uniqueAoristForms,5,
+   'El aoristo homógrafo ἦλθον debe conservar dos lecturas en una sola ficha');
   assert(latin.items.length>=9&&greek.items.length>=12,'Faltan unidades en la matriz curricular');
   const at=(prefix)=>latin.items.find(x=>x.unit.startsWith(prefix));
   assert(at('UD1')?.types['presente de indicativo | activa']>0,'UD1 sin presente activo');
