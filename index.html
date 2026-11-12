@@ -1405,6 +1405,16 @@ function latinExamSurface(form,entry){
  if(oeDiphthong)result=result.replace(/oe/gi,match=>ligature(match,'œ','Œ'));
  return result;
 }
+// Solo verbos transitivos con pasiva personal clara; el supino por sí solo
+// no autoriza pasivas personales de intransitivos como venio o curro.
+// Esta lista de admisión es curricular, no certifica formas individuales.
+const latinPersonalPerfectPassiveLemmas=new Set([
+ 'amo','moneo','duco','mitto','scribo','voco','pulso','video','lego',
+ 'doceo','moveo','ago','vinco','vulnero','saluto','monstro','nuntio',
+ 'oppugno','expugno','libero','importo','aro','tolero','sentio','deleo',
+ 'laudo','creo','cremo','narro','paro','vasto','orno','dico','relinquo',
+ 'rego','pono','audio','cogo','habeo','reddo','recito','peto'
+]);
 // Banco de análisis verbal: únicamente indicativo y formas regulares obtenidas
 // de los paradigmas admitidos para el vocabulario y las unidades seleccionadas.
 // El índice UniMorph genérico no acredita por sí solo una flexión para examen.
@@ -1448,8 +1458,31 @@ function latinMorphologyVerbPool(chosen){
    }[conj];
    add(passiveFuture.map(ending=>stem+ending),'futuro','pasiva');
   }
-  // El perfectum pasivo requiere formas compuestas y concordancia del participio:
-  // no se inventan aquí análisis que aún no estén contrastados individualmente.
+  // Perfectum pasivo desde UD9: participio perfecto concordado con el
+  // sujeto (género y número) + presente / imperfecto de sum. Se deriva
+  // únicamente del supino -um declarado para un verbo ya admitido por mVerb;
+  // esta regla no equivale a certificar individualmente las formas en el banco.
+  if(max>=9&&latinPersonalPerfectPassiveLemmas.has(examKey(entry))&&
+   /^[a-z]+um$/i.test(paradigm.supine||'')){
+   const participialStem=paradigm.supine.slice(0,-2);
+   const genderEndings=[
+    ['masculino','us','i'],['femenino','a','ae'],['neutro','um','a']
+   ];
+   const auxiliaries=[
+    ['perfecto',['sum','es','est','sumus','estis','sunt']],
+    ['pluscuamperfecto',['eram','eras','erat','eramus','eratis','erant']]
+   ];
+   for(const [gender,singular,plural] of genderEndings){
+    for(const [tense,auxiliary] of auxiliaries){
+     const forms=auxiliary.map((sumForm,i)=>
+      participialStem+(i<3?singular:plural)+' '+sumForm);
+     forms.forEach((form,i)=>result.push({
+      form,entry,sourceEntry,person:p.labels[i],tense:tense+' de indicativo',
+      voice:'pasiva',participleGender:gender
+     }));
+    }
+   }
+  }
  }
  // Sin contexto, una misma forma de un lema no debe exigir tiempos distintos:
  // p. ej. duceris = presente o futuro pasivos (2.ª singular).
@@ -1466,9 +1499,20 @@ function latinMorphologyVerbSelection(pool,count){
  if(max<3||count<2)return sample(pool,count);
  const passive=pool.filter(item=>item.voice==='pasiva'),active=pool.filter(item=>item.voice==='activa');
  if(!passive.length||!active.length)return sample(pool,count);
- const chosen=[...sample(passive,Math.max(1,Math.floor(count/3))),...sample(active,1)];
- const used=new Set(chosen.map(x=>x.entry+'|'+x.form+'|'+x.tense+'|'+x.voice));
- const rest=sample(pool.filter(x=>!used.has(x.entry+'|'+x.form+'|'+x.tense+'|'+x.voice)),
+ // Desde UD9, reservar un perfectum pasivo cuando haya al menos dos
+ // formas; con tres o más se incluyen perfecto y pluscuamperfecto.
+ const perfect=passive.filter(x=>x.tense==='perfecto de indicativo');
+ const pluperfect=passive.filter(x=>x.tense==='pluscuamperfecto de indicativo');
+ const identity=x=>x.entry+'|'+x.form+'|'+x.tense+'|'+x.voice;
+ const required=max>=9&&perfect.length?[...sample(perfect,1),
+  ...(count>=3&&pluperfect.length?sample(pluperfect,1):[])]:[];
+ const used=new Set(required.map(identity));
+ const passiveCount=Math.max(required.length,Math.max(1,Math.floor(count/3)));
+ const morePassive=sample(passive.filter(x=>!used.has(identity(x))),
+  passiveCount-required.length);
+ const chosen=[...required,...morePassive,...sample(active,1)];
+ for(const item of chosen)used.add(identity(item));
+ const rest=sample(pool.filter(x=>!used.has(identity(x))),
   Math.max(0,count-chosen.length));
  return sample(chosen.concat(rest),count);
 }
@@ -2088,7 +2132,7 @@ function mVerb(raw){
  const futurePerfect=['ero','eris','erit','erimus','eritis','erint'].map(x=>ps+x);
  // Suppress verbs whose principal parts indicate non-regular present stems.
  if(['capio','facio','iacio','rapio','accipio','recipio','efficio','cupio'].includes(present.toLowerCase()))return null;
- return {lemma:present,conj,source:'Regla interna: indicativo activo (seis tiempos)',tenses:[['Presente',now],['Imperfecto',imperfectForms],['Futuro',fut],['Perfecto',perfectForms],['Pluscuamperfecto',pluperfect],['Futuro perfecto',futurePerfect]]};
+ return {lemma:present,conj,supine,source:'Regla interna: indicativo activo (seis tiempos)',tenses:[['Presente',now],['Imperfecto',imperfectForms],['Futuro',fut],['Perfecto',perfectForms],['Pluscuamperfecto',pluperfect],['Futuro perfecto',futurePerfect]]};
 }
 // Corrections for conjugation: 1st conjugation imperfect is -abam, not -abam with duplicate a;
 // 4th conjugation imperfect is -iebam. 2nd conjugation uses stem excluding -eo.

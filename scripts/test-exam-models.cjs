@@ -33,7 +33,7 @@ function latinSuite(){
   sample:(a,n)=>a.slice(0,n),countFor:id=>Number(state['count-'+id]?.value)||5,
   window:{},document:{getElementById:()=>null},tr:x=>x,esc:x=>String(x),normLex:x=>String(x).toLowerCase(),
   examKey:x=>String(x).split(',')[0].toLowerCase(),
-  examUnitNumber:x=>Number(String(x).replace('UD','')),
+  examUnitNumber:x=>{const m=String(x).match(/\d+/);return m?Number(m[0]):null;},
   M_CASES:['Nominativo','Vocativo','Acusativo','Genitivo','Dativo','Ablativo'],
   M_END:{'1':[['a','a','am','ae','ae','a'],['ae','ae','as','arum','is','is']],
     '2m':[['us','e','um','i','o','o'],['i','i','os','orum','is','is']],
@@ -46,7 +46,8 @@ function latinSuite(){
     ['puellae','puellae','puellas','puellarum','puellis','puellis']
   ]}:null,
   adjective:x=>x.entry===adj.entry?{forms:['bonus','bona'],labels:['nom. masc sg','nom. fem sg']}:null,
-  verb:x=>x.entry===vb.entry?{forms:['amo','amas','amat','amamus','amatis','amant'],labels:['1sg','2sg','3sg','1pl','2pl','3pl']}:null,
+  verb:x=>x.entry===vb.entry?{forms:['amo','amas','amat','amamus','amatis','amant'],labels:['1.ª persona singular','2.ª persona singular','3.ª persona singular',
+    '1.ª persona plural','2.ª persona plural','3.ª persona plural']}:null,
   latinSharedBank:null,
   culture:Array.from({length:4},(_,i)=>({course:'latin4',units:['UD3'],type:'essay',question:'Cultura '+i,answer:'Respuesta '+i})),
   latinExamHeader:()=>'<div class="exam-header">Latín</div>',
@@ -138,6 +139,53 @@ function latinSuite(){
  // Una misma forma ambigua nunca debe recibir dos tiempos posibles.
  const identical=ud7.filter(x=>x.entry==='amo, amavi, amatum (1ª)'&&x.form==='amatur');
  assert.equal(identical.length,1);
+ // UD9 introduce el perfectum pasivo, nunca UD8.
+ const ud8=poolFor(['UD8']),ud9=poolFor(['UD9']),
+  ud10=poolFor(['UD10']),udCombined=poolFor(['UD9–10']);
+ const isCompoundPassive=item=>item.voice==='pasiva'&&
+  /^(?:perfecto|pluscuamperfecto) de indicativo$/.test(item.tense);
+ assert(ud8.every(x=>!isCompoundPassive(x)),'UD8: perfectum pasivo adelantado');
+ assert(ud9.some(isCompoundPassive)&&ud10.some(isCompoundPassive)&&udCombined.some(isCompoundPassive),
+  'UD9, UD10 y UD9–10 deben incorporar el perfectum pasivo');
+ const expected=[
+  ['amatus sum','perfecto de indicativo','masculino','1.ª persona singular'],
+  ['amatus est','perfecto de indicativo','masculino','3.ª persona singular'],
+  ['amata est','perfecto de indicativo','femenino','3.ª persona singular'],
+  ['amatum est','perfecto de indicativo','neutro','3.ª persona singular'],
+  ['amati sunt','perfecto de indicativo','masculino','3.ª persona plural'],
+  ['amatae sunt','perfecto de indicativo','femenino','3.ª persona plural'],
+  ['amata sunt','perfecto de indicativo','neutro','3.ª persona plural'],
+  ['amatus erat','pluscuamperfecto de indicativo','masculino','3.ª persona singular'],
+  ['amatae erant','pluscuamperfecto de indicativo','femenino','3.ª persona plural']
+ ];
+ for(const [form,tense,gender,person] of expected){
+  assert(ud9.some(x=>x.form===form&&x.entry===vb.entry&&
+   x.tense===tense&&x.voice==='pasiva'&&x.participleGender===gender&&x.person===person),
+   'UD9: forma compuesta incorrecta '+form);
+ }
+ const genders={masculino:['us','i'],femenino:['a','ae'],neutro:['um','a']};
+ const auxPerfect=['sum','es','est','sumus','estis','sunt'],
+  auxPluperfect=['eram','eras','erat','eramus','eratis','erant'];
+ const persons=['1.ª persona singular','2.ª persona singular','3.ª persona singular',
+  '1.ª persona plural','2.ª persona plural','3.ª persona plural'];
+ for(const row of ud9.filter(isCompoundPassive)){
+  const [participle,aux]=row.form.split(' ');
+  const i=persons.indexOf(row.person);
+  assert(i>=0,'Perfectum pasivo sin persona y número válidos');
+  assert(participle.endsWith(genders[row.participleGender][i>=3?1:0]),
+   'Concordancia incorrecta del participio: '+row.form);
+  assert.equal(aux,(row.tense==='perfecto de indicativo'?auxPerfect:auxPluperfect)[i],
+   'Auxiliar incorrecto: '+row.form);
+ }
+ // Con 3 filas, los dos tiempos pasivos nuevos y una activa son obligatorios.
+ scope.units=['UD9'];
+ const selected=Array.from(vm.runInContext(
+  'latinMorphologyVerbSelection(latinMorphologyVerbPool(["UD9"]),3)',sandbox));
+ assert.equal(selected.length,3);
+ assert(selected.some(x=>x.tense==='perfecto de indicativo'&&x.voice==='pasiva'));
+ assert(selected.some(x=>x.tense==='pluscuamperfecto de indicativo'&&x.voice==='pasiva'));
+ assert(selected.some(x=>x.voice==='activa'));
+ scope.units=['UD3'];
 
 
  assert.equal(vm.runInContext("latinExamSurface('reginae','regina, –æ')",sandbox),'reginæ');
@@ -179,7 +227,7 @@ function greekSuite(){
   // En este test sintético no hay banco nominal ni diccionario de adjetivos.
   greekAvailableSyntagmAdjectives:()=>[],greekSyntagmNounGenders:{},
   isProperNounLemma:()=>false,isExcludedExamMorphLemma:()=>false,greekMarkedUnits:()=>['UD7'],greekLimit:()=>scope.limit,
-  examUnitNumber:x=>Number(String(x).replace('UD','')),
+  examUnitNumber:x=>{const m=String(x).match(/\d+/);return m?Number(m[0]):null;},
   morphConfig:()=>({offer:3,decline:1,verbs:3,words:5}),
   greekSelectedItems:(pool,chosen,counts)=>({items:pool.filter(x=>pool.filter(y=>y.kind===x.kind).indexOf(x)<(counts[x.kind]||0)),covered:[7],missing:[]}),
   greekPoints:kind=>Number(state['greek-points-'+kind].value),
