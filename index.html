@@ -1462,6 +1462,12 @@ function latinExplicitVerbRows(chosen){
    })));
  });
 }
+// En un análisis sin contexto, estas formas de deponentes de tercera
+// conjugación son presente O futuro indicativo: excluirlas del sorteo aislado.
+const latinDeponentSyncretisms=new Set(['loquor|loqueris','sequor|sequeris']);
+function latinAmbiguousDeponentForm(item){
+ return latinDeponentSyncretisms.has(examKey(item.entry)+'|'+normLex(item.form));
+}
 function latinMorphologyVerbPool(chosen){
  const max=Math.max(0,...chosen.map(examUnitNumber).filter(Number.isInteger));
  const result=[];
@@ -1560,7 +1566,8 @@ function latinMorphologyVerbPool(chosen){
   if(!senses.has(key))senses.set(key,new Set());
   senses.get(key).add(item.person+'/'+item.tense+'/'+item.voice);
  }
- return candidates.filter(item=>senses.get(examKey(item.entry)+'/'+normLex(item.form)).size===1);
+ return candidates.filter(item=>senses.get(examKey(item.entry)+'/'+normLex(item.form)).size===1&&
+  !latinAmbiguousDeponentForm(item));
 }
 function latinMorphologyVerbSelection(pool,count){
  const max=Math.max(0,...selectedUnits().map(examUnitNumber).filter(Number.isInteger));
@@ -1863,7 +1870,8 @@ function latinExamFormCandidates(chosen,allForms=false){
  if(currentCourse()==='latin1'&&permitted('pronouns'))for(const x of latinExamPronouns(chosen)){
   groups[3].push({category:'pronouns',entry:x.form,form:x.form,answer:x.type+'; '+x.case+', '+x.gender+', '+x.number});
  }
- return groups.map(group=>group.map(item=>({...item,form:latinExamSurface(item.form,item.entry)})));
+ return groups.map(group=>group.filter(item=>!latinAmbiguousDeponentForm(item))
+  .map(item=>({...item,form:latinExamSurface(item.form,item.entry)})));
 }
 function latinExamForms(chosen,number){
  const pools=latinExamFormCandidates(chosen).map(x=>sample(x,x.length)),out=[],seen=new Set();
