@@ -17,8 +17,9 @@
       "unverified-proposal": 11,
       "verified-individual-form": 21,
       "teacher-orthography-needed": 7,
-      "teacher-context-needed": 2,
-      "already-recognized": 59
+      "teacher-context-needed": 0,
+      "already-recognized": 59,
+      "teacher-context-approved": 2
     }
   },
   "rows": [
@@ -445,8 +446,12 @@
         3
       ],
       "decision": {
-        "status": "teacher-context-needed",
-        "note": "La lectura de la oración es imprescindible antes de elegir un lema."
+        "status": "teacher-context-approved",
+        "lemma": "milia",
+        "entry": "milia, –ium",
+        "scope": "lat1 · UD10 · incidencia del corpus docente 2026-11-11",
+        "source": "Decisión explícita del profesor del 12-11-2026",
+        "note": "No descartar otros lemas posibles en otros contextos; no decidir el caso sin oración"
       }
     },
     {
@@ -464,8 +469,12 @@
       ],
       "initialSources": [],
       "decision": {
-        "status": "teacher-context-needed",
-        "note": "La lectura de la oración es imprescindible antes de elegir un lema."
+        "status": "teacher-context-approved",
+        "lemma": "parens",
+        "entry": "parens, –ntis",
+        "scope": "lat1 · UD10 · incidencia del corpus docente 2026-11-11",
+        "source": "Decisión explícita del profesor del 12-11-2026",
+        "note": "No descartar otros lemas posibles en otros contextos; no decidir el caso sin oración"
       }
     },
     {
