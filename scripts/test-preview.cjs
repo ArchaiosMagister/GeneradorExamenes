@@ -194,6 +194,9 @@ async function checkFile(browser,filename){
     duco:pool.filter(x=>examKey(x.entry)==='duco').map(x=>({form:x.form,tense:x.tense,voice:x.voice})),
     moneo:pool.filter(x=>examKey(x.entry)==='moneo'&&x.voice==='pasiva').map(x=>x.form),
     audio:pool.filter(x=>examKey(x.entry)==='audio'&&x.voice==='pasiva').map(x=>x.form),
+    excludedIntransitives:pool.filter(x=>['venio','curro','laboro'].includes(examKey(x.entry))&&
+     x.voice==='pasiva'&&/^(?:perfecto|pluscuamperfecto) de indicativo$/.test(x.tense))
+     .map(x=>x.entry+' '+x.form),
     wordXml:wordExamTable(tbl)};
   });
  });
@@ -234,8 +237,10 @@ async function checkFile(browser,filename){
      filename+': la forma compuesta pasiva no se presenta correctamente');
     assert(sample.duco.some(x=>x.form==='ductus est'&&x.voice==='pasiva'&&x.tense==='perfecto de indicativo'),
      filename+': el perfecto pasivo de duco debe usar ductus');
-    assert(!sample.moneo.includes('monetus est'),
-     filename+': forma hipotética ajena al supino de moneo');
+    assert(sample.moneo.includes('monitus est'),
+     filename+': moneo debe formar el participio desde monitum');
+    assert.deepEqual(sample.excludedIntransitives,[],
+     filename+': se ha generado un perfectum pasivo personal de un intransitivo');
     assert(sample.duco.some(x=>x.form==='ductae erant'&&x.voice==='pasiva'&&x.tense==='pluscuamperfecto de indicativo'),
      filename+': el pluscuamperfecto pasivo debe concordar en femenino plural');
    }
