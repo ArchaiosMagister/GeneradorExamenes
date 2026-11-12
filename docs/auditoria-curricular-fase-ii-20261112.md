@@ -100,3 +100,31 @@ Las comprobaciones `scripts/test-latin-verb-evidence.cjs` y `scripts/test-verifi
 La cola `scripts/audit-verbs-evidence.cjs` sigue distinguiendo el contraste de un presente de la certificación de todo un paradigma. Permanecen por revisar los demás compuestos de `eo`, el infectum pasivo irregular de `facio` (`fio`), los tiempos compuestos de deponentes y semideponentes, y las variantes del griego avanzado. El infinitivo y los participios no se generan automáticamente a partir de estos registros.
 
 Este avance **no modifica `main` ni despliega la aplicación**.
+
+
+## Continuación conservadora — integridad del examen definitivo
+
+### Perfecto semideponente de *audeo* (Latín I, desde UD9)
+
+El banco docente ya contenía **seis formas explícitas**, con sujeto masculino, etiquetadas como `DOCENTE;perfecto de indicativo, sujeto masculino`: *ausus sum, ausus es, ausus est, ausi sumus, ausi estis, ausi sunt*. Se conectan a los ejercicios sin modificar la ficha original, como **perfecto de indicativo semideponente**, con `sourceCode: 1`. **No** se deducen a partir de ellas imperfectos, futuros, pluscuamperfectos, ni variantes femeninas/neutras sin contraste propio. Su enunciado conserva *audeo, ausus sum (2ª)*; el ejercicio puede seleccionar estas seis lecturas solo a partir de UD9.
+
+Este agregado aumenta la trazabilidad latina de **114 a 120 formas expresamente documentadas** en el motor. Las dos lecturas sincréticas de deponentes de tercera no se ofrecen en tablas sin contexto, de modo que el inventario de formas aisladas espera **118 lecturas con procedencia individual**, frente a 112 antes de este pase. El número exacto se calcula ahora en la prueba desde el extracto del índice, no de un total histórico.
+
+### Dos modalidades de exportación, sin regresión
+
+La interfaz de puntuación añade una casilla **«Examen definitivo: comprobar la puntuación antes de exportar»**. Está inicialmente **desmarcada** y se reinicia al cambiar de materia o tipo de examen:
+
+- **Borrador (opción predeterminada):** Word e impresión siguen funcionando como hasta ahora, aunque falten preguntas o no se hayan distribuido todavía los 10 puntos.
+- **Definitivo, examen general o de traducción:** exige preguntas presentes y **total exacto de 10,00 puntos**. Si no se cumple, Word e impresión se bloquean y se explica la causa, sin borrar el borrador ni cambiar las puntuaciones.
+- **Definitivo, examen de morfología:** cada pregunta conserva **1 punto**; las preguntas deben tener puntuación positiva y la nota se normaliza a 10. Se conserva la programación docente anterior.
+- El control académico por forma (autorización explícita de propuestas) **sigue funcionando adicionalmente**; ninguno de los dos controles sustituye al otro.
+
+El control se prueba sin conexión con `scripts/test-final-export-preflight.cjs`: Word, impresión, edición de puntuaciones, borrador y valencià/castellano. Su activación no se persiste accidentalmente en otros exámenes.
+
+### Inventario adicional por lema y riesgo
+
+`scripts/audit-verb-coverage.cjs` genera el artefacto `fase-ii-cobertura-verbal-por-lema.json`, una matriz con cada irregular, deponente, semideponente y verbo griego medio que pertenezca al programa. Registra **unidad**, enunciado, fuentes individuales, tiempos realmente respaldados y **lagunas que deben permanecer fuera del sorteo**.
+
+En especial se diferencia el perfecto masculino explícito de *audeo* de sus formas del infectum no contrastadas individualmente. El índice persistente es la autoridad; no se promocionan automáticamente las candidatas de UniMorph, Wikcionario, las reglas regulares ni el corpus auxiliar.
+
+**Cierre de este pase:** todas las actuaciones permanecen en la PR #97 en borrador. No se publica `main`, no se toca el banco original externo y no se presupone que el resto de las fases —como una integración híbrida online/offline o una auditoría individual de toda la flexión griega— estén concluidas. La regeneración de la PWA se realiza en CI para cada revisión y se comprueba antes de cualquier propuesta de publicación.
