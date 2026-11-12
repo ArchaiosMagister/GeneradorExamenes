@@ -24,6 +24,63 @@ function readStoredZipEntry(bytes,wanted){
  throw new Error('Falta '+wanted+' en el documento Word');
 }
 
+async function checkCulture(page,filename){
+ const report=await page.evaluate(()=>{
+  $('course').value='latin4';
+  $('course').dispatchEvent(new Event('change',{bubbles:true}));
+  $('model').value='tablas';
+  $('model').dispatchEvent(new Event('change',{bubbles:true}));
+  examQuestionChoiceState['latin4/tablas/culture']=true;
+  const select=(marked,cumulative,type='all',lang='es')=>{
+   for(const input of document.querySelectorAll('.unit-choice'))input.checked=marked.includes(units[Number(input.value)]);
+   $('cumulative').checked=cumulative;
+   $('cultureType').value=type;
+   $('lang').value=lang;
+   $('lang').dispatchEvent(new Event('change',{bubbles:true}));
+   generate();
+   const picked=examSelectionCache.get(examCacheSignature('culture'));
+   const heading=[...$('paper').querySelectorAll('.exam-question')].find(node=>/Cultura cl[áà]ss?ica/.test(node.textContent));
+   const preview=heading?.nextElementSibling;
+   return {ids:picked.map(row=>row.id),effective:selectedUnits(),questions:preview?.textContent||'',
+    key:$('paper').querySelector('#answerkey').textContent};
+  };
+  const accumulated=select(['UD3'],true);
+  updateUnits();
+  const markedAfterRefresh=selectedUnits(false);
+  const isolated=select(['UD3'],false);
+  const explicit=select(['UD1','UD3'],true);
+  const empty=select([],true);
+  const es=select(['UD3'],true,'mc');
+  const va=select(['UD3'],true,'mc','va');
+  return {accumulated,isolated,markedAfterRefresh,explicit,empty,es,va};
+ });
+ assert.deepEqual(report.accumulated.effective,['UD1','UD2','UD3'],filename+': se perdió la acumulación general');
+ assert.deepEqual(report.markedAfterRefresh,['UD3'],filename+': se marcaron unidades anteriores al refrescar');
+ assert.equal(report.accumulated.ids.length,4);
+ assert(report.accumulated.ids.every(id=>id.startsWith('LAT4-CUL-UD3-')),filename+': se acumuló cultura');
+ assert.deepEqual(report.isolated.ids,report.accumulated.ids,filename+': cambiar la acumulación alteró el sorteo de cultura');
+ assert.equal(report.explicit.ids.length,4);
+ assert(report.explicit.ids.every(id=>/^LAT4-CUL-UD[13]-/.test(id)),filename+': entró una unidad sin marcar');
+ assert.deepEqual(report.empty.ids,[]);
+ assert.equal(report.es.ids.length,1,filename+': el cambio de tipo reutilizó el sorteo anterior');
+ assert.deepEqual(report.va.ids,report.es.ids,filename+': el cambio de idioma alteró el sorteo');
+ assert.match(report.es.questions,/último rey de Roma.*Tarquinio el Soberbio/);
+ assert.match(report.va.questions,/últim rei de Roma.*Tarquini el Superb/);
+ assert.match(report.va.key,/últim rei de Roma\? — C/);
+ const xml=await page.evaluate(async()=>{
+  const previous=downloadBlob;
+  let blob;
+  try{
+   downloadBlob=(_name,output)=>{blob=output};
+   $('docxAnswers').click();
+  }finally{downloadBlob=previous}
+  return Array.from(new Uint8Array(await blob.arrayBuffer()));
+ });
+ const word=readStoredZipEntry(Buffer.from(xml),'word/document.xml');
+ assert(word.includes('<w:t xml:space="preserve">Data: </w:t>'),filename+': falta Data: en el Word valenciano');
+ assert(word.includes('Tarquini el Superb')&&word.includes('últim rei de Roma? — C'),filename+': cultura valenciana incompleta en Word');
+}
+
 async function checkFile(browser,filename){
  const context=await browser.newContext({viewport:{width:1440,height:960},acceptDownloads:true});
  const page=await context.newPage(),errors=[];
@@ -112,6 +169,69 @@ async function checkFile(browser,filename){
   assert.equal(sample.indicatorItalic,false,filename+': metadato en cursiva '+sample.source);
   assert.equal(sample.fullText,sample.source,filename+': se ha perdido contenido '+sample.source);
  }
+ // Prueba real: el cuadro de análisis verbal debe mostrar enunciados y
+ // tener formas pasivas a partir de UD3, respetando los umbrales curriculares.
+ const latinVerbMorphology=await page.evaluate(()=>{
+  const course=document.getElementById('course'),model=document.getElementById('model');
+  course.value='latin1';course.dispatchEvent(new Event('change',{bubbles:true}));
+  model.value='morf';model.dispatchEvent(new Event('change',{bubbles:true}));
+  return ['UD2','UD3','UD4','UD7'].map(unit=>{
+   document.querySelectorAll('.unit-choice').forEach(el=>el.checked=units[Number(el.value)]===unit);
+   examSelectionCache.clear();generate();
+   const tbl=document.querySelector('#paper .reference-verb-table');
+   const rows=[...tbl.querySelectorAll('tbody tr')].map(tr=>{
+    const cell=tr.querySelector('td:first-child'),terms=cell.querySelectorAll('i');
+    return {form:terms[0]?.textContent,lemma:terms[1]?.textContent,
+     text:cell.textContent,
+     lemmaItalic:wordInline(terms[1]).includes('<w:i/>'),
+     conjugationItalic:wordInline(terms[1].nextSibling).includes('<w:i/>')};
+   });
+   const pool=latinMorphologyVerbPool(selectedUnits());
+   const picked=examSelectionCache.get(examCacheSignature('verb'))||[];
+   return {unit,rows,picked: picked.map(({form,entry,voice,tense})=>({form,entry,voice,tense})),
+    allVoices:[...new Set(pool.map(item=>item.voice))],
+    allTenses:[...new Set(pool.map(item=>item.tense))],
+    duco:pool.filter(x=>examKey(x.entry)==='duco').map(x=>({form:x.form,tense:x.tense,voice:x.voice})),
+    moneo:pool.filter(x=>examKey(x.entry)==='moneo'&&x.voice==='pasiva').map(x=>x.form),
+    audio:pool.filter(x=>examKey(x.entry)==='audio'&&x.voice==='pasiva').map(x=>x.form),
+    wordXml:wordExamTable(tbl)};
+  });
+ });
+ for(const sample of latinVerbMorphology){
+  const {unit,rows,picked,allVoices,allTenses,wordXml}=sample;
+  assert(rows.length>=2,filename+' '+unit+': tabla verbal vacía');
+  assert(rows.every(x=>x.form&&x.lemma&&x.lemmaItalic&&!x.conjugationItalic),
+   filename+' '+unit+': falta lema en cursiva o hay conjugación en cursiva');
+  assert(rows.every(x=>x.text.includes('(')&&x.text.includes(')')),
+   filename+' '+unit+': enunciado sin paréntesis');
+  assert(picked.some(x=>x.voice==='activa'),filename+' '+unit+': falta voz activa');
+  assert(wordXml.includes('<w:i/>')&&wordXml.includes('ª'),
+   filename+' '+unit+': exportación Word sin cursiva o conjugación');
+  if(unit==='UD2'){
+   assert.deepEqual(allVoices,['activa'],filename+': pasiva adelantada en UD2');
+   assert(!allTenses.some(x=>/^(?:futuro|perfecto|pluscuamperfecto) de indicativo$/.test(x)),filename+': tiempos adelantados en UD2');
+   assert(rows.every(x=>!x.text.includes(', amavi, amatum')),
+    filename+': UD2 no debe mostrar perfectum en los lemas');
+  }else{
+   assert(picked.some(x=>x.voice==='pasiva'),filename+' '+unit+': falta pasiva en la tabla');
+   if(unit==='UD3')assert(rows.every(x=>!x.text.includes(', amavi, amatum')),
+    filename+': UD3 no debe mostrar perfectum en los lemas');
+   if(unit==='UD4')assert(allTenses.includes('perfecto de indicativo'),
+    filename+': falta perfecto a partir de UD4');
+   if(unit==='UD7')assert(allTenses.includes('futuro de indicativo'),
+    filename+': falta futuro a partir de UD7');
+   if(unit==='UD7'){
+    assert(sample.duco.some(x=>x.form==='ducitur'&&x.voice==='pasiva'&&x.tense==='presente de indicativo'),
+     filename+': forma de duco en presente pasivo incorrecta');
+    assert(sample.duco.some(x=>x.form==='ducetur'&&x.voice==='pasiva'&&x.tense==='futuro de indicativo'),
+     filename+': forma de duco en futuro pasivo incorrecta');
+    assert(!sample.duco.some(x=>x.form==='duceris'),
+     filename+': duceris es ambiguo sin contexto (presente/futuro pasivos)');
+    assert(sample.moneo.includes('monetur')&&sample.audio.includes('auditur'),
+     filename+': faltan 2.ª/4.ª conjugación en pasiva');
+   }
+  }
+ }
  // La exportación Word conserva cursiva solo en los vocablos y no en
  // las letras a./c./d. ni en las consignas.
  const lexWord=await page.evaluate(()=>{
@@ -123,6 +243,29 @@ async function checkFile(browser,filename){
  assert(lexWord.includes('<w:i/>'),filename+': falta cursiva del estímulo léxico en Word');
  assert(lexWord.includes('inmortal'),filename+': término léxico omitido en Word');
  assert(lexWord.indexOf('c.')<lexWord.indexOf('<w:i/>'),filename+': letra de apartado en cursiva');
+ // El lema verbal debe exportarse en cursiva, pero el tipo de conjugación
+ // en redonda: comprobar HTML y runs reales del exportador Word.
+ const morphologyWord=await page.evaluate(()=>{
+  return ['UD3','UD4'].map(unit=>{
+   const item=document.createElement('p');item.className='exam-item';
+   item.innerHTML='<span class="exam-letter">a.</span> ducit'+
+    latinMorphologyEnunciationHtml({category:'verbs',entry:'duco, duxi, ductum (3ª)'},[unit]);
+   const lexeme=item.querySelector('i'),suffix=lexeme?.nextSibling;
+   return {unit,italicText:lexeme?.textContent,suffix:suffix?.textContent,
+    italicWord:wordInline(lexeme),suffixWord:wordInline(suffix),
+    paragraph:wordExamParagraph(item),fullText:item.textContent};
+  });
+ });
+ for(const item of morphologyWord){
+  const full=item.unit==='UD3'?'duco':'duco, duxi, ductum';
+  assert.equal(item.italicText,full,filename+': lema incorrecto en '+item.unit);
+  assert.equal(item.suffix,', 3ª)',filename+': conjugación mal separada en '+item.unit);
+  assert(item.italicWord.includes('<w:i/>'),filename+': lexema sin cursiva en Word '+item.unit);
+  assert(!item.suffixWord.includes('<w:i/>'),filename+': conjugación en cursiva en Word '+item.unit);
+  assert(item.paragraph.includes('3ª')&&item.paragraph.includes('<w:i/>'),
+   filename+': falta lema/conjugación en el documento Word '+item.unit);
+ }
+
  const cases=[
   ['latin1','tablas','UD3'],['latin1','morf','UD3'],['latin1','mixto','UD3'],
   ['latin4','tablas','UD3'],
@@ -135,6 +278,18 @@ async function checkFile(browser,filename){
    document.querySelectorAll('.unit-choice').forEach(el=>el.checked=units[Number(el.value)]===value);
    generate();
   },unit);
+  const dateLabels=await page.evaluate(()=>{
+   const previous=$('lang').value;
+   return ['es','va'].map(lang=>{
+    $('lang').value=lang;
+    generate();
+    const label=$('paper').querySelector('.exam-header-line:last-child span:last-child').textContent;
+    $('lang').value=previous;
+    generate();
+    return label;
+   });
+  });
+  assert.deepEqual(dateLabels,['Fecha: ','Data: '],filename+' '+course+'/'+model+': etiquetas de fecha');
   const result=await page.evaluate(()=>{
    const paper=document.querySelector('#paper'),sheet=paper.querySelector('.exam-sheet');
    return {
@@ -304,6 +459,7 @@ async function checkFile(browser,filename){
    }
    const documentXml=readStoredZipEntry(bytes,'word/document.xml');
    const styleXml=readStoredZipEntry(bytes,'word/styles.xml');
+   assert(documentXml.includes('<w:t xml:space="preserve">Fecha: </w:t>'),caseLabel+': etiqueta de fecha en Word');
    assert(documentXml.includes('p.).'),caseLabel+': el enunciado Word no incluye puntuación al final');
    assert(documentXml.includes('<w:document ')&&documentXml.includes('<w:body>')&&documentXml.includes('</w:document>'),
     caseLabel+': XML Word incompleto');
@@ -501,6 +657,7 @@ async function checkFile(browser,filename){
  assert(xml.includes('Puella amat.')&&xml.includes('Nauta navigat.')&&xml.includes('g.'));
  await page.setViewportSize({width:390,height:844});
  assert(await page.locator('#paper .exam-sheet').isVisible(),filename+': vista previa oculta en móvil');
+ await checkCulture(page,filename);
  assert.deepEqual(errors,[],filename+': errores JavaScript');
  await context.close();
 }

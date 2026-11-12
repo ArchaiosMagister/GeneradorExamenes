@@ -13,9 +13,16 @@ for(const row of rows){
  assert.ok(row.units.length===1 && /^UD[1-8]$/.test(row.units[0]));
  assert.ok(['short','essay','tf','mc'].includes(row.type));
  for(const key of ['question','answer','question_va','answer_va'])assert.ok(typeof row[key]==='string'&&row[key].trim(),row.id+' '+key);
+ if(row.type==='mc'){
+  assert.equal(row.options_va.length,row.options.length,row.id);
+  assert.ok(row.options_va.every(option=>option.trim()),row.id);
+  assert.equal(row.answer_va,row.answer,row.id);
+ }
  assert.ok(!seen.has(row.id),row.id);seen.add(row.id);
 }
 for(let u=1;u<=8;u++)assert.ok(rows.filter(x=>x.units[0]==='UD'+u).length>=8,'UD'+u);
+assert.equal(rows.find(row=>row.question.includes('se atribuye a Servio Tulio')).question_va,
+ "Quina reforma social i militar s'atribuïx a Servi Tul·li?");
 const html=fs.readFileSync(path.join(root,'index.html'),'utf8');
 assert.ok(html.includes('<script src="culture-lat4.js"></script>'));
 assert.ok(html.indexOf('window.ExaminaCultureBank')<html.indexOf('const initialCulture'));

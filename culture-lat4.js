@@ -61,7 +61,7 @@
     "type": "short",
     "question": "Cita dos ramas de la familia indoeuropea distintas de la itálica.",
     "answer": "Por ejemplo, germánica y céltica; también son válidas eslava y otras citadas en el tema.",
-    "question_va": "Esmenta dues branques de la família indoeuropea diferents de la itàlica.",
+    "question_va": "Esmenta dos branques de la família indoeuropea diferents de la itàlica.",
     "answer_va": "Per exemple, germànica i cèltica; també és vàlida l'eslava.",
     "source": "Temario docente de Cultura LAT4, UD1"
   },
@@ -230,7 +230,7 @@
     "type": "short",
     "question": "¿Qué reforma social y militar se atribuye a Servio Tulio?",
     "answer": "La organización censitaria por riqueza y en centurias.",
-    "question_va": "Quina reforma social i militar s'atribueix a Servi Tul·li?",
+    "question_va": "Quina reforma social i militar s'atribuïx a Servi Tul·li?",
     "answer_va": "L'organització censitària segons la riquesa i en centúries.",
     "source": "Temario docente de Cultura LAT4, UD3"
   },
@@ -361,7 +361,7 @@
     "question": "¿Qué era un liberto?",
     "answer": "Un antiguo esclavo que había sido liberado.",
     "question_va": "Què era un llibert?",
-    "answer_va": "Un antic esclau que havia estat alliberat.",
+    "answer_va": "Un antic esclau que havia sigut alliberat.",
     "source": "Temario docente de Cultura LAT4, UD4"
   },
   {
@@ -659,7 +659,7 @@
     "type": "short",
     "question": "¿Quiénes integraron el Primer Triunvirato?",
     "answer": "César, Pompeyo y Craso.",
-    "question_va": "Qui integraren el Primer Triumvirat?",
+    "question_va": "Quins polítics integraren el Primer Triumvirat?",
     "answer_va": "Cèsar, Pompeu i Cras.",
     "source": "Temario docente de Cultura LAT4, UD8"
   },
@@ -711,7 +711,7 @@
     "type": "short",
     "question": "¿Qué dos obras históricas escribió Julio César sobre sus campañas?",
     "answer": "De bello Gallico y De bello civili.",
-    "question_va": "Quines dues obres històriques escrigué Juli Cèsar sobre les seues campanyes?",
+    "question_va": "Quines dos obres històriques escrigué Juli Cèsar sobre les seues campanyes?",
     "answer_va": "De bello Gallico i De bello civili.",
     "source": "Temario docente de Cultura LAT4, UD8"
   },

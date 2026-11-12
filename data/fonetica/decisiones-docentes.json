@@ -303,7 +303,388 @@
       "idBanco": "EVF-1202",
       "motivo": "Se corrige a CHLOEN, acusativo del nombre Chloe; la forma castellana Cloe procede de la adaptación del nombre griego. Ch > c; la secuencia o-e es hiato, no diptongo œ: no corresponde N12.",
       "latin": "Chlœm"
+    },
+    {
+      "latin": "seniorem",
+      "decision": "conservar_criterio_evolucion_fonetica",
+      "estado": "APTO_PROPUESTO",
+      "normasAnteriores": [
+        "N13",
+        "N16"
+      ],
+      "normasFinales": [
+        "N03",
+        "N13"
+      ],
+      "motivo": "El grupo -ni- ante vocal se palataliza en ñ (N13); se pierde la -e final por apócope (N03) y cae la -m final fija. La i no se cuenta de nuevo como síncopa.",
+      "origen": "Resolución docente del conflicto con ArchaiosMagister/EvolucionFonetica, 12-11-2026",
+      "id": "EVF-0282"
+    },
+    {
+      "latin": "sensum",
+      "decision": "conservar_criterio_evolucion_fonetica",
+      "estado": "APTO_PROPUESTO",
+      "normasAnteriores": [
+        "N16"
+      ],
+      "normasFinales": [
+        "N01",
+        "N15"
+      ],
+      "motivo": "Simplificación de -ns- a -s- (N15), abertura de -u- a -o- en -um (N01) y pérdida fija de la -m del acusativo; no es síncopa.",
+      "origen": "Resolución docente del conflicto con ArchaiosMagister/EvolucionFonetica, 12-11-2026",
+      "id": "EVF-0283"
+    },
+    {
+      "latin": "sponsam",
+      "decision": "conservar_criterio_evolucion_fonetica",
+      "estado": "APTO_PROPUESTO",
+      "normasAnteriores": [
+        "N14",
+        "N16"
+      ],
+      "normasFinales": [
+        "N14",
+        "N15"
+      ],
+      "motivo": "Prótesis de e- ante s + consonante (N14), simplificación -ns- > -s- (N15) y caída fija de la -m del acusativo; no es síncopa.",
+      "origen": "Resolución docente del conflicto con ArchaiosMagister/EvolucionFonetica, 12-11-2026",
+      "id": "EVF-0303"
+    },
+    {
+      "latin": "sponsum",
+      "decision": "conservar_criterio_evolucion_fonetica",
+      "estado": "APTO_PROPUESTO",
+      "normasAnteriores": [
+        "N14",
+        "N16"
+      ],
+      "normasFinales": [
+        "N01",
+        "N14",
+        "N15"
+      ],
+      "motivo": "Prótesis de e- (N14), simplificación -ns- > -s- (N15), abertura final -u- > -o (N01) y caída fija de -m; no es síncopa.",
+      "origen": "Resolución docente del conflicto con ArchaiosMagister/EvolucionFonetica, 12-11-2026",
+      "id": "EVF-0304"
+    },
+    {
+      "latin": "abbatem",
+      "castellano": "abad",
+      "decision": "clasificar_patrimonial_excel_pau",
+      "estado": "APTO_PROPUESTO",
+      "filaBanco": 2,
+      "normasExcel": [
+        "N15",
+        "N17"
+      ],
+      "motivo": "Decisión docente de clasificación; se conservan las normas anotadas y las observaciones originales.",
+      "referenciaDecision": "data/fonetica/decisiones-excel-pau-2026.json"
+    },
+    {
+      "latin": "actionem",
+      "castellano": "acción",
+      "decision": "clasificar_patrimonial_excel_pau",
+      "estado": "PENDIENTE_VERIFICACION",
+      "filaBanco": 3,
+      "normasExcel": [],
+      "motivo": "La nota heredada lo considera cultismo. Clasificación patrimonial solicitada por el docente; la vía histórica sigue controvertida y no hay normas verificadas en la ficha.",
+      "referenciaDecision": "data/fonetica/decisiones-excel-pau-2026.json"
+    },
+    {
+      "latin": "acucŭlam",
+      "castellano": "aguja",
+      "decision": "clasificar_patrimonial_excel_pau",
+      "estado": "APTO_PROPUESTO",
+      "filaBanco": 4,
+      "normasExcel": [
+        "N20"
+      ],
+      "motivo": "Patrimonial aprobado para el repertorio docente; la ficha contiene -CUL- pero falta contrastar toda la secuencia histórica.",
+      "referenciaDecision": "data/fonetica/decisiones-excel-pau-2026.json"
+    },
+    {
+      "latin": "adpodiare",
+      "castellano": "apoyar",
+      "decision": "excluir_docente_excel_pau",
+      "estado": "EXCLUIDA",
+      "filaBanco": 5,
+      "normasExcel": [],
+      "motivo": "Exclusión expresa por decisión docente; no participa en ningún sorteo.",
+      "referenciaDecision": "data/fonetica/decisiones-excel-pau-2026.json"
+    },
+    {
+      "latin": "adripare",
+      "castellano": "arribar",
+      "decision": "excluir_docente_excel_pau",
+      "estado": "EXCLUIDA",
+      "filaBanco": 6,
+      "normasExcel": [],
+      "motivo": "Exclusión expresa por decisión docente; no participa en ningún sorteo.",
+      "referenciaDecision": "data/fonetica/decisiones-excel-pau-2026.json"
+    },
+    {
+      "latin": "adulationem",
+      "castellano": "adulación",
+      "decision": "clasificar_patrimonial_excel_pau",
+      "estado": "PENDIENTE_VERIFICACION",
+      "filaBanco": 7,
+      "normasExcel": [],
+      "motivo": "La nota heredada lo considera cultismo. Se registra la opción patrimonial docente; sin normas verificadas, permanece fuera del sorteo.",
+      "referenciaDecision": "data/fonetica/decisiones-excel-pau-2026.json"
+    },
+    {
+      "latin": "advocatum",
+      "castellano": "abogado",
+      "decision": "clasificar_patrimonial_excel_pau",
+      "estado": "APTO_PROPUESTO",
+      "filaBanco": 8,
+      "normasExcel": [
+        "N01",
+        "N17"
+      ],
+      "motivo": "Decisión docente de clasificación; se conservan las normas anotadas y las observaciones originales.",
+      "referenciaDecision": "data/fonetica/decisiones-excel-pau-2026.json"
+    },
+    {
+      "latin": "ætatem",
+      "castellano": "edad",
+      "decision": "clasificar_patrimonial_excel_pau",
+      "estado": "APTO_PROPUESTO",
+      "filaBanco": 9,
+      "normasExcel": [
+        "N12",
+        "N17"
+      ],
+      "motivo": "Decisión docente de clasificación; se conservan las normas anotadas y las observaciones originales.",
+      "referenciaDecision": "data/fonetica/decisiones-excel-pau-2026.json"
+    },
+    {
+      "latin": "alienam",
+      "castellano": "ajena",
+      "decision": "clasificar_patrimonial_excel_pau",
+      "estado": "APTO_PROPUESTO",
+      "filaBanco": 10,
+      "normasExcel": [
+        "N13"
+      ],
+      "motivo": "Decisión docente de clasificación; se conservan las normas anotadas y las observaciones originales.",
+      "referenciaDecision": "data/fonetica/decisiones-excel-pau-2026.json"
+    },
+    {
+      "latin": "alĭquem",
+      "castellano": "alguien",
+      "decision": "clasificar_patrimonial_excel_pau",
+      "estado": "PENDIENTE_VERIFICACION",
+      "filaBanco": 11,
+      "normasExcel": [],
+      "motivo": "Forma y evolución pronominal complejas; patrimonialidad elegida, sin análisis de normas validado.",
+      "referenciaDecision": "data/fonetica/decisiones-excel-pau-2026.json"
+    },
+    {
+      "latin": "alĭquod",
+      "castellano": "algo",
+      "decision": "clasificar_patrimonial_excel_pau",
+      "estado": "PENDIENTE_VERIFICACION",
+      "filaBanco": 12,
+      "normasExcel": [],
+      "motivo": "La historia pronominal requiere análisis; patrimonialidad docente, sin normas validadas.",
+      "referenciaDecision": "data/fonetica/decisiones-excel-pau-2026.json"
+    },
+    {
+      "latin": "amabĭlem",
+      "castellano": "amable",
+      "decision": "clasificar_patrimonial_excel_pau",
+      "estado": "PENDIENTE_VERIFICACION",
+      "filaBanco": 13,
+      "normasExcel": [],
+      "motivo": "La nota heredada señala posible semicultismo; se respeta la decisión patrimonial, sin normas verificadas.",
+      "referenciaDecision": "data/fonetica/decisiones-excel-pau-2026.json"
+    },
+    {
+      "latin": "amœnitatem",
+      "castellano": "amenidad",
+      "decision": "clasificar_patrimonial_excel_pau",
+      "estado": "PENDIENTE_VERIFICACION",
+      "filaBanco": 14,
+      "normasExcel": [],
+      "motivo": "La nota heredada lo considera cultismo. Decisión docente patrimonial, no confirmada históricamente; sin normas validadas.",
+      "referenciaDecision": "data/fonetica/decisiones-excel-pau-2026.json"
+    },
+    {
+      "latin": "amœnum",
+      "castellano": "ameno",
+      "decision": "clasificar_patrimonial_excel_pau",
+      "estado": "PENDIENTE_VERIFICACION",
+      "filaBanco": 15,
+      "normasExcel": [
+        "N01"
+      ],
+      "motivo": "La nota heredada lo considera cultismo. Decisión patrimonial docente; N01 por -um > -o, no prueba por sí sola transmisión patrimonial.",
+      "referenciaDecision": "data/fonetica/decisiones-excel-pau-2026.json"
+    },
+    {
+      "latin": "ampullam",
+      "castellano": "ampolla",
+      "decision": "clasificar_patrimonial_excel_pau",
+      "estado": "APTO_PROPUESTO",
+      "filaBanco": 16,
+      "normasExcel": [
+        "N13"
+      ],
+      "motivo": "Decisión docente de clasificación; se conservan las normas anotadas y las observaciones originales.",
+      "referenciaDecision": "data/fonetica/decisiones-excel-pau-2026.json"
+    },
+    {
+      "latin": "ansam",
+      "castellano": "asa",
+      "decision": "clasificar_patrimonial_excel_pau",
+      "estado": "APTO_PROPUESTO",
+      "filaBanco": 17,
+      "normasExcel": [
+        "N15"
+      ],
+      "motivo": "Decisión docente de clasificación; se conservan las normas anotadas y las observaciones originales.",
+      "referenciaDecision": "data/fonetica/decisiones-excel-pau-2026.json"
+    },
+    {
+      "latin": "antelationem",
+      "castellano": "antelación",
+      "decision": "clasificar_patrimonial_excel_pau",
+      "estado": "PENDIENTE_VERIFICACION",
+      "filaBanco": 18,
+      "normasExcel": [],
+      "motivo": "Origen y transmisión no comprobados; sin normas verificadas, no participa aún en el sorteo.",
+      "referenciaDecision": "data/fonetica/decisiones-excel-pau-2026.json"
+    },
+    {
+      "latin": "apĕrīre",
+      "castellano": "abrir",
+      "decision": "clasificar_patrimonial_excel_pau",
+      "estado": "APTO_PROPUESTO",
+      "filaBanco": 19,
+      "normasExcel": [
+        "N16"
+      ],
+      "motivo": "Decisión docente de clasificación; se conservan las normas anotadas y las observaciones originales.",
+      "referenciaDecision": "data/fonetica/decisiones-excel-pau-2026.json"
+    },
+    {
+      "latin": "apicŭlam",
+      "castellano": "abeja",
+      "decision": "clasificar_patrimonial_excel_pau",
+      "estado": "APTO_PROPUESTO",
+      "filaBanco": 20,
+      "normasExcel": [
+        "N20"
+      ],
+      "motivo": "Patrimonialidad aprobada; verificar cadena de cambios y valor concreto de -CUL-.",
+      "referenciaDecision": "data/fonetica/decisiones-excel-pau-2026.json"
+    },
+    {
+      "latin": "apricare",
+      "castellano": "abrigar",
+      "decision": "clasificar_patrimonial_excel_pau",
+      "estado": "PENDIENTE_VERIFICACION",
+      "filaBanco": 21,
+      "normasExcel": [],
+      "motivo": "Evolución y étimo pendientes de documentación; sin normas comprobadas.",
+      "referenciaDecision": "data/fonetica/decisiones-excel-pau-2026.json"
+    },
+    {
+      "latin": "aprilem",
+      "castellano": "abril",
+      "decision": "clasificar_patrimonial_excel_pau",
+      "estado": "PENDIENTE_VERIFICACION",
+      "filaBanco": 22,
+      "normasExcel": [],
+      "motivo": "Verificar transmisión histórica y anotación de fenómenos antes del sorteo.",
+      "referenciaDecision": "data/fonetica/decisiones-excel-pau-2026.json"
+    },
+    {
+      "latin": "aquam",
+      "castellano": "agua",
+      "decision": "clasificar_patrimonial_excel_pau",
+      "estado": "APTO_PROPUESTO",
+      "filaBanco": 23,
+      "normasExcel": [
+        "N17"
+      ],
+      "motivo": "Decisión docente de clasificación; se conservan las normas anotadas y las observaciones originales.",
+      "referenciaDecision": "data/fonetica/decisiones-excel-pau-2026.json"
+    },
+    {
+      "latin": "aquilam",
+      "castellano": "águila",
+      "decision": "clasificar_patrimonial_excel_pau",
+      "estado": "PENDIENTE_VERIFICACION",
+      "filaBanco": 24,
+      "normasExcel": [],
+      "motivo": "Tratamiento fonético y transmisión pendientes de contraste; sin normas anotadas.",
+      "referenciaDecision": "data/fonetica/decisiones-excel-pau-2026.json"
+    },
+    {
+      "latin": "montensem",
+      "castellano": "montés",
+      "decision": "clasificar_patrimonial_excel_pau",
+      "estado": "PENDIENTE_VERIFICACION",
+      "filaBanco": 207,
+      "normasExcel": [],
+      "motivo": "Patrimonialidad aprobada; -ns- y eventual pérdida de -e requieren análisis independiente antes de marcar N15/N03.",
+      "referenciaDecision": "data/fonetica/decisiones-excel-pau-2026.json"
+    },
+    {
+      "latin": "miliarium",
+      "castellano": "millar",
+      "decision": "clasificar_patrimonial_excel_pau",
+      "estado": "PENDIENTE_VERIFICACION",
+      "filaBanco": 403,
+      "normasExcel": [],
+      "motivo": "Excepción legítima: -um no evoluciona aquí a -o; no añadir N01 automáticamente. Revisar normas del resultado -ar.",
+      "referenciaDecision": "data/fonetica/decisiones-excel-pau-2026.json"
+    },
+    {
+      "latin": "brochum",
+      "castellano": null,
+      "decision": "excluir_docente_excel_pau",
+      "estado": "EXCLUIDA",
+      "filaBanco": 610,
+      "normasExcel": [],
+      "motivo": "Exclusión expresa por decisión docente; no participa en ningún sorteo.",
+      "referenciaDecision": "data/fonetica/decisiones-excel-pau-2026.json"
+    },
+    {
+      "latin": "stuppaculum",
+      "castellano": null,
+      "decision": "excluir_docente_excel_pau",
+      "estado": "EXCLUIDA",
+      "filaBanco": 615,
+      "normasExcel": [],
+      "motivo": "Exclusión expresa por decisión docente; no participa en ningún sorteo.",
+      "referenciaDecision": "data/fonetica/decisiones-excel-pau-2026.json"
+    },
+    {
+      "latin": "refectum",
+      "castellano": null,
+      "decision": "excluir_docente_excel_pau",
+      "estado": "EXCLUIDA",
+      "filaBanco": 857,
+      "normasExcel": [],
+      "motivo": "Exclusión expresa por decisión docente; no participa en ningún sorteo.",
+      "referenciaDecision": "data/fonetica/decisiones-excel-pau-2026.json"
+    },
+    {
+      "latin": "spiritum",
+      "castellano": "espíritu",
+      "decision": "clasificar_patrimonial_excel_pau",
+      "estado": "PENDIENTE_VERIFICACION",
+      "filaBanco": 884,
+      "normasExcel": [
+        "N14"
+      ],
+      "motivo": "La nota heredada lo clasifica como cultismo. Se registra la decisión docente patrimonial; excepción -um ≠ -o, sin N01.",
+      "referenciaDecision": "data/fonetica/decisiones-excel-pau-2026.json"
     }
   ],
-  "politica": "Las grafías de origen griego y la monoptongación de ae/oe pueden incorporarse como ejemplos de adaptación culta aunque no sean patrimoniales, preservando etiqueta de vía culta en el examen. Excepciones con étimo, acepción o forma problemática quedan pendientes de decisión; las exclusiones docentes previas se mantienen. Lote 20: cinco aprobaciones individualizadas, cuatro exclusiones y circum bajo investigación; la relación histórica con CIRCUS no activa automáticamente una ficha."
+  "politica": "Las grafías de origen griego y la monoptongación de ae/oe pueden incorporarse como ejemplos de adaptación culta aunque no sean patrimoniales, preservando etiqueta de vía culta en el examen. Excepciones con étimo, acepción o forma problemática quedan pendientes de decisión; las exclusiones docentes previas se mantienen. Lote 20: cinco aprobaciones individualizadas, cuatro exclusiones y circum bajo investigación; la relación histórica con CIRCUS no activa automáticamente una ficha. Homologación fonética (12-11-2026): pérdida -m final identificada siempre como FIX_M independiente (no seleccionable ni N03); -um > -o lleva abertura N01; -ns- > -s- lleva simplificación N15 (no síncopa N16 por ese fenómeno). La i de -ni- en seniorem pertenece a N13, con e final perdida por N03. Las nuevas fichas se normalizan y validan antes de integrarlas; las dudas quedan fuera. Excel PAU 2026: 5 exclusiones vinculantes, 24 clasificaciones patrimoniales docentes; no se activa ninguna nueva sin revisión fonética completa."
 }

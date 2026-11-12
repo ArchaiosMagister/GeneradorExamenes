@@ -2,6 +2,7 @@
  * Selector de evoluciones fonéticas latín → castellano.
  * Compatible con evoluciones-latin-castellano/v1. Siempre 4 palabras.
  */
+import {erroresBancoFonetico} from './criterios-docentes.mjs';
 export const PALABRAS_POR_EXAMEN=4;
 function claveEtimo(valor){
  return String(valor??'').toLowerCase().replace(/æ/g,'ae').replace(/œ/g,'oe')
@@ -34,6 +35,8 @@ function barajar(entradas,rng){
 export function seleccionarEvoluciones(banco,opciones={}){
  if(banco?.esquema!=='evoluciones-latin-castellano/v1'||!Array.isArray(banco.items))
   throw new TypeError('Esquema de evoluciones fonéticas incompatible');
+ const errores=erroresBancoFonetico(banco);
+ if(errores.length)throw new Error('Banco fonético no homologado: '+errores.slice(0,4).join('; '));
  const cantidad=PALABRAS_POR_EXAMEN;
  if(opciones.cantidad!==undefined&&opciones.cantidad!==cantidad)
   throw new RangeError('Cada ejercicio debe contener exactamente cuatro palabras');

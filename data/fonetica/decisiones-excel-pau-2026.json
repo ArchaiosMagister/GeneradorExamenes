@@ -1,0 +1,361 @@
+{
+  "schema": 1,
+  "fecha": "2026-11-12",
+  "excel": "banco_evolucion_fonetica_PAU_2026_decisiones_29_aplicadas.xlsx",
+  "politica": "La clasificación patrimonial docente no certifica las normas. Diez fichas ya presentes reciben esa marca, sin cambiar sus normas; 14 propuestas patrimoniales nuevas siguen fuera del sorteo. Cinco exclusiones son vinculantes.",
+  "decisiones": [
+    {
+      "filaBanco": 2,
+      "latin": "abbatem",
+      "castellano": "abad",
+      "decision": "patrimonial",
+      "normasExcel": [
+        "N15",
+        "N17"
+      ],
+      "estatusExcel": "PATRIMONIAL · CLASIFICACIÓN DOCENTE",
+      "observacionExcel": "La forma de acusativo abbatem continúa en abad. La geminada -bb- se simplifica y la oclusiva dental sorda intervocálica -t- sonoriza en -d-. Derivación patrimonial tradicional; se etiquetan únicamente simplificación y sonorización.",
+      "notaDocente": "Decisión docente de clasificación; se conservan las normas anotadas y las observaciones originales.",
+      "origen": "Excel PAU 2026 29 resoluciones docentes"
+    },
+    {
+      "filaBanco": 3,
+      "latin": "actionem",
+      "castellano": "acción",
+      "decision": "patrimonial",
+      "normasExcel": [],
+      "estatusExcel": "PATRIMONIAL · NORMAS PENDIENTES",
+      "observacionExcel": "Acción es una incorporación culta o semiculta de actio, actionem; conserva la estructura latina y no representa la evolución patrimonial regular. Se excluye por cultismo; no usar como ejemplo de evolución patrimonial.",
+      "notaDocente": "La nota heredada lo considera cultismo. Clasificación patrimonial solicitada por el docente; la vía histórica sigue controvertida y no hay normas verificadas en la ficha.",
+      "origen": "Excel PAU 2026 29 resoluciones docentes"
+    },
+    {
+      "filaBanco": 4,
+      "latin": "acucŭlam",
+      "castellano": "aguja",
+      "decision": "patrimonial",
+      "normasExcel": [
+        "N20"
+      ],
+      "estatusExcel": "PATRIMONIAL · CLASIFICACIÓN DOCENTE",
+      "observacionExcel": "No se asigna automáticamente un resultado. Acucŭla aparece como base de aguja en la tradición etimológica, pero la reconstrucción intermedia y la aplicación exacta de las reglas del catálogo requieren comprobación documental. Candidato: aguja. Mantener fuera del banco apto hasta documentar la cadena y la evolución de -cul-.",
+      "notaDocente": "Patrimonial aprobado para el repertorio docente; la ficha contiene -CUL- pero falta contrastar toda la secuencia histórica.",
+      "origen": "Excel PAU 2026 29 resoluciones docentes"
+    },
+    {
+      "filaBanco": 5,
+      "latin": "adpodiare",
+      "castellano": "apoyar",
+      "decision": "excluir",
+      "normasExcel": [],
+      "estatusExcel": "EXCLUIDA · DECISIÓN DOCENTE",
+      "observacionExcel": "La forma se relaciona con apoyar, pero la base latina y la secuencia consonántica presentan variantes (appodiare/adpod iare). No se fija una cadena sin verificar la forma de partida exacta. Revisar variante latina y etapas romances antes de aceptar.",
+      "notaDocente": "Exclusión expresa por decisión docente; no participa en ningún sorteo.",
+      "origen": "Excel PAU 2026 29 resoluciones docentes"
+    },
+    {
+      "filaBanco": 6,
+      "latin": "adripare",
+      "castellano": "arribar",
+      "decision": "excluir",
+      "normasExcel": [],
+      "estatusExcel": "EXCLUIDA · DECISIÓN DOCENTE",
+      "observacionExcel": "Arribar se relaciona con el latín vulgar arripare/ad ripam; la forma aportada adripare no permite por sí sola asegurar la cadena patrimonial completa. La base es locución o forma verbal del latín tardío; comprobar lematización y documentación.",
+      "notaDocente": "Exclusión expresa por decisión docente; no participa en ningún sorteo.",
+      "origen": "Excel PAU 2026 29 resoluciones docentes"
+    },
+    {
+      "filaBanco": 7,
+      "latin": "adulationem",
+      "castellano": "adulación",
+      "decision": "patrimonial",
+      "normasExcel": [],
+      "estatusExcel": "PATRIMONIAL · NORMAS PENDIENTES",
+      "observacionExcel": "Adulación continúa el latín adulationem con forma muy próxima a la latina; es voz culta, no evolución patrimonial. Excluir por cultismo.",
+      "notaDocente": "La nota heredada lo considera cultismo. Se registra la opción patrimonial docente; sin normas verificadas, permanece fuera del sorteo.",
+      "origen": "Excel PAU 2026 29 resoluciones docentes"
+    },
+    {
+      "filaBanco": 8,
+      "latin": "advocatum",
+      "castellano": "abogado",
+      "decision": "patrimonial",
+      "normasExcel": [
+        "N01",
+        "N17"
+      ],
+      "estatusExcel": "PATRIMONIAL · CLASIFICACIÓN DOCENTE",
+      "observacionExcel": "Advocatum evoluciona a abogado. La consonante velar sorda intervocálica -c- se sonoriza en -g- y la dental sorda -t- en -d-; la grafía y evolución de la consonante inicial latina u/v se integran en la forma romance. La evolución es patrimonial; se etiquetan las dos sonorizaciones consonánticas pertinentes.",
+      "notaDocente": "Decisión docente de clasificación; se conservan las normas anotadas y las observaciones originales.",
+      "origen": "Excel PAU 2026 29 resoluciones docentes"
+    },
+    {
+      "filaBanco": 9,
+      "latin": "ætatem",
+      "castellano": "edad",
+      "decision": "patrimonial",
+      "normasExcel": [
+        "N12",
+        "N17"
+      ],
+      "estatusExcel": "PATRIMONIAL · CLASIFICACIÓN DOCENTE",
+      "observacionExcel": "Aetatem da edad. El diptongo latino ae se monoptonga en una vocal romance; la dental sorda intervocálica -t- sonoriza en -d- y se pierde la -m final del acusativo. La pérdida de -m final latina es regular y no se etiqueta como apócope castellana si no se ha explicado como tal en clase.",
+      "notaDocente": "Decisión docente de clasificación; se conservan las normas anotadas y las observaciones originales.",
+      "origen": "Excel PAU 2026 29 resoluciones docentes"
+    },
+    {
+      "filaBanco": 10,
+      "latin": "alienam",
+      "castellano": "ajena",
+      "decision": "patrimonial",
+      "normasExcel": [
+        "N13"
+      ],
+      "estatusExcel": "PATRIMONIAL · CLASIFICACIÓN DOCENTE",
+      "observacionExcel": "Alienam evoluciona a ajena mediante palatalización del grupo -li- en contacto vocálico (resultado /ʒ/ > /x/ en la evolución castellana), además de los ajustes vocálicos y la pérdida de -m final. La etiqueta de palatalización cubre el desarrollo de la consonante palatal; comprobar si se ha explicado también el reajuste medieval /ʒ/ > /x/.",
+      "notaDocente": "Decisión docente de clasificación; se conservan las normas anotadas y las observaciones originales.",
+      "origen": "Excel PAU 2026 29 resoluciones docentes"
+    },
+    {
+      "filaBanco": 11,
+      "latin": "alĭquem",
+      "castellano": "alguien",
+      "decision": "patrimonial",
+      "normasExcel": [],
+      "estatusExcel": "PATRIMONIAL · NORMAS PENDIENTES",
+      "observacionExcel": "Alĭquem no debe identificarse sin más con alguien: la historia de alguien incluye formación y evolución pronominal complejas y no es una correspondencia transparente de una sola forma de acusativo. Revisar la forma latina exacta y la historia morfológica; no apta por ahora.",
+      "notaDocente": "Forma y evolución pronominal complejas; patrimonialidad elegida, sin análisis de normas validado.",
+      "origen": "Excel PAU 2026 29 resoluciones docentes"
+    },
+    {
+      "filaBanco": 12,
+      "latin": "alĭquod",
+      "castellano": "algo",
+      "decision": "patrimonial",
+      "normasExcel": [],
+      "estatusExcel": "PATRIMONIAL · NORMAS PENDIENTES",
+      "observacionExcel": "Alĭquod se relaciona con algo, pero la evolución incluye cambios morfológicos y fonéticos que conviene documentar en una cadena específica antes de etiquetar. Mantener en revisión.",
+      "notaDocente": "La historia pronominal requiere análisis; patrimonialidad docente, sin normas validadas.",
+      "origen": "Excel PAU 2026 29 resoluciones docentes"
+    },
+    {
+      "filaBanco": 13,
+      "latin": "amabĭlem",
+      "castellano": "amable",
+      "decision": "patrimonial",
+      "normasExcel": [],
+      "estatusExcel": "PATRIMONIAL · NORMAS PENDIENTES",
+      "observacionExcel": "Amabilem se relaciona con amable, pero la voz puede presentar tratamiento semiculto y la evolución de -bilem no es un ejemplo inequívoco de patrimonialidad estricta. No incluir hasta resolver su clasificación patrimonial/semiculta.",
+      "notaDocente": "La nota heredada señala posible semicultismo; se respeta la decisión patrimonial, sin normas verificadas.",
+      "origen": "Excel PAU 2026 29 resoluciones docentes"
+    },
+    {
+      "filaBanco": 14,
+      "latin": "amœnitatem",
+      "castellano": "amenidad",
+      "decision": "patrimonial",
+      "normasExcel": [],
+      "estatusExcel": "PATRIMONIAL · NORMAS PENDIENTES",
+      "observacionExcel": "Amenidad es una formación culta sobre el tema latino amoenitāt-; no presenta evolución patrimonial regular desde el acusativo aportado. Excluir por cultismo.",
+      "notaDocente": "La nota heredada lo considera cultismo. Decisión docente patrimonial, no confirmada históricamente; sin normas validadas.",
+      "origen": "Excel PAU 2026 29 resoluciones docentes"
+    },
+    {
+      "filaBanco": 15,
+      "latin": "amœnum",
+      "castellano": "ameno",
+      "decision": "patrimonial",
+      "normasExcel": [
+        "N01"
+      ],
+      "estatusExcel": "PATRIMONIAL · CLASIFICACIÓN DOCENTE",
+      "observacionExcel": "Ameno procede de amoenus con adaptación culta y conservación reconocible de la forma latina. Excluir por cultismo.",
+      "notaDocente": "La nota heredada lo considera cultismo. Decisión patrimonial docente; N01 por -um > -o, no prueba por sí sola transmisión patrimonial.",
+      "origen": "Excel PAU 2026 29 resoluciones docentes"
+    },
+    {
+      "filaBanco": 16,
+      "latin": "ampullam",
+      "castellano": "ampolla",
+      "decision": "patrimonial",
+      "normasExcel": [
+        "N13"
+      ],
+      "estatusExcel": "PATRIMONIAL · CLASIFICACIÓN DOCENTE",
+      "observacionExcel": "Ampullam da ampolla. La geminada latina -ll- evoluciona a la lateral palatal castellana -ll-; se pierde la -m final del acusativo. La palatalización de -ll- es el fenómeno del catálogo relevante.",
+      "notaDocente": "Decisión docente de clasificación; se conservan las normas anotadas y las observaciones originales.",
+      "origen": "Excel PAU 2026 29 resoluciones docentes"
+    },
+    {
+      "filaBanco": 17,
+      "latin": "ansam",
+      "castellano": "asa",
+      "decision": "patrimonial",
+      "normasExcel": [
+        "N15"
+      ],
+      "estatusExcel": "PATRIMONIAL · CLASIFICACIÓN DOCENTE",
+      "observacionExcel": "Ansam da asa por simplificación del grupo consonántico -ns-; desaparece la nasal ante la sibilante. También se pierde la -m final del acusativo. Etiquetar simplificación del grupo -ns-.",
+      "notaDocente": "Decisión docente de clasificación; se conservan las normas anotadas y las observaciones originales.",
+      "origen": "Excel PAU 2026 29 resoluciones docentes"
+    },
+    {
+      "filaBanco": 18,
+      "latin": "antelationem",
+      "castellano": "antelación",
+      "decision": "patrimonial",
+      "normasExcel": [],
+      "estatusExcel": "PATRIMONIAL · NORMAS PENDIENTES",
+      "observacionExcel": "Antelationem no ofrece una continuación castellana patrimonial evidente y segura. No se fuerza una equivalencia moderna. Comprobar si la forma latina está bien transcrita y si existe descendiente castellano.",
+      "notaDocente": "Origen y transmisión no comprobados; sin normas verificadas, no participa aún en el sorteo.",
+      "origen": "Excel PAU 2026 29 resoluciones docentes"
+    },
+    {
+      "filaBanco": 19,
+      "latin": "apĕrīre",
+      "castellano": "abrir",
+      "decision": "patrimonial",
+      "normasExcel": [
+        "N16"
+      ],
+      "estatusExcel": "PATRIMONIAL · CLASIFICACIÓN DOCENTE",
+      "observacionExcel": "Aperire da abrir mediante síncopa de la vocal postónica interior: aperire > aprire; después se reajusta el grupo y la vocal final. Etiquetar la síncopa de la vocal interior; la forma exacta de las etapas romances se presenta esquemáticamente.",
+      "notaDocente": "Decisión docente de clasificación; se conservan las normas anotadas y las observaciones originales.",
+      "origen": "Excel PAU 2026 29 resoluciones docentes"
+    },
+    {
+      "filaBanco": 20,
+      "latin": "apicŭlam",
+      "castellano": "abeja",
+      "decision": "patrimonial",
+      "normasExcel": [
+        "N20"
+      ],
+      "estatusExcel": "PATRIMONIAL · CLASIFICACIÓN DOCENTE",
+      "observacionExcel": "Apicŭlam se relaciona tradicionalmente con abeja, pero la cadena contiene cambios vocálicos y consonánticos cuya secuencia debe cotejarse antes de marcar -cul- > -j-. Candidato claro, pero mantener en revisión hasta precisar etapas y etiquetas.",
+      "notaDocente": "Patrimonialidad aprobada; verificar cadena de cambios y valor concreto de -CUL-.",
+      "origen": "Excel PAU 2026 29 resoluciones docentes"
+    },
+    {
+      "filaBanco": 21,
+      "latin": "apricare",
+      "castellano": "abrigar",
+      "decision": "patrimonial",
+      "normasExcel": [],
+      "estatusExcel": "PATRIMONIAL · NORMAS PENDIENTES",
+      "observacionExcel": "Apricare no tiene una continuación castellana patrimonial general inequívoca que pueda asignarse con seguridad a partir de esta forma aislada. Revisar si es variante, forma tardía o error de transcripción.",
+      "notaDocente": "Evolución y étimo pendientes de documentación; sin normas comprobadas.",
+      "origen": "Excel PAU 2026 29 resoluciones docentes"
+    },
+    {
+      "filaBanco": 22,
+      "latin": "aprilem",
+      "castellano": "abril",
+      "decision": "patrimonial",
+      "normasExcel": [],
+      "estatusExcel": "PATRIMONIAL · NORMAS PENDIENTES",
+      "observacionExcel": "April(em) se relaciona con abril, pero la voz presenta una evolución muy conservadora y su clasificación como patrimonial frente a forma culta requiere comprobación lexicográfica. No aceptar como ejemplo patrimonial hasta confirmar el tratamiento histórico.",
+      "notaDocente": "Verificar transmisión histórica y anotación de fenómenos antes del sorteo.",
+      "origen": "Excel PAU 2026 29 resoluciones docentes"
+    },
+    {
+      "filaBanco": 23,
+      "latin": "aquam",
+      "castellano": "agua",
+      "decision": "patrimonial",
+      "normasExcel": [
+        "N17"
+      ],
+      "estatusExcel": "PATRIMONIAL · CLASIFICACIÓN DOCENTE",
+      "observacionExcel": "Aquam da agua. El grupo labiovelar /kw/ se sonoriza en /gw/ en posición intervocálica; la grafía qu- latina se refleja en gu- castellano. Etiqueta de sonorización del elemento oclusivo del grupo /kw/; pérdida regular de -m final.",
+      "notaDocente": "Decisión docente de clasificación; se conservan las normas anotadas y las observaciones originales.",
+      "origen": "Excel PAU 2026 29 resoluciones docentes"
+    },
+    {
+      "filaBanco": 24,
+      "latin": "aquilam",
+      "castellano": "águila",
+      "decision": "patrimonial",
+      "normasExcel": [],
+      "estatusExcel": "PATRIMONIAL · NORMAS PENDIENTES",
+      "observacionExcel": "Aquĭlam se relaciona con águila, pero la acentuación y el mantenimiento de la estructura silábica sugieren una evolución no transparente; debe comprobarse si el resultado es patrimonial o semiculto. No usar aún como ejemplo de evolución fonética patrimonial.",
+      "notaDocente": "Tratamiento fonético y transmisión pendientes de contraste; sin normas anotadas.",
+      "origen": "Excel PAU 2026 29 resoluciones docentes"
+    },
+    {
+      "filaBanco": 207,
+      "latin": "montensem",
+      "castellano": "montés",
+      "decision": "patrimonial",
+      "normasExcel": [],
+      "estatusExcel": "PATRIMONIAL · NORMAS PENDIENTES",
+      "observacionExcel": "«Montés» puede analizarse como derivado de «monte» + -és (sufijo históricamente relacionado con -ense), pero no está suficientemente acreditada una continuidad directa y regular de este acusativo montensem.",
+      "notaDocente": "Patrimonialidad aprobada; -ns- y eventual pérdida de -e requieren análisis independiente antes de marcar N15/N03.",
+      "origen": "Excel PAU 2026 29 resoluciones docentes"
+    },
+    {
+      "filaBanco": 403,
+      "latin": "miliarium",
+      "castellano": "millar",
+      "decision": "patrimonial",
+      "normasExcel": [],
+      "estatusExcel": "PATRIMONIAL · NORMAS PENDIENTES",
+      "observacionExcel": "Millar se relaciona con mille / miliarium, pero su historia incluye formaciones sufijales y la secuencia -li- > ll; contrastar la forma latina exacta antes de presentarlo como evolución regular de miliarium.",
+      "notaDocente": "Excepción legítima: -um no evoluciona aquí a -o; no añadir N01 automáticamente. Revisar normas del resultado -ar.",
+      "origen": "Excel PAU 2026 29 resoluciones docentes"
+    },
+    {
+      "filaBanco": 610,
+      "latin": "brochum",
+      "castellano": null,
+      "decision": "excluir",
+      "normasExcel": [],
+      "estatusExcel": "EXCLUIDA · DECISIÓN DOCENTE",
+      "observacionExcel": "La forma «brochum» es insuficiente para identificar un resultado castellano patrimonial seguro. No equiparar sin prueba a «brocha» o «broche», voces de origen francés.",
+      "notaDocente": "Exclusión expresa por decisión docente; no participa en ningún sorteo.",
+      "origen": "Excel PAU 2026 29 resoluciones docentes"
+    },
+    {
+      "filaBanco": 615,
+      "latin": "stuppaculum",
+      "castellano": null,
+      "decision": "excluir",
+      "normasExcel": [],
+      "estatusExcel": "EXCLUIDA · DECISIÓN DOCENTE",
+      "observacionExcel": "No está demostrada una derivación directa de «estropajo» desde *stuppaculum: «estropajo» suele considerarse derivado de «estopa», con etimología incierta. Mantener la voz castellana en blanco.",
+      "notaDocente": "Exclusión expresa por decisión docente; no participa en ningún sorteo.",
+      "origen": "Excel PAU 2026 29 resoluciones docentes"
+    },
+    {
+      "filaBanco": 857,
+      "latin": "refectum",
+      "castellano": null,
+      "decision": "excluir",
+      "normasExcel": [],
+      "estatusExcel": "EXCLUIDA · DECISIÓN DOCENTE",
+      "observacionExcel": "No se identifica con seguridad un resultado patrimonial castellano directo de refectum. Rehecho es hoy participio de rehacer, y refección proviene de refectionem, no del acusativo refectum.",
+      "notaDocente": "Exclusión expresa por decisión docente; no participa en ningún sorteo.",
+      "origen": "Excel PAU 2026 29 resoluciones docentes"
+    },
+    {
+      "filaBanco": 884,
+      "latin": "spiritum",
+      "castellano": "espíritu",
+      "decision": "patrimonial",
+      "normasExcel": [
+        "N14"
+      ],
+      "estatusExcel": "PATRIMONIAL · CLASIFICACIÓN DOCENTE",
+      "observacionExcel": "Spiritum > espíritu: e- protética; la conservación de -rit- indica cultismo, no resultado popular pleno.",
+      "notaDocente": "La nota heredada lo clasifica como cultismo. Se registra la decisión docente patrimonial; excepción -um ≠ -o, sin N01.",
+      "origen": "Excel PAU 2026 29 resoluciones docentes"
+    }
+  ],
+  "conteos": {
+    "total": 29,
+    "patrimoniales": 24,
+    "excluidas": 5,
+    "activasYaExistentes": 10,
+    "patrimonialesNoActivas": 14
+  }
+}
