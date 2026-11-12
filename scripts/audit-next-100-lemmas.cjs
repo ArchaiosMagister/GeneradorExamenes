@@ -112,24 +112,36 @@ if(process.argv.includes('--check')){
  assert.equal(saved.rows.length,100);
  assert.equal(saved.summary.reviewed,100);
  assert.equal(new Set(saved.rows.map(x=>key(x.form))).size,100);
- assert(saved.rows.every(x=>!prior.has(key(x.form))),'El siguiente lote repite una incidencia ya revisada');
+ assert(saved.rows.every(x=>!prior.has(key(x.form))),'El segundo lote repite un elemento ya revisado');
  const overrides=JSON.parse(read('data/lemmas/verified-overrides.json'));
  const singles=overrides.singleForms||[];
+ const states={};
  for(const row of saved.rows){
   const now=analyze(row.form),d=row.decision;
+  states[d.status]=(states[d.status]||0)+1;
   if(d.status==='verified-individual-form'){
    assert.equal(now.status,'documented','La acreditación dejó de reconocerse: '+row.form);
    assert.equal(now.lemma,d.lemma,'Lema contradictorio: '+row.form);
-   assert(singles.some(x=>x.lemma===d.lemma&&key(x.form)===key(row.form)&&x.reference===d.reference&&x.tags===d.tags),
-    'Falta ficha de la fuente persistente: '+row.form);
-   assert(data.rows.lat.some(x=>x[0]===d.lemma&&key(x[1])===key(row.form)&&x[2]===d.tags&&x[3]===5),
-    'Falta acreditación en índice: '+row.form);
-  }else if(row.status!=='documented'){
-   assert.notEqual(now.status,'documented','Se forzó una forma pendiente sin prueba: '+row.form);
+   assert(singles.some(x=>x.lemma===d.lemma&&key(x.form)===key(row.form)&&
+    x.reference===d.reference&&x.tags===d.tags),
+    'Falta ficha en la fuente persistente: '+row.form);
+   assert(data.rows.lat.some(x=>x[0]===d.lemma&&key(x[1])===key(row.form)&&
+    x[2]===d.tags&&x[3]===5),'Falta acreditación en el índice: '+row.form);
+   assert(data.source.externalVerification.some(x=>x.lemma===d.lemma&&
+    key(x.form)===key(row.form)&&x.reference===d.reference),
+    'Falta la referencia en el índice: '+row.form);
+  }else if(d.status==='already-recognized'){
+   assert.equal(row.previousStatus,'documented');
+   assert.equal(now.status,'documented','Regresión de reconocimiento: '+row.form);
   }else{
-   assert.equal(now.status,'documented','Regresión en una forma antes reconocida: '+row.form);
+   assert.notEqual(now.status,'documented','Pendiente resuelta sin documentación: '+row.form);
+   if(d.status==='teacher-context-needed')
+    assert(now.candidates.length>1,'La homografía perdió alternativas: '+row.form);
+   if(d.status==='teacher-orthography-needed')
+    assert(now.warning,'La advertencia gráfica desapareció: '+row.form);
   }
  }
- console.log('TOP100_REVIEW_OK '+JSON.stringify(saved.summary));
+ assert.deepEqual(states,saved.summary.states,'Descuadre en la clasificación editorial del lote');
+ console.log('TOP100_REVIEW_OK '+JSON.stringify({reviewed:100,states}));
 }
 module.exports={report,rows};
