@@ -88,8 +88,9 @@ for(const row of audit.items){
  const found=banco.items.find(x=>normalizeAudit(x.latin)===normalizeAudit(row.latin));
  if(row.estado==='INCORPORADA'||row.estado==='INCORPORADA_CULTA'){
   assert(found&&found.id===row.idBanco,'Ficha aprobada ausente: '+row.latin);
-  const expectedLote=Number(row.idBanco.slice(4))>=1078?17:
-   Number(row.idBanco.slice(4))>=1074?16:15;
+  const serial=Number(row.idBanco.slice(4));
+  const expectedLote=serial>=1181?19:serial>=1081?18:
+   serial>=1078?17:serial>=1074?16:15;
   assert.equal(found.lote,expectedLote,'Lote incorrecto para '+row.latin);
   assert(row.estado!=='INCORPORADA_CULTA'||found.tipoTransmision==='ADAPTACION_CULTA',
    'Cultismo aprobado sin etiqueta: '+row.latin);
