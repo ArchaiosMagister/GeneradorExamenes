@@ -125,7 +125,7 @@
       "lang": "grc",
       "lemma": "ερχομαι",
       "reference": "https://logeion.uchicago.edu/morpho/%E1%BC%94%CF%81%CF%87%CE%B5%CE%B9",
-      "type": "presente indicativo medio; una sola variante por casilla",
+      "type": "Presente medio y aoristo segundo activo, fuentes individualizadas; ἦλθον es primera singular o tercera plural",
       "blocks": [
         {
           "tags": "V;IND;MID;PRS",
@@ -137,8 +137,20 @@
             "ἔρχεσθε",
             "ἔρχονται"
           ]
+        },
+        {
+          "tags": "V;IND;ACT;PST;PFV",
+          "forms": [
+            "ἦλθον",
+            "ἦλθες",
+            "ἦλθε",
+            "ἤλθομεν",
+            "ἤλθετε",
+            "ἦλθον"
+          ]
         }
-      ]
+      ],
+      "aoristReference": "https://atlas.perseus.tufts.edu/lemma/2201/"
     },
     {
       "lang": "grc",
