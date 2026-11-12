@@ -33,7 +33,7 @@ function latinSuite(){
   sample:(a,n)=>a.slice(0,n),countFor:id=>Number(state['count-'+id]?.value)||5,
   window:{},document:{getElementById:()=>null},tr:x=>x,esc:x=>String(x),normLex:x=>String(x).toLowerCase(),
   examKey:x=>String(x).split(',')[0].toLowerCase(),
-  examUnitNumber:x=>Number(String(x).replace('UD','')),
+  examUnitNumber:x=>{const m=String(x).match(/\d+/);return m?Number(m[0]):null;},
   M_CASES:['Nominativo','Vocativo','Acusativo','Genitivo','Dativo','Ablativo'],
   M_END:{'1':[['a','a','am','ae','ae','a'],['ae','ae','as','arum','is','is']],
     '2m':[['us','e','um','i','o','o'],['i','i','os','orum','is','is']],
@@ -226,7 +226,7 @@ function greekSuite(){
   // En este test sintético no hay banco nominal ni diccionario de adjetivos.
   greekAvailableSyntagmAdjectives:()=>[],greekSyntagmNounGenders:{},
   isProperNounLemma:()=>false,isExcludedExamMorphLemma:()=>false,greekMarkedUnits:()=>['UD7'],greekLimit:()=>scope.limit,
-  examUnitNumber:x=>Number(String(x).replace('UD','')),
+  examUnitNumber:x=>{const m=String(x).match(/\d+/);return m?Number(m[0]):null;},
   morphConfig:()=>({offer:3,decline:1,verbs:3,words:5}),
   greekSelectedItems:(pool,chosen,counts)=>({items:pool.filter(x=>pool.filter(y=>y.kind===x.kind).indexOf(x)<(counts[x.kind]||0)),covered:[7],missing:[]}),
   greekPoints:kind=>Number(state['greek-points-'+kind].value),
