@@ -57,16 +57,52 @@
  const rows=document.createElement('div');rows.className='exam-scoring-rows';
  const status=document.createElement('p');status.id='examScoringTotal';
  status.setAttribute('role','status');status.setAttribute('aria-live','polite');
- header.append(title,help,rows,status);
+ const finalLabel=document.createElement('label');
+ finalLabel.className='exam-final-validation';
+ finalLabel.style.display='flex';finalLabel.style.alignItems='center';finalLabel.style.gap='10px';
+ finalLabel.style.marginTop='12px';
+ const finalCheckbox=document.createElement('input');
+ finalCheckbox.type='checkbox';finalCheckbox.id='examFinalMode';
+ finalCheckbox.setAttribute('aria-describedby','examFinalHelp');
+ const finalText=document.createElement('span');finalText.id='examFinalHelp';
+ finalLabel.append(finalCheckbox,finalText);
+ // La validación definitiva es opcional y se desactiva al cambiar de modelo.
+ // Los borradores existentes se exportan como antes, incluso si aún no suman 10.
+ header.append(title,help,rows,status,finalLabel);
  const questions=document.getElementById('examQuestionSettings');
  if(questions?.parentElement===panel)questions.after(header);
  else panel.insertBefore(header,document.getElementById('group-sentences')||panel.firstChild);
  let renderPending=false,observer=null,previousQuestions=[];
  const find=()=>[...paper.querySelectorAll('.exam-sheet .exam-question')].filter(el=>!el.closest('#answerkey'));
  const sum=()=>previousQuestions.reduce((total,item)=>total+(scores[item.key]||0),0);
+ function finalPreflight(){
+  if(!finalCheckbox.checked)return {ok:true,mode:'borrador',normalized:false};
+  const total=sum();
+  if(!previousQuestions.length)return {ok:false,mode:'definitivo',reason:'sin_preguntas',total};
+  if(morph()){
+   // Una pregunta de morfología vale 1 p.; la nota se normaliza sobre diez.
+   return {ok:total>0&&previousQuestions.every(item=>(scores[item.key]||0)>0),
+    mode:'definitivo',normalized:true,total,reason:'puntuacion_morfologica'};
+  }
+  return {ok:total===1000,mode:'definitivo',normalized:false,total,reason:'total_no_es_diez'};
+ }
+ function canExport(){
+  const result=finalPreflight();
+  if(result.ok)return true;
+  showStatus();
+  status.classList.add('exam-scoring-warning');
+  status.textContent=state().language==='va'?
+   'Exportació definitiva bloquejada: revisa que hi haja preguntes i que la puntuació siga exactament 10 punts (morfologia: 1 punt per pregunta).':
+   'Exportación definitiva bloqueada: revisa que haya preguntas y que la puntuación sume exactamente 10 puntos (morfología: 1 punto por pregunta).';
+  header.scrollIntoView?.({block:'nearest'});
+  return false;
+ }
+ finalCheckbox.addEventListener('change',showStatus);
  function showStatus(){
   const lang=state().language==='va',total=sum(),isMorph=morph();
   const totalString=value(total);
+  finalText.textContent=lang?'Examen definitiu: comprovar la puntuació abans d’exportar':
+   'Examen definitivo: comprobar la puntuación antes de exportar';
   if(!previousQuestions.length){
    status.className='exam-scoring-total';
    status.textContent=lang?'No hi ha preguntes per a puntuar.':'No hay preguntas que puntuar.';
@@ -301,6 +337,7 @@
  });
  for(const id of ['course','model','lang']){
   document.getElementById(id)?.addEventListener('change',()=>{
+   if(id!=='lang')finalCheckbox.checked=false;
    requestAnimationFrame(()=>schedule());
   });
  }
@@ -323,6 +360,7 @@
   if(item)setScore(item.key,number(event.target.value));
  },true);
  window.ExaminaScoring={sync,parse:number,format:value,total:()=>sum(),
+  preflight:finalPreflight,canExport,finalMode:()=>finalCheckbox.checked,
   rows:()=>previousQuestions.map(x=>({key:x.key,points:scores[x.key],caption:x.caption})),
   snapshot:()=>Object.fromEntries(previousQuestions.map(x=>[x.key,scores[x.key]])),
   restore:restoreScores,isMorph:morph};
