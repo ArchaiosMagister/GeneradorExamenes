@@ -40,6 +40,21 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
   const word=await preview.evaluate(el=>wordExamParagraph(el));
   assert.match(word,/2,25p\.\)\./,'El Word no usa los puntos editados');
 
+  // La cabecera mantiene el mismo título en el campo y en el Word editable.
+  await page.evaluate(()=>{
+   const title=document.querySelector('#paper .exam-header-line:first-child > span:first-child');
+   const field=document.getElementById('name');
+   if(!title||!field)throw Error('Cabecera sin campos editables');
+   title.textContent='Examen de Latín I desde Word';
+   title.dispatchEvent(new Event('input',{bubbles:true}));
+   if(field.value!=='Examen de Latín I desde Word')throw Error('La cabecera no actualiza el menú');
+   field.value='Examen de Latín I desde el menú';
+   field.dispatchEvent(new Event('input',{bubbles:true}));
+   if(!title.textContent.includes('Examen de Latín I desde el menú'))
+    throw Error('El menú no actualiza la cabecera');
+  });
+
+
   const before=await page.evaluate(()=>{
    const target=document.querySelector('#paper [data-analysis-slot] > i:first-child');
    if(!target)throw Error('No hay palabra de análisis para probar');
