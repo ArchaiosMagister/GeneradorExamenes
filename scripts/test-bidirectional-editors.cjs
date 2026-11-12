@@ -150,7 +150,14 @@ function readZipEntry(bytes,name){
       filename+': editar '+kind+' modificó otra forma o apartado ('+k+')');
     }
     const paperValue='lexpapeltest'+(++serial);
-    await slot.fill(paperValue);
+    // En un <i> editable dentro de un span no editable, Chromium puede anexar
+    // el texto al hacer locator.fill. Simular el reemplazo real del nodo y su
+    // evento input comprueba la sincronización sin ese efecto de Playwright.
+    await slot.evaluate((node,text)=>{
+     node.textContent=text;
+     node.dispatchEvent(new InputEvent('input',{bubbles:true}));
+    },paperValue);
+    assert.equal(await slot.textContent(),paperValue,filename+': fallo al editar la vista de '+kind);
     assert.equal(await input.inputValue(),paperValue,filename+': papel de '+kind+' no actualiza menú');
     summary.push('lex/'+kind);
    }
