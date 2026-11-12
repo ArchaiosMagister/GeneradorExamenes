@@ -2905,8 +2905,9 @@ function generateGreekMorphologyFixed(){
  const verbs=stickyExamRows('verb',()=>sample(eligible.filter(x=>x.kind==='conjugation'&&x.table)
   .flatMap(x=>x.table.rows.flatMap((row,i)=>[row[1],row[2]].map((form,j)=>({
    prompt:form,answer:(i+1)+'ª persona '+(j===0?'singular':'plural')+' del '+(x.verbTense||'presente')+' de indicativo '+(x.verbVoice||'activo'),
-   lemma:x.lemmas[0],person:(i+1)+'ª '+(j===0?'singular':'plural')
-  })).filter(x=>x.prompt))),cfg.verbs));
+   lemma:x.lemmas[0],person:(i+1)+'ª '+(j===0?'singular':'plural'),
+   syncretic:x.verbTense==='aoristo segundo'&&form==='ἦλθον'
+  })).filter(x=>x.prompt&&!x.syncretic))),cfg.verbs));
  const pronPool=examQuestionEnabled('pronouns')?eligible.filter(x=>x.kind==='pronouns'):[];
  const pronouns=stickyExamRows('pronouns',()=>sample(pronPool,Math.min(6,pronPool.length)));
  const categories={n:$('morphCategory-n')?.checked!==false,adj:$('morphCategory-adj')?.checked!==false,pro:$('morphCategory-pro')?.checked!==false};
