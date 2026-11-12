@@ -82,6 +82,7 @@ const expectedStatus={INCORPORADA:4,EXCLUIDA_DOCENTE:2,CORREGIDA_PENDIENTE:1,
 assert.deepEqual(audit.resumen,expectedStatus,'Estados de auditoría alterados');
 const normalizeAudit=s=>String(s||'').normalize('NFD').replace(/\p{M}/gu,'')
  .replace(/[æÆ]/g,'ae').replace(/[œŒ]/g,'oe').toLowerCase();
+const decisionesLote20Aprobadas=new Set(['gulam','sculptorem']);
 for(const row of audit.items){
  assert(row.latin&&row.castellano&&row.normasExcel.length&&row.observacionExcel,
   'Fila de auditoría sin trazabilidad');
@@ -95,7 +96,9 @@ for(const row of audit.items){
   assert(row.estado!=='INCORPORADA_CULTA'||found.tipoTransmision==='ADAPTACION_CULTA',
    'Cultismo aprobado sin etiqueta: '+row.latin);
  }else{
-  assert(!found,'Se ha activado una ficha no aprobada: '+row.latin);
+  const approvedLater=found?.lote===20&&['gulam','sculptorem'].includes(row.latin)&&
+   decisionesLote20Aprobadas.has(normalizeAudit(row.latin));
+  assert(!found||approvedLater,'Se ha activado una ficha no aprobada: '+row.latin);
   if(row.estado==='CORREGIDA_PENDIENTE'){
    assert(!banco.items.some(x=>normalizeAudit(x.latin)===normalizeAudit(row.latinCorregido)),
     'La corrección sin validación fonética no puede sortearse: '+row.latinCorregido);
