@@ -27,7 +27,7 @@ const syllabus=payload['data/modificacion-preverbial-unidades-lat1.json'];
 assert.equal(syllabus.units.reduce((n,x)=>n+x.verbs.length,0),28);
 assert.deepEqual(syllabus.units.filter(x=>x.verbs.length===0).map(x=>x.unit),[8,10]);
 assert.equal(payload['data/fonetica/banco_examenes.json'].esquema,'evoluciones-latin-castellano/v1');
-assert.equal(payload['data/fonetica/banco_examenes.json'].items.length,513);
+assert.equal(payload['data/fonetica/banco_examenes.json'].items.length,514);
 const latin1Phonetics=payload['data/fonetica/lat1-programacion.json'];
 assert.equal(latin1Phonetics.unidades.length,11);
 assert.equal(latin1Phonetics.unidades.reduce((n,u)=>n+u.palabras.length,0),73);
