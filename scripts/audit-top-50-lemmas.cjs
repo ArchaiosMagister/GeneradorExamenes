@@ -113,16 +113,38 @@ if(process.argv.includes('--print')){
 if(process.argv.includes('--check')){
  const stored=JSON.parse(read('docs/lematizador-top-50-incidencias.json'));
  assert.equal(stored.schema,1);
- assert.equal(stored.rows.length,50,'El informe debe tener 50 registros');
- assert.equal(stored.summary.selected,50);
- for(const [i,row] of exportRows.entries()){
-  const recorded=stored.rows[i];
-  assert.equal(recorded.course,row.course,'El orden y los cursos de la cola han cambiado');
-  assert.equal(recorded.form,row.form,'La forma de revisión ha cambiado');
-  assert.equal(recorded.firstUnit,row.firstUnit,'La unidad de la incidencia ha cambiado');
-  assert.equal(recorded.status,row.status,'La clasificación de incidencia ha cambiado');
+ assert.equal(stored.rows.length,50,'El informe debe mantener exactamente 50 incidencias');
+ assert.equal(stored.summary.reviewed,50);
+ const unique=new Set();
+ const outcomes={};
+ for(const row of stored.rows){
+  const id=row.course+'|'+normal(row.form);
+  assert(!unique.has(id),'Incidencia duplicada: '+id);
+  unique.add(id);
+  const current=engine.analyze(data,row.form,row.course,banks[row.course],{contextual:true})[0];
+  assert(current&&normal(current.form)===normal(row.form),'Error de tokenización: '+row.form);
+  const decision=row.decision;
+  outcomes[decision.status]=(outcomes[decision.status]||0)+1;
+  if(decision.status==='verified-individual-form'){
+   assert.equal(current.status,'documented','Acreditación no aplicada: '+row.form);
+   assert.equal(current.lemma,decision.lemma,'Lema diferente de la forma contrastada: '+row.form);
+   assert(data.rows.lat.some(([lemma,form,tags,source])=>
+    lemma===decision.lemma&&normal(form)===normal(row.form)&&tags===decision.tags&&source===5),
+    'La fuente individual no se encuentra en el índice de '+row.form);
+   assert(data.source.externalVerification.some(ref=>ref.lemma===decision.lemma&&
+    normal(ref.form)===normal(row.form)&&ref.reference===decision.reference),
+    'Falta la trazabilidad de la comprobación individual '+row.form);
+  }else{
+   assert.notEqual(current.status,'documented','Pendiente resuelto sin autorización: '+row.form);
+   if(decision.status==='teacher-context-needed')
+    assert(current.candidates.length>1,'Una homografía dejó de ofrecer alternativas: '+row.form);
+   if(decision.status==='teacher-orthography-needed')
+    assert(current.warning,'Se perdió la advertencia de grafía/contexto: '+row.form);
+  }
  }
- console.log('TOP50_LEMMA_REVIEW_OK 50 incidencias reales, estados y unidades coherentes');
+ for(const [key,n] of Object.entries(stored.summary))
+  if(key!=='reviewed')assert.equal(outcomes[key],n,'Descuadre de la revisión: '+key);
+ console.log('TOP50_LEMMA_REVIEW_OK '+JSON.stringify({reviewed:50,...outcomes}));
 }
 if(process.argv.includes('--export'))console.log('TOP50_LEMMA_JSON '+JSON.stringify(report));
 module.exports={report,top,category};
