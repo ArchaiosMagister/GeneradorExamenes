@@ -90,6 +90,26 @@ async function audit(page,filename){
   check('future-passive',0,'amabor');
   check('perfect-passive',0,'amatus sum');
   check('perfect-passive',3,'amati sumus');
+  const mixed=latinSchoolVerbRows(['UD1','UD2','UD3','UD4','UD7','UD9'])
+   .filter(x=>/^capio,\s*cepi,\s*captum\s*\(mx\.\)/i.test(x.x.entry));
+  for(const [id,index,expected] of [
+   ['present-active',0,'capio'],['imperfect-active',0,'capiebam'],
+   ['present-passive',0,'capior'],['perfect-active',0,'cepi'],
+   ['future-active',0,'capiam'],['future-passive',0,'capiar'],
+   ['perfect-passive',0,'captus sum']
+  ]){
+   const p=mixed.find(x=>x.id===id);
+   fail(p?.forms[index]===expected,'Mixta capio: '+id+' != '+expected);
+  }
+  const pronouns=latinPronounRows;
+  for(const [unit,word] of [[3,'mihi'],[5,'eius'],[6,'hanc'],[8,'ipse']]){
+   fail(pronouns.some(x=>x.unit===unit&&x.form===word),
+    'Falta pronombre '+word+' de UD'+unit);
+   fail(!latinExamPronouns(['UD'+(unit-1)]).some(x=>x.form===word),
+    'Pronombre '+word+' antes de su UD');
+   fail(latinExamPronouns(['UD'+unit]).some(x=>x.form===word),
+    'Pronombre '+word+' no disponible en UD'+unit);
+  }
   const rego=latinSchoolVerbRows(['UD5','UD7']).find(x=>/^rego,/.test(x.x.entry)&&x.id==='future-active');
   fail(rego?.forms[0]==='regam','Futuro de rego incorrecto');
   const audio=latinSchoolVerbRows(['UD6','UD7']).find(x=>/^audio,/.test(x.x.entry)&&x.id==='future-active');
@@ -123,6 +143,8 @@ async function audit(page,filename){
   fail(!!eimi,'Falta εἰμί en Griego I');
   const lyso=greekVerifiedCorpus.find(x=>x.id==='v-school-λυω-futuro-activa');
   fail(lyso?.table?.rows?.[0]?.[1]==='λύσω','Futuro explícito λύσω ausente');
+  const elipon=greekVerifiedCorpus.find(x=>x.id==='v-school-λειπω-aoristo-temático-activa');
+  fail(elipon?.table?.rows?.[0]?.[1]==='ἔλιπον','Aoristo temático explícito ἔλιπον ausente');
   const elysa=greekVerifiedCorpus.find(x=>x.id==='v-school-λυω-aoristo-sigmático-activa');
   fail(elysa?.table?.rows?.[0]?.[1]==='ἔλυσα','Aoristo explícito ἔλυσα ausente');
   const leluka=greekVerifiedCorpus.find(x=>x.id==='v-school-λυω-perfecto-activa');
