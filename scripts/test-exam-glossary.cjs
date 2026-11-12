@@ -7,6 +7,17 @@ const http=require('node:http');
 const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
 const root=path.resolve(__dirname,'..');
 const read=name=>fs.readFileSync(path.join(root,name),'utf8');
+function wordDocumentXml(bytes){
+ let pos=0;
+ while(pos+30<=bytes.length&&bytes.readUInt32LE(pos)===0x04034b50){
+  const size=bytes.readUInt32LE(pos+18);
+  const n=bytes.readUInt16LE(pos+26),extra=bytes.readUInt16LE(pos+28);
+  const name=bytes.toString('utf8',pos+30,pos+30+n),begin=pos+30+n+extra;
+  if(name==='word/document.xml')return bytes.toString('utf8',begin,begin+size);
+  pos=begin+size;
+ }
+ throw Error('Word sin word/document.xml');
+}
 const ctx={window:{},document:{readyState:'loading',addEventListener(){}}};
 for(const filename of ['offline-lemmas.js','vocabulary-generator.js'])
  vm.runInNewContext(read(filename),ctx,{filename});
@@ -154,6 +165,30 @@ assert(!engine.documentXml({...project,groupTypes:false}).includes('Sustantivos 
   assert(!await page.locator('#examSentenceGlossary').innerText().then(s=>s.includes('Revisión necesaria: bona, Galli')));
   const stored=await page.evaluate(()=>JSON.parse(localStorage.getItem('examina_exam_gloss_choices_v1')));
   assert.equal(Object.keys(stored).length,2,'Las dos decisiones deben persistir');
+  // Una traducción guardada antiguamente no puede sobrescribir una glosa
+  // corregida en el banco docente: la decisión conserva el LEMA elegido.
+  const revalidated=await page.evaluate(()=>{
+   const ids=Object.keys(examGlossDecisions),id=ids.find(k=>examGlossDecisions[k].entry.includes('Gallus'));
+   if(!id)throw Error('Falta la decisión del adjetivo Gallus');
+   const previous={...examGlossDecisions[id]};
+   examGlossDecisions[id]={...previous,entry:'Enunciado obsoleto',
+    meaning:'GLOSA_OBSOLETA',meaning_va:'GLOSA_OBSOLETA'};
+   refreshSentenceGlossary();
+   const output=document.getElementById('examSentenceGlossary').textContent;
+   examGlossDecisions[id]=previous;
+   refreshSentenceGlossary();
+   return {output,stillSelected:output.includes('Gallus')};
+  });
+  assert(revalidated.stillSelected,'Una corrección de enunciado hizo perder la decisión del lema');
+  assert(!revalidated.output.includes('GLOSA_OBSOLETA')&&!revalidated.output.includes('Enunciado obsoleto'),
+   'La ficha guardada ha reemplazado indebidamente los datos actuales del banco');
+  // La versión para el alumnado debe contener los enunciados elegidos.
+  const waiting=page.waitForEvent('download');
+  await page.evaluate(()=>exportWord(false));
+  const docx=await waiting,xml=wordDocumentXml(fs.readFileSync(await docx.path()));
+  assert(xml.includes('Gallus')&&xml.includes('bonus'),
+   'Word: faltan los dos lemas resueltos desde el menú del glosario');
+  assert(!xml.includes('GLOSA_OBSOLETA'),'Word contiene una glosa caducada');
   await page.reload();
   await page.locator('#vmShowExam').click();
   await page.locator('#group-course').evaluate(el=>el.open=true);
