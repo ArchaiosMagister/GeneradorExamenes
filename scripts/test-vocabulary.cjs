@@ -615,7 +615,17 @@ console.log('Vocabulario: prioridad docente, deduplicación por UD, ambigüedad,
   await page.click('#vmShowList');
   assert.equal(await page.locator('#examLayout').isVisible(),false,'Se ve el examen en el gestor exigible móvil');
   assert.equal(await page.locator('#vmSuggestUnit').count(),1,'Falta importación docente revisable');
-  // No se añaden exigibles automáticamente por confundir banco general y lista exigible.
+  // Las listas latinas exigibles ya se han importado una sola vez desde el
+  // documento docente. Simular la retirada de una ficha por el profesor:
+  // el botón de importación debe poder recuperarla bajo confirmación.
+  const removedRequired=await page.evaluate(()=>{
+   const index=examRequired.findIndex(x=>x.course==='latin1'&&x.unit==='UD3');
+   if(index<0)return '';
+   const [removed]=examRequired.splice(index,1);
+   saveRequired();
+   return removed.entry;
+  });
+  assert(removedRequired,'Falta lista exigible de Latín I UD3');
   const requiredBefore=await page.evaluate(()=>JSON.parse(localStorage.getItem('examina_required_v9')||'[]').length);
   await page.selectOption('#vmCourse','latin1');
   await page.selectOption('#vmUnit','UD3');
