@@ -1676,7 +1676,7 @@ function vocabularyRequiresReview(row){
   '<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>'+
   titleParagraph+body+'<w:sectPr>'+layout+'</w:sectPr></w:body></w:document>';
 }
-const analysisVersion=5; // Reanalizar con las 12 flexiones verificadas sin perder decisiones docentes.
+const analysisVersion=6; // Reanalizar con nuevas formas contrastadas, conservando ediciones y decisiones docentes.
 function needsAnalysis(unit,course){
  return !!unit.text?.trim()&&(unit.analysisVersion!==analysisVersion||
   unit.analyzedCourse!==course||unit.analyzedText!==unit.text);
