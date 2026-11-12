@@ -40,7 +40,7 @@ assert.equal(data.rows.grc.filter(x=>x[0]==='γιγνομαι'&&x[3]===5).length
 assert.equal(data.rows.grc.filter(x=>x[0]==='ερχομαι'&&x[3]===5).length,6);
 assert.equal(data.rows.grc.filter(x=>x[0]==='διδασκω'&&x[3]===5).length,6);
 assert.equal(data.rows.grc.filter(x=>x[0]==='ακουω'&&x[3]===5).length,6);
-assert.equal(data.source.externalVerification.length,6);
+assert.equal(data.source.externalVerification.length,7);
 assert.ok(data.extensions.rejected_for_conflict.every(x=>x.lemma&&x.features.length>0));
 assert.equal(Object.keys(data.vocabulary.lat).length,772+(data.extensions?.readerEnrichment?.additions?.lat||0),
  'El enriquecimiento solo puede añadir lemas presentes en el banco docente');
