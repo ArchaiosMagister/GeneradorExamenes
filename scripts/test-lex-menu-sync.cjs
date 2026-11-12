@@ -67,6 +67,40 @@ function readStoredZipEntry(bytes,wanted){
    assert(bankLoaded.pelliculam&&!bankLoaded.inde&&!bankLoaded.pirum,
     filename+': decisiones editoriales de fonética no respetadas');
    assert.equal(bankLoaded.distinct,bankLoaded.latin1,filename+': étimos duplicados en el sorteo');
+
+   // Regresión real: UD3 debe sortear centenares de palabras, no reservar las
+   // cuatro plazas a aféresis/epéntesis y otros fenómenos con pocos ejemplos.
+   const variety=await page.evaluate(()=>{
+    const course=$('course');course.value='latin1';course.dispatchEvent(new Event('change',{bubbles:true}));
+    const model=$('model');model.value='tablas';model.dispatchEvent(new Event('change',{bubbles:true}));
+    document.querySelectorAll('.unit-choice').forEach(input=>{
+     input.checked=units[Number(input.value)]==='UD3';
+    });
+    examSelectionCache.clear();
+    const chosen=selectedUnits(),pool=latinLexPool('latin1','phonetics',chosen);
+    const key=examCacheSignature('lex-phonetics');
+    phoneticRecentSelections.delete(key);
+    const seen=new Set(),recent=[];
+    let repeated=0,duplicated=0,invalid=0;
+    for(let round=0;round<80;round++){
+     const rows=latinLexChosenRows('latin1','phonetics',chosen);
+     const words=rows.map(latinLexTermKey);
+     if(rows.length!==4||new Set(words).size!==4)duplicated++;
+     if(words.some(word=>recent.flat().includes(word)))repeated++;
+     if(rows.some(row=>!pool.includes(row)))invalid++;
+     words.forEach(word=>seen.add(word));
+     recent.push(words);
+     if(recent.length>4)recent.shift();
+     examSelectionCache.delete(key);
+    }
+    return {pool:pool.length,distinct:seen.size,repeated,duplicated,invalid};
+   });
+   assert(variety.pool>=500,filename+': UD3 no utiliza el banco fonético general');
+   assert(variety.distinct>=125,filename+': se repiten las normas minoritarias en vez de sortear todo el banco: '+JSON.stringify(variety));
+   assert.equal(variety.repeated,0,filename+': se reciclan formas de las cuatro tandas anteriores');
+   assert.equal(variety.duplicated,0,filename+': hay formas repetidas en un mismo ejercicio');
+   assert.equal(variety.invalid,0,filename+': se ha sorteado una forma no compatible con UD3');
+
    await page.evaluate(()=>{
     const course=document.getElementById('course');
     course.value='latin1';course.dispatchEvent(new Event('change',{bubbles:true}));
