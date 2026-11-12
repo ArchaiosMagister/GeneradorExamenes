@@ -283,6 +283,153 @@
       "form": "expugnata",
       "tags": "V;PTCP;PASS;PRF;NOM;SG;FEM",
       "reference": "https://en.wiktionary.org/wiki/expugnata"
+    },
+    {
+      "lang": "lat",
+      "lemma": "creo",
+      "form": "creati",
+      "tags": "V;PTCP;PASS;PRF;NOM;PL;MASC",
+      "reference": "https://en.wiktionary.org/wiki/creatus"
+    },
+    {
+      "lang": "lat",
+      "lemma": "deleo",
+      "form": "deletam",
+      "tags": "V;PTCP;PASS;PRF;ACC;SG;FEM",
+      "reference": "https://en.wiktionary.org/wiki/deletus"
+    },
+    {
+      "lang": "lat",
+      "lemma": "deleo",
+      "form": "deletum",
+      "tags": "V;PTCP;PASS;PRF;ACC;SG;NEUT",
+      "reference": "https://en.wiktionary.org/wiki/deletus"
+    },
+    {
+      "lang": "lat",
+      "lemma": "laudo",
+      "form": "laudati",
+      "tags": "V;PTCP;PASS;PRF;NOM;PL;MASC",
+      "reference": "https://en.wiktionary.org/wiki/laudatus"
+    },
+    {
+      "lang": "lat",
+      "lemma": "narro",
+      "form": "narratae",
+      "tags": "V;PTCP;PASS;PRF;NOM;PL;FEM",
+      "reference": "https://en.wiktionary.org/wiki/narratus"
+    },
+    {
+      "lang": "lat",
+      "lemma": "occido",
+      "form": "occisus",
+      "tags": "V;PTCP;PASS;PRF;NOM;SG;MASC",
+      "reference": "https://en.wiktionary.org/wiki/occisus"
+    },
+    {
+      "lang": "lat",
+      "lemma": "punio",
+      "form": "punitus",
+      "tags": "V;PTCP;PASS;PRF;NOM;SG;MASC",
+      "reference": "https://en.wiktionary.org/wiki/punitus"
+    },
+    {
+      "lang": "lat",
+      "lemma": "sepelio",
+      "form": "sepultus",
+      "tags": "V;PTCP;PASS;PRF;NOM;SG;MASC",
+      "reference": "https://en.wiktionary.org/wiki/sepultus"
+    },
+    {
+      "lang": "lat",
+      "lemma": "vasto",
+      "form": "vastata",
+      "tags": "V;PTCP;PASS;PRF;NOM;SG;FEM",
+      "reference": "https://en.wiktionary.org/wiki/vastatus"
+    },
+    {
+      "lang": "lat",
+      "lemma": "vinco",
+      "form": "victi",
+      "tags": "V;PTCP;PASS;PRF;NOM;PL;MASC",
+      "reference": "https://en.wiktionary.org/wiki/victus"
+    },
+    {
+      "lang": "lat",
+      "lemma": "voco",
+      "form": "vocatus",
+      "tags": "V;PTCP;PASS;PRF;NOM;SG;MASC",
+      "reference": "https://en.wiktionary.org/wiki/vocatus"
+    },
+    {
+      "lang": "lat",
+      "lemma": "accipio",
+      "form": "acceptis",
+      "tags": "V;PTCP;PASS;PRF;ABL;PL",
+      "reference": "https://en.wiktionary.org/wiki/acceptus"
+    },
+    {
+      "lang": "lat",
+      "lemma": "delibero",
+      "form": "deliberata",
+      "tags": "V;PTCP;PASS;PRF;NOM;SG;FEM",
+      "reference": "https://en.wiktionary.org/wiki/deliberatus"
+    },
+    {
+      "lang": "lat",
+      "lemma": "foedero",
+      "form": "foederatae",
+      "tags": "V;PTCP;PASS;PRF;NOM;PL;FEM",
+      "reference": "https://en.wiktionary.org/wiki/foederatus"
+    },
+    {
+      "lang": "lat",
+      "lemma": "mitto",
+      "form": "missos",
+      "tags": "V;PTCP;PASS;PRF;ACC;PL;MASC",
+      "reference": "https://en.wiktionary.org/wiki/missus"
+    },
+    {
+      "lang": "lat",
+      "lemma": "occido",
+      "form": "occiso",
+      "tags": "V;PTCP;PASS;PRF;ABL;SG;MASC",
+      "reference": "https://en.wiktionary.org/wiki/occisus"
+    },
+    {
+      "lang": "lat",
+      "lemma": "oppugno",
+      "form": "oppugnata",
+      "tags": "V;PTCP;PASS;PRF;NOM;SG;FEM",
+      "reference": "https://en.wiktionary.org/wiki/oppugnatus"
+    },
+    {
+      "lang": "lat",
+      "lemma": "relinquo",
+      "form": "relictis",
+      "tags": "V;PTCP;PASS;PRF;ABL;PL",
+      "reference": "https://en.wiktionary.org/wiki/relictus"
+    },
+    {
+      "lang": "lat",
+      "lemma": "vinco",
+      "form": "victis",
+      "tags": "V;PTCP;PASS;PRF;ABL;PL",
+      "reference": "https://en.wiktionary.org/wiki/victus"
+    },
+    {
+      "lang": "lat",
+      "lemma": "vinco",
+      "form": "victa",
+      "tags": "V;PTCP;PASS;PRF;NOM;SG;FEM",
+      "reference": "https://en.wiktionary.org/wiki/victus"
+    },
+    {
+      "lang": "lat",
+      "lemma": "serva",
+      "form": "servae",
+      "tags": "N;GEN;SG",
+      "reference": "https://en.wiktionary.org/wiki/servae"
     }
   ]
 }
