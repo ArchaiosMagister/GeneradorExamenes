@@ -2,7 +2,7 @@
   "esquema": "evoluciones-latin-castellano/v1",
   "revision": "2026-11-12",
   "origen": "Banco docente de evoluciones fonéticas y ampliaciones auditadas a partir del Excel final de 1058 formas.",
-  "criterio": "530 entradas aptas de fonética y adaptación culta verificada. Las adaptaciones cultas solo se admiten tras validación individual y llevan etiqueta explícita; las excluidas y pendientes no se sortean.",
+  "criterio": "533 entradas aptas. Las adaptaciones cultas solo se activan tras revisión etimológica individual y se etiquetan en examen/Word; las excluidas y pendientes siguen fuera del sorteo.",
   "idioma_origen": "la",
   "idioma_destino": "es",
   "normas": [
@@ -6975,6 +6975,55 @@
       "revision_docente": "inclusion_condicionada",
       "tipoTransmision": "ADAPTACION_CULTA",
       "etiqueta": "Adaptación culta"
+    },
+    {
+      "id": "EVF-1078",
+      "latin": "architectum",
+      "castellano": "arquitecto",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 621,
+      "observacion": "ARCHITECTUM, acusativo de ARCHITECTUS (gr. ἀρχιτέκτων): préstamo culto en el que la grafía ch se adapta como qu ante i. Se conserva -ct-, de modo que no se presenta como resultado patrimonial; solo se analiza N10.",
+      "fuente": "https://iedra.es/palabras/arquitecto",
+      "estado": "APTO_PROPUESTO",
+      "lote": 17,
+      "revision_docente": "inclusion_condicionada",
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta"
+    },
+    {
+      "id": "EVF-1079",
+      "latin": "asphaltum",
+      "castellano": "asfalto",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 622,
+      "observacion": "ASPHALTUM, acusativo del latín tardío ASPHALTUS, del griego ἄσφαλτος: helenismo culto, ph > f. Sin cambios populares adicionales exigibles: solo adaptación gráfica N10.",
+      "fuente": "https://iedra.es/palabras/asfalto",
+      "estado": "APTO_PROPUESTO",
+      "lote": 17,
+      "revision_docente": "inclusion_condicionada",
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta"
+    },
+    {
+      "id": "EVF-1080",
+      "latin": "Chimæram",
+      "castellano": "quimera",
+      "normas": [
+        "N10",
+        "N12"
+      ],
+      "fila_origen": 633,
+      "observacion": "CHIMÆRAM, acusativo del latín CHIMAERA, del griego χίμαιρα: adaptación culta ch > qu, y monoptongación de ae > e. Se mantiene la etiqueta por ser helenismo incorporado por vía escrita.",
+      "fuente": "https://iedra.es/palabras/quimera",
+      "estado": "APTO_PROPUESTO",
+      "lote": 17,
+      "revision_docente": "inclusion_condicionada",
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta"
     }
   ],
   "ampliacion": {
@@ -7128,6 +7177,16 @@
       ],
       "correccionPendiente": "sŏcrum > sŏcram > suegra, pendiente de encaje completo de normas",
       "registro": "data/fonetica/decisiones-docentes.json"
+    },
+    "lote_17": {
+      "fecha": "2026-11-12",
+      "cantidad": 3,
+      "candidatas_condicionadas_verificadas": [
+        "architectum",
+        "asphaltum",
+        "Chimæram"
+      ],
+      "motivo": "Continuación progresiva del cotejo del Excel, con clasificación como adaptación culta y comprobación de las normas"
     }
   }
 }
