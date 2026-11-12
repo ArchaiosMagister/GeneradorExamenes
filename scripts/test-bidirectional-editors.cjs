@@ -54,9 +54,9 @@ async function bidirectionalGeneric(page,course,model,kind){
  assert.equal(await target.count(),1,'Editor sin nodo vinculado: '+course+'/'+model+'/'+kind);
  const initial=await page.evaluate(()=>{
   const nodes=[...document.querySelectorAll('#paper [data-exam-editor-link]')];
-  return {root:document.querySelector('#paper .exam-sheet'),
-   other:nodes.map(node=>[node.dataset.examEditorLink,node.textContent]),
-   cache:[...examSelectionCache].map(([key,value])=>[key,value])};
+  window.__linkedRoot=document.querySelector('#paper .exam-sheet');
+  window.__linkedCache=new Map(examSelectionCache);
+  return {other:nodes.map(node=>[node.dataset.examEditorLink,node.textContent])};
  });
  const value=(course==='greek1'?'δοκιμή':'probāre')+'_'+kind+'_'+model;
  await input.fill(value);
@@ -65,14 +65,15 @@ async function bidirectionalGeneric(page,course,model,kind){
  const afterMenu=await page.evaluate(()=>{
   const nodes=[...document.querySelectorAll('#paper [data-exam-editor-link]')];
   return {other:nodes.map(node=>[node.dataset.examEditorLink,node.textContent]),
-   cache:[...examSelectionCache].map(([key,value])=>[key,value]),
-   root:document.querySelector('#paper .exam-sheet')};
+   stableCache:examSelectionCache.size===window.__linkedCache.size&&
+    [...examSelectionCache].every(([key,value])=>window.__linkedCache.get(key)===value),
+   stableRoot:document.querySelector('#paper .exam-sheet')===window.__linkedRoot};
  });
  const unchanged=initial.other.filter(([otherId])=>otherId!==id);
  assert.deepEqual(afterMenu.other.filter(([otherId])=>otherId!==id),unchanged,
   course+'/'+model+'/'+kind+': editar ha modificado otros campos');
- assert.deepEqual(afterMenu.cache,initial.cache,course+'/'+model+'/'+kind+': el editor ha regenerado la selección');
- assert.strictEqual(afterMenu.root,initial.root,course+'/'+model+'/'+kind+': se reconstruyó toda la vista previa');
+ assert(afterMenu.stableCache,course+'/'+model+'/'+kind+': el editor ha regenerado la selección');
+ assert(afterMenu.stableRoot,course+'/'+model+'/'+kind+': se reconstruyó toda la vista previa');
 
  const otherValue=(course==='greek1'?'ἄλλος':'alter')+'_'+kind+'_'+model;
  const reverse=await page.evaluate(({id,kind,value})=>{
