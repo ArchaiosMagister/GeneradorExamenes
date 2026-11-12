@@ -50,11 +50,20 @@ for(const [i,record] of records.entries()){
  const published=report.rows[i];
  assert.equal(published.unit,record.unit);
  assert.equal(published.forma,record.form);
- assert.equal(published.lema||'',record.lemma);
- assert.equal(published.enunciado||'',record.lemma?record.entry:'');
+ // El informe anterior es histórico: no perder reconocimientos antiguos.
+ // Permitir que una forma antes pendiente pase a documentada tras contraste.
+ if(published.estado==='reconocida'){
+  assert.equal(record.status,'documented','Regresión en '+record.form);
+  assert.equal(published.lema||'',record.lemma,'Lema reconocido alterado: '+record.form);
+  assert.equal(published.enunciado||'',record.entry,'Enunciado reconocido alterado: '+record.form);
+ }
 }
-assert.equal(report.summary.reconocidas,summary.recognizedTotal);
-assert.equal(report.summary.pendientes,summary.pendingTotal);
+assert.ok(summary.recognizedTotal>=report.summary.reconocidas,
+ 'La ampliación no puede hacer perder identificaciones previas');
+assert.equal(summary.recognizedTotal+summary.pendingTotal,183);
+const promotions=records.filter((record,i)=>
+ report.rows[i].estado!=='reconocida'&&record.status==='documented');
+console.log('LATIN1_NEW_VERIFIED '+JSON.stringify(promotions.map(r=>({unit:r.unit,form:r.form,lemma:r.lemma}))));
 assert.equal(summary.unknown,0,'Cada aparición debe conservar al menos una lectura o un aviso editorial');
 console.log('LATIN1_REST_183 '+JSON.stringify(summary));
 console.log('LATIN1_REST_DETAIL '+JSON.stringify(records.filter(x=>x.category!=='recognized')));
