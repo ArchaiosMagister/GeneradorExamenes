@@ -2,7 +2,7 @@
   "esquema": "evoluciones-latin-castellano/v1",
   "revision": "2026-11-12",
   "origen": "Banco docente de evoluciones fonéticas y ampliaciones auditadas a partir del Excel final de 1058 formas.",
-  "criterio": "650 fichas APTO_PROPUESTO: se incluyen de forma didáctica las adaptaciones de grafías griegas y monoptongaciones transparentes, diferenciadas de cambios patrimoniales por etiqueta. Las etimologías debatidas siguen en revisión; no equivalen a una certificación lexicográfica de toda la voz.",
+  "criterio": "655 fichas APTO_PROPUESTO: se incluyen de forma didáctica las adaptaciones de grafías griegas y monoptongaciones transparentes, diferenciadas de cambios patrimoniales por etiqueta. Las etimologías debatidas siguen en revisión; no equivalen a una certificación lexicográfica de toda la voz.",
   "idioma_origen": "la",
   "idioma_destino": "es",
   "normas": [
@@ -9036,6 +9036,90 @@
       "etiqueta": "Adaptación culta",
       "validacion": "CORRESPONDENCIA_GRAFICA_REVISADA",
       "revision": "2026-11-12"
+    },
+    {
+      "id": "EVF-1198",
+      "latin": "pyram",
+      "castellano": "pira",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 686,
+      "observacion": "PYRAM > pira¹, hoguera funeraria o sacrificial, del griego πυρά vía el latín pyra; solo se examina y > i. No confundir con otros usos de pira.",
+      "fuente": "https://iedra.es/palabras/pira",
+      "estado": "APTO_PROPUESTO",
+      "lote": 20,
+      "revision_docente": "aceptar_hoguera",
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta",
+      "etiquetaAcepcion": "hoguera funeraria"
+    },
+    {
+      "id": "EVF-1199",
+      "latin": "Scythiam",
+      "castellano": "Escitia",
+      "normas": [
+        "N10",
+        "N14"
+      ],
+      "fila_origen": 689,
+      "observacion": "Se corrige a SCYTHIAM, acusativo de Scythia; adaptación gráfica culta de th > t y prótesis e- ante sc-. No se atribuye evolución patrimonial integral.",
+      "fuente": "https://en.wiktionary.org/wiki/Scythia",
+      "estado": "APTO_PROPUESTO",
+      "lote": 20,
+      "revision_docente": "corregir_scythiam",
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta"
+    },
+    {
+      "id": "EVF-1200",
+      "latin": "gulam",
+      "castellano": "gola",
+      "normas": [
+        "N01"
+      ],
+      "fila_origen": 381,
+      "observacion": "GŬLAM > gola (garganta) es voz regional/histórica con documentación dialectal; apertura ŭ > o (N01). No equivale al cultismo gula 'glotonería'.",
+      "fuente": "https://iedra.es/palabras/gola",
+      "estado": "APTO_PROPUESTO",
+      "lote": 20,
+      "revision_docente": "aceptar_regional",
+      "tipoTransmision": "REGIONAL_HISTORICA",
+      "etiqueta": "Voz regional o histórica",
+      "etiquetaAcepcion": "garganta (regional/histórica)"
+    },
+    {
+      "id": "EVF-1201",
+      "latin": "sculptorem",
+      "castellano": "escultor",
+      "normas": [
+        "N14",
+        "N15"
+      ],
+      "fila_origen": 504,
+      "observacion": "SCULPTŌREM > escultor, latinismo culto: prótesis e- ante sc- y simplificación gráfica -lpt- > -lt-. No se afirma transmisión patrimonial de la voz.",
+      "fuente": "https://iedra.es/palabras/escultor",
+      "estado": "APTO_PROPUESTO",
+      "lote": 20,
+      "revision_docente": "aceptar_culta_latina",
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta"
+    },
+    {
+      "id": "EVF-1202",
+      "latin": "Chloen",
+      "castellano": "Cloe",
+      "normas": [
+        "N10"
+      ],
+      "fila_origen": 638,
+      "observacion": "Se corrige a CHLOEN, acusativo del nombre Chloe; la forma castellana Cloe procede de la adaptación del nombre griego. Ch > c; la secuencia o-e es hiato, no diptongo œ: no corresponde N12.",
+      "fuente": "https://www.mobot.org/mobot/latindict/keyDetail.aspx?keyWord=-chloe",
+      "estado": "APTO_PROPUESTO",
+      "lote": 20,
+      "revision_docente": "corregir_chloe",
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "etiqueta": "Adaptación culta"
     }
   ],
   "ampliacion": {
@@ -9212,6 +9296,15 @@
       "cantidad": 17,
       "origen": "21 pendientes de revisión culta del lote 15, revalidadas según la nueva decisión docente",
       "nota": "Se aplazan 4 por tratarse de no griegos o por forma latina problemática"
+    },
+    "lote_20": {
+      "fecha": "2026-11-12",
+      "cantidad": 5,
+      "revisadas": 10,
+      "excluidas": 4,
+      "pendientes": 1,
+      "regla": "Corregir únicamente las formas y acepciones aprobadas, sin validar automáticamente otras",
+      "auditoria": "data/fonetica/auditoria-grafias-griegas-lote-100-20261112.json"
     }
   }
 }

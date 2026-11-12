@@ -698,7 +698,7 @@ function parseTeacherPhonetics(raw){
    typeof castellano!=='string'||!castellano||seen.has(id)||estado!=='APTO_PROPUESTO'||
    !Array.isArray(normas)||!normas.length||normas.some(n=>!known.has(n)))continue;
   seen.add(id);rows.push({id,prompt:latin,latin,castellano,normas,estado,answer:'',
-   tipoTransmision:item.tipoTransmision==='ADAPTACION_CULTA'?'ADAPTACION_CULTA':null,
+   tipoTransmision:['ADAPTACION_CULTA','REGIONAL_HISTORICA'].includes(item.tipoTransmision)?item.tipoTransmision:null,
    etiquetaAcepcion:typeof item.etiquetaAcepcion==='string'?item.etiquetaAcepcion:null,
    source:'Banco docente de evolución fonética · '+id});
  }
@@ -3446,9 +3446,11 @@ function latinLexStatus(kind,rows,message=''){
  if(status){
   const review=rows.some(x=>x.reviewRequired);
   const culta=kind==='phonetics'&&rows.some(x=>x.tipoTransmision==='ADAPTACION_CULTA');
+  const regional=kind==='phonetics'&&rows.some(x=>x.tipoTransmision==='REGIONAL_HISTORICA');
   const acepcion=kind==='phonetics'&&rows.some(x=>x.etiquetaAcepcion);
   status.textContent=message||(!rows.length?'No hay formas compatibles.':review?'Revisar formas no documentadas.':
    culta?'Hay adaptaciones cultas etiquetadas en el examen y en Word.':
+   regional?'Hay una voz regional o histórica etiquetada en el examen y en Word.':
    acepcion?'Una palabra tiene una acepción histórica documentada en el banco.':'');
   status.hidden=!status.textContent;
   status.dataset.resultState=message||!rows.length?'missing':review?'review':'available';
@@ -3515,12 +3517,14 @@ function setLatinPhoneticWord(index,value,fromPreview=false){
  // Al editar una forma, la etiqueta culta también debe seguir su ficha exacta.
  for(const slot of $('paper').querySelectorAll('[data-lex-slot="phonetics:'+index+'"]')){
   let tag=slot.querySelector('.phonetic-origin-label');
-  if(next.tipoTransmision==='ADAPTACION_CULTA'){
+  if(['ADAPTACION_CULTA','REGIONAL_HISTORICA'].includes(next.tipoTransmision)){
    if(!tag){
     tag=document.createElement('small');tag.className='phonetic-origin-label';
     tag.contentEditable='false';slot.appendChild(tag);
    }
-   tag.textContent=$('lang').value==='va'?' (adaptació culta)':' (adaptación culta)';
+   tag.textContent=next.tipoTransmision==='REGIONAL_HISTORICA'
+    ?($('lang').value==='va'?' (veu regional o històrica)':' (voz regional o histórica)')
+    :($('lang').value==='va'?' (adaptació culta)':' (adaptación culta)');
   }else tag?.remove();
  }
  latinLexStatus('phonetics',updated);
@@ -3565,9 +3569,11 @@ function buildLatinLexQuestion(course,chosen){
     kind==='phonetics'?'Editar forma de evolución fonética':
     kind==='prefixes'?'Editar prefijo':'Editar latinismo')+'">'+
    esc(latinLexDisplayPrompt(kind,x))+'</i>'+
-   (kind==='phonetics'&&x.tipoTransmision==='ADAPTACION_CULTA'?
+   (kind==='phonetics'&&['ADAPTACION_CULTA','REGIONAL_HISTORICA'].includes(x.tipoTransmision)?
     '<small class="phonetic-origin-label" contenteditable="false">'+
-    (va?' (adaptació culta)':' (adaptación culta)')+'</small>':'')+'</span>';
+    (x.tipoTransmision==='REGIONAL_HISTORICA'
+     ?(va?' (veu regional o històrica)':' (voz regional o histórica)')
+     :(va?' (adaptació culta)':' (adaptación culta)'))+'</small>':'')+'</span>';
  for(const kind of parts){
   const available=latinLexPool(course,kind,chosen),rows=latinLexChosenRows(course,kind,chosen);
   const letter=String.fromCharCode(97+(latinLexModules[course]||[]).indexOf(kind));

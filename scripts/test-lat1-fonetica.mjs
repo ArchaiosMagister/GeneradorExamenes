@@ -9,7 +9,7 @@ const generic=JSON.parse(readFileSync(resolve(root,'data/fonetica/banco_examenes
 assert.equal(curriculum.schema,1);
 assert.equal(curriculum.course,'latin1');
 assert.equal(curriculum.unidades.length,11);
-assert.equal(generic.items.length,650,'El banco general es elegible también en Latín I');
+assert.equal(generic.items.length,655,'El banco general es elegible también en Latín I');
 const known=new Set(generic.normas.map(n=>n.id));
 const introduced=new Set(),seen=new Set();
 let total=0,valid=0,revisar=0,previous=0;

@@ -167,7 +167,8 @@
           "id": "EVF-1197"
         }
       ],
-      "restantes_auditadas": 4
+      "restantes_auditadas": 4,
+      "restantes_tras_lote_20": 1
     },
     {
       "grupo": "lote_18_grafias_griegas",
@@ -176,8 +177,133 @@
       "resultado": "100 entradas nuevas incorporadas y 17 pendientes anteriores recuperadas",
       "auditoria": "data/fonetica/auditoria-grafias-griegas-lote-100-20261112.json",
       "estado": "APROBACION_DOCENTE_GENERAL",
-      "pendientes": 10
+      "pendientes": 10,
+      "pendientesActuales": 1,
+      "resueltas": 9
+    },
+    {
+      "entrada": "pyram",
+      "fila_origen": 686,
+      "decision": "aceptar_hoguera",
+      "estado": "APTO_PROPUESTO",
+      "latinCorregido": "pyram",
+      "castellano": "pira",
+      "normas": [
+        "N10"
+      ],
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "fuente": "https://iedra.es/palabras/pira",
+      "idBanco": "EVF-1198",
+      "motivo": "PYRAM > pira¹, hoguera funeraria o sacrificial, del griego πυρά vía el latín pyra; solo se examina y > i. No confundir con otros usos de pira.",
+      "latin": "pyram"
+    },
+    {
+      "entrada": "Scytiam",
+      "fila_origen": 689,
+      "decision": "corregir_scythiam",
+      "estado": "APTO_PROPUESTO",
+      "latinCorregido": "Scythiam",
+      "castellano": "Escitia",
+      "normas": [
+        "N10",
+        "N14"
+      ],
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "fuente": "https://en.wiktionary.org/wiki/Scythia",
+      "idBanco": "EVF-1199",
+      "motivo": "Se corrige a SCYTHIAM, acusativo de Scythia; adaptación gráfica culta de th > t y prótesis e- ante sc-. No se atribuye evolución patrimonial integral.",
+      "latin": "Scytiam"
+    },
+    {
+      "entrada": "chœrilum",
+      "fila_origen": 757,
+      "decision": "excluir",
+      "estado": "EXCLUIDA",
+      "motivo": "Excluir definitivamente del sorteo por decisión docente expresa",
+      "latin": "chœrilum"
+    },
+    {
+      "entrada": "œagrum",
+      "fila_origen": 774,
+      "decision": "excluir",
+      "estado": "EXCLUIDA",
+      "motivo": "Excluir definitivamente del sorteo por decisión docente expresa",
+      "latin": "œagrum"
+    },
+    {
+      "entrada": "œnomaum",
+      "fila_origen": 778,
+      "decision": "excluir",
+      "estado": "EXCLUIDA",
+      "motivo": "Excluir definitivamente del sorteo por decisión docente expresa",
+      "latin": "œnomaum"
+    },
+    {
+      "entrada": "œtam",
+      "fila_origen": 780,
+      "decision": "excluir",
+      "estado": "EXCLUIDA",
+      "motivo": "Excluir definitivamente del sorteo por decisión docente expresa",
+      "latin": "œtam"
+    },
+    {
+      "entrada": "circum",
+      "fila_origen": 58,
+      "decision": "investigar_circus",
+      "estado": "REVISION_DOCENTE",
+      "motivo": "DiCCA XV registra cerco < CIRCUM, vinculado a CIRCUS, pero se reserva la explicación exacta de las normas fonéticas exigibles antes de la inclusión.",
+      "fuente": "https://ghcl.ub.edu/diccaxv/listings/WordsByFrequencyIndex/page%3A1042/sort%3Avocablo/direction%3Adesc/myLanguage%3Aes",
+      "latin": "circum"
+    },
+    {
+      "entrada": "gulam",
+      "fila_origen": 381,
+      "decision": "aceptar_regional",
+      "estado": "APTO_PROPUESTO",
+      "latinCorregido": "gulam",
+      "castellano": "gola",
+      "normas": [
+        "N01"
+      ],
+      "tipoTransmision": "REGIONAL_HISTORICA",
+      "fuente": "https://iedra.es/palabras/gola",
+      "idBanco": "EVF-1200",
+      "motivo": "GŬLAM > gola (garganta) es voz regional/histórica con documentación dialectal; apertura ŭ > o (N01). No equivale al cultismo gula 'glotonería'.",
+      "latin": "gulam"
+    },
+    {
+      "entrada": "sculptorem",
+      "fila_origen": 504,
+      "decision": "aceptar_culta_latina",
+      "estado": "APTO_PROPUESTO",
+      "latinCorregido": "sculptorem",
+      "castellano": "escultor",
+      "normas": [
+        "N14",
+        "N15"
+      ],
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "fuente": "https://iedra.es/palabras/escultor",
+      "idBanco": "EVF-1201",
+      "motivo": "SCULPTŌREM > escultor, latinismo culto: prótesis e- ante sc- y simplificación gráfica -lpt- > -lt-. No se afirma transmisión patrimonial de la voz.",
+      "latin": "sculptorem"
+    },
+    {
+      "entrada": "Chlœm",
+      "fila_origen": 638,
+      "decision": "corregir_chloe",
+      "estado": "APTO_PROPUESTO",
+      "latinCorregido": "Chloen",
+      "castellano": "Cloe",
+      "normas": [
+        "N10"
+      ],
+      "tipoTransmision": "ADAPTACION_CULTA",
+      "fuente": "https://www.mobot.org/mobot/latindict/keyDetail.aspx?keyWord=-chloe",
+      "idBanco": "EVF-1202",
+      "motivo": "Se corrige a CHLOEN, acusativo del nombre Chloe; la forma castellana Cloe procede de la adaptación del nombre griego. Ch > c; la secuencia o-e es hiato, no diptongo œ: no corresponde N12.",
+      "latin": "Chlœm"
     }
   ],
-  "politica": "Las grafías de origen griego y la monoptongación de ae/oe pueden incorporarse como ejemplos de adaptación culta aunque no sean patrimoniales, preservando etiqueta de vía culta en el examen. Excepciones con étimo, acepción o forma problemática quedan pendientes de decisión; las exclusiones docentes previas se mantienen."
+  "politica": "Las grafías de origen griego y la monoptongación de ae/oe pueden incorporarse como ejemplos de adaptación culta aunque no sean patrimoniales, preservando etiqueta de vía culta en el examen. Excepciones con étimo, acepción o forma problemática quedan pendientes de decisión; las exclusiones docentes previas se mantienen. Lote 20: cinco aprobaciones individualizadas, cuatro exclusiones y circum bajo investigación; la relación histórica con CIRCUS no activa automáticamente una ficha."
 }
