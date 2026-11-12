@@ -11,8 +11,8 @@
     "VARIANTE_CORREGIDA": 1,
     "PENDIENTE_VERIFICACION": 62,
     "DUPLICADA_O_VARIANTE": 3,
-    "INCORPORADA_CULTA": 6,
-    "REVISION_CULTA_CONDICIONADA": 21
+    "INCORPORADA_CULTA": 23,
+    "REVISION_CULTA_CONDICIONADA": 4
   },
   "politica": "Solo las fichas INCORPORADA e INCORPORADA_CULTA constan en banco_examenes.json. Estas últimas han de conservar una etiqueta explícita de transmisión culta. EXCLUIDA_DOCENTE no se reconsidera sin aprobación; CORREGIDA_PENDIENTE y REVISION_CULTA_CONDICIONADA no son sorteables. Las demás siguen sin validar.",
   "items": [
@@ -1003,10 +1003,11 @@
       "normasExcel": [
         "GRIE"
       ],
-      "estado": "REVISION_CULTA_CONDICIONADA",
-      "motivo": "La inclusión por vía culta está permitida solo después de contraste individual y con etiqueta visible; por ahora no participa en el sorteo.",
-      "idBanco": null,
-      "decisionDocente": "inclusion_condicionada"
+      "estado": "INCORPORADA_CULTA",
+      "motivo": "Aprobada la adaptación de grafías grecolatinas expresamente por el profesor, conservando la etiqueta culta y sin afirmar evolución patrimonial.",
+      "idBanco": "EVF-1181",
+      "decisionDocente": "incluir_grafias_griegas",
+      "etiqueta": "Adaptación culta"
     },
     {
       "fila_origen": 617,
@@ -1017,10 +1018,11 @@
         "GRIE",
         "MONOP"
       ],
-      "estado": "REVISION_CULTA_CONDICIONADA",
-      "motivo": "La inclusión por vía culta está permitida solo después de contraste individual y con etiqueta visible; por ahora no participa en el sorteo.",
-      "idBanco": null,
-      "decisionDocente": "inclusion_condicionada"
+      "estado": "INCORPORADA_CULTA",
+      "motivo": "Aprobada la adaptación de grafías grecolatinas expresamente por el profesor, conservando la etiqueta culta y sin afirmar evolución patrimonial.",
+      "idBanco": "EVF-1182",
+      "decisionDocente": "incluir_grafias_griegas",
+      "etiqueta": "Adaptación culta"
     },
     {
       "fila_origen": 618,
@@ -1031,10 +1033,11 @@
         "GRIE",
         "MONOP"
       ],
-      "estado": "REVISION_CULTA_CONDICIONADA",
-      "motivo": "La inclusión por vía culta está permitida solo después de contraste individual y con etiqueta visible; por ahora no participa en el sorteo.",
-      "idBanco": null,
-      "decisionDocente": "inclusion_condicionada"
+      "estado": "INCORPORADA_CULTA",
+      "motivo": "Aprobada la adaptación de grafías grecolatinas expresamente por el profesor, conservando la etiqueta culta y sin afirmar evolución patrimonial.",
+      "idBanco": "EVF-1183",
+      "decisionDocente": "incluir_grafias_griegas",
+      "etiqueta": "Adaptación culta"
     },
     {
       "fila_origen": 619,
@@ -1045,10 +1048,11 @@
         "GRIE",
         "MONOP"
       ],
-      "estado": "REVISION_CULTA_CONDICIONADA",
-      "motivo": "La inclusión por vía culta está permitida solo después de contraste individual y con etiqueta visible; por ahora no participa en el sorteo.",
-      "idBanco": null,
-      "decisionDocente": "inclusion_condicionada"
+      "estado": "INCORPORADA_CULTA",
+      "motivo": "Aprobada la adaptación de grafías grecolatinas expresamente por el profesor, conservando la etiqueta culta y sin afirmar evolución patrimonial.",
+      "idBanco": "EVF-1184",
+      "decisionDocente": "incluir_grafias_griegas",
+      "etiqueta": "Adaptación culta"
     },
     {
       "fila_origen": 620,
@@ -1059,10 +1063,11 @@
         "GRIE",
         "MONOP"
       ],
-      "estado": "REVISION_CULTA_CONDICIONADA",
-      "motivo": "La inclusión por vía culta está permitida solo después de contraste individual y con etiqueta visible; por ahora no participa en el sorteo.",
-      "idBanco": null,
-      "decisionDocente": "inclusion_condicionada"
+      "estado": "INCORPORADA_CULTA",
+      "motivo": "Aprobada la adaptación de grafías grecolatinas expresamente por el profesor, conservando la etiqueta culta y sin afirmar evolución patrimonial.",
+      "idBanco": "EVF-1185",
+      "decisionDocente": "incluir_grafias_griegas",
+      "etiqueta": "Adaptación culta"
     },
     {
       "fila_origen": 621,
@@ -1102,10 +1107,11 @@
       "normasExcel": [
         "GRIE"
       ],
-      "estado": "REVISION_CULTA_CONDICIONADA",
-      "motivo": "La inclusión por vía culta está permitida solo después de contraste individual y con etiqueta visible; por ahora no participa en el sorteo.",
-      "idBanco": null,
-      "decisionDocente": "inclusion_condicionada"
+      "estado": "INCORPORADA_CULTA",
+      "motivo": "Aprobada la adaptación de grafías grecolatinas expresamente por el profesor, conservando la etiqueta culta y sin afirmar evolución patrimonial.",
+      "idBanco": "EVF-1186",
+      "decisionDocente": "incluir_grafias_griegas",
+      "etiqueta": "Adaptación culta"
     },
     {
       "fila_origen": 624,
@@ -1145,10 +1151,11 @@
       "normasExcel": [
         "GRIE"
       ],
-      "estado": "REVISION_CULTA_CONDICIONADA",
-      "motivo": "La inclusión por vía culta está permitida solo después de contraste individual y con etiqueta visible; por ahora no participa en el sorteo.",
-      "idBanco": null,
-      "decisionDocente": "inclusion_condicionada"
+      "estado": "INCORPORADA_CULTA",
+      "motivo": "Aprobada la adaptación de grafías grecolatinas expresamente por el profesor, conservando la etiqueta culta y sin afirmar evolución patrimonial.",
+      "idBanco": "EVF-1187",
+      "decisionDocente": "incluir_grafias_griegas",
+      "etiqueta": "Adaptación culta"
     },
     {
       "fila_origen": 627,
@@ -1158,10 +1165,11 @@
       "normasExcel": [
         "GRIE"
       ],
-      "estado": "REVISION_CULTA_CONDICIONADA",
-      "motivo": "La inclusión por vía culta está permitida solo después de contraste individual y con etiqueta visible; por ahora no participa en el sorteo.",
-      "idBanco": null,
-      "decisionDocente": "inclusion_condicionada"
+      "estado": "INCORPORADA_CULTA",
+      "motivo": "Aprobada la adaptación de grafías grecolatinas expresamente por el profesor, conservando la etiqueta culta y sin afirmar evolución patrimonial.",
+      "idBanco": "EVF-1188",
+      "decisionDocente": "incluir_grafias_griegas",
+      "etiqueta": "Adaptación culta"
     },
     {
       "fila_origen": 628,
@@ -1172,10 +1180,11 @@
         "GRIE",
         "MONOP"
       ],
-      "estado": "REVISION_CULTA_CONDICIONADA",
-      "motivo": "La inclusión por vía culta está permitida solo después de contraste individual y con etiqueta visible; por ahora no participa en el sorteo.",
-      "idBanco": null,
-      "decisionDocente": "inclusion_condicionada"
+      "estado": "INCORPORADA_CULTA",
+      "motivo": "Aprobada la adaptación de grafías grecolatinas expresamente por el profesor, conservando la etiqueta culta y sin afirmar evolución patrimonial.",
+      "idBanco": "EVF-1189",
+      "decisionDocente": "incluir_grafias_griegas",
+      "etiqueta": "Adaptación culta"
     },
     {
       "fila_origen": 629,
@@ -1185,10 +1194,11 @@
       "normasExcel": [
         "GRIE"
       ],
-      "estado": "REVISION_CULTA_CONDICIONADA",
-      "motivo": "La inclusión por vía culta está permitida solo después de contraste individual y con etiqueta visible; por ahora no participa en el sorteo.",
-      "idBanco": null,
-      "decisionDocente": "inclusion_condicionada"
+      "estado": "INCORPORADA_CULTA",
+      "motivo": "Aprobada la adaptación de grafías grecolatinas expresamente por el profesor, conservando la etiqueta culta y sin afirmar evolución patrimonial.",
+      "idBanco": "EVF-1190",
+      "decisionDocente": "incluir_grafias_griegas",
+      "etiqueta": "Adaptación culta"
     },
     {
       "fila_origen": 630,
@@ -1198,10 +1208,11 @@
       "normasExcel": [
         "GRIE"
       ],
-      "estado": "REVISION_CULTA_CONDICIONADA",
-      "motivo": "La inclusión por vía culta está permitida solo después de contraste individual y con etiqueta visible; por ahora no participa en el sorteo.",
-      "idBanco": null,
-      "decisionDocente": "inclusion_condicionada"
+      "estado": "INCORPORADA_CULTA",
+      "motivo": "Aprobada la adaptación de grafías grecolatinas expresamente por el profesor, conservando la etiqueta culta y sin afirmar evolución patrimonial.",
+      "idBanco": "EVF-1191",
+      "decisionDocente": "incluir_grafias_griegas",
+      "etiqueta": "Adaptación culta"
     },
     {
       "fila_origen": 631,
@@ -1211,10 +1222,11 @@
       "normasExcel": [
         "GRIE"
       ],
-      "estado": "REVISION_CULTA_CONDICIONADA",
-      "motivo": "La inclusión por vía culta está permitida solo después de contraste individual y con etiqueta visible; por ahora no participa en el sorteo.",
-      "idBanco": null,
-      "decisionDocente": "inclusion_condicionada"
+      "estado": "INCORPORADA_CULTA",
+      "motivo": "Aprobada la adaptación de grafías grecolatinas expresamente por el profesor, conservando la etiqueta culta y sin afirmar evolución patrimonial.",
+      "idBanco": "EVF-1192",
+      "decisionDocente": "incluir_grafias_griegas",
+      "etiqueta": "Adaptación culta"
     },
     {
       "fila_origen": 633,
@@ -1240,10 +1252,11 @@
       "normasExcel": [
         "GRIE"
       ],
-      "estado": "REVISION_CULTA_CONDICIONADA",
-      "motivo": "La inclusión por vía culta está permitida solo después de contraste individual y con etiqueta visible; por ahora no participa en el sorteo.",
-      "idBanco": null,
-      "decisionDocente": "inclusion_condicionada"
+      "estado": "INCORPORADA_CULTA",
+      "motivo": "Aprobada la adaptación de grafías grecolatinas expresamente por el profesor, conservando la etiqueta culta y sin afirmar evolución patrimonial.",
+      "idBanco": "EVF-1193",
+      "decisionDocente": "incluir_grafias_griegas",
+      "etiqueta": "Adaptación culta"
     },
     {
       "fila_origen": 635,
@@ -1253,10 +1266,11 @@
       "normasExcel": [
         "GRIE"
       ],
-      "estado": "REVISION_CULTA_CONDICIONADA",
-      "motivo": "La inclusión por vía culta está permitida solo después de contraste individual y con etiqueta visible; por ahora no participa en el sorteo.",
-      "idBanco": null,
-      "decisionDocente": "inclusion_condicionada"
+      "estado": "INCORPORADA_CULTA",
+      "motivo": "Aprobada la adaptación de grafías grecolatinas expresamente por el profesor, conservando la etiqueta culta y sin afirmar evolución patrimonial.",
+      "idBanco": "EVF-1194",
+      "decisionDocente": "incluir_grafias_griegas",
+      "etiqueta": "Adaptación culta"
     },
     {
       "fila_origen": 636,
@@ -1266,10 +1280,11 @@
       "normasExcel": [
         "GRIE"
       ],
-      "estado": "REVISION_CULTA_CONDICIONADA",
-      "motivo": "La inclusión por vía culta está permitida solo después de contraste individual y con etiqueta visible; por ahora no participa en el sorteo.",
-      "idBanco": null,
-      "decisionDocente": "inclusion_condicionada"
+      "estado": "INCORPORADA_CULTA",
+      "motivo": "Aprobada la adaptación de grafías grecolatinas expresamente por el profesor, conservando la etiqueta culta y sin afirmar evolución patrimonial.",
+      "idBanco": "EVF-1195",
+      "decisionDocente": "incluir_grafias_griegas",
+      "etiqueta": "Adaptación culta"
     },
     {
       "fila_origen": 637,
@@ -1279,10 +1294,11 @@
       "normasExcel": [
         "GRIE"
       ],
-      "estado": "REVISION_CULTA_CONDICIONADA",
-      "motivo": "La inclusión por vía culta está permitida solo después de contraste individual y con etiqueta visible; por ahora no participa en el sorteo.",
-      "idBanco": null,
-      "decisionDocente": "inclusion_condicionada"
+      "estado": "INCORPORADA_CULTA",
+      "motivo": "Aprobada la adaptación de grafías grecolatinas expresamente por el profesor, conservando la etiqueta culta y sin afirmar evolución patrimonial.",
+      "idBanco": "EVF-1196",
+      "decisionDocente": "incluir_grafias_griegas",
+      "etiqueta": "Adaptación culta"
     },
     {
       "fila_origen": 638,
@@ -1306,10 +1322,11 @@
       "normasExcel": [
         "GRIE"
       ],
-      "estado": "REVISION_CULTA_CONDICIONADA",
-      "motivo": "La inclusión por vía culta está permitida solo después de contraste individual y con etiqueta visible; por ahora no participa en el sorteo.",
-      "idBanco": null,
-      "decisionDocente": "inclusion_condicionada"
+      "estado": "INCORPORADA_CULTA",
+      "motivo": "Aprobada la adaptación de grafías grecolatinas expresamente por el profesor, conservando la etiqueta culta y sin afirmar evolución patrimonial.",
+      "idBanco": "EVF-1197",
+      "decisionDocente": "incluir_grafias_griegas",
+      "etiqueta": "Adaptación culta"
     }
   ],
   "revision_docente": {
@@ -1328,5 +1345,17 @@
       "asphaltum",
       "Chimæram"
     ]
+  },
+  "nuevaRevision": {
+    "fecha": "2026-11-12",
+    "decision": "incorporar ejemplos de grafías griegas con etiqueta de adaptación culta",
+    "anteriormente_pendientes_aprobadas": 17,
+    "restantes_fuera_del_sorteo": [
+      "circum",
+      "gulam",
+      "sculptorem",
+      "Chlœm"
+    ],
+    "referencia": "data/fonetica/auditoria-grafias-griegas-lote-100-20261112.json"
   }
 }
