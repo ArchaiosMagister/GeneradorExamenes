@@ -2960,7 +2960,7 @@ async function loadTeacherLatinLexBanks(){
    const parsed=parseLatin1PhoneticCurriculum(data);
    if(parsed){
     latin1PhoneticCurriculum=parsed;
-    // Las 510 candidatas generales siguen disponibles en Latín 4.º.
+    // El programa fija las normas por unidad, pero sus étimos no sustituyen el banco general.
     latinLexBanks.latin1.phonetics=parsed.rows;
     loaded++;
    }
@@ -3288,13 +3288,7 @@ function syncLatin1PhoneticRuleControls(){
   ': '+allowed.size+' de 20 normas disponibles (acumulativas).';
 }
 function examLexFilter(row,course,kind,chosen){
- if(course==='latin1'&&kind==='phonetics'&&row.id?.startsWith('LAT1-FON-')){
-  const allowed=latin1PhoneticAllowed(chosen);
-  if(row.estado!=='APTO_PROPUESTO'||row.unidad>latin1PhoneticMaxUnit(chosen)||
-   !row.normas?.length||row.normas.some(code=>!allowed.has(code)||!selectedPhoneticRules.has(code)))
-   return false;
- }
- if(row.unit){
+ if(row.unit&&kind!=='phonetics'){
   if(course==='latin4'){
    const n=Number(String(row.unit).match(/\d+/)?.[0]||0);
    if(n>latin4SelectedMaxUnit(chosen))return false;
@@ -3303,9 +3297,10 @@ function examLexFilter(row,course,kind,chosen){
  const prefix=$('lex-prefix')?.value||'all',phenomenon=$('lex-phenomenon')?.value||'all';
  if(kind==='prefixes'&&prefix!=='all'&&row.prefix!==prefix)return false;
  if(kind==='phonetics'){
-  if(row.id?.startsWith('EVF-')&&course!=='latin4'){
-   if(!selectedPhoneticRules.size||row.estado!=='APTO_PROPUESTO'||!Array.isArray(row.normas)||!row.normas.length||
-    !row.normas.every(n=>selectedPhoneticRules.has(n)))return false;
+  if(row.estado!=='APTO_PROPUESTO'||!Array.isArray(row.normas)||!row.normas.length)return false;
+  if(course==='latin1'){
+   const allowed=latin1PhoneticAllowed(chosen);
+   if(!allowed.size||row.normas.some(code=>!allowed.has(code)||!selectedPhoneticRules.has(code)))return false;
   }
   if(phenomenon!=='all'&&!(Array.isArray(row.phenomena)?row.phenomena:[row.phenomenon]).includes(phenomenon))return false;
  }
@@ -3349,12 +3344,8 @@ function latin4PhoneticEligible(row,chosen){
  if(row.estado&&row.estado!=='APTO_PROPUESTO')return false;
  const lessons=latin4TaughtPhoneticLessons(chosen);
  const allowed=new Set([...(latin4LexCurriculum.baselineNormCodes||[]),...lessons.map(x=>x.code)]);
- // No pedir a un alumno una evolución que exija otras normas todavía no trabajadas.
- if(!row.normas.every(code=>allowed.has(code)))return false;
- const source=String(row.latin||row.prompt||'').normalize('NFD')
-  .replace(/[\u0300-\u036f]/g,'').replace(/æ/gi,'ae').replace(/œ/gi,'oe');
- return lessons.some(x=>row.normas.includes(x.code)&&
-  (!x.sourcePattern||new RegExp(x.sourcePattern,'i').test(source)));
+ // Las normas impartidas, no la unidad original ni el patrón del étimo, determinan la elegibilidad.
+ return row.normas.every(code=>allowed.has(code));
 }
 function latinLexPool(course,kind,chosen){
  if(course==='latin1'&&kind==='preverbs')
