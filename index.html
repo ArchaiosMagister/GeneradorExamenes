@@ -3651,7 +3651,7 @@ function regenerateExamWord(kind,index){
    candidates=greekVerifiedCorpus.filter(x=>x.verified&&x.kind==='conjugation'&&
     greekMorphologyEligible(x,limit)&&x.table).flatMap(x=>x.table.rows.flatMap((row,i)=>
     [row[1],row[2]].map((form,j)=>({
-     prompt:form,answer:(i+1)+'ª persona '+(j===0?'singular':'plural')+' del presente de indicativo activo',
+     prompt:form,answer:(i+1)+'ª persona '+(j===0?'singular':'plural')+' del '+(x.id.startsWith('v-school-')?x.prompt.replace(/^Conjuga .*? en /,'').replace(/\.$/,''):'presente de indicativo activo'),
      lemma:x.lemmas[0],person:(i+1)+'ª '+(j===0?'singular':'plural')
     })).filter(item=>item.prompt)));
   }else if(morph)candidates=latinMorphologyVerbPool(chosen);
@@ -3663,6 +3663,7 @@ function regenerateExamWord(kind,index){
   else candidates=latinExamFormCandidates(chosen,true).flat();
  }
  const identity=item=>kind==='forms'?normLex(item?.prompt||item?.form||''):
+  kind==='verb'&&!greek&&!morph?examKey(item?.x?.entry||item?.entry||'')+'|'+(item?.id||'present-active'):
   String(item?.id||item?.title||item?.x?.entry||item?.prompt||item?.form||'');
  const previous=current[index],used=new Set(current.filter((_,i)=>i!==index).map(identity));
  let alternatives=candidates.filter(item=>identity(item)!==identity(previous)&&!used.has(identity(item)));
