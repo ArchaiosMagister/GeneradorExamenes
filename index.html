@@ -1645,7 +1645,7 @@ function latinExamNominals(chosen){
 function examParadigmHeading(value,kind){
  const raw=String(value||'').trim();
  const indicator=kind==='conjugation'
-  ?/\s*(\(\s*[1-4](?:\s*\.?\s*[ªº])?\s*(?:conj(?:ugación|\.)?)?\s*\))$/i
+  ?/\s*(\(\s*(?:[1-4](?:\s*\.?\s*[ªº])?\s*(?:conj(?:ugación|\.)?)?|mx\.|irr\.)\s*\))$/i
   :/\s*(\(\s*[mfn]\.?\s*\))$/i;
  const match=raw.match(indicator),lemma=match?raw.slice(0,match.index).trim():raw;
  return '<i>'+esc(lemma)+'</i>'+(match?' <span class="exam-paradigm-indicator">'+esc(match[1])+'</span>':'');
@@ -2838,7 +2838,9 @@ const greekCompleteAdjectives=[
 ];
 const greekSyntagmNounGenders={
  λογος:'m',ανθρωπος:'m',δωρον:'n',εργον:'n',αγορα:'f',χωρα:'f',
- θαλαττα:'f',νεανιας:'m',παιδεια:'f',αδελφος:'m'
+ θαλαττα:'f',νεανιας:'m',παιδεια:'f',αδελφος:'m',
+ // Tercera declinación: tablas explícitas y con lema documentado desde UD8.
+ πολις:'f',σωμα:'n'
 };
 const greekArticles={
  m:[['ὁ','','τὸν','τοῦ','τῷ'],['οἱ','','τοὺς','τῶν','τοῖς']],
@@ -2956,7 +2958,7 @@ function greekCompleteNominalGroup(item,forMorphology=false,preferred=null){
 }
 function greekTable(item,answers=false){
  const va=$('lang').value==='va',verb=item.kind==='conjugation';
- const articles={λογος:'ὁ',ανθρωπος:'ὁ',δωρον:'τὸ',εργον:'τὸ',αγορα:'ἡ',χωρα:'ἡ',θαλαττα:'ἡ',νεανιας:'ὁ',παιδεια:'ἡ',αδελφος:'ὁ'};
+ const articles={λογος:'ὁ',ανθρωπος:'ὁ',δωρον:'τὸ',εργον:'τὸ',αγορα:'ἡ',χωρα:'ἡ',θαλαττα:'ἡ',νεανιας:'ὁ',παιδεια:'ἡ',αδελφος:'ὁ',πολις:'ἡ',σωμα:'τὸ'};
  const lemma=item.lemmas[0],article=articles[item.id.slice(2)]||'';
  const compound=!verb?greekCompleteNominalGroup(item):null;
  const title=compound?.title||(verb?headLex(lemma):(article?article+' ':'')+lemma);
