@@ -45,6 +45,21 @@ async function inspect(page,filename){
   const decision=window.ExaminaThirdReview.snapshot().brevis;
   output.approvedLocally=window.ExaminaThirdReview.get('brevis, –e')==='approved';
   output.approvalNotVerification=decision?.verified===false&&decision?.decision==='approved';
+  // Comprobar la tabla completa: sustantivo neutro + adjetivo de 3.ª,
+  // con concordancia en singular, plural y genitivo.
+  const originalAdjectives=latinCompleteAdjectives;
+  try{
+   latinCompleteAdjectives=()=>[{x:{entry:'brevis, –e'},p:latinThirdAdjective({entry:'brevis, –e'})}];
+   const pairs=latinCompleteDeclensionItems(['UD1','UD2','UD3','UD4','UD5']);
+   const neutral=pairs.find(x=>x.p.kind==='2n'&&x.compound);
+   output.agreement=neutral?{
+    singularNominative:neutral.compound.forms[0][0],
+    singularGenitive:neutral.compound.forms[0][3],
+    pluralNominative:neutral.compound.forms[1][0],
+    pluralGenitive:neutral.compound.forms[1][3]
+   }:null;
+  }finally{latinCompleteAdjectives=originalAdjectives}
+
   c.value='greek1';c.dispatchEvent(new Event('change',{bubbles:true}));
   m.value='morphology';m.dispatchEvent(new Event('change',{bubbles:true}));
   const make=(label)=>{
@@ -91,6 +106,11 @@ async function inspect(page,filename){
  assert.equal(diagnostics.byGender.n[1][0],'brevia');
  assert.equal(diagnostics.byGender.f[1][3],'brevium');
  assert.equal(diagnostics.byGender.m[0][5],'brevi');
+ assert(diagnostics.agreement,'Falta un sustantivo neutro para comprobar concordancia');
+ assert(diagnostics.agreement.singularNominative.endsWith(' breve'),'Concordancia de neutro singular');
+ assert(diagnostics.agreement.singularGenitive.endsWith(' brevis'),'Concordancia en genitivo singular');
+ assert(diagnostics.agreement.pluralNominative.endsWith(' brevia'),'Concordancia de neutro plural en -ia');
+ assert(diagnostics.agreement.pluralGenitive.endsWith(' brevium'),'Concordancia en genitivo plural -ium');
  const greek=diagnostics.greek;
  assert.equal(greek.participle[2],false,'Participio antes de UD10');
  assert.equal(greek.participle[3],true,'Participio desde UD10');
