@@ -172,6 +172,28 @@ const server=http.createServer(async(req,res)=>{
   }));
   assert(preverbButtons.twoSlots===2&&!preverbButtons.nonexistent&&preverbButtons.inputs.every(Boolean)&&!preverbButtons.thirdInput,
    'El panel de modificación preverbial debe permitir modificar solo dos verbos');
+  // Las normas pertenecen a evolución fonética, no a latinismos.
+  const normsInPhonetics=await page.evaluate(()=>
+   document.querySelector('[data-lat1-phonetic-norms]')?.closest('[data-lex-part]')?.dataset.lexPart);
+  assert.equal(normsInPhonetics,'phonetics','Normas fonéticas mal colocadas entre latinismos');
+  const phoneticInput=page.locator('#lex-edit-phonetics-0');
+  const phoneticOriginal=await phoneticInput.inputValue();
+  assert(phoneticOriginal,'El editor de evolución debe mostrar la palabra sorteada');
+  const unrelatedBefore=await page.locator('#paper [data-lex-kind="latinisms"] i').allTextContents();
+  await phoneticInput.fill('forma_fonetica_manual');
+  assert.equal(await page.locator('#paper [data-lex-slot="phonetics:0"] i').textContent(),'forma_fonetica_manual',
+   'Editar el campo no cambia inmediatamente la vista previa');
+  assert.deepEqual(await page.locator('#paper [data-lex-kind="latinisms"] i').allTextContents(),unrelatedBefore,
+   'Editar una evolución ha regenerado otros apartados');
+  await page.locator('#paper [data-lex-slot="phonetics:0"] i').fill('forma_desde_vista');
+  assert.equal(await phoneticInput.inputValue(),'forma_desde_vista',
+   'La edición de la vista previa no vuelve al campo de texto');
+  const cachedPhonetic=await page.evaluate(()=>
+   examSelectionCache.get(examCacheSignature('lex-phonetics'))?.[0]?.prompt);
+  assert.equal(cachedPhonetic,'forma_desde_vista','La edición no queda guardada en la selección');
+  await phoneticInput.fill(phoneticOriginal);
+  assert.equal(await page.locator('#paper [data-lex-slot="phonetics:0"] i').textContent(),phoneticOriginal,
+   'No se ha recuperado la forma original en la vista previa');
   const morphExclusions=await page.evaluate(()=>{
     const forbidden=['Marcus, -i','Roma, -ae','romanus, -a, -um','graecus, -a, -um','Ἀθήνα','ῥωμαῖος'];
     const allowed=['puella, -ae','bonus, -a, -um','λύω'];
