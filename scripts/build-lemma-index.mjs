@@ -111,8 +111,21 @@ async function main(){
   }
   latinEditorialLemmaRekeys.set(decision.fromLemma,decision.toLemma);
  }
- for(const lang of ['lat','grc'])if(Object.keys(catalog[lang]).length!==manifest.languages[lang].vocabulary_lemmas)
-  throw Error('Inventario de lemas distinto del manifiesto: '+lang+' '+Object.keys(catalog[lang]).length);
+ // Fichas docentes nuevas aprobadas por el profesor: enunciado y glosa,
+ // nunca flexiones acreditadas por la mera inclusión en el vocabulario.
+ const editorialAdditions=latinEditorial.addedEntries||[];
+ for(const added of editorialAdditions){
+  if(added.course!=='lat1'||added.verifiedMorphology!==false||
+     head(added.entry)!==added.lemma||!Array.isArray(added.units)||
+     !added.units.length||catalog.lat[added.lemma])
+   throw Error('Nueva ficha editorial inválida o duplicada: '+added.id);
+  catalog.lat[added.lemma]={lat1:{entry:added.entry,units:added.units}};
+ }
+ for(const lang of ['lat','grc']){
+  const expected=manifest.languages[lang].vocabulary_lemmas+(lang==='lat'?editorialAdditions.length:0);
+  if(Object.keys(catalog[lang]).length!==expected)
+   throw Error('Inventario de lemas distinto del manifiesto: '+lang+' '+Object.keys(catalog[lang]).length+' != '+expected);
+ }
  // Las correcciones filológicas aprobadas NO proceden del índice externo fijado.
  // Aplicarlas en cada compilación preserva las elecciones sin falsear UniMorph
  // ni declarar contrastadas las nuevas flexiones. Validar siempre la fuente.
@@ -227,7 +240,7 @@ async function main(){
      typeof record.form!=='string'||!/^https:\/\//.test(record.reference)||
      !(/^(?:V;IMP;ACT;PRS;2;PL|V;PTCP;(?:ACT|PASS);PRF;(?:NOM|GEN|DAT|ACC|ABL|VOC);(?:SG|PL)(?:;(?:MASC|FEM|NEUT))?|N;(?:NOM|GEN|DAT|ACC|ABL|VOC);(?:SG|PL))$/.test(record.tags)))
    throw Error('Incidencia individual sin documentación o rasgos explícitos: '+record.lemma);
-  const k=record.lemma+'|'+norm(record.form);
+  const k=record.lemma+'|'+norm(record.form)+'|'+record.tags; // lecturas de caso distintas sí pueden coexistir
   if(verifiedSingleKeys.has(k))throw Error('Forma duplicada en la revisión individual: '+k);
   verifiedSingleKeys.add(k);
   externalReferences.push({lang:record.lang,lemma:record.lemma,form:record.form,
@@ -313,6 +326,7 @@ async function main(){
   count:latinEditorial.decisions.length,
   rekeyedLemmas:latinEditorialLemmaRekeys.size,
   verifiedFormsAdded:0,
+  newLexicalEntries:editorialAdditions.length,
   note:'Decisiones editoriales del profesor sin certificación morfológica.'
  };
  extensions.greek_editorial_decisions={
