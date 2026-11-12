@@ -9,7 +9,7 @@ En Latín I se sortea exclusivamente este repertorio específico, con cuatro pal
 Las leyes se activan por unidad y se pueden desmarcar dentro de las ya impartidas. Las normas que todavía no han sido explicadas no se pueden activar. Pruebas: `node scripts/test-lat1-fonetica.mjs`.
 
 
-El fichero [banco_examenes.json](./banco_examenes.json) contiene 513 candidatas para ejercicios: 330 iniciales, 100 de la primera ampliación, 30 de la segunda, 50 de la tercera y 3 de la revisión del Excel final, sin duplicación de identificadores.
+El fichero [banco_examenes.json](./banco_examenes.json) contiene 514 candidatas para ejercicios: 330 iniciales, 100 de la primera ampliación, 30 de la segunda, 50 de la tercera, 3 de la revisión del Excel final y 1 aceptación editorial, sin duplicación de identificadores.
 
 Esquema: evoluciones-latin-castellano/v1. Campos por ficha: id, latin, castellano, normas (N01–N20), observacion, fila_origen, fuente y estado.
 
