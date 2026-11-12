@@ -1,0 +1,164 @@
+'use strict';
+const assert=require('node:assert/strict');
+const fs=require('node:fs');
+const path=require('node:path');
+const {pathToFileURL}=require('node:url');
+const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
+
+function readStoredZipEntry(bytes,wanted){
+ let pos=0;
+ while(pos+30<=bytes.length&&bytes.readUInt32LE(pos)===0x04034b50){
+  const method=bytes.readUInt16LE(pos+8),size=bytes.readUInt32LE(pos+18);
+  const nameLength=bytes.readUInt16LE(pos+26),extraLength=bytes.readUInt16LE(pos+28);
+  const name=bytes.toString('utf8',pos+30,pos+30+nameLength);
+  const start=pos+30+nameLength+extraLength;
+  if(name===wanted){
+   assert.equal(method,0,'Word sin compresión inesperada');
+   return bytes.toString('utf8',start,start+size);
+  }
+  pos=start+size;
+ }
+ throw new Error('Falta '+wanted+' en Word');
+}
+
+(async()=>{
+ const browser=await chromium.launch({headless:true});
+ try{
+  for(const filename of ['index.html','offline.html']){
+   const context=await browser.newContext({viewport:{width:1300,height:940},acceptDownloads:true});
+   const page=await context.newPage(),errors=[];
+   page.on('pageerror',error=>errors.push(error.message));
+   await page.goto(pathToFileURL(path.resolve(__dirname,'..',filename)).href,{waitUntil:'load'});
+   await page.waitForFunction(()=>!!latin1PreverbCurriculum&&!!latin1PhoneticCurriculum&&
+    latinLexBanks.latin1.preverbs.length>0&&latinLexBanks.latin1.phonetics.length>0,null,{timeout:15000});
+   await page.evaluate(()=>{
+    const course=document.getElementById('course');
+    course.value='latin1';course.dispatchEvent(new Event('change',{bubbles:true}));
+    const model=document.getElementById('model');
+    model.value='tablas';model.dispatchEvent(new Event('change',{bubbles:true}));
+    document.querySelectorAll('.unit-choice').forEach(input=>{
+     input.checked=units[Number(input.value)]==='UD9–10';
+    });
+    examSelectionCache.clear();generate();
+    document.querySelector('#examQuestionMenus [data-question="lex"]').open=true;
+   });
+   await page.waitForFunction(()=>document.querySelectorAll('#paper [data-lex-slot^="preverbs:"]').length===2);
+   const initial=await page.evaluate(()=>{
+    const box=document.querySelector('#examQuestionMenus [data-question="lex"]');
+    const norms=box.querySelector('.lex-norms-accordion'),controls=[...norms.querySelectorAll('input[data-phonetic-code]')];
+    const words=[...document.querySelectorAll('#paper [data-lex-slot^="preverbs:"] i')].map(x=>x.textContent);
+    const inputs=[document.getElementById('lex-verb-0').value,document.getElementById('lex-verb-1').value];
+    return {normsCollapsed:!norms.open,normCount:controls.length,
+     words,inputs,sidebar:box.textContent,
+     next:latinLexPool('latin1','preverbs',selectedUnits()).find(x=>!words.includes(latinLexDisplayPrompt('preverbs',x)))?.prompt};
+   });
+   assert(initial.normsCollapsed,filename+': normas fonéticas deben empezar plegadas');
+   assert.equal(initial.normCount,20,filename+': deben conservarse las veinte casillas');
+   assert(initial.words.every(Boolean)&&initial.words.every((x,i)=>x===initial.inputs[i]),
+    filename+': verbos aleatorios deben constar por escrito en menú y vista previa');
+   assert(initial.next,'No hay verbo alternativo en UD9–10');
+   for(const phrase of ['73 étimos','fichas disponibles','Las correspondencias pendientes',
+    'Solo se sortean verbos ya explicados','La opción UD9–10 abarca']){
+    assert(!initial.sidebar.includes(phrase),filename+': permanece explicación '+phrase);
+   }
+   const before=await page.evaluate(()=>{
+    const kinds=['preverbs','phonetics','prefixes','latinisms'];
+    window.__lexBeforeRefs=Object.fromEntries(kinds.map(kind=>
+     [kind,examSelectionCache.get(examCacheSignature('lex-'+kind))]));
+    return kinds.map(kind=>({kind,
+     words:(examSelectionCache.get(examCacheSignature('lex-'+kind))||[]).map(x=>x.prompt)}));
+   });
+   const first=page.locator('#lex-verb-0');
+   await first.fill(initial.next);
+   const typed=await page.evaluate(()=>{
+    const state=examSelectionCache.get(examCacheSignature('lex-preverbs'));
+    return {words:state.map(x=>x.prompt),
+     editor:[document.getElementById('lex-verb-0').value,document.getElementById('lex-verb-1').value],
+     preview:[...document.querySelectorAll('#paper [data-lex-slot^="preverbs:"] i')].map(x=>x.textContent),
+     noOtherChanges:['phonetics','prefixes','latinisms'].every(kind=>
+      examSelectionCache.get(examCacheSignature('lex-'+kind))===window.__lexBeforeRefs[kind])};
+   });
+   assert.equal(typed.words[0],initial.next.toLowerCase(),filename+': editar debe reemplazar el primer verbo');
+   assert.equal(typed.words[1],initial.words[1],filename+': editar no debe tocar el segundo verbo');
+   assert.deepEqual(typed.preview,typed.words,filename+': vista previa no refleja entrada del menú');
+   assert.deepEqual(typed.editor,typed.words,filename+': menú y estado no coinciden');
+   assert(typed.noOtherChanges,filename+': editar verbo regeneró otro apartado');
+
+   // Edición inversa: modificar directamente la previsualización debe sincronizar el campo lateral.
+   const second=await page.evaluate(()=>{
+    const current=examSelectionCache.get(examCacheSignature('lex-preverbs'));
+    const chosen=latinLexPool('latin1','preverbs',selectedUnits())
+     .find(x=>!current.some(row=>normLex(row.prompt)===normLex(x.prompt)));
+    if(!chosen)throw Error('No hay tercer verbo para probar la vista previa');
+    const node=document.querySelector('#paper [data-lex-slot="preverbs:1"] i');
+    node.textContent=chosen.prompt;
+    node.dispatchEvent(new InputEvent('input',{bubbles:true}));
+    return {chosen:chosen.prompt,editor:document.getElementById('lex-verb-1').value,
+     words:examSelectionCache.get(examCacheSignature('lex-preverbs')).map(x=>x.prompt)};
+   });
+   assert.equal(second.editor,second.chosen.toLowerCase(),filename+': vista previa no sincroniza el campo lateral');
+   assert.equal(second.words[0],typed.words[0],filename+': edición de segundo verbo afectó al primero');
+   assert.equal(second.words[1],second.chosen.toLowerCase());
+   // El Word debe exportar el texto final del ejercicio, no una selección antigua.
+   const downloadPromise=page.waitForEvent('download');
+   await page.evaluate(()=>exportWord(false));
+   const download=await downloadPromise;
+   const xml=readStoredZipEntry(fs.readFileSync(await download.path()),'word/document.xml');
+   assert(xml.includes(typed.words[0])&&xml.includes(second.words[1]),
+    filename+': el Word no refleja los verbos editados');
+
+   // Regenerar una sola forma respeta las demás, incluso en apartados distintos.
+   const regeneration=await page.evaluate(()=>{
+    const old=examSelectionCache.get(examCacheSignature('lex-preverbs')).map(x=>x.prompt);
+    regenerateLatinLexWord('preverbs',0);
+    const next=examSelectionCache.get(examCacheSignature('lex-preverbs')).map(x=>x.prompt);
+    return {old,next,shown:[...document.querySelectorAll('#paper [data-lex-slot^="preverbs:"] i')].map(x=>x.textContent),
+     editor:[document.getElementById('lex-verb-0').value,document.getElementById('lex-verb-1').value],
+     othersUnchanged:['phonetics','prefixes','latinisms'].every(kind=>
+      examSelectionCache.get(examCacheSignature('lex-'+kind))===window.__lexBeforeRefs[kind])};
+   });
+   assert.notEqual(regeneration.next[0],regeneration.old[0],filename+': el botón individual no regeneró el verbo');
+   assert.equal(regeneration.next[1],regeneration.old[1],filename+': el botón individual modificó el otro verbo');
+   assert.deepEqual(regeneration.shown,regeneration.next);
+   assert.deepEqual(regeneration.editor,regeneration.next);
+   assert(regeneration.othersUnchanged,filename+': regenerar un verbo tocó otra pregunta');
+
+   // Los filtros de fonética siguen activos, pero ya no invalidan los verbos.
+   const rules=await page.evaluate(()=>{
+    const norms=document.querySelector('.lex-norms-accordion');
+    norms.open=true;
+    const inputs=[...norms.querySelectorAll('input[data-phonetic-code]')];
+    const editable=inputs.find(input=>!input.disabled);
+    const old=examSelectionCache.get(examCacheSignature('lex-preverbs'));
+    const state=editable.checked;
+    editable.checked=!state;editable.dispatchEvent(new Event('change',{bubbles:true}));
+    return {open:norms.open,n:inputs.length,changed:editable.checked!==state,
+     preverbStable:examSelectionCache.get(examCacheSignature('lex-preverbs'))===old,
+     preverbText:[...document.querySelectorAll('#paper [data-lex-slot^="preverbs:"] i')].map(x=>x.textContent)};
+   });
+   assert(rules.open&&rules.changed&&rules.n===20);
+   assert(rules.preverbStable,filename+': seleccionar una norma no debe regenerar verbos');
+   assert.deepEqual(rules.preverbText,regeneration.next);
+
+   await page.evaluate(()=>{
+    const course=document.getElementById('course');
+    course.value='latin4';course.dispatchEvent(new Event('change',{bubbles:true}));
+    const model=document.getElementById('model');
+    model.value='tablas';model.dispatchEvent(new Event('change',{bubbles:true}));
+   });
+   const lat4=await page.evaluate(()=>({
+    text:document.querySelector('#examQuestionMenus [data-question="lex"]')?.textContent||'',
+    norms:document.querySelector('#examQuestionMenus .lex-norms-accordion')
+   }));
+   assert(!lat4.text.includes('fichas disponibles')&&!lat4.text.includes('Latín 4.º: los ejercicios'),
+    filename+': subtítulos descriptivos en Latín 4.º');
+   assert(!lat4.norms,filename+': normas de Latín I en menú de Latín 4.º');
+
+   await page.setViewportSize({width:390,height:844});
+   assert(await page.locator('#paper').isVisible(),filename+': vista previa móvil oculta');
+   assert.deepEqual(errors,[],filename+': errores JS en navegador');
+   await context.close();
+  }
+  console.log('OK: menús léxicos, normas desplegables, edición bidireccional, Word y regeneración individual (online y offline).');
+ }finally{await browser.close()}
+})().catch(error=>{console.error(error);process.exitCode=1});
