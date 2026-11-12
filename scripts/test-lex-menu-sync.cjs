@@ -42,11 +42,31 @@ function readStoredZipEntry(bytes,wanted){
  try{
   for(const filename of ['index.html','offline.html']){
    const context=await browser.newContext({viewport:{width:1300,height:940},acceptDownloads:true});
+   await context.addInitScript(()=>{
+    localStorage.setItem('examina_lexical_banks_v1',JSON.stringify({
+     latin1:{phonetics:[{id:'LAT1-FON-001',prompt:'terram',answer:''}]},
+     latin4:{phonetics:[{id:'EVF-0001',prompt:'terram',answer:''}]}
+    }));
+   });
    const page=await context.newPage(),errors=[];
    page.on('pageerror',error=>errors.push(error.message));
    await page.goto('http://127.0.0.1:'+server.address().port+'/'+filename,{waitUntil:'load'});
    await page.waitForFunction(()=>!!latin1PreverbCurriculum&&!!latin1PhoneticCurriculum&&
     latinLexBanks.latin1.preverbs.length>0&&latinLexBanks.latin1.phonetics.length>0,null,{timeout:15000});
+   // La carga real, online y offline, debe conservar el banco global tras leer el programa de UD.
+   const bankLoaded=await page.evaluate(()=>({
+    latin1:latinLexBanks.latin1.phonetics.length,
+    latin4:latinLexBanks.latin4.phonetics.length,
+    pelliculam:latinLexBanks.latin1.phonetics.some(x=>x.latin==='pelliculam'),
+    inde:latinLexBanks.latin1.phonetics.some(x=>x.latin==='inde'),
+    pirum:latinLexBanks.latin1.phonetics.some(x=>x.latin==='pirum'),
+    distinct:new Set(latinLexBanks.latin1.phonetics.map(x=>normLex(x.latin||x.prompt))).size
+   }));
+   assert.equal(bankLoaded.latin1,527,filename+': el programa ha sustituido las fichas generales o la caché antigua sigue activa');
+   assert.equal(bankLoaded.latin4,514,filename+': falta el banco general de Latín 4.º');
+   assert(bankLoaded.pelliculam&&!bankLoaded.inde&&!bankLoaded.pirum,
+    filename+': decisiones editoriales de fonética no respetadas');
+   assert.equal(bankLoaded.distinct,bankLoaded.latin1,filename+': étimos duplicados en el sorteo');
    await page.evaluate(()=>{
     const course=document.getElementById('course');
     course.value='latin1';course.dispatchEvent(new Event('change',{bubbles:true}));

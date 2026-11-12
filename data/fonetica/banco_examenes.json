@@ -1,8 +1,8 @@
 {
   "esquema": "evoluciones-latin-castellano/v1",
   "revision": "2026-11-12",
-  "origen": "Banco docente de evoluciones fonéticas: 510 candidatas previas y lote 11 con 3 fichas nuevas revisadas contra el Excel final.",
-  "criterio": "513 candidatas a examen (APTO_PROPUESTO); preselección didáctica, no certificación lexicográfica definitiva.",
+  "origen": "Banco docente de evoluciones fonéticas, con ampliaciones y decisiones editoriales documentadas.",
+  "criterio": "514 candidatas APTO_PROPUESTO; solo formas revisadas y reglas expresas, excluidas inde y pirum por decisión docente.",
   "idioma_origen": "la",
   "idioma_destino": "es",
   "normas": [
@@ -6714,6 +6714,22 @@
       "fuente": "Excel docente: banco_evolucion_fonetica_final_10_lotes.xlsx, fila 447",
       "estado": "APTO_PROPUESTO",
       "lote": 11
+    },
+    {
+      "id": "EVF-1061",
+      "latin": "pelliculam",
+      "castellano": "pelleja",
+      "normas": [
+        "N01",
+        "N13",
+        "N16",
+        "N20"
+      ],
+      "observacion": "Del lat. pĕllĭcŭlam > pelleja (piel separada del cuerpo). Se indica resultado patrimonial, no el cultismo película; comprende abertura vocálica, síncopa, palatalización y evolución del grupo -cul-. Decisión docente: incorporar.",
+      "fuente": "https://ghcl.ub.edu/diccaxv/dictionary/ViewLema/15830",
+      "estado": "APTO_PROPUESTO",
+      "lote": 12,
+      "revision_docente": "aceptar"
     }
   ],
   "ampliacion": {
@@ -6820,6 +6836,11 @@
       "cantidad": 3,
       "origen": "Excel docente final de 1058 formas",
       "criterio": "Revisión individual de formas no presentes en el banco"
+    },
+    "lote_12": {
+      "fecha": "2026-11-12",
+      "cantidad": 1,
+      "decisiones": "pelliculam incorporar; inde y pirum excluir"
     }
   }
 }

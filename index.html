@@ -2926,7 +2926,8 @@ function readLatinLexBanks(){
   const saved=JSON.parse(localStorage.getItem(LATIN_LEX_STORAGE)||'null');
   for(const course of Object.keys(empty))for(const kind of latinLexModules[course]){
    const arr=saved?.[course]?.[kind];
-   if(Array.isArray(arr))empty[course][kind]=arr.filter(x=>x&&typeof x.prompt==='string'&&typeof x.answer==='string');
+   // El repertorio fonético lo determina exclusivamente el banco distribuido con esta versión.
+   if(kind!=='phonetics'&&Array.isArray(arr))empty[course][kind]=arr.filter(x=>x&&typeof x.prompt==='string'&&typeof x.answer==='string');
   }
  }catch(error){}
  return empty;
@@ -2960,8 +2961,12 @@ async function loadTeacherLatinLexBanks(){
    const parsed=parseLatin1PhoneticCurriculum(data);
    if(parsed){
     latin1PhoneticCurriculum=parsed;
-    // El programa fija las normas por unidad, pero sus étimos no sustituyen el banco general.
-    latinLexBanks.latin1.phonetics=parsed.rows;
+    // El programa fija las normas por unidad: sus étimos se añaden sin sustituir el banco general.
+    const byForm=new Map(latinLexBanks.latin1.phonetics.map(row=>[normLex(row.latin||row.prompt),row]));
+    for(const row of parsed.rows){
+     if(row.estado==='APTO_PROPUESTO'&&!byForm.has(normLex(row.latin)))byForm.set(normLex(row.latin),row);
+    }
+    latinLexBanks.latin1.phonetics=[...byForm.values()];
     loaded++;
    }
    continue;
@@ -3000,7 +3005,13 @@ async function loadTeacherLatinLexBanks(){
    const key=x=>kind==='latinisms'?String(x.number):
     kind==='phonetics'?x.id||x.prompt:x.prompt+'|'+(x.enunciado||x.prefix||'');
    for(const x of verified)merged.set(key(x),x);
-   for(const x of old)merged.set(key(x),x);
+   // Las entradas antiguas locales no pueden reemplazar las fichas fonéticas de la publicación.
+   if(kind!=='phonetics')for(const x of old)merged.set(key(x),x);
+   if(kind==='phonetics'&&course==='latin1'){
+    for(const x of old.filter(x=>x.id?.startsWith('LAT1-FON-')&&x.estado==='APTO_PROPUESTO')){
+     if(![...merged.values()].some(row=>normLex(row.latin||row.prompt)===normLex(x.latin||x.prompt)))merged.set(x.id,x);
+    }
+   }
    latinLexBanks[course][kind]=[...merged.values()];
   }
   loaded++;
@@ -3013,6 +3024,10 @@ async function loadTeacherLatinLexBanks(){
   phonetics:latinLexBanks.latin1.phonetics.length
  };
  if(loaded){
+  // Una generación provisional no debe conservar en caché un subconjunto antiguo.
+  examSelectionCache.forEach((value,key)=>{
+   try{if(JSON.parse(key)[4]==='lex-phonetics')examSelectionCache.delete(key)}catch(error){}
+  });
   const safePreview=$('paper').innerHTML===window.examinaLastLatinPreview;
   syncExamModelControls();
   document.dispatchEvent(new Event('examina-lex-ready'));
