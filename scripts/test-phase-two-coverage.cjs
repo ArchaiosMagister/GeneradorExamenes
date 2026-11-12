@@ -163,6 +163,17 @@ async function audit(page,filename){
    fail(/<span class="exam-paradigm-indicator">/.test(html),
     'Indicador irregular/mixto en cursiva para '+label);
   }
+  // Un examen con dos tiempos del mismo verbo debe expresar en cada columna
+  // qué tiempo y qué voz se conjugan, también en los presentes activos.
+  const greekPresent=greekVerifiedCorpus.find(x=>x.id==='v-λυω');
+  const greekFuture=greekVerifiedCorpus.find(x=>x.id==='v-school-λυω-futuro-activa');
+  if(greekPresent&&greekFuture){
+   const headings=greekVerbTable([greekPresent,greekFuture]);
+   fail(headings.includes('presente de indicativo, voz activa'),
+    'Conjugación griega sin indicación de presente activo');
+   fail(headings.includes('futuro de indicativo, voz activa'),
+    'Conjugación griega sin indicación de futuro activo');
+  }
   const eimi=greekVerifiedCorpus.find(x=>x.id==='v-school-ειμι-presente-activa');
   fail(!!eimi,'Falta εἰμί en Griego I');
   const lyso=greekVerifiedCorpus.find(x=>x.id==='v-school-λυω-futuro-activa');
