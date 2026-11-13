@@ -2792,9 +2792,9 @@ const greekArticles={
 function greekAvailableSyntagmAdjectives(limit){
  if(limit<5)return [];
  return greekCompleteAdjectives.filter(item=>{
-  // ἐχθρός: enunciado 2-1-2 aprobado, pero todavía faltan 10 cotejos
-  // individuales femeninos. No generar sintagmas hasta su aprobación.
-  if(item.lemma==='ἐχθρός')return false;
+  // ἐχθρός: diez flexiones femeninas cotejadas en fuente 5 (UD5).
+  // En sintagmas el sustantivo y el artículo proporcionan el contexto;
+  // ello no convierte sus lecturas sincréticas en respuestas únicas.
   const found=greekSharedBank.lookup(item.lemma);
   if(!found||!found.entry||isExcludedExamMorphLemma(found.entry,found.meaning))return false;
   const head=properNounKey(found.entry);
