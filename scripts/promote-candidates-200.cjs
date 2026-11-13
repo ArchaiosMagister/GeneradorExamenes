@@ -160,6 +160,14 @@ docs+='\n## Lote de 200 candidaturas latinas y griegas · 13/11/2026\n\n'+
  'Se incorporan 100 análisis latinos (accipio 18, facio 18, duco 18, careo 12, disco 12, dux 11 y obses 11) y 100 griegos (ἀγαθός 30, δίκαιος 30, θάλαττα 10, ξύλον 10, πενία 10 y πόλεμος 10). Todas sus unidades provienen de las entradas docentes existentes; no se inventan unidades ni se amplían paradigmas por analogía. Cada lectura posee su ficha individual en data/lemmas/revision-candidaturas-lote200-20261113.json, con enlace al paradigma de referencia.\n\n'+
  'Las coincidencias entre casos y géneros de sustantivos y adjetivos siguen registradas como análisis distintos. No constituyen respuestas unívocas de un ejercicio aislado sin contexto. El indicativo latino incorpora sólo los tiempos contrastados. El infectum pasivo de facio continúa excluido por corresponder a fio. Se mantienen el banco externo, el requisito de pruebas y la ausencia de despliegue.\n\n'+
  'El índice conserva ahora **3244 candidaturas latinas y 859 griegas** sin contraste individual. El total en fuente 5 aumenta en 200 análisis. La version offline debe actualizarse junto al índice y superar el control de igualdad antes de guardar el commit.\n';
+const workflowPath='.github/workflows/offline-check.yml';
+let workflow=read(workflowPath);
+workflow=once(workflow,"      - name: Contrastar el nuevo lote de cien candidaturas sin promoción automática\n        run: node scripts/test-candidaturas-lote100.cjs",
+ "      - name: Comprobar la transferencia del lote anterior de cien\n        run: node scripts/test-candidaturas-lote100.cjs\n      - name: Verificar el nuevo lote de cien latinas y cien griegas en fuente persistente\n        run: node scripts/test-candidaturas-lote200.cjs",
+ 'CI de análisis morfológico por lotes');
+workflow=once(workflow,'Inventariar exhaustivamente las 4403 fichas candidatas sin promoverlas',
+ 'Auditar las 4103 candidaturas todavía pendientes sin promoverlas','Título del inventario');
+audit=once(audit,'4303 propuestas restantes','4103 propuestas restantes','Texto del inventario');
 writeJson(sourcePath,source,true);
 writeJson(bankPath,bank);
 writeJson(ledgerPath,ledger,true);
@@ -168,4 +176,5 @@ write(builderPath,builder);
 write('scripts/test-comprehensive-morph-audit.cjs',audit);
 write('scripts/test-latin-verb-evidence.cjs',verbs);
 write('docs/revision-filologica-integral-20261113.md',docs);
+write(workflowPath,workflow);
 console.log('LOTE200_MIGRADO_LOCALMENTE '+JSON.stringify({latin:100,greek:100,remaining:{latin:3244,greek:859}}));
