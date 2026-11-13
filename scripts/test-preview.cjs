@@ -197,6 +197,34 @@ async function checkFile(browser,filename){
   assert(result.pronouns.includes(5)&&result.pronouns.includes(3));
  }
  for(const result of curricular[3])assert(result.pronouns.includes(6));
+ const coverage=await page.evaluate(()=>{
+  const configure=(course,model)=>{
+   $('course').value=course;$('course').dispatchEvent(new Event('change',{bubbles:true}));
+   $('model').value=model;$('model').dispatchEvent(new Event('change',{bubbles:true}));
+  };
+  const gaps=[];
+  for(const model of ['tablas','mixto']){
+   configure('latin1',model);
+   for(const unit of units.filter(x=>examUnitNumber(x)>0)){
+    document.querySelectorAll('.unit-choice').forEach(el=>el.checked=units[Number(el.value)]===unit);
+    const chosen=selectedUnits(),pool=latinExamFormCandidates(chosen,true).flat();
+    const priorities=latinFormPriorities(chosen).filter(matches=>pool.some(matches));
+    const rows=latinExamForms(chosen,6);
+    if(!priorities.every(matches=>rows.some(matches)))gaps.push('Latín I '+model+' '+unit);
+   }
+  }
+  configure('greek1','complete');
+  for(const kind of ['declension','conjugation','forms','pronouns','etymology']){
+   for(const {unit} of GREEK_I_SYLLABUS){
+    const pool=greekVerifiedCorpus.filter(x=>x.kind===kind&&greekMorphologyEligible(x,unit));
+    if(!pool.some(x=>x.minUnit===unit))continue;
+    const rows=greekSelect(pool,[unit],{[kind]:2}).items;
+    if(!rows.some(x=>x.minUnit===unit)||rows.some(x=>x.minUnit>unit))gaps.push('Griego I '+kind+' UD'+unit);
+   }
+  }
+  return gaps;
+ });
+ assert.deepEqual(coverage,[],filename+': cobertura curricular en los modelos que comparten el sorteo');
  // Prueba real: el cuadro de análisis verbal debe mostrar enunciados y
  // tener formas pasivas a partir de UD3, respetando los umbrales curriculares.
  const latinVerbMorphology=await page.evaluate(()=>{
