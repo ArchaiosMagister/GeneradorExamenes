@@ -388,7 +388,21 @@ async function checkFile(browser,filename){
   if(course==='greek1'&&model==='complete'){
    const groups=await page.evaluate(()=>greekVerifiedCorpus.filter(x=>x.kind==='declension')
     .map(x=>greekCompleteNominalGroup(x)).filter(Boolean));
-   assert.equal(groups.length,10,filename+': faltan las diez bases griegas verificadas');
+   assert.equal(groups.length,13,filename+': faltan las trece bases griegas verificadas');
+   const ud1=await page.evaluate(()=>{
+    const declensions=greekVerifiedCorpus.filter(x=>x.kind==='declension');
+    const chrono=declensions.find(x=>x.id==='n-χρονος');
+    return {
+     before:greekMorphologyEligible(chrono,0),
+     ids:declensions.filter(x=>greekMorphologyEligible(x,1)).map(x=>x.id).sort(),
+     syncretism:chrono.table.rows.filter(row=>row[2]==='χρόνοι').map(row=>row[0]),
+     isolated:greekVerifiedCorpus.some(x=>x.kind==='forms'&&x.prompt==='χρόνοι')
+    };
+   });
+   assert.equal(ud1.before,false);
+   assert.deepEqual(ud1.ids,['αδελφος','ανθρωπος','λογος','στρατηγος','φιλοσοφος','χρονος'].map(x=>'n-'+x).sort());
+   assert.deepEqual(ud1.syncretism,['nominativo','vocativo']);
+   assert.equal(ud1.isolated,false);
    assert(groups.every(g=>/^(?:ὁ|ἡ|τὸ)\s+\S+\s+\S+$/u.test(g.title)),
     filename+': se ha usado un orden predicativo en vez del atributivo');
    assert(groups.every(g=>g.rows.length===5&&g.rows.every(r=>r[1].length===2&&r[1].every(v=>v.trim().split(/\s+/).length>=2))),

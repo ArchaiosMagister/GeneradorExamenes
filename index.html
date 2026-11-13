@@ -2678,8 +2678,19 @@ const greekSharedBank=(()=>{
  return {entries,lookup:lemma=>entries.get(greekBankKey(lemma))};
 })();
 
-// Only morphology already explicitly represented in v19 is used for full tables.
-const greekNounUnits={λογος:1,ανθρωπος:1,δωρον:2,εργον:2,αγορα:3,χωρα:3,θαλαττα:3,νεανιας:3,παιδεια:3,αδελφος:1};
+// El umbral de flexión pertenece al paradigma, con independencia del vocabulario exigible.
+const greekSecondDeclensionMasculine={unit:1,keys:new Set(['λογος','ανθρωπος','αδελφος','χρονος','φιλοσοφος','στρατηγος'])};
+// Paradigmas cotejados en la PR #106. Las celdas de nominativo y vocativo
+// plural se conservan aunque compartan grafía.
+Object.assign(greekNounData,{
+ χρονος:['χρόνος','χρόνου','χρόνῳ','χρόνον','χρόνε','χρόνοι','χρόνων','χρόνοις','χρόνους','χρόνοι'],
+ φιλοσοφος:['φιλόσοφος','φιλοσόφου','φιλοσόφῳ','φιλόσοφον','φιλόσοφε','φιλόσοφοι','φιλοσόφων','φιλοσόφοις','φιλοσόφους','φιλόσοφοι'],
+ στρατηγος:['στρατηγός','στρατηγοῦ','στρατηγῷ','στρατηγόν','στρατηγέ','στρατηγοί','στρατηγῶν','στρατηγοῖς','στρατηγούς','στρατηγοί']
+});
+const greekNounUnits={δωρον:2,εργον:2,αγορα:3,χωρα:3,θαλαττα:3,νεανιας:3,παιδεια:3};
+function greekNounUnit(key){
+ return greekSecondDeclensionMasculine.keys.has(key)?greekSecondDeclensionMasculine.unit:greekNounUnits[key];
+}
 const greekVerbUnits={λυω:2,παιδευω:2,πεμπω:2};
 Object.assign(greekVerbData,{
  ακουω:['ἀκούω','ἀκούεις','ἀκούει','ἀκούομεν','ἀκούετε','ἀκούουσι(ν)'],
@@ -2709,7 +2720,7 @@ const greekExplicitVerbEvidence={"βουλομαι":{"forms":["βούλομαι"
 function greekCorpus(){
  const items=[];
  const add=(kind,id,minUnit,contentUnits,prompt,answer,lemmas=[],table=null)=>items.push({kind,id,minUnit,contentUnits,prompt,answer,lemmas,table,verified:true});
- for(const [key,forms] of Object.entries(greekNounData)){const u=greekNounUnits[key];if(u===undefined)continue;const lemma=greekLemma(forms[0]);add('declension','n-'+key,u,[u],'Declina '+lemma.entry,greekCaseLabels.map((l,i)=>l+': '+forms[i]).join('; '),[lemma.entry],{headers:['Caso','Singular','Plural'],rows:[0,4,3,1,2].map(i=>[greekCaseLabels[i].split(' ')[0],forms[i],forms[i+5]])})}
+ for(const [key,forms] of Object.entries(greekNounData)){const u=greekNounUnit(key);if(u===undefined)continue;const lemma=greekLemma(forms[0]);add('declension','n-'+key,u,[u],'Declina '+lemma.entry,greekCaseLabels.map((l,i)=>l+': '+forms[i]).join('; '),[lemma.entry],{headers:['Caso','Singular','Plural'],rows:[0,4,3,1,2].map(i=>[greekCaseLabels[i].split(' ')[0],forms[i],forms[i+5]])})}
  for(const [key,forms] of Object.entries(greekVerbData)){const u=greekVerbUnits[key];if(u===undefined)continue;const lemma=greekLemma(forms[0]);add('conjugation','v-'+key,u,[u],'Conjuga '+lemma.entry+' en presente de indicativo activo.',greekPersonLabels.map((l,i)=>l+': '+forms[i]).join('; '),[lemma.entry],{headers:['Persona','Singular','Plural'],rows:[0,1,2].map(i=>[(i+1)+'.ª',forms[i],forms[i+3]])})}
  // Paradigmas explícitos: medio deponente desde UD6 y aoristo segundo desde UD12.
  // No inferir otros tiempos. El sincretismo ἦλθον se explica completo.
@@ -2780,8 +2791,8 @@ const greekCompleteAdjectives=[
  {lemma:'δίκαιος',feminine:'α',accent:'dikaios'}
 ];
 const greekSyntagmNounGenders={
- λογος:'m',ανθρωπος:'m',δωρον:'n',εργον:'n',αγορα:'f',χωρα:'f',
- θαλαττα:'f',νεανιας:'m',παιδεια:'f',αδελφος:'m'
+ ...Object.fromEntries([...greekSecondDeclensionMasculine.keys].map(key=>[key,'m'])),
+ δωρον:'n',εργον:'n',αγορα:'f',χωρα:'f',θαλαττα:'f',νεανιας:'m',παιδεια:'f'
 };
 const greekArticles={
  m:[['ὁ','','τὸν','τοῦ','τῷ'],['οἱ','','τοὺς','τῶν','τοῖς']],
@@ -2902,8 +2913,8 @@ function greekCompleteNominalGroup(item,forMorphology=false,preferred=null){
 }
 function greekTable(item,answers=false){
  const va=$('lang').value==='va',verb=item.kind==='conjugation';
- const articles={λογος:'ὁ',ανθρωπος:'ὁ',δωρον:'τὸ',εργον:'τὸ',αγορα:'ἡ',χωρα:'ἡ',θαλαττα:'ἡ',νεανιας:'ὁ',παιδεια:'ἡ',αδελφος:'ὁ'};
- const lemma=item.lemmas[0],article=articles[item.id.slice(2)]||'';
+ const gender=greekSyntagmNounGenders[item.id.slice(2)];
+ const lemma=item.lemmas[0],article=greekArticles[gender]?.[0][0]||'';
  const compound=!verb?greekCompleteNominalGroup(item):null;
  const title=compound?.title||(verb?headLex(lemma):(article?article+' ':'')+lemma);
  const tableRows=compound?compound.rows.map(row=>[row[0],...row[1]]):item.table.rows;
