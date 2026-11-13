@@ -2393,6 +2393,8 @@ function snapshotExam(){return {
  schema:'examina-exam-draft',version:1,course:currentCourse(),model:$('model').value,
  language:$('lang').value,created:new Date().toISOString(),title:$('name').value,
  html:$('paper').innerHTML,
+ // El número de oraciones es parte del borrador, no solo su HTML visible.
+ sentenceCount:countFor('sent'),
  scores:window.ExaminaScoring?.snapshot?.()||null,
  units:[...document.querySelectorAll('#unitChoices .unit-choice:checked')].map(el=>units[Number(el.value)]).filter(Boolean),
  cumulative:$('cumulative')?.checked===true
@@ -2427,10 +2429,16 @@ function restoreDraft(d){
   control?.dispatchEvent(new Event('change',{bubbles:true}));
  }
  if(typeof d.cumulative==='boolean')$('cumulative').checked=d.cumulative;
+ if(Number.isInteger(d.sentenceCount)&&d.sentenceCount>=1&&d.sentenceCount<=15)
+  $('count-sent').value=String(d.sentenceCount);
  $('paper').innerHTML=cleanDraftHtml(d.html);
  if(typeof d.title==='string')$('name').value=d.title;
  const restoredSlots=[...$('paper').querySelectorAll('[data-sentence-slot]')];
- if(restoredSlots.length){saveSentenceLines(restoredSlots.map(node=>node.textContent));syncSentenceEditor()}
+ if(restoredSlots.length){
+  // También para borradores antiguos, la cantidad real de huecos manda.
+  if(restoredSlots.length<=15)$('count-sent').value=String(restoredSlots.length);
+  saveSentenceLines(restoredSlots.map(node=>node.textContent));syncSentenceEditor();
+ }
  $('paper').setAttribute('contenteditable','true');$('paper').setAttribute('spellcheck','false');
  // Los WeakMap de edición no sobreviven a innerHTML: regenerar enlaces
  // de edición, pero no las preguntas ni sus valores.
@@ -3207,6 +3215,8 @@ $('count-sent').onchange=()=>{
  if(!list)return;
  list.outerHTML=sentenceList(countFor('sent'),sentenceLines(),currentCourse()==='greek1');
  refreshSentenceGlossary();
+ // La puntuación fija de oraciones cambia con la cantidad de huecos.
+ window.ExaminaScoring?.sync?.();
 };
 applySentenceGap();
  $('count-forms').onchange=generate;

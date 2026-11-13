@@ -190,6 +190,8 @@ jobs:
         run: node scripts/test-question-part-regeneration.cjs
       - name: Fase III - regeneración aislada de preguntas de Griego I
         run: node scripts/test-greek-question-regeneration.cjs
+      - name: Fase III - preservar huecos y puntuar una unidad por oración
+        run: node scripts/test-sentence-points-and-drafts.cjs
       - name: Probar las vistas previas de todos los modelos
         run: node scripts/test-preview.cjs
       - name: Guardar Word con puntuaciones de examen para inspección
