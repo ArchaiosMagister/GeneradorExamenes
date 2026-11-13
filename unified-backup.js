@@ -78,14 +78,18 @@
   return data;
  }
  function mergeArray(current,incoming){
-  const out=current.slice(), ids=new Set(current.map(x=>x.course+'|'+x.unit+'|'+(x.key||x.entry)));
-  let added=0,duplicate=0;
+  const out=current.slice(),known=new Map(current.map(x=>[x.course+'|'+x.unit+'|'+(x.key||x.entry),x]));
+  const conflicts=[];let added=0,duplicate=0;
   for(const item of incoming){
    const id=item.course+'|'+item.unit+'|'+(item.key||item.entry);
-   if(ids.has(id)){duplicate++;continue}
-   out.push(item);ids.add(id);added++;
+   if(known.has(id)){
+    if(json(known.get(id))===json(item))duplicate++;
+    else conflicts.push(item);
+    continue;
+   }
+   out.push(item);known.set(id,item);added++;
   }
-  return {value:out,added,duplicate,conflict:null};
+  return {value:out,added,duplicate,conflict:conflicts.length?conflicts:null,conflicts:conflicts.length};
  }
  function mergeMap(current,incoming){
   const out=Object.assign(Object.create(null),current),conflict=Object.create(null);
