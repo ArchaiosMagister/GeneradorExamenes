@@ -151,3 +151,11 @@ Se incorporan 100 análisis latinos (accipio 18, facio 18, duco 18, careo 12, di
 Las coincidencias entre casos y géneros de sustantivos y adjetivos siguen registradas como análisis distintos. No constituyen respuestas unívocas de un ejercicio aislado sin contexto. El indicativo latino incorpora sólo los tiempos contrastados. El infectum pasivo de facio continúa excluido por corresponder a fio. Se mantienen el banco externo, el requisito de pruebas y la ausencia de despliegue.
 
 El índice conserva ahora **3244 candidaturas latinas y 859 griegas** sin contraste individual. El total en fuente 5 aumenta en 200 análisis. La version offline debe actualizarse junto al índice y superar el control de igualdad antes de guardar el commit.
+
+## Lote griego de 300 lecturas en 42 lemas (13/11/2026)
+
+Se trasladan 300 casillas de fuente 4 (candidata) a fuente 5 (contrastada). Cada casilla conserva lema, caso, número, género, fuente y unidades del programa docente. Las grafías escolares eliminan solamente las marcas editorialmente añadidas de cantidad vocálica (macron y breve); acentos, espíritus e iota suscrita se mantienen. En los ejercicios de análisis aislado no se fuerza ninguna lectura unívoca sin contexto. Se sincronizan fuente persistente, índice y versión autónoma. El banco externo no cambia.
+
+Cuarentena filológica: no se promueven las candidaturas de πρῶτος por discrepancias acentuales (πρωτά frente a πρῶτα); se excluyen las formas femeninas del extracto de ἀθάνατος y ἐχθρός cuando el enunciado docente es de dos terminaciones; αἰσχρός conserva pendiente la política de variantes y κεφαλῆ requiere corregir el lema. Las incidencias se documentan en el registro del lote, sin incorporarlas como soluciones.
+
+Balance: Latín 619 verificadas / 3244 candidaturas; Griego 464 verificadas / 559 candidaturas. Rama de revisión únicamente; no publicar ni modificar main.
