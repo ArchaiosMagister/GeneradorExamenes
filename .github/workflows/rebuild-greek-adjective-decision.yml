@@ -21,7 +21,8 @@ jobs:
       - name: Regenerar índice con fuentes fijadas y decisiones docentes
         run: |
           set -euo pipefail
-          node scripts/build-greek-nominal-candidates.mjs
+          # No regenerar el extracto histórico: la auditoría de 559 formas
+          # necesita las mismas identidades y procedencias que se revisaron.
           node scripts/build-lemma-index.mjs
           npm run offline:build
           node scripts/test-greek-adjective-decisions.cjs
@@ -31,7 +32,8 @@ jobs:
         run: |
           set -euo pipefail
           git status --short
-          git add data/lemmas/teacher-forms.json data/lemmas/greek-nominal-candidates.json offline.html
+          git diff --exit-code -- data/lemmas/greek-nominal-candidates.json
+          git add data/lemmas/teacher-forms.json offline.html
           if ! git diff --cached --quiet; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
