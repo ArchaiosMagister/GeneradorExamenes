@@ -35,7 +35,29 @@ Las formas se escribieron en `data/lemmas/verified-overrides.json` y
 simultáneamente. Cada persona tiene su análisis propio. No se deducen voces ni
 otros modos a partir de esos paradigmas.
 
-## Decisiones todavía abiertas
+## Cinco decisiones docentes aprobadas — 13/11/2026
+
+La fuente persistente `data/lemmas/filological-variant-decisions.json` contiene
+las decisiones con análisis y referencias. La reconstrucción del índice
+traslada sus metadatos a `extensions.filological_variants`; la consulta
+morfológica muestra variantes de una palabra con su advertencia, pero **no**
+las utiliza como certificaciones individuales ni claves unívocas del examen.
+
+- **βούλομαι:** forma escolar principal **βούλει**. Se reconoce **βούλῃ**
+  como variante de indicativo, y se advierte expresamente su posible lectura
+  de subjuntivo; también se registra βούλεαι como variante documentada.
+- **ἔρχομαι:** forma principal **ἔρχῃ**. Se registran ἔρχει y ἔρχεαι.
+- **absum:** se conserva el enunciado **absum, abfui**; **afui** es variante
+  consultable del perfecto singular, sin extrapolarla a otras personas.
+- **nolo:** **nonvis** sigue en el paradigma y en las preguntas; **non vis**
+  se documenta como grafía separada de dos palabras y no se analiza como token.
+- **ἀφικνέομαι, ὁρμάομαι, προσέρχομαι:** se conservan sin unidad.
+  Su consulta léxica sigue disponible y no participan en el sorteo.
+
+La prueba `scripts/test-filological-variant-decisions.cjs` comprueba modelo,
+variantes, homografía, bloqueo curricular, persistencia y HTML autónomo.
+
+## Decisiones futuras (no resueltas por estas cinco elecciones)
 
 - La segunda singular de `βούλομαι` documenta `βούλει` y `βούλῃ`:
   https://logeion.uchicago.edu/morpho/%CE%B2%CE%BF%CF%8D%CE%BB%CE%BF%CE%BC%CE%B1%CE%B9.

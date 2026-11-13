@@ -321,6 +321,19 @@ async function main(){
   verifiedFormsAdded:0,
   note:'Decisiones editoriales del profesor sin certificación morfológica.'
  };
+ // Conservar variantes docentes tras reconstruir sin certificar nuevas flexiones.
+ const variantPolicy=JSON.parse(await fs.readFile(path.join(root,'data/lemmas/filological-variant-decisions.json'),'utf8'));
+ if(variantPolicy.schema!==1||variantPolicy.decisions?.length!==5)
+  throw Error('Decisiones morfológicas no reconocidas');
+ for(const choice of variantPolicy.decisions){
+  for(const lemma of choice.lemmas||[choice.lemma]){
+   const record=catalog[choice.lang]?.[lemma]?.[choice.course];
+   if(!record)throw Error('Lema filológico ausente: '+lemma);
+   if(choice.unitPolicy==='UNASSIGNED_NOT_FOR_EXAM'&&record.units.length)
+    throw Error('Se asignó una unidad sin autorización: '+lemma);
+  }
+ }
+ extensions.filological_variants=variantPolicy;
  extensions.greek_editorial_decisions={
   count:greekEditorial.decisions.length,
   addedCitationOnlyEntries:greekEditorialAdded,

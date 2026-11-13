@@ -101,6 +101,8 @@ jobs:
           if-no-files-found: ignore
       - name: Comprobar índice bilingüe persistente sin reconstrucciones externas
         run: node scripts/test-lemma-index.mjs
+      - name: Probar cinco decisiones docentes y variantes sin modificar las claves de examen
+        run: node scripts/test-filological-variant-decisions.cjs
       # La ampliación externa se mantiene en la PR experimental hasta
       # resolver la procedencia/licencias de los datos morfológicos.
       - name: Validar banco ampliable de evolución fonética y programa de Latín I
