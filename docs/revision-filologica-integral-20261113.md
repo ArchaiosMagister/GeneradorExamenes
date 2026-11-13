@@ -107,3 +107,33 @@ una incorporación accidental o cambio de estado no documentado. Este
 lote no necesita una decisión docente nueva: la elección conservadora
 es no sortear las 12 formas compuestas antes de incorporar la semideponencia
 de manera coherente. Continúa pendiente el grueso de las 4403 candidaturas.
+
+## Nuevo lote de 100 candidaturas resueltas académicamente (13/11/2026)
+
+**90 latinas:** se cotejan exactamente las seis personas del presente, imperfecto y
+perfecto activos de cinco verbos que representan los principales modelos escolares:
+`amo`, `moneo`, `rego`, `capio`, `audio`. No se confunden
+perfecto, futuro ni subjuntivo. Fuentes: [paradigmas completos de Azimonti](https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/)
+y [gramática de Dickinson College](https://dcc.dickinson.edu/grammar/latin/four-conjugations).
+
+**10 griegas:** se cotejan las lecturas de singular y plural de `βασίλειον`,
+neutro de segunda declinación, incluyendo las tres etiquetas coincidentes
+(nominativo, acusativo y vocativo) para cada número. El parentesco morfológico
+con el neutro del adjetivo `βασίλειος` permite comprobar las terminaciones,
+sin identificar los lemas ni eliminar acepciones. Fuentes:
+[tabla flexiva con cuantidades](https://en.wiktionary.org/wiki/%CE%B2%CE%B1%CF%83%CE%AF%CE%BB%CE%B5%CE%B9%CE%BF%CF%82)
+y [Logeion, lectura de dativo plural](https://logeion.org/morpho/%CE%B2%CE%B1%CF%83%CE%B9%CE%BB%CE%B5%CE%AF%CE%BF%CE%B9%CF%82).
+
+Cada una de las cien candidaturas queda consignada en
+`data/lemmas/revision-candidaturas-lote100-20261113.json`
+con lema, forma exacta, análisis, fuente y decisión.
+`scripts/test-candidaturas-lote100.cjs` comprueba la identidad de las
+100 filas, los 90 tiempos/personas latinos, el sincretismo nominal griego
+y que ninguna fila se haya certificado sin reconstrucción controlada.
+
+**Alcance:** 100 candidaturas sometidas a cotejo académico favorable.
+**No equivale a 100 nuevas respuestas disponibles en exámenes:** la fuente
+original sigue con códigos de *propuesta* hasta que se coordinen
+`verified-overrides.json`, el índice, la aplicación y `offline.html`.
+Quedan pendientes la auditoría del resto y una CI completa del mismo commit.
+No se altera `main` ni se despliega.
