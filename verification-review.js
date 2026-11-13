@@ -255,7 +255,8 @@ function evidenceProvisionalForbidden(course,row){
  if(course!=='gr1'||!Array.isArray(row)||row[3]!==4)return false;
  const lemma=row[0],tags=String(row[2]).split(';');
  if(lemma==='πρωτοσ')return true;
- if(lemma==='παισ'&&row[1]==='παῖδι')return true; // Variante épica frente al ático παιδί.
+ if(lemma==='παισ'&&row[2]==='N;DAT;SG'&&
+   String(row[1]).normalize('NFD').replace(/[\u0304\u0306]/g,'').normalize('NFC')==='παῖδι')return true; // Variante épica frente al ático παιδί.
  return tags.includes('ADJ')&&tags.includes('FEM')&&
   ['αθανατοσ','εχθροσ','αισχροσ'].includes(lemma);
 }
