@@ -912,6 +912,132 @@
           ]
         }
       ]
+    },
+    {
+      "lang": "lat",
+      "lemma": "absum",
+      "reference": "https://www.online-latin-dictionary.com/latin-dictionary-flexion.php?lemma=ABSUM100",
+      "type": "Cinco tiempos de indicativo activo, seis personas contrastadas por tiempo; no se infieren otros paradigmas",
+      "blocks": [
+        {
+          "tags": "V;IND;ACT;PRS",
+          "forms": [
+            "absum",
+            "abes",
+            "abest",
+            "absumus",
+            "abestis",
+            "absunt"
+          ]
+        },
+        {
+          "tags": "V;IND;ACT;PST;IPFV",
+          "forms": [
+            "aberam",
+            "aberas",
+            "aberat",
+            "aberamus",
+            "aberatis",
+            "aberant"
+          ]
+        },
+        {
+          "tags": "V;IND;ACT;FUT",
+          "forms": [
+            "abero",
+            "aberis",
+            "aberit",
+            "aberimus",
+            "aberitis",
+            "aberunt"
+          ]
+        },
+        {
+          "tags": "V;IND;ACT;PRF",
+          "forms": [
+            "abfui",
+            "abfuisti",
+            "abfuit",
+            "abfuimus",
+            "abfuistis",
+            "abfuerunt"
+          ]
+        },
+        {
+          "tags": "V;IND;ACT;PSTP",
+          "forms": [
+            "abfueram",
+            "abfueras",
+            "abfuerat",
+            "abfueramus",
+            "abfueratis",
+            "abfuerant"
+          ]
+        }
+      ]
+    },
+    {
+      "lang": "lat",
+      "lemma": "praesum",
+      "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-irregular-verbs/",
+      "type": "Cinco tiempos de indicativo activo, seis personas contrastadas por tiempo; no se infieren otros paradigmas",
+      "blocks": [
+        {
+          "tags": "V;IND;ACT;PRS",
+          "forms": [
+            "praesum",
+            "praees",
+            "praeest",
+            "praesumus",
+            "praeestis",
+            "praesunt"
+          ]
+        },
+        {
+          "tags": "V;IND;ACT;PST;IPFV",
+          "forms": [
+            "praeeram",
+            "praeeras",
+            "praeerat",
+            "praeeramus",
+            "praeeratis",
+            "praeerant"
+          ]
+        },
+        {
+          "tags": "V;IND;ACT;FUT",
+          "forms": [
+            "praeero",
+            "praeeris",
+            "praeerit",
+            "praeerimus",
+            "praeeritis",
+            "praeerunt"
+          ]
+        },
+        {
+          "tags": "V;IND;ACT;PRF",
+          "forms": [
+            "praefui",
+            "praefuisti",
+            "praefuit",
+            "praefuimus",
+            "praefuistis",
+            "praefuerunt"
+          ]
+        },
+        {
+          "tags": "V;IND;ACT;PSTP",
+          "forms": [
+            "praefueram",
+            "praefueras",
+            "praefuerat",
+            "praefueramus",
+            "praefueratis",
+            "praefuerant"
+          ]
+        }
+      ]
     }
   ],
   "sourceCode": 5,

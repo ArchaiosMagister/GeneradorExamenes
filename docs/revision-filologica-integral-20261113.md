@@ -20,8 +20,8 @@
 
 ## Primera colación documentada, incorporada en la rama
 
-Se añadieron **120 casillas individuales** (cinco tiempos de indicativo activo,
-seis personas por tiempo) de cuatro verbos presentes en el vocabulario docente:
+Se añadieron **180 casillas individuales** (cinco tiempos de indicativo activo,
+seis personas por tiempo) de seis verbos presentes en el vocabulario docente:
 
 | Lema | Fuente que contiene el paradigma | Casillas |
 | --- | --- | ---: |
