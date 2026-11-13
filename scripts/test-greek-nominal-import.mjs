@@ -4,6 +4,9 @@ import path from 'node:path';
 import {execFileSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
+const candidatePath=path.join(root,'data/lemmas/greek-nominal-candidates.json');
+const original=fs.readFileSync(candidatePath);
+try{
 const testLog=execFileSync(process.execPath,[
  'scripts/build-greek-nominal-candidates.mjs','tests/fixtures/greek-nominals-sample.jsonl'
 ],{cwd:root,stdio:'pipe',timeout:25000});
@@ -28,3 +31,8 @@ assert.equal(data.stats.acceptedLemmas,2);
 assert.equal(data.stats.conflicts,0);
 assert.ok(data.stats.unsafeForms>=2,'Se deben rechazar variantes dialectales y duales');
 console.log('Importación griega: nominativo, genitivo, dativos, géneros, acentos, etiquetas y aislamiento de claves correctos.');
+
+}finally{
+ // La muestra de ensayo no debe sobrescribir el catálogo persistente empleado por el índice offline.
+ fs.writeFileSync(candidatePath,original);
+}
