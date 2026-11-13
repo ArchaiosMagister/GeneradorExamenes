@@ -90,6 +90,15 @@ jobs:
         run: node scripts/test-greek-nominal-import.mjs
       - name: Validar catálogo griego provisional persistente sin acceso de red
         run: node scripts/test-greek-nominal-persistent.cjs
+      - name: Inventariar exhaustivamente las 4403 fichas candidatas sin promoverlas
+        run: node scripts/test-comprehensive-morph-audit.cjs
+      - name: Conservar auditoría individualizada de fichas latinas y griegas
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: revision-filologica-integral-candidatos
+          path: test-artifacts/auditoria-integral-*.json
+          if-no-files-found: ignore
       - name: Comprobar índice bilingüe persistente sin reconstrucciones externas
         run: node scripts/test-lemma-index.mjs
       # La ampliación externa se mantiene en la PR experimental hasta
