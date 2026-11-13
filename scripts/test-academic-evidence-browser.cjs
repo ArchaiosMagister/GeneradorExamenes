@@ -73,6 +73,8 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
   await page.locator('#docx').click();
   assert.match(await page.locator('#academicEvidenceSummary').innerText(),/Exportación bloqueada/);
   assert.deepEqual(errors,[],'Errores JavaScript en la interfaz de evidencias');
+  // Fase IV: pruebas de interacción de la cola docente en el mismo Chromium.
+  await require('./test-phase-four-review-browser.cjs')(browser);
   console.log('Evidencia en Chromium: autorización explícita, persistencia local, no promoción, revocación y bloqueo DOCX.');
  }finally{await browser.close()}
 })().catch(e=>{console.error(e);process.exitCode=1});

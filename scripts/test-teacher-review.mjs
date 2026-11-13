@@ -41,3 +41,6 @@ assert(!greek.some(x=>x.lemma==='αει'&&x.kind==='sin-flexion'),
 assert(latin.some(x=>x.kind==='homografia'),'Se han perdido las homografías');
 assert(greek.some(x=>x.kind==='candidatas'),'Se han promocionado indebidamente candidatos a verificados');
 console.log('Revisión filológica: '+latin.length+' incidencias de Latín I y '+greek.length+' de Griego I. Sin cambios automáticos en exámenes.');
+
+// Fase IV: revisión versionada y conciliación de decisiones docentes.
+await import('./test-phase-four-review-queue.cjs');
