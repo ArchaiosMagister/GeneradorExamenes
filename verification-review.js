@@ -23,6 +23,8 @@ const CURATED=[
   detail:'El índice atribuye dos acusativos singulares a παῖς. Hay que delimitar las variantes admitidas en clase y distinguir formas literarias de las escolares.',
   source:'UniMorph · revisión de variante dialectal/lexicográfica pendiente'}
 ];
+// 68 lecturas griegas con unidad: cola de revisión, nunca autorizaciones ni soluciones.
+const PRIORITY_GREEK_FORMS=[["grc-pending-020","αθανατοσ","ᾱ̓θᾰ́νᾰται","ἀθάναται","ADJ;NOM;PL;FEM","VARIANTE_DE_TERMINACIONES_PARA_DECISION_DOCENTE","https://en.wiktionary.org/wiki/%E1%BC%80%CE%B8%CE%AC%CE%BD%CE%B1%CF%84%CE%BF%CF%82","La propuesta contiene femenino de tres terminaciones; el enunciado docente actual es de dos terminaciones. No usar esa variante sin decisión expresa."],["grc-pending-021","αθανατοσ","ᾱ̓θᾰ́νᾰται","ἀθάναται","ADJ;VOC;PL;FEM","VARIANTE_DE_TERMINACIONES_PARA_DECISION_DOCENTE","https://en.wiktionary.org/wiki/%E1%BC%80%CE%B8%CE%AC%CE%BD%CE%B1%CF%84%CE%BF%CF%82","La propuesta contiene femenino de tres terminaciones; el enunciado docente actual es de dos terminaciones. No usar esa variante sin decisión expresa."],["grc-pending-022","αθανατοσ","ᾱ̓θᾰνᾰ́τᾱς","ἀθανάτας","ADJ;ACC;PL;FEM","VARIANTE_DE_TERMINACIONES_PARA_DECISION_DOCENTE","https://en.wiktionary.org/wiki/%E1%BC%80%CE%B8%CE%AC%CE%BD%CE%B1%CF%84%CE%BF%CF%82","La propuesta contiene femenino de tres terminaciones; el enunciado docente actual es de dos terminaciones. No usar esa variante sin decisión expresa."],["grc-pending-023","αθανατοσ","ᾱ̓θᾰνᾰ́τη","ἀθανάτη","ADJ;NOM;SG;FEM","VARIANTE_DE_TERMINACIONES_PARA_DECISION_DOCENTE","https://en.wiktionary.org/wiki/%E1%BC%80%CE%B8%CE%AC%CE%BD%CE%B1%CF%84%CE%BF%CF%82","La propuesta contiene femenino de tres terminaciones; el enunciado docente actual es de dos terminaciones. No usar esa variante sin decisión expresa."],["grc-pending-024","αθανατοσ","ᾱ̓θᾰνᾰ́τη","ἀθανάτη","ADJ;VOC;SG;FEM","VARIANTE_DE_TERMINACIONES_PARA_DECISION_DOCENTE","https://en.wiktionary.org/wiki/%E1%BC%80%CE%B8%CE%AC%CE%BD%CE%B1%CF%84%CE%BF%CF%82","La propuesta contiene femenino de tres terminaciones; el enunciado docente actual es de dos terminaciones. No usar esa variante sin decisión expresa."],["grc-pending-025","αθανατοσ","ᾱ̓θᾰνᾰ́τῃ","ἀθανάτῃ","ADJ;DAT;SG;FEM","VARIANTE_DE_TERMINACIONES_PARA_DECISION_DOCENTE","https://en.wiktionary.org/wiki/%E1%BC%80%CE%B8%CE%AC%CE%BD%CE%B1%CF%84%CE%BF%CF%82","La propuesta contiene femenino de tres terminaciones; el enunciado docente actual es de dos terminaciones. No usar esa variante sin decisión expresa."],["grc-pending-026","αθανατοσ","ᾱ̓θᾰνᾰ́την","ἀθανάτην","ADJ;ACC;SG;FEM","VARIANTE_DE_TERMINACIONES_PARA_DECISION_DOCENTE","https://en.wiktionary.org/wiki/%E1%BC%80%CE%B8%CE%AC%CE%BD%CE%B1%CF%84%CE%BF%CF%82","La propuesta contiene femenino de tres terminaciones; el enunciado docente actual es de dos terminaciones. No usar esa variante sin decisión expresa."],["grc-pending-027","αθανατοσ","ᾱ̓θᾰνᾰ́της","ἀθανάτης","ADJ;GEN;SG;FEM","VARIANTE_DE_TERMINACIONES_PARA_DECISION_DOCENTE","https://en.wiktionary.org/wiki/%E1%BC%80%CE%B8%CE%AC%CE%BD%CE%B1%CF%84%CE%BF%CF%82","La propuesta contiene femenino de tres terminaciones; el enunciado docente actual es de dos terminaciones. No usar esa variante sin decisión expresa."],["grc-pending-060","αισχροσ","αἰσχρᾰ́","αἰσχρά","ADJ;ACC;PL;NEUT","LECTURA_CON_PARADIGMA_A_COTEJAR","https://en.wiktionary.org/wiki/%CE%B1%E1%BC%B0%CF%83%CF%87%CF%81%CF%8C%CF%82","Lectura coherente con la flexión nominal y unidad docente; falta certificar individualmente la fuente y sincronizar datos/índice/PWA para habilitarla."],["grc-pending-061","αισχροσ","αἰσχρᾰ́","αἰσχρά","ADJ;NOM;PL;NEUT","LECTURA_CON_PARADIGMA_A_COTEJAR","https://en.wiktionary.org/wiki/%CE%B1%E1%BC%B0%CF%83%CF%87%CF%81%CF%8C%CF%82","Lectura coherente con la flexión nominal y unidad docente; falta certificar individualmente la fuente y sincronizar datos/índice/PWA para habilitarla."],["grc-pending-062","αισχροσ","αἰσχρᾰ́","αἰσχρά","ADJ;VOC;PL;NEUT","LECTURA_CON_PARADIGMA_A_COTEJAR","https://en.wiktionary.org/wiki/%CE%B1%E1%BC%B0%CF%83%CF%87%CF%81%CF%8C%CF%82","Lectura coherente con la flexión nominal y unidad docente; falta certificar individualmente la fuente y sincronizar datos/índice/PWA para habilitarla."],["grc-pending-063","αισχροσ","αἰσχραί","αἰσχραί","ADJ;NOM;PL;FEM","VARIANTE_DE_TERMINACIONES_PARA_DECISION_DOCENTE","https://en.wiktionary.org/wiki/%CE%B1%E1%BC%B0%CF%83%CF%87%CF%81%CF%8C%CF%82","La propuesta contiene femenino de tres terminaciones; el enunciado docente actual es de dos terminaciones. No usar esa variante sin decisión expresa."],["grc-pending-064","αισχροσ","αἰσχραί","αἰσχραί","ADJ;VOC;PL;FEM","VARIANTE_DE_TERMINACIONES_PARA_DECISION_DOCENTE","https://en.wiktionary.org/wiki/%CE%B1%E1%BC%B0%CF%83%CF%87%CF%81%CF%8C%CF%82","La propuesta contiene femenino de tres terminaciones; el enunciado docente actual es de dos terminaciones. No usar esa variante sin decisión expresa."],["grc-pending-065","αισχροσ","αἰσχρᾱ́ς","αἰσχράς","ADJ;ACC;PL;FEM","VARIANTE_DE_TERMINACIONES_PARA_DECISION_DOCENTE","https://en.wiktionary.org/wiki/%CE%B1%E1%BC%B0%CF%83%CF%87%CF%81%CF%8C%CF%82","La propuesta contiene femenino de tres terminaciones; el enunciado docente actual es de dos terminaciones. No usar esa variante sin decisión expresa."],["grc-pending-066","αισχροσ","αἰσχρέ","αἰσχρέ","ADJ;VOC;SG;MASC","LECTURA_CON_PARADIGMA_A_COTEJAR","https://en.wiktionary.org/wiki/%CE%B1%E1%BC%B0%CF%83%CF%87%CF%81%CF%8C%CF%82","Lectura coherente con la flexión nominal y unidad docente; falta certificar individualmente la fuente y sincronizar datos/índice/PWA para habilitarla."],["grc-pending-067","αισχροσ","αἰσχροί","αἰσχροί","ADJ;NOM;PL;MASC","LECTURA_CON_PARADIGMA_A_COTEJAR","https://en.wiktionary.org/wiki/%CE%B1%E1%BC%B0%CF%83%CF%87%CF%81%CF%8C%CF%82","Lectura coherente con la flexión nominal y unidad docente; falta certificar individualmente la fuente y sincronizar datos/índice/PWA para habilitarla."],["grc-pending-068","αισχροσ","αἰσχροί","αἰσχροί","ADJ;VOC;PL;MASC","LECTURA_CON_PARADIGMA_A_COTEJAR","https://en.wiktionary.org/wiki/%CE%B1%E1%BC%B0%CF%83%CF%87%CF%81%CF%8C%CF%82","Lectura coherente con la flexión nominal y unidad docente; falta certificar individualmente la fuente y sincronizar datos/índice/PWA para habilitarla."],["grc-pending-069","αισχροσ","αἰσχρόν","αἰσχρόν","ADJ;ACC;SG;MASC","LECTURA_CON_PARADIGMA_A_COTEJAR","https://en.wiktionary.org/wiki/%CE%B1%E1%BC%B0%CF%83%CF%87%CF%81%CF%8C%CF%82","Lectura coherente con la flexión nominal y unidad docente; falta certificar individualmente la fuente y sincronizar datos/índice/PWA para habilitarla."],["grc-pending-070","αισχροσ","αἰσχρόν","αἰσχρόν","ADJ;ACC;SG;NEUT","LECTURA_CON_PARADIGMA_A_COTEJAR","https://en.wiktionary.org/wiki/%CE%B1%E1%BC%B0%CF%83%CF%87%CF%81%CF%8C%CF%82","Lectura coherente con la flexión nominal y unidad docente; falta certificar individualmente la fuente y sincronizar datos/índice/PWA para habilitarla."],["grc-pending-071","αισχροσ","αἰσχρόν","αἰσχρόν","ADJ;NOM;SG;NEUT","LECTURA_CON_PARADIGMA_A_COTEJAR","https://en.wiktionary.org/wiki/%CE%B1%E1%BC%B0%CF%83%CF%87%CF%81%CF%8C%CF%82","Lectura coherente con la flexión nominal y unidad docente; falta certificar individualmente la fuente y sincronizar datos/índice/PWA para habilitarla."],["grc-pending-072","αισχροσ","αἰσχρόν","αἰσχρόν","ADJ;VOC;SG;NEUT","LECTURA_CON_PARADIGMA_A_COTEJAR","https://en.wiktionary.org/wiki/%CE%B1%E1%BC%B0%CF%83%CF%87%CF%81%CF%8C%CF%82","Lectura coherente con la flexión nominal y unidad docente; falta certificar individualmente la fuente y sincronizar datos/índice/PWA para habilitarla."],["grc-pending-073","αισχροσ","αἰσχρός","αἰσχρός","ADJ;NOM;SG;MASC","LECTURA_CON_PARADIGMA_A_COTEJAR","https://en.wiktionary.org/wiki/%CE%B1%E1%BC%B0%CF%83%CF%87%CF%81%CF%8C%CF%82","Lectura coherente con la flexión nominal y unidad docente; falta certificar individualmente la fuente y sincronizar datos/índice/PWA para habilitarla."],["grc-pending-074","αισχροσ","αἰσχρούς","αἰσχρούς","ADJ;ACC;PL;MASC","LECTURA_CON_PARADIGMA_A_COTEJAR","https://en.wiktionary.org/wiki/%CE%B1%E1%BC%B0%CF%83%CF%87%CF%81%CF%8C%CF%82","Lectura coherente con la flexión nominal y unidad docente; falta certificar individualmente la fuente y sincronizar datos/índice/PWA para habilitarla."],["grc-pending-075","αισχροσ","αἰσχρῷ","αἰσχρῷ","ADJ;DAT;SG;MASC","LECTURA_CON_PARADIGMA_A_COTEJAR","https://en.wiktionary.org/wiki/%CE%B1%E1%BC%B0%CF%83%CF%87%CF%81%CF%8C%CF%82","Lectura coherente con la flexión nominal y unidad docente; falta certificar individualmente la fuente y sincronizar datos/índice/PWA para habilitarla."],["grc-pending-076","αισχροσ","αἰσχρῷ","αἰσχρῷ","ADJ;DAT;SG;NEUT","LECTURA_CON_PARADIGMA_A_COTEJAR","https://en.wiktionary.org/wiki/%CE%B1%E1%BC%B0%CF%83%CF%87%CF%81%CF%8C%CF%82","Lectura coherente con la flexión nominal y unidad docente; falta certificar individualmente la fuente y sincronizar datos/índice/PWA para habilitarla."],["grc-pending-077","αισχροσ","αἰσχρῶν","αἰσχρῶν","ADJ;GEN;PL;MASC","LECTURA_CON_PARADIGMA_A_COTEJAR","https://en.wiktionary.org/wiki/%CE%B1%E1%BC%B0%CF%83%CF%87%CF%81%CF%8C%CF%82","Lectura coherente con la flexión nominal y unidad docente; falta certificar individualmente la fuente y sincronizar datos/índice/PWA para habilitarla."],["grc-pending-078","αισχροσ","αἰσχρῶν","αἰσχρῶν","ADJ;GEN;PL;NEUT","LECTURA_CON_PARADIGMA_A_COTEJAR","https://en.wiktionary.org/wiki/%CE%B1%E1%BC%B0%CF%83%CF%87%CF%81%CF%8C%CF%82","Lectura coherente con la flexión nominal y unidad docente; falta certificar individualmente la fuente y sincronizar datos/índice/PWA para habilitarla."],["grc-pending-159","εχθροσ","ἐχθρᾱ́","ἐχθρά","ADJ;NOM;SG;FEM","VARIANTE_DE_TERMINACIONES_PARA_DECISION_DOCENTE","https://en.wiktionary.org/wiki/%E1%BC%90%CF%87%CE%B8%CF%81%CF%8C%CF%82","La propuesta contiene femenino de tres terminaciones; el enunciado docente actual es de dos terminaciones. No usar esa variante sin decisión expresa."],["grc-pending-160","εχθροσ","ἐχθρᾱ́","ἐχθρά","ADJ;VOC;SG;FEM","VARIANTE_DE_TERMINACIONES_PARA_DECISION_DOCENTE","https://en.wiktionary.org/wiki/%E1%BC%90%CF%87%CE%B8%CF%81%CF%8C%CF%82","La propuesta contiene femenino de tres terminaciones; el enunciado docente actual es de dos terminaciones. No usar esa variante sin decisión expresa."],["grc-pending-161","εχθροσ","ἐχθρᾷ","ἐχθρᾷ","ADJ;DAT;SG;FEM","VARIANTE_DE_TERMINACIONES_PARA_DECISION_DOCENTE","https://en.wiktionary.org/wiki/%E1%BC%90%CF%87%CE%B8%CF%81%CF%8C%CF%82","La propuesta contiene femenino de tres terminaciones; el enunciado docente actual es de dos terminaciones. No usar esa variante sin decisión expresa."],["grc-pending-162","εχθροσ","ἐχθραί","ἐχθραί","ADJ;NOM;PL;FEM","VARIANTE_DE_TERMINACIONES_PARA_DECISION_DOCENTE","https://en.wiktionary.org/wiki/%E1%BC%90%CF%87%CE%B8%CF%81%CF%8C%CF%82","La propuesta contiene femenino de tres terminaciones; el enunciado docente actual es de dos terminaciones. No usar esa variante sin decisión expresa."],["grc-pending-163","εχθροσ","ἐχθραί","ἐχθραί","ADJ;VOC;PL;FEM","VARIANTE_DE_TERMINACIONES_PARA_DECISION_DOCENTE","https://en.wiktionary.org/wiki/%E1%BC%90%CF%87%CE%B8%CF%81%CF%8C%CF%82","La propuesta contiene femenino de tres terminaciones; el enunciado docente actual es de dos terminaciones. No usar esa variante sin decisión expresa."],["grc-pending-164","εχθροσ","ἐχθραῖς","ἐχθραῖς","ADJ;DAT;PL;FEM","VARIANTE_DE_TERMINACIONES_PARA_DECISION_DOCENTE","https://en.wiktionary.org/wiki/%E1%BC%90%CF%87%CE%B8%CF%81%CF%8C%CF%82","La propuesta contiene femenino de tres terminaciones; el enunciado docente actual es de dos terminaciones. No usar esa variante sin decisión expresa."],["grc-pending-165","εχθροσ","ἐχθρᾱ́ν","ἐχθράν","ADJ;ACC;SG;FEM","VARIANTE_DE_TERMINACIONES_PARA_DECISION_DOCENTE","https://en.wiktionary.org/wiki/%E1%BC%90%CF%87%CE%B8%CF%81%CF%8C%CF%82","La propuesta contiene femenino de tres terminaciones; el enunciado docente actual es de dos terminaciones. No usar esa variante sin decisión expresa."],["grc-pending-166","εχθροσ","ἐχθρᾱ́ς","ἐχθράς","ADJ;ACC;PL;FEM","VARIANTE_DE_TERMINACIONES_PARA_DECISION_DOCENTE","https://en.wiktionary.org/wiki/%E1%BC%90%CF%87%CE%B8%CF%81%CF%8C%CF%82","La propuesta contiene femenino de tres terminaciones; el enunciado docente actual es de dos terminaciones. No usar esa variante sin decisión expresa."],["grc-pending-167","εχθροσ","ἐχθρᾶς","ἐχθρᾶς","ADJ;GEN;SG;FEM","VARIANTE_DE_TERMINACIONES_PARA_DECISION_DOCENTE","https://en.wiktionary.org/wiki/%E1%BC%90%CF%87%CE%B8%CF%81%CF%8C%CF%82","La propuesta contiene femenino de tres terminaciones; el enunciado docente actual es de dos terminaciones. No usar esa variante sin decisión expresa."],["grc-pending-168","εχθροσ","ἐχθρῶν","ἐχθρῶν","ADJ;GEN;PL;FEM","VARIANTE_DE_TERMINACIONES_PARA_DECISION_DOCENTE","https://en.wiktionary.org/wiki/%E1%BC%90%CF%87%CE%B8%CF%81%CF%8C%CF%82","La propuesta contiene femenino de tres terminaciones; el enunciado docente actual es de dos terminaciones. No usar esa variante sin decisión expresa."],["grc-pending-201","κεφαλη","κεφᾰλῇ","κεφαλῇ","N;DAT;SG","ERRATA_CORREGIDA_ENUNCIADO_DOCENTE","https://en.wiktionary.org/wiki/%CE%BA%CE%B5%CF%86%CE%B1%CE%BB%CE%AE","Se ha corregido el enunciado docente en la fuente, el índice y ambas versiones de la PWA. El dativo κεφαλῇ sigue siendo fuente 4."],["grc-pending-363","παισ","παῖδῐ","παῖδι","N;DAT;SG","VARIANTE_EPICA_FUERA_DE_CURRICULO","https://en.wiktionary.org/wiki/%CF%80%CE%B1%E1%BF%96%CF%82","El dativo singular escolar ático es παιδί. La grafía παῖδι está documentada como variante épica, sin autorización curricular en el modelo de Griego I; conservar la referencia y no sortearla como forma ática."],["grc-pending-384","πολιτησ","πολῑ́τῃ","πολίτῃ","N;DAT;SG","LECTURA_CON_PARADIGMA_A_COTEJAR","https://en.wiktionary.org/wiki/%CF%80%CE%BF%CE%BB%CE%AF%CF%84%CE%B7%CF%82","Lectura coherente con la flexión nominal y unidad docente; falta certificar individualmente la fuente y sincronizar datos/índice/PWA para habilitarla."],["grc-pending-425","πρωτοσ","πρωτᾰ́","πρωτά","ADJ;ACC;PL;NEUT","ACENTO_INCORRECTO_EN_FUENTE","https://en.wiktionary.org/wiki/%CF%80%CF%81%E1%BF%B6%CF%84%CE%BF%CF%82","Los acentos del extracto no coinciden con el paradigma ático de πρῶτος; se anota la corrección documentada, sin sustituir todavía el banco."],["grc-pending-426","πρωτοσ","πρωτᾰ́","πρωτά","ADJ;NOM;PL;NEUT","ACENTO_INCORRECTO_EN_FUENTE","https://en.wiktionary.org/wiki/%CF%80%CF%81%E1%BF%B6%CF%84%CE%BF%CF%82","Los acentos del extracto no coinciden con el paradigma ático de πρῶτος; se anota la corrección documentada, sin sustituir todavía el banco."],["grc-pending-427","πρωτοσ","πρωτᾰ́","πρωτά","ADJ;VOC;PL;NEUT","ACENTO_INCORRECTO_EN_FUENTE","https://en.wiktionary.org/wiki/%CF%80%CF%81%E1%BF%B6%CF%84%CE%BF%CF%82","Los acentos del extracto no coinciden con el paradigma ático de πρῶτος; se anota la corrección documentada, sin sustituir todavía el banco."],["grc-pending-428","πρωτοσ","πρωταί","πρωταί","ADJ;NOM;PL;FEM","ACENTO_INCORRECTO_EN_FUENTE","https://en.wiktionary.org/wiki/%CF%80%CF%81%E1%BF%B6%CF%84%CE%BF%CF%82","Los acentos del extracto no coinciden con el paradigma ático de πρῶτος; se anota la corrección documentada, sin sustituir todavía el banco."],["grc-pending-429","πρωτοσ","πρωταί","πρωταί","ADJ;VOC;PL;FEM","ACENTO_INCORRECTO_EN_FUENTE","https://en.wiktionary.org/wiki/%CF%80%CF%81%E1%BF%B6%CF%84%CE%BF%CF%82","Los acentos del extracto no coinciden con el paradigma ático de πρῶτος; se anota la corrección documentada, sin sustituir todavía el banco."],["grc-pending-430","πρωτοσ","πρωτᾱ́ς","πρωτάς","ADJ;ACC;PL;FEM","ACENTO_INCORRECTO_EN_FUENTE","https://en.wiktionary.org/wiki/%CF%80%CF%81%E1%BF%B6%CF%84%CE%BF%CF%82","Los acentos del extracto no coinciden con el paradigma ático de πρῶτος; se anota la corrección documentada, sin sustituir todavía el banco."],["grc-pending-431","πρωτοσ","πρωτέ","πρωτέ","ADJ;VOC;SG;MASC","ACENTO_INCORRECTO_EN_FUENTE","https://en.wiktionary.org/wiki/%CF%80%CF%81%E1%BF%B6%CF%84%CE%BF%CF%82","Los acentos del extracto no coinciden con el paradigma ático de πρῶτος; se anota la corrección documentada, sin sustituir todavía el banco."],["grc-pending-432","πρωτοσ","πρωτή","πρωτή","ADJ;NOM;SG;FEM","ACENTO_INCORRECTO_EN_FUENTE","https://en.wiktionary.org/wiki/%CF%80%CF%81%E1%BF%B6%CF%84%CE%BF%CF%82","Los acentos del extracto no coinciden con el paradigma ático de πρῶτος; se anota la corrección documentada, sin sustituir todavía el banco."],["grc-pending-433","πρωτοσ","πρωτή","πρωτή","ADJ;VOC;SG;FEM","ACENTO_INCORRECTO_EN_FUENTE","https://en.wiktionary.org/wiki/%CF%80%CF%81%E1%BF%B6%CF%84%CE%BF%CF%82","Los acentos del extracto no coinciden con el paradigma ático de πρῶτος; se anota la corrección documentada, sin sustituir todavía el banco."],["grc-pending-434","πρωτοσ","πρωτῇ","πρωτῇ","ADJ;DAT;SG;FEM","ACENTO_INCORRECTO_EN_FUENTE","https://en.wiktionary.org/wiki/%CF%80%CF%81%E1%BF%B6%CF%84%CE%BF%CF%82","Los acentos del extracto no coinciden con el paradigma ático de πρῶτος; se anota la corrección documentada, sin sustituir todavía el banco."],["grc-pending-435","πρωτοσ","πρωτήν","πρωτήν","ADJ;ACC;SG;FEM","ACENTO_INCORRECTO_EN_FUENTE","https://en.wiktionary.org/wiki/%CF%80%CF%81%E1%BF%B6%CF%84%CE%BF%CF%82","Los acentos del extracto no coinciden con el paradigma ático de πρῶτος; se anota la corrección documentada, sin sustituir todavía el banco."],["grc-pending-436","πρωτοσ","πρωτῆς","πρωτῆς","ADJ;GEN;SG;FEM","ACENTO_INCORRECTO_EN_FUENTE","https://en.wiktionary.org/wiki/%CF%80%CF%81%E1%BF%B6%CF%84%CE%BF%CF%82","Los acentos del extracto no coinciden con el paradigma ático de πρῶτος; se anota la corrección documentada, sin sustituir todavía el banco."],["grc-pending-437","πρωτοσ","πρωτοί","πρωτοί","ADJ;NOM;PL;MASC","ACENTO_INCORRECTO_EN_FUENTE","https://en.wiktionary.org/wiki/%CF%80%CF%81%E1%BF%B6%CF%84%CE%BF%CF%82","Los acentos del extracto no coinciden con el paradigma ático de πρῶτος; se anota la corrección documentada, sin sustituir todavía el banco."],["grc-pending-438","πρωτοσ","πρωτοί","πρωτοί","ADJ;VOC;PL;MASC","ACENTO_INCORRECTO_EN_FUENTE","https://en.wiktionary.org/wiki/%CF%80%CF%81%E1%BF%B6%CF%84%CE%BF%CF%82","Los acentos del extracto no coinciden con el paradigma ático de πρῶτος; se anota la corrección documentada, sin sustituir todavía el banco."],["grc-pending-439","πρωτοσ","πρωτόν","πρωτόν","ADJ;ACC;SG;MASC","ACENTO_INCORRECTO_EN_FUENTE","https://en.wiktionary.org/wiki/%CF%80%CF%81%E1%BF%B6%CF%84%CE%BF%CF%82","Los acentos del extracto no coinciden con el paradigma ático de πρῶτος; se anota la corrección documentada, sin sustituir todavía el banco."],["grc-pending-440","πρωτοσ","πρωτόν","πρωτόν","ADJ;ACC;SG;NEUT","ACENTO_INCORRECTO_EN_FUENTE","https://en.wiktionary.org/wiki/%CF%80%CF%81%E1%BF%B6%CF%84%CE%BF%CF%82","Los acentos del extracto no coinciden con el paradigma ático de πρῶτος; se anota la corrección documentada, sin sustituir todavía el banco."],["grc-pending-441","πρωτοσ","πρωτόν","πρωτόν","ADJ;NOM;SG;NEUT","ACENTO_INCORRECTO_EN_FUENTE","https://en.wiktionary.org/wiki/%CF%80%CF%81%E1%BF%B6%CF%84%CE%BF%CF%82","Los acentos del extracto no coinciden con el paradigma ático de πρῶτος; se anota la corrección documentada, sin sustituir todavía el banco."],["grc-pending-442","πρωτοσ","πρωτόν","πρωτόν","ADJ;VOC;SG;NEUT","ACENTO_INCORRECTO_EN_FUENTE","https://en.wiktionary.org/wiki/%CF%80%CF%81%E1%BF%B6%CF%84%CE%BF%CF%82","Los acentos del extracto no coinciden con el paradigma ático de πρῶτος; se anota la corrección documentada, sin sustituir todavía el banco."],["grc-pending-443","πρωτοσ","πρωτός","πρωτός","ADJ;NOM;SG;MASC","ACENTO_INCORRECTO_EN_FUENTE","https://en.wiktionary.org/wiki/%CF%80%CF%81%E1%BF%B6%CF%84%CE%BF%CF%82","Los acentos del extracto no coinciden con el paradigma ático de πρῶτος; se anota la corrección documentada, sin sustituir todavía el banco."],["grc-pending-444","πρωτοσ","πρωτούς","πρωτούς","ADJ;ACC;PL;MASC","ACENTO_INCORRECTO_EN_FUENTE","https://en.wiktionary.org/wiki/%CF%80%CF%81%E1%BF%B6%CF%84%CE%BF%CF%82","Los acentos del extracto no coinciden con el paradigma ático de πρῶτος; se anota la corrección documentada, sin sustituir todavía el banco."],["grc-pending-445","πρωτοσ","πρωτῷ","πρωτῷ","ADJ;DAT;SG;MASC","ACENTO_INCORRECTO_EN_FUENTE","https://en.wiktionary.org/wiki/%CF%80%CF%81%E1%BF%B6%CF%84%CE%BF%CF%82","Los acentos del extracto no coinciden con el paradigma ático de πρῶτος; se anota la corrección documentada, sin sustituir todavía el banco."],["grc-pending-446","πρωτοσ","πρωτῷ","πρωτῷ","ADJ;DAT;SG;NEUT","ACENTO_INCORRECTO_EN_FUENTE","https://en.wiktionary.org/wiki/%CF%80%CF%81%E1%BF%B6%CF%84%CE%BF%CF%82","Los acentos del extracto no coinciden con el paradigma ático de πρῶτος; se anota la corrección documentada, sin sustituir todavía el banco."],["grc-pending-447","πρωτοσ","πρωτῶν","πρωτῶν","ADJ;GEN;PL;MASC","ACENTO_INCORRECTO_EN_FUENTE","https://en.wiktionary.org/wiki/%CF%80%CF%81%E1%BF%B6%CF%84%CE%BF%CF%82","Los acentos del extracto no coinciden con el paradigma ático de πρῶτος; se anota la corrección documentada, sin sustituir todavía el banco."],["grc-pending-448","πρωτοσ","πρωτῶν","πρωτῶν","ADJ;GEN;PL;NEUT","ACENTO_INCORRECTO_EN_FUENTE","https://en.wiktionary.org/wiki/%CF%80%CF%81%E1%BF%B6%CF%84%CE%BF%CF%82","Los acentos del extracto no coinciden con el paradigma ático de πρῶτος; se anota la corrección documentada, sin sustituir todavía el banco."],["grc-pending-450","ρητωρ","ῥήτορῐ","ῥήτορι","N;DAT;SG","LECTURA_CON_PARADIGMA_A_COTEJAR","https://en.wiktionary.org/wiki/%E1%BF%A5%CE%AE%CF%84%CF%89%CF%81","Lectura coherente con la flexión nominal y unidad docente; falta certificar individualmente la fuente y sincronizar datos/índice/PWA para habilitarla."],["grc-pending-451","ρισ","ῥῑνῐ́","ῥινί","N;DAT;SG","LECTURA_CON_PARADIGMA_A_COTEJAR","https://en.wiktionary.org/wiki/%E1%BF%A5%CE%AF%CF%82","Lectura coherente con la flexión nominal y unidad docente; falta certificar individualmente la fuente y sincronizar datos/índice/PWA para habilitarla."],["grc-pending-462","στρατηγοσ","στρᾰτηγῷ","στρατηγῷ","N;DAT;SG","LECTURA_CON_PARADIGMA_A_COTEJAR","https://en.wiktionary.org/wiki/%CF%83%CF%84%CF%81%CE%B1%CF%84%CE%B7%CE%B3%CF%8C%CF%82","Lectura coherente con la flexión nominal y unidad docente; falta certificar individualmente la fuente y sincronizar datos/índice/PWA para habilitarla."],["grc-pending-493","υδωρ","ῡ̆̔́δᾰτῐ","ὕδατι","N;DAT;SG","LECTURA_CON_PARADIGMA_A_COTEJAR","https://en.wiktionary.org/wiki/%E1%BD%95%CE%B4%CF%89%CF%81","Lectura coherente con la flexión nominal y unidad docente; falta certificar individualmente la fuente y sincronizar datos/índice/PWA para habilitarla."]];
 // Un adverbio, conjunción, preposición o numeral expresamente indeclinable
 // no necesita paradigma: no se le presenta como incidencia por ausencia de flexión.
 function isDeclaredInvariable(entry){
@@ -62,6 +64,25 @@ function buildCases(data,course){
   if(x.kind==='correccion'&&eligible.get(x.lemma)?.[course]?.entry!==x.form)continue;
   if(x.kind==='ampliacion'&&(lemmaRows.get(x.lemma)||[]).some(r=>r[3]===5))continue;
   add(x);
+ }
+ if(course==='gr1'){
+  // Mostrar individualmente las 68 fichas con unidad, incluso cuando el
+  // resto del paradigma tenga lecturas sincréticas o variantes pendientes.
+  const available=new Set(data.rows.grc.filter(r=>r[3]===4).map(r=>JSON.stringify(r.slice(0,3))));
+  for(const [caseId,lemma,sourceForm,schoolForm,tags,status,reference,reason] of PRIORITY_GREEK_FORMS){
+   if(!eligible.has(lemma)||!available.has(JSON.stringify([lemma,sourceForm,tags])))continue;
+   const decision=data.extensions?.greek_adjective_decisions?.decisions
+    ?.find(x=>x.lemma===lemma&&x.candidateIds.includes(caseId));
+   const approvedReason=decision?.policy==='EXCLUIR'
+    ?'Decisión docente: variante femenina de primera declinación excluida del repertorio exigible.'
+    :decision?.policy==='VERIFICACION_INDIVIDUAL'
+     ?'Paradigma de tres terminaciones aprobado; esta flexión sigue sin verificar individualmente y queda bloqueada.'
+     :reason;
+   add({lemma,kind:'candidatas',priority:status==='LECTURA_CON_PARADIGMA_A_COTEJAR'?1:0,
+    form:schoolForm+' ['+tags+']',
+    detail:approvedReason+' Registro '+caseId+': '+status+'. Es propuesta sin verificar y nunca equivale a autorización de examen.',
+    source:reference||'Banco histórico: fuente 4, pendiente de recuperación documental'});
+  }
  }
  for(const [lemma] of eligible){
   const rows=lemmaRows.get(lemma)||[];
@@ -107,6 +128,99 @@ function buildCases(data,course){
  return cases.sort((a,b)=>a.priority-b.priority||a.kind.localeCompare(b.kind,'es')||
   a.lemma.localeCompare(b.lemma,'es')||a.form.localeCompare(b.form,'es'));
 }
+// Registro docente versionado e independiente de cualquier autorización académica.
+// Las decisiones guardadas no cambian la morfología, las claves ni las fuentes.
+const REVIEW_SCHEMA='examina-morph-teacher-review/v2';
+const REVIEW_ACTIONS=new Set(['','aceptar','corregir','excluir']);
+const REVIEW_MAX_ALTERNATIVES=50;
+function reviewSignature(x){
+ return JSON.stringify([x.id,x.course,x.kind,x.lemma,x.entry,x.form,x.source,x.units]);
+}
+function reviewDecisionApplies(x,r){
+ if(!r||typeof r!=='object')return false;
+ return typeof r.signature==='string'?r.signature===reviewSignature(x):
+  r.entry===x.entry; // Decisiones locales del esquema anterior: ID + entrada intactos.
+}
+function reviewFlat(x){
+ return {decision:x.decision,note:x.note,entry:x.entry,updated:x.updated,
+  ...(x.signature?{signature:x.signature}:{})};
+}
+function reviewSame(a,b){
+ if(!a||!b)return false;
+ return JSON.stringify(reviewFlat(a))===JSON.stringify(reviewFlat(b));
+}
+function reviewCheckRecord(id,r,nested=false){
+ if(typeof id!=='string'||id.length>800||
+  !/^(?:lat1|lat4|gr1)\|(?:correccion|etiquetas|ampliacion|candidatas|sin-flexion|variantes|homografia)\|.+\|/u.test(id))
+  throw Error('Identificador de incidencia no reconocido');
+ if(!r||typeof r!=='object'||Array.isArray(r)||
+  !REVIEW_ACTIONS.has(r.decision)||typeof r.note!=='string'||r.note.length>4000||
+  typeof r.entry!=='string'||r.entry.length>600||
+  typeof r.updated!=='string'||!Number.isFinite(Date.parse(r.updated))||
+  (r.signature!==undefined&&(typeof r.signature!=='string'||r.signature.length>2400)))
+  throw Error('Decisión filológica incompleta o inválida: '+id);
+ if(nested&&r.alternatives!==undefined)throw Error('Historial recursivo de incidencia');
+ const record=reviewFlat(r);
+ if(!nested){
+  if(r.alternatives!==undefined&&(!Array.isArray(r.alternatives)||
+   r.alternatives.length>REVIEW_MAX_ALTERNATIVES))
+   throw Error('Historial excesivo o no válido');
+  if(r.alternatives?.length)record.alternatives=r.alternatives.map(alt=>reviewCheckRecord(id,alt,true));
+ }
+ return record;
+}
+function reviewBundle(notes,exported=new Date().toISOString()){
+ const records=Object.create(null);
+ for(const [id,x] of Object.entries(notes||{}))records[id]=reviewCheckRecord(id,x);
+ return {schema:REVIEW_SCHEMA,purpose:'Decisiones docentes y alternativas sin autorización de uso en exámenes',
+  exported,records};
+}
+function reviewMergeBundle(current,payload,cases){
+ const v2=payload?.schema===REVIEW_SCHEMA,legacy=payload?.schema===1;
+ if(!v2&&!legacy)throw Error('Esquema de revisión filológica desconocido');
+ const incoming=v2?payload.records:payload.decisions;
+ if(!incoming||typeof incoming!=='object'||Array.isArray(incoming)||
+  Object.keys(incoming).length>10000)throw Error('Archivo de decisiones inválido');
+ const index=new Map(cases.map(x=>[x.id,x])),next={...current};
+ let added=0,identical=0,conflicts=0,orphaned=0,historyAdded=0;
+ for(const [id,raw] of Object.entries(incoming)){
+  const item=reviewCheckRecord(id,raw),active=index.get(id);
+  if(!active||!reviewDecisionApplies(active,item))orphaned++;
+  const before=Object.hasOwn(next,id)?reviewCheckRecord(id,next[id]):null;
+  if(!before){next[id]=item;added++;continue}
+  const candidates=[item,...(item.alternatives||[])].map(reviewFlat);
+  let changed=false,alts=(before.alternatives||[]).map(reviewFlat);
+  for(const x of candidates){
+   if(reviewSame(before,x)||alts.some(a=>reviewSame(a,x)))continue;
+   if(alts.length>=REVIEW_MAX_ALTERNATIVES)throw Error('Demasiadas alternativas para '+id);
+   alts.push(x);historyAdded++;changed=true;
+  }
+  if(changed){next[id]={...reviewFlat(before),alternatives:alts};conflicts++}
+  else identical++;
+ }
+ return {decisions:next,added,identical,conflicts,orphaned,historyAdded,total:Object.keys(incoming).length};
+}
+function reviewWriteDecision(notes,x,decision,note,updated=new Date().toISOString()){
+ if(!REVIEW_ACTIONS.has(decision)||typeof note!=='string')throw Error('Decisión desconocida');
+ const old=notes[x.id],trimmed=note.trim(),draft={decision,note:trimmed,entry:x.entry,
+  updated,signature:reviewSignature(x)};
+ if(!old&&!decision&&!trimmed)return notes;
+ if(old&&reviewDecisionApplies(x,old)&&old.decision===decision&&old.note===trimmed)return notes;
+ const variants=old?.alternatives?.map(reviewFlat)||[];
+ if(old&&(!variants.some(a=>reviewSame(a,old))))variants.push(reviewFlat(old));
+ if(variants.length>REVIEW_MAX_ALTERNATIVES)throw Error('Historial de esta incidencia lleno; exporta una copia');
+ return {...notes,[x.id]:{...draft,...(variants.length?{alternatives:variants}:{})}};
+}
+function reviewSelectAlternative(notes,x,index){
+ const old=notes[x.id],alt=old?.alternatives?.[index];
+ if(!old||!alt||!reviewDecisionApplies(x,alt))
+  throw Error('La alternativa pertenece a una versión anterior de la incidencia');
+ const alts=old.alternatives.filter((_,i)=>i!==index).map(reviewFlat);
+ if(!alts.some(a=>reviewSame(a,old)))alts.push(reviewFlat(old));
+ if(alts.length>REVIEW_MAX_ALTERNATIVES)throw Error('Historial demasiado grande');
+ return {...notes,[x.id]:{...reviewFlat(alt),alternatives:alts}};
+}
+
 function decisions(){
  try{const data=JSON.parse(localStorage.getItem(STORE)||'{}');return data&&typeof data==='object'?data:{}}
  catch{return {}}
@@ -131,8 +245,10 @@ async function init(){
   '<label for="reviewUnit">Unidad<select id="reviewUnit"><option value="">Todas las unidades</option></select></label>'+
   '<label for="reviewQuery">Buscar lema o forma<input type="text" id="reviewQuery" placeholder="sum / γίγνομαι" autocomplete="off"></label></div>'+
   '<label class="check"><input id="reviewPending" type="checkbox" checked> Mostrar solo las incidencias pendientes</label>'+
+  '<label class="check"><input id="reviewConflicts" type="checkbox"> Solo incidencias con decisiones alternativas</label>'+
   '<p id="reviewSummary" class="hint" role="status" aria-live="polite">Cargando índice local…</p>'+
-  '<div class="review-actions"><button type="button" id="reviewExport" class="secondary">Exportar decisiones</button> <button type="button" id="reviewExportAll" class="secondary">Exportar incidencias</button></div>'+
+  '<div class="review-actions"><button type="button" id="reviewExport" class="secondary">Exportar decisiones e historial</button> <button type="button" id="reviewImport" class="secondary">Importar y conciliar</button> <button type="button" id="reviewExportAll" class="secondary">Exportar incidencias</button><input id="reviewImportFile" type="file" accept=".json,application/json" hidden></div>'+
+  '<p id="reviewBackupStatus" class="hint" role="status" aria-live="polite">Copia local. Ninguna decisión de esta cola autoriza formas para exámenes.</p>'+
   '<div id="reviewItems"></div>'+
   '<div class="review-actions"><button type="button" id="reviewMore" class="secondary" hidden>Mostrar 40 más</button></div>'+
   '<p class="hint">Estados posibles: pendiente, aceptar variante, solicitar corrección o excluir de los ejercicios. Ninguno modifica el banco compartido. Las fuentes documentan la observación; las decisiones siguen siendo tuyas.</p></details>';
@@ -160,10 +276,16 @@ async function init(){
    word=norm(byId('reviewQuery').value),pending=byId('reviewPending').checked;
   state.filtered=state.cases.filter(x=>(!kind||x.kind===kind)&&(!unit||x.units.includes(unit))&&
    (!word||norm(x.entry+' '+x.lemma+' '+x.form+' '+x.detail).includes(word))&&
-   (!pending||!state.notes[x.id]?.decision));
-  const resolved=state.cases.filter(x=>!!state.notes[x.id]?.decision).length;
+   (!pending||!reviewDecisionApplies(x,state.notes[x.id])||!state.notes[x.id].decision)&&
+   (!byId('reviewConflicts').checked||!!state.notes[x.id]?.alternatives?.some(a=>reviewDecisionApplies(x,a))));
+  const resolved=state.cases.filter(x=>reviewDecisionApplies(x,state.notes[x.id])&&!!state.notes[x.id].decision).length;
+  const conflicts=state.cases.filter(x=>state.notes[x.id]?.alternatives?.some(a=>reviewDecisionApplies(x,a))).length;
+  const obsolete=Object.entries(state.notes).filter(([id,x])=>
+   !state.cases.some(y=>y.id===id&&reviewDecisionApplies(y,x))).length;
   byId('reviewSummary').textContent=state.cases.length+' incidencias detectadas · '+
-   resolved+' con decisión guardada · '+state.filtered.length+' coinciden con el filtro. Se muestran '+Math.min(state.limit,state.filtered.length)+'.';
+   resolved+' con decisión vigente · '+conflicts+' con historial alternativo · '+
+   obsolete+' decisiones archivadas de versiones anteriores · '+state.filtered.length+
+   ' coinciden con el filtro. Se muestran '+Math.min(state.limit,state.filtered.length)+'.';
   const holder=byId('reviewItems');holder.replaceChildren();
   for(const x of state.filtered.slice(0,state.limit)){
    const article=document.createElement('article');article.className='review-item';
@@ -177,18 +299,45 @@ async function init(){
    for(const [v,t]of [['','Pendiente'],['aceptar','Aceptar variante o criterio'],['corregir','Corregir / completar entrada'],['excluir','No usar en ejercicios']]){
     const option=document.createElement('option');option.value=v;option.textContent=t;select.append(option);
    }
-   select.value=state.notes[x.id]?.decision||'';
+   select.value=reviewDecisionApplies(x,state.notes[x.id])?state.notes[x.id].decision:'';
    const note=document.createElement('textarea');note.placeholder='Nota o decisión docente (opcional)';
    note.setAttribute('aria-label','Observaciones para '+x.lemma);
-   note.value=state.notes[x.id]?.note||'';
+   note.value=reviewDecisionApplies(x,state.notes[x.id])?state.notes[x.id].note:'';
    function store(){
-    if(!select.value&&!note.value.trim())delete state.notes[x.id];
-    else state.notes[x.id]={decision:select.value,note:note.value.trim(),entry:x.entry,updated:new Date().toISOString()};
-    if(!save(state.notes))byId('reviewSummary').textContent='No se pudo guardar: exporta las decisiones para no perderlas.';
+    try{
+     const next=reviewWriteDecision(state.notes,x,select.value,note.value);
+     if(next===state.notes)return;
+     if(!save(next))throw Error('No se pudo guardar en este dispositivo');
+     state.notes=next;show();
+    }catch(error){byId('reviewBackupStatus').textContent=error.message+'. Exporta una copia.'}
    }
-   select.addEventListener('change',()=>{store();show()});
+   select.addEventListener('change',store);
    note.addEventListener('change',store);
-   article.append(title,label,sample,desc,origin,select,note);holder.append(article);
+   article.append(title,label,sample,desc,origin,select,note);
+   const versions=state.notes[x.id]?.alternatives||[];
+   const usable=versions.map((v,i)=>({v,i})).filter(z=>reviewDecisionApplies(x,z.v));
+   if(usable.length){
+    const history=document.createElement('details'),label=document.createElement('summary');
+    label.textContent=usable.length+' decisiones alternativas conservadas';
+    history.append(label);
+    for(const {v,i} of usable){
+     const line=document.createElement('p');
+     line.textContent=(v.decision||'Pendiente')+' · '+v.updated+(v.note?' · '+v.note:'');
+     const button=document.createElement('button');button.type='button';button.className='secondary';
+     button.textContent='Usar esta decisión';
+     button.onclick=()=>{
+      if(!window.confirm('¿Usar esta decisión para '+x.entry+'? La actual se conservará en el historial.'))return;
+      try{
+       const next=reviewSelectAlternative(state.notes,x,i);
+       if(!save(next))throw Error('No se pudo guardar el cambio');
+       state.notes=next;show();
+      }catch(error){byId('reviewBackupStatus').textContent=error.message}
+     };
+     history.append(line,button);
+    }
+    article.append(history);
+   }
+   holder.append(article);
   }
   byId('reviewMore').hidden=state.limit>=state.filtered.length;
  }
@@ -203,15 +352,406 @@ async function init(){
    show();
   }catch(error){byId('reviewSummary').textContent='No se pudo consultar el índice: '+error.message}
  }
- for(const id of ['reviewKind','reviewUnit','reviewQuery','reviewPending'])byId(id).addEventListener(id==='reviewQuery'?'input':'change',()=>{state.limit=40;show()});
+ for(const id of ['reviewKind','reviewUnit','reviewQuery','reviewPending','reviewConflicts'])byId(id).addEventListener(id==='reviewQuery'?'input':'change',()=>{state.limit=40;show()});
  byId('reviewCourse').addEventListener('change',reload);
  byId('reviewMore').addEventListener('click',()=>{state.limit+=40;show()});
- byId('reviewExport').addEventListener('click',()=>download('decisiones-revision-morfologica.json',
-  {schema:1,description:'Decisiones docentes: no son formas verificadas',exported:new Date().toISOString(),decisions:state.notes}));
+ byId('reviewExport').addEventListener('click',()=>download('decisiones-revision-morfologica-v2.json',reviewBundle(state.notes)));
+ byId('reviewImport').addEventListener('click',()=>byId('reviewImportFile').click());
+ byId('reviewImportFile').addEventListener('change',async event=>{
+  const input=event.target,file=input.files?.[0];if(!file)return;
+  try{
+   if(file.size>2000000)throw Error('Archivo superior a 2 MB; no se ha importado');
+   const payload=JSON.parse(await file.text()),data=await window.ExaminaOfflineLemmatizer.load();
+   const cases=['lat1','lat4','gr1'].flatMap(c=>buildCases(data,c));
+   const result=reviewMergeBundle(state.notes,payload,cases);
+   const info=result.added+' nuevas · '+result.conflicts+' con versiones alternativas conservadas · '+
+    result.orphaned+' archivadas sin coincidencia vigente · '+result.identical+' ya presentes';
+   if(!window.confirm('Importación filológica: '+info+'. ¿Conservarlas sin sobrescribir decisiones locales?'))return;
+   if(!save(result.decisions))throw Error('No hay espacio para guardar la importación completa');
+   state.notes=result.decisions;show();
+   byId('reviewBackupStatus').textContent='Importación completada: '+info+
+    '. Las alternativas pueden elegirse individualmente; ninguna autoriza un análisis de examen.';
+  }catch(error){byId('reviewBackupStatus').textContent='Importación rechazada: '+error.message}
+  finally{input.value=''}
+ });
  byId('reviewExportAll').addEventListener('click',()=>download('incidencias-'+byId('reviewCourse').value+'.json',
   {schema:1,course:byId('reviewCourse').value,description:'Incidencias automáticas; propuestas sin aprobación',cases:state.cases}));
  reload();
 }
-window.ExaminaTeacherReview={buildCases};
+
+// Control de evidencia por FORMA individual, independiente de las decisiones por lema.
+// Una autorización permite usar una propuesta concreta en exámenes; no la verifica,
+// no cambia el índice filológico y no se hereda por analogía a otras flexiones.
+const EVIDENCE_STORE='examina-academic-evidence-v1';
+const EVIDENCE_SCHEMA='examina-academic-evidence/v1';
+const EVIDENCE_COURSES={lat1:'lat1',lat4:'lat4',gr1:'gr1'};
+const evidenceSource={
+ 0:'UniMorph · registro externo',1:'Paradigma docente · forma explícita',
+ 2:'Modelo regular · forma candidata',3:'Solo cita léxica',
+ 4:'Wikcionario · forma griega candidata',5:'Contraste externo · forma documentada',
+ 6:'Collatinus · referencia léxica',7:'Eulexis · referencia léxica'
+};
+function evidenceState(source){
+ if(source===1||source===5)return 'verificada';
+ if(source===0)return 'documentada';
+ if(source===2||source===4)return 'propuesta';
+ return 'no_disponible';
+}
+function evidenceKey(course,row){
+ if(!EVIDENCE_COURSES[course]||!Array.isArray(row)||row.length!==4)throw Error('Ficha de evidencia incorrecta');
+ const [lemma,form,tags,source]=row;
+ return JSON.stringify([EVIDENCE_SCHEMA,course,String(lemma).normalize('NFC'),
+  String(form).normalize('NFC'),String(tags).normalize('NFC'),source]);
+}
+function evidenceDecisions(){
+ try{
+  const saved=JSON.parse(localStorage.getItem(EVIDENCE_STORE)||'{}');
+  return saved&&typeof saved==='object'&&!Array.isArray(saved)?saved:{};
+ }catch{return {}}
+}
+function evidenceApproved(course,row,all=evidenceDecisions()){
+ if(evidenceState(row[3])!=='propuesta')return false;
+ const key=evidenceKey(course,row),decision=all[key];
+ return !!decision&&decision.action==='autorizar_uso'&&decision.schema===EVIDENCE_SCHEMA&&
+  decision.key===key&&decision.verified===false;
+}
+// Tres decisiones docentes cerradas: ἀθάνατος/αἰσχρός excluidos,
+// ἐχθρός admite –ά en el enunciado, pero sus DIEZ formas propuestas de
+// fuente 4 NO se habilitan hasta cotejo individual. También bloquea
+// autorizaciones antiguas o importadas.
+function evidenceProvisionalForbidden(course,row){
+ if(course!=='gr1'||!Array.isArray(row)||row[3]!==4)return false;
+ const lemma=row[0],tags=String(row[2]).split(';');
+ if(lemma==='πρωτοσ')return true;
+ if(lemma==='παισ'&&row[2]==='N;DAT;SG'&&
+   String(row[1]).normalize('NFD').replace(/[\u0304\u0306]/g,'').normalize('NFC')==='παῖδι')return true; // Variante épica frente al ático παιδί.
+ return tags.includes('ADJ')&&tags.includes('FEM')&&
+  ['αθανατοσ','εχθροσ','αισχροσ'].includes(lemma);
+}
+function evidenceGrant(course,row,all=evidenceDecisions(),timestamp=new Date().toISOString()){
+ if(evidenceState(row[3])!=='propuesta')throw Error('Solo pueden autorizarse propuestas individuales');
+ if(evidenceProvisionalForbidden(course,row))throw Error('Variante griega excluida por acentuación o paradigma docente');
+ const key=evidenceKey(course,row);
+ return {...all,[key]:{schema:EVIDENCE_SCHEMA,key,action:'autorizar_uso',verified:false,
+  course,lemma:row[0],form:row[1],tags:row[2],source:row[3],approvedAt:timestamp}};
+}
+function evidenceRevoke(course,row,all=evidenceDecisions()){
+ const next={...all};delete next[evidenceKey(course,row)];return next;
+}
+function evidenceCurricular(course,tags,limit){
+ const bits=String(tags).split(';'),has=tag=>bits.includes(tag);
+ if(!Number.isInteger(limit)||limit<1)return false;
+ if(course==='lat1'){
+  if(has('N'))return has('SG')||has('PL');
+  if(has('ADJ'))return limit>=2&&(has('SG')||has('PL'));
+  if(has('PRO'))return limit>=3;
+  if(has('V')){
+   if(!has('IND'))return false;
+   const voice=has('ACT')?'ACT':has('PASS')?'PASS':null;
+   if(!voice)return false;
+   const present=has('PRS'),imperfect=has('PST')&&has('IPFV'),
+    future=has('FUT'),perfect=has('PRF');
+   if(voice==='PASS'&&limit<3)return false;
+   if(present)return true;
+   if(imperfect)return limit>=2&&(voice==='ACT'||limit>=3);
+   if(future)return limit>=7;
+   if(perfect)return limit>=4&&voice==='ACT'; // Perfectum pasivo compuesto solo desde UD9 y contrastado.
+   return false;
+  }
+  return false;
+ }
+ if(course==='gr1'){
+  if(has('N'))return limit>=8; // Sin clase de declinación contrastada, no anticipar la tercera.
+  if(has('ADJ'))return limit>=5;
+  if(has('PRO'))return limit>=7;
+  if(has('V'))return has('IND')&&has('PRS')&&
+   ((has('ACT')&&limit>=2)||((has('MID')||has('PASS'))&&limit>=6));
+  return false;
+ }
+ return false; // Sin matriz contrastada para Latín 4.º en esta extensión.
+}
+function evidenceUnitAt(info,course){
+ const units=info?.[course]?.units||[];
+ const numbers=units.flatMap(u=>[...String(u).matchAll(/\d+/g)].map(m=>+m[0]));
+ return numbers.length?Math.min(...numbers):Infinity;
+}
+function evidenceRows(data,course,limit=99){
+ if(!EVIDENCE_COURSES[course]||!data?.rows||!data?.vocabulary)return [];
+ const language=course==='gr1'?'grc':'lat';
+ return (data.rows[language]||[]).filter(row=>{
+  if(!Array.isArray(row)||row.length!==4||evidenceState(row[3])!=='propuesta')return false;
+  const info=data.vocabulary[language]?.[row[0]];
+  return info?.[course]&&evidenceUnitAt(info,course)<=limit;
+ });
+}
+// En el análisis escolar una misma forma no debe sortearse con una sola
+// solución cuando existen lecturas homógrafas o sincréticas diferentes.
+const evidenceReadingIndexes=new WeakMap();
+function evidenceUniqueReading(data,course,row){
+ if(!data||!EVIDENCE_COURSES[course])return false;
+ let index=evidenceReadingIndexes.get(data);
+ if(!index){index=new Map();evidenceReadingIndexes.set(data,index)}
+ if(!index.has(course)){
+  const lang=course==='gr1'?'grc':'lat',bySurface=new Map();
+  for(const candidate of data.rows?.[lang]||[]){
+   if(![0,1,2,4,5].includes(candidate[3])||
+    !data.vocabulary?.[lang]?.[candidate[0]]?.[course])continue;
+   const surface=String(candidate[1]).normalize('NFC').toLocaleLowerCase();
+   if(!bySurface.has(surface))bySurface.set(surface,new Set());
+   bySurface.get(surface).add(candidate[0]+'|'+candidate[2]);
+  }
+  index.set(course,bySurface);
+ }
+ const surface=String(row[1]).normalize('NFC').toLocaleLowerCase();
+ return index.get(course).get(surface)?.size===1;
+}
+// Se añaden EXCLUSIVAMENTE fichas autorizadas que superan la matriz curricular.
+// Los registros fuente 3/6/7 no aportan análisis; las fuentes 0/1/5 mantienen
+// sus rutas verificadas ya existentes, sin crear aquí un segundo banco paralelo.
+// Fase IV: cotejo íntegro del JSON importado contra el índice local actual.
+// No cambia el código de fuente ni convierte propuestas en verificadas.
+function validateEvidenceImport(data,payload,existing=evidenceDecisions()){
+ if(!data?.rows||!data?.vocabulary)throw Error('Índice local no disponible');
+ if(payload?.schema!==EVIDENCE_SCHEMA||!payload.decisions||
+   typeof payload.decisions!=='object'||Array.isArray(payload.decisions))
+  throw Error('Formato de autorizaciones desconocido');
+ const records=Object.entries(payload.decisions);
+ if(records.length>10000)throw Error('Demasiadas autorizaciones');
+ const available=new Map();
+ for(const course of Object.keys(EVIDENCE_COURSES))
+  for(const row of evidenceRows(data,course,99))
+   available.set(evidenceKey(course,row),{course,row});
+ for(const [key,decision] of records){
+  let parsed;try{parsed=JSON.parse(key)}catch{throw Error('Identificador ilegible')}
+  const actual=available.get(key);
+  if(!actual||!Array.isArray(parsed)||parsed.length!==6||
+    parsed[0]!==EVIDENCE_SCHEMA||parsed[1]!==actual.course)
+   throw Error('Forma inexistente, sin unidad o procedencia modificada');
+  const {course,row}=actual;
+  if(decision?.course!==course||decision.lemma!==row[0]||
+    decision.form!==row[1]||decision.tags!==row[2]||
+    decision.source!==row[3]||typeof decision.approvedAt!=='string'||
+    !Number.isFinite(Date.parse(decision.approvedAt))||
+    !evidenceApproved(course,row,{[key]:decision}))
+   throw Error('La autorización no corresponde a la ficha individual');
+  if(evidenceProvisionalForbidden(course,row)||!evidenceCurricular(course,row[2],14)||
+    !evidenceUniqueReading(data,course,row))
+   throw Error('Forma bloqueada por criterio filológico, currículo o ambigüedad');
+ }
+ const added=records.filter(([key])=>!Object.hasOwn(existing,key)).length;
+ return {decisions:{...payload.decisions,...existing},added,preserved:records.length-added,total:records.length};
+}
+function approvedExamForms(data,course,limit,all=evidenceDecisions()){
+ if(!data)return [];
+ const lang=course==='gr1'?'grc':'lat',found=[],seen=new Set();
+ for(const row of evidenceRows(data,course,limit)){
+  if(!evidenceApproved(course,row,all)||evidenceProvisionalForbidden(course,row)||
+   !evidenceCurricular(course,row[2],limit)||!evidenceUniqueReading(data,course,row))continue;
+  const [lemma,form,tags,source]=row,entry=data.vocabulary[lang]?.[lemma]?.[course]?.entry;
+  if(!entry)continue;
+  const type=tags.split(';')[0];
+  // Para los sustantivos latinos se exige una declinación reconocible en
+  // la unidad: los irregulares sin clasificación no son candidatos de examen.
+  if(course==='lat1'&&type==='N'){
+   const stem=String(entry).split(',')[0];
+   const secondOrFirst=/,\s*[–-]?(?:ae|æ|i)\b/i.test(entry);
+   if(!secondOrFirst)continue; // Otras declinaciones requieren contraste individual del paradigma.
+   if(!stem||!tags.split(';').some(x=>['NOM','GEN','DAT','ACC','VOC','ABL'].includes(x)))continue;
+  }
+  const category=({N:'nouns',ADJ:'adjectives',V:'verbs',PRO:'pronouns'})[type];
+  if(!category)continue;
+  const key=evidenceKey(course,row);
+  if(seen.has(key))continue;seen.add(key);
+  const analysis=String(tags).split(';').join(' · ');
+  if(course==='gr1'){
+   found.push({id:'academic-'+encodeURIComponent(key),kind:'forms',minUnit:evidenceUnitAt(data.vocabulary[lang][lemma],course),
+    contentUnits:[evidenceUnitAt(data.vocabulary[lang][lemma],course)],prompt:form,
+    answer:analysis+' · propuesta autorizada (no verificada)',lemmas:[entry],
+    teacherAuthorized:true,verified:false,category,evidenceKey:key,evidenceForm:form,
+    evidenceSource:evidenceSource[source],sourceCode:source});
+  }else{
+   found.push({form,entry,category,answer:analysis+' · propuesta autorizada (no verificada)',
+    evidenceKey:key,evidenceForm:form,evidenceSource:evidenceSource[source],sourceCode:source});
+  }
+ }
+ return found;
+}
+function evidenceAttributes(item){
+ if(!item?.evidenceKey)return '';
+ // Los atributos son identificadores técnicos: no se imprimen en el Word.
+ return ' data-academic-key="'+encodeURIComponent(item.evidenceKey)+
+  '" data-academic-form="'+encodeURIComponent(item.evidenceForm)+
+  '" title="Propuesta autorizada por el docente; sigue sin verificar"';
+}
+function evidenceCheckExam(paper,course,all=evidenceDecisions()){
+ const problems=[];
+ for(const node of paper?.querySelectorAll?.('[data-academic-key]')||[]){
+  let key,form,parsed;
+  try{
+   key=decodeURIComponent(node.dataset.academicKey);
+   form=decodeURIComponent(node.dataset.academicForm);
+   parsed=JSON.parse(key);
+  }catch{problems.push('Metadatos de evidencia ilegibles');continue}
+  const current=node.querySelector('i')?.textContent?.trim()||
+    node.textContent?.trim()||'';
+  if(!Array.isArray(parsed)||parsed.length!==6||parsed[0]!==EVIDENCE_SCHEMA||
+    parsed[1]!==course||evidenceProvisionalForbidden(course,parsed.slice(2))||
+    !evidenceApproved(course,parsed.slice(2),all)||
+    current.replace(/[æÆ]/g,c=>c==='Æ'?'AE':'ae').replace(/[œŒ]/g,c=>c==='Œ'?'OE':'oe').normalize('NFC')!==
+    form.replace(/[æÆ]/g,c=>c==='Æ'?'AE':'ae').replace(/[œŒ]/g,c=>c==='Œ'?'OE':'oe').normalize('NFC')){
+   problems.push('Propuesta modificada, revocada o sin autorización: '+form);
+  }
+ }
+ return {ok:!problems.length,problems};
+}
+function evidenceMayExport(paper,course){
+ const validation=evidenceCheckExam(paper,course);
+ if(validation.ok)return true;
+ const section=document.getElementById('academicEvidenceReview');
+ if(section?.tagName==='DETAILS')section.open=true;
+ section?.scrollIntoView?.({block:'start',behavior:'smooth'});
+ const status=document.getElementById('academicEvidenceSummary');
+ if(status)status.textContent='Exportación bloqueada: '+validation.problems.slice(0,3).join(' · ')+
+  '. Confirma de nuevo la forma concreta o regenera ese elemento.';
+ return false;
+}
+function initAcademicEvidence(){
+ if(document.getElementById('academicEvidenceReview'))return;
+ const anchor=document.getElementById('morphTeacherReview')||document.getElementById('offlineLemmaPanel');
+ if(!anchor)return;
+ const root=document.createElement('details');root.id='academicEvidenceReview';
+ root.className='field no-print';
+ root.innerHTML='<summary><strong>Evidencia académica por forma</strong></summary>'+
+  '<p class="hint">Verificada: ficha docente o contraste individual. Documentada: registro externo sin aprobación automática del análisis. Propuesta: requiere tu autorización individual para entrar en el sorteo. Sin registro flexivo: no disponible. La autorización nunca convierte la propuesta en verificada ni modifica los bancos.</p>'+
+  '<div class="review-controls"><label>Curso <select id="academicEvidenceCourse"><option value="lat1">Latín I</option><option value="lat4">Latín 4.º ESO</option><option value="gr1">Griego I</option></select></label>'+
+  '<label>Hasta la unidad <input id="academicEvidenceUnit" type="number" min="1" max="14" value="4"></label>'+
+  '<label>Buscar forma o lema <input id="academicEvidenceQuery" type="text" autocomplete="off" placeholder="duco / λόγου"></label></div>'+
+  '<p id="academicEvidenceSummary" role="status" aria-live="polite">Cargando evidencias locales…</p>'+ 
+  '<div id="academicEvidenceLookup" class="hint" aria-live="polite"></div>'+
+  '<div id="academicEvidenceRows"></div><button type="button" class="secondary" id="academicEvidenceMore">Mostrar más</button>'+
+  '<div class="review-actions"><button type="button" class="secondary" id="academicEvidenceExport">Exportar autorizaciones</button>'+
+  '<button type="button" class="secondary" id="academicEvidenceImport">Importar autorizaciones</button>'+
+  '<input id="academicEvidenceFile" type="file" accept=".json,application/json" hidden></div>'+
+  '<p class="hint">Autorizar una propuesta permite seleccionarla en una generación posterior, únicamente cuando la unidad y su análisis sean curriculares. Una revocación impide exportar un examen que todavía contenga esa propuesta.</p>';
+ anchor.after(root);
+ const css=document.createElement('style');
+ css.textContent='#academicEvidenceReview{border:1px solid var(--line,#cbd5e1);border-radius:9px;padding:12px;margin:12px 0;background:var(--surface,#fff);color:var(--ink,#17243b)}'+
+  '#academicEvidenceReview>summary{cursor:pointer;font-weight:700}'+
+  '#academicEvidenceReview .review-controls{display:grid;grid-template-columns:1fr 100px 1fr;gap:9px;margin:12px 0}'+
+  '#academicEvidenceReview .review-controls label{font-size:12px;font-weight:650}'+
+  '#academicEvidenceReview .review-controls :is(input,select){width:100%;min-width:0}'+
+  '#academicEvidenceReview .evidence-card{border:1px solid var(--line,#cbd5e1);padding:10px;border-radius:8px;margin:10px 0}'+
+  '#academicEvidenceReview .evidence-card p{font-size:12px;margin:5px 0;overflow-wrap:anywhere}'+
+  '#academicEvidenceReview .evidence-card button{margin-top:6px;min-height:42px}'+
+  '#academicEvidenceReview .review-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}'+
+  '@media(max-width:660px){#academicEvidenceReview .review-controls{grid-template-columns:1fr}}'+
+  '#paper [data-academic-key]{text-decoration:underline dotted var(--accent,#315c93);text-underline-offset:3px}'+
+  '@media print{#academicEvidenceReview{display:none!important}#paper [data-academic-key]{text-decoration:none!important}}';
+ document.head.append(css);
+ const get=id=>document.getElementById(id);
+ let all=evidenceDecisions(),limit=20;
+ async function render(){
+  try{
+   const data=await window.ExaminaOfflineLemmatizer.load();
+   const course=get('academicEvidenceCourse').value,
+    max=Math.max(1,Math.min(14,Number(get('academicEvidenceUnit').value)||1)),
+    query=norm(get('academicEvidenceQuery').value);
+   const lang=course==='gr1'?'grc':'lat';
+   const exact=query?(data.rows[lang]||[]).filter(row=>
+    data.vocabulary[lang]?.[row[0]]?.[course]&&
+    evidenceUnitAt(data.vocabulary[lang][row[0]],course)<=max&&
+    (norm(row[1])===query||norm(row[0])===query)): [];
+   const lookup=get('academicEvidenceLookup');
+   if(!query)lookup.textContent='Busca una forma para comparar registros verificados, documentados, propuestas y ausencia de análisis.';
+   else if(!exact.length)lookup.textContent='No disponible: no hay forma ni análisis registrado para esta consulta en la unidad seleccionada.';
+   else lookup.textContent='Evidencia de la forma consultada: '+exact.slice(0,12).map(row=>
+    row[1]+' ('+row[0]+'): '+
+    ({verificada:'verificada individualmente',documentada:'documentada externamente, sin verificación curricular',
+      propuesta:'propuesta sin verificación',no_disponible:'sin análisis flexivo'}[evidenceState(row[3])])+
+    ' · '+evidenceSource[row[3]]+' · '+row[2]).join(' | ')+
+    (exact.length>12?' · '+(exact.length-12)+' lecturas adicionales':'');
+   const rows=evidenceRows(data,course,max).filter(row=>!query||
+    norm(row[0]+' '+row[1]+' '+data.vocabulary[course==='gr1'?'grc':'lat']?.[row[0]]?.[course]?.entry).includes(query));
+   const approved=rows.filter(row=>evidenceApproved(course,row,all)&&
+     !evidenceProvisionalForbidden(course,row)).length,
+    held=rows.filter(row=>evidenceProvisionalForbidden(course,row)||
+     !evidenceCurricular(course,row[2],max)||!evidenceUniqueReading(data,course,row)).length;
+   get('academicEvidenceSummary').textContent=rows.length+' propuestas concretas · '+approved+
+    ' autorizadas solo para uso docente · '+held+' sin autorización curricular en esta unidad.'+
+    (query&&!rows.length?' No hay propuestas registradas: consulta el lematizador para comprobar evidencias documentadas o ausencia de análisis.':'');
+   const host=get('academicEvidenceRows');host.replaceChildren();
+   for(const row of rows.slice(0,limit)){
+    const key=evidenceKey(course,row),approved=evidenceApproved(course,row,all),
+     eligible=!evidenceProvisionalForbidden(course,row)&&
+      evidenceCurricular(course,row[2],max)&&evidenceUniqueReading(data,course,row);
+    const entry=data.vocabulary[course==='gr1'?'grc':'lat']?.[row[0]]?.[course]?.entry||row[0];
+    const card=document.createElement('article');card.className='evidence-card';
+    const title=document.createElement('strong');title.textContent=row[1]+' — '+entry;
+    const description=document.createElement('p');description.textContent=row[2]+' · '+evidenceSource[row[3]];
+    const status=document.createElement('p');status.textContent=evidenceProvisionalForbidden(course,row)?
+     'Variante excluida por acentuación o paradigma docente; una autorización previa no permite sortearla.':
+     approved?'Propuesta autorizada para uso docente (no verificada)':
+     eligible?'Propuesta sin verificar; excluida del sorteo hasta autorizarla.':
+     'Propuesta sin encaje curricular o con lecturas ambiguas; no se sortea aunque se autorice.';
+    const check=document.createElement('label');check.className='check';
+    const consent=document.createElement('input');consent.type='checkbox';
+    check.append(consent,document.createTextNode('He revisado esta forma, su análisis y su procedencia.'));
+    const button=document.createElement('button');button.type='button';button.className='secondary';
+    button.textContent=approved?'Revocar autorización':'Autorizar esta propuesta';
+    button.disabled=!approved&&(!eligible||!consent.checked);
+    consent.onchange=()=>{button.disabled=!approved&&(!eligible||!consent.checked)};
+    button.onclick=()=>{
+     if(approved)all=evidenceRevoke(course,row,all);
+     else if(consent.checked&&eligible)all=evidenceGrant(course,row,all);
+     else return;
+     try{localStorage.setItem(EVIDENCE_STORE,JSON.stringify(all))}catch{
+      get('academicEvidenceSummary').textContent='No se pudo guardar. Exporta una copia de las decisiones.';
+      return;
+     }
+     document.dispatchEvent(new Event('examina-academic-evidence-changed'));
+     // No se regenera el examen ni se borra una edición manual.
+     render();
+    };
+    card.append(title,description,status,check,button);host.append(card);
+   }
+   get('academicEvidenceMore').hidden=rows.length<=limit;
+  }catch(error){get('academicEvidenceSummary').textContent='No se pudo consultar el índice local: '+error.message}
+ }
+ for(const id of ['academicEvidenceCourse','academicEvidenceUnit','academicEvidenceQuery']){
+  get(id).addEventListener(id==='academicEvidenceQuery'?'input':'change',()=>{limit=20;render()});
+ }
+ get('academicEvidenceMore').onclick=()=>{limit+=20;render()};
+ get('academicEvidenceExport').onclick=()=>download('autorizaciones-formas-morfologicas.json',
+  {schema:EVIDENCE_SCHEMA,description:'Autorizaciones docentes individuales: no certifican formas ni corrigen los bancos',
+   exported:new Date().toISOString(),decisions:all});
+ get('academicEvidenceImport').onclick=()=>get('academicEvidenceFile').click();
+ get('academicEvidenceFile').onchange=async event=>{
+  const file=event.target.files?.[0];if(!file)return;
+  try{
+   if(file.size>1000000)throw Error('Archivo demasiado grande');
+   const payload=JSON.parse(await file.text());
+   if(payload?.schema!==EVIDENCE_SCHEMA||!payload.decisions||Array.isArray(payload.decisions))
+    throw Error('Formato de autorizaciones desconocido');
+   const data=await window.ExaminaOfflineLemmatizer.load();
+   const checked=validateEvidenceImport(data,payload,all);
+   if(!window.confirm('¿Importar '+checked.added+' autorizaciones nuevas? Se conservan '+
+    checked.preserved+' decisiones locales. Ninguna propuesta pasa a verificada.'))return;
+   localStorage.setItem(EVIDENCE_STORE,JSON.stringify(checked.decisions));
+   all=checked.decisions;
+   document.dispatchEvent(new Event('examina-academic-evidence-changed'));
+   render();
+  }catch(error){get('academicEvidenceSummary').textContent='Importación rechazada: '+error.message}
+  finally{event.target.value=''}
+ };
+ render();
+}
+
+window.ExaminaTeacherReview={buildCases,reviewSignature,reviewDecisionApplies,reviewBundle,
+ reviewMergeBundle,reviewWriteDecision,reviewSelectAlternative,evidenceState,evidenceKey,evidenceApproved,
+ evidenceGrant,evidenceRevoke,evidenceRows,approvedExamForms,evidenceAttributes,
+ evidenceCheckExam,evidenceMayExport,evidenceCurricular,evidenceUniqueReading,
+ evidenceProvisionalForbidden,validateEvidenceImport};
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initAcademicEvidence);
+else initAcademicEvidence();
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();

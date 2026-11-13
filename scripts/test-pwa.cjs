@@ -231,7 +231,7 @@ const server=http.createServer(async(req,res)=>{
    const reg=await navigator.serviceWorker.ready;
    const keys=await caches.keys();
    const storage=await caches.open(keys.find(k=>k.startsWith('examina-pwa-')));
-   const paths=['index.html','offline.html','pwa.js','exam-scoring.js','offline-lemmas.js','verification-review.js',
+   const paths=['index.html','offline.html','pwa.js','exam-scoring.js','unified-backup.js','offline-lemmas.js','verification-review.js',
     'data/unimorph/lat-v.json','data/lemmas/teacher-forms.json',
     'data/latinismos-docente.json','data/prefijos-docente.json','data/modificacion-preverbial-docente.json',
     'data/modificacion-preverbial-unidades-lat1.json','data/lat4-progresion-lexico.json',
@@ -259,7 +259,14 @@ const server=http.createServer(async(req,res)=>{
   await page.reload({waitUntil:'load'});
   assert(await page.locator('#paper .exam-sheet').count()>0,'La vista previa no se carga sin red');
   await page.locator('#pwaStatus').waitFor({state:'visible'});
-  assert.match(await page.locator('#pwaStatus').innerText(),/Sin conexión/);
+  const offlineStatus=await page.evaluate(async()=>{
+   const connected=await fetch('./comprobar-conexion-pwa',{cache:'no-store'})
+    .then(()=>true,()=>false);
+   return {connected,reportedOnline:navigator.onLine,status:document.getElementById('pwaStatus').textContent};
+  });
+  assert.equal(offlineStatus.connected,false,'La recarga debe funcionar con la red realmente cortada');
+  assert.match(offlineStatus.status,offlineStatus.reportedOnline
+   ?/^Preparada para funcionar sin conexión/:/^Sin conexión/);
   assert(await page.evaluate(key=>!!localStorage.getItem(key),storedDraft),
    'El borrador local se ha perdido tras recargar offline');
   await page.evaluate(()=>document.getElementById('restoreDraft').click());

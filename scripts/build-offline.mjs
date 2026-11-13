@@ -30,6 +30,10 @@ export async function renderOffline(root=projectRoot){
  const qualityExternal='<script src="vocabulary-quality.js" defer></script>';
  if(!html.includes(qualityExternal))throw new Error('Falta el módulo de auditoría de vocabulario');
  html=html.replace(qualityExternal,'<script>'+qualityModule.replace(/<\/script/gi,'<\\/script')+'</script>');
+ const unifiedExternal='<script src="unified-backup.js" defer></script>';
+ if(!html.includes(unifiedExternal))throw new Error('Falta la copia unificada');
+ const unifiedModule=await readFile(resolve(root,'unified-backup.js'),'utf8');
+ html=html.replace(unifiedExternal,'<script>'+unifiedModule.replace(/<\/script/gi,'<\\/script')+'</script>');
  const scoringModule=await readFile(resolve(root,'exam-scoring.js'),'utf8');
  const scoringExternal='<script src="exam-scoring.js" defer></script>';
  if(!html.includes(scoringExternal))throw new Error('Falta el gestor de puntuación por pregunta');

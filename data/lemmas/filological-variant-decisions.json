@@ -1,0 +1,103 @@
+{
+  "schema": 1,
+  "coursePolicy": "Sin nuevas claves de calificación automáticas: solo consulta de variantes y bloqueo curricular de lemas sin unidad.",
+  "decisions": [
+    {
+      "id": "principal-boulei",
+      "course": "gr1",
+      "lang": "grc",
+      "lemma": "βουλομαι",
+      "primary": "βούλει",
+      "primaryTags": "V;IND;MID;PRS;2;SG",
+      "reason": "Segunda singular de indicativo medio. Se conserva la forma principal ya contrastada.",
+      "reference": "https://logeion.uchicago.edu/morpho/%CE%B2%CE%BF%CF%8D%CE%BB%CE%BF%CE%BC%CE%B1%CE%B9",
+      "variants": [
+        {
+          "form": "βούλῃ",
+          "tags": "V;IND;MID;PRS;2;SG",
+          "note": "También admite lectura como presente de subjuntivo medio, 2.ª singular; no utilizar en análisis de respuesta única."
+        },
+        {
+          "form": "βούλεαι",
+          "tags": "V;IND;MID;PRS;2;SG",
+          "note": "Variante jónica documentada. Solo consulta, no calificación automática."
+        }
+      ],
+      "noUnambiguousExamFromVariants": true
+    },
+    {
+      "id": "principal-erche",
+      "course": "gr1",
+      "lang": "grc",
+      "lemma": "ερχομαι",
+      "primary": "ἔρχῃ",
+      "primaryTags": "V;IND;MID;PRS;2;SG",
+      "reason": "Conservación del paradigma docente de presente; las formas alternativas están registradas sin alterar el modelo.",
+      "reference": "https://logeion.uchicago.edu/morpho/%E1%BC%94%CF%81%CF%87%CE%B5%CE%B9",
+      "variants": [
+        {
+          "form": "ἔρχει",
+          "tags": "V;IND;MID;PRS;2;SG",
+          "note": "Variante documentada del indicativo medio; solo consulta."
+        },
+        {
+          "form": "ἔρχεαι",
+          "tags": "V;IND;MID;PRS;2;SG",
+          "note": "Variante documentada del indicativo medio; solo consulta."
+        }
+      ],
+      "noUnambiguousExamFromVariants": true
+    },
+    {
+      "id": "ambas-abfui",
+      "course": "lat1",
+      "lang": "lat",
+      "lemma": "absum",
+      "primary": "abfui",
+      "primaryTags": "V;IND;ACT;PRF;1;SG",
+      "reason": "Se preserva el enunciado docente absum, abfui; afui es variante lexicográfica. La aceptación no implica verificar todo el perfecto o el pluscuamperfecto alternativos.",
+      "reference": "https://logeion.uchicago.edu/absum",
+      "variants": [
+        {
+          "form": "afui",
+          "tags": "V;IND;ACT;PRF;1;SG",
+          "note": "Variante atestiguada del perfecto, primera singular. No extender automáticamente a otras personas ni tiempos."
+        }
+      ],
+      "noUnambiguousExamFromVariants": true
+    },
+    {
+      "id": "conservar-nonvis",
+      "course": "lat1",
+      "lang": "lat",
+      "lemma": "nolo",
+      "primary": "nonvis",
+      "primaryTags": "V;IND;ACT;PRS;2;SG",
+      "reason": "La alternativa non vis consta de dos palabras gráficas; se documenta, pero no se ofrece como forma única en el lematizador ni en el análisis de una sola palabra.",
+      "reference": "https://www.nationalarchives.gov.uk/latin/stage-2-latin/resources/stage-2-latin-grammar-resource/",
+      "variants": [
+        {
+          "form": "non vis",
+          "tags": "V;IND;ACT;PRS;2;SG",
+          "note": "Grafía separada documentada, únicamente para notas y tablas contextualizadas; no se analizará como un único token.",
+          "multiword": true
+        }
+      ],
+      "noUnambiguousExamFromVariants": true
+    },
+    {
+      "id": "sin-sorteo",
+      "course": "gr1",
+      "lang": "grc",
+      "lemmas": [
+        "αφικνεομαι",
+        "ορμαομαι",
+        "προσερχομαι"
+      ],
+      "unitPolicy": "UNASSIGNED_NOT_FOR_EXAM",
+      "reason": "No existe adscripción curricular aprobada. Preservar consulta léxica y excluir del sorteo hasta asignación docente expresa.",
+      "verifiedMorphology": false,
+      "variants": []
+    }
+  ]
+}

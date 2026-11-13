@@ -1,0 +1,68 @@
+{
+  "schema": "examina-greek-adjective-decisions/v1",
+  "date": "2026-11-13",
+  "course": "gr1",
+  "authority": "decisión explícita del docente",
+  "certificationPolicy": "El enunciado aprobado no equivale a validación general; diez lecturas femeninas de ἐχθρός cuentan con evidencia individual fuente 5. No se autorizan exámenes ambiguos.",
+  "historicalAudit": "data/lemmas/revision-559-griego-20261113.json",
+  "decisions": [
+    {
+      "lemma": "αθανατοσ",
+      "entry": "ἀθάνατος, −ον",
+      "unit": "UD 8",
+      "paradigm": "DOS_TERMINACIONES",
+      "policy": "EXCLUIR",
+      "candidateIds": [
+        "grc-pending-020",
+        "grc-pending-021",
+        "grc-pending-022",
+        "grc-pending-023",
+        "grc-pending-024",
+        "grc-pending-025",
+        "grc-pending-026",
+        "grc-pending-027"
+      ],
+      "verifiedFormsAdded": 0,
+      "reason": "Masculino y femenino de segunda declinación; excluir las ocho candidaturas de femenino de primera declinación, conservar historial."
+    },
+    {
+      "lemma": "εχθροσ",
+      "previousEntry": "ἐχθρός, –ον",
+      "entry": "ἐχθρός, –ά, –όν",
+      "unit": "UD 5",
+      "paradigm": "TRES_TERMINACIONES",
+      "policy": "VERIFICADAS_INDIVIDUALMENTE",
+      "candidateIds": [
+        "grc-pending-159",
+        "grc-pending-160",
+        "grc-pending-161",
+        "grc-pending-162",
+        "grc-pending-163",
+        "grc-pending-164",
+        "grc-pending-165",
+        "grc-pending-166",
+        "grc-pending-167",
+        "grc-pending-168"
+      ],
+      "verifiedFormsAdded": 10,
+      "reason": "Diez fichas femeninas documentadas una por una y trasladadas de fuente 4 a fuente 5; los sincretismos permanecen como lecturas múltiples. Se reactiva el uso en sintagmas desde UD5 sin habilitar respuestas únicas por analogía.",
+      "documentaryLedger": "data/lemmas/cotejo-10-echthros-20261113.json",
+      "singleFormExamPolicy": "PROHIBIR_RESPUESTA_UNICA_SIN_CONTEXTO"
+    },
+    {
+      "lemma": "αισχροσ",
+      "entry": "αἰσχρός, –ον",
+      "unit": "UD 5",
+      "paradigm": "DOS_TERMINACIONES",
+      "policy": "EXCLUIR",
+      "candidateIds": [
+        "grc-pending-063",
+        "grc-pending-064",
+        "grc-pending-065"
+      ],
+      "verifiedFormsAdded": 0,
+      "reason": "Conservar exclusivamente las dos terminaciones en el repertorio exigible y excluir del sorteo las tres propuestas femeninas de primera declinación."
+    }
+  ],
+  "rebuildPolicy": "Las 559 candidaturas históricas conservan su identidad en la auditoría; 10 fueron migradas individualmente a fuente 5, quedan 549 en fuente 4. Conservar las 49 huérfanas sin unidad y sin inventar verificaciones."
+}

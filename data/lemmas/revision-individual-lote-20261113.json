@@ -1,0 +1,334 @@
+{
+  "schema": "examina-individual-evidence-review/v1",
+  "date": "2026-11-13",
+  "branch": "revision-filologica-integral-20261113",
+  "policy": "Revisión documental individual; NO escritura de fuente 5 ni activación de claves hasta confirmar persistencia, etiquetado de semideponente y sincronización del archivo autónomo.",
+  "items": [
+    {
+      "lang": "grc",
+      "lemma": "λογοσ",
+      "form": "λόγῳ",
+      "analysis": "N;DAT;SG",
+      "candidateSource": 4,
+      "matchedExistingSource": 1,
+      "reference": "https://www.open.edu/openlearn/history-the-arts/discovering-ancient-greek-and-latin/content-section-10.6",
+      "documentaryResult": "CORROBORADO_EXTERNAMENTE",
+      "eligibleForNewAutomaticGrading": false,
+      "reason": "Dativo singular explícito en el paradigma de λόγος. El índice ya contiene además la forma como ficha docente; no duplicar la lectura."
+    },
+    {
+      "lang": "lat",
+      "lemma": "gaudeo",
+      "form": "gaudeo",
+      "analysis": "V;IND;ACT;PRS;1;SG",
+      "reference": "https://www.cultus.hk/Latin_vocab/verb2/gaudere.html",
+      "documentaryResult": "CORROBORADO_EXTERNAMENTE",
+      "eligibleForNewAutomaticGrading": false,
+      "reason": "Forma de indicativo activo; falta cotejo exacto con las grafías de cantidad y las etiquetas del índice."
+    },
+    {
+      "lang": "lat",
+      "lemma": "gaudeo",
+      "form": "gaudes",
+      "analysis": "V;IND;ACT;PRS;2;SG",
+      "reference": "https://www.cultus.hk/Latin_vocab/verb2/gaudere.html",
+      "documentaryResult": "CORROBORADO_EXTERNAMENTE",
+      "eligibleForNewAutomaticGrading": false,
+      "reason": "Forma de indicativo activo; falta cotejo exacto con las grafías de cantidad y las etiquetas del índice."
+    },
+    {
+      "lang": "lat",
+      "lemma": "gaudeo",
+      "form": "gaudet",
+      "analysis": "V;IND;ACT;PRS;3;SG",
+      "reference": "https://www.cultus.hk/Latin_vocab/verb2/gaudere.html",
+      "documentaryResult": "CORROBORADO_EXTERNAMENTE",
+      "eligibleForNewAutomaticGrading": false,
+      "reason": "Forma de indicativo activo; falta cotejo exacto con las grafías de cantidad y las etiquetas del índice."
+    },
+    {
+      "lang": "lat",
+      "lemma": "gaudeo",
+      "form": "gaudemus",
+      "analysis": "V;IND;ACT;PRS;1;PL",
+      "reference": "https://www.cultus.hk/Latin_vocab/verb2/gaudere.html",
+      "documentaryResult": "CORROBORADO_EXTERNAMENTE",
+      "eligibleForNewAutomaticGrading": false,
+      "reason": "Forma de indicativo activo; falta cotejo exacto con las grafías de cantidad y las etiquetas del índice."
+    },
+    {
+      "lang": "lat",
+      "lemma": "gaudeo",
+      "form": "gaudetis",
+      "analysis": "V;IND;ACT;PRS;2;PL",
+      "reference": "https://www.cultus.hk/Latin_vocab/verb2/gaudere.html",
+      "documentaryResult": "CORROBORADO_EXTERNAMENTE",
+      "eligibleForNewAutomaticGrading": false,
+      "reason": "Forma de indicativo activo; falta cotejo exacto con las grafías de cantidad y las etiquetas del índice."
+    },
+    {
+      "lang": "lat",
+      "lemma": "gaudeo",
+      "form": "gaudent",
+      "analysis": "V;IND;ACT;PRS;3;PL",
+      "reference": "https://www.cultus.hk/Latin_vocab/verb2/gaudere.html",
+      "documentaryResult": "CORROBORADO_EXTERNAMENTE",
+      "eligibleForNewAutomaticGrading": false,
+      "reason": "Forma de indicativo activo; falta cotejo exacto con las grafías de cantidad y las etiquetas del índice."
+    },
+    {
+      "lang": "lat",
+      "lemma": "gaudeo",
+      "form": "gaudebam",
+      "analysis": "V;IND;ACT;PST;IPFV;1;SG",
+      "reference": "https://www.cultus.hk/Latin_vocab/verb2/gaudere.html",
+      "documentaryResult": "CORROBORADO_EXTERNAMENTE",
+      "eligibleForNewAutomaticGrading": false,
+      "reason": "Forma de indicativo activo; falta cotejo exacto con las grafías de cantidad y las etiquetas del índice."
+    },
+    {
+      "lang": "lat",
+      "lemma": "gaudeo",
+      "form": "gaudebas",
+      "analysis": "V;IND;ACT;PST;IPFV;2;SG",
+      "reference": "https://www.cultus.hk/Latin_vocab/verb2/gaudere.html",
+      "documentaryResult": "CORROBORADO_EXTERNAMENTE",
+      "eligibleForNewAutomaticGrading": false,
+      "reason": "Forma de indicativo activo; falta cotejo exacto con las grafías de cantidad y las etiquetas del índice."
+    },
+    {
+      "lang": "lat",
+      "lemma": "gaudeo",
+      "form": "gaudebat",
+      "analysis": "V;IND;ACT;PST;IPFV;3;SG",
+      "reference": "https://www.cultus.hk/Latin_vocab/verb2/gaudere.html",
+      "documentaryResult": "CORROBORADO_EXTERNAMENTE",
+      "eligibleForNewAutomaticGrading": false,
+      "reason": "Forma de indicativo activo; falta cotejo exacto con las grafías de cantidad y las etiquetas del índice."
+    },
+    {
+      "lang": "lat",
+      "lemma": "gaudeo",
+      "form": "gaudebamus",
+      "analysis": "V;IND;ACT;PST;IPFV;1;PL",
+      "reference": "https://www.cultus.hk/Latin_vocab/verb2/gaudere.html",
+      "documentaryResult": "CORROBORADO_EXTERNAMENTE",
+      "eligibleForNewAutomaticGrading": false,
+      "reason": "Forma de indicativo activo; falta cotejo exacto con las grafías de cantidad y las etiquetas del índice."
+    },
+    {
+      "lang": "lat",
+      "lemma": "gaudeo",
+      "form": "gaudebatis",
+      "analysis": "V;IND;ACT;PST;IPFV;2;PL",
+      "reference": "https://www.cultus.hk/Latin_vocab/verb2/gaudere.html",
+      "documentaryResult": "CORROBORADO_EXTERNAMENTE",
+      "eligibleForNewAutomaticGrading": false,
+      "reason": "Forma de indicativo activo; falta cotejo exacto con las grafías de cantidad y las etiquetas del índice."
+    },
+    {
+      "lang": "lat",
+      "lemma": "gaudeo",
+      "form": "gaudebant",
+      "analysis": "V;IND;ACT;PST;IPFV;3;PL",
+      "reference": "https://www.cultus.hk/Latin_vocab/verb2/gaudere.html",
+      "documentaryResult": "CORROBORADO_EXTERNAMENTE",
+      "eligibleForNewAutomaticGrading": false,
+      "reason": "Forma de indicativo activo; falta cotejo exacto con las grafías de cantidad y las etiquetas del índice."
+    },
+    {
+      "lang": "lat",
+      "lemma": "gaudeo",
+      "form": "gaudebo",
+      "analysis": "V;IND;ACT;FUT;1;SG",
+      "reference": "https://www.cultus.hk/Latin_vocab/verb2/gaudere.html",
+      "documentaryResult": "CORROBORADO_EXTERNAMENTE",
+      "eligibleForNewAutomaticGrading": false,
+      "reason": "Forma de indicativo activo; falta cotejo exacto con las grafías de cantidad y las etiquetas del índice."
+    },
+    {
+      "lang": "lat",
+      "lemma": "gaudeo",
+      "form": "gaudebis",
+      "analysis": "V;IND;ACT;FUT;2;SG",
+      "reference": "https://www.cultus.hk/Latin_vocab/verb2/gaudere.html",
+      "documentaryResult": "CORROBORADO_EXTERNAMENTE",
+      "eligibleForNewAutomaticGrading": false,
+      "reason": "Forma de indicativo activo; falta cotejo exacto con las grafías de cantidad y las etiquetas del índice."
+    },
+    {
+      "lang": "lat",
+      "lemma": "gaudeo",
+      "form": "gaudebit",
+      "analysis": "V;IND;ACT;FUT;3;SG",
+      "reference": "https://www.cultus.hk/Latin_vocab/verb2/gaudere.html",
+      "documentaryResult": "CORROBORADO_EXTERNAMENTE",
+      "eligibleForNewAutomaticGrading": false,
+      "reason": "Forma de indicativo activo; falta cotejo exacto con las grafías de cantidad y las etiquetas del índice."
+    },
+    {
+      "lang": "lat",
+      "lemma": "gaudeo",
+      "form": "gaudebimus",
+      "analysis": "V;IND;ACT;FUT;1;PL",
+      "reference": "https://www.cultus.hk/Latin_vocab/verb2/gaudere.html",
+      "documentaryResult": "CORROBORADO_EXTERNAMENTE",
+      "eligibleForNewAutomaticGrading": false,
+      "reason": "Forma de indicativo activo; falta cotejo exacto con las grafías de cantidad y las etiquetas del índice."
+    },
+    {
+      "lang": "lat",
+      "lemma": "gaudeo",
+      "form": "gaudebitis",
+      "analysis": "V;IND;ACT;FUT;2;PL",
+      "reference": "https://www.cultus.hk/Latin_vocab/verb2/gaudere.html",
+      "documentaryResult": "CORROBORADO_EXTERNAMENTE",
+      "eligibleForNewAutomaticGrading": false,
+      "reason": "Forma de indicativo activo; falta cotejo exacto con las grafías de cantidad y las etiquetas del índice."
+    },
+    {
+      "lang": "lat",
+      "lemma": "gaudeo",
+      "form": "gaudebunt",
+      "analysis": "V;IND;ACT;FUT;3;PL",
+      "reference": "https://www.cultus.hk/Latin_vocab/verb2/gaudere.html",
+      "documentaryResult": "CORROBORADO_EXTERNAMENTE",
+      "eligibleForNewAutomaticGrading": false,
+      "reason": "Forma de indicativo activo; falta cotejo exacto con las grafías de cantidad y las etiquetas del índice."
+    },
+    {
+      "lang": "lat",
+      "lemma": "gaudeo",
+      "form": "gavisus sum",
+      "analysis": "V;IND;DEP;PRF;1;SG",
+      "reference": "https://www.cultus.hk/Latin_vocab/verb2/gaudere.html",
+      "documentaryResult": "CORROBORADO_EXTERNAMENTE",
+      "eligibleForNewAutomaticGrading": false,
+      "reason": "Perfecto compuesto semideponente con sujeto masculino. No equivale a voz pasiva ni autoriza otros géneros."
+    },
+    {
+      "lang": "lat",
+      "lemma": "gaudeo",
+      "form": "gavisus es",
+      "analysis": "V;IND;DEP;PRF;2;SG",
+      "reference": "https://www.cultus.hk/Latin_vocab/verb2/gaudere.html",
+      "documentaryResult": "CORROBORADO_EXTERNAMENTE",
+      "eligibleForNewAutomaticGrading": false,
+      "reason": "Perfecto compuesto semideponente con sujeto masculino. No equivale a voz pasiva ni autoriza otros géneros."
+    },
+    {
+      "lang": "lat",
+      "lemma": "gaudeo",
+      "form": "gavisus est",
+      "analysis": "V;IND;DEP;PRF;3;SG",
+      "reference": "https://www.cultus.hk/Latin_vocab/verb2/gaudere.html",
+      "documentaryResult": "CORROBORADO_EXTERNAMENTE",
+      "eligibleForNewAutomaticGrading": false,
+      "reason": "Perfecto compuesto semideponente con sujeto masculino. No equivale a voz pasiva ni autoriza otros géneros."
+    },
+    {
+      "lang": "lat",
+      "lemma": "gaudeo",
+      "form": "gavisi sumus",
+      "analysis": "V;IND;DEP;PRF;1;PL",
+      "reference": "https://www.cultus.hk/Latin_vocab/verb2/gaudere.html",
+      "documentaryResult": "CORROBORADO_EXTERNAMENTE",
+      "eligibleForNewAutomaticGrading": false,
+      "reason": "Perfecto compuesto semideponente con sujeto masculino. No equivale a voz pasiva ni autoriza otros géneros."
+    },
+    {
+      "lang": "lat",
+      "lemma": "gaudeo",
+      "form": "gavisi estis",
+      "analysis": "V;IND;DEP;PRF;2;PL",
+      "reference": "https://www.cultus.hk/Latin_vocab/verb2/gaudere.html",
+      "documentaryResult": "CORROBORADO_EXTERNAMENTE",
+      "eligibleForNewAutomaticGrading": false,
+      "reason": "Perfecto compuesto semideponente con sujeto masculino. No equivale a voz pasiva ni autoriza otros géneros."
+    },
+    {
+      "lang": "lat",
+      "lemma": "gaudeo",
+      "form": "gavisi sunt",
+      "analysis": "V;IND;DEP;PRF;3;PL",
+      "reference": "https://www.cultus.hk/Latin_vocab/verb2/gaudere.html",
+      "documentaryResult": "CORROBORADO_EXTERNAMENTE",
+      "eligibleForNewAutomaticGrading": false,
+      "reason": "Perfecto compuesto semideponente con sujeto masculino. No equivale a voz pasiva ni autoriza otros géneros."
+    },
+    {
+      "lang": "lat",
+      "lemma": "gaudeo",
+      "form": "gavisus eram",
+      "analysis": "V;IND;DEP;PSTP;1;SG",
+      "reference": "https://www.cultus.hk/Latin_vocab/verb2/gaudere.html",
+      "documentaryResult": "CORROBORADO_EXTERNAMENTE",
+      "eligibleForNewAutomaticGrading": false,
+      "reason": "Perfecto compuesto semideponente con sujeto masculino. No equivale a voz pasiva ni autoriza otros géneros."
+    },
+    {
+      "lang": "lat",
+      "lemma": "gaudeo",
+      "form": "gavisus eras",
+      "analysis": "V;IND;DEP;PSTP;2;SG",
+      "reference": "https://www.cultus.hk/Latin_vocab/verb2/gaudere.html",
+      "documentaryResult": "CORROBORADO_EXTERNAMENTE",
+      "eligibleForNewAutomaticGrading": false,
+      "reason": "Perfecto compuesto semideponente con sujeto masculino. No equivale a voz pasiva ni autoriza otros géneros."
+    },
+    {
+      "lang": "lat",
+      "lemma": "gaudeo",
+      "form": "gavisus erat",
+      "analysis": "V;IND;DEP;PSTP;3;SG",
+      "reference": "https://www.cultus.hk/Latin_vocab/verb2/gaudere.html",
+      "documentaryResult": "CORROBORADO_EXTERNAMENTE",
+      "eligibleForNewAutomaticGrading": false,
+      "reason": "Perfecto compuesto semideponente con sujeto masculino. No equivale a voz pasiva ni autoriza otros géneros."
+    },
+    {
+      "lang": "lat",
+      "lemma": "gaudeo",
+      "form": "gavisi eramus",
+      "analysis": "V;IND;DEP;PSTP;1;PL",
+      "reference": "https://www.cultus.hk/Latin_vocab/verb2/gaudere.html",
+      "documentaryResult": "CORROBORADO_EXTERNAMENTE",
+      "eligibleForNewAutomaticGrading": false,
+      "reason": "Perfecto compuesto semideponente con sujeto masculino. No equivale a voz pasiva ni autoriza otros géneros."
+    },
+    {
+      "lang": "lat",
+      "lemma": "gaudeo",
+      "form": "gavisi eratis",
+      "analysis": "V;IND;DEP;PSTP;2;PL",
+      "reference": "https://www.cultus.hk/Latin_vocab/verb2/gaudere.html",
+      "documentaryResult": "CORROBORADO_EXTERNAMENTE",
+      "eligibleForNewAutomaticGrading": false,
+      "reason": "Perfecto compuesto semideponente con sujeto masculino. No equivale a voz pasiva ni autoriza otros géneros."
+    },
+    {
+      "lang": "lat",
+      "lemma": "gaudeo",
+      "form": "gavisi erant",
+      "analysis": "V;IND;DEP;PSTP;3;PL",
+      "reference": "https://www.cultus.hk/Latin_vocab/verb2/gaudere.html",
+      "documentaryResult": "CORROBORADO_EXTERNAMENTE",
+      "eligibleForNewAutomaticGrading": false,
+      "reason": "Perfecto compuesto semideponente con sujeto masculino. No equivale a voz pasiva ni autoriza otros géneros."
+    }
+  ],
+  "teacherQueue": [
+    {
+      "lemma": "gaudeo",
+      "issue": "Tratamiento del perfecto semideponente en el motor y de la variación de género/número del participio",
+      "default": "Mantener exclusivamente las lecturas masculinas respaldadas; no inventar femeninos o neutros",
+      "requiresTeacherDecision": false
+    },
+    {
+      "lemma": "λογοσ",
+      "issue": "La equivalencia entre la ficha nominal docente y el registro Wiktextract no justifica declarar todo el paradigma como fuente 5",
+      "default": "No duplicar, mantener las demás formas y sus distintas procedencias",
+      "requiresTeacherDecision": false
+    }
+  ]
+}

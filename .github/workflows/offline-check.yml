@@ -5,6 +5,7 @@ on:
     paths:
       - 'index.html'
       - 'exam-scoring.js'
+      - 'unified-backup.js'
       - 'culture-lat4.js'
       - 'lexicon-valenciano.js'
       - 'required-latin-units.js'
@@ -31,6 +32,7 @@ on:
     paths:
       - 'index.html'
       - 'exam-scoring.js'
+      - 'unified-backup.js'
       - 'culture-lat4.js'
       - 'vocabulary-generator.js'
       - 'offline.html'
@@ -62,24 +64,75 @@ jobs:
         run: node scripts/test-cultura-lat4.cjs
       - name: Probar modelos regulares sin incorporación a los exámenes
         run: node scripts/test-regular-latin.mjs
+      - name: Verificar evidencia persistente y conjugación mixta de Latín I
+        run: node scripts/test-latin-verb-evidence.cjs
+      - name: Cotejar paradigmas individuales verificados con la fuente persistente
+        run: node scripts/test-verified-verb-overrides.cjs
+      - name: Garantizar coherencia de la evidencia en web y PWA guardada
+        run: node scripts/test-phase-two-persistent-offline.cjs
+      - name: Registrar incidencias de verbos irregulares y deponentes sin certificar paradigmas
+        run: node scripts/audit-verbs-evidence.cjs
+      - name: Auditar cobertura de tiempos y voces por lema individual
+        run: node scripts/audit-verb-coverage.cjs
+      - name: Guardar lagunas filológicas por lema para decisión docente
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fase-ii-cobertura-verbal-por-lema
+          path: test-artifacts/fase-ii-cobertura-verbal-por-lema.json
+          if-no-files-found: ignore
+      - name: Conservar cola filológica de verbos para decisiones docentes
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fase-ii-irregulares-deponentes
+          path: test-artifacts/fase-ii-revision-irregulares-deponentes.json
+          if-no-files-found: ignore
       - name: Probar nominales griegos con corpus sintético etiquetado
         run: node scripts/test-greek-nominal-import.mjs
-      - name: Extraer nominales griegos reales para consulta offline
-        run: node scripts/build-greek-nominal-candidates.mjs
-      - name: Construir índice bilingüe del vocabulario docente
-        run: node scripts/build-lemma-index.mjs
+      - name: Validar catálogo griego provisional persistente sin acceso de red
+        run: node scripts/test-greek-nominal-persistent.cjs
+      - name: Auditar exhaustivamente las candidaturas todavía pendientes sin promoverlas
+        run: node scripts/test-comprehensive-morph-audit.cjs
+      - name: Comprobar el lote anterior de cien formas ya incorporadas
+        run: node scripts/test-candidaturas-lote100.cjs
+      - name: Verificar las cien latinas y cien griegas del nuevo lote en el banco y la PWA
+        run: node scripts/test-candidaturas-lote200.cjs
+      - name: Verificar trescientos análisis griegos, politonía y formas excluidas
+        run: node scripts/test-candidaturas-lote300-griego.cjs
+      - name: Validar las 31 lecturas documentales y evitar promociones automáticas
+        run: node scripts/test-individual-evidence-ledger.cjs
+      - name: Controlar tres adjetivos, 11 exclusiones y 10 verificaciones femeninas de ἐχθρός
+        run: node scripts/test-greek-adjective-decisions.cjs
+      - name: Cotejar las diez fichas femeninas de ἐχθρός y sus sincretismos
+        run: node scripts/test-echthros-ten-collation.cjs
+      - name: Conservar auditoría individualizada de fichas latinas y griegas
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: revision-filologica-integral-candidatos
+          path: test-artifacts/auditoria-integral-*.json
+          if-no-files-found: ignore
+      - name: Comprobar índice bilingüe persistente sin reconstrucciones externas
+        run: node scripts/test-lemma-index.mjs
+      - name: Probar cinco decisiones docentes y variantes sin modificar las claves de examen
+        run: node scripts/test-filological-variant-decisions.cjs
       # La ampliación externa se mantiene en la PR experimental hasta
       # resolver la procedencia/licencias de los datos morfológicos.
       - name: Validar banco ampliable de evolución fonética y programa de Latín I
         run: node scripts/test-criterios-foneticos.mjs && node scripts/test-fonetica.mjs && node scripts/test-lat1-fonetica.mjs
       - name: Regenerar archivo autónomo
         run: npm run offline:build
+      - name: Exigir que el HTML autónomo regenerado coincida con el archivo del repositorio
+        run: git diff --exit-code -- offline.html
       - name: Probar lematización latina y griega sin red
         run: node scripts/test-lemma-index.mjs
       - name: Verificar las 17 decisiones griegas, banco, índice y HTML autónomo
         run: node scripts/test-greek-editorial.cjs
       - name: Auditar incidencias morfológicas y decisiones
         run: node scripts/test-teacher-review.mjs
+      - name: Validar evidencia y autorizaciones docentes por forma
+        run: node scripts/test-academic-evidence.cjs
       - name: Probar la cola griega y el adaptador de importación Eulexis
         run: node scripts/test-greek-review.mjs
       - name: Probar conversión y extracción Eulexis sin corpus de terceros
@@ -102,6 +155,19 @@ jobs:
           npx playwright install chromium
       - name: Comprobar interfaz de preguntas, UD, alcance del glosario y Eulexis contextual
         run: node scripts/test-auditoria-ui.cjs
+      - name: Verificar autorizaciones académicas y bloqueo DOCX en Chromium sin conexión
+        run: node scripts/test-academic-evidence-browser.cjs
+      - name: Verificar exportación definitiva sin romper descargas de borradores
+        run: node scripts/test-final-export-preflight.cjs
+      - name: Auditar cada unidad y exportar inventario morfológico grecolatino
+        run: node scripts/test-verb-curriculum-browser.cjs
+      - name: Conservar matriz curricular para revisión filológica
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fase-ii-inventario-morfologico
+          path: test-artifacts/fase-ii-inventario-morfologico.json
+          if-no-files-found: ignore
       - name: Validar glosas en castellano y valenciano
         run: node scripts/test-valenciano.cjs
       - name: Auditar cobertura y pendientes del vocabulario por unidad
@@ -143,6 +209,20 @@ jobs:
         run: node scripts/test-bidirectional-editors.cjs
       - name: Comprobar que cada palabra se regenera sin alterar las demás
         run: node scripts/test-single-word-regeneration.cjs
+      - name: Fase III - conservar el borrador al regenerar un apartado léxico
+        run: node scripts/test-lex-part-regeneration.cjs
+      - name: Fase III - regeneración aislada de preguntas latinas y sus soluciones
+        run: node scripts/test-question-part-regeneration.cjs
+      - name: Fase III - regeneración aislada de preguntas de Griego I
+        run: node scripts/test-greek-question-regeneration.cjs
+      - name: Fase III - preservar huecos y puntuar una unidad por oración
+        run: node scripts/test-sentence-points-and-drafts.cjs
+      - name: Fase III - normas fonéticas acumulativas sin regenerar el examen
+        run: node scripts/test-phonetic-filter-isolation.cjs
+      - name: Fase III - regeneración aislada de morfología latina y griega
+        run: node scripts/test-morph-question-isolation.cjs
+      - name: Fase III - auditar conjuntamente ediciones, regeneración, borradores y Word
+        run: node scripts/test-phase-three-integration.cjs
       - name: Probar las vistas previas de todos los modelos
         run: node scripts/test-preview.cjs
       - name: Guardar Word con puntuaciones de examen para inspección

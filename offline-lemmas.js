@@ -53,6 +53,22 @@ function indexes(data){
    }
   }
  }
+ // Variantes en consulta; nunca nuevas respuestas automáticas.
+ for(const decision of data.extensions?.filological_variants?.decisions||[]){
+  if(decision.unitPolicy||!data.vocabulary[decision.lang]?.[decision.lemma]?.[decision.course])continue;
+  for(const variant of decision.variants||[]){
+   if(variant.multiword||!variant.form||/\s/u.test(variant.form))continue;
+   const item={lemma:decision.lemma,surface:variant.form,tags:variant.tags,
+    source:'Variante filológica documentada · '+decision.reference,
+    provisional:true,citation:false,variant:true,variantNote:variant.note,
+    info:data.vocabulary[decision.lang][decision.lemma]};
+   for(const [map,key] of [[index.forms[decision.lang],normalize(variant.form)],
+       [index.lemmas[decision.lang],normalize(decision.lemma)]]){
+    if(!map.has(key))map.set(key,[]);
+    map.get(key).push(item);
+   }
+  }
+ }
  caches.set(data,index);
  return index;
 }
@@ -165,7 +181,7 @@ function itemElement(item){
  meta.textContent=' · '+(entry?.units?.join(', ')||'sin unidad')+' · '+item.source;
  heading.append(meta);
  const detail=document.createElement('p');
- detail.textContent=item.surface+' — '+describe(item.tags);
+ detail.textContent=item.surface+' — '+describe(item.tags)+(item.variantNote?' · '+item.variantNote:'');
  detail.lang=langOf(document.getElementById('offlineLemmaCourse').value)==='grc'?'grc':'la';
  const raw=document.createElement('small');
  raw.textContent='Análisis original: '+item.tags;

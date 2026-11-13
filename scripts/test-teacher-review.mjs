@@ -14,7 +14,8 @@ assert.equal(typeof api?.buildCases,'function');
 const latin=api.buildCases(data,'lat1'),latin4=api.buildCases(data,'lat4'),greek=api.buildCases(data,'gr1');
 assert.ok(latin4.length>20,'Faltan incidencias de Latín 4.º ESO');
 for(const [course,items] of [['lat1',latin],['lat4',latin4],['gr1',greek]]){
- assert(items.length>(course==='lat4'?20:200),course+': faltan incidencias');
+ // La cola se reduce legítimamente cuando 300 candidaturas reciben evidencia; exigir aún incidencias reales.
+ assert(items.length>(course==='lat4'?20:course==='gr1'?100:200),course+': faltan incidencias');
  assert.equal(new Set(items.map(x=>x.id)).size,items.length,'ID duplicados: '+course);
  assert(items.every(x=>x.course===course),'Cursos mezclados');
  assert(items.every(x=>Array.isArray(x.units)&&x.detail&&x.entry),'Falta descripción o procedencia');
@@ -40,3 +41,6 @@ assert(!greek.some(x=>x.lemma==='αει'&&x.kind==='sin-flexion'),
 assert(latin.some(x=>x.kind==='homografia'),'Se han perdido las homografías');
 assert(greek.some(x=>x.kind==='candidatas'),'Se han promocionado indebidamente candidatos a verificados');
 console.log('Revisión filológica: '+latin.length+' incidencias de Latín I y '+greek.length+' de Griego I. Sin cambios automáticos en exámenes.');
+
+// Fase IV: revisión versionada y conciliación de decisiones docentes.
+await import('./test-phase-four-review-queue.cjs');

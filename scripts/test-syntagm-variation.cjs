@@ -38,14 +38,15 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
    const nouns=greekVerifiedCorpus.filter(x=>x.kind==='declension'&&x.minUnit<=greekLimit());
    const find=id=>nouns.find(x=>x.id===id);
    const pair=(id,lemma)=>greekCompleteNominalGroup(find(id),true,adjs.find(x=>x.lemma===lemma));
-   const feminine22=pair('n-αγορα','ἐχθρός');
+   const feminine22=pair('n-αγορα','αἰσχρός');
    const feminine212=pair('n-αγορα','πονηρός');
+   const echthros=pair('n-αγορα','ἐχθρός');
    const neuter22=pair('n-δωρον','αἰσχρός');
    const nominative=pair('n-λογος','δίκαιος');
    const check=pair('n-αγορα','δίκαιος');
    return {
     adjectives:adjs.map(x=>x.lemma),classes:adjs.map(x=>x.feminine===null?'2-2':'2-1-2'),
-    feminine22,feminine212,neuter22,nominative,check,
+    feminine22,feminine212,echthros,neuter22,nominative,check,
     selected:greekExamState.ids.declension,
     chosen:greekExamState.adjectiveChoices||{}
    };
@@ -53,14 +54,19 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
   assert(result.adjectives.length>=7,
    'En UD5 deben estar disponibles varios adjetivos 2-1-2 y 2-2 del banco: '+result.adjectives.join(', '));
   assert(result.classes.includes('2-2')&&result.classes.includes('2-1-2'),'Falta una clase de adjetivo');
-  assert.match(result.feminine22.title,/^ἡ ἐχθρὸς ἀγορά$/u,'El adjetivo 2-2 conserva flexión masculina con artículo femenino');
-  assert.match(result.feminine22.rows[3][1][0],/^τῆς ἐχθροῦ /u);
+  assert(result.adjectives.includes('ἐχθρός'),'ἐχθρός debe poder sortearse desde UD5 tras los diez cotejos individuales');
+  assert.match(result.feminine22.title,/^ἡ αἰσχρὸς ἀγορά$/u,'El adjetivo 2-2 conserva flexión masculina con artículo femenino');
+  assert.match(result.feminine22.rows[3][1][0],/^τῆς αἰσχροῦ /u);
   assert.match(result.feminine212.title,/^ἡ πονηρὰ ἀγορά$/u);
+  assert.match(result.echthros.title,/^ἡ ἐχθρὰ ἀγορά$/u);
+  assert.match(result.echthros.rows[3][1][0],/^τῆς ἐχθρᾶς /u,'Genitivo singular femenino circunflejo');
+  assert.match(result.echthros.rows[2][1][0],/^τὴν ἐχθρὰν /u,'Acusativo singular con artículo y acento grave');
+  assert.match(result.echthros.rows[4][1][0],/^τῇ ἐχθρᾷ /u,'Dativo femenino conserva iota suscrita');
   assert.match(result.feminine212.rows[3][1][0],/^τῆς πονηρᾶς /u);
   assert.match(result.neuter22.title,/^τὸ αἰσχρὸν δῶρον$/u);
   assert.match(result.nominative.title,/^ὁ δίκαιος λόγος$/u);
   assert.match(result.check.rows[3][1][0],/^τῆς δικαίας /u);
-  for(const noun of [result.feminine22,result.feminine212,result.neuter22,result.nominative]){
+  for(const noun of [result.feminine22,result.feminine212,result.echthros,result.neuter22,result.nominative]){
    assert.equal(noun.rows.length,5);
    assert(noun.rows.every(row=>row[1].length===2));
    assert(noun.rows[1][1].every(cell=>!(/^(ὁ|ἡ|τὸ|οἱ|αἱ|τὰ) /u).test(cell)),
