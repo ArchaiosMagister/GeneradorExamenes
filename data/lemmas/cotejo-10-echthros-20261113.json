@@ -5,7 +5,7 @@
   "lemma": "εχθροσ",
   "headword": "ἐχθρός, –ά, –όν",
   "unit": "UD 5",
-  "scope": "Cotejo filológico de las diez fichas femeninas, sin modificación del sorteo ni de la calificación automática.",
+  "scope": "Cotejo filológico de diez candidaturas, incorporación individual a fuente 5, sin autorización de respuestas únicas ambiguas.",
   "evidence": [
     {
       "url": "https://en.wiktionary.org/wiki/%E1%BC%90%CF%87%CE%B8%CF%81%CF%8C%CF%82",
@@ -20,14 +20,14 @@
   ],
   "normalization": "Grafía escolar sin macrón/breve; conservar espíritus, acentos y iota suscrita. Diferenciar ἐχθρᾶς (genitivo singular) de ἐχθράς (acusativo plural).",
   "originalInventory": "data/lemmas/revision-559-griego-20261113.json",
-  "workflowDecision": "Análisis morfológico confirmado para las diez fichas; conservar fuente 4 hasta una incorporación controlada que respete sincretismos y autorizaciones.",
+  "workflowDecision": "Diez fichas trasladadas a fuente 5 con evidencia individual y preservación de su procedencia histórica; quedan excluidas de preguntas de análisis único ambiguo salvo contexto adecuado, y se habilita ἐχθρός en la declinación de sintagmas desde UD5.",
   "summary": {
     "reviewed": 10,
     "morphologyConfirmed": 10,
     "distinctSurfaceForms": 8,
     "syncreticReadings": 5,
     "otherReadings": 5,
-    "source5Promotions": 0,
+    "source5Promotions": 10,
     "newAutomaticExamForms": 0
   },
   "items": [
@@ -44,9 +44,11 @@
       "analysisVerified": true,
       "ambiguityInParadigm": true,
       "ambiguityNote": "Coincide con el vocativo singular femenino y con el nominativo/acusativo/vocativo plural neutro.",
-      "indexSourceCode": 4,
+      "indexSourceCode": 5,
       "individualAuthorizationAdded": false,
-      "automaticGradingEnabled": false
+      "automaticGradingEnabled": false,
+      "promotedSourceCode": 5,
+      "examPolicy": "MULTIPLE_ANALYSES_REQUIRE_CONTEXT"
     },
     {
       "id": "grc-pending-160",
@@ -61,9 +63,11 @@
       "analysisVerified": true,
       "ambiguityInParadigm": true,
       "ambiguityNote": "Coincide con el nominativo singular femenino y con el nominativo/acusativo/vocativo plural neutro.",
-      "indexSourceCode": 4,
+      "indexSourceCode": 5,
       "individualAuthorizationAdded": false,
-      "automaticGradingEnabled": false
+      "automaticGradingEnabled": false,
+      "promotedSourceCode": 5,
+      "examPolicy": "MULTIPLE_ANALYSES_REQUIRE_CONTEXT"
     },
     {
       "id": "grc-pending-161",
@@ -78,9 +82,11 @@
       "analysisVerified": true,
       "ambiguityInParadigm": false,
       "ambiguityNote": "Sin sincretismo adicional dentro del paradigma examinado.",
-      "indexSourceCode": 4,
+      "indexSourceCode": 5,
       "individualAuthorizationAdded": false,
-      "automaticGradingEnabled": false
+      "automaticGradingEnabled": false,
+      "promotedSourceCode": 5,
+      "examPolicy": "DOCUMENTED_READING_NOT_AUTOMATICALLY_GRADED"
     },
     {
       "id": "grc-pending-162",
@@ -95,9 +101,11 @@
       "analysisVerified": true,
       "ambiguityInParadigm": true,
       "ambiguityNote": "Coincide con el vocativo plural femenino.",
-      "indexSourceCode": 4,
+      "indexSourceCode": 5,
       "individualAuthorizationAdded": false,
-      "automaticGradingEnabled": false
+      "automaticGradingEnabled": false,
+      "promotedSourceCode": 5,
+      "examPolicy": "MULTIPLE_ANALYSES_REQUIRE_CONTEXT"
     },
     {
       "id": "grc-pending-163",
@@ -112,9 +120,11 @@
       "analysisVerified": true,
       "ambiguityInParadigm": true,
       "ambiguityNote": "Coincide con el nominativo plural femenino.",
-      "indexSourceCode": 4,
+      "indexSourceCode": 5,
       "individualAuthorizationAdded": false,
-      "automaticGradingEnabled": false
+      "automaticGradingEnabled": false,
+      "promotedSourceCode": 5,
+      "examPolicy": "MULTIPLE_ANALYSES_REQUIRE_CONTEXT"
     },
     {
       "id": "grc-pending-164",
@@ -129,9 +139,11 @@
       "analysisVerified": true,
       "ambiguityInParadigm": false,
       "ambiguityNote": "Sin sincretismo adicional dentro del paradigma examinado.",
-      "indexSourceCode": 4,
+      "indexSourceCode": 5,
       "individualAuthorizationAdded": false,
-      "automaticGradingEnabled": false
+      "automaticGradingEnabled": false,
+      "promotedSourceCode": 5,
+      "examPolicy": "DOCUMENTED_READING_NOT_AUTOMATICALLY_GRADED"
     },
     {
       "id": "grc-pending-165",
@@ -146,9 +158,11 @@
       "analysisVerified": true,
       "ambiguityInParadigm": false,
       "ambiguityNote": "Sin sincretismo adicional dentro del paradigma examinado.",
-      "indexSourceCode": 4,
+      "indexSourceCode": 5,
       "individualAuthorizationAdded": false,
-      "automaticGradingEnabled": false
+      "automaticGradingEnabled": false,
+      "promotedSourceCode": 5,
+      "examPolicy": "DOCUMENTED_READING_NOT_AUTOMATICALLY_GRADED"
     },
     {
       "id": "grc-pending-166",
@@ -163,9 +177,11 @@
       "analysisVerified": true,
       "ambiguityInParadigm": false,
       "ambiguityNote": "Sin sincretismo adicional dentro del paradigma examinado.",
-      "indexSourceCode": 4,
+      "indexSourceCode": 5,
       "individualAuthorizationAdded": false,
-      "automaticGradingEnabled": false
+      "automaticGradingEnabled": false,
+      "promotedSourceCode": 5,
+      "examPolicy": "DOCUMENTED_READING_NOT_AUTOMATICALLY_GRADED"
     },
     {
       "id": "grc-pending-167",
@@ -180,9 +196,11 @@
       "analysisVerified": true,
       "ambiguityInParadigm": false,
       "ambiguityNote": "Sin sincretismo adicional dentro del paradigma examinado.",
-      "indexSourceCode": 4,
+      "indexSourceCode": 5,
       "individualAuthorizationAdded": false,
-      "automaticGradingEnabled": false
+      "automaticGradingEnabled": false,
+      "promotedSourceCode": 5,
+      "examPolicy": "DOCUMENTED_READING_NOT_AUTOMATICALLY_GRADED"
     },
     {
       "id": "grc-pending-168",
@@ -197,9 +215,11 @@
       "analysisVerified": true,
       "ambiguityInParadigm": true,
       "ambiguityNote": "Coincide con los genitivos plurales masculino y neutro del mismo adjetivo.",
-      "indexSourceCode": 4,
+      "indexSourceCode": 5,
       "individualAuthorizationAdded": false,
-      "automaticGradingEnabled": false
+      "automaticGradingEnabled": false,
+      "promotedSourceCode": 5,
+      "examPolicy": "MULTIPLE_ANALYSES_REQUIRE_CONTEXT"
     }
   ]
 }
