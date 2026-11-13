@@ -20,6 +20,8 @@ async function select(page,course,unit){
   const m=$('model');m.value='tablas';m.dispatchEvent(new Event('change',{bubbles:true}));
   document.querySelectorAll('#unitChoices .unit-choice').forEach(x=>x.checked=units[Number(x.value)]===unit);
   examSelectionCache.clear();
+  // Pronombres es opcional en los exámenes completos: activarlo para probar su regeneración.
+  if(course==='latin1')examQuestionChoiceState['latin1/tablas/pronouns']=true;
   generate();
  },{course,unit});
 }
