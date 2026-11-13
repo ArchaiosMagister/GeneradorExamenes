@@ -12,8 +12,8 @@ assert.equal(typeof api.evidenceProvisionalForbidden,'function');
 const bank=get('data/lemmas/teacher-forms.json');
 const triage=get('data/lemmas/revision-559-griego-20261113.json');
 const held=triage.items.filter(x=>['ACENTO_INCORRECTO_EN_FUENTE',
- 'VARIANTE_DE_TERMINACIONES_PARA_DECISION_DOCENTE'].includes(x.status));
-assert.equal(held.length,45);
+ 'VARIANTE_DE_TERMINACIONES_PARA_DECISION_DOCENTE','VARIANTE_EPICA_FUERA_DE_CURRICULO'].includes(x.status));
+assert.equal(held.length,46);
 const schema='examina-academic-evidence/v1';
 for(const x of held){
  const row=bank.rows.grc.find(r=>r[0]===x.lemma&&r[1]===x.sourceForm&&r[2]===x.analysis&&r[3]===4);
@@ -58,4 +58,4 @@ assert(read('index.html').includes('κεφαλή, –ῆς'));
 assert(read('offline.html').includes('κεφαλή, –ῆς'));
 assert.equal(bank.counts.grc.wikcionario,559);
 assert.equal(bank.counts.grc.contrastado,464);
-console.log('Fase IV: 45 lecturas en cuarentena, importación no destructiva y κεφαλή corregida.');
+console.log('Fase IV: 46 lecturas en cuarentena, importación no destructiva y κεφαλή corregida.');
