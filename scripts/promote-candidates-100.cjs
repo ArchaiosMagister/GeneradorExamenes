@@ -114,7 +114,7 @@ audit=replace1(audit,'assert.equal(report.latin.entries.length,3434);','assert.e
 audit=replace1(audit,'assert.equal(report.greek.entries.length,969);','assert.equal(report.greek.entries.length,959);');
 let latinTest=get('scripts/test-latin-verb-evidence.cjs');
 latinTest=replace1(latinTest,"['abeo','absum','audeo','confero','conor','eo','ineo','loquor','nolo','pereo','possum','praesum','proficiscor','redeo','sequor','sum','transeo']",
- "['abeo','absum','amo','audio','audeo','capio','confero','conor','eo','ineo','loquor','moneo','nolo','pereo','possum','praesum','proficiscor','redeo','rego','sequor','sum','transeo']");
+ "['abeo','absum','amo','audeo','audio','capio','confero','conor','eo','ineo','loquor','moneo','nolo','pereo','possum','praesum','proficiscor','redeo','rego','sequor','sum','transeo']");
 latinTest=replace1(latinTest,'assert.equal(total,402,','assert.equal(total,492,');
 let test=get('scripts/test-candidaturas-lote100.cjs');
 test=replace1(test,'assert.equal(report.summary.promoted,0);','assert.equal(report.summary.promoted,100);');
