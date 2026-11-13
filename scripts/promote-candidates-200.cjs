@@ -167,7 +167,7 @@ workflow=once(workflow,"      - name: Contrastar el nuevo lote de cien candidatu
  'CI de análisis morfológico por lotes');
 workflow=once(workflow,'Inventariar exhaustivamente las 4403 fichas candidatas sin promoverlas',
  'Auditar las 4103 candidaturas todavía pendientes sin promoverlas','Título del inventario');
-audit=once(audit,'4303 propuestas restantes','4103 propuestas restantes','Texto del inventario');
+audit=once(audit,'4403 propuestas inventariadas','4103 propuestas todavía pendientes','Texto del inventario');
 writeJson(sourcePath,source,true);
 writeJson(bankPath,bank);
 writeJson(ledgerPath,ledger,true);
