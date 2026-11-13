@@ -37,3 +37,15 @@ Estas tres elecciones no deben forzar cambios masivos a otras unidades ni certif
 **Finalizar la migración condicionada de las 22 lecturas curriculares compatibles y las 25 correcciones editoriales** solo tras prueba individual y aplicación coherente a fuente persistente, índice, PWA, programa y Word. Pedir las tres elecciones docentes. No agotar las **3244** candidaturas latinas mediante promociones indiscriminadas: priorizar cobertura de verbos irregulares/deponentes, anomalías del examen y vocabulario realmente impartido; avanzar en la **fase IV de persistencia y trazabilidad** en paralelo.
 
 El cierre funcional de la fase III figura en `docs/fase-iii-20261113.md` y los workflows de su rama están en verde, pero **no está fusionado en `main` ni publicado**. La auditoría de las 559 propuestas es un cierre de clasificación; **quedan lecturas sin certificación individual**, y no se declara terminado el proceso filológico.
+
+## Cierre docente de los tres paradigmas (13/11/2026)
+
+**Estas decisiones se incorporan después de la auditoría histórica de 559 candidaturas.** La tabla anterior y sus 21 registros «pendientes de decisión» se conservan como evidencia de lo detectado antes de la aprobación; su estado histórico y las 559 fichas no se reescriben ni se declaran verificadas. La situación académica actual está en `data/lemmas/greek-adjective-decisions.json`.
+
+- **ἀθάνατος, –ον (UD8):** dos terminaciones; las ocho propuestas de femenino por primera declinación se excluyen del repertorio examinable. Los registros originales y decisiones previas siguen consultables.
+- **ἐχθρός, –ά, –όν (UD5):** se corrige el enunciado del vocabulario desde `ἐχθρός, –ον` y se admite el paradigma con femenino en –ά. **Sus diez candidaturas femeninas siguen en fuente 4, bloqueadas**, hasta comprobación documental *individual* de forma y análisis. La aprobación del paradigma no constituye autorización ni prueba morfológica. Temporalmente se excluye el lema del sorteo automático de sintagmas, para no generar femeninos sin verificar.
+- **αἰσχρός, –ον (UD5):** enunciado escolar de dos terminaciones. Las tres propuestas femeninas de primera declinación se conservan en el historial y no se incluyen en el sorteo ni en el repertorio exigible.
+
+Se conservan los femeninos ya contrastados de otros lemas y los análisis masculino/neutro documentados; no se rebaja ninguna fuente ni se promueve ninguna candidata a fuente 5. La cuarentena de acentuaciones de πρῶτος y la variante épica παῖδι permanece intacta. La función de autorizaciones bloquea las 21 candidaturas incluso si se intenta importar un permiso antiguo.
+
+La fuente persistente que reproduce el enunciado de `ἐχθρός` al reconstruir la base es `data/lemmas/verified-overrides.json` (entrada `entryCorrections`). El índice `teacher-forms.json`, la interfaz y `offline.html` se regeneran sincronizados. Prueba dedicada: `scripts/test-greek-adjective-decisions.cjs`; la CI comprueba que no desaparezca ninguna de las 21 identidades históricas ni se active una autorización.
