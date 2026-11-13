@@ -64,7 +64,7 @@ jobs:
         run: node scripts/test-regular-latin.mjs
       - name: Verificar evidencia persistente y conjugación mixta de Latín I
         run: node scripts/test-latin-verb-evidence.cjs
-      - name: Cotejar 84 nuevas casillas verificadas con la fuente persistente
+      - name: Cotejar paradigmas individuales verificados con la fuente persistente
         run: node scripts/test-verified-verb-overrides.cjs
       - name: Registrar incidencias de verbos irregulares y deponentes sin certificar paradigmas
         run: node scripts/audit-verbs-evidence.cjs
