@@ -1,0 +1,65 @@
+{
+  "schema": "examina-greek-adjective-decisions/v1",
+  "date": "2026-11-13",
+  "course": "gr1",
+  "authority": "decisión explícita del docente",
+  "certificationPolicy": "El paradigma aprobado no equivale a cotejo individual: no promoción de fuente 4 ni desbloqueo de autorizaciones de uso sin verificación",
+  "historicalAudit": "data/lemmas/revision-559-griego-20261113.json",
+  "decisions": [
+    {
+      "lemma": "αθανατοσ",
+      "entry": "ἀθάνατος, −ον",
+      "unit": "UD 8",
+      "paradigm": "DOS_TERMINACIONES",
+      "policy": "EXCLUIR",
+      "candidateIds": [
+        "grc-pending-020",
+        "grc-pending-021",
+        "grc-pending-022",
+        "grc-pending-023",
+        "grc-pending-024",
+        "grc-pending-025",
+        "grc-pending-026",
+        "grc-pending-027"
+      ],
+      "verifiedFormsAdded": 0,
+      "reason": "Masculino y femenino de segunda declinación; excluir las ocho candidaturas de femenino de primera declinación, conservar historial."
+    },
+    {
+      "lemma": "εχθροσ",
+      "previousEntry": "ἐχθρός, –ον",
+      "entry": "ἐχθρός, –ά, –όν",
+      "unit": "UD 5",
+      "paradigm": "TRES_TERMINACIONES",
+      "policy": "VERIFICACION_INDIVIDUAL",
+      "candidateIds": [
+        "grc-pending-159",
+        "grc-pending-160",
+        "grc-pending-161",
+        "grc-pending-162",
+        "grc-pending-163",
+        "grc-pending-164",
+        "grc-pending-165",
+        "grc-pending-166",
+        "grc-pending-167",
+        "grc-pending-168"
+      ],
+      "verifiedFormsAdded": 0,
+      "reason": "Enunciado escolar corregido. Las diez candidaturas femeninas requieren cotejo por forma y análisis; temporalmente bloquear también el sorteo automático de sintagmas del lema."
+    },
+    {
+      "lemma": "αισχροσ",
+      "entry": "αἰσχρός, –ον",
+      "unit": "UD 5",
+      "paradigm": "DOS_TERMINACIONES",
+      "policy": "EXCLUIR",
+      "candidateIds": [
+        "grc-pending-063",
+        "grc-pending-064",
+        "grc-pending-065"
+      ],
+      "verifiedFormsAdded": 0,
+      "reason": "Conservar exclusivamente las dos terminaciones en el repertorio exigible y excluir del sorteo las tres propuestas femeninas de primera declinación."
+    }
+  ]
+}
