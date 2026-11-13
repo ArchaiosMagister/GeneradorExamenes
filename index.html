@@ -628,7 +628,7 @@ body:has(.vocab-manager.active) .exam-coursebar{display:none}
 @media print{.vg-eulexis-panel,.vg-eulexis-card{display:none!important}}
 
 #examMobileTabs{display:none}
-@media screen and (max-width:767px), screen and (max-width:950px) and (max-height:500px) and (pointer:coarse){
+@media screen and (max-width:800px), screen and (max-width:950px) and (max-height:500px) and (pointer:coarse){
  #examLayout.layout{grid-template-columns:minmax(0,1fr)}
  #examLayout.layout>.panel,#examLayout.layout>.paper{grid-column:1;grid-row:2;min-width:0}
  #examMobileTabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;grid-row:1;
@@ -4947,7 +4947,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 (function examinaMobileTabs(){
  const layout=$('examLayout'),nav=$('examMobileTabs'),paper=$('paper'),editor=$('examEditorPanel');
  const tabs=[...nav.querySelectorAll('[role="tab"]')];
- const mobile=matchMedia('screen and (max-width:767px), screen and (max-width:950px) and (max-height:500px) and (pointer:coarse)');
+ const mobile=matchMedia('screen and (max-width:800px), screen and (max-width:950px) and (max-height:500px) and (pointer:coarse)');
  let selected=tabs[0];
  function sync(){
   editor.removeAttribute('aria-labelledby');
