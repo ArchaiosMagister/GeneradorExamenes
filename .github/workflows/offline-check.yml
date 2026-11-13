@@ -186,6 +186,8 @@ jobs:
         run: node scripts/test-single-word-regeneration.cjs
       - name: Fase III - conservar el borrador al regenerar un apartado léxico
         run: node scripts/test-lex-part-regeneration.cjs
+      - name: Fase III - regeneración aislada de preguntas latinas y sus soluciones
+        run: node scripts/test-question-part-regeneration.cjs
       - name: Probar las vistas previas de todos los modelos
         run: node scripts/test-preview.cjs
       - name: Guardar Word con puntuaciones de examen para inspección
