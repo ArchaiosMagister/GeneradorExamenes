@@ -1,0 +1,57 @@
+name: Transferir 300 formas griegas (solo rama filológica)
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'scripts/promote-candidates-300-greek.cjs'
+      - '.github/workflows/promote-candidates-300-greek.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  promover-exclusivamente-tras-pruebas:
+    if: github.head_ref == 'revision-filologica-integral-20261113' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Aplicar 300 casillas del registro académico
+        run: node scripts/promote-candidates-300-greek.cjs
+      - name: Reconstruir HTML único con nuevos datos
+        run: npm run offline:build
+      - name: Comprobar exactamente 300 análisis, iota y cuarentena
+        run: node scripts/test-candidaturas-lote300-griego.cjs
+      - name: Preservar el lote 200 ya contrastado
+        run: node scripts/test-candidaturas-lote200.cjs
+      - name: Validar reconstrucción, fuentes e índice
+        run: node scripts/test-lemma-index.mjs && node scripts/test-verified-verb-overrides.cjs
+      - name: Comprobar las decisiones editoriales de griego
+        run: node scripts/test-greek-editorial.cjs
+      - name: Comprobar versión autónoma idéntica al banco
+        run: node scripts/test-phase-two-persistent-offline.cjs && node scripts/test-offline.mjs
+      - name: Conservar inventario exacto de candidaturas pendientes
+        run: node scripts/test-comprehensive-morph-audit.cjs
+      - name: Guardar todo conjuntamente solo si las pruebas pasan
+        env:
+          TARGET_BRANCH: ${{ github.head_ref }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/lemmas/teacher-forms.json data/lemmas/verified-overrides.json \
+            data/lemmas/revision-candidaturas-lote300-griego-20261113.json \
+            offline.html scripts/test-candidaturas-lote200.cjs \
+            scripts/test-comprehensive-morph-audit.cjs \
+            docs/revision-filologica-integral-20261113.md
+          if git diff --cached --quiet; then
+            echo "No hay cambios"
+          else
+            git commit -m "feat(filologia): 300 análisis griegos contrastados y PWA sincronizada"
+            git push origin HEAD:"$TARGET_BRANCH"
+          fi
