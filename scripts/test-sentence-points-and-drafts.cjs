@@ -87,7 +87,8 @@ async function run(browser,file){
   t.dispatchEvent(new Event('input',{bubbles:true}));
   $('saveDraft').click();
   const count=$('count-sent');count.value='3';count.dispatchEvent(new Event('change',{bubbles:true}));
-  restoreDraft(JSON.parse(localStorage.getItem('examina_draft_v14')));
+  // El restaurador pertenece al módulo de borradores y se invoca desde su botón público.
+  document.getElementById('restoreDraft').click();
  });
  const restored=await page.evaluate(()=>{
   const saved=JSON.parse(localStorage.getItem('examina_draft_v14'));
