@@ -192,6 +192,8 @@ jobs:
         run: node scripts/test-greek-question-regeneration.cjs
       - name: Fase III - preservar huecos y puntuar una unidad por oración
         run: node scripts/test-sentence-points-and-drafts.cjs
+      - name: Fase III - normas fonéticas acumulativas sin regenerar el examen
+        run: node scripts/test-phonetic-filter-isolation.cjs
       - name: Probar las vistas previas de todos los modelos
         run: node scripts/test-preview.cjs
       - name: Guardar Word con puntuaciones de examen para inspección

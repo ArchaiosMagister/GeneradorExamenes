@@ -688,7 +688,20 @@ const latinLexTitles={
 };
 const phoneticRules='Abertura|Aféresis|Apócope|Asimilación|Aspiración|Consonantización|Diptongación|Disimilación|Epéntesis|Evolución de grafías griegas|Metátesis|Monoptongación|Palatalización|Prótesis|Simplificación|Síncopa|Sonorización|Vocalización|-min- > -mbr-|-cul- > -j-/-g-'.split('|').map((name,i)=>({id:'N'+String(i+1).padStart(2,'0'),name}));
 // Todas las normas impartidas activas por defecto; las posteriores quedan inhabilitadas.
-const selectedPhoneticRules=new Set(phoneticRules.map(rule=>rule.id));
+const PHONETIC_RULES_STORAGE='examina_latin1_phonetic_rules_v1';
+const selectedPhoneticRules=(()=>{
+ const defaults=phoneticRules.map(rule=>rule.id);
+ try{
+  const stored=JSON.parse(localStorage.getItem(PHONETIC_RULES_STORAGE)||'null');
+  if(Array.isArray(stored)&&stored.every(code=>typeof code==='string'&&defaults.includes(code)))
+   return new Set(stored);
+ }catch(_){}
+ return new Set(defaults);
+})();
+function persistPhoneticRules(){
+ try{localStorage.setItem(PHONETIC_RULES_STORAGE,JSON.stringify([...selectedPhoneticRules].sort()))}
+ catch(_){}
+}
 function parseTeacherPhonetics(raw){
  if(raw?.esquema!=='evoluciones-latin-castellano/v1'||!Array.isArray(raw.items))return [];
  const known=new Set(phoneticRules.map(rule=>rule.id)),seen=new Set(),rows=[];
@@ -3531,7 +3544,7 @@ function examCacheSignature(kind){
    kind==='lex-prefixes'?$('lex-prefix')?.value:null,
    kind==='lex-phonetics'?$('lex-phenomenon')?.value:null,
    kind==='lex-latinisms'?[$('lex-parity')?.value,$('lex-from')?.value,$('lex-to')?.value].join(':'):null,
-   kind==='lex-phonetics'?[...selectedPhoneticRules].join(','):null
+   kind==='lex-phonetics'?[...selectedPhoneticRules].sort().join(','):null
   ].join('|'):null]);
 }
 function stickyExamRows(kind,factory){
@@ -4281,8 +4294,28 @@ loadTeacherLatinLexBanks();
     input.dataset.phoneticCode=rule.id;
     input.checked=allowed.has(rule.id)&&selectedPhoneticRules.has(rule.id);
     input.disabled=!allowed.has(rule.id);
-    input.onchange=()=>{if(input.checked)selectedPhoneticRules.add(rule.id);else selectedPhoneticRules.delete(rule.id);
-     examSelectionCache.delete(examCacheSignature('lex-phonetics'));generate()};
+    input.onchange=()=>{
+     const wasSelected=selectedPhoneticRules.has(rule.id);
+     if(input.checked)selectedPhoneticRules.add(rule.id);
+     else selectedPhoneticRules.delete(rule.id);
+     const paper=$('paper').querySelector('.exam-sheet');
+     const currentPart=paper?.querySelector('.lex-subquestion[data-lex-kind="phonetics"]');
+     if(currentPart){
+      const eligible=latinLexPool(course,'phonetics',selectedUnits());
+      const enough=new Set(eligible.map(latinLexTermKey)).size>=latinLexExpectedCount('phonetics');
+      if(!enough||!regenerateLatinLexPart('phonetics')){
+       // No dejar fichas ajenas a la selección ni sustituir el examen completo.
+       if(wasSelected)selectedPhoneticRules.add(rule.id);
+       else selectedPhoneticRules.delete(rule.id);
+       input.checked=wasSelected;
+       const restored=examSelectionCache.get(examCacheSignature('lex-phonetics'));
+       latinLexStatus('phonetics',Array.isArray(restored)?restored:[],
+        'Filtro no aplicado: no quedan cuatro étimos compatibles con las normas exigibles.');
+       return;
+      }
+     }
+     persistPhoneticRules();
+    };
     field.append(makeLabel(rule.id+' · '+rule.name,input));
    }
    const phoneticGroup=box.querySelector('[data-lex-part="phonetics"]');
