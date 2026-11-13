@@ -5,7 +5,7 @@
   "description": "Webapp autónoma para generar exámenes de Latín y Griego, utilizable sin conexión",
   "scripts": {
     "offline:build": "node scripts/build-offline.mjs",
-    "offline:test": "node scripts/check-web.mjs && node scripts/test-teacher-review.mjs && node scripts/test-offline.mjs",
+    "offline:test": "node scripts/check-web.mjs && node scripts/test-teacher-review.mjs && node scripts/test-unified-backup.cjs && node scripts/test-offline.mjs",
     "preview:test": "node scripts/test-preview.cjs",
     "pwa:test": "node scripts/test-pwa.cjs",
     "vocabulary:test": "node scripts/test-vocabulary-quality.cjs && node scripts/test-latin-vocabulary-corpus.cjs && node scripts/test-vocabulary.cjs && node scripts/test-required-latin-vocabulary.cjs",

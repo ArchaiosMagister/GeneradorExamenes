@@ -5,6 +5,7 @@ on:
     paths:
       - 'index.html'
       - 'exam-scoring.js'
+      - 'unified-backup.js'
       - 'culture-lat4.js'
       - 'lexicon-valenciano.js'
       - 'required-latin-units.js'
@@ -31,6 +32,7 @@ on:
     paths:
       - 'index.html'
       - 'exam-scoring.js'
+      - 'unified-backup.js'
       - 'culture-lat4.js'
       - 'vocabulary-generator.js'
       - 'offline.html'

@@ -24,6 +24,10 @@ La versión web **puede funcionar sin Internet después de una primera visita co
 
 La actualización del service worker se versiona con el SHA del despliegue en GitHub Pages; los recursos se guardan de forma conjunta para evitar versiones mezcladas. No se envían borradores ni vocabulario del usuario a un servidor: permanecen en el almacenamiento local del navegador.
 
+## Copia de seguridad unificada · Fase IV
+
+En la sección **Generación de exámenes**, abre **Copia de seguridad unificada · Fase IV** para exportar un solo JSON con el borrador visible, las decisiones filológicas y los demás datos locales del docente. Al importar se añaden únicamente registros ausentes y se conservan los conflictos. Consulta la [guía de recuperación](docs/copia-unificada-fase-iv.md).
+
 ## Estructura académica de los exámenes (versión actual)
 
 El **nombre del modelo** (completo, morfología o traducción) no sustituye el título académico de la cabecera: `Examen de Latín I – UDs 2–3`, por ejemplo.
