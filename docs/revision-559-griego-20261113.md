@@ -49,3 +49,12 @@ El cierre funcional de la fase III figura en `docs/fase-iii-20261113.md` y los w
 Se conservan los femeninos ya contrastados de otros lemas y los análisis masculino/neutro documentados; no se rebaja ninguna fuente ni se promueve ninguna candidata a fuente 5. La cuarentena de acentuaciones de πρῶτος y la variante épica παῖδι permanece intacta. La función de autorizaciones bloquea las 21 candidaturas incluso si se intenta importar un permiso antiguo.
 
 La fuente persistente que reproduce el enunciado de `ἐχθρός` al reconstruir la base es `data/lemmas/verified-overrides.json` (entrada `entryCorrections`). El índice `teacher-forms.json`, la interfaz y `offline.html` se regeneran sincronizados. Prueba dedicada: `scripts/test-greek-adjective-decisions.cjs`; la CI comprueba que no desaparezca ninguna de las 21 identidades históricas ni se active una autorización.
+
+
+## Cotejo individual de ἐχθρός — diez lecturas femeninas
+
+Cotejo posterior al cierre del inventario y **limitado a diez candidaturas**: `grc-pending-159` a `grc-pending-168`. La tabla ática de [Wikcionario](https://en.wiktionary.org/wiki/%E1%BC%90%CF%87%CE%B8%CF%81%CF%8C%CF%82) y el [paradigma comparativo de Hellas Alive](https://hellas.bab2min.pe.kr/hk/exqros?l=en) contienen las diez combinaciones de forma y análisis (Hellas Alive advierte expresamente que parte de su conjugación/declinación está generada y puede contener errores; se toma como contraste, no como única prueba).
+
+**Resultado: 10/10 combinaciones coinciden con la flexión ática de `ἐχθρός, –ά, –όν`**, sin grafías incompatibles ni errores de caso o número. Se comprueba especialmente la diferencia de acentuación entre `ἐχθρᾶς` (genitivo singular) y `ἐχθράς` (acusativo plural), así como la iota suscrita de `ἐχθρᾷ`. Hay ocho grafías distintas y cinco lecturas con sincretismo: los dos análisis femeninos de `ἐχθρά` comparten forma entre sí y con el neutro plural; los dos de `ἐχθραί` comparten forma entre sí; `ἐχθρῶν` es también genitivo plural masculino y neutro.
+
+Se incorpora el expediente reproducible `data/lemmas/cotejo-10-echthros-20261113.json` y la regresión `scripts/test-echthros-ten-collation.cjs`, que cotejan *cada ficha con su identidad histórica exacta*. **El cotejo documental no equivale a conceder una autorización de examen**: se conservan los registros originales de fuente 4, la cuarentena de permisos antiguos, y el bloqueo de sorteo mientras se decide una incorporación segura que preserve los análisis alternativos. No se alteran otras fichas ni se publica.
