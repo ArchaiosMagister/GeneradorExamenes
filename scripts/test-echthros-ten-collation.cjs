@@ -1,5 +1,5 @@
 'use strict';
-// Cotejo académico de 10 lecturas, sin cambiar fuentes ni habilitar preguntas automáticas.
+// Cotejo académico de 10 lecturas, con migración individual fuente 5 sin habilitar respuestas automáticas.
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
 const root=path.resolve(__dirname,'..');
 const get=p=>JSON.parse(fs.readFileSync(path.join(root,p),'utf8'));
@@ -26,9 +26,9 @@ assert.equal(review.items.length,10);
 assert.deepEqual([review.summary.reviewed,review.summary.morphologyConfirmed,
  review.summary.distinctSurfaceForms,review.summary.syncreticReadings,
  review.summary.otherReadings,review.summary.source5Promotions,
- review.summary.newAutomaticExamForms],[10,10,8,5,5,0,0]);
+ review.summary.newAutomaticExamForms],[10,10,8,5,5,10,0]);
 const decision=policy.decisions.find(x=>x.lemma==='εχθροσ');
-assert(decision&&decision.policy==='VERIFICACION_INDIVIDUAL');
+assert(decision&&decision.policy==='VERIFICADAS_INDIVIDUALMENTE'&&decision.verifiedFormsAdded===10);
 const saved=new Set(),surfaces=new Set();
 for(const [i,form,tags,amb] of expected){
  const id='grc-pending-'+i;
@@ -44,13 +44,13 @@ for(const [i,form,tags,amb] of expected){
  assert.equal(stripQuantity(h.sourceForm),form);
  assert.equal(h.analysis,tags);
  assert.equal(h.originalSource,4);
- assert.equal(r.indexSourceCode,4);
+ assert.equal(r.indexSourceCode,5);
  assert(r.spellingVerified&&r.analysisVerified);
  assert.equal(r.evidenceState,'CONCORDANCIA_EXPLICITA_EN_PARADIGMA_ATICO');
  assert(/^https:\/\//.test(r.reference)&&/^https:\/\//.test(r.independentParadigmCrosscheck));
  assert(!r.individualAuthorizationAdded&&!r.automaticGradingEnabled);
- assert(bank.rows.grc.some(x=>x[0]==='εχθροσ'&&x[1]===h.sourceForm&&x[2]===tags&&x[3]===4));
- assert(!bank.rows.grc.some(x=>x[0]==='εχθροσ'&&x[1]===form&&x[2]===tags&&x[3]===5));
+ assert(!bank.rows.grc.some(x=>x[0]==='εχθροσ'&&x[1]===h.sourceForm&&x[2]===tags&&x[3]===4));
+ assert.equal(bank.rows.grc.filter(x=>x[0]==='εχθροσ'&&x[1]===form&&x[2]===tags&&x[3]===5).length,1);
  assert(decision.candidateIds.includes(id));
  surfaces.add(form);
  // La ambigüedad se calcula sobre todas las lecturas documentadas de ese lema,
@@ -62,6 +62,6 @@ for(const [i,form,tags,amb] of expected){
 assert.equal(saved.size,10);
 assert.equal(surfaces.size,8);
 assert.equal(bank.vocabulary.grc.εχθροσ.gr1.entry,'ἐχθρός, –ά, –όν');
-assert.equal(bank.counts.grc.wikcionario,559);
-assert.equal(bank.counts.grc.contrastado,464);
-console.log('ἐχθρός: 10/10 cotejos morfológicos, ocho grafías, cinco lecturas con sincretismo; sin promociones ni cambios en el sorteo.');
+assert.equal(bank.counts.grc.wikcionario,549);
+assert.equal(bank.counts.grc.contrastado,474);
+console.log('ἐχθρός: 10/10 cotejos morfológicos, ocho grafías, cinco lecturas con sincretismo; diez promociones documentadas; sin activar preguntas de respuesta única.');
