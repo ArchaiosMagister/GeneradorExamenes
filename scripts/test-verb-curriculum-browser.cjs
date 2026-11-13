@@ -143,8 +143,21 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
    latin1:latin.items,latin4:latin4.items,greek1:greek.items
   },null,2)+'\n');
   const last=latin.items[latin.items.length-1];
-  const expectedBacked=await page.evaluate(()=>Object.values(latinExplicitVerbEvidence)
-   .flat().reduce((n,block)=>n+block.forms.length,0)-latinDeponentSyncretisms.size);
+  const expectedBacked=await page.evaluate(()=>{
+   // Contar lecturas, no lemas: dos lecturas de proficisceris (presente/
+   // futuro) desaparecen a la vez del análisis aislado.
+   const all=Object.entries(latinExplicitVerbEvidence).flatMap(([lemma,blocks])=>
+    blocks.flatMap(block=>block.forms.map((form,i)=>({
+     key:lemma+'|'+normLex(form),reading:i+'|'+block.tense+'|'+block.voice
+    }))));
+   const readings=new Map();
+   for(const item of all){
+    if(!readings.has(item.key))readings.set(item.key,new Set());
+    readings.get(item.key).add(item.reading);
+   }
+   return all.filter(item=>readings.get(item.key).size===1&&
+    !latinDeponentSyncretisms.has(item.key)).length;
+  });
   assert.equal(last.attestedForms,expectedBacked,
    'Las formas individuales deben conservar su procedencia; los sincretismos se excluyen del análisis aislado');
   console.log('Auditoría curricular: Latín I '+latin.items.length+' etapas, Latín 4.º '+latin4.items.length+
