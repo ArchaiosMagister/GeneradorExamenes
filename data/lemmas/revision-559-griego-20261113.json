@@ -21,7 +21,7 @@
     "requiresTeacherDecision": 21,
     "accentCorrections": 24,
     "headwordCorrections": 1,
-    "readingsForFurtherCotejo": 22,
+    "readingsForFurtherCotejo": 21,
     "verifiedPromoted": 0,
     "gradeEligibleNew": 0,
     "byStatus": {
@@ -29,9 +29,11 @@
       "SIN_UNIDAD": 442,
       "ACENTO_INCORRECTO_EN_FUENTE": 24,
       "VARIANTE_DE_TERMINACIONES_PARA_DECISION_DOCENTE": 21,
-      "ERRATA_ENUNCIADO_DOCENTE": 1,
-      "LECTURA_CON_PARADIGMA_A_COTEJAR": 22
-    }
+      "LECTURA_CON_PARADIGMA_A_COTEJAR": 21,
+      "ERRATA_CORREGIDA_ENUNCIADO_DOCENTE": 1,
+      "VARIANTE_EPICA_FUERA_DE_CURRICULO": 1
+    },
+    "dialectalExcluded": 1
   },
   "items": [
     {
@@ -3912,7 +3914,7 @@
       "id": "grc-pending-201",
       "language": "grc",
       "lemma": "κεφαλη",
-      "teacherEntry": "κεφαλῆ, –ῆς",
+      "teacherEntry": "κεφαλή, –ῆς",
       "units": [
         "UD 6–7"
       ],
@@ -3922,12 +3924,13 @@
       "originalSource": 4,
       "extractPresent": true,
       "reference": "https://en.wiktionary.org/wiki/%CE%BA%CE%B5%CF%86%CE%B1%CE%BB%CE%AE",
-      "status": "ERRATA_ENUNCIADO_DOCENTE",
-      "reason": "Dativo singular κεφαλῇ documentado, pero el enunciado persistente κεφαλῆ, –ῆς necesita corrección a κεφαλή, –ῆς antes de habilitarlo.",
+      "status": "ERRATA_CORREGIDA_ENUNCIADO_DOCENTE",
+      "reason": "Se ha corregido el enunciado docente en la fuente, el índice y ambas versiones de la PWA. El dativo κεφαλῇ sigue siendo fuente 4.",
       "proposedCorrection": "κεφαλή, –ῆς",
       "requiresTeacherDecision": false,
       "verifiedIndividual": false,
-      "gradeEligible": false
+      "gradeEligible": false,
+      "originalTeacherEntry": "κεφαλῆ, –ῆς"
     },
     {
       "id": "grc-pending-202",
@@ -7002,8 +7005,8 @@
       "originalSource": 4,
       "extractPresent": true,
       "reference": "https://en.wiktionary.org/wiki/%CF%80%CE%B1%E1%BF%96%CF%82",
-      "status": "LECTURA_CON_PARADIGMA_A_COTEJAR",
-      "reason": "Lectura coherente con la flexión nominal y unidad docente; falta certificar individualmente la fuente y sincronizar datos/índice/PWA para habilitarla.",
+      "status": "VARIANTE_EPICA_FUERA_DE_CURRICULO",
+      "reason": "El dativo singular escolar ático es παιδί. La grafía παῖδι está documentada como variante épica, sin autorización curricular en el modelo de Griego I; conservar la referencia y no sortearla como forma ática.",
       "proposedCorrection": null,
       "requiresTeacherDecision": false,
       "verifiedIndividual": false,
