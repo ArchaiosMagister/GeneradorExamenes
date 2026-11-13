@@ -242,7 +242,18 @@
      const open=root.ExaminaUnifiedRestoreDraft;
      if(typeof open!=='function')throw Error('Abre el examen desde el cargador de borradores');
      if(!root.confirm('¿Abrir este borrador en la vista previa? Guarda antes los cambios actuales. El borrador local guardado no se sustituirá.'))return;
-     open(item.value);status.textContent='Borrador abierto en la vista previa. Guárdalo manualmente si deseas conservarlo.';
+     // Abrir la vista previa puede provocar persistencias indirectas durante la
+     // regeneración de menús. Conservar íntegro el estado local previo.
+     const oldValues=Object.keys(GROUPS).map(key=>[key,storage().getItem(key)]);
+     try{open(item.value)}
+     finally{
+      for(const [key,previous] of oldValues){
+       if(storage().getItem(key)===previous)continue;
+       if(previous===null)storage().removeItem(key);
+       else storage().setItem(key,previous);
+      }
+     }
+     status.textContent='Borrador abierto sin modificar las copias locales guardadas. Guárdalo manualmente si deseas conservarlo.';
     }else{
      const stats=restoreFromArchive(index);
      refresh();
