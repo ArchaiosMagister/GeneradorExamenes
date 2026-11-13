@@ -19,16 +19,12 @@ Funciona sin conexión. No se envían datos a un servidor. Conviene mantener var
 - Borrador guardado y generación anterior: examina_draft_v14, examina_previous_v14.
 - Vista previa actual sin guardar: liveDraft.
 - Decisiones de morfología, discrepancias griegas y desambiguación de glosas: examina-morph-review-v1, examina-greek-discrepancy-v1, examina_exam_gloss_choices_v1.
-- Autorizaciones individuales **solo si se hubieran registrado**: examina_teacher_authorizations_v1.
+- Autorizaciones individuales de uso docente: `examina-academic-evidence-v1`, con identidad por curso, lema, forma, análisis y fuente. Se guardan en la copia pero su recuperación queda en cuarentena.
 - Oraciones, puntuaciones y vocabulario exigible: examina_exam_sentences_v1, examina_question_points_v1, examina_required_v9.
 - Datos docentes adicionales, bancos léxicos personales y proyectos de vocabulario: examina_extra, examina_lexical_banks_v1, examina_vocabulary_project_v1.
 - Historial de importaciones conflictivas: examina_unified_archive_v1.
 
-**Límite académico actual:** no se detectó en el código examinado un sistema que
-persistiera autorizaciones individuales en examina_teacher_authorizations_v1.
-Esta versión admite esa clave, pero **no inventa aprobaciones, ni convierte una
-decisión en tarjeta en forma académicamente verificada**. La conexión de futuras
-autorizaciones explícitas al motor de generación requerirá su propio desarrollo y pruebas.
+**Protección académica:** la fase IV previa ya dispone de autorizaciones por forma y un verificador académico. Una importación general **no activa** los permisos entrantes: los archiva en cuarentena. El botón Recuperar del registro archivado coteja todo el lote con el banco y la matriz curricular actuales mediante `validateEvidenceImport`, descarta restauraciones inválidas y exige una confirmación explícita. Ninguna autorización eleva una forma a «verificada». Las decisiones editoriales de `examina-morph-review-v1` utilizan historial de alternativas v2 y tampoco conceden permisos.
 
 Se excluyen los índices descargables UniMorph y Eulexis en IndexedDB: no son decisiones personales y se pueden reinstalar. También se excluyen los bancos del repositorio y las preferencias efímeras.
 
@@ -37,7 +33,7 @@ Se excluyen los índices descargables UniMorph y Eulexis en IndexedDB: no son de
 - Se aceptan exclusivamente JSON con esquema examina-unified-backup/v1 y claves reconocidas.
 - Antes de escribir se ofrece una vista previa numérica.
 - Se agregan las claves ausentes y se omiten los valores exactamente idénticos.
-- En mapas de decisiones se añaden identificadores inexistentes, sin cambiar los antiguos. Las alternativas contradictorias quedan archivadas.
+- En mapas de decisiones se añaden identificadores inexistentes, sin cambiar los antiguos. Para revisión filológica v2 se conserva el historial de alternativas del módulo docente. Las demás alternativas contradictorias quedan archivadas.
 - En vocabulario exigible se agregan fichas nuevas; los mismos identificadores con contenido diferente se archivan.
 - Los borradores, proyectos completos y otras estructuras no fusionables se conservan como registros archivados en caso de conflicto.
 - El archivo de conflictos se incluye en exportaciones futuras y se deduplica en importaciones repetidas.
@@ -47,7 +43,7 @@ Se excluyen los índices descargables UniMorph y Eulexis en IndexedDB: no son de
 ## Pruebas
 
 La suite scripts/test-unified-backup.cjs cubre exportación, copia del borrador
-visible, decisiones y autorizaciones como datos, fusión conservadora,
+visible, decisiones y autorizaciones en cuarentena, fusión conservadora,
 conflictos, idempotencia, recuperación entre dispositivos, archivos inválidos,
 rollback y referencias de empaquetado. Se ejecuta con npm run offline:test,
 que forma parte de las comprobaciones de PR y publicación.
