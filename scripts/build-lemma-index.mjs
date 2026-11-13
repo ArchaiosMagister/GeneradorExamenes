@@ -278,8 +278,8 @@ async function main(){
   }
   if(accepted){extensions.candidate_lemmas++;extensions.candidate_rows+=accepted}
  }
- // The accented nominal forms have been extracted and screened separately:
- // they remain Wiktionary CANDIDATES (source 4), never exam solutions.
+ // Solo las diez lecturas femeninas contrastadas individualmente de ἐχθρός
+ // se migran a fuente 5; el resto permanece candidato (fuente 4).
  let greekCandidateData;
  try{greekCandidateData=JSON.parse(await fs.readFile(greekCandidatePath,'utf8'))}
  catch(e){throw Error('Falta el extracto nominal griego (ejecuta build-greek-nominal-candidates.mjs): '+e.message)}
@@ -312,6 +312,23 @@ async function main(){
  // Una reconstrucción no debe borrar sus IDs ni simular procedencia nueva.
  const historicGreek=JSON.parse(await fs.readFile(
   path.join(root,'data/lemmas/revision-559-griego-20261113.json'),'utf8'));
+ const echthrosLedger=JSON.parse(await fs.readFile(
+  path.join(root,'data/lemmas/cotejo-10-echthros-20261113.json'),'utf8'));
+ if(echthrosLedger.schema!=='examina-greek-individual-morphology-collation/v1'||
+    echthrosLedger.lemma!=='εχθροσ'||echthrosLedger.items?.length!==10||
+    echthrosLedger.summary?.source5Promotions!==10)
+  throw Error('Cotejo individual de ἐχθρός ausente o inconsistente');
+ const historicalById=new Map(historicGreek.items.map(x=>[x.id,x]));
+ for(const record of echthrosLedger.items){
+  const original=historicalById.get(record.id);
+  if(!original||original.lemma!=='εχθροσ'||original.originalSource!==4||
+     original.sourceForm!==record.originalSourceForm||original.schoolForm!==record.schoolForm||
+     original.analysis!==record.analysis||!record.spellingVerified||!record.analysisVerified||
+     record.indexSourceCode!==5||record.automaticGradingEnabled!==false||
+     !rows.grc.some(r=>r[0]==='εχθροσ'&&r[1]===record.schoolForm&&
+      r[2]===record.analysis&&r[3]===5))
+   throw Error('Forma femenina de ἐχθρός no migrada exactamente una vez: '+record.id);
+ }
  const missingGreek=historicGreek.items.filter(x=>x.originalSource===4&&!x.extractPresent);
  if(historicGreek.items.length!==559||missingGreek.length!==49)
   throw Error('Auditoría de 559 registros griegos modificada inesperadamente');
@@ -322,11 +339,13 @@ async function main(){
    throw Error('Ficha histórica griega no segura: '+x.id);
   add('grc',x.lemma,x.sourceForm,x.analysis,'wikcionario');
  }
- if(counts.grc.wikcionario-greekCountBefore!==559)
-  throw Error('La reconstrucción pierde candidaturas griegas históricas');
+ if(counts.grc.wikcionario-greekCountBefore!==559-echthrosLedger.items.length)
+  throw Error('La reconstrucción no concilia las diez promociones con el inventario histórico');
  extensions.greek_nominal_candidates={
   lemmas:greekCandidateData.entries.length,
   rows:counts.grc.wikcionario-greekCountBefore,
+  historicalRows:historicGreek.items.length,
+  migratedIndividualSource5:echthrosLedger.items.length,
   archivedRowsWithoutExtract:missingGreek.length,
   license:greekCandidateData.license,
   attribution:greekCandidateData.attribution,
@@ -363,13 +382,13 @@ async function main(){
  const adjectiveAudit=JSON.parse(await fs.readFile(
   path.join(root,'data/lemmas/revision-559-griego-20261113.json'),'utf8'));
  const auditById=new Map(adjectiveAudit.items.map(x=>[x.id,x]));
- const expectedAdjectives=[['αθανατοσ',8,'DOS_TERMINACIONES','EXCLUIR'],
-  ['εχθροσ',10,'TRES_TERMINACIONES','VERIFICACION_INDIVIDUAL'],
-  ['αισχροσ',3,'DOS_TERMINACIONES','EXCLUIR']];
+ const expectedAdjectives=[['αθανατοσ',8,'DOS_TERMINACIONES','EXCLUIR',0],
+  ['εχθροσ',10,'TRES_TERMINACIONES','VERIFICADAS_INDIVIDUALMENTE',10],
+  ['αισχροσ',3,'DOS_TERMINACIONES','EXCLUIR',0]];
  const approvedIds=new Set();
- for(const [lemma,n,paradigm,policy] of expectedAdjectives){
+ for(const [lemma,n,paradigm,policy,verified] of expectedAdjectives){
   const d=adjectivePolicy.decisions.find(x=>x.lemma===lemma);
-  if(!d||d.paradigm!==paradigm||d.policy!==policy||d.verifiedFormsAdded!==0||
+  if(!d||d.paradigm!==paradigm||d.policy!==policy||d.verifiedFormsAdded!==verified||
      !Array.isArray(d.candidateIds)||d.candidateIds.length!==n||
      catalog.grc[lemma]?.gr1?.entry!==d.entry)
    throw Error('Decisión docente inconsistente: '+lemma);
@@ -377,9 +396,11 @@ async function main(){
    const historical=auditById.get(id);
    if(!historical||historical.lemma!==lemma||historical.analysis?.split(';').at(-1)!=='FEM'||
       historical.originalSource!==4||approvedIds.has(id)||
-      !rows.grc.some(r=>r[0]===lemma&&r[1]===historical.sourceForm&&
-       r[2]===historical.analysis&&r[3]===4))
-    throw Error('Candidatura histórica no reproducible: '+id);
+      !(lemma==='εχθροσ'
+        ?rows.grc.some(r=>r[0]===lemma&&r[1]===historical.schoolForm&&r[2]===historical.analysis&&r[3]===5)&&
+         !rows.grc.some(r=>r[0]===lemma&&r[1]===historical.sourceForm&&r[2]===historical.analysis&&r[3]===4)
+        :rows.grc.some(r=>r[0]===lemma&&r[1]===historical.sourceForm&&r[2]===historical.analysis&&r[3]===4)))
+    throw Error('Candidatura histórica o promoción no reproducible: '+id);
    approvedIds.add(id);
   }
  }
