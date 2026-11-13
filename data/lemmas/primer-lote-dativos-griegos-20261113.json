@@ -1,0 +1,149 @@
+{
+  "schema": "examina-greek-curricular-review/v1",
+  "date": "2026-11-13",
+  "sourceCommit": "0d71498efe1af50ab9101d4b96c650cdc8677a15",
+  "selection": "Primer lote: las cinco fichas nominales con unidad docente y estado LECTURA_CON_PARADIGMA_A_COTEJAR. El índice y las autorizaciones permanecen intactos; toda incorporación al sorteo requiere una revisión posterior.",
+  "summary": {
+    "reviewed": 5,
+    "documentarilyCorroborated": 5,
+    "syncreticInCurrentBank": 0,
+    "promoted": 0
+  },
+  "items": [
+    {
+      "id": "grc-pending-384",
+      "lemma": "πολιτησ",
+      "teacherEntry": "πολίτης, –ου",
+      "units": [
+        "UD 1–4"
+      ],
+      "sourceForm": "πολῑ́τῃ",
+      "schoolForm": "πολίτῃ",
+      "analysis": "N;DAT;SG",
+      "originalSource": 4,
+      "decision": "CORROBORADA_DOCUMENTALMENTE",
+      "attestedParadigmForm": "πολῑ́τῃ",
+      "references": [
+        "https://en.wiktionary.org/wiki/%CF%80%CE%BF%CE%BB%CE%AF%CF%84%CE%B7%CF%82#Declension",
+        "https://hellas.bab2min.pe.kr/hk/poliths?l=en"
+      ],
+      "note": "Primera declinación masculina. El dativo singular conserva la iota suscrita bajo eta y el acento sobre la iota del tema.",
+      "bankReadings": [
+        {
+          "lemma": "πολιτησ",
+          "analysis": "N;DAT;SG"
+        }
+      ],
+      "requiresContextForSingleAnswerInBank": false,
+      "automaticGradingEnabled": false
+    },
+    {
+      "id": "grc-pending-462",
+      "lemma": "στρατηγοσ",
+      "teacherEntry": "στρατηγός, –ου",
+      "units": [
+        "UD 5"
+      ],
+      "sourceForm": "στρᾰτηγῷ",
+      "schoolForm": "στρατηγῷ",
+      "analysis": "N;DAT;SG",
+      "originalSource": 4,
+      "decision": "CORROBORADA_DOCUMENTALMENTE",
+      "attestedParadigmForm": "στρᾰτηγῷ",
+      "references": [
+        "https://en.wiktionary.org/wiki/%CF%83%CF%84%CF%81%CE%B1%CF%84%CE%B7%CE%B3%CF%8C%CF%82#Declension",
+        "https://hellas.bab2min.pe.kr/hk/strathgos?form=strathgon&l=en"
+      ],
+      "note": "Segunda declinación masculina. El dativo singular lleva circunflejo e iota suscrita en -ῷ.",
+      "bankReadings": [
+        {
+          "lemma": "στρατηγοσ",
+          "analysis": "N;DAT;SG"
+        }
+      ],
+      "requiresContextForSingleAnswerInBank": false,
+      "automaticGradingEnabled": false
+    },
+    {
+      "id": "grc-pending-450",
+      "lemma": "ρητωρ",
+      "teacherEntry": "ῥήτωρ, –ορος (ὁ)",
+      "units": [
+        "UD 8"
+      ],
+      "sourceForm": "ῥήτορῐ",
+      "schoolForm": "ῥήτορι",
+      "analysis": "N;DAT;SG",
+      "originalSource": 4,
+      "decision": "CORROBORADA_DOCUMENTALMENTE",
+      "attestedParadigmForm": "ῥήτορῐ",
+      "references": [
+        "https://en.wiktionary.org/wiki/%E1%BF%A5%CE%AE%CF%84%CF%89%CF%81#Declension",
+        "https://ihd.cnrs.fr/wp-content/uploads/2021/06/cours_initiation_grec.pdf"
+      ],
+      "note": "Tercera declinación. El tema ῥητορ- toma -ι y mantiene la aguda en la eta.",
+      "bankReadings": [
+        {
+          "lemma": "ρητωρ",
+          "analysis": "N;DAT;SG"
+        }
+      ],
+      "requiresContextForSingleAnswerInBank": false,
+      "automaticGradingEnabled": false
+    },
+    {
+      "id": "grc-pending-451",
+      "lemma": "ρισ",
+      "teacherEntry": "ῥίς, ῥινός (ἡ)",
+      "units": [
+        "UD 8"
+      ],
+      "sourceForm": "ῥῑνῐ́",
+      "schoolForm": "ῥινί",
+      "analysis": "N;DAT;SG",
+      "originalSource": 4,
+      "decision": "CORROBORADA_DOCUMENTALMENTE",
+      "attestedParadigmForm": "ῥῑνῐ́",
+      "references": [
+        "https://en.wiktionary.org/wiki/%E1%BF%A5%CE%AF%CF%82#Inflection",
+        "https://atlas.perseus.tufts.edu/lemma/4757/"
+      ],
+      "note": "Tercera declinación femenina. El tema ῥιν- toma -ί, con espíritu áspero inicial. Scaife recoge ῥινί y ῥινὶ como realizaciones acentuales del mismo análisis.",
+      "bankReadings": [
+        {
+          "lemma": "ρισ",
+          "analysis": "N;DAT;SG"
+        }
+      ],
+      "requiresContextForSingleAnswerInBank": false,
+      "automaticGradingEnabled": false
+    },
+    {
+      "id": "grc-pending-493",
+      "lemma": "υδωρ",
+      "teacherEntry": "ὕδωρ, ὑδάτος (τό)",
+      "units": [
+        "UD 8"
+      ],
+      "sourceForm": "ῡ̆̔́δᾰτῐ",
+      "schoolForm": "ὕδατι",
+      "analysis": "N;DAT;SG",
+      "originalSource": 4,
+      "decision": "CORROBORADA_DOCUMENTALMENTE",
+      "attestedParadigmForm": "ῠ̔́δᾰτῐ",
+      "references": [
+        "https://en.wiktionary.org/wiki/%E1%BD%95%CE%B4%CF%89%CF%81#Declension",
+        "https://atlas.perseus.tufts.edu/nodes/urn%3Acts%3AgreekLit%3Atlg0012.tlg002.perseus-grc2%3A9.392/"
+      ],
+      "note": "Tercera declinación neutra. El tema ὑδατ- toma -ι y conserva el espíritu áspero y la aguda inicial. El dativo figura en Odisea 9.392 y en el paradigma ático del diccionario.",
+      "bankReadings": [
+        {
+          "lemma": "υδωρ",
+          "analysis": "N;DAT;SG"
+        }
+      ],
+      "requiresContextForSingleAnswerInBank": false,
+      "automaticGradingEnabled": false
+    }
+  ]
+}
