@@ -65,6 +65,8 @@ const {chromium} = require(process.env.PLAYWRIGHT_PATH || 'playwright');
   // Teacher vocabulary block availability, not arbitrary individual UD tags.
   const required=await page.evaluate(()=>({before:isRequired('δίκη',['UD3']),after:isRequired('δίκη',['UD4']),six:isRequired('βούλομαι',['UD6']),seven:isRequired('βούλομαι',['UD7'])}));
   assert.deepEqual(required,{before:false,after:true,six:false,seven:true});
+  await page.locator('#group-drafts').evaluate(el=>el.open=true);
+  page.on('dialog',dialog=>dialog.accept());
   await page.click('#saveDraft');const draft=await page.locator('#paper').innerHTML();await page.click('#generate');await page.click('#restoreDraft');assert.equal(await page.locator('#paper').innerHTML(),draft);
   await page.selectOption('#lang','va');assert.equal(await page.locator('#model option:checked').textContent(),'Examen complet');
   await page.selectOption('#lang','es');

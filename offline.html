@@ -42,13 +42,10 @@ try {
 /* Navegación de trabajo a la manera de un editor: configuración izquierda y vista previa derecha. */
 @media(min-width:801px){#examLayout.layout>.panel{grid-column:1;grid-row:1}#examLayout.layout>.paper{grid-column:2;grid-row:1;min-width:0}}
 @media(max-width:800px){#examLayout.layout>.panel{grid-column:1;grid-row:1}#examLayout.layout>.paper{grid-column:1;grid-row:2}}
-#examLayout aside.panel .sidebar-steps{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin:0 0 14px}
-#examLayout aside.panel .sidebar-steps button{min-height:37px;font-size:12px;font-weight:650;text-align:left;padding:9px 10px;color:var(--ink,#213b61);background:var(--soft,#eef4fa);border:1px solid var(--line,#d6e0ed);border-radius:8px}
-#examLayout aside.panel .sidebar-steps button:hover,#examLayout aside.panel .sidebar-steps button:focus-visible{color:var(--soft-ink,#234b82);background:var(--secondary-bg,#dbeafa)}
 #examLayout aside.panel .settings-group{scroll-margin-top:18px}
 #examLayout aside.panel .settings-group>summary{min-height:44px}
 #examLayout aside.panel #group-export>summary{background:var(--soft,#eaf1fa)}
-#examLayout aside.panel #group-sentences textarea{font-family:Palatino,"Palatino Linotype",serif;font-size:14px;line-height:1.55}
+#examLayout aside.panel #sentenceQuestionFields textarea{font-family:Palatino,"Palatino Linotype",serif;font-size:14px;line-height:1.55}
 </style><style>
 .vocab-tabbar{display:flex;gap:8px;padding:10px 18px;background:#eaf0f8;border-bottom:1px solid #ccd7e6;flex-wrap:wrap}.vocab-tabbar button{border:1px solid #a8bbd4;background:white;border-radius:7px;padding:9px 13px;cursor:pointer;font-weight:600}.vocab-tabbar button.active{background:#214f85;color:white}.vocab-manager{display:none;max-width:1100px;margin:18px auto;padding:18px;background:white;border:1px solid #d8e1eb;border-radius:12px}.vocab-manager.active{display:block}.vocab-manager .vm-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.vocab-manager label{display:block;font-size:13px;font-weight:600;margin:6px 0}.vocab-manager input,.vocab-manager select,.vocab-manager textarea{width:100%;box-sizing:border-box;padding:9px;border:1px solid #bac8da;border-radius:6px}.vocab-manager button{padding:8px 12px;border:1px solid #9ab0ca;border-radius:6px;background:#f3f7fc;cursor:pointer;margin:5px 5px 5px 0}.vocab-manager .vm-table{width:100%;border-collapse:collapse}.vocab-manager .vm-table th,.vocab-manager .vm-table td{border-bottom:1px solid #e0e6ed;padding:6px;text-align:left}.vocab-manager .vm-table input{min-width:90px}.vocab-manager .vm-scroll{max-height:440px;overflow:auto}.vocab-manager .vm-help{color:#52647a;font-size:13px}.vocab-manager .vm-warning{color:#92400e;font-size:13px}@media(max-width:750px){.vocab-manager .vm-grid{grid-template-columns:1fr}.vocab-manager{margin:8px}}@media print{.vocab-tabbar,.vocab-manager{display:none!important}}
 /* Acción principal del generador de vocabulario: visible en móvil y escritorio. */
@@ -214,8 +211,6 @@ html[data-course="greek1"] .paper .exam-sheet *{font-style:normal!important}
 #examLayout aside.panel button.sidebar-choice[aria-pressed="true"]::after{content:"✓";margin-left:auto;flex:0 0 auto;font-size:16px;font-weight:800}
 #examLayout aside.panel button.sidebar-choice[aria-pressed="true"]:hover{background:var(--soft);color:var(--soft-ink);border-color:var(--accent)}
 #examLayout aside.panel .settings-group .buttons{gap:10px}
-#examLayout aside.panel .buttons:has(> #generate){grid-template-columns:minmax(0,1fr)}
-#examLayout aside.panel #generate{min-height:52px;font-size:15px;letter-spacing:.01em}
 #examLayout aside.panel button:focus-visible{outline:3px solid var(--focus-course,var(--accent));outline-offset:3px}
 :root[data-course] .vocab-tabbar button:not(.active){background:#f2f6fb;color:#1d3d5d;border:1px solid #a8bed8}
 :root[data-course] .vocab-tabbar button:not(.active):hover{background:#e0ecf9;color:#142f4d;border-color:#759bc3}
@@ -242,15 +237,12 @@ html[data-course="greek1"] .paper .exam-sheet *{font-style:normal!important}
 #examLayout aside.panel .sidebar-choices{gap:5px;margin-top:5px}
 #examLayout aside.panel button.sidebar-choice{padding-top:9px;padding-bottom:9px}
 #examLayout aside.panel .settings-group .buttons{gap:8px;margin-top:10px}
-#examLayout aside.panel .settings-group-body .buttons:has(> #generate){grid-template-columns:repeat(2,minmax(0,1fr))}
-#examLayout aside.panel #generate{grid-column:1/-1}
 #examLayout aside.panel .exam-accordion{margin:7px 0}
 #examLayout aside.panel .exam-accordion>summary{min-height:44px;padding:9px 35px 9px 11px;font-size:13px}
 #examLayout aside.panel .exam-question-config{padding:8px 10px}
 #examLayout aside.panel .exam-question-config .question-editor{margin:7px 0;padding:7px 0}
 #examLayout aside.panel .curriculum-preview{margin:8px 0;padding:9px 10px}
 #examLayout aside.panel .settings-group:has(>.settings-group-body>.field.legacy-question-fields):not(:has(>.settings-group-body>:not(.legacy-question-fields))){display:none}
-@media(max-width:420px){#examLayout aside.panel{padding:14px}#examLayout aside.panel .settings-group-body .buttons:has(> #generate){grid-template-columns:minmax(0,1fr)}}
 </style><style id="exam-final-visual-polish">
 /* Interfaz únicamente: nunca altera el documento impreso ni las salidas Word. */
 @media screen {
@@ -481,7 +473,6 @@ html[data-course="greek1"] .paper .exam-sheet *{font-style:normal!important}
 #exam-header-controls button:focus-visible{outline:3px solid #ffe8a6;outline-offset:3px}
 #exam-header-controls button:hover{border-color:#ffd27d}
 #exam-header-controls button:disabled{opacity:.55;cursor:not-allowed}
-#examLayout aside.panel .sidebar-steps,
 #examLayout aside.panel #primaryCoursePicker,
 #examLayout aside.panel #primaryModelPicker,
 #examLayout aside.panel #group-course,
@@ -569,7 +560,6 @@ html[data-appearance="oled"] #vocabularyGenerator #vgClearAll:hover{background:#
 #examQuestionMenus .exam-question-heading{display:flex;gap:9px;align-items:center;padding:12px;background:var(--soft,#eef3f9);color:var(--soft-ink,#243952);font-weight:700}
 #examQuestionMenus .exam-question-config{padding:10px 12px 13px}
 #examQuestionMenus .question-editor input{width:100%;min-height:42px}
-#regenerateAllQuestions{display:block;width:100%;margin:12px 0 4px}
 
 
 #examQuestionSettings.exam-questions-group{margin:12px 0;padding:8px 0}
@@ -652,8 +642,8 @@ body:has(.vocab-manager.active) .exam-coursebar{display:none}
  #examMobileTabs button:focus-visible{outline:3px solid var(--focus-course,#b87400);outline-offset:2px}
  #examLayout[data-exam-tab="preview"]>.panel,
  #examLayout[data-exam-tab]:not([data-exam-tab="preview"])>.paper{display:none}
- #examLayout[data-exam-tab="settings"]>.panel>:is(#examQuestionSettings,#examScoring,#group-sentences),
- #examLayout[data-exam-tab="questions"]>.panel>:not(:is(#examQuestionSettings,#examScoring,#group-sentences)){display:none!important}
+ #examLayout[data-exam-tab="settings"]>.panel>:is(#examQuestionSettings,#examScoring),
+ #examLayout[data-exam-tab="questions"]>.panel>:not(:is(#examQuestionSettings,#examScoring)){display:none!important}
 }
 </style><header class="top"><h1>Generador de exámenes · Latín y griego</h1><p>Genera, revisa y exporta exámenes y vocabulario de Latín y Griego · disponible sin conexión · borradores recuperables</p></header><nav class="vocab-tabbar no-print" aria-label="Secciones de la aplicación"><button id="vmShowExam" class="active" type="button">Generación de exámenes</button><button id="vgShow" type="button">Generación de vocabulario</button><button id="vmShowList" type="button">Vocabulario exigible por unidad</button><label class="appearance-picker" for="appearanceMode">Apariencia <select id="appearanceMode" aria-label="Modo de apariencia"><option value="light">Claro</option><option value="dark">Oscuro</option><option value="oled">Oscuro OLED</option></select></label></nav><div class="exam-coursebar no-print"><div id="exam-header-controls" role="region" aria-label="Elecciones principales del examen"></div></div><script>
 (function(){
@@ -693,9 +683,9 @@ body:has(.vocab-manager.active) .exam-coursebar{display:none}
 <button type="button" role="tab" id="examSettingsTab" data-exam-tab="settings" aria-controls="examEditorPanel" aria-selected="true">Configuración</button>
 <button type="button" role="tab" id="examQuestionsTab" data-exam-tab="questions" aria-controls="examEditorPanel" aria-selected="false" tabindex="-1">Preguntas</button>
 <button type="button" role="tab" id="examPreviewTab" data-exam-tab="preview" aria-controls="paper" aria-selected="false" tabindex="-1">Vista previa</button>
-</div><section class="paper" id="paper" aria-label="Vista previa editable del examen" role="region"></section><aside class="panel" id="examEditorPanel" aria-label="Configuración y exportación"><h2 data-i18n="config">Configurar examen</h2><nav class="sidebar-steps" aria-label="Ir a sección"><button type="button" data-open-panel="group-course">1 · Curso</button><button type="button" data-open-panel="group-content">2 · Contenido</button><button type="button" data-open-panel="group-sentences">3 · Oraciones</button><button type="button" data-open-panel="group-vocab">4 · Vocabulario</button><button type="button" data-open-panel="group-export">5 · Exportar</button><button type="button" data-open-panel="group-culture">6 · Bancos</button></nav><h3 class="settings-section-caption">Preparar el examen</h3><details id="group-course" class="settings-group" open><summary>Curso y unidades</summary><div class="settings-group-body"><div class="field"><label for="course">Curso / Curs</label><select id="course"><option value="latin1">Latín I / Llatí I</option><option value="latin4">Latín 4.º ESO / Llatí 4t ESO</option><option value="greek1">Griego I / Grec I (ático)</option></select><p class="hint" id="courseStatus"></p></div><div class="field"><label for="model" data-i18n="model">Modelo</label><select id="model"><option value="tablas" selected>1 · Examen completo</option><option value="morf">2 · Examen de morfología</option><option value="mixto">3 · Examen de traducción</option></select></div><div class="field"><label for="lang" data-i18n="language">Idioma del examen</label><select id="lang"><option value="es">Castellano</option><option value="va">Valencià</option></select></div><div class="field"><label for="term" data-i18n="term">Trimestre</label><select id="term"><option value="1">1.º trimestre</option><option value="2">2.º trimestre</option><option value="3">3.º trimestre</option></select></div><div class="field"><label data-i18n="units">Unidad o unidades del examen</label><div id="unitChoices" class="unit-grid"></div><details id="curriculumPreview" class="curriculum-preview"><summary>Consultar contenidos de las unidades</summary><p class="hint" id="curriculumIntro">Programación facilitada por el docente. Consulta el temario de cada unidad y el acumulado de las unidades seleccionadas.</p><div id="curriculumUnits"></div><div id="curriculumSelected" aria-live="polite"></div></details><div class="check"><input type="checkbox" id="cumulative" checked><label for="cumulative" data-i18n="cumulative">Incluir vocabulario acumulado hasta la última unidad marcada</label></div><div class="buttons"><button type="button" class="secondary" id="allUnits" data-i18n="all">Todas</button><button type="button" class="secondary" id="clearUnits" data-i18n="clear">Limpiar</button></div></div></div></details><details id="group-content" class="settings-group"><summary>Modelo y contenido</summary><div class="settings-group-body"><div class="field"><label for="sheetType">Tipo de documento</label><select id="sheetType"><option value="exam">Examen</option><option value="review">Ficha de repaso</option></select></div><div class="field"><label for="name" data-i18n="title">Título</label><input id="name" type="text" value="Examen de Latín I"></div><div class="field"><label data-i18n="blocks">Bloques (puedes combinar cualquiera)</label><div class="check"><input id="decl" type="checkbox" checked><label for="decl" data-i18n="decl">Declinación y concordancia</label></div><div class="check"><input id="verb" type="checkbox" checked><label for="verb" data-i18n="verb">Formas verbales</label></div><div class="check" id="lexOption"><input id="lex" type="checkbox"><label for="lex" data-i18n="lex">Léxico</label></div><div class="check"><input id="sent" type="checkbox"><label for="sent" data-i18n="sent">Oraciones (banco inicial)</label></div><div class="check" id="cultureOption"><input id="culture" type="checkbox"><label for="culture" data-i18n="culture">Cultura clásica</label></div></div></div></details><details id="group-sentences" class="settings-group"><summary>Oraciones</summary><div class="settings-group-body"><div class="field"><label>Número de oraciones <input type="number" id="count-sent" min="1" max="15" value="5"></label></div><div class="field"><label for="newSentences">Oraciones del examen (una por línea)</label><p class="hint" id="sentenceInputHint">También puedes escribirlas en la vista previa. Cada línea corresponde a una letra, incluidas las líneas vacías.</p><textarea id="newSentences" rows="5" aria-describedby="sentenceInputHint"></textarea></div></div></details><details id="group-questions" class="settings-group"><summary>Preguntas y cantidades</summary><div class="settings-group-body"><div class="field" id="manualMorphField"><label>Palabras de los ejercicios (editables)</label><p class="hint">El banco propone las formas inicialmente. Puedes sustituirlas escribiendo aquí. Si cambias una forma, revisa su solución: no se inventan análisis ni paradigmas.</p><div id="manualMorphWords"></div></div><div class="field"><label for="amount" data-i18n="amount">Elementos por bloque</label><input id="amount" type="number" min="1" max="12" value="5"></div><div class="field"><label>Elementos por pregunta / Elements per pregunta</label><div class="count-grid"><label>Declinación <input type="number" id="count-decl" min="1" max="30" value="5"></label><label>Verbos <input type="number" id="count-verb" min="1" max="30" value="10"></label><label>Léxico <input type="number" id="count-lex" min="1" max="30" value="5"></label><label data-i18n="culture">Cultura clásica</label><input type="number" id="count-culture" min="1" max="20" value="3"></div></div><div class="field"><label for="seed">Identificador de versión / Identificador de versió</label><input id="seed" type="text" placeholder="A, B, repaso..."></div></div></details><details id="group-vocab" class="settings-group"><summary>Vocabulario del examen</summary><div class="settings-group-body"><div class="field" id="lexiconSettings"><h2>Vocabulario del examen</h2><label class="check"><input type="checkbox" id="autoGloss" checked> Generar vocabulario con enunciados completos</label><p class="hint">Incluye por defecto los lemas identificados en las oraciones, más los añadidos manualmente. Los lemas exigibles figuran solo con su enunciado; los demás, con enunciado y traducción. Los términos no identificados se señalan para revisión, nunca se adivinan.</p><label for="glossScope">Qué vocabulario lematizar</label><select id="glossScope"><option value="all" selected>Todo el vocabulario</option><option value="outside">Solo palabras que no entran en el examen</option><option value="required">Solo vocabulario exigible</option></select><p class="hint">Combina el alcance con los tipos de palabras seleccionados. Las palabras exigibles pueden aparecer sin traducción.</p><label class="check"><input type="checkbox" id="glossHideRequired" checked> Omitir la traducción de las palabras exigibles para el examen (mostrar solo su enunciado)</label><div id="glossTypes"><label class="check"><input type="checkbox" id="glossNouns" checked> Sustantivos</label><label class="check"><input type="checkbox" id="glossVerbs" checked> Verbos</label><label class="check"><input type="checkbox" id="glossAdjectives" checked> Adjetivos</label><label class="check"><input type="checkbox" id="glossPronouns" checked> Pronombres</label><label class="check"><input type="checkbox" id="glossArticles" checked> Artículos (griego)</label><label class="check"><input type="checkbox" id="glossParticles" checked> Partículas (griego)</label><label class="check"><input type="checkbox" id="glossOther" checked> Adverbios, conjunciones, preposiciones y otros</label></div><label for="examVocabInput">Vocabulario exigible (unidad;lema o enunciado), una línea por palabra</label><textarea id="examVocabInput" rows="4" placeholder="UD1;puella, -ae
+</div><section class="paper" id="paper" aria-label="Vista previa editable del examen" role="region"></section><aside class="panel" id="examEditorPanel" aria-label="Configuración y exportación"><h2 data-i18n="config">Configurar examen</h2><h3 class="settings-section-caption">Preparar el examen</h3><details id="group-course" class="settings-group" open><summary>Curso y unidades</summary><div class="settings-group-body"><div class="field"><label for="course">Curso / Curs</label><select id="course"><option value="latin1">Latín I / Llatí I</option><option value="latin4">Latín 4.º ESO / Llatí 4t ESO</option><option value="greek1">Griego I / Grec I (ático)</option></select><p class="hint" id="courseStatus"></p></div><div class="field"><label for="model" data-i18n="model">Modelo</label><select id="model"><option value="tablas" selected>1 · Examen completo</option><option value="morf">2 · Examen de morfología</option><option value="mixto">3 · Examen de traducción</option></select></div><div class="field"><label for="lang" data-i18n="language">Idioma del examen</label><select id="lang"><option value="es">Castellano</option><option value="va">Valencià</option></select></div><div class="field"><label for="term" data-i18n="term">Trimestre</label><select id="term"><option value="1">1.º trimestre</option><option value="2">2.º trimestre</option><option value="3">3.º trimestre</option></select></div><div class="field"><label data-i18n="units">Unidad o unidades del examen</label><div id="unitChoices" class="unit-grid"></div><details id="curriculumPreview" class="curriculum-preview"><summary>Consultar contenidos de las unidades</summary><p class="hint" id="curriculumIntro">Programación facilitada por el docente. Consulta el temario de cada unidad y el acumulado de las unidades seleccionadas.</p><div id="curriculumUnits"></div><div id="curriculumSelected" aria-live="polite"></div></details><div class="check"><input type="checkbox" id="cumulative" checked><label for="cumulative" data-i18n="cumulative">Incluir vocabulario acumulado hasta la última unidad marcada</label></div><div class="buttons"><button type="button" class="secondary" id="allUnits" data-i18n="all">Todas</button><button type="button" class="secondary" id="clearUnits" data-i18n="clear">Limpiar</button></div></div></div></details><details id="group-content" class="settings-group"><summary>Modelo y contenido</summary><div class="settings-group-body"><div class="field"><label for="sheetType">Tipo de documento</label><select id="sheetType"><option value="exam">Examen</option><option value="review">Ficha de repaso</option></select></div><div class="field"><label for="name" data-i18n="title">Título</label><input id="name" type="text" value="Examen de Latín I"></div><div class="field"><label data-i18n="blocks">Bloques (puedes combinar cualquiera)</label><div class="check"><input id="decl" type="checkbox" checked><label for="decl" data-i18n="decl">Declinación y concordancia</label></div><div class="check"><input id="verb" type="checkbox" checked><label for="verb" data-i18n="verb">Formas verbales</label></div><div class="check" id="lexOption"><input id="lex" type="checkbox"><label for="lex" data-i18n="lex">Léxico</label></div><div class="check"><input id="sent" type="checkbox"><label for="sent" data-i18n="sent">Oraciones (banco inicial)</label></div><div class="check" id="cultureOption"><input id="culture" type="checkbox"><label for="culture" data-i18n="culture">Cultura clásica</label></div></div></div></details><div id="sentenceQuestionFields"><div class="field"><label>Número de oraciones <input type="number" id="count-sent" min="1" max="15" value="5"></label></div><div class="field"><label for="newSentences">Oraciones del examen (una por línea)</label><p class="hint" id="sentenceInputHint">También puedes escribirlas en la vista previa. Cada línea corresponde a una letra, incluidas las líneas vacías.</p><textarea id="newSentences" rows="5" aria-describedby="sentenceInputHint"></textarea></div></div><details id="group-questions" class="settings-group"><summary>Preguntas y cantidades</summary><div class="settings-group-body"><div class="field" id="manualMorphField"><label>Palabras de los ejercicios (editables)</label><p class="hint">El banco propone las formas inicialmente. Puedes sustituirlas escribiendo aquí. Si cambias una forma, revisa su solución: no se inventan análisis ni paradigmas.</p><div id="manualMorphWords"></div></div><div class="field"><label for="amount" data-i18n="amount">Elementos por bloque</label><input id="amount" type="number" min="1" max="12" value="5"></div><div class="field"><label>Elementos por pregunta / Elements per pregunta</label><div class="count-grid"><label>Declinación <input type="number" id="count-decl" min="1" max="30" value="5"></label><label>Verbos <input type="number" id="count-verb" min="1" max="30" value="10"></label><label>Léxico <input type="number" id="count-lex" min="1" max="30" value="5"></label><label data-i18n="culture">Cultura clásica</label><input type="number" id="count-culture" min="1" max="20" value="3"></div></div><div class="field"><label for="seed">Identificador de versión / Identificador de versió</label><input id="seed" type="text" placeholder="A, B, repaso..."></div></div></details><details id="group-vocab" class="settings-group"><summary>Glosario del examen</summary><div class="settings-group-body"><div class="field" id="lexiconSettings"><label class="check"><input type="checkbox" id="autoGloss" checked> Generar vocabulario con enunciados completos</label><p class="hint">Incluye por defecto los lemas identificados en las oraciones, más los añadidos manualmente. Los lemas exigibles figuran solo con su enunciado; los demás, con enunciado y traducción. Los términos no identificados se señalan para revisión, nunca se adivinan.</p><label for="glossScope">Qué vocabulario lematizar</label><select id="glossScope"><option value="all" selected>Todo el vocabulario</option><option value="outside">Solo palabras que no entran en el examen</option><option value="required">Solo vocabulario exigible</option></select><p class="hint">Combina el alcance con los tipos de palabras seleccionados. Las palabras exigibles pueden aparecer sin traducción.</p><label class="check"><input type="checkbox" id="glossHideRequired" checked> Omitir la traducción de las palabras exigibles para el examen (mostrar solo su enunciado)</label><div id="glossTypes"><label class="check"><input type="checkbox" id="glossNouns" checked> Sustantivos</label><label class="check"><input type="checkbox" id="glossVerbs" checked> Verbos</label><label class="check"><input type="checkbox" id="glossAdjectives" checked> Adjetivos</label><label class="check"><input type="checkbox" id="glossPronouns" checked> Pronombres</label><label class="check"><input type="checkbox" id="glossArticles" checked> Artículos (griego)</label><label class="check"><input type="checkbox" id="glossParticles" checked> Partículas (griego)</label><label class="check"><input type="checkbox" id="glossOther" checked> Adverbios, conjunciones, preposiciones y otros</label></div><label for="examVocabInput">Vocabulario exigible (unidad;lema o enunciado), una línea por palabra</label><textarea id="examVocabInput" rows="4" placeholder="UD1;puella, -ae
 UD2;amicus, -i"></textarea><div class="buttons"><button type="button" class="secondary" id="importExamVocab">Importar vocabulario exigible</button><button type="button" class="secondary" id="clearExamVocab">Vaciar lista exigible del curso</button></div><p class="hint" id="examVocabStatus"></p><label for="examExtra">Lemas adicionales usados en el examen (uno por línea; se pueden añadir los de las oraciones)</label><textarea id="examExtra" rows="3" placeholder="silva
-puella"></textarea><p class="hint">Esta lista complementa la detección automática. Revisa siempre el vocabulario antes de imprimir.</p></div></div></details><h3 class="settings-section-caption">Crear y exportar</h3><details id="group-export" class="settings-group" open><summary>Generar, descargar y guardar</summary><div class="settings-group-body"><div class="buttons"><button id="generate" data-i18n="generate">Generar examen</button><button class="secondary" id="docx" type="button">Descargar Word (.docx)</button><button class="secondary" id="docxAnswers" type="button">Word con soluciones (.docx)</button><button class="secondary" id="saveDraft" type="button">Guardar borrador</button><button class="secondary" id="restoreDraft" type="button">Recuperar borrador</button><button class="secondary" id="downloadDraft" type="button">Exportar borrador (.json)</button><button class="secondary" id="loadDraft" type="button">Importar borrador (.json)</button><input type="file" id="draftFile" accept=".json,application/json" hidden><button class="secondary" id="print" data-i18n="print">Imprimir / PDF</button><button class="secondary" id="solutions" data-i18n="solutions">Mostrar soluciones</button></div><p class="hint" id="draftStatus" role="status" aria-live="polite">Los borradores guardan también las modificaciones manuales del examen y su solucionario. Recuperarlos no modifica los bancos de vocabulario.</p><p class="hint">Cada generación elige otras palabras. El texto del examen es editable. Puedes elegir unidades sueltas o activar el vocabulario acumulado. Puedes añadir vocabulario más adelante sin alterar las plantillas.</p><div class="notice">Versión de desarrollo: el banco de Cultura de Latín 4.º está cargado con preguntas basadas en los ocho temas docentes. El laboratorio morfológico no cubre todos los paradigmas ni irregularidades. Los significados del vocabulario original están en castellano; la traducción léxica valenciana está pendiente. Generación conservadora de 1.ª y 2.ª declinación, adjetivos de tres terminaciones y presente de indicativo activo regular; no cubre irregularidades ni toda la flexión. Las formas especiales y otras conjugaciones se incorporarán después.</div></div></details><h3 class="settings-section-caption">Bancos y herramientas</h3><details id="group-culture" class="settings-group"><summary>Cultura clásica</summary><div class="settings-group-body"><div class="field"><h2 data-i18n="culture">Cultura clásica</h2><p class="hint" id="cultureHint">Solo Latín de 4.º ESO. Banco de preguntas por las ocho unidades de Cultura de Latín 4.º; puedes añadir más preguntas.</p><label for="cultureType">Tipo de pregunta</label><select id="cultureType"><option value="all">Todos / Tots</option><option value="short">Respuesta breve / Resposta breu</option><option value="essay">Desarrollo / Desenvolupament</option><option value="tf">Verdadero/falso / Vertader/fals</option><option value="mc">Elección múltiple / Elecció múltiple</option></select><label for="newCulture">Añadir cultura (unidad;tipo;pregunta;respuesta;opciones separadas por |)</label><textarea id="newCulture" rows="4" placeholder="UD1;short;¿Quién era Júpiter?;El dios principal del panteón romano.
+puella"></textarea><p class="hint">Esta lista complementa la detección automática. Revisa siempre el vocabulario antes de imprimir.</p></div></div></details><div class="field" id="examReselect"><button id="generate" type="button" class="secondary" aria-describedby="examReselectHint">Sortear otras preguntas</button><p class="hint" id="examReselectHint">Sustituye las preguntas del banco. Puedes recuperar el examen anterior desde Borradores.</p></div><details id="group-export" class="settings-group" open><summary>Descargar e imprimir</summary><div class="settings-group-body"><div class="buttons"><button class="secondary" id="docx" type="button">Descargar Word (.docx)</button><button class="secondary" id="docxAnswers" type="button">Word con soluciones (.docx)</button><button class="secondary" id="print" data-i18n="print">Imprimir / PDF</button><button class="secondary" id="solutions" data-i18n="solutions">Mostrar soluciones</button></div></div></details><details id="group-drafts" class="settings-group"><summary>Borradores del examen</summary><div class="settings-group-body"><div class="buttons"><button class="secondary" id="saveDraft" type="button">Guardar borrador</button><button class="secondary" id="restoreDraft" type="button">Recuperar borrador</button><button class="secondary" id="downloadDraft" type="button">Exportar borrador (.json)</button><button class="secondary" id="loadDraft" type="button">Importar borrador (.json)</button><input type="file" id="draftFile" accept=".json,application/json" hidden></div><p class="hint" id="draftStatus" role="status" aria-live="polite">Los borradores guardan también las modificaciones manuales del examen y su solucionario. Recuperarlos no modifica los bancos de vocabulario.</p></div></details><h3 class="settings-section-caption">Bancos y herramientas</h3><details id="group-culture" class="settings-group"><summary>Cultura clásica</summary><div class="settings-group-body"><div class="field"><h2 data-i18n="culture">Cultura clásica</h2><p class="hint" id="cultureHint">Solo Latín de 4.º ESO. Banco de preguntas por las ocho unidades de Cultura de Latín 4.º; puedes añadir más preguntas.</p><label for="cultureType">Tipo de pregunta</label><select id="cultureType"><option value="all">Todos / Tots</option><option value="short">Respuesta breve / Resposta breu</option><option value="essay">Desarrollo / Desenvolupament</option><option value="tf">Verdadero/falso / Vertader/fals</option><option value="mc">Elección múltiple / Elecció múltiple</option></select><label for="newCulture">Añadir cultura (unidad;tipo;pregunta;respuesta;opciones separadas por |)</label><textarea id="newCulture" rows="4" placeholder="UD1;short;¿Quién era Júpiter?;El dios principal del panteón romano.
 UD1;mc;¿Qué lengua se hablaba en Roma?;B;Griego|Latín|Etrusco"></textarea><button type="button" class="secondary" id="importCulture">Importar preguntas de cultura</button><p class="hint" id="cultureStatus"></p></div></div></details><details id="group-import" class="settings-group"><summary>Importación y copias de datos</summary><div class="settings-group-body"><div class="field"><label for="newvocab">Añadir vocabulario al curso seleccionado (CSV: unidad;enunciado;significado)</label><textarea id="newvocab" rows="4" placeholder="UD13;puella, -ae;muchacha"></textarea><div class="buttons"><button class="secondary" id="importVocab" type="button">Importar léxico</button><button class="secondary" id="exportData" type="button">Copia de datos (.json)</button><button class="secondary" id="importData" type="button">Restaurar copia</button><input type="file" id="restoreFile" accept=".json" hidden></div><p class="hint" id="dataStatus"></p></div></div></details><details id="group-morph" class="settings-group"><summary>Herramientas morfológicas</summary><div class="settings-group-body"><div class="field" id="morphWorkbench"><div class="buttons"><button type="button" id="auditMorph" class="secondary">Auditar vocabulario de las unidades elegidas</button><button type="button" id="runMorphTests" class="secondary">Ejecutar pruebas morfológicas</button></div><div id="morphAudit" aria-live="polite"></div><h2>Laboratorio morfológico · offline</h2><label for="morphEntry">Lema del banco (o escribe un enunciado)</label><input id="morphEntry" list="morphEntries" placeholder="rex, regis (m.)"><datalist id="morphEntries"></datalist><div class="buttons"><button type="button" id="morphAnalyze" class="secondary">Generar paradigma</button><button type="button" id="morphCsv" class="secondary">Exportar tabla CSV</button></div><p class="hint">Paradigmas latinos generados por reglas internas conservadoras, con pruebas de regresión puntuales. Los lemas no reconocidos se bloquean; no se inventan formas. Griego ático: flexión limitada a paradigmas explícitos. Corpus externos pendientes.</p><div id="morphResult" aria-live="polite"></div></div></div></details></aside></main><footer class="footer">Prototipo local: no requiere conexión ni envía datos a ningún servidor. Revisa los lemas, las formas y las traducciones antes de utilizar cualquier examen en una evaluación real. <a href="https://github.com/ArchaiosMagister/GeneradorExamenes/blob/main/docs/lematizacion-lectores.md" target="_blank" rel="noopener noreferrer">Fuentes y licencias de lematización</a> (Collatinus, Eulexis, UniMorph y Wikcionario).</footer><script>/* Banco de preguntas de cultura de Latín 4.º, basado exclusivamente en los ocho temas docentes aportados. */
 (function(g){'use strict';g.ExaminaCultureBank=[
   {
@@ -4918,10 +4908,12 @@ function selectedUnits(cumulative=$('cumulative').checked){const ix=[...document
 function trimesterHeading(){const n=Math.max(1,Math.min(3,Number($('term').value)||1));return ($('lang').value==='va'?['1r trimestre','2n trimestre','3r trimestre']:['1.er trimestre','2.º trimestre','3.er trimestre'])[n-1]}
 function examinaTranslateConfiguration(){
  const va=$('lang').value==='va';
+ $('generate').textContent=va?'Sortejar altres preguntes':'Sortear otras preguntas';
+ $('examReselectHint').textContent=va?'Substitueix les preguntes del banc. Pots recuperar l’examen anterior des d’Esborranys.':'Sustituye las preguntas del banco. Puedes recuperar el examen anterior desde Borradores.';
  const labels={
   'Curso y unidades':'Curs i unitats','Modelo y contenido':'Model i contingut',
-  'Preguntas y cantidades':'Preguntes i quantitats','Vocabulario del examen':'Vocabulari de l’examen',
-  'Generar, descargar y guardar':'Generar, descarregar i guardar',
+  'Preguntas y cantidades':'Preguntes i quantitats','Glosario del examen':'Glossari de l’examen',
+  'Descargar e imprimir':'Descarregar i imprimir','Borradores del examen':'Esborranys de l’examen',
   'Banco de oraciones':'Banc d’oracions','Cultura clásica':'Cultura clàssica',
   'Importación y copias de datos':'Importació i còpies de dades',
   'Herramientas morfológicas':'Eines morfològiques'
@@ -4930,11 +4922,6 @@ function examinaTranslateConfiguration(){
   const base=el.dataset.castellano||(el.dataset.castellano=el.textContent);
   el.textContent=va?(labels[base]||base):base;
  }
- const steps=['1 · Curs','2 · Contingut','3 · Oracions','4 · Vocabulari','5 · Exportar','6 · Bancs'];
- document.querySelectorAll('#examLayout .sidebar-steps button').forEach((el,i)=>{
-  if(!el.dataset.castellano)el.dataset.castellano=el.textContent;
-  el.textContent=va?(steps[i]||el.dataset.castellano):el.dataset.castellano;
- });
 }
 function translateUI(){examinaTranslateConfiguration();document.documentElement.lang=$('lang').value==='va'?'ca-valencia':'es';document.querySelectorAll('[data-i18n]').forEach(e=>e.textContent=tr(e.dataset.i18n));$('term').querySelectorAll('option').forEach((o,i)=>o.textContent=($('lang').value==='va'?['1r trimestre','2n trimestre','3r trimestre']:['1.er trimestre','2.º trimestre','3.er trimestre'])[i]);$('name').placeholder=courseName();document.querySelectorAll('.vocab-tabbar,.quick-actions,#examLayout aside.panel,#vocabManager').forEach(el=>window.ExaminaValencianGloss?.translateDom?.(el,$('lang').value));}
 
@@ -6348,7 +6335,7 @@ function exportWord(includeAnswers){
  downloadBlob(filename,zip(files));
 }
 $('docx').onclick=()=>exportWord(false);
-$('docxAnswers').onclick=()=>exportWord(true);$('generate').onclick=generate;$('print').onclick=()=>{if(window.ExaminaTeacherReview?.evidenceMayExport?.($('paper'),{latin1:'lat1',latin4:'lat4',greek1:'gr1'}[currentCourse()])!==false&&window.ExaminaScoring?.canExport?.()!==false)window.print()};$('solutions').onclick=()=>{let el=$('answerkey');el.classList.toggle('show');$('solutions').textContent=el.classList.contains('show')?tr('hide'):tr('solutions')};$('lang').onchange=()=>{translateUI();generate()};$('term').onchange=generate;$('cumulative').onchange=generate;document.querySelectorAll('.unit-choice').forEach(e=>e.onchange=generate);$('allUnits').onclick=()=>{document.querySelectorAll('.unit-choice').forEach(e=>e.checked=true);generate()};$('clearUnits').onclick=()=>{document.querySelectorAll('.unit-choice').forEach(e=>e.checked=false);generate()};$('amount').onchange=generate;for(const id of ['decl','verb','lex','sent'])$('count-'+id).onchange=generate;for(let id of ['decl','verb','lex','sent'])$(id).onchange=generate;translateUI();
+$('docxAnswers').onclick=()=>exportWord(true);$('print').onclick=()=>{if(window.ExaminaTeacherReview?.evidenceMayExport?.($('paper'),{latin1:'lat1',latin4:'lat4',greek1:'gr1'}[currentCourse()])!==false&&window.ExaminaScoring?.canExport?.()!==false)window.print()};$('solutions').onclick=()=>{let el=$('answerkey');el.classList.toggle('show');$('solutions').textContent=el.classList.contains('show')?tr('hide'):tr('solutions')};$('lang').onchange=()=>{translateUI();generate()};$('term').onchange=generate;$('cumulative').onchange=generate;document.querySelectorAll('.unit-choice').forEach(e=>e.onchange=generate);$('allUnits').onclick=()=>{document.querySelectorAll('.unit-choice').forEach(e=>e.checked=true);generate()};$('clearUnits').onclick=()=>{document.querySelectorAll('.unit-choice').forEach(e=>e.checked=false);generate()};$('amount').onchange=generate;for(const id of ['decl','verb','lex','sent'])$('count-'+id).onchange=generate;for(let id of ['decl','verb','lex','sent'])$(id).onchange=generate;translateUI();
 // V4: conservative, inspectable, dependency-free morphology workbench.
 // These are implemented rules, NOT imported Collatinus/Morpheus/Eulexis datasets.
 const M_CASES=['Nominativo','Vocativo','Acusativo','Genitivo','Dativo','Ablativo'];
@@ -6636,7 +6623,20 @@ document.addEventListener('DOMContentLoaded',()=>{
  window.ExaminaOfflineLemmatizer?.load().catch(()=>{});
 },{once:true});
 document.addEventListener('examina-lemmas-ready',refreshSentenceGlossary);
-$('generate').onclick=generate;
+$('generate').onclick=()=>{
+ const va=$('lang').value==='va';
+ if($('paper').querySelector('.exam-sheet')&&!window.confirm(va
+  ?'Vols sortejar altres preguntes? Pots recuperar l’examen anterior des d’Esborranys.'
+  :'¿Sortear otras preguntas? Puedes recuperar el examen anterior desde Borradores.'))return;
+ const sentences=$('newSentences').value;
+ examSelectionCache.clear();
+ if(currentCourse()==='greek1')greekExamState=null;
+ generate();
+ if($('newSentences').value!==sentences){
+  $('newSentences').value=sentences;
+  $('newSentences').dispatchEvent(new Event('input',{bubbles:true}));
+ }
+};
 const undoButton=document.createElement('button');undoButton.type='button';undoButton.className='secondary';undoButton.textContent='Deshacer última generación';undoButton.id='undoGeneration';
 $('restoreDraft').after(undoButton);
 undoButton.onclick=()=>{try{const d=JSON.parse(localStorage.getItem(PREVIOUS_KEY)||'null');if(!d)throw Error('No hay una generación anterior');restoreDraft(d);localStorage.removeItem(PREVIOUS_KEY)}catch(e){$('draftStatus').textContent=e.message}};
@@ -8341,7 +8341,6 @@ loadTeacherLatinLexBanks();
  panel.append(host);
 })();
 
-(function examinaSidebarJump(){document.querySelectorAll('#examLayout [data-open-panel]').forEach(button=>{button.addEventListener('click',()=>{const target=document.getElementById(button.dataset.openPanel);if(!target)return;target.open=true;target.scrollIntoView({behavior:'smooth',block:'start'});});});})();
 /* Controles reusables: el <select> original sigue accesible al motor, mientras
    las asignaturas y modelos se ven como opciones permanentes. */
 (function configureExamSidebar(){
@@ -8357,7 +8356,7 @@ loadTeacherLatinLexBanks();
   const node=document.createElement('details');node.id=id;node.className='menu-section exam-accordion';node.open=open;
   const summary=document.createElement('summary');summary.textContent=title;node.append(summary);return node;
  };
- const format=details('examFormatSettings','1. Formato de examen',false);
+ const format=details('examFormatSettings','Formato y encabezado',false);
  const questions=document.createElement('section');
  questions.id='examQuestionSettings';questions.className='exam-questions-group';
  const groupHeading=document.createElement('h3');groupHeading.textContent='Preguntas';questions.append(groupHeading);
@@ -8370,9 +8369,7 @@ loadTeacherLatinLexBanks();
 
  const oldMorph=$('manualMorphField');questions.append(oldMorph);
  const questionHost=document.createElement('div');questionHost.id='examQuestionMenus';questions.insertBefore(questionHost,oldMorph);
- const regenerateAll=document.createElement('button');regenerateAll.id='regenerateAllQuestions';regenerateAll.type='button';regenerateAll.className='secondary';regenerateAll.textContent='Regenerar todas las preguntas';
- regenerateAll.addEventListener('click',()=>{examSelectionCache.clear();if(currentCourse()==='greek1')greekExamState=null;generate();});
- questionHost.after(regenerateAll);
+ const sentenceFields=$('sentenceQuestionFields');
  const legacyCountArea=$('count-decl').closest('.count-grid');
  const greekFormCount=document.createElement('label');
  greekFormCount.className='legacy-question-fields';
@@ -8545,36 +8542,36 @@ loadTeacherLatinLexBanks();
  }
  const quotaMemory={nouns:0,adjectives:0,verbs:0,pronouns:0};
  function questionMenus(){
+  const open=new Set([...questionHost.querySelectorAll('details[data-question][open]')].map(panel=>panel.dataset.question));
+  sentenceFields.hidden=true;
+  questions.append(sentenceFields);
   questionHost.replaceChildren();
   const morph=['morf','morphology'].includes($('model').value);
-  for(const [index,kind] of questionKeys().entries()){
+  for(const kind of questionKeys().filter(examQuestionAvailable)){
    const detail=document.createElement('details');detail.className='exam-question-panel';detail.dataset.question=kind;
-   detail.open=false;
+   detail.open=open.has(kind);
+   if(kind==='sent')detail.id='group-sentences';
    const summary=document.createElement('summary');summary.className='exam-question-heading';detail.append(summary);
    const body=document.createElement('div');body.className='exam-question-config';detail.append(body);
-   const available=examQuestionAvailable(kind),on=examQuestionEnabled(kind);
-   detail.dataset.available=String(available);detail.dataset.included=String(on);
+   const on=examQuestionEnabled(kind);
+   detail.dataset.available='true';detail.dataset.included=String(on);
    const check=document.createElement('input');check.type='checkbox';check.className='exam-question-toggle';
-   check.checked=on;check.disabled=!available;check.setAttribute('aria-label','Incluir '+questionTitle(kind));
+   check.checked=on;check.setAttribute('aria-label','Incluir '+questionTitle(kind));
    check.addEventListener('click',event=>event.stopPropagation());
    const statusLabel=document.createElement('span');statusLabel.className='exam-question-status';
-   statusLabel.textContent=!available?'No disponible':on?'Incluida':'Omitida';
+   statusLabel.textContent=on?'Incluida':'Omitida';
    check.onchange=()=>{examQuestionChoiceState[currentCourse()+'/'+$('model').value+'/'+kind]=check.checked;
     detail.dataset.included=String(check.checked);statusLabel.textContent=check.checked?'Incluida':'Omitida';
     if(currentCourse()==='greek1')greekExamState=null;generate()};
-   const name=document.createElement('span');name.className='exam-question-name';name.textContent=(index+1)+'. '+questionTitle(kind);
+   const name=document.createElement('span');name.className='exam-question-name';name.textContent=questionTitle(kind);
    summary.append(check,name,statusLabel);
-   if(!available){
-    const note=document.createElement('p');note.className='hint';
-    note.textContent=kind==='pronouns'?'Disponible cuando la unidad incluya pronombres.':'Pregunta incompatible con este tipo de examen.';
-    body.append(note);
-   }
-   if(available&&kind==='lex')lexConfig(body);
-   if(available&&kind==='forms')quotaConfig(body);
-   if(available)countControl(body,kind,morph);
+   if(kind==='sent'){sentenceFields.hidden=false;body.append(sentenceFields)}
+   if(kind==='lex')lexConfig(body);
+   if(kind==='forms')quotaConfig(body);
+   countControl(body,kind,morph);
    if(['decl','verb','forms','pronouns','lex','etymology','culture'].includes(kind)){
     const button=document.createElement('button');button.type='button';button.className='secondary';
-    button.textContent='Regenerar palabras de esta pregunta';button.disabled=!available||(kind==='lex'&&!(Object.values(latinLexBanks[currentCourse()]||{}).some(x=>x.length)));
+    button.textContent='Regenerar palabras de esta pregunta';button.disabled=kind==='lex'&&!Object.values(latinLexBanks[currentCourse()]||{}).some(x=>x.length);
     button.onclick=()=>regenerateExamQuestion(kind);body.append(button);
    }
    const editor=document.createElement('div');editor.className='question-editor';editor.dataset.editorFor=kind;body.append(editor);
@@ -9001,7 +8998,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
  let mounted=false;
  function mount(){
   const panel=document.querySelector('#examLayout > aside.panel');
-  const primary=$('primaryExamSettings'),before=$('group-sentences');
+  const primary=$('primaryExamSettings'),before=$('group-vocab');
   if(!panel||!primary||!before)return;
   const format=$('examFormatSettings'),questions=$('examQuestionSettings');
   if(format&&format.parentElement!==panel)panel.insertBefore(format,before);
@@ -9054,7 +9051,6 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   const isLatin4=c==='latin4',hasSent=!['morf','morphology'].includes(m);
   for(const [id,visible] of [
    ['group-culture',isLatin4],
-   ['group-sentences',hasSent],
    ['group-vocab',hasSent],
    ['group-morph',true],
    ['group-import',true]
@@ -13091,7 +13087,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
  header.append(title,help,rows,status,finalLabel);
  const questions=document.getElementById('examQuestionSettings');
  if(questions?.parentElement===panel)questions.after(header);
- else panel.insertBefore(header,document.getElementById('group-sentences')||panel.firstChild);
+ else panel.insertBefore(header,panel.firstChild);
  let renderPending=false,observer=null,previousQuestions=[];
  const find=()=>[...paper.querySelectorAll('.exam-sheet .exam-question')].filter(el=>!el.closest('#answerkey'));
  const sum=()=>previousQuestions.reduce((total,item)=>total+(scores[item.key]||0),0);

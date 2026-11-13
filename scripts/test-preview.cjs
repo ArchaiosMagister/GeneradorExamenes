@@ -110,10 +110,10 @@ async function checkFile(browser,filename){
     disabled:el.querySelector('.exam-question-toggle')?.disabled
    }));
   },{course,model,unit});
-  assert.equal(menu.length,6,filename+' '+course+'/'+model+': deben verse seis preguntas posibles');
+  assert(menu.every(x=>!x.disabled),filename+' '+course+'/'+model+': solo deben verse preguntas disponibles');
   for(const kind of included)assert(menu.some(x=>x.kind===kind&&x.checked&&!x.disabled),
    filename+' '+course+'/'+model+': pregunta predeterminada '+kind);
-  for(const kind of disabled)assert(menu.some(x=>x.kind===kind&&!x.checked&&x.disabled),
+  for(const kind of disabled)assert(!menu.some(x=>x.kind===kind),
    filename+' '+course+'/'+model+': pregunta incompatible '+kind);
  }
  // Las marcas de morfología deben actuar sobre el examen real.
@@ -471,7 +471,7 @@ async function checkFile(browser,filename){
   assert.equal(await page.locator('#group-sentences').isVisible(),shouldHaveSent,filename+': menú de oraciones fuera de contexto');
   assert.equal(await page.locator('#group-vocab').isVisible(),shouldHaveSent,filename+': vocabulario fuera de contexto');
   assert.equal(await page.locator('#group-culture').isVisible(),course==='latin4',filename+': cultura visible fuera de Latín 4.º');
-  assert.equal(await page.locator('#examQuestionMenus [data-question="lex"]').count()>0,course!=='greek1',
+  assert.equal(await page.locator('#examQuestionMenus [data-question="lex"]').count()>0,course!=='greek1'&&model!=='morf',
    filename+': sección de léxico incoherente');
   assert.equal(await page.locator('#examQuestionMenus [data-question="culture"]').count()>0,course==='latin4',
    filename+': sección de cultura incoherente');
