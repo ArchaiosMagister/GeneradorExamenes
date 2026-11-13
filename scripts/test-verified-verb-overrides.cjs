@@ -12,12 +12,13 @@ const latinMatch=html.match(/const latinExplicitVerbEvidence=(\{[^\n]+\});\nfunc
 const greekMatch=html.match(/const greekExplicitVerbEvidence=(\{[^\n]+\});\nfunction greekCorpus/);
 assert(latinMatch&&greekMatch,'La app debe contener solo extractos de los paradigmas contrastados');
 const latin=JSON.parse(latinMatch[1]),greek=JSON.parse(greekMatch[1]);
-const records=source.paradigms.filter(x=>['possum','confero','loquor','sequor','βουλομαι','ερχομαι'].includes(x.lemma));
-assert.equal(records.length,6);
+const records=source.paradigms.filter(x=>['possum','confero','loquor','sequor','βουλομαι','ερχομαι','eo','redeo','transeo','proficiscor','ηγεομαι','μαχομαι'].includes(x.lemma));
+assert.equal(records.length,12);
 const translate={
  'V;IND;ACT;PRS':'presente','V;IND;ACT;PST;IPFV':'imperfecto',
  'V;IND;ACT;FUT':'futuro','V;IND;ACT;PRF':'perfecto',
- 'V;IND;ACT;PSTP':'pluscuamperfecto','V;IND;DEP;PRS':'presente'
+ 'V;IND;ACT;PSTP':'pluscuamperfecto','V;IND;DEP;PRS':'presente',
+ 'V;IND;DEP;PST;IPFV':'imperfecto','V;IND;DEP;FUT':'futuro'
 };
 let newForms=0;
 for(const x of records){
@@ -35,12 +36,13 @@ for(const x of records){
    assert.deepEqual(entry.forms,block.forms);
    assert.equal(entry.sourceCode,5);
   }else{
-   const selectedGreek=greek[x.lemma];
+   const selectedGreek=greek[x.lemma+(block.tags.endsWith(';FUT')?'-future':'')];
    assert(selectedGreek,'Falta el modelo griego explícito '+x.lemma);
    assert.deepEqual(selectedGreek.forms,block.forms);
    assert.equal(selectedGreek.sourceCode,5);
-   assert.equal(selectedGreek.unit,x.lemma==='βουλομαι'?6:12);
-   assert.equal(selectedGreek.voice,x.lemma==='βουλομαι'?'medio (deponente)':'activo');
+   assert.equal(selectedGreek.unit,x.lemma==='βουλομαι'||x.lemma==='μαχομαι'?6:
+    x.lemma==='ηγεομαι'?(block.tags.endsWith(';FUT')?11:10):12);
+   assert.equal(selectedGreek.voice,['βουλομαι','ηγεομαι','μαχομαι'].includes(x.lemma)?'medio (deponente)':'activo');
    if(x.lemma==='ερχομαι')assert.equal(selectedGreek.tense,'aoristo segundo');
   }
   assert.equal(block.forms.length,6);
@@ -53,7 +55,7 @@ for(const x of records){
   }
  }
 }
-assert.equal(newForms,84);
+assert.equal(newForms,198);
 for(const lang of ['lat','grc']){
  const sum=Object.values(index.counts[lang]).reduce((a,b)=>a+b,0);
  assert.equal(sum,index.rows[lang].length,'Desajuste de contadores: '+lang);
@@ -70,4 +72,4 @@ const currentBuilder=fs.readFileSync(path.join(root,'scripts/build-lemma-index.m
 assert(currentBuilder.includes('ACT|MID|DEP'),'La regeneración perdería la etiqueta latina deponente');
 assert(!greek.βουλομαι.forms.includes('βούλῃ'),
  'Una variante no aprobada para el modelo no puede colarse como la lectura elegida');
-console.log('Cotejo positivo: 84 casillas nuevas (72 latinas y 12 griegas), referencia por lema, índice persistente, enunciado y totales.');
+console.log('Cotejo positivo: 198 casillas de los lotes de revisión (84 previas y 114 del conjunto ampliado contado con eo presente), índices y fuentes contrastadas.');
