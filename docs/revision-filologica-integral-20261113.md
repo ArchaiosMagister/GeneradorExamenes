@@ -71,3 +71,39 @@ variantes, homografía, bloqueo curricular, persistencia y HTML autónomo.
 
 Este documento **no afirma completada** la verificación exhaustiva. Cada
 siguiente incorporación requiere contraste, fuente persistente y CI correcta.
+
+## Segunda colación conservadora: 31 lecturas (13/11/2026)
+
+Archivo persistente de trabajo: `data/lemmas/revision-individual-lote-20261113.json`.
+Esta revisión **no modifica** `teacher-forms.json`, `verified-overrides.json`,
+el motor de examen ni el paquete `offline.html`.
+
+- **Griego — 1 lectura:** `λόγῳ` de `λόγος`, dativo singular,
+  corroborado con la tabla de la Open University. Ya existe tanto en la fuente
+  docente nominal como en la candidatura Wiktextract. **Se concilia sin
+  duplicar la forma** ni atribuir al resto de las formas la misma procedencia.
+  Referencia: https://www.open.edu/openlearn/history-the-arts/discovering-ancient-greek-and-latin/content-section-10.6
+- **Latín — 18 formas sintéticas de `gaudeo`:** presente, imperfecto
+  y futuro de indicativo activo, cotejados con un paradigma publicado.
+  En el índice ya figuran las 18 superficies como registros UniMorph; el
+  nuevo documento añade una referencia filológica, no una certificación
+  indiscriminada del resto del corpus.
+- **Latín — 12 formas compuestas de `gaudeo`:** perfecto y
+  pluscuamperfecto de indicativo semideponente, **solo con sujeto masculino**.
+  Contrastadas documentalmente, aún no están como superficies del lema en
+  el índice local. Antes de hacerlas sorteables se debe añadir su etiquetado
+  semideponente al motor y reconstruir juntos fuente, índice y PWA.
+  Referencias: https://www.cultus.hk/Latin_vocab/verb2/gaudere.html
+  y https://grammatik.woxikon.de/grammatik-latein/deponentien
+
+**Resultado de conciliación:** 31 lecturas registradas, 19 superficies ya
+presentes y 12 compuestas ausentes; **0 promociones a fuente 5 y 0 claves
+nuevas de examen**. La existencia de 19 superficies no es, por sí sola,
+confirmación de equivalencia exacta de análisis (p. ej. etiquetas
+semideponentes). Se conservan homografías y variantes.
+
+La CI ejecuta `scripts/test-individual-evidence-ledger.cjs` y detecta
+una incorporación accidental o cambio de estado no documentado. Este
+lote no necesita una decisión docente nueva: la elección conservadora
+es no sortear las 12 formas compuestas antes de incorporar la semideponencia
+de manera coherente. Continúa pendiente el grueso de las 4403 candidaturas.
