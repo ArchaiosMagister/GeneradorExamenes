@@ -10,8 +10,8 @@ new vm.Script(source,{filename:'verification-review.js'}).runInContext(sandbox);
 const api=sandbox.window.ExaminaTeacherReview;
 const all=['lat1','lat4','gr1'].flatMap(course=>api.buildCases(data,course));
 const greek=all.filter(x=>x.course==='gr1'),priority=greek.filter(x=>/Registro grc-pending-\d+:/.test(x.detail));
-assert.equal(priority.length,68,'Las 68 lecturas con unidad deben figurar individualmente');
-assert.equal(new Set(priority.map(x=>x.id)).size,68,'Los sincretismos no pueden confundirse en una tarjeta');
+assert.equal(priority.length,58,'Las 58 lecturas aún pendientes con unidad deben figurar individualmente');
+assert.equal(new Set(priority.map(x=>x.id)).size,58,'Los sincretismos no pueden confundirse en una tarjeta');
 assert(priority.every(x=>x.kind==='candidatas'&&x.units.length&&/sin verificar/.test(x.detail)));
 assert(priority.some(x=>x.form.includes('παῖδι')&&/épica/.test(x.detail)));
 assert(priority.some(x=>x.lemma==='πρωτοσ'&&x.detail.includes('ACENTO_INCORRECTO')));
@@ -74,4 +74,4 @@ const html=fs.readFileSync(path.join(root,'index.html'),'utf8');
 assert(html.includes('verification-review.js'));
 for(const id of ['reviewImport','reviewImportFile','reviewConflicts','reviewBackupStatus'])
  assert(source.includes(id),'Falta control de la cola '+id);
-console.log('Fase IV: 68 fichas griegas visibles, conflictos e historial sin pérdida, importar v1/v2 y decisión ≠ autorización.');
+console.log('Fase IV: 58 fichas griegas todavía pendientes (10 migradas), conflictos e historial sin pérdida, importar v1/v2 y decisión ≠ autorización.');
