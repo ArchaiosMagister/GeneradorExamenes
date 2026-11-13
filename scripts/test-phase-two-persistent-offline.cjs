@@ -36,14 +36,17 @@ for(const record of source.paradigms){
   }
  }
 }
+function explicit(source,name,after){
+ const marker='const '+name+'=';
+ const start=source.indexOf(marker),end=source.indexOf(';\\n'+after,start);
+ assert(start>=0&&end>start,'Falta bloque explícito '+name);
+ return JSON.parse(source.slice(start+marker.length,end));
+}
 for(const [name,after] of [
  ['latinExplicitVerbEvidence','function latinExplicitVerbRows(chosen)'],
  ['greekExplicitVerbEvidence','function greekCorpus()']
 ]){
- const pattern=new RegExp('const '+name+'=(\\{[^\\n]+\\});\\n'+after.replace(/[.*+?^$|()[\\]{}]/g,'\\$&'));
- const online=index.match(pattern),local=offline.match(pattern);
- assert(online&&local,'No se encuentra el modelo explícito '+name);
- assert.deepEqual(JSON.parse(local[1]),JSON.parse(online[1]),
+ assert.deepEqual(explicit(offline,name,after),explicit(index,name,after),
   'El paradigma embebido está obsoleto: '+name);
 }
 assert(offline.includes("const latinDeponentSyncretisms=new Set(['loquor|loqueris','sequor|sequeris','proficiscor|proficisceris']);"),
