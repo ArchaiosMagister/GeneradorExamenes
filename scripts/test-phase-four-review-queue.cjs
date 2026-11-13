@@ -65,10 +65,9 @@ assert.throws(()=>api.reviewMergeBundle({},{
  schema:'examina-morph-teacher-review/v2',
  records:{[x.id]:{decision:'certificar',note:'No válido',entry:x.entry,updated:'2026-11-13T16:00:00Z',signature:sig}}
 },all),/incompleta|inválida/);
-assert.throws(()=>api.reviewMergeBundle({},{
- schema:'examina-morph-teacher-review/v2',
- records:{'__proto__':{decision:'excluir',note:'t',entry:'p',updated:'2026-11-13T16:00:00Z'}}
-},all),/identificador|inválido|desconocido|Archivo/); // Ajustar uso de JSON.parse en la variante peligrosa.
+const polluted=JSON.parse('{"schema":"examina-morph-teacher-review/v2","records":{"__proto__":{"decision":"excluir","note":"t","entry":"p","updated":"2026-11-13T16:00:00Z"}}}');
+assert.throws(()=>api.reviewMergeBundle({},polluted,all),/Identificador|identificador|inválido|desconocido|Archivo/);
+assert.equal({}.polluted,undefined,'La importación no puede contaminar prototipos');
 assert(!api.approvedExamForms(data,'gr1',14,{}).some(y=>y.evidenceKey===x.id),
  'Las decisiones sobre incidencias jamás deben convertirse en autorizaciones');
 const html=fs.readFileSync(path.join(root,'index.html'),'utf8');
