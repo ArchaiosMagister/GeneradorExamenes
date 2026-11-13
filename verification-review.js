@@ -71,9 +71,16 @@ function buildCases(data,course){
   const available=new Set(data.rows.grc.filter(r=>r[3]===4).map(r=>JSON.stringify(r.slice(0,3))));
   for(const [caseId,lemma,sourceForm,schoolForm,tags,status,reference,reason] of PRIORITY_GREEK_FORMS){
    if(!eligible.has(lemma)||!available.has(JSON.stringify([lemma,sourceForm,tags])))continue;
+   const decision=data.extensions?.greek_adjective_decisions?.decisions
+    ?.find(x=>x.lemma===lemma&&x.candidateIds.includes(caseId));
+   const approvedReason=decision?.policy==='EXCLUIR'
+    ?'Decisión docente: variante femenina de primera declinación excluida del repertorio exigible.'
+    :decision?.policy==='VERIFICACION_INDIVIDUAL'
+     ?'Paradigma de tres terminaciones aprobado; esta flexión sigue sin verificar individualmente y queda bloqueada.'
+     :reason;
    add({lemma,kind:'candidatas',priority:status==='LECTURA_CON_PARADIGMA_A_COTEJAR'?1:0,
     form:schoolForm+' ['+tags+']',
-    detail:reason+' Registro '+caseId+': '+status+'. Es propuesta sin verificar y nunca equivale a autorización de examen.',
+    detail:approvedReason+' Registro '+caseId+': '+status+'. Es propuesta sin verificar y nunca equivale a autorización de examen.',
     source:reference||'Banco histórico: fuente 4, pendiente de recuperación documental'});
   }
  }
@@ -408,8 +415,10 @@ function evidenceApproved(course,row,all=evidenceDecisions()){
  return !!decision&&decision.action==='autorizar_uso'&&decision.schema===EVIDENCE_SCHEMA&&
   decision.key===key&&decision.verified===false;
 }
-// Exclusiones filológicas de los paradigmas escolares actuales.
-// Evita que autorizaciones antiguas habiliten propuestas erróneas.
+// Tres decisiones docentes cerradas: ἀθάνατος/αἰσχρός excluidos,
+// ἐχθρός admite –ά en el enunciado, pero sus DIEZ formas propuestas de
+// fuente 4 NO se habilitan hasta cotejo individual. También bloquea
+// autorizaciones antiguas o importadas.
 function evidenceProvisionalForbidden(course,row){
  if(course!=='gr1'||!Array.isArray(row)||row[3]!==4)return false;
  const lemma=row[0],tags=String(row[2]).split(';');
