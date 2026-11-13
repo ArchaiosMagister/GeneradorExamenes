@@ -61,5 +61,6 @@
       "verifiedFormsAdded": 0,
       "reason": "Conservar exclusivamente las dos terminaciones en el repertorio exigible y excluir del sorteo las tres propuestas femeninas de primera declinación."
     }
-  ]
+  ],
+  "rebuildPolicy": "Conservar intacto el extracto nominal griego auditado en la revisión de 559 fichas; regenerar únicamente el índice derivado y offline.html."
 }
