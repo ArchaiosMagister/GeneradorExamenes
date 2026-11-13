@@ -188,6 +188,8 @@ jobs:
         run: node scripts/test-lex-part-regeneration.cjs
       - name: Fase III - regeneración aislada de preguntas latinas y sus soluciones
         run: node scripts/test-question-part-regeneration.cjs
+      - name: Fase III - regeneración aislada de preguntas de Griego I
+        run: node scripts/test-greek-question-regeneration.cjs
       - name: Probar las vistas previas de todos los modelos
         run: node scripts/test-preview.cjs
       - name: Guardar Word con puntuaciones de examen para inspección
