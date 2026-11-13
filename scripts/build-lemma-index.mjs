@@ -307,9 +307,27 @@ async function main(){
    add('grc',record.lemma,surface,features,'wikcionario');
   }
  }
+ // Conservar las 49 fichas originales de fuente 4 que ya no se reproducen
+ // en el extracto nominal. Son SOLO históricos, sin adscripción curricular.
+ // Una reconstrucción no debe borrar sus IDs ni simular procedencia nueva.
+ const historicGreek=JSON.parse(await fs.readFile(
+  path.join(root,'data/lemmas/revision-559-griego-20261113.json'),'utf8'));
+ const missingGreek=historicGreek.items.filter(x=>x.originalSource===4&&!x.extractPresent);
+ if(historicGreek.items.length!==559||missingGreek.length!==49)
+  throw Error('Auditoría de 559 registros griegos modificada inesperadamente');
+ for(const x of missingGreek){
+  const slot=catalog.grc[x.lemma]?.gr1;
+  if(!slot||slot.units?.length!==0||x.gradeEligible||x.verifiedIndividual||
+     !/^grc-pending-\\d{3}$/.test(x.id)||!x.sourceForm||!x.analysis)
+   throw Error('Ficha histórica griega no segura: '+x.id);
+  add('grc',x.lemma,x.sourceForm,x.analysis,'wikcionario');
+ }
+ if(counts.grc.wikcionario-greekCountBefore!==559)
+  throw Error('La reconstrucción pierde candidaturas griegas históricas');
  extensions.greek_nominal_candidates={
   lemmas:greekCandidateData.entries.length,
   rows:counts.grc.wikcionario-greekCountBefore,
+  archivedRowsWithoutExtract:missingGreek.length,
   license:greekCandidateData.license,
   attribution:greekCandidateData.attribution,
   status:greekCandidateData.status,
