@@ -12,7 +12,7 @@ const match=html.match(/const latinExplicitVerbEvidence=(\{[^\n]+\});\nfunction 
 assert(match,'Falta la tabla explícita de evidencia verbal');
 const evidence=JSON.parse(match[1]);
 assert.deepEqual(Object.keys(evidence).sort(),
- ['audeo','confero','conor','eo','loquor','possum','sequor','sum']);
+ ['audeo','confero','conor','eo','loquor','possum','proficiscor','redeo','sequor','sum','transeo']);
 const overrides=JSON.parse(readFileSync(resolve(root,'data/lemmas/verified-overrides.json'),'utf8'));
 let total=0;
 for(const [lemma,series]of Object.entries(evidence)){
@@ -24,7 +24,8 @@ for(const [lemma,series]of Object.entries(evidence)){
    ['1;SG','2;SG','3;SG','1;PL','2;PL','3;PL'];
   const category=item.sourceCode===1?
    (item.voice==='semideponente'?'DOCENTE;perfecto de indicativo, sujeto masculino':'DOCENTE;presente de indicativo deponente'):
-   item.voice==='deponente'?'V;IND;DEP;PRS':
+   item.voice==='deponente'?(item.tense==='presente'?'V;IND;DEP;PRS':
+   item.tense==='imperfecto'?'V;IND;DEP;PST;IPFV':'V;IND;DEP;FUT'):
    item.tense==='presente'?'V;IND;ACT;PRS':
    item.tense==='imperfecto'?'V;IND;ACT;PST;IPFV':
    item.tense==='futuro'?'V;IND;ACT;FUT':
@@ -42,7 +43,12 @@ for(const [lemma,series]of Object.entries(evidence)){
   });
  }
 }
-assert.equal(total,120,'Cantidad de fichas contrastadas registrada inesperada');
+assert.equal(total,210,'Cantidad de fichas contrastadas registrada inesperada');
+assert.deepEqual(evidence.redeo.map(x=>x.tense),['presente','imperfecto','futuro','perfecto','pluscuamperfecto']);
+assert.deepEqual(evidence.transeo.map(x=>x.tense),['presente','imperfecto','futuro','perfecto','pluscuamperfecto']);
+assert.deepEqual(evidence.proficiscor.map(x=>x.tense),['presente','imperfecto','futuro']);
+assert(evidence.proficiscor.every(x=>x.voice==='deponente'));
+assert(!evidence.fio,'No incluir fio, que no es lema del banco docente');
 assert.equal(evidence.audeo?.[0]?.voice,'semideponente');
 assert.equal(evidence.audeo?.[0]?.tense,'perfecto');
 assert(!evidence.audeo.some(x=>x.tense==='presente'),'No generalizar el infectum de audeo');
@@ -50,6 +56,7 @@ assert.equal(corpus.rows.lat.filter(row=>row[0]==='possum'&&row[3]===5).length,3
 assert.equal(corpus.rows.lat.filter(row=>row[0]==='confero'&&row[3]===5).length,30);
 assert(!evidence.fero,'No incorporar el lema fero: no consta en el vocabulario docente');
 assert(evidence.loquor[0].voice==='deponente'&&evidence.sequor[0].voice==='deponente');
+assert(html.includes("'proficiscor|proficisceris'"),'Sincretismo de segunda singular no protegido');
 
 const start=html.indexOf('function mVerb(raw){');
 const end=html.indexOf('// Corrections for conjugation:',start);
@@ -78,4 +85,4 @@ assert(html.includes("const latinPersonalPresentPassiveLemmas=new Set([...latinP
  'Falta la excepción de facio y el inventario de pasivas personales');
 assert(html.includes("if(latinPersonalPresentPassiveLemmas.has(examKey(entry)))"),
  'La pasiva no está condicionada a la transitividad admitida');
-console.log('Latín I: 120 fichas contrastadas (incluido el perfecto semideponente docente de audeo); cinco conjugaciones y mixta sin pasivas ficticias.');
+console.log('Latín I: 210 fichas individuales o docentes: eo, redeo, transeo, proficiscor y paradigmas anteriores; irregularidades no inventadas.');
