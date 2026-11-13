@@ -26,7 +26,7 @@ for(const item of review.items){
  assert.equal(item.originalSource,4);
  assert.equal(item.verifiedIndividual,false);
  assert.equal(item.gradeEligible,false);
- assert.equal(item.sourceForm&&item.schoolForm, true);
+ assert(Boolean(item.sourceForm&&item.schoolForm));
  assert.equal(item.analysis.includes(';'),true);
  const k=key(item.lemma,item.sourceForm,item.analysis);
  assert(originalKeys.has(k),'La forma fuente cambió: '+k);
