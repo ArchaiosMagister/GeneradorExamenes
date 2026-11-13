@@ -90,10 +90,12 @@ jobs:
         run: node scripts/test-greek-nominal-import.mjs
       - name: Validar catálogo griego provisional persistente sin acceso de red
         run: node scripts/test-greek-nominal-persistent.cjs
-      - name: Inventariar exhaustivamente las 4403 fichas candidatas sin promoverlas
+      - name: Auditar exhaustivamente las candidaturas todavía pendientes sin promoverlas
         run: node scripts/test-comprehensive-morph-audit.cjs
-      - name: Contrastar el nuevo lote de cien candidaturas sin promoción automática
+      - name: Comprobar el lote anterior de cien formas ya incorporadas
         run: node scripts/test-candidaturas-lote100.cjs
+      - name: Verificar las cien latinas y cien griegas del nuevo lote en el banco y la PWA
+        run: node scripts/test-candidaturas-lote200.cjs
       - name: Validar las 31 lecturas documentales y evitar promociones automáticas
         run: node scripts/test-individual-evidence-ledger.cjs
       - name: Conservar auditoría individualizada de fichas latinas y griegas
