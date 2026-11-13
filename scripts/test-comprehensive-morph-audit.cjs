@@ -10,9 +10,9 @@ const report=JSON.parse(fs.readFileSync(path.join(root,'test-artifacts/auditoria
 const summary=JSON.parse(fs.readFileSync(path.join(root,'test-artifacts/auditoria-integral-resumen.json'),'utf8'));
 assert.equal(report.schema,'examina-comprehensive-morph-audit/v1');
 assert.equal(report.status,'REVIEW_ONLY_NOT_FOR_GRADING');
-assert.equal(report.totalCandidates,3803,'Cambio de fichas pendientes: examinar antes de variar el inventario');
+assert.equal(report.totalCandidates,3793,'Cambio de fichas pendientes: examinar antes de variar el inventario');
 assert.equal(report.latin.entries.length,3244);
-assert.equal(report.greek.entries.length,559);
+assert.equal(report.greek.entries.length,549);
 assert.deepEqual(summary.latin,report.latin.summary);
 assert.deepEqual(summary.greek,report.greek.summary);
 assert.equal(summary.verifiedPromoted,0);
@@ -28,6 +28,6 @@ for(const lang of ['latin','greek']){
 // mediante el auditor de candidaturas.
 assert.equal(fs.readFileSync(indexFile,'utf8'),original,'El auditor alteró el índice persistente');
 assert.equal(fs.readFileSync(sourceFile,'utf8'),originalSource,'El auditor alteró las fuentes verificadas');
-console.log('Auditoría integral: 3803 propuestas restantes, cero promociones por el auditor.');
-// Revisión individual del saldo griego: validar todas las 559 fichas sin cambiar estado.
+console.log('Auditoría integral: 3793 propuestas restantes (549 griegas, 3244 latinas), cero promociones por el auditor.');
+// Revisión histórica del griego: 559 identidades inmutables, 10 migradas y 549 candidatas vigentes.
 require('./test-revision-559-griego.cjs');
