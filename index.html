@@ -1423,8 +1423,8 @@ function morphSyntagmRows(cfg,greek=false){
   }
   if(!latinCompleteCompoundActive(selectedUnits()))return sample(latinExamNominals(selectedUnits()),cfg.offer)
    .map(item=>({title:latinDisplayEnunciation(item.x.entry)}));
-  return sample(latinCompleteDeclensionItems(selectedUnits()).filter(x=>x.compound),cfg.offer)
-   .map(x=>({title:x.compound.title}));
+  return latinPrioritySample(latinCompleteDeclensionItems(selectedUnits()).filter(x=>x.compound),cfg.offer,latinDeclensionPriorities(selectedUnits()))
+   .map(x=>({title:x.compound.title,declension:x.p.kind}));
  });
  return Array.from({length:cfg.offer},(_,i)=>
   '<p class="exam-item reference-analysis-item morph-syntagm-item" data-syntagm-slot="'+i+'" contenteditable="false">'+
@@ -1596,8 +1596,48 @@ function latinMorphologyVerbPool(chosen){
  return candidates.filter(item=>senses.get(examKey(item.entry)+'/'+normLex(item.form)).size===1&&
   !latinAmbiguousDeponentForm(item));
 }
+// Reservar una plaza por contenido nuevo y sortear el resto entre todo el banco.
+function latinPrioritySample(pool,count,priorities,key=item=>item,fill=true){
+ const picked=[],used=new Set();
+ for(const matches of fill?[...priorities,prioritiesFallback]:priorities){
+  if(picked.length>=count)break;
+  for(const item of sample(pool.filter(item=>matches(item)&&!used.has(key(item))),pool.length)){
+   if(picked.length>=count)break;
+   const id=key(item);
+   if(used.has(id))continue;
+   used.add(id);picked.push(item);
+   if(matches!==prioritiesFallback)break;
+  }
+ }
+ return picked;
+}
+const prioritiesFallback=()=>true;
+function latinFocusUnit(chosen){
+ return currentCourse()==='latin1'?Math.max(0,...chosen.map(examUnitNumber).filter(Number.isInteger)):0;
+}
+function latinDeclensionPriorities(chosen){
+ return latinFocusUnit(chosen)===4?[item=>item.p.kind.startsWith('3')]:[];
+}
+function latinPronounPriorities(chosen){
+ const unit=latinFocusUnit(chosen);
+ return latinPronounRows.some(row=>row.unit===unit)?[row=>row.unit===unit]:[];
+}
 function latinMorphologyVerbSelection(pool,count){
  const max=Math.max(0,...selectedUnits().map(examUnitNumber).filter(Number.isInteger));
+ const tense=label=>item=>item.tense===label+' de indicativo';
+ const activeTense=label=>item=>item.voice==='activa'&&tense(label)(item);
+ const perfectum=['perfecto','pluscuamperfecto'];
+ const focus={
+  2:[activeTense('imperfecto')],
+  3:[item=>item.voice==='pasiva'],
+  4:perfectum.map(activeTense),
+  7:[item=>item.voice==='deponente',activeTense('futuro')]
+ }[max];
+ if(focus){
+  const review=max>=3&&count>focus.length?
+   (max===3?[item=>item.voice==='activa']:[item=>item.voice==='pasiva']):[];
+  return sample(latinPrioritySample(pool,count,[...focus,...review],item=>examKey(item.entry)+'|'+normLex(item.form)),count);
+ }
  if(max<3||count<2)return sample(pool,count);
  const passive=pool.filter(item=>item.voice==='pasiva'),active=pool.filter(item=>item.voice==='activa'),
   deponent=pool.filter(item=>item.voice==='deponente');
@@ -1628,7 +1668,7 @@ function generateLatinMorphologyReference(){
  const t=(es,vl)=>va?vl:es;
  const allVerbs=latinMorphologyVerbPool(chosen);
  const verbItems=stickyExamRows('verb',()=>latinMorphologyVerbSelection(allVerbs,cfg.verbs));
- const pronouns=examQuestionEnabled('pronouns')?latinExamPronouns(chosen):[],pronItems=stickyExamRows('pronouns',()=>sample(pronouns,Math.min(6,pronouns.length)));
+ const pronouns=examQuestionEnabled('pronouns')?latinExamPronouns(chosen):[],pronItems=stickyExamRows('pronouns',()=>latinPrioritySample(pronouns,Math.min(6,pronouns.length),latinPronounPriorities(chosen)));
  const words=stickyExamRows('forms',()=>examQuotaPick(latinExamFormCandidates(chosen),cfg.words,()=>latinExamForms(chosen,cfg.words)));
  const question=(kind,index,heading)=>'<p class="exam-question" data-morph-kind="'+kind+'">'+index+'. '+esc(heading)+'</p>';
  let n=0;
@@ -1836,6 +1876,18 @@ function latinExamConjugationTable(items,solutions=false){
   '<tr><td class="exam-corner"></td>'+items.map(()=>'<th>Singular</th><th>Plural</th>').join('')+'</tr></thead><tbody>'+
   [0,1,2].map(i=>'<tr><th>'+(i+1)+'ª</th>'+items.map(x=>'<td>'+(solutions?'<i>'+esc(latinExamSurface(x.p.forms[i],x.x.entry))+'</i>':'')+'</td><td>'+(solutions?'<i>'+esc(latinExamSurface(x.p.forms[i+3],x.x.entry))+'</i>':'')+'</td>').join('')+'</tr>').join('')+'</tbody></table>';
 }
+// Formas de adjetivos de tercera documentadas en data/lemmas/teacher-forms.json.
+const latinThirdAdjectiveRows={"fortis":{"forte":["ACC;NEUT;SG","NOM;NEUT;SG","VOC;NEUT;SG"],"fortem":["ACC;MASC+FEM;SG"],"fortēs":["ACC;MASC+FEM;PL","NOM;MASC+FEM;PL","VOC;MASC+FEM;PL"],"fortī":["ABL;MASC+FEM+NEUT;SG","DAT;MASC+FEM+NEUT;SG"],"fortia":["ACC;NEUT;PL","NOM;NEUT;PL","VOC;NEUT;PL"]},"acer":{"ācer":["NOM;MASC;SG","VOC;MASC;SG"],"ācre":["ACC;NEUT;SG","NOM;NEUT;SG","VOC;NEUT;SG"],"ācrem":["ACC;MASC+FEM;SG"],"ācrēs":["ACC;MASC+FEM;PL","NOM;MASC+FEM;PL","VOC;MASC+FEM;PL"],"ācrī":["ABL;MASC+FEM+NEUT;SG","DAT;MASC+FEM+NEUT;SG"]},"felix":{"fēlīcem":["ACC;MASC+FEM;SG"],"fēlīcēs":["ACC;MASC+FEM;PL","NOM;MASC+FEM;PL","VOC;MASC+FEM;PL"],"fēlīcī":["ABL;MASC+FEM+NEUT;SG","DAT;MASC+FEM+NEUT;SG"],"fēlīcia":["ACC;NEUT;PL","NOM;NEUT;PL","VOC;NEUT;PL"],"fēlīcibus":["ABL;MASC+FEM+NEUT;PL","DAT;MASC+FEM+NEUT;PL"]},"omnis":{"omne":["ACC;NEUT;SG","NOM;NEUT;SG","VOC;NEUT;SG"],"omnem":["ACC;MASC+FEM;SG"],"omnēs":["ACC;MASC+FEM;PL","NOM;MASC+FEM;PL","VOC;MASC+FEM;PL"],"omnī":["ABL;MASC+FEM+NEUT;SG","DAT;MASC+FEM+NEUT;SG"],"omnia":["ACC;NEUT;PL","NOM;NEUT;PL","VOC;NEUT;PL"]},"brevis":{"breve":["ACC;NEUT;SG","NOM;NEUT;SG","VOC;NEUT;SG"],"brevem":["ACC;MASC+FEM;SG"],"brevēs":["ACC;MASC+FEM;PL","NOM;MASC+FEM;PL","VOC;MASC+FEM;PL"],"brevī":["ABL;MASC+FEM+NEUT;SG","DAT;MASC+FEM+NEUT;SG"],"brevia":["ACC;NEUT;PL","NOM;NEUT;PL","VOC;NEUT;PL"]},"prudens":{"prūdēns":["ACC;NEUT;SG","NOM;MASC+FEM+NEUT;SG","VOC;MASC+FEM+NEUT;SG"],"prūdentem":["ACC;MASC+FEM;SG"],"prūdentēs":["ACC;MASC+FEM;PL","NOM;MASC+FEM;PL","VOC;MASC+FEM;PL"],"prūdentī":["ABL;MASC+FEM+NEUT;SG","DAT;MASC+FEM+NEUT;SG"],"prūdentia":["ACC;NEUT;PL","NOM;NEUT;PL","VOC;NEUT;PL"]},"ingens":{"ingēns":["ACC;NEUT;SG","NOM;MASC+FEM+NEUT;SG","VOC;MASC+FEM+NEUT;SG"],"ingentem":["ACC;MASC+FEM;SG"],"ingentēs":["ACC;MASC+FEM;PL","NOM;MASC+FEM;PL","VOC;MASC+FEM;PL"],"ingentī":["ABL;MASC+FEM+NEUT;SG","DAT;MASC+FEM+NEUT;SG"],"ingentia":["ACC;NEUT;PL","NOM;NEUT;PL","VOC;NEUT;PL"]}};
+function latinFormPriorities(chosen){
+ const unit=latinFocusUnit(chosen);
+ return {
+  2:[row=>row.category==='adjectives'],
+  3:[row=>row.category==='pronouns'&&row.introduced===3],
+  4:[row=>row.category==='nouns'&&row.declension?.startsWith('3')],
+  5:[row=>row.category==='adjectives'&&row.declension==='3',row=>row.category==='pronouns'&&row.introduced===5],
+  6:[row=>row.category==='pronouns'&&row.introduced===6]
+ }[unit]||[];
+}
 function latinExamFormCandidates(chosen,allForms=false){
  const data=latinSharedBank.vocabulary(currentCourse(),chosen),groups=[[],[],[],[]];
  const limit=Math.max(0,...chosen.map(examUnitNumber).filter(Number.isInteger));
@@ -1845,21 +1897,33 @@ function latinExamFormCandidates(chosen,allForms=false){
   const control={nouns:'n',adjectives:'adj',pronouns:'pro'}[category];
   return !control||$('morphCategory-'+control)?.checked!==false;
  };
- const add=(group,forms,labels,category,entry,sourceEntry='')=>{
+ const add=(group,forms,labels,category,entry,sourceEntry='',declension)=>{
   const indices=allForms?forms.map((_,i)=>i):[Math.floor(Math.random()*forms.length)];
   for(const i of indices)groups[group].push({
-   category,entry,sourceEntry,form:forms[i],answer:labels[i]+'; '+entry
+   category,entry,sourceEntry,declension,form:forms[i],answer:labels[i]+'; '+entry
   });
  };
  const indexedVerbs=new Set();
  for(const x of data){
   if(isExcludedExamMorphLemma(x.entry,x.meaning))continue;
   const n=mNoun(x.entry),a=adjective(x),v=verb(x);
-  if(n){
+  const documented=Object.hasOwn(latinThirdAdjectiveRows,examKey(x.entry))?latinThirdAdjectiveRows[examKey(x.entry)]:null;
+  if(currentCourse()==='latin1'&&documented){
+   if(limit>=5&&permitted('adjectives')){
+    const entries=Object.entries(documented);
+    for(const [form,analyses] of allForms?entries:sample(entries,1)){
+     const labels={NOM:'nominativo',ACC:'acusativo',VOC:'vocativo',GEN:'genitivo',DAT:'dativo',ABL:'ablativo',
+      SG:'singular',PL:'plural',MASC:'masculino',FEM:'femenino',NEUT:'neutro'};
+     const answer=analyses.map(tags=>tags.split(/[;+]/).map(tag=>labels[tag]).join(' ')).join(' / ');
+     groups[1].push({category:'adjectives',declension:'3',entry:x.entry,form,
+      answer:'adjetivo de tercera declinación: '+answer+'; '+x.entry});
+    }
+   }
+  }else if(n){
    // La tercera declinación de Latín I se introduce en UD4, aunque el
    // vocabulario de unidades anteriores ya contenga un lema de esta clase.
    if(permitted('nouns')&&(currentCourse()!=='latin1'||limit>=4||/^[12]/.test(mNoun(x.entry).kind)))
-    add(0,n.forms.flat(),['singular','plural'].flatMap(number=>M_CASES.map(c=>c+', '+number)),'nouns',x.entry);
+    add(0,n.forms.flat(),['singular','plural'].flatMap(number=>M_CASES.map(c=>c+', '+number)),'nouns',x.entry,'',n.kind);
   }
   else if(a){if(permitted('adjectives')&&(currentCourse()!=='latin1'||limit>=2))
    add(1,a.forms,a.labels,'adjectives',x.entry)}
@@ -1895,13 +1959,19 @@ function latinExamFormCandidates(chosen,allForms=false){
   }
  }
  if(currentCourse()==='latin1'&&permitted('pronouns'))for(const x of latinExamPronouns(chosen)){
-  groups[3].push({category:'pronouns',entry:x.form,form:x.form,answer:x.type+'; '+x.case+', '+x.gender+', '+x.number});
+  groups[3].push({category:'pronouns',introduced:x.unit,entry:x.form,form:x.form,answer:x.type+'; '+x.case+', '+x.gender+', '+x.number});
  }
  return groups.map(group=>group.filter(item=>!latinAmbiguousDeponentForm(item))
   .map(item=>({...item,form:latinExamSurface(item.form,item.entry)})));
 }
+function normLatinExamItem(item){return normLex(item.form)}
 function latinExamForms(chosen,number){
- const pools=latinExamFormCandidates(chosen).map(x=>sample(x,x.length)),out=[],seen=new Set();
+ const pools=latinExamFormCandidates(chosen).map(x=>sample(x,x.length));
+ const priorities=latinFormPriorities(chosen);
+ const out=priorities.length?latinPrioritySample(pools.flat(),number,priorities,normLatinExamItem,false):[];
+ const seen=new Set(out.map(normLatinExamItem));
+ const covered=new Set(out.map(item=>item.category));
+ pools.sort((a,b)=>Number(covered.has(a[0]?.category))-Number(covered.has(b[0]?.category)));
  while(out.length<number&&pools.some(x=>x.length)){
   for(const group of pools){
    while(group.length){
@@ -1934,7 +2004,7 @@ function generate(){
  const missing=message=>'<p class="small no-print">'+esc(message)+'</p>';
  const formsCount=examMorphQuotasActive()?examMorphQuotaCount():countFor('forms');
  if(!translation&&examQuestionEnabled('decl')){
-  const nouns=stickyExamRows('decl',()=>sample(latinCompleteDeclensionItems(chosen),Math.min(3,countFor('decl'))));
+  const nouns=stickyExamRows('decl',()=>latinPrioritySample(latinCompleteDeclensionItems(chosen),Math.min(3,countFor('decl')),latinDeclensionPriorities(chosen)));
   add('decl',latinCompleteCompoundActive(chosen)?t('Declina los siguientes sintagmas nominales.','Declina els sintagmes nominals següents.'):t('Declina las siguientes palabras.','Declina les paraules següents.'),
    nouns.length?nouns.map(x=>latinExamDeclensionTable(x)).join(''):missing('No hay paradigmas nominales admitidos para las unidades seleccionadas.'),
    nouns.map(x=>latinExamDeclensionTable(x,true)).join(''));
@@ -1952,7 +2022,7 @@ function generate(){
    ': <span class="reference-answer-line"></span></li>').join('')+'</ol>':missing('No hay formas variables verificadas para estas unidades.'),
   '<ol>'+forms.map(x=>'<li>'+esc(x.form)+' — '+esc(x.answer)+'</li>').join('')+'</ol>');
  if(course==='latin1'&&examQuestionEnabled('pronouns')){
-  const pronouns=stickyExamRows('pronouns',()=>sample(latinExamPronouns(chosen),6));
+  const pronouns=stickyExamRows('pronouns',()=>latinPrioritySample(latinExamPronouns(chosen),6,latinPronounPriorities(chosen)));
   if(pronouns.length)add('pronouns',t('Analiza los siguientes pronombres.','Analitza els pronoms següents.'),
    '<table class="exam-paradigm exam-pronouns"><thead><tr><th>Forma</th><th>Tipo</th><th>Caso</th><th>Género</th><th>Número</th></tr></thead><tbody>'+
    pronouns.map(x=>'<tr><td>'+esc(x.form)+'</td><td></td><td></td><td></td><td></td></tr>').join('')+'</tbody></table>',
@@ -3533,7 +3603,7 @@ function examQuotaPick(groups,count,fallback){
  const groupOrder=[groups[0]||[],groups[1]||[],groups[2]||[],groups[3]||[]];
  const picked=[],seen=new Set();
  quotas.forEach((quantity,i)=>{
-  for(const item of sample(groupOrder[i],quantity)){
+  for(const item of latinPrioritySample(groupOrder[i],quantity,latinFormPriorities(selectedUnits()),normLatinExamItem)){
    const key=String(item.form||item.entry||'').normalize('NFC');
    if(!seen.has(key)){seen.add(key);picked.push(item)}
   }
@@ -3694,7 +3764,7 @@ function regenerateExamWord(kind,index){
     !(x.lemmas||[]).some(isProperNounLemma));
    candidates=nouns.flatMap(noun=>adjectives.map(adj=>greekCompleteNominalGroup(noun,true,adj))).filter(Boolean);
   }else if(morph)candidates=latinCompleteDeclensionItems(chosen).filter(x=>x.compound)
-   .map(x=>({title:x.compound.title}));
+   .map(x=>({title:x.compound.title,declension:x.p.kind}));
   else candidates=latinCompleteDeclensionItems(chosen);
  }else if(kind==='verb'){
   if(greek){
@@ -3722,7 +3792,13 @@ function regenerateExamWord(kind,index){
   alternatives=alternatives.filter(x=>category(x)===category(previous));
  }
  if(!alternatives.length)return;
- const next=sample(alternatives,1)[0],updated=current.slice();
+ const focus=latinFocusUnit(chosen);
+ const matches=kind==='forms'?latinFormPriorities(chosen).find(test=>test(previous)):
+  kind==='verb'&&morph&&focus===4&&previous.voice==='activa'&&/^(perfecto|pluscuamperfecto) de indicativo$/.test(previous.tense)?
+   item=>item.voice===previous.voice&&item.tense===previous.tense:
+  kind==='decl'&&focus===4&&(previous.p?.kind||previous.declension)?.startsWith('3')?
+   item=>(item.p?.kind||item.declension)?.startsWith('3'):null;
+ const next=latinPrioritySample(alternatives,1,matches?[matches]:[])[0],updated=current.slice();
  updated[index]=next;
  examSelectionCache.set(cacheKey,updated);
  if(morph&&kind==='decl'){

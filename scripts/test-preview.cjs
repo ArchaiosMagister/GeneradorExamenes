@@ -169,6 +169,34 @@ async function checkFile(browser,filename){
   assert.equal(sample.indicatorItalic,false,filename+': metadato en cursiva '+sample.source);
   assert.equal(sample.fullText,sample.source,filename+': se ha perdido contenido '+sample.source);
  }
+ const curricular=await page.evaluate(()=>{
+  const course=$('course'),model=$('model');
+  course.value='latin1';course.dispatchEvent(new Event('change',{bubbles:true}));
+  model.value='morf';model.dispatchEvent(new Event('change',{bubbles:true}));
+  return [3,4,5,6].map(unit=>{
+   document.querySelectorAll('.unit-choice').forEach(el=>el.checked=units[Number(el.value)]==='UD'+unit);
+   $('cumulative').checked=true;
+   return Array.from({length:10},()=>{
+    examSelectionCache.clear();generate();
+    const cached=key=>examSelectionCache.get(examCacheSignature(key))||[];
+    return {decl:cached('decl').map(x=>x.declension),verbs:cached('verb').map(x=>[x.tense,x.voice]),
+     forms:cached('forms').map(x=>[x.category,x.declension,x.introduced]),pronouns:cached('pronouns').map(x=>x.unit)};
+   });
+  });
+ });
+ for(const result of curricular[0])assert(!result.forms.some(([,d])=>d?.startsWith('3')));
+ for(const result of curricular[1]){
+  assert(result.decl.some(kind=>kind?.startsWith('3')));
+  assert(result.forms.some(([kind,d])=>kind==='nouns'&&d?.startsWith('3')));
+  for(const tense of ['perfecto','pluscuamperfecto'])
+   assert(result.verbs.some(([t,v])=>t===tense+' de indicativo'&&v==='activa'));
+ }
+ for(const result of curricular[2]){
+  assert(result.forms.some(([kind,d])=>kind==='adjectives'&&d==='3'));
+  assert(result.forms.some(([kind,,introduced])=>kind==='pronouns'&&introduced===5));
+  assert(result.pronouns.includes(5)&&result.pronouns.includes(3));
+ }
+ for(const result of curricular[3])assert(result.pronouns.includes(6));
  // Prueba real: el cuadro de análisis verbal debe mostrar enunciados y
  // tener formas pasivas a partir de UD3, respetando los umbrales curriculares.
  const latinVerbMorphology=await page.evaluate(()=>{
