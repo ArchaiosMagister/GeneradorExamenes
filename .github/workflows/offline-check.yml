@@ -194,6 +194,8 @@ jobs:
         run: node scripts/test-sentence-points-and-drafts.cjs
       - name: Fase III - normas fonéticas acumulativas sin regenerar el examen
         run: node scripts/test-phonetic-filter-isolation.cjs
+      - name: Fase III - regeneración aislada de morfología latina y griega
+        run: node scripts/test-morph-question-isolation.cjs
       - name: Probar las vistas previas de todos los modelos
         run: node scripts/test-preview.cjs
       - name: Guardar Word con puntuaciones de examen para inspección
