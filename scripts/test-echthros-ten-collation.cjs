@@ -23,7 +23,7 @@ const expected=[
 assert.equal(review.schema,'examina-greek-individual-morphology-collation/v1');
 assert.equal(review.headword,'ἐχθρός, –ά, –όν');
 assert.equal(review.items.length,10);
-assert.deepEqual([...review.summary.reviewed,review.summary.morphologyConfirmed,
+assert.deepEqual([review.summary.reviewed,review.summary.morphologyConfirmed,
  review.summary.distinctSurfaceForms,review.summary.syncreticReadings,
  review.summary.otherReadings,review.summary.source5Promotions,
  review.summary.newAutomaticExamForms],[10,10,8,5,5,0,0]);
