@@ -196,6 +196,8 @@ jobs:
         run: node scripts/test-phonetic-filter-isolation.cjs
       - name: Fase III - regeneración aislada de morfología latina y griega
         run: node scripts/test-morph-question-isolation.cjs
+      - name: Fase III - auditar conjuntamente ediciones, regeneración, borradores y Word
+        run: node scripts/test-phase-three-integration.cjs
       - name: Probar las vistas previas de todos los modelos
         run: node scripts/test-preview.cjs
       - name: Guardar Word con puntuaciones de examen para inspección
