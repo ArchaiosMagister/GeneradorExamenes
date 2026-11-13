@@ -7,7 +7,7 @@ const path=require('node:path');
 const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
 const root=path.resolve(__dirname,'..');
 const server=http.createServer((request,response)=>{
- const relative=decodeURIComponent((request.url||'/').split('?')[0]).replace(/^\\/+/, '')||'index.html';
+ const relative=decodeURIComponent((request.url||'/').split('?')[0]).replace(/^[/]+/, '')||'index.html';
  const file=path.resolve(root,relative);
  if(!file.startsWith(root+path.sep)){response.writeHead(403).end();return}
  fs.readFile(file,(error,bytes)=>{
