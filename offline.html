@@ -7471,7 +7471,8 @@ function renderOnlyRegeneratedExamWord(kind,index,render){
   }
  }
  const newKey=fresh?.querySelector('#answerkey');
- if(oldKey&&newKey){
+ if(oldKey&&newKey&&!kind.startsWith('lex-')){
+  // Una sustitución léxica no debe regenerar el solucionario editado.
   const key=newKey.cloneNode(true);
   if(oldKey.classList.contains('show'))key.classList.add('show');
   const warning=oldKey.querySelector('[data-manual-warning]');
@@ -7571,8 +7572,13 @@ function regenerateExamWord(kind,index){
  renderOnlyRegeneratedExamWord(kind,index,generate);
 }
 function regenerateExamQuestion(kind){
+ // El léxico está dividido en subpreguntas independientes. No borrar el
+ // documento al pulsar «regenerar esta pregunta»: conservar los demás bloques.
+ if(kind==='lex'){
+  for(const part of examSelectedLexParts(currentCourse()))regenerateLatinLexPart(part);
+  return;
+ }
  const key=examCacheSignature(kind);examSelectionCache.delete(key);
- if(kind==='lex')for(const part of latinLexModules[currentCourse()]||[])examSelectionCache.delete(examCacheSignature('lex-'+part));
  if(currentCourse()==='greek1'&&$('model').value!=='morphology'){
   const greekKind={decl:'declension',verb:'conjugation',forms:'forms',pronouns:'pronouns',etymology:'etymology',sent:'sentences'}[kind];
   if(greekKind&&typeof greekExamState!=='undefined'&&greekExamState){greekRegenerate(greekKind);return}
@@ -7838,10 +7844,42 @@ $('paper').addEventListener('input',event=>{
  else if(kind==='prefixes'||kind==='latinisms')
   setLatinLexWord(kind,index,slot.textContent,true);
 });
+function renderOnlyRegeneratedLatinLexPart(kind,render){
+ const paper=$('paper'),original=paper.querySelector('.exam-sheet');
+ const selector='.lex-subquestion[data-lex-kind="'+kind+'"]';
+ const previous=original?.querySelector(selector);
+ // Si el apartado no está presente, no descartamos el examen del docente.
+ if(!original||!previous)return false;
+ render();
+ const replacement=paper.querySelector('.exam-sheet')?.querySelector(selector);
+ if(!replacement){paper.replaceChildren(original);return false}
+ // Conservar exactamente los nodos de las otras preguntas, las oraciones,
+ // el encabezado, las decisiones del glosario y el solucionario editado.
+ previous.replaceWith(replacement.cloneNode(true));
+ paper.replaceChildren(original);
+ refreshManualMorphWords();
+ return true;
+}
 function regenerateLatinLexPart(kind){
+ const course=currentCourse(),chosen=selectedUnits();
+ if(!examSelectedLexParts(course).includes(kind))return false;
+ const key=examCacheSignature('lex-'+kind);
+ const current=examSelectionCache.get(key);
+ const eligible=latinLexPool(course,kind,chosen);
+ if(new Set(eligible.map(latinLexTermKey)).size<latinLexExpectedCount(kind)){
+  latinLexStatus(kind,Array.isArray(current)?current:[],'No hay suficientes formas compatibles para regenerar.');
+  return false;
+ }
+ const previousInputs=kind==='preverbs'?[0,1].map(i=>$('lex-verb-'+i)?.value||''):[];
  if(kind==='preverbs')for(let i=0;i<2;i++){const input=$('lex-verb-'+i);if(input)input.value=''}
- examSelectionCache.delete(examCacheSignature('lex-'+kind));
- generate();
+ examSelectionCache.delete(key);
+ if(renderOnlyRegeneratedLatinLexPart(kind,generate))return true;
+ // Fallo de encaje: restaurar también la selección y los editores originales.
+ if(Array.isArray(current))examSelectionCache.set(key,current);
+ else examSelectionCache.delete(key);
+ if(kind==='preverbs')for(let i=0;i<2;i++){const input=$('lex-verb-'+i);if(input)input.value=previousInputs[i]}
+ if(Array.isArray(current))latinLexStatus(kind,current);
+ return false;
 }
 function regenerateLatinLexWord(kind,index){
  if(index<0||index>=latinLexExpectedCount(kind))return;
