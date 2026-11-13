@@ -121,6 +121,99 @@ function buildCases(data,course){
  return cases.sort((a,b)=>a.priority-b.priority||a.kind.localeCompare(b.kind,'es')||
   a.lemma.localeCompare(b.lemma,'es')||a.form.localeCompare(b.form,'es'));
 }
+// Registro docente versionado e independiente de cualquier autorización académica.
+// Las decisiones guardadas no cambian la morfología, las claves ni las fuentes.
+const REVIEW_SCHEMA='examina-morph-teacher-review/v2';
+const REVIEW_ACTIONS=new Set(['','aceptar','corregir','excluir']);
+const REVIEW_MAX_ALTERNATIVES=50;
+function reviewSignature(x){
+ return JSON.stringify([x.id,x.course,x.kind,x.lemma,x.entry,x.form,x.source,x.units]);
+}
+function reviewDecisionApplies(x,r){
+ if(!r||typeof r!=='object')return false;
+ return typeof r.signature==='string'?r.signature===reviewSignature(x):
+  r.entry===x.entry; // Decisiones locales del esquema anterior: ID + entrada intactos.
+}
+function reviewFlat(x){
+ return {decision:x.decision,note:x.note,entry:x.entry,updated:x.updated,
+  ...(x.signature?{signature:x.signature}:{})};
+}
+function reviewSame(a,b){
+ if(!a||!b)return false;
+ return JSON.stringify(reviewFlat(a))===JSON.stringify(reviewFlat(b));
+}
+function reviewCheckRecord(id,r,nested=false){
+ if(typeof id!=='string'||id.length>800||
+  !/^(?:lat1|lat4|gr1)\|(?:correccion|etiquetas|ampliacion|candidatas|sin-flexion|variantes|homografia)\|.+\|/u.test(id))
+  throw Error('Identificador de incidencia no reconocido');
+ if(!r||typeof r!=='object'||Array.isArray(r)||
+  !REVIEW_ACTIONS.has(r.decision)||typeof r.note!=='string'||r.note.length>4000||
+  typeof r.entry!=='string'||r.entry.length>600||
+  typeof r.updated!=='string'||!Number.isFinite(Date.parse(r.updated))||
+  (r.signature!==undefined&&(typeof r.signature!=='string'||r.signature.length>2400)))
+  throw Error('Decisión filológica incompleta o inválida: '+id);
+ if(nested&&r.alternatives!==undefined)throw Error('Historial recursivo de incidencia');
+ const record=reviewFlat(r);
+ if(!nested){
+  if(r.alternatives!==undefined&&(!Array.isArray(r.alternatives)||
+   r.alternatives.length>REVIEW_MAX_ALTERNATIVES))
+   throw Error('Historial excesivo o no válido');
+  if(r.alternatives?.length)record.alternatives=r.alternatives.map(alt=>reviewCheckRecord(id,alt,true));
+ }
+ return record;
+}
+function reviewBundle(notes,exported=new Date().toISOString()){
+ const records=Object.create(null);
+ for(const [id,x] of Object.entries(notes||{}))records[id]=reviewCheckRecord(id,x);
+ return {schema:REVIEW_SCHEMA,purpose:'Decisiones docentes y alternativas sin autorización de uso en exámenes',
+  exported,records};
+}
+function reviewMergeBundle(current,payload,cases){
+ const v2=payload?.schema===REVIEW_SCHEMA,legacy=payload?.schema===1;
+ if(!v2&&!legacy)throw Error('Esquema de revisión filológica desconocido');
+ const incoming=v2?payload.records:payload.decisions;
+ if(!incoming||typeof incoming!=='object'||Array.isArray(incoming)||
+  Object.keys(incoming).length>10000)throw Error('Archivo de decisiones inválido');
+ const index=new Map(cases.map(x=>[x.id,x])),next={...current};
+ let added=0,identical=0,conflicts=0,orphaned=0,historyAdded=0;
+ for(const [id,raw] of Object.entries(incoming)){
+  const item=reviewCheckRecord(id,raw),active=index.get(id);
+  if(!active||!reviewDecisionApplies(active,item))orphaned++;
+  const before=Object.hasOwn(next,id)?reviewCheckRecord(id,next[id]):null;
+  if(!before){next[id]=item;added++;continue}
+  const candidates=[item,...(item.alternatives||[])].map(reviewFlat);
+  let changed=false,alts=(before.alternatives||[]).map(reviewFlat);
+  for(const x of candidates){
+   if(reviewSame(before,x)||alts.some(a=>reviewSame(a,x)))continue;
+   if(alts.length>=REVIEW_MAX_ALTERNATIVES)throw Error('Demasiadas alternativas para '+id);
+   alts.push(x);historyAdded++;changed=true;
+  }
+  if(changed){next[id]={...reviewFlat(before),alternatives:alts};conflicts++}
+  else identical++;
+ }
+ return {decisions:next,added,identical,conflicts,orphaned,historyAdded,total:Object.keys(incoming).length};
+}
+function reviewWriteDecision(notes,x,decision,note,updated=new Date().toISOString()){
+ if(!REVIEW_ACTIONS.has(decision)||typeof note!=='string')throw Error('Decisión desconocida');
+ const old=notes[x.id],trimmed=note.trim(),draft={decision,note:trimmed,entry:x.entry,
+  updated,signature:reviewSignature(x)};
+ if(!old&&!decision&&!trimmed)return notes;
+ if(old&&reviewDecisionApplies(x,old)&&old.decision===decision&&old.note===trimmed)return notes;
+ const variants=old?.alternatives?.map(reviewFlat)||[];
+ if(old&&(!variants.some(a=>reviewSame(a,old))))variants.push(reviewFlat(old));
+ if(variants.length>REVIEW_MAX_ALTERNATIVES)throw Error('Historial de esta incidencia lleno; exporta una copia');
+ return {...notes,[x.id]:{...draft,...(variants.length?{alternatives:variants}:{})}};
+}
+function reviewSelectAlternative(notes,x,index){
+ const old=notes[x.id],alt=old?.alternatives?.[index];
+ if(!old||!alt||!reviewDecisionApplies(x,alt))
+  throw Error('La alternativa pertenece a una versión anterior de la incidencia');
+ const alts=old.alternatives.filter((_,i)=>i!==index).map(reviewFlat);
+ if(!alts.some(a=>reviewSame(a,old)))alts.push(reviewFlat(old));
+ if(alts.length>REVIEW_MAX_ALTERNATIVES)throw Error('Historial demasiado grande');
+ return {...notes,[x.id]:{...reviewFlat(alt),alternatives:alts}};
+}
+
 function decisions(){
  try{const data=JSON.parse(localStorage.getItem(STORE)||'{}');return data&&typeof data==='object'?data:{}}
  catch{return {}}
@@ -145,8 +238,10 @@ async function init(){
   '<label for="reviewUnit">Unidad<select id="reviewUnit"><option value="">Todas las unidades</option></select></label>'+
   '<label for="reviewQuery">Buscar lema o forma<input type="text" id="reviewQuery" placeholder="sum / γίγνομαι" autocomplete="off"></label></div>'+
   '<label class="check"><input id="reviewPending" type="checkbox" checked> Mostrar solo las incidencias pendientes</label>'+
+  '<label class="check"><input id="reviewConflicts" type="checkbox"> Solo incidencias con decisiones alternativas</label>'+
   '<p id="reviewSummary" class="hint" role="status" aria-live="polite">Cargando índice local…</p>'+
-  '<div class="review-actions"><button type="button" id="reviewExport" class="secondary">Exportar decisiones</button> <button type="button" id="reviewExportAll" class="secondary">Exportar incidencias</button></div>'+
+  '<div class="review-actions"><button type="button" id="reviewExport" class="secondary">Exportar decisiones e historial</button> <button type="button" id="reviewImport" class="secondary">Importar y conciliar</button> <button type="button" id="reviewExportAll" class="secondary">Exportar incidencias</button><input id="reviewImportFile" type="file" accept=".json,application/json" hidden></div>'+
+  '<p id="reviewBackupStatus" class="hint" role="status" aria-live="polite">Copia local. Ninguna decisión de esta cola autoriza formas para exámenes.</p>'+
   '<div id="reviewItems"></div>'+
   '<div class="review-actions"><button type="button" id="reviewMore" class="secondary" hidden>Mostrar 40 más</button></div>'+
   '<p class="hint">Estados posibles: pendiente, aceptar variante, solicitar corrección o excluir de los ejercicios. Ninguno modifica el banco compartido. Las fuentes documentan la observación; las decisiones siguen siendo tuyas.</p></details>';
@@ -174,10 +269,16 @@ async function init(){
    word=norm(byId('reviewQuery').value),pending=byId('reviewPending').checked;
   state.filtered=state.cases.filter(x=>(!kind||x.kind===kind)&&(!unit||x.units.includes(unit))&&
    (!word||norm(x.entry+' '+x.lemma+' '+x.form+' '+x.detail).includes(word))&&
-   (!pending||!state.notes[x.id]?.decision));
-  const resolved=state.cases.filter(x=>!!state.notes[x.id]?.decision).length;
+   (!pending||!reviewDecisionApplies(x,state.notes[x.id])||!state.notes[x.id].decision)&&
+   (!byId('reviewConflicts').checked||!!state.notes[x.id]?.alternatives?.some(a=>reviewDecisionApplies(x,a))));
+  const resolved=state.cases.filter(x=>reviewDecisionApplies(x,state.notes[x.id])&&!!state.notes[x.id].decision).length;
+  const conflicts=state.cases.filter(x=>state.notes[x.id]?.alternatives?.some(a=>reviewDecisionApplies(x,a))).length;
+  const obsolete=Object.entries(state.notes).filter(([id,x])=>
+   !state.cases.some(y=>y.id===id&&reviewDecisionApplies(y,x))).length;
   byId('reviewSummary').textContent=state.cases.length+' incidencias detectadas · '+
-   resolved+' con decisión guardada · '+state.filtered.length+' coinciden con el filtro. Se muestran '+Math.min(state.limit,state.filtered.length)+'.';
+   resolved+' con decisión vigente · '+conflicts+' con historial alternativo · '+
+   obsolete+' decisiones archivadas de versiones anteriores · '+state.filtered.length+
+   ' coinciden con el filtro. Se muestran '+Math.min(state.limit,state.filtered.length)+'.';
   const holder=byId('reviewItems');holder.replaceChildren();
   for(const x of state.filtered.slice(0,state.limit)){
    const article=document.createElement('article');article.className='review-item';
@@ -191,18 +292,45 @@ async function init(){
    for(const [v,t]of [['','Pendiente'],['aceptar','Aceptar variante o criterio'],['corregir','Corregir / completar entrada'],['excluir','No usar en ejercicios']]){
     const option=document.createElement('option');option.value=v;option.textContent=t;select.append(option);
    }
-   select.value=state.notes[x.id]?.decision||'';
+   select.value=reviewDecisionApplies(x,state.notes[x.id])?state.notes[x.id].decision:'';
    const note=document.createElement('textarea');note.placeholder='Nota o decisión docente (opcional)';
    note.setAttribute('aria-label','Observaciones para '+x.lemma);
-   note.value=state.notes[x.id]?.note||'';
+   note.value=reviewDecisionApplies(x,state.notes[x.id])?state.notes[x.id].note:'';
    function store(){
-    if(!select.value&&!note.value.trim())delete state.notes[x.id];
-    else state.notes[x.id]={decision:select.value,note:note.value.trim(),entry:x.entry,updated:new Date().toISOString()};
-    if(!save(state.notes))byId('reviewSummary').textContent='No se pudo guardar: exporta las decisiones para no perderlas.';
+    try{
+     const next=reviewWriteDecision(state.notes,x,select.value,note.value);
+     if(next===state.notes)return;
+     if(!save(next))throw Error('No se pudo guardar en este dispositivo');
+     state.notes=next;show();
+    }catch(error){byId('reviewBackupStatus').textContent=error.message+'. Exporta una copia.'}
    }
-   select.addEventListener('change',()=>{store();show()});
+   select.addEventListener('change',store);
    note.addEventListener('change',store);
-   article.append(title,label,sample,desc,origin,select,note);holder.append(article);
+   article.append(title,label,sample,desc,origin,select,note);
+   const versions=state.notes[x.id]?.alternatives||[];
+   const usable=versions.map((v,i)=>({v,i})).filter(z=>reviewDecisionApplies(x,z.v));
+   if(usable.length){
+    const history=document.createElement('details'),label=document.createElement('summary');
+    label.textContent=usable.length+' decisiones alternativas conservadas';
+    history.append(label);
+    for(const {v,i} of usable){
+     const line=document.createElement('p');
+     line.textContent=(v.decision||'Pendiente')+' · '+v.updated+(v.note?' · '+v.note:'');
+     const button=document.createElement('button');button.type='button';button.className='secondary';
+     button.textContent='Usar esta decisión';
+     button.onclick=()=>{
+      if(!window.confirm('¿Usar esta decisión para '+x.entry+'? La actual se conservará en el historial.'))return;
+      try{
+       const next=reviewSelectAlternative(state.notes,x,i);
+       if(!save(next))throw Error('No se pudo guardar el cambio');
+       state.notes=next;show();
+      }catch(error){byId('reviewBackupStatus').textContent=error.message}
+     };
+     history.append(line,button);
+    }
+    article.append(history);
+   }
+   holder.append(article);
   }
   byId('reviewMore').hidden=state.limit>=state.filtered.length;
  }
@@ -217,11 +345,28 @@ async function init(){
    show();
   }catch(error){byId('reviewSummary').textContent='No se pudo consultar el índice: '+error.message}
  }
- for(const id of ['reviewKind','reviewUnit','reviewQuery','reviewPending'])byId(id).addEventListener(id==='reviewQuery'?'input':'change',()=>{state.limit=40;show()});
+ for(const id of ['reviewKind','reviewUnit','reviewQuery','reviewPending','reviewConflicts'])byId(id).addEventListener(id==='reviewQuery'?'input':'change',()=>{state.limit=40;show()});
  byId('reviewCourse').addEventListener('change',reload);
  byId('reviewMore').addEventListener('click',()=>{state.limit+=40;show()});
- byId('reviewExport').addEventListener('click',()=>download('decisiones-revision-morfologica.json',
-  {schema:1,description:'Decisiones docentes: no son formas verificadas',exported:new Date().toISOString(),decisions:state.notes}));
+ byId('reviewExport').addEventListener('click',()=>download('decisiones-revision-morfologica-v2.json',reviewBundle(state.notes)));
+ byId('reviewImport').addEventListener('click',()=>byId('reviewImportFile').click());
+ byId('reviewImportFile').addEventListener('change',async event=>{
+  const input=event.target,file=input.files?.[0];if(!file)return;
+  try{
+   if(file.size>2000000)throw Error('Archivo superior a 2 MB; no se ha importado');
+   const payload=JSON.parse(await file.text()),data=await window.ExaminaOfflineLemmatizer.load();
+   const cases=['lat1','lat4','gr1'].flatMap(c=>buildCases(data,c));
+   const result=reviewMergeBundle(state.notes,payload,cases);
+   const info=result.added+' nuevas · '+result.conflicts+' con versiones alternativas conservadas · '+
+    result.orphaned+' archivadas sin coincidencia vigente · '+result.identical+' ya presentes';
+   if(!window.confirm('Importación filológica: '+info+'. ¿Conservarlas sin sobrescribir decisiones locales?'))return;
+   if(!save(result.decisions))throw Error('No hay espacio para guardar la importación completa');
+   state.notes=result.decisions;show();
+   byId('reviewBackupStatus').textContent='Importación completada: '+info+
+    '. Las alternativas pueden elegirse individualmente; ninguna autoriza un análisis de examen.';
+  }catch(error){byId('reviewBackupStatus').textContent='Importación rechazada: '+error.message}
+  finally{input.value=''}
+ });
  byId('reviewExportAll').addEventListener('click',()=>download('incidencias-'+byId('reviewCourse').value+'.json',
   {schema:1,course:byId('reviewCourse').value,description:'Incidencias automáticas; propuestas sin aprobación',cases:state.cases}));
  reload();
@@ -592,7 +737,8 @@ function initAcademicEvidence(){
  render();
 }
 
-window.ExaminaTeacherReview={buildCases,evidenceState,evidenceKey,evidenceApproved,
+window.ExaminaTeacherReview={buildCases,reviewSignature,reviewDecisionApplies,reviewBundle,
+ reviewMergeBundle,reviewWriteDecision,reviewSelectAlternative,evidenceState,evidenceKey,evidenceApproved,
  evidenceGrant,evidenceRevoke,evidenceRows,approvedExamForms,evidenceAttributes,
  evidenceCheckExam,evidenceMayExport,evidenceCurricular,evidenceUniqueReading,
  evidenceProvisionalForbidden,validateEvidenceImport};
