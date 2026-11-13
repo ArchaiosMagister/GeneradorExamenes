@@ -334,6 +334,38 @@ async function main(){
   }
  }
  extensions.filological_variants=variantPolicy;
+ // Política docente de ADJETIVOS: enunciado aprobado ≠ forma verificada.
+ // Las candidatas originales de fuente 4 se mantienen para historial,
+ // pero no pueden convertirse por analogía en fuente 5.
+ const adjectivePolicy=JSON.parse(await fs.readFile(
+  path.join(root,'data/lemmas/greek-adjective-decisions.json'),'utf8'));
+ if(adjectivePolicy.schema!=='examina-greek-adjective-decisions/v1'||
+    adjectivePolicy.course!=='gr1'||adjectivePolicy.decisions?.length!==3)
+  throw Error('Política de adjetivos griegos incompleta');
+ const adjectiveAudit=JSON.parse(await fs.readFile(
+  path.join(root,'data/lemmas/revision-559-griego-20261113.json'),'utf8'));
+ const auditById=new Map(adjectiveAudit.items.map(x=>[x.id,x]));
+ const expectedAdjectives=[['αθανατοσ',8,'DOS_TERMINACIONES','EXCLUIR'],
+  ['εχθροσ',10,'TRES_TERMINACIONES','VERIFICACION_INDIVIDUAL'],
+  ['αισχροσ',3,'DOS_TERMINACIONES','EXCLUIR']];
+ const approvedIds=new Set();
+ for(const [lemma,n,paradigm,policy] of expectedAdjectives){
+  const d=adjectivePolicy.decisions.find(x=>x.lemma===lemma);
+  if(!d||d.paradigm!==paradigm||d.policy!==policy||d.verifiedFormsAdded!==0||
+     !Array.isArray(d.candidateIds)||d.candidateIds.length!==n||
+     catalog.grc[lemma]?.gr1?.entry!==d.entry)
+   throw Error('Decisión docente inconsistente: '+lemma);
+  for(const id of d.candidateIds){
+   const historical=auditById.get(id);
+   if(!historical||historical.lemma!==lemma||historical.analysis?.split(';').at(-1)!=='FEM'||
+      historical.originalSource!==4||approvedIds.has(id)||
+      !rows.grc.some(r=>r[0]===lemma&&r[1]===historical.sourceForm&&
+       r[2]===historical.analysis&&r[3]===4))
+    throw Error('Candidatura histórica no reproducible: '+id);
+   approvedIds.add(id);
+  }
+ }
+ extensions.greek_adjective_decisions=adjectivePolicy;
  extensions.greek_editorial_decisions={
   count:greekEditorial.decisions.length,
   addedCitationOnlyEntries:greekEditorialAdded,
