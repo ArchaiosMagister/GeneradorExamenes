@@ -88,8 +88,8 @@ jobs:
           if-no-files-found: ignore
       - name: Probar nominales griegos con corpus sintético etiquetado
         run: node scripts/test-greek-nominal-import.mjs
-      - name: Extraer nominales griegos reales para consulta offline
-        run: node scripts/build-greek-nominal-candidates.mjs
+      - name: Validar catálogo griego provisional persistente sin acceso de red
+        run: node scripts/test-greek-nominal-persistent.cjs
       - name: Construir índice bilingüe del vocabulario docente
         run: node scripts/build-lemma-index.mjs
       # La ampliación externa se mantiene en la PR experimental hasta
