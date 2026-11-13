@@ -13,9 +13,12 @@ assert.equal(review.schema,'examina-greek-morphology-triage/v1');
 assert.equal(review.items.length,559);
 assert.equal(review.summary.total,559);
 const original=bank.rows.grc.filter(x=>x[3]===4);
-assert.equal(original.length,559);
+assert.equal(original.length,549);
 const originalKeys=new Set(original.map(x=>key(x[0],x[1],x[2])));
-assert.equal(originalKeys.size,559);
+assert.equal(originalKeys.size,549);
+const migrated=get('data/lemmas/cotejo-10-echthros-20261113.json');
+const migratedIds=new Set(migrated.items.map(x=>x.id));
+assert.equal(migratedIds.size,10);
 const sourceByLemma=new Map(extract.entries.map(x=>[x.lemma,x]));
 const ids=new Set(),seen=new Set(),byStatus={},byUnit={with:0,without:0};
 let matches=0,missing=0,teacher=0,corrections=0;
@@ -29,7 +32,11 @@ for(const item of review.items){
  assert(Boolean(item.sourceForm&&item.schoolForm));
  assert.equal(item.analysis.includes(';'),true);
  const k=key(item.lemma,item.sourceForm,item.analysis);
- assert(originalKeys.has(k),'La forma fuente cambió: '+k);
+ if(migratedIds.has(item.id)){
+  assert(!originalKeys.has(k),'La candidata ya contrastada debe salir de fuente 4: '+k);
+  assert(bank.rows.grc.some(r=>r[0]===item.lemma&&r[1]===item.schoolForm&&
+   r[2]===item.analysis&&r[3]===5),'Falta migración individual: '+item.id);
+ }else assert(originalKeys.has(k),'La forma fuente cambió: '+k);
  assert(!seen.has(k),'Forma duplicada');
  seen.add(k);
  assert.equal(item.schoolForm,simplify(item.sourceForm),'Ortografía escolar no reproducible');
@@ -81,10 +88,12 @@ assert.deepEqual(byStatus,expected);
 assert.deepEqual(review.summary.byStatus,expected);
 assert.equal(review.summary.verifiedPromoted,0);
 assert.equal(review.summary.gradeEligibleNew,0);
-assert.equal(bank.counts.grc.wikcionario,559);
-assert.equal(bank.counts.grc.contrastado,464);
+assert.equal(bank.counts.grc.wikcionario,549);
+assert.equal(bank.counts.grc.contrastado,474);
+assert.equal(bank.extensions.greek_nominal_candidates.historicalRows,559);
+assert.equal(bank.extensions.greek_nominal_candidates.migratedIndividualSource5,10);
 assert.equal(bank.counts.lat.modelo,3244);
 // Comprobar que la auditoría no ha convertido accidentalmente a fuente 5 ninguna propuesta.
 const verifiedKeys=new Set(bank.rows.grc.filter(x=>x[3]===5).map(x=>key(x[0],x[1],x[2])));
-assert(review.items.every(x=>!verifiedKeys.has(key(x.lemma,x.sourceForm,x.analysis))));
-console.log('Revisión griega: 559/559 propuestas identificadas, 0 promociones, 21 lecturas sujetas a criterio docente.');
+assert(review.items.every(x=>migratedIds.has(x.id)||!verifiedKeys.has(key(x.lemma,x.sourceForm,x.analysis))));
+console.log('Revisión griega: 559/559 identidades históricas, 10 cotejos femeninos migrados, 549 candidaturas restantes; sin falsificar el inventario original.');
