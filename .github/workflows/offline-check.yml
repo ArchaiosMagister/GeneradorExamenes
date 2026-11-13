@@ -92,6 +92,8 @@ jobs:
         run: node scripts/test-greek-nominal-persistent.cjs
       - name: Inventariar exhaustivamente las 4403 fichas candidatas sin promoverlas
         run: node scripts/test-comprehensive-morph-audit.cjs
+      - name: Contrastar el nuevo lote de cien candidaturas sin promoción automática
+        run: node scripts/test-candidaturas-lote100.cjs
       - name: Validar las 31 lecturas documentales y evitar promociones automáticas
         run: node scripts/test-individual-evidence-ledger.cjs
       - name: Conservar auditoría individualizada de fichas latinas y griegas
