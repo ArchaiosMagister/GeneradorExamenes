@@ -88,10 +88,10 @@ jobs:
           if-no-files-found: ignore
       - name: Probar nominales griegos con corpus sintético etiquetado
         run: node scripts/test-greek-nominal-import.mjs
-      - name: Extraer nominales griegos reales para consulta offline
-        run: node scripts/build-greek-nominal-candidates.mjs
-      - name: Construir índice bilingüe del vocabulario docente
-        run: node scripts/build-lemma-index.mjs
+      - name: Validar catálogo griego provisional persistente sin acceso de red
+        run: node scripts/test-greek-nominal-persistent.cjs
+      - name: Comprobar índice bilingüe persistente sin reconstrucciones externas
+        run: node scripts/test-lemma-index.mjs
       # La ampliación externa se mantiene en la PR experimental hasta
       # resolver la procedencia/licencias de los datos morfológicos.
       - name: Validar banco ampliable de evolución fonética y programa de Latín I
@@ -184,6 +184,20 @@ jobs:
         run: node scripts/test-bidirectional-editors.cjs
       - name: Comprobar que cada palabra se regenera sin alterar las demás
         run: node scripts/test-single-word-regeneration.cjs
+      - name: Fase III - conservar el borrador al regenerar un apartado léxico
+        run: node scripts/test-lex-part-regeneration.cjs
+      - name: Fase III - regeneración aislada de preguntas latinas y sus soluciones
+        run: node scripts/test-question-part-regeneration.cjs
+      - name: Fase III - regeneración aislada de preguntas de Griego I
+        run: node scripts/test-greek-question-regeneration.cjs
+      - name: Fase III - preservar huecos y puntuar una unidad por oración
+        run: node scripts/test-sentence-points-and-drafts.cjs
+      - name: Fase III - normas fonéticas acumulativas sin regenerar el examen
+        run: node scripts/test-phonetic-filter-isolation.cjs
+      - name: Fase III - regeneración aislada de morfología latina y griega
+        run: node scripts/test-morph-question-isolation.cjs
+      - name: Fase III - auditar conjuntamente ediciones, regeneración, borradores y Word
+        run: node scripts/test-phase-three-integration.cjs
       - name: Probar las vistas previas de todos los modelos
         run: node scripts/test-preview.cjs
       - name: Guardar Word con puntuaciones de examen para inspección
