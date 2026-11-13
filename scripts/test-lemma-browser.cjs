@@ -63,12 +63,12 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
    'Se conserva el origen de la propuesta y del análisis contrastado');
   // Propuestas de tercera declinación completas solo en las casillas seguras.
   await page.selectOption('#offlineLemmaMode','lemma');
-  await page.locator('#offlineLemmaInput').fill('dux');
+  await page.locator('#offlineLemmaInput').fill('senex');
   await page.locator('#offlineLemmaSearch').click();
   await page.locator('#offlineLemmaResults .lemma-provisional').first().waitFor();
   assert.ok(await page.locator('#offlineLemmaResults .lemma-provisional').count()>=10,
-   'Faltan propuestas de tercera declinación para dux, ducis');
-  assert.match(await page.locator('#offlineLemmaResults').textContent(),/ducem/);
+   'Faltan propuestas de tercera declinación para senex, senis');
+  assert.match(await page.locator('#offlineLemmaResults').textContent(),/senem/);
   assert.doesNotMatch(await page.locator('#offlineLemmaResults').textContent(),/N;GEN;PL/,
    'No debe inferirse el genitivo plural de un tema incierto');
   // Un lema griego sin formas queda localizable como entrada, sin inventar acentos.

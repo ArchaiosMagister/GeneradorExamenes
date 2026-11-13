@@ -29,7 +29,8 @@ assert.deepEqual(data.extensions.greek_editorial_decisions.suspendedCandidateLem
 assert.equal(Object.keys(data.vocabulary.grc).length,351);
 const verifiedOverrides=JSON.parse(read('data/lemmas/verified-overrides.json'));
 const greekEvidence=verifiedOverrides.paradigms.filter(x=>x.lang==='grc')
- .reduce((n,p)=>n+p.blocks.reduce((a,b)=>a+b.forms.length,0),0);
+ .reduce((n,p)=>n+p.blocks.reduce((a,b)=>a+b.forms.length,0),0)
+ +verifiedOverrides.singleForms.filter(x=>x.lang==='grc').length;
 assert.equal(data.rows.grc.filter(x=>x[3]===5).length,greekEvidence,
  'Solo incorporar casillas griegas contrastadas individualmente');
 for(const item of decisions.decisions){

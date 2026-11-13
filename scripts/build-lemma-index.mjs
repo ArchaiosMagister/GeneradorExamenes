@@ -229,11 +229,11 @@ async function main(){
  // paradigma por analogía ni modificar los enunciados del profesor.
  const verifiedSingleKeys=new Set();
  for(const record of overrides.singleForms){
-  if(record.lang!=='lat'||!catalog[record.lang]?.[record.lemma]||
+  if(!['lat','grc'].includes(record.lang)||!catalog[record.lang]?.[record.lemma]||
      typeof record.form!=='string'||!/^https:\/\//.test(record.reference)||
-     !(/^(?:V;IMP;ACT;PRS;2;PL|V;PTCP;(?:ACT|PASS);PRF;(?:NOM|GEN|DAT|ACC|ABL|VOC);(?:SG|PL)(?:;(?:MASC|FEM|NEUT))?|N;(?:NOM|GEN|DAT|ACC|ABL|VOC);(?:SG|PL))$/.test(record.tags)))
+     !( /^(?:V;IMP;ACT;PRS;2;PL|V;PTCP;(?:ACT|PASS);PRF;(?:NOM|GEN|DAT|ACC|ABL|VOC);(?:SG|PL)(?:;(?:MASC|FEM|NEUT))?|N;(?:NOM|GEN|DAT|ACC|ABL|VOC);(?:SG|PL))$/.test(record.tags) || (record.lang==='grc' && /^ADJ;(?:NOM|GEN|DAT|ACC|VOC);(?:SG|PL);(?:MASC|FEM|NEUT)$/.test(record.tags)) ))
    throw Error('Incidencia individual sin documentación o rasgos explícitos: '+record.lemma);
-  const k=record.lemma+'|'+norm(record.form);
+  const k=record.lang+'|'+record.lemma+'|'+norm(record.form)+'|'+record.tags;
   if(verifiedSingleKeys.has(k))throw Error('Forma duplicada en la revisión individual: '+k);
   verifiedSingleKeys.add(k);
   externalReferences.push({lang:record.lang,lemma:record.lemma,form:record.form,
@@ -290,7 +290,7 @@ async function main(){
  const greekCountBefore=counts.grc.wikcionario;
  const documentedGreekSlots=new Map();
  for(const [lemma,form,tags,source] of rows.grc){
-  if(![0,1].includes(source)||!/^N;|^ADJ;/.test(tags))continue;
+  if(![0,1,5].includes(source)||!/^(?:N|ADJ);/.test(tags))continue;
   const k=lemma+'|'+tags;
   if(!documentedGreekSlots.has(k))documentedGreekSlots.set(k,new Set());
   documentedGreekSlots.get(k).add(norm(form));
@@ -321,6 +321,19 @@ async function main(){
   verifiedFormsAdded:0,
   note:'Decisiones editoriales del profesor sin certificación morfológica.'
  };
+ // Conservar variantes docentes tras reconstruir sin certificar nuevas flexiones.
+ const variantPolicy=JSON.parse(await fs.readFile(path.join(root,'data/lemmas/filological-variant-decisions.json'),'utf8'));
+ if(variantPolicy.schema!==1||variantPolicy.decisions?.length!==5)
+  throw Error('Decisiones morfológicas no reconocidas');
+ for(const choice of variantPolicy.decisions){
+  for(const lemma of choice.lemmas||[choice.lemma]){
+   const record=catalog[choice.lang]?.[lemma]?.[choice.course];
+   if(!record)throw Error('Lema filológico ausente: '+lemma);
+   if(choice.unitPolicy==='UNASSIGNED_NOT_FOR_EXAM'&&record.units.length)
+    throw Error('Se asignó una unidad sin autorización: '+lemma);
+  }
+ }
+ extensions.filological_variants=variantPolicy;
  extensions.greek_editorial_decisions={
   count:greekEditorial.decisions.length,
   addedCitationOnlyEntries:greekEditorialAdded,

@@ -11,7 +11,8 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
   const errors=[];page.on('pageerror',e=>errors.push(e.message));
   await page.goto(pathToFileURL(path.resolve(__dirname,'../offline.html')).href,{waitUntil:'load'});
   await page.waitForFunction(()=>!!window.ExaminaTeacherReview?.evidenceApproved);
-  const form='accipimus';
+  // Debe ser una propuesta todavía pendiente, no una forma verificada del lote 200.
+  const form='appropinquabas';
   await page.evaluate(()=>{
    const details=document.getElementById('academicEvidenceReview');
    details.open=true;

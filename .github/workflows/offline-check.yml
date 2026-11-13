@@ -90,8 +90,27 @@ jobs:
         run: node scripts/test-greek-nominal-import.mjs
       - name: Validar catálogo griego provisional persistente sin acceso de red
         run: node scripts/test-greek-nominal-persistent.cjs
+      - name: Auditar exhaustivamente las candidaturas todavía pendientes sin promoverlas
+        run: node scripts/test-comprehensive-morph-audit.cjs
+      - name: Comprobar el lote anterior de cien formas ya incorporadas
+        run: node scripts/test-candidaturas-lote100.cjs
+      - name: Verificar las cien latinas y cien griegas del nuevo lote en el banco y la PWA
+        run: node scripts/test-candidaturas-lote200.cjs
+      - name: Verificar trescientos análisis griegos, politonía y formas excluidas
+        run: node scripts/test-candidaturas-lote300-griego.cjs
+      - name: Validar las 31 lecturas documentales y evitar promociones automáticas
+        run: node scripts/test-individual-evidence-ledger.cjs
+      - name: Conservar auditoría individualizada de fichas latinas y griegas
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: revision-filologica-integral-candidatos
+          path: test-artifacts/auditoria-integral-*.json
+          if-no-files-found: ignore
       - name: Comprobar índice bilingüe persistente sin reconstrucciones externas
         run: node scripts/test-lemma-index.mjs
+      - name: Probar cinco decisiones docentes y variantes sin modificar las claves de examen
+        run: node scripts/test-filological-variant-decisions.cjs
       # La ampliación externa se mantiene en la PR experimental hasta
       # resolver la procedencia/licencias de los datos morfológicos.
       - name: Validar banco ampliable de evolución fonética y programa de Latín I
