@@ -41,8 +41,9 @@
  });
  window.addEventListener('appinstalled',()=>{install.hidden=true;installPrompt=null});
  byId('pwaDataBackup').addEventListener('click',()=>{
-  byId('exportData')?.click();
-  guidance('Exporta también el borrador del examen. El navegador puede eliminar sus datos si limpias el sitio.');
+  const backup=byId('examinaBackupExport');
+  (backup||byId('exportData'))?.click();
+  guidance('Se ha solicitado una copia unificada de los datos y del borrador visible. Guarda el JSON fuera de este dispositivo.');
  });
  byId('pwaExamBackup').addEventListener('click',()=>{
   byId('downloadDraft')?.click();
