@@ -180,6 +180,8 @@ jobs:
         run: node scripts/test-bidirectional-editors.cjs
       - name: Comprobar que cada palabra se regenera sin alterar las demás
         run: node scripts/test-single-word-regeneration.cjs
+      - name: Fase III - conservar el borrador al regenerar un apartado lexico
+        run: node scripts/test-lex-part-regeneration.cjs
       - name: Probar las vistas previas de todos los modelos
         run: node scripts/test-preview.cjs
       - name: Guardar Word con puntuaciones de examen para inspección
