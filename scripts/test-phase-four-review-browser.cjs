@@ -24,7 +24,7 @@ async function run(browser){
    const data=await window.ExaminaOfflineLemmatizer.load();
    const cases=window.ExaminaTeacherReview.buildCases(data,'gr1');
    const items=cases.filter(x=>x.detail.includes('Registro grc-pending-'));
-   if(items.length!==68)throw Error('Cola griega inconsistente: '+items.length);
+   if(items.length!==58)throw Error('Cola griega inconsistente: '+items.length);
    return items.find(x=>x.lemma==='πρωτοσ');
   });
   assert(target&&target.form);
@@ -76,7 +76,7 @@ async function run(browser){
   assert(reloaded.alternatives.length>=2);
   assert.deepEqual(errors,[],'Errores JavaScript durante conciliación');
   assert.deepEqual(requests,[],'La cola docente offline no debe usar la red');
-  console.log('Cola docente Chromium: 68 tarjetas, importar, conservar conflictos, elegir alternativa, exportar y persistir offline.');
+  console.log('Cola docente Chromium: 58 tarjetas pendientes, diez migradas, importar, conservar conflictos, elegir alternativa, exportar y persistir offline.');
  }finally{await page.close()}
 }
 module.exports=run;
