@@ -29,3 +29,5 @@ for(const lang of ['latin','greek']){
 assert.equal(fs.readFileSync(indexFile,'utf8'),original,'El auditor alteró el índice persistente');
 assert.equal(fs.readFileSync(sourceFile,'utf8'),originalSource,'El auditor alteró las fuentes verificadas');
 console.log('Auditoría integral: 3803 propuestas restantes, cero promociones por el auditor.');
+// Revisión individual del saldo griego: validar todas las 559 fichas sin cambiar estado.
+require('./test-revision-559-griego.cjs');
