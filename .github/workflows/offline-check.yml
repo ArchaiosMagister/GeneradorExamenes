@@ -102,7 +102,7 @@ jobs:
         run: node scripts/test-candidaturas-lote300-griego.cjs
       - name: Validar las 31 lecturas documentales y evitar promociones automáticas
         run: node scripts/test-individual-evidence-ledger.cjs
-      - name: Aplicar decisiones docentes de tres adjetivos griegos sin verificar las 21 formas
+      - name: Controlar tres adjetivos, 11 exclusiones y 10 verificaciones femeninas de ἐχθρός
         run: node scripts/test-greek-adjective-decisions.cjs
       - name: Cotejar las diez fichas femeninas de ἐχθρός y sus sincretismos
         run: node scripts/test-echthros-ten-collation.cjs
