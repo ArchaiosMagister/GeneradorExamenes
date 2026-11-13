@@ -99,6 +99,28 @@
             "itis",
             "eunt"
           ]
+        },
+        {
+          "tags": "V;IND;ACT;PST;IPFV",
+          "forms": [
+            "ibam",
+            "ibas",
+            "ibat",
+            "ibamus",
+            "ibatis",
+            "ibant"
+          ]
+        },
+        {
+          "tags": "V;IND;ACT;FUT",
+          "forms": [
+            "ibo",
+            "ibis",
+            "ibit",
+            "ibimus",
+            "ibitis",
+            "ibunt"
+          ]
         }
       ]
     },
@@ -391,6 +413,226 @@
             "βουλόμεθα",
             "βούλεσθε",
             "βούλονται"
+          ]
+        }
+      ]
+    },
+    {
+      "lang": "lat",
+      "lemma": "redeo",
+      "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-irregular-verbs/",
+      "type": "Cinco tiempos de indicativo, elección explícita del perfecto sin -v- (rediī)",
+      "blocks": [
+        {
+          "tags": "V;IND;ACT;PRS",
+          "forms": [
+            "redeo",
+            "redis",
+            "redit",
+            "redimus",
+            "reditis",
+            "redeunt"
+          ]
+        },
+        {
+          "tags": "V;IND;ACT;PST;IPFV",
+          "forms": [
+            "redibam",
+            "redibas",
+            "redibat",
+            "redibamus",
+            "redibatis",
+            "redibant"
+          ]
+        },
+        {
+          "tags": "V;IND;ACT;FUT",
+          "forms": [
+            "redibo",
+            "redibis",
+            "redibit",
+            "redibimus",
+            "redibitis",
+            "redibunt"
+          ]
+        },
+        {
+          "tags": "V;IND;ACT;PRF",
+          "forms": [
+            "redii",
+            "redisti",
+            "rediit",
+            "rediimus",
+            "redistis",
+            "redierunt"
+          ]
+        },
+        {
+          "tags": "V;IND;ACT;PSTP",
+          "forms": [
+            "redieram",
+            "redieras",
+            "redierat",
+            "redieramus",
+            "redieratis",
+            "redierant"
+          ]
+        }
+      ]
+    },
+    {
+      "lang": "lat",
+      "lemma": "transeo",
+      "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-irregular-verbs/",
+      "secondaryReference": "https://www.verbix.com/latin/verb/transeo",
+      "type": "Cinco tiempos de indicativo, perfecto sin -v- individualizado; pasiva no inferida",
+      "blocks": [
+        {
+          "tags": "V;IND;ACT;PRS",
+          "forms": [
+            "transeo",
+            "transis",
+            "transit",
+            "transimus",
+            "transitis",
+            "transeunt"
+          ]
+        },
+        {
+          "tags": "V;IND;ACT;PST;IPFV",
+          "forms": [
+            "transibam",
+            "transibas",
+            "transibat",
+            "transibamus",
+            "transibatis",
+            "transibant"
+          ]
+        },
+        {
+          "tags": "V;IND;ACT;FUT",
+          "forms": [
+            "transibo",
+            "transibis",
+            "transibit",
+            "transibimus",
+            "transibitis",
+            "transibunt"
+          ]
+        },
+        {
+          "tags": "V;IND;ACT;PRF",
+          "forms": [
+            "transii",
+            "transisti",
+            "transiit",
+            "transiimus",
+            "transistis",
+            "transierunt"
+          ]
+        },
+        {
+          "tags": "V;IND;ACT;PSTP",
+          "forms": [
+            "transieram",
+            "transieras",
+            "transierat",
+            "transieramus",
+            "transieratis",
+            "transierant"
+          ]
+        }
+      ]
+    },
+    {
+      "lang": "lat",
+      "lemma": "proficiscor",
+      "reference": "https://www.nihilscio.it/Manuali/Lingua%20latina/Verbi/Coniugazione_latino.aspx?lang=ES_&verbo=proficiscor",
+      "secondaryReference": "https://www.latindictionary.io/entry/proficiscor-proficisci-profectus-sum",
+      "type": "Presente, imperfecto y futuro deponente; 2 sg presente/futuro ambigua y bloqueada sin contexto",
+      "blocks": [
+        {
+          "tags": "V;IND;DEP;PRS",
+          "forms": [
+            "proficiscor",
+            "proficisceris",
+            "proficiscitur",
+            "proficiscimur",
+            "proficiscimini",
+            "proficiscuntur"
+          ]
+        },
+        {
+          "tags": "V;IND;DEP;PST;IPFV",
+          "forms": [
+            "proficiscebar",
+            "proficiscebaris",
+            "proficiscebatur",
+            "proficiscebamur",
+            "proficiscebamini",
+            "proficiscebantur"
+          ]
+        },
+        {
+          "tags": "V;IND;DEP;FUT",
+          "forms": [
+            "proficiscar",
+            "proficisceris",
+            "proficiscetur",
+            "proficiscemur",
+            "proficiscemini",
+            "proficiscentur"
+          ]
+        }
+      ]
+    },
+    {
+      "lang": "grc",
+      "lemma": "ηγεομαι",
+      "reference": "https://hellenike.github.io/textbook/reference/paradigms-verbs/conjugation-epsilon-contract-deponent.html",
+      "secondaryReference": "https://logeion.uchicago.edu/morpho/%E1%BC%A1%CE%B3%CE%AD%CE%BF%CE%BC%CE%B1%CE%B9",
+      "type": "Presente medio contracto y futuro medio, formas áticas escolares; segunda singular con variante documentada no promocionada",
+      "blocks": [
+        {
+          "tags": "V;IND;MID;PRS",
+          "forms": [
+            "ἡγοῦμαι",
+            "ἡγεῖ",
+            "ἡγεῖται",
+            "ἡγούμεθα",
+            "ἡγεῖσθε",
+            "ἡγοῦνται"
+          ]
+        },
+        {
+          "tags": "V;IND;MID;FUT",
+          "forms": [
+            "ἡγήσομαι",
+            "ἡγήσει",
+            "ἡγήσεται",
+            "ἡγησόμεθα",
+            "ἡγήσεσθε",
+            "ἡγήσονται"
+          ]
+        }
+      ]
+    },
+    {
+      "lang": "grc",
+      "lemma": "μαχομαι",
+      "reference": "https://logeion.uchicago.edu/morpho/%CE%BC%CE%AC%CF%87%E1%BF%83",
+      "secondaryReference": "https://archive.bukohome.com/content/wiktionary_en_all_maxi_2024-05/A/%CE%BC%CE%AC%CF%87%CE%BF%CE%BC%CE%B1%CE%B9",
+      "type": "Presente indicativo medio/deponente (ático), variantes alternativas no promocionadas",
+      "blocks": [
+        {
+          "tags": "V;IND;MID;PRS",
+          "forms": [
+            "μάχομαι",
+            "μάχει",
+            "μάχεται",
+            "μαχόμεθα",
+            "μάχεσθε",
+            "μάχονται"
           ]
         }
       ]
