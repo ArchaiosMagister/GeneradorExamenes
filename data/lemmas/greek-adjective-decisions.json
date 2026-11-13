@@ -3,7 +3,7 @@
   "date": "2026-11-13",
   "course": "gr1",
   "authority": "decisión explícita del docente",
-  "certificationPolicy": "El paradigma aprobado no equivale a cotejo individual: no promoción de fuente 4 ni desbloqueo de autorizaciones de uso sin verificación",
+  "certificationPolicy": "El enunciado aprobado no equivale a validación general; diez lecturas femeninas de ἐχθρός cuentan con evidencia individual fuente 5. No se autorizan exámenes ambiguos.",
   "historicalAudit": "data/lemmas/revision-559-griego-20261113.json",
   "decisions": [
     {
@@ -31,7 +31,7 @@
       "entry": "ἐχθρός, –ά, –όν",
       "unit": "UD 5",
       "paradigm": "TRES_TERMINACIONES",
-      "policy": "VERIFICACION_INDIVIDUAL",
+      "policy": "VERIFICADAS_INDIVIDUALMENTE",
       "candidateIds": [
         "grc-pending-159",
         "grc-pending-160",
@@ -44,8 +44,10 @@
         "grc-pending-167",
         "grc-pending-168"
       ],
-      "verifiedFormsAdded": 0,
-      "reason": "Enunciado escolar corregido. Las diez candidaturas femeninas requieren cotejo por forma y análisis; temporalmente bloquear también el sorteo automático de sintagmas del lema."
+      "verifiedFormsAdded": 10,
+      "reason": "Diez fichas femeninas documentadas una por una y trasladadas de fuente 4 a fuente 5; los sincretismos permanecen como lecturas múltiples. Se reactiva el uso en sintagmas desde UD5 sin habilitar respuestas únicas por analogía.",
+      "documentaryLedger": "data/lemmas/cotejo-10-echthros-20261113.json",
+      "singleFormExamPolicy": "PROHIBIR_RESPUESTA_UNICA_SIN_CONTEXTO"
     },
     {
       "lemma": "αισχροσ",
@@ -62,5 +64,5 @@
       "reason": "Conservar exclusivamente las dos terminaciones en el repertorio exigible y excluir del sorteo las tres propuestas femeninas de primera declinación."
     }
   ],
-  "rebuildPolicy": "Conservar intacto el extracto nominal griego auditado en la revisión de 559 fichas; regenerar únicamente el índice derivado y offline.html. Se reintroducen 49 registros huérfanos únicamente desde el registro de auditoría, sin inventar unidades ni verificaciones."
+  "rebuildPolicy": "Las 559 candidaturas históricas conservan su identidad en la auditoría; 10 fueron migradas individualmente a fuente 5, quedan 549 en fuente 4. Conservar las 49 huérfanas sin unidad y sin inventar verificaciones."
 }
