@@ -22,5 +22,8 @@ for(const record of ledger.items){
 }
 assert.equal(existing,19,'Las formas ya indexadas han cambiado; revisar manualmente');
 assert.equal(missing,12,'No inferir ni insertar formas compuestas sin reconstrucción controlada');
-assert.equal(corpus.rows.grc.filter(r=>r[0]==='λογοσ'&&r[1]==='λόγῳ'&&r[3]===4).length,1);
-console.log('REVISIÓN INDIVIDUAL: 31 fichas cotejadas; 19 ya tienen superficie en índice; 12 compuestas documentadas fuera del índice; 0 promovidas.');
+assert.equal(corpus.rows.grc.filter(r=>r[0]==='λογοσ'&&r[1]==='λόγῳ'&&r[2]==='N;DAT;SG'&&r[3]===5).length,1,
+ 'λόγῳ quedó verificada individualmente en el lote de 300 griegas');
+assert.equal(corpus.rows.grc.filter(r=>r[0]==='λογοσ'&&r[1]==='λόγῳ'&&r[3]===4).length,0,
+ 'No deben quedar dos estados de fuente para la misma casilla');
+console.log('REVISIÓN INDIVIDUAL: 31 fichas cotejadas; 19 ya tienen superficie en índice; 12 compuestas documentadas fuera del índice; 1 ficha de λόγῳ verificada posteriormente, sin autorizar las restantes por analogía.');
