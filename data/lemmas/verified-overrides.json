@@ -1248,6 +1248,189 @@
           ]
         }
       ]
+    },
+    {
+      "lang": "lat",
+      "lemma": "accipio",
+      "reference": "https://en.wiktionary.org/wiki/accipio",
+      "type": "Indicativo activo: persona, número y tiempo contrastados en paradigma de lema",
+      "blocks": [
+        {
+          "tags": "V;IND;ACT;PRS",
+          "forms": [
+            "accipio",
+            "accipis",
+            "accipit",
+            "accipimus",
+            "accipitis",
+            "accipiunt"
+          ]
+        },
+        {
+          "tags": "V;IND;ACT;PST;IPFV",
+          "forms": [
+            "accipiebam",
+            "accipiebas",
+            "accipiebat",
+            "accipiebamus",
+            "accipiebatis",
+            "accipiebant"
+          ]
+        },
+        {
+          "tags": "V;IND;ACT;PRF",
+          "forms": [
+            "accepi",
+            "accepisti",
+            "accepit",
+            "accepimus",
+            "accepistis",
+            "acceperunt"
+          ]
+        }
+      ]
+    },
+    {
+      "lang": "lat",
+      "lemma": "facio",
+      "reference": "https://en.wiktionary.org/wiki/facio",
+      "type": "Indicativo activo: persona, número y tiempo contrastados en paradigma de lema",
+      "blocks": [
+        {
+          "tags": "V;IND;ACT;PRS",
+          "forms": [
+            "facio",
+            "facis",
+            "facit",
+            "facimus",
+            "facitis",
+            "faciunt"
+          ]
+        },
+        {
+          "tags": "V;IND;ACT;PST;IPFV",
+          "forms": [
+            "faciebam",
+            "faciebas",
+            "faciebat",
+            "faciebamus",
+            "faciebatis",
+            "faciebant"
+          ]
+        },
+        {
+          "tags": "V;IND;ACT;PRF",
+          "forms": [
+            "feci",
+            "fecisti",
+            "fecit",
+            "fecimus",
+            "fecistis",
+            "fecerunt"
+          ]
+        }
+      ]
+    },
+    {
+      "lang": "lat",
+      "lemma": "duco",
+      "reference": "https://en.wiktionary.org/wiki/duco",
+      "type": "Indicativo activo: persona, número y tiempo contrastados en paradigma de lema",
+      "blocks": [
+        {
+          "tags": "V;IND;ACT;PRS",
+          "forms": [
+            "duco",
+            "ducis",
+            "ducit",
+            "ducimus",
+            "ducitis",
+            "ducunt"
+          ]
+        },
+        {
+          "tags": "V;IND;ACT;PST;IPFV",
+          "forms": [
+            "ducebam",
+            "ducebas",
+            "ducebat",
+            "ducebamus",
+            "ducebatis",
+            "ducebant"
+          ]
+        },
+        {
+          "tags": "V;IND;ACT;PRF",
+          "forms": [
+            "duxi",
+            "duxisti",
+            "duxit",
+            "duximus",
+            "duxistis",
+            "duxerunt"
+          ]
+        }
+      ]
+    },
+    {
+      "lang": "lat",
+      "lemma": "careo",
+      "reference": "https://en.wiktionary.org/wiki/careo",
+      "type": "Indicativo activo: persona, número y tiempo contrastados en paradigma de lema",
+      "blocks": [
+        {
+          "tags": "V;IND;ACT;PRS",
+          "forms": [
+            "careo",
+            "cares",
+            "caret",
+            "caremus",
+            "caretis",
+            "carent"
+          ]
+        },
+        {
+          "tags": "V;IND;ACT;PST;IPFV",
+          "forms": [
+            "carebam",
+            "carebas",
+            "carebat",
+            "carebamus",
+            "carebatis",
+            "carebant"
+          ]
+        }
+      ]
+    },
+    {
+      "lang": "lat",
+      "lemma": "disco",
+      "reference": "https://en.wiktionary.org/wiki/disco",
+      "type": "Indicativo activo: persona, número y tiempo contrastados en paradigma de lema",
+      "blocks": [
+        {
+          "tags": "V;IND;ACT;PRS",
+          "forms": [
+            "disco",
+            "discis",
+            "discit",
+            "discimus",
+            "discitis",
+            "discunt"
+          ]
+        },
+        {
+          "tags": "V;IND;ACT;PST;IPFV",
+          "forms": [
+            "discebam",
+            "discebas",
+            "discebat",
+            "discebamus",
+            "discebatis",
+            "discebant"
+          ]
+        }
+      ]
     }
   ],
   "sourceCode": 5,
@@ -1572,6 +1755,982 @@
       "sourceForm": "βᾰσῐλείων",
       "reference": "https://greekdoc.github.io/lexicon/bas.html",
       "note": "Neutro de segunda declinación. Sin UD: consulta sí, sorteo no."
+    },
+    {
+      "lang": "lat",
+      "lemma": "dux",
+      "form": "dux",
+      "tags": "N;NOM;SG",
+      "reference": "https://en.wiktionary.org/wiki/dux",
+      "note": "Análisis de tercera declinación por caso y número, sin inferir casillas ausentes"
+    },
+    {
+      "lang": "lat",
+      "lemma": "dux",
+      "form": "ducis",
+      "tags": "N;GEN;SG",
+      "reference": "https://en.wiktionary.org/wiki/dux",
+      "note": "Análisis de tercera declinación por caso y número, sin inferir casillas ausentes"
+    },
+    {
+      "lang": "lat",
+      "lemma": "dux",
+      "form": "duci",
+      "tags": "N;DAT;SG",
+      "reference": "https://en.wiktionary.org/wiki/dux",
+      "note": "Análisis de tercera declinación por caso y número, sin inferir casillas ausentes"
+    },
+    {
+      "lang": "lat",
+      "lemma": "dux",
+      "form": "ducem",
+      "tags": "N;ACC;SG",
+      "reference": "https://en.wiktionary.org/wiki/dux",
+      "note": "Análisis de tercera declinación por caso y número, sin inferir casillas ausentes"
+    },
+    {
+      "lang": "lat",
+      "lemma": "dux",
+      "form": "dux",
+      "tags": "N;VOC;SG",
+      "reference": "https://en.wiktionary.org/wiki/dux",
+      "note": "Análisis de tercera declinación por caso y número, sin inferir casillas ausentes"
+    },
+    {
+      "lang": "lat",
+      "lemma": "dux",
+      "form": "duce",
+      "tags": "N;ABL;SG",
+      "reference": "https://en.wiktionary.org/wiki/dux",
+      "note": "Análisis de tercera declinación por caso y número, sin inferir casillas ausentes"
+    },
+    {
+      "lang": "lat",
+      "lemma": "dux",
+      "form": "duces",
+      "tags": "N;NOM;PL",
+      "reference": "https://en.wiktionary.org/wiki/dux",
+      "note": "Análisis de tercera declinación por caso y número, sin inferir casillas ausentes"
+    },
+    {
+      "lang": "lat",
+      "lemma": "dux",
+      "form": "ducibus",
+      "tags": "N;DAT;PL",
+      "reference": "https://en.wiktionary.org/wiki/dux",
+      "note": "Análisis de tercera declinación por caso y número, sin inferir casillas ausentes"
+    },
+    {
+      "lang": "lat",
+      "lemma": "dux",
+      "form": "duces",
+      "tags": "N;ACC;PL",
+      "reference": "https://en.wiktionary.org/wiki/dux",
+      "note": "Análisis de tercera declinación por caso y número, sin inferir casillas ausentes"
+    },
+    {
+      "lang": "lat",
+      "lemma": "dux",
+      "form": "duces",
+      "tags": "N;VOC;PL",
+      "reference": "https://en.wiktionary.org/wiki/dux",
+      "note": "Análisis de tercera declinación por caso y número, sin inferir casillas ausentes"
+    },
+    {
+      "lang": "lat",
+      "lemma": "dux",
+      "form": "ducibus",
+      "tags": "N;ABL;PL",
+      "reference": "https://en.wiktionary.org/wiki/dux",
+      "note": "Análisis de tercera declinación por caso y número, sin inferir casillas ausentes"
+    },
+    {
+      "lang": "lat",
+      "lemma": "obses",
+      "form": "obses",
+      "tags": "N;NOM;SG",
+      "reference": "https://en.wiktionary.org/wiki/obses",
+      "note": "Análisis de tercera declinación por caso y número, sin inferir casillas ausentes"
+    },
+    {
+      "lang": "lat",
+      "lemma": "obses",
+      "form": "obsidis",
+      "tags": "N;GEN;SG",
+      "reference": "https://en.wiktionary.org/wiki/obses",
+      "note": "Análisis de tercera declinación por caso y número, sin inferir casillas ausentes"
+    },
+    {
+      "lang": "lat",
+      "lemma": "obses",
+      "form": "obsidi",
+      "tags": "N;DAT;SG",
+      "reference": "https://en.wiktionary.org/wiki/obses",
+      "note": "Análisis de tercera declinación por caso y número, sin inferir casillas ausentes"
+    },
+    {
+      "lang": "lat",
+      "lemma": "obses",
+      "form": "obsidem",
+      "tags": "N;ACC;SG",
+      "reference": "https://en.wiktionary.org/wiki/obses",
+      "note": "Análisis de tercera declinación por caso y número, sin inferir casillas ausentes"
+    },
+    {
+      "lang": "lat",
+      "lemma": "obses",
+      "form": "obses",
+      "tags": "N;VOC;SG",
+      "reference": "https://en.wiktionary.org/wiki/obses",
+      "note": "Análisis de tercera declinación por caso y número, sin inferir casillas ausentes"
+    },
+    {
+      "lang": "lat",
+      "lemma": "obses",
+      "form": "obside",
+      "tags": "N;ABL;SG",
+      "reference": "https://en.wiktionary.org/wiki/obses",
+      "note": "Análisis de tercera declinación por caso y número, sin inferir casillas ausentes"
+    },
+    {
+      "lang": "lat",
+      "lemma": "obses",
+      "form": "obsides",
+      "tags": "N;NOM;PL",
+      "reference": "https://en.wiktionary.org/wiki/obses",
+      "note": "Análisis de tercera declinación por caso y número, sin inferir casillas ausentes"
+    },
+    {
+      "lang": "lat",
+      "lemma": "obses",
+      "form": "obsidibus",
+      "tags": "N;DAT;PL",
+      "reference": "https://en.wiktionary.org/wiki/obses",
+      "note": "Análisis de tercera declinación por caso y número, sin inferir casillas ausentes"
+    },
+    {
+      "lang": "lat",
+      "lemma": "obses",
+      "form": "obsides",
+      "tags": "N;ACC;PL",
+      "reference": "https://en.wiktionary.org/wiki/obses",
+      "note": "Análisis de tercera declinación por caso y número, sin inferir casillas ausentes"
+    },
+    {
+      "lang": "lat",
+      "lemma": "obses",
+      "form": "obsides",
+      "tags": "N;VOC;PL",
+      "reference": "https://en.wiktionary.org/wiki/obses",
+      "note": "Análisis de tercera declinación por caso y número, sin inferir casillas ausentes"
+    },
+    {
+      "lang": "lat",
+      "lemma": "obses",
+      "form": "obsidibus",
+      "tags": "N;ABL;PL",
+      "reference": "https://en.wiktionary.org/wiki/obses",
+      "note": "Análisis de tercera declinación por caso y número, sin inferir casillas ausentes"
+    },
+    {
+      "lang": "grc",
+      "lemma": "αγαθοσ",
+      "form": "ᾰ̓γᾰθός",
+      "tags": "ADJ;NOM;SG;MASC",
+      "reference": "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B3%CE%B1%CE%B8%CF%8C%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "αγαθοσ",
+      "form": "ᾰ̓γᾰθοῦ",
+      "tags": "ADJ;GEN;SG;MASC",
+      "reference": "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B3%CE%B1%CE%B8%CF%8C%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "αγαθοσ",
+      "form": "ᾰ̓γᾰθῷ",
+      "tags": "ADJ;DAT;SG;MASC",
+      "reference": "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B3%CE%B1%CE%B8%CF%8C%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "αγαθοσ",
+      "form": "ᾰ̓γᾰθόν",
+      "tags": "ADJ;ACC;SG;MASC",
+      "reference": "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B3%CE%B1%CE%B8%CF%8C%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "αγαθοσ",
+      "form": "ᾰ̓γᾰθέ",
+      "tags": "ADJ;VOC;SG;MASC",
+      "reference": "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B3%CE%B1%CE%B8%CF%8C%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "αγαθοσ",
+      "form": "ᾰ̓γᾰθή",
+      "tags": "ADJ;NOM;SG;FEM",
+      "reference": "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B3%CE%B1%CE%B8%CF%8C%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "αγαθοσ",
+      "form": "ᾰ̓γᾰθῆς",
+      "tags": "ADJ;GEN;SG;FEM",
+      "reference": "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B3%CE%B1%CE%B8%CF%8C%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "αγαθοσ",
+      "form": "ᾰ̓γᾰθῇ",
+      "tags": "ADJ;DAT;SG;FEM",
+      "reference": "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B3%CE%B1%CE%B8%CF%8C%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "αγαθοσ",
+      "form": "ᾰ̓γᾰθήν",
+      "tags": "ADJ;ACC;SG;FEM",
+      "reference": "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B3%CE%B1%CE%B8%CF%8C%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "αγαθοσ",
+      "form": "ᾰ̓γᾰθή",
+      "tags": "ADJ;VOC;SG;FEM",
+      "reference": "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B3%CE%B1%CE%B8%CF%8C%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "αγαθοσ",
+      "form": "ᾰ̓γᾰθόν",
+      "tags": "ADJ;NOM;SG;NEUT",
+      "reference": "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B3%CE%B1%CE%B8%CF%8C%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "αγαθοσ",
+      "form": "ᾰ̓γᾰθοῦ",
+      "tags": "ADJ;GEN;SG;NEUT",
+      "reference": "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B3%CE%B1%CE%B8%CF%8C%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "αγαθοσ",
+      "form": "ᾰ̓γᾰθῷ",
+      "tags": "ADJ;DAT;SG;NEUT",
+      "reference": "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B3%CE%B1%CE%B8%CF%8C%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "αγαθοσ",
+      "form": "ᾰ̓γᾰθόν",
+      "tags": "ADJ;ACC;SG;NEUT",
+      "reference": "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B3%CE%B1%CE%B8%CF%8C%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "αγαθοσ",
+      "form": "ᾰ̓γᾰθόν",
+      "tags": "ADJ;VOC;SG;NEUT",
+      "reference": "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B3%CE%B1%CE%B8%CF%8C%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "αγαθοσ",
+      "form": "ᾰ̓γᾰθοί",
+      "tags": "ADJ;NOM;PL;MASC",
+      "reference": "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B3%CE%B1%CE%B8%CF%8C%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "αγαθοσ",
+      "form": "ᾰ̓γᾰθῶν",
+      "tags": "ADJ;GEN;PL;MASC",
+      "reference": "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B3%CE%B1%CE%B8%CF%8C%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "αγαθοσ",
+      "form": "ᾰ̓γᾰθοῖς",
+      "tags": "ADJ;DAT;PL;MASC",
+      "reference": "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B3%CE%B1%CE%B8%CF%8C%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "αγαθοσ",
+      "form": "ᾰ̓γᾰθούς",
+      "tags": "ADJ;ACC;PL;MASC",
+      "reference": "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B3%CE%B1%CE%B8%CF%8C%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "αγαθοσ",
+      "form": "ᾰ̓γᾰθοί",
+      "tags": "ADJ;VOC;PL;MASC",
+      "reference": "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B3%CE%B1%CE%B8%CF%8C%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "αγαθοσ",
+      "form": "ᾰ̓γᾰθαί",
+      "tags": "ADJ;NOM;PL;FEM",
+      "reference": "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B3%CE%B1%CE%B8%CF%8C%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "αγαθοσ",
+      "form": "ᾰ̓γᾰθῶν",
+      "tags": "ADJ;GEN;PL;FEM",
+      "reference": "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B3%CE%B1%CE%B8%CF%8C%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "αγαθοσ",
+      "form": "ᾰ̓γᾰθαῖς",
+      "tags": "ADJ;DAT;PL;FEM",
+      "reference": "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B3%CE%B1%CE%B8%CF%8C%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "αγαθοσ",
+      "form": "ᾰ̓γᾰθᾱ́ς",
+      "tags": "ADJ;ACC;PL;FEM",
+      "reference": "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B3%CE%B1%CE%B8%CF%8C%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "αγαθοσ",
+      "form": "ᾰ̓γᾰθαί",
+      "tags": "ADJ;VOC;PL;FEM",
+      "reference": "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B3%CE%B1%CE%B8%CF%8C%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "αγαθοσ",
+      "form": "ᾰ̓γᾰθᾰ́",
+      "tags": "ADJ;NOM;PL;NEUT",
+      "reference": "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B3%CE%B1%CE%B8%CF%8C%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "αγαθοσ",
+      "form": "ᾰ̓γᾰθῶν",
+      "tags": "ADJ;GEN;PL;NEUT",
+      "reference": "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B3%CE%B1%CE%B8%CF%8C%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "αγαθοσ",
+      "form": "ᾰ̓γᾰθοῖς",
+      "tags": "ADJ;DAT;PL;NEUT",
+      "reference": "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B3%CE%B1%CE%B8%CF%8C%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "αγαθοσ",
+      "form": "ᾰ̓γᾰθᾰ́",
+      "tags": "ADJ;ACC;PL;NEUT",
+      "reference": "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B3%CE%B1%CE%B8%CF%8C%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "αγαθοσ",
+      "form": "ᾰ̓γᾰθᾰ́",
+      "tags": "ADJ;VOC;PL;NEUT",
+      "reference": "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B3%CE%B1%CE%B8%CF%8C%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "δικαιοσ",
+      "form": "δῐ́καιος",
+      "tags": "ADJ;NOM;SG;MASC",
+      "reference": "https://en.wiktionary.org/wiki/%CE%B4%CE%AF%CE%BA%CE%B1%CE%B9%CE%BF%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "δικαιοσ",
+      "form": "δῐκαίου",
+      "tags": "ADJ;GEN;SG;MASC",
+      "reference": "https://en.wiktionary.org/wiki/%CE%B4%CE%AF%CE%BA%CE%B1%CE%B9%CE%BF%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "δικαιοσ",
+      "form": "δῐκαίῳ",
+      "tags": "ADJ;DAT;SG;MASC",
+      "reference": "https://en.wiktionary.org/wiki/%CE%B4%CE%AF%CE%BA%CE%B1%CE%B9%CE%BF%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "δικαιοσ",
+      "form": "δῐ́καιον",
+      "tags": "ADJ;ACC;SG;MASC",
+      "reference": "https://en.wiktionary.org/wiki/%CE%B4%CE%AF%CE%BA%CE%B1%CE%B9%CE%BF%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "δικαιοσ",
+      "form": "δῐ́καιε",
+      "tags": "ADJ;VOC;SG;MASC",
+      "reference": "https://en.wiktionary.org/wiki/%CE%B4%CE%AF%CE%BA%CE%B1%CE%B9%CE%BF%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "δικαιοσ",
+      "form": "δῐκαίᾱ",
+      "tags": "ADJ;NOM;SG;FEM",
+      "reference": "https://en.wiktionary.org/wiki/%CE%B4%CE%AF%CE%BA%CE%B1%CE%B9%CE%BF%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "δικαιοσ",
+      "form": "δῐκαίᾱς",
+      "tags": "ADJ;GEN;SG;FEM",
+      "reference": "https://en.wiktionary.org/wiki/%CE%B4%CE%AF%CE%BA%CE%B1%CE%B9%CE%BF%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "δικαιοσ",
+      "form": "δῐκαίᾳ",
+      "tags": "ADJ;DAT;SG;FEM",
+      "reference": "https://en.wiktionary.org/wiki/%CE%B4%CE%AF%CE%BA%CE%B1%CE%B9%CE%BF%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "δικαιοσ",
+      "form": "δῐκαίᾱν",
+      "tags": "ADJ;ACC;SG;FEM",
+      "reference": "https://en.wiktionary.org/wiki/%CE%B4%CE%AF%CE%BA%CE%B1%CE%B9%CE%BF%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "δικαιοσ",
+      "form": "δῐκαίᾱ",
+      "tags": "ADJ;VOC;SG;FEM",
+      "reference": "https://en.wiktionary.org/wiki/%CE%B4%CE%AF%CE%BA%CE%B1%CE%B9%CE%BF%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "δικαιοσ",
+      "form": "δῐ́καιον",
+      "tags": "ADJ;NOM;SG;NEUT",
+      "reference": "https://en.wiktionary.org/wiki/%CE%B4%CE%AF%CE%BA%CE%B1%CE%B9%CE%BF%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "δικαιοσ",
+      "form": "δῐκαίου",
+      "tags": "ADJ;GEN;SG;NEUT",
+      "reference": "https://en.wiktionary.org/wiki/%CE%B4%CE%AF%CE%BA%CE%B1%CE%B9%CE%BF%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "δικαιοσ",
+      "form": "δῐκαίῳ",
+      "tags": "ADJ;DAT;SG;NEUT",
+      "reference": "https://en.wiktionary.org/wiki/%CE%B4%CE%AF%CE%BA%CE%B1%CE%B9%CE%BF%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "δικαιοσ",
+      "form": "δῐ́καιον",
+      "tags": "ADJ;ACC;SG;NEUT",
+      "reference": "https://en.wiktionary.org/wiki/%CE%B4%CE%AF%CE%BA%CE%B1%CE%B9%CE%BF%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "δικαιοσ",
+      "form": "δῐ́καιον",
+      "tags": "ADJ;VOC;SG;NEUT",
+      "reference": "https://en.wiktionary.org/wiki/%CE%B4%CE%AF%CE%BA%CE%B1%CE%B9%CE%BF%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "δικαιοσ",
+      "form": "δῐ́καιοι",
+      "tags": "ADJ;NOM;PL;MASC",
+      "reference": "https://en.wiktionary.org/wiki/%CE%B4%CE%AF%CE%BA%CE%B1%CE%B9%CE%BF%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "δικαιοσ",
+      "form": "δῐκαίων",
+      "tags": "ADJ;GEN;PL;MASC",
+      "reference": "https://en.wiktionary.org/wiki/%CE%B4%CE%AF%CE%BA%CE%B1%CE%B9%CE%BF%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "δικαιοσ",
+      "form": "δῐκαίοις",
+      "tags": "ADJ;DAT;PL;MASC",
+      "reference": "https://en.wiktionary.org/wiki/%CE%B4%CE%AF%CE%BA%CE%B1%CE%B9%CE%BF%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "δικαιοσ",
+      "form": "δῐκαίους",
+      "tags": "ADJ;ACC;PL;MASC",
+      "reference": "https://en.wiktionary.org/wiki/%CE%B4%CE%AF%CE%BA%CE%B1%CE%B9%CE%BF%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "δικαιοσ",
+      "form": "δῐ́καιοι",
+      "tags": "ADJ;VOC;PL;MASC",
+      "reference": "https://en.wiktionary.org/wiki/%CE%B4%CE%AF%CE%BA%CE%B1%CE%B9%CE%BF%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "δικαιοσ",
+      "form": "δῐ́καιαι",
+      "tags": "ADJ;NOM;PL;FEM",
+      "reference": "https://en.wiktionary.org/wiki/%CE%B4%CE%AF%CE%BA%CE%B1%CE%B9%CE%BF%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "δικαιοσ",
+      "form": "δῐκαίων",
+      "tags": "ADJ;GEN;PL;FEM",
+      "reference": "https://en.wiktionary.org/wiki/%CE%B4%CE%AF%CE%BA%CE%B1%CE%B9%CE%BF%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "δικαιοσ",
+      "form": "δῐκαίαις",
+      "tags": "ADJ;DAT;PL;FEM",
+      "reference": "https://en.wiktionary.org/wiki/%CE%B4%CE%AF%CE%BA%CE%B1%CE%B9%CE%BF%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "δικαιοσ",
+      "form": "δῐκαίᾱς",
+      "tags": "ADJ;ACC;PL;FEM",
+      "reference": "https://en.wiktionary.org/wiki/%CE%B4%CE%AF%CE%BA%CE%B1%CE%B9%CE%BF%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "δικαιοσ",
+      "form": "δῐ́καιαι",
+      "tags": "ADJ;VOC;PL;FEM",
+      "reference": "https://en.wiktionary.org/wiki/%CE%B4%CE%AF%CE%BA%CE%B1%CE%B9%CE%BF%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "δικαιοσ",
+      "form": "δῐ́καιᾰ",
+      "tags": "ADJ;NOM;PL;NEUT",
+      "reference": "https://en.wiktionary.org/wiki/%CE%B4%CE%AF%CE%BA%CE%B1%CE%B9%CE%BF%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "δικαιοσ",
+      "form": "δῐκαίων",
+      "tags": "ADJ;GEN;PL;NEUT",
+      "reference": "https://en.wiktionary.org/wiki/%CE%B4%CE%AF%CE%BA%CE%B1%CE%B9%CE%BF%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "δικαιοσ",
+      "form": "δῐκαίοις",
+      "tags": "ADJ;DAT;PL;NEUT",
+      "reference": "https://en.wiktionary.org/wiki/%CE%B4%CE%AF%CE%BA%CE%B1%CE%B9%CE%BF%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "δικαιοσ",
+      "form": "δῐ́καιᾰ",
+      "tags": "ADJ;ACC;PL;NEUT",
+      "reference": "https://en.wiktionary.org/wiki/%CE%B4%CE%AF%CE%BA%CE%B1%CE%B9%CE%BF%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "δικαιοσ",
+      "form": "δῐ́καιᾰ",
+      "tags": "ADJ;VOC;PL;NEUT",
+      "reference": "https://en.wiktionary.org/wiki/%CE%B4%CE%AF%CE%BA%CE%B1%CE%B9%CE%BF%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "θαλαττα",
+      "form": "θᾰ́λᾰττᾰ",
+      "tags": "N;NOM;SG",
+      "reference": "https://en.wiktionary.org/wiki/%CE%B8%CE%AC%CE%BB%CE%B1%CF%84%CF%84%CE%B1",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "θαλαττα",
+      "form": "θᾰλᾰ́ττης",
+      "tags": "N;GEN;SG",
+      "reference": "https://en.wiktionary.org/wiki/%CE%B8%CE%AC%CE%BB%CE%B1%CF%84%CF%84%CE%B1",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "θαλαττα",
+      "form": "θᾰλᾰ́ττῃ",
+      "tags": "N;DAT;SG",
+      "reference": "https://en.wiktionary.org/wiki/%CE%B8%CE%AC%CE%BB%CE%B1%CF%84%CF%84%CE%B1",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "θαλαττα",
+      "form": "θᾰ́λᾰττᾰν",
+      "tags": "N;ACC;SG",
+      "reference": "https://en.wiktionary.org/wiki/%CE%B8%CE%AC%CE%BB%CE%B1%CF%84%CF%84%CE%B1",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "θαλαττα",
+      "form": "θᾰ́λᾰττᾰ",
+      "tags": "N;VOC;SG",
+      "reference": "https://en.wiktionary.org/wiki/%CE%B8%CE%AC%CE%BB%CE%B1%CF%84%CF%84%CE%B1",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "θαλαττα",
+      "form": "θᾰ́λᾰτται",
+      "tags": "N;NOM;PL",
+      "reference": "https://en.wiktionary.org/wiki/%CE%B8%CE%AC%CE%BB%CE%B1%CF%84%CF%84%CE%B1",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "θαλαττα",
+      "form": "θᾰλᾰττῶν",
+      "tags": "N;GEN;PL",
+      "reference": "https://en.wiktionary.org/wiki/%CE%B8%CE%AC%CE%BB%CE%B1%CF%84%CF%84%CE%B1",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "θαλαττα",
+      "form": "θᾰλᾰ́τταις",
+      "tags": "N;DAT;PL",
+      "reference": "https://en.wiktionary.org/wiki/%CE%B8%CE%AC%CE%BB%CE%B1%CF%84%CF%84%CE%B1",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "θαλαττα",
+      "form": "θᾰλᾰ́ττᾱς",
+      "tags": "N;ACC;PL",
+      "reference": "https://en.wiktionary.org/wiki/%CE%B8%CE%AC%CE%BB%CE%B1%CF%84%CF%84%CE%B1",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "θαλαττα",
+      "form": "θᾰ́λᾰτται",
+      "tags": "N;VOC;PL",
+      "reference": "https://en.wiktionary.org/wiki/%CE%B8%CE%AC%CE%BB%CE%B1%CF%84%CF%84%CE%B1",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "ξυλον",
+      "form": "ξῠ́λον",
+      "tags": "N;NOM;SG",
+      "reference": "https://en.wiktionary.org/wiki/%CE%BE%CF%8D%CE%BB%CE%BF%CE%BD",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "ξυλον",
+      "form": "ξῠ́λου",
+      "tags": "N;GEN;SG",
+      "reference": "https://en.wiktionary.org/wiki/%CE%BE%CF%8D%CE%BB%CE%BF%CE%BD",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "ξυλον",
+      "form": "ξῠ́λῳ",
+      "tags": "N;DAT;SG",
+      "reference": "https://en.wiktionary.org/wiki/%CE%BE%CF%8D%CE%BB%CE%BF%CE%BD",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "ξυλον",
+      "form": "ξῠ́λον",
+      "tags": "N;ACC;SG",
+      "reference": "https://en.wiktionary.org/wiki/%CE%BE%CF%8D%CE%BB%CE%BF%CE%BD",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "ξυλον",
+      "form": "ξῠ́λον",
+      "tags": "N;VOC;SG",
+      "reference": "https://en.wiktionary.org/wiki/%CE%BE%CF%8D%CE%BB%CE%BF%CE%BD",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "ξυλον",
+      "form": "ξῠ́λᾰ",
+      "tags": "N;NOM;PL",
+      "reference": "https://en.wiktionary.org/wiki/%CE%BE%CF%8D%CE%BB%CE%BF%CE%BD",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "ξυλον",
+      "form": "ξῠ́λων",
+      "tags": "N;GEN;PL",
+      "reference": "https://en.wiktionary.org/wiki/%CE%BE%CF%8D%CE%BB%CE%BF%CE%BD",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "ξυλον",
+      "form": "ξῠ́λοις",
+      "tags": "N;DAT;PL",
+      "reference": "https://en.wiktionary.org/wiki/%CE%BE%CF%8D%CE%BB%CE%BF%CE%BD",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "ξυλον",
+      "form": "ξῠ́λᾰ",
+      "tags": "N;ACC;PL",
+      "reference": "https://en.wiktionary.org/wiki/%CE%BE%CF%8D%CE%BB%CE%BF%CE%BD",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "ξυλον",
+      "form": "ξῠ́λᾰ",
+      "tags": "N;VOC;PL",
+      "reference": "https://en.wiktionary.org/wiki/%CE%BE%CF%8D%CE%BB%CE%BF%CE%BD",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "πενια",
+      "form": "πενῐ́ᾱ",
+      "tags": "N;NOM;SG",
+      "reference": "https://en.wiktionary.org/wiki/%CF%80%CE%B5%CE%BD%CE%AF%CE%B1",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "πενια",
+      "form": "πενῐ́ᾱς",
+      "tags": "N;GEN;SG",
+      "reference": "https://en.wiktionary.org/wiki/%CF%80%CE%B5%CE%BD%CE%AF%CE%B1",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "πενια",
+      "form": "πενῐ́ᾳ",
+      "tags": "N;DAT;SG",
+      "reference": "https://en.wiktionary.org/wiki/%CF%80%CE%B5%CE%BD%CE%AF%CE%B1",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "πενια",
+      "form": "πενῐ́ᾱν",
+      "tags": "N;ACC;SG",
+      "reference": "https://en.wiktionary.org/wiki/%CF%80%CE%B5%CE%BD%CE%AF%CE%B1",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "πενια",
+      "form": "πενῐ́ᾱ",
+      "tags": "N;VOC;SG",
+      "reference": "https://en.wiktionary.org/wiki/%CF%80%CE%B5%CE%BD%CE%AF%CE%B1",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "πενια",
+      "form": "πενῐ́αι",
+      "tags": "N;NOM;PL",
+      "reference": "https://en.wiktionary.org/wiki/%CF%80%CE%B5%CE%BD%CE%AF%CE%B1",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "πενια",
+      "form": "πενῐῶν",
+      "tags": "N;GEN;PL",
+      "reference": "https://en.wiktionary.org/wiki/%CF%80%CE%B5%CE%BD%CE%AF%CE%B1",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "πενια",
+      "form": "πενῐ́αις",
+      "tags": "N;DAT;PL",
+      "reference": "https://en.wiktionary.org/wiki/%CF%80%CE%B5%CE%BD%CE%AF%CE%B1",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "πενια",
+      "form": "πενῐ́ᾱς",
+      "tags": "N;ACC;PL",
+      "reference": "https://en.wiktionary.org/wiki/%CF%80%CE%B5%CE%BD%CE%AF%CE%B1",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "πενια",
+      "form": "πενῐ́αι",
+      "tags": "N;VOC;PL",
+      "reference": "https://en.wiktionary.org/wiki/%CF%80%CE%B5%CE%BD%CE%AF%CE%B1",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "πολεμοσ",
+      "form": "πόλεμος",
+      "tags": "N;NOM;SG",
+      "reference": "https://en.wiktionary.org/wiki/%CF%80%CF%8C%CE%BB%CE%B5%CE%BC%CE%BF%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "πολεμοσ",
+      "form": "πολέμου",
+      "tags": "N;GEN;SG",
+      "reference": "https://en.wiktionary.org/wiki/%CF%80%CF%8C%CE%BB%CE%B5%CE%BC%CE%BF%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "πολεμοσ",
+      "form": "πολέμῳ",
+      "tags": "N;DAT;SG",
+      "reference": "https://en.wiktionary.org/wiki/%CF%80%CF%8C%CE%BB%CE%B5%CE%BC%CE%BF%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "πολεμοσ",
+      "form": "πόλεμον",
+      "tags": "N;ACC;SG",
+      "reference": "https://en.wiktionary.org/wiki/%CF%80%CF%8C%CE%BB%CE%B5%CE%BC%CE%BF%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "πολεμοσ",
+      "form": "πόλεμε",
+      "tags": "N;VOC;SG",
+      "reference": "https://en.wiktionary.org/wiki/%CF%80%CF%8C%CE%BB%CE%B5%CE%BC%CE%BF%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "πολεμοσ",
+      "form": "πόλεμοι",
+      "tags": "N;NOM;PL",
+      "reference": "https://en.wiktionary.org/wiki/%CF%80%CF%8C%CE%BB%CE%B5%CE%BC%CE%BF%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "πολεμοσ",
+      "form": "πολέμων",
+      "tags": "N;GEN;PL",
+      "reference": "https://en.wiktionary.org/wiki/%CF%80%CF%8C%CE%BB%CE%B5%CE%BC%CE%BF%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "πολεμοσ",
+      "form": "πολέμοις",
+      "tags": "N;DAT;PL",
+      "reference": "https://en.wiktionary.org/wiki/%CF%80%CF%8C%CE%BB%CE%B5%CE%BC%CE%BF%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "πολεμοσ",
+      "form": "πολέμους",
+      "tags": "N;ACC;PL",
+      "reference": "https://en.wiktionary.org/wiki/%CF%80%CF%8C%CE%BB%CE%B5%CE%BC%CE%BF%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
+    },
+    {
+      "lang": "grc",
+      "lemma": "πολεμοσ",
+      "form": "πόλεμοι",
+      "tags": "N;VOC;PL",
+      "reference": "https://en.wiktionary.org/wiki/%CF%80%CF%8C%CE%BB%CE%B5%CE%BC%CE%BF%CF%82",
+      "note": "Análisis ático individual; conservar todas las lecturas sincréticas de esta superficie"
     }
   ]
 }

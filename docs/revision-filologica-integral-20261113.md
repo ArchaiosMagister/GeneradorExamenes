@@ -143,3 +143,11 @@ No se altera `main` ni se despliega.
 Se han trasladado 90 análisis latinos y 10 griegos como fuente 5 al índice, modelos y archivo autónomo. Los cinco modelos verbales mantienen sus umbrales curriculares. El neutro βασίλειον no tiene UD y sigue excluido del sorteo; se conservan las lecturas NOM/ACC/VOC. Fuentes: https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/ y https://greekdoc.github.io/lexicon/bas.html.
 
 Restan 3344 candidaturas latinas y 959 griegas. Ni el auditor ni esta migración autorizan formas adicionales por analogía. No se fusiona ni se publica.
+
+## Lote de 200 candidaturas latinas y griegas · 13/11/2026
+
+Se incorporan 100 análisis latinos (accipio 18, facio 18, duco 18, careo 12, disco 12, dux 11 y obses 11) y 100 griegos (ἀγαθός 30, δίκαιος 30, θάλαττα 10, ξύλον 10, πενία 10 y πόλεμος 10). Todas sus unidades provienen de las entradas docentes existentes; no se inventan unidades ni se amplían paradigmas por analogía. Cada lectura posee su ficha individual en data/lemmas/revision-candidaturas-lote200-20261113.json, con enlace al paradigma de referencia.
+
+Las coincidencias entre casos y géneros de sustantivos y adjetivos siguen registradas como análisis distintos. No constituyen respuestas unívocas de un ejercicio aislado sin contexto. El indicativo latino incorpora sólo los tiempos contrastados. El infectum pasivo de facio continúa excluido por corresponder a fio. Se mantienen el banco externo, el requisito de pruebas y la ausencia de despliegue.
+
+El índice conserva ahora **3244 candidaturas latinas y 859 griegas** sin contraste individual. El total en fuente 5 aumenta en 200 análisis. La version offline debe actualizarse junto al índice y superar el control de igualdad antes de guardar el commit.

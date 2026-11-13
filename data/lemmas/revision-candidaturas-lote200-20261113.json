@@ -1,13 +1,13 @@
 {
   "schema": "examina-individual-candidate-resolution/v2",
   "date": "2026-11-13",
-  "status": "PENDING_ATOMIC_MIGRATION",
+  "status": "TRANSFERIDO_FUENTE_5_EN_RAMA_DE_REVISION",
   "policy": "Las formas se comparan individualmente con un paradigma documental alternativo por caso/persona; no se promueven automáticamente las otras flexiones ni se eliminan las lecturas sincréticas.",
   "summary": {
     "total": 200,
     "latin": 100,
     "greek": 100,
-    "promoted": 0,
+    "promoted": 200,
     "byLemma": {
       "lat": {
         "accipio": 18,
@@ -26,7 +26,12 @@
         "πενια": 10,
         "πολεμοσ": 10
       }
-    }
+    },
+    "latinVerified": 100,
+    "greekVerified": 100,
+    "latinStillPending": 3244,
+    "greekStillPending": 859,
+    "offlineSynchronized": true
   },
   "rows": [
     {
@@ -38,9 +43,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/accipio",
       "secondaryReference": "https://latindictionary.co/academy/grammar/188",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-001"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-001",
+      "promotedSourceCode": 5,
+      "verifiedForm": "accipio",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -51,9 +59,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/accipio",
       "secondaryReference": "https://latindictionary.co/academy/grammar/188",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-002"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-002",
+      "promotedSourceCode": 5,
+      "verifiedForm": "accipis",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -64,9 +75,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/accipio",
       "secondaryReference": "https://latindictionary.co/academy/grammar/188",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-003"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-003",
+      "promotedSourceCode": 5,
+      "verifiedForm": "accipit",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -77,9 +91,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/accipio",
       "secondaryReference": "https://latindictionary.co/academy/grammar/188",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-004"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-004",
+      "promotedSourceCode": 5,
+      "verifiedForm": "accipimus",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -90,9 +107,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/accipio",
       "secondaryReference": "https://latindictionary.co/academy/grammar/188",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-005"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-005",
+      "promotedSourceCode": 5,
+      "verifiedForm": "accipitis",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -103,9 +123,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/accipio",
       "secondaryReference": "https://latindictionary.co/academy/grammar/188",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-006"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-006",
+      "promotedSourceCode": 5,
+      "verifiedForm": "accipiunt",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -116,9 +139,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/accipio",
       "secondaryReference": "https://latindictionary.co/academy/grammar/188",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-007"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-007",
+      "promotedSourceCode": 5,
+      "verifiedForm": "accipiebam",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -129,9 +155,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/accipio",
       "secondaryReference": "https://latindictionary.co/academy/grammar/188",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-008"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-008",
+      "promotedSourceCode": 5,
+      "verifiedForm": "accipiebas",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -142,9 +171,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/accipio",
       "secondaryReference": "https://latindictionary.co/academy/grammar/188",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-009"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-009",
+      "promotedSourceCode": 5,
+      "verifiedForm": "accipiebat",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -155,9 +187,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/accipio",
       "secondaryReference": "https://latindictionary.co/academy/grammar/188",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-010"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-010",
+      "promotedSourceCode": 5,
+      "verifiedForm": "accipiebamus",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -168,9 +203,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/accipio",
       "secondaryReference": "https://latindictionary.co/academy/grammar/188",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-011"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-011",
+      "promotedSourceCode": 5,
+      "verifiedForm": "accipiebatis",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -181,9 +219,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/accipio",
       "secondaryReference": "https://latindictionary.co/academy/grammar/188",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-012"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-012",
+      "promotedSourceCode": 5,
+      "verifiedForm": "accipiebant",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -194,9 +235,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/accipio",
       "secondaryReference": "https://latindictionary.co/academy/grammar/188",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-013"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-013",
+      "promotedSourceCode": 5,
+      "verifiedForm": "accepi",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -207,9 +251,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/accipio",
       "secondaryReference": "https://latindictionary.co/academy/grammar/188",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-014"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-014",
+      "promotedSourceCode": 5,
+      "verifiedForm": "accepisti",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -220,9 +267,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/accipio",
       "secondaryReference": "https://latindictionary.co/academy/grammar/188",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-015"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-015",
+      "promotedSourceCode": 5,
+      "verifiedForm": "accepit",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -233,9 +283,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/accipio",
       "secondaryReference": "https://latindictionary.co/academy/grammar/188",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-016"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-016",
+      "promotedSourceCode": 5,
+      "verifiedForm": "accepimus",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -246,9 +299,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/accipio",
       "secondaryReference": "https://latindictionary.co/academy/grammar/188",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-017"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-017",
+      "promotedSourceCode": 5,
+      "verifiedForm": "accepistis",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -259,9 +315,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/accipio",
       "secondaryReference": "https://latindictionary.co/academy/grammar/188",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-018"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-018",
+      "promotedSourceCode": 5,
+      "verifiedForm": "acceperunt",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -272,9 +331,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/facio",
       "secondaryReference": "https://latindictionary.co/academy/grammar/188",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-019"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-019",
+      "promotedSourceCode": 5,
+      "verifiedForm": "facio",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -285,9 +347,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/facio",
       "secondaryReference": "https://latindictionary.co/academy/grammar/188",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-020"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-020",
+      "promotedSourceCode": 5,
+      "verifiedForm": "facis",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -298,9 +363,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/facio",
       "secondaryReference": "https://latindictionary.co/academy/grammar/188",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-021"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-021",
+      "promotedSourceCode": 5,
+      "verifiedForm": "facit",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -311,9 +379,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/facio",
       "secondaryReference": "https://latindictionary.co/academy/grammar/188",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-022"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-022",
+      "promotedSourceCode": 5,
+      "verifiedForm": "facimus",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -324,9 +395,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/facio",
       "secondaryReference": "https://latindictionary.co/academy/grammar/188",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-023"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-023",
+      "promotedSourceCode": 5,
+      "verifiedForm": "facitis",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -337,9 +411,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/facio",
       "secondaryReference": "https://latindictionary.co/academy/grammar/188",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-024"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-024",
+      "promotedSourceCode": 5,
+      "verifiedForm": "faciunt",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -350,9 +427,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/facio",
       "secondaryReference": "https://latindictionary.co/academy/grammar/188",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-025"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-025",
+      "promotedSourceCode": 5,
+      "verifiedForm": "faciebam",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -363,9 +443,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/facio",
       "secondaryReference": "https://latindictionary.co/academy/grammar/188",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-026"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-026",
+      "promotedSourceCode": 5,
+      "verifiedForm": "faciebas",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -376,9 +459,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/facio",
       "secondaryReference": "https://latindictionary.co/academy/grammar/188",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-027"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-027",
+      "promotedSourceCode": 5,
+      "verifiedForm": "faciebat",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -389,9 +475,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/facio",
       "secondaryReference": "https://latindictionary.co/academy/grammar/188",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-028"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-028",
+      "promotedSourceCode": 5,
+      "verifiedForm": "faciebamus",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -402,9 +491,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/facio",
       "secondaryReference": "https://latindictionary.co/academy/grammar/188",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-029"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-029",
+      "promotedSourceCode": 5,
+      "verifiedForm": "faciebatis",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -415,9 +507,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/facio",
       "secondaryReference": "https://latindictionary.co/academy/grammar/188",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-030"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-030",
+      "promotedSourceCode": 5,
+      "verifiedForm": "faciebant",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -428,9 +523,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/facio",
       "secondaryReference": "https://latindictionary.co/academy/grammar/188",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-031"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-031",
+      "promotedSourceCode": 5,
+      "verifiedForm": "feci",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -441,9 +539,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/facio",
       "secondaryReference": "https://latindictionary.co/academy/grammar/188",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-032"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-032",
+      "promotedSourceCode": 5,
+      "verifiedForm": "fecisti",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -454,9 +555,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/facio",
       "secondaryReference": "https://latindictionary.co/academy/grammar/188",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-033"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-033",
+      "promotedSourceCode": 5,
+      "verifiedForm": "fecit",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -467,9 +571,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/facio",
       "secondaryReference": "https://latindictionary.co/academy/grammar/188",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-034"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-034",
+      "promotedSourceCode": 5,
+      "verifiedForm": "fecimus",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -480,9 +587,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/facio",
       "secondaryReference": "https://latindictionary.co/academy/grammar/188",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-035"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-035",
+      "promotedSourceCode": 5,
+      "verifiedForm": "fecistis",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -493,9 +603,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/facio",
       "secondaryReference": "https://latindictionary.co/academy/grammar/188",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-036"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-036",
+      "promotedSourceCode": 5,
+      "verifiedForm": "fecerunt",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -506,9 +619,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/duco",
       "secondaryReference": "https://www.nationalarchives.gov.uk/latin/stage-1-latin/resources/stage-1-latin-grammar-resource/nouns/",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-037"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-037",
+      "promotedSourceCode": 5,
+      "verifiedForm": "duco",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -519,9 +635,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/duco",
       "secondaryReference": "https://www.nationalarchives.gov.uk/latin/stage-1-latin/resources/stage-1-latin-grammar-resource/nouns/",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-038"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-038",
+      "promotedSourceCode": 5,
+      "verifiedForm": "ducis",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -532,9 +651,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/duco",
       "secondaryReference": "https://www.nationalarchives.gov.uk/latin/stage-1-latin/resources/stage-1-latin-grammar-resource/nouns/",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-039"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-039",
+      "promotedSourceCode": 5,
+      "verifiedForm": "ducit",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -545,9 +667,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/duco",
       "secondaryReference": "https://www.nationalarchives.gov.uk/latin/stage-1-latin/resources/stage-1-latin-grammar-resource/nouns/",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-040"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-040",
+      "promotedSourceCode": 5,
+      "verifiedForm": "ducimus",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -558,9 +683,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/duco",
       "secondaryReference": "https://www.nationalarchives.gov.uk/latin/stage-1-latin/resources/stage-1-latin-grammar-resource/nouns/",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-041"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-041",
+      "promotedSourceCode": 5,
+      "verifiedForm": "ducitis",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -571,9 +699,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/duco",
       "secondaryReference": "https://www.nationalarchives.gov.uk/latin/stage-1-latin/resources/stage-1-latin-grammar-resource/nouns/",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-042"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-042",
+      "promotedSourceCode": 5,
+      "verifiedForm": "ducunt",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -584,9 +715,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/duco",
       "secondaryReference": "https://www.nationalarchives.gov.uk/latin/stage-1-latin/resources/stage-1-latin-grammar-resource/nouns/",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-043"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-043",
+      "promotedSourceCode": 5,
+      "verifiedForm": "ducebam",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -597,9 +731,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/duco",
       "secondaryReference": "https://www.nationalarchives.gov.uk/latin/stage-1-latin/resources/stage-1-latin-grammar-resource/nouns/",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-044"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-044",
+      "promotedSourceCode": 5,
+      "verifiedForm": "ducebas",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -610,9 +747,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/duco",
       "secondaryReference": "https://www.nationalarchives.gov.uk/latin/stage-1-latin/resources/stage-1-latin-grammar-resource/nouns/",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-045"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-045",
+      "promotedSourceCode": 5,
+      "verifiedForm": "ducebat",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -623,9 +763,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/duco",
       "secondaryReference": "https://www.nationalarchives.gov.uk/latin/stage-1-latin/resources/stage-1-latin-grammar-resource/nouns/",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-046"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-046",
+      "promotedSourceCode": 5,
+      "verifiedForm": "ducebamus",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -636,9 +779,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/duco",
       "secondaryReference": "https://www.nationalarchives.gov.uk/latin/stage-1-latin/resources/stage-1-latin-grammar-resource/nouns/",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-047"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-047",
+      "promotedSourceCode": 5,
+      "verifiedForm": "ducebatis",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -649,9 +795,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/duco",
       "secondaryReference": "https://www.nationalarchives.gov.uk/latin/stage-1-latin/resources/stage-1-latin-grammar-resource/nouns/",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-048"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-048",
+      "promotedSourceCode": 5,
+      "verifiedForm": "ducebant",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -662,9 +811,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/duco",
       "secondaryReference": "https://www.nationalarchives.gov.uk/latin/stage-1-latin/resources/stage-1-latin-grammar-resource/nouns/",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-049"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-049",
+      "promotedSourceCode": 5,
+      "verifiedForm": "duxi",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -675,9 +827,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/duco",
       "secondaryReference": "https://www.nationalarchives.gov.uk/latin/stage-1-latin/resources/stage-1-latin-grammar-resource/nouns/",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-050"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-050",
+      "promotedSourceCode": 5,
+      "verifiedForm": "duxisti",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -688,9 +843,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/duco",
       "secondaryReference": "https://www.nationalarchives.gov.uk/latin/stage-1-latin/resources/stage-1-latin-grammar-resource/nouns/",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-051"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-051",
+      "promotedSourceCode": 5,
+      "verifiedForm": "duxit",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -701,9 +859,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/duco",
       "secondaryReference": "https://www.nationalarchives.gov.uk/latin/stage-1-latin/resources/stage-1-latin-grammar-resource/nouns/",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-052"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-052",
+      "promotedSourceCode": 5,
+      "verifiedForm": "duximus",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -714,9 +875,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/duco",
       "secondaryReference": "https://www.nationalarchives.gov.uk/latin/stage-1-latin/resources/stage-1-latin-grammar-resource/nouns/",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-053"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-053",
+      "promotedSourceCode": 5,
+      "verifiedForm": "duxistis",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -727,9 +891,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/duco",
       "secondaryReference": "https://www.nationalarchives.gov.uk/latin/stage-1-latin/resources/stage-1-latin-grammar-resource/nouns/",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-054"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-054",
+      "promotedSourceCode": 5,
+      "verifiedForm": "duxerunt",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -740,9 +907,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/careo",
       "secondaryReference": "https://www.nationalarchives.gov.uk/latin/stage-1-latin/resources/stage-1-latin-grammar-resource/nouns/",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-055"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-055",
+      "promotedSourceCode": 5,
+      "verifiedForm": "careo",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -753,9 +923,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/careo",
       "secondaryReference": "https://www.nationalarchives.gov.uk/latin/stage-1-latin/resources/stage-1-latin-grammar-resource/nouns/",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-056"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-056",
+      "promotedSourceCode": 5,
+      "verifiedForm": "cares",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -766,9 +939,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/careo",
       "secondaryReference": "https://www.nationalarchives.gov.uk/latin/stage-1-latin/resources/stage-1-latin-grammar-resource/nouns/",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-057"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-057",
+      "promotedSourceCode": 5,
+      "verifiedForm": "caret",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -779,9 +955,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/careo",
       "secondaryReference": "https://www.nationalarchives.gov.uk/latin/stage-1-latin/resources/stage-1-latin-grammar-resource/nouns/",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-058"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-058",
+      "promotedSourceCode": 5,
+      "verifiedForm": "caremus",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -792,9 +971,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/careo",
       "secondaryReference": "https://www.nationalarchives.gov.uk/latin/stage-1-latin/resources/stage-1-latin-grammar-resource/nouns/",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-059"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-059",
+      "promotedSourceCode": 5,
+      "verifiedForm": "caretis",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -805,9 +987,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/careo",
       "secondaryReference": "https://www.nationalarchives.gov.uk/latin/stage-1-latin/resources/stage-1-latin-grammar-resource/nouns/",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-060"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-060",
+      "promotedSourceCode": 5,
+      "verifiedForm": "carent",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -818,9 +1003,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/careo",
       "secondaryReference": "https://www.nationalarchives.gov.uk/latin/stage-1-latin/resources/stage-1-latin-grammar-resource/nouns/",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-061"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-061",
+      "promotedSourceCode": 5,
+      "verifiedForm": "carebam",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -831,9 +1019,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/careo",
       "secondaryReference": "https://www.nationalarchives.gov.uk/latin/stage-1-latin/resources/stage-1-latin-grammar-resource/nouns/",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-062"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-062",
+      "promotedSourceCode": 5,
+      "verifiedForm": "carebas",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -844,9 +1035,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/careo",
       "secondaryReference": "https://www.nationalarchives.gov.uk/latin/stage-1-latin/resources/stage-1-latin-grammar-resource/nouns/",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-063"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-063",
+      "promotedSourceCode": 5,
+      "verifiedForm": "carebat",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -857,9 +1051,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/careo",
       "secondaryReference": "https://www.nationalarchives.gov.uk/latin/stage-1-latin/resources/stage-1-latin-grammar-resource/nouns/",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-064"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-064",
+      "promotedSourceCode": 5,
+      "verifiedForm": "carebamus",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -870,9 +1067,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/careo",
       "secondaryReference": "https://www.nationalarchives.gov.uk/latin/stage-1-latin/resources/stage-1-latin-grammar-resource/nouns/",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-065"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-065",
+      "promotedSourceCode": 5,
+      "verifiedForm": "carebatis",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -883,9 +1083,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/careo",
       "secondaryReference": "https://www.nationalarchives.gov.uk/latin/stage-1-latin/resources/stage-1-latin-grammar-resource/nouns/",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-066"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-066",
+      "promotedSourceCode": 5,
+      "verifiedForm": "carebant",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -896,9 +1099,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/disco",
       "secondaryReference": "https://www.nationalarchives.gov.uk/latin/stage-1-latin/resources/stage-1-latin-grammar-resource/nouns/",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-067"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-067",
+      "promotedSourceCode": 5,
+      "verifiedForm": "disco",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -909,9 +1115,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/disco",
       "secondaryReference": "https://www.nationalarchives.gov.uk/latin/stage-1-latin/resources/stage-1-latin-grammar-resource/nouns/",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-068"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-068",
+      "promotedSourceCode": 5,
+      "verifiedForm": "discis",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -922,9 +1131,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/disco",
       "secondaryReference": "https://www.nationalarchives.gov.uk/latin/stage-1-latin/resources/stage-1-latin-grammar-resource/nouns/",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-069"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-069",
+      "promotedSourceCode": 5,
+      "verifiedForm": "discit",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -935,9 +1147,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/disco",
       "secondaryReference": "https://www.nationalarchives.gov.uk/latin/stage-1-latin/resources/stage-1-latin-grammar-resource/nouns/",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-070"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-070",
+      "promotedSourceCode": 5,
+      "verifiedForm": "discimus",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -948,9 +1163,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/disco",
       "secondaryReference": "https://www.nationalarchives.gov.uk/latin/stage-1-latin/resources/stage-1-latin-grammar-resource/nouns/",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-071"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-071",
+      "promotedSourceCode": 5,
+      "verifiedForm": "discitis",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -961,9 +1179,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/disco",
       "secondaryReference": "https://www.nationalarchives.gov.uk/latin/stage-1-latin/resources/stage-1-latin-grammar-resource/nouns/",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-072"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-072",
+      "promotedSourceCode": 5,
+      "verifiedForm": "discunt",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -974,9 +1195,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/disco",
       "secondaryReference": "https://www.nationalarchives.gov.uk/latin/stage-1-latin/resources/stage-1-latin-grammar-resource/nouns/",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-073"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-073",
+      "promotedSourceCode": 5,
+      "verifiedForm": "discebam",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -987,9 +1211,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/disco",
       "secondaryReference": "https://www.nationalarchives.gov.uk/latin/stage-1-latin/resources/stage-1-latin-grammar-resource/nouns/",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-074"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-074",
+      "promotedSourceCode": 5,
+      "verifiedForm": "discebas",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -1000,9 +1227,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/disco",
       "secondaryReference": "https://www.nationalarchives.gov.uk/latin/stage-1-latin/resources/stage-1-latin-grammar-resource/nouns/",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-075"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-075",
+      "promotedSourceCode": 5,
+      "verifiedForm": "discebat",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -1013,9 +1243,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/disco",
       "secondaryReference": "https://www.nationalarchives.gov.uk/latin/stage-1-latin/resources/stage-1-latin-grammar-resource/nouns/",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-076"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-076",
+      "promotedSourceCode": 5,
+      "verifiedForm": "discebamus",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -1026,9 +1259,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/disco",
       "secondaryReference": "https://www.nationalarchives.gov.uk/latin/stage-1-latin/resources/stage-1-latin-grammar-resource/nouns/",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-077"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-077",
+      "promotedSourceCode": 5,
+      "verifiedForm": "discebatis",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -1039,9 +1275,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/disco",
       "secondaryReference": "https://www.nationalarchives.gov.uk/latin/stage-1-latin/resources/stage-1-latin-grammar-resource/nouns/",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
-      "gradeEligible": false,
-      "id": "candidate-200-078"
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
+      "gradeEligible": true,
+      "id": "candidate-200-078",
+      "promotedSourceCode": 5,
+      "verifiedForm": "discebant",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -1052,9 +1291,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/dux",
       "secondaryReference": "https://www.nationalarchives.gov.uk/latin/stage-1-latin/resources/stage-1-latin-grammar-resource/nouns/",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-079"
+      "id": "candidate-200-079",
+      "promotedSourceCode": 5,
+      "verifiedForm": "dux",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -1065,9 +1307,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/dux",
       "secondaryReference": "https://www.nationalarchives.gov.uk/latin/stage-1-latin/resources/stage-1-latin-grammar-resource/nouns/",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-080"
+      "id": "candidate-200-080",
+      "promotedSourceCode": 5,
+      "verifiedForm": "ducis",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -1078,9 +1323,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/dux",
       "secondaryReference": "https://www.nationalarchives.gov.uk/latin/stage-1-latin/resources/stage-1-latin-grammar-resource/nouns/",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-081"
+      "id": "candidate-200-081",
+      "promotedSourceCode": 5,
+      "verifiedForm": "duci",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -1091,9 +1339,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/dux",
       "secondaryReference": "https://www.nationalarchives.gov.uk/latin/stage-1-latin/resources/stage-1-latin-grammar-resource/nouns/",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-082"
+      "id": "candidate-200-082",
+      "promotedSourceCode": 5,
+      "verifiedForm": "ducem",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -1104,9 +1355,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/dux",
       "secondaryReference": "https://www.nationalarchives.gov.uk/latin/stage-1-latin/resources/stage-1-latin-grammar-resource/nouns/",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-083"
+      "id": "candidate-200-083",
+      "promotedSourceCode": 5,
+      "verifiedForm": "dux",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -1117,9 +1371,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/dux",
       "secondaryReference": "https://www.nationalarchives.gov.uk/latin/stage-1-latin/resources/stage-1-latin-grammar-resource/nouns/",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-084"
+      "id": "candidate-200-084",
+      "promotedSourceCode": 5,
+      "verifiedForm": "duce",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -1130,9 +1387,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/dux",
       "secondaryReference": "https://www.nationalarchives.gov.uk/latin/stage-1-latin/resources/stage-1-latin-grammar-resource/nouns/",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-085"
+      "id": "candidate-200-085",
+      "promotedSourceCode": 5,
+      "verifiedForm": "duces",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -1143,9 +1403,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/dux",
       "secondaryReference": "https://www.nationalarchives.gov.uk/latin/stage-1-latin/resources/stage-1-latin-grammar-resource/nouns/",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-086"
+      "id": "candidate-200-086",
+      "promotedSourceCode": 5,
+      "verifiedForm": "ducibus",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -1156,9 +1419,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/dux",
       "secondaryReference": "https://www.nationalarchives.gov.uk/latin/stage-1-latin/resources/stage-1-latin-grammar-resource/nouns/",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-087"
+      "id": "candidate-200-087",
+      "promotedSourceCode": 5,
+      "verifiedForm": "duces",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -1169,9 +1435,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/dux",
       "secondaryReference": "https://www.nationalarchives.gov.uk/latin/stage-1-latin/resources/stage-1-latin-grammar-resource/nouns/",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-088"
+      "id": "candidate-200-088",
+      "promotedSourceCode": 5,
+      "verifiedForm": "duces",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -1182,9 +1451,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/dux",
       "secondaryReference": "https://www.nationalarchives.gov.uk/latin/stage-1-latin/resources/stage-1-latin-grammar-resource/nouns/",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-089"
+      "id": "candidate-200-089",
+      "promotedSourceCode": 5,
+      "verifiedForm": "ducibus",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -1195,9 +1467,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/obses",
       "secondaryReference": "https://www.nationalarchives.gov.uk/latin/stage-1-latin/resources/stage-1-latin-grammar-resource/nouns/",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-090"
+      "id": "candidate-200-090",
+      "promotedSourceCode": 5,
+      "verifiedForm": "obses",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -1208,9 +1483,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/obses",
       "secondaryReference": "https://www.nationalarchives.gov.uk/latin/stage-1-latin/resources/stage-1-latin-grammar-resource/nouns/",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-091"
+      "id": "candidate-200-091",
+      "promotedSourceCode": 5,
+      "verifiedForm": "obsidis",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -1221,9 +1499,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/obses",
       "secondaryReference": "https://www.nationalarchives.gov.uk/latin/stage-1-latin/resources/stage-1-latin-grammar-resource/nouns/",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-092"
+      "id": "candidate-200-092",
+      "promotedSourceCode": 5,
+      "verifiedForm": "obsidi",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -1234,9 +1515,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/obses",
       "secondaryReference": "https://www.nationalarchives.gov.uk/latin/stage-1-latin/resources/stage-1-latin-grammar-resource/nouns/",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-093"
+      "id": "candidate-200-093",
+      "promotedSourceCode": 5,
+      "verifiedForm": "obsidem",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -1247,9 +1531,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/obses",
       "secondaryReference": "https://www.nationalarchives.gov.uk/latin/stage-1-latin/resources/stage-1-latin-grammar-resource/nouns/",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-094"
+      "id": "candidate-200-094",
+      "promotedSourceCode": 5,
+      "verifiedForm": "obses",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -1260,9 +1547,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/obses",
       "secondaryReference": "https://www.nationalarchives.gov.uk/latin/stage-1-latin/resources/stage-1-latin-grammar-resource/nouns/",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-095"
+      "id": "candidate-200-095",
+      "promotedSourceCode": 5,
+      "verifiedForm": "obside",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -1273,9 +1563,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/obses",
       "secondaryReference": "https://www.nationalarchives.gov.uk/latin/stage-1-latin/resources/stage-1-latin-grammar-resource/nouns/",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-096"
+      "id": "candidate-200-096",
+      "promotedSourceCode": 5,
+      "verifiedForm": "obsides",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -1286,9 +1579,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/obses",
       "secondaryReference": "https://www.nationalarchives.gov.uk/latin/stage-1-latin/resources/stage-1-latin-grammar-resource/nouns/",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-097"
+      "id": "candidate-200-097",
+      "promotedSourceCode": 5,
+      "verifiedForm": "obsidibus",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -1299,9 +1595,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/obses",
       "secondaryReference": "https://www.nationalarchives.gov.uk/latin/stage-1-latin/resources/stage-1-latin-grammar-resource/nouns/",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-098"
+      "id": "candidate-200-098",
+      "promotedSourceCode": 5,
+      "verifiedForm": "obsides",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -1312,9 +1611,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/obses",
       "secondaryReference": "https://www.nationalarchives.gov.uk/latin/stage-1-latin/resources/stage-1-latin-grammar-resource/nouns/",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-099"
+      "id": "candidate-200-099",
+      "promotedSourceCode": 5,
+      "verifiedForm": "obsides",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "lat",
@@ -1325,9 +1627,12 @@
       "originalSourceCode": 2,
       "reference": "https://en.wiktionary.org/wiki/obses",
       "secondaryReference": "https://www.nationalarchives.gov.uk/latin/stage-1-latin/resources/stage-1-latin-grammar-resource/nouns/",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-100"
+      "id": "candidate-200-100",
+      "promotedSourceCode": 5,
+      "verifiedForm": "obsidibus",
+      "curricularNote": "Lema con unidades docentes; el análisis aislado debe ser unívoco o conservar las alternativas"
     },
     {
       "language": "grc",
@@ -1338,9 +1643,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B3%CE%B1%CE%B8%CF%8C%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-101"
+      "id": "candidate-200-101",
+      "promotedSourceCode": 5,
+      "verifiedForm": "ᾰ̓γᾰθός",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -1351,9 +1659,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B3%CE%B1%CE%B8%CF%8C%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-102"
+      "id": "candidate-200-102",
+      "promotedSourceCode": 5,
+      "verifiedForm": "ᾰ̓γᾰθοῦ",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -1364,9 +1675,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B3%CE%B1%CE%B8%CF%8C%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-103"
+      "id": "candidate-200-103",
+      "promotedSourceCode": 5,
+      "verifiedForm": "ᾰ̓γᾰθῷ",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -1377,9 +1691,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B3%CE%B1%CE%B8%CF%8C%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-104"
+      "id": "candidate-200-104",
+      "promotedSourceCode": 5,
+      "verifiedForm": "ᾰ̓γᾰθόν",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -1390,9 +1707,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B3%CE%B1%CE%B8%CF%8C%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-105"
+      "id": "candidate-200-105",
+      "promotedSourceCode": 5,
+      "verifiedForm": "ᾰ̓γᾰθέ",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -1403,9 +1723,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B3%CE%B1%CE%B8%CF%8C%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-106"
+      "id": "candidate-200-106",
+      "promotedSourceCode": 5,
+      "verifiedForm": "ᾰ̓γᾰθή",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -1416,9 +1739,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B3%CE%B1%CE%B8%CF%8C%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-107"
+      "id": "candidate-200-107",
+      "promotedSourceCode": 5,
+      "verifiedForm": "ᾰ̓γᾰθῆς",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -1429,9 +1755,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B3%CE%B1%CE%B8%CF%8C%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-108"
+      "id": "candidate-200-108",
+      "promotedSourceCode": 5,
+      "verifiedForm": "ᾰ̓γᾰθῇ",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -1442,9 +1771,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B3%CE%B1%CE%B8%CF%8C%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-109"
+      "id": "candidate-200-109",
+      "promotedSourceCode": 5,
+      "verifiedForm": "ᾰ̓γᾰθήν",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -1455,9 +1787,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B3%CE%B1%CE%B8%CF%8C%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-110"
+      "id": "candidate-200-110",
+      "promotedSourceCode": 5,
+      "verifiedForm": "ᾰ̓γᾰθή",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -1468,9 +1803,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B3%CE%B1%CE%B8%CF%8C%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-111"
+      "id": "candidate-200-111",
+      "promotedSourceCode": 5,
+      "verifiedForm": "ᾰ̓γᾰθόν",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -1481,9 +1819,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B3%CE%B1%CE%B8%CF%8C%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-112"
+      "id": "candidate-200-112",
+      "promotedSourceCode": 5,
+      "verifiedForm": "ᾰ̓γᾰθοῦ",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -1494,9 +1835,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B3%CE%B1%CE%B8%CF%8C%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-113"
+      "id": "candidate-200-113",
+      "promotedSourceCode": 5,
+      "verifiedForm": "ᾰ̓γᾰθῷ",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -1507,9 +1851,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B3%CE%B1%CE%B8%CF%8C%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-114"
+      "id": "candidate-200-114",
+      "promotedSourceCode": 5,
+      "verifiedForm": "ᾰ̓γᾰθόν",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -1520,9 +1867,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B3%CE%B1%CE%B8%CF%8C%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-115"
+      "id": "candidate-200-115",
+      "promotedSourceCode": 5,
+      "verifiedForm": "ᾰ̓γᾰθόν",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -1533,9 +1883,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B3%CE%B1%CE%B8%CF%8C%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-116"
+      "id": "candidate-200-116",
+      "promotedSourceCode": 5,
+      "verifiedForm": "ᾰ̓γᾰθοί",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -1546,9 +1899,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B3%CE%B1%CE%B8%CF%8C%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-117"
+      "id": "candidate-200-117",
+      "promotedSourceCode": 5,
+      "verifiedForm": "ᾰ̓γᾰθῶν",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -1559,9 +1915,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B3%CE%B1%CE%B8%CF%8C%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-118"
+      "id": "candidate-200-118",
+      "promotedSourceCode": 5,
+      "verifiedForm": "ᾰ̓γᾰθοῖς",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -1572,9 +1931,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B3%CE%B1%CE%B8%CF%8C%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-119"
+      "id": "candidate-200-119",
+      "promotedSourceCode": 5,
+      "verifiedForm": "ᾰ̓γᾰθούς",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -1585,9 +1947,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B3%CE%B1%CE%B8%CF%8C%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-120"
+      "id": "candidate-200-120",
+      "promotedSourceCode": 5,
+      "verifiedForm": "ᾰ̓γᾰθοί",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -1598,9 +1963,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B3%CE%B1%CE%B8%CF%8C%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-121"
+      "id": "candidate-200-121",
+      "promotedSourceCode": 5,
+      "verifiedForm": "ᾰ̓γᾰθαί",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -1611,9 +1979,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B3%CE%B1%CE%B8%CF%8C%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-122"
+      "id": "candidate-200-122",
+      "promotedSourceCode": 5,
+      "verifiedForm": "ᾰ̓γᾰθῶν",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -1624,9 +1995,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B3%CE%B1%CE%B8%CF%8C%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-123"
+      "id": "candidate-200-123",
+      "promotedSourceCode": 5,
+      "verifiedForm": "ᾰ̓γᾰθαῖς",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -1637,9 +2011,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B3%CE%B1%CE%B8%CF%8C%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-124"
+      "id": "candidate-200-124",
+      "promotedSourceCode": 5,
+      "verifiedForm": "ᾰ̓γᾰθᾱ́ς",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -1650,9 +2027,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B3%CE%B1%CE%B8%CF%8C%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-125"
+      "id": "candidate-200-125",
+      "promotedSourceCode": 5,
+      "verifiedForm": "ᾰ̓γᾰθαί",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -1663,9 +2043,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B3%CE%B1%CE%B8%CF%8C%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-126"
+      "id": "candidate-200-126",
+      "promotedSourceCode": 5,
+      "verifiedForm": "ᾰ̓γᾰθᾰ́",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -1676,9 +2059,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B3%CE%B1%CE%B8%CF%8C%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-127"
+      "id": "candidate-200-127",
+      "promotedSourceCode": 5,
+      "verifiedForm": "ᾰ̓γᾰθῶν",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -1689,9 +2075,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B3%CE%B1%CE%B8%CF%8C%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-128"
+      "id": "candidate-200-128",
+      "promotedSourceCode": 5,
+      "verifiedForm": "ᾰ̓γᾰθοῖς",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -1702,9 +2091,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B3%CE%B1%CE%B8%CF%8C%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-129"
+      "id": "candidate-200-129",
+      "promotedSourceCode": 5,
+      "verifiedForm": "ᾰ̓γᾰθᾰ́",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -1715,9 +2107,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B3%CE%B1%CE%B8%CF%8C%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-130"
+      "id": "candidate-200-130",
+      "promotedSourceCode": 5,
+      "verifiedForm": "ᾰ̓γᾰθᾰ́",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -1728,9 +2123,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CE%B4%CE%AF%CE%BA%CE%B1%CE%B9%CE%BF%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-131"
+      "id": "candidate-200-131",
+      "promotedSourceCode": 5,
+      "verifiedForm": "δῐ́καιος",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -1741,9 +2139,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CE%B4%CE%AF%CE%BA%CE%B1%CE%B9%CE%BF%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-132"
+      "id": "candidate-200-132",
+      "promotedSourceCode": 5,
+      "verifiedForm": "δῐκαίου",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -1754,9 +2155,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CE%B4%CE%AF%CE%BA%CE%B1%CE%B9%CE%BF%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-133"
+      "id": "candidate-200-133",
+      "promotedSourceCode": 5,
+      "verifiedForm": "δῐκαίῳ",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -1767,9 +2171,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CE%B4%CE%AF%CE%BA%CE%B1%CE%B9%CE%BF%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-134"
+      "id": "candidate-200-134",
+      "promotedSourceCode": 5,
+      "verifiedForm": "δῐ́καιον",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -1780,9 +2187,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CE%B4%CE%AF%CE%BA%CE%B1%CE%B9%CE%BF%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-135"
+      "id": "candidate-200-135",
+      "promotedSourceCode": 5,
+      "verifiedForm": "δῐ́καιε",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -1793,9 +2203,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CE%B4%CE%AF%CE%BA%CE%B1%CE%B9%CE%BF%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-136"
+      "id": "candidate-200-136",
+      "promotedSourceCode": 5,
+      "verifiedForm": "δῐκαίᾱ",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -1806,9 +2219,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CE%B4%CE%AF%CE%BA%CE%B1%CE%B9%CE%BF%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-137"
+      "id": "candidate-200-137",
+      "promotedSourceCode": 5,
+      "verifiedForm": "δῐκαίᾱς",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -1819,9 +2235,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CE%B4%CE%AF%CE%BA%CE%B1%CE%B9%CE%BF%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-138"
+      "id": "candidate-200-138",
+      "promotedSourceCode": 5,
+      "verifiedForm": "δῐκαίᾳ",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -1832,9 +2251,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CE%B4%CE%AF%CE%BA%CE%B1%CE%B9%CE%BF%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-139"
+      "id": "candidate-200-139",
+      "promotedSourceCode": 5,
+      "verifiedForm": "δῐκαίᾱν",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -1845,9 +2267,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CE%B4%CE%AF%CE%BA%CE%B1%CE%B9%CE%BF%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-140"
+      "id": "candidate-200-140",
+      "promotedSourceCode": 5,
+      "verifiedForm": "δῐκαίᾱ",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -1858,9 +2283,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CE%B4%CE%AF%CE%BA%CE%B1%CE%B9%CE%BF%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-141"
+      "id": "candidate-200-141",
+      "promotedSourceCode": 5,
+      "verifiedForm": "δῐ́καιον",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -1871,9 +2299,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CE%B4%CE%AF%CE%BA%CE%B1%CE%B9%CE%BF%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-142"
+      "id": "candidate-200-142",
+      "promotedSourceCode": 5,
+      "verifiedForm": "δῐκαίου",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -1884,9 +2315,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CE%B4%CE%AF%CE%BA%CE%B1%CE%B9%CE%BF%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-143"
+      "id": "candidate-200-143",
+      "promotedSourceCode": 5,
+      "verifiedForm": "δῐκαίῳ",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -1897,9 +2331,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CE%B4%CE%AF%CE%BA%CE%B1%CE%B9%CE%BF%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-144"
+      "id": "candidate-200-144",
+      "promotedSourceCode": 5,
+      "verifiedForm": "δῐ́καιον",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -1910,9 +2347,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CE%B4%CE%AF%CE%BA%CE%B1%CE%B9%CE%BF%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-145"
+      "id": "candidate-200-145",
+      "promotedSourceCode": 5,
+      "verifiedForm": "δῐ́καιον",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -1923,9 +2363,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CE%B4%CE%AF%CE%BA%CE%B1%CE%B9%CE%BF%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-146"
+      "id": "candidate-200-146",
+      "promotedSourceCode": 5,
+      "verifiedForm": "δῐ́καιοι",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -1936,9 +2379,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CE%B4%CE%AF%CE%BA%CE%B1%CE%B9%CE%BF%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-147"
+      "id": "candidate-200-147",
+      "promotedSourceCode": 5,
+      "verifiedForm": "δῐκαίων",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -1949,9 +2395,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CE%B4%CE%AF%CE%BA%CE%B1%CE%B9%CE%BF%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-148"
+      "id": "candidate-200-148",
+      "promotedSourceCode": 5,
+      "verifiedForm": "δῐκαίοις",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -1962,9 +2411,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CE%B4%CE%AF%CE%BA%CE%B1%CE%B9%CE%BF%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-149"
+      "id": "candidate-200-149",
+      "promotedSourceCode": 5,
+      "verifiedForm": "δῐκαίους",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -1975,9 +2427,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CE%B4%CE%AF%CE%BA%CE%B1%CE%B9%CE%BF%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-150"
+      "id": "candidate-200-150",
+      "promotedSourceCode": 5,
+      "verifiedForm": "δῐ́καιοι",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -1988,9 +2443,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CE%B4%CE%AF%CE%BA%CE%B1%CE%B9%CE%BF%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-151"
+      "id": "candidate-200-151",
+      "promotedSourceCode": 5,
+      "verifiedForm": "δῐ́καιαι",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -2001,9 +2459,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CE%B4%CE%AF%CE%BA%CE%B1%CE%B9%CE%BF%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-152"
+      "id": "candidate-200-152",
+      "promotedSourceCode": 5,
+      "verifiedForm": "δῐκαίων",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -2014,9 +2475,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CE%B4%CE%AF%CE%BA%CE%B1%CE%B9%CE%BF%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-153"
+      "id": "candidate-200-153",
+      "promotedSourceCode": 5,
+      "verifiedForm": "δῐκαίαις",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -2027,9 +2491,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CE%B4%CE%AF%CE%BA%CE%B1%CE%B9%CE%BF%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-154"
+      "id": "candidate-200-154",
+      "promotedSourceCode": 5,
+      "verifiedForm": "δῐκαίᾱς",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -2040,9 +2507,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CE%B4%CE%AF%CE%BA%CE%B1%CE%B9%CE%BF%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-155"
+      "id": "candidate-200-155",
+      "promotedSourceCode": 5,
+      "verifiedForm": "δῐ́καιαι",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -2053,9 +2523,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CE%B4%CE%AF%CE%BA%CE%B1%CE%B9%CE%BF%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-156"
+      "id": "candidate-200-156",
+      "promotedSourceCode": 5,
+      "verifiedForm": "δῐ́καιᾰ",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -2066,9 +2539,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CE%B4%CE%AF%CE%BA%CE%B1%CE%B9%CE%BF%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-157"
+      "id": "candidate-200-157",
+      "promotedSourceCode": 5,
+      "verifiedForm": "δῐκαίων",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -2079,9 +2555,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CE%B4%CE%AF%CE%BA%CE%B1%CE%B9%CE%BF%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-158"
+      "id": "candidate-200-158",
+      "promotedSourceCode": 5,
+      "verifiedForm": "δῐκαίοις",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -2092,9 +2571,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CE%B4%CE%AF%CE%BA%CE%B1%CE%B9%CE%BF%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-159"
+      "id": "candidate-200-159",
+      "promotedSourceCode": 5,
+      "verifiedForm": "δῐ́καιᾰ",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -2105,9 +2587,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CE%B4%CE%AF%CE%BA%CE%B1%CE%B9%CE%BF%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-160"
+      "id": "candidate-200-160",
+      "promotedSourceCode": 5,
+      "verifiedForm": "δῐ́καιᾰ",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -2118,9 +2603,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CE%B8%CE%AC%CE%BB%CE%B1%CF%84%CF%84%CE%B1",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-161"
+      "id": "candidate-200-161",
+      "promotedSourceCode": 5,
+      "verifiedForm": "θᾰ́λᾰττᾰ",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -2131,9 +2619,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CE%B8%CE%AC%CE%BB%CE%B1%CF%84%CF%84%CE%B1",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-162"
+      "id": "candidate-200-162",
+      "promotedSourceCode": 5,
+      "verifiedForm": "θᾰλᾰ́ττης",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -2144,9 +2635,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CE%B8%CE%AC%CE%BB%CE%B1%CF%84%CF%84%CE%B1",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-163"
+      "id": "candidate-200-163",
+      "promotedSourceCode": 5,
+      "verifiedForm": "θᾰλᾰ́ττῃ",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -2157,9 +2651,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CE%B8%CE%AC%CE%BB%CE%B1%CF%84%CF%84%CE%B1",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-164"
+      "id": "candidate-200-164",
+      "promotedSourceCode": 5,
+      "verifiedForm": "θᾰ́λᾰττᾰν",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -2170,9 +2667,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CE%B8%CE%AC%CE%BB%CE%B1%CF%84%CF%84%CE%B1",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-165"
+      "id": "candidate-200-165",
+      "promotedSourceCode": 5,
+      "verifiedForm": "θᾰ́λᾰττᾰ",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -2183,9 +2683,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CE%B8%CE%AC%CE%BB%CE%B1%CF%84%CF%84%CE%B1",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-166"
+      "id": "candidate-200-166",
+      "promotedSourceCode": 5,
+      "verifiedForm": "θᾰ́λᾰτται",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -2196,9 +2699,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CE%B8%CE%AC%CE%BB%CE%B1%CF%84%CF%84%CE%B1",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-167"
+      "id": "candidate-200-167",
+      "promotedSourceCode": 5,
+      "verifiedForm": "θᾰλᾰττῶν",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -2209,9 +2715,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CE%B8%CE%AC%CE%BB%CE%B1%CF%84%CF%84%CE%B1",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-168"
+      "id": "candidate-200-168",
+      "promotedSourceCode": 5,
+      "verifiedForm": "θᾰλᾰ́τταις",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -2222,9 +2731,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CE%B8%CE%AC%CE%BB%CE%B1%CF%84%CF%84%CE%B1",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-169"
+      "id": "candidate-200-169",
+      "promotedSourceCode": 5,
+      "verifiedForm": "θᾰλᾰ́ττᾱς",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -2235,9 +2747,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CE%B8%CE%AC%CE%BB%CE%B1%CF%84%CF%84%CE%B1",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-170"
+      "id": "candidate-200-170",
+      "promotedSourceCode": 5,
+      "verifiedForm": "θᾰ́λᾰτται",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -2248,9 +2763,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CE%BE%CF%8D%CE%BB%CE%BF%CE%BD",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-171"
+      "id": "candidate-200-171",
+      "promotedSourceCode": 5,
+      "verifiedForm": "ξῠ́λον",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -2261,9 +2779,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CE%BE%CF%8D%CE%BB%CE%BF%CE%BD",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-172"
+      "id": "candidate-200-172",
+      "promotedSourceCode": 5,
+      "verifiedForm": "ξῠ́λου",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -2274,9 +2795,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CE%BE%CF%8D%CE%BB%CE%BF%CE%BD",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-173"
+      "id": "candidate-200-173",
+      "promotedSourceCode": 5,
+      "verifiedForm": "ξῠ́λῳ",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -2287,9 +2811,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CE%BE%CF%8D%CE%BB%CE%BF%CE%BD",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-174"
+      "id": "candidate-200-174",
+      "promotedSourceCode": 5,
+      "verifiedForm": "ξῠ́λον",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -2300,9 +2827,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CE%BE%CF%8D%CE%BB%CE%BF%CE%BD",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-175"
+      "id": "candidate-200-175",
+      "promotedSourceCode": 5,
+      "verifiedForm": "ξῠ́λον",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -2313,9 +2843,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CE%BE%CF%8D%CE%BB%CE%BF%CE%BD",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-176"
+      "id": "candidate-200-176",
+      "promotedSourceCode": 5,
+      "verifiedForm": "ξῠ́λᾰ",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -2326,9 +2859,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CE%BE%CF%8D%CE%BB%CE%BF%CE%BD",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-177"
+      "id": "candidate-200-177",
+      "promotedSourceCode": 5,
+      "verifiedForm": "ξῠ́λων",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -2339,9 +2875,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CE%BE%CF%8D%CE%BB%CE%BF%CE%BD",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-178"
+      "id": "candidate-200-178",
+      "promotedSourceCode": 5,
+      "verifiedForm": "ξῠ́λοις",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -2352,9 +2891,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CE%BE%CF%8D%CE%BB%CE%BF%CE%BD",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-179"
+      "id": "candidate-200-179",
+      "promotedSourceCode": 5,
+      "verifiedForm": "ξῠ́λᾰ",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -2365,9 +2907,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CE%BE%CF%8D%CE%BB%CE%BF%CE%BD",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-180"
+      "id": "candidate-200-180",
+      "promotedSourceCode": 5,
+      "verifiedForm": "ξῠ́λᾰ",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -2378,9 +2923,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CF%80%CE%B5%CE%BD%CE%AF%CE%B1",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-181"
+      "id": "candidate-200-181",
+      "promotedSourceCode": 5,
+      "verifiedForm": "πενῐ́ᾱ",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -2391,9 +2939,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CF%80%CE%B5%CE%BD%CE%AF%CE%B1",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-182"
+      "id": "candidate-200-182",
+      "promotedSourceCode": 5,
+      "verifiedForm": "πενῐ́ᾱς",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -2404,9 +2955,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CF%80%CE%B5%CE%BD%CE%AF%CE%B1",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-183"
+      "id": "candidate-200-183",
+      "promotedSourceCode": 5,
+      "verifiedForm": "πενῐ́ᾳ",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -2417,9 +2971,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CF%80%CE%B5%CE%BD%CE%AF%CE%B1",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-184"
+      "id": "candidate-200-184",
+      "promotedSourceCode": 5,
+      "verifiedForm": "πενῐ́ᾱν",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -2430,9 +2987,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CF%80%CE%B5%CE%BD%CE%AF%CE%B1",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-185"
+      "id": "candidate-200-185",
+      "promotedSourceCode": 5,
+      "verifiedForm": "πενῐ́ᾱ",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -2443,9 +3003,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CF%80%CE%B5%CE%BD%CE%AF%CE%B1",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-186"
+      "id": "candidate-200-186",
+      "promotedSourceCode": 5,
+      "verifiedForm": "πενῐ́αι",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -2456,9 +3019,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CF%80%CE%B5%CE%BD%CE%AF%CE%B1",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-187"
+      "id": "candidate-200-187",
+      "promotedSourceCode": 5,
+      "verifiedForm": "πενῐῶν",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -2469,9 +3035,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CF%80%CE%B5%CE%BD%CE%AF%CE%B1",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-188"
+      "id": "candidate-200-188",
+      "promotedSourceCode": 5,
+      "verifiedForm": "πενῐ́αις",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -2482,9 +3051,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CF%80%CE%B5%CE%BD%CE%AF%CE%B1",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-189"
+      "id": "candidate-200-189",
+      "promotedSourceCode": 5,
+      "verifiedForm": "πενῐ́ᾱς",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -2495,9 +3067,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CF%80%CE%B5%CE%BD%CE%AF%CE%B1",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-190"
+      "id": "candidate-200-190",
+      "promotedSourceCode": 5,
+      "verifiedForm": "πενῐ́αι",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -2508,9 +3083,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CF%80%CF%8C%CE%BB%CE%B5%CE%BC%CE%BF%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-191"
+      "id": "candidate-200-191",
+      "promotedSourceCode": 5,
+      "verifiedForm": "πόλεμος",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -2521,9 +3099,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CF%80%CF%8C%CE%BB%CE%B5%CE%BC%CE%BF%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-192"
+      "id": "candidate-200-192",
+      "promotedSourceCode": 5,
+      "verifiedForm": "πολέμου",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -2534,9 +3115,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CF%80%CF%8C%CE%BB%CE%B5%CE%BC%CE%BF%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-193"
+      "id": "candidate-200-193",
+      "promotedSourceCode": 5,
+      "verifiedForm": "πολέμῳ",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -2547,9 +3131,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CF%80%CF%8C%CE%BB%CE%B5%CE%BC%CE%BF%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-194"
+      "id": "candidate-200-194",
+      "promotedSourceCode": 5,
+      "verifiedForm": "πόλεμον",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -2560,9 +3147,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CF%80%CF%8C%CE%BB%CE%B5%CE%BC%CE%BF%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-195"
+      "id": "candidate-200-195",
+      "promotedSourceCode": 5,
+      "verifiedForm": "πόλεμε",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -2573,9 +3163,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CF%80%CF%8C%CE%BB%CE%B5%CE%BC%CE%BF%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-196"
+      "id": "candidate-200-196",
+      "promotedSourceCode": 5,
+      "verifiedForm": "πόλεμοι",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -2586,9 +3179,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CF%80%CF%8C%CE%BB%CE%B5%CE%BC%CE%BF%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-197"
+      "id": "candidate-200-197",
+      "promotedSourceCode": 5,
+      "verifiedForm": "πολέμων",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -2599,9 +3195,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CF%80%CF%8C%CE%BB%CE%B5%CE%BC%CE%BF%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-198"
+      "id": "candidate-200-198",
+      "promotedSourceCode": 5,
+      "verifiedForm": "πολέμοις",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -2612,9 +3211,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CF%80%CF%8C%CE%BB%CE%B5%CE%BC%CE%BF%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-199"
+      "id": "candidate-200-199",
+      "promotedSourceCode": 5,
+      "verifiedForm": "πολέμους",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     },
     {
       "language": "grc",
@@ -2625,9 +3227,12 @@
       "originalSourceCode": 4,
       "reference": "https://en.wiktionary.org/wiki/%CF%80%CF%8C%CE%BB%CE%B5%CE%BC%CE%BF%CF%82",
       "secondaryReference": "https://en.wiktionary.org/wiki/Appendix:Ancient_Greek_grammar_tables",
-      "decision": "VERIFICACION_DOCUMENTAL_POR_CASILLA",
+      "decision": "INCORPORADA_FUENTE_5_TRAS_CONTRASTE_INDIVIDUAL",
       "gradeEligible": false,
-      "id": "candidate-200-200"
+      "id": "candidate-200-200",
+      "promotedSourceCode": 5,
+      "verifiedForm": "πόλεμοι",
+      "curricularNote": "Lema con unidades docentes; conservar análisis alternativos y no forzar una lectura única de formas sincréticas"
     }
   ]
 }

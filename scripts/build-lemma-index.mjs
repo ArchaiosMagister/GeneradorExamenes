@@ -231,7 +231,7 @@ async function main(){
  for(const record of overrides.singleForms){
   if(!['lat','grc'].includes(record.lang)||!catalog[record.lang]?.[record.lemma]||
      typeof record.form!=='string'||!/^https:\/\//.test(record.reference)||
-     !(/^(?:V;IMP;ACT;PRS;2;PL|V;PTCP;(?:ACT|PASS);PRF;(?:NOM|GEN|DAT|ACC|ABL|VOC);(?:SG|PL)(?:;(?:MASC|FEM|NEUT))?|N;(?:NOM|GEN|DAT|ACC|ABL|VOC);(?:SG|PL))$/.test(record.tags)))
+     !( /^(?:V;IMP;ACT;PRS;2;PL|V;PTCP;(?:ACT|PASS);PRF;(?:NOM|GEN|DAT|ACC|ABL|VOC);(?:SG|PL)(?:;(?:MASC|FEM|NEUT))?|N;(?:NOM|GEN|DAT|ACC|ABL|VOC);(?:SG|PL))$/.test(record.tags) || (record.lang==='grc' && /^ADJ;(?:NOM|GEN|DAT|ACC|VOC);(?:SG|PL);(?:MASC|FEM|NEUT)$/.test(record.tags)) ))
    throw Error('Incidencia individual sin documentación o rasgos explícitos: '+record.lemma);
   const k=record.lang+'|'+record.lemma+'|'+norm(record.form)+'|'+record.tags;
   if(verifiedSingleKeys.has(k))throw Error('Forma duplicada en la revisión individual: '+k);
