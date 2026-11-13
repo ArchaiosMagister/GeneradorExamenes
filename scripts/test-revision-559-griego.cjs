@@ -35,7 +35,11 @@ for(const item of review.items){
  assert.equal(item.schoolForm,simplify(item.sourceForm),'Ortografía escolar no reproducible');
  const vocab=bank.vocabulary.grc[item.lemma]?.gr1;
  assert(vocab,'Sin lema docente: '+item.lemma);
- assert.equal(item.teacherEntry,vocab.entry);
+ // La auditoría es histórica y conserva el enunciado previo a la decisión.
+ if(item.lemma==='εχθροσ'){
+  assert.equal(item.teacherEntry,'ἐχθρός, –ον');
+  assert.equal(vocab.entry,'ἐχθρός, –ά, –όν');
+ }else assert.equal(item.teacherEntry,vocab.entry);
  assert.deepEqual(item.units,vocab.units);
  const entry=sourceByLemma.get(item.lemma);
  const has=Boolean(entry?.forms?.some(y=>y[0]===item.sourceForm&&y[1]===item.analysis));
