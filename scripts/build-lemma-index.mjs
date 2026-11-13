@@ -318,7 +318,7 @@ async function main(){
  for(const x of missingGreek){
   const slot=catalog.grc[x.lemma]?.gr1;
   if(!slot||slot.units?.length!==0||x.gradeEligible||x.verifiedIndividual||
-     !/^grc-pending-\\d{3}$/.test(x.id)||!x.sourceForm||!x.analysis)
+     !/^grc-pending-\d{3}$/.test(x.id)||!x.sourceForm||!x.analysis)
    throw Error('Ficha histórica griega no segura: '+x.id);
   add('grc',x.lemma,x.sourceForm,x.analysis,'wikcionario');
  }
