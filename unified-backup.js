@@ -6,7 +6,8 @@
   'examina_draft_v14':'draft','examina_previous_v14':'draft',
   'examina_exam_sentences_v1':'map','examina_exam_gloss_choices_v1':'map',
   'examina-morph-review-v1':'map','examina-greek-discrepancy-v1':'map',
-  'examina_teacher_authorizations_v1':'map',
+  'examina-academic-evidence-v1':'evidence',
+  'examina_latin1_phonetic_rules_v1':'rules',
   'examina_question_points_v1':'map',
   'examina_required_v9':'required','examina_extra':'data',
   'examina_lexical_banks_v1':'data','examina_vocabulary_project_v1':'data'
@@ -31,8 +32,9 @@
   if(kind==='required'&&(!Array.isArray(value)||value.length>50000||
     !value.every(x=>record(x)&&typeof x.course==='string'&&typeof x.unit==='string'&&typeof x.entry==='string')))
    throw Error('Vocabulario exigible no válido');
-  if((kind==='map'||kind==='data')&&!record(value))throw Error('Datos no válidos: '+key);
-  if(kind==='map'&&Object.keys(value).some(k=>unsafe(k)))throw Error('Identificador inseguro: '+key);
+  if((kind==='map'||kind==='data'||kind==='evidence')&&!record(value))throw Error('Datos no válidos: '+key);
+  if(kind==='rules'&&(!Array.isArray(value)||value.length>30||!value.every(x=>typeof x==='string'&&/^N\d{2}$/.test(x))))throw Error('Normas fonéticas no válidas');
+  if((kind==='map'||kind==='evidence')&&Object.keys(value).some(k=>unsafe(k)))throw Error('Identificador inseguro: '+key);
   if(key==='examina_vocabulary_project_v1'&&(!Array.isArray(value.units)||
     !Number.isInteger(value.count)||value.count<1||value.count>100))
    throw Error('Proyecto de vocabulario no válido');
@@ -105,8 +107,13 @@
  function prepareImport(raw){
   const data=validateBackup(raw);
   const changes=Object.create(null),addArchive=[];
-  const stats={newKeys:0,newItems:0,identical:0,conflicts:0,archived:0};
+  const stats={newKeys:0,newItems:0,identical:0,conflicts:0,archived:0,awaitingEvidence:0};
   for(const [key,incoming] of Object.entries(data.entries)){
+   // Las autorizaciones importadas requieren contraste con el banco vigente.
+   if(GROUPS[key]==='evidence'){
+    addArchive.push({key,value:incoming});stats.awaitingEvidence+=Object.keys(incoming).length;
+    continue;
+   }
    const previous=storage().getItem(key);
    if(previous===null){changes[key]=incoming;stats.newKeys++;continue}
    let current;
@@ -115,7 +122,13 @@
    }
    if(json(current)===json(incoming)){stats.identical++;continue}
    let merged=null;
-   if(GROUPS[key]==='map')merged=mergeMap(current,incoming);
+   if(key==='examina-morph-review-v1'&&root.ExaminaTeacherReview?.reviewMergeBundle){
+    const engine=root.ExaminaTeacherReview;
+    const checked=engine.reviewMergeBundle(current,engine.reviewBundle(incoming),[]);
+    merged={value:checked.decisions,added:checked.added+checked.historyAdded,
+     duplicate:checked.identical,conflict:null,conflicts:checked.conflicts};
+    stats.conflicts+=checked.conflicts;
+   }else if(GROUPS[key]==='map')merged=mergeMap(current,incoming);
    else if(GROUPS[key]==='required')merged=mergeArray(current,incoming);
    if(merged){
     stats.newItems+=merged.added;
@@ -154,9 +167,35 @@
  function restoreFromArchive(index){
   const item=readArchive()[index];
   if(!item||item.key==='liveDraft'||!own(GROUPS,item.key))throw Error('Elige una entrada recuperable');
+  if(GROUPS[item.key]==='evidence')throw Error('Usa la validación individual de autorizaciones');
   validateItem(item.key,item.value);
   const data={schema:SCHEMA,version:1,entries:{[item.key]:item.value},archive:[],liveDraft:null};
   return applyImport(data);
+ }
+ async function recoverEvidence(index){
+  const item=readArchive()[index];
+  if(!item||GROUPS[item.key]!=='evidence')throw Error('No es un paquete de autorizaciones');
+  validateItem(item.key,item.value);
+  const engine=root.ExaminaTeacherReview,reader=root.ExaminaOfflineLemmatizer;
+  if(!engine?.validateEvidenceImport||!reader?.load)
+   throw Error('El validador académico no está disponible');
+  const bank=await reader.load();
+  const raw=storage().getItem(item.key);
+  let current={};
+  if(raw!==null){
+   try{current=JSON.parse(raw);validateItem(item.key,current)}
+   catch{throw Error('Las autorizaciones locales están dañadas; conserva una copia antes de recuperarlas')}
+  }
+  const checked=engine.validateEvidenceImport(bank,
+   {schema:'examina-academic-evidence/v1',decisions:item.value},current);
+  if(!root.confirm('Se validaron '+checked.total+' permisos contra el índice actual. ¿Incorporar '+
+    checked.added+' autorizaciones nuevas, conservando las locales?'))return null;
+  if(checked.added){
+   try{storage().setItem(item.key,json(checked.decisions))}
+   catch{throw Error('No se pudieron guardar las autorizaciones; conserva la copia externa')}
+  }
+  return {newKeys:raw===null&&checked.added?1:0,newItems:checked.added,
+   archived:0,conflicts:0,identical:checked.preserved,awaitingEvidence:0};
  }
  function download(filename,value){
   const blob=new Blob([json(value)+'\n'],{type:'application/json;charset=utf-8'});
@@ -235,7 +274,7 @@
     status.textContent='Registro descargado. Puedes trasladarlo a otro dispositivo sin perder los actuales.';
    }catch(error){status.textContent=error.message}
   });
-  el('examinaArchiveRecover').addEventListener('click',()=>{
+  el('examinaArchiveRecover').addEventListener('click',async()=>{
    const index=Number(el('examinaArchiveSelect').value),item=selected();if(!item)return;
    try{
     if(item.key==='liveDraft'||GROUPS[item.key]==='draft'){
@@ -255,7 +294,8 @@
      }
      status.textContent='Borrador abierto sin modificar las copias locales guardadas. Guárdalo manualmente si deseas conservarlo.';
     }else{
-     const stats=restoreFromArchive(index);
+     const stats=GROUPS[item.key]==='evidence'?await recoverEvidence(index):restoreFromArchive(index);
+     if(!stats)return;
      refresh();
      status.textContent='Se añadieron '+(stats.newKeys+stats.newItems)+
       ' elementos nuevos. Los conflictos siguen archivados. Recarga tras guardar el examen.';
@@ -264,7 +304,7 @@
   });
   refresh();
  }
- root.ExaminaUnifiedBackup={makeBackup,validateBackup,prepareImport,applyImport,readArchive,restoreFromArchive};
+ root.ExaminaUnifiedBackup={makeBackup,validateBackup,prepareImport,applyImport,readArchive,restoreFromArchive,recoverEvidence};
  if(root.document?.readyState==='loading')root.document.addEventListener('DOMContentLoaded',init);
  else if(root.document)init();
 })(window);
