@@ -186,9 +186,25 @@ async function checkFile(browser,filename){
      lemmaItalic:wordInline(terms[1]).includes('<w:i/>'),
      conjugationItalic:wordInline(terms[1].nextSibling).includes('<w:i/>')};
    });
+   const fields=[...document.querySelectorAll('[data-editor-for="verb"] .exam-word-editor input')];
+   const editorValues=fields.map(input=>input.value);
+   const first=tbl.querySelector('tbody td:first-child > i:first-child');
+   const lemma=first?.nextElementSibling;
+   const lemmaBefore=lemma?.textContent;
+   if(fields.length&&first){
+    fields[0].value='forma revisada';
+    fields[0].dispatchEvent(new Event('input',{bubbles:true}));
+   }
+   const editWorked=first?.textContent==='forma revisada'&&lemma?.textContent===lemmaBefore&&
+    wordExamTable(tbl).includes('forma revisada');
+   if(fields.length&&first){
+    first.textContent=rows[0].form;
+    first.dispatchEvent(new Event('input',{bubbles:true}));
+   }
+   const reverseEditWorked=fields[0]?.value===rows[0]?.form;
    const pool=latinMorphologyVerbPool(selectedUnits());
    const picked=examSelectionCache.get(examCacheSignature('verb'))||[];
-   return {unit,rows,picked: picked.map(({form,entry,voice,tense})=>({form,entry,voice,tense})),
+   return {unit,rows,editorValues,editWorked,reverseEditWorked,picked: picked.map(({form,entry,voice,tense})=>({form,entry,voice,tense})),
     allVoices:[...new Set(pool.map(item=>item.voice))],
     allTenses:[...new Set(pool.map(item=>item.tense))],
     duco:pool.filter(x=>examKey(x.entry)==='duco').map(x=>({form:x.form,tense:x.tense,voice:x.voice})),
@@ -203,6 +219,10 @@ async function checkFile(browser,filename){
  for(const sample of latinVerbMorphology){
   const {unit,rows,picked,allVoices,allTenses,wordXml}=sample;
   assert(rows.length>=2,filename+' '+unit+': tabla verbal vacía');
+  assert.deepEqual(sample.editorValues,rows.map(row=>row.form),
+   filename+' '+unit+': debe haber un solo campo por forma verbal');
+  assert(sample.editWorked&&sample.reverseEditWorked,
+   filename+' '+unit+': la edición debe conservar el enunciado y llegar a Word');
   assert(rows.every(x=>x.form&&x.lemma&&x.lemmaItalic&&!x.conjugationItalic),
    filename+' '+unit+': falta lema en cursiva o hay conjugación en cursiva');
   assert(rows.every(x=>x.text.includes('(')&&x.text.includes(')')),
@@ -680,7 +700,9 @@ async function checkFile(browser,filename){
  const xml=readStoredZipEntry(fs.readFileSync(await downloaded.path()),'word/document.xml');
  assert(xml.includes('Puella amat.')&&xml.includes('Nauta navigat.')&&xml.includes('g.'));
  await page.setViewportSize({width:390,height:844});
+ await page.getByRole('tab',{name:/Vista pr[eè]via/}).click();
  assert(await page.locator('#paper .exam-sheet').isVisible(),filename+': vista previa oculta en móvil');
+ await page.setViewportSize({width:1360,height:940});
  await checkCulture(page,filename);
  assert.deepEqual(errors,[],filename+': errores JavaScript');
  await context.close();

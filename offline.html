@@ -4950,6 +4950,8 @@ function examEditorPreviewValue(target,mode='plain'){
 }
 function linkExamWordEditor(target,input,mode='plain'){
  if(!target||!input)return;
+ if(target.matches('.reference-verb-table td > i:first-child,[data-analysis-slot] > i:first-child'))
+  target.setAttribute('contenteditable','plaintext-only');
  const id='exam-word-link-'+(++examEditorLinkSerial);
  target.dataset.examEditorLink=id;input.dataset.examEditorLink=id;
  examEditorLinks.set(target,{input,mode});
@@ -5014,8 +5016,11 @@ function refreshManualMorphWords(forceGreekDraft=false){
  };
  // Los siete modelos usan tablas, listas y formas independientes; no las antiguas .forms b.
  paper.querySelectorAll('.exam-nouns thead tr:first-child th[colspan]').forEach(el=>{if(!el.closest('#answerkey'))add(el,'Declinación')});
- paper.querySelectorAll('.exam-verbs thead tr:first-child th[colspan]').forEach(el=>{if(!el.closest('#answerkey'))add(el,'Conjugación')});
- paper.querySelectorAll('.reference-verb-table tbody td:first-child i').forEach(el=>add(el,'Forma verbal'));
+ paper.querySelectorAll('.exam-verbs thead tr:first-child th[colspan]').forEach(el=>{
+  if(!el.closest('#answerkey'))add(el.dataset.corpusId?el.querySelector('i')||el:el,'Conjugación');
+ });
+ paper.querySelectorAll('.reference-verb-table tbody td:first-child > i:first-child')
+  .forEach(el=>{if(!el.closest('#answerkey'))add(el,'Forma verbal')});
  paper.querySelectorAll('.exam-pronouns tbody td:first-child').forEach(cell=>{
   if(!cell.closest('#answerkey'))add(cell.querySelector('i')||cell,'Pronombre');
  });
@@ -7282,10 +7287,10 @@ function greekExamControls(){
    const node=[...$('paper').querySelectorAll('[data-corpus-id]')]
     .find(element=>element.dataset.corpusId===id);
    const target=kind==='declension'?node?.querySelector('thead th[colspan]'):
-    kind==='conjugation'?node:
+    kind==='conjugation'?node?.querySelector('i'):
     kind==='forms'?node?.querySelector('span:last-child'):
     kind==='pronouns'?node?.querySelector('td:first-child'):node;
-   const mode=kind==='etymology'?'etymology':kind==='forms'?'colon':'plain';
+   const mode=kind==='etymology'?'etymology':'plain';
    input.value=target?examEditorPreviewValue(target,mode):
     kind==='conjugation'?headLex(item.lemmas[0]):item.prompt;
    input.setAttribute('aria-label','Editar '+label+' '+id);
@@ -7293,9 +7298,7 @@ function greekExamControls(){
    input.addEventListener('input',()=>{
     if(!target)return;
     const value=input.value.trim();
-    if(kind==='declension'||kind==='conjugation')
-     target.innerHTML=examParadigmHeading(value,kind==='conjugation'?'conjugation':'declension');
-    else if(kind==='forms')target.textContent=value+':';
+    if(kind==='declension')target.innerHTML=examParadigmHeading(value,'declension');
     else if(kind==='etymology'){
      const prefix=target.textContent.match(/^\s*[a-z]\.\s*/iu)?.[0]||'';
      target.textContent=prefix+value+':';
