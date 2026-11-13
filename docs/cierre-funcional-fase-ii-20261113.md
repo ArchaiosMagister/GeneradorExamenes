@@ -25,3 +25,14 @@ Las fuentes híbridas en línea no están activadas sin contratos verificables d
 5. La rama principal y la web pública permanecen intactas hasta autorización de publicación.
 
 Este documento **cierra el bloque funcional de la fase II sin declarar terminada la revisión filológica individual de todos los paradigmas**.
+
+## Cierre verificado, 13 de noviembre de 2026
+
+**Fase II funcional terminada en la rama de revisión.** El cierre se fundamenta en los dos workflows correctos para el último commit de código `4c605cf6fbbbd8f2797b16758b107b02d2595fdf`:
+
+- [Auditoría autónoma integral](https://github.com/ArchaiosMagister/GeneradorExamenes/actions/runs/43422349318): correcta; comprueba igualdad exacta de `offline.html` regenerado con el archivo guardado, trazabilidad, currículo, Eulexis local, Word y PWA.
+- [Regresión sin despliegue](https://github.com/ArchaiosMagister/GeneradorExamenes/actions/runs/43422349170): correcta.
+
+La revisión incorporó formas de `eo`, `redeo`, `transeo`, `proficiscor`, `ηγεομαι` y `μαχομαι` con etiquetas individualizadas. El índice persistente y `offline.html` coinciden, incluyendo las candidatas griegas del índice externo; tales candidatas **no se convierten en respuestas verificadas**. Las colas de cobertura continúan documentando los tiempos y variantes todavía excluidos, que son trabajo académico futuro y **no invalidan** los requisitos técnicos y de seguridad de esta fase.
+
+La PR #97 se conserva en borrador, sin fusión ni despliegue. La fase III puede apoyarse en esta rama como base validada. Cualquier cambio posterior en la fase II debe revalidarse antes de propagarse.
