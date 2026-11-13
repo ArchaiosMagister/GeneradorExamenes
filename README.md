@@ -179,3 +179,5 @@ Lee [la guía del generador por unidades](docs/generador-vocabulario.md) y [el i
 ## Criterios fonéticos homologados (12-11-2026)
 
 Las cuatro decisiones sobre `seniorem`, `sensum`, `sponsam` y `sponsum` se han aplicado también a GeneradorExamenes, además de las reglas generales para *-ns- → -s-* (N15), *-um → -o* (N01) y la pérdida fija de *-m* (FIX_M, **no seleccionable** y distinta de N03). El banco de 655 palabras y las 73 fichas del programa de Latín I conservan sus étimos, resultados y estados. Se han incorporado validaciones automáticas para las fichas futuras, incluidas en el flujo de publicación. Véase `data/fonetica/criterios-docentes.mjs` y [el informe docente](docs/criterios-foneticos-2026-11-12.md).
+
+Decisiones filológicas de Griego I: los paradigmas de ἀθάνατος, ἐχθρός y αἰσχρός se rigen por `data/lemmas/greek-adjective-decisions.json`. La aprobación docente del enunciado **no verifica automáticamente formas candidatas**. Véase `docs/revision-559-griego-20261113.md`.
