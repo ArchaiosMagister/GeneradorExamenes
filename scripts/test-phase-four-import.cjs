@@ -12,8 +12,8 @@ assert.equal(typeof api.evidenceProvisionalForbidden,'function');
 const bank=get('data/lemmas/teacher-forms.json');
 const triage=get('data/lemmas/revision-559-griego-20261113.json');
 const held=triage.items.filter(x=>['ACENTO_INCORRECTO_EN_FUENTE',
- 'VARIANTE_DE_TERMINACIONES_PARA_DECISION_DOCENTE','VARIANTE_EPICA_FUERA_DE_CURRICULO'].includes(x.status));
-assert.equal(held.length,46);
+ 'VARIANTE_DE_TERMINACIONES_PARA_DECISION_DOCENTE','VARIANTE_EPICA_FUERA_DE_CURRICULO'].includes(x.status)&&x.lemma!=='εχθροσ');
+assert.equal(held.length,36); // 10 de 46 trasladadas a fuente 5.
 const schema='examina-academic-evidence/v1';
 for(const x of held){
  const row=bank.rows.grc.find(r=>r[0]===x.lemma&&r[1]===x.sourceForm&&r[2]===x.analysis&&r[3]===4);
@@ -29,6 +29,19 @@ for(const x of held){
  assert.equal(api.evidenceCheckExam(paper,'gr1',old).ok,false);
  assert.throws(()=>api.validateEvidenceImport(bank,{schema,decisions:old},{}),
   /Forma bloqueada|Forma inexistente/);
+}
+// Los permisos de fuente 4 anteriores a la migración de ἐχθρός
+// nunca se reactivan cuando existe una lectura contrastada de fuente 5.
+for(const historical of triage.items.filter(x=>x.lemma==='εχθροσ')){
+ const obsolete=[historical.lemma,historical.sourceForm,historical.analysis,4];
+ assert(!bank.rows.grc.some(r=>JSON.stringify(r)===JSON.stringify(obsolete)));
+ assert(api.evidenceProvisionalForbidden('gr1',obsolete));
+ const key=api.evidenceKey('gr1',obsolete);
+ const old={[key]:{schema,key,action:'autorizar_uso',verified:false,course:'gr1',
+  lemma:historical.lemma,form:historical.sourceForm,tags:historical.analysis,
+  source:4,approvedAt:'2026-11-13T14:00:00Z'}};
+ assert.throws(()=>api.validateEvidenceImport(bank,{schema,decisions:old},{}),/Forma inexistente/);
+ assert(!api.approvedExamForms(bank,'gr1',14,old).some(x=>x.evidenceKey===key));
 }
 const eligible=api.evidenceRows(bank,'lat1',14).find(row=>
  api.evidenceCurricular('lat1',row[2],14)&&api.evidenceUniqueReading(bank,'lat1',row));
@@ -56,6 +69,6 @@ assert(corrections.some(x=>x.lang==='grc'&&x.lemma==='κεφαλη'&&
  x.from==='κεφαλῆ, –ῆς'&&x.to==='κεφαλή, –ῆς'));
 assert(read('index.html').includes('κεφαλή, –ῆς'));
 assert(read('offline.html').includes('κεφαλή, –ῆς'));
-assert.equal(bank.counts.grc.wikcionario,559);
-assert.equal(bank.counts.grc.contrastado,464);
-console.log('Fase IV: 46 lecturas en cuarentena, importación no destructiva y κεφαλή corregida.');
+assert.equal(bank.counts.grc.wikcionario,549);
+assert.equal(bank.counts.grc.contrastado,474);
+console.log('Fase IV: 36 lecturas todavía en cuarentena, diez transferidas sin permisos heredados, importación no destructiva y κεφαλή corregida.');
