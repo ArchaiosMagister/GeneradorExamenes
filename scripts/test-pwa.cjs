@@ -258,7 +258,15 @@ const server=http.createServer(async(req,res)=>{
   await context.setOffline(true);
   await page.reload({waitUntil:'load'});
   assert(await page.locator('#paper .exam-sheet').count()>0,'La vista previa no se carga sin red');
-  await page.locator('#pwaStatus').filter({hasText:/^Sin conexión/}).waitFor();
+  await page.locator('#pwaStatus').waitFor({state:'visible'});
+  const offlineStatus=await page.evaluate(async()=>{
+   const connected=await fetch('./comprobar-conexion-pwa',{cache:'no-store'})
+    .then(()=>true,()=>false);
+   return {connected,reportedOnline:navigator.onLine,status:document.getElementById('pwaStatus').textContent};
+  });
+  assert.equal(offlineStatus.connected,false,'La recarga debe funcionar con la red realmente cortada');
+  assert.match(offlineStatus.status,offlineStatus.reportedOnline
+   ?/^Preparada para funcionar sin conexión/:/^Sin conexión/);
   assert(await page.evaluate(key=>!!localStorage.getItem(key),storedDraft),
    'El borrador local se ha perdido tras recargar offline');
   await page.evaluate(()=>document.getElementById('restoreDraft').click());
