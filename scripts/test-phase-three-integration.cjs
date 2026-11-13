@@ -93,7 +93,7 @@ async function auditLatin(page,file){
   const values=[...restored.querySelectorAll('[data-sentence-slot]')].map(x=>x.textContent);
   return {
    changeForms,unchangedAfterForms,prefixOk,lexicalStable,filterStable,textPreserved,
-   initialPoints:preflight.total,savedCount:saved?.sentenceCount,
+   initialPoints:window.ExaminaScoring.total(),savedCount:saved?.sentenceCount,
    restoredCount:Number($('count-sent').value),restoredValues:values,
    restoredHeader:restored.textContent.includes('AUDITORIA-DOCENTE'),
    restoredOther:restored.textContent.includes('AUDITORIA-VERBOS'),
