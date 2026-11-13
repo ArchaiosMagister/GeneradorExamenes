@@ -50,10 +50,11 @@ async function run(browser){
   await page.locator('#reviewBackupStatus').filter({hasText:'Importación completada'}).waitFor();
   item=await page.evaluate(id=>JSON.parse(localStorage.getItem('examina-morph-review-v1'))[id],target.id);
   assert.equal(item.decision,'corregir','La importación sobrescribió un criterio local');
-  assert.equal(item.alternatives.length,1);
+  assert(item.alternatives.length>=2,'Deben conservarse la observación previa y la decisión importada');
+  assert(item.alternatives.some(x=>x.decision==='excluir'&&x.note==='Mantener fuera'));
   const history=card.locator('details');
   await history.locator('summary').click();
-  await history.getByRole('button',{name:'Usar esta decisión'}).click();
+  await history.getByRole('button',{name:'Usar esta decisión'}).last().click();
   item=await page.evaluate(id=>JSON.parse(localStorage.getItem('examina-morph-review-v1'))[id],target.id);
   assert.equal(item.decision,'excluir');
   assert(item.alternatives.some(x=>x.decision==='corregir'));
@@ -72,7 +73,7 @@ async function run(browser){
   await page.reload({waitUntil:'load'});
   const reloaded=await page.evaluate(id=>JSON.parse(localStorage.getItem('examina-morph-review-v1'))[id],target.id);
   assert.equal(reloaded.decision,'excluir','La revisión no se conservó entre sesiones');
-  assert.equal(reloaded.alternatives.length,1);
+  assert(reloaded.alternatives.length>=2);
   assert.deepEqual(errors,[],'Errores JavaScript durante conciliación');
   assert.deepEqual(requests,[],'La cola docente offline no debe usar la red');
   console.log('Cola docente Chromium: 68 tarjetas, importar, conservar conflictos, elegir alternativa, exportar y persistir offline.');
