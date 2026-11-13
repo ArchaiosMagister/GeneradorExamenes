@@ -28,20 +28,20 @@ const bundle=(entries,extra={})=>({schema,version:1,created:'2026-11-13T00:00:00
   'examina_draft_v14':validDraft('<p>Mi examen actual</p>'),
   'examina-morph-review-v1':{a:{decision:'excluir',note:'contrastado'}},
   'examina-greek-discrepancy-v1':{'gr1|λόγος':{action:'all'}},
-  'examina_teacher_authorizations_v1':{'lat1|amo':{approved:true,source:'docente'}},
+  'examina-academic-evidence-v1':{'lat1|amo':{approved:true,source:'docente'}},
   'examina_required_v9':[{course:'latin1',unit:'UD1',entry:'puella, -ae'}]
  });
  const backup=local.api.makeBackup();
  assert.equal(backup.schema,schema);
  assert.equal(backup.entries['examina_draft_v14'].html,'<p>Mi examen actual</p>');
  assert.equal(backup.liveDraft.html,'<p>Trabajo todavía no guardado</p>');
- assert.equal(backup.entries['examina_teacher_authorizations_v1']['lat1|amo'].approved,true);
+ assert.equal(backup.entries['examina-academic-evidence-v1']['lat1|amo'].approved,true);
  assert.equal(backup.entries['examina_required_v9'].length,1);
  const importFile=bundle({
   'examina_draft_v14':validDraft('<p>Borrador en otro iPad</p>'),
   'examina-morph-review-v1':{a:{decision:'aceptar'},b:{decision:'corregir'}},
   'examina-greek-discrepancy-v1':{'gr1|λόγος':{action:'exclude'},'gr1|δῶρον':{action:'all'}},
-  'examina_teacher_authorizations_v1':{'lat1|amo':{approved:false},'lat1|sum':{approved:true}},
+  'examina-academic-evidence-v1':{'lat1|amo':{approved:false},'lat1|sum':{approved:true}},
   'examina_required_v9':[
    {course:'latin1',unit:'UD1',entry:'puella, -ae',meaning:'alterada'},
    {course:'latin1',unit:'UD2',entry:'rosa, -ae'}
@@ -50,25 +50,25 @@ const bundle=(entries,extra={})=>({schema,version:1,created:'2026-11-13T00:00:00
  },{liveDraft:validDraft('<p>Sin guardar del otro equipo</p>')});
  const plan=local.api.prepareImport(importFile);
  assert.equal(plan.stats.newKeys,1);
- assert.equal(plan.stats.newItems,4);
+ assert.equal(plan.stats.newItems,3);
  assert.ok(plan.stats.conflicts>=4);
  assert.deepEqual(Object.keys(plan.changes).sort(),
-  ['examina-morph-review-v1','examina-greek-discrepancy-v1','examina_teacher_authorizations_v1','examina_required_v9','examina_exam_sentences_v1','examina_unified_archive_v1'].sort());
+  ['examina-morph-review-v1','examina-greek-discrepancy-v1','examina_required_v9','examina_exam_sentences_v1','examina_unified_archive_v1'].sort());
  const result=local.api.applyImport(importFile);
- assert.equal(result.newItems,4);
+ assert.equal(result.newItems,3);
  assert.equal(JSON.parse(local.storage.getItem('examina_draft_v14')).html,'<p>Mi examen actual</p>');
  assert.equal(JSON.parse(local.storage.getItem('examina-morph-review-v1')).a.decision,'excluir');
  assert.equal(JSON.parse(local.storage.getItem('examina-morph-review-v1')).b.decision,'corregir');
  assert.equal(JSON.parse(local.storage.getItem('examina-greek-discrepancy-v1'))['gr1|λόγος'].action,'all');
  assert.equal(JSON.parse(local.storage.getItem('examina-greek-discrepancy-v1'))['gr1|δῶρον'].action,'all');
- assert.equal(JSON.parse(local.storage.getItem('examina_teacher_authorizations_v1'))['lat1|amo'].approved,true);
- assert.equal(JSON.parse(local.storage.getItem('examina_teacher_authorizations_v1'))['lat1|sum'].approved,true);
+ assert.equal(JSON.parse(local.storage.getItem('examina-academic-evidence-v1'))['lat1|amo'].approved,true);
+ assert.equal(JSON.parse(local.storage.getItem('examina-academic-evidence-v1'))['lat1|sum'],undefined,'Sin validación no se activan autorizaciones');
  assert.equal(JSON.parse(local.storage.getItem('examina_required_v9')).length,2);
  let archive=local.api.readArchive();
  assert.ok(archive.find(x=>x.key==='examina_draft_v14'&&x.value.html.includes('otro iPad')));
  assert.ok(archive.find(x=>x.key==='liveDraft'&&x.value.html.includes('Sin guardar')));
  assert.ok(archive.find(x=>x.key==='examina_required_v9'&&Array.isArray(x.value)&&x.value[0].meaning==='alterada'));
- assert.ok(archive.find(x=>x.key==='examina_teacher_authorizations_v1'&&x.value['lat1|amo'].approved===false));
+ assert.ok(archive.find(x=>x.key==='examina-academic-evidence-v1'&&x.value['lat1|amo'].approved===false));
  const same=local.api.applyImport(importFile);
  assert.equal(same.newItems,0,'La segunda importación debe ser idempotente');
  assert.equal(local.api.readArchive().length,archive.length,'No duplicar conflictos archivados');
@@ -77,7 +77,7 @@ const bundle=(entries,extra={})=>({schema,version:1,created:'2026-11-13T00:00:00
  const empty=create();
  empty.api.applyImport(portable);
  assert.equal(JSON.parse(empty.storage.getItem('examina_draft_v14')).html,'<p>Mi examen actual</p>');
- assert.equal(empty.api.readArchive().length,archive.length);
+ assert.ok(empty.api.readArchive().length>=archive.length,'Las autorizaciones deben seguir archivadas hasta su validación');
  const draftIndex=archive.findIndex(x=>x.key==='examina_draft_v14');
  assert.equal(local.api.restoreFromArchive(draftIndex).archived,0,'No duplicar un conflicto existente');
  assert.equal(JSON.parse(local.storage.getItem('examina_draft_v14')).html,'<p>Mi examen actual</p>');
