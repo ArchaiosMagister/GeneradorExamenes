@@ -660,6 +660,258 @@
           ]
         }
       ]
+    },
+    {
+      "lang": "lat",
+      "lemma": "nolo",
+      "reference": "https://www.nationalarchives.gov.uk/latin/stage-2-latin/resources/stage-2-latin-grammar-resource/",
+      "type": "Cinco tiempos de indicativo activo, 30 casillas de persona y número cotejadas con tabla explícita",
+      "blocks": [
+        {
+          "tags": "V;IND;ACT;PRS",
+          "forms": [
+            "nolo",
+            "nonvis",
+            "nonvult",
+            "nolumus",
+            "nonvultis",
+            "nolunt"
+          ]
+        },
+        {
+          "tags": "V;IND;ACT;PST;IPFV",
+          "forms": [
+            "nolebam",
+            "nolebas",
+            "nolebat",
+            "nolebamus",
+            "nolebatis",
+            "nolebant"
+          ]
+        },
+        {
+          "tags": "V;IND;ACT;FUT",
+          "forms": [
+            "nolam",
+            "noles",
+            "nolet",
+            "nolemus",
+            "noletis",
+            "nolent"
+          ]
+        },
+        {
+          "tags": "V;IND;ACT;PRF",
+          "forms": [
+            "nolui",
+            "noluisti",
+            "noluit",
+            "noluimus",
+            "noluistis",
+            "noluerunt"
+          ]
+        },
+        {
+          "tags": "V;IND;ACT;PSTP",
+          "forms": [
+            "nolueram",
+            "nolueras",
+            "noluerat",
+            "nolueramus",
+            "nolueratis",
+            "noluerant"
+          ]
+        }
+      ]
+    },
+    {
+      "lang": "lat",
+      "lemma": "abeo",
+      "reference": "https://www.nihilscio.it/Manuali/Lingua%20latina/Verbi/Coniugazione_latino.aspx?lang=EN_&verbo=abeo",
+      "type": "Cinco tiempos de indicativo activo, 30 casillas de persona y número cotejadas con tabla explícita",
+      "blocks": [
+        {
+          "tags": "V;IND;ACT;PRS",
+          "forms": [
+            "abeo",
+            "abis",
+            "abit",
+            "abimus",
+            "abitis",
+            "abeunt"
+          ]
+        },
+        {
+          "tags": "V;IND;ACT;PST;IPFV",
+          "forms": [
+            "abibam",
+            "abibas",
+            "abibat",
+            "abibamus",
+            "abibatis",
+            "abibant"
+          ]
+        },
+        {
+          "tags": "V;IND;ACT;FUT",
+          "forms": [
+            "abibo",
+            "abibis",
+            "abibit",
+            "abibimus",
+            "abibitis",
+            "abibunt"
+          ]
+        },
+        {
+          "tags": "V;IND;ACT;PRF",
+          "forms": [
+            "abii",
+            "abisti",
+            "abiit",
+            "abiimus",
+            "abistis",
+            "abierunt"
+          ]
+        },
+        {
+          "tags": "V;IND;ACT;PSTP",
+          "forms": [
+            "abieram",
+            "abieras",
+            "abierat",
+            "abieramus",
+            "abieratis",
+            "abierant"
+          ]
+        }
+      ]
+    },
+    {
+      "lang": "lat",
+      "lemma": "ineo",
+      "reference": "https://www.nihilscio.it/Manuali/Lingua%20latina/Verbi/Coniugazione_latino.aspx?lang=EN_&verbo=ineo",
+      "type": "Cinco tiempos de indicativo activo, 30 casillas de persona y número cotejadas con tabla explícita",
+      "blocks": [
+        {
+          "tags": "V;IND;ACT;PRS",
+          "forms": [
+            "ineo",
+            "inis",
+            "init",
+            "inimus",
+            "initis",
+            "ineunt"
+          ]
+        },
+        {
+          "tags": "V;IND;ACT;PST;IPFV",
+          "forms": [
+            "inibam",
+            "inibas",
+            "inibat",
+            "inibamus",
+            "inibatis",
+            "inibant"
+          ]
+        },
+        {
+          "tags": "V;IND;ACT;FUT",
+          "forms": [
+            "inibo",
+            "inibis",
+            "inibit",
+            "inibimus",
+            "inibitis",
+            "inibunt"
+          ]
+        },
+        {
+          "tags": "V;IND;ACT;PRF",
+          "forms": [
+            "inii",
+            "inisti",
+            "iniit",
+            "iniimus",
+            "inistis",
+            "inierunt"
+          ]
+        },
+        {
+          "tags": "V;IND;ACT;PSTP",
+          "forms": [
+            "inieram",
+            "inieras",
+            "inierat",
+            "inieramus",
+            "inieratis",
+            "inierant"
+          ]
+        }
+      ]
+    },
+    {
+      "lang": "lat",
+      "lemma": "pereo",
+      "reference": "https://www.nihilscio.it/Manuali/Lingua%20latina/Verbi/Coniugazione_latino.aspx?lang=ES_&verbo=pereo",
+      "type": "Cinco tiempos de indicativo activo, 30 casillas de persona y número cotejadas con tabla explícita",
+      "blocks": [
+        {
+          "tags": "V;IND;ACT;PRS",
+          "forms": [
+            "pereo",
+            "peris",
+            "perit",
+            "perimus",
+            "peritis",
+            "pereunt"
+          ]
+        },
+        {
+          "tags": "V;IND;ACT;PST;IPFV",
+          "forms": [
+            "peribam",
+            "peribas",
+            "peribat",
+            "peribamus",
+            "peribatis",
+            "peribant"
+          ]
+        },
+        {
+          "tags": "V;IND;ACT;FUT",
+          "forms": [
+            "peribo",
+            "peribis",
+            "peribit",
+            "peribimus",
+            "peribitis",
+            "peribunt"
+          ]
+        },
+        {
+          "tags": "V;IND;ACT;PRF",
+          "forms": [
+            "perii",
+            "peristi",
+            "periit",
+            "periimus",
+            "peristis",
+            "perierunt"
+          ]
+        },
+        {
+          "tags": "V;IND;ACT;PSTP",
+          "forms": [
+            "perieram",
+            "perieras",
+            "perierat",
+            "perieramus",
+            "perieratis",
+            "perierant"
+          ]
+        }
+      ]
     }
   ],
   "sourceCode": 5,
