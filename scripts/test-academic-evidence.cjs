@@ -116,3 +116,6 @@ assert.deepEqual(Array.from(api.evidenceRows(data,'lat1',1),x=>x[1]).sort(),
 assert.equal(api.evidenceState(lexical[3]),'no_disponible');
 assert.equal(api.evidenceState(greekDocumented[3]),'documentada');
 console.log('Control académico: fuentes, decisión exacta, currículo, revocación, edición y ausencia de promoción verificados.');
+
+// Fase IV: probar reconciliación y cuarentena sin red.
+require('./test-phase-four-import.cjs');

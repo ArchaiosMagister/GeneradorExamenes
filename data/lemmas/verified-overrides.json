@@ -17,6 +17,15 @@
       "from": "eripio, eripui, eripitum (4ª)",
       "to": "eripio, eripui, ereptum (mx.)",
       "reference": "https://logeion.uchicago.edu/eriperer"
+    },
+    {
+      "lang": "grc",
+      "lemma": "κεφαλη",
+      "course": "gr1",
+      "from": "κεφαλῆ, –ῆς",
+      "to": "κεφαλή, –ῆς",
+      "reference": "https://www.greek-language.gr/digitalResources/ancient_greek/tools/liddell-scott/search.html?lq=%CE%BA%CE%B5%CF%86%CE%B1%CE%BB%CE%AE",
+      "note": "Corrección editorial del nominativo; no acredita flexiones."
     }
   ],
   "paradigms": [

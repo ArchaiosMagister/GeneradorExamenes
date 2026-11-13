@@ -249,8 +249,18 @@ function evidenceApproved(course,row,all=evidenceDecisions()){
  return !!decision&&decision.action==='autorizar_uso'&&decision.schema===EVIDENCE_SCHEMA&&
   decision.key===key&&decision.verified===false;
 }
+// Exclusiones filológicas de los paradigmas escolares actuales.
+// Evita que autorizaciones antiguas habiliten propuestas erróneas.
+function evidenceProvisionalForbidden(course,row){
+ if(course!=='gr1'||!Array.isArray(row)||row[3]!==4)return false;
+ const lemma=row[0],tags=String(row[2]).split(';');
+ if(lemma==='πρωτοσ')return true;
+ return tags.includes('ADJ')&&tags.includes('FEM')&&
+  ['αθανατοσ','εχθροσ','αισχροσ'].includes(lemma);
+}
 function evidenceGrant(course,row,all=evidenceDecisions(),timestamp=new Date().toISOString()){
  if(evidenceState(row[3])!=='propuesta')throw Error('Solo pueden autorizarse propuestas individuales');
+ if(evidenceProvisionalForbidden(course,row))throw Error('Variante griega excluida por acentuación o paradigma docente');
  const key=evidenceKey(course,row);
  return {...all,[key]:{schema:EVIDENCE_SCHEMA,key,action:'autorizar_uso',verified:false,
   course,lemma:row[0],form:row[1],tags:row[2],source:row[3],approvedAt:timestamp}};
@@ -328,12 +338,45 @@ function evidenceUniqueReading(data,course,row){
 // Se añaden EXCLUSIVAMENTE fichas autorizadas que superan la matriz curricular.
 // Los registros fuente 3/6/7 no aportan análisis; las fuentes 0/1/5 mantienen
 // sus rutas verificadas ya existentes, sin crear aquí un segundo banco paralelo.
+// Fase IV: cotejo íntegro del JSON importado contra el índice local actual.
+// No cambia el código de fuente ni convierte propuestas en verificadas.
+function validateEvidenceImport(data,payload,existing=evidenceDecisions()){
+ if(!data?.rows||!data?.vocabulary)throw Error('Índice local no disponible');
+ if(payload?.schema!==EVIDENCE_SCHEMA||!payload.decisions||
+   typeof payload.decisions!=='object'||Array.isArray(payload.decisions))
+  throw Error('Formato de autorizaciones desconocido');
+ const records=Object.entries(payload.decisions);
+ if(records.length>10000)throw Error('Demasiadas autorizaciones');
+ const available=new Map();
+ for(const course of Object.keys(EVIDENCE_COURSES))
+  for(const row of evidenceRows(data,course,99))
+   available.set(evidenceKey(course,row),{course,row});
+ for(const [key,decision] of records){
+  let parsed;try{parsed=JSON.parse(key)}catch{throw Error('Identificador ilegible')}
+  const actual=available.get(key);
+  if(!actual||!Array.isArray(parsed)||parsed.length!==6||
+    parsed[0]!==EVIDENCE_SCHEMA||parsed[1]!==actual.course)
+   throw Error('Forma inexistente, sin unidad o procedencia modificada');
+  const {course,row}=actual;
+  if(decision?.course!==course||decision.lemma!==row[0]||
+    decision.form!==row[1]||decision.tags!==row[2]||
+    decision.source!==row[3]||typeof decision.approvedAt!=='string'||
+    !Number.isFinite(Date.parse(decision.approvedAt))||
+    !evidenceApproved(course,row,{[key]:decision}))
+   throw Error('La autorización no corresponde a la ficha individual');
+  if(evidenceProvisionalForbidden(course,row)||!evidenceCurricular(course,row[2],14)||
+    !evidenceUniqueReading(data,course,row))
+   throw Error('Forma bloqueada por criterio filológico, currículo o ambigüedad');
+ }
+ const added=records.filter(([key])=>!Object.hasOwn(existing,key)).length;
+ return {decisions:{...payload.decisions,...existing},added,preserved:records.length-added,total:records.length};
+}
 function approvedExamForms(data,course,limit,all=evidenceDecisions()){
  if(!data)return [];
  const lang=course==='gr1'?'grc':'lat',found=[],seen=new Set();
  for(const row of evidenceRows(data,course,limit)){
-  if(!evidenceApproved(course,row,all)||!evidenceCurricular(course,row[2],limit)||
-   !evidenceUniqueReading(data,course,row))continue;
+  if(!evidenceApproved(course,row,all)||evidenceProvisionalForbidden(course,row)||
+   !evidenceCurricular(course,row[2],limit)||!evidenceUniqueReading(data,course,row))continue;
   const [lemma,form,tags,source]=row,entry=data.vocabulary[lang]?.[lemma]?.[course]?.entry;
   if(!entry)continue;
   const type=tags.split(';')[0];
@@ -382,7 +425,8 @@ function evidenceCheckExam(paper,course,all=evidenceDecisions()){
   const current=node.querySelector('i')?.textContent?.trim()||
     node.textContent?.trim()||'';
   if(!Array.isArray(parsed)||parsed.length!==6||parsed[0]!==EVIDENCE_SCHEMA||
-    parsed[1]!==course||!evidenceApproved(course,parsed.slice(2),all)||
+    parsed[1]!==course||evidenceProvisionalForbidden(course,parsed.slice(2))||
+    !evidenceApproved(course,parsed.slice(2),all)||
     current.replace(/[æÆ]/g,c=>c==='Æ'?'AE':'ae').replace(/[œŒ]/g,c=>c==='Œ'?'OE':'oe').normalize('NFC')!==
     form.replace(/[æÆ]/g,c=>c==='Æ'?'AE':'ae').replace(/[œŒ]/g,c=>c==='Œ'?'OE':'oe').normalize('NFC')){
    problems.push('Propuesta modificada, revocada o sin autorización: '+form);
@@ -458,21 +502,25 @@ function initAcademicEvidence(){
     (exact.length>12?' · '+(exact.length-12)+' lecturas adicionales':'');
    const rows=evidenceRows(data,course,max).filter(row=>!query||
     norm(row[0]+' '+row[1]+' '+data.vocabulary[course==='gr1'?'grc':'lat']?.[row[0]]?.[course]?.entry).includes(query));
-   const approved=rows.filter(row=>evidenceApproved(course,row,all)).length,
-    held=rows.filter(row=>!evidenceCurricular(course,row[2],max)||
-     !evidenceUniqueReading(data,course,row)).length;
+   const approved=rows.filter(row=>evidenceApproved(course,row,all)&&
+     !evidenceProvisionalForbidden(course,row)).length,
+    held=rows.filter(row=>evidenceProvisionalForbidden(course,row)||
+     !evidenceCurricular(course,row[2],max)||!evidenceUniqueReading(data,course,row)).length;
    get('academicEvidenceSummary').textContent=rows.length+' propuestas concretas · '+approved+
     ' autorizadas solo para uso docente · '+held+' sin autorización curricular en esta unidad.'+
     (query&&!rows.length?' No hay propuestas registradas: consulta el lematizador para comprobar evidencias documentadas o ausencia de análisis.':'');
    const host=get('academicEvidenceRows');host.replaceChildren();
    for(const row of rows.slice(0,limit)){
     const key=evidenceKey(course,row),approved=evidenceApproved(course,row,all),
-     eligible=evidenceCurricular(course,row[2],max)&&evidenceUniqueReading(data,course,row);
+     eligible=!evidenceProvisionalForbidden(course,row)&&
+      evidenceCurricular(course,row[2],max)&&evidenceUniqueReading(data,course,row);
     const entry=data.vocabulary[course==='gr1'?'grc':'lat']?.[row[0]]?.[course]?.entry||row[0];
     const card=document.createElement('article');card.className='evidence-card';
     const title=document.createElement('strong');title.textContent=row[1]+' — '+entry;
     const description=document.createElement('p');description.textContent=row[2]+' · '+evidenceSource[row[3]];
-    const status=document.createElement('p');status.textContent=approved?'Propuesta autorizada para uso docente (no verificada)':
+    const status=document.createElement('p');status.textContent=evidenceProvisionalForbidden(course,row)?
+     'Variante excluida por acentuación o paradigma docente; una autorización previa no permite sortearla.':
+     approved?'Propuesta autorizada para uso docente (no verificada)':
      eligible?'Propuesta sin verificar; excluida del sorteo hasta autorizarla.':
      'Propuesta sin encaje curricular o con lecturas ambiguas; no se sortea aunque se autorice.';
     const check=document.createElement('label');check.className='check';
@@ -514,18 +562,12 @@ function initAcademicEvidence(){
    const payload=JSON.parse(await file.text());
    if(payload?.schema!==EVIDENCE_SCHEMA||!payload.decisions||Array.isArray(payload.decisions))
     throw Error('Formato de autorizaciones desconocido');
-   const entries=Object.entries(payload.decisions);
-   const valid=entries.every(([key,x])=>{
-    try{
-     const parsed=JSON.parse(key);
-     return Array.isArray(parsed)&&parsed.length===6&&parsed[0]===EVIDENCE_SCHEMA&&
-      EVIDENCE_COURSES[parsed[1]]&&evidenceApproved(parsed[1],parsed.slice(2),{[key]:x});
-    }catch{return false}
-   });
-   if(!valid)throw Error('El archivo contiene registros incompletos o no individuales');
-   if(!window.confirm('¿Importar '+entries.length+' autorizaciones docentes? No verifican los paradigmas.'))return;
-   all={...all,...payload.decisions};
-   localStorage.setItem(EVIDENCE_STORE,JSON.stringify(all));
+   const data=await window.ExaminaOfflineLemmatizer.load();
+   const checked=validateEvidenceImport(data,payload,all);
+   if(!window.confirm('¿Importar '+checked.added+' autorizaciones nuevas? Se conservan '+
+    checked.preserved+' decisiones locales. Ninguna propuesta pasa a verificada.'))return;
+   localStorage.setItem(EVIDENCE_STORE,JSON.stringify(checked.decisions));
+   all=checked.decisions;
    document.dispatchEvent(new Event('examina-academic-evidence-changed'));
    render();
   }catch(error){get('academicEvidenceSummary').textContent='Importación rechazada: '+error.message}
@@ -536,7 +578,8 @@ function initAcademicEvidence(){
 
 window.ExaminaTeacherReview={buildCases,evidenceState,evidenceKey,evidenceApproved,
  evidenceGrant,evidenceRevoke,evidenceRows,approvedExamForms,evidenceAttributes,
- evidenceCheckExam,evidenceMayExport,evidenceCurricular,evidenceUniqueReading};
+ evidenceCheckExam,evidenceMayExport,evidenceCurricular,evidenceUniqueReading,
+ evidenceProvisionalForbidden,validateEvidenceImport};
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initAcademicEvidence);
 else initAcademicEvidence();
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();

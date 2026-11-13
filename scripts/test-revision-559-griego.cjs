@@ -53,7 +53,9 @@ for(const item of review.items){
   assert(item.proposedCorrection&&item.proposedCorrection!==item.schoolForm);
   corrections++;
  }
- if(item.status==='ERRATA_ENUNCIADO_DOCENTE'){
+ if(item.status==='ERRATA_CORREGIDA_ENUNCIADO_DOCENTE'){
+  assert.equal(item.originalTeacherEntry,'κεφαλῆ, –ῆς');
+  assert.equal(item.teacherEntry,'κεφαλή, –ῆς');
   assert.equal(item.lemma,'κεφαλη');
   assert.equal(item.proposedCorrection,'κεφαλή, –ῆς');
  }
@@ -69,7 +71,7 @@ const expected={
  SIN_UNIDAD_Y_ORIGEN_NO_REPRODUCIBLE:49,SIN_UNIDAD:442,
  ACENTO_INCORRECTO_EN_FUENTE:24,
  VARIANTE_DE_TERMINACIONES_PARA_DECISION_DOCENTE:21,
- ERRATA_ENUNCIADO_DOCENTE:1,LECTURA_CON_PARADIGMA_A_COTEJAR:22
+ ERRATA_CORREGIDA_ENUNCIADO_DOCENTE:1,LECTURA_CON_PARADIGMA_A_COTEJAR:22
 };
 assert.deepEqual(byStatus,expected);
 assert.deepEqual(review.summary.byStatus,expected);
