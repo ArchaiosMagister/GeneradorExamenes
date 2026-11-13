@@ -1038,6 +1038,216 @@
           ]
         }
       ]
+    },
+    {
+      "lang": "lat",
+      "lemma": "amo",
+      "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "type": "Tres tiempos del indicativo activo contrastados por persona",
+      "blocks": [
+        {
+          "tags": "V;IND;ACT;PRS",
+          "forms": [
+            "amo",
+            "amas",
+            "amat",
+            "amamus",
+            "amatis",
+            "amant"
+          ]
+        },
+        {
+          "tags": "V;IND;ACT;PST;IPFV",
+          "forms": [
+            "amabam",
+            "amabas",
+            "amabat",
+            "amabamus",
+            "amabatis",
+            "amabant"
+          ]
+        },
+        {
+          "tags": "V;IND;ACT;PRF",
+          "forms": [
+            "amavi",
+            "amavisti",
+            "amavit",
+            "amavimus",
+            "amavistis",
+            "amaverunt"
+          ]
+        }
+      ]
+    },
+    {
+      "lang": "lat",
+      "lemma": "moneo",
+      "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "type": "Tres tiempos del indicativo activo contrastados por persona",
+      "blocks": [
+        {
+          "tags": "V;IND;ACT;PRS",
+          "forms": [
+            "moneo",
+            "mones",
+            "monet",
+            "monemus",
+            "monetis",
+            "monent"
+          ]
+        },
+        {
+          "tags": "V;IND;ACT;PST;IPFV",
+          "forms": [
+            "monebam",
+            "monebas",
+            "monebat",
+            "monebamus",
+            "monebatis",
+            "monebant"
+          ]
+        },
+        {
+          "tags": "V;IND;ACT;PRF",
+          "forms": [
+            "monui",
+            "monuisti",
+            "monuit",
+            "monuimus",
+            "monuistis",
+            "monuerunt"
+          ]
+        }
+      ]
+    },
+    {
+      "lang": "lat",
+      "lemma": "rego",
+      "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "type": "Tres tiempos del indicativo activo contrastados por persona",
+      "blocks": [
+        {
+          "tags": "V;IND;ACT;PRS",
+          "forms": [
+            "rego",
+            "regis",
+            "regit",
+            "regimus",
+            "regitis",
+            "regunt"
+          ]
+        },
+        {
+          "tags": "V;IND;ACT;PST;IPFV",
+          "forms": [
+            "regebam",
+            "regebas",
+            "regebat",
+            "regebamus",
+            "regebatis",
+            "regebant"
+          ]
+        },
+        {
+          "tags": "V;IND;ACT;PRF",
+          "forms": [
+            "rexi",
+            "rexisti",
+            "rexit",
+            "reximus",
+            "rexistis",
+            "rexerunt"
+          ]
+        }
+      ]
+    },
+    {
+      "lang": "lat",
+      "lemma": "capio",
+      "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "type": "Tres tiempos del indicativo activo contrastados por persona",
+      "blocks": [
+        {
+          "tags": "V;IND;ACT;PRS",
+          "forms": [
+            "capio",
+            "capis",
+            "capit",
+            "capimus",
+            "capitis",
+            "capiunt"
+          ]
+        },
+        {
+          "tags": "V;IND;ACT;PST;IPFV",
+          "forms": [
+            "capiebam",
+            "capiebas",
+            "capiebat",
+            "capiebamus",
+            "capiebatis",
+            "capiebant"
+          ]
+        },
+        {
+          "tags": "V;IND;ACT;PRF",
+          "forms": [
+            "cepi",
+            "cepisti",
+            "cepit",
+            "cepimus",
+            "cepistis",
+            "ceperunt"
+          ]
+        }
+      ]
+    },
+    {
+      "lang": "lat",
+      "lemma": "audio",
+      "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "type": "Tres tiempos del indicativo activo contrastados por persona",
+      "blocks": [
+        {
+          "tags": "V;IND;ACT;PRS",
+          "forms": [
+            "audio",
+            "audis",
+            "audit",
+            "audimus",
+            "auditis",
+            "audiunt"
+          ]
+        },
+        {
+          "tags": "V;IND;ACT;PST;IPFV",
+          "forms": [
+            "audiebam",
+            "audiebas",
+            "audiebat",
+            "audiebamus",
+            "audiebatis",
+            "audiebant"
+          ]
+        },
+        {
+          "tags": "V;IND;ACT;PRF",
+          "forms": [
+            "audivi",
+            "audivisti",
+            "audivit",
+            "audivimus",
+            "audivistis",
+            "audiverunt"
+          ]
+        }
+      ]
     }
   ],
   "sourceCode": 5,
@@ -1272,6 +1482,96 @@
       "form": "servae",
       "tags": "N;GEN;SG",
       "reference": "https://en.wiktionary.org/wiki/servae"
+    },
+    {
+      "lang": "grc",
+      "lemma": "βασιλειον",
+      "form": "βασίλεια",
+      "tags": "N;ACC;PL",
+      "sourceForm": "βᾰσῐ́λειᾰ",
+      "reference": "https://greekdoc.github.io/lexicon/bas.html",
+      "note": "Neutro de segunda declinación. Sin UD: consulta sí, sorteo no."
+    },
+    {
+      "lang": "grc",
+      "lemma": "βασιλειον",
+      "form": "βασίλεια",
+      "tags": "N;NOM;PL",
+      "sourceForm": "βᾰσῐ́λειᾰ",
+      "reference": "https://greekdoc.github.io/lexicon/bas.html",
+      "note": "Neutro de segunda declinación. Sin UD: consulta sí, sorteo no."
+    },
+    {
+      "lang": "grc",
+      "lemma": "βασιλειον",
+      "form": "βασίλεια",
+      "tags": "N;VOC;PL",
+      "sourceForm": "βᾰσῐ́λειᾰ",
+      "reference": "https://greekdoc.github.io/lexicon/bas.html",
+      "note": "Neutro de segunda declinación. Sin UD: consulta sí, sorteo no."
+    },
+    {
+      "lang": "grc",
+      "lemma": "βασιλειον",
+      "form": "βασιλείοις",
+      "tags": "N;DAT;PL",
+      "sourceForm": "βᾰσῐλείοις",
+      "reference": "https://greekdoc.github.io/lexicon/bas.html",
+      "note": "Neutro de segunda declinación. Sin UD: consulta sí, sorteo no."
+    },
+    {
+      "lang": "grc",
+      "lemma": "βασιλειον",
+      "form": "βασίλειον",
+      "tags": "N;ACC;SG",
+      "sourceForm": "βᾰσῐ́λειον",
+      "reference": "https://greekdoc.github.io/lexicon/bas.html",
+      "note": "Neutro de segunda declinación. Sin UD: consulta sí, sorteo no."
+    },
+    {
+      "lang": "grc",
+      "lemma": "βασιλειον",
+      "form": "βασίλειον",
+      "tags": "N;NOM;SG",
+      "sourceForm": "βᾰσῐ́λειον",
+      "reference": "https://greekdoc.github.io/lexicon/bas.html",
+      "note": "Neutro de segunda declinación. Sin UD: consulta sí, sorteo no."
+    },
+    {
+      "lang": "grc",
+      "lemma": "βασιλειον",
+      "form": "βασίλειον",
+      "tags": "N;VOC;SG",
+      "sourceForm": "βᾰσῐ́λειον",
+      "reference": "https://greekdoc.github.io/lexicon/bas.html",
+      "note": "Neutro de segunda declinación. Sin UD: consulta sí, sorteo no."
+    },
+    {
+      "lang": "grc",
+      "lemma": "βασιλειον",
+      "form": "βασιλείου",
+      "tags": "N;GEN;SG",
+      "sourceForm": "βᾰσῐλείου",
+      "reference": "https://greekdoc.github.io/lexicon/bas.html",
+      "note": "Neutro de segunda declinación. Sin UD: consulta sí, sorteo no."
+    },
+    {
+      "lang": "grc",
+      "lemma": "βασιλειον",
+      "form": "βασιλείῳ",
+      "tags": "N;DAT;SG",
+      "sourceForm": "βᾰσῐλείῳ",
+      "reference": "https://greekdoc.github.io/lexicon/bas.html",
+      "note": "Neutro de segunda declinación. Sin UD: consulta sí, sorteo no."
+    },
+    {
+      "lang": "grc",
+      "lemma": "βασιλειον",
+      "form": "βασιλείων",
+      "tags": "N;GEN;PL",
+      "sourceForm": "βᾰσῐλείων",
+      "reference": "https://greekdoc.github.io/lexicon/bas.html",
+      "note": "Neutro de segunda declinación. Sin UD: consulta sí, sorteo no."
     }
   ]
 }

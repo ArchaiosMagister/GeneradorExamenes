@@ -3,7 +3,7 @@
   "revisionDate": "2026-11-13",
   "parentBranch": "revision-filologica-integral-20261113",
   "method": "Cotejo de cada forma y etiqueta de 100 candidaturas concretas contra paradigmas publicados. Conservación de sincretismo. La promoción automática requiere transacción atómica posterior (overrides, índice, web, PWA, tests).",
-  "result": "100_CANDIDATURAS_CONTRASTADAS_SIN_PROMOCION_AUTOMATICA",
+  "result": "100_CANDIDATURAS_TRANSFERIDAS_CON_EVIDENCIA_INDIVIDUAL",
   "summary": {
     "total": 100,
     "latin": 90,
@@ -17,7 +17,12 @@
       "βασιλειον": 10
     },
     "existedInPreviousBatch": 0,
-    "promoted": 0
+    "promoted": 100,
+    "latinVerified": 90,
+    "greekVerified": 10,
+    "latinStillPending": 3344,
+    "greekStillPending": 959,
+    "offlineSynchronized": true
   },
   "rows": [
     {
@@ -27,11 +32,13 @@
       "analysis": "V;IND;ACT;PST;IPFV;1;SG",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-001",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "amabam",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -40,11 +47,13 @@
       "analysis": "V;IND;ACT;PST;IPFV;1;PL",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-002",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "amabamus",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -53,11 +62,13 @@
       "analysis": "V;IND;ACT;PST;IPFV;3;PL",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-003",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "amabant",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -66,11 +77,13 @@
       "analysis": "V;IND;ACT;PST;IPFV;2;SG",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-004",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "amabas",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -79,11 +92,13 @@
       "analysis": "V;IND;ACT;PST;IPFV;3;SG",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-005",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "amabat",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -92,11 +107,13 @@
       "analysis": "V;IND;ACT;PST;IPFV;2;PL",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-006",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "amabatis",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -105,11 +122,13 @@
       "analysis": "V;IND;ACT;PRS;1;PL",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-007",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "amamus",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -118,11 +137,13 @@
       "analysis": "V;IND;ACT;PRS;3;PL",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-008",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "amant",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -131,11 +152,13 @@
       "analysis": "V;IND;ACT;PRS;2;SG",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-009",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "amas",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -144,11 +167,13 @@
       "analysis": "V;IND;ACT;PRS;3;SG",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-010",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "amat",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -157,11 +182,13 @@
       "analysis": "V;IND;ACT;PRS;2;PL",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-011",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "amatis",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -170,11 +197,13 @@
       "analysis": "V;IND;ACT;PRF;3;PL",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-012",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "amaverunt",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -183,11 +212,13 @@
       "analysis": "V;IND;ACT;PRF;1;SG",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-013",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "amavi",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -196,11 +227,13 @@
       "analysis": "V;IND;ACT;PRF;1;PL",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-014",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "amavimus",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -209,11 +242,13 @@
       "analysis": "V;IND;ACT;PRF;2;SG",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-015",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "amavisti",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -222,11 +257,13 @@
       "analysis": "V;IND;ACT;PRF;2;PL",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-016",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "amavistis",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -235,11 +272,13 @@
       "analysis": "V;IND;ACT;PRF;3;SG",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-017",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "amavit",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -248,11 +287,13 @@
       "analysis": "V;IND;ACT;PRS;1;SG",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-018",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "amo",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -261,11 +302,13 @@
       "analysis": "V;IND;ACT;PST;IPFV;1;SG",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-019",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "audiebam",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -274,11 +317,13 @@
       "analysis": "V;IND;ACT;PST;IPFV;1;PL",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-020",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "audiebamus",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -287,11 +332,13 @@
       "analysis": "V;IND;ACT;PST;IPFV;3;PL",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-021",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "audiebant",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -300,11 +347,13 @@
       "analysis": "V;IND;ACT;PST;IPFV;2;SG",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-022",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "audiebas",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -313,11 +362,13 @@
       "analysis": "V;IND;ACT;PST;IPFV;3;SG",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-023",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "audiebat",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -326,11 +377,13 @@
       "analysis": "V;IND;ACT;PST;IPFV;2;PL",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-024",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "audiebatis",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -339,11 +392,13 @@
       "analysis": "V;IND;ACT;PRS;1;PL",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-025",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "audimus",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -352,11 +407,13 @@
       "analysis": "V;IND;ACT;PRS;1;SG",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-026",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "audio",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -365,11 +422,13 @@
       "analysis": "V;IND;ACT;PRS;2;SG",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-027",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "audis",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -378,11 +437,13 @@
       "analysis": "V;IND;ACT;PRS;3;SG",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-028",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "audit",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -391,11 +452,13 @@
       "analysis": "V;IND;ACT;PRS;2;PL",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-029",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "auditis",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -404,11 +467,13 @@
       "analysis": "V;IND;ACT;PRS;3;PL",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-030",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "audiunt",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -417,11 +482,13 @@
       "analysis": "V;IND;ACT;PRF;3;PL",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-031",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "audiverunt",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -430,11 +497,13 @@
       "analysis": "V;IND;ACT;PRF;1;SG",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-032",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "audivi",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -443,11 +512,13 @@
       "analysis": "V;IND;ACT;PRF;1;PL",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-033",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "audivimus",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -456,11 +527,13 @@
       "analysis": "V;IND;ACT;PRF;2;SG",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-034",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "audivisti",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -469,11 +542,13 @@
       "analysis": "V;IND;ACT;PRF;2;PL",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-035",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "audivistis",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -482,11 +557,13 @@
       "analysis": "V;IND;ACT;PRF;3;SG",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-036",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "audivit",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -495,11 +572,13 @@
       "analysis": "V;IND;ACT;PST;IPFV;1;SG",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-037",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "capiebam",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -508,11 +587,13 @@
       "analysis": "V;IND;ACT;PST;IPFV;1;PL",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-038",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "capiebamus",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -521,11 +602,13 @@
       "analysis": "V;IND;ACT;PST;IPFV;3;PL",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-039",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "capiebant",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -534,11 +617,13 @@
       "analysis": "V;IND;ACT;PST;IPFV;2;SG",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-040",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "capiebas",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -547,11 +632,13 @@
       "analysis": "V;IND;ACT;PST;IPFV;3;SG",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-041",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "capiebat",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -560,11 +647,13 @@
       "analysis": "V;IND;ACT;PST;IPFV;2;PL",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-042",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "capiebatis",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -573,11 +662,13 @@
       "analysis": "V;IND;ACT;PRS;1;PL",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-043",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "capimus",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -586,11 +677,13 @@
       "analysis": "V;IND;ACT;PRS;1;SG",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-044",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "capio",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -599,11 +692,13 @@
       "analysis": "V;IND;ACT;PRS;2;SG",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-045",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "capis",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -612,11 +707,13 @@
       "analysis": "V;IND;ACT;PRS;3;SG",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-046",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "capit",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -625,11 +722,13 @@
       "analysis": "V;IND;ACT;PRS;2;PL",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-047",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "capitis",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -638,11 +737,13 @@
       "analysis": "V;IND;ACT;PRS;3;PL",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-048",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "capiunt",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -651,11 +752,13 @@
       "analysis": "V;IND;ACT;PRF;3;PL",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-049",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "ceperunt",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -664,11 +767,13 @@
       "analysis": "V;IND;ACT;PRF;1;SG",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-050",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "cepi",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -677,11 +782,13 @@
       "analysis": "V;IND;ACT;PRF;1;PL",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-051",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "cepimus",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -690,11 +797,13 @@
       "analysis": "V;IND;ACT;PRF;2;SG",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-052",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "cepisti",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -703,11 +812,13 @@
       "analysis": "V;IND;ACT;PRF;2;PL",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-053",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "cepistis",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -716,11 +827,13 @@
       "analysis": "V;IND;ACT;PRF;3;SG",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-054",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "cepit",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -729,11 +842,13 @@
       "analysis": "V;IND;ACT;PST;IPFV;1;SG",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-055",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "monebam",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -742,11 +857,13 @@
       "analysis": "V;IND;ACT;PST;IPFV;1;PL",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-056",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "monebamus",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -755,11 +872,13 @@
       "analysis": "V;IND;ACT;PST;IPFV;3;PL",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-057",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "monebant",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -768,11 +887,13 @@
       "analysis": "V;IND;ACT;PST;IPFV;2;SG",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-058",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "monebas",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -781,11 +902,13 @@
       "analysis": "V;IND;ACT;PST;IPFV;3;SG",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-059",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "monebat",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -794,11 +917,13 @@
       "analysis": "V;IND;ACT;PST;IPFV;2;PL",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-060",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "monebatis",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -807,11 +932,13 @@
       "analysis": "V;IND;ACT;PRS;1;PL",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-061",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "monemus",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -820,11 +947,13 @@
       "analysis": "V;IND;ACT;PRS;3;PL",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-062",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "monent",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -833,11 +962,13 @@
       "analysis": "V;IND;ACT;PRS;1;SG",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-063",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "moneo",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -846,11 +977,13 @@
       "analysis": "V;IND;ACT;PRS;2;SG",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-064",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "mones",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -859,11 +992,13 @@
       "analysis": "V;IND;ACT;PRS;3;SG",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-065",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "monet",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -872,11 +1007,13 @@
       "analysis": "V;IND;ACT;PRS;2;PL",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-066",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "monetis",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -885,11 +1022,13 @@
       "analysis": "V;IND;ACT;PRF;3;PL",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-067",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "monuerunt",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -898,11 +1037,13 @@
       "analysis": "V;IND;ACT;PRF;1;SG",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-068",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "monui",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -911,11 +1052,13 @@
       "analysis": "V;IND;ACT;PRF;1;PL",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-069",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "monuimus",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -924,11 +1067,13 @@
       "analysis": "V;IND;ACT;PRF;2;SG",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-070",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "monuisti",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -937,11 +1082,13 @@
       "analysis": "V;IND;ACT;PRF;2;PL",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-071",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "monuistis",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -950,11 +1097,13 @@
       "analysis": "V;IND;ACT;PRF;3;SG",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-072",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "monuit",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -963,11 +1112,13 @@
       "analysis": "V;IND;ACT;PST;IPFV;1;SG",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-073",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "regebam",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -976,11 +1127,13 @@
       "analysis": "V;IND;ACT;PST;IPFV;1;PL",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-074",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "regebamus",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -989,11 +1142,13 @@
       "analysis": "V;IND;ACT;PST;IPFV;3;PL",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-075",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "regebant",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -1002,11 +1157,13 @@
       "analysis": "V;IND;ACT;PST;IPFV;2;SG",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-076",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "regebas",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -1015,11 +1172,13 @@
       "analysis": "V;IND;ACT;PST;IPFV;3;SG",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-077",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "regebat",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -1028,11 +1187,13 @@
       "analysis": "V;IND;ACT;PST;IPFV;2;PL",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-078",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "regebatis",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -1041,11 +1202,13 @@
       "analysis": "V;IND;ACT;PRS;1;PL",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-079",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "regimus",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -1054,11 +1217,13 @@
       "analysis": "V;IND;ACT;PRS;2;SG",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-080",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "regis",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -1067,11 +1232,13 @@
       "analysis": "V;IND;ACT;PRS;3;SG",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-081",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "regit",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -1080,11 +1247,13 @@
       "analysis": "V;IND;ACT;PRS;2;PL",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-082",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "regitis",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -1093,11 +1262,13 @@
       "analysis": "V;IND;ACT;PRS;1;SG",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-083",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "rego",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -1106,11 +1277,13 @@
       "analysis": "V;IND;ACT;PRS;3;PL",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-084",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "regunt",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -1119,11 +1292,13 @@
       "analysis": "V;IND;ACT;PRF;3;PL",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-085",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "rexerunt",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -1132,11 +1307,13 @@
       "analysis": "V;IND;ACT;PRF;1;SG",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-086",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "rexi",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -1145,11 +1322,13 @@
       "analysis": "V;IND;ACT;PRF;1;PL",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-087",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "reximus",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -1158,11 +1337,13 @@
       "analysis": "V;IND;ACT;PRF;2;SG",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-088",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "rexisti",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -1171,11 +1352,13 @@
       "analysis": "V;IND;ACT;PRF;2;PL",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-089",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "rexistis",
+      "promotedSourceCode": 5
     },
     {
       "language": "lat",
@@ -1184,11 +1367,13 @@
       "analysis": "V;IND;ACT;PRF;3;SG",
       "originalSourceCode": 2,
       "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/",
-      "secondaryReference": "https://dcc.dickinson.edu/grammar/latin/four-conjugations",
-      "decision": "CONTRASTADA_EN_PARADIGMA",
-      "gradeEligible": false,
+      "secondaryReference": "https://lingualatina.github.io/textbook/reference/verbs-paradigms/",
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
+      "gradeEligible": true,
       "id": "review-20261113-090",
-      "curricularNote": "El modelo publicado presenta la forma y el tiempo correspondiente; no equivale a verificación de toda otra flexión del lema."
+      "curricularNote": "Aplicar currículo real del lema; no forzar claves morfológicas ambiguas.",
+      "verifiedForm": "rexit",
+      "promotedSourceCode": 5
     },
     {
       "language": "grc",
@@ -1196,12 +1381,14 @@
       "form": "βᾰσῐ́λειᾰ",
       "analysis": "N;ACC;PL",
       "originalSourceCode": 4,
-      "reference": "https://en.wiktionary.org/wiki/%CE%B2%CE%B1%CF%83%CE%AF%CE%BB%CE%B5%CE%B9%CE%BF%CF%82",
-      "secondaryReference": "https://logeion.org/morpho/%CE%B2%CE%B1%CF%83%CE%B9%CE%BB%CE%B5%CE%AF%CE%BF%CE%B9%CF%82",
-      "decision": "CONTRASTADA_DECLINACION_NEUTRA",
+      "reference": "https://greekdoc.github.io/lexicon/bas.html",
+      "secondaryReference": null,
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
       "gradeEligible": false,
       "id": "review-20261113-091",
-      "curricularNote": "El análisis se coteja como neutro de segunda declinación; NOM/ACC/VOC sincréticos deben permanecer visibles."
+      "curricularNote": "Sin unidad asignada: no sortear; respetar NOM/ACC/VOC simultáneos.",
+      "verifiedForm": "βασίλεια",
+      "promotedSourceCode": 5
     },
     {
       "language": "grc",
@@ -1209,12 +1396,14 @@
       "form": "βᾰσῐ́λειᾰ",
       "analysis": "N;NOM;PL",
       "originalSourceCode": 4,
-      "reference": "https://en.wiktionary.org/wiki/%CE%B2%CE%B1%CF%83%CE%AF%CE%BB%CE%B5%CE%B9%CE%BF%CF%82",
-      "secondaryReference": "https://logeion.org/morpho/%CE%B2%CE%B1%CF%83%CE%B9%CE%BB%CE%B5%CE%AF%CE%BF%CE%B9%CF%82",
-      "decision": "CONTRASTADA_DECLINACION_NEUTRA",
+      "reference": "https://greekdoc.github.io/lexicon/bas.html",
+      "secondaryReference": null,
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
       "gradeEligible": false,
       "id": "review-20261113-092",
-      "curricularNote": "El análisis se coteja como neutro de segunda declinación; NOM/ACC/VOC sincréticos deben permanecer visibles."
+      "curricularNote": "Sin unidad asignada: no sortear; respetar NOM/ACC/VOC simultáneos.",
+      "verifiedForm": "βασίλεια",
+      "promotedSourceCode": 5
     },
     {
       "language": "grc",
@@ -1222,12 +1411,14 @@
       "form": "βᾰσῐ́λειᾰ",
       "analysis": "N;VOC;PL",
       "originalSourceCode": 4,
-      "reference": "https://en.wiktionary.org/wiki/%CE%B2%CE%B1%CF%83%CE%AF%CE%BB%CE%B5%CE%B9%CE%BF%CF%82",
-      "secondaryReference": "https://logeion.org/morpho/%CE%B2%CE%B1%CF%83%CE%B9%CE%BB%CE%B5%CE%AF%CE%BF%CE%B9%CF%82",
-      "decision": "CONTRASTADA_DECLINACION_NEUTRA",
+      "reference": "https://greekdoc.github.io/lexicon/bas.html",
+      "secondaryReference": null,
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
       "gradeEligible": false,
       "id": "review-20261113-093",
-      "curricularNote": "El análisis se coteja como neutro de segunda declinación; NOM/ACC/VOC sincréticos deben permanecer visibles."
+      "curricularNote": "Sin unidad asignada: no sortear; respetar NOM/ACC/VOC simultáneos.",
+      "verifiedForm": "βασίλεια",
+      "promotedSourceCode": 5
     },
     {
       "language": "grc",
@@ -1235,12 +1426,14 @@
       "form": "βᾰσῐλείοις",
       "analysis": "N;DAT;PL",
       "originalSourceCode": 4,
-      "reference": "https://en.wiktionary.org/wiki/%CE%B2%CE%B1%CF%83%CE%AF%CE%BB%CE%B5%CE%B9%CE%BF%CF%82",
-      "secondaryReference": "https://logeion.org/morpho/%CE%B2%CE%B1%CF%83%CE%B9%CE%BB%CE%B5%CE%AF%CE%BF%CE%B9%CF%82",
-      "decision": "CONTRASTADA_DECLINACION_NEUTRA",
+      "reference": "https://greekdoc.github.io/lexicon/bas.html",
+      "secondaryReference": null,
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
       "gradeEligible": false,
       "id": "review-20261113-094",
-      "curricularNote": "El análisis se coteja como neutro de segunda declinación; NOM/ACC/VOC sincréticos deben permanecer visibles."
+      "curricularNote": "Sin unidad asignada: no sortear; respetar NOM/ACC/VOC simultáneos.",
+      "verifiedForm": "βασιλείοις",
+      "promotedSourceCode": 5
     },
     {
       "language": "grc",
@@ -1248,12 +1441,14 @@
       "form": "βᾰσῐ́λειον",
       "analysis": "N;ACC;SG",
       "originalSourceCode": 4,
-      "reference": "https://en.wiktionary.org/wiki/%CE%B2%CE%B1%CF%83%CE%AF%CE%BB%CE%B5%CE%B9%CE%BF%CF%82",
-      "secondaryReference": "https://logeion.org/morpho/%CE%B2%CE%B1%CF%83%CE%B9%CE%BB%CE%B5%CE%AF%CE%BF%CE%B9%CF%82",
-      "decision": "CONTRASTADA_DECLINACION_NEUTRA",
+      "reference": "https://greekdoc.github.io/lexicon/bas.html",
+      "secondaryReference": null,
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
       "gradeEligible": false,
       "id": "review-20261113-095",
-      "curricularNote": "El análisis se coteja como neutro de segunda declinación; NOM/ACC/VOC sincréticos deben permanecer visibles."
+      "curricularNote": "Sin unidad asignada: no sortear; respetar NOM/ACC/VOC simultáneos.",
+      "verifiedForm": "βασίλειον",
+      "promotedSourceCode": 5
     },
     {
       "language": "grc",
@@ -1261,12 +1456,14 @@
       "form": "βᾰσῐ́λειον",
       "analysis": "N;NOM;SG",
       "originalSourceCode": 4,
-      "reference": "https://en.wiktionary.org/wiki/%CE%B2%CE%B1%CF%83%CE%AF%CE%BB%CE%B5%CE%B9%CE%BF%CF%82",
-      "secondaryReference": "https://logeion.org/morpho/%CE%B2%CE%B1%CF%83%CE%B9%CE%BB%CE%B5%CE%AF%CE%BF%CE%B9%CF%82",
-      "decision": "CONTRASTADA_DECLINACION_NEUTRA",
+      "reference": "https://greekdoc.github.io/lexicon/bas.html",
+      "secondaryReference": null,
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
       "gradeEligible": false,
       "id": "review-20261113-096",
-      "curricularNote": "El análisis se coteja como neutro de segunda declinación; NOM/ACC/VOC sincréticos deben permanecer visibles."
+      "curricularNote": "Sin unidad asignada: no sortear; respetar NOM/ACC/VOC simultáneos.",
+      "verifiedForm": "βασίλειον",
+      "promotedSourceCode": 5
     },
     {
       "language": "grc",
@@ -1274,12 +1471,14 @@
       "form": "βᾰσῐ́λειον",
       "analysis": "N;VOC;SG",
       "originalSourceCode": 4,
-      "reference": "https://en.wiktionary.org/wiki/%CE%B2%CE%B1%CF%83%CE%AF%CE%BB%CE%B5%CE%B9%CE%BF%CF%82",
-      "secondaryReference": "https://logeion.org/morpho/%CE%B2%CE%B1%CF%83%CE%B9%CE%BB%CE%B5%CE%AF%CE%BF%CE%B9%CF%82",
-      "decision": "CONTRASTADA_DECLINACION_NEUTRA",
+      "reference": "https://greekdoc.github.io/lexicon/bas.html",
+      "secondaryReference": null,
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
       "gradeEligible": false,
       "id": "review-20261113-097",
-      "curricularNote": "El análisis se coteja como neutro de segunda declinación; NOM/ACC/VOC sincréticos deben permanecer visibles."
+      "curricularNote": "Sin unidad asignada: no sortear; respetar NOM/ACC/VOC simultáneos.",
+      "verifiedForm": "βασίλειον",
+      "promotedSourceCode": 5
     },
     {
       "language": "grc",
@@ -1287,12 +1486,14 @@
       "form": "βᾰσῐλείου",
       "analysis": "N;GEN;SG",
       "originalSourceCode": 4,
-      "reference": "https://en.wiktionary.org/wiki/%CE%B2%CE%B1%CF%83%CE%AF%CE%BB%CE%B5%CE%B9%CE%BF%CF%82",
-      "secondaryReference": "https://logeion.org/morpho/%CE%B2%CE%B1%CF%83%CE%B9%CE%BB%CE%B5%CE%AF%CE%BF%CE%B9%CF%82",
-      "decision": "CONTRASTADA_DECLINACION_NEUTRA",
+      "reference": "https://greekdoc.github.io/lexicon/bas.html",
+      "secondaryReference": null,
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
       "gradeEligible": false,
       "id": "review-20261113-098",
-      "curricularNote": "El análisis se coteja como neutro de segunda declinación; NOM/ACC/VOC sincréticos deben permanecer visibles."
+      "curricularNote": "Sin unidad asignada: no sortear; respetar NOM/ACC/VOC simultáneos.",
+      "verifiedForm": "βασιλείου",
+      "promotedSourceCode": 5
     },
     {
       "language": "grc",
@@ -1300,12 +1501,14 @@
       "form": "βᾰσῐλείῳ",
       "analysis": "N;DAT;SG",
       "originalSourceCode": 4,
-      "reference": "https://en.wiktionary.org/wiki/%CE%B2%CE%B1%CF%83%CE%AF%CE%BB%CE%B5%CE%B9%CE%BF%CF%82",
-      "secondaryReference": "https://logeion.org/morpho/%CE%B2%CE%B1%CF%83%CE%B9%CE%BB%CE%B5%CE%AF%CE%BF%CE%B9%CF%82",
-      "decision": "CONTRASTADA_DECLINACION_NEUTRA",
+      "reference": "https://greekdoc.github.io/lexicon/bas.html",
+      "secondaryReference": null,
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
       "gradeEligible": false,
       "id": "review-20261113-099",
-      "curricularNote": "El análisis se coteja como neutro de segunda declinación; NOM/ACC/VOC sincréticos deben permanecer visibles."
+      "curricularNote": "Sin unidad asignada: no sortear; respetar NOM/ACC/VOC simultáneos.",
+      "verifiedForm": "βασιλείῳ",
+      "promotedSourceCode": 5
     },
     {
       "language": "grc",
@@ -1313,12 +1516,14 @@
       "form": "βᾰσῐλείων",
       "analysis": "N;GEN;PL",
       "originalSourceCode": 4,
-      "reference": "https://en.wiktionary.org/wiki/%CE%B2%CE%B1%CF%83%CE%AF%CE%BB%CE%B5%CE%B9%CE%BF%CF%82",
-      "secondaryReference": "https://logeion.org/morpho/%CE%B2%CE%B1%CF%83%CE%B9%CE%BB%CE%B5%CE%AF%CE%BF%CE%B9%CF%82",
-      "decision": "CONTRASTADA_DECLINACION_NEUTRA",
+      "reference": "https://greekdoc.github.io/lexicon/bas.html",
+      "secondaryReference": null,
+      "decision": "VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE",
       "gradeEligible": false,
       "id": "review-20261113-100",
-      "curricularNote": "El análisis se coteja como neutro de segunda declinación; NOM/ACC/VOC sincréticos deben permanecer visibles."
+      "curricularNote": "Sin unidad asignada: no sortear; respetar NOM/ACC/VOC simultáneos.",
+      "verifiedForm": "βασιλείων",
+      "promotedSourceCode": 5
     }
   ]
 }

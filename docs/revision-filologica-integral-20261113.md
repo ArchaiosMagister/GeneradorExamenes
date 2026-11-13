@@ -137,3 +137,9 @@ original sigue con códigos de *propuesta* hasta que se coordinen
 `verified-overrides.json`, el índice, la aplicación y `offline.html`.
 Quedan pendientes la auditoría del resto y una CI completa del mismo commit.
 No se altera `main` ni se despliega.
+
+## Incorporación persistente del lote de cien
+
+Se han trasladado 90 análisis latinos y 10 griegos como fuente 5 al índice, modelos y archivo autónomo. Los cinco modelos verbales mantienen sus umbrales curriculares. El neutro βασίλειον no tiene UD y sigue excluido del sorteo; se conservan las lecturas NOM/ACC/VOC. Fuentes: https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/ y https://greekdoc.github.io/lexicon/bas.html.
+
+Restan 3344 candidaturas latinas y 959 griegas. Ni el auditor ni esta migración autorizan formas adicionales por analogía. No se fusiona ni se publica.

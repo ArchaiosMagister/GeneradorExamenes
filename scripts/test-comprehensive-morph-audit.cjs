@@ -10,9 +10,9 @@ const report=JSON.parse(fs.readFileSync(path.join(root,'test-artifacts/auditoria
 const summary=JSON.parse(fs.readFileSync(path.join(root,'test-artifacts/auditoria-integral-resumen.json'),'utf8'));
 assert.equal(report.schema,'examina-comprehensive-morph-audit/v1');
 assert.equal(report.status,'REVIEW_ONLY_NOT_FOR_GRADING');
-assert.equal(report.totalCandidates,4403,'Cambio de fichas pendientes: examinar antes de variar el inventario');
-assert.equal(report.latin.entries.length,3434);
-assert.equal(report.greek.entries.length,969);
+assert.equal(report.totalCandidates,4303,'Cambio de fichas pendientes: examinar antes de variar el inventario');
+assert.equal(report.latin.entries.length,3344);
+assert.equal(report.greek.entries.length,959);
 assert.deepEqual(summary.latin,report.latin.summary);
 assert.deepEqual(summary.greek,report.greek.summary);
 assert.equal(summary.verifiedPromoted,0);

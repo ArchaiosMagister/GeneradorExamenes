@@ -10,7 +10,7 @@ assert.equal(report.schema,'examina-individual-candidate-resolution/v1');
 assert.equal(report.rows.length,100);
 assert.equal(report.summary.latin,90);
 assert.equal(report.summary.greek,10);
-assert.equal(report.summary.promoted,0);
+assert.equal(report.summary.promoted,100);
 const normalize=v=>String(v).normalize('NFD').replace(/\u0345/g,'ι').replace(/\p{M}/gu,'').toLowerCase().replace(/ς/g,'σ');
 const pair=(r)=>r.language+'|'+r.lemma+'|'+normalize(r.form)+'|'+r.analysis;
 const previous=new Set(prev.items.map(r=>r.lang+'|'+r.lemma+'|'+normalize(r.form)+'|'+r.analysis));
@@ -21,12 +21,14 @@ for(const r of report.rows){
  assert(!seen.has(pair(r)),'Duplicada: '+pair(r)); seen.add(pair(r));
  assert(!previous.has(pair(r)),'Solapamiento del lote previo');
  assert(/^https:\/\//.test(r.reference),'Falta fuente');
- assert.equal(r.gradeEligible,false,'Promoción no autorizada');
- assert(['CONTRASTADA_EN_PARADIGMA','CONTRASTADA_DECLINACION_NEUTRA'].includes(r.decision));
+ assert.equal(r.gradeEligible,r.language==='lat','La ficha griega sin unidad no entra en el examen');
+ assert.equal(r.decision,'VERIFICADA_INDIVIDUALMENTE_EN_FUENTE_PERSISTENTE');
  const source=r.language==='lat'?2:4;
  assert.equal(r.originalSourceCode,source);
- assert(bank.rows[r.language].some(x=>x[0]===r.lemma&&x[1]===r.form&&x[2]===r.analysis&&x[3]===source),
-  'La ficha dejó de coincidir exactamente con el banco: '+pair(r));
+ assert(bank.rows[r.language].some(x=>x[0]===r.lemma&&x[1]===r.verifiedForm&&x[2]===r.analysis&&x[3]===5),
+  'Falta fuente 5: '+pair(r));
+ assert(!bank.rows[r.language].some(x=>x[0]===r.lemma&&x[1]===r.form&&x[2]===r.analysis&&x[3]===source),
+  'La ficha sigue siendo una candidatura: '+pair(r));
  byLemma[r.lemma]=(byLemma[r.lemma]||0)+1;
 }
 assert.deepEqual(byLemma,expected);
@@ -45,4 +47,5 @@ for(const number of ['SG','PL']){
    'No reducir nominativo/acusativo/vocativo del neutro');
  }
 }
-console.log('LOTE100_VALIDADO: 90 latinas, 10 griegas; 0 duplicadas, 0 promociones, sincretismos preservados.');
+assert.equal(bank.vocabulary.grc['βασιλειον'].gr1.units.length,0,'No asignar unidad curricular sin aprobación');
+console.log('LOTE100_VALIDADO: 90 latinas y 10 griegas verificadas, sincretismos conservados.');

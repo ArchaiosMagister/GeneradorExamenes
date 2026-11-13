@@ -229,11 +229,11 @@ async function main(){
  // paradigma por analogía ni modificar los enunciados del profesor.
  const verifiedSingleKeys=new Set();
  for(const record of overrides.singleForms){
-  if(record.lang!=='lat'||!catalog[record.lang]?.[record.lemma]||
+  if(!['lat','grc'].includes(record.lang)||!catalog[record.lang]?.[record.lemma]||
      typeof record.form!=='string'||!/^https:\/\//.test(record.reference)||
      !(/^(?:V;IMP;ACT;PRS;2;PL|V;PTCP;(?:ACT|PASS);PRF;(?:NOM|GEN|DAT|ACC|ABL|VOC);(?:SG|PL)(?:;(?:MASC|FEM|NEUT))?|N;(?:NOM|GEN|DAT|ACC|ABL|VOC);(?:SG|PL))$/.test(record.tags)))
    throw Error('Incidencia individual sin documentación o rasgos explícitos: '+record.lemma);
-  const k=record.lemma+'|'+norm(record.form);
+  const k=record.lang+'|'+record.lemma+'|'+norm(record.form)+'|'+record.tags;
   if(verifiedSingleKeys.has(k))throw Error('Forma duplicada en la revisión individual: '+k);
   verifiedSingleKeys.add(k);
   externalReferences.push({lang:record.lang,lemma:record.lemma,form:record.form,
@@ -290,7 +290,7 @@ async function main(){
  const greekCountBefore=counts.grc.wikcionario;
  const documentedGreekSlots=new Map();
  for(const [lemma,form,tags,source] of rows.grc){
-  if(![0,1].includes(source)||!/^N;|^ADJ;/.test(tags))continue;
+  if(![0,1,5].includes(source)||!/^(?:N|ADJ);/.test(tags))continue;
   const k=lemma+'|'+tags;
   if(!documentedGreekSlots.has(k))documentedGreekSlots.set(k,new Set());
   documentedGreekSlots.get(k).add(norm(form));

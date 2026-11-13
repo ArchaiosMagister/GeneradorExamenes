@@ -12,7 +12,7 @@ const match=html.match(/const latinExplicitVerbEvidence=(\{[^\n]+\});\nfunction 
 assert(match,'Falta la tabla explícita de evidencia verbal');
 const evidence=JSON.parse(match[1]);
 assert.deepEqual(Object.keys(evidence).sort(),
- ['abeo','absum','audeo','confero','conor','eo','ineo','loquor','nolo','pereo','possum','praesum','proficiscor','redeo','sequor','sum','transeo']);
+ ['abeo','absum','amo','audeo','audio','capio','confero','conor','eo','ineo','loquor','moneo','nolo','pereo','possum','praesum','proficiscor','redeo','rego','sequor','sum','transeo']);
 const overrides=JSON.parse(readFileSync(resolve(root,'data/lemmas/verified-overrides.json'),'utf8'));
 let total=0;
 for(const [lemma,series]of Object.entries(evidence)){
@@ -43,7 +43,7 @@ for(const [lemma,series]of Object.entries(evidence)){
   });
  }
 }
-assert.equal(total,402,'Cantidad de fichas contrastadas registrada inesperada');
+assert.equal(total,492,'Cantidad de fichas contrastadas registrada inesperada');
 assert.deepEqual(evidence.eo.map(x=>x.tense),['presente','imperfecto','futuro','perfecto','pluscuamperfecto']);
 assert.deepEqual(evidence.redeo.map(x=>x.tense),['presente','imperfecto','futuro','perfecto','pluscuamperfecto']);
 assert.deepEqual(evidence.transeo.map(x=>x.tense),['presente','imperfecto','futuro','perfecto','pluscuamperfecto']);
