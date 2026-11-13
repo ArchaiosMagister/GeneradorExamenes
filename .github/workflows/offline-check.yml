@@ -102,6 +102,8 @@ jobs:
         run: node scripts/test-candidaturas-lote300-griego.cjs
       - name: Validar las 31 lecturas documentales y evitar promociones automáticas
         run: node scripts/test-individual-evidence-ledger.cjs
+      - name: Aplicar decisiones docentes de tres adjetivos griegos sin verificar las 21 formas
+        run: node scripts/test-greek-adjective-decisions.cjs
       - name: Conservar auditoría individualizada de fichas latinas y griegas
         if: always()
         uses: actions/upload-artifact@v4
