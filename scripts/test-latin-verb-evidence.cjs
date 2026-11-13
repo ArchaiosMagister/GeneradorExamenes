@@ -43,7 +43,8 @@ for(const [lemma,series]of Object.entries(evidence)){
   });
  }
 }
-assert.equal(total,210,'Cantidad de fichas contrastadas registrada inesperada');
+assert.equal(total,222,'Cantidad de fichas contrastadas registrada inesperada');
+assert.deepEqual(evidence.eo.map(x=>x.tense),['presente','imperfecto','futuro','perfecto','pluscuamperfecto']);
 assert.deepEqual(evidence.redeo.map(x=>x.tense),['presente','imperfecto','futuro','perfecto','pluscuamperfecto']);
 assert.deepEqual(evidence.transeo.map(x=>x.tense),['presente','imperfecto','futuro','perfecto','pluscuamperfecto']);
 assert.deepEqual(evidence.proficiscor.map(x=>x.tense),['presente','imperfecto','futuro']);
@@ -85,4 +86,4 @@ assert(html.includes("const latinPersonalPresentPassiveLemmas=new Set([...latinP
  'Falta la excepción de facio y el inventario de pasivas personales');
 assert(html.includes("if(latinPersonalPresentPassiveLemmas.has(examKey(entry)))"),
  'La pasiva no está condicionada a la transitividad admitida');
-console.log('Latín I: 210 fichas individuales o docentes: eo, redeo, transeo, proficiscor y paradigmas anteriores; irregularidades no inventadas.');
+console.log('Latín I: 222 fichas individuales o docentes: eo, redeo, transeo, proficiscor y paradigmas anteriores; irregularidades no inventadas.');

@@ -121,6 +121,30 @@
             "ibitis",
             "ibunt"
           ]
+        },
+        {
+          "tags": "V;IND;ACT;PRF",
+          "forms": [
+            "ii",
+            "isti",
+            "iit",
+            "iimus",
+            "istis",
+            "ierunt"
+          ],
+          "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-irregular-verbs/"
+        },
+        {
+          "tags": "V;IND;ACT;PSTP",
+          "forms": [
+            "ieram",
+            "ieras",
+            "ierat",
+            "ieramus",
+            "ieratis",
+            "ierant"
+          ],
+          "reference": "https://www.azimonti.com/philology/latin/resources/paradigms-irregular-verbs/"
         }
       ]
     },

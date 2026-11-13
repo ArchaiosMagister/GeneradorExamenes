@@ -55,7 +55,7 @@ for(const x of records){
   }
  }
 }
-assert.equal(newForms,198);
+assert.equal(newForms,210);
 for(const lang of ['lat','grc']){
  const sum=Object.values(index.counts[lang]).reduce((a,b)=>a+b,0);
  assert.equal(sum,index.rows[lang].length,'Desajuste de contadores: '+lang);
@@ -72,4 +72,4 @@ const currentBuilder=fs.readFileSync(path.join(root,'scripts/build-lemma-index.m
 assert(currentBuilder.includes('ACT|MID|DEP'),'La regeneración perdería la etiqueta latina deponente');
 assert(!greek.βουλομαι.forms.includes('βούλῃ'),
  'Una variante no aprobada para el modelo no puede colarse como la lectura elegida');
-console.log('Cotejo positivo: 198 casillas de los lotes de revisión (84 previas y 114 del conjunto ampliado contado con eo presente), índices y fuentes contrastadas.');
+console.log('Cotejo positivo: 210 casillas de los lotes de revisión (84 previas y 126 del conjunto ampliado contado con eo presente), índices y fuentes contrastadas.');
