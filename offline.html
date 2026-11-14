@@ -6185,6 +6185,26 @@ function latinExamForms(chosen,number){
  }
  return out;
 }
+// Las alternativas léxicas se anuncian en letra, con concordancia femenina.
+function examLexOptionCountInWords(value,lang){
+ const n=Number(value),va=lang==='va';
+ if(!Number.isInteger(n)||n<0||n>99)return String(value);
+ const low=va?
+  ['zero','una','dues','tres','quatre','cinc','sis','set','huit','nou',
+   'deu','onze','dotze','tretze','catorze','quinze','setze','dèsset','díhuit','dènou',
+   'vint','vint-i-una','vint-i-dues','vint-i-tres','vint-i-quatre','vint-i-cinc',
+   'vint-i-sis','vint-i-set','vint-i-huit','vint-i-nou']:
+  ['cero','una','dos','tres','cuatro','cinco','seis','siete','ocho','nueve',
+   'diez','once','doce','trece','catorce','quince','dieciséis','diecisiete',
+   'dieciocho','diecinueve','veinte','veintiuna','veintidós','veintitrés',
+   'veinticuatro','veinticinco','veintiséis','veintisiete','veintiocho','veintinueve'];
+ if(n<low.length)return low[n];
+ const tens=va?
+  ['','','','trenta','quaranta','cinquanta','seixanta','setanta','huitanta','noranta']:
+  ['','','','treinta','cuarenta','cincuenta','sesenta','setenta','ochenta','noventa'];
+ const ten=tens[Math.floor(n/10)],unit=n%10;
+ return unit?ten+(va?'-':' y ')+low[unit]:ten;
+}
 function generate(){
  syncLatin1PhoneticRuleControls();
  if(currentCourse()==='greek1')return generateGreekExam();
@@ -6231,8 +6251,10 @@ function generate(){
  }
  const lexQuestion=buildLatinLexQuestion(course,chosen);
  if(examQuestionEnabled('lex')&&lexQuestion){
+  const offered=lexQuestion.count||examSelectedLexParts(course).length;
   add('lex',course==='latin1'
-   ?t('Léxico: elige dos de las '+(lexQuestion.count||examSelectedLexParts(course).length)+' cuestiones siguientes.','Lèxic: tria dues de les '+(lexQuestion.count||examSelectedLexParts(course).length)+' qüestions següents.')
+   ?t('Léxico: elige dos de las '+examLexOptionCountInWords(offered,'es')+' cuestiones siguientes.',
+      'Lèxic: tria dues de les '+examLexOptionCountInWords(offered,'va')+' qüestions següents.')
    :t('Léxico.','Lèxic.'),
    lexQuestion.html,lexQuestion.solution);
  }
@@ -7425,9 +7447,11 @@ function greekExamControls(){
    row.append(details);
   }
 
-  const current=document.createElement('div');current.className='hint';
-  current.textContent='Seleccionadas: '+(selected.length?selected.map(id=>{const x=pool.find(y=>y.id===id);return x?(kind==='conjugation'?headLex(x.lemmas[0]):x.prompt):''}).filter(Boolean).join(' · '):'ninguna');
-  row.append(current);
+  // No repetir las formas ya visibles en sus campos de texto editables.
+  if(!selected.length){
+   const current=document.createElement('div');current.className='hint';
+   current.textContent='Seleccionadas: ninguna';row.append(current);
+  }
   const select=document.createElement('select');select.setAttribute('aria-label','Elegir '+label);
   for(const item of pool.filter(x=>!selected.includes(x.id))){const option=document.createElement('option');option.value=item.id;option.textContent=kind==='conjugation'?headLex(item.lemmas[0]):item.prompt;select.append(option)}
   row.append(select);
@@ -7470,7 +7494,8 @@ function greekExamControls(){
     row.append(single);
    }
    const remove=document.createElement('button');remove.type='button';remove.className='secondary';
-   remove.textContent='Quitar '+(kind==='conjugation'?headLex(item.lemmas[0]):item.prompt);
+   remove.textContent='Quitar forma '+(index+1);
+   remove.setAttribute('aria-label','Quitar '+(kind==='conjugation'?headLex(item.lemmas[0]):item.prompt));
    remove.addEventListener('click',()=>greekRemoveChoice(kind,id));row.append(remove);
   }
   if(!pool.length){const note=document.createElement('p');note.className='hint';note.textContent='No hay entradas verificadas para las unidades seleccionadas.';row.append(note)}
@@ -8618,38 +8643,31 @@ loadTeacherLatinLexBanks();
    all.onclick=()=>regenerateLatinLexPart(kind);group.append(all);
    for(let i=0;i<latinLexExpectedCount(kind);i++){
     const row=document.createElement('div');row.className='lex-word-control';
-    const span=document.createElement('span');span.id='lex-slot-'+kind+'-'+i;span.textContent='Forma '+(i+1);
-    const button=document.createElement('button');button.type='button';button.className='secondary';
-    button.textContent='Cambiar solo esta forma';
-    button.setAttribute('aria-label','Regenerar forma '+(i+1)+' de '+latinLexTitles[kind]);
-    button.onclick=()=>regenerateLatinLexWord(kind,i);
-    row.append(span,button);
-    if(kind==='phonetics'||kind==='prefixes'||kind==='latinisms'){
-     const input=document.createElement('input');input.type='text';
-     input.id='lex-edit-'+kind+'-'+i;input.autocomplete='off';
+    // Una sola aparición editable de cada forma: sin duplicar su texto.
+    // Se conserva la regeneración aislada de cada posición.
+    const input=document.createElement('input');input.type='text';input.autocomplete='off';
+    if(kind==='preverbs'&&course==='latin1'){
+     input.id='lex-verb-'+i;
+     input.placeholder='Verbo '+(i+1)+' · '+(i===0?3:2)+' derivados';
+     input.setAttribute('aria-label','Editar verbo '+(i+1)+' de modificación preverbial');
+     input.addEventListener('input',()=>setLatinPreverbWord(i,input.value));
+     input.addEventListener('change',()=>{
+      if(!input.value.trim())regenerateLatinLexWord('preverbs',i);
+      else setLatinPreverbWord(i,input.value);
+     });
+    }else{
+     input.id='lex-edit-'+kind+'-'+i;
      input.setAttribute('aria-label','Editar forma '+(i+1)+' de '+latinLexTitles[kind]);
      input.addEventListener('input',()=>{
       if(kind==='phonetics')setLatinPhoneticWord(i,input.value);
       else setLatinLexWord(kind,i,input.value);
      });
-     row.append(input);
     }
-    group.append(row);
-   }
-   if(kind==='preverbs'&&course==='latin1'){
-    for(let i=0;i<2;i++){
-     const input=document.createElement('input');input.id='lex-verb-'+i;input.type='text';
-     input.placeholder='Verbo '+(i+1);input.autocomplete='off';
-     input.setAttribute('aria-label','Editar verbo '+(i+1)+' de modificación preverbial');
-     input.addEventListener('input',()=>setLatinPreverbWord(i,input.value));
-     // Compatible también con ediciones confirmadas mediante "change".
-     // Si se vacía el campo, recuperar un verbo elegible en lugar de dejar hueco.
-     input.addEventListener('change',()=>{
-      if(!input.value.trim())regenerateLatinLexWord('preverbs',i);
-      else setLatinPreverbWord(i,input.value);
-     });
-     group.append(makeLabel('Verbo '+(i+1)+' · '+(i===0?3:2)+' derivados',input));
-    }
+    const button=document.createElement('button');button.type='button';button.className='secondary';
+    button.textContent='Cambiar solo esta forma';
+    button.setAttribute('aria-label','Regenerar forma '+(i+1)+' de '+latinLexTitles[kind]);
+    button.onclick=()=>regenerateLatinLexWord(kind,i);
+    row.append(input,button);group.append(row);
    }
    const status=document.createElement('p');status.id='lex-status-'+kind;status.className='hint';
    status.setAttribute('aria-live','polite');group.append(status);box.append(group);
@@ -13296,9 +13314,12 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   ]);
   const base=question.base;
   if(base==='lex'){
+   // Latín I: se eligen DOS de varias alternativas, que no se responden juntas.
+   // Únicamente el bloque de léxico tiene 2 p.; las alternativas no deben
+   // mostrar ni validar un desglose que el alumno nunca completará entero.
+   if(state().course==='latin1')return {optional:true,groups:[]};
    const parts=findIn('.lex-subquestion[data-lex-kind]');
-   const optional=state().course==='latin1'&&parts.length>2;
-   return {optional,groups:parts.map((node,i)=>({
+   return {optional:false,groups:parts.map(node=>({
     node,part:'lex-'+node.dataset.lexKind,wordNodes:[...node.querySelectorAll('[data-lex-slot]')],
     fixed:false
    }))};
@@ -13357,7 +13378,16 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
     }));
     q.groups.push(group);
    });
-   if(!q.groups.length)return q;
+   if(!q.groups.length){
+    // Borradores anteriores a esta corrección podían conservar subpuntos
+    // optativos; descartarlos sin afectar a los dos puntos de la pregunta.
+    if(question.base==='lex'&&state().course==='latin1'){
+     for(const key of Object.keys(scores)){
+      if(key.startsWith(q.key+'|sub:')||key===initKey(q))delete scores[key];
+     }
+    }
+    return q;
+   }
    initializeDetails(q);
    q.groups.forEach(group=>{
     if(group.fixed)scores[group.key]=100;

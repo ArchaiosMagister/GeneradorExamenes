@@ -153,11 +153,11 @@ const server=http.createServer(async(req,res)=>{
   assert(examLex.phonetics.every(row=>row.normas.every(n=>['N07','N17'].includes(n))),
    'Evolución fonética incluye una norma aún no seleccionada');
   const before=examLex.exam.map(x=>({kind:x.kind,terms:x.terms.slice()}));
-  const prefixEditor=()=>page.locator('[id^="lex-slot-prefixes-"]').allTextContents();
+  const prefixEditor=()=>page.locator('[id^="lex-edit-prefixes-"]').evaluateAll(nodes=>nodes.map(el=>el.value));
   const beforeSlots=await prefixEditor();
   await page.locator('#examQuestionSettings').evaluate(el=>el.open=true);
   await page.locator('#examQuestionMenus [data-question="lex"]').evaluate(el=>el.open=true);
-  await page.locator('#lex-slot-prefixes-1 + button').click();
+  await page.locator('#lex-edit-prefixes-1 + button').click();
   const afterSlots=await prefixEditor();
   assert.notEqual(afterSlots[1],beforeSlots[1],'Regenerar una palabra no ha cambiado la forma elegida');
   assert.deepEqual(afterSlots.filter((_,i)=>i!==1),beforeSlots.filter((_,i)=>i!==1));
@@ -169,7 +169,7 @@ const server=http.createServer(async(req,res)=>{
    const expected=old.kind==='prefixes'?afterSlots.slice().sort((a,b)=>a.localeCompare(b,'es')):old.terms;
    assert.deepEqual(next.terms,expected,'Regenerar una palabra ha alterado términos ajenos o el orden alfabético');
   }
-  await page.locator('#lex-slot-latinisms-0').locator('..').locator('..').getByRole('button',{name:'Regenerar las cuatro formas'}).click();
+  await page.locator('#lex-edit-latinisms-0').locator('..').locator('..').getByRole('button',{name:'Regenerar las cuatro formas'}).click();
   const afterAll=await page.evaluate(()=>[...document.querySelector('#paper [data-lex-kind="latinisms"]').querySelectorAll('i')].map(x=>x.textContent));
   assert(afterAll.some((x,i)=>x!==before.find(x=>x.kind==='latinisms').terms[i]),
    'Regenerar subpregunta no ha sustituido las cuatro formas');
@@ -182,14 +182,18 @@ const server=http.createServer(async(req,res)=>{
   });
   assert(/<i(?:\s[^>]*)?>verbo_personalizado<\/i>(?:<\/span>)? \(3\)/.test(freeVerbs),
    'El primer verbo manual debe aparecer en minúscula, en cursiva y con tres derivados');
-  const preverbButtons=await page.evaluate(()=>({
-    twoSlots:document.querySelectorAll('#lex-slot-preverbs-0, #lex-slot-preverbs-1').length,
-    nonexistent:!!document.getElementById('lex-slot-preverbs-2'),
+  const preverbButtons=await page.evaluate(()=>{
+   const rows=[...document.querySelectorAll('[data-lex-part="preverbs"] .lex-word-control')];
+   return {rows:rows.length,
+    complete:rows.every(row=>row.querySelectorAll('input[type="text"]').length===1&&
+     row.querySelectorAll('button').length===1),
     inputs:[0,1].map(i=>!!document.getElementById('lex-verb-'+i)),
-    thirdInput:!!document.getElementById('lex-verb-2')
-  }));
-  assert(preverbButtons.twoSlots===2&&!preverbButtons.nonexistent&&preverbButtons.inputs.every(Boolean)&&!preverbButtons.thirdInput,
-   'El panel de modificación preverbial debe permitir modificar solo dos verbos');
+    thirdInput:!!document.getElementById('lex-verb-2'),
+    duplicates:document.querySelectorAll('[id^="lex-slot-preverbs-"]').length};
+  });
+  assert(preverbButtons.rows===2&&preverbButtons.complete&&preverbButtons.duplicates===0&&
+    preverbButtons.inputs.every(Boolean)&&!preverbButtons.thirdInput,
+   'El panel preverbial debe presentar solo dos campos editables con regeneración individual');
   // Las normas pertenecen a evolución fonética, no a latinismos.
   const normsInPhonetics=await page.evaluate(()=>
    document.querySelector('[data-lat1-phonetic-norms]')?.closest('[data-lex-part]')?.dataset.lexPart);

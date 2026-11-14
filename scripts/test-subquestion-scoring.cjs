@@ -170,36 +170,104 @@ async function verifyEditing(page,file){
  return {formKey:g.key,points:first};
 }
 async function checkLex(page,file){
+ // index.html leído como file:// bloquea la carga fetch de bancos externos.
+ // Ese escenario se audita mediante HTTP en test-lex-menu-sync.cjs; la
+ // versión autónoma sí incorpora los bancos y comprueba aquí los desgloses.
+ if(file==='index.html')return {testedBy:'test-lex-menu-sync.cjs (HTTP)'};
+ await page.waitForFunction(()=>typeof latinLexBanks!=='undefined'&&
+  latinLexBanks.latin1.preverbs.length>0&&latinLexBanks.latin1.phonetics.length>0);
  await configure(page,'latin1','tablas','UD9–10');
- const detail=await page.evaluate(()=>window.ExaminaScoring.details().find(q=>q.base==='lex'));
- if(!detail||!detail.groups.length)return {optional:false};
- assert(detail.optional,file+': léxico de Latín I debe tratar dos alternativas a elegir');
- assert(detail.groups.length>=3,file+': faltan alternativas');
- assert(detail.groups.every(g=>g.points*2===detail.parent),file+': las alternativas se sumaron indebidamente');
- assert(detail.groups.some(g=>g.children.length>0),file+': el léxico no desglosa palabras');
- const preverbs=detail.groups.find(g=>g.key.includes('lex-preverbs'));
- if(preverbs&&preverbs.children.length===2){
-  assert.equal(preverbs.children[0].points*2,preverbs.children[1].points*3,
-   file+': la modificación preverbial debe respetar tres y dos derivados');
- }
- const group=detail.groups.find(g=>g.children.length>=2);
- const child=group.children[0],original=child.points;
- const input=page.locator('#examScoring input[data-subscore-key="'+child.key+'"]');
- await openScoringDetail(page,child.key);
- await input.fill(String((original+25)/100).replace('.',','));
- assert((await page.evaluate(()=>window.ExaminaScoring.detailErrors())).some(x=>x.includes(group.key)),
-  file+': no se detecta desajuste de palabras de léxico');
- await input.fill(String(original/100).replace('.',','));
- assert.deepEqual(await page.evaluate(()=>window.ExaminaScoring.detailErrors()),[]);
+ await page.evaluate(()=>{
+  examQuestionChoiceState['latin1/tablas/lex']=true;
+  for(const kind of latinLexModules.latin1)
+   latinLexPartEnabled['latin1/'+kind]=true;
+  examSelectionCache.clear();
+  generate();window.ExaminaScoring.sync();
+ });
+ await page.waitForFunction(()=>document.querySelector('#paper .exam-question[data-exam-kind="lex"]'));
+ const initial=await page.evaluate(()=>{
+  const scoring=window.ExaminaScoring,lex=scoring.details().find(q=>q.base==='lex');
+  const headline=[...document.querySelectorAll('#paper .exam-question')]
+   .find(el=>el.dataset.examKind==='lex')?.textContent||'';
+  const offered=document.querySelectorAll('#paper .lex-subquestion[data-lex-kind]').length;
+  const fields=[...document.querySelectorAll('#examQuestionMenus [data-question="lex"] .lex-word-control')]
+   .map(el=>({fields:el.querySelectorAll('input[type="text"]').length,
+    buttons:el.querySelectorAll('button').length,
+    duplicate:el.querySelectorAll('span[id^="lex-slot-"]').length,
+    value:el.querySelector('input')?.value||''}));
+  return {lex,headline,offered,fields,total:scoring.total(),
+   errors:scoring.detailErrors(),snapshot:scoring.snapshot(),
+   previewLabels:document.querySelectorAll('#paper .lex-subquestion [data-exam-subscore]').length,
+   scores:[...document.querySelectorAll('#examScoring input[data-subscore-key]')].filter(x=>x.dataset.subscoreKey.startsWith(lex.key+'|')).length};
+ });
+ assert(initial.lex,file+': falta puntuación del bloque de léxico');
+ assert.equal(initial.lex.parent,200,file+': léxico optativo ha perdido sus dos puntos globales');
+ assert.equal(initial.lex.optional,true);
+ assert.deepEqual(initial.lex.groups,[],file+': las alternativas no pueden llevar desglose');
+ assert.equal(initial.previewLabels,0,file+': aparecen puntos por alternativa en el examen');
+ assert.equal(initial.scores,0,file+': hay campos de puntuación por alternativa');
+ assert(!Object.keys(initial.snapshot).some(x=>x.startsWith(initial.lex.key+'|')),
+  file+': quedan subpuntuaciones de léxico guardadas');
+ assert.equal(initial.offered,4,file+': deben existir cuatro alternativas');
+ assert.match(initial.headline,/elige dos de las cuatro cuestiones siguientes/i);
+ assert.equal(initial.fields.length,14,file+': deben mantenerse todos los editores léxicos');
+ assert(initial.fields.every(x=>x.fields===1&&x.buttons===1&&x.duplicate===0&&x.value),
+  file+': el menú duplica formas o pierde regeneración');
+ assert.deepEqual(initial.errors,[],file+': desglose inicialmente inconsistente');
+ // Al desactivar una alternativa, mostrar el número en letra sin asignar
+ // puntos a los tres apartados restantes.
+ const three=await page.evaluate(()=>{
+  const key='latin1/latinisms',prior=latinLexPartEnabled[key];
+  try{
+   latinLexPartEnabled[key]=false;generate();window.ExaminaScoring.sync();
+   return {heading:[...document.querySelectorAll('#paper .exam-question')]
+     .find(x=>x.dataset.examKind==='lex')?.textContent||'',
+    count:document.querySelectorAll('#paper .lex-subquestion').length,
+    score:window.ExaminaScoring.details().find(x=>x.base==='lex').parent,
+    errors:window.ExaminaScoring.detailErrors()};
+  }finally{latinLexPartEnabled[key]=prior;generate();window.ExaminaScoring.sync()}
+ });
+ assert.equal(three.count,3);
+ assert.match(three.heading,/elige dos de las tres cuestiones siguientes/i);
+ assert.equal(three.score,200);
+ assert.deepEqual(three.errors,[]);
+ // La versión valenciana debe utilizar "quatre" y no un numeral en cifras.
  await page.evaluate(()=>{
   const lang=document.getElementById('lang');lang.value='va';
   lang.dispatchEvent(new Event('change',{bubbles:true}));
+  generate();window.ExaminaScoring.sync();
  });
- await page.waitForFunction(()=>[...document.querySelectorAll('#examScoring .exam-subscore-details>summary')]
-  .some(el=>el.textContent.startsWith('Desglossament')));
- assert.deepEqual(await page.evaluate(()=>window.ExaminaScoring.detailErrors()),[],
-  file+': cambiar al valenciano altera los puntos internos');
- return {optional:true,alternatives:detail.groups.length,words:group.children.length};
+ const valencian=await page.evaluate(()=>({
+  heading:[...document.querySelectorAll('#paper .exam-question')]
+   .find(x=>x.dataset.examKind==='lex')?.textContent||'',
+  detail:window.ExaminaScoring.details().find(x=>x.base==='lex'),
+  errors:window.ExaminaScoring.detailErrors()
+ }));
+ assert.match(valencian.heading,/tria dues de les quatre qüestions següents/i);
+ assert.deepEqual(valencian.detail.groups,[]);
+ assert.equal(valencian.detail.parent,200);
+ assert.deepEqual(valencian.errors,[]);
+ return {offered:initial.offered,editors:initial.fields.length,optional:true};
+}
+async function checkGreekMenuWithoutDuplicates(page,file){
+ await configure(page,'greek1','complete','UD7');
+ const state=await page.evaluate(()=>{
+  const items=[...document.querySelectorAll('#examQuestionMenus [data-editor-for] > div')]
+   .filter(row=>row.querySelector('input[type="text"]'));
+  return {
+   editable:items.length,
+   duplicated:items.filter(row=>[...row.querySelectorAll('.hint')]
+    .some(el=>/^Seleccionadas:\s*(?!ninguna)/i.test(el.textContent))).length,
+   regen:items.filter(row=>row.querySelector('.exam-regenerate-word')).length,
+   removable:items.filter(row=>[...row.querySelectorAll('button')]
+    .some(btn=>/^Quitar forma \d+$/.test(btn.textContent))).length
+  };
+ });
+ assert(state.editable>0,file+': faltan editores de Griego I completo');
+ assert.equal(state.duplicated,0,file+': se repiten formas junto al campo editable de Griego I');
+ assert(state.regen>0,file+': desapareció la regeneración individual de Griego I');
+ assert(state.removable>0,file+': faltan botones para quitar formas de Griego I');
+ return state;
 }
 async function run(browser,file){
  const context=await browser.newContext({viewport:{width:1380,height:900}});
@@ -210,9 +278,10 @@ async function run(browser,file){
  const models=await verifyModels(page,file);
  const edit=await verifyEditing(page,file);
  const lex=await checkLex(page,file);
+ const greekMenu=await checkGreekMenuWithoutDuplicates(page,file);
  assert.deepEqual(errors,[],file+': excepciones JavaScript');
  await context.close();
- return {file,models,edit,lex};
+ return {file,models,edit,lex,greekMenu};
 }
 (async()=>{
  const browser=await chromium.launch({headless:true});
