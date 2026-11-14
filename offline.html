@@ -13903,9 +13903,14 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
    else if(!Object.prototype.hasOwnProperty.call(scores,key)){
     // Los valores nuevos nacen de las preguntas realmente disponibles.
     scores[key]=defaults[i];autoManaged.add(key);
-   }else if(autoManaged.has(key)&&scores[key]!==defaults[i]){
-    // Migrar repartos antiguos con decimales únicamente si eran automáticos.
-    // Nunca sustituir el valor decimal introducido por el docente.
+   }else if(autoManaged.has(key)&&scores[key]!==defaults[i]&&(
+    scores[key]%100!==0||
+    (state().course==='latin4'&&['decl','verb','forms'].includes(base)&&
+     (latin4LateNoCulture()||raw.some(q=>q.base==='culture'))
+    ))){
+    // Migrar puntuaciones automáticas con decimales a puntos enteros.
+    // Las modificaciones manuales se respetan; cambiar el número de
+    // oraciones no redistribuye silenciosamente las demás preguntas.
     scores[key]=defaults[i];
     delete scores[key+'|desglose-inicializado'];
     for(const subkey of Object.keys(scores))if(subkey.startsWith(key+'|sub:'))delete scores[subkey];
