@@ -1,0 +1,39 @@
+name: Sincronizar offline de fase VI (solo rama de trabajo)
+on:
+  push:
+    branches:
+      - feat/fase-vi-puntuacion-regresiones-20261114
+    paths:
+      - exam-scoring.js
+      - index.html
+      - scripts/test-phase-six.cjs
+      - .github/workflows/phase-six-offline-sync.yml
+permissions:
+  contents: write
+jobs:
+  build:
+    if: github.repository == 'ArchaiosMagister/GeneradorExamenes'
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/fase-vi-puntuacion-regresiones-20261114
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Generar HTML autónomo sin publicar
+        run: npm run offline:build
+      - name: Versionar solamente el archivo de rama
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s offline.html
+          git add -- offline.html
+          if git diff --cached --quiet; then
+            echo "offline.html sincronizado"
+          else
+            git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'Fase VI: sincronizar offline.html con puntuaciones'
+            git push origin HEAD:feat/fase-vi-puntuacion-regresiones-20261114
+          fi
