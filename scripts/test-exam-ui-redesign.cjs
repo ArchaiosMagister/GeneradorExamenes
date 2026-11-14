@@ -76,12 +76,14 @@ async function pick(page,course,model,unit){
    assert(greek.wordCount>0&&greek.sameWords,file+': campos editoriales extra o ausentes en Griego');
    assert(greek.enunciations>0&&greek.distinctEnunciations,file+': enunciación convertida en campo editable');
    const before=await page.locator('#paper .exam-form-enunciation').first().textContent();
+   await page.locator('#examQuestionMenus [data-question="forms"]').evaluate(el=>el.open=true);
    await page.locator('#examQuestionMenus [data-question="forms"] .question-editor input[type="text"]').first().fill('ἀγαθῶν');
    const after=await page.locator('#paper .exam-form-enunciation').first().textContent();
    assert.equal(before,after,file+': la enunciación de vista previa cambió por editar la forma');
    assert.equal(await page.locator('#paper [data-greek-form-surface]').first().textContent(),'ἀγαθῶν',
     file+': no se sincronizó edición con vista previa');
    await pick(page,'greek1','morphology','UD10');
+   await page.locator('#examQuestionMenus [data-question="forms"]').evaluate(el=>el.open=true);
    assert.equal(await page.locator('#examQuestionMenus [data-question="decl"] .exam-ui-extra select').count(),1);
    assert.equal(await page.locator('#examQuestionMenus [data-question="forms"] .exam-ui-categories input').count(),3);
    assert.equal(await page.locator('#exam-ui-bulk').isVisible(),true);
