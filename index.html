@@ -2937,7 +2937,33 @@ function greekCorpus(){
   });
  }
  greekFormRows.forEach(([form,min,us,lemma,answer],i)=>add('forms','f-'+i,min,us,form,answer,[lemma]));
- greekPronounRows.forEach(([form,answer],i)=>{add('pronouns','p-'+i,7,[7],form,answer);add('forms','pf-'+i,7,[7],form,answer)});
+ // Los pronombres carecían de enunciado aunque sus flexiones ya estaban
+ // verificadas. Asociar cada forma exclusivamente a su paradigma atestiguado.
+ const greekPronounParadigms=[
+  'ὅδε, ἥδε, τόδε',
+  'ἐκεῖνος, ἐκείνη, ἐκεῖνο',
+  'αὐτός, αὐτή, αὐτό',
+  'οὗτος, αὕτη, τοῦτο',
+  'οὗτος, αὕτη, τοῦτο',
+  'οὗτος, αὕτη, τοῦτο',
+  'ἐγώ, ἡμεῖς',
+  'αὐτός, αὐτή, αὐτό',
+  'σύ, ὑμεῖς',
+  'σύ, ὑμεῖς',
+  'ὅδε, ἥδε, τόδε',
+  'αὐτός, αὐτή, αὐτό',
+  'ἐγώ, ἡμεῖς',
+  'ἐκεῖνος, ἐκείνη, ἐκεῖνο',
+  'οὗτος, αὕτη, τοῦτο',
+  'αὐτός, αὐτή, αὐτό',
+  'ἐγώ, ἡμεῖς',
+  'ἐγώ, ἡμεῖς'
+ ];
+ greekPronounRows.forEach(([form,answer],i)=>{
+  const lemma=greekPronounParadigms[i];
+  add('pronouns','p-'+i,7,[7],form,answer,lemma?[lemma]:[]);
+  add('forms','pf-'+i,7,[7],form,answer,lemma?[lemma]:[]);
+ });
  greekEtymology.forEach(([word,min,us,answer],i)=>add('etymology','e-'+i,min,us,word,answer,[greekSharedBank.lookup(word)?.entry||word]));
  greekSentenceRows.forEach(([text,min,us,sol,analysis,lemmas],i)=>add('sentences','s-'+i,min,us,text,sol+' Análisis: '+analysis,lemmas));
  return items;
