@@ -62,7 +62,7 @@ async function testIntegers(page,name){
   assert(data.rows.every(x=>x.points%100===0),
    name+' '+course+'/'+model+': puntuación automática con decimales '+JSON.stringify(data.rows));
   if(['morf','morphology'].includes(model))
-   assert(data.rows.every(x=>x.points===100),name+': morfología no tiene 1 p. por pregunta');
+   assert(data.rows.every(x=>x.points===100),name+' '+course+'/'+model+': morfología no tiene 1 p. por pregunta '+JSON.stringify(data.rows));
   assert.equal(data.display,0,name+': hay subpuntos en la vista previa');
   assert.equal(data.subFields,0,name+': hay editores de subpuntos');
   assert.equal(data.breakdowns,0,name+': hay acordeones de desgloses');
