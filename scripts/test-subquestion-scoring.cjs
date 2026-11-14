@@ -170,7 +170,16 @@ async function verifyEditing(page,file){
  return {formKey:g.key,points:first};
 }
 async function checkLex(page,file){
+ await page.waitForFunction(()=>window.ExaminaTeacherLexBankReady===true);
  await configure(page,'latin1','tablas','UD9–10');
+ await page.evaluate(()=>{
+  examQuestionChoiceState['latin1/tablas/lex']=true;
+  for(const kind of latinLexModules.latin1)
+   latinLexPartEnabled['latin1/'+kind]=true;
+  examSelectionCache.clear();
+  generate();window.ExaminaScoring.sync();
+ });
+ await page.waitForFunction(()=>document.querySelector('#paper .exam-question[data-exam-kind="lex"]'));
  const initial=await page.evaluate(()=>{
   const scoring=window.ExaminaScoring,lex=scoring.details().find(q=>q.base==='lex');
   const headline=[...document.querySelectorAll('#paper .exam-question')]
