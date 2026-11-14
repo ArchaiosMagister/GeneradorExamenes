@@ -1520,7 +1520,14 @@ function classifyVocabularyEntry(item,course='lat1'){
    'noster','vester','nostras','vestras']);
  if(/\((?:pron\.?|pronombre|pronom\.?|demostrativo|interrogativo|relativo|anaf[oó]rico|personal|indefinido|f[oó]rico)[^)]*\)/iu.test(entry)||
   pronouns.has(lemma))return 'pronouns';
- if(/\((?:adv\.?|adverbio|conj\.?|conjunci[oó]n|prep\.?|preposici[oó]n|part\.?|interj\.?|interjecci[oó]n)[^)]*\)/iu.test(entry))
+ // Las preposiciones constituyen una categoría independiente en el
+ // vocabulario de las oraciones. No inferir "cum" como preposición cuando
+ // también puede ser conjunción: una etiqueta explícita tiene prioridad.
+ if(/\((?:prep\.?|preposici[oó]n)(?:\s|\.|\)|\+)/iu.test(entry)||
+  (greek?new Set(['εν','εισ','εκ','εξ','απο','προσ','δια']).has(lemma):
+   new Set(['a','ab','ad','e','ex','de','per']).has(lemma)))
+  return 'prepositions';
+ if(/\((?:adv\.?|adverbio|conj\.?|conjunci[oó]n|part\.?|interj\.?|interjecci[oó]n)[^)]*\)/iu.test(entry))
   return 'other';
  if(/\((?:[1-4][ªa]|mx\.?|irr\.?|dep\.?|semidep\.?|verbo)[^)]*\)/iu.test(entry))
   return 'verbs';

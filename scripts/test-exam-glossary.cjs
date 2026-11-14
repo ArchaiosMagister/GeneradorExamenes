@@ -50,6 +50,14 @@ for(const [entry,course,kind] of [
  ['hic, haec, hoc (pron.)','lat1','pronouns'],
  ['amo, amavi, amatum (1ª)','lat1','verbs'],
  ['bene (adv.)','lat1','other'],
+ ['et (conj.)','lat1','other'],
+ ['cum (conj.)','lat1','other'],
+ ['cum (prep. + abl.)','lat1','prepositions'],
+ ['ad (prep. + ac.)','lat1','prepositions'],
+ ['ad','lat1','prepositions'],
+ ['ἐν','gr1','prepositions'],
+ ['ἐν (prep. + dat.)','gr1','prepositions'],
+ ['καί (conj.)','gr1','other'],
  ['ὁ, ἡ, τό (art.)','gr1','articles'],
  ['μέν (part.)','gr1','particles'],
  ['ἐκεῖνος, –η, –ο (pron. dem.)','gr1','pronouns'],
@@ -210,8 +218,29 @@ assert(!engine.documentXml({...project,groupTypes:false}).includes('Sustantivos 
   assert.equal(await page.locator('#examSentenceGlossary .exam-gloss-reset').count(),2);
   await page.locator('#examSentenceGlossary .exam-gloss-reset').first().evaluate(el=>el.click());
   assert.equal(await page.locator('#examSentenceGlossary .exam-gloss-lemma').count(),1);
-  for(const id of ['glossNouns','glossAdjectives','glossPronouns','glossArticles','glossParticles','glossOther','glossHideRequired'])
+  for(const id of ['glossNouns','glossAdjectives','glossPronouns','glossArticles','glossParticles','glossOther','glossPrepositions','glossHideRequired'])
    assert.equal(await page.locator('#'+id).count(),1,id);
+  const independent=await page.evaluate(()=>{
+   const preps=document.getElementById('glossPrepositions');
+   const other=document.getElementById('glossOther');
+   const scope=document.getElementById('glossScope');
+   scope.value='all';
+   const run=()=>({prep:glossAccept('ad (prep. + ac.)',['UD7']),
+    barePrep:glossAccept('ad',['UD7']),
+    conj:glossAccept('cum (conj.)',['UD7']),
+    adv:glossAccept('bene (adv.)',['UD7'])});
+   const initial=run();
+   other.checked=false;other.dispatchEvent(new Event('change',{bubbles:true}));
+   const onlyPrepositions=run();
+   other.checked=true;other.dispatchEvent(new Event('change',{bubbles:true}));
+   preps.checked=false;preps.dispatchEvent(new Event('change',{bubbles:true}));
+   const onlyOther=run();
+   preps.checked=true;preps.dispatchEvent(new Event('change',{bubbles:true}));
+   return {initial,onlyPrepositions,onlyOther};
+  });
+  assert.deepEqual(independent.initial,{prep:true,barePrep:true,conj:true,adv:true});
+  assert.deepEqual(independent.onlyPrepositions,{prep:true,barePrep:true,conj:false,adv:false});
+  assert.deepEqual(independent.onlyOther,{prep:false,barePrep:false,conj:true,adv:true});
   assert.deepEqual(errors,[],'No deben aparecer errores JavaScript en la interfaz');
   console.log('Glosario de oraciones: elecciones, persistencia, edición, tipos y agrupación: OK');
  }finally{
