@@ -87,6 +87,12 @@ async function verifyModels(page,file){
  for(const kind of ['decl','forms','sent'])assert(types.has(kind),file+': no se cubre '+kind);
  return {count,types:[...types]};
 }
+async function openScoringDetail(page,key){
+ const selector='#examScoring input[data-subscore-key="'+key+'"]';
+ const card=page.locator('#examScoring .exam-subscore-details').filter({has:page.locator(selector)});
+ await card.evaluate(element=>element.open=true);
+ return card;
+}
 async function verifyEditing(page,file){
  await configure(page,'latin1','tablas','UD9–10');
  let info=await page.evaluate(()=>window.ExaminaScoring.details());
@@ -101,6 +107,7 @@ async function verifyEditing(page,file){
    other:scoring.details().find(x=>x.key===q).groups[1].points};
  },{q:target.key,g:g.key,g2:g2.key});
  const changed=Math.max(0,g.points-25);
+ await openScoringDetail(page,g.key);
  await page.locator('#examScoring input[data-subscore-key="'+g.key+'"]').fill(String(changed/100).replace('.',','));
  const mismatch=await page.evaluate(()=>({
   errors:window.ExaminaScoring.detailErrors(),
@@ -140,6 +147,7 @@ async function verifyEditing(page,file){
  await page.evaluate(()=>document.getElementById('saveDraft').click());
  const saved=await page.evaluate(({key})=>JSON.parse(localStorage.getItem('examina_draft_v14')).scores[key],{key:g.key});
  assert.equal(saved,first,file+': el borrador no guarda los puntos internos');
+ await openScoringDetail(page,g.key);
  await page.locator('#examScoring input[data-subscore-key="'+g.key+'"]').fill('0');
  await page.evaluate(()=>document.getElementById('restoreDraft').click());
  await page.waitForFunction(({key,first})=>window.ExaminaScoring.snapshot()[key]===first,{key:g.key,first});
@@ -168,6 +176,7 @@ async function checkLex(page,file){
  const group=detail.groups.find(g=>g.children.length>=2);
  const child=group.children[0],original=child.points;
  const input=page.locator('#examScoring input[data-subscore-key="'+child.key+'"]');
+ await openScoringDetail(page,child.key);
  await input.fill(String((original+25)/100).replace('.',','));
  assert((await page.evaluate(()=>window.ExaminaScoring.detailErrors())).some(x=>x.includes(group.key)),
   file+': no se detecta desajuste de palabras de léxico');
