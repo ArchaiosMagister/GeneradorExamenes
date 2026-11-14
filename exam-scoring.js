@@ -218,7 +218,8 @@
    if(input.dataset.subscoreKey===key&&input!==activeInput)input.value=value(cents);
   }
   for(const labelNode of paper.querySelectorAll('[data-exam-subscore]')){
-   if(labelNode.dataset.examSubscore===key)labelNode.textContent=' ('+value(cents)+' p.)';
+   if(labelNode.dataset.examSubscore===key)labelNode.textContent=
+    (labelNode.dataset.examSubscorePrefix||'')+'('+value(cents)+' p.)';
   }
   refreshDetailSummaries();
   showStatus();
@@ -226,19 +227,29 @@
  }
  function attachPreviewDetail(node,key,fixed){
   if(!node?.isConnected)return;
-  const host=node.tagName==='TR'?(node.cells?.[0]||node):node;
-  if(!host||host.dataset?.examSubscore===key)return;
+  const table=node.matches('table')?node:node.closest('table');
   const labelNode=document.createElement('span');
   labelNode.className='exam-subpoint-label no-print';
   labelNode.dataset.examSubscore=key;
   labelNode.contentEditable='false';
-  labelNode.textContent=' ('+value(scores[key]||0)+' p.)';
+  // La etiqueta docente nunca se inserta dentro de un encabezado ni dentro
+  // de una forma analizable: preserva sus textos, celdas y vínculos Word.
+  const prefix=table?detailLabel(node)+': ':'';
+  labelNode.dataset.examSubscorePrefix=prefix;
+  labelNode.textContent=prefix+'('+value(scores[key]||0)+' p.)';
   labelNode.title='Puntuación de este elemento (solo para edición docente)';
   if(!fixed){
    labelNode.tabIndex=0;labelNode.setAttribute('role','button');
    labelNode.setAttribute('aria-label','Editar puntuación del elemento: '+value(scores[key]||0)+' puntos');
   }
-  host.append(labelNode);
+  if(table){
+   labelNode.classList.add('exam-subpoint-table-label');
+   table.after(labelNode);
+  }else if(node.matches('li')){
+   node.append(labelNode);
+  }else{
+   node.after(labelNode);
+  }
  }
  function redistributeDetails(q){
   if(!q.groups.length)return;
