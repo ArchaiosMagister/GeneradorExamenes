@@ -45,7 +45,8 @@ const report={
   'Se examina la estructura académica y el DOCX, no se certifica automáticamente la corrección filológica de cada respuesta.',
   'Para inspeccionar la serialización del DOCX, se aísla únicamente el bloqueo de evidencias docentes; no se concede autorización persistente a ninguna forma.',
   'Los apartados con huecos deliberados para el alumnado no se consideran preguntas incompletas.',
-  'index.html se prueba servido vía HTTP local; offline.html mantiene bancos integrados.'
+  'index.html se prueba servido vía HTTP local; offline.html mantiene bancos integrados.',
+  'Se comprueban todas las unidades por separado y acumuladas; Word se serializa en primera, última e intermedia por modelo e idioma.'
  ],
  cases:[],words:[],editors:[],issues:[]
 };
@@ -71,14 +72,14 @@ async function unitsFor(page,course){
    .map(el=>units[Number(el.value)]).filter(u=>/^UD\d+(?:[–-]\d+)?$/.test(u));
  },course);
 }
-async function configure(page,course,model,unit,lang){
- return page.evaluate(({course,model,unit,lang})=>{
+async function configure(page,course,model,unit,lang,cumulative=true){
+ return page.evaluate(({course,model,unit,lang,cumulative})=>{
   const select=(id,value)=>{
    const el=document.getElementById(id);el.value=value;
    el.dispatchEvent(new Event('change',{bubbles:true}));
   };
   select('course',course);select('model',model);select('lang',lang);
-  document.getElementById('cumulative').checked=true;
+  document.getElementById('cumulative').checked=cumulative;
   const selected=[...document.querySelectorAll('#unitChoices .unit-choice')];
   selected.forEach(el=>{el.checked=units[Number(el.value)]===unit});
   if(!selected.some(el=>el.checked))throw Error('Unidad inexistente: '+unit);
@@ -114,17 +115,21 @@ async function configure(page,course,model,unit,lang){
   const lexLetters=lexNodes.map(el=>el.querySelector('.exam-letter')?.textContent.trim());
   const sentenceSlots=[...paper.querySelectorAll('[data-sentence-slot]')];
   const blankSentenceSlots=sentenceSlots.filter(el=>!el.textContent.trim()).length;
-  return {course,model,unit,lang,effective:selectedUnits(),questions,questionCount:qs.length,
+  return {course,model,unit,lang,cumulative,selectedRaw:selectedUnits(false),effective:selectedUnits(),questions,questionCount:qs.length,
    scoreRows:rows.length,scoreDetails:rows.map(x=>({kind:x.key.split('/').pop().replace(/#\\d+$/,''),points:x.points})),
    total,definitive:{ok:definitive.ok,mode:definitive.mode,total:definitive.total,normalized:definitive.normalized},
    draft:{ok:draft.ok,mode:draft.mode},detailErrors:engine.detailErrors?.()||[],
    hasSheet:!!paper.querySelector('.exam-sheet'),header:paper.querySelector('.exam-header')?.textContent.slice(0,180)||'',
    date,tableCount,pronounRows,greekForms,lexParts,lexLetters,sentenceSlots:sentenceSlots.length,blankSentenceSlots,cultural,warnings};
- },{course,model,unit,lang});
+ },{course,model,unit,lang,cumulative});
 }
 function inspect(row,file){
- const where=file+' '+row.course+'/'+row.model+'/'+row.unit+'/'+row.lang;
+ const where=file+' '+row.course+'/'+row.model+'/'+row.unit+'/'+row.lang+(row.cumulative?'/acumulativo':'/solo-UD');
  report.cases.push({file,...row});
+ if(row.selectedRaw.length!==1||row.selectedRaw[0]!==row.unit)
+  issue('bloqueante',where,'El selector no mantiene una única unidad marcada');
+ if(!row.cumulative&&(row.effective.length!==1||row.effective[0]!==row.unit))
+  issue('bloqueante',where,'Se filtraron unidades anteriores pese a desactivar la acumulación: '+JSON.stringify(row.effective));
  if(!row.hasSheet||row.questionCount===0)issue('bloqueante',where,'Examen sin contenido imprimible');
  if(row.scoreRows!==row.questionCount)issue('bloqueante',where,'Número de preguntas y controles de puntuación no coincide');
  if(row.questions.some(q=>!q.hasPoints))issue('bloqueante',where,'Hay un enunciado sin puntuación visible');
@@ -167,9 +172,9 @@ function inspect(row,file){
  if(row.course==='greek1'&&row.model==='morphology'&&row.greekForms.some(x=>/\(\s*\)/.test(x.context||'')))
   issue('bloqueante',where,'Enunciado griego vacío junto a forma');
 }
-async function word(page,file,course,model,unit,lang){
+async function word(page,file,course,model,unit,lang,cumulative=true){
  const where=file+' '+course+'/'+model+'/'+unit+'/'+lang;
- const selected=await configure(page,course,model,unit,lang);
+ const selected=await configure(page,course,model,unit,lang,cumulative);
  const exported=await page.evaluate(async()=>{
   const review=window.ExaminaTeacherReview;
   const old=review?.evidenceMayExport;
@@ -196,11 +201,11 @@ async function word(page,file,course,model,unit,lang){
  if(course==='greek1'&&selected.tableCount)assert(!xml.includes('<w:i/>'),where+' griego en cursiva Word');
  if(xml.includes('exam-subscore')||xml.includes('data-exam-subscore'))
   issue('bloqueante',where,'Controles docentes internos filtrados al Word');
- const filename=['examen',course,model,unit.replace(/[^a-zA-Z0-9]/g,''),lang,file==='index.html'?'online':'offline'].join('-')+'.docx';
+ const filename=['examen',course,model,unit.replace(/[^a-zA-Z0-9]/g,''),cumulative?'acumulativo':'soloUD',lang,file==='index.html'?'online':'offline'].join('-')+'.docx';
  if(file==='index.html'){
   fs.writeFileSync(path.join(artifacts,filename),bytes);
  }
- report.words.push({file,course,model,unit,lang,filename:file==='index.html'?filename:null,bytes:bytes.length,
+ report.words.push({file,course,model,unit,lang,cumulative,filename:file==='index.html'?filename:null,bytes:bytes.length,
   hasTables:!!selected.tableCount,questionCount:selected.questionCount});
 }
 async function edit(page,file,course,model,unit){
@@ -255,10 +260,13 @@ async function runFile(browser,file){
    assert(list.length>0,file+' '+group.course+' sin unidades');
    if(group.course==='greek1'&&list.includes('UD0'))issue('bloqueante',file+' Griego I','UD0 sigue disponible en el selector de exámenes');
    for(const model of group.models){
-    for(const unit of list){
-     for(const lang of ['es','va']){
-      try{inspect(await configure(page,group.course,model,unit,lang),file)}
-      catch(e){issue('bloqueante',file+' '+group.course+'/'+model+'/'+unit+'/'+lang,'Excepción: '+e.message)}
+    for(const cumulative of [true,false]){
+     for(const unit of list){
+      for(const lang of ['es','va']){
+       try{inspect(await configure(page,group.course,model,unit,lang,cumulative),file)}
+       catch(e){issue('bloqueante',file+' '+group.course+'/'+model+'/'+unit+'/'+lang+
+        (cumulative?'/acumulativo':'/solo-UD'),'Excepción: '+e.message)}
+      }
      }
     }
    }
@@ -266,10 +274,17 @@ async function runFile(browser,file){
   for(const group of cases){
    const list=await unitsFor(page,group.course);
    const mid=list.find(x=>x==='UD7')||list[Math.floor(list.length/2)];
+   // En cada modelo se serializa Word en una UD intermedia acumulativa
+   // y en la primera y última UD aisladas, tanto en ES como en VA.
+   const wordCases=[{unit:mid,cumulative:true},
+    {unit:list[0],cumulative:false},{unit:list[list.length-1],cumulative:false}];
    for(const model of group.models){
-    for(const lang of ['es','va']){
-     try{await word(page,file,group.course,model,mid,lang)}
-     catch(e){issue('bloqueante',file+' Word '+group.course+'/'+model+'/'+lang,e.message)}
+    for(const {unit,cumulative} of wordCases){
+     for(const lang of ['es','va']){
+      try{await word(page,file,group.course,model,unit,lang,cumulative)}
+      catch(e){issue('bloqueante',file+' Word '+group.course+'/'+model+'/'+unit+'/'+lang+
+       (cumulative?'/acumulativo':'/solo-UD'),e.message)}
+     }
     }
     try{await edit(page,file,group.course,model,mid)}
     catch(e){issue('bloqueante',file+' edición '+group.course+'/'+model,e.message)}
