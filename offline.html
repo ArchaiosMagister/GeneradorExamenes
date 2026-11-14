@@ -7842,12 +7842,20 @@ async function loadTeacherLatinLexBanks(){
  }
 }
 
+// UD9 y UD10 de Latín 4.º carecen de bloque cultural propio. No se toma
+// contenido de unidades anteriores: es la única pregunta no acumulativa.
+function latin4CultureExcludedForUnit(){
+ if(currentCourse()!=='latin4')return false;
+ const marked=selectedUnits(false);
+ return marked.length>0&&marked.every(unit=>unit==='UD9'||unit==='UD10');
+}
 function examQuestionAvailable(kind){
  const course=currentCourse(),model=$('model').value;
  const supported=course==='greek1'?['decl','verb','forms','pronouns','etymology','sent']:
   course==='latin4'?['decl','verb','forms','lex','culture','sent']:
   ['decl','verb','forms','pronouns','lex','sent'];
  if(!supported.includes(kind))return false;
+ if(kind==='culture'&&latin4CultureExcludedForUnit())return false;
  if(['morf','morphology'].includes(model)&&!['decl','verb','pronouns','forms'].includes(kind))return false;
  if(['mixto','translation'].includes(model)&&!['forms','lex','etymology','sent'].includes(kind))return false;
  if(kind==='pronouns'){
@@ -9307,9 +9315,9 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   host.hidden=!examVisible;
   // Los apartados desactivados permanecen visibles en la lista de preguntas.
   // No deben hacer aparecer el menú de oraciones de los exámenes de morfología.
-  const isLatin4=c==='latin4',hasSent=!['morf','morphology'].includes(m);
+  const isLatin4=c==='latin4',cultureLate=isLatin4&&latin4CultureExcludedForUnit(),hasSent=!['morf','morphology'].includes(m);
   for(const [id,visible] of [
-   ['group-culture',isLatin4],
+   ['group-culture',isLatin4&&!cultureLate],
    ['group-vocab',hasSent],
    ['group-morph',true],
    ['group-import',true]
@@ -9320,11 +9328,12 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   const lex=$('examQuestionMenus')?.querySelector('[data-question="lex"]');
   if(lex)lex.hidden=c==='greek1';
   const culture=$('examQuestionMenus')?.querySelector('[data-question="culture"]');
-  if(culture)culture.hidden=!isLatin4;
+  if(culture)culture.hidden=!isLatin4||cultureLate;
  }
  function schedule(){requestAnimationFrame(()=>requestAnimationFrame(refresh))}
  for(const id of ['course','model','lang'])$(id)?.addEventListener('change',schedule);
  document.querySelector('.vocab-tabbar')?.addEventListener('click',schedule);
+ $('unitChoices')?.addEventListener('change',schedule);
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mount,{once:true});
  else mount();
 })();

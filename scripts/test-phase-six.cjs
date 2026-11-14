@@ -52,11 +52,16 @@ async function policySweep(page,filename){
   assert(result.initial.total>0,label+': ninguna pregunta puntuada');
   assert.equal(result.initial.mode,false,label+': modo definitivo activado sin consentimiento');
   assert.equal(result.definitive.normalized,false,label+': normalización implícita');
-  assert.equal(result.definitive.ok,result.initial.total===1000,label+': validación no estricta');
+  const partial=['morf','morphology'].includes(model);
+  assert.equal(result.definitive.mode,partial?'parcial':'definitivo',label+': modalidad final incorrecta');
+  assert.equal(result.definitive.ok,partial?
+   result.initial.rows.every(x=>x.points===100):result.initial.total===1000,
+   label+': validación no estricta');
   assert.equal(result.draft.ok,true,label+': no se admite el borrador');
   assert.equal(result.draft.mode,'borrador',label+': estado del borrador');
   const text=await page.locator('#examScoringTotal').innerText();
-  if(result.initial.total!==1000)assert.match(text,/10|morfolog/i,label+': falta aviso de puntuación');
+  if(partial)assert.match(text,/prova parcial|prueba parcial/i,label+': morfología no identificada como prueba parcial');
+  else if(result.initial.total!==1000)assert.match(text,/10|morfolog/i,label+': falta aviso de puntuación');
  }
 }
 async function testPreservation(page,filename){

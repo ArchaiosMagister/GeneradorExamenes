@@ -115,7 +115,8 @@ async function configure(page,course,model,unit,lang){
   const sentenceSlots=[...paper.querySelectorAll('[data-sentence-slot]')];
   const blankSentenceSlots=sentenceSlots.filter(el=>!el.textContent.trim()).length;
   return {course,model,unit,lang,effective:selectedUnits(),questions,questionCount:qs.length,
-   scoreRows:rows.length,total,definitive:{ok:definitive.ok,total:definitive.total,normalized:definitive.normalized},
+   scoreRows:rows.length,scoreDetails:rows.map(x=>({kind:x.key.split('/').pop().replace(/#\\d+$/,''),points:x.points})),
+   total,definitive:{ok:definitive.ok,mode:definitive.mode,total:definitive.total,normalized:definitive.normalized},
    draft:{ok:draft.ok,mode:draft.mode},detailErrors:engine.detailErrors?.()||[],
    hasSheet:!!paper.querySelector('.exam-sheet'),header:paper.querySelector('.exam-header')?.textContent.slice(0,180)||'',
    date,tableCount,pronounRows,greekForms,lexParts,lexLetters,sentenceSlots:sentenceSlots.length,blankSentenceSlots,cultural,warnings};
@@ -129,10 +130,24 @@ function inspect(row,file){
  if(row.questions.some(q=>!q.hasPoints))issue('bloqueante',where,'Hay un enunciado sin puntuación visible');
  if(row.total===null||row.total<=0)issue('bloqueante',where,'Puntuación total ausente');
  if(row.definitive.normalized!==false)issue('bloqueante',where,'Reparto implícito en la validación definitiva');
- if(row.total!==1000&&row.definitive.ok)issue('bloqueante',where,'Permite definitivo con puntuación distinta de 10');
+ const morph=['morf','morphology'].includes(row.model);
+ if(morph){
+  if(!row.definitive.ok||row.definitive.mode!=='parcial'||
+     row.scoreDetails.some(x=>x.points!==100)||row.total!==row.questionCount*100)
+   issue('bloqueante',where,'Prueba parcial morfológica: no respeta 1 p. por pregunta');
+ }else if(row.total!==1000||!row.definitive.ok)
+  issue('bloqueante',where,'Examen completo no alcanza los 10 puntos definitivos');
+ if(row.course==='latin4'&&['UD9','UD10'].includes(row.unit)){
+  if(row.questions.some(x=>x.kind==='culture')||row.cultural?.length||
+     row.warnings.some(x=>/cultura|culture/i.test(x)))
+   issue('bloqueante',where,'Cultura aparece o genera aviso en UD9/10');
+  if(row.total!==1000||['decl','verb','forms'].some(kind=>
+     row.scoreDetails.find(x=>x.kind===kind)?.points!==100))
+   issue('bloqueante',where,'UD9/10 sin cultura no reparte 1+1+1+2+5 puntos');
+ }
  if(!row.draft.ok)issue('bloqueante',where,'Un borrador no puede exportarse');
  if(row.date!==(row.lang==='va'?'Data: ':'Fecha: '))issue('bloqueante',where,'Encabezado de fecha mal localizado: '+JSON.stringify(row.date));
- if(row.total!==1000)issue('revisión',where,'Puntuación inicial '+(row.total/100).toFixed(2)+'; para definitivo requiere ajuste docente');
+ if(!morph&&row.total!==1000)issue('revisión',where,'Puntuación inicial '+(row.total/100).toFixed(2)+'; para definitivo requiere ajuste docente');
  for(const warning of row.warnings)issue('revisión',where,'Aviso curricular: '+warning.slice(0,250));
  if(row.course==='latin4'&&row.cultural){
   for(const c of row.cultural)if(c.units&&!c.units.includes(row.unit))
