@@ -1,0 +1,46 @@
+name: Auditoría de exámenes reales (sin publicación)
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/test-real-exam-audit.cjs'
+      - '.github/workflows/audit-real-exams.yml'
+      - 'index.html'
+      - 'offline.html'
+      - 'exam-scoring.js'
+      - 'culture-lat4.js'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    name: Exámenes, unidades, puntuación, editores y DOCX (ES/VA)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Preparar Chromium para pruebas reales
+        run: |
+          npm install --no-save --ignore-scripts playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Construir y cotejar la versión offline
+        run: |
+          npm run offline:build
+          git diff --exit-code -- offline.html
+      - name: Revisar sistemáticamente exámenes reales en web y offline
+        run: node scripts/test-real-exam-audit.cjs
+      - name: Conservar informe completo y muestras Word para el docente
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: auditoria-examenes-reales-20261114
+          path: |
+            test-artifacts/auditoria-examenes-reales-20261114.json
+            test-artifacts/examen-*.docx
+          if-no-files-found: warn
+          retention-days: 30

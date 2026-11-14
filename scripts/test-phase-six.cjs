@@ -1,5 +1,5 @@
 'use strict';
-// Fase VI: diez puntos reales en todos los modelos, sin reparto oculto.
+// Fase VI: 10 p. en exámenes completos, pruebas morfológicas parciales a 1 p. por pregunta.
 const assert=require('node:assert/strict');
 const path=require('node:path');
 const {pathToFileURL}=require('node:url');
@@ -46,17 +46,22 @@ async function policySweep(page,filename){
    const definitive=e.preflight();
    check.checked=false;check.dispatchEvent(new Event('change',{bubbles:true}));
    const draft=e.preflight();
-   return {initial,definitive,draft};
+   return {initial,definitive,draft,effectiveModel:document.getElementById('model').value};
   });
   assert(result.initial.rows.length>0,label+': sin preguntas');
   assert(result.initial.total>0,label+': ninguna pregunta puntuada');
   assert.equal(result.initial.mode,false,label+': modo definitivo activado sin consentimiento');
   assert.equal(result.definitive.normalized,false,label+': normalización implícita');
-  assert.equal(result.definitive.ok,result.initial.total===1000,label+': validación no estricta');
+  const partial=['morf','morphology'].includes(result.effectiveModel);
+  assert.equal(result.definitive.mode,partial?'parcial':'definitivo',label+': modalidad final incorrecta');
+  assert.equal(result.definitive.ok,partial?
+   result.initial.rows.every(x=>x.points===100):result.initial.total===1000,
+   label+': validación no estricta');
   assert.equal(result.draft.ok,true,label+': no se admite el borrador');
   assert.equal(result.draft.mode,'borrador',label+': estado del borrador');
   const text=await page.locator('#examScoringTotal').innerText();
-  if(result.initial.total!==1000)assert.match(text,/10|morfolog/i,label+': falta aviso de puntuación');
+  if(partial)assert.match(text,/prova parcial|prueba parcial/i,label+': morfología no identificada como prueba parcial');
+  else if(result.initial.total!==1000)assert.match(text,/10|morfolog/i,label+': falta aviso de puntuación');
  }
 }
 async function testPreservation(page,filename){

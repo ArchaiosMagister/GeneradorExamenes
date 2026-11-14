@@ -1,5 +1,5 @@
 'use strict';
-// La validación estricta exige diez puntos reales en todos los modelos; borradores exportables.
+// Política docente: completos 10 p.; morfología como prueba parcial de 1 p. por pregunta.
 const assert=require('node:assert/strict');
 const path=require('node:path');
 const {pathToFileURL}=require('node:url');
@@ -81,43 +81,40 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
    const checkbox=document.getElementById('examFinalMode');
    checkbox.checked=true;checkbox.dispatchEvent(new Event('change',{bubbles:true}));
   });
-  const morphology=await page.evaluate(()=>window.ExaminaScoring.preflight());
-  assert.equal(morphology.normalized,false,'Ningún modelo admite normalización implícita');
-  assert.equal(morphology.ok,morphology.total===1000,
-   'Morfología definitiva solo puede exportarse con diez puntos reales');
-  if(morphology.total!==1000){
-   assert.equal(await page.evaluate(()=>window.ExaminaScoring.canExport()),false);
-   assert.match(await page.locator('#examScoringTotal').innerText(),/10 punts|10 puntos/i);
-   // La decisión docente de reajustar una puntuación es siempre explícita.
-   await page.evaluate(()=>{
-    const item=[...document.querySelectorAll('#examScoring .exam-scoring-rows input[data-scoring-key]')]
-     .find(el=>!el.disabled);
-    if(!item)throw Error('Morfología sin pregunta editable');
-    const scoring=window.ExaminaScoring,current=scoring.parse(item.value);
-    const updated=current+1000-morphologyTotal();
-    function morphologyTotal(){return scoring.total()}
-    if(updated<0||updated>10000)throw Error('No es posible completar diez puntos');
-    item.value=scoring.format(updated);
-    item.dispatchEvent(new Event('input',{bubbles:true}));
-    // La corrección del total NO redistribuye los subpuntos por sí sola.
-    // El docente debe ejecutar también el reparto explícito de la pregunta.
-    const detail=[...document.querySelectorAll('#examScoring .exam-subscore-details')]
-     .find(section=>section.querySelector('[data-detail-status]')?.dataset.detailStatus===item.dataset.scoringKey);
-    detail?.querySelector('button')?.click();
-   });
-   assert.equal(await page.evaluate(()=>window.ExaminaScoring.preflight().ok),true,
-    'Una corrección docente explícita sí debe permitir el definitivo');
-  }
+  const morphology=await page.evaluate(()=>({
+   result:window.ExaminaScoring.preflight(),
+   rows:window.ExaminaScoring.rows()
+  }));
+  assert.equal(morphology.result.normalized,false,'No normalizar prueba parcial');
+  assert.equal(morphology.result.mode,'parcial','La morfología debe declararse prueba parcial');
+  assert.equal(morphology.result.total,morphology.rows.length*100,'Morfología: 1 p. por pregunta');
+  assert(morphology.rows.every(r=>r.points===100),'No se conserva la puntuación unitaria');
+  assert.equal(morphology.result.ok,true,'La prueba parcial debe poder cerrarse con su puntuación real');
+  assert.equal(await page.evaluate(()=>window.ExaminaScoring.canExport()),true);
+  await page.evaluate(()=>{
+   const row=[...document.querySelectorAll('#examScoring input[data-scoring-key]')].find(x=>!x.disabled);
+   if(!row)throw Error('Morfología sin puntuaciones editables');
+   row.value='1,5';row.dispatchEvent(new Event('input',{bubbles:true}));
+  });
+  assert.equal(await page.evaluate(()=>window.ExaminaScoring.preflight().ok),false,
+   'La prueba parcial debe bloquear puntuaciones de pregunta distintas de 1 p.');
+  assert.equal(await page.evaluate(()=>window.ExaminaScoring.canExport()),false);
+  await page.evaluate(()=>{
+   const row=[...document.querySelectorAll('#examScoring input[data-scoring-key]')].find(x=>!x.disabled);
+   row.value='1';row.dispatchEvent(new Event('input',{bubbles:true}));
+  });
+  assert.equal(await page.evaluate(()=>window.ExaminaScoring.preflight().ok),true,
+   'La prueba parcial debe recuperarse tras restaurar 1 p. por pregunta');
   await page.evaluate(()=>{
    const l=document.getElementById('lang');l.value='va';l.dispatchEvent(new Event('change',{bubbles:true}));
   });
-  await page.waitForFunction(()=>document.getElementById('examFinalHelp').textContent.includes('Examen definitiu'));
+  await page.waitForFunction(()=>document.getElementById('examFinalHelp').textContent.includes('Prova parcial'));
   // La aprobación del modo definitivo nunca se hereda tras recargar.
   await page.reload({waitUntil:'load'});
   await page.waitForFunction(()=>!!window.ExaminaScoring?.preflight&&!!document.getElementById('examFinalMode'));
   assert.equal(await page.evaluate(()=>window.ExaminaScoring.finalMode()),false,
    'Al reabrir el generador el modo definitivo debe permanecer desactivado');
   assert.deepEqual(errors,[],'Errores JavaScript del panel definitivo');
-  console.log('Definitivo: puntos exactos, bloqueo Word/impresión, borradores sin cambios y morfología normalizada, ES/VA.');
+  console.log('Validación final: completos a 10 p., pruebas morfológicas parciales a 1 p. por pregunta, Word e impresión controlados, ES/VA.');
  }finally{await browser.close()}
 })().catch(e=>{console.error(e);process.exitCode=1});
