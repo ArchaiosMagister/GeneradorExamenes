@@ -64,6 +64,8 @@ jobs:
         run: node scripts/test-cultura-lat4.cjs
       - name: Probar modelos regulares sin incorporación a los exámenes
         run: node scripts/test-regular-latin.mjs
+      - name: Verificar adaptador ScholaClassica de solo lectura y bloqueo de promociones
+        run: node scripts/test-schola-morphology-reconciliation.cjs
       - name: Verificar evidencia persistente y conjugación mixta de Latín I
         run: node scripts/test-latin-verb-evidence.cjs
       - name: Cotejar paradigmas individuales verificados con la fuente persistente
