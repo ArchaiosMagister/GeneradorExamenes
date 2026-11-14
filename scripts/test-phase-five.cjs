@@ -73,6 +73,7 @@ async function checkOne(browser,filename){
  }
  for(const width of [900,820,768,390,360]){
   await page.setViewportSize({width,height:780});
+  await page.waitForFunction(()=>document.getElementById('examLayout').dataset.examTab==='settings');
   await assertVisibility(page,true);
   assert.equal(await page.locator('#examSettingsTab').getAttribute('aria-selected'),'true');
   await page.locator('#examQuestionsTab').click();
