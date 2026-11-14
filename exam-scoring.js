@@ -126,8 +126,8 @@
  function showStatus(){
   const lang=state().language==='va',total=sum(),isMorph=morph();
   const totalString=value(total);
-  finalText.textContent=lang?'Examen definitiu: comprovar la puntuació abans d’exportar':
-   'Examen definitivo: comprobar la puntuación antes de exportar';
+  finalText.textContent=lang?'Examen definitiu: exactament 10 punts per a exportar':
+   'Examen definitivo: exactamente 10 puntos para exportar';
   if(!previousQuestions.length){
    status.className='exam-scoring-total';
    status.textContent=lang?'No hi ha preguntes per a puntuar.':'No hay preguntas que puntuar.';
@@ -200,6 +200,11 @@
    row.append(name,control,unit);rows.append(row);
   }
   reset.textContent=state().language==='va'?'Repartir punts':'Repartir puntos';
+  reset.title=morph()?
+   (state().language==='va'?'Restableix 1 punt inicial per pregunta. El total pot no ser 10.':
+    'Restablece 1 punto inicial por pregunta. El total puede no ser 10.'):
+   (state().language==='va'?'Reparteix expressament els punts; substitueix els valors actuals.':
+    'Reparte explícitamente los puntos y sustituye los valores actuales.');
   help.textContent=state().language==='va'?
    'Edita cada valor ací o la xifra del mateix enunciat en la vista prèvia. El Word conserva la puntuació.':
    'Edita cada valor aquí o la cifra del propio enunciado en la vista previa. El Word conserva la puntuación.';
