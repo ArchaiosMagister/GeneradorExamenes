@@ -94,14 +94,14 @@ async function pick(page,course,model,unit){
    }));
    assert.equal(await page.locator('#morphOffer').isVisible(),false,
     'Control morfológico duplicado: '+JSON.stringify(morphOfferInfo));
-   const untouched=await page.locator('#paper .reference-verb-table').innerHTML();
+   const untouched=await page.locator('#paper .reference-verb-table').textContent();
    const button=page.locator('#examQuestionMenus [data-question="forms"] .exam-regenerate-word').first();
    assert(await button.count(),file+': faltan botones de regeneración individual');
    await button.click();
-   assert.equal(await page.locator('#paper .reference-verb-table').innerHTML(),untouched,
+   assert.equal(await page.locator('#paper .reference-verb-table').textContent(),untouched,
     file+': regenerar análisis alteró otra pregunta');
    await page.locator('#examQuestionMenus [data-question="forms"] [data-regenerate-question="forms"]').click();
-   assert.equal(await page.locator('#paper .reference-verb-table').innerHTML(),untouched,
+   assert.equal(await page.locator('#paper .reference-verb-table').textContent(),untouched,
     file+': regenerar pregunta completa alteró la verbal');
    await page.locator('#vgShow').click();
    assert(await page.locator('#vocabularyGenerator.active').count(),file+': cambió la navegación del vocabulario');
