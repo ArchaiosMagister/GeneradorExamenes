@@ -577,7 +577,7 @@ html[data-appearance="oled"] #vocabularyGenerator #vgClearAll:hover{background:#
 #examScoring .exam-scoring-heading{display:flex;align-items:center;gap:10px;
  justify-content:space-between;flex-wrap:wrap}
 #examScoring h3{font-size:15px;margin:0}
-#examScoring .exam-scoring-heading button{min-height:38px;font-size:12px;padding:6px 9px}
+#examScoring .exam-scoring-heading button{min-height:44px;font-size:12px;padding:8px 10px}
 #examScoring .exam-scoring-rows{display:grid;gap:8px;margin:12px 0}
 #examScoring .exam-scoring-row{display:grid;grid-template-columns:minmax(0,1fr) 74px 24px;
  gap:8px;align-items:center;font-size:12px;line-height:1.4}
@@ -606,6 +606,36 @@ html[data-appearance="dark"] #examScoring .exam-scoring-warning,
 html[data-appearance="oled"] #examScoring .exam-scoring-warning{color:#ffb0a7}
 html[data-appearance="dark"] #examScoring .exam-scoring-correct,
 html[data-appearance="oled"] #examScoring .exam-scoring-correct{color:#a0e9cd}
+</style><style id="examina-subquestion-scoring">
+/* Desglose de corrección solo en el editor, nunca dentro del documento exportado. */
+#examScoring .exam-subscore-details{border:1px solid var(--line,#ccd6e3);border-radius:8px;
+ padding:8px 10px;margin:8px 0 2px;background:var(--surface,#fff);color:var(--ink,#243952)}
+#examScoring .exam-subscore-details>summary{cursor:pointer;font-weight:700;font-size:12px;
+ min-height:44px;display:list-item;overflow-wrap:anywhere}
+#examScoring .exam-subscore-details>.exam-subscore-status{display:block;font-size:12px;margin:4px 0}
+#examScoring .exam-subscore-details>button{min-height:44px;padding:8px 10px;margin:7px 0}
+#examScoring .exam-subscore-row{display:grid;grid-template-columns:minmax(0,1fr) 78px 20px;
+ gap:8px;align-items:center;padding:6px 0;border-top:1px solid var(--line,#dce3ec);
+ font-size:12px;line-height:1.45}
+#examScoring .exam-subscore-row>span:first-child{overflow-wrap:anywhere;white-space:pre-wrap}
+#examScoring .exam-subscore-row input{width:100%;min-height:44px;padding:7px 5px;
+ border:1px solid var(--line,#c1cbd8);border-radius:6px;font-size:15px;text-align:right}
+#examScoring .exam-subscore-row input:disabled{opacity:.8}
+#examScoring .exam-subscore-row input[aria-invalid="true"]{outline:2px solid #b43a36}
+#paper .exam-subpoint-label{display:inline-block;margin-left:5px;padding:1px 3px;
+ font:600 9pt system-ui,sans-serif;color:#35537e;background:#eaf1fb;border-radius:3px;
+ white-space:nowrap;vertical-align:baseline}
+#paper .exam-subpoint-label[role="button"]{cursor:pointer;border-bottom:1px dotted currentColor}
+#paper .exam-subpoint-label:focus-visible{outline:2px solid #3566a2;outline-offset:2px}
+#paper .exam-subscore-inline{width:65px;max-width:85px;background:#fff;color:#111;
+ font:600 12pt system-ui,sans-serif;padding:1px 4px;border:1px solid #3566a2;border-radius:4px}
+html[data-appearance="dark"] #examScoring .exam-subscore-details,
+html[data-appearance="oled"] #examScoring .exam-subscore-details{background:var(--appearance-surface);
+ color:var(--appearance-text);border-color:var(--appearance-border)}
+html[data-appearance="dark"] #examScoring .exam-subscore-row input,
+html[data-appearance="oled"] #examScoring .exam-subscore-row input{background:var(--appearance-raised);
+ color:var(--appearance-text);border-color:var(--appearance-border)}
+@media print{#paper [data-exam-subscore],#paper .exam-subscore-inline{display:none!important}}
 </style><style id="examina-2026-navigation">
 /* Jerarquía: título, tres acciones principales, asignatura y modelo. */
 .vocab-tabbar{justify-content:center;align-items:center;gap:12px;padding:18px 20px}
@@ -2299,7 +2329,11 @@ function exportWord(includeAnswers){
  if(window.ExaminaTeacherReview?.evidenceMayExport?.(paper,
   {latin1:'lat1',latin4:'lat4',greek1:'gr1'}[currentCourse()])===false)return;
  if(window.ExaminaScoring?.canExport?.()===false)return;
- const copy=paper.cloneNode(true),key=copy.querySelector('#answerkey');
+ const copy=paper.cloneNode(true);
+ // Las puntuaciones internas son controles de corrección docente en la vista previa:
+ // el documento Word conserva exactamente el formato del examen del alumnado.
+ copy.querySelectorAll('[data-exam-subscore],.exam-subscore-inline').forEach(node=>node.remove());
+ const key=copy.querySelector('#answerkey');
  if(key&&!includeAnswers)key.remove();
  if(key&&includeAnswers)key.classList.remove('solutions');
  const greekLayout=true;

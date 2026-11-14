@@ -227,6 +227,10 @@ jobs:
         run: node scripts/test-preview.cjs
       - name: Fase V - interfaces adaptables, navegación, Word y OLED
         run: node scripts/test-phase-five.cjs
+      - name: Fase VI - diez puntos exactos sin redistribución y DOCX real
+        run: node scripts/test-phase-six.cjs
+      - name: Fase VI - desglose de subpreguntas en menús, vista previa y Word
+        run: node scripts/test-subquestion-scoring.cjs
       - name: Guardar Word con puntuaciones de examen para inspección
         if: always()
         uses: actions/upload-artifact@v4
