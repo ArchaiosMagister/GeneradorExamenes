@@ -107,11 +107,8 @@
   if(!finalCheckbox.checked)return {ok:true,mode:'borrador',normalized:false};
   const total=sum();
   if(!previousQuestions.length)return {ok:false,mode:'definitivo',reason:'sin_preguntas',total};
-  if(morph()){
-   // Una pregunta de morfología vale 1 p.; la nota se normaliza sobre diez.
-   return {ok:total>0&&previousQuestions.every(item=>(scores[item.key]||0)>0),
-    mode:'definitivo',normalized:true,total,reason:'puntuacion_morfologica'};
-  }
+  // Los 10 puntos exactos rigen para todos los modelos. Las preguntas de
+  // morfología empiezan con 1 p. pero nunca se normalizan sin conocimiento docente.
   return {ok:total===1000,mode:'definitivo',normalized:false,total,reason:'total_no_es_diez'};
  }
  function canExport(){
@@ -120,8 +117,8 @@
   showStatus();
   status.classList.add('exam-scoring-warning');
   status.textContent=state().language==='va'?
-   'Exportació definitiva bloquejada: revisa que hi haja preguntes i que la puntuació siga exactament 10 punts (morfologia: 1 punt per pregunta).':
-   'Exportación definitiva bloqueada: revisa que haya preguntas y que la puntuación sume exactamente 10 puntos (morfología: 1 punto por pregunta).';
+   'Exportació definitiva bloquejada: la puntuació ha de sumar exactament 10 punts, també en morfologia. Revisa els valors sense alterar les preguntes.':
+   'Exportación definitiva bloqueada: la puntuación debe sumar exactamente 10 puntos, también en morfología. Revisa los valores sin alterar las preguntas.';
   header.scrollIntoView?.({block:'nearest'});
   return false;
  }
@@ -134,9 +131,11 @@
   if(!previousQuestions.length){
    status.className='exam-scoring-total';
    status.textContent=lang?'No hi ha preguntes per a puntuar.':'No hay preguntas que puntuar.';
-  }else if(isMorph){
-   status.className='exam-scoring-total';
-   status.textContent=(lang?'Puntuació bruta: ':'Puntuación bruta: ')+totalString+(lang?' punts. La nota sobre 10 es calcula sobre aquest màxim.':' puntos. La nota sobre 10 se calcula sobre este máximo.');
+  }else if(isMorph&&total!==1000){
+   status.className='exam-scoring-total exam-scoring-warning';
+   status.textContent=(lang?'Morfologia: ':'Morfología: ')+totalString+
+    (lang?' punts. Cada pregunta comença amb 1 p.; per al definitiu, ajusta expressament el total a 10.':
+     ' puntos. Cada pregunta comienza con 1 p.; para el definitivo, ajusta expresamente el total a 10.');
   }else if(total!==1000){
    status.className='exam-scoring-total exam-scoring-warning';
    status.textContent=(lang?'Avís: la puntuació suma ':'Aviso: la puntuación suma ')+
@@ -262,7 +261,9 @@
    const key=storageKey(base+(duplicate?'#'+duplicate:''));
    if(base==='sent')scores[key]=sentenceCents();
    else if(state().course!=='greek1'&&base==='lex')scores[key]=200;
-   else if(!Object.prototype.hasOwnProperty.call(scores,key)||autoManaged.has(key)){
+   else if(!Object.prototype.hasOwnProperty.call(scores,key)){
+    // Solo se asigna la puntuación inicial una vez por clave; un cambio de
+    // unidades, número de oraciones o selección no redistribuye valores previos.
     scores[key]=defaults[i];autoManaged.add(key);
    }
    if(state().course==='greek1'){
