@@ -307,10 +307,11 @@ html[data-course="greek1"] .paper .exam-sheet *{font-style:normal!important}
 .paper .exam-sheet table{width:100%;border-collapse:collapse;table-layout:fixed;margin:0;font-size:10.5pt;font-family:inherit}
 .paper .exam-sheet th,.paper .exam-sheet td{border:.5pt solid #808080;padding:0 4pt;font-weight:normal;vertical-align:middle;height:24.6pt;background:transparent;color:#000}
 .paper .exam-paradigm th{text-align:center}
+.paper .exam-paradigm-indicator{font-style:normal}
 .paper .exam-nouns col:first-child{width:16%}.paper .exam-nouns col:not(:first-child){width:42%}
 .paper .exam-verbs col:first-child{width:6%}.paper .exam-verbs col:not(:first-child){width:47%}.paper .exam-verbs:has(col:nth-child(5)) col:not(:first-child){width:23.5%}
 .paper .exam-nouns tbody th{text-align:right;white-space:nowrap}
-.paper .exam-verbs tbody th{text-align:left}
+.paper .exam-verbs tbody th{text-align:right;white-space:nowrap;padding-right:4pt}
 .paper .exam-sheet .exam-corner{border:none!important;padding:0}
 .paper .exam-verbs th,.paper .exam-verbs td{height:23.1pt}
 .paper .exam-pronouns th{font-weight:normal;text-align:left}
@@ -5965,10 +5966,13 @@ function latinExamNominals(chosen){
 function examParadigmHeading(value,kind){
  const raw=String(value||'').trim();
  const indicator=kind==='conjugation'
-  ?/\s*(\(\s*[1-4](?:\s*\.?\s*[ªº])?\s*(?:conj(?:ugación|\.)?)?\s*\))$/i
+  ?/(?:\s*\(\s*(?:[1-4]\s*\.?\s*[ªº](?:\s*conj(?:ugación|ugació|\.)?)?|mx\.?|irr\.?)\s*\)|,\s*(?:[1-4]\s*\.?\s*[ªº]|mx\.?|irr\.?))$/i
   :/\s*(\(\s*[mfn]\.?\s*\))$/i;
  const match=raw.match(indicator),lemma=match?raw.slice(0,match.index).trim():raw;
- return '<i>'+esc(lemma)+'</i>'+(match?' <span class="exam-paradigm-indicator">'+esc(match[1])+'</span>':'');
+ // La conjugación o el género son metadatos gramaticales: nunca cursiva.
+ const indicatorText=match?(kind==='conjugation'?match[0].trim():match[1]):'';
+ const separator=kind==='conjugation'&&indicatorText.startsWith(',')?'':' ';
+ return '<i>'+esc(lemma)+'</i>'+(match?separator+'<span class="exam-paradigm-indicator">'+esc(indicatorText)+'</span>':'');
 }
 function latinDisplayEnunciation(entry){
  return String(entry||'').replace(/,\s*[-–−—]\s*ae\b/gi,', –æ')
@@ -6086,7 +6090,10 @@ function latin4ConjugationPool(chosen){
   .filter(x=>Array.isArray(x.p.forms)&&x.p.forms.length===6&&latin4ConjugationAllowed(x));
 }
 function latinExamConjugationTable(items,solutions=false){
- return '<table class="exam-paradigm exam-verbs"><thead><tr><td class="exam-corner"></td>'+
+ // La primera columna recoge solo 1.ª/2.ª/3.ª; sus anchuras deben ser
+ // idénticas en la vista previa y en el documento Word.
+ const widths=[500,...items.flatMap(()=>[4000/items.length,4000/items.length])].map(Math.round);
+ return '<table class="exam-paradigm exam-verbs" data-col-widths="'+widths.join(',')+'"><colgroup>'+widths.map(()=>'<col>').join('')+'</colgroup><thead><tr><td class="exam-corner"></td>'+
   items.map(x=>'<th colspan="2">'+examParadigmHeading(latinVerbExamEnunciation(x.x.entry,selectedUnits(),x.p),'conjugation')+'</th>').join('')+'</tr>'+
   '<tr><td class="exam-corner"></td>'+items.map(()=>'<th>Singular</th><th>Plural</th>').join('')+'</tr></thead><tbody>'+
   [0,1,2].map(i=>'<tr><th>'+(i+1)+'ª</th>'+items.map(x=>'<td>'+(solutions?'<i>'+esc(latinExamSurface(x.p.forms[i],x.x.entry))+'</i>':'')+'</td><td>'+(solutions?'<i>'+esc(latinExamSurface(x.p.forms[i+3],x.x.entry))+'</i>':'')+'</td>').join('')+'</tr>').join('')+'</tbody></table>';
@@ -6491,7 +6498,7 @@ function wordExamTable(table){
   const head=row.parentElement.tagName==='THEAD';let col=0;
   out+='<w:tr><w:trPr><w:cantSplit/><w:trHeight w:val="'+(verb?'452':'482')+'" w:hRule="atLeast"/>'+(head?'<w:tblHeader/>':'')+'</w:trPr>';
   for(const cell of row.cells){const span=+cell.colSpan||1,w=widths.slice(col,col+span).reduce((a,b)=>a+b,0),corner=cell.classList.contains('exam-corner');
-   const align=paradigm?(col===0&&!head?(verb?'left':'right'):'center'):'left';
+   const align=paradigm?(col===0&&!head?'right':'center'):'left';
    out+='<w:tc><w:tcPr><w:tcW w:w="'+w+'" w:type="dxa"/>'+(span>1?'<w:gridSpan w:val="'+span+'"/>':'')+'<w:tcBorders>'+['top','left','bottom','right'].map(side=>'<w:'+side+' w:val="'+(corner?'nil':'single')+'" w:sz="4" w:color="808080"/>').join('')+'</w:tcBorders><w:vAlign w:val="center"/></w:tcPr><w:p><w:pPr><w:jc w:val="'+align+'"/><w:spacing w:before="0" w:after="0" w:line="280" w:lineRule="auto"/>'+(ri<rows.length-1?'<w:keepNext/>':'')+'</w:pPr>'+[...cell.childNodes].map(n=>wordInline(n)).join('')+'</w:p></w:tc>';col+=span;
   }out+='</w:tr>';
  });return out+'</w:tbl>';

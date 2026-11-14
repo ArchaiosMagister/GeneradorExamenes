@@ -453,7 +453,13 @@ async function checkFile(browser,filename){
   const headings=await page.locator('#paper .exam-nouns thead tr:first-child th[colspan], #paper .exam-verbs thead tr:first-child th[colspan]').evaluateAll(
    cells=>cells.map(cell=>({text:cell.textContent,lexeme:cell.querySelector('i')?.textContent,indicator:cell.querySelector('.exam-paradigm-indicator')?.textContent||''}))
   );
-  assert(headings.every(h=>h.lexeme&&h.text===h.lexeme+(h.indicator?' '+h.indicator:'')),filename+' '+course+'/'+model+': formato de encabezado alterado '+JSON.stringify(headings));
+  // La marca de conjugación también puede estar separada mediante coma
+  // (p. ej., «scribo, 3ª»), siempre fuera del tramo léxico en cursiva.
+  assert(headings.every(h=>h.lexeme&&(
+   h.text===h.lexeme+(h.indicator?' '+h.indicator:'')||
+   h.text===h.lexeme+h.indicator||
+   h.text===h.lexeme+', '+h.indicator
+  )),filename+' '+course+'/'+model+': formato de encabezado alterado '+JSON.stringify(headings));
   // Los sintagmas se activan solo en el examen completo y deben concordar.
   if(model==='tablas'&&(course==='latin1'||course==='latin4')){
    const titles=await page.locator('#paper .exam-nouns thead tr:first-child th[colspan]').allTextContents();
