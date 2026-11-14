@@ -5490,6 +5490,12 @@ html[data-appearance="oled"] body.exam-redesign #exam-ui-shell :is(#exam-ui-core
   const tip=document.createElement('p');tip.id='exam-ui-shell-note';
   tip.textContent='Una configuración por pregunta. Los cambios se reflejan en el examen y en Word.';
   shell.append(heading,tip);
+  // La navegación anterior ocultaba los selectores reales porque usaba
+  // botones superiores. Deshacer ese estado sin crear nuevos controles.
+  for(const id of ['primaryCoursePicker','primaryModelPicker']){
+   if($(id))$(id).hidden=false;
+  }
+  if($('lang')?.closest('.field'))$('lang').closest('.field').hidden=false;
   const core=document.createElement('section');core.id='exam-ui-core';core.append($('primaryExamSettings'));
   const meta=document.createElement('div');meta.id='exam-ui-meta';
   for(const id of ['lang','term','sheetType','name','seed']){
@@ -5503,7 +5509,8 @@ html[data-appearance="oled"] body.exam-redesign #exam-ui-shell :is(#exam-ui-core
   bulk.append(label,$('morphOptions'));qs.append(bulk);
   // Los controles originales conservan el estado del motor; las casillas
   // visibles están en su pregunta. Ocultar el grupo entero evita duplicidades.
-  $('morphOffer')?.closest('.count-grid')?.setAttribute('hidden','');
+  const internalCounts=$('morphOffer')?.closest('.count-grid');
+  if(internalCounts){internalCounts.hidden=true;internalCounts.style.setProperty('display','none','important')}
   const actions=document.createElement('section');actions.id='exam-ui-actions';
   const actionsTitle=document.createElement('h3');actionsTitle.textContent='Generar, guardar y exportar';actions.append(actionsTitle);
   for(const id of ['examReselect','group-export','group-drafts'])if($(id))actions.append($(id));
