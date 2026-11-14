@@ -289,6 +289,37 @@ function readStoredZipEntry(bytes,wanted){
    assert(rules.preverbStable,filename+': seleccionar una norma no debe regenerar verbos');
    assert.deepEqual(rules.preverbText,regeneration.next);
 
+   // Regresión: cambiar a examen de traducción reconstruye el menú,
+   // pero nunca puede dejar vacíos los campos de las formas ya sorteadas.
+   const translationMenu=await page.evaluate(()=>{
+    const model=document.getElementById('model');
+    model.value='mixto';model.dispatchEvent(new Event('change',{bubbles:true}));
+    const snapshot=kind=>{
+     const expected=[...document.querySelectorAll('#paper [data-lex-slot^="'+kind+':"]')]
+      .map(slot=>({i:Number(slot.dataset.lexSlot.split(':')[1]),
+       value:slot.querySelector('i')?.textContent||''}))
+      .sort((a,b)=>a.i-b.i).map(row=>row.value);
+     const actual=[...Array(4)].map((_,i)=>document.getElementById('lex-edit-'+kind+'-'+i)?.value||'');
+     return {expected,actual};
+    };
+    return {prefixes:snapshot('prefixes'),latinisms:snapshot('latinisms')};
+   });
+   for(const kind of ['prefixes','latinisms']){
+    const {expected,actual}=translationMenu[kind];
+    assert.equal(expected.length,4,filename+': sin pregunta de '+kind+' en traducción');
+    assert.deepEqual(actual,expected,filename+': al cambiar a traducción se vacía el editor de '+kind);
+   }
+   const afterPrefixesOnly=await page.evaluate(()=>{
+    const oldLatinisms=examSelectionCache.get(examCacheSignature('lex-latinisms'));
+    const oldText=[...Array(4)].map((_,i)=>document.getElementById('lex-edit-latinisms-'+i)?.value||'');
+    regenerateLatinLexPart('prefixes');
+    return {sameLatinisms:examSelectionCache.get(examCacheSignature('lex-latinisms'))===oldLatinisms,
+     unchanged:[...Array(4)].map((_,i)=>document.getElementById('lex-edit-latinisms-'+i)?.value||'')
+      .every((value,i)=>value===oldText[i])};
+   });
+   assert(afterPrefixesOnly.sameLatinisms&&afterPrefixesOnly.unchanged,
+    filename+': regenerar prefijos alteró los latinismos en vez de aislar el apartado');
+
    await page.evaluate(()=>{
     const course=document.getElementById('course');
     course.value='latin4';course.dispatchEvent(new Event('change',{bubbles:true}));
