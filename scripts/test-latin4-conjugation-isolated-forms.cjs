@@ -78,8 +78,19 @@ async function checkConjugationPresentation(page,file,course,model,unit){
      const labels=[...table.querySelectorAll('tbody tr th')];
      const heads=[...table.querySelectorAll('thead tr:first-child th[colspan]')];
      const word=wordExamTable(table);
+     // En el modo iPad la pestaña de vista previa puede estar oculta.
+     // Medir una copia fuera de pantalla, pero con el mismo CSS de .paper.
+     const probe=document.createElement('div');
+     probe.className='paper';
+     probe.style.cssText='position:absolute;left:-10000px;top:0;width:850px;display:block;visibility:hidden';
+     probe.innerHTML='<div class="exam-sheet">'+table.outerHTML+'</div>';
+     document.body.appendChild(probe);
+     const visible=probe.querySelector('table.exam-verbs'),
+      first=visible.querySelector('tbody th');
+     const firstRatio=first.getBoundingClientRect().width/visible.getBoundingClientRect().width;
+     probe.remove();
      return {widths,columns:table.querySelectorAll('colgroup col').length,
-      firstRatio:labels[0].getBoundingClientRect().width/table.getBoundingClientRect().width,
+      firstRatio,
       alignments:labels.map(el=>getComputedStyle(el).textAlign),
       labels:labels.map(el=>el.textContent.trim()),
       wordRight:(word.match(/<w:jc w:val="right"\/>/g)||[]).length,
