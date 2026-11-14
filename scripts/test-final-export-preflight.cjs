@@ -1,5 +1,5 @@
 'use strict';
-// La validación estricta es una opción expresa. El borrador sigue exportable.
+// La validación estricta exige diez puntos reales en todos los modelos; borradores exportables.
 const assert=require('node:assert/strict');
 const path=require('node:path');
 const {pathToFileURL}=require('node:url');
@@ -82,8 +82,27 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
    checkbox.checked=true;checkbox.dispatchEvent(new Event('change',{bubbles:true}));
   });
   const morphology=await page.evaluate(()=>window.ExaminaScoring.preflight());
-  assert.equal(morphology.normalized,true);
-  assert.equal(morphology.ok,true,'La morfología de 1 p. por pregunta se normaliza a 10');
+  assert.equal(morphology.normalized,false,'Ningún modelo admite normalización implícita');
+  assert.equal(morphology.ok,morphology.total===1000,
+   'Morfología definitiva solo puede exportarse con diez puntos reales');
+  if(morphology.total!==1000){
+   assert.equal(await page.evaluate(()=>window.ExaminaScoring.canExport()),false);
+   assert.match(await page.locator('#examScoringTotal').innerText(),/10 punts|10 puntos/i);
+   // La decisión docente de reajustar una puntuación es siempre explícita.
+   await page.evaluate(()=>{
+    const item=[...document.querySelectorAll('#examScoring .exam-scoring-rows input[data-scoring-key]')]
+     .find(el=>!el.disabled);
+    if(!item)throw Error('Morfología sin pregunta editable');
+    const scoring=window.ExaminaScoring,current=scoring.parse(item.value);
+    const updated=current+1000-morphologyTotal();
+    function morphologyTotal(){return scoring.total()}
+    if(updated<0||updated>10000)throw Error('No es posible completar diez puntos');
+    item.value=scoring.format(updated);
+    item.dispatchEvent(new Event('input',{bubbles:true}));
+   });
+   assert.equal(await page.evaluate(()=>window.ExaminaScoring.preflight().ok),true,
+    'Una corrección docente explícita sí debe permitir el definitivo');
+  }
   await page.evaluate(()=>{
    const l=document.getElementById('lang');l.value='va';l.dispatchEvent(new Event('change',{bubbles:true}));
   });
