@@ -1,0 +1,86 @@
+name: Conciliación filológica ScholaClassica → Generador (sin publicación)
+on:
+  pull_request:
+    paths:
+      - 'scripts/reconcile-schola-morphology.cjs'
+      - 'scripts/summarize-schola-morphology.cjs'
+      - 'scripts/test-schola-morphology-reconciliation.cjs'
+      - 'data/lemmas/teacher-forms.json'
+      - '.github/workflows/schola-morphology-audit.yml'
+      - 'docs/conciliacion-schola-adaptador-20261114.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  reconcile:
+    name: Contrastar paradigmas reales y conservar informe sin alterar bancos
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - name: Obtener GeneradorExamenes
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Obtener ScholaClassica en revisión fija
+        uses: actions/checkout@v4
+        with:
+          repository: ArchaiosMagister/ScholaClassica
+          ref: 8c4ede483593c890ac7b6fe62c2056e3e552cdcf
+          path: .schola
+          persist-credentials: false
+      - name: Obtener Appendix en el SHA académico aprobado
+        uses: actions/checkout@v4
+        with:
+          repository: ArchaiosMagister/Appendix-grammaticae
+          ref: a3d54209b3bb8a31efd3d57d62b09d6de8d85f5c
+          path: .schola/.sources/appendix
+          persist-credentials: false
+      - name: Obtener Vocabula en el SHA académico aprobado
+        uses: actions/checkout@v4
+        with:
+          repository: ArchaiosMagister/VocabulaLatinaGraecaque
+          ref: 0e16505b7631298a0448c4160a5d258f82732bfe
+          path: .schola/.sources/vocabula
+          persist-credentials: false
+      - name: Obtener Evolutio en el SHA académico aprobado
+        uses: actions/checkout@v4
+        with:
+          repository: ArchaiosMagister/EvolucionFonetica
+          ref: 901dacb125ee7894ea9d11faf7b0d0afa7e713b5
+          path: .schola/.sources/evolutio
+          persist-credentials: false
+      - name: Reconstruir el banco real de ScholaClassica (sin despliegue)
+        working-directory: .schola
+        run: npm run build
+      - name: Conciliar los tres cursos sin escrituras en los bancos
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s .schola/dist/apps/morfologia/data/paradigmas.json
+          node scripts/test-schola-morphology-reconciliation.cjs
+          node scripts/reconcile-schola-morphology.cjs \
+            --schola .schola/dist/apps/morfologia/data/paradigmas.json \
+            --schola-commit 8c4ede483593c890ac7b6fe62c2056e3e552cdcf \
+            --generador-commit "$(git rev-parse HEAD)" \
+            --report test-artifacts/conciliacion-schola-real.json
+          node scripts/summarize-schola-morphology.cjs \
+            test-artifacts/conciliacion-schola-real.json > test-artifacts/conciliacion-schola-resumen.md
+          cat test-artifacts/conciliacion-schola-resumen.md
+          cat test-artifacts/conciliacion-schola-resumen.md >> "$GITHUB_STEP_SUMMARY"
+          git diff --exit-code -- data index.html offline.html
+      - name: Archivar informes académicos para revisión docente
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: conciliacion-schola-generador-solo-lectura
+          path: |
+            test-artifacts/conciliacion-schola-real.json
+            test-artifacts/conciliacion-schola-resumen.md
+          if-no-files-found: warn
+          retention-days: 14
