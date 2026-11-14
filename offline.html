@@ -14458,7 +14458,7 @@ body.exam-redesign #exam-ui-advanced>summary,body.exam-redesign #exam-ui-bulk>su
 body.exam-redesign #exam-ui-advanced .settings-group{margin:8px 0}
 body.exam-redesign #exam-ui-bulk{border:1px solid var(--line,#ccd7e4);border-radius:10px;padding:7px;margin:6px 0}
 body.exam-redesign #exam-ui-bulk #morphOptions{margin:0;padding:8px;border:0}
-body.exam-redesign #exam-ui-bulk #morphOptions>h3,body.exam-redesign #exam-ui-bulk #morphOptions>.count-grid,
+body.exam-redesign #exam-ui-bulk #morphOptions>h3,body.exam-redesign #exam-ui-bulk #morphOptions .count-grid,
 body.exam-redesign #exam-ui-bulk #morphOptions>p,
 body.exam-redesign #exam-ui-bulk #morphOptions>label.check{display:none!important}
 body.exam-redesign #exam-ui-bulk #morphSyntagms{width:100%}
@@ -14558,6 +14558,9 @@ html[data-appearance="oled"] body.exam-redesign #exam-ui-shell :is(#exam-ui-core
   const bulk=document.createElement('details');bulk.id='exam-ui-bulk';
   const label=document.createElement('summary');label.textContent='Editar varios sintagmas a la vez (avanzado)';
   bulk.append(label,$('morphOptions'));qs.append(bulk);
+  // Los controles originales conservan el estado del motor; las casillas
+  // visibles están en su pregunta. Ocultar el grupo entero evita duplicidades.
+  $('morphOffer')?.closest('.count-grid')?.setAttribute('hidden','');
   const actions=document.createElement('section');actions.id='exam-ui-actions';
   const actionsTitle=document.createElement('h3');actionsTitle.textContent='Generar, guardar y exportar';actions.append(actionsTitle);
   for(const id of ['examReselect','group-export','group-drafts'])if($(id))actions.append($(id));
