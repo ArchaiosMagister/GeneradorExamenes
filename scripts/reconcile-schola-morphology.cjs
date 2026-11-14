@@ -73,7 +73,7 @@ function scholaFeatures(record,form){
  const context=String(record.id||'')+' '+String(record.evidence?.topic||'');
  if(/deponent/iu.test(context))obj.voice='DEP';
  // El presente medio-pasivo griego es morfológicamente sincrético.
- else if(/medio[\\s-]*pasiv|media[\\s-]*pasiv/u.test(lower))obj.voice='MIDPASS';
+ else if(/medio[\s-]*pasiv|media[\s-]*pasiv/u.test(lower))obj.voice='MIDPASS';
  else if(/pasiv/u.test(lower))obj.voice='PASS';
  else if(/activ/u.test(lower))obj.voice='ACT';
  else if(/medio/u.test(lower))obj.voice='MID';
