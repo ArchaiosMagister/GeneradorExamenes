@@ -4,11 +4,33 @@
 const assert=require('node:assert/strict');
 const fs=require('node:fs');
 const path=require('node:path');
-const {pathToFileURL}=require('node:url');
+const http=require('node:http');
 const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
 
 const root=path.resolve(__dirname,'..');
 const artifacts=path.join(root,'test-artifacts');
+// Sirve el archivo web con origen HTTP: file:// bloquea la lectura de bancos JSON
+// externos y produce exámenes artificialmente incompletos.
+const server=http.createServer((request,response)=>{
+ let url;
+ try{url=new URL(request.url||'/', 'http://127.0.0.1')}
+ catch{response.writeHead(400).end();return}
+ let requested;
+ try{requested=decodeURIComponent(url.pathname).replace(/^\/+/,'')||'index.html'}
+ catch{response.writeHead(400).end();return}
+ const filename=path.resolve(root,requested);
+ if(!filename.startsWith(root+path.sep)){response.writeHead(403).end();return}
+ fs.readFile(filename,(error,bytes)=>{
+  if(error){response.writeHead(404).end();return}
+  const type=filename.endsWith('.html')?'text/html':
+   filename.endsWith('.js')||filename.endsWith('.mjs')?'text/javascript':
+   filename.endsWith('.json')?'application/json':
+   filename.endsWith('.webmanifest')?'application/manifest+json':
+   filename.endsWith('.png')?'image/png':'application/octet-stream';
+  response.setHeader('Content-Type',type+'; charset=utf-8');
+  response.end(bytes);
+ });
+});
 const cases=[
  {course:'latin1',models:['tablas','morf','mixto']},
  {course:'latin4',models:['tablas']},
@@ -22,7 +44,8 @@ const report={
   'El navegador de CI no reemplaza Safari físico en iPhone/iPad.',
   'Se examina la estructura académica y el DOCX, no se certifica automáticamente la corrección filológica de cada respuesta.',
   'Para inspeccionar la serialización del DOCX, se aísla únicamente el bloqueo de evidencias docentes; no se concede autorización persistente a ninguna forma.',
-  'Los apartados con huecos deliberados para el alumnado no se consideran preguntas incompletas.'
+  'Los apartados con huecos deliberados para el alumnado no se consideran preguntas incompletas.',
+  'index.html se prueba servido vía HTTP local; offline.html mantiene bancos integrados.'
  ],
  cases:[],words:[],editors:[],issues:[]
 };
@@ -202,7 +225,7 @@ async function runFile(browser,file){
  const page=await context.newPage(),errors=[];
  page.on('pageerror',e=>errors.push(e.message));
  try{
-  await page.goto(pathToFileURL(path.join(root,file)).href,{waitUntil:'load'});
+  await page.goto('http://127.0.0.1:'+server.address().port+'/'+file,{waitUntil:'load'});
   await page.waitForFunction(()=>!!window.ExaminaScoring?.preflight&&!!document.getElementById('unitChoices'),null,{timeout:20000});
   for(const group of cases){
    const list=await unitsFor(page,group.course);
@@ -236,14 +259,28 @@ async function runFile(browser,file){
 }
 (async()=>{
  fs.mkdirSync(artifacts,{recursive:true});
- const browser=await chromium.launch({headless:true,...(process.env.BROWSER_PATH?{executablePath:process.env.BROWSER_PATH}:{})});
- try{for(const file of ['index.html','offline.html'])await runFile(browser,file)}
- finally{await browser.close()}
+ await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
+ let browser;
+ try{
+  browser=await chromium.launch({headless:true,...(process.env.BROWSER_PATH?{executablePath:process.env.BROWSER_PATH}:{})});
+  for(const file of ['index.html','offline.html'])await runFile(browser,file);
+ }finally{
+  if(browser)await browser.close();
+  await new Promise(resolve=>server.close(resolve));
+ }
  fs.writeFileSync(path.join(artifacts,'auditoria-examenes-reales-20261114.json'),JSON.stringify(report,null,2)+'\n');
  const n=severity=>report.issues.filter(x=>x.severity===severity).length;
  console.log('Auditoría de exámenes reales: '+report.cases.length+' combinaciones; '+report.words.length+
   ' DOCX; '+report.editors.length+' pruebas de edición; '+n('bloqueante')+
   ' bloqueantes y '+n('revisión')+' observaciones para revisión docente.');
+ const groups=new Map();
+ for(const item of report.issues){
+  const key=item.detail.replace(/Puntuación inicial \d+(?:[.,]\d+)?/, 'Puntuación inicial X');
+  if(!groups.has(key))groups.set(key,{count:0,examples:[]});
+  const group=groups.get(key);group.count++;
+  if(group.examples.length<3)group.examples.push(item.where);
+ }
+ console.log('Observaciones consolidadas:', JSON.stringify([...groups.entries()].map(([reason,data])=>({reason,...data}))));
  for(const item of report.issues.slice(0,35))console.log('['+item.severity+'] '+item.where+': '+item.detail);
  if(n('bloqueante'))process.exitCode=1;
 })().catch(error=>{
