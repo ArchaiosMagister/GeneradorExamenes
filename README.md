@@ -183,3 +183,7 @@ Las cuatro decisiones sobre `seniorem`, `sensum`, `sponsam` y `sponsum` se han a
 Decisiones filológicas de Griego I: los paradigmas de ἀθάνατος, ἐχθρός y αἰσχρός se rigen por `data/lemmas/greek-adjective-decisions.json`. La aprobación docente del enunciado **no verifica automáticamente formas candidatas**. Véase `docs/revision-559-griego-20261113.md`.
 
 **Actualización académica (13/11/2026, PR 105 sin publicar):** diez formas femeninas de `ἐχθρός, –ά, –όν` acreditadas individualmente en fuente 5; sincretismos conservados, sintagmas reactivados desde UD5, historial de 559 fichas preservado. Cierre funcional de fase IV documentado en `docs/fase-iv-20261113.md` (sin certificación masiva de formas pendientes).
+
+## Vocabulario de Bachillerato II
+
+La pestaña de vocabulario ofrece bancos de lectura de Latín II (inventarios PAU y cuaderno) y Griego II (repasos de Lisias, Platón y Apolodoro), disponibles también sin conexión. Las propuestas nuevas requieren revisión; no alteran las preguntas ni las claves del generador. Véase [alcance, fuentes y cobertura](docs/bachillerato-ii-textos.md).

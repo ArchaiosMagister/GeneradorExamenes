@@ -10,6 +10,8 @@ on:
       - 'lexicon-valenciano.js'
       - 'required-latin-units.js'
       - 'vocabulary-generator.js'
+      - 'bachillerato-ii.js'
+      - 'data/bachillerato-ii/**'
       - 'vocabulary-quality.js'
       - 'offline.html'
       - 'offline-lemmas.js'
@@ -35,6 +37,8 @@ on:
       - 'unified-backup.js'
       - 'culture-lat4.js'
       - 'vocabulary-generator.js'
+      - 'bachillerato-ii.js'
+      - 'data/bachillerato-ii/**'
       - 'offline.html'
       - 'data/lemmas/**'
       - 'data/unimorph/**'
@@ -174,6 +178,12 @@ jobs:
         run: node scripts/test-vocabulary-quality.cjs
       - name: Probar generador de vocabulario por unidades y Word
         run: npm run vocabulary:test
+      - name: Validar inventarios y exportación de Bachillerato II
+        run: |
+          node scripts/build-bachillerato-ii.mjs
+          git diff --exit-code -- bachillerato-ii.js
+          node scripts/test-bachillerato-ii.cjs
+          node scripts/test-bachillerato-ii-browser.cjs
       - name: Priorizar 50 incidencias reales del lematizador
         run: node scripts/audit-top-50-lemmas.cjs --check
       - name: Revisar otro lote de 100 fichas reales del lematizador

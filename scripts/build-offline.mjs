@@ -38,6 +38,10 @@ export async function renderOffline(root=projectRoot){
  const scoringExternal='<script src="exam-scoring.js" defer></script>';
  if(!html.includes(scoringExternal))throw new Error('Falta el gestor de puntuación por pregunta');
  html=html.replace(scoringExternal,'<script>'+scoringModule.replace(/<\/script/gi,'<\\/script')+'</script>');
+ const iiModule=await readFile(resolve(root,'bachillerato-ii.js'),'utf8');
+ const iiExternal='<script src="bachillerato-ii.js" defer></script>';
+ if(!html.includes(iiExternal))throw new Error('Falta el inventario de Bachillerato II');
+ html=html.replace(iiExternal,'<script>'+iiModule.replace(/<\/script/gi,'<\\/script')+'</script>');
  const vocabularyModule=await readFile(resolve(root,'vocabulary-generator.js'),'utf8');
  const vocabularyExternal='<script src="vocabulary-generator.js" defer></script>';
  if(!html.includes(vocabularyExternal))throw new Error('Falta el generador de vocabulario independiente');

@@ -1,0 +1,52 @@
+{
+  "greek": [
+    {
+      "document": "1-repaso-lisias.docx",
+      "passages": 30,
+      "total": 433,
+      "baselineCandidates": 155,
+      "candidates": 433,
+      "automatic": 147,
+      "unknown": []
+    },
+    {
+      "document": "2-repaso-platón.docx",
+      "passages": 16,
+      "total": 379,
+      "baselineCandidates": 154,
+      "candidates": 379,
+      "automatic": 145,
+      "unknown": []
+    },
+    {
+      "document": "3-repaso-Apolodoro.docx",
+      "passages": 15,
+      "total": 350,
+      "baselineCandidates": 89,
+      "candidates": 350,
+      "automatic": 88,
+      "unknown": []
+    }
+  ],
+  "latin": [
+    {
+      "inventory": "pau-cv-2006-2026.tsv",
+      "appearances": 352,
+      "expressions": 303,
+      "tokens": 306,
+      "candidates": 306,
+      "unknown": []
+    },
+    {
+      "inventory": "cuaderno-2026-27-morfologia.tsv",
+      "appearances": 239,
+      "expressions": 224,
+      "tokens": 226,
+      "candidates": 226,
+      "unknown": []
+    }
+  ],
+  "notes": [
+    "Cobertura = al menos una lectura candidata, no desambiguación automática ni certificación morfológica."
+  ]
+}

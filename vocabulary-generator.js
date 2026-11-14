@@ -730,6 +730,8 @@ function greekReferenceForms(bank){
  };
  const endings=(stem,list,row)=>{for(const ending of list)add(stem+key(ending),row)};
  for(const source of bank){
+  // Una ficha de lectura nueva no acredita un paradigma productivo.
+  if(source?.origin==='Repasos Griego II · propuesta')continue;
   if(!source?.entry||!source?.meaning)continue;
   const entry=source.entry,alternatives=head(entry).split(/\s+o\s+/i).map(key).filter(Boolean);
   for(const lemma of alternatives){
@@ -1219,6 +1221,12 @@ const greekSpellingNotes={
 const vocabularyIndexCache=new WeakMap(),greekReferenceCache=new WeakMap();
 const documentedSources=new Set([0,1,5,6,7]);
 function analyze(data,text,course,bank,{contextual=false}={}){
+ const requestedCourse=course;
+ if(['lat2','gr2'].includes(course)){
+  if(!window.ExaminaBachilleratoII)throw Error('Falta el inventario de Bachillerato II');
+  ({data,bank}=window.ExaminaBachilleratoII.prepare(data,course,bank));
+  course=course==='gr2'?'gr1':'lat1';
+ }
  const lang=course==='gr1'?'grc':'lat';
  let byCourse=vocabularyIndexCache.get(data);
  if(!byCourse){byCourse=new Map();vocabularyIndexCache.set(data,byCourse)}
@@ -1331,6 +1339,12 @@ function analyze(data,text,course,bank,{contextual=false}={}){
     !(supplement.length&&!x.attested&&!x.meaning)&&
     !(regularLemmas.has(x.lemma)&&!x.attested)),
     ...supplement,...directInvariable,...curated,...regular,...enclitic];
+  if(requestedCourse==='gr2'){
+   all.push(...window.ExaminaBachilleratoII.candidates(form,bank));
+  }
+  if(requestedCourse==='lat2'){
+   all.push(...window.ExaminaBachilleratoII.latinCandidates(form,bank));
+  }
   if(contextual){
    for(const row of bankIndex.get('H'+normal)||[]){
     if(lang==='grc'&&head(row.entry).normalize('NFC')!==form.normalize('NFC'))continue;
@@ -1455,10 +1469,11 @@ function analyze(data,text,course,bank,{contextual=false}={}){
    }
    candidates=[...preferred.values()];
   }
-  const resolved=candidates.length===1&&candidates[0].attested;
+  const resolved=candidates.length===1&&candidates[0].attested&&
+   (!['lat2','gr2'].includes(requestedCourse)||!!candidates[0].meaning);
   const spellingHint=lang==='grc'?Object.entries(greekSpellingNotes)
    .find(([sample])=>sample.normalize('NFC')===form.normalize('NFC'))?.[1]:
-   lang==='lat'?latinSpellingNotes[normal]:undefined;
+   lang==='lat'?((requestedCourse==='lat2'?window.ExaminaBachilleratoII.spellingNote(form):'')||latinSpellingNotes[normal]):undefined;
   // Señalar erratas y abreviaturas sin modificar el original ni simular
   // una flexión contrastada. Distinguir sugerencia de evidencia.
   const contextHint=lang==='lat'?latinContextNotes[normal]:undefined;
@@ -1505,7 +1520,7 @@ function classifyVocabularyEntry(item,course='lat1'){
  const norm=value=>String(value).normalize('NFD').replace(/\p{M}/gu,'')
   .replace(/æ/gi,'ae').replace(/ς/g,'σ').toLowerCase();
  const lemma=norm(first),label=norm(entry);
- const greek=course==='gr1'||course==='greek1';
+ const greek=['gr1','greek1','gr2'].includes(course);
  if(greek&&(/^ὁ\s*,\s*ἡ\s*,\s*(?:τό|τὸ)/u.test(entry)||/\b(?:art[íi]culo|article)\b/iu.test(entry)))
   return 'articles';
  if(greek&&(/\((?:part\.?|part[íi]cula)\)/iu.test(entry)||
@@ -1571,7 +1586,7 @@ function vocabularyGroups(rows,course,language='es'){
 
 function formatVocabularyEntry(row,mode,course,language='es'){
  let entry=displayEntry(row.entry,mode);
- if(course==='gr1'){
+ if(['gr1','gr2'].includes(course)){
   const raw=entry.trim();
   // Etiquetas gramaticales para invariables no etiquetadas en la fuente.
   const types={
@@ -1625,10 +1640,10 @@ function vocabularyRequiresReview(row){
   '<w:keepLines/><w:spacing w:after="45"/>')+
   '</w:pPr>'+runs+'</w:p>';
  const p=(value,bold=false)=>paragraph(run(value,{bold}),{heading:bold});
- const titleNames={lat1:'Latín I',lat4:'Latín 4.º ESO',gr1:'Griego I'};
+ const titleNames={lat1:'Latín I',lat4:'Latín 4.º ESO',gr1:'Griego I',lat2:'Latín II',gr2:'Griego II'};
  const title='Vocabulario por unidades de '+(titleNames[project.course]||project.course||'la asignatura');
  const titleParagraph=paragraph(run(title,{bold:true,smallCaps:true,size:28}),{title:true});
- const isLatin=project.course!=='gr1';
+ const isLatin=!['gr1','gr2'].includes(project.course);
  const line=(row,unit)=>{
   const pending=vocabularyRequiresReview(row);
   const formatted=formatVocabularyEntry(row,unit.mode,project.course,project.lang||'es')+
@@ -1683,7 +1698,7 @@ function vocabularyRequiresReview(row){
   '<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>'+
   titleParagraph+body+'<w:sectPr>'+layout+'</w:sectPr></w:body></w:document>';
 }
-const analysisVersion=6; // Reanalizar con nuevas formas contrastadas, conservando ediciones y decisiones docentes.
+const analysisVersion=7; // Reanalizar con nuevas formas contrastadas, conservando ediciones y decisiones docentes.
 function needsAnalysis(unit,course){
  return !!unit.text?.trim()&&(unit.analysisVersion!==analysisVersion||
   unit.analyzedCourse!==course||unit.analyzedText!==unit.text);
@@ -1723,7 +1738,7 @@ function migrateProject(project){
  applyLatinEditorialProjectCorrections(project);
  for(const unit of project.units){
   const source=unit.decisions,decisions={};
-  for(const course of ['lat1','lat4','gr1']){
+  for(const course of ['lat1','lat4','gr1','lat2','gr2']){
    const legacy=course===project.course&&(!unit.analyzedCourse||unit.analyzedCourse===course);
    const rows=Array.isArray(source?.[course])?source[course]:legacy?unit.rows||[]:[];
    decisions[course]=rows.filter(row=>row&&['manual','omitted'].includes(row.status)&&
@@ -1739,7 +1754,7 @@ window.ExaminaVocabulary={analyze,entries,displayEntry,formatVocabularyEntry,doc
 function init(){
  const $=id=>document.getElementById(id),storage='examina_vocabulary_project_v1';
  let project={count:1,course:'lat1',lang:'es',units:[]},selected=0;
- try{const saved=JSON.parse(localStorage.getItem(storage));if(saved?.units&&Number.isInteger(saved.count)&&saved.count>=1&&saved.count<=100&&['lat1','lat4','gr1'].includes(saved.course))project=saved}catch{}
+ try{const saved=JSON.parse(localStorage.getItem(storage));if(saved?.units&&Number.isInteger(saved.count)&&saved.count>=1&&saved.count<=100&&['lat1','lat4','gr1','lat2','gr2'].includes(saved.course))project=saved}catch{}
  if(!['es','va'].includes(project.lang))project.lang='es';
  const unit=()=>{while(project.units.length<project.count)project.units.push({title:'UD'+(project.units.length+1),text:'',mode:'complete',rows:[],analyzed:false});return project.units[selected]};
  migrateProject(project);
@@ -1818,6 +1833,18 @@ function init(){
    if(sourceCourse!==project.course)return;
    const audit=window.ExaminaVocabularyQuality?.audit;
    if(typeof audit!=='function')throw Error('No se ha cargado el módulo de auditoría.');
+   if(['lat2','gr2'].includes(sourceCourse)){
+    const meta=window.ExaminaBachilleratoII.metadata;
+    qualitySnapshot={schema:1,course:sourceCourse,metadata:meta,reviewQueue:[],units:[]};
+    area.textContent=sourceCourse==='gr2'?
+     meta.greekEntries+' fichas y '+meta.greekForms+' grafías de los repasos. Son propuestas léxicas; revisa las candidatas en cada texto.':
+     meta.latinParadigms+' paradigmas de los inventarios PAU y cuaderno. No contiene todo el vocabulario de sus textos completos.';
+    $('vgQualityRows').replaceChildren();
+    $('vgReviewUnit').replaceChildren(new Option('Todas las unidades',''));
+    showQualityQueue();
+    $('vgQualityQueueSummary').textContent='Las incidencias se muestran al analizar los textos del proyecto.';
+    return;
+   }
    qualitySnapshot=audit(data,vocab,sourceCourse,window.ExaminaValencianGloss);
    const t=qualitySnapshot.totals,locale=project.lang==='va';
    area.textContent=(locale?'Fitxes: ':'Fichas: ')+t.rows+
@@ -1910,8 +1937,10 @@ function init(){
   };
   if(safe.length){
    const batch=document.createElement('details'),summary=document.createElement('summary');
-   summary.textContent='Propuestas seguras del proyecto ('+safe.length+')';
-   batch.append(summary,paragraph('Formas de cita del banco docente. La aceptación incorpora la ficha al Word.'));
+   summary.textContent=(project.course==='gr2'?'Propuestas léxicas revisables (':'Propuestas seguras del proyecto (')+safe.length+')';
+   batch.append(summary,paragraph(project.course==='gr2'?
+    'Propuestas de lectura: revisa el lema y la acepción con el contexto antes de aceptarlas. La selección incorpora la ficha al Word; no verifica el paradigma.':
+    'Formas de cita del banco docente. La aceptación incorpora la ficha al Word.'));
    const checks=safe.map(({unit,row})=>{
     const label=document.createElement('label'),check=document.createElement('input');
     check.type='checkbox';check.checked=true;label.className='check';
@@ -2090,8 +2119,9 @@ function init(){
   controls.forEach(control=>control.disabled=true);status('Analizando…');
   try{
    const data=await linguistic().load();
-   const course={lat1:'latin1',lat4:'latin4',gr1:'greek1'}[project.course];
-   const bank=vocab.filter(x=>courseOf(x)===course);
+   const course={lat1:'latin1',lat4:'latin4',gr1:'greek1',lat2:'latin1',gr2:'greek1'}[project.course];
+   let bank=vocab.filter(x=>courseOf(x)===course);
+   if(['lat2','gr2'].includes(project.course))bank=window.ExaminaBachilleratoII.prepare(data,project.course,bank).bank;
    const units=project.units.slice(0,project.count);
    const signature=bankSignature(bank);
    const updates=units.filter(u=>u.text.trim()&&(stale(u)||u.analyzedBank!==signature))
@@ -2145,7 +2175,7 @@ function init(){
   }catch(e){status('No se ha exportado el Word: '+e.message)}
  };
  $('vgRestore').onclick=()=>$('vgImport').click();
- $('vgImport').onchange=async e=>{if(!e.target.files.length)return;try{const p=JSON.parse(await e.target.files[0].text());if(!Number.isInteger(p.count)||p.count<1||p.count>100||!['lat1','lat4','gr1'].includes(p.course)||!Array.isArray(p.units)||p.units.length<p.count||!p.units.every(u=>typeof u.title==='string'&&typeof u.text==='string'&&['simple','complete'].includes(u.mode)&&Array.isArray(u.rows)&&u.rows.every(r=>typeof r.entry==='string'&&typeof r.meaning==='string'&&typeof r.form==='string'&&Array.isArray(r.candidates))))throw Error('Formato incorrecto');project=migrateProject(p);qualitySnapshot=null;project.lang=['es','va'].includes(p.lang)?p.lang:'es';selected=0;render();save();const pending=project.units.slice(0,project.count).filter(stale).length;status('Proyecto importado: '+project.count+' unidades y textos conservados. '+pending+' por analizar. Puedes pulsar «Analizar y revisar vocabulario» o «Exportar Word» (analizará las pendientes).')}catch(e){status('No se pudo importar: '+e.message)}finally{e.target.value=''}};
+ $('vgImport').onchange=async e=>{if(!e.target.files.length)return;try{const p=JSON.parse(await e.target.files[0].text());if(!Number.isInteger(p.count)||p.count<1||p.count>100||!['lat1','lat4','gr1','lat2','gr2'].includes(p.course)||!Array.isArray(p.units)||p.units.length<p.count||!p.units.every(u=>typeof u.title==='string'&&typeof u.text==='string'&&['simple','complete'].includes(u.mode)&&Array.isArray(u.rows)&&u.rows.every(r=>typeof r.entry==='string'&&typeof r.meaning==='string'&&typeof r.form==='string'&&Array.isArray(r.candidates))))throw Error('Formato incorrecto');project=migrateProject(p);qualitySnapshot=null;project.lang=['es','va'].includes(p.lang)?p.lang:'es';selected=0;render();save();const pending=project.units.slice(0,project.count).filter(stale).length;status('Proyecto importado: '+project.count+' unidades y textos conservados. '+pending+' por analizar. Puedes pulsar «Analizar y revisar vocabulario» o «Exportar Word» (analizará las pendientes).')}catch(e){status('No se pudo importar: '+e.message)}finally{e.target.value=''}};
  $('vgShow').onclick=()=>{$('examLayout').hidden=true;$('examLayout').style.display='none';$('vocabManager').classList.remove('active');$('vocabularyGenerator').classList.add('active');for(const id of ['vmShowExam','vmShowList'])$(id).classList.remove('active');$('vgShow').classList.add('active');render();if($('vgQualityPanel').open)refreshQuality()};
  for(const id of ['vmShowExam','vmShowList'])$(id).addEventListener('click',()=>{$('vocabularyGenerator').classList.remove('active');$('vgShow').classList.remove('active')});
  render();
