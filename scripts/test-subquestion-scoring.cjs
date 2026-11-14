@@ -89,7 +89,9 @@ async function verifyModels(page,file){
 }
 async function openScoringDetail(page,key){
  const selector='#examScoring input[data-subscore-key="'+key+'"]';
- const card=page.locator('#examScoring .exam-subscore-details').filter({has:page.locator(selector)});
+ const card=page.locator('#examScoring .exam-subscore-details').filter({
+  has:page.locator('input[data-subscore-key="'+key+'"]')
+ });
  await card.evaluate(element=>element.open=true);
  return card;
 }
