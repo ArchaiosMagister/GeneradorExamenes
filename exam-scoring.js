@@ -376,10 +376,6 @@
   if(!previousQuestions.length){
    status.className='exam-scoring-total';
    status.textContent=lang?'No hi ha preguntes per a puntuar.':'No hay preguntas que puntuar.';
-  }else if(detailDiscrepancies().length){
-   status.className='exam-scoring-total exam-scoring-warning';
-   status.textContent=lang?'Desglossament de les subpreguntes pendent de quadrar amb els punts de cada pregunta.':
-    'El desglose de las subpreguntas no coincide con los puntos de cada pregunta.';
   }else if(isMorph&&total!==1000){
    status.className='exam-scoring-total exam-scoring-warning';
    status.textContent=(lang?'Morfologia: ':'Morfología: ')+totalString+
@@ -389,6 +385,10 @@
    status.className='exam-scoring-total exam-scoring-warning';
    status.textContent=(lang?'Avís: la puntuació suma ':'Aviso: la puntuación suma ')+
     totalString+(lang?' punts, no 10. Revisa el repartiment.':' puntos, no 10. Revisa el reparto.');
+  }else if(detailDiscrepancies().length){
+   status.className='exam-scoring-total exam-scoring-warning';
+   status.textContent=lang?'Desglossament de les subpreguntes pendent de quadrar amb els punts de cada pregunta.':
+    'El desglose de las subpreguntas no coincide con los puntos de cada pregunta.';
   }else{
    status.className='exam-scoring-total exam-scoring-correct';
    status.textContent=lang?'Total: 10 punts.':'Total: 10 puntos.';
