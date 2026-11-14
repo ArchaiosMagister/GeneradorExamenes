@@ -170,7 +170,8 @@ async function verifyEditing(page,file){
  return {formKey:g.key,points:first};
 }
 async function checkLex(page,file){
- await page.waitForFunction(()=>window.ExaminaTeacherLexBankReady===true);
+ await page.waitForFunction(()=>typeof latinLexBanks!=='undefined'&&
+  latinLexBanks.latin1.preverbs.length>0&&latinLexBanks.latin1.phonetics.length>0);
  await configure(page,'latin1','tablas','UD9–10');
  await page.evaluate(()=>{
   examQuestionChoiceState['latin1/tablas/lex']=true;
