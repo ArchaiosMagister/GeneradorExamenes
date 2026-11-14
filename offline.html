@@ -8632,7 +8632,7 @@ loadTeacherLatinLexBanks();
   });
   box.append(makeLabel(kind==='forms'?'Número de formas':'Número de elementos',number));
  }
- function lexConfig(box){
+ function lexConfig(box,previousFilters={}){
   const course=currentCourse(),data=latinLexBanks[course]||{};
   for(const kind of latinLexModules[course]||[]){
    const group=document.createElement('div');group.className='lex-subparts';group.dataset.lexPart=kind;
@@ -8675,6 +8675,7 @@ loadTeacherLatinLexBanks();
   const select=(id,label,values)=>{
    const input=document.createElement('select');input.id=id;
    values.forEach(([v,title])=>{const opt=document.createElement('option');opt.value=v;opt.textContent=title;input.append(opt)});
+   if(values.some(([value])=>value===previousFilters[id]))input.value=previousFilters[id];
    input.onchange=generate;box.append(makeLabel(label,input));
   };
   const prefixes=[...new Set((data.prefixes||[]).map(x=>x.prefix).filter(Boolean))].sort();
@@ -8724,6 +8725,8 @@ loadTeacherLatinLexBanks();
    select('lex-parity','Latinismos',[['all','Todos'],['odd','Impares'],['even','Pares']]);
    const from=document.createElement('input');from.id='lex-from';from.type='number';from.min='1';from.placeholder='Desde';
    const to=document.createElement('input');to.id='lex-to';to.type='number';to.min='1';to.placeholder='Hasta';
+   from.value=previousFilters['lex-from']||'';
+   to.value=previousFilters['lex-to']||'';
    from.onchange=generate;to.onchange=generate;box.append(makeLabel('Intervalo desde',from),makeLabel('Hasta',to));
   }
  }
@@ -8739,8 +8742,16 @@ loadTeacherLatinLexBanks();
   }
  }
  const quotaMemory={nouns:0,adjectives:0,verbs:0,pronouns:0};
+ let lexMenuCourse=null;
  function questionMenus(){
   const open=new Set([...questionHost.querySelectorAll('details[data-question][open]')].map(panel=>panel.dataset.question));
+  // Cambiar modelo, idioma o unidades reconstruye los controles. Se preservan
+  // los filtros del mismo curso: de otro modo cambia también la clave de caché
+  // de prefijos/latinismos y el nuevo menú puede perder sus cuatro valores.
+  const previousFilters=lexMenuCourse===currentCourse()?
+   Object.fromEntries(['lex-prefix','lex-parity','lex-from','lex-to']
+    .map(id=>[id,$(id)?.value]).filter(([,value])=>value!==undefined)):{};
+  lexMenuCourse=currentCourse();
   sentenceFields.hidden=true;
   questions.append(sentenceFields);
   questionHost.replaceChildren();
@@ -8764,7 +8775,7 @@ loadTeacherLatinLexBanks();
    const name=document.createElement('span');name.className='exam-question-name';name.textContent=questionTitle(kind);
    summary.append(check,name,statusLabel);
    if(kind==='sent'){sentenceFields.hidden=false;body.append(sentenceFields)}
-   if(kind==='lex')lexConfig(body);
+   if(kind==='lex')lexConfig(body,previousFilters);
    if(kind==='forms')quotaConfig(body);
    countControl(body,kind,morph);
    if(['decl','verb','forms','pronouns','lex','etymology','culture'].includes(kind)){
@@ -8775,11 +8786,20 @@ loadTeacherLatinLexBanks();
    const editor=document.createElement('div');editor.className='question-editor';editor.dataset.editorFor=kind;body.append(editor);
    questionHost.append(detail);
   }
-  // Reconstruir el menú (al cambiar curso, idioma o cargar bancos) no debe
-  // dejar vacíos los campos de verbos que ya aparecen en el examen.
+  // La generación del examen puede producirse ANTES de reconstruir este menú.
+  // Eliminar los controles anteriores los deja vacíos aunque las formas estén
+  // ya sorteadas y visibles en el examen. Rehidratar sin volver a sortear.
+  // Primero la selección conservada; después el texto real de la vista previa,
+  // que es la referencia si el profesor ha editado un término manualmente.
   for(const kind of latinLexModules[currentCourse()]||[]){
    const rows=examSelectionCache.get(examCacheSignature('lex-'+kind));
    if(Array.isArray(rows))latinLexStatus(kind,rows);
+   for(let i=0;i<latinLexExpectedCount(kind);i++){
+    const paperWord=$('paper').querySelector('[data-lex-slot="'+kind+':'+i+'"] > i');
+    const input=kind==='preverbs'?$('lex-verb-'+i):$('lex-edit-'+kind+'-'+i);
+    if(paperWord&&input&&document.activeElement!==input)
+     input.value=paperWord.textContent.trim();
+   }
   }
   /* Después de mover los editores a cada pregunta, conserva las referencias al
      examen actual para que cada cambio manual se refleje en vista previa y Word. */
