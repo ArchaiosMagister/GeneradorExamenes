@@ -244,6 +244,26 @@ async function checkLex(page,file){
  assert.deepEqual(valencian.errors,[]);
  return {offered:initial.offered,editors:initial.fields.length,optional:true};
 }
+async function checkGreekMenuWithoutDuplicates(page,file){
+ await configure(page,'greek1','complete','UD7');
+ const state=await page.evaluate(()=>{
+  const items=[...document.querySelectorAll('#examQuestionMenus [data-editor-for] > div')]
+   .filter(row=>row.querySelector('input[type="text"]'));
+  return {
+   editable:items.length,
+   duplicated:items.filter(row=>[...row.querySelectorAll('.hint')]
+    .some(el=>/^Seleccionadas:\s*(?!ninguna)/i.test(el.textContent))).length,
+   regen:items.filter(row=>row.querySelector('.exam-regenerate-word')).length,
+   removable:items.filter(row=>[...row.querySelectorAll('button')]
+    .some(btn=>/^Quitar forma \d+$/.test(btn.textContent))).length
+  };
+ });
+ assert(state.editable>0,file+': faltan editores de Griego I completo');
+ assert.equal(state.duplicated,0,file+': se repiten formas junto al campo editable de Griego I');
+ assert(state.regen>0,file+': desapareció la regeneración individual de Griego I');
+ assert(state.removable>0,file+': faltan botones para quitar formas de Griego I');
+ return state;
+}
 async function run(browser,file){
  const context=await browser.newContext({viewport:{width:1380,height:900}});
  const page=await context.newPage(),errors=[];
@@ -253,9 +273,10 @@ async function run(browser,file){
  const models=await verifyModels(page,file);
  const edit=await verifyEditing(page,file);
  const lex=await checkLex(page,file);
+ const greekMenu=await checkGreekMenuWithoutDuplicates(page,file);
  assert.deepEqual(errors,[],file+': excepciones JavaScript');
  await context.close();
- return {file,models,edit,lex};
+ return {file,models,edit,lex,greekMenu};
 }
 (async()=>{
  const browser=await chromium.launch({headless:true});
