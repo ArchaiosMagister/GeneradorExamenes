@@ -5353,6 +5353,10 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 <script src="verification-review.js" defer></script><script src="eulexis-local.js" defer></script><script src="greek-review.js" defer></script><script src="vocabulary-quality.js" defer></script>
 <script src="vocabulary-generator.js" defer></script><script src="exam-scoring.js" defer></script><script src="unified-backup.js" defer></script><script src="pwa.js" defer></script><style id="examina-exam-redesign-css">
 /* Rediseño aislado del generador; los gestores de vocabulario no se modifican. */
+body.exam-redesign #examLayout aside.panel #primaryCoursePicker,
+body.exam-redesign #examLayout aside.panel #primaryModelPicker{display:block!important}
+body.exam-redesign #examLayout aside.panel #primaryCoursePicker #course,
+body.exam-redesign #examLayout aside.panel #primaryModelPicker #model{display:block!important;min-height:44px;width:100%}
 body.exam-redesign #exam-header-controls,body.exam-redesign .exam-coursebar,
 body.exam-redesign #examEditorPanel .sidebar-choices,body.exam-redesign #examFormatSettings,
 body.exam-redesign #group-course,body.exam-redesign #group-content,body.exam-redesign #group-questions,
