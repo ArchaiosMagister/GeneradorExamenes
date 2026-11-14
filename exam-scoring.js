@@ -512,6 +512,9 @@
   renderPending=false;
   if(!paper.querySelector('.exam-sheet')){previousQuestions=[];renderRows();renderQuestionScores();return}
   if(observer)observer.disconnect();
+  // Eliminar etiquetas editoriales anteriores antes de releer los enunciados.
+  // Nunca deben convertirse en parte de una nueva etiqueta o del texto académico.
+  paper.querySelectorAll('[data-exam-subscore]').forEach(el=>el.remove());
   const elements=find(),raw=elements.map(el=>{
    const text=el.dataset.scoringCaption||clean(el.textContent);
    const match=/\(\s*(\d+(?:[,.]\d+)?)\s*p\.?\s*\)\s*[:.]?\s*$/i.exec(el.textContent);
