@@ -120,7 +120,9 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
    const kinds=['phonetics','prefixes','latinisms','preverbs'];
    return Object.fromEntries(kinds.map(kind=>[kind,{
     exam:[...document.querySelectorAll('[data-lex-kind="'+kind+'"] i')].map(x=>x.textContent),
-    editor:[...document.querySelectorAll('[id^="lex-slot-'+kind+'-"]')].map(x=>x.textContent),
+    editor:kind==='preverbs'?
+     [0,1].map(i=>document.getElementById('lex-verb-'+i)?.value||''):
+     [...document.querySelectorAll('[id^="lex-edit-'+kind+'-"]')].map(x=>x.value),
     canonical:latinLexBanks.latin1.latinisms.find(x=>x.number===30).prompt
    }]));
   });
@@ -145,7 +147,7 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
   assert.equal(score.total,1000,'Los demás puntos deben repartirse hasta 10');
   assert(score.points.every(x=>/^\(\d+(?:,\d+)?p\.\)\.$/.test(x)),
    'Sin espacios entre número y p.: '+score.points);
-  assert(/elige dos de las [34] cuestiones siguientes/i.test(score.enunciado),
+  assert(/elige dos de las (tres|cuatro) cuestiones siguientes/i.test(score.enunciado),
    'Latín I: elegir dos entre 3 o 4 cuestiones: '+score.enunciado);
 
   // Si el docente desactiva un apartado, el enunciado debe decir tres,
@@ -162,7 +164,7 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
     generate();
    }
   });
-  assert(/elige dos de las 3 cuestiones siguientes/i.test(threePartCaption),
+  assert(/elige dos de las tres cuestiones siguientes/i.test(threePartCaption),
    'Al desmarcar un apartado deben ofrecerse exactamente tres: '+threePartCaption);
 
   // La exigencia acumulativa oculta SOLO el significado en el glosario del examen.
