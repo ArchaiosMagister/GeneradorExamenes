@@ -8,6 +8,7 @@ on:
       - 'scripts/test-phase-one.cjs'
       - 'scripts/test-phase-five.cjs'
       - 'scripts/test-phase-six.cjs'
+      - 'scripts/test-greek-morph-regeneration.cjs'
       - 'scripts/test-subquestion-scoring.cjs'
       - '.github/workflows/phase-one-regression.yml'
   workflow_dispatch:
@@ -33,6 +34,8 @@ jobs:
         run: npm run offline:build
       - name: Phase I synchronization regressions
         run: node scripts/test-phase-one.cjs
+      - name: Greek morphology regeneration web and offline
+        run: node scripts/test-greek-morph-regeneration.cjs
       - name: All existing Word preview regressions
         run: npm run preview:test
       - name: Phase V responsive editing and Word regressions
