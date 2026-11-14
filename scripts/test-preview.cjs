@@ -515,11 +515,14 @@ async function checkFile(browser,filename){
    return toolbar&&toolbar.querySelector('fieldset:nth-child(1) button[aria-pressed="true"]')?.dataset.value===c&&
     toolbar.querySelector('fieldset:nth-child(2) button[aria-pressed="true"]')?.dataset.value===m;
   },[course,model]);
-  assert(await header.isVisible(),filename+': botones superiores ocultos');
+  assert(!(await header.isVisible()),filename+': duplicidad de botones superiores visible');
+  assert(await page.locator('#exam-ui-core').isVisible(),filename+': falta configuración centralizada');
   assert(await primary.locator('#unitChoices').isVisible(),filename+': unidades ocultas');
-  assert(!(await primary.locator('#course').isVisible()),filename+': selector desplegable de asignatura visible');
-  assert(!(await primary.locator('#model').isVisible()),filename+': selector desplegable de modelo visible');
-  assert(!(await page.locator('#lang').isVisible()),filename+': selector desplegable de idioma visible');
+  assert(await primary.locator('#course').isVisible(),filename+': selector de asignatura inaccesible');
+  assert(await primary.locator('#model').isVisible(),filename+': selector de modelo inaccesible');
+  assert(await page.locator('#lang').isVisible(),filename+': selector de idioma inaccesible');
+  assert.equal(await page.locator('#exam-ui-meta #lang').count(),1,filename+': idioma duplicado');
+  await page.locator('#exam-ui-advanced').evaluate(el=>el.open=true);
   assert.equal(await header.locator('fieldset').count(),3,filename+': faltan los tres grupos de botones');
   assert.equal(await header.locator('fieldset:nth-child(2) button').count(),course==='latin4'?1:3,
    filename+': modelos incorrectos en la cabecera');
@@ -622,14 +625,14 @@ async function checkFile(browser,filename){
    assert.equal(await page.locator('#paper #answerkey [data-manual-warning]').count(),1,filename+' '+course+'/'+model+': falta advertencia de solucionario');
   }
  }
- // Los pulsadores deben cambiar el estado real del examen sin duplicar controles.
- await page.locator('#exam-header-controls fieldset:nth-child(1) button[data-value="latin1"]').click();
- await page.locator('#exam-header-controls fieldset:nth-child(2) button[data-value="morf"]').click();
- assert.equal(await page.locator('#model').inputValue(),'morf',filename+': botones no cambian modelo');
- await page.locator('#exam-header-controls fieldset:nth-child(3) button[data-value="va"]').click();
- assert.equal(await page.locator('#lang').inputValue(),'va',filename+': botones no cambian idioma');
- await page.locator('#exam-header-controls fieldset:nth-child(3) button[data-value="es"]').click();
- assert.equal(await page.locator('#lang').inputValue(),'es',filename+': botones no restauran castellano');
+ // En el rediseño solo los selectores centralizados son interactivos.
+ await page.locator('#course').selectOption('latin1');
+ await page.locator('#model').selectOption('morf');
+ assert.equal(await page.locator('#model').inputValue(),'morf',filename+': modelo no cambia');
+ await page.locator('#lang').selectOption('va');
+ assert.equal(await page.locator('#lang').inputValue(),'va',filename+': idioma no cambia');
+ await page.locator('#lang').selectOption('es');
+ assert.equal(await page.locator('#lang').inputValue(),'es',filename+': no se restaura castellano');
  await page.evaluate(()=>{const course=document.getElementById('course');course.value='latin1';course.dispatchEvent(new Event('change',{bubbles:true}));const model=document.getElementById('model');model.value='mixto';model.dispatchEvent(new Event('change',{bubbles:true}))});
  await page.evaluate(()=>{
   document.querySelectorAll('.unit-choice').forEach(el=>el.checked=units[Number(el.value)]==='UD3');

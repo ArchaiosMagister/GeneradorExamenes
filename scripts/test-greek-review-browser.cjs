@@ -11,6 +11,7 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
   page.on('request',r=>{if(/^https?:/i.test(r.url()))requests.push(r.url())});
   await page.goto(pathToFileURL(path.resolve(__dirname,'../offline.html')).href,{waitUntil:'load'});
   await page.locator('#greekDiscrepancyReview').waitFor({state:'attached'});
+  await page.locator('#exam-ui-advanced').evaluate(el=>el.open=true);
   await page.locator('#offlineLemmaPanel').evaluate(el=>{const details=el.closest('details');if(details)details.open=true;});
   await page.locator('#greekDiscrepancyReview > details').evaluate(el=>el.open=true);
   await page.locator('#grReviewStatus').filter({hasText:'formas con discrepancias'}).waitFor();

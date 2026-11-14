@@ -14,6 +14,7 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
   });
   await page.goto(pathToFileURL(path.resolve(__dirname,'../offline.html')).href,{waitUntil:'load'});
   await page.locator('#offlineLemmaPanel').waitFor({state:'attached'});
+  await page.locator('#exam-ui-advanced').evaluate(el=>el.open=true);
   await page.locator('#offlineLemmaPanel').evaluate(el=>{
    const details=el.closest('details');if(details)details.open=true;
   });

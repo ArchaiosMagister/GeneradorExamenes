@@ -250,11 +250,11 @@ const server=http.createServer(async(req,res)=>{
   const firstVersion=cache.keys.find(k=>k.startsWith('examina-pwa-'));
   assert(firstVersion?.includes('test-one'));
   // El documento es la misma aplicación en línea y sin conexión.
-  // Las opciones de cabecera actualizan los selectores nativos ocultos.
-  await page.locator('#exam-header-controls fieldset:nth-child(1) button[data-value="latin1"]').click();
-  await page.locator('#exam-header-controls fieldset:nth-child(2) button[data-value="tablas"]').click();
+  // El rediseño usa los selectores únicos, sin botones duplicados en cabecera.
+  await page.locator('#course').selectOption('latin1');
+  await page.locator('#model').selectOption('tablas');
   assert.deepEqual(await page.evaluate(()=>[document.getElementById('course').value,document.getElementById('model').value]),['latin1','tablas'],
-   'Los botones de cabecera no sincronizan asignatura y modelo');
+   'Los selectores únicos no sincronizan asignatura y modelo');
   await page.evaluate(()=>{generate();document.getElementById('saveDraft').click()});
   const storedDraft=await page.evaluate(()=>Object.keys(localStorage)
    .find(key=>key.toLowerCase().includes('draft')||key.toLowerCase().includes('borrador')));
@@ -293,6 +293,7 @@ const server=http.createServer(async(req,res)=>{
   });
   assert(latin.status===200&&latin.length===16988,'No funciona el banco latino offline');
   await page.locator('#offlineLemmaPanel').waitFor({state:'attached'});
+  await page.locator('#exam-ui-advanced').evaluate(node=>node.open=true);
   await page.evaluate(()=>{const d=document.getElementById('offlineLemmaPanel').closest('details');if(d)d.open=true});
   await page.selectOption('#offlineLemmaCourse','gr1');
   await page.selectOption('#offlineLemmaMode','lemma');
