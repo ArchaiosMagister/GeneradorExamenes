@@ -80,7 +80,7 @@ async function run(browser,file){
   const count=$('count-sent');count.value='6';count.dispatchEvent(new Event('change',{bubbles:true}));
  });
  let r=await report(page);
- assert.equal(r.total,1000,file+': no se redistribuyeron los puntos tras cambiar a seis oraciones');
+ assert.equal(r.total,900,file+': cambiar una oración debe reducir el total sin redistribuir las otras preguntas');
  assert.equal(r.sentCents,600,file+': seis oraciones no suman 6 p.');
  await page.evaluate(()=>{
   const t=$('newSentences');t.value='Puella amat.\n\nNauta navigat.';
@@ -130,7 +130,7 @@ async function run(browser,file){
  try{
   await run(browser,'index.html');
   await run(browser,'offline.html');
-  console.log('FASE III: huecos/borradores/DOCX y 1p. por oración, total de 10 y bloqueo de excesos (web/offline) OK');
+  console.log('FASES III/VI: huecos, borradores, DOCX, 1p. por oración y ausencia de reparto automático (web/offline) OK');
  }finally{
   await browser.close();
   await new Promise(resolve=>server.close(resolve));
