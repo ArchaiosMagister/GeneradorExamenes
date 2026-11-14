@@ -182,6 +182,7 @@ jobs:
         run: |
           node scripts/build-bachillerato-ii.mjs
           git diff --exit-code -- bachillerato-ii.js
+          node scripts/test-common-invariables.cjs
           node scripts/test-bachillerato-ii.cjs
           node scripts/test-bachillerato-ii-browser.cjs
       - name: Priorizar 50 incidencias reales del lematizador

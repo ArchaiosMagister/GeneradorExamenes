@@ -11,7 +11,7 @@
     "vocabulary:test": "node scripts/test-vocabulary-quality.cjs && node scripts/test-latin-vocabulary-corpus.cjs && node scripts/test-vocabulary.cjs && node scripts/test-required-latin-vocabulary.cjs",
     "vocabulary:corpus": "node scripts/test-latin-vocabulary-corpus.cjs",
     "bachillerato:build": "node scripts/build-bachillerato-ii.mjs",
-    "bachillerato:test": "node scripts/test-bachillerato-ii.cjs",
+    "bachillerato:test": "node scripts/test-common-invariables.cjs && node scripts/test-bachillerato-ii.cjs",
     "bachillerato:test:browser": "node scripts/test-bachillerato-ii-browser.cjs"
   }
 }

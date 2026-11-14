@@ -19,11 +19,22 @@ const greek=[...grouped.values()];
 const latin=JSON.parse(await read('data/bachillerato-ii/latin-paradigms.json'));
 const latinGlosses=Object.fromEntries((await read('data/bachillerato-ii/latin-glosses.tsv'))
  .split(/\r?\n/).filter(l=>l&&!l.startsWith('#')).map(l=>l.split('|')));
-const metadata={greekEntries:greek.length,greekForms:new Set(greek.flatMap(x=>x.forms)).size,
+const common=(await read('data/bachillerato-ii/common-invariables.tsv')).split(/\r?\n/)
+ .filter(l=>l&&!l.startsWith('#')).map(line=>{
+  const [lang,lemma,category,meaning,meaning_va,variants,...rest]=line.split('|');
+  if(!['lat','grc'].includes(lang)||!lemma||!category||!meaning||!meaning_va||!variants||rest.length)
+   throw Error('Invariable común inválida: '+line);
+  return {lang,lemma,entry:lemma+' ('+category+')',meaning,meaning_va,forms:variants.split(/\s+/u)};
+ });
+for(const lang of ['lat','grc']){
+ const items=common.filter(x=>x.lang===lang);
+ if(items.length!==20||new Set(items.map(x=>x.lemma)).size!==20)throw Error('Se requieren 20 lemas nuevos distintos: '+lang);
+}
+const metadata={commonLatin:20,commonGreek:20,greekEntries:greek.length,greekForms:new Set(greek.flatMap(x=>x.forms)).size,
  greekStatus:'Propuestas léxicas de los repasos Lisias, Platón y Apolodoro; sin acreditación morfológica automática',
  latinParadigms:latin.records,latinEntries:latin.items.length,latinSource:latin.source,
  latinScope:'Inventarios morfológicos PAU y cuaderno; no contiene sus textos completos'};
 const runtime=await read('scripts/bachillerato-ii-runtime.js');
 await fs.writeFile(path.join(root,'bachillerato-ii.js'),runtime.replace('__BACHILLERATO_II_DATA__',
- JSON.stringify({greek,latin,latinGlosses,metadata}).replace(/</g,'\\u003c')));
+ JSON.stringify({greek,latin,latinGlosses,common,metadata}).replace(/</g,'\\u003c')));
 console.log(metadata);

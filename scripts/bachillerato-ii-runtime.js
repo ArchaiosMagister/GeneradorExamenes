@@ -90,6 +90,28 @@ function latinCandidates(form,bank){
    origin:note?note.note:'Componente de perífrasis documentada de Latín II; revisar con su auxiliar'};
  });
 }
-root.ExaminaBachilleratoII={prepare,candidates,latinCandidates,spelling,
+// Invariables comunes: léxico de consulta disponible en todos los cursos,
+// separado del vocabulario exigible y de cualquier certificación de flexiones.
+function commonCandidates(form,lang,bank=[]){
+ const matches=payload.common.filter(item=>item.lang===lang&&item.forms.some(surface=>
+  lang==='lat'?fold(surface)===fold(form):spelling(surface)===spelling(form)));
+ return matches.map(item=>{
+  const teacher=bank.find(row=>fold(head(row.entry))===fold(item.lemma));
+  return {lemma:fold(item.lemma),entry:teacher?.entry||item.entry,
+   meaning:teacher?teacher.meaning||'':item.meaning,
+   meaning_va:teacher?teacher.meaning_va||'':item.meaning_va,
+   attested:true,origin:'Suplemento léxico común · palabra invariable'};
+ });
+}
+function commonReferences(text,lang){
+ return payload.common.filter(item=>item.lang===lang&&item.forms.some(surface=>fold(surface)===fold(text)))
+  .map(item=>({lemma:item.lemma,surface:item.forms.find(surface=>fold(surface)===fold(text)),
+   tags:'LEX;INVARIABLE',source:'Suplemento léxico común · palabra invariable',
+   provisional:false,citation:false,reference:true,
+   info:Object.fromEntries((lang==='lat'?['lat1','lat4']:['gr1']).map(course=>[course,
+    {entry:item.entry,meaning:item.meaning,meaning_va:item.meaning_va,units:[]}]))}));
+}
+root.ExaminaBachilleratoII={prepare,candidates,latinCandidates,spelling,commonCandidates,commonReferences,
+ commonEntries:payload.common,
  spellingNote:form=>latinTextNotes[fold(form)]?.note||'',metadata:payload.metadata};
 })(window);

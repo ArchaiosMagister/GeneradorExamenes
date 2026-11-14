@@ -18,6 +18,15 @@ const server=http.createServer(async(req,res)=>{
   // La entrega autónoma se sirve por HTTP únicamente para sortear la política
   // del entorno de pruebas que bloquea file://; no se permite ningún recurso adicional.
   await page.waitForFunction(()=>!!window.ExaminaVocabulary&&!!window.ExaminaBachilleratoII);
+  const common=await page.evaluate(async()=>{
+   const data=await window.ExaminaOfflineLemmatizer.load();
+   return window.ExaminaBachilleratoII.commonEntries.map(word=>{
+    const query=window.ExaminaOfflineLemmatizer.query(data,{course:word.lang==='lat'?'lat1':'gr1',text:word.lemma});
+    const row=window.ExaminaVocabulary.analyze(data,word.lemma,word.lang==='lat'?'lat2':'gr2',[])[0];
+    return {lemma:word.lemma,found:query.total,status:row.status,meaning:row.meaning,va:row.meaning_va};
+   });
+  });
+  assert.equal(common.length,40);assert(common.every(x=>x.found===1&&x.status==='documented'&&x.meaning&&x.va));
   await page.locator('#vgShow').click();
   await page.evaluate(()=>{
    document.getElementById('vgQualityPanel').open=true;

@@ -96,3 +96,33 @@ conservación del banco docente, aislamiento de los cursos I, glosas y XML
 Word. La prueba de navegador abre el HTML autónomo por HTTP local para ser
 compatible con entornos que bloquean `file://`, impide todos los recursos
 adicionales y verifica persistencia, importación, ambos cursos y un DOCX real.
+
+## Suplemento de 40 invariables comunes
+
+Se añaden 20 lemas latinos y 20 griegos que no estaban en el índice docente,
+los suplementos de Bachillerato II ni el reconocimiento del generador. Son
+adverbios, conectores y partículas: la identificación es léxica, sin generar
+paradigmas flexivos. Las glosas editoriales incluyen castellano y valenciano;
+una ficha docente posterior tiene prioridad sobre ellas.
+
+- Latín: igitur, quidem, ergo, deinde, quoniam, quamquam, quamvis, subito,
+  paene, satis, simul, frustra, fortasse, interim, nusquam, cotidie, quondam,
+  fere, praeterea, praesertim.
+- Griego: ἐξαίφνης, ἐνίοτε, ἴσως, σχεδόν, ἔξω, πόρρω, ἐκεῖθεν, αὖ, αὖθις,
+  αὔριον, χθές, σήμερον, πέρυσι, πάλαι, ὅμως, οὐδαμῶς, ἄρτι, πρίν, ὅταν,
+  μέντοι.
+
+Fuente editable: `data/bachillerato-ii/common-invariables.tsv`. La variante
+latina *quotidie* pertenece al mismo lema *cotidie*: no se cuenta como una
+palabra adicional. La grave contextual griega se admite sin borrar espíritus
+o sustituir acentos arbitrariamente.
+
+Las palabras se reconocen en el generador de vocabulario de todos los cursos
+y en la consulta auxiliar offline. Esta capa suplementaria no se añade al
+banco exigible y no autoriza recuperación automática de respuestas de examen.
+Los indicadores de cobertura curricular conservan su alcance anterior.
+
+`node scripts/test-common-invariables.cjs` comprueba la ausencia previa de
+los 40 lemas, las dos lenguas de las glosas, las variantes, el reconocimiento,
+la prioridad docente y el aislamiento del índice curricular. La prueba de
+navegador comprueba también los 40 registros dentro del HTML autónomo.

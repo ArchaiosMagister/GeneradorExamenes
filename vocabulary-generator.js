@@ -1339,6 +1339,7 @@ function analyze(data,text,course,bank,{contextual=false}={}){
     !(supplement.length&&!x.attested&&!x.meaning)&&
     !(regularLemmas.has(x.lemma)&&!x.attested)),
     ...supplement,...directInvariable,...curated,...regular,...enclitic];
+  all.push(...(window.ExaminaBachilleratoII?.commonCandidates?.(form,lang,bank)||[]));
   if(requestedCourse==='gr2'){
    all.push(...window.ExaminaBachilleratoII.candidates(form,bank));
   }
@@ -1698,7 +1699,7 @@ function vocabularyRequiresReview(row){
   '<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>'+
   titleParagraph+body+'<w:sectPr>'+layout+'</w:sectPr></w:body></w:document>';
 }
-const analysisVersion=7; // Reanalizar con nuevas formas contrastadas, conservando ediciones y decisiones docentes.
+const analysisVersion=8; // Reanalizar con nuevas formas contrastadas, conservando ediciones y decisiones docentes.
 function needsAnalysis(unit,course){
  return !!unit.text?.trim()&&(unit.analysisVersion!==analysisVersion||
   unit.analyzedCourse!==course||unit.analyzedText!==unit.text);

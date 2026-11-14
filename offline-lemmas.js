@@ -25,6 +25,7 @@ const translations={
  '1':'1.ª persona','2':'2.ª persona','3':'3.ª persona'
 };
 function describe(tags){
+ if(tags==='LEX;INVARIABLE')return 'Palabra invariable · identificación léxica; sin paradigma flexivo';
  if(tags==='LEX;ENTRY')return 'Forma citada en el vocabulario; sin análisis flexivo documentado';
  if(tags.startsWith('DOCENTE;')){
   const xs=tags.split(';');
@@ -77,7 +78,8 @@ function query(data,{course='lat1',mode='form',text='',max=100}={}){
  const lang=langOf(course),key=normalize(text);
  if(!key||/\s/.test(key))return {total:0,items:[],invalid:!!key};
  const index=indexes(data);
- const candidates=(mode==='lemma'?index.lemmas[lang]:index.forms[lang]).get(key)||[];
+ const candidates=[...((mode==='lemma'?index.lemmas[lang]:index.forms[lang]).get(key)||[]),
+  ...(window.ExaminaBachilleratoII?.commonReferences?.(text,lang)||[])];
  const matching=candidates.filter(item=>!!item.info[course]);
  // Retain every distinct attested analysis, including homographs.
  const seen=new Set(),items=[];
@@ -135,7 +137,7 @@ function uniqueLemmaFromData(data,course,form){
  if(found.invalid||!found.items.length)return null;
  // Only actual morphological evidence (UniMorph or explicit teacher paradigm)
  // can authorize automatic entry recovery; a citation form is NOT an analysis.
- const reliable=found.items.filter(item=>!item.provisional&&!item.citation);
+ const reliable=found.items.filter(item=>!item.provisional&&!item.citation&&!item.reference);
  if(!reliable.length)return null;
  // A competing provisional form or a citation lemma still makes the written
  // form ambiguous. Never silently prefer the seemingly stronger analysis.
