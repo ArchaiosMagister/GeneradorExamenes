@@ -149,7 +149,7 @@
   const content=(node.dataset.subscoreCaption||node.textContent||'')
    .replace(/\s*\(\d+(?:[,.]\d+)?\s*p\.\)\s*$/,'').trim();
   const plain=content.replace(/\s+/g,' ');
-  return plain.length>90?plain.slice(0,87)+'…':plain||'Elemento';
+  return plain.length>90?plain.slice(0,87)+'…':plain||(state().language==='va'?'Element':'Elemento');
  };
  function initializeDetails(q){
   if(has(initKey(q)))return;
@@ -162,7 +162,11 @@
    // elegibles (no se suman las tres o más alternativas).
    const cents=q.optional?Math.floor(parent/2):amounts[i];
    scores[group.key]=cents;
-   const terms=split(cents,group.children.length);
+   // La modificación preverbial exige 3 derivados del primer verbo y 2
+   // del segundo: reparto inicial ponderado, sin inventar una regla 50/50.
+   const terms=group.part==='lex-preverbs'&&group.children.length===2?
+    [Math.floor(cents*3/5),cents-Math.floor(cents*3/5)]:
+    split(cents,group.children.length);
    group.children.forEach((child,j)=>{scores[child.key]=terms[j]});
   });
   scores[initKey(q)]=1;
@@ -237,10 +241,12 @@
   const prefix=table?detailLabel(node)+': ':'';
   labelNode.dataset.examSubscorePrefix=prefix;
   labelNode.textContent=prefix+'('+value(scores[key]||0)+' p.)';
-  labelNode.title='Puntuación de este elemento (solo para edición docente)';
+  labelNode.title=state().language==='va'?'Puntuació d’este element (només edició docent)':
+   'Puntuación de este elemento (solo para edición docente)';
   if(!fixed){
    labelNode.tabIndex=0;labelNode.setAttribute('role','button');
-   labelNode.setAttribute('aria-label','Editar puntuación del elemento: '+value(scores[key]||0)+' puntos');
+   labelNode.setAttribute('aria-label',(state().language==='va'?'Editar puntuació de l’element: ':
+    'Editar puntuación del elemento: ')+value(scores[key]||0)+' p.');
   }
   if(table){
    labelNode.classList.add('exam-subpoint-table-label');
@@ -277,7 +283,7 @@
   const title=document.createElement('span');title.textContent=description;
   const input=document.createElement('input');input.type='text';input.inputMode='decimal';
   input.dataset.subscoreKey=owner.key;input.value=value(scores[owner.key]||0);
-  input.setAttribute('aria-label','Puntos: '+description);
+  input.setAttribute('aria-label',(state().language==='va'?'Punts: ':'Puntos: ')+description);
   input.disabled=Boolean(fixed);
   input.addEventListener('input',()=>{
    const n=number(input.value);input.setAttribute('aria-invalid',String(n===null));
@@ -298,17 +304,22 @@
    if(!q.groups.length)continue;
    const detail=document.createElement('details');detail.className='exam-subscore-details';
    const head=document.createElement('summary');
-   head.textContent='Desglose · '+q.caption;
+   head.textContent=(state().language==='va'?'Desglossament · ':'Desglose · ')+q.caption;
    const status=document.createElement('span');status.dataset.detailStatus=q.key;
    status.className='exam-subscore-status';
    const resetButton=document.createElement('button');resetButton.type='button';
-   resetButton.className='secondary';resetButton.textContent='Repartir desglose';
-   resetButton.title='Acción docente explícita: sustituye los puntos de los elementos de esta pregunta';
+   resetButton.className='secondary';resetButton.textContent=state().language==='va'?
+    'Repartir desglossament':'Repartir desglose';
+   resetButton.title=state().language==='va'?
+   'Acció docent explícita: substituïx la puntuació dels elements d’esta pregunta':
+   'Acción docente explícita: sustituye los puntos de los elementos de esta pregunta';
    resetButton.addEventListener('click',()=>redistributeDetails(q));
    detail.append(head,status,resetButton);
    if(q.optional){
     const hint=document.createElement('p');hint.className='hint';
-    hint.textContent='Se eligen dos apartados: las alternativas no se suman todas. Cada apartado alternativo debe valer la mitad de los puntos de la pregunta.';
+    hint.textContent=state().language==='va'?
+     'Es trien dos apartats: les alternatives no se sumen totes. Cada alternativa val la mitat dels punts de la pregunta.':
+     'Se eligen dos apartados: las alternativas no se suman todas. Cada apartado alternativo debe valer la mitad de los puntos de la pregunta.';
     detail.append(hint);
    }
    for(const [i,g] of q.groups.entries()){
@@ -328,7 +339,8 @@
   if(!key||node.nextElementSibling?.classList.contains('exam-subscore-inline'))return;
   const input=document.createElement('input');
   input.className='exam-subscore-inline';input.type='text';input.inputMode='decimal';
-  input.value=value(scores[key]||0);input.setAttribute('aria-label','Editar puntos del elemento');
+  input.value=value(scores[key]||0);input.setAttribute('aria-label',
+   state().language==='va'?'Editar punts de l’element':'Editar puntos del elemento');
   node.hidden=true;node.after(input);
   let cancelled=false;
   input.addEventListener('keydown',e=>{
