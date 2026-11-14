@@ -67,7 +67,9 @@ async function snapshotOther(page){
    const nodes=[heading];
    for(let node=heading.nextElementSibling;node&&!node.matches('.exam-question,#answerkey,.exam-glossary,.sentence-glossary,.exam-vocabulary');node=node.nextElementSibling)
     nodes.push(node);
-   results.push(nodes.map(n=>n.outerHTML).join(''));
+   // Los identificadores de enlace pueden renovarse al rehidratar los editores;
+   // no forman parte del contenido académico ni de las modificaciones del docente.
+   results.push(nodes.map(n=>n.outerHTML).join('').replace(/data-exam-editor-link="[^"]*"/g,'data-exam-editor-link="linked"'));
   }
   return results;
  });
