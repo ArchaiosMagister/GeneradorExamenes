@@ -11,15 +11,23 @@ El informe primitivo probaba `index.html` como `file://` y carecía de acceso a 
 
 La modificación preverbial no empieza hasta **UD2**, como acredita `data/modificacion-preverbial-unidades-lat1.json`. Los avisos en **UD1** eran esperables y se han eliminado sin incorporar contenido prematuro; al faltar esa alternativa, las subpreguntas disponibles se identifican con letras consecutivas a), b), c), tanto en web como en offline. La nueva prueba obliga a mantener el orden. Después de la corrección se registran **108 observaciones** sin incidencias técnicas bloqueantes.
 
-## Clasificación normalizada de los 108 registros pendientes
+## Decisiones docentes aprobadas y ejecutadas · 14/11/2026
+
+**Decisión 1 — opción A, pruebas parciales morfológicas.** Los modelos `latin1/morf` y `greek1/morphology` conservan **1 p. por pregunta** y un total variable de **3 o 4 p.** según su composición. Cuando el profesor marca la validación final, el sistema distingue expresamente el modo `parcial`, valida 1 p. por pregunta y no exige llegar a diez puntos. Se conserva el control de coherencia de subpuntos y se bloquea cualquier modificación a una cifra distinta de 1 p. Los exámenes completos mantienen su obligación de 10 p.
+
+**Decisión 2 — opción B, sin cultura en Latín 4.º UD9 y UD10.** Si solo se marcan UD9 o UD10, no se ofrece ni genera el bloque de cultura. El reparto inicial es **1 p. declinación + 1 p. conjugación + 1 p. análisis + 2 p. léxico + 5 p. oraciones = 10 p.** No se reciclan preguntas culturales de UD1–8. Al regresar a una unidad con cultura, las puntuaciones **automáticas** se recalculan según el número real de preguntas, sin modificar los valores personalizados por el docente.
+
+**Resultado:** las **108 observaciones restantes se cierran mediante estas dos decisiones**. El informe histórico de 112 sigue disponible como trazabilidad; no debe interpretarse como un número de errores aún pendientes.
+
+## Clasificación histórica de los 108 registros antes de aplicar las decisiones
 
 | Situación | Registros | Casos pedagógicos | Dictamen |
 | --- | ---: | --- | --- |
-| Morfología de Latín I | 40 | UD1–2: 3 preguntas; restantes: 4 preguntas. ES/VA × web/offline | **Decisión docente pendiente**. Cada pregunta aporta 1 p.; el total inicial es 3 o 4 p. y el modo definitivo exige 10 p. |
-| Morfología de Griego I | 56 | UD1–6: 3 preguntas; UD7–14: 4 preguntas. ES/VA × web/offline | **Misma decisión docente**. No redistribuir ni multiplicar puntos automáticamente. |
-| Latín 4.º, puntuación UD9 y UD10 | 8 | 2 UD × 2 idiomas × 2 versiones | **Decisión curricular pendiente**. El examen sin pregunta cultural queda en 9,25 p. |
-| Latín 4.º, aviso de cultura UD9 y UD10 | 4 | Avisos textuales en castellano en las dos versiones | **Mismo origen que los 8 registros anteriores**. La ausencia de cultura afecta a ambos idiomas; el filtro textual de avisos solo registró la formulación castellana. |
-| **Total** | **108** | **Dos decisiones de fondo** | Sin atribuirles errores filológicos inexistentes |
+| Morfología de Latín I | 40 | UD1–2: 3 preguntas; restantes: 4 preguntas. ES/VA × web/offline | **Decisión docente resuelta (opción 1.A)**. Cada pregunta aporta 1 p.; el total inicial es 3 o 4 p. y el modo definitivo exige 10 p. |
+| Morfología de Griego I | 56 | UD1–6: 3 preguntas; UD7–14: 4 preguntas. ES/VA × web/offline | **Resuelta (opción 1.A)**. No redistribuir ni multiplicar puntos automáticamente. |
+| Latín 4.º, puntuación UD9 y UD10 | 8 | 2 UD × 2 idiomas × 2 versiones | **Decisión docente resuelta (opción 2.B)**. El examen sin pregunta cultural queda en 9,25 p. |
+| Latín 4.º, aviso de cultura UD9 y UD10 | 4 | Avisos textuales en castellano en las dos versiones | **Resuelto (opción 2.B). Mismo origen que los 8 registros anteriores**. La ausencia de cultura afecta a ambos idiomas; el filtro textual de avisos solo registró la formulación castellana. |
+| **Total** | **108** | **Dos decisiones resueltas** | Sin atribuirles errores filológicos inexistentes |
 
 ### 1. Morfología: conflicto entre dos criterios legítimos
 Criterios docentes ya aprobados: **1 p. por pregunta** y **10 p. obligatorios para un examen definitivo**. Con tres o cuatro preguntas no pueden cumplirse simultáneamente sin modificar el número de ejercicios o su valoración. El sistema actual conserva cada pregunta en 1 p., permite exportar el borrador y **bloquea correctamente el definitivo** mientras no sume 10. No se ha alterado esa política.
