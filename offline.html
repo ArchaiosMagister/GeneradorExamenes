@@ -8532,9 +8532,13 @@ function buildLatinLexQuestion(course,chosen){
     (x.tipoTransmision==='REGIONAL_HISTORICA'
      ?(va?' (veu regional o històrica)':' (voz regional o histórica)')
      :(va?' (adaptació culta)':' (adaptación culta)'))+'</small>':'')+'</span>';
+ let visibleLexIndex=0;
  for(const kind of parts){
   const available=latinLexPool(course,kind,chosen),rows=latinLexChosenRows(course,kind,chosen);
-  const letter=String.fromCharCode(97+(latinLexModules[course]||[]).indexOf(kind));
+  // No presentar como anomalía un ejercicio cuyo temario empieza en UD2.
+  if(course==='latin1'&&kind==='preverbs'&&latin1PhoneticMaxUnit(chosen)<2){
+   latinLexStatus(kind,[],'Disponible desde UD2.');continue;
+  }
   if(rows.length!==latinLexExpectedCount(kind)){
    const msg=kind==='phonetics'&&course==='latin1'&&!latin1PhoneticAllowed(chosen).size?
     'Selecciona las normas fonéticas explicadas para generar cuatro formas.':
@@ -8542,6 +8546,8 @@ function buildLatinLexQuestion(course,chosen){
    latinLexStatus(kind,[],msg);
    html.push('<p class="small no-print">'+esc(msg)+'</p>');continue;
   }
+  // Letras consecutivas incluso cuando una alternativa no está en el programa.
+  const letter=String.fromCharCode(97+visibleLexIndex++);
   const examRows=kind==='preverbs'?rows:rows.slice().sort((a,b)=>
    latinLexDisplayPrompt(kind,a).localeCompare(latinLexDisplayPrompt(kind,b),'es'));
   const partsHtml=examRows.map(x=>italic(x,kind,rows.indexOf(x))),four=partsHtml.join(', ');

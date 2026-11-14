@@ -109,12 +109,16 @@ async function configure(page,course,model,unit,lang){
   const pronounRows=[...paper.querySelectorAll('table.exam-pronouns tbody tr')].length;
   const greekForms=[...paper.querySelectorAll('.reference-analysis-item i, [data-analysis-slot] i')]
    .slice(0,3).map(el=>({form:el.textContent,context:el.parentElement?.textContent.slice(0,130)}));
-  const lexParts=paper.querySelectorAll('.lex-subquestion[data-lex-kind]').length;
+  const lexNodes=[...paper.querySelectorAll('.lex-subquestion[data-lex-kind]')];
+  const lexParts=lexNodes.length;
+  const lexLetters=lexNodes.map(el=>el.querySelector('.exam-letter')?.textContent.trim());
+  const sentenceSlots=[...paper.querySelectorAll('[data-sentence-slot]')];
+  const blankSentenceSlots=sentenceSlots.filter(el=>!el.textContent.trim()).length;
   return {course,model,unit,lang,effective:selectedUnits(),questions,questionCount:qs.length,
    scoreRows:rows.length,total,definitive:{ok:definitive.ok,total:definitive.total,normalized:definitive.normalized},
    draft:{ok:draft.ok,mode:draft.mode},detailErrors:engine.detailErrors?.()||[],
    hasSheet:!!paper.querySelector('.exam-sheet'),header:paper.querySelector('.exam-header')?.textContent.slice(0,180)||'',
-   date,tableCount,pronounRows,greekForms,lexParts,cultural,warnings};
+   date,tableCount,pronounRows,greekForms,lexParts,lexLetters,sentenceSlots:sentenceSlots.length,blankSentenceSlots,cultural,warnings};
  },{course,model,unit,lang});
 }
 function inspect(row,file){
@@ -139,6 +143,10 @@ function inspect(row,file){
  if(row.course==='latin1'&&row.questions.some(q=>q.kind==='pronouns')&&
   Number((row.unit.match(/\d+/)||[0])[0])>=6&&row.pronounRows!==10)
   issue('revisión',where,'Esperados 10 pronombres; generados '+row.pronounRows);
+ if(row.lexLetters?.length&&row.lexLetters.join('|')!==row.lexLetters.map((_,i)=>String.fromCharCode(97+i)+'.').join('|'))
+  issue('bloqueante',where,'Letras de alternativas léxicas no consecutivas: '+JSON.stringify(row.lexLetters));
+ if(row.course==='latin1'&&row.model!=='morf'&&row.unit==='UD1'&&row.lexParts!==3)
+  issue('bloqueante',where,'Latín I UD1 debe ofrecer tres alternativas de léxico, no modificación preverbial');
  if(row.course==='latin1'&&row.model!=='morf'&&row.lexParts>0&&row.lexParts<2)
   issue('revisión',where,'Léxico con menos de dos alternativas disponibles');
  if(row.course==='greek1'&&row.model==='morphology'&&row.greekForms.some(x=>/\(\s*\)/.test(x.context||'')))
