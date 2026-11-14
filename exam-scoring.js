@@ -99,7 +99,7 @@
  header.append(title,help,rows,status,finalLabel);
  const questions=document.getElementById('examQuestionSettings');
  if(questions?.parentElement===panel)questions.after(header);
- else panel.insertBefore(header,document.getElementById('group-sentences')||panel.firstChild);
+ else panel.insertBefore(header,panel.firstChild);
  let renderPending=false,observer=null,previousQuestions=[];
  const find=()=>[...paper.querySelectorAll('.exam-sheet .exam-question')].filter(el=>!el.closest('#answerkey'));
  const sum=()=>previousQuestions.reduce((total,item)=>total+(scores[item.key]||0),0);

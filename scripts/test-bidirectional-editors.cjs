@@ -35,8 +35,9 @@ async function configure(page,course,model,unit){
   c.dispatchEvent(new Event('change',{bubbles:true}));
   const m=document.getElementById('model');m.value=model;
   m.dispatchEvent(new Event('change',{bubbles:true}));
-  document.querySelectorAll('#unitChoices .unit-choice').forEach(el=>
-   {el.checked=units[Number(el.value)]===unit});
+  const controls=[...document.querySelectorAll('#unitChoices .unit-choice')];
+  for(const el of controls)el.checked=units[Number(el.value)]===unit;
+  controls.find(el=>el.checked)?.dispatchEvent(new Event('change',{bubbles:true}));
   examSelectionCache.clear();
   if(course==='greek1')greekExamState=null;
   generate();

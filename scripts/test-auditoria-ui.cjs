@@ -32,11 +32,13 @@ assert.match(index,/if\(\/artículo\|articulo\/\.test\(a\)\)return null/,
   await page.goto('http://127.0.0.1:'+server.address().port+'/offline.html',{waitUntil:'load'});
   await page.locator('#examQuestionMenus .exam-question-panel').first().waitFor();
   assert.equal(await page.locator('.vocab-tabbar>button').count(),3);
-  assert.equal(await page.locator('#examQuestionMenus details[data-question]').count(),6,
-   'Cada pregunta debe tener su propio desplegable numerado');
+  assert.equal(await page.locator('#examQuestionMenus details[data-question]').count(),5,
+   'Cada pregunta debe tener su propio desplegable');
   assert.equal(await page.locator('#examQuestionSettings').evaluate(el=>el.tagName),'SECTION',
    'No se debe anidar un gran desplegable que contenga todas las preguntas');
-  assert.equal(await page.locator('#regenerateAllQuestions').count(),1);
+  assert.equal(await page.locator('#regenerateAllQuestions').count(),0);
+  assert.equal(await page.locator('#examQuestionMenus [data-question=sent] #newSentences').count(),1);
+  assert.equal(await page.locator('#generate').textContent(),'Sortear otras preguntas');
   await page.evaluate(()=>{
    const paper=document.getElementById('paper');
    window.__glossUpdates=0;
@@ -55,7 +57,7 @@ assert.match(index,/if\(\/artículo\|articulo\/\.test\(a\)\)return null/,
    const model=document.getElementById('model');model.value='morf';
    model.dispatchEvent(new Event('change',{bubbles:true}));
   });
-  await page.waitForFunction(()=>document.querySelector('#examQuestionMenus [data-question="lex"] input')?.disabled);
+  await page.locator('#examQuestionMenus [data-question="lex"]').waitFor({state:'detached'});
   const morphology=await page.locator('#examQuestionMenus .exam-question-panel').evaluateAll(nodes=>
    Object.fromEntries(nodes.map(node=>[node.dataset.question,{
     checked:node.querySelector('input[type="checkbox"]').checked,
@@ -64,8 +66,19 @@ assert.match(index,/if\(\/artículo\|articulo\/\.test\(a\)\)return null/,
   assert.equal(morphology.decl.checked,true);
   assert.equal(morphology.verb.checked,true);
   assert.equal(morphology.forms.checked,true);
-  assert.equal(morphology.lex.disabled,true);
-  assert.equal(morphology.sent.disabled,true);
+  assert.equal(morphology.lex,undefined);
+  assert.equal(morphology.sent,undefined);
+  const snapshot=()=>page.locator('#paper').innerHTML();
+  const prior=await snapshot();
+  page.once('dialog',dialog=>dialog.dismiss());
+  await page.locator('#generate').click();
+  assert.equal(await snapshot(),prior,'Cancelar el sorteo debe conservar la vista previa');
+  page.once('dialog',dialog=>dialog.accept());
+  await page.locator('#generate').click();
+  assert.notEqual(await snapshot(),prior,'El sorteo debe reconstruir las preguntas');
+  await page.locator('#group-drafts > summary').click();
+  await page.locator('#undoGeneration').click();
+  assert.match(await page.locator('#draftStatus').textContent(),/Borrador recuperado/);
   await page.locator('#vgShow').click();
   await page.locator('#vocabularyGenerator.active').waitFor();
   assert.equal(await page.locator('#vgUnitButtons button').count(),Number(await page.locator('#vgCount').inputValue()));
