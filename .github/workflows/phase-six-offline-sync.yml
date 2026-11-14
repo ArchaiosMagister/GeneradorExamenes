@@ -1,0 +1,44 @@
+name: Sincronizar HTML autónomo para auditoría del desglose (temporal)
+on:
+  push:
+    branches:
+      - feat/fase-vi-puntuacion-regresiones-20261114
+    paths:
+      - index.html
+      - exam-scoring.js
+      - scripts/test-subquestion-scoring.cjs
+      - .github/workflows/phase-six-offline-sync.yml
+concurrency:
+  group: fase-vi-offline-subpreguntas
+  cancel-in-progress: false
+permissions:
+  contents: write
+jobs:
+  sync:
+    if: github.repository == 'ArchaiosMagister/GeneradorExamenes'
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/fase-vi-puntuacion-regresiones-20261114
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Reconstruir y registrar solo HTML autónomo de esta rama
+        shell: bash
+        run: |
+          set -euo pipefail
+          for attempt in 1 2 3; do
+            git fetch origin feat/fase-vi-puntuacion-regresiones-20261114
+            git reset --hard origin/feat/fase-vi-puntuacion-regresiones-20261114
+            npm run offline:build
+            test -s offline.html
+            git add -- offline.html
+            if git diff --cached --quiet; then exit 0; fi
+            git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'Fase VI: sincronizar versión autónoma del desglose'
+            if git push origin HEAD:feat/fase-vi-puntuacion-regresiones-20261114; then exit 0; fi
+          done
+          echo 'No se logró reconciliar offline.html' >&2
+          exit 1
