@@ -58,13 +58,16 @@ async function verifyModels(page,file){
   const info=await page.evaluate(()=>{
    const engine=window.ExaminaScoring,details=engine.details();
    return {errors:engine.detailErrors(),details,items:[...document.querySelectorAll('#paper [data-exam-subscore]')].length,
-    inputs:[...document.querySelectorAll('#examScoring [data-subscore-key]')].length};
+    inputs:[...document.querySelectorAll('#examScoring [data-subscore-key]')].length,
+    previewKeys:[...document.querySelectorAll('#paper [data-exam-subscore]')].map(x=>x.dataset.examSubscore),
+    inputKeys:[...document.querySelectorAll('#examScoring [data-subscore-key]')].map(x=>x.dataset.subscoreKey)};
   });
   assert.deepEqual(info.errors,[],file+' '+course+'/'+model+': desgloses iniciales no cuadran');
   const groups=info.details.flatMap(q=>q.groups);
   assert(groups.length>=1,file+' '+course+'/'+model+': no se desglosan elementos');
   const total=groups.length+groups.reduce((n,g)=>n+g.children.length,0);
-  assert.equal(info.items,total,file+' '+course+'/'+model+': faltan indicadores de vista previa');
+  assert.equal(info.items,total,file+' '+course+'/'+model+': faltan indicadores de vista previa '+
+   JSON.stringify(info.inputKeys.filter(key=>!info.previewKeys.includes(key))));
   assert.equal(info.inputs,total,file+' '+course+'/'+model+': faltan entradas en el menú');
   count+=total;
   for(const q of info.details)if(q.groups.length)types.add(q.base);
