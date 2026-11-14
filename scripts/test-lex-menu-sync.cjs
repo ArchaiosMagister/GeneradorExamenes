@@ -289,6 +289,13 @@ function readStoredZipEntry(bytes,wanted){
    assert(rules.preverbStable,filename+': seleccionar una norma no debe regenerar verbos');
    assert.deepEqual(rules.preverbText,regeneration.next);
 
+   // La reconstrucción no debe restablecer silenciosamente filtros
+   // de latinismos del mismo curso: forman parte de la clave de sorteo.
+   await page.evaluate(()=>{
+    const parity=document.getElementById('lex-parity');
+    parity.value='odd';parity.dispatchEvent(new Event('change',{bubbles:true}));
+   });
+
    // Regresión: cambiar a examen de traducción reconstruye el menú,
    // pero nunca puede dejar vacíos los campos de las formas ya sorteadas.
    const translationMenu=await page.evaluate(()=>{
@@ -302,8 +309,10 @@ function readStoredZipEntry(bytes,wanted){
      const actual=[...Array(4)].map((_,i)=>document.getElementById('lex-edit-'+kind+'-'+i)?.value||'');
      return {expected,actual};
     };
-    return {prefixes:snapshot('prefixes'),latinisms:snapshot('latinisms')};
+    return {prefixes:snapshot('prefixes'),latinisms:snapshot('latinisms'),
+     parity:document.getElementById('lex-parity')?.value};
    });
+   assert.equal(translationMenu.parity,'odd',filename+': reconstruir el menú reinicia el filtro de latinismos');
    for(const kind of ['prefixes','latinisms']){
     const {expected,actual}=translationMenu[kind];
     assert.equal(expected.length,4,filename+': sin pregunta de '+kind+' en traducción');
