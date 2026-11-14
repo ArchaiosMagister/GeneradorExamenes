@@ -177,6 +177,11 @@ async function checkLex(page,file){
  assert(detail.groups.length>=3,file+': faltan alternativas');
  assert(detail.groups.every(g=>g.points*2===detail.parent),file+': las alternativas se sumaron indebidamente');
  assert(detail.groups.some(g=>g.children.length>0),file+': el léxico no desglosa palabras');
+ const preverbs=detail.groups.find(g=>g.key.includes('lex-preverbs'));
+ if(preverbs&&preverbs.children.length===2){
+  assert.equal(preverbs.children[0].points*2,preverbs.children[1].points*3,
+   file+': la modificación preverbial debe respetar tres y dos derivados');
+ }
  const group=detail.groups.find(g=>g.children.length>=2);
  const child=group.children[0],original=child.points;
  const input=page.locator('#examScoring input[data-subscore-key="'+child.key+'"]');
@@ -186,6 +191,14 @@ async function checkLex(page,file){
   file+': no se detecta desajuste de palabras de léxico');
  await input.fill(String(original/100).replace('.',','));
  assert.deepEqual(await page.evaluate(()=>window.ExaminaScoring.detailErrors()),[]);
+ await page.evaluate(()=>{
+  const lang=document.getElementById('lang');lang.value='va';
+  lang.dispatchEvent(new Event('change',{bubbles:true}));
+ });
+ await page.waitForFunction(()=>[...document.querySelectorAll('#examScoring .exam-subscore-details>summary')]
+  .some(el=>el.textContent.startsWith('Desglossament')));
+ assert.deepEqual(await page.evaluate(()=>window.ExaminaScoring.detailErrors()),[],
+  file+': cambiar al valenciano altera los puntos internos');
  return {optional:true,alternatives:detail.groups.length,words:group.children.length};
 }
 async function run(browser,file){
