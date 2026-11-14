@@ -5426,6 +5426,13 @@ html[data-appearance="oled"] body.exam-redesign #exam-ui-shell{color:var(--appea
 html[data-appearance="dark"] body.exam-redesign #exam-ui-shell :is(#exam-ui-core,#examQuestionSettings,#exam-ui-actions,#exam-ui-advanced),
 html[data-appearance="oled"] body.exam-redesign #exam-ui-shell :is(#exam-ui-core,#examQuestionSettings,#exam-ui-actions,#exam-ui-advanced){
  background:var(--appearance-raised);color:var(--appearance-text);border-color:var(--appearance-border)}
+@media screen and (max-width:900px), screen and (max-width:950px) and (max-height:500px) and (pointer:coarse){
+ /* A diferencia del panel antiguo, el nuevo menú está dentro de #exam-ui-shell. */
+ body.exam-redesign #examLayout[data-exam-tab="questions"]>#examEditorPanel>#exam-ui-shell{display:grid!important}
+ body.exam-redesign #examLayout[data-exam-tab="questions"]>#examEditorPanel>#exam-ui-shell>:not(#examQuestionSettings){display:none!important}
+ body.exam-redesign #examLayout[data-exam-tab="settings"]>#examEditorPanel>#exam-ui-shell>#examQuestionSettings{display:none!important}
+ body.exam-redesign #examLayout[data-exam-tab="questions"]>#examEditorPanel #examQuestionSettings{display:block!important}
+}
 </style>
 <script id="examina-exam-redesign-js">
 (function(){
