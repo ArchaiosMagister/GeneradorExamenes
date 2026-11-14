@@ -76,10 +76,40 @@ async function snapshotOther(page){
 }
 async function checkIsolatedResize(page,file,course,model,unit,id){
  await select(page,course,model,unit);
- const edit=await page.evaluate(()=>{
-  const node=document.querySelector('#paper .exam-verbs thead tr:first-child th[colspan],#paper .reference-verb-table tbody tr:first-child td:first-child');
-  if(node)node.setAttribute('data-keep-edit','redimensionar-no-borra');
-  return !!node;
+ // Dos formas/enunciados ajenos al análisis se editan de verdad, como en clase.
+ // Después se comprueba tanto el redimensionamiento como una restauración real.
+ const edits=await page.evaluate(()=>{
+  const candidates=[
+   '#paper .exam-nouns thead tr:first-child th[colspan] i',
+   '#paper .exam-verbs thead tr:first-child th[colspan] i',
+   '#paper .reference-verb-table tbody tr:first-child td:first-child i',
+   '#paper [data-syntagm-slot] > i',
+   '#paper .exam-pronouns tbody tr:first-child td:first-child i',
+   '#paper .exam-sentences [data-sentence-slot]'
+  ].map(css=>document.querySelector(css)).filter(Boolean);
+  const picked=[...new Set(candidates)].slice(0,2);
+  // Las preguntas siguen siendo editables aun si el banco no ofrece dos tablas.
+  for(const heading of document.querySelectorAll('#paper .exam-question')){
+   if(picked.length>=2)break;
+   if(heading.dataset.examKind==='forms'||heading.dataset.morphKind==='forms'||heading.dataset.greekKind==='forms')continue;
+   if(!picked.includes(heading))picked.push(heading);
+  }
+  if(picked.length!==2)throw Error('No se localizaron dos campos de otras preguntas');
+  const markers=picked.map((node,i)=>{
+   const marker='MARCA_DOCENTE_'+i;
+   node.setAttribute('data-audit-manual-edit',String(i));
+   node.textContent+=' '+marker;
+   node.dispatchEvent(new InputEvent('input',{bubbles:true}));
+   return marker;
+  });
+  const name=document.getElementById('name');
+  const title='TITULO_DOCENTE_'+currentCourse()+'_'+document.getElementById('model').value;
+  name.value=title;name.dispatchEvent(new Event('input',{bubbles:true}));
+  document.getElementById('saveDraft').click();
+  const draft=JSON.parse(localStorage.getItem('examina_draft_v14')||'null');
+  if(!draft||!markers.every(m=>draft.html.includes(m))||draft.title!==title)
+   throw Error('El borrador no guardó las dos ediciones y el título');
+  return {markers,title};
  });
  const previous=await snapshotOther(page);
  const before=await page.locator('#paper [data-analysis-slot],#paper .exam-form').count();
@@ -95,8 +125,29 @@ async function checkIsolatedResize(page,file,course,model,unit,id){
  assert(after>before,file+' '+course+'/'+model+': no aumentaron las formas');
  assert.deepEqual(await snapshotOther(page),previous,
   file+' '+course+'/'+model+': al cambiar las formas se reconstruyeron otras preguntas');
- if(edit)assert.equal(await page.locator('#paper [data-keep-edit]').count(),1,
-  file+' '+course+'/'+model+': se perdió una edición previa de otra pregunta');
+ const kept=await page.evaluate(({markers,title})=>({
+  markers:markers.every(m=>document.getElementById('paper').textContent.includes(m)),
+  title:document.getElementById('paper').textContent.includes(title)
+ }),edits);
+ assert(kept.markers&&kept.title,file+' '+course+'/'+model+': se perdió una edición o el título al redimensionar');
+ // Simular alteraciones posteriores y recuperar el borrador mediante su botón.
+ await page.evaluate(()=>{
+  document.querySelectorAll('#paper [data-audit-manual-edit]').forEach(el=>el.textContent='CAMBIO_NO_GUARDADO');
+  const name=document.getElementById('name');name.value='CAMBIO_NO_GUARDADO';
+  name.dispatchEvent(new Event('input',{bubbles:true}));
+  document.getElementById('restoreDraft').click();
+ });
+ const restored=await page.evaluate(({markers,title})=>({
+  markers:markers.every(m=>document.getElementById('paper').textContent.includes(m)),
+  title:document.getElementById('name').value===title&&document.getElementById('paper').textContent.includes(title),
+  count:document.querySelectorAll('#paper [data-analysis-slot],#paper .exam-form').length,
+  errors:window.ExaminaScoring?.detailErrors?.()||[],
+  draftStatus:document.getElementById('draftStatus').textContent
+ }),edits);
+ assert(restored.markers&&restored.title,file+' '+course+'/'+model+': el borrador perdió ediciones manuales');
+ assert.equal(restored.count,before,file+' '+course+'/'+model+': el borrador no restauró las formas anteriores');
+ assert(!/No se pudo|incorrecto|Error/i.test(restored.draftStatus),
+  file+' '+course+'/'+model+': error al recuperar el borrador '+restored.draftStatus);
  if(course==='greek1'&&model==='complete'){
   const state=await page.evaluate(()=>greekExamState?.ids||{});
   assert(state.conjugation?.length>0,file+': estado de conjugación griega perdido');
