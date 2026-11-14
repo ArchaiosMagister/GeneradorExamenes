@@ -13319,6 +13319,11 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   language:document.getElementById('lang')?.value||'es'
  });
  const morph=()=>['morf','morphology'].includes(state().model);
+ const latin4LateNoCulture=()=>{
+  if(state().course!=='latin4'||typeof selectedUnits!=='function')return false;
+  const marked=selectedUnits(false);
+  return marked.length>0&&marked.every(unit=>unit==='UD9'||unit==='UD10');
+ };
  const storageKey=(k)=>{const v=state();return v.course+'/'+v.model+'/'+k};
  // Los tipos explícitos del generador prevalecen sobre las etiquetas traducidas.
  const baseKind=item=>{
@@ -13498,6 +13503,9 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   if(item?.fixed)return false;
   if(!item&&!child)return false;
   scores[key]=cents;
+  // Un desglose cambiado por el docente deja de ser puntuación automática.
+  const owner=detailGroups.find(q=>q.groups.some(g=>g.key===key||g.children.some(c=>c.key===key)));
+  if(owner)autoManaged.delete(owner.key);
   persist();
   for(const input of panel.querySelectorAll('input[data-subscore-key]')){
    if(input.dataset.subscoreKey===key&&input!==activeInput)input.value=value(cents);
@@ -13654,8 +13662,13 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   const mismatches=detailDiscrepancies();
   if(mismatches.length)return {ok:false,mode:'definitivo',normalized:false,
    total,reason:'desglose_no_cuadra',mismatches};
-  // Los 10 puntos exactos rigen para todos los modelos. Las preguntas de
-  // morfología empiezan con 1 p. pero nunca se normalizan sin conocimiento docente.
+  // Decisión docente 1.A: la morfología es una prueba parcial de 1 p.
+  // por pregunta. Nunca se rellena artificialmente hasta diez puntos.
+  if(morph()){
+   const onePoint=previousQuestions.every(q=>scores[q.key]===100);
+   return {ok:onePoint,mode:'parcial',normalized:false,total,
+    reason:onePoint?null:'parcial_un_punto'};
+  }
   return {ok:total===1000,mode:'definitivo',normalized:false,total,reason:'total_no_es_diez'};
  }
  function canExport(){
@@ -13666,8 +13679,11 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   status.textContent=result.reason==='desglose_no_cuadra'?
    (state().language==='va'?'Exportació bloquejada: el desglossament de les subpreguntes no quadra amb la seua pregunta.':
     'Exportación bloqueada: el desglose de las subpreguntas no coincide con su pregunta.'):
-   (state().language==='va'?'Exportació definitiva bloquejada: la puntuació ha de sumar exactament 10 punts, també en morfologia.':
-    'Exportación definitiva bloqueada: la puntuación debe sumar exactamente 10 puntos, también en morfología.');
+   result.reason==='parcial_un_punto'?
+   (state().language==='va'?'Prova parcial bloquejada: cada pregunta de morfologia ha de valdre 1 punt.':
+    'Prueba parcial bloqueada: cada pregunta de morfología debe valer 1 punto.'):
+   (state().language==='va'?'Exportació definitiva bloquejada: la puntuació ha de sumar exactament 10 punts.':
+    'Exportación definitiva bloqueada: la puntuación debe sumar exactamente 10 puntos.');
   header.scrollIntoView?.({block:'nearest'});
   return false;
  }
@@ -13675,16 +13691,22 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
  function showStatus(){
   const lang=state().language==='va',total=sum(),isMorph=morph();
   const totalString=value(total);
-  finalText.textContent=lang?'Examen definitiu: exactament 10 punts per a exportar':
-   'Examen definitivo: exactamente 10 puntos para exportar';
+  finalText.textContent=isMorph?
+   (lang?'Prova parcial: 1 punt per pregunta (sense exigència de 10 punts)':
+    'Prueba parcial: 1 punto por pregunta (sin exigencia de 10 puntos)'):
+   (lang?'Examen definitiu: exactament 10 punts per a exportar':
+    'Examen definitivo: exactamente 10 puntos para exportar');
   if(!previousQuestions.length){
    status.className='exam-scoring-total';
    status.textContent=lang?'No hi ha preguntes per a puntuar.':'No hay preguntas que puntuar.';
-  }else if(isMorph&&total!==1000){
-   status.className='exam-scoring-total exam-scoring-warning';
-   status.textContent=(lang?'Morfologia: ':'Morfología: ')+totalString+
-    (lang?' punts. Cada pregunta comença amb 1 p.; per al definitiu, ajusta expressament el total a 10.':
-     ' puntos. Cada pregunta comienza con 1 p.; para el definitivo, ajusta expresamente el total a 10.');
+  }else if(isMorph){
+   const valid=previousQuestions.every(q=>scores[q.key]===100);
+   status.className='exam-scoring-total '+(valid?'exam-scoring-correct':'exam-scoring-warning');
+   status.textContent=valid?
+    (lang?'Prova parcial: '+totalString+' punts (1 p. per pregunta).':
+     'Prueba parcial: '+totalString+' puntos (1 p. por pregunta).'):
+    (lang?'Prova parcial: cada pregunta ha de valdre 1 punt; revisa el repartiment.':
+     'Prueba parcial: cada pregunta debe valer 1 punto; revisa el reparto.');
   }else if(total!==1000){
    status.className='exam-scoring-total exam-scoring-warning';
    status.textContent=(lang?'Avís: la puntuació suma ':'Aviso: la puntuación suma ')+
@@ -13823,9 +13845,17 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
    if(base==='sent')scores[key]=sentenceCents();
    else if(state().course!=='greek1'&&base==='lex')scores[key]=200;
    else if(!Object.prototype.hasOwnProperty.call(scores,key)){
-    // Solo se asigna la puntuación inicial una vez por clave; un cambio de
-    // unidades, número de oraciones o selección no redistribuye valores previos.
+    // Los valores nuevos nacen de las preguntas realmente disponibles.
     scores[key]=defaults[i];autoManaged.add(key);
+   }else if(state().course==='latin4'&&['decl','verb','forms'].includes(base)&&
+    autoManaged.has(key)&&(latin4LateNoCulture()||raw.some(q=>q.base==='culture'))&&
+    scores[key]!==defaults[i]){
+    // Decisión docente 2.B: UD9/10 no tienen cultura y los tres apartados
+    // variables pasan de 0,75 a 1 p. (1+1+1+2+5=10). Restauramos 0,75
+    // al volver a UD1-8. Nunca se pisa una puntuación editada a mano.
+    scores[key]=defaults[i];
+    delete scores[key+'|desglose-inicializado'];
+    for(const subkey of Object.keys(scores))if(subkey.startsWith(key+'|sub:'))delete scores[subkey];
    }
    if(state().course==='greek1'){
     const aliases={decl:'declension',verb:'conjugation',sent:'sentences'};
