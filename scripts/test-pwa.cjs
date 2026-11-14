@@ -153,11 +153,11 @@ const server=http.createServer(async(req,res)=>{
   assert(examLex.phonetics.every(row=>row.normas.every(n=>['N07','N17'].includes(n))),
    'Evolución fonética incluye una norma aún no seleccionada');
   const before=examLex.exam.map(x=>({kind:x.kind,terms:x.terms.slice()}));
-  const prefixEditor=()=>page.locator('[id^="lex-slot-prefixes-"]').allTextContents();
+  const prefixEditor=()=>page.locator('[id^="lex-edit-prefixes-"]').evaluateAll(nodes=>nodes.map(el=>el.value));
   const beforeSlots=await prefixEditor();
   await page.locator('#examQuestionSettings').evaluate(el=>el.open=true);
   await page.locator('#examQuestionMenus [data-question="lex"]').evaluate(el=>el.open=true);
-  await page.locator('#lex-slot-prefixes-1 + button').click();
+  await page.locator('#lex-edit-prefixes-1 + button').click();
   const afterSlots=await prefixEditor();
   assert.notEqual(afterSlots[1],beforeSlots[1],'Regenerar una palabra no ha cambiado la forma elegida');
   assert.deepEqual(afterSlots.filter((_,i)=>i!==1),beforeSlots.filter((_,i)=>i!==1));
@@ -169,7 +169,7 @@ const server=http.createServer(async(req,res)=>{
    const expected=old.kind==='prefixes'?afterSlots.slice().sort((a,b)=>a.localeCompare(b,'es')):old.terms;
    assert.deepEqual(next.terms,expected,'Regenerar una palabra ha alterado términos ajenos o el orden alfabético');
   }
-  await page.locator('#lex-slot-latinisms-0').locator('..').locator('..').getByRole('button',{name:'Regenerar las cuatro formas'}).click();
+  await page.locator('#lex-edit-latinisms-0').locator('..').locator('..').getByRole('button',{name:'Regenerar las cuatro formas'}).click();
   const afterAll=await page.evaluate(()=>[...document.querySelector('#paper [data-lex-kind="latinisms"]').querySelectorAll('i')].map(x=>x.textContent));
   assert(afterAll.some((x,i)=>x!==before.find(x=>x.kind==='latinisms').terms[i]),
    'Regenerar subpregunta no ha sustituido las cuatro formas');
