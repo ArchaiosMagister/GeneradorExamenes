@@ -515,11 +515,14 @@ async function checkFile(browser,filename){
    return toolbar&&toolbar.querySelector('fieldset:nth-child(1) button[aria-pressed="true"]')?.dataset.value===c&&
     toolbar.querySelector('fieldset:nth-child(2) button[aria-pressed="true"]')?.dataset.value===m;
   },[course,model]);
-  assert(await header.isVisible(),filename+': botones superiores ocultos');
+  assert(!(await header.isVisible()),filename+': duplicidad de botones superiores visible');
+  assert(await page.locator('#exam-ui-core').isVisible(),filename+': falta configuración centralizada');
   assert(await primary.locator('#unitChoices').isVisible(),filename+': unidades ocultas');
-  assert(!(await primary.locator('#course').isVisible()),filename+': selector desplegable de asignatura visible');
-  assert(!(await primary.locator('#model').isVisible()),filename+': selector desplegable de modelo visible');
-  assert(!(await page.locator('#lang').isVisible()),filename+': selector desplegable de idioma visible');
+  assert(await primary.locator('#course').isVisible(),filename+': selector de asignatura inaccesible');
+  assert(await primary.locator('#model').isVisible(),filename+': selector de modelo inaccesible');
+  assert(await page.locator('#lang').isVisible(),filename+': selector de idioma inaccesible');
+  assert.equal(await page.locator('#exam-ui-meta #lang').count(),1,filename+': idioma duplicado');
+  await page.locator('#exam-ui-advanced').evaluate(el=>el.open=true);
   assert.equal(await header.locator('fieldset').count(),3,filename+': faltan los tres grupos de botones');
   assert.equal(await header.locator('fieldset:nth-child(2) button').count(),course==='latin4'?1:3,
    filename+': modelos incorrectos en la cabecera');
