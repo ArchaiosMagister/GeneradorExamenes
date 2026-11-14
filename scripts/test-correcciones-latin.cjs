@@ -141,10 +141,25 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
    const input=[...document.querySelectorAll('#examScoring input[data-scoring-key]')].find(x=>x.dataset.scoringKey===lex?.key);
    const points=[...document.querySelectorAll('#paper .exam-question-points')].map(x=>x.textContent);
    const enunciado=[...document.querySelectorAll('#paper .exam-question')].find(x=>/léxico/i.test(x.textContent))?.textContent||'';
-   return {points,lex,disabled:input?.disabled,total:window.ExaminaScoring.total(),enunciado};
+   const detail=window.ExaminaScoring.details().find(x=>x.key===lex?.key);
+   const fields=[...document.querySelectorAll('#examQuestionMenus [data-question="lex"] .lex-word-control')]
+    .map(row=>({editors:row.querySelectorAll('input[type="text"]').length,
+     buttons:row.querySelectorAll('button').length,
+     duplicates:row.querySelectorAll('span[id^="lex-slot-"]').length}));
+   const noLexIndicators=document.querySelectorAll('#paper .lex-subquestion [data-exam-subscore]').length===0;
+   const oldSaved=Object.keys(window.ExaminaScoring.snapshot()).filter(key=>key.startsWith(lex.key+'|'));
+   return {points,lex,disabled:input?.disabled,total:window.ExaminaScoring.total(),enunciado,
+    detail,fields,noLexIndicators,oldSaved};
   });
   assert(score.lex&&score.lex.points===200&&score.disabled,'El léxico debe valer siempre 2p.: '+JSON.stringify(score));
   assert.equal(score.total,1000,'Los demás puntos deben repartirse hasta 10');
+  assert(score.detail?.optional&&score.detail.groups.length===0,
+   'El léxico optativo no debe contabilizar cada subpregunta: '+JSON.stringify(score.detail));
+  assert(score.noLexIndicators,'El examen muestra puntos en alternativas de léxico no obligatorias');
+  assert.deepEqual(score.oldSaved,[],'El borrador conserva desglose optativo obsoleto');
+  assert.equal(score.fields.length,14,'Debe haber 14 campos individuales de léxico');
+  assert(score.fields.every(row=>row.editors===1&&row.buttons===1&&row.duplicates===0),
+   'Cada forma debe tener un único campo editable y su botón de regeneración');
   assert(score.points.every(x=>/^\(\d+(?:,\d+)?p\.\)\.$/.test(x)),
    'Sin espacios entre número y p.: '+score.points);
   assert(/elige dos de las (tres|cuatro) cuestiones siguientes/i.test(score.enunciado),
@@ -166,6 +181,19 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
   });
   assert(/elige dos de las tres cuestiones siguientes/i.test(threePartCaption),
    'Al desmarcar un apartado deben ofrecerse exactamente tres: '+threePartCaption);
+  const valencianCaption=await page.evaluate(()=>{
+   const field=document.getElementById('lang'),saved=field.value;
+   try{
+    field.value='va';field.dispatchEvent(new Event('change',{bubbles:true}));
+    generate();
+    return [...document.querySelectorAll('#paper .exam-question')]
+     .find(x=>x.dataset.examKind==='lex')?.textContent||'';
+   }finally{
+    field.value=saved;field.dispatchEvent(new Event('change',{bubbles:true}));generate();
+   }
+  });
+  assert(/tria dues de les quatre qüestions següents/i.test(valencianCaption),
+   'Valenciano: número de alternativas en letra: '+valencianCaption);
 
   // La exigencia acumulativa oculta SOLO el significado en el glosario del examen.
   const glossary=await page.evaluate(()=>{
