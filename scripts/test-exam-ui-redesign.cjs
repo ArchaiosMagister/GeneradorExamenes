@@ -87,7 +87,13 @@ async function pick(page,course,model,unit){
    assert.equal(await page.locator('#examQuestionMenus [data-question="decl"] .exam-ui-extra select').count(),1);
    assert.equal(await page.locator('#examQuestionMenus [data-question="forms"] .exam-ui-categories input').count(),3);
    assert.equal(await page.locator('#exam-ui-bulk').isVisible(),true);
-   assert.equal(await page.locator('#morphOffer').isVisible(),false,'Control morfológico duplicado');
+   const morphOfferInfo=await page.locator('#morphOffer').evaluate(el=>({
+    visible:!!el.getClientRects().length,display:getComputedStyle(el).display,
+    countGrid:el.closest('.count-grid')?.outerHTML.slice(0,150),parent:el.parentElement?.outerHTML.slice(0,130),
+    bulk:!!el.closest('#exam-ui-bulk'),body:document.body.className
+   }));
+   assert.equal(await page.locator('#morphOffer').isVisible(),false,
+    'Control morfológico duplicado: '+JSON.stringify(morphOfferInfo));
    const untouched=await page.locator('#paper .reference-verb-table').innerHTML();
    const button=page.locator('#examQuestionMenus [data-question="forms"] .exam-regenerate-word').first();
    assert(await button.count(),file+': faltan botones de regeneración individual');
