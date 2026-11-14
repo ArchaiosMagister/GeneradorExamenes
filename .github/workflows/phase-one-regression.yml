@@ -6,6 +6,7 @@ on:
       - 'index.html'
       - 'exam-scoring.js'
       - 'scripts/test-phase-one.cjs'
+      - 'scripts/test-phase-five.cjs'
       - '.github/workflows/phase-one-regression.yml'
   workflow_dispatch:
 
@@ -32,6 +33,8 @@ jobs:
         run: node scripts/test-phase-one.cjs
       - name: All existing Word preview regressions
         run: npm run preview:test
+      - name: Phase V responsive editing and Word regressions
+        run: node scripts/test-phase-five.cjs
       - name: Vocabulary regressions
         run: npm run vocabulary:test
       - name: Offline consistency
