@@ -151,6 +151,51 @@ async function checkFile(browser,filename){
   }
  }
  assert(checked>=18,filename+': cobertura insuficiente de editores: '+checked);
+ // Las tablas de pronombres usan diez filas cuando hay repertorio suficiente.
+ await configure(page,'latin1','morf','UD7');
+ const latinPronouns=await page.locator('#paper .exam-pronouns tbody tr').count();
+ assert.equal(latinPronouns,10,filename+': Latín I morfología no presenta diez pronombres');
+ await configure(page,'greek1','morphology','UD12');
+ const greekPronouns=await page.locator('#paper .exam-pronouns tbody tr').count();
+ assert.equal(greekPronouns,10,filename+': Griego I morfología no presenta diez pronombres');
+ // En el examen completo el enunciado se imprime después de la palabra,
+ // pero el control de menú enlaza SOLAMENTE con la forma, nunca con el lema.
+ await configure(page,'greek1','complete','UD12');
+ const greekFull=await page.evaluate(()=>{
+  examQuestionChoiceState['greek1/complete/pronouns']=true;
+  greekExamState=null;generate();
+  const forms=[...document.querySelectorAll('#paper .exam-form')];
+  const withLemma=forms.filter(row=>row.querySelector('[data-greek-form-surface]')&&
+   row.querySelector('.exam-form-enunciation'));
+  return {pronouns:document.querySelectorAll('#paper .exam-pronouns tbody tr').length,
+   totalForms:forms.length,withLemma:withLemma.length,
+   targets:forms.filter(row=>!!row.querySelector('[data-greek-form-surface]')).length,
+   allReadOnly:withLemma.every(row=>row.querySelector('.exam-form-enunciation').contentEditable==='false')};
+ });
+ assert.equal(greekFull.pronouns,10,filename+': Griego I completo no presenta diez pronombres');
+ assert(greekFull.totalForms>0&&greekFull.withLemma>0&&greekFull.allReadOnly&&
+  greekFull.targets===greekFull.totalForms,
+  filename+': enunciados griegos ausentes o forma editable sin destino único: '+JSON.stringify(greekFull));
+ const formRow=page.locator('#paper .exam-form:has(.exam-form-enunciation)').first();
+ const lemmaBefore=await formRow.locator('.exam-form-enunciation').textContent();
+ const formSurface=formRow.locator('[data-greek-form-surface]');
+ const formLink=await formSurface.getAttribute('data-exam-editor-link');
+ assert(formLink,filename+': la forma griega no está enlazada con el menú');
+ const formInput=page.locator('input[data-exam-editor-link="'+formLink+'"]');
+ assert.equal(await formInput.count(),1,filename+': enlace de la forma perdido o duplicado');
+ await formInput.fill('δοκιμαστική_μορφή');
+ assert.equal(await formSurface.textContent(),'δοκιμαστική_μορφή',
+  filename+': editar campo griego no cambia la forma');
+ assert.equal(await formRow.locator('.exam-form-enunciation').textContent(),lemmaBefore,
+  filename+': editar forma griega modifica también su enunciado');
+ await formSurface.evaluate(node=>{
+  node.textContent='ἄλλη_μορφή';
+  node.dispatchEvent(new InputEvent('input',{bubbles:true}));
+ });
+ assert.equal(await formInput.inputValue(),'ἄλλη_μορφή',
+  filename+': editar la forma griega en Word/HTML no actualiza el campo');
+ assert.equal(await formRow.locator('.exam-form-enunciation').textContent(),lemmaBefore,
+  filename+': el enunciado cambió al editar desde la vista previa');
  // Latín I: vocabulario léxico y sus cuatro campos bidireccionales.
  await configure(page,'latin1','tablas','UD9–10');
  const checkedLex=await checkLex(page);
