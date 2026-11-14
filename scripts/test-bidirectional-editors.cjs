@@ -209,6 +209,8 @@ async function checkFile(browser,filename){
  });
  assert(morph.count>=2,filename+': no hay sintagmas para sincronizar');
  const syllabi=['bonus, –a, –um + puer, –i','magnus, –a, –um + oppidum, –i'];
+ // El editor masivo se conserva, pero ahora vive en Opciones avanzadas.
+ await page.locator('#exam-ui-bulk').evaluate(el=>el.open=true);
  const textarea=page.locator('#morphSyntagms');
  await textarea.fill(syllabi.join('\n'));
  const typed=await page.evaluate(()=>[...document.querySelectorAll('#paper [data-syntagm-slot]>i')].map(x=>x.textContent));
