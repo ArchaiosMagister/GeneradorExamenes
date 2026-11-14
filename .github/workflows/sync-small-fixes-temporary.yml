@@ -1,0 +1,40 @@
+name: Sincronizar PWA de mejoras docentes (temporal)
+on:
+  push:
+    branches: [feat/pronombres-diez-enunciados-griegos-glosario-20261114]
+    paths:
+      - index.html
+      - vocabulary-generator.js
+      - .github/workflows/sync-small-fixes-temporary.yml
+concurrency:
+  group: sync-small-fixes-temporary
+  cancel-in-progress: false
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/pronombres-diez-enunciados-griegos-glosario-20261114
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Reconstruir offline.html solo en rama de la PR
+        shell: bash
+        run: |
+          set -euo pipefail
+          for attempt in 1 2 3; do
+            git fetch origin feat/pronombres-diez-enunciados-griegos-glosario-20261114
+            git reset --hard origin/feat/pronombres-diez-enunciados-griegos-glosario-20261114
+            npm run offline:build
+            git add -- offline.html
+            if git diff --cached --quiet; then exit 0; fi
+            git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'Actualizar PWA autónoma tras mejoras de pronombres y glosario'
+            if git push origin HEAD:feat/pronombres-diez-enunciados-griegos-glosario-20261114; then exit 0; fi
+          done
+          echo 'No se pudo sincronizar offline.html' >&2
+          exit 1
