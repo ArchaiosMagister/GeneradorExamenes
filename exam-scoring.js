@@ -122,9 +122,12 @@
   ]);
   const base=question.base;
   if(base==='lex'){
+   // Latín I: se eligen DOS de varias alternativas, que no se responden juntas.
+   // Únicamente el bloque de léxico tiene 2 p.; las alternativas no deben
+   // mostrar ni validar un desglose que el alumno nunca completará entero.
+   if(state().course==='latin1')return {optional:true,groups:[]};
    const parts=findIn('.lex-subquestion[data-lex-kind]');
-   const optional=state().course==='latin1'&&parts.length>2;
-   return {optional,groups:parts.map((node,i)=>({
+   return {optional:false,groups:parts.map(node=>({
     node,part:'lex-'+node.dataset.lexKind,wordNodes:[...node.querySelectorAll('[data-lex-slot]')],
     fixed:false
    }))};
@@ -183,7 +186,16 @@
     }));
     q.groups.push(group);
    });
-   if(!q.groups.length)return q;
+   if(!q.groups.length){
+    // Borradores anteriores a esta corrección podían conservar subpuntos
+    // optativos; descartarlos sin afectar a los dos puntos de la pregunta.
+    if(question.base==='lex'&&state().course==='latin1'){
+     for(const key of Object.keys(scores)){
+      if(key.startsWith(q.key+'|sub:')||key===initKey(q))delete scores[key];
+     }
+    }
+    return q;
+   }
    initializeDetails(q);
    q.groups.forEach(group=>{
     if(group.fixed)scores[group.key]=100;
