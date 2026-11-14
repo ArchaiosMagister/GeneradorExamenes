@@ -5243,7 +5243,9 @@ window.ExaminaMorphology={lookup,stats,importText};
  };
  block.addEventListener('change',event=>{
   if(event.target.id==='morphSyntagms')return;
-  update();generate();
+  update();
+  if(event.target.id==='morphWords')resizeOnlyExamAnalysis();
+  else generate();
  });
  block.querySelector('#morphSyntagms').addEventListener('input',event=>{
   const slots=[...document.querySelectorAll('#paper [data-syntagm-slot] > i')];
