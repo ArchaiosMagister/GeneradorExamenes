@@ -46,7 +46,8 @@ async function wordXml(page){
 async function testIntegers(page,name){
  const cases=[
   ['latin1','tablas','UD7'],['latin1','morf','UD7'],['latin1','mixto','UD7'],
-  ['latin4','tablas','UD7'],['latin4','morf','UD7'],['latin4','mixto','UD7'],
+  // Latín 4.º solo permite el examen completo; no se prueban modelos inexistentes.
+  ['latin4','tablas','UD7'],
   ['greek1','complete','UD7'],['greek1','morphology','UD7'],['greek1','translation','UD7']
  ];
  for(const [course,model,unit] of cases){
@@ -128,7 +129,7 @@ async function testManualAndReview(page,name){
   name+': ficha no persiste como tal en el borrador');
 }
 async function testLatinEr(page,name){
- await configure(page,'latin4','morf','UD3');
+ await configure(page,'latin4','tablas','UD3');
  const result=await page.evaluate(()=>{
   const forms=entry=>mNoun(entry)?.forms.flat();
   const actual=latinExamFormCandidates(['UD3'],true).flat()
