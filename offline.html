@@ -6728,6 +6728,7 @@ const DRAFT_KEY='examina_draft_v14', PREVIOUS_KEY='examina_previous_v14';
 function snapshotExam(){return {
  schema:'examina-exam-draft',version:1,course:currentCourse(),model:$('model').value,
  language:$('lang').value,created:new Date().toISOString(),title:$('name').value,
+ sheetType:$('sheetType')?.value==='review'?'review':'exam',
  html:$('paper').innerHTML,
  // El número de oraciones es parte del borrador, no solo su HTML visible.
  sentenceCount:countFor('sent'),
@@ -6766,6 +6767,9 @@ function restoreDraft(d){
   control?.dispatchEvent(new Event('change',{bubbles:true}));
  }
  if(typeof d.cumulative==='boolean')$('cumulative').checked=d.cumulative;
+ // Restituir el tipo de ficha ANTES del HTML y de las puntuaciones; los
+ // borradores anteriores carecen de este campo y siguen siendo exámenes.
+ $('sheetType').value=d.sheetType==='review'?'review':'exam';
  if(Number.isInteger(d.sentenceCount)&&d.sentenceCount>=1&&d.sentenceCount<=15)
   $('count-sent').value=String(d.sentenceCount);
  $('paper').innerHTML=cleanDraftHtml(d.html);
