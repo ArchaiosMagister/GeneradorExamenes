@@ -5970,8 +5970,9 @@ function examParadigmHeading(value,kind){
   :/\s*(\(\s*[mfn]\.?\s*\))$/i;
  const match=raw.match(indicator),lemma=match?raw.slice(0,match.index).trim():raw;
  // La conjugación o el género son metadatos gramaticales: nunca cursiva.
- const indicatorText=match?(kind==='conjugation'?match[0]:match[1]):'';
- return '<i>'+esc(lemma)+'</i>'+(match?(kind==='conjugation'?'':' ')+'<span class="exam-paradigm-indicator">'+esc(indicatorText)+'</span>':'');
+ const indicatorText=match?(kind==='conjugation'?match[0].trim():match[1]):'';
+ const separator=kind==='conjugation'&&indicatorText.startsWith(',')?'':' ';
+ return '<i>'+esc(lemma)+'</i>'+(match?separator+'<span class="exam-paradigm-indicator">'+esc(indicatorText)+'</span>':'');
 }
 function latinDisplayEnunciation(entry){
  return String(entry||'').replace(/,\s*[-–−—]\s*ae\b/gi,', –æ')
