@@ -31,7 +31,10 @@ async function configure(page,lang='es',unit='UD10'){
   select('course','greek1');select('model','morphology');select('lang',lang);
   const choices=[...document.querySelectorAll('#unitChoices .unit-choice')];
   choices.forEach(el=>{el.checked=units[Number(el.value)]===unit});
-  if(!choices.some(el=>el.checked))throw Error('Unidad inexistente: '+unit);
+  const selected=choices.find(el=>el.checked);
+  if(!selected)throw Error('Unidad inexistente: '+unit);
+  // Reproducir el cambio real de UD: actualiza tanto el examen como sus menús.
+  selected.dispatchEvent(new Event('change',{bubbles:true}));
   examSelectionCache.clear();
   generate();
  },{lang,unit});
