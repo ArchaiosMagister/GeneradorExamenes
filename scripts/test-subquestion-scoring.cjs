@@ -125,6 +125,7 @@ async function verifyEditing(page,file){
  await parent.fill(String((before.parent+25)/100).replace('.',','));
  assert((await page.evaluate(()=>window.ExaminaScoring.detailErrors())).length>0);
  const card=page.locator('#examScoring .exam-subscore-details').filter({has:page.locator('[data-subscore-key="'+g.key+'"]')});
+ await card.evaluate(el=>el.open=true);
  await card.getByRole('button',{name:'Repartir desglose'}).click();
  assert.deepEqual(await page.evaluate(()=>window.ExaminaScoring.detailErrors()),[],
   file+': repartir explícitamente no cuadró el desglose');
