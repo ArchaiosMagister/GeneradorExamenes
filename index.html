@@ -5401,7 +5401,11 @@ body.exam-redesign #exam-ui-advanced>summary,body.exam-redesign #exam-ui-bulk>su
 body.exam-redesign #exam-ui-advanced .settings-group{margin:8px 0}
 body.exam-redesign #exam-ui-bulk{border:1px solid var(--line,#ccd7e4);border-radius:10px;padding:7px;margin:6px 0}
 body.exam-redesign #exam-ui-bulk #morphOptions{margin:0;padding:8px;border:0}
-body.exam-redesign #exam-ui-bulk #morphOptions>h3,body.exam-redesign #exam-ui-bulk #morphOptions .count-grid,
+body.exam-redesign #morphOffer,
+body.exam-redesign #morphVerbs,
+body.exam-redesign #morphWords,
+body.exam-redesign #morphDecline{display:none!important}
+body.exam-redesign #morphOptions>h3,body.exam-redesign #morphOptions .count-grid,
 body.exam-redesign #exam-ui-bulk #morphOptions>p,
 body.exam-redesign #exam-ui-bulk #morphOptions>label.check{display:none!important}
 body.exam-redesign #exam-ui-bulk #morphSyntagms{width:100%}
@@ -5461,6 +5465,12 @@ html[data-appearance="oled"] body.exam-redesign #exam-ui-shell :is(#exam-ui-core
  }
  function enhance(){
   if(!mounted)return;
+  // Otras rutinas pueden reconstruir el bloque morfológico al cambiar modelo.
+  // La fuente de estado debe mantenerse fuera de los menús efímeros.
+  const bulk=$('exam-ui-bulk'),source=$('morphOffer')?.closest('#morphOptions');
+  if(bulk&&source&&!bulk.contains(source))bulk.append(source);
+  const internal=$('morphOffer')?.closest('.count-grid');
+  if(internal){internal.hidden=true;internal.style.setProperty('display','none','important')}
   if(morph()){
    const decl=host.querySelector('[data-question="decl"] .exam-question-config');
    if(decl&&!decl.querySelector('.exam-ui-extra')){
