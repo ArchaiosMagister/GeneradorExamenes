@@ -5058,7 +5058,7 @@ function refreshManualMorphWords(forceGreekDraft=false){
   if(!cell.closest('#answerkey'))add(cell.querySelector('i')||cell,'Pronombre');
  });
  paper.querySelectorAll('.morph-syntagm-item > i').forEach(el=>add(el,'Declinación'));
- paper.querySelectorAll('[data-analysis-slot] > i:first-child, .exam-form > span:last-child')
+ paper.querySelectorAll('[data-analysis-slot] > i:first-child, .exam-form [data-greek-form-surface]')
   .forEach(el=>add(el,'Análisis morfológico'));
  paper.querySelectorAll('.exam-etymology [data-corpus-id]').forEach(el=>add(el,'Etimología'));
  if(!targets.length){
@@ -14408,4 +14408,201 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
  if(root.document?.readyState==='loading')root.document.addEventListener('DOMContentLoaded',init);
  else if(root.document)init();
 })(window);
-</script></html>
+</script><style id="examina-exam-redesign-css">
+/* Rediseño aislado del generador; los gestores de vocabulario no se modifican. */
+body.exam-redesign #examLayout aside.panel #primaryCoursePicker,
+body.exam-redesign #examLayout aside.panel #primaryModelPicker{display:block!important}
+body.exam-redesign #examLayout aside.panel #primaryCoursePicker #course,
+body.exam-redesign #examLayout aside.panel #primaryModelPicker #model{display:block!important;min-height:44px;width:100%}
+body.exam-redesign #exam-header-controls,body.exam-redesign .exam-coursebar,
+body.exam-redesign #examEditorPanel .sidebar-choices,body.exam-redesign #examFormatSettings,
+body.exam-redesign #group-course,body.exam-redesign #group-content,body.exam-redesign #group-questions,
+body.exam-redesign #examEditorPanel>.settings-section-caption,
+body.exam-redesign #examEditorPanel .legacy-question-fields{display:none!important}
+body.exam-redesign[data-exam-redesign-view="exam"] .quick-actions{display:none!important}
+body.exam-redesign #exam-ui-shell{display:grid;gap:14px;min-width:0}
+body.exam-redesign #examEditorPanel{min-width:0;overflow-wrap:anywhere}
+body.exam-redesign #exam-ui-shell :is(input,select,textarea){box-sizing:border-box;max-width:100%;border-radius:8px;min-height:42px}
+body.exam-redesign #exam-ui-shell button{min-height:40px}
+body.exam-redesign #exam-ui-shell :is(button,input,select,textarea):focus-visible{outline:3px solid #e5a63f;outline-offset:2px}
+body.exam-redesign #exam-ui-shell-title{font-size:19px;margin:0}
+body.exam-redesign #exam-ui-shell-note{margin:-7px 0 0;font-size:12px;color:var(--muted,#65758b)}
+body.exam-redesign #exam-ui-core,body.exam-redesign #examQuestionSettings,
+body.exam-redesign #exam-ui-actions,body.exam-redesign #exam-ui-advanced{
+ background:var(--surface,#fff);color:var(--ink,#162d47);border:1px solid var(--line,#ccd7e4);
+ padding:13px;border-radius:13px;min-width:0}
+body.exam-redesign #primaryExamSettings{margin:0;padding:0;border:0;background:transparent}
+body.exam-redesign #primaryExamSettings h3{margin:0 0 12px;font-size:16px}
+body.exam-redesign #primaryExamSettings .field{margin:0 0 12px}
+body.exam-redesign #exam-ui-meta{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 12px}
+body.exam-redesign #exam-ui-meta .field{margin:0;min-width:0}
+body.exam-redesign #exam-ui-meta .field>label{font-weight:650}
+body.exam-redesign #exam-ui-meta .field :is(input,select){width:100%}
+body.exam-redesign #exam-ui-meta .ui-wide{grid-column:1/-1}
+body.exam-redesign #examQuestionSettings{margin:0}
+body.exam-redesign #examQuestionSettings>h3{margin:0 0 12px;font-size:16px}
+body.exam-redesign #examQuestionMenus{display:grid;gap:8px}
+body.exam-redesign #examQuestionMenus>details.exam-question-panel{margin:0;border-radius:10px;border:1px solid var(--line,#ccd7e4)}
+body.exam-redesign #examQuestionMenus .exam-question-heading{padding:12px;align-items:center;min-height:47px;gap:8px}
+body.exam-redesign #examQuestionMenus .exam-question-name{font-size:14px;line-height:1.4}
+body.exam-redesign #examQuestionMenus .exam-question-config{padding:12px;display:grid;gap:10px}
+body.exam-redesign #examQuestionMenus [data-included="false"]{opacity:.68;border-style:dashed}
+body.exam-redesign #examQuestionMenus [data-included="false"] .exam-question-config{display:none}
+body.exam-redesign #examQuestionMenus .question-editor{display:grid;gap:7px}
+body.exam-redesign #examQuestionMenus .exam-word-editor{padding:8px 0;border-top:1px solid var(--line,#ccd7e4)}
+body.exam-redesign #examQuestionMenus .exam-word-editor input{width:100%}
+body.exam-redesign #exam-ui-actions h3{margin:0 0 10px;font-size:16px}
+body.exam-redesign #exam-ui-actions .buttons{display:flex;gap:8px;flex-wrap:wrap}
+body.exam-redesign #exam-ui-actions .buttons button{flex:1 1 152px}
+body.exam-redesign #exam-ui-advanced>summary,body.exam-redesign #exam-ui-bulk>summary{padding:8px;cursor:pointer;font-weight:700}
+body.exam-redesign #exam-ui-advanced .settings-group{margin:8px 0}
+body.exam-redesign #exam-ui-bulk{border:1px solid var(--line,#ccd7e4);border-radius:10px;padding:7px;margin:6px 0}
+body.exam-redesign #exam-ui-bulk #morphOptions{margin:0;padding:8px;border:0}
+body.exam-redesign #morphOffer,
+body.exam-redesign #morphVerbs,
+body.exam-redesign #morphWords,
+body.exam-redesign #morphDecline{display:none!important}
+body.exam-redesign #morphOptions>h3,body.exam-redesign #morphOptions .count-grid,
+body.exam-redesign #exam-ui-bulk #morphOptions>p,
+body.exam-redesign #exam-ui-bulk #morphOptions>label.check{display:none!important}
+body.exam-redesign #exam-ui-bulk #morphSyntagms{width:100%}
+body.exam-redesign .exam-ui-extra{display:grid;gap:8px;grid-template-columns:repeat(2,minmax(0,1fr))}
+body.exam-redesign .exam-ui-extra label{display:grid;gap:5px;font-size:13px}
+body.exam-redesign .exam-ui-categories{display:flex;flex-wrap:wrap;gap:8px 14px}
+body.exam-redesign .exam-ui-categories label{display:flex;gap:5px;align-items:center;font-size:13px}
+body.exam-redesign #manualMorphField:has(#manualMorphWords:empty){display:none!important}
+@media (min-width:951px){
+ body.exam-redesign #examLayout{grid-template-columns:minmax(335px,44%) minmax(0,1fr);gap:15px;align-items:start}
+ body.exam-redesign #examLayout>#examEditorPanel{order:0;grid-row:1;grid-column:1;max-width:none}
+ body.exam-redesign #examLayout>#paper{order:0;grid-row:1;grid-column:2;min-width:0}
+}
+@media (max-width:950px){body.exam-redesign #exam-ui-core,body.exam-redesign #examQuestionSettings{padding:11px}}
+@media (max-width:490px){body.exam-redesign #exam-ui-meta{grid-template-columns:1fr}}
+html[data-appearance="dark"] body.exam-redesign #exam-ui-shell,
+html[data-appearance="oled"] body.exam-redesign #exam-ui-shell{color:var(--appearance-text)}
+html[data-appearance="dark"] body.exam-redesign #exam-ui-shell :is(#exam-ui-core,#examQuestionSettings,#exam-ui-actions,#exam-ui-advanced),
+html[data-appearance="oled"] body.exam-redesign #exam-ui-shell :is(#exam-ui-core,#examQuestionSettings,#exam-ui-actions,#exam-ui-advanced){
+ background:var(--appearance-raised);color:var(--appearance-text);border-color:var(--appearance-border)}
+@media screen and (max-width:900px), screen and (max-width:950px) and (max-height:500px) and (pointer:coarse){
+ /* A diferencia del panel antiguo, el nuevo menú está dentro de #exam-ui-shell. */
+ body.exam-redesign #examLayout[data-exam-tab="questions"]>#examEditorPanel>#exam-ui-shell{display:grid!important}
+ body.exam-redesign #examLayout[data-exam-tab="questions"]>#examEditorPanel>#exam-ui-shell>:not(#examQuestionSettings){display:none!important}
+ body.exam-redesign #examLayout[data-exam-tab="settings"]>#examEditorPanel>#exam-ui-shell>#examQuestionSettings{display:none!important}
+ body.exam-redesign #examLayout[data-exam-tab="questions"]>#examEditorPanel #examQuestionSettings{display:block!important}
+}
+</style>
+<script id="examina-exam-redesign-js">
+(function(){
+ 'use strict';
+ const $=id=>document.getElementById(id);
+ const panel=$('examEditorPanel'),host=$('examQuestionMenus'),layout=$('examLayout');
+ if(!panel||!host||!layout)return;
+ let mounted=false;
+ const morph=()=>['morf','morphology'].includes($('model')?.value);
+ function updateVisibility(){
+  if(!mounted)return;
+  const shown=layout.style.display!=='none'&&!layout.hidden;
+  document.body.dataset.examRedesignView=shown?'exam':'other';
+  $('exam-ui-bulk').hidden=!morph();
+  const leftovers=$('manualMorphWords');
+  if($('manualMorphField'))$('manualMorphField').hidden=!leftovers?.children.length;
+  if($('group-vocab'))$('group-vocab').hidden=morph();
+  if($('group-culture'))$('group-culture').hidden=$('course').value!=='latin4'||
+   (typeof latin4CultureExcludedForUnit==='function'&&latin4CultureExcludedForUnit());
+ }
+ function proxy(source,name,tag,dest){
+  if(!source)return;
+  const wrap=document.createElement('label');wrap.textContent=name;
+  const c=document.createElement(tag);
+  if(tag==='select'){
+   for(const opt of source.options){
+    const item=document.createElement('option');
+    item.value=opt.value;item.textContent=opt.textContent;item.disabled=opt.disabled;c.append(item);
+   }
+   c.value=source.value;
+  }else{c.type='checkbox';c.checked=source.checked}
+  c.addEventListener('change',()=>{
+   if(tag==='select')source.value=c.value;else source.checked=c.checked;
+   source.dispatchEvent(new Event('change',{bubbles:true}));
+  });
+  wrap.append(c);dest.append(wrap);
+ }
+ function enhance(){
+  if(!mounted)return;
+  // Otras rutinas pueden reconstruir el bloque morfológico al cambiar modelo.
+  // La fuente de estado debe mantenerse fuera de los menús efímeros.
+  const bulk=$('exam-ui-bulk'),source=$('morphOffer')?.closest('#morphOptions');
+  if(bulk&&source&&!bulk.contains(source))bulk.append(source);
+  const internal=$('morphOffer')?.closest('.count-grid');
+  if(internal){internal.hidden=true;internal.style.setProperty('display','none','important')}
+  if(morph()){
+   const decl=host.querySelector('[data-question="decl"] .exam-question-config');
+   if(decl&&!decl.querySelector('.exam-ui-extra')){
+    const row=document.createElement('div');row.className='exam-ui-extra';
+    proxy($('morphOffer'),$('lang').value==='va'?'Opcions proposades':'Opciones propuestas','select',row);
+    decl.prepend(row);
+   }
+   const forms=host.querySelector('[data-question="forms"] .exam-question-config');
+   if(forms&&!forms.querySelector('.exam-ui-categories')){
+    const row=document.createElement('div');row.className='exam-ui-categories';
+    for(const [id,es,va] of [
+      ['morphCategory-n','Sustantivos','Substantius'],
+      ['morphCategory-adj','Adjetivos','Adjectius'],
+      ['morphCategory-pro','Pronombres','Pronoms']]){
+     proxy($(id),$('lang').value==='va'?va:es,'input',row);
+    }
+    forms.append(row);
+   }
+  }
+  updateVisibility();
+ }
+ function mount(){
+  if(mounted||!$('primaryExamSettings')||!$('morphOptions'))return;
+  mounted=true;
+  const shell=document.createElement('section');shell.id='exam-ui-shell';
+  const heading=document.createElement('h2');heading.id='exam-ui-shell-title';heading.textContent='Preparar el examen';
+  const tip=document.createElement('p');tip.id='exam-ui-shell-note';
+  tip.textContent='Una configuración por pregunta. Los cambios se reflejan en el examen y en Word.';
+  shell.append(heading,tip);
+  // La navegación anterior ocultaba los selectores reales porque usaba
+  // botones superiores. Deshacer ese estado sin crear nuevos controles.
+  for(const id of ['primaryCoursePicker','primaryModelPicker']){
+   if($(id))$(id).hidden=false;
+  }
+  if($('lang')?.closest('.field'))$('lang').closest('.field').hidden=false;
+  const core=document.createElement('section');core.id='exam-ui-core';core.append($('primaryExamSettings'));
+  const meta=document.createElement('div');meta.id='exam-ui-meta';
+  for(const id of ['lang','term','sheetType','name','seed']){
+   const f=$(id)?.closest('.field');
+   if(f){if(id==='name'||id==='seed')f.classList.add('ui-wide');meta.append(f)}
+  }
+  core.append(meta);shell.append(core);
+  const qs=$('examQuestionSettings');shell.append(qs);
+  const bulk=document.createElement('details');bulk.id='exam-ui-bulk';
+  const label=document.createElement('summary');label.textContent='Editar varios sintagmas a la vez (avanzado)';
+  bulk.append(label,$('morphOptions'));qs.append(bulk);
+  // Los controles originales conservan el estado del motor; las casillas
+  // visibles están en su pregunta. Ocultar el grupo entero evita duplicidades.
+  const internalCounts=$('morphOffer')?.closest('.count-grid');
+  if(internalCounts){internalCounts.hidden=true;internalCounts.style.setProperty('display','none','important')}
+  const actions=document.createElement('section');actions.id='exam-ui-actions';
+  const actionsTitle=document.createElement('h3');actionsTitle.textContent='Generar, guardar y exportar';actions.append(actionsTitle);
+  for(const id of ['examReselect','group-export','group-drafts'])if($(id))actions.append($(id));
+  shell.append(actions);
+  const advanced=document.createElement('details');advanced.id='exam-ui-advanced';
+  const advancedTitle=document.createElement('summary');advancedTitle.textContent='Más opciones: glosario, bancos y herramientas';advanced.append(advancedTitle);
+  for(const id of ['group-vocab','group-culture','group-import','group-morph','unimorphPanel'])if($(id))advanced.append($(id));
+  shell.append(advanced);panel.prepend(shell);
+  document.body.classList.add('exam-redesign');
+  new MutationObserver(()=>queueMicrotask(enhance)).observe(host,{childList:true});
+  document.addEventListener('change',event=>{
+   if(event.target?.matches?.('#course,#model,#lang,#unitChoices input,#cumulative,#sheetType'))requestAnimationFrame(enhance);
+  });
+  document.querySelector('.vocab-tabbar')?.addEventListener('click',()=>requestAnimationFrame(updateVisibility));
+  enhance();
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mount,{once:true});
+ else mount();
+})();
+</script>
+</html>
