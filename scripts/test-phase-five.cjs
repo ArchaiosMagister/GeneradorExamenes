@@ -79,11 +79,11 @@ async function checkOne(browser,filename){
   await page.locator('#examQuestionsTab').click();
   const shown=await page.evaluate(()=>({
    tab:document.getElementById('examLayout').dataset.examTab,
-   questions:document.getElementById('examQuestionSettings').open,
+   questions:document.getElementById('examQuestionSettings').getBoundingClientRect().height,
    scores:document.getElementById('examScoring')?.getBoundingClientRect().height||0
   }));
   assert.equal(shown.tab,'questions');
-  assert.equal(shown.questions,true,'El acordeón de preguntas debe abrirse al cambiar a su pestaña');
+  assert(shown.questions>0,'Las preguntas deben permanecer visibles en su pestaña');
   assert(shown.scores>0,'La puntuación no aparece en Preguntas');
   await page.locator('#examPreviewTab').click();
   await assertVisibility(page,true);
