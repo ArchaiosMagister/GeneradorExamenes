@@ -151,6 +151,18 @@ async function checkOne(browser,filename){
  assert.equal(await score.inputValue(),'1,75');
  assert.deepEqual(errors,[],filename+': errores de JavaScript');
  await context.close();
+ // Teléfono apaisado con puntero táctil: criterio compuesto de pantalla corta.
+ const touchContext=await browser.newContext({viewport:{width:930,height:430},isMobile:true,hasTouch:true});
+ try{
+  const touchPage=await touchContext.newPage();
+  await touchPage.goto(pathToFileURL(path.resolve(filename)).href);
+  await touchPage.waitForFunction(()=>document.getElementById('examLayout')?.dataset.examTab==='settings');
+  assert(await touchPage.evaluate(()=>matchMedia('screen and (max-width:950px) and (max-height:500px) and (pointer:coarse)').matches),
+   filename+': no se reconoció el móvil horizontal táctil');
+  await assertVisibility(touchPage,true);
+  await touchPage.locator('#examPreviewTab').click();
+  await assertVisibility(touchPage,true);
+ }finally{await touchContext.close();}
 }
 (async()=>{
  const browser=await chromium.launch({headless:true,
