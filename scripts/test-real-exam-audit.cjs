@@ -113,7 +113,7 @@ function inspect(row,file){
   if(row.cultural.some(c=>c.id&&!c.id.includes('-'+row.unit+'-')))
    issue('bloqueante',where,'Código de cultura ajeno a '+row.unit);
  }
- if(row.course==='latin1'&&['morf','tablas'].includes(row.model)&&
+ if(row.course==='latin1'&&row.questions.some(q=>q.kind==='pronouns')&&
   Number((row.unit.match(/\d+/)||[0])[0])>=6&&row.pronounRows!==10)
   issue('revisión',where,'Esperados 10 pronombres; generados '+row.pronounRows);
  if(row.course==='latin1'&&row.model!=='morf'&&row.lexParts>0&&row.lexParts<2)
@@ -165,6 +165,7 @@ async function edit(page,file,course,model,unit){
   issue('revisión',where,'No hay editor genérico vinculado que probar; revisar categorías específicas');
   return;
  }
+ await editor.evaluate(el=>{for(let node=el;node;node=node.parentElement)if(node.tagName==='DETAILS')node.open=true});
  const key=await editor.getAttribute('data-exam-editor-link');
  const target=page.locator('#paper [data-exam-editor-link="'+key+'"]');
  if(await target.count()!==1){issue('bloqueante',where,'Editor sin nodo de vista previa único: '+key);return}
