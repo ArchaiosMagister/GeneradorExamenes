@@ -182,14 +182,18 @@ const server=http.createServer(async(req,res)=>{
   });
   assert(/<i(?:\s[^>]*)?>verbo_personalizado<\/i>(?:<\/span>)? \(3\)/.test(freeVerbs),
    'El primer verbo manual debe aparecer en minúscula, en cursiva y con tres derivados');
-  const preverbButtons=await page.evaluate(()=>({
-    twoSlots:document.querySelectorAll('#lex-slot-preverbs-0, #lex-slot-preverbs-1').length,
-    nonexistent:!!document.getElementById('lex-slot-preverbs-2'),
+  const preverbButtons=await page.evaluate(()=>{
+   const rows=[...document.querySelectorAll('[data-lex-part="preverbs"] .lex-word-control')];
+   return {rows:rows.length,
+    complete:rows.every(row=>row.querySelectorAll('input[type="text"]').length===1&&
+     row.querySelectorAll('button').length===1),
     inputs:[0,1].map(i=>!!document.getElementById('lex-verb-'+i)),
-    thirdInput:!!document.getElementById('lex-verb-2')
-  }));
-  assert(preverbButtons.twoSlots===2&&!preverbButtons.nonexistent&&preverbButtons.inputs.every(Boolean)&&!preverbButtons.thirdInput,
-   'El panel de modificación preverbial debe permitir modificar solo dos verbos');
+    thirdInput:!!document.getElementById('lex-verb-2'),
+    duplicates:document.querySelectorAll('[id^="lex-slot-preverbs-"]').length};
+  });
+  assert(preverbButtons.rows===2&&preverbButtons.complete&&preverbButtons.duplicates===0&&
+    preverbButtons.inputs.every(Boolean)&&!preverbButtons.thirdInput,
+   'El panel preverbial debe presentar solo dos campos editables con regeneración individual');
   // Las normas pertenecen a evolución fonética, no a latinismos.
   const normsInPhonetics=await page.evaluate(()=>
    document.querySelector('[data-lat1-phonetic-norms]')?.closest('[data-lex-part]')?.dataset.lexPart);
