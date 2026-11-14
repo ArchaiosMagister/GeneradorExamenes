@@ -99,6 +99,11 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
     if(updated<0||updated>10000)throw Error('No es posible completar diez puntos');
     item.value=scoring.format(updated);
     item.dispatchEvent(new Event('input',{bubbles:true}));
+    // La corrección del total NO redistribuye los subpuntos por sí sola.
+    // El docente debe ejecutar también el reparto explícito de la pregunta.
+    const detail=[...document.querySelectorAll('#examScoring .exam-subscore-details')]
+     .find(section=>section.querySelector('[data-detail-status]')?.dataset.detailStatus===item.dataset.scoringKey);
+    detail?.querySelector('button')?.click();
    });
    assert.equal(await page.evaluate(()=>window.ExaminaScoring.preflight().ok),true,
     'Una corrección docente explícita sí debe permitir el definitivo');
