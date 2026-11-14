@@ -132,6 +132,7 @@
   const selectors={
    decl:'[data-syntagm-slot],table.exam-nouns',
    verb:'table.reference-verb-table tbody tr,.exam-verbs thead tr:first-child th[colspan]',
+   verbforms:'table.reference-verb-table tbody tr',
    pronouns:'table.exam-pronouns tbody tr',
    forms:'[data-analysis-slot],.exam-form',
    culture:'ol.task>li',
