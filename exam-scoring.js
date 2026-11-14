@@ -99,19 +99,282 @@
  header.append(title,help,rows,status,finalLabel);
  const questions=document.getElementById('examQuestionSettings');
  if(questions?.parentElement===panel)questions.after(header);
- else panel.insertBefore(header,document.getElementById('group-sentences')||panel.firstChild);
+ else panel.insertBefore(header,panel.firstChild);
  let renderPending=false,observer=null,previousQuestions=[];
  const find=()=>[...paper.querySelectorAll('.exam-sheet .exam-question')].filter(el=>!el.closest('#answerkey'));
  const sum=()=>previousQuestions.reduce((total,item)=>total+(scores[item.key]||0),0);
+ // Desglose docente: las puntuaciones internas son datos persistentes separados
+ // de la presentación Word. Una cifra de la pregunta nunca reparte sus puntos
+ // entre los elementos sin una decisión explícita del profesor.
+ let detailGroups=[];
+ const has=key=>Object.prototype.hasOwnProperty.call(scores,key);
+ const itemKey=(question,part,word=null)=>question.key+'|sub:'+part+(word===null?'':':'+word);
+ const initKey=q=>q.key+'|desglose-inicializado';
+ const split=(cents,n)=>Array.from({length:n},(_,i)=>n?Math.floor(cents/n)+(i<cents%n?1:0):0);
+ function collectDetailNodes(question){
+  const block=[];
+  for(let node=question.el.nextElementSibling;node;node=node.nextElementSibling){
+   if(node.matches('.exam-question,#answerkey,.exam-glossary,.sentence-glossary,.exam-vocabulary,.final-gloss'))break;
+   block.push(node);
+  }
+  const findIn=selector=>block.flatMap(node=>[
+   ...(node.matches(selector)?[node]:[]),...node.querySelectorAll(selector)
+  ]);
+  const base=question.base;
+  if(base==='lex'){
+   const parts=findIn('.lex-subquestion[data-lex-kind]');
+   const optional=state().course==='latin1'&&parts.length>2;
+   return {optional,groups:parts.map((node,i)=>({
+    node,part:'lex-'+node.dataset.lexKind,wordNodes:[...node.querySelectorAll('[data-lex-slot]')],
+    fixed:false
+   }))};
+  }
+  const selectors={
+   decl:'[data-syntagm-slot],table.exam-nouns',
+   verb:'table.reference-verb-table tbody tr,.exam-verbs thead tr:first-child th[colspan]',
+   verbforms:'table.reference-verb-table tbody tr',
+   pronouns:'table.exam-pronouns tbody tr',
+   forms:'[data-analysis-slot],.exam-form',
+   culture:'ol.task>li',
+   etymology:'.exam-etymology>span',
+   sent:'.exam-sentences [data-sentence-slot]'
+  };
+  const nodes=findIn(selectors[base]||'.exam-item');
+  return {optional:false,groups:nodes.map((node,i)=>({
+   node:base==='sent'?(node.closest('li')||node):node,
+   part:String(i),wordNodes:[],fixed:base==='sent'
+  }))};
+ }
+ const detailLabel=node=>{
+  const content=(node.dataset.subscoreCaption||node.textContent||'')
+   .replace(/\s*\(\d+(?:[,.]\d+)?\s*p\.\)\s*$/,'').trim();
+  const plain=content.replace(/\s+/g,' ');
+  return plain.length>90?plain.slice(0,87)+'…':plain||(state().language==='va'?'Element':'Elemento');
+ };
+ function initializeDetails(q){
+  if(has(initKey(q)))return;
+  const chosen=q.groups;
+  const parent=scores[q.key]||0;
+  const amounts=q.base==='sent'?chosen.map(()=>100):
+   split(q.optional?Math.floor(parent/2):parent,chosen.length);
+  chosen.forEach((group,i)=>{
+   // Las alternativas de léxico valen cada una la mitad de los dos puntos
+   // elegibles (no se suman las tres o más alternativas).
+   const cents=q.optional?Math.floor(parent/2):amounts[i];
+   scores[group.key]=cents;
+   // La modificación preverbial exige 3 derivados del primer verbo y 2
+   // del segundo: reparto inicial ponderado, sin inventar una regla 50/50.
+   const terms=group.part==='lex-preverbs'&&group.children.length===2?
+    [Math.floor(cents*3/5),cents-Math.floor(cents*3/5)]:
+    split(cents,group.children.length);
+   group.children.forEach((child,j)=>{scores[child.key]=terms[j]});
+  });
+  scores[initKey(q)]=1;
+ }
+ function buildDetails(){
+  detailGroups=previousQuestions.map(question=>{
+   const {optional,groups}=collectDetailNodes(question);
+   const q={...question,optional,groups:[]};
+   groups.forEach((entry,i)=>{
+    const group={...entry,key:itemKey(question,entry.part),index:i,
+     label:detailLabel(entry.node),children:[]};
+    entry.wordNodes.forEach((node,j)=>group.children.push({
+     node,key:itemKey(question,entry.part,j),index:j,label:detailLabel(node)
+    }));
+    q.groups.push(group);
+   });
+   if(!q.groups.length)return q;
+   initializeDetails(q);
+   q.groups.forEach(group=>{
+    if(group.fixed)scores[group.key]=100;
+    else if(!has(group.key))scores[group.key]=0;
+    group.children.forEach(child=>{if(!has(child.key))scores[child.key]=0});
+   });
+   return q;
+  });
+ }
+ function detailDiscrepancies(){
+  const errors=[];
+  for(const q of detailGroups){
+   if(!q.groups.length)continue;
+   const parent=scores[q.key]||0;
+   if(q.optional){
+    if(parent%2!==0||q.groups.some(g=>(scores[g.key]||0)*2!==parent))
+     errors.push(q.key+':alternativas');
+   }else if(q.groups.reduce((n,g)=>n+(scores[g.key]||0),0)!==parent)
+    errors.push(q.key+':total');
+   for(const g of q.groups){
+    if(g.children.length&&g.children.reduce((n,child)=>n+(scores[child.key]||0),0)!==(scores[g.key]||0))
+     errors.push(g.key+':términos');
+   }
+  }
+  return errors;
+ }
+ function updateDetail(key,cents,{activeInput=null}={}){
+  if(cents===null)return false;
+  const item=detailGroups.flatMap(q=>q.groups).find(g=>g.key===key);
+  const child=detailGroups.flatMap(q=>q.groups.flatMap(g=>g.children)).find(c=>c.key===key);
+  if(item?.fixed)return false;
+  if(!item&&!child)return false;
+  scores[key]=cents;
+  persist();
+  for(const input of panel.querySelectorAll('input[data-subscore-key]')){
+   if(input.dataset.subscoreKey===key&&input!==activeInput)input.value=value(cents);
+  }
+  for(const labelNode of paper.querySelectorAll('[data-exam-subscore]')){
+   if(labelNode.dataset.examSubscore===key)labelNode.textContent=
+    (labelNode.dataset.examSubscorePrefix||'')+'('+value(cents)+' p.)';
+  }
+  refreshDetailSummaries();
+  showStatus();
+  return true;
+ }
+ function attachPreviewDetail(node,key,fixed){
+  if(!node?.isConnected)return;
+  const table=node.matches('table')?node:node.closest('table');
+  const labelNode=document.createElement('span');
+  labelNode.className='exam-subpoint-label no-print';
+  labelNode.dataset.examSubscore=key;
+  labelNode.contentEditable='false';
+  // La etiqueta docente nunca se inserta dentro de un encabezado ni dentro
+  // de una forma analizable: preserva sus textos, celdas y vínculos Word.
+  const prefix=table?detailLabel(node)+': ':'';
+  labelNode.dataset.examSubscorePrefix=prefix;
+  labelNode.textContent=prefix+'('+value(scores[key]||0)+' p.)';
+  labelNode.title=state().language==='va'?'Puntuació d’este element (només edició docent)':
+   'Puntuación de este elemento (solo para edición docente)';
+  if(!fixed){
+   labelNode.tabIndex=0;labelNode.setAttribute('role','button');
+   labelNode.setAttribute('aria-label',(state().language==='va'?'Editar puntuació de l’element: ':
+    'Editar puntuación del elemento: ')+value(scores[key]||0)+' p.');
+  }
+  if(table){
+   labelNode.classList.add('exam-subpoint-table-label');
+   table.after(labelNode);
+  }else if(node.matches('li')){
+   node.append(labelNode);
+  }else{
+   node.after(labelNode);
+  }
+ }
+ function redistributeDetails(q){
+  if(!q.groups.length)return;
+  delete scores[initKey(q)];
+  q.groups.forEach(g=>{
+   delete scores[g.key];
+   for(const child of g.children)delete scores[child.key];
+  });
+  initializeDetails(q);
+  persist();renderDetails();showStatus();
+ }
+ function refreshDetailSummaries(){
+  for(const q of detailGroups){
+   const target=panel.querySelector('[data-detail-status="'+CSS.escape(q.key)+'"]');
+   if(!target)continue;
+   const errors=detailDiscrepancies().filter(x=>x.startsWith(q.key+':')||x.startsWith(q.key+'|'));
+   target.textContent=errors.length?(state().language==='va'?'Desglossament pendent de quadrar':'Desglose sin cuadrar'):
+    (q.optional?(state().language==='va'?'Tria dues alternatives':'Elige dos alternativas'):
+      (state().language==='va'?'Desglossament quadrat':'Desglose cuadrado'));
+   target.className=errors.length?'exam-scoring-warning':'exam-scoring-correct';
+  }
+ }
+ function detailInput(owner,description,fixed){
+  const row=document.createElement('label');row.className='exam-subscore-row';
+  const title=document.createElement('span');title.textContent=description;
+  const input=document.createElement('input');input.type='text';input.inputMode='decimal';
+  input.dataset.subscoreKey=owner.key;input.value=value(scores[owner.key]||0);
+  input.setAttribute('aria-label',(state().language==='va'?'Punts: ':'Puntos: ')+description);
+  input.disabled=Boolean(fixed);
+  input.addEventListener('input',()=>{
+   const n=number(input.value);input.setAttribute('aria-invalid',String(n===null));
+   if(n!==null)updateDetail(owner.key,n,{activeInput:input});
+  });
+  input.addEventListener('blur',()=>{
+   input.value=value(scores[owner.key]||0);input.removeAttribute('aria-invalid');
+  });
+  const unit=document.createElement('span');unit.textContent='p.';
+  row.append(title,input,unit);
+  return row;
+ }
+ function renderDetails(){
+  rows.querySelectorAll('.exam-subscore-details').forEach(node=>node.remove());
+  // Los distintivos de pantalla son controles docentes, nunca parte del Word.
+  paper.querySelectorAll('[data-exam-subscore]').forEach(node=>node.remove());
+  for(const q of detailGroups){
+   if(!q.groups.length)continue;
+   const detail=document.createElement('details');detail.className='exam-subscore-details';
+   const head=document.createElement('summary');
+   head.textContent=(state().language==='va'?'Desglossament · ':'Desglose · ')+q.caption;
+   const status=document.createElement('span');status.dataset.detailStatus=q.key;
+   status.className='exam-subscore-status';
+   const resetButton=document.createElement('button');resetButton.type='button';
+   resetButton.className='secondary';resetButton.textContent=state().language==='va'?
+    'Repartir desglossament':'Repartir desglose';
+   resetButton.title=state().language==='va'?
+   'Acció docent explícita: substituïx la puntuació dels elements d’esta pregunta':
+   'Acción docente explícita: sustituye los puntos de los elementos de esta pregunta';
+   resetButton.addEventListener('click',()=>redistributeDetails(q));
+   detail.append(head,status,resetButton);
+   if(q.optional){
+    const hint=document.createElement('p');hint.className='hint';
+    hint.textContent=state().language==='va'?
+     'Es trien dos apartats: les alternatives no se sumen totes. Cada alternativa val la mitat dels punts de la pregunta.':
+     'Se eligen dos apartados: las alternativas no se suman todas. Cada apartado alternativo debe valer la mitad de los puntos de la pregunta.';
+    detail.append(hint);
+   }
+   for(const [i,g] of q.groups.entries()){
+    detail.append(detailInput(g,(i+1)+'. '+g.label,g.fixed));
+    attachPreviewDetail(g.node,g.key,g.fixed);
+    for(const [j,child] of g.children.entries()){
+     detail.append(detailInput(child,'   '+(j+1)+'. '+child.label,false));
+     attachPreviewDetail(child.node,child.key,false);
+    }
+   }
+   rows.append(detail);
+  }
+  refreshDetailSummaries();
+ }
+ function editPreviewSubscore(node){
+  const key=node?.dataset?.examSubscore;
+  if(!key||node.nextElementSibling?.classList.contains('exam-subscore-inline'))return;
+  const input=document.createElement('input');
+  input.className='exam-subscore-inline';input.type='text';input.inputMode='decimal';
+  input.value=value(scores[key]||0);input.setAttribute('aria-label',
+   state().language==='va'?'Editar punts de l’element':'Editar puntos del elemento');
+  node.hidden=true;node.after(input);
+  let cancelled=false;
+  input.addEventListener('keydown',e=>{
+   if(e.key==='Enter'){e.preventDefault();input.blur()}
+   else if(e.key==='Escape'){e.preventDefault();cancelled=true;input.blur()}
+  });
+  input.addEventListener('blur',()=>{
+   const result=cancelled?null:number(input.value);
+   input.remove();node.hidden=false;
+   if(result!==null)updateDetail(key,result);
+   node.focus({preventScroll:true});
+  },{once:true});
+  input.focus();input.select();
+ }
+ paper.addEventListener('click',e=>{
+  const target=e.target?.closest?.('.exam-subpoint-label[role="button"]');
+  if(target){e.stopPropagation();editPreviewSubscore(target)}
+ });
+ paper.addEventListener('keydown',e=>{
+  const target=e.target?.closest?.('.exam-subpoint-label[role="button"]');
+  if(target&&(e.key==='Enter'||e.key===' ')){
+   e.preventDefault();e.stopPropagation();editPreviewSubscore(target);
+  }
+ });
+
  function finalPreflight(){
   if(!finalCheckbox.checked)return {ok:true,mode:'borrador',normalized:false};
   const total=sum();
   if(!previousQuestions.length)return {ok:false,mode:'definitivo',reason:'sin_preguntas',total};
-  if(morph()){
-   // Una pregunta de morfología vale 1 p.; la nota se normaliza sobre diez.
-   return {ok:total>0&&previousQuestions.every(item=>(scores[item.key]||0)>0),
-    mode:'definitivo',normalized:true,total,reason:'puntuacion_morfologica'};
-  }
+  const mismatches=detailDiscrepancies();
+  if(mismatches.length)return {ok:false,mode:'definitivo',normalized:false,
+   total,reason:'desglose_no_cuadra',mismatches};
+  // Los 10 puntos exactos rigen para todos los modelos. Las preguntas de
+  // morfología empiezan con 1 p. pero nunca se normalizan sin conocimiento docente.
   return {ok:total===1000,mode:'definitivo',normalized:false,total,reason:'total_no_es_diez'};
  }
  function canExport(){
@@ -119,9 +382,11 @@
   if(result.ok)return true;
   showStatus();
   status.classList.add('exam-scoring-warning');
-  status.textContent=state().language==='va'?
-   'Exportació definitiva bloquejada: revisa que hi haja preguntes i que la puntuació siga exactament 10 punts (morfologia: 1 punt per pregunta).':
-   'Exportación definitiva bloqueada: revisa que haya preguntas y que la puntuación sume exactamente 10 puntos (morfología: 1 punto por pregunta).';
+  status.textContent=result.reason==='desglose_no_cuadra'?
+   (state().language==='va'?'Exportació bloquejada: el desglossament de les subpreguntes no quadra amb la seua pregunta.':
+    'Exportación bloqueada: el desglose de las subpreguntas no coincide con su pregunta.'):
+   (state().language==='va'?'Exportació definitiva bloquejada: la puntuació ha de sumar exactament 10 punts, també en morfologia.':
+    'Exportación definitiva bloqueada: la puntuación debe sumar exactamente 10 puntos, también en morfología.');
   header.scrollIntoView?.({block:'nearest'});
   return false;
  }
@@ -129,18 +394,24 @@
  function showStatus(){
   const lang=state().language==='va',total=sum(),isMorph=morph();
   const totalString=value(total);
-  finalText.textContent=lang?'Examen definitiu: comprovar la puntuació abans d’exportar':
-   'Examen definitivo: comprobar la puntuación antes de exportar';
+  finalText.textContent=lang?'Examen definitiu: exactament 10 punts per a exportar':
+   'Examen definitivo: exactamente 10 puntos para exportar';
   if(!previousQuestions.length){
    status.className='exam-scoring-total';
    status.textContent=lang?'No hi ha preguntes per a puntuar.':'No hay preguntas que puntuar.';
-  }else if(isMorph){
-   status.className='exam-scoring-total';
-   status.textContent=(lang?'Puntuació bruta: ':'Puntuación bruta: ')+totalString+(lang?' punts. La nota sobre 10 es calcula sobre aquest màxim.':' puntos. La nota sobre 10 se calcula sobre este máximo.');
+  }else if(isMorph&&total!==1000){
+   status.className='exam-scoring-total exam-scoring-warning';
+   status.textContent=(lang?'Morfologia: ':'Morfología: ')+totalString+
+    (lang?' punts. Cada pregunta comença amb 1 p.; per al definitiu, ajusta expressament el total a 10.':
+     ' puntos. Cada pregunta comienza con 1 p.; para el definitivo, ajusta expresamente el total a 10.');
   }else if(total!==1000){
    status.className='exam-scoring-total exam-scoring-warning';
    status.textContent=(lang?'Avís: la puntuació suma ':'Aviso: la puntuación suma ')+
     totalString+(lang?' punts, no 10. Revisa el repartiment.':' puntos, no 10. Revisa el reparto.');
+  }else if(detailDiscrepancies().length){
+   status.className='exam-scoring-total exam-scoring-warning';
+   status.textContent=lang?'Desglossament de les subpreguntes pendent de quadrar amb els punts de cada pregunta.':
+    'El desglose de las subpreguntas no coincide con los puntos de cada pregunta.';
   }else{
    status.className='exam-scoring-total exam-scoring-correct';
    status.textContent=lang?'Total: 10 punts.':'Total: 10 puntos.';
@@ -201,6 +472,11 @@
    row.append(name,control,unit);rows.append(row);
   }
   reset.textContent=state().language==='va'?'Repartir punts':'Repartir puntos';
+  reset.title=morph()?
+   (state().language==='va'?'Restableix 1 punt inicial per pregunta. El total pot no ser 10.':
+    'Restablece 1 punto inicial por pregunta. El total puede no ser 10.'):
+   (state().language==='va'?'Reparteix expressament els punts; substitueix els valors actuals.':
+    'Reparte explícitamente los puntos y sustituye los valores actuales.');
   help.textContent=state().language==='va'?
    'Edita cada valor ací o la xifra del mateix enunciat en la vista prèvia. El Word conserva la puntuació.':
    'Edita cada valor aquí o la cifra del propio enunciado en la vista previa. El Word conserva la puntuación.';
@@ -248,6 +524,9 @@
   renderPending=false;
   if(!paper.querySelector('.exam-sheet')){previousQuestions=[];renderRows();renderQuestionScores();return}
   if(observer)observer.disconnect();
+  // Eliminar etiquetas editoriales anteriores antes de releer los enunciados.
+  // Nunca deben convertirse en parte de una nueva etiqueta o del texto académico.
+  paper.querySelectorAll('[data-exam-subscore]').forEach(el=>el.remove());
   const elements=find(),raw=elements.map(el=>{
    const text=el.dataset.scoringCaption||clean(el.textContent);
    const match=/\(\s*(\d+(?:[,.]\d+)?)\s*p\.?\s*\)\s*[:.]?\s*$/i.exec(el.textContent);
@@ -262,7 +541,9 @@
    const key=storageKey(base+(duplicate?'#'+duplicate:''));
    if(base==='sent')scores[key]=sentenceCents();
    else if(state().course!=='greek1'&&base==='lex')scores[key]=200;
-   else if(!Object.prototype.hasOwnProperty.call(scores,key)||autoManaged.has(key)){
+   else if(!Object.prototype.hasOwnProperty.call(scores,key)){
+    // Solo se asigna la puntuación inicial una vez por clave; un cambio de
+    // unidades, número de oraciones o selección no redistribuye valores previos.
     scores[key]=defaults[i];autoManaged.add(key);
    }
    if(state().course==='greek1'){
@@ -301,7 +582,7 @@
    }
    return {el,key,caption:item.caption,base};
   });
-  persist();renderRows();renderQuestionScores();
+  buildDetails();persist();renderRows();renderQuestionScores();renderDetails();
   if(observer)observer.observe(paper,{subtree:true,childList:true,characterData:true});
  }
  function schedule(){
@@ -367,7 +648,11 @@
    delete scores[item.key];
    setScore(item.key,defaults[i],{source:'auto'});
   });
-  renderRows();
+  for(const q of detailGroups){
+   delete scores[initKey(q)];
+   q.groups.forEach(g=>{delete scores[g.key];g.children.forEach(c=>delete scores[c.key])});
+  }
+  sync();
  });
  for(const id of ['course','model','lang']){
   document.getElementById(id)?.addEventListener('change',()=>{
@@ -380,6 +665,17 @@
  function restoreScores(saved){
   if(!saved||typeof saved!=='object'||Array.isArray(saved))return;
   const current=state(),prefix=current.course+'/'+current.model+'/';
+  // Compatibilidad con los borradores anteriores al desglose: sus puntos
+  // globales se restauran, y el primer desglose se genera desde esos valores,
+  // sin heredar subpuntos de otro examen que esté en el mismo navegador.
+  const savedKeys=Object.keys(saved);
+  const hasSubpoints=savedKeys.some(key=>key.startsWith(prefix)&&
+   (key.includes('|sub:')||key.endsWith('|desglose-inicializado')));
+  if(!hasSubpoints){
+   for(const key of Object.keys(scores))
+    if(key.startsWith(prefix)&&(key.includes('|sub:')||key.endsWith('|desglose-inicializado')))
+     delete scores[key];
+  }
   for(const [key,cents] of Object.entries(saved)){
    if(key.startsWith(prefix)&&Number.isInteger(cents)&&cents>=0&&cents<=10000){
     scores[key]=cents;autoManaged.delete(key);
@@ -398,6 +694,23 @@
  window.ExaminaScoring={sync,parse:number,format:value,total:()=>sum(),
   preflight:finalPreflight,canExport,finalMode:()=>finalCheckbox.checked,
   rows:()=>previousQuestions.map(x=>({key:x.key,points:scores[x.key],caption:x.caption})),
-  snapshot:()=>Object.fromEntries(previousQuestions.map(x=>[x.key,scores[x.key]])),
+  snapshot:()=>{
+    const all=previousQuestions.map(x=>[x.key,scores[x.key]]);
+    for(const q of detailGroups){
+     if(!q.groups.length)continue;
+     all.push([initKey(q),scores[initKey(q)]||1]);
+     for(const g of q.groups){
+      all.push([g.key,scores[g.key]||0]);
+      for(const c of g.children)all.push([c.key,scores[c.key]||0]);
+     }
+    }
+    return Object.fromEntries(all);
+   },
+   details:()=>detailGroups.map(q=>({key:q.key,base:q.base,optional:q.optional,
+    parent:scores[q.key]||0,groups:q.groups.map(g=>({
+     key:g.key,points:scores[g.key]||0,fixed:g.fixed,
+     children:g.children.map(c=>({key:c.key,points:scores[c.key]||0}))
+    }))})),
+   detailErrors:detailDiscrepancies,
   restore:restoreScores,isMorph:morph};
 })();

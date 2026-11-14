@@ -6,6 +6,9 @@ on:
       - 'index.html'
       - 'exam-scoring.js'
       - 'scripts/test-phase-one.cjs'
+      - 'scripts/test-phase-five.cjs'
+      - 'scripts/test-phase-six.cjs'
+      - 'scripts/test-subquestion-scoring.cjs'
       - '.github/workflows/phase-one-regression.yml'
   workflow_dispatch:
 
@@ -32,6 +35,12 @@ jobs:
         run: node scripts/test-phase-one.cjs
       - name: All existing Word preview regressions
         run: npm run preview:test
+      - name: Phase V responsive editing and Word regressions
+        run: node scripts/test-phase-five.cjs
+      - name: Phase VI ten points, drafts and Word regressions
+        run: node scripts/test-phase-six.cjs
+      - name: Phase VI subquestion scoring, drafts and lexical alternatives
+        run: node scripts/test-subquestion-scoring.cjs
       - name: Vocabulary regressions
         run: npm run vocabulary:test
       - name: Offline consistency

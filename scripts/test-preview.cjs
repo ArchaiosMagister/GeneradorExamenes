@@ -110,10 +110,10 @@ async function checkFile(browser,filename){
     disabled:el.querySelector('.exam-question-toggle')?.disabled
    }));
   },{course,model,unit});
-  assert.equal(menu.length,6,filename+' '+course+'/'+model+': deben verse seis preguntas posibles');
+  assert(menu.every(x=>!x.disabled),filename+' '+course+'/'+model+': solo deben verse preguntas disponibles');
   for(const kind of included)assert(menu.some(x=>x.kind===kind&&x.checked&&!x.disabled),
    filename+' '+course+'/'+model+': pregunta predeterminada '+kind);
-  for(const kind of disabled)assert(menu.some(x=>x.kind===kind&&!x.checked&&x.disabled),
+  for(const kind of disabled)assert(!menu.some(x=>x.kind===kind),
    filename+' '+course+'/'+model+': pregunta incompatible '+kind);
  }
  // Las marcas de morfología deben actuar sobre el examen real.
@@ -169,6 +169,62 @@ async function checkFile(browser,filename){
   assert.equal(sample.indicatorItalic,false,filename+': metadato en cursiva '+sample.source);
   assert.equal(sample.fullText,sample.source,filename+': se ha perdido contenido '+sample.source);
  }
+ const curricular=await page.evaluate(()=>{
+  const course=$('course'),model=$('model');
+  course.value='latin1';course.dispatchEvent(new Event('change',{bubbles:true}));
+  model.value='morf';model.dispatchEvent(new Event('change',{bubbles:true}));
+  return [3,4,5,6].map(unit=>{
+   document.querySelectorAll('.unit-choice').forEach(el=>el.checked=units[Number(el.value)]==='UD'+unit);
+   $('cumulative').checked=true;
+   return Array.from({length:10},()=>{
+    examSelectionCache.clear();generate();
+    const cached=key=>examSelectionCache.get(examCacheSignature(key))||[];
+    return {decl:cached('decl').map(x=>x.declension),verbs:cached('verb').map(x=>[x.tense,x.voice]),
+     forms:cached('forms').map(x=>[x.category,x.declension,x.introduced]),pronouns:cached('pronouns').map(x=>x.unit)};
+   });
+  });
+ });
+ for(const result of curricular[0])assert(!result.forms.some(([,d])=>d?.startsWith('3')));
+ for(const result of curricular[1]){
+  assert(result.decl.some(kind=>kind?.startsWith('3')));
+  assert(result.forms.some(([kind,d])=>kind==='nouns'&&d?.startsWith('3')));
+  for(const tense of ['perfecto','pluscuamperfecto'])
+   assert(result.verbs.some(([t,v])=>t===tense+' de indicativo'&&v==='activa'));
+ }
+ for(const result of curricular[2]){
+  assert(result.forms.some(([kind,d])=>kind==='adjectives'&&d==='3'));
+  assert(result.forms.some(([kind,,introduced])=>kind==='pronouns'&&introduced===5));
+  assert(result.pronouns.includes(5)&&result.pronouns.includes(3));
+ }
+ for(const result of curricular[3])assert(result.pronouns.includes(6));
+ const coverage=await page.evaluate(()=>{
+  const configure=(course,model)=>{
+   $('course').value=course;$('course').dispatchEvent(new Event('change',{bubbles:true}));
+   $('model').value=model;$('model').dispatchEvent(new Event('change',{bubbles:true}));
+  };
+  const gaps=[];
+  for(const model of ['tablas','mixto']){
+   configure('latin1',model);
+   for(const unit of units.filter(x=>examUnitNumber(x)>0)){
+    document.querySelectorAll('.unit-choice').forEach(el=>el.checked=units[Number(el.value)]===unit);
+    const chosen=selectedUnits(),pool=latinExamFormCandidates(chosen,true).flat();
+    const priorities=latinFormPriorities(chosen).filter(matches=>pool.some(matches));
+    const rows=latinExamForms(chosen,6);
+    if(!priorities.every(matches=>rows.some(matches)))gaps.push('Latín I '+model+' '+unit);
+   }
+  }
+  configure('greek1','complete');
+  for(const kind of ['declension','conjugation','forms','pronouns','etymology']){
+   for(const {unit} of GREEK_I_SYLLABUS){
+    const pool=greekVerifiedCorpus.filter(x=>x.kind===kind&&greekMorphologyEligible(x,unit));
+    if(!pool.some(x=>x.minUnit===unit))continue;
+    const rows=greekSelect(pool,[unit],{[kind]:2}).items;
+    if(!rows.some(x=>x.minUnit===unit)||rows.some(x=>x.minUnit>unit))gaps.push('Griego I '+kind+' UD'+unit);
+   }
+  }
+  return gaps;
+ });
+ assert.deepEqual(coverage,[],filename+': cobertura curricular en los modelos que comparten el sorteo');
  // Prueba real: el cuadro de análisis verbal debe mostrar enunciados y
  // tener formas pasivas a partir de UD3, respetando los umbrales curriculares.
  const latinVerbMorphology=await page.evaluate(()=>{
@@ -186,9 +242,25 @@ async function checkFile(browser,filename){
      lemmaItalic:wordInline(terms[1]).includes('<w:i/>'),
      conjugationItalic:wordInline(terms[1].nextSibling).includes('<w:i/>')};
    });
+   const fields=[...document.querySelectorAll('[data-editor-for="verb"] .exam-word-editor input')];
+   const editorValues=fields.map(input=>input.value);
+   const first=tbl.querySelector('tbody td:first-child > i:first-child');
+   const lemma=first?.nextElementSibling;
+   const lemmaBefore=lemma?.textContent;
+   if(fields.length&&first){
+    fields[0].value='forma revisada';
+    fields[0].dispatchEvent(new Event('input',{bubbles:true}));
+   }
+   const editWorked=first?.textContent==='forma revisada'&&lemma?.textContent===lemmaBefore&&
+    wordExamTable(tbl).includes('forma revisada');
+   if(fields.length&&first){
+    first.textContent=rows[0].form;
+    first.dispatchEvent(new Event('input',{bubbles:true}));
+   }
+   const reverseEditWorked=fields[0]?.value===rows[0]?.form;
    const pool=latinMorphologyVerbPool(selectedUnits());
    const picked=examSelectionCache.get(examCacheSignature('verb'))||[];
-   return {unit,rows,picked: picked.map(({form,entry,voice,tense})=>({form,entry,voice,tense})),
+   return {unit,rows,editorValues,editWorked,reverseEditWorked,picked: picked.map(({form,entry,voice,tense})=>({form,entry,voice,tense})),
     allVoices:[...new Set(pool.map(item=>item.voice))],
     allTenses:[...new Set(pool.map(item=>item.tense))],
     duco:pool.filter(x=>examKey(x.entry)==='duco').map(x=>({form:x.form,tense:x.tense,voice:x.voice})),
@@ -203,6 +275,10 @@ async function checkFile(browser,filename){
  for(const sample of latinVerbMorphology){
   const {unit,rows,picked,allVoices,allTenses,wordXml}=sample;
   assert(rows.length>=2,filename+' '+unit+': tabla verbal vacía');
+  assert.deepEqual(sample.editorValues,rows.map(row=>row.form),
+   filename+' '+unit+': debe haber un solo campo por forma verbal');
+  assert(sample.editWorked&&sample.reverseEditWorked,
+   filename+' '+unit+': la edición debe conservar el enunciado y llegar a Word');
   assert(rows.every(x=>x.form&&x.lemma&&x.lemmaItalic&&!x.conjugationItalic),
    filename+' '+unit+': falta lema en cursiva o hay conjugación en cursiva');
   assert(rows.every(x=>x.text.includes('(')&&x.text.includes(')')),
@@ -451,7 +527,7 @@ async function checkFile(browser,filename){
   assert.equal(await page.locator('#group-sentences').isVisible(),shouldHaveSent,filename+': menú de oraciones fuera de contexto');
   assert.equal(await page.locator('#group-vocab').isVisible(),shouldHaveSent,filename+': vocabulario fuera de contexto');
   assert.equal(await page.locator('#group-culture').isVisible(),course==='latin4',filename+': cultura visible fuera de Latín 4.º');
-  assert.equal(await page.locator('#examQuestionMenus [data-question="lex"]').count()>0,course!=='greek1',
+  assert.equal(await page.locator('#examQuestionMenus [data-question="lex"]').count()>0,course!=='greek1'&&model!=='morf',
    filename+': sección de léxico incoherente');
   assert.equal(await page.locator('#examQuestionMenus [data-question="culture"]').count()>0,course==='latin4',
    filename+': sección de cultura incoherente');
@@ -680,7 +756,9 @@ async function checkFile(browser,filename){
  const xml=readStoredZipEntry(fs.readFileSync(await downloaded.path()),'word/document.xml');
  assert(xml.includes('Puella amat.')&&xml.includes('Nauta navigat.')&&xml.includes('g.'));
  await page.setViewportSize({width:390,height:844});
+ await page.getByRole('tab',{name:/Vista pr[eè]via/}).click();
  assert(await page.locator('#paper .exam-sheet').isVisible(),filename+': vista previa oculta en móvil');
+ await page.setViewportSize({width:1360,height:940});
  await checkCulture(page,filename);
  assert.deepEqual(errors,[],filename+': errores JavaScript');
  await context.close();

@@ -304,6 +304,7 @@ function readStoredZipEntry(bytes,wanted){
    assert(!lat4.norms,filename+': normas de Latín I en menú de Latín 4.º');
 
    await page.setViewportSize({width:390,height:844});
+   await page.getByRole('tab',{name:/Vista pr[eè]via/}).click();
    assert(await page.locator('#paper').isVisible(),filename+': vista previa móvil oculta');
    assert.deepEqual(errors,[],filename+': errores JS en navegador');
    await context.close();
