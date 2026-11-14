@@ -181,6 +181,52 @@ async function checkProfile(browser,p,filename,origin){
     await context.setOffline(false);
    }
   }
+  if(p.name==='Safari iPad vertical'){
+   // Interacción táctil real de Playwright sobre WebKit con una edición previa.
+   // No reemplaza la prueba de Safari en hardware Apple.
+   await page.locator('#examQuestionsTab').tap();
+   await page.locator('#examPreviewTab').tap();
+   const edit=await page.evaluate(()=>{
+    const paper=document.getElementById('paper');
+    const verb=paper.querySelector('.exam-verbs thead tr:first-child th[colspan] i')||
+     paper.querySelector('.exam-nouns thead tr:first-child th[colspan] i');
+    const sentence=paper.querySelector('.exam-sentences [data-sentence-slot]');
+    if(!verb||!sentence)throw Error('Faltan dos superficies académicas para editar');
+    verb.textContent+=' EDITADO_WEBKIT_IPAD';
+    verb.dispatchEvent(new InputEvent('input',{bubbles:true}));
+    sentence.textContent='Puella in villa laborat. EDITADA_WEBKIT_IPAD';
+    sentence.dispatchEvent(new InputEvent('input',{bubbles:true}));
+    document.getElementById('saveDraft').click();
+    const saved=JSON.parse(localStorage.getItem('examina_draft_v14')||'null');
+    const before=paper.querySelectorAll('[data-analysis-slot],.exam-form').length;
+    const count=document.getElementById('count-forms');
+    count.value=String(Number(count.value)+1);
+    count.dispatchEvent(new Event('change',{bubbles:true}));
+    return {
+     saved:!!saved?.html?.includes('EDITADO_WEBKIT_IPAD')&&
+      saved.html.includes('EDITADA_WEBKIT_IPAD'),
+     stable:paper.textContent.includes('EDITADO_WEBKIT_IPAD')&&
+      paper.textContent.includes('EDITADA_WEBKIT_IPAD'),
+     before,after:paper.querySelectorAll('[data-analysis-slot],.exam-form').length
+    };
+   });
+   assert(edit.saved&&edit.stable,filename+': WebKit iPad perdió dos cambios manuales');
+   assert(edit.after>edit.before,filename+': WebKit iPad no redimensionó el análisis');
+   const editedWord=await word(page);
+   assert(editedWord.includes('EDITADO_WEBKIT_IPAD')&&editedWord.includes('EDITADA_WEBKIT_IPAD'),
+    filename+': Word en WebKit iPad perdió las ediciones manuales');
+   const restored=await page.evaluate(()=>{
+    document.getElementById('restoreDraft').click();
+    const paper=document.getElementById('paper');
+    return {
+     stable:paper.textContent.includes('EDITADO_WEBKIT_IPAD')&&
+      paper.textContent.includes('EDITADA_WEBKIT_IPAD'),
+     forms:paper.querySelectorAll('[data-analysis-slot],.exam-form').length
+    };
+   });
+   assert(restored.stable&&restored.forms===edit.before,
+    filename+': Safari iPad no recuperó el borrador con ambas ediciones');
+  }
   assert.deepEqual(exceptions,[],filename+' '+p.name+': excepciones JavaScript');
   console.log('OK',p.name,filename,'preguntas',initial.questions,'subapartados',initial.details);
  }finally{await context.close()}
