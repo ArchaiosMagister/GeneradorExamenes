@@ -13827,6 +13827,17 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
  function restoreScores(saved){
   if(!saved||typeof saved!=='object'||Array.isArray(saved))return;
   const current=state(),prefix=current.course+'/'+current.model+'/';
+  // Compatibilidad con los borradores anteriores al desglose: sus puntos
+  // globales se restauran, y el primer desglose se genera desde esos valores,
+  // sin heredar subpuntos de otro examen que esté en el mismo navegador.
+  const savedKeys=Object.keys(saved);
+  const hasSubpoints=savedKeys.some(key=>key.startsWith(prefix)&&
+   (key.includes('|sub:')||key.endsWith('|desglose-inicializado')));
+  if(!hasSubpoints){
+   for(const key of Object.keys(scores))
+    if(key.startsWith(prefix)&&(key.includes('|sub:')||key.endsWith('|desglose-inicializado')))
+     delete scores[key];
+  }
   for(const [key,cents] of Object.entries(saved)){
    if(key.startsWith(prefix)&&Number.isInteger(cents)&&cents>=0&&cents<=10000){
     scores[key]=cents;autoManaged.delete(key);
