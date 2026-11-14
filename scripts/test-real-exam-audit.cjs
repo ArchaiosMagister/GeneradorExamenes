@@ -207,6 +207,7 @@ async function runFile(browser,file){
   for(const group of cases){
    const list=await unitsFor(page,group.course);
    assert(list.length>0,file+' '+group.course+' sin unidades');
+   if(group.course==='greek1'&&list.includes('UD0'))issue('bloqueante',file+' Griego I','UD0 sigue disponible en el selector de exámenes');
    for(const model of group.models){
     for(const unit of list){
      for(const lang of ['es','va']){
