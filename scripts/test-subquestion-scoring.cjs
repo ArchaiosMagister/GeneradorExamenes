@@ -143,6 +143,8 @@ async function verifyEditing(page,file){
   file+': repartir explícitamente no cuadró el desglose');
  await parent.fill(parentOriginal);
  assert((await page.evaluate(()=>window.ExaminaScoring.detailErrors())).length>0);
+ // La acción de repartir reconstruye el desplegable; reabrirlo antes del segundo reparto.
+ await openScoringDetail(page,g.key);
  await card.getByRole('button',{name:'Repartir desglose'}).click();
  assert.deepEqual(await page.evaluate(()=>window.ExaminaScoring.detailErrors()),[]);
  const first=await page.evaluate(({key})=>window.ExaminaScoring.snapshot()[key],{key:g.key});
