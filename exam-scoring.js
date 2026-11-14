@@ -50,6 +50,7 @@
   language:document.getElementById('lang')?.value||'es'
  });
  const morph=()=>['morf','morphology'].includes(state().model);
+ const review=()=>document.getElementById('sheetType')?.value==='review';
  const latin4LateNoCulture=()=>{
   if(state().course!=='latin4'||typeof selectedUnits!=='function')return false;
   const marked=selectedUnits(false);
@@ -69,12 +70,16 @@
   const available=Math.max(0,1000-sentence-(latinLex?200:0));
   const other=raw.filter(x=>x.base!=='sent'&&!(latinLex&&x.base==='lex'));
   let ordinal=0;
+  // Los valores automáticos son puntos enteros, no céntimos repartidos:
+  // 3 p. entre 2 preguntas => 2 p. y 1 p. (nunca 1,50 p.).
+  // La edición manual admite decimales y se conserva sin redondeos.
+  const wholePoints=Math.floor(available/100);
   return raw.map(x=>{
-   if(morph())return x.original??100;
+   if(morph())return 100;
    if(x.base==='sent')return sentence;
    if(latinLex&&x.base==='lex')return 200;
    const n=ordinal++,quantity=other.length;
-   return quantity?Math.floor(available/quantity)+(n<available%quantity?1:0):0;
+   return quantity?(Math.floor(wholePoints/quantity)+(n<wholePoints%quantity?1:0))*100:0;
   });
  };
  const header=document.createElement('section');
@@ -317,43 +322,12 @@
   return row;
  }
  function renderDetails(){
+  // Se mantienen los datos de desglose de antiguos borradores únicamente
+  // por compatibilidad; no se presentan subtotales ni controles por elemento.
   rows.querySelectorAll('.exam-subscore-details').forEach(node=>node.remove());
-  // Los distintivos de pantalla son controles docentes, nunca parte del Word.
   paper.querySelectorAll('[data-exam-subscore]').forEach(node=>node.remove());
-  for(const q of detailGroups){
-   if(!q.groups.length)continue;
-   const detail=document.createElement('details');detail.className='exam-subscore-details';
-   const head=document.createElement('summary');
-   head.textContent=(state().language==='va'?'Desglossament · ':'Desglose · ')+q.caption;
-   const status=document.createElement('span');status.dataset.detailStatus=q.key;
-   status.className='exam-subscore-status';
-   const resetButton=document.createElement('button');resetButton.type='button';
-   resetButton.className='secondary';resetButton.textContent=state().language==='va'?
-    'Repartir desglossament':'Repartir desglose';
-   resetButton.title=state().language==='va'?
-   'Acció docent explícita: substituïx la puntuació dels elements d’esta pregunta':
-   'Acción docente explícita: sustituye los puntos de los elementos de esta pregunta';
-   resetButton.addEventListener('click',()=>redistributeDetails(q));
-   detail.append(head,status,resetButton);
-   if(q.optional){
-    const hint=document.createElement('p');hint.className='hint';
-    hint.textContent=state().language==='va'?
-     'Es trien dos apartats: les alternatives no se sumen totes. Cada alternativa val la mitat dels punts de la pregunta.':
-     'Se eligen dos apartados: las alternativas no se suman todas. Cada apartado alternativo debe valer la mitad de los puntos de la pregunta.';
-    detail.append(hint);
-   }
-   for(const [i,g] of q.groups.entries()){
-    detail.append(detailInput(g,(i+1)+'. '+g.label,g.fixed));
-    attachPreviewDetail(g.node,g.key,g.fixed);
-    for(const [j,child] of g.children.entries()){
-     detail.append(detailInput(child,'   '+(j+1)+'. '+child.label,false));
-     attachPreviewDetail(child.node,child.key,false);
-    }
-   }
-   rows.append(detail);
-  }
-  refreshDetailSummaries();
  }
+
  function editPreviewSubscore(node){
   const key=node?.dataset?.examSubscore;
   if(!key||node.nextElementSibling?.classList.contains('exam-subscore-inline'))return;
@@ -387,12 +361,12 @@
  });
 
  function finalPreflight(){
+  // La ficha de repaso no se califica, tampoco cuando se exporta a Word.
+  if(review())return {ok:true,mode:'repaso',normalized:false,total:0};
   if(!finalCheckbox.checked)return {ok:true,mode:'borrador',normalized:false};
   const total=sum();
   if(!previousQuestions.length)return {ok:false,mode:'definitivo',reason:'sin_preguntas',total};
-  const mismatches=detailDiscrepancies();
-  if(mismatches.length)return {ok:false,mode:'definitivo',normalized:false,
-   total,reason:'desglose_no_cuadra',mismatches};
+  // Las subpuntuaciones históricas no condicionan la nota por pregunta.
   // Decisión docente 1.A: la morfología es una prueba parcial de 1 p.
   // por pregunta. Nunca se rellena artificialmente hasta diez puntos.
   if(morph()){
@@ -442,10 +416,6 @@
    status.className='exam-scoring-total exam-scoring-warning';
    status.textContent=(lang?'Avís: la puntuació suma ':'Aviso: la puntuación suma ')+
     totalString+(lang?' punts, no 10. Revisa el repartiment.':' puntos, no 10. Revisa el reparto.');
-  }else if(detailDiscrepancies().length){
-   status.className='exam-scoring-total exam-scoring-warning';
-   status.textContent=lang?'Desglossament de les subpreguntes pendent de quadrar amb els punts de cada pregunta.':
-    'El desglose de las subpreguntas no coincide con los puntos de cada pregunta.';
   }else{
    status.className='exam-scoring-total exam-scoring-correct';
    status.textContent=lang?'Total: 10 punts.':'Total: 10 puntos.';
@@ -476,7 +446,11 @@
   showStatus();return true;
  }
  function renderRows(){
+  header.hidden=review();
+  // Sobrescribe display de las reglas CSS del panel en Safari.
+  header.style.display=review()?'none':'';
   rows.replaceChildren();
+  if(review()){showStatus();return}
   for(const [i,item] of previousQuestions.entries()){
    const row=document.createElement('label');row.className='exam-scoring-row';
    const name=document.createElement('span');
@@ -523,6 +497,7 @@
  function renderQuestionScores(){
   const host=document.getElementById('examQuestionMenus');if(!host)return;
   host.querySelectorAll('.exam-question-score-row').forEach(row=>row.remove());
+  if(review())return;
   for(const item of previousQuestions){
    const base=item.key.split('/').pop().replace(/#\d+$/,'');
    const target=base==='verbforms'?'verb':base;
@@ -578,12 +553,14 @@
    else if(!Object.prototype.hasOwnProperty.call(scores,key)){
     // Los valores nuevos nacen de las preguntas realmente disponibles.
     scores[key]=defaults[i];autoManaged.add(key);
-   }else if(state().course==='latin4'&&['decl','verb','forms'].includes(base)&&
-    autoManaged.has(key)&&(latin4LateNoCulture()||raw.some(q=>q.base==='culture'))&&
-    scores[key]!==defaults[i]){
-    // Decisión docente 2.B: UD9/10 no tienen cultura y los tres apartados
-    // variables pasan de 0,75 a 1 p. (1+1+1+2+5=10). Restauramos 0,75
-    // al volver a UD1-8. Nunca se pisa una puntuación editada a mano.
+   }else if(autoManaged.has(key)&&scores[key]!==defaults[i]&&(
+    scores[key]%100!==0||
+    (state().course==='latin4'&&['decl','verb','forms'].includes(base)&&
+     (latin4LateNoCulture()||raw.some(q=>q.base==='culture'))
+    ))){
+    // Migrar puntuaciones automáticas con decimales a puntos enteros.
+    // Las modificaciones manuales se respetan; cambiar el número de
+    // oraciones no redistribuye silenciosamente las demás preguntas.
     scores[key]=defaults[i];
     delete scores[key+'|desglose-inicializado'];
     for(const subkey of Object.keys(scores))if(subkey.startsWith(key+'|sub:'))delete scores[subkey];
@@ -614,13 +591,16 @@
      pts.tabIndex=-1;
      pts.title=base==='sent'?'1 p. por oración':'Léxico: 2p. fijos';
     }
-    strong.append(count,caption,pts);el.replaceChildren(strong);
+    strong.append(count,caption);
+    if(!review())strong.append(pts);
+    el.replaceChildren(strong);
    }else{
     const span=el.querySelector('.exam-question-points');
     span.dataset.scoringKey=key;
     // Al recuperar un borrador, el texto del Word y el estado numérico
     // deben proceder del mismo valor restaurado.
-    span.textContent=label(scores[key]);
+    if(review())span.remove();
+    else span.textContent=label(scores[key]);
    }
    return {el,key,caption:item.caption,base};
   });
@@ -696,7 +676,7 @@
   }
   sync();
  });
- for(const id of ['course','model','lang']){
+ for(const id of ['course','model','lang','sheetType']){
   document.getElementById(id)?.addEventListener('change',()=>{
    if(id!=='lang')finalCheckbox.checked=false;
    requestAnimationFrame(()=>schedule());
@@ -754,5 +734,5 @@
      children:g.children.map(c=>({key:c.key,points:scores[c.key]||0}))
     }))})),
    detailErrors:detailDiscrepancies,
-  restore:restoreScores,isMorph:morph};
+  restore:restoreScores,isMorph:morph,isReview:review};
 })();
