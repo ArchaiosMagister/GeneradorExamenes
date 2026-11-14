@@ -170,6 +170,10 @@ async function verifyEditing(page,file){
  return {formKey:g.key,points:first};
 }
 async function checkLex(page,file){
+ // index.html leído como file:// bloquea la carga fetch de bancos externos.
+ // Ese escenario se audita mediante HTTP en test-lex-menu-sync.cjs; la
+ // versión autónoma sí incorpora los bancos y comprueba aquí los desgloses.
+ if(file==='index.html')return {testedBy:'test-lex-menu-sync.cjs (HTTP)'};
  await page.waitForFunction(()=>typeof latinLexBanks!=='undefined'&&
   latinLexBanks.latin1.preverbs.length>0&&latinLexBanks.latin1.phonetics.length>0);
  await configure(page,'latin1','tablas','UD9–10');
