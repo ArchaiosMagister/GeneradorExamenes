@@ -50,8 +50,8 @@ Se inspeccionó además el render de muestras Word en Latín I, Griego I y Latí
 
 ## Regresión y publicación
 - [Auditoría curricular y DOCX después de corregir léxico](https://github.com/ArchaiosMagister/GeneradorExamenes/actions/runs/43598542574): **correcta**, 328 combinaciones, 28 DOCX, 14 ediciones, 0 bloqueantes, 108 observaciones.
-- [Fase I](https://github.com/ArchaiosMagister/GeneradorExamenes/actions/runs/43598542565): pruebas de regresión en curso al redactar el informe.
-- [WebKit y Android](https://github.com/ArchaiosMagister/GeneradorExamenes/actions/runs/43598542560): pruebas de compatibilidad en curso al redactar el informe.
-- [Batería general](https://github.com/ArchaiosMagister/GeneradorExamenes/actions/runs/43598542573): pruebas de regresión en curso al redactar el informe.
+- [Fase I](https://github.com/ArchaiosMagister/GeneradorExamenes/actions/runs/43598542565): **correcta**.
+- [WebKit y Android](https://github.com/ArchaiosMagister/GeneradorExamenes/actions/runs/43598542560): **correcta**.
+- [Batería general](https://github.com/ArchaiosMagister/GeneradorExamenes/actions/runs/43598542573): **correcta**.
 
 **No publicar ni fusionar** sin cierre de pruebas y autorización docente. Las correcciones no certifican la corrección filológica individual de todas las soluciones ni sustituyen las comprobaciones físicas en Safari de iPhone/iPad.
