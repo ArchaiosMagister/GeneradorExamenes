@@ -4636,7 +4636,10 @@ loadTeacherLatinLexBanks();
   '<input id="morphVerbs" type="number" value="10"><input id="morphWords" type="number" value="4">'+
   '<input id="morphCategory-n" type="checkbox" checked><input id="morphCategory-adj" type="checkbox" checked>'+
   '<input id="morphCategory-pro" type="checkbox" checked>';
- host.addEventListener('change',()=>generate());
+ host.addEventListener('change',event=>{
+  if(event.target?.id==='morphWords')resizeOnlyExamAnalysis();
+  else generate();
+ });
  panel.append(host);
 })();
 
