@@ -39,7 +39,7 @@
   if(/pronom/.test(s))return 'pronouns';
   if(/cultura/.test(s))return 'culture';
   if(/lexic|etimol|derivad/.test(s))return /lexic/.test(s)?'lex':'etymology';
-  if(/oracion|oracio|tradueix les/.test(s))return 'sent';
+  if(/oracion|oracio|tradueix les|traduix les/.test(s))return 'sent';
   if(/verbal/.test(s))return 'verbforms';
   if(/morfolog|paraules variables|palabras variables/.test(s))return 'forms';
   return 'q:'+s.replace(/[^a-z0-9]+/g,'-').slice(0,72);
