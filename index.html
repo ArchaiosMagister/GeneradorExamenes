@@ -4049,8 +4049,9 @@ function resizeOnlyExamAnalysis(){
   }else oldHeading.after(...replacement);
   const answer=original.querySelector('#answerkey > ol > li[data-exam-kind="forms"]');
   if(answer){
-   answer.innerHTML='<strong>'+esc(oldHeading.textContent.replace(/^\\s*\\d+[.]\\s*/u,''))+'</strong>'+
-    '<ol>'+forms.map(item=>'<li>'+esc(item.form)+' — '+esc(item.answer)+'</li>').join('')+'</ol>';
+   const list=answer.querySelector('ol');
+   if(list)list.innerHTML=forms.map(item=>
+    '<li>'+esc(item.form)+' — '+esc(item.answer)+'</li>').join('');
   }
   refreshManualMorphWords();
   window.examinaLastLatinPreview=paper.innerHTML;
