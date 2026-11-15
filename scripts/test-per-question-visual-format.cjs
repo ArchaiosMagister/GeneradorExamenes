@@ -185,7 +185,7 @@ async function morph(page,file){
   margin(xml,title,19);
   if(await page.locator('input[data-exam-visual-key="'+formsKey+'"][data-exam-visual-field="items"]').count()){
    await setPer(page,formsKey,'items',6);
-   const item=await page.locator('#paper .reference-analysis-item').nth(1).evaluate(el=>getComputedStyle(el).marginTop);
+   const item=await page.locator('#paper .reference-analysis-item[data-analysis-slot]').nth(1).evaluate(el=>getComputedStyle(el).marginTop);
    closeTo(item,6);
    const formatted=await wordXml(page);
    assert(formatted.includes('w:before="120"'),file+': los 6 pt de análisis de '+course+' no llegan a Word');
