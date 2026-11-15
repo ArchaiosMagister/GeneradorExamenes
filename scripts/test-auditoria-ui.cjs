@@ -31,7 +31,8 @@ assert.match(index,/if\(\/artículo\|articulo\/\.test\(a\)\)return null/,
   page.on('pageerror',error=>errors.push(error.message));
   await page.goto('http://127.0.0.1:'+server.address().port+'/offline.html',{waitUntil:'load'});
   await page.locator('#examQuestionMenus .exam-question-panel').first().waitFor();
-  assert.equal(await page.locator('.vocab-tabbar>button').count(),3);
+  assert.equal(await page.locator('.vocab-tabbar>button').count(),4,
+   'Tres módulos originales más Herramientas académicas');
   assert.equal(await page.locator('#examQuestionMenus details[data-question]').count(),5,
    'Cada pregunta debe tener su propio desplegable');
   assert.equal(await page.locator('#examQuestionSettings').evaluate(el=>el.tagName),'SECTION',
