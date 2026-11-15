@@ -71,8 +71,9 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
   await page.waitForFunction(()=>document.querySelector('#academicEvidenceRows .evidence-card button')?.textContent.includes('Autorizar'));
   assert.equal(await page.evaluate(()=>window.ExaminaTeacherReview.evidenceCheckExam(
    document.getElementById('paper'),'lat1').ok),false,'La revocación debe invalidar un ítem existente');
+  await page.locator('#vmShowExam').click();
   await page.locator('#docx').click();
-  assert.match(await page.locator('#academicEvidenceSummary').innerText(),/Exportación bloqueada/);
+  assert.match(await page.locator('#academicEvidenceSummary').textContent(),/Exportación bloqueada/);
   assert.deepEqual(errors,[],'Errores JavaScript en la interfaz de evidencias');
   // Fase IV: pruebas de interacción de la cola docente en el mismo Chromium.
   await require('./test-phase-four-review-browser.cjs')(browser);
