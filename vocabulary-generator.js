@@ -1565,8 +1565,16 @@ function passivePhrases(data,rows,course,bank){
    const teacher=entries.slice().sort((a,b)=>
     (b.entry.split(',').length-a.entry.split(',').length)*100+
     (b.entry.length-a.entry.length))[0];
-   candidates.push({lemma:record.lemma,entry:teacher.entry,meaning:teacher.meaning||'',
-    meaning_va:teacher.meaning_va||'',verifiedParticiple:record.verified});
+   // Ante divergencias de enunciación (occissum/occisum), la fuente
+   // morfológica documentada conserva la grafía canónica; las traducciones
+   // siguen perteneciendo al banco docente y no se modifica ningún registro.
+   const indexed=data.vocabulary?.lat?.[record.lemma]?.[course]?.entry||
+    data.vocabulary?.lat?.[record.lemma]?.lat1?.entry;
+   const supported=record.verified&&String(indexed||'').split(',').length>=3 &&
+    String(teacher.entry).split(',').length>=3;
+   candidates.push({lemma:record.lemma,entry:supported?indexed:teacher.entry,
+    meaning:teacher.meaning||'',meaning_va:teacher.meaning_va||'',
+    verifiedParticiple:record.verified});
   }
   if(!candidates.length)continue;
   found.push({identity:JSON.stringify([part.identity,aux.identity]),
