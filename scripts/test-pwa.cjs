@@ -293,8 +293,9 @@ const server=http.createServer(async(req,res)=>{
   });
   assert(latin.status===200&&latin.length===16988,'No funciona el banco latino offline');
   await page.locator('#offlineLemmaPanel').waitFor({state:'attached'});
-  await page.locator('#exam-ui-advanced').evaluate(node=>node.open=true);
-  await page.evaluate(()=>{const d=document.getElementById('offlineLemmaPanel').closest('details');if(d)d.open=true});
+  await page.locator('#academicNav').click();
+  assert(await page.locator('#academicWorkspace').isVisible(),
+   'Las consultas morfológicas deben permanecer accesibles sin conexión');
   await page.selectOption('#offlineLemmaCourse','gr1');
   await page.selectOption('#offlineLemmaMode','lemma');
   await page.locator('#offlineLemmaInput').fill('λύω');
