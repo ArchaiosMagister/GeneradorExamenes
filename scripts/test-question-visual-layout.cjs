@@ -48,6 +48,7 @@ async function configure(page,lang){
   examQuestionChoiceState['latin4/tablas/culture']=true;
   examSelectionCache.clear();
   generate();
+  window.ExaminaScoring?.sync?.(); // La prueba consulta el motor tras actualizar la vista previa.
   const sheet=document.querySelector('#paper .exam-sheet');
   const q=sheet?.querySelector('.exam-question[data-exam-kind="culture"]');
   const list=q?.nextElementSibling;
@@ -139,6 +140,7 @@ function validateXml(xml,questions,before,gap){
     assert.equal(custom.snapshot.cultureGapPt,9.5);
     validateXml(await wordXml(page),defaultView.texts,18,9.5);
 
+    await page.locator('#group-drafts').evaluate(el=>el.open=true);
     await page.locator('#saveDraft').click();
     await change('examQuestionBeforePt','2');
     await change('examCultureGapPt','1');
