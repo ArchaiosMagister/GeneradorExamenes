@@ -5,7 +5,8 @@
 (function(root){
  'use strict';
  const byId=id=>root.document.getElementById(id);
- const courseNames={latin1:'latin1',latin4:'latin4',greek1:'greek1'};
+ const PAGE_MARGINS_MM=[25,25,25,30]; // top, right, bottom, left
+ const CONTENT_WIDTH_MM=210-PAGE_MARGINS_MM[1]-PAGE_MARGINS_MM[3]; // A4
  const status=()=>byId('examinaPdfStatus');
  const lang=()=>byId('lang')?.value==='va';
  let busy=false;
@@ -39,7 +40,7 @@
   paper.querySelectorAll('[contenteditable]').forEach(el=>el.removeAttribute('contenteditable'));
   const stage=root.document.createElement('div');
   stage.className='examina-pdf-stage';
-  stage.style.cssText='width:186mm;max-width:186mm;padding:0;margin:0;background:white;color:#000;';
+  stage.style.cssText='width:'+CONTENT_WIDTH_MM+'mm;max-width:'+CONTENT_WIDTH_MM+'mm;padding:0;margin:0;background:white;color:#000;';
   stage.append(paper);
   return stage;
  }
@@ -57,14 +58,12 @@
   try{
    if(root.document.fonts?.ready)await root.document.fonts.ready;
    const stage=prepareDocument();
-   const course=courseNames[byId('course')?.value]||'latin';
-   const term=String(byId('term')?.value||'1').replace(/[^0-9]/g,'');
-   const filename='examen_'+course+'_'+term+'T_alumnado.pdf';
+   const filename=root.ExaminaExportFilename('pdf');
    // html2canvas rasteriza las grafías que muestra el navegador (incluida la
    // politonía griega); jsPDF compone páginas A4 sin abrir window.print().
    await root.html2pdf().set({
     filename,
-    margin:[12,12,14,12],
+    margin:PAGE_MARGINS_MM,
     image:{type:'jpeg',quality:0.94},
     html2canvas:{scale:1.7,useCORS:false,allowTaint:false,backgroundColor:'#ffffff',scrollX:0,scrollY:0,logging:false},
     jsPDF:{unit:'mm',format:'a4',orientation:'portrait',compress:true},
