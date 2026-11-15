@@ -352,6 +352,12 @@ html[data-course="greek1"] .paper .exam-sheet *{font-style:normal!important}
 .paper .exam-gloss-title{margin:4pt 0 3pt;font-size:10.5pt;break-after:avoid}
 .paper .exam-sheet .final-gloss{line-height:1.45;column-gap:24pt;font-size:10.5pt}
 .paper .exam-sheet .gloss-item{margin:0;break-inside:avoid}
+/* La elección filológica pertenece al editor, no al documento exportado. */
+#examSentenceGlossary .exam-passive-review{margin-top:12px}
+#examSentenceGlossary .exam-passive-label{display:grid;gap:5px;margin:9px 0}
+#examSentenceGlossary .exam-passive-label>span{overflow-wrap:anywhere;font-weight:400}
+#examSentenceGlossary .exam-passive-label>select{width:100%;max-width:100%;min-height:44px}
+
 .paper .exam-grade{font-size:10.5pt;margin:12pt 0}
 .paper .exam-sheet #answerkey h2,.paper .exam-sheet #answerkey h3{font-size:10.5pt;text-align:left}
 @media(max-width:500px){.paper .exam-header-line{grid-template-columns:minmax(0,1fr) 30%;gap:4pt;line-height:1.4;padding:3pt 0}.paper .exam-sheet th,.paper .exam-sheet td{padding:0 2pt;font-size:9pt}.paper .exam-nouns tbody th{white-space:normal}.paper .exam-item{margin-left:12pt}.paper .exam-etymology{margin-left:12pt}.paper .exam-sheet .final-gloss{columns:1}}
@@ -5640,7 +5646,9 @@ function buildFinalLexicon(chosen,sentences){
  const text=sentences.map(x=>x.text).join('\n');
  for(const row of analyzeExamVocabulary(text,course,bank,passiveChoices)){
   if(row.status==='manual'){
-   add(row);selectedChoices.push(row);
+   add(row);
+   // La perífrasis ya dispone de selector propio: no duplicar el botón «Cambiar».
+   if(!String(row.origin||'').startsWith('interpretación compuesta elegida'))selectedChoices.push(row);
   }else if(row.status==='documented')add(row);
   else if(row.candidates?.length)pendingChoices.set(examGlossIdentity(course,row.identity||row.form),row);
   else unresolved.add(row.form);
