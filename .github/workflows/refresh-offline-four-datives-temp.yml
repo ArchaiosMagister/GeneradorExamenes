@@ -1,0 +1,35 @@
+name: Regenerar PWA autónoma solo en rama filológica (temporal)
+on:
+  push:
+    branches:
+      - feat/fuente5-cuatro-dativos-griegos-20261115
+    paths:
+      - scripts/test-cuatro-dativos-fuente5.cjs
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    if: github.repository == 'ArchaiosMagister/GeneradorExamenes' && github.ref == 'refs/heads/feat/fuente5-cuatro-dativos-griegos-20261115'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Reconstruir únicamente offline.html a partir del índice ya auditado
+        run: |
+          set -euo pipefail
+          node scripts/build-offline.mjs
+          if git diff --quiet -- offline.html; then
+            echo 'Se esperaba un cambio exclusivamente en el índice embebido'
+            exit 1
+          fi
+          test "$(git diff --name-only)" = 'offline.html'
+          git add -- offline.html
+          git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' \
+            commit -m 'Sincronizar PWA autónoma con cuatro dativos griegos individualmente verificados'
+          git push origin HEAD:refs/heads/feat/fuente5-cuatro-dativos-griegos-20261115
