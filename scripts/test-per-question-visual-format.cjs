@@ -1,6 +1,7 @@
 'use strict';
 /* Valores independientes por pregunta en pantalla, Word, borradores y PWA. */
 const assert=require('node:assert/strict');
+const http=require('node:http'),fs=require('node:fs');
 const path=require('node:path'),{pathToFileURL}=require('node:url');
 const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
 const ROOT=path.resolve(__dirname,'..');
@@ -294,7 +295,36 @@ async function checkCourseThemeContrast(page,file){
  }
 }
 
+async function serveRealLexicalBanks(){
+ const server=http.createServer((req,res)=>{
+  let pathname;
+  try{pathname=decodeURIComponent(new URL(req.url,'http://localhost').pathname)}
+  catch{res.writeHead(400).end();return}
+  const full=path.resolve(ROOT,'.'+pathname);
+  if(!full.startsWith(ROOT+path.sep)){res.writeHead(403).end();return}
+  fs.stat(full,(error,info)=>{
+   if(error||!info.isFile()){res.writeHead(404).end();return}
+   const ext=path.extname(full);
+   res.setHeader('Content-Type',({'.html':'text/html; charset=utf-8',
+    '.js':'text/javascript; charset=utf-8','.json':'application/json',
+    '.webmanifest':'application/manifest+json','.svg':'image/svg+xml',
+    '.png':'image/png','.css':'text/css'}[ext]||'application/octet-stream'));
+   fs.createReadStream(full).pipe(res);
+  });
+ });
+ await new Promise((resolve,reject)=>{
+  server.once('error',reject);server.listen(0,'127.0.0.1',resolve);
+ });
+ return {url:'http://127.0.0.1:'+server.address().port+'/index.html',
+  close:()=>new Promise(resolve=>server.close(resolve))};
+}
 async function latinLexSpacing(page,file){
+ // El HTML público carga sus bancos por fetch: file:// no los proporciona.
+ // El archivo autónomo sí los tiene incrustados y se prueba sin HTTP.
+ const site=file==='index.html'?await serveRealLexicalBanks():null;
+ try{
+  if(site)await page.goto(site.url,{waitUntil:'load'});
+  await page.waitForFunction(()=>window.ExaminaTeacherLexBankReady===true);
  const phrases={
   es:{preverbs:'Modificación preverbial a partir de',phonetics:'Evolución fonética de',
    prefixes:'Señala el prefijo',latinisms:'Latinismos. Explica'},
@@ -355,6 +385,7 @@ async function latinLexSpacing(page,file){
     file+': Word conserva espacio antiguo al seleccionar cero puntos');
   }
  }
+ }finally{if(site)await site.close()}
 }
 
 (async()=>{
