@@ -273,7 +273,9 @@ assert(!engine.documentXml({...project,groupTypes:false}).includes('Sustantivos 
   });
   assert.equal(newGloss.after-newGloss.before,3,'Faltan tres fichas en el glosario complementario');
   assert.equal(newGloss.baselineExtra,0,'Se alteró el banco curricular original de 4.º');
-  assert.deepEqual(newGloss.units.slice(0,8),['UD1','UD2','UD3','UD4','UD5','UD6','UD7','UD8']);
+  assert.deepEqual([...new Set(newGloss.units)].sort((a,b)=>a.localeCompare(b,'es',{numeric:true})),
+   ['UD1','UD2','UD3','UD4','UD5','UD6','UD7','UD8','UD9','UD10'],
+   'La incorporación no debe crear unidades artificiales');
   for(const [surface,lemma] of [['Arat','aro'],['Doctusque','doctus'],['scribit','scribo']]){
    const hit=newGloss.forms.find(row=>row.form===surface);
    assert(hit,'Sin análisis del token '+surface);
