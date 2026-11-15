@@ -270,7 +270,8 @@ assert(!engine.documentXml({...project,groupTypes:false}).includes('Sustantivos 
   // El banco puede conservar una cita docente sin abreviatura POS; la
   // clasificación de categoría ya se contrasta por separado arriba.
   const hasConj=rows=>rows.some(row=>/^et\b/i.test(row));
-  const hasAdv=rows=>rows.some(row=>/^bene\b/i.test(row));
+  const hasAdv=rows=>rows.some(row=>/^bene\b/i.test(
+   row.normalize('NFD').replace(/\p{M}/gu,'')));
   assert(hasPrep(categories.both),'La casilla activada no añade ad al vocabulario final');
   assert(hasConj(categories.both)&&hasAdv(categories.both),
    'Faltan adverbios o conjunciones: '+JSON.stringify(categories));
