@@ -498,7 +498,7 @@ assert(!engine.documentXml({...project,groupTypes:false}).includes('Sustantivos 
    document.getElementById('glossNouns').checked=true;
    document.getElementById('glossAdjectives').checked=true;
    const editor=document.getElementById('newSentences');
-   editor.value='Latus.\\nLatus.';
+   editor.value='Latus.\nLatus.';
    editor.dispatchEvent(new Event('input',{bubbles:true}));
    generate();
    const selects=[...document.querySelectorAll('#examSentenceGlossary .exam-gloss-lemma')]
@@ -521,24 +521,24 @@ assert(!engine.documentXml({...project,groupTypes:false}).includes('Sustantivos 
   const bothKinds=await page.evaluate(()=>{
    const items=[...document.querySelectorAll('#examSentenceGlossary .gloss-item')];
    return {matching:items.filter(el=>el.textContent.toLowerCase().includes('latus')||
-    el.textContent.normalize('NFD').replace(/\\p{M}/gu,'').toLowerCase().includes('latus'))
+    el.textContent.normalize('NFD').replace(/\p{M}/gu,'').toLowerCase().includes('latus'))
      .map(el=>el.textContent),
     choices:[...document.querySelectorAll('#examSentenceGlossary .exam-gloss-selected')].map(e=>e.textContent)
    };
   });
   assert.equal(bothKinds.matching.length,2,'El glosario colapsa dos clases de latus: '+JSON.stringify(bothKinds));
-  assert(bothKinds.matching.some(x=>/lateris/i.test(x.normalize('NFD').replace(/\\p{M}/gu,''))),
+  assert(bothKinds.matching.some(x=>/lateris/i.test(x.normalize('NFD').replace(/\p{M}/gu,''))),
    'Falta la lectura del sustantivo latus, lateris');
-  assert(bothKinds.matching.some(x=>/[–-]a,\\s*[–-]um/i.test(x)),
+  assert(bothKinds.matching.some(x=>/[–-]a,\s*[–-]um/i.test(x)),
    'Falta la lectura del adjetivo latus, –a, –um');
   const wordHomograph=page.waitForEvent('download');
   await page.evaluate(()=>exportWord(false));
   const wordHomographFile=await wordHomograph;
   const wordHomographXml=wordDocumentXml(fs.readFileSync(await wordHomographFile.path()));
-  assert(/lateris/i.test(wordHomographXml.normalize('NFD').replace(/\\p{M}/gu,'')),
+  assert(/lateris/i.test(wordHomographXml.normalize('NFD').replace(/\p{M}/gu,'')),
    'Word no conserva el sustantivo latus');
-  assert(/latus/i.test(wordHomographXml.normalize('NFD').replace(/\\p{M}/gu,''))&&
-   /[–-]a,\\s*[–-]um/.test(wordHomographXml),
+  assert(/latus/i.test(wordHomographXml.normalize('NFD').replace(/\p{M}/gu,''))&&
+   /[–-]a,\s*[–-]um/.test(wordHomographXml),
    'Word no conserva el adjetivo latus');
   assert.deepEqual(errors,[],'No deben aparecer errores JavaScript en la interfaz');
   console.log('Glosario de oraciones: elecciones, persistencia, edición, tipos y agrupación: OK');
