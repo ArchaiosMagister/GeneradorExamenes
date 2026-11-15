@@ -109,7 +109,8 @@ async function main(){
    assert.equal(state.selected[0],'compound:0');
    assert.equal(state.selected[1],'');
    assert(state.text.includes('occido, occidi, occisum'),filename+': no se agrupó el perfecto pasivo: '+JSON.stringify(state));
-   assert(!state.text.includes('sum, fui'),filename+': el auxiliar sigue como lema independiente');
+   // La segunda frase aún sin elegir conserva su auxiliar independiente.
+   assert(state.text.includes('sum, fui'),filename+': se alteró una frase aún no resuelta');
    assert.equal(Object.keys(state.stored).length,1,'la elección no se guarda individualmente');
    assert.equal(await page.locator('[data-sentence-slot="0"]').textContent(),before,
     'la elección modificó el texto de la oración');
@@ -121,6 +122,7 @@ async function main(){
    assert(state.text.includes('ædifico')||state.text.includes('aedifico'),
     filename+': no se reconoció aedificata erant');
    assert(state.selected.every(x=>x==='compound:0'),'las decisiones no se acumulan');
+   assert(!state.text.includes('sum, fui'),filename+': siguen apareciendo auxiliares pese a agrupar ambas frases');
    await page.locator('.exam-passive-choice').nth(0).selectOption('separate');
    assert.equal(await page.locator('.exam-passive-choice').nth(1).inputValue(),'compound:0',
     'cambiar la primera frase alteró la segunda');
