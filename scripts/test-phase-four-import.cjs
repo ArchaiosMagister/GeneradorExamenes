@@ -69,6 +69,6 @@ assert(corrections.some(x=>x.lang==='grc'&&x.lemma==='κεφαλη'&&
  x.from==='κεφαλῆ, –ῆς'&&x.to==='κεφαλή, –ῆς'));
 assert(read('index.html').includes('κεφαλή, –ῆς'));
 assert(read('offline.html').includes('κεφαλή, –ῆς'));
-assert.equal(bank.counts.grc.wikcionario,549);
-assert.equal(bank.counts.grc.contrastado,474);
+assert.equal(bank.counts.grc.wikcionario,545);
+assert.equal(bank.counts.grc.contrastado,478);
 console.log('Fase IV: 36 lecturas todavía en cuarentena, diez transferidas sin permisos heredados, importación no destructiva y κεφαλή corregida.');
