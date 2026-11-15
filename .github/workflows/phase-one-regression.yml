@@ -4,6 +4,8 @@ on:
   pull_request:
     paths:
       - 'index.html'
+      - 'data/lemmas/teacher-forms.json'
+      - 'data/lemmas/verified-overrides.json'
       - 'exam-scoring.js'
       - 'scripts/test-phase-one.cjs'
       - 'scripts/test-phase-five.cjs'
