@@ -192,6 +192,55 @@ async function morph(page,file){
   }
  }
 }
+async function checkReviewLocaleAndContrast(page,file){
+ for(const [course,model,unit,es,va,expected] of [
+  ['latin4','tablas','UD4','Ficha de repaso de Latín 4.º ESO','Fitxa de repàs de Llatí 4t ESO','rgb(243, 212, 81)'],
+  ['greek1','morphology','UD8','Ficha de repaso de Griego I','Fitxa de repàs de Grec I','rgb(159, 216, 255)'],
+  ['latin1','morf','UD4','Ficha de repaso de Latín I','Fitxa de repàs de Llatí I',null]
+ ]){
+  await configure(page,course,model,'es',unit);
+  const actual=await page.evaluate(()=>{
+   const sheet=document.getElementById('sheetType'),lang=document.getElementById('lang');
+   sheet.value='review';sheet.dispatchEvent(new Event('change',{bubbles:true}));
+   const original=document.getElementById('name').value;
+   lang.value='va';lang.dispatchEvent(new Event('change',{bubbles:true}));
+   return {original,localized:document.getElementById('name').value,
+    heading:document.querySelector('#paper .exam-header-line:first-child span:first-child')?.textContent||''};
+  });
+  assert.equal(actual.original,es,file+': título ES inicial de '+course);
+  assert.equal(actual.localized,va,file+': no localiza el campo de título de '+course);
+  assert(actual.heading.startsWith(va),file+': no localiza el encabezado del documento de '+course);
+  const xml=await wordXml(page);
+  assert(xml.includes('Fitxa de repàs de'),file+': Word no contiene el título valenciano en '+course);
+  assert(!xml.includes('Ficha de repaso de'),file+': Word conserva el título español en '+course);
+  if(course==='latin4'){
+   const old=await page.evaluate(es=>{
+    document.getElementById('name').value=es;
+    generate();
+    return document.querySelector('#paper .exam-header-line:first-child span:first-child')?.textContent||'';
+   },es);
+   assert(old.startsWith(va),file+': borrador antiguo no se traduce');
+   assert((await wordXml(page)).includes(va),file+': Word no traduce borrador antiguo');
+  }
+  if(expected)for(const mode of ['dark','oled']){
+   const values=await page.evaluate(mode=>{
+    document.documentElement.dataset.appearance=mode;
+    return {text:getComputedStyle(document.querySelector('#examLayout aside.panel .settings-section-caption')).color,
+      paper:getComputedStyle(document.getElementById('paper')).backgroundColor};
+   },mode);
+   assert.equal(values.text,expected,file+': contraste '+course+'/'+mode);
+   assert.equal(values.paper,'rgb(255, 255, 255)',file+': papel no blanco en '+mode);
+  }
+ }
+ const custom=await page.evaluate(()=>{
+  const name=document.getElementById('name'),lang=document.getElementById('lang');
+  name.value='Título docente personalizado';
+  lang.value='es';lang.dispatchEvent(new Event('change',{bubbles:true}));
+  lang.value='va';lang.dispatchEvent(new Event('change',{bubbles:true}));
+  return name.value;
+ });
+ assert.equal(custom,'Título docente personalizado',file+': el cambio de idioma sobrescribe un título docente');
+}
 (async()=>{
  const browser=await chromium.launch({headless:true});
  try{
@@ -204,6 +253,7 @@ async function morph(page,file){
     await page.waitForFunction(()=>!!window.ExaminaVisualFormat&&!!window.ExaminaScoring?.rows);
     await latin4(page,file);
     await morph(page,file);
+    await checkReviewLocaleAndContrast(page,file);
     assert.deepEqual(errors,[],file+': excepciones JavaScript tras cambiar valores por pregunta');
    }finally{await context.close()}
   }
