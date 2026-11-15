@@ -105,6 +105,26 @@
   buttons.append(el('docxAnswers'),el('solutions'));teacher.append(buttons);
   printHint.after(teacher);
   const status=doc.createElement('p');status.id='examinaPdfStatus';status.setAttribute('role','status');status.setAttribute('aria-live','polite');teacher.after(status);
+  const validation=doc.createElement('p');validation.id='exportValidationStatus';validation.className='export-hint';
+  validation.setAttribute('role','status');validation.setAttribute('aria-live','polite');status.after(validation);
+  // El panel académico no está siempre visible: mostrar el motivo del bloqueo
+  // junto a la acción solicitada, sin modificar la evidencia ni la puntuación.
+  for(const id of ['docx','docxAnswers','print','pdfDownload']){
+   el(id)?.addEventListener('click',event=>{
+    const paper=el('paper'),course=el('course')?.value;
+    let message='';
+    if(!paper?.querySelector('.exam-sheet')){
+     message=tr('Genera primero un examen.','Genera primer un examen.');
+    }else if(root.ExaminaTeacherReview?.evidenceMayExport?.(paper,
+     {latin1:'lat1',latin4:'lat4',greek1:'gr1'}[course])===false){
+     message=tr('Exportación bloqueada por una forma pendiente. Revisa Herramientas académicas → Evidencia académica por forma.','Exportació bloquejada per una forma pendent. Revisa Eines acadèmiques → Evidència acadèmica per forma.');
+    }else if(root.ExaminaScoring?.canExport?.()===false){
+     message=tr('Exportación bloqueada por la puntuación. Revisa la distribución de puntos del examen.','Exportació bloquejada per la puntuació. Revisa la distribució de punts de l’examen.');
+    }
+    validation.textContent=message;
+    if(message){event.preventDefault();event.stopImmediatePropagation()}
+   },true);
+  }
   section.append(exportGroup);
   exportGroup.open=true;
   const draftHint=doc.createElement('p');draftHint.id='draftHubHint';draftHint.className='export-hint';
