@@ -111,6 +111,9 @@ function validateXml(xml,questions,before,gap){
     assert(parseFloat(defaultView.padding)>=15,file+': letra cultural sin suficiente distancia al texto');
     assert.equal(defaultView.qCount,defaultView.scoreCount,file+': controles de puntuación desincronizados');
     validateXml(await wordXml(page),defaultView.texts,12,5);
+    // Exportar Word añade metadatos de puntuación al DOM sin cambiar ninguna pregunta;
+    // capturarlos ahora evita confundir esa sincronización con una regeneración.
+    const htmlAfterWord=await page.locator('#paper .exam-sheet').evaluate(el=>el.innerHTML);
 
     const layout=page.locator('#examVisualSettings');
     await layout.evaluate(el=>el.open=true);
@@ -132,7 +135,7 @@ function validateXml(xml,questions,before,gap){
       snapshot:window.ExaminaVisualFormat.snapshot()
      };
     });
-    assert.equal(custom.html,defaultView.html,file+': cambiar formato volvió a sortear el examen');
+    assert.equal(custom.html,htmlAfterWord,file+': cambiar formato volvió a sortear el examen');
     assert.equal(custom.questions,defaultView.qCount,file+': se perdieron preguntas');
     assert.equal(custom.questions,custom.scoreCount,file+': se alteraron puntuaciones');
     assert(nearPt(custom.before,18)&&nearPt(custom.gap,9.5),file+': la vista previa no se actualiza');
