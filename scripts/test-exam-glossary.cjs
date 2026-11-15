@@ -271,21 +271,58 @@ assert(!engine.documentXml({...project,groupTypes:false}).includes('Sustantivos 
    result.examination=document.getElementById('examSentenceGlossary')?.innerText||'';
    return result;
   });
-  assert.equal(newGloss.after-newGloss.before,3,'Faltan tres fichas en el glosario complementario');
+  assert(newGloss.after>newGloss.before+100,'El glosario latino no reúne ambos cursos');
   assert.equal(newGloss.baselineExtra,0,'Se alteró el banco curricular original de 4.º');
+  const shared=await page.evaluate(()=>{
+   const data=window.ExaminaOfflineLemmatizer.currentData();
+   const engine=window.ExaminaVocabulary;
+   const get=(course,word)=>engine.analyze(data,word,course==='latin1'?'lat1':'lat4',
+    latinSentenceGlossaryBank(course),{contextual:true})[0];
+   const caelo=get('latin4','caelum'),gema=get('latin1','gemma');
+   const courseNode=document.getElementById('course'),old=courseNode.value;
+   courseNode.value='latin4';
+   const caeloExigible4=isRequired('cælum, –i',['UD1']);
+   courseNode.value='latin1';
+   const caeloExigible1=isRequired('cælum, –i',['UD1']);
+   courseNode.value=old;
+   return {caelo:{status:caelo.status,lemma:caelo.lemma},
+    gema:{status:gema.status,lemma:gema.lemma},
+    caeloExigible4,caeloExigible1,initial:vocab.length};
+  });
+  assert.equal(shared.caelo.status,'documented','Latín de 4.º no reconoce el banco de Latín I');
+  assert.equal(shared.caelo.lemma,'caelum');
+  assert.equal(shared.gema.status,'documented','Latín I no reconoce el banco de 4.º');
+  assert.equal(shared.gema.lemma,'gemma');
+  assert.equal(shared.caeloExigible4,false,'Una ficha ajena se ha hecho exigible en 4.º');
+  assert.equal(shared.caeloExigible1,true,'Se ha perdido la exigibilidad original de Latín I');
+  assert.equal(shared.initial,2046,'No se debe modificar el banco docente original');
   assert.deepEqual([...new Set(newGloss.units)].sort((a,b)=>a.localeCompare(b,'es',{numeric:true})),
    ['UD1','UD2','UD3','UD4','UD5','UD6','UD7','UD8','UD9','UD10'],
    'La incorporación no debe crear unidades artificiales');
   for(const [surface,lemma] of [['Arat','aro'],['Doctusque','doctus'],['scribit','scribo']]){
    const hit=newGloss.forms.find(row=>row.form===surface);
    assert(hit,'Sin análisis del token '+surface);
-   assert.equal(hit.status,'documented',surface+' aún requiere revisión sin candidatos');
-   assert.equal(hit.lemma,lemma,'Lema equivocado para '+surface);
+   if(surface==='Doctusque'){
+    assert.equal(hit.status,'review','La unión debe conservar la alternativa participial');
+    assert(hit.candidates.includes('doceo')&&hit.candidates.includes('doctus'),
+     'Se han ocultado lecturas morfológicas de doctusque');
+   }else{
+    assert.equal(hit.status,'documented',surface+' aún no se identifica');
+    assert.equal(hit.lemma,lemma,'Lema equivocado para '+surface);
+   }
   }
   assert.equal(newGloss.forms.find(x=>x.form==='Doctusque').encliticQue,true,
    'No se separa el nexo copulativo -que');
+  // No se elige automáticamente entre el adjetivo y el posible participio.
+  const doctusChoice=page.locator('#examSentenceGlossary .exam-gloss-review-choice')
+   .filter({hasText:'Doctusque'}).first();
+  const doctusOption=doctusChoice.locator('option').filter({hasText:'doctus, –a, –um'}).first();
+  const doctusValue=await doctusOption.getAttribute('value');
+  assert(doctusValue!==null,'No está disponible el adjetivo documentado');
+  await doctusChoice.locator('select').selectOption(doctusValue);
+  const selectedGloss=await page.locator('#examSentenceGlossary').innerText();
   for(const term of ['aro','doctus','scribo','–que'])
-   assert(newGloss.examination.includes(term),'No aparece '+term+' en la vista previa');
+   assert(selectedGloss.includes(term),'No aparece '+term+' en la vista previa');
   assert(!newGloss.examination.includes('sin candidatos'),'Siguen apareciendo formas desconocidas');
   // No se crea un lema sintético doctusque ni se promociona nada a morfología.
   assert.equal(await page.evaluate(()=>latinSharedBank.vocabulary('latin4').some(x=>
@@ -298,8 +335,8 @@ assert(!engine.documentXml({...project,groupTypes:false}).includes('Sustantivos 
    vocab.length=len;
    return rows.map(row=>row.meaning);
   });
-  assert.deepEqual(customOverride,['arar (acepción docente)'],
-   'El glosario complementario ha sobrescrito una ficha editada por el docente');
+  assert.equal(customOverride[0],'arar (acepción docente)',
+   'La glosa del curso actual debe tener prioridad sobre la del otro curso');
   for(const [language,expected] of [['es',['arar','escribir','sabio']],['va',['llaurar','escriure','savi']]]){
    await page.evaluate(lang=>{
     const control=document.getElementById('lang');control.value=lang;
