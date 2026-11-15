@@ -5,6 +5,8 @@ on:
       - 'scripts/reconcile-schola-morphology.cjs'
       - 'scripts/summarize-schola-morphology.cjs'
       - 'scripts/test-schola-morphology-reconciliation.cjs'
+      - 'scripts/test-cotejo-4-schola.cjs'
+      - 'data/lemmas/cotejo-4-schola-20261115.json'
       - 'data/lemmas/teacher-forms.json'
       - '.github/workflows/schola-morphology-audit.yml'
       - 'docs/conciliacion-schola-adaptador-20261114.md'
@@ -64,6 +66,7 @@ jobs:
           set -euo pipefail
           test -s .schola/dist/apps/morfologia/data/paradigmas.json
           node scripts/test-schola-morphology-reconciliation.cjs
+          node scripts/test-cotejo-4-schola.cjs
           node scripts/reconcile-schola-morphology.cjs \
             --schola .schola/dist/apps/morfologia/data/paradigmas.json \
             --schola-commit 8c4ede483593c890ac7b6fe62c2056e3e552cdcf \
