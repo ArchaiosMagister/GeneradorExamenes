@@ -38,6 +38,8 @@ jobs:
         run: npm run offline:build
       - name: Phase I synchronization regressions
         run: node scripts/test-phase-one.cjs
+      - name: Verificar interfaz de guardar/exportar y PDF local sin publicar
+        run: node scripts/test-export-workspace.cjs
       - name: Greek morphology regeneration web and offline
         run: node scripts/test-greek-morph-regeneration.cjs
       - name: Exam UI redesign in iPad, forms, Word and vocabulary isolation
