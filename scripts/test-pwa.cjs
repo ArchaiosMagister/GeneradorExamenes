@@ -48,6 +48,9 @@ const server=http.createServer(async(req,res)=>{
  const html=await fs.readFile(path.join(ROOT,'index.html'),'utf8');
  assert(html.includes('rel="apple-touch-icon" href="./icons/apple-touch-icon-180.png"'),
    'iPhone y iPad no tienen icono específico');
+ const deployment=await fs.readFile(path.join(ROOT,'.github/workflows/publish-online.yml'),'utf8');
+ assert(deployment.includes('exam-selection-summary.js'),
+  'GitHub Pages debe incluir el módulo extraído antes de publicar');
  const sw=await fs.readFile(path.join(ROOT,'sw.js'),'utf8');
  assert(sw.includes("cache:'no-cache'")&&!sw.includes("cache:'reload'"),
   'La nueva versión debe revalidar assets, no forzar su retransmisión incondicional');
