@@ -1,0 +1,40 @@
+name: Sincronizar PWA de homógrafos tras regresión
+
+on:
+  push:
+    branches:
+      - audit/latin-homograph-classes-20261115
+    paths:
+      - '.github/workflows/temp-sync-homographs.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  regenerate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Comprobar fuente y reconstruir HTML autónomo sin publicar
+        run: |
+          node --check vocabulary-generator.js
+          node --check scripts/test-exam-glossary.cjs
+          npm run offline:build
+          git diff --exit-code -- index.html
+      - name: Subir solamente offline.html
+        run: |
+          set -euo pipefail
+          git add offline.html
+          if git diff --cached --quiet; then
+            echo "HTML autónomo ya actualizado"
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'build(offline): sincronizar clasificación de homógrafos'
+          git push origin HEAD:audit/latin-homograph-classes-20261115
