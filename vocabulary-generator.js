@@ -6,6 +6,29 @@ const key=s=>linguistic().normalize(s);
 const latinKey=s=>key(s).replace(/v/g,'u'); // u/v gráficas, sin cambiar los enunciados.
 const head=s=>String(s).split(',')[0].replace(/\s*\([^)]*\).*/,'').trim();
 
+/* Los enunciados docentes de 1.ª pueden abreviar DOS temas regulares,
+ * p. ej. «trānsportō, –āvī, –ātum (1ª)». Reconstruirlos SOLO cuando
+ * ambas terminaciones y la conjugación están expresamente declaradas.
+ * Es una lectura de notación escolar, no una forma documentada individual.
+ * Conservar siempre intactos el enunciado y la glosa originales.
+ */
+function latinPrincipalParts(entry){
+ const raw=String(entry||'').trim();
+ const sections=raw.split(',').map(value=>
+  latinKey(value.replace(/\([^)]*\)/g,'').trim()));
+ const fields=sections.map(value=>value.replace(/^[–−—-]+/u,'').trim());
+ const lemma=latinKey(head(raw));
+ if(/\(1ª\)\s*$/u.test(raw)&&/^[a-z]+o$/.test(lemma)&&
+    // latinKey unifica u/v, también en el sufijo escrito –āvī.
+    sections.length>=3&&/^[–−—-]aui$/u.test(sections[1])&&
+    /^[–−—-]atum$/u.test(sections[2])){
+  const stem=lemma.slice(0,-1);
+  fields[1]=stem+'avi';
+  fields[2]=stem+'atum';
+ }
+ return fields;
+}
+
 /* Formas invariables de referencia: no requieren un paradigma flexivo.
  * Se usan solo cuando el banco no contiene otra lectura para la misma forma.
  * Las acepciones polisémicas pueden necesitar desambiguación contextual.
@@ -406,7 +429,7 @@ function latinExpandedForms(bank){
  for(const row of complete){
   const raw=String(row.entry||'').trim(),lemma=head(raw),l=latinKey(lemma);
   if(!l||!row.meaning||!(/^[a-z]+$/.test(l)))continue;
-  const fields=raw.split(',').map(x=>latinKey(x.replace(/\([^)]*\)/g,'').trim().replace(/^[–−—-]+/,'').trim()));
+  const fields=latinPrincipalParts(raw);
   const annotated=raw.match(/\((1ª|2ª|3ª|4ª|mx\.)\)\s*$/u);
   const record={lemma:l,entry:raw,meaning:row.meaning,meaning_va:row.meaning_va||'',
    attested:true,origin:'paradigma regular escolar derivado del enunciado (no flexión individual certificada)'};
@@ -1506,7 +1529,7 @@ function latinPassiveParticiples(data,bank){
  const bankStems=[];
  for(const row of bank){
   if(classifyVocabularyEntry(row.entry,'lat1')!=='verbs')continue;
-  const fields=String(row.entry||'').split(',').map(field=>latinKey(field.trim()));
+  const fields=latinPrincipalParts(row.entry);
   const supine=/^([a-z]+)um\b/.exec(fields[2]||'');
   if(fields.length<3||!supine||!fields[1]?.endsWith('i'))continue;
   const lemma=latinKey(head(row.entry));
@@ -1527,7 +1550,7 @@ function latinPassiveParticiples(data,bank){
  for(const [lemma,courses] of Object.entries(data.vocabulary?.lat||{})){
   if(/or$/.test(latinKey(lemma)))continue; // no crear pasivas de deponentes
   for(const curriculum of Object.values(courses)){
-   const fields=String(curriculum.entry||'').split(',').map(x=>latinKey(x.trim()));
+   const fields=latinPrincipalParts(curriculum.entry);
    const supine=/^([a-z]+)um\b/.exec(fields[2]||'');
    if(fields.length<3||!supine||!fields[1]?.endsWith('i'))continue;
    addStem(lemma,supine[1]);
