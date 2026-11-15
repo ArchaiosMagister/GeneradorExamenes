@@ -354,8 +354,13 @@ assert(!engine.documentXml({...project,groupTypes:false}).includes('Sustantivos 
    const sourceAro='aro, aravi, aratum (1ª)';
    const sourceSum='sum, fŭī – (irr.)';
    const sourceAmo='ămō, ămāvī, ămātum (1ª)';
-   const renderedEarly=buildFinalLexicon(early,[{text:'Arat et sum.'}]);
-   const renderedLate=buildFinalLexicon(late,[{text:'Arat et sum.'}]);
+   const visible=markup=>{
+    const box=document.createElement('div');
+    box.innerHTML=markup;
+    return box.textContent;
+   };
+   const renderedEarly=visible(buildFinalLexicon(early,[{text:'Arat et sum.'}]));
+   const renderedLate=visible(buildFinalLexicon(late,[{text:'Arat et sum.'}]));
    return {
     earlyAro:entry(sourceAro,'latin4',early),
     earlySum:entry(sourceSum,'latin4',early),
