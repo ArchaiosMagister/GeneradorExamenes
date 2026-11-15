@@ -1087,7 +1087,12 @@ function examVisualValue(heading,property){
  return Number.isFinite(n)&&n>=0&&n<=72?n:null;
 }
 function examVisualBeforeFor(heading){
- return examVisualValue(heading,'before')??examQuestionBeforePt();
+ const own=examVisualValue(heading,'before')??examQuestionBeforePt();
+ // Antes de la pregunta siguiente, respetar al menos el intervalo interno
+ // de la anterior, sin perder un ajuste explícito de enunciado mayor.
+ const previous=examVisualOwner(heading);
+ const gap=previous?examVisualItemGapFor(previous):null;
+ return gap===null?own:Math.max(own,gap);
 }
 function examVisualItemGapFor(heading){
  const custom=examVisualValue(heading,'items');
@@ -1098,6 +1103,14 @@ function examVisualItemGapFor(heading){
  return null; // Los demás mantienen su formato existente hasta que se personalizan.
 }
 function examVisualItemGapOverride(heading){return examVisualValue(heading,'items')}
+function examVisualGlossBeforeFor(gloss){
+ // La cabecera del vocabulario de oraciones hereda su separación real,
+ // incluida una personalización individual de la pregunta.
+ const previous=examVisualOwner(gloss);
+ const kind=examVisualHeadingIdentity(previous)?.kind;
+ return kind==='sent'||kind==='sentences'
+  ?examVisualItemGapFor(previous)??sentenceGapPoints():null;
+}
 // Renderizamos reglas fuera de #paper: editar un espacio no toca el examen
 // ni los enlaces de edición, la puntuación o el historial de regeneración.
 function applyExamVisualFormat(){
@@ -1114,11 +1127,10 @@ function applyExamVisualFormat(){
   if(!identity)continue;
   const {key,selector,kind}=identity;
   const custom=examVisualPerQuestion[key];
-  if(!custom)continue;
   const head='.paper .exam-sheet > '+selector;
-  if(Number.isFinite(custom.before))
-   text.push(head+'{margin-top:'+custom.before+'pt!important}');
-  if(!Number.isFinite(custom.items))continue;
+  // Una pregunta sin margen específico puede seguir a 50 pt internos de léxico.
+  text.push(head+'{margin-top:'+examVisualBeforeFor(heading)+'pt!important}');
+  if(!custom||!Number.isFinite(custom.items))continue;
   const gap=custom.items;
   // Preguntas con lista de apartados, letras o frases.
   text.push(head+'+ol.task>li{margin-bottom:0!important;padding-bottom:0!important}');
@@ -1150,10 +1162,19 @@ function applyExamVisualFormat(){
   if(kind==='declension')
    text.push(head+'~p.exam-table-gap{height:'+gap+'pt!important;line-height:'+Math.max(.05,gap)+'pt!important}');
  }
+ const gloss=sheet?.querySelector(':scope > p.exam-gloss-title');
+ const glossGap=examVisualGlossBeforeFor(gloss);
+ if(glossGap!==null)text.push(
+  '.paper .exam-sheet > p.exam-gloss-title{margin-top:'+glossGap+'pt!important}'
+ );
  rules.textContent=text.join('\n');
 }
 function sentenceGapPoints(){const value=Number($('sentence-gap-pt')?.value);return Number.isFinite(value)&&value>0?Math.max(12,Math.min(100,Math.round(value))):42}
-function applySentenceGap(){const paper=$('paper');if(paper?.style)paper.style.setProperty('--exam-sentence-gap',sentenceGapPoints()+'pt')}
+function applySentenceGap(){
+ const paper=$('paper');
+ if(paper?.style)paper.style.setProperty('--exam-sentence-gap',sentenceGapPoints()+'pt');
+ applyExamVisualFormat(); // El espacio del glosario también depende de las oraciones.
+}
 function countFor(id){const input=$('count-'+id);const fallback=id==='forms'?4:5;return Math.max(1,Math.min(id==='sent'?15:30,Number(input?.value)||fallback))}
 let sentences=[{text:'Puella rosam amat.',sol:'La niña ama la rosa.',units:['UD1']},{text:'Servi in villa laborant.',sol:'Los esclavos trabajan en la finca.',units:['UD1','UD2']},{text:'Nauta terram videt.',sol:'El marinero ve la tierra.',units:['UD1','UD2']},{text:'Romani oppidum oppugnant.',sol:'Los romanos asedian la ciudad.',units:['UD2']},{text:'Magister discipulos laudat.',sol:'El maestro elogia a los alumnos.',units:['UD2']}];
 // Vocabulario exigible, separado del banco general y de la unidad de aparición del lema.
@@ -2620,7 +2641,11 @@ function wordExamParagraph(el){
   props.push('<w:spacing w:before="0" w:after="0" w:line="'+(gap===null?140:Math.max(1,Math.round(gap*20)))+'" w:lineRule="exact"/>');
   runs='';
  }
- else if(cls.contains('exam-gloss-title'))props.push('<w:keepNext/><w:spacing w:before="80" w:after="60" w:line="300" w:lineRule="auto"/>');
+ else if(cls.contains('exam-gloss-title')){
+  const gap=examVisualGlossBeforeFor(el);
+  props.push('<w:keepNext/><w:spacing w:before="'+(gap===null?80:Math.round(gap*20))+
+   '" w:after="60" w:line="300" w:lineRule="auto"/>');
+ }
  else props.push('<w:spacing w:before="200" w:after="100"/>');
  return '<w:p><w:pPr>'+props.join('')+'</w:pPr>'+runs+'</w:p>';
 }
