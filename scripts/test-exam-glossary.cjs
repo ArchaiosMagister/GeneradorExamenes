@@ -699,6 +699,30 @@ assert(!engine.documentXml({...project,groupTypes:false}).includes('Sustantivos 
   assert.equal(directResize.initialHeadingPreserved,true,'Se ha sustituido el enunciado de análisis');
   assert.equal(directResize.forms,6,'El apartado de análisis no se ha redimensionado');
   assert.equal(directResize.answers,6,'Las soluciones de análisis no están sincronizadas');
+  // Los índices morfológicos no cambian el orden, las etiquetas ni las
+  // ambigüedades de las formas; una consulta repetida da el mismo resultado.
+  const lookupIndex=await page.evaluate(async()=>{
+   const engine=window.ExaminaMorphology;
+   const lat=await engine.lookup('lat','puella','form');
+   const repeated=await engine.lookup('lat','puella','form');
+   const greek=await engine.lookup('grc','λόγος','lemma');
+   const greekRepeated=await engine.lookup('grc','λόγος','lemma');
+   const ids=rows=>rows.map(x=>JSON.stringify([x.headword,x.surface,x.features]));
+   return {latinCount:lat.length,greekCount:greek.length,
+    latinStable:JSON.stringify(lat)===JSON.stringify(repeated),
+    greekStable:JSON.stringify(greek)===JSON.stringify(greekRepeated),
+    latinUnique:new Set(ids(lat)).size===lat.length,
+    greekUnique:new Set(ids(greek)).size===greek.length,
+    latinNom:lat.some(x=>x.headword==='puella'),
+    greekGen:greek.some(x=>x.surface==='λόγου')};
+  });
+  assert(lookupIndex.latinCount>=1&&lookupIndex.greekCount>=4);
+  assert(lookupIndex.latinStable&&lookupIndex.greekStable,
+   'La caché morfológica alteró las respuestas consecutivas');
+  assert(lookupIndex.latinUnique&&lookupIndex.greekUnique,
+   'La deduplicación morfológica introdujo entradas repetidas');
+  assert(lookupIndex.latinNom&&lookupIndex.greekGen,
+   'No se recuperan los ejemplos nominales de referencia');
   assert.deepEqual(errors,[],'No deben aparecer errores JavaScript en la interfaz');
   console.log('Glosario de oraciones: elecciones, persistencia, edición, tipos y agrupación: OK');
  }finally{
