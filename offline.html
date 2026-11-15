@@ -15387,14 +15387,22 @@ html[data-appearance="oled"] body.exam-redesign #exam-ui-shell :is(#exam-ui-core
   const compatibility=doc.createElement('details');compatibility.id='academicCompatibility';
   const summary=doc.createElement('summary');summary.id='academicCompatibilitySummary';compatibility.append(summary);
   const help=doc.createElement('p');help.id='academicCompatibilityHint';help.className='hint';compatibility.append(help);
-  for(const id of ['group-morph','unimorphPanel','offlineLemmaPanel','morphTeacherReview','academicEvidenceReview','greekDiscrepancyReview']){
-   const node=el(id);if(node)section.append(node);
-  }
+  const academicIds=['group-morph','unimorphPanel','offlineLemmaPanel','morphTeacherReview','academicEvidenceReview','greekDiscrepancyReview'];
   const legacy=el('group-import');if(legacy)compatibility.append(legacy);
   section.append(compatibility);
+  function relocateAcademic(){
+   // Los paneles de evidencias pueden inicializarse asíncronamente; al entrar
+   // garantiza un único nodo real, fuera de desplegables ocultos del examen.
+   for(const id of academicIds){
+    const node=el(id);
+    if(node&&node.parentElement!==section)section.insertBefore(node,compatibility);
+   }
+  }
+  relocateAcademic();
   const footer=doc.querySelector('footer.footer');
   if(footer)footer.before(section);else doc.body.append(section);
   function enter(){
+   relocateAcademic();
    doc.body.classList.add('academic-view');
    el('examLayout').hidden=true;
    el('examLayout').style.display='none';
