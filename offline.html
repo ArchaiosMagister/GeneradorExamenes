@@ -5673,6 +5673,11 @@ function buildFinalLexicon(chosen,sentences){
    (va?'Lectura de formes verbals compostes (tria cada aparició):':
        'Lectura de formas verbales compuestas (elige cada aparición):')+'</strong>';
   for(const phrase of passiveChoices){
+   const tenseText=va?({
+    'perfecto de indicativo pasivo':'perfet d’indicatiu passiu',
+    'pluscuamperfecto de indicativo pasivo':'plusquamperfet d’indicatiu passiu',
+    'futuro perfecto de indicativo pasivo':'futur perfet d’indicatiu passiu'
+   }[phrase.tense]||phrase.tense):phrase.tense;
    out+='<label class="exam-passive-label"><span><i>'+esc(phrase.form)+'</i> · '+
     esc(phrase.context)+'</span><select class="exam-passive-choice" data-identity="'+
     esc(phrase.identity)+'" aria-label="'+esc(phrase.form)+'">'+
@@ -5683,8 +5688,8 @@ function buildFinalLexicon(chosen,sentences){
      (va?'Dues paraules independents':'Dos palabras independientes')+'</option>'+
     phrase.candidates.map((candidate,i)=>'<option value="compound:'+i+'"'+
      (phrase.selected==='compound:'+i?' selected':'')+'>'+
-     esc(phrase.tense+' · '+candidate.entry)+
-     (candidate.verifiedParticiple?'':' (paradigma deducido; revisar)')+
+     esc(tenseText+' · '+candidate.entry)+
+     (candidate.verifiedParticiple?'':va?' (paradigma deduït; revisa)':' (paradigma deducido; revisar)')+
      '</option>').join('')+'</select></label>';
   }
   out+='</div>';
