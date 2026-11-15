@@ -278,8 +278,8 @@ async function main(){
   }
   if(accepted){extensions.candidate_lemmas++;extensions.candidate_rows+=accepted}
  }
- // Solo las diez lecturas femeninas contrastadas individualmente de ἐχθρός
- // se migran a fuente 5; el resto permanece candidato (fuente 4).
+ // Las diez lecturas femeninas de ἐχθρός y cuatro dativos singulares
+ // contrastados por separado se migran a fuente 5; el resto permanece fuente 4.
  let greekCandidateData;
  try{greekCandidateData=JSON.parse(await fs.readFile(greekCandidatePath,'utf8'))}
  catch(e){throw Error('Falta el extracto nominal griego (ejecuta build-greek-nominal-candidates.mjs): '+e.message)}
@@ -329,6 +329,35 @@ async function main(){
       r[2]===record.analysis&&r[3]===5))
    throw Error('Forma femenina de ἐχθρός no migrada exactamente una vez: '+record.id);
  }
+ const dativesLedger=JSON.parse(await fs.readFile(
+  path.join(root,'data/lemmas/cotejo-4-dativos-fuente5-20261115.json'),'utf8'));
+ if(dativesLedger.schema!=='examina-greek-individual-morphology-collation/v1'||
+    dativesLedger.subject!=='gr1'||dativesLedger.items?.length!==4||
+    dativesLedger.summary?.source5Promotions!==4||
+    dativesLedger.summary?.newAutomaticGradingPermissions!==0)
+  throw Error('Falta el cotejo individual de los cuatro dativos griegos');
+ const dativesSeen=new Set();
+ for(const record of dativesLedger.items){
+  const original=historicalById.get(record.id);
+  const backing=overrides.singleForms.filter(x=>x.lang==='grc'&&x.historicalId===record.id);
+  if(dativesSeen.has(record.id)||!original||
+     original.originalSource!==4||original.verifiedIndividual!==false||original.gradeEligible!==false||
+     original.lemma!==record.lemma||original.sourceForm!==record.originalSourceForm||
+     original.schoolForm!==record.schoolForm||original.analysis!=='N;DAT;SG'||
+     JSON.stringify(original.units)!==JSON.stringify(record.units)||
+     norm(record.originalSourceForm)!==norm(record.schoolForm)||
+     record.indexSourceCode!==5||record.automaticGradingEnabled!==false||
+     !record.spellingVerified||!record.analysisVerified||
+     !/^https:\/\//.test(record.reference)||!/^https:\/\//.test(record.independentParadigmCrosscheck)||
+     backing.length!==1||backing[0].form!==record.schoolForm||
+     backing[0].sourceForm!==record.originalSourceForm||backing[0].tags!==record.analysis||
+     !rows.grc.some(r=>r[0]===record.lemma&&r[1]===record.schoolForm&&
+      r[2]===record.analysis&&r[3]===5)||
+     rows.grc.some(r=>r[0]===record.lemma&&r[1]===record.originalSourceForm&&
+      r[2]===record.analysis&&r[3]===4))
+   throw Error('Dativo griego individual no migrado con historia exacta: '+record.id);
+  dativesSeen.add(record.id);
+ }
  const missingGreek=historicGreek.items.filter(x=>x.originalSource===4&&!x.extractPresent);
  if(historicGreek.items.length!==559||missingGreek.length!==49)
   throw Error('Auditoría de 559 registros griegos modificada inesperadamente');
@@ -339,13 +368,13 @@ async function main(){
    throw Error('Ficha histórica griega no segura: '+x.id);
   add('grc',x.lemma,x.sourceForm,x.analysis,'wikcionario');
  }
- if(counts.grc.wikcionario-greekCountBefore!==559-echthrosLedger.items.length)
-  throw Error('La reconstrucción no concilia las diez promociones con el inventario histórico');
+ if(counts.grc.wikcionario-greekCountBefore!==559-echthrosLedger.items.length-dativesLedger.items.length)
+  throw Error('La reconstrucción no concilia las catorce promociones con el inventario histórico');
  extensions.greek_nominal_candidates={
   lemmas:greekCandidateData.entries.length,
   rows:counts.grc.wikcionario-greekCountBefore,
   historicalRows:historicGreek.items.length,
-  migratedIndividualSource5:echthrosLedger.items.length,
+  migratedIndividualSource5:echthrosLedger.items.length+dativesLedger.items.length,
   archivedRowsWithoutExtract:missingGreek.length,
   license:greekCandidateData.license,
   attribution:greekCandidateData.attribution,

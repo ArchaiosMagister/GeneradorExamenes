@@ -13,13 +13,13 @@ assert.equal(ledger.summary.latin,100);
 assert.equal(ledger.summary.greek,100);
 assert.equal(ledger.summary.promoted,200);
 assert.equal(bank.counts.lat.modelo,3244);
-assert.equal(bank.counts.grc.wikcionario,549);
+assert.equal(bank.counts.grc.wikcionario,545);
 assert.equal(bank.counts.lat.contrastado,619);
-assert.equal(bank.counts.grc.contrastado,474);
+assert.equal(bank.counts.grc.contrastado,478);
 assert.equal(bank.extensions.candidate_rows,3244);
-assert.equal(bank.extensions.greek_nominal_candidates.rows,549);
-assert.equal(source.singleForms.length,475);
-assert.equal(bank.extensions.verifiedIndividualForms,475);
+assert.equal(bank.extensions.greek_nominal_candidates.rows,545);
+assert.equal(source.singleForms.length,479);
+assert.equal(bank.extensions.verifiedIndividualForms,479);
 const norm=s=>String(s).normalize('NFD').replace(/\u0345/g,'ι')
  .replace(/\p{M}/gu,'').toLowerCase().replace(/ς/g,'σ');
 const sig=r=>[r.language,r.lemma,r.form,r.analysis].join('|');

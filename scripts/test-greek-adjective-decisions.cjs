@@ -71,9 +71,9 @@ for(const [lemma,paradigm,handling,count,entry,verified] of expected){
 assert.equal(records.size,21);
 assert.equal(promoted,10);assert.equal(blocked,11);
 assert.equal(history.summary.requiresTeacherDecision,21,'Historial original intacto');
-assert.equal(bank.counts.grc.wikcionario,549);
-assert.equal(bank.counts.grc.contrastado,474);
-assert.equal(bank.extensions.verifiedIndividualForms,475);
+assert.equal(bank.counts.grc.wikcionario,545);
+assert.equal(bank.counts.grc.contrastado,478);
+assert.equal(bank.extensions.verifiedIndividualForms,479);
 assert.equal(bank.extensions.greek_nominal_candidates.historicalRows,559);
 assert(overrides.entryCorrections.some(x=>x.lang==='grc'&&x.course==='gr1'&&x.lemma==='εχθροσ'&&
  x.from==='ἐχθρός, –ον'&&x.to==='ἐχθρός, –ά, –όν'));
