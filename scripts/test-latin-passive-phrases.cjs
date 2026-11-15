@@ -108,7 +108,7 @@ async function main(){
    }));
    assert.equal(state.selected[0],'compound:0');
    assert.equal(state.selected[1],'');
-   assert(state.text.includes('occido, occidi, occisum'),filename+': no se agrupó el perfecto pasivo');
+   assert(state.text.includes('occido, occidi, occisum'),filename+': no se agrupó el perfecto pasivo: '+JSON.stringify(state));
    assert(!state.text.includes('sum, fui'),filename+': el auxiliar sigue como lema independiente');
    assert.equal(Object.keys(state.stored).length,1,'la elección no se guarda individualmente');
    assert.equal(await page.locator('[data-sentence-slot="0"]').textContent(),before,
