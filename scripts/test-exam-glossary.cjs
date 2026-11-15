@@ -345,6 +345,49 @@ assert(!engine.documentXml({...project,groupTypes:false}).includes('Sustantivos 
   });
   assert.equal(customOverride[0],'arar (acepción docente)',
    'La glosa del curso actual debe tener prioridad sobre la del otro curso');
+  // La UD6 de Latín 4.º cambia la presentación, NO la lematización.
+  // Incluso los verbos procedentes solo de Latín I se citan por el presente
+  // hasta UD5. Tras la UD6 aparecen perfecto y supino disponibles.
+  const schoolCitations=await page.evaluate(()=>{
+   const entry=latinExamGlossEntry;
+   const early=['UD3'],late=['UD6'];
+   const sourceAro='aro, aravi, aratum (1ª)';
+   const sourceSum='sum, fŭī – (irr.)';
+   const sourceAmo='ămō, ămāvī, ămātum (1ª)';
+   const renderedEarly=buildFinalLexicon(early,[{text:'Arat et sum.'}]);
+   const renderedLate=buildFinalLexicon(late,[{text:'Arat et sum.'}]);
+   return {
+    earlyAro:entry(sourceAro,'latin4',early),
+    earlySum:entry(sourceSum,'latin4',early),
+    earlyAmo:entry(sourceAmo,'latin4',early),
+    earlyUd1Sum:entry(sourceSum,'latin4',['UD1']),
+    lateAro:entry(sourceAro,'latin4',late),
+    lateSum:entry(sourceSum,'latin4',late),
+    latin1:entry(sourceAro,'latin1',early),
+    adjective:entry('bonus, –a, –um','latin4',early),
+    early:renderedEarly,late:renderedLate
+   };
+  });
+  assert.equal(schoolCitations.earlyAro,'aro (1ª)');
+  assert.equal(schoolCitations.earlySum,'sŭm (irr.)');
+  assert.equal(schoolCitations.earlyAmo,'ămo (1ª)');
+  assert.equal(schoolCitations.earlyUd1Sum,'sŭm');
+  assert.equal(schoolCitations.lateAro,'aro, aravi, aratum (1ª)');
+  assert.equal(schoolCitations.lateSum,'sum, fŭī – (irr.)');
+  assert.equal(schoolCitations.latin1,'aro, aravi, aratum (1ª)',
+   'No modificar la secuenciación de Latín I');
+  assert.equal(schoolCitations.adjective,'bonus, –a, –um',
+   'La abreviación no afecta a adjetivos');
+  assert(schoolCitations.early.includes('aro (1ª)')&&
+   schoolCitations.early.includes('sŭm (irr.)'),
+   'La presentación de UD3 no usa enunciados progresivos');
+  assert(!schoolCitations.early.includes('aravi')&&
+   !schoolCitations.early.includes('fŭī'),
+   'No anticipar los temas del perfecto/supino antes de UD6');
+  assert(schoolCitations.late.includes('aravi')&&
+   schoolCitations.late.includes('fŭī'),
+   'UD6 debe recuperar los temas verbales documentados');
+
   for(const [language,expected] of [['es',['arar','escribir','sabio']],['va',['llaurar','escriure','savi']]]){
    await page.evaluate(lang=>{
     const control=document.getElementById('lang');control.value=lang;
