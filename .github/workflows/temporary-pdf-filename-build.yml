@@ -1,0 +1,31 @@
+name: Sincronizar PDF offline y nombres en rama de revisión (sin desplegar)
+on:
+  push:
+    branches: [feat/pdf-margins-export-filenames-20261115]
+permissions:
+  contents: write
+jobs:
+  rebuild:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Construir HTML autónomo
+        run: node scripts/build-offline.mjs
+      - name: Verificar sintaxis y ausencia de recursos externos
+        run: node scripts/test-offline.mjs
+      - name: Sincronizar solo en la rama de revisión
+        run: |
+          git add offline.html
+          if ! git diff --cached --quiet; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -m "build: sincronizar nombres y márgenes PDF en offline"
+            git push origin HEAD:feat/pdf-margins-export-filenames-20261115
+          fi
