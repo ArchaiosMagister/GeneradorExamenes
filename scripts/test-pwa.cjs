@@ -49,6 +49,10 @@ const server=http.createServer(async(req,res)=>{
  assert(html.includes('rel="apple-touch-icon" href="./icons/apple-touch-icon-180.png"'),
    'iPhone y iPad no tienen icono específico');
  const sw=await fs.readFile(path.join(ROOT,'sw.js'),'utf8');
+ assert(sw.includes("cache:'no-cache'")&&!sw.includes("cache:'reload'"),
+  'La nueva versión debe revalidar assets, no forzar su retransmisión incondicional');
+ assert(sw.includes('const batchSize=6')&&sw.includes('cache.addAll(CORE_FILES.slice('),
+  'La instalación debe limitar las peticiones simultáneas sin perder CORE_FILES');
  assert(extraIcons.every(([name])=>sw.includes('./icons/'+name)),
    'Los iconos de Apple, Android y navegador deben quedar disponibles sin conexión');
  await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
