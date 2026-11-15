@@ -123,6 +123,43 @@ async function main(){
     filename+': no se reconoció aedificata erant');
    assert(state.selected.every(x=>x==='compound:0'),'las decisiones no se acumulan');
    assert(!state.text.includes('sum, fui'),filename+': siguen apareciendo auxiliares pese a agrupar ambas frases');
+   const word=await page.evaluate(async()=>{
+    const original=downloadBlob,review=window.ExaminaTeacherReview,score=window.ExaminaScoring;
+    const oldReview=review?.evidenceMayExport,oldScore=score?.canExport;
+    let result=null;
+    try{
+     document.getElementById('sheetType').value='review';
+     if(review)review.evidenceMayExport=()=>true;
+     if(score)score.canExport=()=>true;
+     downloadBlob=(name,blob)=>{result={name,blob}};
+     exportWord(false);
+     if(!result)return null;
+     const bytes=new Uint8Array(await result.blob.arrayBuffer());
+     const xml=new TextDecoder().decode(bytes);
+     return {name:result.name,size:bytes.length,
+      hasOccido:xml.includes('occido'),hasAedifico:xml.includes('ædifico')||xml.includes('aedifico'),
+      hasSum:xml.includes('sum, fui'),hasOption:xml.includes('Dos palabras independientes')};
+    }finally{
+     downloadBlob=original;
+     if(review)review.evidenceMayExport=oldReview;
+     if(score)score.canExport=oldScore;
+    }
+   });
+   assert(word&&word.size>3000&&word.name.endsWith('.docx'),filename+': exportación Word rota');
+   assert(word.hasOccido&&word.hasAedifico,filename+': Word no conserva la elección verbal '+JSON.stringify(word));
+   assert(!word.hasSum,filename+': Word añade sum pese a las dos decisiones compuestas');
+   assert(!word.hasOption,filename+': Word contiene controles del profesor');
+   const valencian=await page.evaluate(()=>{
+    document.getElementById('lang').value='va';
+    refreshSentenceGlossary();
+    const result={text:document.querySelector('#examSentenceGlossary').textContent,
+     options:[...document.querySelectorAll('.exam-passive-choice')].flatMap(x=>[...x.options].map(o=>o.textContent))};
+    document.getElementById('lang').value='es';refreshSentenceGlossary();
+    return result;
+   });
+   assert(valencian.text.includes('Vocabulari'),filename+': falta título valenciano');
+   assert(valencian.options.some(x=>x.includes('plusquamperfet d’indicatiu passiu')),
+    filename+': falta traducir el tiempo en el selector valenciano');
    await page.locator('.exam-passive-choice').nth(0).selectOption('separate');
    assert.equal(await page.locator('.exam-passive-choice').nth(1).inputValue(),'compound:0',
     'cambiar la primera frase alteró la segunda');
