@@ -49,7 +49,7 @@ for(const [course,vocabulary,form,left,right] of cases){
 const allLatin=[...latin,...latin4];
 const checkLatin=(form,course='lat4')=>
  engine.analyze(data,form,course,allLatin,{contextual:true})[0];
-const classesOf=(row,lemma)=>row.candidates
+const classesOf=(row,lemma)=>Array.from(row.candidates)
  .filter(c=>c.lemma===lemma)
  .map(c=>engine.classifyVocabularyEntry(c.entry,'lat4')).sort();
 for(const course of ['lat1','lat4']){
