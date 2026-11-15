@@ -336,8 +336,8 @@ async function latinLexSpacing(page,file){
  for(const [course,model,unit,lang,gap] of [
   ['latin4','tablas','UD8','es',8.5],
   ['latin4','tablas','UD8','va',11.5],
-  ['latin1','tablas','UD10','es',6.5],
-  ['latin1','mixto','UD10','va',13.5]
+  ['latin1','tablas','UD8','es',6.5],
+  ['latin1','mixto','UD8','va',13.5]
  ]){
   await configure(page,course,model,lang,unit);
   const k=key(course,model,'lex');
