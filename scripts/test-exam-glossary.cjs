@@ -43,6 +43,46 @@ for(const [course,vocabulary,form,left,right] of cases){
  assert(row.candidates.some(c=>c.lemma===right));
  assert(row.candidates.some(c=>c.entry&&c.meaning),'Debe ofrecer la ficha docente con glosa');
 }
+// El curso actual y el otro comparten formas, no unidades ni exigibilidad.
+// Las coincidencias de mismo lema con distinta clase deben conservar ambas
+// lecturas, frente a variantes de un solo lexema entre distintas unidades.
+const allLatin=[...latin,...latin4];
+const checkLatin=(form,course='lat4')=>
+ engine.analyze(data,form,course,allLatin,{contextual:true})[0];
+const classesOf=(row,lemma)=>Array.from(row.candidates)
+ .filter(c=>c.lemma===lemma)
+ .map(c=>engine.classifyVocabularyEntry(c.entry,'lat4')).sort();
+for(const course of ['lat1','lat4']){
+ for(const [form,lemma,expected] of [
+  ['Latus','latus',['adjectives','nouns']],
+  ['Adversus','adversus',['adjectives','prepositions']],
+  ['Iuvenis','iuvenis',['adjectives','nouns']]
+ ]){
+  const result=checkLatin(form,course);
+  assert.equal(result.status,'review',course+': '+form+' exige lectura docente');
+  assert.deepEqual(classesOf(result,lemma),expected,
+   course+': se ha descartado alguna categoría de '+form+': '+JSON.stringify(result.candidates.map(c=>c.entry)));
+ }
+}
+assert.deepEqual(classesOf(checkLatin('Lata'),'latus'),['adjectives'],
+ 'El nominativo femenino lata no debe recibir la lectura del neutro latus');
+assert.deepEqual(classesOf(checkLatin('Lateris'),'latus'),['nouns'],
+ 'El genitivo lateris no debe confundirse con el adjetivo latus');
+assert.deepEqual(classesOf(checkLatin('Iuvenem'),'iuvenis'),['adjectives','nouns'],
+ 'La homografía persiste en el acusativo singular');
+assert.equal(checkLatin('Miser').candidates.filter(c=>c.lemma==='miser').length,1,
+ 'miser, misera, miserum es el MISMO adjetivo que miser, –a, –um');
+assert.equal(checkLatin('Via').candidates.filter(c=>c.lemma==='via').length,1,
+ 'No multiplicar una ficha por varias acepciones editoriales de via');
+for(const entry of ['miser, misera, miserum',
+ 'pulcher, pulchra, pulchrum','celer, –eris, –ere']){
+ assert.equal(engine.classifyVocabularyEntry(entry,'lat1'),'adjectives',
+  'La ficha declinada como adjetivo no debe clasificarse como sustantivo: '+entry);
+}
+// Los posesivos siguen en el selector escolar de pronombres: no alterar
+// la categorización docente por su flexión de adjetivo.
+assert.equal(engine.classifyVocabularyEntry('noster, nostra, nostrum','lat1'),'pronouns');
+
 for(const [entry,course,kind] of [
  ['bonus, –a, –um','lat1','adjectives'],
  ['Gallus, –a, –um','lat1','adjectives'],
@@ -449,6 +489,60 @@ assert(!engine.documentXml({...project,groupTypes:false}).includes('Sustantivos 
    assert(!xml.includes('Revisión necesaria (sin candidatos)'),
     'Word no puede llevar un aviso de revisión pendiente');
   }
+  // Dos apariciones de la misma grafía: el profesor elige una clase
+  // distinta en cada una y el glosario y Word conservan ambas.
+  const homograph=await page.evaluate(()=>{
+   const course=document.getElementById('course');
+   course.value='latin4';course.dispatchEvent(new Event('change',{bubbles:true}));
+   const model=document.getElementById('model');
+   model.value='tablas';model.dispatchEvent(new Event('change',{bubbles:true}));
+   document.getElementById('autoGloss').checked=true;
+   document.getElementById('glossScope').value='all';
+   document.getElementById('glossNouns').checked=true;
+   document.getElementById('glossAdjectives').checked=true;
+   const editor=document.getElementById('newSentences');
+   editor.value='Latus.\nLatus.';
+   editor.dispatchEvent(new Event('input',{bubbles:true}));
+   generate();
+   const selects=[...document.querySelectorAll('#examSentenceGlossary .exam-gloss-lemma')]
+    .filter(s=>s.closest('label')?.textContent.includes('Latus'));
+   return selects.map(s=>{
+    const found=examGlossCandidates.get(s.dataset.identity);
+    return [...s.options].filter(o=>o.value!=='').map(o=>({
+     value:o.value,kind:window.ExaminaVocabulary.classifyVocabularyEntry(
+      found.candidates[Number(o.value)].entry,'lat4')
+    }));
+   });
+  });
+  assert.equal(homograph.length,2,'Las dos apariciones de latus deben permitir elección independiente');
+  assert(homograph.every(row=>row.some(o=>o.kind==='nouns')&&row.some(o=>o.kind==='adjectives')),
+   'No se ofrecen ambas clases en el selector de cada latus: '+JSON.stringify(homograph));
+  const firstLatus=page.locator('#examSentenceGlossary .exam-gloss-lemma').first();
+  await firstLatus.selectOption(homograph[0].find(o=>o.kind==='nouns').value);
+  const secondLatus=page.locator('#examSentenceGlossary .exam-gloss-lemma').first();
+  await secondLatus.selectOption(homograph[1].find(o=>o.kind==='adjectives').value);
+  const bothKinds=await page.evaluate(()=>{
+   const items=[...document.querySelectorAll('#examSentenceGlossary .gloss-item')];
+   return {matching:items.filter(el=>el.textContent.toLowerCase().includes('latus')||
+    el.textContent.normalize('NFD').replace(/\p{M}/gu,'').toLowerCase().includes('latus'))
+     .map(el=>el.textContent),
+    choices:[...document.querySelectorAll('#examSentenceGlossary .exam-gloss-selected')].map(e=>e.textContent)
+   };
+  });
+  assert.equal(bothKinds.matching.length,2,'El glosario colapsa dos clases de latus: '+JSON.stringify(bothKinds));
+  assert(bothKinds.matching.some(x=>/lateris/i.test(x.normalize('NFD').replace(/\p{M}/gu,''))),
+   'Falta la lectura del sustantivo latus, lateris');
+  assert(bothKinds.matching.some(x=>/[–-]a,\s*[–-]um/i.test(x)),
+   'Falta la lectura del adjetivo latus, –a, –um');
+  const wordHomograph=page.waitForEvent('download');
+  await page.evaluate(()=>exportWord(false));
+  const wordHomographFile=await wordHomograph;
+  const wordHomographXml=wordDocumentXml(fs.readFileSync(await wordHomographFile.path()));
+  assert(/lateris/i.test(wordHomographXml.normalize('NFD').replace(/\p{M}/gu,'')),
+   'Word no conserva el sustantivo latus');
+  assert(/latus/i.test(wordHomographXml.normalize('NFD').replace(/\p{M}/gu,''))&&
+   /[–-]a,\s*[–-]um/.test(wordHomographXml),
+   'Word no conserva el adjetivo latus');
   assert.deepEqual(errors,[],'No deben aparecer errores JavaScript en la interfaz');
   console.log('Glosario de oraciones: elecciones, persistencia, edición, tipos y agrupación: OK');
  }finally{

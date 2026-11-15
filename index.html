@@ -1512,7 +1512,14 @@ function buildFinalLexicon(chosen,sentences){
  const found=new Map(),unresolved=new Set(),pendingChoices=new Map(),selectedChoices=[];
  const passiveChoices=[];
  examGlossCandidates=new Map();examPassiveChoicesShown=new Map();
- const add=row=>{const key=examKey(row.entry);if(key&&!found.has(key))found.set(key,row)};
+ // Variantes de un mismo lema y clase siguen siendo una sola ficha;
+ // sustantivo/adjetivo o adjetivo/preposición son lecturas léxicas distintas.
+ // Respetar en el glosario las elecciones que conserva el lematizador.
+ const add=row=>{
+  const head=examKey(row.entry);
+  const identity=head+(greek?'':'|'+glossType(row.entry));
+  if(head&&!found.has(identity))found.set(identity,row);
+ };
  for(const raw of $('examExtra').value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean)){
   const hit=bank.find(x=>examKey(x.entry)===examKey(raw));
   if(hit)add(hit);else unresolved.add(raw);

@@ -1269,10 +1269,27 @@ function analyze(data,text,course,bank,{contextual=false}={}){
   if(!greekReferenceCache.has(bank))greekReferenceCache.set(bank,greekReferenceForms(bank));
   greek=greekReferenceCache.get(bank);
  }
- const bankIndex=new Map();
+ const bankIndex=new Map(),latinClasses=new Map();
  const normalizeCourse=lang==='lat'?latinKey:key;
  const attach=(id,row)=>{if(!bankIndex.has(id))bankIndex.set(id,[]);bankIndex.get(id).push(row)};
- for(const row of bank){attach('E'+normalizeCourse(row.entry),row);attach('H'+normalizeCourse(head(row.entry)),row)}
+ for(const row of bank){
+  attach('E'+normalizeCourse(row.entry),row);
+  attach('H'+normalizeCourse(head(row.entry)),row);
+  if(lang==='lat'){
+   const lemma=normalizeCourse(head(row.entry));
+   const kind=classifyVocabularyEntry(row.entry,course);
+   // Las formas de cita sin clase ni enunciado completo («sŭm»,
+   // «ămō») son abreviaturas, NO una segunda categoría «other».
+   if(kind!=='other'||/[(),]/u.test(String(row.entry))){
+    if(!latinClasses.has(lemma))latinClasses.set(lemma,new Set());
+    latinClasses.get(lemma).add(kind);
+   }
+  }
+ }
+ // Separar por categoría SOLO los lemas que cuentan con varias fichas
+ // gramaticalmente diferentes en el banco, no las glosas sinónimas por UD.
+ const latinMultiClass=new Set([...latinClasses].filter(([,classes])=>classes.size>1)
+  .map(([lemma])=>lemma));
  const tokens=new Map();
  const passages=contextual?String(text).split(/[.!?;·;\n]+/u):[String(text)];
  // Distintas apariciones de una misma oración no pueden compartir la
@@ -1309,11 +1326,29 @@ function analyze(data,text,course,bank,{contextual=false}={}){
    // entrada docente más completa, dando preferencia a la del índice.
    // Los homógrafos de lemas distintos siguen separados en `candidates`.
    if(!original&&!matches.length)return [];
-   const variants=matches.length?(lang==='lat'?[matches.slice().sort((a,b)=>{
+   const variants=matches.length?(lang==='lat'?(()=>{
     const score=x=>(x.entry===original?.entry?100:0)+
      (x.meaning_va?6:0)+(x.entry.split(',').length*3);
-    return score(b)-score(a);
-   })[0]]:matches):[{entry:original.entry,meaning:''}];
+    const ordered=matches.slice().sort((a,b)=>score(b)-score(a));
+    if(!latinMultiClass.has(latinKey(c.lemma)))return ordered.slice(0,1);
+    const grouped=new Map();
+    for(const row of ordered){
+     const kind=classifyVocabularyEntry(row.entry,course);
+     // Cuando hay dos clases declaradas, un enunciado desnudo no es
+     // una tercera ficha léxica ni una lectura nueva.
+     if(kind==='other'&&!/[(),]/u.test(String(row.entry)))continue;
+     if(!grouped.has(kind))grouped.set(kind,row);
+    }
+    // Un mismo lema del índice puede tener fichas N y ADJ; utilizar
+    // sus etiquetas morfológicas para no ofrecer el sustantivo con una
+    // flexión que solo esté acreditada para el adjetivo, y viceversa.
+    const tags=[...(c.morphTags||[])];
+    const hasNominalTags=tags.some(t=>/^(?:N|ADJ|PROPN);/.test(t));
+    return [...grouped].filter(([kind])=>!hasNominalTags||
+     kind==='nouns'&&tags.some(t=>/^(?:N|PROPN);/.test(t))||
+     kind==='adjectives'&&tags.some(t=>t.startsWith('ADJ;'))||
+     !['nouns','adjectives'].includes(kind)).map(([,row])=>row);
+   })():matches):[{entry:original.entry,meaning:''}];
    return variants.map(x=>({...c,entry:x.entry,meaning:x.meaning||'',meaning_va:x.meaning_va||''}));
   });
   const regular=lang==='lat'?[...(latinPresentForms(bank).get(normal)||[]),
@@ -1394,11 +1429,12 @@ function analyze(data,text,course,bank,{contextual=false}={}){
     const tags=[...(candidate.morphTags||[])];
     if(tags.length&&tags.every(tag=>tag.startsWith('ADJ;')))continue;
    }
-   // Un único lema latino puede figurar en el banco con distintas rayas,
-   // indicaciones de género o glosas de varias unidades. No son homógrafos:
-   // conservar la ficha más completa en lugar de crear falsa ambigüedad.
-   // Distintos lemas (bona / bonus, bello / bellum) siguen separados.
-   const id=lang==='lat'?latinKey(candidate.lemma):
+   // Diferenciar categoría léxica solo cuando hay dos fichas distintas
+   // explícitas para el mismo lema (latus: adjetivo/sustantivo; adversus:
+   // adjetivo/preposición). No multiplicar variantes de glosa por unidad.
+   const lemmaId=lang==='lat'?latinKey(candidate.lemma):'';
+   const id=lang==='lat'?lemmaId+(latinMultiClass.has(lemmaId)?
+    '|'+classifyVocabularyEntry(candidate.entry,course):''):
     candidate.lemma+'|'+candidate.entry+'|'+candidate.meaning;
    const previous=compact.get(id);
    const score=x=>(x.attested?100:0)+(x.meaning?3:0)+
@@ -1697,7 +1733,16 @@ function classifyVocabularyEntry(item,course='lat1'){
   if(/,/.test(entry))return 'nouns';
   return 'other';
  }
- if(/,\s*[–−-]?(?:a|ra|era)\s*,\s*[–−-]?um\b/iu.test(entry)||
+ // Algunos bancos escriben las terminaciones completas y otros con raya.
+ // No confundir miser, misera, miserum con un sustantivo por su formato.
+ const parts=entry.split(',').map(s=>norm(s.replace(/\([^)]*\)/g,'').trim())
+  .replace(/^[–−—-]+/u,''));
+ const fullDecl12=parts.length>=3&&/(?:us|er)$/.test(lemma)&&
+  /^[a-z]+a$/i.test(parts[1])&&/^[a-z]+um$/i.test(parts[2]);
+ const fullDecl3=parts.length>=3&&lemma.endsWith('er')&&
+  /(?:ris|eris)$/.test(parts[1])&&/(?:re|ere)$/.test(parts[2]);
+ if(fullDecl12||fullDecl3||
+  /,\s*[–−-]?(?:a|ra|era)\s*,\s*[–−-]?um\b/iu.test(entry)||
   /,\s*[–−-]?e\b/iu.test(entry)||/\((?:adj\.?|adjetivo)[^)]*\)/iu.test(entry))
   return 'adjectives';
  if(/^[a-z]+(?:o|or)\s*,/i.test(first+',')&&entry.split(',').length>=3)return 'verbs';
