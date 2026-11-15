@@ -54,6 +54,16 @@ try {
 #examLayout aside.panel #examVisualSettings input[type=number]{width:94px;max-width:100%;min-height:42px}
 #examLayout aside.panel #examVisualSettings .exam-ui-point-input>span{font-size:12px;font-weight:600}
 #examLayout aside.panel #examVisualSettings .hint{margin:0}
+#examLayout aside.panel #examVisualSettings .exam-ui-visual-body>h4{font-size:13px;font-weight:750;margin:6px 0 0}
+#examLayout aside.panel #examVisualSettings .exam-ui-question-rows{display:grid;gap:10px}
+#examLayout aside.panel #examVisualSettings .exam-ui-question-row{min-width:0;margin:0;border:1px solid var(--line,#d4dfed);border-radius:8px;padding:10px;display:grid;gap:9px}
+#examLayout aside.panel #examVisualSettings .exam-ui-question-row>legend{font-weight:700;font-size:13px;max-width:100%;padding:0 3px;line-height:1.4;overflow-wrap:anywhere}
+#examLayout aside.panel #examVisualSettings .exam-ui-question-inputs{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:9px;min-width:0}
+#examLayout aside.panel #examVisualSettings .exam-ui-question-inputs>label{min-width:0;font-size:12px}
+#examLayout aside.panel #examVisualSettings .exam-ui-question-inputs>label[hidden]{display:none!important}
+#examLayout aside.panel #examVisualSettings .exam-ui-question-inputs .exam-ui-point-input{display:flex;align-items:center;gap:7px}
+#examLayout aside.panel #examVisualSettings .exam-ui-question-inputs input[type=number]{max-width:100%;width:94px}
+@media(max-width:480px){#examLayout aside.panel #examVisualSettings .exam-ui-question-inputs{grid-template-columns:1fr}}
 </style><style id="examina-sidebar-navigation">
 /* Navegación de trabajo a la manera de un editor: configuración izquierda y vista previa derecha. */
 @media(min-width:801px){#examLayout.layout>.panel{grid-column:1;grid-row:1}#examLayout.layout>.paper{grid-column:2;grid-row:1;min-width:0}}
@@ -464,6 +474,15 @@ html[data-course="greek1"] .paper .exam-sheet *{font-style:normal!important}
  html[data-appearance="dark"] #examLayout>.paper::before,html[data-appearance="oled"] #examLayout>.paper::before{color:#5b6f85}
 }
 @media print{.appearance-picker{display:none!important}html[data-appearance] .paper{background:#fff!important;color:#000!important}}
+</style><style id="examina-course-dark-legibility">
+/* Textos cromáticos legibles en oscuro y OLED; el papel y las superficies de botones conservan su estilo. */
+@media screen{
+ html:is([data-appearance="dark"],[data-appearance="oled"])[data-course="latin4"]{--examina-readable-course:#f3d451}
+ html:is([data-appearance="dark"],[data-appearance="oled"])[data-course="greek1"]{--examina-readable-course:#9fd8ff}
+ html:is([data-appearance="dark"],[data-appearance="oled"]):is([data-course="latin4"],[data-course="greek1"]) #examLayout aside.panel :is(.settings-section-caption,#examSelectionSummary .exam-summary-caption,#examQuestionMenus .exam-question-status){
+  color:var(--examina-readable-course);
+ }
+}
 </style><style id="primary-exam-pickers">
 @media screen {
  #examLayout aside.panel .exam-primary-picker{margin:9px 0;border:1px solid var(--line);border-radius:9px;background:var(--surface);overflow:hidden}
@@ -4966,6 +4985,23 @@ window.ExaminaGreekSentenceContexts=function(form){
 const courseName=()=>({latin1:'Latín I',latin4:'Latín 4.º ESO',greek1:'Griego I (ático)'})[currentCourse()];
 const T={es:{config:'Configurar examen',language:'Idioma del examen',term:'Trimestre',units:'Unidad o unidades del examen',cumulative:'Incluir vocabulario acumulado hasta la última unidad marcada',all:'Todas',clear:'Limpiar',title:'Título',model:'Modelo de examen',blocks:'Bloques (puedes combinar cualquiera)',decl:'Declinación y concordancia',verb:'Formas verbales',lex:'Léxico',sent:'Oraciones (banco inicial)',culture:'Cultura clásica',cultureTitle:'Cultura clásica: responde a las preguntas',amount:'Elementos por bloque',generate:'Generar examen',print:'Imprimir / PDF',solutions:'Mostrar soluciones',hide:'Ocultar soluciones',name:'Nombre',date:'Fecha',quarter:'trimestre',selection:'Unidades',available:'entradas distintas disponibles',declTitle:'Analiza las formas nominales y adjetivales',declHelp:'Indica caso, número y género cuando corresponda, y el enunciado.',verbTitle:'Analiza las formas verbales',verbHelp:'Indica persona, número, tiempo, modo, voz y enunciado.',lexTitle:'Léxico: traduce al castellano',sentTitle:'Analiza y traduce las oraciones',key:'Solucionario orientativo',empty:'Selecciona al menos un bloque y una unidad.',pres:'presente de indicativo activo',edit:'Puedes editar directamente el texto del examen antes de imprimir.'},va:{config:'Configura l’examen',language:'Llengua de l’examen',term:'Trimestre',units:'Unitat o unitats de l’examen',cumulative:'Incloure el vocabulari acumulat fins a l’última unitat marcada',all:'Totes',clear:'Netejar',title:'Títol',model:'Model d’examen',blocks:'Blocs (pots combinar-ne qualsevol)',decl:'Declinació i concordança',verb:'Formes verbals',lex:'Lèxic',sent:'Oracions (banc inicial)',culture:'Cultura clàssica',cultureTitle:'Cultura clàssica: respon a les preguntes',amount:'Elements per bloc',generate:'Generar examen',print:'Imprimir / PDF',solutions:'Mostrar solucions',hide:'Ocultar solucions',name:'Nom',date:'Data',quarter:'trimestre',selection:'Unitats',available:'entrades diferents disponibles',declTitle:'Analitza les formes nominals i adjectivals',declHelp:'Indica el cas, el nombre i el gènere quan corresponga, i l’enunciat.',verbTitle:'Analitza les formes verbals',verbHelp:'Indica la persona, el nombre, el temps, el mode, la veu i l’enunciat.',lexTitle:'Lèxic: traduïx al valencià',sentTitle:'Analitza i traduïx les oracions',key:'Solucionari orientatiu',empty:'Selecciona almenys un bloc i una unitat.',pres:'present d’indicatiu actiu',edit:'Pots editar directament el text de l’examen abans d’imprimir.'}};
 const tr=k=>T[$('lang').value][k];
+const examAutoSubjects={
+ latin1:{es:'Latín I',va:'Llatí I'},
+ latin4:{es:'Latín 4.º ESO',va:'Llatí 4t ESO'},
+ greek1:{es:'Griego I',va:'Grec I'}
+};
+function examAutoTitle(course=currentCourse(),lang=$('lang').value,review=$('sheetType')?.value==='review'){
+ return (review?(lang==='va'?'Fitxa de repàs de ':'Ficha de repaso de '):(lang==='va'?'Examen de ':'Examen de '))+
+  examAutoSubjects[course][lang];
+}
+function isExamAutoTitle(value){
+ return Object.keys(examAutoSubjects).some(course=>
+  ['es','va'].some(lang=>[false,true].some(review=>examAutoTitle(course,lang,review)===value)));
+}
+function localizeExamAutoTitle(){
+ const title=$('name');
+ if(title&&isExamAutoTitle(title.value.trim()))title.value=examAutoTitle();
+}
 $('unitChoices').innerHTML=units.map((u,i)=>`<label><input type="checkbox" class="unit-choice" value="${i}" >${esc(u)}</label>`).join('');
 function selectedUnits(cumulative=$('cumulative').checked){const ix=[...document.querySelectorAll('.unit-choice:checked')].map(x=>+x.value);return cumulative&&ix.length?units.filter((_,i)=>i<=Math.max(...ix)):ix.map(i=>units[i]);}
 function trimesterHeading(){const n=Math.max(1,Math.min(3,Number($('term').value)||1));return ($('lang').value==='va'?['1r trimestre','2n trimestre','3r trimestre']:['1.er trimestre','2.º trimestre','3.er trimestre'])[n-1]}
@@ -4986,7 +5022,7 @@ function examinaTranslateConfiguration(){
   el.textContent=va?(labels[base]||base):base;
  }
 }
-function translateUI(){examinaTranslateConfiguration();document.documentElement.lang=$('lang').value==='va'?'ca-valencia':'es';document.querySelectorAll('[data-i18n]').forEach(e=>e.textContent=tr(e.dataset.i18n));$('term').querySelectorAll('option').forEach((o,i)=>o.textContent=($('lang').value==='va'?['1r trimestre','2n trimestre','3r trimestre']:['1.er trimestre','2.º trimestre','3.er trimestre'])[i]);$('name').placeholder=courseName();document.querySelectorAll('.vocab-tabbar,.quick-actions,#examLayout aside.panel,#vocabManager').forEach(el=>window.ExaminaValencianGloss?.translateDom?.(el,$('lang').value));}
+function translateUI(){localizeExamAutoTitle();examinaTranslateConfiguration();document.documentElement.lang=$('lang').value==='va'?'ca-valencia':'es';document.querySelectorAll('[data-i18n]').forEach(e=>e.textContent=tr(e.dataset.i18n));$('term').querySelectorAll('option').forEach((o,i)=>o.textContent=($('lang').value==='va'?['1r trimestre','2n trimestre','3r trimestre']:['1.er trimestre','2.º trimestre','3.er trimestre'])[i]);$('name').placeholder=courseName();document.querySelectorAll('.vocab-tabbar,.quick-actions,#examLayout aside.panel,#vocabManager').forEach(el=>window.ExaminaValencianGloss?.translateDom?.(el,$('lang').value));}
 
 $('sheetType').addEventListener('change',()=>{const c=currentCourse();$('name').value=($('sheetType').value==='review'?($('lang').value==='va'?'Fitxa de repàs de ':'Ficha de repaso de '):($('lang').value==='va'?'Examen de ':'Examen de '))+({'latin1':$('lang').value==='va'?'Llatí I':'Latín I','latin4':$('lang').value==='va'?'Llatí 4t ESO':'Latín 4.º ESO','greek1':$('lang').value==='va'?'Grec I':'Griego I'})[c];generate()});
 // Un solo vínculo por palabra editable: conserva la vista previa como fuente
@@ -5146,11 +5182,87 @@ function examVisualPt(id,fallback){
 }
 function examQuestionBeforePt(){return examVisualPt('examQuestionBeforePt',12)}
 function examCultureGapPt(){return examVisualPt('examCultureGapPt',5)}
+// Los ajustes de cada pregunta se identifican por curso, modelo y tipo, nunca
+// por el número mostrado (que cambia al excluir un apartado del examen).
+const examVisualPerQuestion=Object.create(null);
+function examVisualHeadingIdentity(el){
+ if(!el?.classList?.contains('exam-question'))return null;
+ for(const [attr,property,scope] of [
+  ['data-exam-kind','examKind','exam'],
+  ['data-morph-kind','morphKind','morph'],
+  ['data-greek-kind','greekKind','greek']
+ ]){
+  const kind=el.dataset[property];
+  if(kind&&/^[a-z0-9_-]+$/i.test(kind))return {
+   key:currentCourse()+'/'+$('model').value+'/'+scope+':'+kind,
+   selector:'p.exam-question['+attr+'="'+kind+'"]',
+   kind,scope
+  };
+ }
+ return null;
+}
+function examVisualOwner(el){
+ if(!el?.parentElement?.classList?.contains('exam-sheet'))return null;
+ for(let sibling=el.previousElementSibling;sibling;sibling=sibling.previousElementSibling)
+  if(sibling.classList.contains('exam-question'))return sibling;
+ return null;
+}
+function examVisualValue(heading,property){
+ const key=examVisualHeadingIdentity(heading)?.key;
+ const n=key===undefined?null:examVisualPerQuestion[key]?.[property];
+ return Number.isFinite(n)&&n>=0&&n<=72?n:null;
+}
+function examVisualBeforeFor(heading){
+ return examVisualValue(heading,'before')??examQuestionBeforePt();
+}
+function examVisualItemGapFor(heading){
+ const custom=examVisualValue(heading,'items');
+ if(custom!==null)return custom;
+ const {kind,scope}=examVisualHeadingIdentity(heading)||{};
+ if(kind==='culture'&&scope==='exam')return examCultureGapPt();
+ if(kind==='sent'||kind==='sentences')return sentenceGapPoints();
+ return null; // Los demás mantienen su formato existente hasta que se personalizan.
+}
+function examVisualItemGapOverride(heading){return examVisualValue(heading,'items')}
+// Renderizamos reglas fuera de #paper: editar un espacio no toca el examen
+// ni los enlaces de edición, la puntuación o el historial de regeneración.
 function applyExamVisualFormat(){
  const paper=$('paper');
  if(!paper)return;
  paper.style.setProperty('--exam-question-before',examQuestionBeforePt()+'pt');
  paper.style.setProperty('--exam-culture-gap',examCultureGapPt()+'pt');
+ const sheet=paper.querySelector('.exam-sheet');
+ let rules=document.getElementById('examina-per-question-rules');
+ if(!rules){rules=document.createElement('style');rules.id='examina-per-question-rules';document.head.append(rules)}
+ const text=[];
+ if(sheet)for(const heading of sheet.querySelectorAll(':scope > p.exam-question')){
+  const identity=examVisualHeadingIdentity(heading);
+  if(!identity)continue;
+  const {key,selector,kind}=identity;
+  const custom=examVisualPerQuestion[key];
+  if(!custom)continue;
+  const head='.paper .exam-sheet > '+selector;
+  if(Number.isFinite(custom.before))
+   text.push(head+'{margin-top:'+custom.before+'pt!important}');
+  if(!Number.isFinite(custom.items))continue;
+  const gap=custom.items;
+  // Preguntas con lista de apartados, letras o frases.
+  text.push(head+'+ol.task>li{margin-bottom:0!important;padding-bottom:0!important}');
+  text.push(head+'+ol.task>li+li{margin-top:'+gap+'pt!important}');
+  // Análisis morfológico con párrafos a., b., c. sucesivos.
+  if(kind==='forms')text.push(
+   head+'~p.exam-item.reference-analysis-item{margin-top:'+gap+'pt!important}',
+   head+'+p.exam-item.reference-analysis-item{margin-top:0!important}'
+  );
+  // Tablas nominales consecutivas: no modificar las tablas de conjugación.
+  if(kind==='decl'&&identity.scope==='exam')
+   text.push(head+'+table.exam-nouns+table.exam-nouns{margin-top:'+gap+'pt!important}',
+    head+'+table.exam-nouns+table.exam-nouns+table.exam-nouns{margin-top:'+gap+'pt!important}');
+  // Paradigmas griegos enlazados por una fila de separación.
+  if(kind==='declension')
+   text.push(head+'~p.exam-table-gap{height:'+gap+'pt!important;line-height:'+Math.max(.05,gap)+'pt!important}');
+ }
+ rules.textContent=text.join('\n');
 }
 function sentenceGapPoints(){const value=Number($('sentence-gap-pt')?.value);return Number.isFinite(value)&&value>0?Math.max(12,Math.min(100,Math.round(value))):42}
 function applySentenceGap(){const paper=$('paper');if(paper?.style)paper.style.setProperty('--exam-sentence-gap',sentenceGapPoints()+'pt')}
@@ -5949,10 +6061,10 @@ function examDateLabel(va){return (va?'Data':'Fecha')+': '}
 function latinExamHeader(chosen){
  const va=$('lang').value==='va';
  const titleInput=$('name').value.trim();
- const defaultNames=['Examen de Latín I','Examen de Llatí I','Examen de Latín 4.º ESO','Examen de Llatí 4t ESO'];
+ const defaultNames=['Examen de Latín I','Examen de Llatí I','Examen de Latín 4.º ESO','Examen de Llatí 4t ESO','Ficha de repaso de Latín I','Fitxa de repàs de Llatí I','Ficha de repaso de Latín 4.º ESO','Fitxa de repàs de Llatí 4t ESO'];
  const subject=va?(currentCourse()==='latin4'?'Llatí 4t ESO':'Llatí I'):(currentCourse()==='latin4'?'Latín 4.º ESO':'Latín I');
  const model=$('model').value;
- const type=model==='morf'?(va?'Examen de morfologia de ':'Examen de morfología de '):model==='mixto'?(va?'Examen de traducció de ':'Examen de traducción de '):'Examen de ';
+ const type=$('sheetType').value==='review'?(va?'Fitxa de repàs de ':'Ficha de repaso de '):model==='morf'?(va?'Examen de morfologia de ':'Examen de morfología de '):model==='mixto'?(va?'Examen de traducció de ':'Examen de traducción de '):'Examen de ';
  const title=examHeadingWithUnits(titleInput&&!defaultNames.includes(titleInput)?titleInput:type+subject,chosen);
  const term=trimesterHeading();
  const seed=$('seed').value.trim();
@@ -6459,7 +6571,16 @@ function wordBlock(el){
  if(el.classList&&el.classList.contains('answer'))return '<w:p><w:pPr><w:spacing w:after="120" w:line="360" w:lineRule="auto"/></w:pPr>'+wordRun('________________________________________________')+'</w:p>';
  if(el.classList&&el.classList.contains('final-gloss'))return wordGlossTable(el);
  const tag=el.tagName.toLowerCase();
- if(tag==='table')return wordTable(el);
+ if(tag==='table'){
+  const heading=examVisualOwner(el),gap=examVisualItemGapOverride(heading);
+  // La separación Word entre tablas nominales tiene una altura exacta en twips.
+  if(gap!==null&&el.previousElementSibling?.tagName==='TABLE'&&
+     examVisualHeadingIdentity(heading)?.kind==='decl'){
+   const spacer='<w:p><w:pPr><w:spacing w:before="0" w:after="0" w:line="'+Math.max(1,Math.round(gap*20))+'" w:lineRule="exact"/></w:pPr></w:p>';
+   return spacer+wordTable(el);
+  }
+  return wordTable(el);
+ }
  if(tag==='ol'||tag==='ul'){
   const type=el.getAttribute('type')||'';
   return [...el.children].filter(x=>x.tagName==='LI').map((li,i)=>{
@@ -6475,7 +6596,10 @@ function wordBlock(el){
     ?'<w:keepLines/><w:ind w:left="1200" w:hanging="480"/><w:tabs><w:tab w:val="left" w:pos="1200"/></w:tabs>'
     :'<w:ind w:left="1080" w:hanging="360"/><w:tabs><w:tab w:val="left" w:pos="1080"/></w:tabs>'):
     '<w:numPr><w:ilvl w:val="0"/><w:numId w:val="'+(tag==='ol'?'1':'2')+'"/></w:numPr>';
-   const sentenceSpacing=el.classList.contains('exam-sentences')?'<w:spacing w:before="'+(i>0?sentenceGapPoints()*20:0)+'" w:after="0"/>':
+   const owner=el.classList.contains('task')?examVisualOwner(el):null;
+   const custom=examVisualItemGapOverride(owner);
+   const sentenceSpacing=custom!==null?'<w:spacing w:before="'+(i>0?custom*20:0)+'" w:after="0"/>':
+    el.classList.contains('exam-sentences')?'<w:spacing w:before="'+(i>0?sentenceGapPoints()*20:0)+'" w:after="0"/>':
     cultural?'<w:spacing w:before="'+(i>0?examCultureGapPt()*20:0)+'" w:after="0"/>':'';
    const para='<w:p><w:pPr>'+pr+sentenceSpacing+'</w:pPr>'+(alphabetic?wordRun(letter)+'<w:r><w:tab/></w:r>':'')+inline+'</w:p>';
    const extras=children.filter(n=>n.nodeType===1&&(
@@ -6506,11 +6630,18 @@ function wordExamParagraph(el){
  const cls=el.classList,props=['<w:keepLines/>'];let runs=wordInline(el);
  if(cls.contains('exam-question')){
   const m=el.textContent.match(/^(\d+\.)\s*(.*)$/s);
-  props.push('<w:keepNext/><w:ind w:left="720" w:hanging="360"/><w:tabs><w:tab w:val="left" w:pos="720"/></w:tabs><w:spacing w:before="'+(examQuestionBeforePt()*20)+'" w:after="80" w:line="290" w:lineRule="auto"/>');
+  props.push('<w:keepNext/><w:ind w:left="720" w:hanging="360"/><w:tabs><w:tab w:val="left" w:pos="720"/></w:tabs><w:spacing w:before="'+(examVisualBeforeFor(el)*20)+'" w:after="80" w:line="290" w:lineRule="auto"/>');
   if(cls.contains('exam-page-break'))props.push('<w:pageBreakBefore/>');
   if(m)runs=wordRun(m[1],true)+'<w:r><w:tab/></w:r>'+wordRun(m[2],true);
  }else if(cls.contains('exam-item')){
-  props.push('<w:ind w:left="1080" w:hanging="360"/><w:tabs><w:tab w:val="left" w:pos="1080"/></w:tabs><w:spacing w:before="'+(cls.contains('exam-sentence')&&el.previousElementSibling?.classList?.contains('exam-sentence')?sentenceGapPoints()*20:0)+'" w:after="'+(cls.contains('exam-sentence')?'0':'180')+'" w:line="'+(cls.contains('exam-sentence')?'310':'260')+'" w:lineRule="atLeast"/>');
+  const owner=examVisualOwner(el),custom=examVisualItemGapOverride(owner);
+  const repeated=el.previousElementSibling?.classList?.contains('exam-item');
+  const before=custom!==null&&repeated?custom*20:
+   cls.contains('exam-sentence')&&el.previousElementSibling?.classList?.contains('exam-sentence')?
+    (custom??sentenceGapPoints())*20:0;
+  // Al personalizar los intervalos, se suprime el margen posterior heredado.
+  const after=custom!==null||cls.contains('exam-sentence')?0:180;
+  props.push('<w:ind w:left="1080" w:hanging="360"/><w:tabs><w:tab w:val="left" w:pos="1080"/></w:tabs><w:spacing w:before="'+before+'" w:after="'+after+'" w:line="'+(cls.contains('exam-sentence')?'310':'260')+'" w:lineRule="atLeast"/>');
   const letter=el.querySelector(':scope > .exam-letter');
   if(letter)runs=wordRun(letter.textContent.trim())+'<w:r><w:tab/></w:r>'+
    [...el.childNodes].filter(n=>n!==letter).map(n=>wordInline(n)).join('');
@@ -6519,7 +6650,11 @@ function wordExamParagraph(el){
  }else if(cls.contains('exam-etymology')){
   props.push('<w:ind w:left="720"/><w:tabs><w:tab w:val="left" w:pos="4240"/></w:tabs><w:spacing w:before="0" w:after="160" w:line="300" w:lineRule="auto"/>');
   runs=[...el.children].map(x=>wordInline(x)).join('<w:r><w:tab/></w:r>');
- }else if(cls.contains('exam-table-gap')){props.push('<w:spacing w:before="0" w:after="0" w:line="140" w:lineRule="exact"/>');runs='';}
+ }else if(cls.contains('exam-table-gap')){
+  const gap=examVisualItemGapOverride(examVisualOwner(el));
+  props.push('<w:spacing w:before="0" w:after="0" w:line="'+(gap===null?140:Math.max(1,Math.round(gap*20)))+'" w:lineRule="exact"/>');
+  runs='';
+ }
  else if(cls.contains('exam-gloss-title'))props.push('<w:keepNext/><w:spacing w:before="80" w:after="60" w:line="300" w:lineRule="auto"/>');
  else props.push('<w:spacing w:before="200" w:after="100"/>');
  return '<w:p><w:pPr>'+props.join('')+'</w:pPr>'+runs+'</w:p>';
@@ -6875,7 +7010,13 @@ function localizeExamPreview(){
  if(currentCourse()==='greek1')window.greekLastPreview=paper.innerHTML;
  else window.examinaLastLatinPreview=paper.innerHTML;
 }
-generate=function(){if($('paper').innerHTML.trim())saveDraftTo(PREVIOUS_KEY);originalGenerate();localizeExamPreview()};
+generate=function(){
+ if($('paper').innerHTML.trim())saveDraftTo(PREVIOUS_KEY);
+ originalGenerate();
+ localizeExamPreview();
+ applyExamVisualFormat();
+ window.ExaminaVisualFormat?.render?.();
+};
 // En la web instalada el índice lematizador se descarga de la caché PWA de
 // modo asíncrono. Completa el vocabulario al quedar listo sin cambiar las
 // preguntas ni perder retoques hechos por el docente en la vista previa.
@@ -14714,10 +14855,14 @@ html[data-appearance="oled"] body.exam-redesign #exam-ui-shell :is(#exam-ui-core
   visuals.className='exam-ui-visual menu-section';
   visuals.innerHTML='<summary id="examVisualTitle">Formato y espaciado de las preguntas</summary>'+
    '<div class="exam-ui-visual-body">'+
+   '<h4 id="examVisualDefaultsTitle">Valores predeterminados</h4>'+
    '<label for="examQuestionBeforePt"><span id="examQuestionBeforeLabel">Espacio antes del enunciado de cada pregunta</span>'+
    '<span class="exam-ui-point-input"><input id="examQuestionBeforePt" type="number" min="0" max="72" step="0.5" value="12" inputmode="decimal"><span>pt (Word)</span></span></label>'+
    '<label id="examCultureFormatRow" for="examCultureGapPt"><span id="examCultureGapLabel">Cultura (a., b., c.): espacio entre preguntas</span>'+
    '<span class="exam-ui-point-input"><input id="examCultureGapPt" type="number" min="0" max="72" step="0.5" value="5" inputmode="decimal"><span>pt (Word)</span></span></label>'+
+   '<h4 id="examVisualIndividualsTitle">Por pregunta</h4>'+
+   '<p class="hint" id="examVisualIndividualsHint">Cada pregunta tiene sus propios espacios. Dejar un campo vacío conserva el valor predeterminado.</p>'+
+   '<div id="examVisualQuestionRows" class="exam-ui-question-rows" aria-live="polite"></div>'+
    '<p class="hint" id="examVisualHint">Ajustes para la vista previa, impresión y Word. Cultura sin líneas de respuesta. No regeneran el examen.</p>'+
    '</div>';
   shell.append(visuals);
@@ -14751,29 +14896,138 @@ html[data-appearance="oled"] body.exam-redesign #exam-ui-shell :is(#exam-ui-core
     ?'Ajustos per a la vista prèvia, impressió i Word. Cultura sense línies de resposta. No regeneren l’examen.'
     :'Ajustes para la vista previa, impresión y Word. Cultura sin líneas de respuesta. No regeneran el examen.';
    $('examCultureFormatRow').hidden=$('course').value!=='latin4';
+   $('examVisualDefaultsTitle').textContent=va?'Valors predeterminats':'Valores predeterminados';
+   $('examVisualIndividualsTitle').textContent=va?'Per pregunta':'Por pregunta';
+   $('examVisualIndividualsHint').textContent=va
+    ?'Cada pregunta té els seus espais. Si deixes un camp buit, s’utilitza el valor predeterminat.'
+    :'Cada pregunta tiene sus propios espacios. Dejar un campo vacío mantiene el valor predeterminado.';
   };
-  const store=()=>{try{localStorage.setItem(formatKey,JSON.stringify({
-   questionBeforePt:examQuestionBeforePt(),cultureGapPt:examCultureGapPt()
-  }))}catch(e){/* El formato sigue funcionando sin almacenamiento local. */}};
-  const restoreFormat=v=>{if(!v||typeof v!=='object')return;
+  const formatRows=$('examVisualQuestionRows');
+  // Las filas reflejan únicamente las preguntas que están realmente en el papel.
+  // Conservar la clave académica evita que cambien los ajustes al renumerar.
+  const renderVisualRows=()=>{
+   const va=$('lang').value==='va';
+   formatRows.replaceChildren();
+   const headings=[...$('paper').querySelectorAll('.exam-sheet > p.exam-question')];
+   if(!headings.length){
+    const hint=document.createElement('p');hint.className='hint';
+    hint.textContent=va?'Genera un examen per a configurar les preguntes.':'Genera un examen para configurar cada pregunta.';
+    formatRows.append(hint);return;
+   }
+   headings.forEach((heading,index)=>{
+    const identity=examVisualHeadingIdentity(heading);
+    if(!identity)return;
+    const key=identity.key;
+    const text=(heading.querySelector('.exam-question-caption')?.textContent||heading.textContent||'')
+     .replace(/^\s*\d+\.\s*/,'').replace(/\(\d+(?:[,.]\d+)?\s*p\.\)\s*:?/giu,'').trim();
+    const num=(heading.querySelector('.exam-q-number')?.textContent||String(index+1)+'.').trim();
+    const group=document.createElement('fieldset');group.className='exam-ui-question-row';
+    group.dataset.examVisualKey=key;
+    const legend=document.createElement('legend');
+    legend.textContent=num+' '+text.slice(0,116);
+    group.append(legend);
+    const body=document.createElement('div');body.className='exam-ui-question-inputs';
+    const blocks=[];
+    for(let el=heading.nextElementSibling;el&&!el.classList?.contains('exam-question')&&el.id!=='answerkey';el=el.nextElementSibling)
+     blocks.push(el);
+    const list=blocks.find(el=>el.classList?.contains('task')&&el.tagName==='OL');
+    const countItems=list?[...list.children].filter(el=>el.tagName==='LI').length:0;
+    const paragraphItems=blocks.filter(el=>el.classList?.contains('exam-item')).length;
+    const tableCount=blocks.filter(el=>el.tagName==='TABLE'&&el.classList.contains('exam-paradigm')).length;
+    const hasTableGaps=blocks.some(el=>el.classList?.contains('exam-table-gap'));
+    const sectionType=tableCount>1||hasTableGaps?'tables':countItems>1||paragraphItems>1?'items':null;
+    const addInput=(kind,title,placeholder)=>{
+     const label=document.createElement('label');
+     label.textContent=title;
+     const inputRow=document.createElement('span');inputRow.className='exam-ui-point-input';
+     const input=document.createElement('input');input.type='number';input.min='0';input.max='72';input.step='0.5';input.inputMode='decimal';
+     input.dataset.examVisualKey=key;input.dataset.examVisualField=kind;
+     input.value=Number.isFinite(examVisualPerQuestion[key]?.[kind])?String(examVisualPerQuestion[key][kind]):'';
+     input.placeholder=placeholder;
+     input.setAttribute('aria-label',title+' — '+num+' '+text.slice(0,75));
+     input.title=va?'Buit: valor predeterminat':'Vacío: valor predeterminado';
+     const unit=document.createElement('span');unit.textContent='pt';
+     inputRow.append(input,unit);label.append(inputRow);body.append(label);
+    };
+    addInput('before',va?'Abans de l’enunciat':'Antes del enunciado',String(examQuestionBeforePt()));
+    if(sectionType){
+     const fallback=examVisualItemGapFor(heading);
+     const title=sectionType==='tables'?(va?'Entre taules':'Entre tablas'):(va?'Entre elements (a., b., c.)':'Entre elementos (a., b., c.)');
+     addInput('items',title,fallback===null?(va?'Actual':'Actual'):String(fallback));
+    }
+    group.append(body);formatRows.append(group);
+   });
+  };
+  const formatSnapshot=()=>({
+   questionBeforePt:examQuestionBeforePt(),cultureGapPt:examCultureGapPt(),
+   perQuestion:Object.fromEntries(Object.entries(examVisualPerQuestion).map(([key,v])=>[key,{...v}]))
+  });
+  const store=()=>{try{localStorage.setItem(formatKey,JSON.stringify(formatSnapshot()))}
+   catch(e){/* El formato puede funcionar sin permiso para el almacenamiento local. */}};
+  const restoreFormat=v=>{
+   if(!v||typeof v!=='object')return;
    fill(v.questionBeforePt,'examQuestionBeforePt',12);
    fill(v.cultureGapPt,'examCultureGapPt',5);
-   applyExamVisualFormat();store();
+   if(v.perQuestion&&typeof v.perQuestion==='object'&&!Array.isArray(v.perQuestion)){
+    for(const key of Object.keys(examVisualPerQuestion))delete examVisualPerQuestion[key];
+    for(const [key,props] of Object.entries(v.perQuestion).slice(0,120)){
+     if(!/^(latin1|latin4|greek1)\/[a-z0-9_-]+\/(?:exam|morph|greek):[a-z0-9_-]+$/i.test(key)||
+        !props||typeof props!=='object')continue;
+     const safe={};
+     for(const field of ['before','items']){
+      const num=props[field];
+      if(typeof num==='number'&&Number.isFinite(num)&&num>=0&&num<=72)
+       safe[field]=Math.round(num*2)/2;
+     }
+     if(Object.keys(safe).length)examVisualPerQuestion[key]=safe;
+    }
+   }
+   applyExamVisualFormat();renderVisualRows();store();
   };
   window.ExaminaVisualFormat={
-   snapshot:()=>({questionBeforePt:examQuestionBeforePt(),cultureGapPt:examCultureGapPt()}),
-   restore:restoreFormat
+   snapshot:formatSnapshot,restore:restoreFormat,render:renderVisualRows
   };
   try{restoreFormat(JSON.parse(localStorage.getItem(formatKey)||'null'))}catch(e){}
   for(const field of [qBefore,cGap]){
-   field.addEventListener('input',applyExamVisualFormat);
+   field.addEventListener('input',()=>{
+    applyExamVisualFormat();renderVisualRows();
+   });
    field.addEventListener('change',()=>{
     field.value=String(examVisualPt(field.id,field===qBefore?12:5));
-    applyExamVisualFormat();store();
+    applyExamVisualFormat();renderVisualRows();store();
    });
   }
-  for(const id of ['lang','course'])$(id)?.addEventListener('change',refreshVisualLabels);
-  refreshVisualLabels();applyExamVisualFormat();
+  // Delegación estable: redibujar la lista al cambiar de unidad no duplica
+  // escuchadores ni modifica los campos de preguntas y formas del generador.
+  formatRows.addEventListener('input',event=>{
+   const input=event.target;
+   if(!input.matches('input[data-exam-visual-field]'))return;
+   const key=input.dataset.examVisualKey,kind=input.dataset.examVisualField;
+   if(!/^(before|items)$/.test(kind)||!key)return;
+   const text=input.value.trim();
+   if(!text){
+    if(examVisualPerQuestion[key]){
+     delete examVisualPerQuestion[key][kind];
+     if(!Object.keys(examVisualPerQuestion[key]).length)delete examVisualPerQuestion[key];
+    }
+   }else{
+    const value=Number(text);
+    if(!Number.isFinite(value)||value<0||value>72)return;
+    if(!examVisualPerQuestion[key])examVisualPerQuestion[key]={};
+    examVisualPerQuestion[key][kind]=Math.round(value*2)/2;
+   }
+   applyExamVisualFormat();store();
+  });
+  formatRows.addEventListener('change',event=>{
+   const input=event.target;
+   if(!input.matches('input[data-exam-visual-field]'))return;
+   const n=examVisualPerQuestion[input.dataset.examVisualKey]?.[input.dataset.examVisualField];
+   if(Number.isFinite(n))input.value=String(n);
+  });
+  for(const id of ['lang','course'])$(id)?.addEventListener('change',()=>{
+   refreshVisualLabels();renderVisualRows();
+  });
+  refreshVisualLabels();applyExamVisualFormat();renderVisualRows();
 
   document.body.classList.add('exam-redesign');
   new MutationObserver(()=>queueMicrotask(enhance)).observe(host,{childList:true});

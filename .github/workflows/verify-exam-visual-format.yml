@@ -5,6 +5,7 @@ on:
       - 'index.html'
       - 'offline.html'
       - 'scripts/test-question-visual-layout.cjs'
+      - 'scripts/test-per-question-visual-format.cjs'
       - '.github/workflows/verify-exam-visual-format.yml'
   workflow_dispatch:
 permissions:
@@ -30,3 +31,5 @@ jobs:
           git diff --exit-code -- offline.html
       - name: Espaciados Word, listas culturales, borradores e idiomas sin regeneración
         run: node scripts/test-question-visual-layout.cjs
+      - name: Espacios individuales por pregunta en los tres cursos, Word y PWA
+        run: node scripts/test-per-question-visual-format.cjs

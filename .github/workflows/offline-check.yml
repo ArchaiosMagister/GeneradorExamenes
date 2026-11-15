@@ -248,6 +248,8 @@ jobs:
         run: node scripts/test-valenciano-browser.cjs
       - name: Comprobar formato de cultura y enunciados en puntos Word, borradores, ES/VA y PWA
         run: node scripts/test-question-visual-layout.cjs
+      - name: Comprobar espacios individuales por pregunta y Word en ES/VA y PWA
+        run: node scripts/test-per-question-visual-format.cjs
       - name: Verificar traduïx y el enunciado valenciano de oraciones de Latín 4.º en Word y PWA
         run: node scripts/test-valencian-imperative.cjs
       - name: Verificar correcciones docentes de Latín I y 4.º, editores y vocabulario exigible
