@@ -250,7 +250,7 @@ async function checkCourseThemeContrast(page,file){
   ['greek1','morphology','UD8','rgb(234, 245, 255)'],
   ['latin1','morf','UD4','rgb(255, 243, 226)']
  ];
- const rgb=s=>String(s).match(/\\d+(?:\\.\\d+)?/g).slice(0,3).map(Number);
+ const rgb=s=>String(s).match(/\d+(?:\.\d+)?/g).slice(0,3).map(Number);
  const luminance=c=>{
   const v=rgb(c).map(x=>x/255).map(x=>x<=0.04045?x/12.92:((x+0.055)/1.055)**2.4);
   return 0.2126*v[0]+0.7152*v[1]+0.0722*v[2];
