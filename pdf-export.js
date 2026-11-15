@@ -88,5 +88,5 @@
  }
  if(root.document.readyState==='loading')root.document.addEventListener('DOMContentLoaded',init,{once:true});
  else init();
- root.ExaminaPdfExport={generate:makePdf,prepareDocument,preflight};
+ root.ExaminaPdfExport={generate:makePdf,prepareDocument,preflight,init};
 })(window);
