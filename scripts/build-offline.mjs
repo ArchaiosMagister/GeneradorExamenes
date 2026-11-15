@@ -32,7 +32,7 @@ export async function renderOffline(root=projectRoot){
  if(!html.includes(summaryExternal))throw new Error('Falta el resumen visual del examen');
  const summaryModule=await readFile(resolve(root,'exam-selection-summary.js'),'utf8');
  html=html.replace(summaryExternal,
-  '<script>'+summaryModule.replace(/<\\/script/gi,'<\\\\/script')+'</script>');
+  '<script>'+summaryModule.replace(/<\/script/gi,'<\\/script')+'</script>');
  const qualityModule=await readFile(resolve(root,'vocabulary-quality.js'),'utf8');
  const qualityExternal='<script src="vocabulary-quality.js" defer></script>';
  if(!html.includes(qualityExternal))throw new Error('Falta el módulo de auditoría de vocabulario');
