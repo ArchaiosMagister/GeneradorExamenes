@@ -213,7 +213,7 @@ async function main(){
     },course);
     assert.equal(impersonal.count,1,filename+' '+course+': falta selector para pugnatum est');
     assert(impersonal.options.some(x=>x.includes('pugno')&&x.includes('perfecto')),
-     filename+' '+course+': falta lema pugno en lectura compuesta');
+     filename+' '+course+': falta lema pugno en lectura compuesta '+JSON.stringify(impersonal));
     assert(impersonal.options.some(x=>x.includes('paradigma deducido')),
      filename+' '+course+': se omitió aviso de forma inferida');
     assert.equal(impersonal.selected,'',filename+' '+course+': selección automática indebida');
