@@ -5839,28 +5839,132 @@ html[data-appearance="oled"] body.exam-redesign #exam-ui-shell :is(#exam-ui-core
     ?'Cada pregunta té els seus espais. Si deixes un camp buit, s’utilitza el valor predeterminat.'
     :'Cada pregunta tiene sus propios espacios. Dejar un campo vacío mantiene el valor predeterminado.';
   };
-  const store=()=>{try{localStorage.setItem(formatKey,JSON.stringify({
-   questionBeforePt:examQuestionBeforePt(),cultureGapPt:examCultureGapPt()
-  }))}catch(e){/* El formato sigue funcionando sin almacenamiento local. */}};
-  const restoreFormat=v=>{if(!v||typeof v!=='object')return;
+  const formatRows=$('examVisualQuestionRows');
+  // Las filas reflejan únicamente las preguntas que están realmente en el papel.
+  // Conservar la clave académica evita que cambien los ajustes al renumerar.
+  const renderVisualRows=()=>{
+   const va=$('lang').value==='va';
+   formatRows.replaceChildren();
+   const headings=[...$('paper').querySelectorAll('.exam-sheet > p.exam-question')];
+   if(!headings.length){
+    const hint=document.createElement('p');hint.className='hint';
+    hint.textContent=va?'Genera un examen per a configurar les preguntes.':'Genera un examen para configurar cada pregunta.';
+    formatRows.append(hint);return;
+   }
+   headings.forEach((heading,index)=>{
+    const identity=examVisualHeadingIdentity(heading);
+    if(!identity)return;
+    const key=identity.key;
+    const text=(heading.querySelector('.exam-question-caption')?.textContent||heading.textContent||'')
+     .replace(/^\s*\d+\.\s*/,'').replace(/\(\d+(?:[,.]\d+)?\s*p\.\)\s*:?/giu,'').trim();
+    const num=(heading.querySelector('.exam-q-number')?.textContent||String(index+1)+'.').trim();
+    const group=document.createElement('fieldset');group.className='exam-ui-question-row';
+    group.dataset.examVisualKey=key;
+    const legend=document.createElement('legend');
+    legend.textContent=num+' '+text.slice(0,116);
+    group.append(legend);
+    const body=document.createElement('div');body.className='exam-ui-question-inputs';
+    const blocks=[];
+    for(let el=heading.nextElementSibling;el&&!el.classList?.contains('exam-question')&&el.id!=='answerkey';el=el.nextElementSibling)
+     blocks.push(el);
+    const list=blocks.find(el=>el.classList?.contains('task')&&el.tagName==='OL');
+    const countItems=list?[...list.children].filter(el=>el.tagName==='LI').length:0;
+    const paragraphItems=blocks.filter(el=>el.classList?.contains('exam-item')).length;
+    const tableCount=blocks.filter(el=>el.tagName==='TABLE'&&el.classList.contains('exam-paradigm')).length;
+    const hasTableGaps=blocks.some(el=>el.classList?.contains('exam-table-gap'));
+    const sectionType=tableCount>1||hasTableGaps?'tables':countItems>1||paragraphItems>1?'items':null;
+    const addInput=(kind,title,placeholder)=>{
+     const label=document.createElement('label');
+     label.textContent=title;
+     const inputRow=document.createElement('span');inputRow.className='exam-ui-point-input';
+     const input=document.createElement('input');input.type='number';input.min='0';input.max='72';input.step='0.5';input.inputMode='decimal';
+     input.dataset.examVisualKey=key;input.dataset.examVisualField=kind;
+     input.value=Number.isFinite(examVisualPerQuestion[key]?.[kind])?String(examVisualPerQuestion[key][kind]):'';
+     input.placeholder=placeholder;
+     input.setAttribute('aria-label',title+' — '+num+' '+text.slice(0,75));
+     input.title=va?'Buit: valor predeterminat':'Vacío: valor predeterminado';
+     const unit=document.createElement('span');unit.textContent='pt';
+     inputRow.append(input,unit);label.append(inputRow);body.append(label);
+    };
+    addInput('before',va?'Abans de l’enunciat':'Antes del enunciado',String(examQuestionBeforePt()));
+    if(sectionType){
+     const fallback=examVisualItemGapFor(heading);
+     const title=sectionType==='tables'?(va?'Entre taules':'Entre tablas'):(va?'Entre elements (a., b., c.)':'Entre elementos (a., b., c.)');
+     addInput('items',title,fallback===null?(va?'Actual':'Actual'):String(fallback));
+    }
+    group.append(body);formatRows.append(group);
+   });
+  };
+  const formatSnapshot=()=>({
+   questionBeforePt:examQuestionBeforePt(),cultureGapPt:examCultureGapPt(),
+   perQuestion:Object.fromEntries(Object.entries(examVisualPerQuestion).map(([key,v])=>[key,{...v}]))
+  });
+  const store=()=>{try{localStorage.setItem(formatKey,JSON.stringify(formatSnapshot()))}
+   catch(e){/* El formato puede funcionar sin permiso para el almacenamiento local. */}};
+  const restoreFormat=v=>{
+   if(!v||typeof v!=='object')return;
    fill(v.questionBeforePt,'examQuestionBeforePt',12);
    fill(v.cultureGapPt,'examCultureGapPt',5);
-   applyExamVisualFormat();store();
+   if(v.perQuestion&&typeof v.perQuestion==='object'&&!Array.isArray(v.perQuestion)){
+    for(const key of Object.keys(examVisualPerQuestion))delete examVisualPerQuestion[key];
+    for(const [key,props] of Object.entries(v.perQuestion).slice(0,120)){
+     if(!/^(latin1|latin4|greek1)\/[a-z0-9_-]+\/(?:exam|morph|greek):[a-z0-9_-]+$/i.test(key)||
+        !props||typeof props!=='object')continue;
+     const safe={};
+     for(const field of ['before','items']){
+      const num=props[field];
+      if(typeof num==='number'&&Number.isFinite(num)&&num>=0&&num<=72)
+       safe[field]=Math.round(num*2)/2;
+     }
+     if(Object.keys(safe).length)examVisualPerQuestion[key]=safe;
+    }
+   }
+   applyExamVisualFormat();renderVisualRows();store();
   };
   window.ExaminaVisualFormat={
-   snapshot:()=>({questionBeforePt:examQuestionBeforePt(),cultureGapPt:examCultureGapPt()}),
-   restore:restoreFormat
+   snapshot:formatSnapshot,restore:restoreFormat,render:renderVisualRows
   };
   try{restoreFormat(JSON.parse(localStorage.getItem(formatKey)||'null'))}catch(e){}
   for(const field of [qBefore,cGap]){
-   field.addEventListener('input',applyExamVisualFormat);
+   field.addEventListener('input',()=>{
+    applyExamVisualFormat();renderVisualRows();
+   });
    field.addEventListener('change',()=>{
     field.value=String(examVisualPt(field.id,field===qBefore?12:5));
-    applyExamVisualFormat();store();
+    applyExamVisualFormat();renderVisualRows();store();
    });
   }
-  for(const id of ['lang','course'])$(id)?.addEventListener('change',refreshVisualLabels);
-  refreshVisualLabels();applyExamVisualFormat();
+  // Delegación estable: redibujar la lista al cambiar de unidad no duplica
+  // escuchadores ni modifica los campos de preguntas y formas del generador.
+  formatRows.addEventListener('input',event=>{
+   const input=event.target;
+   if(!input.matches('input[data-exam-visual-field]'))return;
+   const key=input.dataset.examVisualKey,kind=input.dataset.examVisualField;
+   if(!/^(before|items)$/.test(kind)||!key)return;
+   const text=input.value.trim();
+   if(!text){
+    if(examVisualPerQuestion[key]){
+     delete examVisualPerQuestion[key][kind];
+     if(!Object.keys(examVisualPerQuestion[key]).length)delete examVisualPerQuestion[key];
+    }
+   }else{
+    const value=Number(text);
+    if(!Number.isFinite(value)||value<0||value>72)return;
+    if(!examVisualPerQuestion[key])examVisualPerQuestion[key]={};
+    examVisualPerQuestion[key][kind]=Math.round(value*2)/2;
+   }
+   applyExamVisualFormat();store();
+  });
+  formatRows.addEventListener('change',event=>{
+   const input=event.target;
+   if(!input.matches('input[data-exam-visual-field]'))return;
+   const n=examVisualPerQuestion[input.dataset.examVisualKey]?.[input.dataset.examVisualField];
+   if(Number.isFinite(n))input.value=String(n);
+  });
+  for(const id of ['lang','course'])$(id)?.addEventListener('change',()=>{
+   refreshVisualLabels();renderVisualRows();
+  });
+  refreshVisualLabels();applyExamVisualFormat();renderVisualRows();
 
   document.body.classList.add('exam-redesign');
   new MutationObserver(()=>queueMicrotask(enhance)).observe(host,{childList:true});
