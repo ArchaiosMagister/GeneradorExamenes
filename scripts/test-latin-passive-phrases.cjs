@@ -8,6 +8,7 @@ const vm=require('node:vm');
 const {chromium}=require('playwright');
 const root=path.resolve(__dirname,'..');
 const read=name=>fs.readFileSync(path.join(root,name),'utf8');
+const noQuantities=value=>String(value).normalize('NFD').replace(/\p{M}/gu,'').replace(/æ/gi,'ae').replace(/œ/gi,'oe');
 const sandbox={window:{},document:{readyState:'loading',addEventListener(){}}};
 vm.runInNewContext(read('offline-lemmas.js'),sandbox,{filename:'offline-lemmas.js'});
 vm.runInNewContext(read('vocabulary-generator.js'),sandbox,{filename:'vocabulary-generator.js'});
@@ -212,14 +213,14 @@ async function main(){
       before:paper.querySelector('[data-sentence-slot="0"]').textContent};
     },course);
     assert.equal(impersonal.count,1,filename+' '+course+': falta selector para pugnatum est');
-    assert(impersonal.options.some(x=>x.includes('pugno')&&x.includes('perfecto')),
+    assert(impersonal.options.some(x=>noQuantities(x).includes('pugno')&&x.includes('perfecto')),
      filename+' '+course+': falta lema pugno en lectura compuesta '+JSON.stringify(impersonal));
     assert(impersonal.options.some(x=>x.includes('paradigma deducido')),
      filename+' '+course+': se omitió aviso de forma inferida');
     assert.equal(impersonal.selected,'',filename+' '+course+': selección automática indebida');
     await page.locator('.exam-passive-choice').selectOption('compound:0');
     const combined=await page.locator('#examSentenceGlossary').innerText();
-    assert(combined.includes('pugno'),filename+' '+course+': no se sustituyó por lema pugno');
+    assert(noQuantities(combined).includes('pugno'),filename+' '+course+': no se sustituyó por lema pugno');
     assert(!combined.includes('sum, fui'),filename+' '+course+': auxiliar duplicado');
     assert.equal(await page.locator('[data-sentence-slot="0"]').textContent(),
      impersonal.before,'la selección alteró el texto original');
