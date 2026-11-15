@@ -5533,8 +5533,12 @@ function latinExamGlossEntry(entry,course,chosen){
  let local=null,localUnit=-1;
  for(const row of vocab){
   const n=examUnitNumber(row.unit);
+  // UD1 registra sum sin etiqueta de conjugación: la forma de cita
+  // escueta también es válida, si pertenece al mismo lema reconocido.
+  const bare=!row.entry.includes(',')&&!row.entry.includes('(');
   if(courseOf(row)!=='latin4'||n===null||n>last||n<localUnit||
-     examKey(row.entry)!==key||classify(row.entry,'lat4')!=='verbs')continue;
+     examKey(row.entry)!==key||
+     (classify(row.entry,'lat4')!=='verbs'&&!bare))continue;
   local=row.entry;localUnit=n;
  }
  const citation=local||entry;
