@@ -180,7 +180,8 @@ async function morph(page,file){
   const xml=await wordXml(page);
   const forms=state.headings.find(x=>x.kind==='forms');
   assert(forms,file+': no aparece análisis de palabras en '+course);
-  const title=forms.text.replace(/^\d+\.\s*/,'').trim().slice(0,25);
+  // Se distingue de la pregunta de verbos: sus títulos empiezan igual.
+  const title=forms.text.replace(/^\d+\.\s*/,'').trim().slice(0,70);
   margin(xml,title,19);
   if(await page.locator('input[data-exam-visual-key="'+formsKey+'"][data-exam-visual-field="items"]').count()){
    await setPer(page,formsKey,'items',6);
