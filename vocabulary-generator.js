@@ -1498,12 +1498,11 @@ for(const [tense,forms] of [
 const latinPassiveIndexCache=new WeakMap();
 function latinPassiveParticiples(data){
  if(latinPassiveIndexCache.has(data))return latinPassiveIndexCache.get(data);
- const stems=new Map(),index=new Map();
- const addStem=(lemma,surface,verified=false)=>{
+ const stems=new Map(),index=new Map(),verifiedForms=new Set();
+ const addStem=(lemma,surface)=>{
   const stem=latinKey(surface);
   if(!/^[a-z]+$/.test(stem)||!stem.length)return;
-  const id=latinKey(lemma)+'|'+stem,prev=stems.get(id);
-  stems.set(id,{lemma,stem,verified:verified||!!prev?.verified});
+  stems.set(latinKey(lemma)+'|'+stem,{lemma,stem});
  };
  // Una forma deducida del supino es candidata, no forma acreditada.
  for(const [lemma,courses] of Object.entries(data.vocabulary?.lat||{})){
@@ -1521,17 +1520,21 @@ function latinPassiveParticiples(data){
   if(/or$/.test(latinKey(lemma)))continue;
   const end=tags.includes(';MASC')?'us':tags.includes(';FEM')?'a':'um';
   const word=latinKey(surface);
-  if(word.endsWith(end)&&word.length>end.length+1)addStem(lemma,word.slice(0,-end.length),true);
+  if(word.endsWith(end)&&word.length>end.length+1){
+   addStem(lemma,word.slice(0,-end.length));
+   verifiedForms.add(latinKey(lemma)+'|'+word+'|singular');
+  }
  }
- for(const {lemma,stem,verified} of stems.values()){
+ for(const {lemma,stem} of stems.values()){
   for(const [ending,number] of [
    ['us','singular'],['a','singular'],['um','singular'],
    ['i','plural'],['ae','plural'],['a','plural']
   ]){
    const word=latinKey(stem+ending);
    if(!index.has(word))index.set(word,new Map());
-   const id=latinKey(lemma)+'|'+number,old=index.get(word).get(id);
-   index.get(word).set(id,{lemma,number,verified:verified||!!old?.verified});
+   const id=latinKey(lemma)+'|'+number;
+   index.get(word).set(id,{lemma,number,
+    verified:verifiedForms.has(latinKey(lemma)+'|'+word+'|'+number)});
   }
  }
  latinPassiveIndexCache.set(data,index);
