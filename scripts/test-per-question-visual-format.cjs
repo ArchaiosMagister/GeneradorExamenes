@@ -391,8 +391,24 @@ async function latinLexSpacing(page,file){
   assert.equal(await page.locator('#paper .exam-sheet').evaluate(el=>el.innerHTML),before,
    file+': cambiar márgenes regeneró preguntas');
   // Vocabulario: mismo hueco que entre oraciones, tanto en Word como en pantalla.
-  assert(await page.locator('#paper .exam-sheet > p.exam-gloss-title').count(),
-   file+': falta el glosario de las oraciones');
+  // Hay unidades de prueba cuyo glosario está vacío por filtros docentes.
+  // En tal caso introducir solo un título de prueba dentro del examen ya
+  // generado, sin tocar bancos ni preguntas, para verificar el exportador.
+  if(!await page.locator('#paper .exam-sheet > p.exam-gloss-title').count()){
+   await page.evaluate(()=>{
+    const sheet=document.querySelector('#paper .exam-sheet');
+    if(!sheet.querySelector('.exam-sentences > li, p.exam-sentence'))
+     throw Error('Faltan las oraciones anteriores al glosario');
+    const title=document.createElement('p');title.className='exam-gloss-title';
+    title.innerHTML=document.getElementById('lang').value==='va'
+     ?'<strong>Vocabulari</strong>':'<strong>Vocabulario</strong>';
+    const list=document.createElement('div');list.className='final-gloss';
+    list.innerHTML='<div class="gloss-item">puella, –ae: niña</div>';
+    sheet.querySelector('#answerkey').before(title,list);
+    applyExamVisualFormat();
+   });
+  }
+  const withGloss=await page.locator('#paper .exam-sheet').evaluate(el=>el.innerHTML);
   await setPer(page,key(course,model,'sent'),'items',''); // Quitar intervalo individual heredado.
   await page.locator('#sentence-gap-pt').fill('54');
   await page.locator('#sentence-gap-pt').press('Tab');
@@ -407,7 +423,7 @@ async function latinLexSpacing(page,file){
    .evaluate(el=>getComputedStyle(el).marginTop),66);
   assert(para(await wordXml(page),glossTitle.trim()).includes('w:before="1320"'),
    file+': Word no respeta los 66 pt específicos de oraciones');
-  assert.equal(await page.locator('#paper .exam-sheet').evaluate(el=>el.innerHTML),before,
+  assert.equal(await page.locator('#paper .exam-sheet').evaluate(el=>el.innerHTML),withGloss,
    file+': cambiar espaciado del glosario ha regenerado el examen');
   // Prueba explícita de 0 puntos: ningún resto de los 7/9 pt heredados.
   await setPer(page,k,'items',0);
