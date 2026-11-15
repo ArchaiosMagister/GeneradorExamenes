@@ -13,6 +13,7 @@ async function run(browser){
  try{
   await page.goto(pathToFileURL(path.resolve(__dirname,'../offline.html')).href,{waitUntil:'load'});
   await page.waitForFunction(()=>!!window.ExaminaTeacherReview?.reviewMergeBundle);
+  await page.locator('#academicNav').click();
   await page.evaluate(()=>{
    const details=document.querySelector('#morphTeacherReview details');details.open=true;
    for(let el=details.parentElement;el;el=el.parentElement)
