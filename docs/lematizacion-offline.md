@@ -89,3 +89,21 @@ La regeneración necesita Internet solo en el **equipo de preparación**, nunca 
 ## Relación con VocabulaLatinaGraecaque
 
 La fuente léxica y la mayor parte de las formas se mantienen en `VocabulaLatinaGraecaque`; este generador importa **una instantánea versionada** para poder funcionar sin conexión y ofrecer la misma lista de lemas. Los dos repositorios no comparten actualmente una base de datos con escritura común ni recalifican automáticamente los exámenes. Más adelante podrán utilizar un mismo esquema de publicación de paradigmas verificados.
+
+## Reconocimiento común para glosarios de Latín I y Latín de 4.º
+
+Los glosarios automáticos de **oraciones de examen** consultan las fichas generales
+latinas de ambos cursos, dando preferencia a las glosas y enunciados del curso
+seleccionado. Las fichas distintas conservan su procedencia y no se fusionan
+físicamente. El banco exigible (asignatura, unidad, bloques acumulativos y
+correcciones locales del docente) se consulta **después del reconocimiento**
+para decidir si se muestra la traducción; nunca limita qué lemas pueden
+reconocerse.
+
+La consulta común no modifica los sorteos de morfología, la generación de
+preguntas, los paradigmas, las unidades originales ni las fuentes verificadas.
+Las ambigüedades nuevas —por ejemplo, una lectura adjetival frente a una
+participial— siguen requiriendo decisión docente. Una forma no documentada
+no se aprueba automáticamente por figurar en cualquiera de los vocabularios.
+Las tres fichas auxiliares de aro, scribo y doctus permanecen como respaldo
+si desaparecieran del banco general, sin adscripción curricular.

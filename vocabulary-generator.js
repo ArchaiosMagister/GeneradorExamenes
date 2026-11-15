@@ -1448,7 +1448,16 @@ function analyze(data,text,course,bank,{contextual=false}={}){
     const exact=bankIndex.get('E'+normalizeCourse(candidate.entry))||[];
     const matching=(bankIndex.get('H'+normalizeCourse(head(candidate.entry)))||[])
      .filter(row=>lang==='lat'||head(row.entry).normalize('NFC')===head(candidate.entry).normalize('NFC'));
-    const teacher=exact.find(row=>row.entry===candidate.entry)||matching[0];
+    // El corpus común reconoce flexiones ajenas, pero las glosas del
+    // curso seleccionado prevalecen si coinciden lema y clase léxica.
+    const target=course==='lat1'?'latin1':course==='lat4'?'latin4':'';
+    const category=classifyVocabularyEntry(candidate.entry,course);
+    const local=lang==='lat'&&contextual?matching.filter(row=>
+     (row.course||'latin1')===target&&
+     classifyVocabularyEntry(row.entry,course)===category)
+     .sort((a,b)=>(b.entry.split(',').length-a.entry.split(',').length)*100+
+      (b.entry.length-a.entry.length))[0]:null;
+    const teacher=local||exact.find(row=>row.entry===candidate.entry)||matching[0];
     const lexical=teacher?{...candidate,entry:teacher.entry,meaning:teacher.meaning||'',meaning_va:teacher.meaning_va||''}:candidate;
     const id=JSON.stringify([lexical.lemma,lexical.entry,lexical.meaning]);
     if(!preferred.has(id)||lexical.attested)preferred.set(id,lexical);

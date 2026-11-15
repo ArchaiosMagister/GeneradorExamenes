@@ -1350,19 +1350,47 @@ function analyzeExamVocabulary(text,course,bank){
    meaning_va:chosen.meaning_va||'',status:'manual'};
  }));
 }
-// Fichas de apoyo al glosario de oraciones de 4.º, sin adscribirlas a ninguna
-// unidad ni incorporarlas a la morfología, sorteo o vocabulario exigible.
-// Se respeta siempre cualquier ficha del docente que ya exista en el banco.
+// El glosario reconoce el vocabulario latino de AMBOS cursos sin convertir
+// una ficha de otro curso en vocabulario exigible ni modificar su unidad.
+// Se mantiene el banco curricular por curso para preguntas y morfología.
 const LATIN4_SENTENCE_GLOSS_SUPPLEMENTS=Object.freeze([
  {entry:'aro, aravi, aratum (1ª)',meaning:'arar',meaning_va:'llaurar'},
  {entry:'scribo, scripsi, scriptum (3ª)',meaning:'escribir',meaning_va:'escriure'},
  {entry:'doctus, –a, –um',meaning:'sabio/a, docto/a',meaning_va:'savi/sàvia, docte/docta'}
 ]);
 function latinSentenceGlossaryBank(course){
- const main=latinSharedBank.vocabulary(course);
- if(course!=='latin4')return main;
- const original=new Set(main.map(item=>examKey(item.entry)));
- return main.concat(LATIN4_SENTENCE_GLOSS_SUPPLEMENTS.filter(item=>!original.has(examKey(item.entry))));
+ if(course!=='latin1'&&course!=='latin4')return [];
+ const other=course==='latin1'?'latin4':'latin1';
+ const result=[],seen=new Set(),lemmas=new Set();
+ const add=row=>{
+  const entry=String(row?.entry||'').trim();
+  if(!entry)return;
+  // Una misma ficha repetida en varias UDs se consulta una sola vez,
+  // pero se conservan en las fuentes las acepciones/enunciados distintos.
+  const identity=entry.normalize('NFC').toLowerCase()+'|'+
+   String(row.meaning||'').trim().normalize('NFC').toLowerCase();
+  if(seen.has(identity))return;
+  seen.add(identity);result.push(row);lemmas.add(examKey(entry));
+ };
+ // Las fichas del curso actual tienen prioridad de glosa sobre las ajenas.
+ for(const c of [course,other]){
+  // Reutilizar primero la misma vista docente que empleaba cada curso:
+  // el último registro de cada enunciado exacto conserva su prioridad.
+  for(const row of latinSharedBank.vocabulary(c))add(row);
+  // Mantener las otras acepciones sin modificar el banco persistente.
+  for(const row of vocab)if(courseOf(row)===c)add(row);
+ }
+ // Estas tres fichas siguen siendo respaldo, nunca amplían los ejercicios.
+ for(const row of LATIN4_SENTENCE_GLOSS_SUPPLEMENTS)
+  if(!lemmas.has(examKey(row.entry)))add(row);
+ // Si el profesor ha añadido una palabra exigible que no figura en ningún
+ // vocabulario general, conservar su enunciado sin inventar traducción.
+ for(const c of [course,other])
+  for(const row of examRequired)
+   if(row.course===c&&!lemmas.has(examKey(row.entry)))add({
+    ...row,meaning:'',meaning_va:''
+   });
+ return result;
 }
 function buildFinalLexicon(chosen,sentences){
  if(!$('autoGloss').checked)return '';
