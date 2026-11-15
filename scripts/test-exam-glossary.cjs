@@ -175,6 +175,47 @@ assert(!engine.documentXml({...project,groupTypes:false}).includes('Sustantivos 
    x.course==='latin4'&&x.entry.startsWith('admīror')&&x.unit==='UD10'));
   assert.equal(stillRemoved,false,
    'Una corrección docente no puede revertirse al recargar la lista exigible');
+  // La gestión del exigible debe mantener edición y filtrado incluso con
+  // muchas filas. No se altera ningún registro docente persistente.
+  const managerBatch=await page.evaluate(()=>{
+   const originalLength=examRequired.length;
+   const selected=window.confirm;window.confirm=()=>true;
+   const course=document.getElementById('vmCourse');
+   const unit=document.getElementById('vmUnit');
+   const search=document.getElementById('vmSearch');
+   try{
+    for(let i=0;i<80;i++)examRequired.push({
+     course:'latin4',unit:'UD1',entry:'vocabulum-perf-'+i+', –i',
+     key:'vocabulum-perf-'+i,meaning:'prueba '+i
+    });
+    course.value='latin4';course.dispatchEvent(new Event('change',{bubbles:true}));
+    unit.value='UD1';unit.dispatchEvent(new Event('change',{bubbles:true}));
+    search.value='vocabulum-perf-';search.dispatchEvent(new Event('input',{bubbles:true}));
+    const entries=document.querySelectorAll('#vmRows tr');
+    const options=[...entries].map(tr=>tr.querySelector('select')?.options.length||0);
+    search.value='vocabulum-perf-17';search.dispatchEvent(new Event('input',{bubbles:true}));
+    const one=document.querySelector('#vmRows tr');
+    const name=one.querySelector('input[aria-label="Enunciado"]');
+    const meaning=one.querySelector('input[aria-label="Traducción"]');
+    meaning.value='traducción cambiada';meaning.dispatchEvent(new Event('change',{bubbles:true}));
+    const changed=examRequired.find(x=>x.entry==='vocabulum-perf-17, –i')?.meaning;
+    const selector=one.querySelector('select');
+    selector.value='UD2';selector.dispatchEvent(new Event('change',{bubbles:true}));
+    const moved=examRequired.find(x=>x.entry==='vocabulum-perf-17, –i')?.unit;
+    const gone=document.querySelectorAll('#vmRows tr').length;
+    unit.value='UD2';unit.dispatchEvent(new Event('change',{bubbles:true}));
+    const found=document.querySelectorAll('#vmRows tr').length;
+    return {count:entries.length,allOptions:options.every(n=>n>=10),
+     changed,moved,gone,found};
+   }finally{
+    examRequired.length=originalLength;
+    window.confirm=selected;search.value='';
+    saveRequired();unit.dispatchEvent(new Event('change',{bubbles:true}));
+   }
+  });
+  assert.deepEqual(managerBatch,{count:80,allOptions:true,
+   changed:'traducción cambiada',moved:'UD2',gone:0,found:1},
+   'El gestor exigible debe actualizar filas, traducciones y unidades sin pérdidas');
   await page.locator('#vmShowExam').click();
   await page.locator('#group-course').evaluate(el=>el.open=true);
   await page.locator('#group-content').evaluate(el=>el.open=true);
