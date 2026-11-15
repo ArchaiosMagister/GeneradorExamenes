@@ -1280,7 +1280,12 @@ try{
 const sentenceContext=()=>currentCourse()+'/'+$('model').value;
 const sentenceLines=()=>sentenceDrafts.get(sentenceContext())||[];
 function saveSentenceLines(lines,key=sentenceContext()){
- sentenceDrafts.set(key,lines);
+ const previous=sentenceDrafts.get(key);
+ // No escribir localStorage cuando una sincronización entre editores no
+ // modifica ninguna oración: las escrituras síncronas bloquean Safari/iPad.
+ if(previous&&previous.length===lines.length&&
+    previous.every((value,i)=>value===lines[i]))return;
+ sentenceDrafts.set(key,lines.slice());
  try{localStorage.setItem(sentenceDraftKey,JSON.stringify(Object.fromEntries(sentenceDrafts)))}catch{}
 }
 function sentenceList(count,lines,greek=false){
@@ -1293,13 +1298,33 @@ function sentenceGlossary(chosen){
  const rows=sentenceLines().slice(0,countFor('sent')).map(text=>({text}));
  return '<div id="examSentenceGlossary" contenteditable="false">'+buildFinalLexicon(chosen,rows)+'</div>';
 }
+let sentenceGlossTimer=null;
 function refreshSentenceGlossary(){
+ if(sentenceGlossTimer!==null){clearTimeout(sentenceGlossTimer);sentenceGlossTimer=null}
  const panel=$('examSentenceGlossary');
  if(!panel)return;
  const chosen=currentCourse()==='greek1'?greekMarkedUnits():selectedUnits();
- panel.innerHTML=buildFinalLexicon(chosen,[...$('paper').querySelectorAll('[data-sentence-slot]')]
+ const updated=buildFinalLexicon(chosen,[...$('paper').querySelectorAll('[data-sentence-slot]')]
   .map(node=>({text:node.textContent})));
+ // Mantener los selectores y el foco cuando no ha cambiado el glosario.
+ if(panel.innerHTML!==updated)panel.innerHTML=updated;
 }
+function scheduleSentenceGlossaryRefresh(){
+ // Las frases breves conservan la actualización inmediata original.
+ // En textos largos, acumular ráfagas de pulsaciones, nunca las decisiones
+ // filológicas ni los comandos de exportación.
+ const text=$('newSentences').value;
+ if(text.length<400){refreshSentenceGlossary();return}
+ if(sentenceGlossTimer!==null)clearTimeout(sentenceGlossTimer);
+ sentenceGlossTimer=setTimeout(refreshSentenceGlossary,110);
+}
+// Word/PDF/borradores deben leer siempre la última edición, aunque el
+// profesor pulse Exportar antes de que transcurran esos 110 ms.
+window.ExaminaFlushSentenceGlossary=refreshSentenceGlossary;
+$('newSentences').addEventListener('change',refreshSentenceGlossary);
+$('paper').addEventListener('focusout',event=>{
+ if(event.target.closest?.('[data-sentence-slot]'))refreshSentenceGlossary();
+});
 // Resolver las ambigüedades en la propia vista previa actualiza el Word,
 // pero nunca altera el banco acreditado ni regenera las preguntas.
 $('paper').addEventListener('change',event=>{
@@ -1329,9 +1354,10 @@ $('newSentences').addEventListener('input',()=>{
  const lines=$('newSentences').value.split('\n');
  saveSentenceLines(lines);
  $('paper').querySelectorAll('[data-sentence-slot]').forEach(node=>{
-  node.textContent=lines[Number(node.dataset.sentenceSlot)]||'';
+  const next=lines[Number(node.dataset.sentenceSlot)]||'';
+  if(node.textContent!==next)node.textContent=next;
  });
- refreshSentenceGlossary();
+ scheduleSentenceGlossaryRefresh();
 });
 $('paper').addEventListener('input',event=>{
  const slot=event.target.closest('[data-sentence-slot]');
@@ -1341,7 +1367,7 @@ $('paper').addEventListener('input',event=>{
  lines[index]=slot.textContent;
  saveSentenceLines(lines);
  syncSentenceEditor();
- refreshSentenceGlossary();
+ scheduleSentenceGlossaryRefresh();
 });
 $('paper').addEventListener('keydown',event=>{
  if(event.key==='Enter'&&event.target.closest('[data-sentence-slot]'))event.preventDefault();
@@ -2784,6 +2810,7 @@ function wordExamGloss(el){
  for(let i=0;i<half;i++){out+='<w:tr><w:trPr><w:cantSplit/></w:trPr>';[items[i],items[i+half]].forEach((x,j)=>{out+='<w:tc><w:tcPr><w:tcW w:w="'+(j?4032:4756)+'" w:type="dxa"/></w:tcPr><w:p><w:pPr><w:spacing w:before="0" w:after="0" w:line="300" w:lineRule="atLeast"/></w:pPr>'+(x?wordInline(x):'')+'</w:p></w:tc>'});out+='</w:tr>'}return out+'</w:tbl>';
 }
 function exportWord(includeAnswers){
+ window.ExaminaFlushSentenceGlossary?.();
  const paper=$('paper');
  if(!paper||!paper.textContent.trim()){alert('Genera primero un examen.');return;}
  if(window.ExaminaTeacherReview?.evidenceMayExport?.(paper,
@@ -3053,7 +3080,7 @@ function cleanDraftHtml(raw){
  root.querySelectorAll('*').forEach(el=>{for(const attr of [...el.attributes]){if(/^on/i.test(attr.name)||['src','srcdoc','href','style'].includes(attr.name))el.removeAttribute(attr.name)}});
  return root.innerHTML;
 }
-function saveDraftTo(key){try{localStorage.setItem(key,JSON.stringify(snapshotExam()));return true}catch(e){$('draftStatus').textContent='No se pudo guardar localmente. Exporta el borrador JSON.';return false}}
+function saveDraftTo(key){try{window.ExaminaFlushSentenceGlossary?.();localStorage.setItem(key,JSON.stringify(snapshotExam()));return true}catch(e){$('draftStatus').textContent='No se pudo guardar localmente. Exporta el borrador JSON.';return false}}
 function restoreDraft(d){
  if(!validDraft(d))throw Error('Formato de borrador no reconocido');
  // Ajustar el contexto ANTES de reponer el HTML: los selectores pueden
