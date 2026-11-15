@@ -1723,7 +1723,16 @@ function classifyVocabularyEntry(item,course='lat1'){
   if(/,/.test(entry))return 'nouns';
   return 'other';
  }
- if(/,\s*[–−-]?(?:a|ra|era)\s*,\s*[–−-]?um\b/iu.test(entry)||
+ // Algunos bancos escriben las terminaciones completas y otros con raya.
+ // No confundir miser, misera, miserum con un sustantivo por su formato.
+ const parts=entry.split(',').map(s=>norm(s.replace(/\([^)]*\)/g,'').trim())
+  .replace(/^[–−—-]+/u,''));
+ const fullDecl12=parts.length>=3&&/(?:us|er)$/.test(lemma)&&
+  /^[a-z]+a$/i.test(parts[1])&&/^[a-z]+um$/i.test(parts[2]);
+ const fullDecl3=parts.length>=3&&lemma.endsWith('er')&&
+  /(?:ris|eris)$/.test(parts[1])&&/(?:re|ere)$/.test(parts[2]);
+ if(fullDecl12||fullDecl3||
+  /,\s*[–−-]?(?:a|ra|era)\s*,\s*[–−-]?um\b/iu.test(entry)||
   /,\s*[–−-]?e\b/iu.test(entry)||/\((?:adj\.?|adjetivo)[^)]*\)/iu.test(entry))
   return 'adjectives';
  if(/^[a-z]+(?:o|or)\s*,/i.test(first+',')&&entry.split(',').length>=3)return 'verbs';
