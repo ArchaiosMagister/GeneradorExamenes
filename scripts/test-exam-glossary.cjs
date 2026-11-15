@@ -74,11 +74,14 @@ assert.equal(checkLatin('Miser').candidates.filter(c=>c.lemma==='miser').length,
  'miser, misera, miserum es el MISMO adjetivo que miser, –a, –um');
 assert.equal(checkLatin('Via').candidates.filter(c=>c.lemma==='via').length,1,
  'No multiplicar una ficha por varias acepciones editoriales de via');
-for(const entry of ['miser, misera, miserum','noster, nostra, nostrum',
+for(const entry of ['miser, misera, miserum',
  'pulcher, pulchra, pulchrum','celer, –eris, –ere']){
  assert.equal(engine.classifyVocabularyEntry(entry,'lat1'),'adjectives',
   'La ficha declinada como adjetivo no debe clasificarse como sustantivo: '+entry);
 }
+// Los posesivos siguen en el selector escolar de pronombres: no alterar
+// la categorización docente por su flexión de adjetivo.
+assert.equal(engine.classifyVocabularyEntry('noster, nostra, nostrum','lat1'),'pronouns');
 
 for(const [entry,course,kind] of [
  ['bonus, –a, –um','lat1','adjectives'],
