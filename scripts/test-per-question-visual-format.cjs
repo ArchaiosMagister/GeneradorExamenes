@@ -373,6 +373,60 @@ async function latinLexSpacing(page,file){
    assert(wordParagraph.includes('w:after="0"'),
     file+': Word acumula márgenes verticales en '+item.kind);
   }
+  // Continuidad: 50 pt entre subopciones -> 50 pt hasta el título siguiente.
+  const next=await page.evaluate(()=>{
+   const sheet=document.querySelector('#paper .exam-sheet');
+   const headings=[...sheet.querySelectorAll(':scope > p.exam-question')];
+   const lex=sheet.querySelector(':scope > p.exam-question[data-exam-kind="lex"]');
+   const n=headings[headings.indexOf(lex)+1];
+   if(!n)throw Error('Falta una pregunta después de léxico');
+   return {text:n.textContent.trim().replace(/^\d+\.\s*/,''),kind:n.dataset.examKind};
+  });
+  await setPer(page,k,'items',50);
+  const nextMargin=await page.evaluate(kind=>getComputedStyle(
+   document.querySelector('#paper p.exam-question[data-exam-kind="'+kind+'"]')).marginTop,next.kind);
+  closeTo(nextMargin,50);
+  assert(para(await wordXml(page),next.text).includes('w:before="1000"'),
+   file+': Word no conserva los 50 pt antes de la pregunta siguiente');
+  assert.equal(await page.locator('#paper .exam-sheet').evaluate(el=>el.innerHTML),before,
+   file+': cambiar márgenes regeneró preguntas');
+  // Vocabulario: mismo hueco que entre oraciones, tanto en Word como en pantalla.
+  // Hay unidades de prueba cuyo glosario está vacío por filtros docentes.
+  // En tal caso introducir solo un título de prueba dentro del examen ya
+  // generado, sin tocar bancos ni preguntas, para verificar el exportador.
+  if(!await page.locator('#paper .exam-sheet > p.exam-gloss-title').count()){
+   await page.evaluate(()=>{
+    const sheet=document.querySelector('#paper .exam-sheet');
+    if(!sheet.querySelector('.exam-sentences > li, p.exam-sentence'))
+     throw Error('Faltan las oraciones anteriores al glosario');
+    const title=document.createElement('p');title.className='exam-gloss-title';
+    title.innerHTML=document.getElementById('lang').value==='va'
+     ?'<strong>Vocabulari</strong>':'<strong>Vocabulario</strong>';
+    const list=document.createElement('div');list.className='final-gloss';
+    list.innerHTML='<div class="gloss-item">puella, –ae: niña</div>';
+    sheet.querySelector('#answerkey').before(title,list);
+    applyExamVisualFormat();
+   });
+  }
+  const withGloss=await page.locator('#paper .exam-sheet').evaluate(el=>el.innerHTML);
+  await setPer(page,key(course,model,'sent'),'items',''); // Quitar intervalo individual heredado.
+  await page.evaluate(()=>{
+   const field=document.getElementById('sentence-gap-pt');
+   field.value='54';field.dispatchEvent(new Event('change',{bubbles:true}));
+  }); // El campo original vive en un desplegable de configuración cerrado.
+  const glossTitle=await page.locator('#paper .exam-sheet > p.exam-gloss-title').textContent();
+  const glossMargin=await page.locator('#paper .exam-sheet > p.exam-gloss-title')
+   .evaluate(el=>getComputedStyle(el).marginTop);
+  closeTo(glossMargin,54);
+  assert(para(await wordXml(page),glossTitle.trim()).includes('w:before="1080"'),
+   file+': Word no deja 54 pt antes del vocabulario');
+  await setPer(page,key(course,model,'sent'),'items',66);
+  closeTo(await page.locator('#paper .exam-sheet > p.exam-gloss-title')
+   .evaluate(el=>getComputedStyle(el).marginTop),66);
+  assert(para(await wordXml(page),glossTitle.trim()).includes('w:before="1320"'),
+   file+': Word no respeta los 66 pt específicos de oraciones');
+  assert.equal(await page.locator('#paper .exam-sheet').evaluate(el=>el.innerHTML),withGloss,
+   file+': cambiar espaciado del glosario ha regenerado el examen');
   // Prueba explícita de 0 puntos: ningún resto de los 7/9 pt heredados.
   await setPer(page,k,'items',0);
   const zeros=await page.evaluate(()=>[...document.querySelectorAll('#paper .exam-sheet > p.lex-subquestion')]

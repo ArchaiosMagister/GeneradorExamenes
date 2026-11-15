@@ -38,7 +38,8 @@ const {chromium} = require(process.env.PLAYWRIGHT_PATH || 'playwright');
    const score=await page.evaluate(()=>greekLastExam.total);
    assert.equal(score,{complete:10,analysis:9,morphology:3.5}[mode]);
    for(const answers of [false,true]){
-    const downloadPromise=page.waitForEvent('download');await page.click(answers?'#docxAnswers':'#docx');
+    if(answers)await page.locator('#teacherSolutionsSummary').evaluate(el=>el.parentElement.open=true);
+     const downloadPromise=page.waitForEvent('download');await page.click(answers?'#docxAnswers':'#docx');
     const download=await downloadPromise;await download.saveAs(path.join(out,mode+(answers?'-answers':'-student')+'.docx'));
    }
   }

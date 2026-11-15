@@ -55,11 +55,11 @@ jobs:
           set -euo pipefail
           mkdir -p _site
           cp index.html offline.html _site/
-          for asset in offline-lemmas.js verification-review.js greek-review.js eulexis-local.js culture-lat4.js lexicon-valenciano.js required-latin-units.js vocabulary-quality.js vocabulary-generator.js exam-scoring.js unified-backup.js pwa.js manifest.webmanifest; do
+          for asset in offline-lemmas.js verification-review.js greek-review.js eulexis-local.js culture-lat4.js lexicon-valenciano.js required-latin-units.js vocabulary-quality.js vocabulary-generator.js exam-scoring.js unified-backup.js pwa.js pdf-export.js export-workspace.js manifest.webmanifest; do
             test -f "$asset"
             cp "$asset" _site/
           done
-          cp -R icons data _site/
+          cp -R icons data vendor _site/
           if [[ -d THIRD_PARTY_LICENSES ]]; then cp -R THIRD_PARTY_LICENSES _site/; fi
           if [[ -f docs/lematizacion-lectores.md ]]; then
             mkdir -p _site/docs
