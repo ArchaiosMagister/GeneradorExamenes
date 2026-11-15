@@ -410,8 +410,10 @@ async function latinLexSpacing(page,file){
   }
   const withGloss=await page.locator('#paper .exam-sheet').evaluate(el=>el.innerHTML);
   await setPer(page,key(course,model,'sent'),'items',''); // Quitar intervalo individual heredado.
-  await page.locator('#sentence-gap-pt').fill('54');
-  await page.locator('#sentence-gap-pt').press('Tab');
+  await page.evaluate(()=>{
+   const field=document.getElementById('sentence-gap-pt');
+   field.value='54';field.dispatchEvent(new Event('change',{bubbles:true}));
+  }); // El campo original vive en un desplegable de configuración cerrado.
   const glossTitle=await page.locator('#paper .exam-sheet > p.exam-gloss-title').textContent();
   const glossMargin=await page.locator('#paper .exam-sheet > p.exam-gloss-title')
    .evaluate(el=>getComputedStyle(el).marginTop);
