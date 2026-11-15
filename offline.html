@@ -474,6 +474,15 @@ html[data-course="greek1"] .paper .exam-sheet *{font-style:normal!important}
  html[data-appearance="dark"] #examLayout>.paper::before,html[data-appearance="oled"] #examLayout>.paper::before{color:#5b6f85}
 }
 @media print{.appearance-picker{display:none!important}html[data-appearance] .paper{background:#fff!important;color:#000!important}}
+</style><style id="examina-course-dark-legibility">
+/* Textos cromáticos legibles en oscuro y OLED; el papel y las superficies de botones conservan su estilo. */
+@media screen{
+ html:is([data-appearance="dark"],[data-appearance="oled"])[data-course="latin4"]{--examina-readable-course:#f3d451}
+ html:is([data-appearance="dark"],[data-appearance="oled"])[data-course="greek1"]{--examina-readable-course:#9fd8ff}
+ html:is([data-appearance="dark"],[data-appearance="oled"]):is([data-course="latin4"],[data-course="greek1"]) #examLayout aside.panel :is(.settings-section-caption,#examSelectionSummary .exam-summary-caption,#examQuestionMenus .exam-question-status){
+  color:var(--examina-readable-course);
+ }
+}
 </style><style id="primary-exam-pickers">
 @media screen {
  #examLayout aside.panel .exam-primary-picker{margin:9px 0;border:1px solid var(--line);border-radius:9px;background:var(--surface);overflow:hidden}
@@ -4976,6 +4985,23 @@ window.ExaminaGreekSentenceContexts=function(form){
 const courseName=()=>({latin1:'Latín I',latin4:'Latín 4.º ESO',greek1:'Griego I (ático)'})[currentCourse()];
 const T={es:{config:'Configurar examen',language:'Idioma del examen',term:'Trimestre',units:'Unidad o unidades del examen',cumulative:'Incluir vocabulario acumulado hasta la última unidad marcada',all:'Todas',clear:'Limpiar',title:'Título',model:'Modelo de examen',blocks:'Bloques (puedes combinar cualquiera)',decl:'Declinación y concordancia',verb:'Formas verbales',lex:'Léxico',sent:'Oraciones (banco inicial)',culture:'Cultura clásica',cultureTitle:'Cultura clásica: responde a las preguntas',amount:'Elementos por bloque',generate:'Generar examen',print:'Imprimir / PDF',solutions:'Mostrar soluciones',hide:'Ocultar soluciones',name:'Nombre',date:'Fecha',quarter:'trimestre',selection:'Unidades',available:'entradas distintas disponibles',declTitle:'Analiza las formas nominales y adjetivales',declHelp:'Indica caso, número y género cuando corresponda, y el enunciado.',verbTitle:'Analiza las formas verbales',verbHelp:'Indica persona, número, tiempo, modo, voz y enunciado.',lexTitle:'Léxico: traduce al castellano',sentTitle:'Analiza y traduce las oraciones',key:'Solucionario orientativo',empty:'Selecciona al menos un bloque y una unidad.',pres:'presente de indicativo activo',edit:'Puedes editar directamente el texto del examen antes de imprimir.'},va:{config:'Configura l’examen',language:'Llengua de l’examen',term:'Trimestre',units:'Unitat o unitats de l’examen',cumulative:'Incloure el vocabulari acumulat fins a l’última unitat marcada',all:'Totes',clear:'Netejar',title:'Títol',model:'Model d’examen',blocks:'Blocs (pots combinar-ne qualsevol)',decl:'Declinació i concordança',verb:'Formes verbals',lex:'Lèxic',sent:'Oracions (banc inicial)',culture:'Cultura clàssica',cultureTitle:'Cultura clàssica: respon a les preguntes',amount:'Elements per bloc',generate:'Generar examen',print:'Imprimir / PDF',solutions:'Mostrar solucions',hide:'Ocultar solucions',name:'Nom',date:'Data',quarter:'trimestre',selection:'Unitats',available:'entrades diferents disponibles',declTitle:'Analitza les formes nominals i adjectivals',declHelp:'Indica el cas, el nombre i el gènere quan corresponga, i l’enunciat.',verbTitle:'Analitza les formes verbals',verbHelp:'Indica la persona, el nombre, el temps, el mode, la veu i l’enunciat.',lexTitle:'Lèxic: traduïx al valencià',sentTitle:'Analitza i traduïx les oracions',key:'Solucionari orientatiu',empty:'Selecciona almenys un bloc i una unitat.',pres:'present d’indicatiu actiu',edit:'Pots editar directament el text de l’examen abans d’imprimir.'}};
 const tr=k=>T[$('lang').value][k];
+const examAutoSubjects={
+ latin1:{es:'Latín I',va:'Llatí I'},
+ latin4:{es:'Latín 4.º ESO',va:'Llatí 4t ESO'},
+ greek1:{es:'Griego I',va:'Grec I'}
+};
+function examAutoTitle(course=currentCourse(),lang=$('lang').value,review=$('sheetType')?.value==='review'){
+ return (review?(lang==='va'?'Fitxa de repàs de ':'Ficha de repaso de '):(lang==='va'?'Examen de ':'Examen de '))+
+  examAutoSubjects[course][lang];
+}
+function isExamAutoTitle(value){
+ return Object.keys(examAutoSubjects).some(course=>
+  ['es','va'].some(lang=>[false,true].some(review=>examAutoTitle(course,lang,review)===value)));
+}
+function localizeExamAutoTitle(){
+ const title=$('name');
+ if(title&&isExamAutoTitle(title.value.trim()))title.value=examAutoTitle();
+}
 $('unitChoices').innerHTML=units.map((u,i)=>`<label><input type="checkbox" class="unit-choice" value="${i}" >${esc(u)}</label>`).join('');
 function selectedUnits(cumulative=$('cumulative').checked){const ix=[...document.querySelectorAll('.unit-choice:checked')].map(x=>+x.value);return cumulative&&ix.length?units.filter((_,i)=>i<=Math.max(...ix)):ix.map(i=>units[i]);}
 function trimesterHeading(){const n=Math.max(1,Math.min(3,Number($('term').value)||1));return ($('lang').value==='va'?['1r trimestre','2n trimestre','3r trimestre']:['1.er trimestre','2.º trimestre','3.er trimestre'])[n-1]}
@@ -4996,7 +5022,7 @@ function examinaTranslateConfiguration(){
   el.textContent=va?(labels[base]||base):base;
  }
 }
-function translateUI(){examinaTranslateConfiguration();document.documentElement.lang=$('lang').value==='va'?'ca-valencia':'es';document.querySelectorAll('[data-i18n]').forEach(e=>e.textContent=tr(e.dataset.i18n));$('term').querySelectorAll('option').forEach((o,i)=>o.textContent=($('lang').value==='va'?['1r trimestre','2n trimestre','3r trimestre']:['1.er trimestre','2.º trimestre','3.er trimestre'])[i]);$('name').placeholder=courseName();document.querySelectorAll('.vocab-tabbar,.quick-actions,#examLayout aside.panel,#vocabManager').forEach(el=>window.ExaminaValencianGloss?.translateDom?.(el,$('lang').value));}
+function translateUI(){localizeExamAutoTitle();examinaTranslateConfiguration();document.documentElement.lang=$('lang').value==='va'?'ca-valencia':'es';document.querySelectorAll('[data-i18n]').forEach(e=>e.textContent=tr(e.dataset.i18n));$('term').querySelectorAll('option').forEach((o,i)=>o.textContent=($('lang').value==='va'?['1r trimestre','2n trimestre','3r trimestre']:['1.er trimestre','2.º trimestre','3.er trimestre'])[i]);$('name').placeholder=courseName();document.querySelectorAll('.vocab-tabbar,.quick-actions,#examLayout aside.panel,#vocabManager').forEach(el=>window.ExaminaValencianGloss?.translateDom?.(el,$('lang').value));}
 
 $('sheetType').addEventListener('change',()=>{const c=currentCourse();$('name').value=($('sheetType').value==='review'?($('lang').value==='va'?'Fitxa de repàs de ':'Ficha de repaso de '):($('lang').value==='va'?'Examen de ':'Examen de '))+({'latin1':$('lang').value==='va'?'Llatí I':'Latín I','latin4':$('lang').value==='va'?'Llatí 4t ESO':'Latín 4.º ESO','greek1':$('lang').value==='va'?'Grec I':'Griego I'})[c];generate()});
 // Un solo vínculo por palabra editable: conserva la vista previa como fuente
@@ -6035,10 +6061,10 @@ function examDateLabel(va){return (va?'Data':'Fecha')+': '}
 function latinExamHeader(chosen){
  const va=$('lang').value==='va';
  const titleInput=$('name').value.trim();
- const defaultNames=['Examen de Latín I','Examen de Llatí I','Examen de Latín 4.º ESO','Examen de Llatí 4t ESO'];
+ const defaultNames=['Examen de Latín I','Examen de Llatí I','Examen de Latín 4.º ESO','Examen de Llatí 4t ESO','Ficha de repaso de Latín I','Fitxa de repàs de Llatí I','Ficha de repaso de Latín 4.º ESO','Fitxa de repàs de Llatí 4t ESO'];
  const subject=va?(currentCourse()==='latin4'?'Llatí 4t ESO':'Llatí I'):(currentCourse()==='latin4'?'Latín 4.º ESO':'Latín I');
  const model=$('model').value;
- const type=model==='morf'?(va?'Examen de morfologia de ':'Examen de morfología de '):model==='mixto'?(va?'Examen de traducció de ':'Examen de traducción de '):'Examen de ';
+ const type=$('sheetType').value==='review'?(va?'Fitxa de repàs de ':'Ficha de repaso de '):model==='morf'?(va?'Examen de morfologia de ':'Examen de morfología de '):model==='mixto'?(va?'Examen de traducció de ':'Examen de traducción de '):'Examen de ';
  const title=examHeadingWithUnits(titleInput&&!defaultNames.includes(titleInput)?titleInput:type+subject,chosen);
  const term=trimesterHeading();
  const seed=$('seed').value.trim();
