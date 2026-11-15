@@ -19,6 +19,9 @@ const bank=[
  {course:'latin1',unit:'UD9',entry:'ædifico, ædificavi, ædificatum (1ª)',meaning:'edificar',meaning_va:'edificar'},
  {course:'latin1',unit:'UD9',entry:'doceo, docui, doctum (2ª)',meaning:'enseñar'},
  {course:'latin1',unit:'UD9',entry:'pugno, pugnavi, pugnatum (1ª)',meaning:'luchar',meaning_va:'lluitar'},
+ {course:'latin4',unit:'UD6',entry:'trānsportō, –āvī, –ātum (1ª)',meaning:'transportar',meaning_va:'transportar'},
+ {course:'latin4',unit:'UD6',entry:'resisto, restiti, – (3ª)',meaning:'resistir'},
+ {course:'latin4',unit:'UD2',entry:'porto (1ª)',meaning:'llevar'},
  {course:'latin1',unit:'UD9',entry:'sum, fui, – (irr.)',meaning:'ser, estar'},
  {course:'latin1',unit:'UD9',entry:'pastor, pastoris',meaning:'pastor'},
  {course:'latin1',unit:'UD9',entry:'ovis, ovis',meaning:'oveja'}
@@ -37,7 +40,10 @@ for(const [sentence,lemma,tense,number] of [
  ['Doctus est.','doceo','perfecto','singular'],
  ['Pugnatum est.','pugno','perfecto','singular'],
  ['Pugnatum erat.','pugno','pluscuamperfecto','singular'],
- ['Pugnatum erit.','pugno','futuro perfecto','singular']
+ ['Pugnatum erit.','pugno','futuro perfecto','singular'],
+ ['Transportatus est.','transporto','perfecto','singular'],
+ ['Transportatae erant.','transporto','pluscuamperfecto','plural'],
+ ['Transportatum erit.','transporto','futuro perfecto','singular']
 ]){
  const found=phrases(sentence);
  assert.equal(found.length,1,sentence+' no detectó grupo posible');
@@ -56,6 +62,19 @@ for(const sentence of [
 ])assert.equal(phrases(sentence).length,0,sentence+' falsa perífrasis');
 assert.equal(phrases('Pugnatum sunt.').length,0,'impersonal: número incompatible con sunt');
 assert.equal(phrases('Pugnatum, est.').length,0,'la coma impide la combinación');
+assert.equal(phrases('Transportatus erant.').length,0,'no admitir número incompatible tras abreviación');
+assert.equal(phrases('Transportatus, est.').length,0,'el signo impide la lectura compuesta');
+assert.equal(phrases('Portatus est.').some(x=>x.candidates.some(y=>y.lemma==='porto')),false,
+ 'no inventar supino para verbos declarados solo en presente');
+assert.equal(phrases('Resistitus est.').some(x=>x.candidates.some(y=>y.lemma==='resisto')),false,
+ 'no inventar supino para verbos con raya de ausencia');
+const expanded=engine.analyze(data,'Transportaverat.','lat4',bank,{contextual:true})[0];
+assert.equal(expanded.status,'documented','falta reconocer el pluscuamperfecto abreviado');
+assert.equal(expanded.lemma,'transporto','el perfecto abreviado pertenece al lema declarado');
+assert.equal(expanded.entry,'trānsportō, –āvī, –ātum (1ª)',
+ 'no sustituir el enunciado docente por otro fabricado');
+assert.equal(phrases('Transportatus est.')[0].candidates.find(c=>c.lemma==='transporto').verifiedParticiple,false,
+ 'el participio deducido de la notación docente no es forma contrastada');
 assert.equal(phrases('Pugnatum est.')[0].candidates.find(c=>c.lemma==='pugno').verifiedParticiple,false,
  'no certificar pugnatum por el supino, solo ofrecer elección');
 const pugnoShortBank=bank.filter(x=>!x.entry.startsWith('pugno,')).concat([
@@ -228,6 +247,33 @@ async function main(){
     assert.equal(await page.locator('.exam-passive-choice').inputValue(),'separate',
      filename+' '+course+': no se puede mantener la lectura separada');
    }
+   // Reproducción real: la UD6 solo conserva el paradigma abreviado.
+   // El selector existe en la versión online y autónoma y no elige por el docente.
+   const abbreviated=await page.evaluate(()=>{
+    document.getElementById('course').value='latin4';
+    document.getElementById('lang').value='es';
+    const paper=document.getElementById('paper');
+    paper.innerHTML='<div class="exam-sheet">'+
+     '<i data-sentence-slot="0" contenteditable="plaintext-only">Transportatus est.</i>'+
+     '<div id="examSentenceGlossary"></div></div>';
+    refreshSentenceGlossary();
+    const choice=paper.querySelector('.exam-passive-choice');
+    return {count:paper.querySelectorAll('.exam-passive-choice').length,
+     options:choice?[...choice.options].map(x=>x.textContent):[],
+     selected:choice?.value||''};
+   });
+   assert.equal(abbreviated.count,1,filename+': falta lectura de transportatus est');
+   assert(abbreviated.options.some(x=>noQuantities(x).includes('transporto')&&
+    x.includes('paradigma deducido')),filename+': falta la hipótesis y su advertencia');
+   assert.equal(abbreviated.selected,'',filename+': no se debe decidir automáticamente');
+   const original=await page.locator('[data-sentence-slot="0"]').textContent();
+   await page.locator('.exam-passive-choice').selectOption('compound:0');
+   assert(noQuantities(await page.locator('#examSentenceGlossary').innerText()).includes('transporto'),
+    filename+': no se conserva el lema docente al agrupar');
+   assert.equal(await page.locator('[data-sentence-slot="0"]').textContent(),original,
+    filename+': se ha editado la oración original');
+   await page.locator('.exam-passive-choice').selectOption('separate');
+   assert.equal(await page.locator('.exam-passive-choice').inputValue(),'separate');
    assert.deepEqual(errors,[],filename+': errores en navegador');
    await page.close();
   }
