@@ -241,12 +241,14 @@ const server=http.createServer(async(req,res)=>{
     'data/modificacion-preverbial-unidades-lat1.json','data/lat4-progresion-lexico.json',
     'data/fonetica/banco_examenes.json','data/fonetica/lat1-programacion.json',
     'manifest.webmanifest','icons/icon-192.png','icons/icon-512.png'];
-   return {scope:reg.scope,keys,entries:await Promise.all(paths.map(async p=>({
+   return {scope:reg.scope,keys,rootDuplicate:!!await storage.match(reg.scope),
+    entries:await Promise.all(paths.map(async p=>({
     path:p,stored:!!await storage.match(new URL(p,reg.scope).href)
    })))};
   });
   assert.equal(cache.scope,origin+PREFIX);
   assert(cache.entries.every(x=>x.stored),'Precache incompleta: '+JSON.stringify(cache.entries));
+  assert.equal(cache.rootDuplicate,false,'El SW conserva una copia adicional de la portada en ./');
   const firstVersion=cache.keys.find(k=>k.startsWith('examina-pwa-'));
   assert(firstVersion?.includes('test-one'));
   // El documento es la misma aplicación en línea y sin conexión.
@@ -322,6 +324,26 @@ const server=http.createServer(async(req,res)=>{
    assert.equal((await download).suggestedFilename(),'vocabulario-unidades.docx');
   }
   await page.click('#vmShowExam');
+  // El motor PDF no debe ejecutarse al abrir la PWA. Debe permanecer en la
+  // caché e inicializarse únicamente cuando el profesor pide un PDF, aun offline.
+  assert.equal(await page.evaluate(()=>typeof window.html2pdf),'undefined',
+   'La PWA ha ejecutado anticipadamente el motor PDF');
+  await page.evaluate(()=>{
+   const type=document.getElementById('sheetType');
+   type.value='review';type.dispatchEvent(new Event('change',{bubbles:true}));
+  });
+  await page.locator('#examPreviewTab').click();
+  await page.locator('#exportShortcut').click();
+  const pdfWait=page.waitForEvent('download',{timeout:120000});
+  await page.locator('#pdfDownload').click();
+  const pdfFile=await pdfWait;
+  assert.match(pdfFile.suggestedFilename(),/\.pdf$/,'PDF sin conexión: extensión incorrecta');
+  const pdfBytes=await fs.readFile(await pdfFile.path());
+  assert.equal(pdfBytes.subarray(0,5).toString('ascii'),'%PDF-',
+   'PDF sin conexión: archivo ilegible');
+  assert(pdfBytes.length>10000,'PDF sin conexión vacío o truncado');
+  assert.equal(await page.evaluate(()=>typeof window.html2pdf),'function',
+   'La PWA no inicializó el motor PDF desde la caché sin Internet');
 
   await context.setOffline(false);
   release='test-two';
