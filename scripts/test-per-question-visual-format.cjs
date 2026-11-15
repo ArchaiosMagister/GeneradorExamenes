@@ -241,6 +241,59 @@ async function checkReviewLocaleAndContrast(page,file){
  });
  assert.equal(custom,'Título docente personalizado',file+': el cambio de idioma sobrescribe un título docente');
 }
+
+async function checkCourseThemeContrast(page,file){
+ // El CSS específico del curso no puede ganar la cascada al tema oscuro/OLED.
+ // El encabezado «Unidades del examen» usa --ink sobre --soft.
+ const fixtures=[
+  ['latin4','tablas','UD4','rgb(255, 251, 227)'],
+  ['greek1','morphology','UD8','rgb(234, 245, 255)'],
+  ['latin1','morf','UD4','rgb(255, 243, 226)']
+ ];
+ const rgb=s=>String(s).match(/\\d+(?:\\.\\d+)?/g).slice(0,3).map(Number);
+ const luminance=c=>{
+  const v=rgb(c).map(x=>x/255).map(x=>x<=0.04045?x/12.92:((x+0.055)/1.055)**2.4);
+  return 0.2126*v[0]+0.7152*v[1]+0.0722*v[2];
+ };
+ const ratio=(a,b)=>{const x=luminance(a),y=luminance(b);return (Math.max(x,y)+0.05)/(Math.min(x,y)+0.05)};
+ for(const [course,model,unit,lightBackground] of fixtures){
+  await configure(page,course,model,'es',unit);
+  for(const mode of ['light','dark','oled']){
+   const css=await page.evaluate(mode=>{
+    document.documentElement.dataset.appearance=mode;
+    const root=getComputedStyle(document.documentElement);
+    const h=document.getElementById('primaryExamHeading');
+    const heading=getComputedStyle(h);
+    return {
+     label:h.textContent.trim(),
+     course:document.documentElement.dataset.course,
+     foreground:heading.color,
+     background:heading.backgroundColor,
+     soft:root.getPropertyValue('--soft').trim(),
+     softInk:root.getPropertyValue('--soft-ink').trim(),
+     page:getComputedStyle(document.getElementById('paper')).backgroundColor,
+     canvas:getComputedStyle(document.documentElement).backgroundColor
+    };
+   },mode);
+   assert.equal(css.label,'Unidades del examen',file+': falta el encabezado visible');
+   assert.equal(css.course,course,file+': no se ha aplicado el curso');
+   if(mode==='light'){
+    assert.equal(css.background,lightBackground,file+': ha cambiado la paleta clara de '+course);
+   }else{
+    assert.equal(css.background,'rgb(48, 61, 80)',file+': fondo claro residual en '+course+'/'+mode);
+    assert.equal(css.foreground,'rgb(237, 243, 251)',file+': texto de título sin contraste en '+course+'/'+mode);
+    assert.equal(css.soft,'#303d50',file+': --soft ignora tema '+mode+'/'+course);
+    assert.equal(css.softInk,'#edf3fb',file+': --soft-ink ignora tema '+mode+'/'+course);
+    assert.equal(css.canvas,mode==='oled'?'rgb(0, 0, 0)':'rgb(23, 29, 40)',
+     file+': se ha cambiado el fondo del modo '+mode);
+    assert.equal(css.page,'rgb(255, 255, 255)',file+': se ha oscurecido el documento imprimible');
+   }
+   assert(ratio(css.foreground,css.background)>=7,
+    file+': contraste insuficiente ('+ratio(css.foreground,css.background).toFixed(2)+':1) en '+course+'/'+mode);
+  }
+ }
+}
+
 (async()=>{
  const browser=await chromium.launch({headless:true});
  try{
@@ -254,6 +307,7 @@ async function checkReviewLocaleAndContrast(page,file){
     await latin4(page,file);
     await morph(page,file);
     await checkReviewLocaleAndContrast(page,file);
+    await checkCourseThemeContrast(page,file);
     assert.deepEqual(errors,[],file+': excepciones JavaScript tras cambiar valores por pregunta');
    }finally{await context.close()}
   }
