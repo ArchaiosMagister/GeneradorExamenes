@@ -12974,8 +12974,13 @@ function analyze(data,text,course,bank,{contextual=false}={}){
   attach('H'+normalizeCourse(head(row.entry)),row);
   if(lang==='lat'){
    const lemma=normalizeCourse(head(row.entry));
-   if(!latinClasses.has(lemma))latinClasses.set(lemma,new Set());
-   latinClasses.get(lemma).add(classifyVocabularyEntry(row.entry,course));
+   const kind=classifyVocabularyEntry(row.entry,course);
+   // Las formas de cita sin clase ni enunciado completo («sŭm»,
+   // «ămō») son abreviaturas, NO una segunda categoría «other».
+   if(kind!=='other'||/[(),]/u.test(String(row.entry))){
+    if(!latinClasses.has(lemma))latinClasses.set(lemma,new Set());
+    latinClasses.get(lemma).add(kind);
+   }
   }
  }
  // Separar por categoría SOLO los lemas que cuentan con varias fichas
@@ -13021,9 +13026,14 @@ function analyze(data,text,course,bank,{contextual=false}={}){
    const variants=matches.length?(lang==='lat'?(()=>{
     const score=x=>(x.entry===original?.entry?100:0)+
      (x.meaning_va?6:0)+(x.entry.split(',').length*3);
+    const ordered=matches.slice().sort((a,b)=>score(b)-score(a));
+    if(!latinMultiClass.has(latinKey(c.lemma)))return ordered.slice(0,1);
     const grouped=new Map();
-    for(const row of matches.slice().sort((a,b)=>score(b)-score(a))){
+    for(const row of ordered){
      const kind=classifyVocabularyEntry(row.entry,course);
+     // Cuando hay dos clases declaradas, un enunciado desnudo no es
+     // una tercera ficha léxica ni una lectura nueva.
+     if(kind==='other'&&!/[(),]/u.test(String(row.entry)))continue;
      if(!grouped.has(kind))grouped.set(kind,row);
     }
     // Un mismo lema del índice puede tener fichas N y ADJ; utilizar
