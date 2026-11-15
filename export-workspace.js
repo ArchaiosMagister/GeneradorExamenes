@@ -153,6 +153,17 @@
   button.addEventListener('click',enter);
   nav.addEventListener('click',event=>{
    const target=event.target.closest('button');
+   if(target?.id==='vmShowExam'&&doc.body.classList.contains('academic-view')){
+    // El manejador histórico de esta pestaña fuerza course.change y sortea
+    // un examen al volver. Navegar desde herramientas no debe regenerarlo.
+    event.preventDefault();event.stopImmediatePropagation();
+    leave();
+    const layout=el('examLayout');layout.hidden=false;layout.style.display='';
+    el('vocabManager')?.classList.remove('active');
+    el('vocabularyGenerator')?.classList.remove('active');
+    nav.querySelectorAll('button').forEach(b=>b.classList.toggle('active',b===target));
+    return;
+   }
    if(target&&target!==button)leave();
   },true);
  }
