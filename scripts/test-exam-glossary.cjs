@@ -279,6 +279,7 @@ assert(!engine.documentXml({...project,groupTypes:false}).includes('Sustantivos 
    const get=(course,word)=>engine.analyze(data,word,course==='latin1'?'lat1':'lat4',
     latinSentenceGlossaryBank(course),{contextual:true})[0];
    const caelo=get('latin4','caelum'),gema=get('latin1','gemma');
+   const activeAmo=get('latin4','amat'),activeIter=get('latin1','iter');
    const courseNode=document.getElementById('course'),old=courseNode.value;
    courseNode.value='latin4';
    const caeloExigible4=isRequired('cælum, –i',['UD1']);
@@ -287,12 +288,19 @@ assert(!engine.documentXml({...project,groupTypes:false}).includes('Sustantivos 
    courseNode.value=old;
    return {caelo:{status:caelo.status,lemma:caelo.lemma},
     gema:{status:gema.status,lemma:gema.lemma},
+    activeAmo:{entry:activeAmo.entry,meaning:activeAmo.meaning},
+    activeIter:{entry:activeIter.entry,meaning:activeIter.meaning},
     caeloExigible4,caeloExigible1,initial:vocab.length};
   });
   assert.equal(shared.caelo.status,'documented','Latín de 4.º no reconoce el banco de Latín I');
   assert.equal(shared.caelo.lemma,'caelum');
   assert.equal(shared.gema.status,'documented','Latín I no reconoce el banco de 4.º');
   assert.equal(shared.gema.lemma,'gemma');
+  assert.equal(shared.activeAmo.entry,'ămō, ămāvī, ămātum (1ª)',
+   'El banco compartido ha sustituido el enunciado propio de 4.º');
+  assert.equal(shared.activeAmo.meaning,'amar');
+  assert.equal(shared.activeIter.meaning,'camino',
+   'No prevalece la última glosa docente original de Latín I');
   assert.equal(shared.caeloExigible4,false,'Una ficha ajena se ha hecho exigible en 4.º');
   assert.equal(shared.caeloExigible1,true,'Se ha perdido la exigibilidad original de Latín I');
   assert.equal(shared.initial,2046,'No se debe modificar el banco docente original');
