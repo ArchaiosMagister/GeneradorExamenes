@@ -332,7 +332,7 @@ const server=http.createServer(async(req,res)=>{
    const type=document.getElementById('sheetType');
    type.value='review';type.dispatchEvent(new Event('change',{bubbles:true}));
   });
-  await page.locator('#examPreviewTab').click();
+  // En el perfil escritorio de esta prueba las pestañas móviles están ocultas.
   await page.locator('#exportShortcut').click();
   const pdfWait=page.waitForEvent('download',{timeout:120000});
   await page.locator('#pdfDownload').click();
