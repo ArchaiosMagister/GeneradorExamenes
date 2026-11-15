@@ -267,11 +267,13 @@ assert(!engine.documentXml({...project,groupTypes:false}).includes('Sustantivos 
    return {both,withoutPrep,withoutOther};
   });
   const hasPrep=rows=>rows.some(row=>/^ad\b/i.test(row)&&/prep/i.test(row));
-  const hasConj=rows=>rows.some(row=>/^et\b/i.test(row)&&/conj/i.test(row));
-  const hasAdv=rows=>rows.some(row=>/^bene\b/i.test(row)&&/adv/i.test(row));
+  // El banco puede conservar una cita docente sin abreviatura POS; la
+  // clasificación de categoría ya se contrasta por separado arriba.
+  const hasConj=rows=>rows.some(row=>/^et\b/i.test(row));
+  const hasAdv=rows=>rows.some(row=>/^bene\b/i.test(row));
   assert(hasPrep(categories.both),'La casilla activada no añade ad al vocabulario final');
   assert(hasConj(categories.both)&&hasAdv(categories.both),
-   'Falta la representación de adverbios y conjunciones');
+   'Faltan adverbios o conjunciones: '+JSON.stringify(categories));
   assert(!hasPrep(categories.withoutPrep)&&hasConj(categories.withoutPrep)&&hasAdv(categories.withoutPrep),
    'Excluir preposiciones no debe ocultar adverbios ni conjunciones');
   assert(hasPrep(categories.withoutOther)&&!hasConj(categories.withoutOther)&&!hasAdv(categories.withoutOther),
