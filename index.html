@@ -1357,6 +1357,31 @@ try{
 }catch{}
 let examGlossCandidates=new Map();
 const examGlossIdentity=(course,identity)=>course+'|'+identity;
+const examPassiveChoiceKey='examina_exam_passive_choices_v1';
+let examPassiveChoices={};
+try{
+ const stored=JSON.parse(localStorage.getItem(examPassiveChoiceKey)||'{}');
+ if(stored&&typeof stored==='object'&&!Array.isArray(stored))examPassiveChoices=stored;
+}catch{}
+let examPassiveChoicesShown=new Map();
+const examPassiveIdentity=(course,identity)=>course+'|passive|'+identity;
+$('paper').addEventListener('change',event=>{
+ const control=event.target.closest('.exam-passive-choice');
+ if(!control)return;
+ const row=examPassiveChoicesShown.get(control.dataset.identity);
+ if(!row)return;
+ const value=control.value;
+ if(value==='separate')examPassiveChoices[control.dataset.identity]={mode:'separate'};
+ else if(/^compound:\d+$/.test(value)){
+  const candidate=row.candidates[Number(value.slice('compound:'.length))];
+  if(!candidate)return;
+  examPassiveChoices[control.dataset.identity]={mode:'compound',lemma:candidate.lemma};
+ }else delete examPassiveChoices[control.dataset.identity];
+ try{localStorage.setItem(examPassiveChoiceKey,JSON.stringify(examPassiveChoices))}
+ catch{console.warn('No se pudo guardar la lectura verbal compuesta')}
+ refreshSentenceGlossary(); // nunca regenera otras preguntas
+});
+
 function latinGlossCitation(entry){
  const raw=String(entry),notes=[...raw.matchAll(/\([^)]*\)/g)];
  let html='',offset=0;
@@ -1368,19 +1393,33 @@ function latinGlossCitation(entry){
  if(offset<raw.length)html+='<i>'+esc(raw.slice(offset))+'</i>';
  return html;
 }
-function analyzeExamVocabulary(text,course,bank){
+function analyzeExamVocabulary(text,course,bank,phraseChoices=[]){
  if(!text.trim())return [];
  const engine=window.ExaminaVocabulary;
  if(!engine)return [];
  const data=window.ExaminaOfflineLemmatizer.currentData()||emptyExamLemmaIndex;
- const analyzed=engine.analyze(data,text,({latin1:'lat1',latin4:'lat4',greek1:'gr1'})[course],bank,{contextual:true});
- // Solo recuperar fichas aún ofrecidas por el analizador actual.
- return engine.entries(analyzed.map(row=>{
+ const code=({latin1:'lat1',latin4:'lat4',greek1:'gr1'})[course];
+ const analyzed=engine.analyze(data,text,code,bank,{contextual:true});
+ const combinations=engine.passivePhrases?.(data,analyzed,code,bank)||[];
+ const joined=[],consumed=new Set();
+ for(const phrase of combinations){
+  const identity=examPassiveIdentity(course,phrase.identity);
+  examPassiveChoicesShown.set(identity,phrase);
+  const saved=examPassiveChoices[identity];
+  const candidate=saved?.mode==='compound'?phrase.candidates.find(row=>row.lemma===saved.lemma):null;
+  phraseChoices.push({...phrase,identity,selected:candidate?'compound:'+phrase.candidates.indexOf(candidate):
+   saved?.mode==='separate'?'separate':''});
+  // Sin elegir, conservar provisionalmente las lecturas individuales previas.
+  if(!candidate)continue;
+  consumed.add(phrase.partIdentity);consumed.add(phrase.auxIdentity);
+  joined.push({form:phrase.form,identity,context:phrase.context,
+   lemma:candidate.lemma,entry:candidate.entry,meaning:candidate.meaning,
+   meaning_va:candidate.meaning_va,status:'manual',candidates:[],
+   origin:'interpretación compuesta elegida por el docente ('+phrase.tense+')'});
+ }
+ const recovered=analyzed.filter(row=>!consumed.has(row.identity)).map(row=>{
   examGlossCandidates.set(examGlossIdentity(course,row.identity||row.form),row);
   const selected=examGlossDecisions[examGlossIdentity(course,row.identity||row.form)];
-  // La decisión guarda QUÉ lema escogió el docente, no congela las glosas:
-  // si el banco se actualiza, recuperar su enunciado y traducciones vigentes.
-  // El cambio de enunciado se acepta solo si el lema continúa siendo único.
   if(!selected)return row;
   const sameLemma=row.candidates?.filter(c=>c.lemma===selected.lemma)||[];
   const chosen=sameLemma.find(c=>c.entry===selected.entry)||
@@ -1388,7 +1427,8 @@ function analyzeExamVocabulary(text,course,bank){
   if(!chosen)return row;
   return {...row,lemma:chosen.lemma,entry:chosen.entry,meaning:chosen.meaning||'',
    meaning_va:chosen.meaning_va||'',status:'manual'};
- }));
+ });
+ return engine.entries([...recovered,...joined]);
 }
 // El glosario reconoce el vocabulario latino de AMBOS cursos sin convertir
 // una ficha de otro curso en vocabulario exigible ni modificar su unidad.
