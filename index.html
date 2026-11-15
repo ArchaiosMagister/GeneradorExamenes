@@ -3059,7 +3059,9 @@ renderReview();
 // Borradores del examen: copia fiel del contenido editable, incluida la clave de respuestas.
 // La copia automática antes de regenerar protege las modificaciones manuales accidentales.
 const DRAFT_KEY='examina_draft_v14', PREVIOUS_KEY='examina_previous_v14';
-function snapshotExam(){return {
+function snapshotExam(){
+ window.ExaminaFlushSentenceGlossary?.();
+ return {
  schema:'examina-exam-draft',version:1,course:currentCourse(),model:$('model').value,
  language:$('lang').value,created:new Date().toISOString(),title:$('name').value,
  sheetType:$('sheetType')?.value==='review'?'review':'exam',
