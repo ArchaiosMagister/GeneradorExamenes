@@ -63,15 +63,94 @@ async function main(){
     };
    });
    assert(Object.values(proof).every(Boolean),filename+': PDF expone controles o cambia el original: '+JSON.stringify(proof));
+   // Contrato de nombres: selección explícita, sin expandir por "acumulativo".
+   const cases=[
+    {course:'latin1',type:'exam',lang:'es',units:['UD1'],word:'ex ud1 lat1.docx',pdf:'ex ud1 lat1.pdf',solutions:'ex ud1 lat1 sol.docx'},
+    {course:'latin4',type:'review',lang:'va',units:['UD2','UD4'],word:'ficha repaso ud2-ud4 lat4 val.docx',pdf:'ficha repaso ud2-ud4 lat4 val.pdf',solutions:'ficha repaso ud2-ud4 lat4 sol val.docx'},
+    {course:'greek1',type:'exam',lang:'va',units:['UD3','UD10'],word:'ex ud3-ud10 gr1 val.docx',pdf:'ex ud3-ud10 gr1 val.pdf',solutions:'ex ud3-ud10 gr1 sol val.docx'},
+    {course:'latin1',type:'review',lang:'es',units:['UD7'],word:'ficha repaso ud7 lat1.docx',pdf:'ficha repaso ud7 lat1.pdf',solutions:'ficha repaso ud7 lat1 sol.docx'},
+    {course:'latin4',type:'exam',lang:'es',units:[],word:'ex ud-sin-seleccionar lat4.docx',pdf:'ex ud-sin-seleccionar lat4.pdf',solutions:'ex ud-sin-seleccionar lat4 sol.docx'}
+   ];
+   for(const c of cases){
+    const found=await page.evaluate(({course,type,lang,units:chosen})=>{
+     const courseField=document.getElementById('course');
+     courseField.value=course;courseField.dispatchEvent(new Event('change',{bubbles:true}));
+     document.getElementById('lang').value=lang;
+     document.getElementById('sheetType').value=type;
+     document.getElementById('cumulative').checked=true;
+     const expected=new Set(chosen),found=[];
+     document.querySelectorAll('#unitChoices .unit-choice').forEach(box=>{
+      const code=units[Number(box.value)];
+      box.checked=expected.has(code);
+      if(box.checked)found.push(code);
+     });
+     return {
+      selected:found,word:window.ExaminaExportFilename('docx'),
+      pdf:window.ExaminaExportFilename('pdf'),
+      solutions:window.ExaminaExportFilename('docx',true)
+     };
+    },c);
+    assert.deepEqual(found.selected,c.units,filename+': unidades marcadas '+c.course);
+    for(const field of ['word','pdf','solutions'])
+     assert.equal(found[field],c[field],filename+': nombre '+field+' para '+c.course+' '+c.lang);
+   }
+   // Verificar que el Word real usa el mismo nombre y distingue soluciones.
    await page.evaluate(()=>{
-    const control=document.getElementById('sheetType');
-    control.value='review';control.dispatchEvent(new Event('change',{bubbles:true}));
+    const course=document.getElementById('course');
+    course.value='latin1';course.dispatchEvent(new Event('change',{bubbles:true}));
+    document.getElementById('lang').value='va';
+    const type=document.getElementById('sheetType');
+    type.value='review';type.dispatchEvent(new Event('change',{bubbles:true}));
+    document.querySelectorAll('#unitChoices .unit-choice').forEach(box=>{
+     box.checked=units[Number(box.value)]==='UD1';
+    });
+    generate();
+    window.ExaminaScoring?.sync?.();
    });
+   const wordFiles=await page.evaluate(()=>{
+    const records=[],original=downloadBlob;
+    const review=window.ExaminaTeacherReview,oldReview=review?.evidenceMayExport;
+    const scoring=window.ExaminaScoring,oldScore=scoring?.canExport;
+    try{
+     if(review)review.evidenceMayExport=()=>true;
+     if(scoring)scoring.canExport=()=>true;
+     downloadBlob=(name,blob)=>records.push({name,bytes:blob.size});
+     exportWord(false);exportWord(true);
+    }finally{
+     downloadBlob=original;
+     if(review)review.evidenceMayExport=oldReview;
+     if(scoring)scoring.canExport=oldScore;
+    }
+    return records;
+   });
+   assert.deepEqual(wordFiles.map(x=>x.name),
+    ['ficha repaso ud1 lat1 val.docx','ficha repaso ud1 lat1 sol val.docx'],
+    filename+': nombres reales de Word y solucionario');
+   assert(wordFiles.every(x=>x.bytes>3500),filename+': Word vacío');
+   // El motor PDF recibe centímetros convertidos a mm: arriba/derecha/abajo
+   // 25 mm, izquierda 30 mm. El contenido A4 se limita a 155 mm de ancho.
+   const pdfOptions=await page.evaluate(async()=>{
+    const old=window.html2pdf,details={};
+    window.html2pdf=()=>({
+     set(options){details.margin=Array.from(options.margin);details.filename=options.filename;return this},
+     from(stage){details.stageWidth=stage.style.width;return this},
+     save(){return Promise.resolve()}
+    });
+    try{details.success=await window.ExaminaPdfExport.generate()}
+    finally{window.html2pdf=old}
+    return details;
+   });
+   assert.equal(pdfOptions.success,true,filename+': fallo al preparar el PDF');
+   assert.deepEqual(pdfOptions.margin,[25,25,25,30],filename+': márgenes PDF incorrectos');
+   assert.equal(pdfOptions.stageWidth,'155mm',filename+': ancho A4 útil incorrecto');
+   assert.equal(pdfOptions.filename,'ficha repaso ud1 lat1 val.pdf',
+    filename+': el PDF no comparte el nombre con Word');
    assert.equal(await page.evaluate(()=>window.ExaminaScoring.canExport()),true,filename+': ficha de repaso bloqueada');
    const downloadWait=page.waitForEvent('download',{timeout:90000});
    await page.locator('#pdfDownload').click();
    const download=await downloadWait;
-   assert(/\.pdf$/i.test(download.suggestedFilename()),filename+': tipo de archivo incorrecto');
+   assert.equal(download.suggestedFilename(),'ficha repaso ud1 lat1 val.pdf',
+    filename+': el PDF descargado ignora el nombre seleccionado');
    const name=await download.path();
    const bytes=fs.readFileSync(name);
    assert.equal(bytes.subarray(0,5).toString('ascii'),'%PDF-',filename+': no es un PDF real');
