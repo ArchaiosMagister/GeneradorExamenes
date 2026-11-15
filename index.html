@@ -4027,6 +4027,36 @@ function resizeOnlyExamAnalysis(){
   return nodes;
  };
  const oldBody=bodyNodes(oldHeading);
+ // Examen latino completo / traducción: la cantidad de formas puede
+ // recalcularse sin generar ni descartar las otras preguntas. Mantener el
+ // mecanismo conservador anterior para las variantes morfológicas/griegas.
+ if(currentCourse()!=='greek1'&&original?.classList.contains('latin-standard-exam')&&
+    oldHeading.matches('[data-exam-kind="forms"]')){
+  const chosen=selectedUnits(),count=examMorphQuotasActive()?examMorphQuotaCount():countFor('forms');
+  const forms=stickyExamRows('forms',()=>examQuotaPick(
+   latinExamFormCandidates(chosen),count,()=>latinExamForms(chosen,count)));
+  const lines=forms.length?'<ol class="task" type="a">'+forms.map((item,i)=>
+   '<li data-analysis-slot="'+i+'"><i'+examAcademicAttrs(item)+'>'+esc(item.form)+'</i>'+
+   latinMorphologyEnunciationHtml(item,chosen)+
+   ': <span class="reference-answer-line"></span></li>').join('')+'</ol>':
+   '<p class="small no-print">No hay formas variables verificadas para estas unidades.</p>';
+  const stage=document.createElement('template');
+  stage.innerHTML=lines;
+  const replacement=[...stage.content.childNodes];
+  if(oldBody.length){
+   oldBody[0].before(...replacement);
+   oldBody.forEach(node=>node.remove());
+  }else oldHeading.after(...replacement);
+  const answer=original.querySelector('#answerkey > ol > li[data-exam-kind="forms"]');
+  if(answer){
+   answer.innerHTML='<strong>'+esc(oldHeading.textContent.replace(/^\\s*\\d+[.]\\s*/u,''))+'</strong>'+
+    '<ol>'+forms.map(item=>'<li>'+esc(item.form)+' — '+esc(item.answer)+'</li>').join('')+'</ol>';
+  }
+  refreshManualMorphWords();
+  window.examinaLastLatinPreview=paper.innerHTML;
+  window.ExaminaScoring?.sync?.();
+  return;
+ }
  const previousGreek=currentCourse()==='greek1'&&typeof greekExamState!=='undefined'&&greekExamState?
   {ids:Object.fromEntries(Object.entries(greekExamState.ids).map(([key,ids])=>[key,[...ids]]))}:null;
  generate();
