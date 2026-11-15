@@ -59,7 +59,7 @@ jobs:
             test -f "$asset"
             cp "$asset" _site/
           done
-          cp -R icons data _site/
+          cp -R icons data vendor _site/
           if [[ -d THIRD_PARTY_LICENSES ]]; then cp -R THIRD_PARTY_LICENSES _site/; fi
           if [[ -f docs/lematizacion-lectores.md ]]; then
             mkdir -p _site/docs
