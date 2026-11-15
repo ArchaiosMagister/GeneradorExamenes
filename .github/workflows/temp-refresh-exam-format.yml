@@ -1,0 +1,28 @@
+name: Regenerar HTML autónomo en rama de formato (temporal)
+on:
+  push:
+    branches: [feat/formato-preguntas-cultura-word-20261115]
+    paths: [.github/workflows/temp-refresh-exam-format.yml]
+permissions:
+  contents: write
+jobs:
+  refresh:
+    if: github.repository == 'ArchaiosMagister/GeneradorExamenes' && github.ref == 'refs/heads/feat/formato-preguntas-cultura-word-20261115'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Regenerar solo offline.html sin publicación
+        run: |
+          set -euo pipefail
+          node scripts/build-offline.mjs
+          test "$(git diff --name-only)" = 'offline.html'
+          git add -- offline.html
+          git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' \
+            commit -m 'Sincronizar PWA autónoma con el apartado de formato y espaciado'
+          git push origin HEAD:refs/heads/feat/formato-preguntas-cultura-word-20261115
