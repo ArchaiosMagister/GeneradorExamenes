@@ -118,7 +118,16 @@ export async function renderOffline(root=projectRoot){
  const script='<script>'+offlineModule.replace(/<\/script/gi,'<\\/script')+'</script>';
  const offline=html.replace(external,script).replace(reviewExternal,reviewScript).replace(greekReviewExternal,greekReviewScript).replace(eulexisExternal,eulexisScript).replace(marker,
   '<script id="examina-offline-assets" type="application/json">'+json+'</script>\n'+marker);
- return {content:offline,datasetCount:Object.keys(assets).length,latinRows:latin.rows.length,lemmaRows:lemmatizer.rows.lat.length+lemmatizer.rows.grc.length};
+ // Bibliotecas PDF y organización docente inyectadas en el HTML único:
+ // sin CDN, sin URL de red y sin introducir scripts tras cerrar el documento.
+ let bundled=offline;
+ for(const file of ['vendor/html2pdf.bundle.min.js','pdf-export.js','export-workspace.js']){
+  const tag='<script src="'+file+'" defer></script>';
+  if(!bundled.includes(tag))throw new Error('Falta el módulo offline: '+file);
+  const code=await readFile(resolve(root,file),'utf8');
+  bundled=bundled.replace(tag,'<script>'+code.replace(/<\/script/gi,'<\\/script')+'</script>');
+ }
+ return {content:bundled,datasetCount:Object.keys(assets).length,latinRows:latin.rows.length,lemmaRows:lemmatizer.rows.lat.length+lemmatizer.rows.grc.length};
 }
 export async function buildOffline(output=resolve(projectRoot,'offline.html')){
  const result=await renderOffline();
