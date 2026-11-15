@@ -246,6 +246,8 @@ jobs:
           if-no-files-found: ignore
       - name: Validar valenciano en pantalla y Word para los tres cursos
         run: node scripts/test-valenciano-browser.cjs
+      - name: Verificar traduïx y el enunciado valenciano de oraciones de Latín 4.º en Word y PWA
+        run: node scripts/test-valencian-imperative.cjs
       - name: Verificar correcciones docentes de Latín I y 4.º, editores y vocabulario exigible
         run: node scripts/test-correcciones-latin.cjs
       - name: Verificar concordancia de tablas y umbrales de unidad
