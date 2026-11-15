@@ -241,6 +241,42 @@ assert(!engine.documentXml({...project,groupTypes:false}).includes('Sustantivos 
   assert.deepEqual(independent.initial,{prep:true,barePrep:true,conj:true,adv:true});
   assert.deepEqual(independent.onlyPrepositions,{prep:true,barePrep:true,conj:false,adv:false});
   assert.deepEqual(independent.onlyOther,{prep:false,barePrep:false,conj:true,adv:true});
+  // El selector estaba bien conectado, pero el filtro FINAL borraba todas
+  // las preposiciones aun cuando la casilla estaba activada.
+  const categories=await page.evaluate(()=>{
+   const course=document.getElementById('course');
+   course.value='latin1';course.dispatchEvent(new Event('change',{bubbles:true}));
+   document.getElementById('autoGloss').checked=true;
+   document.getElementById('glossScope').value='all';
+   const prep=document.getElementById('glossPrepositions');
+   const other=document.getElementById('glossOther');
+   const previous={prep:prep.checked,other:other.checked};
+   const render=()=>{
+    const root=document.createElement('div');
+    root.innerHTML=buildFinalLexicon(['UD7'],
+     [{text:'Ad urbem ambulat et bene laborat.'}]);
+    return [...root.querySelectorAll('.gloss-item')].map(el=>el.textContent.trim());
+   };
+   prep.checked=true;other.checked=true;
+   const both=render();
+   prep.checked=false;
+   const withoutPrep=render();
+   prep.checked=true;other.checked=false;
+   const withoutOther=render();
+   prep.checked=previous.prep;other.checked=previous.other;
+   return {both,withoutPrep,withoutOther};
+  });
+  const hasPrep=rows=>rows.some(row=>/^ad\b/i.test(row)&&/prep/i.test(row));
+  const hasConj=rows=>rows.some(row=>/^et\b/i.test(row)&&/conj/i.test(row));
+  const hasAdv=rows=>rows.some(row=>/^bene\b/i.test(row)&&/adv/i.test(row));
+  assert(hasPrep(categories.both),'La casilla activada no añade ad al vocabulario final');
+  assert(hasConj(categories.both)&&hasAdv(categories.both),
+   'Falta la representación de adverbios y conjunciones');
+  assert(!hasPrep(categories.withoutPrep)&&hasConj(categories.withoutPrep)&&hasAdv(categories.withoutPrep),
+   'Excluir preposiciones no debe ocultar adverbios ni conjunciones');
+  assert(hasPrep(categories.withoutOther)&&!hasConj(categories.withoutOther)&&!hasAdv(categories.withoutOther),
+   'Excluir otras invariables no debe ocultar las preposiciones');
+
   // Tres palabras de oraciones de Latín de 4.º: no figuran en su
   // programación curricular, pero sí tienen análisis escolares verificables.
   // El banco complementario SOLO actúa en el glosario y respeta glosas propias.
