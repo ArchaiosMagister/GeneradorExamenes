@@ -1373,8 +1373,13 @@ function latinSentenceGlossaryBank(course){
   seen.add(identity);result.push(row);lemmas.add(examKey(entry));
  };
  // Las fichas del curso actual tienen prioridad de glosa sobre las ajenas.
- for(const c of [course,other])
+ for(const c of [course,other]){
+  // Reutilizar primero la misma vista docente que empleaba cada curso:
+  // el último registro de cada enunciado exacto conserva su prioridad.
+  for(const row of latinSharedBank.vocabulary(c))add(row);
+  // Mantener las otras acepciones sin modificar el banco persistente.
   for(const row of vocab)if(courseOf(row)===c)add(row);
+ }
  // Estas tres fichas siguen siendo respaldo, nunca amplían los ejercicios.
  for(const row of LATIN4_SENTENCE_GLOSS_SUPPLEMENTS)
   if(!lemmas.has(examKey(row.entry)))add(row);
