@@ -1520,7 +1520,9 @@ function buildFinalLexicon(chosen,sentences){
  const text=sentences.map(x=>x.text).join('\n');
  for(const row of analyzeExamVocabulary(text,course,bank,passiveChoices)){
   if(row.status==='manual'){
-   add(row);selectedChoices.push(row);
+   add(row);
+   // La perífrasis ya dispone de selector propio: no duplicar el botón «Cambiar».
+   if(!String(row.origin||'').startsWith('interpretación compuesta elegida'))selectedChoices.push(row);
   }else if(row.status==='documented')add(row);
   else if(row.candidates?.length)pendingChoices.set(examGlossIdentity(course,row.identity||row.form),row);
   else unresolved.add(row.form);
