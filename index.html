@@ -1392,6 +1392,33 @@ function latinSentenceGlossaryBank(course){
    });
  return result;
 }
+// La UD6 introduce el perfecto en Latín de 4.º: identificar la forma
+// con el paradigma completo no implica mostrar al alumno sus tres temas.
+const LATIN4_PERFECT_FROM_UNIT=6;
+function latinExamGlossEntry(entry,course,chosen){
+ if(course!=='latin4')return entry;
+ const last=Math.max(-1,...chosen.map(examUnitNumber).filter(n=>n!==null));
+ if(last>=LATIN4_PERFECT_FROM_UNIT)return entry;
+ const classify=window.ExaminaVocabulary?.classifyVocabularyEntry;
+ if(!classify||classify(entry,'lat4')!=='verbs')return entry;
+ // Hasta UD5, respetar el enunciado más reciente que figura en el curso
+ // seleccionado; si el verbo solo existe en Latín I, abreviar SU enunciado.
+ const key=examKey(entry);
+ let local=null,localUnit=-1;
+ for(const row of vocab){
+  const n=examUnitNumber(row.unit);
+  // UD1 registra sum sin etiqueta de conjugación: la forma de cita
+  // escueta también es válida, si pertenece al mismo lema reconocido.
+  const bare=!row.entry.includes(',')&&!row.entry.includes('(');
+  if(courseOf(row)!=='latin4'||n===null||n>last||n<localUnit||
+     examKey(row.entry)!==key||
+     (classify(row.entry,'lat4')!=='verbs'&&!bare))continue;
+  local=row.entry;localUnit=n;
+ }
+ const citation=local||entry;
+ const conjugation=citation.match(/\((?:[1-4]ª|mx\.|irr\.?|dep\.?|semidep\.?)\)/iu)?.[0]||'';
+ return headLex(citation)+(conjugation?' '+conjugation:'');
+}
 function buildFinalLexicon(chosen,sentences){
  if(!$('autoGloss').checked)return '';
  const course=currentCourse(),greek=course==='greek1';
@@ -1422,7 +1449,7 @@ function buildFinalLexicon(chosen,sentences){
  let out=rows.length?'<p class="exam-gloss-title"><strong>'+($('lang').value==='va'?'Vocabulari':'Vocabulario')+'</strong></p><div class="final-gloss">'+rows.map(x=>{
   const entry=x.entry,localized=localizedGloss(x),verified=!missingTranslation(x);
   const gloss=!verified||(isRequired(entry,chosen)&&hideRequired)?'':': '+esc(quoteGloss(localized.value));
-  return '<div class="gloss-item">'+(greek?esc(entry):latinGlossCitation(entry))+gloss+'</div>';
+  return '<div class="gloss-item">'+(greek?esc(entry):latinGlossCitation(latinExamGlossEntry(entry,course,chosen)))+gloss+'</div>';
  }).join('')+'</div>':'';
  if(pending.length)out+='<p class="notice no-print"><strong>'+($('lang').value==='va'?'Traduccions pendents de revisar:':'Traducciones pendientes de revisar:')+'</strong> '+esc(pending.map(x=>headLex(x.entry)).join(', '))+'. '+($('lang').value==='va'?'Es mostren els enunciats sense inventar significats.':'El examen muestra sus enunciados sin inventar significados.')+'</p>';
  if(pendingChoices.size){

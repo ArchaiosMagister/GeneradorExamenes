@@ -107,3 +107,21 @@ participial— siguen requiriendo decisión docente. Una forma no documentada
 no se aprueba automáticamente por figurar en cualquiera de los vocabularios.
 Las tres fichas auxiliares de aro, scribo y doctus permanecen como respaldo
 si desaparecieran del banco general, sin adscripción curricular.
+
+## Enunciado verbal progresivo en los glosarios de Latín de 4.º
+
+La UD6 introduce el perfecto. El lematizador de oraciones puede identificar
+una forma con todos los paradigmas latinos de los dos cursos desde UD1, pero
+los **enunciados que ve el alumnado** en el glosario del examen de 4.º siguen
+el programa escolar:
+
+- UD1–UD5: únicamente la forma de presente y, cuando conste, la clase o la
+  etiqueta de irregularidad; se prioriza la grafía de la unidad más reciente
+  cursada en el propio banco de 4.º. Para lemas aportados únicamente por Latín I
+  se abrevia el enunciado completo sin perder la lematización.
+- Desde UD6: se permite mostrar el enunciado completo que haya en el banco,
+  sin fabricar temas verbales inexistentes (por ejemplo, *sum* carece de supino).
+
+Esta adaptación afecta solo al **glosario de oraciones** (vista previa y Word),
+no al banco original, la morfología verificada, las lematizaciones internas,
+las preguntas, las unidades ni el vocabulario exigible. No modifica Latín I.
