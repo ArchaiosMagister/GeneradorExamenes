@@ -1,0 +1,33 @@
+name: Sincronización temporal optimización 6
+on:
+  push:
+    branches:
+      - refactor/145-ui-summary-module-20261115
+    paths:
+      - '.github/workflows/temp-optimizer-sync.yml'
+permissions:
+  contents: write
+jobs:
+  sync:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verificar módulo y HTML
+        run: |
+          node --check exam-selection-summary.js
+          node --check scripts/build-offline.mjs
+          node --check scripts/test-pwa.cjs
+          npm run offline:build
+          git diff --exit-code -- index.html
+      - name: Sincronizar HTML autónomo
+        run: |
+          set -euo pipefail
+          git add offline.html
+          if git diff --cached --quiet; then exit 0; fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'build(offline): incorporar módulo de resumen externo'
+          git push origin HEAD:refactor/145-ui-summary-module-20261115
