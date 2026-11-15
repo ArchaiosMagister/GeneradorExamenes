@@ -9,7 +9,25 @@
  const CONTENT_WIDTH_MM=210-PAGE_MARGINS_MM[1]-PAGE_MARGINS_MM[3]; // A4
  const status=()=>byId('examinaPdfStatus');
  const lang=()=>byId('lang')?.value==='va';
- let busy=false;
+ let busy=false,engineRequest=null;
+ // En la PWA el bundle sigue precacheado, pero no ocupa CPU ni memoria de
+ // ejecución hasta pulsar PDF. En offline.html ya está integrado y listo.
+ function ensurePdfEngine(){
+  if(typeof root.html2pdf==='function')return Promise.resolve();
+  if(engineRequest)return engineRequest;
+  engineRequest=new Promise((resolve,reject)=>{
+   const script=root.document.createElement('script');
+   script.src='vendor/html2pdf.bundle.min.js';
+   script.async=true;
+   script.onload=()=>{
+    if(typeof root.html2pdf==='function')resolve();
+    else reject(Error('El motor PDF no se inicializó correctamente.'));
+   };
+   script.onerror=()=>{script.remove();reject(Error('No se pudo cargar el motor PDF local.'));};
+   root.document.head.appendChild(script);
+  }).catch(error=>{engineRequest=null;throw error});
+  return engineRequest;
+ }
  function announce(message,isError){
   const element=status();if(element){element.textContent=message;element.dataset.error=isError?'true':'false'}
  }
@@ -47,15 +65,12 @@
  async function makePdf(){
   if(busy)return false;
   if(!preflight())return false;
-  if(typeof root.html2pdf!=='function'){
-   announce(lang()?'No s’ha pogut carregar el motor PDF local. Torna a obrir la webapp.':'No se ha podido cargar el motor PDF local. Vuelve a abrir la webapp.',true);
-   return false;
-  }
   busy=true;
   const button=byId('pdfDownload');
   if(button)button.disabled=true;
   announce(lang()?'Generant el PDF sense connexió…':'Generando el PDF sin conexión…',false);
   try{
+   await ensurePdfEngine();
    if(root.document.fonts?.ready)await root.document.fonts.ready;
    const stage=prepareDocument();
    const filename=root.ExaminaExportFilename('pdf');
