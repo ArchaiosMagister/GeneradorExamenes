@@ -5476,10 +5476,24 @@ function analyzeExamVocabulary(text,course,bank){
    meaning_va:chosen.meaning_va||'',status:'manual'};
  }));
 }
+// Fichas de apoyo al glosario de oraciones de 4.º, sin adscribirlas a ninguna
+// unidad ni incorporarlas a la morfología, sorteo o vocabulario exigible.
+// Se respeta siempre cualquier ficha del docente que ya exista en el banco.
+const LATIN4_SENTENCE_GLOSS_SUPPLEMENTS=Object.freeze([
+ {entry:'aro, aravi, aratum (1ª)',meaning:'arar',meaning_va:'llaurar'},
+ {entry:'scribo, scripsi, scriptum (3ª)',meaning:'escribir',meaning_va:'escriure'},
+ {entry:'doctus, –a, –um',meaning:'sabio/a, docto/a',meaning_va:'savi/sàvia, docte/docta'}
+]);
+function latinSentenceGlossaryBank(course){
+ const main=latinSharedBank.vocabulary(course);
+ if(course!=='latin4')return main;
+ const original=new Set(main.map(item=>examKey(item.entry)));
+ return main.concat(LATIN4_SENTENCE_GLOSS_SUPPLEMENTS.filter(item=>!original.has(examKey(item.entry))));
+}
 function buildFinalLexicon(chosen,sentences){
  if(!$('autoGloss').checked)return '';
  const course=currentCourse(),greek=course==='greek1';
- const bank=greek?vocab.filter(row=>courseOf(row)===course):latinSharedBank.vocabulary(course);
+ const bank=greek?vocab.filter(row=>courseOf(row)===course):latinSentenceGlossaryBank(course);
  const found=new Map(),unresolved=new Set(),pendingChoices=new Map(),selectedChoices=[];
  examGlossCandidates=new Map();
  const add=row=>{const key=examKey(row.entry);if(key&&!found.has(key))found.set(key,row)};

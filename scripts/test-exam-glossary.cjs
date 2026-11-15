@@ -241,6 +241,82 @@ assert(!engine.documentXml({...project,groupTypes:false}).includes('Sustantivos 
   assert.deepEqual(independent.initial,{prep:true,barePrep:true,conj:true,adv:true});
   assert.deepEqual(independent.onlyPrepositions,{prep:true,barePrep:true,conj:false,adv:false});
   assert.deepEqual(independent.onlyOther,{prep:false,barePrep:false,conj:true,adv:true});
+  // Tres palabras de oraciones de Latín de 4.º: no figuran en su
+  // programación curricular, pero sí tienen análisis escolares verificables.
+  // El banco complementario SOLO actúa en el glosario y respeta glosas propias.
+  const newGloss=await page.evaluate(()=>{
+   const course=document.getElementById('course');
+   course.value='latin4';course.dispatchEvent(new Event('change',{bubbles:true}));
+   const model=document.getElementById('model');
+   model.value='tablas';model.dispatchEvent(new Event('change',{bubbles:true}));
+   const scope=document.getElementById('glossScope');scope.value='all';
+   scope.dispatchEvent(new Event('change',{bubbles:true}));
+   for(const id of ['glossVerbs','glossAdjectives','glossOther'])
+    document.getElementById(id).checked=true;
+   const main=latinSharedBank.vocabulary('latin4'),supp=latinSentenceGlossaryBank('latin4');
+   const identified=window.ExaminaVocabulary.analyze(
+    window.ExaminaOfflineLemmatizer.currentData(),
+    'Arat. Doctusque scribit.','lat4',supp,{contextual:true});
+   const result={
+    before:main.length,after:supp.length,
+    units:latinSharedBank.units('latin4'),
+    baselineExtra:main.filter(x=>/^(aro|scribo|doctus),/i.test(x.entry)).length,
+    forms:identified.map(row=>({form:row.form,lemma:row.lemma,status:row.status,
+      encliticQue:row.encliticQue,candidates:row.candidates.map(c=>c.lemma)}))
+   };
+   const sentences=document.getElementById('newSentences');
+   sentences.value='Arat. Doctusque scribit.';
+   sentences.dispatchEvent(new Event('input',{bubbles:true}));
+   generate();
+   result.examination=document.getElementById('examSentenceGlossary')?.innerText||'';
+   return result;
+  });
+  assert.equal(newGloss.after-newGloss.before,3,'Faltan tres fichas en el glosario complementario');
+  assert.equal(newGloss.baselineExtra,0,'Se alteró el banco curricular original de 4.º');
+  assert.deepEqual([...new Set(newGloss.units)].sort((a,b)=>a.localeCompare(b,'es',{numeric:true})),
+   ['UD1','UD2','UD3','UD4','UD5','UD6','UD7','UD8','UD9','UD10'],
+   'La incorporación no debe crear unidades artificiales');
+  for(const [surface,lemma] of [['Arat','aro'],['Doctusque','doctus'],['scribit','scribo']]){
+   const hit=newGloss.forms.find(row=>row.form===surface);
+   assert(hit,'Sin análisis del token '+surface);
+   assert.equal(hit.status,'documented',surface+' aún requiere revisión sin candidatos');
+   assert.equal(hit.lemma,lemma,'Lema equivocado para '+surface);
+  }
+  assert.equal(newGloss.forms.find(x=>x.form==='Doctusque').encliticQue,true,
+   'No se separa el nexo copulativo -que');
+  for(const term of ['aro','doctus','scribo','–que'])
+   assert(newGloss.examination.includes(term),'No aparece '+term+' en la vista previa');
+  assert(!newGloss.examination.includes('sin candidatos'),'Siguen apareciendo formas desconocidas');
+  // No se crea un lema sintético doctusque ni se promociona nada a morfología.
+  assert.equal(await page.evaluate(()=>latinSharedBank.vocabulary('latin4').some(x=>
+   /^doctusque\b/i.test(x.entry))),false);
+  const customOverride=await page.evaluate(()=>{
+   const len=vocab.length;
+   vocab.push({course:'latin4',unit:'UD3',entry:'aro, aravi, aratum (1ª)',
+    meaning:'arar (acepción docente)',meaning_va:'llaurar (accepció docent)'});
+   const rows=latinSentenceGlossaryBank('latin4').filter(x=>/^aro,/i.test(x.entry));
+   vocab.length=len;
+   return rows.map(row=>row.meaning);
+  });
+  assert.deepEqual(customOverride,['arar (acepción docente)'],
+   'El glosario complementario ha sobrescrito una ficha editada por el docente');
+  for(const [language,expected] of [['es',['arar','escribir','sabio']],['va',['llaurar','escriure','savi']]]){
+   await page.evaluate(lang=>{
+    const control=document.getElementById('lang');control.value=lang;
+    control.dispatchEvent(new Event('change',{bubbles:true}));
+    generate();
+   },language);
+   const shown=await page.locator('#examSentenceGlossary').innerText();
+   for(const term of expected)assert(shown.includes(term),
+    'Falta traducción '+language+': '+term);
+   const downloadPromise=page.waitForEvent('download');
+   await page.evaluate(()=>exportWord(false));
+   const download=await downloadPromise,xml=wordDocumentXml(fs.readFileSync(await download.path()));
+   for(const term of ['aro','doctus','scribo',...expected])
+    assert(xml.includes(term),'Falta '+term+' en Word '+language);
+   assert(!xml.includes('Revisión necesaria (sin candidatos)'),
+    'Word no puede llevar un aviso de revisión pendiente');
+  }
   assert.deepEqual(errors,[],'No deben aparecer errores JavaScript en la interfaz');
   console.log('Glosario de oraciones: elecciones, persistencia, edición, tipos y agrupación: OK');
  }finally{
