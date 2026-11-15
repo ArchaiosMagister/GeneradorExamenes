@@ -5653,9 +5653,8 @@ function buildFinalLexicon(chosen,sentences){
   else if(row.candidates?.length)pendingChoices.set(examGlossIdentity(course,row.identity||row.form),row);
   else unresolved.add(row.form);
  }
- const rows=[...found.values()].filter(x=>
-  !/\(\s*(?:prep\.?|preposición)\b|\s+\+\s*(?:genitivo|acusativo|dativo|ablativo)/iu.test(x.entry)&&
-  glossAccept(x.entry,chosen))
+ // Las categorías seleccionadas también incluyen preposiciones.
+ const rows=[...found.values()].filter(x=>glossAccept(x.entry,chosen))
   .sort((a,b)=>headLex(a.entry).localeCompare(headLex(b.entry),'es'));
  if(!rows.length&&!unresolved.size&&!pendingChoices.size&&!passiveChoices.length)return '';
  const hideRequired=$('glossHideRequired').checked;

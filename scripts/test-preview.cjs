@@ -666,7 +666,9 @@ async function checkFile(browser,filename){
  const glossaryRegression=await page.evaluate(()=>{
   const course=document.getElementById('course'),model=document.getElementById('model');
   const scope=document.getElementById('glossScope');
-  const previous={course:course.value,model:model.value,scope:scope.value,required:examRequired.slice()};
+  const prepositions=document.getElementById('glossPrepositions');
+  const previous={course:course.value,model:model.value,scope:scope.value,
+   prepositions:prepositions.checked,required:examRequired.slice()};
   const parse=html=>{
    const el=document.createElement('div');el.innerHTML=html;
    return {
@@ -677,6 +679,9 @@ async function checkFile(browser,filename){
   };
   try{
    course.value='latin1';model.value='tablas';scope.value='all';
+   // Esta prueba exige excluir las preposiciones de forma EXPLÍCITA.
+   // Cuando la casilla está marcada, deben aparecer (test-exam-glossary).
+   prepositions.checked=false;
    const base=parse(buildFinalLexicon(['UD1'],[{text:'Puellaque amat in villa. Quoque quisque uterque.'}]));
    examRequired.push({course:'latin1',unit:'UD1',key:examKey('puella'),entry:'puella, -ae'});
    const required=parse(buildFinalLexicon(['UD1'],[{text:'Puella amat.'}]));
@@ -684,6 +689,7 @@ async function checkFile(browser,filename){
    return {base,required,unknown,defaultScope:previous.scope};
   }finally{
    course.value=previous.course;model.value=previous.model;scope.value=previous.scope;
+   prepositions.checked=previous.prepositions;
    examRequired.length=0;examRequired.push(...previous.required);
   }
  });
@@ -733,7 +739,9 @@ async function checkFile(browser,filename){
  const requiredRow=gloss.locator('.gloss-item').filter({hasText:/^puella/i});
  assert.equal(await requiredRow.count(),1);
  assert(!/[:‘“]/.test(await requiredRow.textContent()),'La entrada exigible debe ir sin significado');
- assert.equal(await gloss.locator('.gloss-item').filter({hasText:/^in\b/i}).count(),0);
+ const shouldShowIn=await page.locator('#glossPrepositions').isChecked();
+ assert.equal(await gloss.locator('.gloss-item').filter({hasText:/^in\b/i}).count(),shouldShowIn?1:0,
+  'La entrada «in» debe seguir el selector de preposiciones');
  // villa, –æ ya figura explícitamente en el listado docente de UD2:
  // debe imprimirse como exigible, sin traducción, no como palabra nueva.
  const villaRow=gloss.locator('.gloss-item').filter({hasText:/^villa/i});
