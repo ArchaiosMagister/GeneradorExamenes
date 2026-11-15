@@ -13187,8 +13187,13 @@ for(const [tense,forms] of [
  }));
 }
 const latinPassiveIndexCache=new WeakMap();
-function latinPassiveParticiples(data){
- if(latinPassiveIndexCache.has(data))return latinPassiveIndexCache.get(data);
+function latinPassiveParticiples(data,bank){
+ // El repertorio académico contextual puede contener enunciados completos
+ // que el índice de formas conserva abreviados (pugno -> pugnatum).
+ // Indizar por AMBAS fuentes, sin acreditar formas inferidas del supino.
+ let byBank=latinPassiveIndexCache.get(data);
+ if(!byBank){byBank=new WeakMap();latinPassiveIndexCache.set(data,byBank)}
+ if(byBank.has(bank))return byBank.get(bank);
  const stems=new Map(),index=new Map(),verifiedForms=new Set();
  const addStem=(lemma,surface)=>{
   const stem=latinKey(surface);
@@ -13204,6 +13209,18 @@ function latinPassiveParticiples(data){
    if(fields.length<3||!supine||!fields[1]?.endsWith('i'))continue;
    addStem(lemma,supine[1]);
   }
+ }
+ // El banco del glosario reúne los enunciados completos de los dos cursos,
+ // incluso cuando teacher-forms.json solo conserva el presente. No supone
+ // certificar un participio: la propuesta seguirá marcada para revisión.
+ for(const row of bank){
+  if(classifyVocabularyEntry(row.entry,'lat1')!=='verbs')continue;
+  const fields=String(row.entry||'').split(',').map(field=>latinKey(field.trim()));
+  const supine=/^([a-z]+)um\b/.exec(fields[2]||'');
+  if(fields.length<3||!supine||!fields[1]?.endsWith('i'))continue;
+  const lemma=latinKey(head(row.entry));
+  if(!lemma||/or$/.test(lemma))continue;
+  addStem(lemma,supine[1]);
  }
  // Participios nominativos singular contrastados: fuente de mayor prioridad.
  for(const [lemma,surface,tags,source] of data.rows?.lat||[]){
@@ -13228,12 +13245,12 @@ function latinPassiveParticiples(data){
     verified:verifiedForms.has(latinKey(lemma)+'|'+word+'|'+number)});
   }
  }
- latinPassiveIndexCache.set(data,index);
+ byBank.set(bank,index);
  return index;
 }
 function passivePhrases(data,rows,course,bank){
  if(!['lat1','lat4'].includes(course)||!Array.isArray(rows))return [];
- const possible=latinPassiveParticiples(data),byLemma=new Map();
+ const possible=latinPassiveParticiples(data,bank),byLemma=new Map();
  for(const row of bank||[]){
   const lemma=latinKey(head(row.entry));
   if(!byLemma.has(lemma))byLemma.set(lemma,[]);
