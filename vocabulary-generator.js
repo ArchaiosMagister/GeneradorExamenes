@@ -1484,6 +1484,97 @@ function analyze(data,text,course,bank,{contextual=false}={}){
    meaning_va:resolved&&!requiresSpellingReview?(candidates[0].meaning_va||''):''};
  });
 }
+// Lectura contextual OPCIONAL; las formas inferidas no se certifican.
+const latinPassiveAuxiliaries=new Map();
+for(const [tense,forms] of [
+ ['perfecto de indicativo pasivo',['sum','es','est','sumus','estis','sunt']],
+ ['pluscuamperfecto de indicativo pasivo',['eram','eras','erat','eramus','eratis','erant']],
+ ['futuro perfecto de indicativo pasivo',['ero','eris','erit','erimus','eritis','erunt']]
+]){
+ forms.forEach((form,i)=>latinPassiveAuxiliaries.set(form,{
+  tense,person:i%3+1,number:i<3?'singular':'plural'
+ }));
+}
+const latinPassiveIndexCache=new WeakMap();
+function latinPassiveParticiples(data){
+ if(latinPassiveIndexCache.has(data))return latinPassiveIndexCache.get(data);
+ const stems=new Map(),index=new Map();
+ const addStem=(lemma,surface,verified=false)=>{
+  const stem=latinKey(surface);
+  if(!/^[a-z]+$/.test(stem)||!stem.length)return;
+  const id=latinKey(lemma)+'|'+stem,prev=stems.get(id);
+  stems.set(id,{lemma,stem,verified:verified||!!prev?.verified});
+ };
+ // Una forma deducida del supino es candidata, no forma acreditada.
+ for(const [lemma,courses] of Object.entries(data.vocabulary?.lat||{})){
+  if(/or$/.test(latinKey(lemma)))continue; // no crear pasivas de deponentes
+  for(const curriculum of Object.values(courses)){
+   const fields=String(curriculum.entry||'').split(',').map(x=>latinKey(x.trim()));
+   const supine=/^([a-z]+)um\b/.exec(fields[2]||'');
+   if(fields.length<3||!supine||!fields[1]?.endsWith('i'))continue;
+   addStem(lemma,supine[1]);
+  }
+ }
+ // Participios nominativos singular contrastados: fuente de mayor prioridad.
+ for(const [lemma,surface,tags,source] of data.rows?.lat||[]){
+  if(!documentedSources.has(source)||!/^V;PTCP;PASS;PRF;NOM;SG;(?:MASC|FEM|NEUT)(?:;|$)/.test(tags))continue;
+  if(/or$/.test(latinKey(lemma)))continue;
+  const end=tags.includes(';MASC')?'us':tags.includes(';FEM')?'a':'um';
+  const word=latinKey(surface);
+  if(word.endsWith(end)&&word.length>end.length+1)addStem(lemma,word.slice(0,-end.length),true);
+ }
+ for(const {lemma,stem,verified} of stems.values()){
+  for(const [ending,number] of [
+   ['us','singular'],['a','singular'],['um','singular'],
+   ['i','plural'],['ae','plural'],['a','plural']
+  ]){
+   const word=latinKey(stem+ending);
+   if(!index.has(word))index.set(word,new Map());
+   const id=latinKey(lemma)+'|'+number,old=index.get(word).get(id);
+   index.get(word).set(id,{lemma,number,verified:verified||!!old?.verified});
+  }
+ }
+ latinPassiveIndexCache.set(data,index);
+ return index;
+}
+function passivePhrases(data,rows,course,bank){
+ if(!['lat1','lat4'].includes(course)||!Array.isArray(rows))return [];
+ const possible=latinPassiveParticiples(data),byLemma=new Map();
+ for(const row of bank||[]){
+  const lemma=latinKey(head(row.entry));
+  if(!byLemma.has(lemma))byLemma.set(lemma,[]);
+  byLemma.get(lemma).push(row);
+ }
+ const found=[];
+ for(let i=0;i<rows.length-1;i++){
+  const part=rows[i],aux=rows[i+1],auxiliary=latinPassiveAuxiliaries.get(latinKey(aux.form));
+  if(!auxiliary||!part.context||part.context!==aux.context||
+     !Number.isInteger(part.offset)||!Number.isInteger(aux.offset)||
+     part.offset+part.form.length>=aux.offset||
+     !/^\s+$/u.test(part.context.slice(part.offset+part.form.length,aux.offset)))continue;
+  const all=possible.get(latinKey(part.form));
+  if(!all)continue;
+  const candidates=[];
+  for(const record of all.values()){
+   if(record.number!==auxiliary.number)continue;
+   const entries=byLemma.get(latinKey(record.lemma))||[];
+   if(!entries.length)continue;
+   const teacher=entries.slice().sort((a,b)=>
+    (b.entry.split(',').length-a.entry.split(',').length)*100+
+    (b.entry.length-a.entry.length))[0];
+   candidates.push({lemma:record.lemma,entry:teacher.entry,meaning:teacher.meaning||'',
+    meaning_va:teacher.meaning_va||'',verifiedParticiple:record.verified});
+  }
+  if(!candidates.length)continue;
+  found.push({identity:JSON.stringify([part.identity,aux.identity]),
+   partIdentity:part.identity,auxIdentity:aux.identity,
+   form:part.form+' '+aux.form,context:part.context,
+   tense:auxiliary.tense,person:auxiliary.person,number:auxiliary.number,
+   candidates:candidates.sort((a,b)=>a.lemma.localeCompare(b.lemma,'es'))});
+  i++; // una aparición no puede pertenecer a dos perífrasis superpuestas
+ }
+ return found;
+}
 function entries(rows){
  // La descomposición del nexo produce una entrada de vocabulario propia,
  // pero nunca para quoque, quisque, uterque ni otros -que lexicalizados.
@@ -1744,7 +1835,7 @@ function migrateProject(project){
  }
  return project;
 }
-window.ExaminaVocabulary={analyze,entries,displayEntry,formatVocabularyEntry,documentXml,classifyVocabularyEntry,vocabularyGroups};
+window.ExaminaVocabulary={analyze,passivePhrases,entries,displayEntry,formatVocabularyEntry,documentXml,classifyVocabularyEntry,vocabularyGroups};
 function init(){
  const $=id=>document.getElementById(id),storage='examina_vocabulary_project_v1';
  let project={count:1,course:'lat1',lang:'es',units:[]},selected=0;
