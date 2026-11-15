@@ -393,6 +393,7 @@ async function latinLexSpacing(page,file){
   // Vocabulario: mismo hueco que entre oraciones, tanto en Word como en pantalla.
   assert(await page.locator('#paper .exam-sheet > p.exam-gloss-title').count(),
    file+': falta el glosario de las oraciones');
+  await setPer(page,key(course,model,'sent'),'items',''); // Quitar intervalo individual heredado.
   await page.locator('#sentence-gap-pt').fill('54');
   await page.locator('#sentence-gap-pt').press('Tab');
   const glossTitle=await page.locator('#paper .exam-sheet > p.exam-gloss-title').textContent();
