@@ -1020,11 +1020,87 @@ function examVisualPt(id,fallback){
 }
 function examQuestionBeforePt(){return examVisualPt('examQuestionBeforePt',12)}
 function examCultureGapPt(){return examVisualPt('examCultureGapPt',5)}
+// Los ajustes de cada pregunta se identifican por curso, modelo y tipo, nunca
+// por el número mostrado (que cambia al excluir un apartado del examen).
+const examVisualPerQuestion=Object.create(null);
+function examVisualHeadingIdentity(el){
+ if(!el?.classList?.contains('exam-question'))return null;
+ for(const [attr,property,scope] of [
+  ['data-exam-kind','examKind','exam'],
+  ['data-morph-kind','morphKind','morph'],
+  ['data-greek-kind','greekKind','greek']
+ ]){
+  const kind=el.dataset[property];
+  if(kind&&/^[a-z0-9_-]+$/i.test(kind))return {
+   key:currentCourse()+'/'+$('model').value+'/'+scope+':'+kind,
+   selector:'p.exam-question['+attr+'="'+kind+'"]',
+   kind,scope
+  };
+ }
+ return null;
+}
+function examVisualOwner(el){
+ if(!el?.parentElement?.classList?.contains('exam-sheet'))return null;
+ for(let sibling=el.previousElementSibling;sibling;sibling=sibling.previousElementSibling)
+  if(sibling.classList.contains('exam-question'))return sibling;
+ return null;
+}
+function examVisualValue(heading,property){
+ const key=examVisualHeadingIdentity(heading)?.key;
+ const n=key===undefined?null:examVisualPerQuestion[key]?.[property];
+ return Number.isFinite(n)&&n>=0&&n<=72?n:null;
+}
+function examVisualBeforeFor(heading){
+ return examVisualValue(heading,'before')??examQuestionBeforePt();
+}
+function examVisualItemGapFor(heading){
+ const custom=examVisualValue(heading,'items');
+ if(custom!==null)return custom;
+ const {kind,scope}=examVisualHeadingIdentity(heading)||{};
+ if(kind==='culture'&&scope==='exam')return examCultureGapPt();
+ if(kind==='sent'||kind==='sentences')return sentenceGapPoints();
+ return null; // Los demás mantienen su formato existente hasta que se personalizan.
+}
+function examVisualItemGapOverride(heading){return examVisualValue(heading,'items')}
+// Renderizamos reglas fuera de #paper: editar un espacio no toca el examen
+// ni los enlaces de edición, la puntuación o el historial de regeneración.
 function applyExamVisualFormat(){
  const paper=$('paper');
  if(!paper)return;
  paper.style.setProperty('--exam-question-before',examQuestionBeforePt()+'pt');
  paper.style.setProperty('--exam-culture-gap',examCultureGapPt()+'pt');
+ const sheet=paper.querySelector('.exam-sheet');
+ let rules=document.getElementById('examina-per-question-rules');
+ if(!rules){rules=document.createElement('style');rules.id='examina-per-question-rules';document.head.append(rules)}
+ const text=[];
+ if(sheet)for(const heading of sheet.querySelectorAll(':scope > p.exam-question')){
+  const identity=examVisualHeadingIdentity(heading);
+  if(!identity)continue;
+  const {key,selector,kind}=identity;
+  const custom=examVisualPerQuestion[key];
+  if(!custom)continue;
+  const head='.paper .exam-sheet > '+selector;
+  if(Number.isFinite(custom.before))
+   text.push(head+'{margin-top:'+custom.before+'pt!important}');
+  if(!Number.isFinite(custom.items))continue;
+  const gap=custom.items;
+  // Preguntas con lista de apartados, letras o frases.
+  text.push(head+'+ol.task>li{margin-bottom:0!important;padding-bottom:0!important}');
+  text.push(head+'+ol.task>li+li{margin-top:'+gap+'pt!important}');
+  // Análisis morfológico con párrafos a., b., c. sucesivos.
+  if(kind==='forms')text.push(
+   head+'~p.exam-item.reference-analysis-item{margin-top:'+gap+'pt!important}',
+   head+'+p.exam-item.reference-analysis-item{margin-top:0!important}'
+  );
+  // Tablas nominales consecutivas: no modificar las tablas de conjugación.
+  if(kind==='decl'&&identity.scope==='exam')
+   text.push(head+'+table.exam-nouns+table.exam-nouns{margin-top:'+gap+'pt!important}',
+    head+'+table.exam-nouns+table.exam-nouns+table.exam-nouns{margin-top:'+gap+'pt!important}');
+  // Paradigmas griegos enlazados por una fila de separación.
+  if(kind==='declension')
+   text.push(head+'~p.exam-table-gap{height:'+gap+'pt!important;line-height:'+Math.max(.05,gap)+'pt!important}');
+ }
+ rules.textContent=text.join('\n');
 }
 function sentenceGapPoints(){const value=Number($('sentence-gap-pt')?.value);return Number.isFinite(value)&&value>0?Math.max(12,Math.min(100,Math.round(value))):42}
 function applySentenceGap(){const paper=$('paper');if(paper?.style)paper.style.setProperty('--exam-sentence-gap',sentenceGapPoints()+'pt')}
