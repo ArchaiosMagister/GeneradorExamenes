@@ -351,6 +351,12 @@ html[data-course="greek1"] .paper .exam-sheet *{font-style:normal!important}
 .paper .exam-gloss-title{margin:4pt 0 3pt;font-size:10.5pt;break-after:avoid}
 .paper .exam-sheet .final-gloss{line-height:1.45;column-gap:24pt;font-size:10.5pt}
 .paper .exam-sheet .gloss-item{margin:0;break-inside:avoid}
+/* La elección filológica pertenece al editor, no al documento exportado. */
+#examSentenceGlossary .exam-passive-review{margin-top:12px}
+#examSentenceGlossary .exam-passive-label{display:grid;gap:5px;margin:9px 0}
+#examSentenceGlossary .exam-passive-label>span{overflow-wrap:anywhere;font-weight:400}
+#examSentenceGlossary .exam-passive-label>select{width:100%;max-width:100%;min-height:44px}
+
 .paper .exam-grade{font-size:10.5pt;margin:12pt 0}
 .paper .exam-sheet #answerkey h2,.paper .exam-sheet #answerkey h3{font-size:10.5pt;text-align:left}
 @media(max-width:500px){.paper .exam-header-line{grid-template-columns:minmax(0,1fr) 30%;gap:4pt;line-height:1.4;padding:3pt 0}.paper .exam-sheet th,.paper .exam-sheet td{padding:0 2pt;font-size:9pt}.paper .exam-nouns tbody th{white-space:normal}.paper .exam-item{margin-left:12pt}.paper .exam-etymology{margin-left:12pt}.paper .exam-sheet .final-gloss{columns:1}}
@@ -1357,6 +1363,31 @@ try{
 }catch{}
 let examGlossCandidates=new Map();
 const examGlossIdentity=(course,identity)=>course+'|'+identity;
+const examPassiveChoiceKey='examina_exam_passive_choices_v1';
+let examPassiveChoices={};
+try{
+ const stored=JSON.parse(localStorage.getItem(examPassiveChoiceKey)||'{}');
+ if(stored&&typeof stored==='object'&&!Array.isArray(stored))examPassiveChoices=stored;
+}catch{}
+let examPassiveChoicesShown=new Map();
+const examPassiveIdentity=(course,identity)=>course+'|passive|'+identity;
+$('paper').addEventListener('change',event=>{
+ const control=event.target.closest('.exam-passive-choice');
+ if(!control)return;
+ const row=examPassiveChoicesShown.get(control.dataset.identity);
+ if(!row)return;
+ const value=control.value;
+ if(value==='separate')examPassiveChoices[control.dataset.identity]={mode:'separate'};
+ else if(/^compound:\d+$/.test(value)){
+  const candidate=row.candidates[Number(value.slice('compound:'.length))];
+  if(!candidate)return;
+  examPassiveChoices[control.dataset.identity]={mode:'compound',lemma:candidate.lemma};
+ }else delete examPassiveChoices[control.dataset.identity];
+ try{localStorage.setItem(examPassiveChoiceKey,JSON.stringify(examPassiveChoices))}
+ catch{console.warn('No se pudo guardar la lectura verbal compuesta')}
+ refreshSentenceGlossary(); // nunca regenera otras preguntas
+});
+
 function latinGlossCitation(entry){
  const raw=String(entry),notes=[...raw.matchAll(/\([^)]*\)/g)];
  let html='',offset=0;
@@ -1368,19 +1399,33 @@ function latinGlossCitation(entry){
  if(offset<raw.length)html+='<i>'+esc(raw.slice(offset))+'</i>';
  return html;
 }
-function analyzeExamVocabulary(text,course,bank){
+function analyzeExamVocabulary(text,course,bank,phraseChoices=[]){
  if(!text.trim())return [];
  const engine=window.ExaminaVocabulary;
  if(!engine)return [];
  const data=window.ExaminaOfflineLemmatizer.currentData()||emptyExamLemmaIndex;
- const analyzed=engine.analyze(data,text,({latin1:'lat1',latin4:'lat4',greek1:'gr1'})[course],bank,{contextual:true});
- // Solo recuperar fichas aún ofrecidas por el analizador actual.
- return engine.entries(analyzed.map(row=>{
+ const code=({latin1:'lat1',latin4:'lat4',greek1:'gr1'})[course];
+ const analyzed=engine.analyze(data,text,code,bank,{contextual:true});
+ const combinations=engine.passivePhrases?.(data,analyzed,code,bank)||[];
+ const joined=[],consumed=new Set();
+ for(const phrase of combinations){
+  const identity=examPassiveIdentity(course,phrase.identity);
+  examPassiveChoicesShown.set(identity,phrase);
+  const saved=examPassiveChoices[identity];
+  const candidate=saved?.mode==='compound'?phrase.candidates.find(row=>row.lemma===saved.lemma):null;
+  phraseChoices.push({...phrase,identity,selected:candidate?'compound:'+phrase.candidates.indexOf(candidate):
+   saved?.mode==='separate'?'separate':''});
+  // Sin elegir, conservar provisionalmente las lecturas individuales previas.
+  if(!candidate)continue;
+  consumed.add(phrase.partIdentity);consumed.add(phrase.auxIdentity);
+  joined.push({form:phrase.form,identity,context:phrase.context,
+   lemma:candidate.lemma,entry:candidate.entry,meaning:candidate.meaning,
+   meaning_va:candidate.meaning_va,status:'manual',candidates:[],
+   origin:'interpretación compuesta elegida por el docente ('+phrase.tense+')'});
+ }
+ const recovered=analyzed.filter(row=>!consumed.has(row.identity)).map(row=>{
   examGlossCandidates.set(examGlossIdentity(course,row.identity||row.form),row);
   const selected=examGlossDecisions[examGlossIdentity(course,row.identity||row.form)];
-  // La decisión guarda QUÉ lema escogió el docente, no congela las glosas:
-  // si el banco se actualiza, recuperar su enunciado y traducciones vigentes.
-  // El cambio de enunciado se acepta solo si el lema continúa siendo único.
   if(!selected)return row;
   const sameLemma=row.candidates?.filter(c=>c.lemma===selected.lemma)||[];
   const chosen=sameLemma.find(c=>c.entry===selected.entry)||
@@ -1388,7 +1433,8 @@ function analyzeExamVocabulary(text,course,bank){
   if(!chosen)return row;
   return {...row,lemma:chosen.lemma,entry:chosen.entry,meaning:chosen.meaning||'',
    meaning_va:chosen.meaning_va||'',status:'manual'};
- }));
+ });
+ return engine.entries([...recovered,...joined]);
 }
 // El glosario reconoce el vocabulario latino de AMBOS cursos sin convertir
 // una ficha de otro curso en vocabulario exigible ni modificar su unidad.
@@ -1464,16 +1510,19 @@ function buildFinalLexicon(chosen,sentences){
  const course=currentCourse(),greek=course==='greek1';
  const bank=greek?vocab.filter(row=>courseOf(row)===course):latinSentenceGlossaryBank(course);
  const found=new Map(),unresolved=new Set(),pendingChoices=new Map(),selectedChoices=[];
- examGlossCandidates=new Map();
+ const passiveChoices=[];
+ examGlossCandidates=new Map();examPassiveChoicesShown=new Map();
  const add=row=>{const key=examKey(row.entry);if(key&&!found.has(key))found.set(key,row)};
  for(const raw of $('examExtra').value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean)){
   const hit=bank.find(x=>examKey(x.entry)===examKey(raw));
   if(hit)add(hit);else unresolved.add(raw);
  }
  const text=sentences.map(x=>x.text).join('\n');
- for(const row of analyzeExamVocabulary(text,course,bank)){
+ for(const row of analyzeExamVocabulary(text,course,bank,passiveChoices)){
   if(row.status==='manual'){
-   add(row);selectedChoices.push(row);
+   add(row);
+   // La perífrasis ya dispone de selector propio: no duplicar el botón «Cambiar».
+   if(!String(row.origin||'').startsWith('interpretación compuesta elegida'))selectedChoices.push(row);
   }else if(row.status==='documented')add(row);
   else if(row.candidates?.length)pendingChoices.set(examGlossIdentity(course,row.identity||row.form),row);
   else unresolved.add(row.form);
@@ -1482,7 +1531,7 @@ function buildFinalLexicon(chosen,sentences){
   !/\(\s*(?:prep\.?|preposición)\b|\s+\+\s*(?:genitivo|acusativo|dativo|ablativo)/iu.test(x.entry)&&
   glossAccept(x.entry,chosen))
   .sort((a,b)=>headLex(a.entry).localeCompare(headLex(b.entry),'es'));
- if(!rows.length&&!unresolved.size&&!pendingChoices.size)return '';
+ if(!rows.length&&!unresolved.size&&!pendingChoices.size&&!passiveChoices.length)return '';
  const hideRequired=$('glossHideRequired').checked;
  const missingTranslation=x=>!localizedGloss(x).ready||/\[TRADUCCI[ÓO]N PENDIENTE/i.test(x.meaning);
  const pending=rows.filter(x=>!(isRequired(x.entry,chosen)&&hideRequired)&&missingTranslation(x));
@@ -1492,6 +1541,33 @@ function buildFinalLexicon(chosen,sentences){
   return '<div class="gloss-item">'+(greek?esc(entry):latinGlossCitation(latinExamGlossEntry(entry,course,chosen)))+gloss+'</div>';
  }).join('')+'</div>':'';
  if(pending.length)out+='<p class="notice no-print"><strong>'+($('lang').value==='va'?'Traduccions pendents de revisar:':'Traducciones pendientes de revisar:')+'</strong> '+esc(pending.map(x=>headLex(x.entry)).join(', '))+'. '+($('lang').value==='va'?'Es mostren els enunciats sense inventar significats.':'El examen muestra sus enunciados sin inventar significados.')+'</p>';
+ if(passiveChoices.length){
+  const va=$('lang').value==='va';
+  out+='<div class="notice no-print exam-passive-review"><strong>'+
+   (va?'Lectura de formes verbals compostes (tria cada aparició):':
+       'Lectura de formas verbales compuestas (elige cada aparición):')+'</strong>';
+  for(const phrase of passiveChoices){
+   const tenseText=va?({
+    'perfecto de indicativo pasivo':'perfet d’indicatiu passiu',
+    'pluscuamperfecto de indicativo pasivo':'plusquamperfet d’indicatiu passiu',
+    'futuro perfecto de indicativo pasivo':'futur perfet d’indicatiu passiu'
+   }[phrase.tense]||phrase.tense):phrase.tense;
+   out+='<label class="exam-passive-label"><span><i>'+esc(phrase.form)+'</i> · '+
+    esc(phrase.context)+'</span><select class="exam-passive-choice" data-identity="'+
+    esc(phrase.identity)+'" aria-label="'+esc(phrase.form)+'">'+
+    '<option value=""'+(!phrase.selected?' selected':'')+'>'+
+     (va?'Sense decidir (es mostren separades provisionalment)':
+         'Sin decidir (se muestran separadas provisionalmente)')+'</option>'+
+    '<option value="separate"'+(phrase.selected==='separate'?' selected':'')+'>'+
+     (va?'Dues paraules independents':'Dos palabras independientes')+'</option>'+
+    phrase.candidates.map((candidate,i)=>'<option value="compound:'+i+'"'+
+     (phrase.selected==='compound:'+i?' selected':'')+'>'+
+     esc(tenseText+' · '+candidate.entry)+
+     (candidate.verifiedParticiple?'':va?' (paradigma deduït; revisa)':' (paradigma deducido; revisar)')+
+     '</option>').join('')+'</select></label>';
+  }
+  out+='</div>';
+ }
  if(pendingChoices.size){
   out+='<div class="notice no-print exam-gloss-review"><strong>Elige el lema de cada forma ambigua:</strong>';
   for(const [identity,row] of pendingChoices){
