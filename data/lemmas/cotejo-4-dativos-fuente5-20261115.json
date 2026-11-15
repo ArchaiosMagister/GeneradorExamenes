@@ -1,0 +1,112 @@
+{
+  "schema": "examina-greek-individual-morphology-collation/v1",
+  "date": "2026-11-15",
+  "subject": "gr1",
+  "scope": "Promoción estrictamente individual de cuatro dativos singulares al índice de contraste (fuente 5) sin autorización de corrección automática ni activación por inferencia.",
+  "originalInventory": "data/lemmas/revision-559-griego-20261113.json",
+  "originalCandidateExtract": "data/lemmas/greek-nominal-candidates.json",
+  "verificationSource": "data/lemmas/verified-overrides.json",
+  "auditSource": "https://github.com/ArchaiosMagister/GeneradorExamenes/pull/121",
+  "unchangedDecisions": [
+    "data/lemmas/greek-adjective-decisions.json",
+    "data/lemmas/filological-variant-decisions.json",
+    "data/lemmas/greek-editorial-decisions.json"
+  ],
+  "normalisation": "En el índice de fuente 5, omitir exclusivamente macrón/breve editoriales y conservar acentos, espíritus, iota suscrita y cada lectura morfológica.",
+  "summary": {
+    "originalHistoricalEntries": 559,
+    "priorPromotionsEchthros": 10,
+    "reviewed": 4,
+    "morphologyConfirmed": 4,
+    "source5Promotions": 4,
+    "newAutomaticExamForms": 0,
+    "newAutomaticGradingPermissions": 0,
+    "unresolvedTeacherDecisions": 0
+  },
+  "items": [
+    {
+      "id": "grc-pending-201",
+      "lemma": "κεφαλη",
+      "teacherEntry": "κεφαλή, –ῆς",
+      "units": [
+        "UD 6–7"
+      ],
+      "schoolForm": "κεφαλῇ",
+      "originalSourceForm": "κεφᾰλῇ",
+      "analysis": "N;DAT;SG",
+      "reference": "https://en.wiktionary.org/wiki/%CE%BA%CE%B5%CF%86%CE%B1%CE%BB%CE%AE",
+      "independentParadigmCrosscheck": "https://grammars.alpheios.net/smyth/xhtml/body.1_div1.2_div2.4.html",
+      "evidenceDetail": "Primera declinación femenina de tema en η: dativo singular -ῃ; se conserva el acento agudo/circunflejo y la iota suscrita.",
+      "spellingVerified": true,
+      "analysisVerified": true,
+      "indexSourceCode": 5,
+      "originalSourceCode": 4,
+      "automaticGradingEnabled": false,
+      "individualAuthorizationAdded": false,
+      "examPolicy": "CONSERVAR_CONTROLES_DE_EVIDENCIA_DOCENTE"
+    },
+    {
+      "id": "grc-pending-450",
+      "lemma": "ρητωρ",
+      "teacherEntry": "ῥήτωρ, –ορος (ὁ)",
+      "units": [
+        "UD 8"
+      ],
+      "schoolForm": "ῥήτορι",
+      "originalSourceForm": "ῥήτορῐ",
+      "analysis": "N;DAT;SG",
+      "reference": "https://en.wiktionary.org/wiki/%E1%BF%A5%CE%AE%CF%84%CF%89%CF%81",
+      "independentParadigmCrosscheck": "https://grammars.alpheios.net/smyth/xhtml/body.1_div1.2_div2.4.html",
+      "evidenceDetail": "Smyth §259 explicita ῥήτορ-ι, dativo singular de ῥήτωρ; breve editorial de ι suprimida.",
+      "spellingVerified": true,
+      "analysisVerified": true,
+      "indexSourceCode": 5,
+      "originalSourceCode": 4,
+      "automaticGradingEnabled": false,
+      "individualAuthorizationAdded": false,
+      "examPolicy": "CONSERVAR_CONTROLES_DE_EVIDENCIA_DOCENTE"
+    },
+    {
+      "id": "grc-pending-451",
+      "lemma": "ρισ",
+      "teacherEntry": "ῥίς, ῥινός (ἡ)",
+      "units": [
+        "UD 8"
+      ],
+      "schoolForm": "ῥινί",
+      "originalSourceForm": "ῥῑνῐ́",
+      "analysis": "N;DAT;SG",
+      "reference": "https://en.wiktionary.org/wiki/%E1%BF%A5%CE%AF%CF%82",
+      "independentParadigmCrosscheck": "https://grammars.alpheios.net/smyth/xhtml/body.1_div1.2_div2.4.html",
+      "evidenceDetail": "Smyth §259 explicita ῥῑν-ί, dativo singular de ῥῑ́ς; se preservan espíritu áspero y acento agudo.",
+      "spellingVerified": true,
+      "analysisVerified": true,
+      "indexSourceCode": 5,
+      "originalSourceCode": 4,
+      "automaticGradingEnabled": false,
+      "individualAuthorizationAdded": false,
+      "examPolicy": "CONSERVAR_CONTROLES_DE_EVIDENCIA_DOCENTE"
+    },
+    {
+      "id": "grc-pending-462",
+      "lemma": "στρατηγοσ",
+      "teacherEntry": "στρατηγός, –ου",
+      "units": [
+        "UD 5"
+      ],
+      "schoolForm": "στρατηγῷ",
+      "originalSourceForm": "στρᾰτηγῷ",
+      "analysis": "N;DAT;SG",
+      "reference": "https://en.wiktionary.org/wiki/%CF%83%CF%84%CF%81%CE%B1%CF%84%CE%B7%CE%B3%CF%8C%CF%82",
+      "independentParadigmCrosscheck": "https://grammars.alpheios.net/smyth/xhtml/body.1_div1.2_div2.4.html",
+      "evidenceDetail": "Segunda declinación masculina, dativo singular -ῳ; cantidad editorial de α omitida, circunflejo e iota suscrita conservados.",
+      "spellingVerified": true,
+      "analysisVerified": true,
+      "indexSourceCode": 5,
+      "originalSourceCode": 4,
+      "automaticGradingEnabled": false,
+      "individualAuthorizationAdded": false,
+      "examPolicy": "CONSERVAR_CONTROLES_DE_EVIDENCIA_DOCENTE"
+    }
+  ]
+}
