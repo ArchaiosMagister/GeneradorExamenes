@@ -8,7 +8,7 @@ on:
       - '.github/workflows/temp-glossary-benchmark.yml'
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   baseline:
@@ -22,3 +22,20 @@ jobs:
         run: |
           node --check scripts/benchmark-latin-glossary.cjs
           node scripts/benchmark-latin-glossary.cjs
+      - name: Generar HTML autónomo y comprobar fuente
+        run: |
+          node --check scripts/test-exam-glossary.cjs
+          npm run offline:build
+          git diff --exit-code -- index.html
+      - name: Guardar exclusivamente la versión autónoma derivada
+        run: |
+          set -euo pipefail
+          git add offline.html
+          if git diff --cached --quiet; then
+            echo "La PWA autónoma ya coincide con las fuentes"
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'build(offline): reutilizar banco latino sin reconstrucciones'
+          git push origin HEAD:perf/latin-glossary-bank-reuse-20261115
