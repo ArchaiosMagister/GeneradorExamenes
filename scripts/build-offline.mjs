@@ -122,7 +122,9 @@ export async function renderOffline(root=projectRoot){
  // sin CDN, sin URL de red y sin introducir scripts tras cerrar el documento.
  let bundled=offline;
  for(const file of ['vendor/html2pdf.bundle.min.js','pdf-export.js','export-workspace.js']){
-  const tag='<script src="'+file+'" defer></script>';
+  // La PWA carga el motor PDF bajo demanda, pero el HTML único debe seguir
+  // conteniéndolo sin ninguna descarga ni dependencia de la caché del navegador.
+  const tag='<script src="'+(file==='vendor/html2pdf.bundle.min.js'?'pdf-export.js':file)+'" defer></script>';
   if(!bundled.includes(tag))throw new Error('Falta el módulo offline: '+file);
   const code=await readFile(resolve(root,file),'utf8');
   if(file==='vendor/html2pdf.bundle.min.js'){
@@ -132,7 +134,7 @@ export async function renderOffline(root=projectRoot){
    const encoded=Buffer.from(code,'utf8').toString('base64');
    const bootstrap="(function(){var s=document.createElement('script');s.textContent=atob('"+
     encoded+"');document.head.appendChild(s);})();";
-   bundled=bundled.replace(tag,'<script>'+bootstrap+'</script>');
+   bundled=bundled.replace(tag,'<script>'+bootstrap+'</script>\n'+tag);
   }else{
    bundled=bundled.replace(tag,'<script>'+code.replace(/<\/script/gi,'<\\/script')+'</script>');
   }
