@@ -171,7 +171,9 @@
   const coursebar=doc.querySelector('.exam-coursebar');if(!coursebar)return;
   const button=doc.createElement('button');
   button.type='button';button.id='exportShortcut';button.className='secondary';
-  coursebar.append(button);
+  // La barra de curso original se oculta por el rediseño; el acceso debe
+  // quedar como hermano visible incluso en la pestaña de vista previa.
+  coursebar.after(button);
   button.addEventListener('click',()=>{
    if(doc.body.classList.contains('academic-view'))el('vmShowExam')?.click();
    el('examSettingsTab')?.click();
