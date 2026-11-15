@@ -53,6 +53,16 @@ try {
 #examLayout aside.panel #examVisualSettings input[type=number]{width:94px;max-width:100%;min-height:42px}
 #examLayout aside.panel #examVisualSettings .exam-ui-point-input>span{font-size:12px;font-weight:600}
 #examLayout aside.panel #examVisualSettings .hint{margin:0}
+#examLayout aside.panel #examVisualSettings .exam-ui-visual-body>h4{font-size:13px;font-weight:750;margin:6px 0 0}
+#examLayout aside.panel #examVisualSettings .exam-ui-question-rows{display:grid;gap:10px}
+#examLayout aside.panel #examVisualSettings .exam-ui-question-row{min-width:0;margin:0;border:1px solid var(--line,#d4dfed);border-radius:8px;padding:10px;display:grid;gap:9px}
+#examLayout aside.panel #examVisualSettings .exam-ui-question-row>legend{font-weight:700;font-size:13px;max-width:100%;padding:0 3px;line-height:1.4;overflow-wrap:anywhere}
+#examLayout aside.panel #examVisualSettings .exam-ui-question-inputs{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:9px;min-width:0}
+#examLayout aside.panel #examVisualSettings .exam-ui-question-inputs>label{min-width:0;font-size:12px}
+#examLayout aside.panel #examVisualSettings .exam-ui-question-inputs>label[hidden]{display:none!important}
+#examLayout aside.panel #examVisualSettings .exam-ui-question-inputs .exam-ui-point-input{display:flex;align-items:center;gap:7px}
+#examLayout aside.panel #examVisualSettings .exam-ui-question-inputs input[type=number]{max-width:100%;width:94px}
+@media(max-width:480px){#examLayout aside.panel #examVisualSettings .exam-ui-question-inputs{grid-template-columns:1fr}}
 </style><style id="examina-sidebar-navigation">
 /* Navegación de trabajo a la manera de un editor: configuración izquierda y vista previa derecha. */
 @media(min-width:801px){#examLayout.layout>.panel{grid-column:1;grid-row:1}#examLayout.layout>.paper{grid-column:2;grid-row:1;min-width:0}}
@@ -2848,7 +2858,13 @@ function localizeExamPreview(){
  if(currentCourse()==='greek1')window.greekLastPreview=paper.innerHTML;
  else window.examinaLastLatinPreview=paper.innerHTML;
 }
-generate=function(){if($('paper').innerHTML.trim())saveDraftTo(PREVIOUS_KEY);originalGenerate();localizeExamPreview()};
+generate=function(){
+ if($('paper').innerHTML.trim())saveDraftTo(PREVIOUS_KEY);
+ originalGenerate();
+ localizeExamPreview();
+ applyExamVisualFormat();
+ window.ExaminaVisualFormat?.render?.();
+};
 // En la web instalada el índice lematizador se descarga de la caché PWA de
 // modo asíncrono. Completa el vocabulario al quedar listo sin cambiar las
 // preguntas ni perder retoques hechos por el docente en la vista previa.
@@ -5776,10 +5792,14 @@ html[data-appearance="oled"] body.exam-redesign #exam-ui-shell :is(#exam-ui-core
   visuals.className='exam-ui-visual menu-section';
   visuals.innerHTML='<summary id="examVisualTitle">Formato y espaciado de las preguntas</summary>'+
    '<div class="exam-ui-visual-body">'+
+   '<h4 id="examVisualDefaultsTitle">Valores predeterminados</h4>'+
    '<label for="examQuestionBeforePt"><span id="examQuestionBeforeLabel">Espacio antes del enunciado de cada pregunta</span>'+
    '<span class="exam-ui-point-input"><input id="examQuestionBeforePt" type="number" min="0" max="72" step="0.5" value="12" inputmode="decimal"><span>pt (Word)</span></span></label>'+
    '<label id="examCultureFormatRow" for="examCultureGapPt"><span id="examCultureGapLabel">Cultura (a., b., c.): espacio entre preguntas</span>'+
    '<span class="exam-ui-point-input"><input id="examCultureGapPt" type="number" min="0" max="72" step="0.5" value="5" inputmode="decimal"><span>pt (Word)</span></span></label>'+
+   '<h4 id="examVisualIndividualsTitle">Por pregunta</h4>'+
+   '<p class="hint" id="examVisualIndividualsHint">Cada pregunta tiene sus propios espacios. Dejar un campo vacío conserva el valor predeterminado.</p>'+
+   '<div id="examVisualQuestionRows" class="exam-ui-question-rows" aria-live="polite"></div>'+
    '<p class="hint" id="examVisualHint">Ajustes para la vista previa, impresión y Word. Cultura sin líneas de respuesta. No regeneran el examen.</p>'+
    '</div>';
   shell.append(visuals);
@@ -5813,6 +5833,11 @@ html[data-appearance="oled"] body.exam-redesign #exam-ui-shell :is(#exam-ui-core
     ?'Ajustos per a la vista prèvia, impressió i Word. Cultura sense línies de resposta. No regeneren l’examen.'
     :'Ajustes para la vista previa, impresión y Word. Cultura sin líneas de respuesta. No regeneran el examen.';
    $('examCultureFormatRow').hidden=$('course').value!=='latin4';
+   $('examVisualDefaultsTitle').textContent=va?'Valors predeterminats':'Valores predeterminados';
+   $('examVisualIndividualsTitle').textContent=va?'Per pregunta':'Por pregunta';
+   $('examVisualIndividualsHint').textContent=va
+    ?'Cada pregunta té els seus espais. Si deixes un camp buit, s’utilitza el valor predeterminat.'
+    :'Cada pregunta tiene sus propios espacios. Dejar un campo vacío mantiene el valor predeterminado.';
   };
   const store=()=>{try{localStorage.setItem(formatKey,JSON.stringify({
    questionBeforePt:examQuestionBeforePt(),cultureGapPt:examCultureGapPt()
