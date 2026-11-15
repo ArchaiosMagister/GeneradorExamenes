@@ -27,7 +27,7 @@ async function main(){
    const errors=[];page.on('pageerror',e=>errors.push(e.message));
    await page.goto('http://127.0.0.1:'+server.address().port+'/'+filename,{waitUntil:'load'});
    await page.waitForFunction(()=>!!window.ExaminaPdfExport&&!!document.getElementById('academicNav'));
-   const structure=await page.evaluate(()=>{
+   const structure=await page.evaluate(isStandalone=>{
     const exam=document.getElementById('exam-ui-actions');
     const editor=document.getElementById('examEditorPanel');
     return {
@@ -36,11 +36,13 @@ async function main(){
      oldOut:!editor.contains(document.getElementById('group-morph'))&&!editor.contains(document.getElementById('offlineLemmaPanel')),
      academic:['group-morph','offlineLemmaPanel','morphTeacherReview','academicEvidenceReview','greekDiscrepancyReview','group-import'].every(id=>document.querySelector('#academicWorkspace #'+id)),
      pwaShortcutsHidden:['pwaDataBackup','pwaExamBackup'].every(id=>!document.getElementById(id)||document.getElementById(id).hidden),
-     localEngine:typeof window.html2pdf==='function',
+     expectedEngineState:isStandalone?typeof window.html2pdf==='function':typeof window.html2pdf==='undefined',
      unchangedQuestions:!!document.getElementById('examQuestionMenus')
     };
-   });
+   },filename==='offline.html');
    assert(Object.values(structure).every(Boolean),filename+': estructura: '+JSON.stringify(structure));
+   if(filename==='index.html')assert.equal(await page.locator('script[src*="html2pdf.bundle.min.js"]').count(),0,
+    'El motor PDF se descarga al abrir la webapp');
    // La consulta académica no ejecuta generación ni mueve las preguntas.
    const before=await page.locator('#paper').innerHTML();
    await page.locator('#academicNav').click();
@@ -149,6 +151,8 @@ async function main(){
    const downloadWait=page.waitForEvent('download',{timeout:90000});
    await page.locator('#pdfDownload').click();
    const download=await downloadWait;
+   assert.equal(await page.evaluate(()=>typeof window.html2pdf),'function',
+    filename+': no se cargó el motor PDF al solicitar la exportación');
    assert.equal(download.suggestedFilename(),'ficha repaso ud1 lat1 val.pdf',
     filename+': el PDF descargado ignora el nombre seleccionado');
    const name=await download.path();
