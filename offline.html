@@ -5249,6 +5249,20 @@ function applyExamVisualFormat(){
   // Preguntas con lista de apartados, letras o frases.
   text.push(head+'+ol.task>li{margin-bottom:0!important;padding-bottom:0!important}');
   text.push(head+'+ol.task>li+li{margin-top:'+gap+'pt!important}');
+  // El léxico latino tiene subpreguntas en párrafos hermanos, no en <ol>.
+  // El primer apartado comienza sin hueco extra; solo los posteriores se separan.
+  if(kind==='lex'&&identity.scope==='exam'){
+   const parts=[];
+   for(let node=heading.nextElementSibling;
+       node&&!node.classList.contains('exam-question');node=node.nextElementSibling){
+    if(node.matches('p.exam-item.lex-subquestion')&&
+       /^[a-z0-9_-]+$/i.test(node.dataset.lexKind||''))parts.push(node);
+   }
+   parts.forEach((part,index)=>{
+    const item='p.exam-item.lex-subquestion[data-lex-kind="'+part.dataset.lexKind+'"]';
+    text.push(head+'~'+item+'{margin-top:'+(index?gap:0)+'pt!important;margin-bottom:0!important}');
+   });
+  }
   // Análisis morfológico con párrafos a., b., c. sucesivos.
   if(kind==='forms')text.push(
    head+'~p.exam-item.reference-analysis-item{margin-top:'+gap+'pt!important}',
@@ -6635,7 +6649,15 @@ function wordExamParagraph(el){
   if(m)runs=wordRun(m[1],true)+'<w:r><w:tab/></w:r>'+wordRun(m[2],true);
  }else if(cls.contains('exam-item')){
   const owner=examVisualOwner(el),custom=examVisualItemGapOverride(owner);
-  const repeated=el.previousElementSibling?.classList?.contains('exam-item');
+  let repeated=el.previousElementSibling?.classList?.contains('exam-item');
+  // No se consideran los avisos ocultos intercalados entre apartados de léxico.
+  if(cls.contains('lex-subquestion')){
+   repeated=false;
+   for(let previous=el.previousElementSibling;
+       previous&&!previous.classList.contains('exam-question');previous=previous.previousElementSibling){
+    if(previous.classList.contains('lex-subquestion')){repeated=true;break}
+   }
+  }
   const before=custom!==null&&repeated?custom*20:
    cls.contains('exam-sentence')&&el.previousElementSibling?.classList?.contains('exam-sentence')?
     (custom??sentenceGapPoints())*20:0;

@@ -1,6 +1,7 @@
 'use strict';
 /* Valores independientes por pregunta en pantalla, Word, borradores y PWA. */
 const assert=require('node:assert/strict');
+const http=require('node:http'),fs=require('node:fs');
 const path=require('node:path'),{pathToFileURL}=require('node:url');
 const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
 const ROOT=path.resolve(__dirname,'..');
@@ -294,6 +295,99 @@ async function checkCourseThemeContrast(page,file){
  }
 }
 
+async function serveRealLexicalBanks(){
+ const server=http.createServer((req,res)=>{
+  let pathname;
+  try{pathname=decodeURIComponent(new URL(req.url,'http://localhost').pathname)}
+  catch{res.writeHead(400).end();return}
+  const full=path.resolve(ROOT,'.'+pathname);
+  if(!full.startsWith(ROOT+path.sep)){res.writeHead(403).end();return}
+  fs.stat(full,(error,info)=>{
+   if(error||!info.isFile()){res.writeHead(404).end();return}
+   const ext=path.extname(full);
+   res.setHeader('Content-Type',({'.html':'text/html; charset=utf-8',
+    '.js':'text/javascript; charset=utf-8','.json':'application/json',
+    '.webmanifest':'application/manifest+json','.svg':'image/svg+xml',
+    '.png':'image/png','.css':'text/css'}[ext]||'application/octet-stream'));
+   fs.createReadStream(full).pipe(res);
+  });
+ });
+ await new Promise((resolve,reject)=>{
+  server.once('error',reject);server.listen(0,'127.0.0.1',resolve);
+ });
+ return {url:'http://127.0.0.1:'+server.address().port+'/index.html',
+  close:()=>new Promise(resolve=>server.close(resolve))};
+}
+async function latinLexSpacing(page,file){
+ // El HTML público carga sus bancos por fetch: file:// no los proporciona.
+ // El archivo autónomo sí los tiene incrustados y se prueba sin HTTP.
+ const site=file==='index.html'?await serveRealLexicalBanks():null;
+ try{
+  if(site)await page.goto(site.url,{waitUntil:'load'});
+  await page.waitForFunction(()=>window.ExaminaTeacherLexBankReady===true);
+ const phrases={
+  es:{preverbs:'Modificación preverbial a partir de',phonetics:'Evolución fonética de',
+   prefixes:'Señala el prefijo',latinisms:'Latinismos. Explica'},
+  va:{preverbs:'Modificació preverbial a partir de',phonetics:'Evolució fonètica de',
+   prefixes:'Assenyala el prefix',latinisms:'Llatinismes. Explica'}
+ };
+ // 4.º: prefijos + evolución fonética. Latín I: hasta cuatro subapartados.
+ // Comprobar ambos idiomas y ambos tipos de examen latino.
+ for(const [course,model,unit,lang,gap] of [
+  ['latin4','tablas','UD8','es',8.5],
+  ['latin4','tablas','UD8','va',11.5],
+  ['latin1','tablas','UD8','es',6.5],
+  ['latin1','mixto','UD8','va',13.5]
+ ]){
+  await configure(page,course,model,lang,unit);
+  const k=key(course,model,'lex');
+  const row=page.locator('#examVisualQuestionRows input[data-exam-visual-key="'+k+'"][data-exam-visual-field="items"]');
+  assert.equal(await row.count(),1,file+': falta el espaciado de léxico '+course+'/'+model+'/'+lang);
+  const before=await page.locator('#paper .exam-sheet').evaluate(el=>el.innerHTML);
+  const other=await page.locator('#paper .exam-sheet').evaluate(el=>{
+   const target=el.querySelector('p.exam-question[data-exam-kind="forms"]+ol.task>li+li');
+   return target?getComputedStyle(target).marginTop:null;
+  });
+  await setPer(page,k,'items',gap);
+  assert.equal(await page.locator('#paper .exam-sheet').evaluate(el=>el.innerHTML),before,
+   file+': cambiar el espaciado de léxico ha regenerado palabras');
+  const items=await page.evaluate(()=>{
+   const nodes=[...document.querySelectorAll('#paper .exam-sheet > p.exam-item.lex-subquestion')];
+   return nodes.map(el=>({kind:el.dataset.lexKind,margin:getComputedStyle(el).marginTop}));
+  });
+  assert(items.length>=2,file+': sin varios apartados léxicos en '+course+'/'+model+'/'+lang);
+  items.forEach((item,i)=>closeTo(item.margin,i?gap:0));
+  assert.deepEqual(items.map(x=>x.kind),course==='latin4'?['prefixes','phonetics']:
+   ['preverbs','phonetics','prefixes','latinisms'].filter(kind=>items.some(x=>x.kind===kind)),
+   file+': se ha alterado el orden de subapartados');
+  const afterOther=await page.locator('#paper .exam-sheet').evaluate(el=>{
+   const target=el.querySelector('p.exam-question[data-exam-kind="forms"]+ol.task>li+li');
+   return target?getComputedStyle(target).marginTop:null;
+  });
+  assert.equal(afterOther,other,file+': aplicar margen léxico altera el análisis morfológico');
+  const xml=await wordXml(page);
+  for(const [i,item] of items.entries()){
+   const wordParagraph=para(xml,phrases[lang][item.kind]);
+   assert(wordParagraph.includes('w:before="'+(i?Math.round(gap*20):0)+'"'),
+    file+': Word no respeta el espacio de '+item.kind+' ('+course+'/'+lang+')');
+   assert(wordParagraph.includes('w:after="0"'),
+    file+': Word acumula márgenes verticales en '+item.kind);
+  }
+  // Prueba explícita de 0 puntos: ningún resto de los 7/9 pt heredados.
+  await setPer(page,k,'items',0);
+  const zeros=await page.evaluate(()=>[...document.querySelectorAll('#paper .exam-sheet > p.lex-subquestion')]
+   .map(n=>getComputedStyle(n).marginTop));
+  zeros.forEach(value=>closeTo(value,0));
+  const zeroXml=await wordXml(page);
+  for(const item of items){
+   const p=para(zeroXml,phrases[lang][item.kind]);
+   assert(p.includes('w:before="0"')&&p.includes('w:after="0"'),
+    file+': Word conserva espacio antiguo al seleccionar cero puntos');
+  }
+ }
+ }finally{if(site)await site.close()}
+}
+
 (async()=>{
  const browser=await chromium.launch({headless:true});
  try{
@@ -308,6 +402,7 @@ async function checkCourseThemeContrast(page,file){
     await morph(page,file);
     await checkReviewLocaleAndContrast(page,file);
     await checkCourseThemeContrast(page,file);
+    await latinLexSpacing(page,file);
     assert.deepEqual(errors,[],file+': excepciones JavaScript tras cambiar valores por pregunta');
    }finally{await context.close()}
   }
