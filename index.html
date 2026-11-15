@@ -878,6 +878,25 @@ function localizeExamAutoTitle(){
 }
 $('unitChoices').innerHTML=units.map((u,i)=>`<label><input type="checkbox" class="unit-choice" value="${i}" >${esc(u)}</label>`).join('');
 function selectedUnits(cumulative=$('cumulative').checked){const ix=[...document.querySelectorAll('.unit-choice:checked')].map(x=>+x.value);return cumulative&&ix.length?units.filter((_,i)=>i<=Math.max(...ix)):ix.map(i=>units[i]);}
+// Un nombre único para Word y PDF. Solo las unidades marcadas explícitamente:
+// la casilla «vocabulario acumulado» no añade unidades al nombre del examen.
+function examExportFilename(extension,includeAnswers=false){
+ const suffix=String(extension).toLowerCase();
+ if(!['docx','pdf'].includes(suffix))throw Error('Formato de exportación desconocido');
+ const course={latin1:'lat1',latin4:'lat4',greek1:'gr1'}[currentCourse()];
+ if(!course)throw Error('Asignatura no válida para exportación');
+ const numbers=[...new Set(selectedUnits(false).map(unit=>{
+  const matched=/^UD(\d+)$/i.exec(String(unit||''));
+  return matched?Number(matched[1]):null;
+ }).filter(Number.isInteger))].sort((a,b)=>a-b);
+ const unitText=numbers.length?numbers.map(n=>'ud'+n).join('-'):'ud-sin-seleccionar';
+ const type=$('sheetType')?.value==='review'?'ficha repaso':'ex';
+ const parts=[type,unitText,course];
+ if(includeAnswers)parts.push('sol');
+ if($('lang')?.value==='va')parts.push('val');
+ return parts.join(' ')+'.'+suffix;
+}
+window.ExaminaExportFilename=examExportFilename;
 function trimesterHeading(){const n=Math.max(1,Math.min(3,Number($('term').value)||1));return ($('lang').value==='va'?['1r trimestre','2n trimestre','3r trimestre']:['1.er trimestre','2.º trimestre','3.er trimestre'])[n-1]}
 function examinaTranslateConfiguration(){
  const va=$('lang').value==='va';
@@ -2701,7 +2720,7 @@ function exportWord(includeAnswers){
   const footField=name=>footRun('<w:fldChar w:fldCharType="begin"/>')+footRun('<w:instrText xml:space="preserve"> '+name+' </w:instrText>')+footRun('<w:fldChar w:fldCharType="separate"/>')+footRun('<w:t>1</w:t>')+footRun('<w:fldChar w:fldCharType="end"/>');
   files.push(['word/footer1.xml','<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:ftr xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:p><w:pPr><w:jc w:val="center"/></w:pPr>'+footField('PAGE')+footRun('<w:t xml:space="preserve"> | </w:t>')+footField('NUMPAGES')+'</w:p></w:ftr>']);
  }
- const course=currentCourse(),filename=`examen_${course}_${$('term').value}T_${includeAnswers?'solucionario':'alumnado'}.docx`;
+ const filename=examExportFilename('docx',includeAnswers);
  downloadBlob(filename,zip(files));
 }
 $('docx').onclick=()=>exportWord(false);
