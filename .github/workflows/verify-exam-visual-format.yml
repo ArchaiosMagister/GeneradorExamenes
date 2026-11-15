@@ -1,0 +1,32 @@
+name: Verificar formato Word de preguntas y cultura (sin publicación)
+on:
+  pull_request:
+    paths:
+      - 'index.html'
+      - 'offline.html'
+      - 'scripts/test-question-visual-layout.cjs'
+      - '.github/workflows/verify-exam-visual-format.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  format:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Instalar Chromium para pruebas de Word y vista previa
+        run: |
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+      - name: Comprobar la correspondencia del archivo autónomo con el generador
+        run: |
+          node scripts/build-offline.mjs
+          git diff --exit-code -- offline.html
+      - name: Espaciados Word, listas culturales, borradores e idiomas sin regeneración
+        run: node scripts/test-question-visual-layout.cjs
