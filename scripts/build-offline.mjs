@@ -125,7 +125,17 @@ export async function renderOffline(root=projectRoot){
   const tag='<script src="'+file+'" defer></script>';
   if(!bundled.includes(tag))throw new Error('Falta el módulo offline: '+file);
   const code=await readFile(resolve(root,file),'utf8');
-  bundled=bundled.replace(tag,'<script>'+code.replace(/<\/script/gi,'<\\/script')+'</script>');
+  if(file==='vendor/html2pdf.bundle.min.js'){
+   // El bundle contiene cadenas HTML/expresiones que pueden confundir al
+   // extractor de scripts estático. Base64 inerte + ejecución local síncrona:
+   // ningún fetch, CDN ni eval; también funciona abierto con file://.
+   const encoded=Buffer.from(code,'utf8').toString('base64');
+   const bootstrap="(function(){var s=document.createElement('script');s.textContent=atob('"+
+    encoded+"');document.head.appendChild(s);})();";
+   bundled=bundled.replace(tag,'<script>'+bootstrap+'</script>');
+  }else{
+   bundled=bundled.replace(tag,'<script>'+code.replace(/<\/script/gi,'<\\/script')+'</script>');
+  }
  }
  return {content:bundled,datasetCount:Object.keys(assets).length,latinRows:latin.rows.length,lemmaRows:lemmatizer.rows.lat.length+lemmatizer.rows.grc.length};
 }
