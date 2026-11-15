@@ -666,6 +666,39 @@ assert(!engine.documentXml({...project,groupTypes:false}).includes('Sustantivos 
    input.dispatchEvent(new Event('input',{bubbles:true}));
   });
   assert.equal(await page.locator('[data-sentence-slot="0"]').textContent(),'Puella amat.');
+  // Cambiar solo la cantidad de formas en Latín I no debe llamar a generate()
+  // ni perder los nodos y las ediciones de las otras preguntas.
+  const directResize=await page.evaluate(()=>{
+   const course=document.getElementById('course');
+   course.value='latin1';course.dispatchEvent(new Event('change',{bubbles:true}));
+   const model=document.getElementById('model');
+   model.value='tablas';model.dispatchEvent(new Event('change',{bubbles:true}));
+   const units=document.querySelectorAll('#unitChoices .unit-choice');
+   if(units[0]){units[0].checked=true;units[0].dispatchEvent(new Event('change',{bubbles:true}))}
+   const counter=document.getElementById('count-forms');
+   counter.value='4';generate();
+   const heading=document.querySelector('#paper .exam-question[data-exam-kind="decl"]');
+   const formHeading=document.querySelector('#paper .exam-question[data-exam-kind="forms"]');
+   if(!heading||!formHeading)throw Error('No hay pregunta nominal y de análisis en el examen completo');
+   heading.dataset.preserveResize='yes';
+   const formerGenerate=generate;let calls=0;
+   generate=function(){calls++;return formerGenerate()};
+   try{
+    counter.value='6';counter.dispatchEvent(new Event('change',{bubbles:true}));
+    const rows=document.querySelectorAll('#paper [data-analysis-slot]');
+    const answer=document.querySelector('#answerkey li[data-exam-kind="forms"] ol');
+    return {calls,stable:heading.isConnected,
+     sameHeading:heading.dataset.preserveResize==='yes',
+     forms:rows.length,answers:answer?.querySelectorAll('li').length||0,
+     initialHeadingPreserved:formHeading.isConnected};
+   }finally{generate=formerGenerate}
+  });
+  assert.equal(directResize.calls,0,'Cambiar formas no debe generar el examen latino completo');
+  assert.equal(directResize.stable,true,'Se ha sustituido la pregunta de declinación');
+  assert.equal(directResize.sameHeading,true,'Se ha perdido una edición en otra pregunta');
+  assert.equal(directResize.initialHeadingPreserved,true,'Se ha sustituido el enunciado de análisis');
+  assert.equal(directResize.forms,6,'El apartado de análisis no se ha redimensionado');
+  assert.equal(directResize.answers,6,'Las soluciones de análisis no están sincronizadas');
   assert.deepEqual(errors,[],'No deben aparecer errores JavaScript en la interfaz');
   console.log('Glosario de oraciones: elecciones, persistencia, edición, tipos y agrupación: OK');
  }finally{
