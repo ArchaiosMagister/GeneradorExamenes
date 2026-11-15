@@ -1,0 +1,37 @@
+name: Verificar reconstrucción reproducible de cuatro dativos (sin publicación)
+on:
+  pull_request:
+    paths:
+      - 'data/lemmas/teacher-forms.json'
+      - 'data/lemmas/verified-overrides.json'
+      - 'data/lemmas/cotejo-4-dativos-fuente5-20261115.json'
+      - 'scripts/build-lemma-index.mjs'
+      - 'scripts/test-cuatro-dativos-fuente5.cjs'
+      - '.github/workflows/verify-four-greek-datives.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  reconstruct:
+    name: Reproducir desde vocabulario fijado y cotejo persistente
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Obtener exactamente la revisión propuesta
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Reconstruir índice desde Vocabula fijado y decisiones contrastadas
+        run: node scripts/build-lemma-index.mjs
+      - name: Asegurar equivalencia binaria del índice versionado
+        run: git diff --exit-code -- data/lemmas/teacher-forms.json
+      - name: Verificar historia, cuatro fuentes 5, unidades y PWA autónoma
+        run: node scripts/test-cuatro-dativos-fuente5.cjs
+      - name: Comprobar que no se ha alterado ningún otro archivo
+        run: git diff --exit-code
