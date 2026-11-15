@@ -48,12 +48,13 @@ const result=reconcile(schola,generator,{scholaCommit:'a'.repeat(40)});
 assert.equal(JSON.stringify(generator),base,'El adaptador cambió el banco en memoria');
 assert.equal(result.summary.scholaRecordsInScope,3);
 assert.equal(result.summary.comparedCells,3);
-assert.equal(result.summary.greekProvisionalCurricular,58);
+assert.equal(result.summary.greekProvisionalCurricular,54);
 assert.equal(result.summary.greekPriorityCategories.CUARENTENA_ACENTUACION,24);
 assert.equal(result.summary.greekPriorityCategories.EXCLUIDA_POR_DECISION_DOCENTE,11);
-const κεφαλη=result.greekCurricularCandidates.find(x=>x.lemma==='κεφαλη');
-assert.equal(κεφαλη.category,'COINCIDENCIA_PENDIENTE_COTEJO_INDIVIDUAL');
-assert.equal(κεφαλη.scholaMatches.length,1);
+const κεφαλη=result.cells.find(x=>x.recordId==='greek-kephale');
+assert.equal(κεφαλη.status,'ya_documentada_en_generador');
+assert(κεφαλη.matches.some(x=>x.sourceCode===5&&x.compatible));
+assert(!result.greekCurricularCandidates.some(x=>x.lemma==='κεφαλη'&&x.form==='κεφᾰλῇ'));
 assert(result.cells.every(x=>x.automaticPromotion===false));
 assert(result.greekCurricularCandidates.every(x=>x.automaticPromotion===false));
 assert(!result.cells.some(x=>x.course==='latin2'));
@@ -72,7 +73,7 @@ try{
  assert.deepEqual(fs.readFileSync(gen),origGen);
  const saved=JSON.parse(fs.readFileSync(out,'utf8'));
  assert.equal(saved.policy.automaticPromotions,0);
- assert.equal(saved.summary.greekProvisionalCurricular,58);
+ assert.equal(saved.summary.greekProvisionalCurricular,54);
  assert.throws(()=>main(['--schola',source,'--generador',gen,'--report',gen]),/sobrescribir bancos/);
 }finally{fs.rmSync(temp,{recursive:true,force:true})}
-console.log('Conciliación ScholaClassica: 58 candidatas griegas preservadas; normalización, procedencia y fuentes inmutables.');
+console.log('Conciliación ScholaClassica: 54 candidatas griegas aún provisionales; cuatro dativos individuales en fuente 5 y fuentes inmutables.');
