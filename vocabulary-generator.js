@@ -19,7 +19,8 @@ function latinPrincipalParts(entry){
  const fields=sections.map(value=>value.replace(/^[–−—-]+/u,'').trim());
  const lemma=latinKey(head(raw));
  if(/\(1ª\)\s*$/u.test(raw)&&/^[a-z]+o$/.test(lemma)&&
-    sections.length>=3&&/^[–−—-]avi$/u.test(sections[1])&&
+    // latinKey unifica u/v, también en el sufijo escrito –āvī.
+    sections.length>=3&&/^[–−—-]aui$/u.test(sections[1])&&
     /^[–−—-]atum$/u.test(sections[2])){
   const stem=lemma.slice(0,-1);
   fields[1]=stem+'avi';
