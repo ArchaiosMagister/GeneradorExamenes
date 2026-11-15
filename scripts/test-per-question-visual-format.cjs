@@ -316,7 +316,7 @@ async function serveRealLexicalBanks(){
   server.once('error',reject);server.listen(0,'127.0.0.1',resolve);
  });
  return {url:'http://127.0.0.1:'+server.address().port+'/index.html',
-  close:()=>new Promise(resolve=>server.close(resolve))};
+  close:()=>new Promise(resolve=>{server.close(resolve);server.closeAllConnections?.()})};
 }
 async function latinLexSpacing(page,file){
  // El HTML público carga sus bancos por fetch: file:// no los proporciona.
