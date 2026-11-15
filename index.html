@@ -5597,15 +5597,16 @@ async function fullUniMorphLookup(language,word,mode){
   surface:row[1],features:row[2],source:'UniMorph completo'})),available:true};
 }
 function indexedBundledMorphology(language,bundled,mode,query){
- const rows=[...(builtInMorph[language]||[]),
-  ...(['v','n','adj','pro'].flatMap(kind=>bundled?.[kind]||[]))];
  if(!bundled||typeof bundled!=='object')
-  return rows.filter(row=>morphologyNormalize(row[mode==='lemma'?0:1])===query)
+  return (builtInMorph[language]||[])
+   .filter(row=>morphologyNormalize(row[mode==='lemma'?0:1])===query)
    .map(row=>({headword:row[0],surface:row[1],features:row[2],
     subtype:row[4]||'',source:row.length>=5?'UniMorph':'Paradigma escolar'}));
  let indexes=bundledLookupCache.get(bundled);
  if(!indexes){
   indexes={form:new Map(),lemma:new Map()};
+  const rows=[...(builtInMorph[language]||[]),
+   ...(['v','n','adj','pro'].flatMap(kind=>bundled[kind]||[]))];
   for(const row of rows){
    const record={headword:row[0],surface:row[1],features:row[2],
     subtype:row[4]||'',source:row.length>=5?'UniMorph':'Paradigma escolar'};
