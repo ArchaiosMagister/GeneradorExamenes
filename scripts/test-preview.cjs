@@ -739,7 +739,9 @@ async function checkFile(browser,filename){
  const requiredRow=gloss.locator('.gloss-item').filter({hasText:/^puella/i});
  assert.equal(await requiredRow.count(),1);
  assert(!/[:‘“]/.test(await requiredRow.textContent()),'La entrada exigible debe ir sin significado');
- assert.equal(await gloss.locator('.gloss-item').filter({hasText:/^in\b/i}).count(),0);
+ const shouldShowIn=await page.locator('#glossPrepositions').isChecked();
+ assert.equal(await gloss.locator('.gloss-item').filter({hasText:/^in\b/i}).count(),shouldShowIn?1:0,
+  'La entrada «in» debe seguir el selector de preposiciones');
  // villa, –æ ya figura explícitamente en el listado docente de UD2:
  // debe imprimirse como exigible, sin traducción, no como palabra nueva.
  const villaRow=gloss.locator('.gloss-item').filter({hasText:/^villa/i});
