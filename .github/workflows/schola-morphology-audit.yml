@@ -33,14 +33,14 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: ArchaiosMagister/ScholaClassica
-          ref: 8c4ede483593c890ac7b6fe62c2056e3e552cdcf
+          ref: 67dd48cbc887b85d1a275e73328bf1fe42c6bb64
           path: .schola
           persist-credentials: false
       - name: Obtener Appendix en el SHA académico aprobado
         uses: actions/checkout@v4
         with:
           repository: ArchaiosMagister/Appendix-grammaticae
-          ref: a3d54209b3bb8a31efd3d57d62b09d6de8d85f5c
+          ref: 0d0901c0a9cce46735f8479c7286ad3c77d8ab3e
           path: .schola/.sources/appendix
           persist-credentials: false
       - name: Obtener Vocabula en el SHA académico aprobado
@@ -69,7 +69,7 @@ jobs:
           node scripts/test-cotejo-4-schola.cjs
           node scripts/reconcile-schola-morphology.cjs \
             --schola .schola/dist/apps/morfologia/data/paradigmas.json \
-            --schola-commit 8c4ede483593c890ac7b6fe62c2056e3e552cdcf \
+            --schola-commit 67dd48cbc887b85d1a275e73328bf1fe42c6bb64 \
             --generador-commit "$(git rev-parse HEAD)" \
             --report test-artifacts/conciliacion-schola-real.json
           node scripts/summarize-schola-morphology.cjs \
