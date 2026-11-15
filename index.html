@@ -5684,6 +5684,22 @@ html[data-appearance="oled"] body.exam-redesign #exam-ui-shell :is(#exam-ui-core
    '<p class="hint" id="examVisualHint">Ajustes para la vista previa, impresión y Word. Cultura sin líneas de respuesta. No regeneran el examen.</p>'+
    '</div>';
   shell.append(visuals);
+  const bulk=document.createElement('details');bulk.id='exam-ui-bulk';
+  const label=document.createElement('summary');label.textContent='Editar varios sintagmas a la vez (avanzado)';
+  bulk.append(label,$('morphOptions'));qs.append(bulk);
+  // Los controles originales conservan el estado del motor; las casillas
+  // visibles están en su pregunta. Ocultar el grupo entero evita duplicidades.
+  const internalCounts=$('morphOffer')?.closest('.count-grid');
+  if(internalCounts){internalCounts.hidden=true;internalCounts.style.setProperty('display','none','important')}
+  const actions=document.createElement('section');actions.id='exam-ui-actions';
+  const actionsTitle=document.createElement('h3');actionsTitle.textContent='Generar, guardar y exportar';actions.append(actionsTitle);
+  for(const id of ['examReselect','group-export','group-drafts'])if($(id))actions.append($(id));
+  shell.append(actions);
+  const advanced=document.createElement('details');advanced.id='exam-ui-advanced';
+  const advancedTitle=document.createElement('summary');advancedTitle.textContent='Más opciones: glosario, bancos y herramientas';advanced.append(advancedTitle);
+  for(const id of ['group-vocab','group-culture','group-import','group-morph','unimorphPanel'])if($(id))advanced.append($(id));
+  shell.append(advanced);panel.prepend(shell);
+  // Los selectores solo existen para document.getElementById una vez montado el panel.
   const formatKey='examina_exam_visual_format_v1';
   const qBefore=$('examQuestionBeforePt'),cGap=$('examCultureGapPt');
   const fill=(v,id,fallback)=>{if(v!==undefined&&v!==null&&v!==''){
@@ -5721,21 +5737,7 @@ html[data-appearance="oled"] body.exam-redesign #exam-ui-shell :is(#exam-ui-core
   }
   for(const id of ['lang','course'])$(id)?.addEventListener('change',refreshVisualLabels);
   refreshVisualLabels();applyExamVisualFormat();
-  const bulk=document.createElement('details');bulk.id='exam-ui-bulk';
-  const label=document.createElement('summary');label.textContent='Editar varios sintagmas a la vez (avanzado)';
-  bulk.append(label,$('morphOptions'));qs.append(bulk);
-  // Los controles originales conservan el estado del motor; las casillas
-  // visibles están en su pregunta. Ocultar el grupo entero evita duplicidades.
-  const internalCounts=$('morphOffer')?.closest('.count-grid');
-  if(internalCounts){internalCounts.hidden=true;internalCounts.style.setProperty('display','none','important')}
-  const actions=document.createElement('section');actions.id='exam-ui-actions';
-  const actionsTitle=document.createElement('h3');actionsTitle.textContent='Generar, guardar y exportar';actions.append(actionsTitle);
-  for(const id of ['examReselect','group-export','group-drafts'])if($(id))actions.append($(id));
-  shell.append(actions);
-  const advanced=document.createElement('details');advanced.id='exam-ui-advanced';
-  const advancedTitle=document.createElement('summary');advancedTitle.textContent='Más opciones: glosario, bancos y herramientas';advanced.append(advancedTitle);
-  for(const id of ['group-vocab','group-culture','group-import','group-morph','unimorphPanel'])if($(id))advanced.append($(id));
-  shell.append(advanced);panel.prepend(shell);
+
   document.body.classList.add('exam-redesign');
   new MutationObserver(()=>queueMicrotask(enhance)).observe(host,{childList:true});
   document.addEventListener('change',event=>{
