@@ -239,7 +239,7 @@ const server=http.createServer(async(req,res)=>{
    const reg=await navigator.serviceWorker.ready;
    const keys=await caches.keys();
    const storage=await caches.open(keys.find(k=>k.startsWith('examina-pwa-')));
-   const paths=['index.html','offline.html','pwa.js','exam-scoring.js','unified-backup.js','offline-lemmas.js','verification-review.js',
+   const paths=['index.html','offline.html','pwa.js','exam-selection-summary.js','exam-scoring.js','unified-backup.js','offline-lemmas.js','verification-review.js',
     'data/unimorph/lat-v.json','data/lemmas/teacher-forms.json',
     'data/latinismos-docente.json','data/prefijos-docente.json','data/modificacion-preverbial-docente.json',
     'data/modificacion-preverbial-unidades-lat1.json','data/lat4-progresion-lexico.json',
@@ -250,6 +250,8 @@ const server=http.createServer(async(req,res)=>{
     path:p,stored:!!await storage.match(new URL(p,reg.scope).href)
    })))};
   });
+  assert.equal(await page.locator('#examSelectionSummary').count(),1,
+   'El módulo externo no ha reconstruido el resumen visual del examen');
   assert.equal(cache.scope,origin+PREFIX);
   assert(cache.entries.every(x=>x.stored),'Precache incompleta: '+JSON.stringify(cache.entries));
   assert.equal(cache.rootDuplicate,false,'El SW conserva una copia adicional de la portada en ./');
