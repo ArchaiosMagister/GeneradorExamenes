@@ -17,6 +17,7 @@ const bank=[
  {course:'latin1',unit:'UD9',entry:'occido, occidi, occisum (3ª)',meaning:'matar',meaning_va:'matar'},
  {course:'latin1',unit:'UD9',entry:'ædifico, ædificavi, ædificatum (1ª)',meaning:'edificar',meaning_va:'edificar'},
  {course:'latin1',unit:'UD9',entry:'doceo, docui, doctum (2ª)',meaning:'enseñar'},
+ {course:'latin1',unit:'UD9',entry:'pugno, pugnavi, pugnatum (1ª)',meaning:'luchar',meaning_va:'lluitar'},
  {course:'latin1',unit:'UD9',entry:'sum, fui, – (irr.)',meaning:'ser, estar'},
  {course:'latin1',unit:'UD9',entry:'pastor, pastoris',meaning:'pastor'},
  {course:'latin1',unit:'UD9',entry:'ovis, ovis',meaning:'oveja'}
@@ -32,7 +33,10 @@ for(const [sentence,lemma,tense,number] of [
  ['Occisa est.','occido','perfecto','singular'],
  ['Occisus erat.','occido','pluscuamperfecto','singular'],
  ['Occisus erit.','occido','futuro perfecto','singular'],
- ['Doctus est.','doceo','perfecto','singular']
+ ['Doctus est.','doceo','perfecto','singular'],
+ ['Pugnatum est.','pugno','perfecto','singular'],
+ ['Pugnatum erat.','pugno','pluscuamperfecto','singular'],
+ ['Pugnatum erit.','pugno','futuro perfecto','singular']
 ]){
  const found=phrases(sentence);
  assert.equal(found.length,1,sentence+' no detectó grupo posible');
@@ -49,6 +53,15 @@ for(const sentence of [
  'Occisus, est.', // no unir a través de coma
  'Ædificata ovibus erant.'
 ])assert.equal(phrases(sentence).length,0,sentence+' falsa perífrasis');
+assert.equal(phrases('Pugnatum sunt.').length,0,'impersonal: número incompatible con sunt');
+assert.equal(phrases('Pugnatum, est.').length,0,'la coma impide la combinación');
+assert.equal(phrases('Pugnatum est.')[0].candidates.find(c=>c.lemma==='pugno').verifiedParticiple,false,
+ 'no certificar pugnatum por el supino, solo ofrecer elección');
+const pugnoShortBank=bank.filter(x=>!x.entry.startsWith('pugno,')).concat([
+ {course:'latin1',unit:'UD5',entry:'pugno (1ª)',meaning:'luchar'}]);
+const shortenedRows=engine.analyze(data,'Pugnatum est.','lat1',pugnoShortBank,{contextual:true});
+assert.equal(engine.passivePhrases(data,shortenedRows,'lat1',pugnoShortBank).length,0,
+ 'no proponer la perífrasis sin tema de participio en fuentes disponibles');
 assert.equal(phrases('Ὁ θεός ἐστιν.','gr1').length,0,'griego sin cambios');
 const repeated=phrases('Occisus est. Occisus est.');
 assert.equal(repeated.length,2,'las ocurrencias repetidas se han fusionado');
@@ -182,6 +195,38 @@ async function main(){
     return [...document.querySelectorAll('.exam-passive-choice')].map(x=>x.value);
    });
    assert.deepEqual(changed,['','compound:0'],filename+': se heredó una decisión de otra oración');
+   // El banco integrado aporta el supino que el índice de lemas abrevia.
+   // Comprobar el desplegable real y la edición sin regenerar otras preguntas.
+   for(const course of ['latin1','latin4']){
+    const impersonal=await page.evaluate(course=>{
+     document.getElementById('course').value=course;
+     const paper=document.getElementById('paper');
+     paper.innerHTML='<div class="exam-sheet">'+
+      '<i data-sentence-slot="0" contenteditable="plaintext-only">Pugnatum est.</i>'+
+      '<div id="examSentenceGlossary"></div></div>';
+     refreshSentenceGlossary();
+     const select=paper.querySelector('.exam-passive-choice');
+     return {count:paper.querySelectorAll('.exam-passive-choice').length,
+      options:select?[...select.options].map(x=>x.textContent):[],
+      selected:select?.value,
+      before:paper.querySelector('[data-sentence-slot="0"]').textContent};
+    },course);
+    assert.equal(impersonal.count,1,filename+' '+course+': falta selector para pugnatum est');
+    assert(impersonal.options.some(x=>x.includes('pugno')&&x.includes('perfecto')),
+     filename+' '+course+': falta lema pugno en lectura compuesta');
+    assert(impersonal.options.some(x=>x.includes('paradigma deducido')),
+     filename+' '+course+': se omitió aviso de forma inferida');
+    assert.equal(impersonal.selected,'',filename+' '+course+': selección automática indebida');
+    await page.locator('.exam-passive-choice').selectOption('compound:0');
+    const combined=await page.locator('#examSentenceGlossary').innerText();
+    assert(combined.includes('pugno'),filename+' '+course+': no se sustituyó por lema pugno');
+    assert(!combined.includes('sum, fui'),filename+' '+course+': auxiliar duplicado');
+    assert.equal(await page.locator('[data-sentence-slot="0"]').textContent(),
+     impersonal.before,'la selección alteró el texto original');
+    await page.locator('.exam-passive-choice').selectOption('separate');
+    assert.equal(await page.locator('.exam-passive-choice').inputValue(),'separate',
+     filename+' '+course+': no se puede mantener la lectura separada');
+   }
    assert.deepEqual(errors,[],filename+': errores en navegador');
    await page.close();
   }
