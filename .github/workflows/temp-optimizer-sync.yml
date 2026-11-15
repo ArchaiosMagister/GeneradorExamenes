@@ -1,4 +1,4 @@
-name: Sincronización temporal de optimizaciones offline
+name: Sincronización temporal de optimizaciones offline (revisión final)
 on:
   push:
     branches:
