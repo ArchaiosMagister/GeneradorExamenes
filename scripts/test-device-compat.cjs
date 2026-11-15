@@ -226,6 +226,29 @@ async function checkProfile(browser,p,filename,origin){
    });
    assert(restored.stable&&restored.forms===edit.before,
     filename+': Safari iPad no recuperó el borrador con ambas ediciones');
+   if(filename==='index.html'){
+    // El motor de 946 KB no se ejecuta al abrir; Safari lo carga desde un
+    // clic real de exportación después de conservar ediciones y borradores.
+    assert.equal(await page.evaluate(()=>typeof window.html2pdf),'undefined',
+     'El motor PDF cargó antes de solicitarlo en Safari iPad');
+    await page.evaluate(()=>{
+     const type=document.getElementById('sheetType');
+     type.value='review';type.dispatchEvent(new Event('change',{bubbles:true}));
+     // Aislar el motor PDF de las verificaciones filológicas ya ensayadas.
+     if(window.ExaminaTeacherReview)window.ExaminaTeacherReview.evidenceMayExport=()=>true;
+     if(window.ExaminaScoring)window.ExaminaScoring.canExport=()=>true;
+    });
+    await page.locator('#exportShortcut').click();
+    const pendingPdf=page.waitForEvent('download',{timeout:120000});
+    await page.locator('#pdfDownload').click();
+    const pdf=await pendingPdf;
+    const pdfBytes=await fs.readFile(await pdf.path());
+    assert.equal(pdfBytes.subarray(0,5).toString('ascii'),'%PDF-',
+     'Safari iPad WebKit descargó un PDF inválido');
+    assert(pdfBytes.length>10000,'Safari iPad WebKit: PDF incompleto');
+    assert.equal(await page.evaluate(()=>typeof window.html2pdf),'function',
+     'Safari iPad WebKit no ejecutó el motor PDF tras solicitarlo');
+   }
   }
   assert.deepEqual(exceptions,[],filename+' '+p.name+': excepciones JavaScript');
   console.log('OK',p.name,filename,'preguntas',initial.questions,'subapartados',initial.details);
