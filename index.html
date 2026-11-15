@@ -1504,14 +1504,15 @@ function buildFinalLexicon(chosen,sentences){
  const course=currentCourse(),greek=course==='greek1';
  const bank=greek?vocab.filter(row=>courseOf(row)===course):latinSentenceGlossaryBank(course);
  const found=new Map(),unresolved=new Set(),pendingChoices=new Map(),selectedChoices=[];
- examGlossCandidates=new Map();
+ const passiveChoices=[];
+ examGlossCandidates=new Map();examPassiveChoicesShown=new Map();
  const add=row=>{const key=examKey(row.entry);if(key&&!found.has(key))found.set(key,row)};
  for(const raw of $('examExtra').value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean)){
   const hit=bank.find(x=>examKey(x.entry)===examKey(raw));
   if(hit)add(hit);else unresolved.add(raw);
  }
  const text=sentences.map(x=>x.text).join('\n');
- for(const row of analyzeExamVocabulary(text,course,bank)){
+ for(const row of analyzeExamVocabulary(text,course,bank,passiveChoices)){
   if(row.status==='manual'){
    add(row);selectedChoices.push(row);
   }else if(row.status==='documented')add(row);
@@ -1522,7 +1523,7 @@ function buildFinalLexicon(chosen,sentences){
   !/\(\s*(?:prep\.?|preposición)\b|\s+\+\s*(?:genitivo|acusativo|dativo|ablativo)/iu.test(x.entry)&&
   glossAccept(x.entry,chosen))
   .sort((a,b)=>headLex(a.entry).localeCompare(headLex(b.entry),'es'));
- if(!rows.length&&!unresolved.size&&!pendingChoices.size)return '';
+ if(!rows.length&&!unresolved.size&&!pendingChoices.size&&!passiveChoices.length)return '';
  const hideRequired=$('glossHideRequired').checked;
  const missingTranslation=x=>!localizedGloss(x).ready||/\[TRADUCCI[ÓO]N PENDIENTE/i.test(x.meaning);
  const pending=rows.filter(x=>!(isRequired(x.entry,chosen)&&hideRequired)&&missingTranslation(x));
@@ -1532,6 +1533,28 @@ function buildFinalLexicon(chosen,sentences){
   return '<div class="gloss-item">'+(greek?esc(entry):latinGlossCitation(latinExamGlossEntry(entry,course,chosen)))+gloss+'</div>';
  }).join('')+'</div>':'';
  if(pending.length)out+='<p class="notice no-print"><strong>'+($('lang').value==='va'?'Traduccions pendents de revisar:':'Traducciones pendientes de revisar:')+'</strong> '+esc(pending.map(x=>headLex(x.entry)).join(', '))+'. '+($('lang').value==='va'?'Es mostren els enunciats sense inventar significats.':'El examen muestra sus enunciados sin inventar significados.')+'</p>';
+ if(passiveChoices.length){
+  const va=$('lang').value==='va';
+  out+='<div class="notice no-print exam-passive-review"><strong>'+
+   (va?'Lectura de formes verbals compostes (tria cada aparició):':
+       'Lectura de formas verbales compuestas (elige cada aparición):')+'</strong>';
+  for(const phrase of passiveChoices){
+   out+='<label class="exam-passive-label"><span><i>'+esc(phrase.form)+'</i> · '+
+    esc(phrase.context)+'</span><select class="exam-passive-choice" data-identity="'+
+    esc(phrase.identity)+'" aria-label="'+esc(phrase.form)+'">'+
+    '<option value=""'+(!phrase.selected?' selected':'')+'>'+
+     (va?'Sense decidir (es mostren separades provisionalment)':
+         'Sin decidir (se muestran separadas provisionalmente)')+'</option>'+
+    '<option value="separate"'+(phrase.selected==='separate'?' selected':'')+'>'+
+     (va?'Dues paraules independents':'Dos palabras independientes')+'</option>'+
+    phrase.candidates.map((candidate,i)=>'<option value="compound:'+i+'"'+
+     (phrase.selected==='compound:'+i?' selected':'')+'>'+
+     esc(phrase.tense+' · '+candidate.entry)+
+     (candidate.verifiedParticiple?'':' (paradigma deducido; revisar)')+
+     '</option>').join('')+'</select></label>';
+  }
+  out+='</div>';
+ }
  if(pendingChoices.size){
   out+='<div class="notice no-print exam-gloss-review"><strong>Elige el lema de cada forma ambigua:</strong>';
   for(const [identity,row] of pendingChoices){
