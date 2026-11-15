@@ -15,7 +15,7 @@ assert.equal(review.summary.total,559);
 const original=bank.rows.grc.filter(x=>x[3]===4);
 assert.equal(original.length,545);
 const originalKeys=new Set(original.map(x=>key(x[0],x[1],x[2])));
-assert.equal(originalKeys.size,549);
+assert.equal(originalKeys.size,545);
 const migrated=get('data/lemmas/cotejo-10-echthros-20261113.json');
 const newlyMigrated=get('data/lemmas/cotejo-4-dativos-fuente5-20261115.json');
 const migratedIds=new Set([...migrated.items,...newlyMigrated.items].map(x=>x.id));
