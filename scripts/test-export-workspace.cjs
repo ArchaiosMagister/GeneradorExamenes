@@ -188,8 +188,8 @@ async function main(){
    const multi=await multiDownload;
    const multiBytes=fs.readFileSync(await multi.path());
    const multiText=multiBytes.toString('latin1');
-   const multiPages=(multiText.match(/\\/Type\\s*\\/Page\\b/g)||[]).length;
-   const multiImages=(multiText.match(/\\/Subtype\\s*\\/Image\\b/g)||[]).length;
+   const multiPages=(multiText.match(/\/Type\s*\/Page\b/g)||[]).length;
+   const multiImages=(multiText.match(/\/Subtype\s*\/Image\b/g)||[]).length;
    assert(multiPages>=3,filename+': PDF largo truncado: '+multiPages+' páginas');
    assert(multiImages>=multiPages,
     filename+': faltan imágenes de contenido de páginas posteriores ('+
