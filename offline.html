@@ -5570,6 +5570,12 @@ const LATIN4_SENTENCE_GLOSS_SUPPLEMENTS=Object.freeze([
  {entry:'scribo, scripsi, scriptum (3ª)',meaning:'escribir',meaning_va:'escriure'},
  {entry:'doctus, –a, –um',meaning:'sabio/a, docto/a',meaning_va:'savi/sàvia, docte/docta'}
 ]);
+// El análisis de paradigmas conserva cachés WeakMap por referencia del banco.
+// Cuando el contenido docente no cambia entre pulsaciones, mantener la misma
+// lista evita reconstruir miles de formas latinas. La firma completa se calcula
+// CADA vez para invalidar la caché también ante ediciones de fichas in situ,
+// importaciones, cambios de acepción y modificaciones del exigible.
+const latinSentenceGlossaryCache=new Map();
 function latinSentenceGlossaryBank(course){
  if(course!=='latin1'&&course!=='latin4')return [];
  const other=course==='latin1'?'latin4':'latin1';
@@ -5602,6 +5608,12 @@ function latinSentenceGlossaryBank(course){
    if(row.course===c&&!lemmas.has(examKey(row.entry)))add({
     ...row,meaning:'',meaning_va:''
    });
+ // No basta con comprobar longitud ni comparar referencias: el profesor
+ // puede corregir el enunciado o la traducción en el mismo objeto.
+ const signature=JSON.stringify(result);
+ const previous=latinSentenceGlossaryCache.get(course);
+ if(previous?.signature===signature)return previous.bank;
+ latinSentenceGlossaryCache.set(course,{signature,bank:result});
  return result;
 }
 // La UD6 introduce el perfecto en Latín de 4.º: identificar la forma

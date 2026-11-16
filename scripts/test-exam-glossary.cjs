@@ -414,6 +414,54 @@ assert(!engine.documentXml({...project,groupTypes:false}).includes('Sustantivos 
   // No se crea un lema sintético doctusque ni se promociona nada a morfología.
   assert.equal(await page.evaluate(()=>latinSharedBank.vocabulary('latin4').some(x=>
    /^doctusque\b/i.test(x.entry))),false);
+  // Rendimiento: la vista del glosario conserva su identidad mientras su
+  // contenido sea idéntico, pero detecta TODO cambio del banco docente,
+  // incluso cuando se edita in situ sin modificar la longitud del array.
+  const memoized=await page.evaluate(()=>{
+   const original=latinSentenceGlossaryBank('latin4');
+   const same=latinSentenceGlossaryBank('latin4');
+   const latin1=latinSentenceGlossaryBank('latin1');
+   const before=buildFinalLexicon(['UD7'],[{text:'Arat et scribit.'}]);
+   const after=buildFinalLexicon(['UD7'],[{text:'Arat et scribit.'}]);
+   const row=original.find(r=>r.course==='latin4'&&vocab.includes(r)&&String(r.meaning||'').trim());
+   if(!row)throw Error('No se encontró una ficha editable del curso');
+   const meaning=row.meaning;
+   let edited=false,restored=false,added=false,removed=false,required=false;
+   try{
+    row.meaning=meaning+' [CAMBIO TEMPORAL]';
+    const changed=latinSentenceGlossaryBank('latin4');
+    edited=changed!==original&&changed.some(r=>r===row&&
+     r.meaning.endsWith('[CAMBIO TEMPORAL]'));
+   }finally{row.meaning=meaning}
+   const current=latinSentenceGlossaryBank('latin4');
+   restored=current!==original&&current.some(r=>r===row&&r.meaning===meaning);
+   const size=vocab.length;
+   try{
+    vocab.push({course:'latin4',unit:'UD3',entry:'tempuscache, –i',
+     meaning:'prueba temporal',meaning_va:'prova temporal'});
+    const grown=latinSentenceGlossaryBank('latin4');
+    added=grown!==current&&grown.some(r=>r.entry==='tempuscache, –i');
+   }finally{vocab.length=size}
+   const shrunk=latinSentenceGlossaryBank('latin4');
+   removed=!shrunk.some(r=>r.entry==='tempuscache, –i');
+   const requiredSize=examRequired.length;
+   try{
+    examRequired.push({course:'latin4',unit:'UD4',
+     entry:'quidditascache, –atis (f.)'});
+    const updated=latinSentenceGlossaryBank('latin4');
+    required=updated.some(r=>r.entry==='quidditascache, –atis (f.)');
+   }finally{examRequired.length=requiredSize}
+   const final=latinSentenceGlossaryBank('latin4');
+   const noResidual=!final.some(r=>r.entry==='quidditascache, –atis (f.)');
+   return {stable:original===same,differentCourse:original!==latin1,
+    identicalMarkup:before===after,edited,restored,added,removed,
+    required,noResidual};
+  });
+  assert.deepEqual(memoized,{
+   stable:true,differentCourse:true,identicalMarkup:true,
+   edited:true,restored:true,added:true,removed:true,
+   required:true,noResidual:true
+  },'La caché debe conservar la identidad y caducar tras cada edición real');
   const customOverride=await page.evaluate(()=>{
    const len=vocab.length;
    vocab.push({course:'latin4',unit:'UD3',entry:'aro, aravi, aratum (1ª)',
