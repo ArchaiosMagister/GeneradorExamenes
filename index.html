@@ -3001,8 +3001,57 @@ const $v=id=>document.getElementById(id);
 const courseNames={latin4:'Latín 4.º ESO',latin1:'Latín I',greek1:'Griego I'};
 function vmUnits(course){let units=[...new Set(vocab.filter(x=>courseOf(x)===course).map(x=>x.unit).filter(Boolean))];let fromReq=examRequired.filter(x=>x.course===course).map(x=>x.unit);units=[...new Set([...units,...fromReq])];units.sort((a,b)=>(examUnitNumber(a)||999)-(examUnitNumber(b)||999)||a.localeCompare(b));if(course==='greek1')for(let n=0;n<=14;n++){let u='UD'+n;if(!units.includes(u))units.push(u)}if(!units.length)units=Array.from({length:12},(_,i)=>'UD'+(i+1));return units.sort((a,b)=>(examUnitNumber(a)||999)-(examUnitNumber(b)||999))}
 function refreshUnits(){let sel=$v('vmUnit'),prev=sel.value;sel.replaceChildren();for(const unit of vmUnits($v('vmCourse').value)){let o=document.createElement('option');o.value=unit;o.textContent=unit;sel.append(o)}if([...sel.options].some(x=>x.value===prev))sel.value=prev;render()}
-function render(){let c=$v('vmCourse').value,u=$v('vmUnit').value,q=$v('vmSearch').value.trim().toLocaleLowerCase();let rows=examRequired.map((x,i)=>({...x,index:i})).filter(x=>x.course===c&&x.unit===u&&(!q||(x.entry+' '+(x.meaning||'')).toLocaleLowerCase().includes(q)));$v('vmCount').textContent=`${rows.length} entradas en ${u} · ${examRequired.filter(x=>x.course===c).length} en ${courseNames[c]}.`;
-let body=$v('vmRows');body.replaceChildren();for(const x of rows){let tr=document.createElement('tr');let unit=document.createElement('select');for(const name of vmUnits(c)){let o=document.createElement('option');o.value=name;o.textContent=name;unit.append(o)}unit.value=x.unit;unit.onchange=()=>{examRequired[x.index].unit=unit.value;saveRequired();render()};let entry=document.createElement('input');entry.value=x.entry;entry.setAttribute('aria-label','Enunciado');entry.onchange=()=>{let val=entry.value.trim(),key=examKey(val);if(!key){entry.value=x.entry;return}if(examRequired.some((y,i)=>i!==x.index&&y.course===c&&y.unit===examRequired[x.index].unit&&y.key===key)){alert('Ya existe esa palabra en la unidad');entry.value=x.entry;return}examRequired[x.index].entry=val;examRequired[x.index].key=key;saveRequired();render()};let meaning=document.createElement('input');meaning.value=x.meaning||'';meaning.setAttribute('aria-label','Traducción');meaning.onchange=()=>{examRequired[x.index].meaning=meaning.value.trim();saveRequired()};let del=document.createElement('button');del.textContent='Eliminar';del.onclick=()=>{if(!confirm('¿Eliminar '+x.entry+' del vocabulario exigible?'))return;examRequired.splice(x.index,1);saveRequired();render()};for(let control of [unit,entry,meaning,del]){let td=document.createElement('td');td.append(control);tr.append(td)}body.append(tr)}
+function render(){
+ const c=$v('vmCourse').value,u=$v('vmUnit').value;
+ const q=$v('vmSearch').value.trim().toLocaleLowerCase();
+ const rows=[];let courseCount=0;
+ // Una sola pasada preserva los índices reales de edición/borrado.
+ for(let index=0;index<examRequired.length;index++){
+  const item=examRequired[index];
+  if(item.course!==c)continue;
+  courseCount++;
+  if(item.unit!==u||q&&!(item.entry+' '+(item.meaning||'')).toLocaleLowerCase().includes(q))continue;
+  rows.push({item,index});
+ }
+ $v('vmCount').textContent=`${rows.length} entradas en ${u} · ${courseCount} en ${courseNames[c]}.`;
+ // Antes se recomputaban todas las unidades para CADA fila y se insertaban
+ // controles directamente en la tabla dentro del bucle.
+ const unitTemplate=document.createElement('select');
+ for(const name of vmUnits(c)){
+  const option=document.createElement('option');
+  option.value=name;option.textContent=name;unitTemplate.append(option);
+ }
+ const body=$v('vmRows'),fragment=document.createDocumentFragment();
+ for(const {item:x,index} of rows){
+  const tr=document.createElement('tr'),unit=unitTemplate.cloneNode(true);
+  unit.value=x.unit;
+  unit.onchange=()=>{examRequired[index].unit=unit.value;saveRequired();render()};
+  const entry=document.createElement('input');entry.value=x.entry;
+  entry.setAttribute('aria-label','Enunciado');
+  entry.onchange=()=>{
+   const val=entry.value.trim(),key=examKey(val);
+   if(!key){entry.value=x.entry;return}
+   if(examRequired.some((y,i)=>i!==index&&y.course===c&&
+      y.unit===examRequired[index].unit&&y.key===key)){
+    alert('Ya existe esa palabra en la unidad');entry.value=x.entry;return;
+   }
+   examRequired[index].entry=val;examRequired[index].key=key;
+   saveRequired();render();
+  };
+  const meaning=document.createElement('input');meaning.value=x.meaning||'';
+  meaning.setAttribute('aria-label','Traducción');
+  meaning.onchange=()=>{examRequired[index].meaning=meaning.value.trim();saveRequired()};
+  const del=document.createElement('button');del.textContent='Eliminar';
+  del.onclick=()=>{
+   if(!confirm('¿Eliminar '+x.entry+' del vocabulario exigible?'))return;
+   examRequired.splice(index,1);saveRequired();render();
+  };
+  for(const control of [unit,entry,meaning,del]){
+   const td=document.createElement('td');td.append(control);tr.append(td);
+  }
+  fragment.append(tr);
+ }
+ body.replaceChildren(fragment);
 }
 function feedback(t){$v('vmFeedback').textContent=t}
 function add(unit,entry,meaning){let c=$v('vmCourse').value,key=examKey(entry);if(!unit||!key)return false;if(examRequired.some(x=>x.course===c&&x.unit===unit&&x.key===key))return false;examRequired.push({course:c,unit,entry,key,meaning:meaning||''});return true}
