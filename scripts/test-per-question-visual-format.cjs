@@ -471,6 +471,9 @@ async function greekGlossSpacing(page,file){
    return {wrapper:wrapper.id,kind:heading.dataset.greekKind};
   });
   assert.deepEqual(structure,{wrapper:'examSentenceGlossary',kind:'sentences'});
+  // El test ES anterior deja 66 pt guardados en el mismo examen: limpiar
+  // solo el ajuste del test antes de comprobar los 54 pt generales en VA.
+  await setPer(page,key('greek1','complete','sentences','greek'),'items','');
   const previous=await page.locator('#paper .exam-sheet').innerHTML();
   await page.evaluate(()=>{
    const gap=document.getElementById('sentence-gap-pt');
