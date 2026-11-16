@@ -6440,4 +6440,65 @@ html[data-appearance="oled"] body.exam-redesign #exam-ui-shell :is(#exam-ui-core
 <!-- El motor PDF se carga solo al exportar; el SW lo mantiene disponible sin conexión. -->
 <script src="pdf-export.js" defer></script>
 <script src="export-workspace.js" defer></script>
+
+<style id="desktop-four-area-style">
+/* Variante visual de escritorio: los motores y formularios originales siguen en el DOM. */
+@media screen {
+ .vocab-tabbar{display:grid;grid-template-columns:minmax(130px,.85fr) minmax(228px,1.6fr) minmax(140px,.9fr) minmax(175px,1.12fr) minmax(132px,.73fr);align-items:stretch;gap:10px;padding:13px max(18px,calc((100vw - 1380px)/2));background:var(--surface,#fff)}
+ .vocab-tabbar>button{max-width:none;min-width:0;width:100%;flex:initial;min-height:64px;margin:0;border-radius:11px;font-size:14px;padding:9px 12px}
+ .vocab-tabbar>button[aria-pressed="true"]{background:var(--accent,#315cb1)!important;color:#fff!important;border-color:var(--accent,#315cb1)!important}
+ .desktop-vocab-group{display:grid;align-content:center;gap:4px;padding:7px 9px;border-radius:11px;border:1px solid var(--line,#cad6e6);background:var(--soft,#edf3f9);min-width:0}
+ .desktop-vocab-group strong{color:var(--soft-ink,#234062);font-size:12px}
+ .desktop-vocab-group[data-active="true"]{border-color:var(--accent,#315cb1);box-shadow:inset 0 0 0 1px var(--accent,#315cb1)}
+ .desktop-vocab-group>div{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px}
+ .vocab-tabbar .desktop-vocab-group button{margin:0;min-width:0;padding:7px 5px;min-height:36px;font-size:12px;line-height:1.2;background:var(--surface,#fff);color:var(--soft-ink,#203d69);border:1px solid var(--line,#bfcfe2);border-radius:7px}
+ .vocab-tabbar .desktop-vocab-group button.active{background:var(--accent,#315cb1)!important;color:#fff!important;border-color:var(--accent,#315cb1)!important}
+ .vocab-tabbar .appearance-picker{min-width:0;margin:0;display:flex;flex-direction:column;justify-content:center;gap:4px}
+ .vocab-tabbar .appearance-picker select{min-height:39px;max-width:100%}
+ .desktop-area{max-width:1160px;margin:23px auto;padding:clamp(18px,3vw,29px);color:var(--ink,#162c47);background:var(--surface,#fff);border:1px solid var(--line,#d0dceb);border-radius:16px;box-shadow:0 3px 14px #1527440e}
+ .desktop-area[hidden]{display:none!important}
+ .desktop-area-header{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:20px}
+ .desktop-area-header h2{margin:3px 0 9px;font-size:clamp(21px,2.2vw,26px)}
+ .desktop-area-header p{max-width:755px;line-height:1.55;margin:0;font-size:14px;color:var(--muted,#596b81)}
+ .desktop-kicker{font-size:11px;letter-spacing:.09em;font-weight:800;color:var(--accent,#315cb1)}
+ .desktop-readonly{flex:0 0 auto;padding:8px 11px;border-radius:24px;background:var(--soft,#edf3f9);border:1px solid var(--line,#c6d5e7);color:var(--soft-ink,#234062);font-size:12px;font-weight:750}
+ .desktop-program-courses{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:15px}
+ .desktop-program-courses button{min-height:43px;background:var(--secondary-bg,#edf3fa);color:var(--secondary-ink,#1d3b60);border:1px solid var(--line,#cad7e8)}
+ .desktop-program-courses button[aria-pressed="true"]{background:var(--accent,#315cb1)!important;color:#fff!important;border-color:var(--accent,#315cb1)!important}
+ .desktop-context{background:var(--soft,#edf3f9);color:var(--soft-ink,#213d60);border-radius:9px;padding:12px 14px;font-size:13px;line-height:1.6}
+ .desktop-program-units{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,275px),1fr));align-items:start;gap:12px;margin:18px 0}
+ .desktop-program-units details{background:var(--surface,#fff);border:1px solid var(--line,#d4dfeb);border-radius:9px;overflow:hidden}
+ .desktop-program-units summary{padding:13px 15px;background:var(--soft,#eef3f9);color:var(--soft-ink,#234062);cursor:pointer;font-weight:750}
+ .desktop-program-units ul{margin:12px 15px 14px;padding-left:20px;font-size:13px;line-height:1.65}
+ .desktop-program-units li+li{margin-top:4px}
+ .desktop-program-actions{display:flex;justify-content:flex-end;margin-top:18px}
+ .desktop-hub-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr));gap:14px}
+ .desktop-hub-grid article{display:flex;flex-direction:column;gap:10px;padding:19px;min-width:0;border:1px solid var(--line,#cad7e5);border-radius:11px;background:var(--surface,#fff)}
+ .desktop-hub-grid h3{margin:0;font-size:16px;color:var(--ink,#162c47)}
+ .desktop-hub-grid p{margin:0 0 5px;flex:1;line-height:1.6;font-size:13px;color:var(--muted,#586a81)}
+ .desktop-hub-grid button{align-self:flex-start;min-height:42px;font-size:13px}
+ #desktopDataStatus{margin-top:18px}
+ .desktop-area :is(button,summary):focus-visible,.vocab-tabbar button:focus-visible{outline:3px solid #dcaa47;outline-offset:3px}
+ body[data-desktop-section="program"] :is(#examLayout,#vocabManager,#vocabularyGenerator,.exam-coursebar),
+ body[data-desktop-section="data"] :is(#examLayout,#vocabManager,#vocabularyGenerator,.exam-coursebar){display:none!important}
+ body[data-desktop-section="program"] #desktopProgram,body[data-desktop-section="data"] #desktopData{display:block}
+ body[data-desktop-section="vocab"] .exam-coursebar{display:none!important}
+ body[data-desktop-section="program"] #exam-header-controls,body[data-desktop-section="data"] #exam-header-controls{display:none!important}
+ /* En la interfaz propuesta no aparecen controles de solucionarios; el motor no se toca. */
+ #docxAnswers,#quickWordAnswers,#solutions,#paper #answerkey{display:none!important}
+}
+@media screen and (max-width:1080px){
+ .vocab-tabbar{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .vocab-tabbar .appearance-picker{grid-column:1/-1;flex-direction:row;justify-content:flex-start;align-items:center}
+ .vocab-tabbar .appearance-picker select{max-width:250px}
+ .desktop-area{margin:14px 12px}
+}
+@media screen and (max-width:530px){
+ .vocab-tabbar{grid-template-columns:minmax(0,1fr);padding:11px 13px;gap:8px}
+ .vocab-tabbar>button{min-height:45px}
+ .vocab-tabbar .appearance-picker{grid-column:1}
+ .desktop-area-header{flex-direction:column}
+}
+@media print{#desktopProgram,#desktopData{display:none!important}}
+</style>
 </html>
