@@ -447,17 +447,27 @@ async function greekGlossSpacing(page,file){
  for(const lang of ['es','va']){
   await configure(page,'greek1','complete',lang,'UD8');
   const structure=await page.evaluate(()=>{
+   // Un lema REAL del banco griego garantiza que la sincronización previa a
+   // Word/PDF mantendrá el vocabulario y el título, sin usar HTML ficticio.
+   const scope=document.getElementById('glossScope');
+   if([...scope.options].some(x=>x.value==='all'))scope.value='all';
+   document.getElementById('autoGloss').checked=true;
+   for(const control of document.querySelectorAll('input[type="checkbox"][id^="gloss"]'))
+    control.checked=true;
+   const chosen=greekMarkedUnits();
+   const candidate=vocab.find(row=>courseOf(row)==='greek1'&&
+    String(row.entry||'').trim()&&!String(row.entry).includes('+')&&
+    glossAccept(row.entry,chosen));
+   if(!candidate)throw Error('Falta una ficha de vocabulario griego aceptable');
+   document.getElementById('examExtra').value=candidate.entry;
+   generate();
    const sheet=document.querySelector('#paper .exam-sheet');
    const wrapper=sheet?.querySelector(':scope > #examSentenceGlossary');
    const heading=sheet?.querySelector(':scope > p.exam-question[data-greek-kind="sentences"]');
    const last=sheet?.querySelector(':scope > ol.exam-sentences > li:last-child');
-   if(!wrapper||!heading||!last)throw Error('Faltan oraciones o glosario del examen completo griego');
-   if(!wrapper.querySelector(':scope > p.exam-gloss-title')){
-    wrapper.innerHTML='<p class="exam-gloss-title"><strong>'+
-     (document.getElementById('lang').value==='va'?'Vocabulari':'Vocabulario')+
-     '</strong></p><div class="final-gloss"><div class="gloss-item">λόγος, -ου: palabra</div></div>';
-   }
-   applyExamVisualFormat();
+   const title=wrapper?.querySelector(':scope > p.exam-gloss-title');
+   if(!wrapper||!heading||!last||!title)
+    throw Error('Examen griego sin glosario real: '+candidate.entry);
    return {wrapper:wrapper.id,kind:heading.dataset.greekKind};
   });
   assert.deepEqual(structure,{wrapper:'examSentenceGlossary',kind:'sentences'});
