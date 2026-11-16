@@ -20,9 +20,17 @@ self.addEventListener('install',event=>{
  event.waitUntil((async()=>{
   const cache=await caches.open(CACHE_NAME);
   try{
-   // Publicar siempre una versión completa; las respuestas del caché HTTP
-   // pueden estar desfasadas cuando cambia el banco morfológico.
-   await cache.addAll(CORE_FILES.map(path=>new Request(scopedUrl(path),{cache:'reload'})));
+   // Validar cada recurso con el servidor: no-cache permite revalidación
+   // HTTP condicional (ETag/Last-Modified), pero nunca acepta un archivo
+   // desfasado sin comprobarlo. 'reload' forzaba transferir de nuevo incluso
+   // los grandes bancos académicos que seguían idénticos.
+   // Instalar en lotes pequeños reduce picos de peticiones y memoria
+   // en Safari/iPad sin perder el precache íntegro ni la atomicidad.
+   const batchSize=6;
+   for(let i=0;i<CORE_FILES.length;i+=batchSize){
+    await cache.addAll(CORE_FILES.slice(i,i+batchSize).map(path=>
+     new Request(scopedUrl(path),{cache:'no-cache'})));
+   }
   }catch(error){await caches.delete(CACHE_NAME);throw error}
   // No hacer skipWaiting: la actualización debe ser una decisión del docente.
  })());
