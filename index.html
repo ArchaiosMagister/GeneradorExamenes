@@ -1129,9 +1129,11 @@ function examVisualItemGapFor(heading){
 }
 function examVisualItemGapOverride(heading){return examVisualValue(heading,'items')}
 function examVisualGlossBeforeFor(gloss){
- // La cabecera del vocabulario de oraciones hereda su separación real,
- // incluida una personalización individual de la pregunta.
- const previous=examVisualOwner(gloss);
+ // El glosario se aloja dentro de #examSentenceGlossary. Localizar la
+ // pregunta previa desde el contenedor hermano, no desde su título anidado.
+ const block=gloss?.parentElement?.id==='examSentenceGlossary'
+  ?gloss.parentElement:gloss;
+ const previous=examVisualOwner(block);
  const kind=examVisualHeadingIdentity(previous)?.kind;
  return kind==='sent'||kind==='sentences'
   ?examVisualItemGapFor(previous)??sentenceGapPoints():null;
@@ -1187,10 +1189,15 @@ function applyExamVisualFormat(){
   if(kind==='declension')
    text.push(head+'~p.exam-table-gap{height:'+gap+'pt!important;line-height:'+Math.max(.05,gap)+'pt!important}');
  }
- const gloss=sheet?.querySelector(':scope > p.exam-gloss-title');
+ const gloss=sheet?.querySelector(
+  ':scope > p.exam-gloss-title, :scope > #examSentenceGlossary > p.exam-gloss-title');
  const glossGap=examVisualGlossBeforeFor(gloss);
  if(glossGap!==null)text.push(
-  '.paper .exam-sheet > p.exam-gloss-title{margin-top:'+glossGap+'pt!important}'
+  '.paper .exam-sheet > p.exam-gloss-title{margin-top:'+glossGap+'pt!important}',
+  // El margen de un título dentro de un contenedor colapsa; anclarlo al
+  // contenedor evita perder separación al rasterizar páginas A4.
+  '.paper .exam-sheet > #examSentenceGlossary{margin-top:'+glossGap+'pt!important;display:flow-root}',
+  '.paper .exam-sheet > #examSentenceGlossary > p.exam-gloss-title{margin-top:0!important}'
  );
  rules.textContent=text.join('\n');
 }
