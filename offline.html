@@ -5440,7 +5440,12 @@ function refreshSentenceGlossary(){
  const updated=buildFinalLexicon(chosen,[...$('paper').querySelectorAll('[data-sentence-slot]')]
   .map(node=>({text:node.textContent})));
  // Mantener los selectores y el foco cuando no ha cambiado el glosario.
- if(panel.innerHTML!==updated)panel.innerHTML=updated;
+ if(panel.innerHTML!==updated){
+  panel.innerHTML=updated;
+  // Puede aparecer por primera vez al escribir una oración: la regla de
+  // separación debe activarse incluso sin regenerar el resto del examen.
+  applyExamVisualFormat();
+ }
 }
 function scheduleSentenceGlossaryRefresh(){
  // Las frases breves conservan la actualización inmediata original.
