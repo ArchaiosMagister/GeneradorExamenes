@@ -162,6 +162,43 @@ async function main(){
    const text=bytes.toString('latin1');
    const pages=(text.match(/\/Type\s*\/Page\b/g)||[]).length;
    assert(pages>=1,filename+': faltan páginas PDF');
+
+   // Regresión: un examen que ocupa varias hojas debe descargarse ENTERO.
+   // El fallo histórico pasaba inadvertido porque sólo se comprobaba >=1 pág.
+   // Se amplía la hoja únicamente en este navegador de pruebas, sin bancos.
+   const fixture=await page.evaluate(()=>{
+    const sheet=document.querySelector('#paper .exam-sheet');
+    const wrapper=document.createElement('div');
+    wrapper.id='pdfPaginationRegression';
+    for(let i=0;i<125;i++){
+     const paragraph=document.createElement('p');
+     paragraph.textContent='Línea de comprobación PDF multipágina '+
+      String(i+1).padStart(3,'0')+' — forma, análisis y traducción.';
+     paragraph.style.cssText='font:14px/1.65 Georgia,serif;margin:0 0 7px;';
+     if(i===35)paragraph.classList.add('exam-page-break');
+     wrapper.append(paragraph);
+    }
+    sheet.append(wrapper);
+    return {rows:wrapper.children.length};
+   });
+   assert.equal(fixture.rows,125);
+   const multiDownload=page.waitForEvent('download',{timeout:120000});
+   await page.locator('#pdfDownload').click();
+   const multi=await multiDownload;
+   const multiBytes=fs.readFileSync(await multi.path());
+   const multiText=multiBytes.toString('latin1');
+   const multiPages=(multiText.match(/\\/Type\\s*\\/Page\\b/g)||[]).length;
+   const multiImages=(multiText.match(/\\/Subtype\\s*\\/Image\\b/g)||[]).length;
+   assert(multiPages>=3,filename+': PDF largo truncado: '+multiPages+' páginas');
+   assert(multiImages>=multiPages,
+    filename+': faltan imágenes de contenido de páginas posteriores ('+
+    multiImages+'/'+multiPages+')');
+   assert.equal(multi.suggestedFilename(),'ficha repaso ud1 lat1 val.pdf');
+   const multiStatus=await page.locator('#examinaPdfStatus').textContent();
+   assert(!/no se pudo|no s’ha pogut|bloquead/i.test(multiStatus),
+    filename+': exportación larga: '+multiStatus);
+   await page.evaluate(()=>document.getElementById('pdfPaginationRegression')?.remove());
+
    const status=await page.locator('#examinaPdfStatus').textContent();
    assert(!/no se pudo|no s’ha pogut|bloquead/i.test(status),filename+': '+status);
    assert.deepEqual(errors,[],filename+': errores JavaScript');
