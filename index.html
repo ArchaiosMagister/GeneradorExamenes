@@ -6501,4 +6501,172 @@ html[data-appearance="oled"] body.exam-redesign #exam-ui-shell :is(#exam-ui-core
 }
 @media print{#desktopProgram,#desktopData{display:none!important}}
 </style>
+
+<script id="desktop-four-area-script">
+/* UI separada de los bancos y motores. Los controles reales son fuente única. */
+(function(){
+ 'use strict';
+ const $=id=>document.getElementById(id);
+ const nav=document.querySelector('.vocab-tabbar');
+ if(!nav||!$('desktopProgram')||!$('desktopData'))return;
+ const names={
+  latin1:['Latín I','Llatí I'],latin4:['Latín 4.º ESO','Llatí 4t ESO'],
+  greek1:['Griego I','Grec I']
+ };
+ let programCourse=$('course')?.value||'latin1';
+ const valencian=()=>$('lang')?.value==='va';
+ const t=(es,va)=>valencian()?va:es;
+ const title=course=>names[course][valencian()?1:0];
+ const translate=(id,es,va)=>{if($(id))$(id).textContent=t(es,va)};
+ function updateProgramming(){
+  const host=$('desktopProgramUnits'),status=$('desktopProgramStatus');
+  const topics=programCourse==='latin1'?LATIN_I_TOPICS:programCourse==='greek1'?GREEK_I_SYLLABUS:null;
+  host.replaceChildren();
+  for(const button of $('desktopProgramCourses').querySelectorAll('button[data-program-course]')){
+   button.setAttribute('aria-pressed',String(button.dataset.programCourse===programCourse));
+  }
+  if(!topics){
+   status.textContent=t('Latín 4.º: el motor sigue aplicando su programación vigente. Su desglose completo no está disponible aquí como catálogo configurable; las unidades se consultan al crear un examen.',
+    'Llatí 4t: el motor continua aplicant la programació vigent. El desglossament complet encara no està disponible com a catàleg configurable; les unitats es consulten en crear un examen.');
+   return;
+  }
+  status.textContent=t('Programación actual de '+title(programCourse)+'. Es una consulta informativa; las unidades y los filtros de examen permanecen intactos.',
+   'Programació actual de '+title(programCourse)+'. És una consulta informativa; les unitats i els filtres d’examen no es modifiquen.');
+  for(const row of topics){
+   const d=document.createElement('details');d.dataset.programUnit=String(row.unit);
+   const summary=document.createElement('summary');summary.textContent='UD'+row.unit;
+   const ul=document.createElement('ul');
+   for(const topic of row.topics){const li=document.createElement('li');li.textContent=topic;ul.append(li)}
+   d.append(summary,ul);host.append(d);
+  }
+ }
+ function localize(){
+  for(const [id,es,va] of [
+   ['desktopProgramButton','Programación','Programació'],
+   ['desktopVocabHeading','Vocabulario','Vocabulari'],
+   ['vgShow','Desde textos','Des de textos'],
+   ['vmShowList','Exigible','Exigible'],
+   ['vmShowExam','Crear examen','Crear examen'],
+   ['desktopDataButton','Datos y configuración','Dades i configuració'],
+   ['desktopAppearanceLabel','Apariencia','Aparença'],
+   ['desktopProgramKicker','PROGRAMACIÓN','PROGRAMACIÓ'],
+   ['desktopProgramTitle','Programación académica','Programació acadèmica'],
+   ['desktopProgramIntro','Consulta la secuenciación actual. El cambio de programación por unidad no está activado en esta variante visual.',
+    'Consulta la seqüenciació actual. El canvi de programació per unitat no està activat en esta variant visual.'],
+   ['desktopReadOnly','Solo lectura','Només lectura'],
+   ['desktopProgramToExam','Usar esta asignatura en un examen','Utilitzar esta assignatura en un examen'],
+   ['desktopDataKicker','MANTENIMIENTO','MANTENIMENT'],
+   ['desktopDataTitle','Datos y configuración','Dades i configuració'],
+   ['desktopDataIntro','Accede a las herramientas existentes sin mover ni duplicar sus controles. Los borradores continúan en el almacenamiento local.',
+    'Accedix a les eines existents sense moure ni duplicar-ne els controls. Els esborranys continuen en l’emmagatzematge local.'],
+   ['desktopDraftsTitle','Borradores','Esborranys'],
+   ['desktopDraftsInfo','Guardar y recuperar borradores de examen.','Guardar i recuperar esborranys d’examen.'],
+   ['desktopDraftsOpen','Abrir borradores','Obrir esborranys'],
+   ['desktopCopiesTitle','Copias de datos','Còpies de dades'],
+   ['desktopCopiesInfo','Importación, exportación y respaldo docente.','Importació, exportació i còpia docent.'],
+   ['desktopCopiesOpen','Abrir copias','Obrir còpies'],
+   ['desktopVocabCopiesTitle','Proyecto de vocabulario','Projecte de vocabulari'],
+   ['desktopVocabCopiesInfo','Herramientas de copia del generador por unidades.','Eines de còpia del generador per unitats.'],
+   ['desktopVocabCopiesOpen','Abrir vocabulario','Obrir vocabulari'],
+   ['desktopMorphTitle','Consulta morfológica','Consulta morfològica'],
+   ['desktopMorphInfo','Laboratorio y recursos ya incorporados.','Laboratori i recursos ja incorporats.'],
+   ['desktopMorphOpen','Abrir herramientas','Obrir eines'],
+   ['desktopPwaTitle','Versión y conexión','Versió i connexió'],
+   ['desktopPwaInfo','Estado de la PWA y actualizaciones disponibles.','Estat de la PWA i actualitzacions disponibles.'],
+   ['desktopPwaOpen','Ver estado','Veure estat'],
+   ['desktopThemeTitle','Apariencia','Aparença'],
+   ['desktopThemeInfo','Tema claro, oscuro u OLED.','Tema clar, fosc o OLED.'],
+   ['desktopThemeOpen','Cambiar apariencia','Canviar aparença']
+  ])translate(id,es,va);
+  for(const b of $('desktopProgramCourses').querySelectorAll('button[data-program-course]'))
+   b.textContent=title(b.dataset.programCourse);
+  updateProgramming();
+ }
+ function select(section){
+  document.body.dataset.desktopSection=section;
+  $('desktopProgram').hidden=section!=='program';
+  $('desktopData').hidden=section!=='data';
+  const vocab=section==='vocab',generator=vocab&&$('vocabularyGenerator').classList.contains('active');
+  $('desktopProgramButton').setAttribute('aria-pressed',String(section==='program'));
+  $('desktopDataButton').setAttribute('aria-pressed',String(section==='data'));
+  $('desktopProgramButton').classList.toggle('active',section==='program');
+  $('desktopDataButton').classList.toggle('active',section==='data');
+  $('desktopVocabHeading').parentElement.dataset.active=String(vocab);
+  for(const [id,selected] of [
+   ['vmShowExam',section==='exam'],['vgShow',generator],['vmShowList',vocab&&!generator]
+  ]){
+   $(id).classList.toggle('active',selected);
+   $(id).setAttribute('aria-pressed',String(selected));
+  }
+ }
+ function examWithoutRegeneration(){
+  // Volver desde un hub no debe disparar otra generación ni borrar ediciones.
+  $('examLayout').hidden=false;$('examLayout').style.display='';
+  $('vocabManager').classList.remove('active');
+  $('vocabularyGenerator').classList.remove('active');
+  select('exam');
+ }
+ function openExamTool(id,parents){
+  examWithoutRegeneration();
+  for(const name of parents){const el=$(name);if(el?.tagName==='DETAILS')el.open=true}
+  requestAnimationFrame(()=>{
+   const element=$(id);
+   if(element){element.scrollIntoView({block:'center'});if(element.matches('button,input,select,summary'))element.focus({preventScroll:true})}
+  });
+ }
+ function dataAction(action){
+  $('desktopDataStatus').textContent='';
+  if(action==='drafts')return openExamTool('group-drafts',['group-drafts']);
+  if(action==='backups')return openExamTool('group-import',['exam-ui-advanced','group-import']);
+  if(action==='morph')return openExamTool('group-morph',['exam-ui-advanced','group-morph']);
+  if(action==='vocabulary'){
+   $('vgShow').click();select('vocab');
+   requestAnimationFrame(()=>$('vgBackup')?.scrollIntoView({block:'center'}));return;
+  }
+  if(action==='appearance'){
+   $('appearanceMode').focus();$('appearanceMode').scrollIntoView({block:'center'});return;
+  }
+  if(action==='pwa'){
+   if(!$('pwaPanel')?.hidden){$('pwaPanel').scrollIntoView({block:'center'});return}
+   $('desktopDataStatus').textContent=t(
+    'La gestión de actualizaciones PWA está disponible al abrir GitHub Pages mediante HTTPS. El archivo autónomo no necesita conexión.',
+    'La gestió de les actualitzacions PWA està disponible en obrir GitHub Pages per HTTPS. L’arxiu autònom no necessita connexió.');
+  }
+ }
+ function mount(){
+  nav.addEventListener('click',event=>{
+   const button=event.target.closest('button');
+   if(!button||!nav.contains(button))return;
+   if(button.id==='desktopProgramButton'){select('program');updateProgramming()}
+   else if(button.id==='desktopDataButton')select('data');
+   else if(button.id==='vmShowExam')select('exam');
+   else if(button.id==='vmShowList'||button.id==='vgShow')select('vocab');
+  });
+  $('desktopProgramCourses').addEventListener('click',event=>{
+   const b=event.target.closest('button[data-program-course]');if(!b)return;
+   programCourse=b.dataset.programCourse;updateProgramming();
+  });
+  $('desktopProgramToExam').addEventListener('click',()=>{
+   examWithoutRegeneration();
+   if($('course').value!==programCourse){
+    $('course').value=programCourse;
+    $('course').dispatchEvent(new Event('change',{bubbles:true}));
+   }
+  });
+  $('desktopData').addEventListener('click',event=>{
+   const b=event.target.closest('button[data-desktop-action]');
+   if(b)dataAction(b.dataset.desktopAction);
+  });
+  $('lang')?.addEventListener('change',()=>requestAnimationFrame(localize));
+  localize();select('exam');
+  window.ExaminaDesktopShell=Object.freeze({
+   section:()=>document.body.dataset.desktopSection,
+   programmingCourse:()=>programCourse,
+   open:section=>{if(['program','data'].includes(section))select(section);else if(section==='exam')examWithoutRegeneration()}
+  });
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mount,{once:true});
+ else mount();
+})();
+</script>
 </html>
