@@ -7089,4 +7089,61 @@ html[data-appearance="oled"] body.exam-redesign #exam-ui-shell :is(#exam-ui-core
  }
 }
 </style>
+<style id="examina-equal-toolbar-buttons">
+/* Igualdad dimensional: solo botones de navegación y acciones de vista previa. */
+@media screen {
+ :root[data-course] .vocab-tabbar > button {
+  box-sizing:border-box;
+  flex:0 1 208px;
+  inline-size:208px;
+  min-inline-size:0;
+  max-inline-size:208px;
+  block-size:52px;
+  min-block-size:52px;
+  max-block-size:52px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:5px 9px;
+  font-size:13px;
+  line-height:1.2;
+  text-align:center;
+  white-space:normal;
+  overflow-wrap:anywhere;
+ }
+ #examLayout #examPreviewActions {
+  justify-content:center;
+ }
+ #examLayout #examPreviewActions > button {
+  box-sizing:border-box;
+  flex:0 0 124px;
+  inline-size:124px;
+  min-inline-size:0;
+  max-inline-size:124px;
+  block-size:48px;
+  min-block-size:48px;
+  max-block-size:48px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:5px 7px;
+  font-size:12.5px;
+  font-weight:650;
+  line-height:1.18;
+  text-align:center;
+  white-space:normal;
+  overflow-wrap:anywhere;
+ }
+ @media(max-width:760px), (pointer:coarse) {
+  :root[data-course] .vocab-tabbar > button {
+   flex:1 1 calc(50% - 4px);
+   inline-size:auto;
+   max-inline-size:none;
+   block-size:58px;
+   min-block-size:58px;
+   max-block-size:58px;
+  }
+ }
+}
+</style>
 </html>
