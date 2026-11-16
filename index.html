@@ -2742,10 +2742,11 @@ function wordBlock(el){
    const alphabetic=tag==='ol'&&['a','A'].includes(type);
    const letter=alphabetic?String.fromCharCode(97+(i%26))+'.':'';
    const cultural=el.classList.contains('exam-culture-items');
-   // La letra y el texto tienen tabulación independiente y separación suficiente.
-   const pr=alphabetic?(cultural
-    ?'<w:keepLines/><w:ind w:left="1200" w:hanging="480"/><w:tabs><w:tab w:val="left" w:pos="1200"/></w:tabs>'
-    :'<w:ind w:left="1080" w:hanging="360"/><w:tabs><w:tab w:val="left" w:pos="1080"/></w:tabs>'):
+   const nested=el.parentElement?.tagName==='LI'&&!!el.closest('ol.task');
+   // Un único patrón: a. a 36pt, texto a 54pt; opciones un nivel más.
+   const target=nested?1800:1080;
+   const pr=alphabetic?
+    '<w:keepLines/><w:ind w:left="'+target+'" w:hanging="360"/><w:tabs><w:tab w:val="left" w:pos="'+target+'"/></w:tabs>':
     '<w:numPr><w:ilvl w:val="0"/><w:numId w:val="'+(tag==='ol'?'1':'2')+'"/></w:numPr>';
    const owner=el.classList.contains('task')?examVisualOwner(el):null;
    const custom=examVisualItemGapOverride(owner);
@@ -2807,8 +2808,24 @@ function wordExamParagraph(el){
   else{const m=el.textContent.match(/^([a-z]\\.)\\s*(.*)$/s);
    if(m)runs=wordRun(m[1])+'<w:r><w:tab/></w:r>'+wordRun(m[2])}
  }else if(cls.contains('exam-etymology')){
-  props.push('<w:ind w:left="720"/><w:tabs><w:tab w:val="left" w:pos="4240"/></w:tabs><w:spacing w:before="0" w:after="160" w:line="300" w:lineRule="auto"/>');
-  runs=[...el.children].map(x=>wordInline(x)).join('<w:r><w:tab/></w:r>');
+  // Mantener dos columnas, con letras/texto alineados como en morfología.
+  const items=[...el.children];
+  const itemRuns=item=>{
+   const letter=item.querySelector(':scope > .exam-letter');
+   if(!letter)return wordInline(item);
+   return wordRun(letter.textContent.trim())+'<w:r><w:tab/></w:r>'+
+    [...item.childNodes].filter(n=>n!==letter).map(n=>wordInline(n)).join('');
+  };
+  const tabs='<w:tabs>'+[1080,4240,4600].map(pos=>
+   '<w:tab w:val="left" w:pos="'+pos+'"/>').join('')+'</w:tabs>';
+  const paras=[];
+  for(let i=0;i<items.length;i+=2){
+   const second=items[i+1]?'<w:r><w:tab/></w:r>'+itemRuns(items[i+1]):'';
+   paras.push('<w:p><w:pPr><w:ind w:left="720"/>'+tabs+
+    '<w:spacing w:before="0" w:after="'+(i+2>=items.length?160:0)+
+    '" w:line="300" w:lineRule="auto"/></w:pPr>'+itemRuns(items[i])+second+'</w:p>');
+  }
+  return paras.join('');
  }else if(cls.contains('exam-table-gap')){
   const gap=examVisualItemGapOverride(examVisualOwner(el));
   props.push('<w:spacing w:before="0" w:after="0" w:line="'+(gap===null?140:Math.max(1,Math.round(gap*20)))+'" w:lineRule="exact"/>');
