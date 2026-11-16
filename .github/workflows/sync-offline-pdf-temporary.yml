@@ -1,0 +1,27 @@
+name: Sincronización temporal del HTML autónomo para PDF multipágina
+on:
+  push:
+    branches: [fix/pdf-multipage-ipad-20261116]
+    paths:
+      - '.github/workflows/sync-offline-pdf-temporary.yml'
+permissions:
+  contents: write
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Regenerar distribución autónoma del código de esta rama
+        run: |
+          set -euo pipefail
+          npm run offline:build
+          git add offline.html
+          if ! git diff --cached --quiet; then
+            git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'build: sincronizar PDF multipágina en HTML autónomo'
+            git push origin HEAD:fix/pdf-multipage-ipad-20261116
+          fi
