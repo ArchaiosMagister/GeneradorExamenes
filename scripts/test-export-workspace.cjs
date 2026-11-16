@@ -4,7 +4,7 @@ const assert=require('node:assert/strict');
 const fs=require('node:fs');
 const path=require('node:path');
 const http=require('node:http');
-const {chromium}=require('playwright');
+const {chromium,webkit}=require('playwright');
 const root=path.resolve(__dirname,'..');
 const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8',
  '.json':'application/json; charset=utf-8'};
@@ -20,7 +20,8 @@ const server=http.createServer((req,res)=>{
 });
 async function main(){
  await new Promise(ok=>server.listen(0,'127.0.0.1',ok));
- const browser=await chromium.launch({headless:true});
+ const engine=process.env.PDF_TEST_BROWSER==='webkit'?webkit:chromium;
+ const browser=await engine.launch({headless:true});
  try{
   for(const filename of ['index.html','offline.html']){
    const page=await browser.newPage({viewport:{width:820,height:1180},acceptDownloads:true});
