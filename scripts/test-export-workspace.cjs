@@ -4,7 +4,7 @@ const assert=require('node:assert/strict');
 const fs=require('node:fs');
 const path=require('node:path');
 const http=require('node:http');
-const {chromium}=require('playwright');
+const {chromium,webkit}=require('playwright');
 const root=path.resolve(__dirname,'..');
 const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8',
  '.json':'application/json; charset=utf-8'};
@@ -20,7 +20,8 @@ const server=http.createServer((req,res)=>{
 });
 async function main(){
  await new Promise(ok=>server.listen(0,'127.0.0.1',ok));
- const browser=await chromium.launch({headless:true});
+ const engine=process.env.PDF_TEST_BROWSER==='webkit'?webkit:chromium;
+ const browser=await engine.launch({headless:true});
  try{
   for(const filename of ['index.html','offline.html']){
    const page=await browser.newPage({viewport:{width:820,height:1180},acceptDownloads:true});
@@ -133,9 +134,21 @@ async function main(){
    // 25 mm, izquierda 30 mm. El contenido A4 se limita a 155 mm de ancho.
    const pdfOptions=await page.evaluate(async()=>{
     const old=window.html2pdf,details={};
+    let pageCount=1;
+    const pdf={
+     getNumberOfPages(){return pageCount},
+     addPage(){pageCount++},
+     addImage(){},
+     save(){}
+    };
     window.html2pdf=()=>({
      set(options){details.margin=Array.from(options.margin);details.filename=options.filename;return this},
      from(stage){details.stageWidth=stage.style.width;return this},
+     toPdf(){return this},
+     toCanvas(){return this},
+     get(key){return Promise.resolve(key==='pdf'?pdf:{
+      width:100,height:100,toDataURL(){return 'data:image/jpeg;base64,/9j/2Q=='}
+     })},
      save(){return Promise.resolve()}
     });
     try{details.success=await window.ExaminaPdfExport.generate()}
@@ -162,6 +175,43 @@ async function main(){
    const text=bytes.toString('latin1');
    const pages=(text.match(/\/Type\s*\/Page\b/g)||[]).length;
    assert(pages>=1,filename+': faltan páginas PDF');
+
+   // Regresión: un examen que ocupa varias hojas debe descargarse ENTERO.
+   // El fallo histórico pasaba inadvertido porque sólo se comprobaba >=1 pág.
+   // Se amplía la hoja únicamente en este navegador de pruebas, sin bancos.
+   const fixture=await page.evaluate(()=>{
+    const sheet=document.querySelector('#paper .exam-sheet');
+    const wrapper=document.createElement('div');
+    wrapper.id='pdfPaginationRegression';
+    for(let i=0;i<125;i++){
+     const paragraph=document.createElement('p');
+     paragraph.textContent='Línea de comprobación PDF multipágina '+
+      String(i+1).padStart(3,'0')+' — forma, análisis y traducción.';
+     paragraph.style.cssText='font:14px/1.65 Georgia,serif;margin:0 0 7px;';
+     if(i===35)paragraph.classList.add('exam-page-break');
+     wrapper.append(paragraph);
+    }
+    sheet.append(wrapper);
+    return {rows:wrapper.children.length};
+   });
+   assert.equal(fixture.rows,125);
+   const multiDownload=page.waitForEvent('download',{timeout:120000});
+   await page.locator('#pdfDownload').click();
+   const multi=await multiDownload;
+   const multiBytes=fs.readFileSync(await multi.path());
+   const multiText=multiBytes.toString('latin1');
+   const multiPages=(multiText.match(/\/Type\s*\/Page\b/g)||[]).length;
+   const multiImages=(multiText.match(/\/Subtype\s*\/Image\b/g)||[]).length;
+   assert(multiPages>=3,filename+': PDF largo truncado: '+multiPages+' páginas');
+   assert(multiImages>=multiPages,
+    filename+': faltan imágenes de contenido de páginas posteriores ('+
+    multiImages+'/'+multiPages+')');
+   assert.equal(multi.suggestedFilename(),'ficha repaso ud1 lat1 val.pdf');
+   const multiStatus=await page.locator('#examinaPdfStatus').textContent();
+   assert(!/no se pudo|no s’ha pogut|bloquead/i.test(multiStatus),
+    filename+': exportación larga: '+multiStatus);
+   await page.evaluate(()=>document.getElementById('pdfPaginationRegression')?.remove());
+
    const status=await page.locator('#examinaPdfStatus').textContent();
    assert(!/no se pudo|no s’ha pogut|bloquead/i.test(status),filename+': '+status);
    assert.deepEqual(errors,[],filename+': errores JavaScript');
