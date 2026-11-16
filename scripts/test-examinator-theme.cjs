@@ -16,5 +16,11 @@ assert(styles[0].includes('html:not([data-appearance="dark"]):not([data-appearan
 for(const selector of ['#examPreviewActions','#docx','#pdfDownload','#paper','.vocab-tabbar','#examEditorPanel']){
  assert(styles[0].includes(selector),'Falta selector: '+selector);
 }
+for(const token of ['--accent:#1d5466','--soft:#204750','--soft-ink:#d8f5f3',
+ '--appearance-accent:#96d5ce','--appearance-button:#234950']){
+ assert(styles[0].includes(token),'Falta el verde azulado oscuro: '+token);
+}
+assert(styles[0].includes(':root[data-course]:is([data-appearance="dark"],[data-appearance="oled"])'),
+ 'No se respeta el tema por asignatura');
 assert(!styles[0].includes('@media print'),'No alterar la maqueta impresa');
 console.log('Tema Examinator sincronizado en HTML web/autónomo, impresión intacta');
