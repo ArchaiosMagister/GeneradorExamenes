@@ -1,0 +1,27 @@
+name: Reconstrucción temporal de HTML autónomo para sangrías
+on:
+  push:
+    branches: [fix/unify-exam-indentation-20261116]
+    paths:
+      - '.github/workflows/sync-offline-indents-temporary.yml'
+permissions:
+  contents: write
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Regenerar HTML autónomo reproducible desde los cambios
+        run: |
+          set -euo pipefail
+          npm run offline:build
+          git add offline.html
+          if ! git diff --cached --quiet; then
+            git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'build: sangrías de exámenes sincronizadas en HTML autónomo'
+            git push origin HEAD:fix/unify-exam-indentation-20261116
+          fi
