@@ -591,6 +591,40 @@ assert(!engine.documentXml({...project,groupTypes:false}).includes('Sustantivos 
   assert(/latus/i.test(wordHomographXml.normalize('NFD').replace(/\p{M}/gu,''))&&
    /[–-]a,\s*[–-]um/.test(wordHomographXml),
    'Word no conserva el adjetivo latus');
+  // La escritura de un texto largo se agrupa, sin dejar Word o el
+  // borrador con un glosario antiguo si se exporta inmediatamente.
+  const batching=await page.evaluate(()=>{
+   const course=document.getElementById('course');
+   course.value='latin1';course.dispatchEvent(new Event('change',{bubbles:true}));
+   const model=document.getElementById('model');
+   model.value='mixto';model.dispatchEvent(new Event('change',{bubbles:true}));
+   const source=document.getElementById('newSentences');
+   const long=('Puella in villa laborat. ').repeat(23)+'Puella amat.';
+   source.value=long;source.dispatchEvent(new Event('input',{bubbles:true}));
+   const stored=JSON.parse(localStorage.getItem('examina_exam_sentences_v1')||'{}');
+   const pending=typeof window.ExaminaFlushSentenceGlossary==='function'&&
+    document.getElementById('examSentenceGlossary')?.textContent.indexOf('villa')===-1;
+   return {pending,source:source.value,
+    preview:document.querySelector('[data-sentence-slot="0"]')?.textContent,
+    saved:(stored['latin1/mixto']||[])[0]};
+  });
+  assert.equal(batching.pending,true,'Un texto largo debe agruparse antes de analizarse');
+  assert.equal(batching.preview,batching.source,'La vista del enunciado debe actualizarse inmediatamente');
+  assert.equal(batching.saved,batching.source,'El borrador debe estar persistido al pulsar una tecla');
+  const pendingWord=page.waitForEvent('download');
+  await page.evaluate(()=>exportWord(false));
+  const immediateWord=await pendingWord;
+  const immediateXml=wordDocumentXml(fs.readFileSync(await immediateWord.path()));
+  assert(immediateXml.includes('Puella amat.')&&immediateXml.includes('villa'),
+   'La exportación inmediata después de escribir debe incluir la última oración');
+  const refreshed=await page.locator('#examSentenceGlossary .gloss-item').allTextContents();
+  assert(refreshed.length>0,'Word debe forzar el glosario antes de exportar');
+  await page.evaluate(()=>{
+   const input=document.getElementById('newSentences');
+   input.value='Puella amat.';
+   input.dispatchEvent(new Event('input',{bubbles:true}));
+  });
+  assert.equal(await page.locator('[data-sentence-slot="0"]').textContent(),'Puella amat.');
   assert.deepEqual(errors,[],'No deben aparecer errores JavaScript en la interfaz');
   console.log('Glosario de oraciones: elecciones, persistencia, edición, tipos y agrupación: OK');
  }finally{

@@ -64,6 +64,9 @@
  }
  async function makePdf(){
   if(busy)return false;
+  // Una edición larga puede seguir pendiente de refresco del glosario:
+  // imprimir siempre la última versión, también en Safari sin conexión.
+  root.ExaminaFlushSentenceGlossary?.();
   if(!preflight())return false;
   busy=true;
   const button=byId('pdfDownload');
