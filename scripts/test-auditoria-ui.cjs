@@ -39,13 +39,13 @@ assert.match(index,/if\(\/artículo\|articulo\/\.test\(a\)\)return null/,
    'No se debe anidar un gran desplegable que contenga todas las preguntas');
   assert.equal(await page.locator('#regenerateAllQuestions').count(),0);
   assert.equal(await page.locator('#examQuestionMenus [data-question=sent] #newSentences').count(),1);
-  assert.equal(await page.locator('#generate').textContent(),'Sortear otras preguntas');
+  assert(!(await page.locator('#generate').isVisible()));
   await page.evaluate(()=>{
    const paper=document.getElementById('paper');
    window.__glossUpdates=0;
    new MutationObserver(()=>window.__glossUpdates++).observe(paper,{childList:true,subtree:true});
   });
-  await page.locator('#exam-ui-advanced').evaluate(el=>el.open=true);
+  await page.locator('#group-sentences').evaluate(el=>el.open=true);
   await page.locator('#group-vocab').evaluate(el=>el.open=true);
   await page.evaluate(()=>{
    const editor=document.getElementById('newSentences');
@@ -73,10 +73,10 @@ assert.match(index,/if\(\/artículo\|articulo\/\.test\(a\)\)return null/,
   const snapshot=()=>page.locator('#paper').innerHTML();
   const prior=await snapshot();
   page.once('dialog',dialog=>dialog.dismiss());
-  await page.locator('#generate').click();
+  await page.locator('#generate').evaluate(el=>el.click());
   assert.equal(await snapshot(),prior,'Cancelar el sorteo debe conservar la vista previa');
   page.once('dialog',dialog=>dialog.accept());
-  await page.locator('#generate').click();
+  await page.locator('#generate').evaluate(el=>el.click());
   assert.notEqual(await snapshot(),prior,'El sorteo debe reconstruir las preguntas');
   await page.locator('#group-drafts > summary').click();
   await page.locator('#undoGeneration').click();
@@ -106,6 +106,40 @@ assert.match(index,/if\(\/artículo\|articulo\/\.test\(a\)\)return null/,
   assert.equal(decision.eulexisUnverified,true);
   await page.locator('#vmShowExam').click();
   await page.locator('#examQuestionMenus .exam-question-panel').first().waitFor();
+  // El modo de la aplicación se respeta aun con el sistema en modo oscuro.
+  await page.emulateMedia({colorScheme:'dark'});
+  for(const width of [1150,390]){
+   await page.setViewportSize({width,height:850});
+   for(const mode of ['light','dark','oled']){
+    await page.selectOption('#appearanceMode',mode);
+    const contrast=await page.evaluate(()=>{
+     const luminance=color=>color.match(/[\d.]+/g).slice(0,3).map(Number)
+      .map(channel=>channel/255)
+      .map(channel=>channel<=0.04045?channel/12.92:((channel+0.055)/1.055)**2.4)
+      .reduce((sum,channel,i)=>sum+channel*[0.2126,0.7152,0.0722][i],0);
+     const ratio=(text,background)=>{
+      const l=[luminance(text),luminance(background)].sort((a,b)=>b-a);
+      return (l[0]+0.05)/(l[1]+0.05);
+     };
+     const fields=[...document.querySelectorAll('select, textarea, input:not([type=checkbox],[type=radio],[type=hidden])')];
+     const failures=[];
+     for(const field of fields){
+      const style=getComputedStyle(field);
+      const name=field.id||field.getAttribute('aria-label')||field.outerHTML.slice(0,80);
+      if(style.backgroundColor==='rgba(0, 0, 0, 0)'||
+       ratio(style.webkitTextFillColor,style.backgroundColor)<4.5)failures.push(name+' · valor');
+      if(field.placeholder){
+       const placeholder=getComputedStyle(field,'::placeholder');
+       if(placeholder.opacity!=='1'||ratio(placeholder.webkitTextFillColor,style.backgroundColor)<4.5)
+        failures.push(name+' · ejemplo');
+      }
+     }
+     return {failures,scheme:getComputedStyle(document.documentElement).colorScheme};
+    });
+    assert.equal(contrast.scheme,mode==='light'?'light':'dark');
+    assert.deepEqual(contrast.failures,[],`Contraste de campos en ${mode}, ancho ${width}`);
+   }
+  }
   assert.deepEqual(errors,[],'No debe haber excepciones JavaScript en la interfaz');
   console.log('Navegación, jerarquía, filtros, preguntas, botones UD y Eulexis contextual: OK.');
  }finally{

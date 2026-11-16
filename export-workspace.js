@@ -14,26 +14,18 @@
   if(el('examinaWorkspaceStyles'))return;
   const css=doc.createElement('style');css.id='examinaWorkspaceStyles';
   css.textContent=[
-   '#exportWorkspace{margin-top:16px;display:grid;gap:12px}',
-   '#exportWorkspace h3{margin:0 0 4px;font-size:17px}',
-   '#exportWorkspace .export-intro{margin:0;font-size:13px;color:var(--secondary-ink,var(--ink,#324962));line-height:1.5}',
-   '#exportWorkspace .settings-group{margin:0!important}',
-   '#exportWorkspace .export-main-buttons{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:8px 0 10px}',
-   '#exportWorkspace .export-main-buttons button{width:100%;min-height:48px;white-space:normal;margin:0}',
-   '#exportWorkspace .export-utilities{display:flex;gap:9px;align-items:center;flex-wrap:wrap}',
-   '#exportWorkspace .export-utilities>button{min-height:42px}',
-   '#exportWorkspace .export-teacher{margin-top:12px;border-top:1px solid var(--line,#d8e0eb);padding-top:10px}',
-   '#exportWorkspace .export-teacher>summary{font-weight:650;cursor:pointer;line-height:1.7}',
-   '#exportWorkspace .export-teacher .buttons{margin-top:10px}',
-   '#exportWorkspace #examinaUnifiedBackup{margin:0!important}',
-   '#exportWorkspace #examinaUnifiedBackup>details>summary{font-size:14px;font-weight:750}',
-   '#exportWorkspace #examinaPdfStatus{font-size:13px;line-height:1.5;min-height:1.4em}',
-   '#exportWorkspace #examinaPdfStatus[data-error="true"]{font-weight:650;color:var(--error-text,#ad342a)}',
-   '#exportWorkspace .export-hint{margin:5px 0 10px;font-size:12px;line-height:1.5;color:var(--secondary-ink,var(--ink,#324962))}',
-   '#exportWorkspace #group-drafts .settings-group-body .buttons{display:flex;flex-wrap:wrap;gap:7px}',
-   '#exportWorkspace #group-drafts button{white-space:normal;min-height:42px}',
-   '#exportShortcut{margin:10px max(14px,calc((100vw - 1150px)/2)) 0 auto;display:block;min-height:43px;background:var(--secondary-bg,#edf3fb);color:var(--secondary-ink,#21476e);border:1px solid var(--secondary-border,#a8bacd);border-radius:9px;padding:8px 14px;font-weight:750;cursor:pointer}',
-   'body:has(.vocab-manager.active) #exportShortcut,body.academic-view #exportShortcut{display:none!important}',
+   '#examPreviewActions{display:flex;flex-wrap:wrap;gap:8px;align-items:center;min-width:0}',
+   '#examPreviewActions button{min-height:44px;margin:0;padding:6px 10px}',
+   '#paper #answerkey{display:none!important}',
+   '#examLayout #docx{background:#19599e;color:#fff}',
+   '#examLayout :is(#pdfDownload,#print){background:#a3222b;color:#fff}',
+   '#examPreviewActions [role="status"]{width:100%;margin:0}',
+   '#examPreviewActions [role="status"]:empty{position:absolute}',
+   '#examinaPdfStatus[data-error="true"]{font-weight:650;color:var(--error-text,#ad342a)}',
+   '@media screen and (min-width:901px){body.exam-redesign #examLayout{grid-template-rows:max-content minmax(0,1fr);row-gap:9px}body.exam-redesign #examLayout.layout>#examEditorPanel{grid-row:1 / span 2}body.exam-redesign #examLayout.layout>#paper{grid-row:2}#examPreviewActions{grid-column:2;grid-row:1}}',
+   '@media screen and (min-width:1000px){#examPreviewActions{position:sticky;top:18px;z-index:2;background:var(--canvas)}body.exam-redesign #examLayout.layout>#paper{top:calc(27px + var(--preview-actions-height,44px));max-height:calc(100vh - 45px - var(--preview-actions-height,44px))}}',
+   '@media screen and (max-width:900px), screen and (max-width:950px) and (max-height:500px) and (pointer:coarse){#examPreviewActions{order:0;width:100%;gap:6px}#examPreviewActions button{flex:1 1 auto}}',
+   '@media print{#examPreviewActions{display:none!important}}',
    '#academicWorkspace{max-width:1080px;margin:18px auto;padding:20px;border:1px solid var(--line,#d4e0ed);border-radius:13px;background:var(--surface,#fff);color:var(--ink,#1c293a);min-height:260px}',
    '#academicWorkspace[hidden]{display:none!important}',
    '#academicWorkspace h2{margin:0 0 8px;font-size:20px}',
@@ -50,63 +42,46 @@
    '#academicNav{min-height:43px}',
    '#examinaUnifiedBackup .buttons button{white-space:normal;min-height:42px}',
    '#academicWorkspace #group-import>summary{font-weight:700}',
-   '@media(max-width:500px){#exportWorkspace .export-main-buttons{grid-template-columns:1fr}#academicWorkspace{padding:13px;margin:10px}#exportShortcut{margin:9px 14px 0 auto}}'
+   '@media(max-width:500px){#academicWorkspace{padding:13px;margin:10px}}',
   ].join('\n');
   doc.head.append(css);
  }
  function labelize(){
-  text(el('exportWorkspaceTitle'),tr('Guardar y exportar','Guardar i exportar'));
-  text(el('exportWorkspaceIntro'),tr('Elige un documento final, continúa un borrador o protege los datos de este dispositivo.','Tria un document final, continua un esborrany o protegeix les dades d’aquest dispositiu.'));
-  text(el('exportShortcut'),tr('Guardar y exportar','Guardar i exportar'));
+  el('examPreviewActions')?.setAttribute('aria-label',tr('Acciones de la vista previa','Accions de la vista prèvia'));
   text(el('academicNav'),tr('Herramientas académicas','Eines acadèmiques'));
   text(el('academicWorkspaceTitle'),tr('Herramientas académicas','Eines acadèmiques'));
   text(el('academicWorkspaceIntro'),tr('Consulta formas y paradigmas, revisa incidencias y gestiona autorizaciones docentes. No son pasos necesarios para crear un examen habitual.','Consulta formes i paradigmes, revisa incidències i gestiona autoritzacions docents. No són passos necessaris per a crear un examen habitual.'));
-  text(el('group-export')?.querySelector('summary'),tr('Documento terminado','Document acabat'));
-  text(el('examinaExportHint'),tr('Word es editable. El PDF se genera en este dispositivo para entregar al alumnado y no incluye soluciones.','Word és editable. El PDF es genera en aquest dispositiu per a l’alumnat i no inclou solucions.'));
-  text(el('docx'),tr('Descargar Word (.docx)','Descarregar Word (.docx)'));
-  text(el('pdfDownload'),tr('Descargar PDF (.pdf)','Descarregar PDF (.pdf)'));
-  text(el('print'),tr('Imprimir (navegador)','Imprimir (navegador)'));
-  text(el('printHint'),tr('En una PWA de iPad, si no se abre la impresión, descarga el PDF y utiliza Compartir → Imprimir.','En una PWA d’iPad, si no s’obri la impressió, descarrega el PDF i utilitza Compartir → Imprimir.'));
-  text(el('teacherSolutionsSummary'),tr('Opciones del profesor: soluciones','Opcions del professor: solucions'));
-  text(el('docxAnswers'),tr('Word con soluciones','Word amb solucions'));
-  text(el('solutions'),tr('Mostrar soluciones','Mostrar solucions'));
-  text(el('group-drafts')?.querySelector('summary'),tr('Continuar trabajando · Borradores','Continuar treballant · Esborranys'));
-  text(el('draftHubHint'),tr('Guardar aquí conserva las ediciones en este dispositivo; descargar JSON permite trasladar el borrador a otro. Ninguna opción crea un documento para el alumnado.','Guardar ací conserva les edicions en aquest dispositiu; descarregar JSON permet traslladar l’esborrany a un altre. Cap opció crea un document per a l’alumnat.'));
-  text(el('saveDraft'),tr('Guardar borrador en este dispositivo','Guardar esborrany en aquest dispositiu'));
-  text(el('restoreDraft'),tr('Recuperar borrador guardado','Recuperar esborrany guardat'));
+  text(el('docx'),'Exportar Word');
+  text(el('pdfDownload'),'Exportar PDF');
+  text(el('print'),'Imprimir');
+  text(el('group-drafts')?.querySelector('summary'),tr('Intercambiar borradores (.json)','Intercanviar esborranys (.json)'));
+  text(el('saveDraft'),tr('Guardar borrador','Guardar esborrany'));
+  text(el('restoreDraft'),tr('Recuperar borrador','Recuperar esborrany'));
   text(el('downloadDraft'),tr('Descargar borrador editable (.json)','Descarregar esborrany editable (.json)'));
   text(el('loadDraft'),tr('Importar borrador (.json)','Importar esborrany (.json)'));
-  text(el('examinaUnifiedBackup')?.querySelector('summary'),tr('Proteger mis datos · Copia completa','Protegir les meues dades · Còpia completa'));
+  text(el('examinaUnifiedBackup')?.querySelector('summary'),tr('Copia completa','Còpia completa'));
   text(el('examinaBackupExport'),tr('Descargar copia completa (.json)','Descarregar còpia completa (.json)'));
   text(el('examinaBackupChoose'),tr('Importar copia completa (.json)','Importar còpia completa (.json)'));
   text(el('academicCompatibilitySummary'),tr('Compatibilidad: importaciones y copias antiguas','Compatibilitat: importacions i còpies antigues'));
-  text(el('academicCompatibilityHint'),tr('Estas herramientas se conservan para archivos anteriores y gestión avanzada de bancos. La copia completa habitual está en «Guardar y exportar».','Estes eines es conserven per a arxius anteriors i gestió avançada dels bancs. La còpia completa habitual és a «Guardar i exportar».'));
+  text(el('academicCompatibilityHint'),tr('Estas herramientas se conservan para archivos anteriores y gestión avanzada de bancos. La copia completa habitual está en «Copia completa».','Estes eines es conserven per a arxius anteriors i gestió avançada dels bancs. La còpia completa habitual és a «Còpia completa».'));
  }
  function configureExport(){
-  const actions=el('exam-ui-actions'),exportGroup=el('group-export'),drafts=el('group-drafts');
-  if(!actions||!exportGroup||!drafts)return;
-  text(actions.querySelector('h3'),tr('Regenerar preguntas','Regenerar preguntes'));
-  const section=doc.createElement('section');section.id='exportWorkspace';
-  const title=doc.createElement('h3');title.id='exportWorkspaceTitle';section.append(title);
-  const intro=doc.createElement('p');intro.id='exportWorkspaceIntro';intro.className='export-intro';section.append(intro);
-  actions.append(section);
-  const body=exportGroup.querySelector('.settings-group-body');
-  const primary=doc.createElement('div');primary.className='export-main-buttons';
-  const pdf=doc.createElement('button');pdf.id='pdfDownload';pdf.type='button';
-  pdf.className='secondary';pdf.textContent='Descargar PDF (.pdf)';
-  primary.append(el('docx'),pdf);body.prepend(primary);
-  const hint=doc.createElement('p');hint.id='examinaExportHint';hint.className='export-hint';primary.after(hint);
-  const utilities=doc.createElement('div');utilities.className='export-utilities';
-  utilities.append(el('print'));hint.after(utilities);
-  const printHint=doc.createElement('p');printHint.id='printHint';printHint.className='export-hint';utilities.after(printHint);
-  const teacher=doc.createElement('details');teacher.className='export-teacher';
-  const teacherTitle=doc.createElement('summary');teacherTitle.id='teacherSolutionsSummary';teacher.append(teacherTitle);
-  const buttons=doc.createElement('div');buttons.className='buttons';
-  buttons.append(el('docxAnswers'),el('solutions'));teacher.append(buttons);
-  printHint.after(teacher);
-  const status=doc.createElement('p');status.id='examinaPdfStatus';status.setAttribute('role','status');status.setAttribute('aria-live','polite');teacher.after(status);
-  const validation=doc.createElement('p');validation.id='exportValidationStatus';validation.className='export-hint';
-  validation.setAttribute('role','status');validation.setAttribute('aria-live','polite');status.after(validation);
+  const exportGroup=el('group-export'),drafts=el('group-drafts');
+  if(!exportGroup||!drafts)return;
+  const toolbar=doc.createElement('div');toolbar.id='examPreviewActions';
+  toolbar.className='no-print';toolbar.setAttribute('role','group');
+  const pdf=doc.createElement('button');pdf.id='pdfDownload';pdf.type='button';pdf.className='secondary';
+  const status=doc.createElement('p');status.id='examinaPdfStatus';status.setAttribute('role','status');
+  const validation=doc.createElement('p');validation.id='exportValidationStatus';validation.setAttribute('role','status');
+  const draftStatus=el('draftStatus');draftStatus.textContent='';
+  toolbar.append(el('saveDraft'),el('restoreDraft'),el('docx'),pdf,el('print'),draftStatus,status,validation);
+  el('paper').before(toolbar);
+  new ResizeObserver(()=>{
+   if(toolbar.offsetHeight>0)el('examLayout').style.setProperty('--preview-actions-height',toolbar.offsetHeight+'px');
+  }).observe(toolbar);
+
+  // Conservar las referencias internas usadas al regenerar y restaurar borradores.
+  exportGroup.hidden=true;
   // El panel académico no está siempre visible: mostrar el motivo del bloqueo
   // junto a la acción solicitada, sin modificar la evidencia ni la puntuación.
   for(const id of ['docx','docxAnswers','print','pdfDownload']){
@@ -125,14 +100,9 @@
     if(message){event.preventDefault();event.stopImmediatePropagation()}
    },true);
   }
-  section.append(exportGroup);
-  exportGroup.open=true;
-  const draftHint=doc.createElement('p');draftHint.id='draftHubHint';draftHint.className='export-hint';
-  drafts.querySelector('.settings-group-body')?.prepend(draftHint);
-  section.append(drafts);drafts.open=false;
   const backup=el('examinaUnifiedBackup');
   if(backup){
-   section.append(backup);
+   drafts.after(backup);
    const details=backup.querySelector('details');if(details)details.open=false;
   }
   root.ExaminaPdfExport?.init?.();
@@ -195,31 +165,16 @@
    if(target&&target!==button)leave();
   },true);
  }
- function shortcut(){
-  const coursebar=doc.querySelector('.exam-coursebar');if(!coursebar)return;
-  const button=doc.createElement('button');
-  button.type='button';button.id='exportShortcut';button.className='secondary';
-  // La barra de curso original se oculta por el rediseño; el acceso debe
-  // quedar como hermano visible incluso en la pestaña de vista previa.
-  coursebar.after(button);
-  button.addEventListener('click',()=>{
-   if(doc.body.classList.contains('academic-view'))el('vmShowExam')?.click();
-   el('examSettingsTab')?.click();
-   const group=el('group-export');if(group)group.open=true;
-   root.requestAnimationFrame(()=>el('exportWorkspace')?.scrollIntoView({block:'start',behavior:'smooth'}));
-  });
- }
  function init(){
-  if(installed||!el('exam-ui-actions')||!el('examinaUnifiedBackup'))return;
-  installed=true;style();configureExport();configureAcademic();shortcut();labelize();
+  if(installed||!el('exam-ui-shell')||!el('examinaUnifiedBackup'))return;
+  installed=true;style();configureExport();configureAcademic();labelize();
   const pwa1=el('pwaDataBackup'),pwa2=el('pwaExamBackup');
   if(pwa1)pwa1.hidden=true;
   if(pwa2)pwa2.hidden=true;
   el('lang')?.addEventListener('change',()=>root.requestAnimationFrame(labelize));
-  root.ExaminaExportWorkspace={open:()=>el('exportShortcut')?.click()};
  }
  function ready(){
-  // El rediseño principal monta #exam-ui-actions al finalizar DOMContentLoaded.
+  // El rediseño principal monta #exam-ui-shell al finalizar DOMContentLoaded.
   // Esperamos un frame para respetar el orden de las inicializaciones online/offline.
   root.requestAnimationFrame(init);
  }

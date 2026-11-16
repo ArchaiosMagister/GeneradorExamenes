@@ -528,12 +528,12 @@ async function checkFile(browser,filename){
   assert(await primary.locator('#model').isVisible(),filename+': selector de modelo inaccesible');
   assert(await page.locator('#lang').isVisible(),filename+': selector de idioma inaccesible');
   assert.equal(await page.locator('#exam-ui-meta #lang').count(),1,filename+': idioma duplicado');
-  await page.locator('#exam-ui-advanced').evaluate(el=>el.open=true);
   assert.equal(await header.locator('fieldset').count(),3,filename+': faltan los tres grupos de botones');
   assert.equal(await header.locator('fieldset:nth-child(2) button').count(),course==='latin4'?1:3,
    filename+': modelos incorrectos en la cabecera');
   const shouldHaveSent=!['morf','morphology'].includes(model);
   assert.equal(await page.locator('#group-sentences').isVisible(),shouldHaveSent,filename+': menú de oraciones fuera de contexto');
+  if(shouldHaveSent)await page.locator('#group-sentences').evaluate(el=>el.open=true);
   assert.equal(await page.locator('#group-vocab').isVisible(),shouldHaveSent,filename+': vocabulario fuera de contexto');
   assert.equal(await page.locator('#group-culture').isVisible(),course==='latin4',filename+': cultura visible fuera de Latín 4.º');
   assert.equal(await page.locator('#examQuestionMenus [data-question="lex"]').count()>0,course!=='greek1'&&model!=='morf',

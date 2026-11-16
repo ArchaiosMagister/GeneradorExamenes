@@ -188,6 +188,8 @@ jobs:
         run: node scripts/audit-sentence-lemmas.cjs
       - name: Probar lemas ambiguos y formato del glosario de oraciones
         run: node scripts/test-exam-glossary.cjs
+      - name: Probar consultas externas del glosario sin conexión
+        run: node scripts/test-exam-external-gloss.cjs
       - name: Auditar las 612 formas pendientes aportadas para Latín I
         run: node scripts/audit-latin1-generated.cjs --minimum=429
       - name: Revisar individualmente las 183 pendientes de Latín I

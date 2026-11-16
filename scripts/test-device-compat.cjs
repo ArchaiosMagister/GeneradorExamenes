@@ -238,7 +238,6 @@ async function checkProfile(browser,p,filename,origin){
      if(window.ExaminaTeacherReview)window.ExaminaTeacherReview.evidenceMayExport=()=>true;
      if(window.ExaminaScoring)window.ExaminaScoring.canExport=()=>true;
     });
-    await page.locator('#exportShortcut').click();
     const pendingPdf=page.waitForEvent('download',{timeout:120000});
     await page.locator('#pdfDownload').click();
     const pdf=await pendingPdf;

@@ -55,8 +55,8 @@ async function pick(page,course,model,unit){
      hiddenPills:[...document.querySelectorAll('#examEditorPanel .sidebar-choices')].every(el=>!visible(el)),
      oneField:ids.every(id=>document.querySelectorAll('#exam-ui-shell #'+id).length===1),
      vocabularyNodes:[document.querySelectorAll('#vocabularyGenerator').length,document.querySelectorAll('#vocabManager').length],
-     export:!!document.querySelector('#exam-ui-actions #docx'),
-     drafts:!!document.querySelector('#exam-ui-actions #saveDraft')
+     export:!!document.querySelector('#examPreviewActions #docx'),
+     drafts:!!document.querySelector('#examPreviewActions #saveDraft')
     };
    });
    assert(initial.core&&initial.hiddenTop&&initial.hiddenPills&&initial.oneField,file+': selector duplicado o ausente');
@@ -87,6 +87,16 @@ async function pick(page,course,model,unit){
    assert.equal(await page.locator('#examQuestionMenus [data-question="decl"] .exam-ui-extra select').count(),1);
    assert.equal(await page.locator('#examQuestionMenus [data-question="forms"] .exam-ui-categories input').count(),3);
    assert.equal(await page.locator('#exam-ui-bulk').isVisible(),true);
+   const score=page.locator('#examScoring .exam-scoring-row').first();
+   const points=score.locator('input');
+   const originalPoints=await points.inputValue();
+   await points.fill('1,25');
+   await score.getByRole('button',{name:/Sumar 1 punto/}).press('Enter');
+   assert.equal(await points.inputValue(),'2,25');
+   assert.match(await page.locator('#paper .exam-question-points').first().textContent(),/2,25/);
+   await score.getByRole('button',{name:/Restar 1 punto/}).click();
+   assert.equal(await points.inputValue(),'1,25');
+   await points.fill(originalPoints);
    const morphOfferInfo=await page.locator('#morphOffer').evaluate(el=>({
     visible:!!el.getClientRects().length,display:getComputedStyle(el).display,
     countGrid:el.closest('.count-grid')?.outerHTML.slice(0,150),parent:el.parentElement?.outerHTML.slice(0,130),

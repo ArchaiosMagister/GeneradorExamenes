@@ -29,11 +29,11 @@ async function main(){
    await page.goto('http://127.0.0.1:'+server.address().port+'/'+filename,{waitUntil:'load'});
    await page.waitForFunction(()=>!!window.ExaminaPdfExport&&!!document.getElementById('academicNav'));
    const structure=await page.evaluate(isStandalone=>{
-    const exam=document.getElementById('exam-ui-actions');
+    const exam=document.getElementById('exam-ui-shell');
     const editor=document.getElementById('examEditorPanel');
     return {
      one:[...['docx','docxAnswers','print','pdfDownload','saveDraft','downloadDraft','examinaBackupExport']].every(id=>document.querySelectorAll('#'+id).length===1),
-     exportPlace:!!exam.querySelector('#exportWorkspace #docx')&&!!exam.querySelector('#exportWorkspace #saveDraft')&&!!exam.querySelector('#exportWorkspace #examinaBackupExport'),
+     exportPlace:!!document.querySelector('#examPreviewActions #docx')&&!!document.querySelector('#examPreviewActions #saveDraft')&&!!exam.querySelector('#examinaBackupExport'),
      oldOut:!editor.contains(document.getElementById('group-morph'))&&!editor.contains(document.getElementById('offlineLemmaPanel')),
      academic:['group-morph','offlineLemmaPanel','morphTeacherReview','academicEvidenceReview','greekDiscrepancyReview','group-import'].every(id=>document.querySelector('#academicWorkspace #'+id)),
      pwaShortcutsHidden:['pwaDataBackup','pwaExamBackup'].every(id=>!document.getElementById(id)||document.getElementById(id).hidden),
@@ -41,6 +41,9 @@ async function main(){
      unchangedQuestions:!!document.getElementById('examQuestionMenus')
     };
    },filename==='offline.html');
+   assert.equal(await page.locator('#exam-ui-shell > #group-drafts #downloadDraft').count(),1);
+   assert.equal(await page.locator('#exam-ui-shell > #group-drafts #loadDraft').count(),1);
+   assert.equal(await page.locator('#exam-ui-shell > #examinaUnifiedBackup #examinaBackupExport').count(),1);
    assert(Object.values(structure).every(Boolean),filename+': estructura: '+JSON.stringify(structure));
    if(filename==='index.html')assert.equal(await page.locator('script[src*="html2pdf.bundle.min.js"]').count(),0,
     'El motor PDF se descarga al abrir la webapp');
@@ -51,9 +54,28 @@ async function main(){
    assert(!(await page.locator('#examLayout').isVisible()),filename+': la configuración sigue visible en herramientas académicas');
    await page.locator('#vmShowExam').click();
    assert.equal(await page.locator('#paper').innerHTML(),before,filename+': volver de herramientas cambió el examen');
+   assert(await page.locator('#docx').isVisible(),filename+': Word oculto en Configuración de iPad');
+   assert(await page.locator('#pdfDownload').isVisible(),filename+': PDF oculto en Configuración de iPad');
+   assert.equal(await page.locator('#docx').evaluate(el=>getComputedStyle(el).backgroundColor),'rgb(25, 89, 158)');
+   assert.equal(await page.locator('#pdfDownload').evaluate(el=>getComputedStyle(el).backgroundColor),'rgb(163, 34, 43)');
+   const print=page.locator('#print');
+   assert(await print.isVisible(),filename+': acceso directo a imprimir oculto');
+   assert.equal(await print.evaluate(el=>el.previousElementSibling.id),'pdfDownload');
+   assert.equal(await print.evaluate(el=>getComputedStyle(el).backgroundColor),'rgb(163, 34, 43)');
+   assert(!(await page.locator('#solutions').isVisible()));
+   assert(!(await page.locator('#docxAnswers').isVisible()));
+   assert(!(await page.locator('#generate').isVisible()));
+   const restore=page.locator('#restoreDraft');
+   assert(await restore.isVisible());
+   assert.equal(await restore.evaluate(el=>el.previousElementSibling.id),'saveDraft');
+   const compact=await page.evaluate(()=>{
+    const first=['course','model'].map(id=>document.getElementById(id).getBoundingClientRect().top);
+    const second=['term','lang','sheetType'].map(id=>document.getElementById(id).getBoundingClientRect().top);
+    return [first,second];
+   });
+   assert(compact.every(row=>Math.max(...row)-Math.min(...row)<2),filename+': configuración con filas desaprovechadas');
    await page.locator('#examPreviewTab').click();
-   await page.locator('#exportShortcut').click();
-   assert(await page.locator('#exportWorkspace').isVisible(),filename+': acceso desde vista previa roto');
+   assert.equal(await page.locator('#exportShortcut,#exportWorkspace,#exam-ui-actions,#exam-ui-advanced,#courseStatus').count(),0);
    const proof=await page.evaluate(()=>{
     const form=document.getElementById('paper');
     const key=window.ExaminaPdfExport.prepareDocument();
@@ -118,7 +140,7 @@ async function main(){
      if(review)review.evidenceMayExport=()=>true;
      if(scoring)scoring.canExport=()=>true;
      downloadBlob=(name,blob)=>records.push({name,bytes:blob.size});
-     exportWord(false);exportWord(true);
+     document.getElementById('docx').click();exportWord(true);
     }finally{
      downloadBlob=original;
      if(review)review.evidenceMayExport=oldReview;
@@ -161,6 +183,14 @@ async function main(){
    assert.equal(pdfOptions.filename,'ficha repaso ud1 lat1 val.pdf',
     filename+': el PDF no comparte el nombre con Word');
    assert.equal(await page.evaluate(()=>window.ExaminaScoring.canExport()),true,filename+': ficha de repaso bloqueada');
+   await page.locator('#examPreviewTab').click();
+   const actions=await page.locator('#examPreviewActions').boundingBox();
+   const preview=await page.locator('#paper').boundingBox();
+   assert(actions&&preview&&actions.y+actions.height<=preview.y,filename+': botones debajo de la vista previa');
+   await page.evaluate(()=>{window.print=()=>{window.previewPrintInvoked=true}});
+   await print.click();
+   assert.equal(await page.evaluate(()=>window.previewPrintInvoked),true,
+    filename+': el acceso directo no abre la impresión del navegador');
    const downloadWait=page.waitForEvent('download',{timeout:90000});
    await page.locator('#pdfDownload').click();
    const download=await downloadWait;
@@ -195,6 +225,7 @@ async function main(){
     return {rows:wrapper.children.length};
    });
    assert.equal(fixture.rows,125);
+   await page.locator('#examSettingsTab').click();
    const multiDownload=page.waitForEvent('download',{timeout:120000});
    await page.locator('#pdfDownload').click();
    const multi=await multiDownload;
@@ -214,6 +245,15 @@ async function main(){
 
    const status=await page.locator('#examinaPdfStatus').textContent();
    assert(!/no se pudo|no s’ha pogut|bloquead/i.test(status),filename+': '+status);
+   await page.locator('#saveDraft').click();
+   await restore.click();
+   assert.match(await page.locator('#draftStatus').textContent(),/Borrador recuperado/);
+   await page.setViewportSize({width:1440,height:850});
+   await page.evaluate(()=>window.scrollTo({top:280,behavior:'instant'}));
+   const desktopActions=await page.locator('#examPreviewActions').boundingBox();
+   const desktopPreview=await page.locator('#paper').boundingBox();
+   assert(desktopActions&&desktopPreview&&desktopActions.y+desktopActions.height<=desktopPreview.y,
+    filename+': la barra de escritorio se solapa con el papel al desplazar');
    assert.deepEqual(errors,[],filename+': errores JavaScript');
    await page.close();
   }

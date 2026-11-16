@@ -221,7 +221,6 @@ assert(!engine.documentXml({...project,groupTypes:false}).includes('Sustantivos 
   await page.locator('#group-content').evaluate(el=>el.open=true);
   await page.locator('#group-sentences').evaluate(el=>el.open=true);
   await page.locator('#group-vocab').evaluate(el=>el.open=true);
-  await page.locator('#group-export').evaluate(el=>el.open=true);
   await page.evaluate(()=>{
    for(const [id,value] of [['course','latin1'],['model','mixto']]){
     const el=document.getElementById(id);el.value=value;
@@ -284,7 +283,6 @@ assert(!engine.documentXml({...project,groupTypes:false}).includes('Sustantivos 
   await page.locator('#group-content').evaluate(el=>el.open=true);
   await page.locator('#group-sentences').evaluate(el=>el.open=true);
   await page.locator('#group-vocab').evaluate(el=>el.open=true);
-  await page.locator('#group-export').evaluate(el=>el.open=true);
   await page.evaluate(()=>{
    const course=document.getElementById('course');
    course.value='latin1';course.dispatchEvent(new Event('change',{bubbles:true}));

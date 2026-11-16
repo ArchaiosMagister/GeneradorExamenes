@@ -445,6 +445,21 @@
   }
   showStatus();return true;
  }
+ function scoreStepper(item,input){
+  const group=document.createElement('span');group.className='exam-score-stepper';
+  const va=state().language==='va';
+  const step=(symbol,delta,action)=>{
+   const button=document.createElement('button');
+   button.type='button';button.className='secondary';button.textContent=symbol;
+   button.setAttribute('aria-label',action+' 1 '+(va?'punt':'punto')+' · '+item.caption);
+   button.disabled=input.disabled;
+   button.addEventListener('click',()=>setScore(item.key,
+    Math.min(10000,Math.max(0,(scores[item.key]||0)+delta))));
+   return button;
+  };
+  group.append(step('−',-100,va?'Resta':'Restar'),input,step('+',100,va?'Suma':'Sumar'));
+  return group;
+ }
  function renderRows(){
   header.hidden=review();
   // Sobrescribe display de las reglas CSS del panel en Safari.
@@ -452,7 +467,7 @@
   rows.replaceChildren();
   if(review()){showStatus();return}
   for(const [i,item] of previousQuestions.entries()){
-   const row=document.createElement('label');row.className='exam-scoring-row';
+   const row=document.createElement('div');row.className='exam-scoring-row';
    const name=document.createElement('span');
    name.textContent=(i+1)+'. '+item.caption;
    name.title=item.caption;
@@ -477,7 +492,7 @@
     if(n!==null)setScore(item.key,n);
    });
    const unit=document.createElement('span');unit.textContent='p.';unit.className='exam-scoring-unit';
-   row.append(name,control,unit);rows.append(row);
+   row.append(name,scoreStepper(item,control),unit);rows.append(row);
   }
   reset.textContent=state().language==='va'?'Repartir punts':'Repartir puntos';
   reset.title=morph()?
@@ -504,13 +519,12 @@
    const detail=[...host.querySelectorAll('[data-question]')].find(el=>el.dataset.question===target);
    if(!detail||detail.dataset.available==='false'||detail.dataset.included==='false')continue;
    const body=detail.querySelector('.exam-question-config');if(!body)continue;
-   const label=document.createElement('label');label.className='exam-question-score-row';
-   label.style.display='flex';label.style.alignItems='center';label.style.gap='10px';
-   label.textContent=state().language==='va'?'Puntuació (p.)':'Puntuación (p.)';
+   const label=document.createElement('div');label.className='exam-question-score-row';
+   const caption=document.createElement('span');
+   caption.textContent=state().language==='va'?'Puntuació (p.)':'Puntuación (p.)';
    const input=document.createElement('input');input.type='text';input.inputMode='decimal';
    input.autocomplete='off';input.dataset.scoringKey=item.key;
    input.setAttribute('aria-label','Puntuación de '+item.caption);
-   input.style.width='90px';input.style.maxWidth='90px';
    input.value=value(scores[item.key]||0);
    if(target==='sent'||(state().course!=='greek1'&&target==='lex')){
     input.disabled=true;input.title=target==='sent'?'1 p. por oración':'Léxico: 2p. fijos';
@@ -523,7 +537,7 @@
    input.addEventListener('blur',()=>{
     input.value=value(scores[item.key]||0);input.removeAttribute('aria-invalid');
    });
-   label.append(input);body.prepend(label);
+   label.append(caption,scoreStepper(item,input));body.prepend(label);
   }
  }
  const menuHost=document.getElementById('examQuestionMenus');

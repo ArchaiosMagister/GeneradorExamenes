@@ -342,7 +342,6 @@ const server=http.createServer(async(req,res)=>{
    type.value='review';type.dispatchEvent(new Event('change',{bubbles:true}));
   });
   // En el perfil escritorio de esta prueba las pestañas móviles están ocultas.
-  await page.locator('#exportShortcut').click();
   const pdfWait=page.waitForEvent('download',{timeout:120000});
   await page.locator('#pdfDownload').click();
   const pdfFile=await pdfWait;

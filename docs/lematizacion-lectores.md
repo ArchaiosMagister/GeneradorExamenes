@@ -8,8 +8,8 @@ flexiones que ese banco no registra, existe una **ampliación experimental**
 con sistemas utilizados en `lector-latino` y `lector-griego`.
 **La compilación y publicación estables no ejecutan esa ampliación**, a la
 espera de comprobar las condiciones de redistribución de cada fuente.
-Los motores originales **no se incluyen en el cliente**: `offline.html` y
-la webapp PWA consultan únicamente `data/lemmas/teacher-forms.json`.
+Los motores originales **no se distribuyen con el cliente**. El análisis
+automático de las oraciones usa el índice local `data/lemmas/teacher-forms.json`.
 
 ### Procedencia reproducible
 
@@ -18,8 +18,8 @@ la webapp PWA consultan únicamente `data/lemmas/teacher-forms.json`.
 | Latín | Collatinus 11 mediante `genuensis/lector-latino` | `6e3a05c55dfd0514d1bd507a246172f103b49e92` | 6 |
 | Griego | Eulexis (datos Diogenes/Perseus), mediante `genuensis/lector-griego` | `e3ca505b0e028af68a800673f5dc4565b0b05104` | 7 |
 
-Los ficheros de los lectores se obtienen exclusivamente en la construcción,
-por HTTPS mediante `git fetch` de la revisión indicada.
+El script de ampliación obtiene los ficheros por HTTPS mediante `git fetch`
+de la revisión indicada.
 No se utilizan APIs de lematización de terceros cuando el profesor pega un texto.
 
 El índice resultante es un extracto de **formas de los lemas del temario**.
@@ -135,6 +135,36 @@ No basta la autorización del profesor, que no es titular de esos datos.
 Ambas evaluaciones afectan a la **redistribución pública**, no al
 estudio de salidas de los programas para corregir manualmente el vocabulario.
 Ningún cambio de licencia permite aprobar automáticamente un homógrafo.
+## Consulta opcional desde un examen
+
+Cuando el banco docente no resuelve una forma, el glosario de oraciones
+puede consultar Collatinus (latín) o Eulexis (griego). También se ofrece
+la consulta si el índice reconoce una entrada que carece de ficha en el
+banco docente. Las ambigüedades con candidatos locales conservan sus
+selectores habituales.
+
+Al pulsar «Consultar», el navegador obtiene el motor y los datos de la
+revisión enlazada en la tabla. La ejecución se aísla del editor y la
+palabra se analiza en ese marco. GitHub sirve archivos estáticos y la
+consulta no envía la palabra ni la oración. Eulexis descarga solo los
+fragmentos de su léxico necesarios para la forma. El lector se reutiliza
+mientras siga abierta la página.
+
+Para las propuestas latinas, Collatinus aporta nominativo y genitivo de
+los sustantivos, género en los de tercera y nominativos de los géneros
+disponibles en adjetivos y pronombres. Los verbos se proponen con
+presente, perfecto, supino y conjugación. La vista y las exportaciones
+abrevian los verbos en unidades anteriores al perfecto, conservando la
+ficha completa. Si falta una parte necesaria, el campo debe completarse
+manualmente antes de confirmar.
+
+La lectura elegida, el enunciado y la traducción se pueden revisar antes
+de añadirlos al glosario. Eulexis también rellena el campo editable con
+su glosa de origen para que el docente pueda revisarla y adaptarla al
+idioma del examen. Cada decisión se conserva para esa aparición en la oración
+y viaja con los borradores exportados. «Cambiar» la retira. El banco
+docente y las soluciones se mantienen independientes de esas decisiones.
+
 ## Reproducir la integración y probarla
 
 Con acceso a Internet **solo en compilación**:

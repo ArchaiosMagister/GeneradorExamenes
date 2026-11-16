@@ -628,7 +628,10 @@ console.log('Vocabulario: prioridad docente, deduplicación por UD, ambigüedad,
   assert(removedRequired,'Falta lista exigible de Latín I UD3');
   const requiredBefore=await page.evaluate(()=>JSON.parse(localStorage.getItem('examina_required_v9')||'[]').length);
   await page.selectOption('#vmCourse','latin1');
-  await page.selectOption('#vmUnit','UD3');
+  const ud3=page.locator('#vmUnitButtons').getByRole('button',{name:'UD3',exact:true});
+  await ud3.press('Enter');
+  assert.equal(await ud3.getAttribute('aria-pressed'),'true');
+  assert.equal(await page.locator('#vmUnit').inputValue(),'UD3');
   page.once('dialog',dialog=>dialog.accept());
   await page.click('#vmSuggestUnit');
   const requiredAfter=await page.evaluate(()=>JSON.parse(localStorage.getItem('examina_required_v9')||'[]').length);
