@@ -40,6 +40,6 @@ for(const x of ['#examQuestionMenus','#exam-ui-meta','#exam-ui-bulk','#group-dra
 assert(!menuStyles[0].includes('@media print'),'La estética Examinator2 no debe alterar impresión');
 assert(!menuStyles[0].includes('#paper'),'El CSS no debe alterar la hoja de examen');
 assert(!menuStyles[0].includes('.vocab-manager'),'La estética no afecta al gestor de vocabulario');
-assert(!['display:','position:','visibility:','order:','grid-template-columns:'].some(rule=>menuStyles[0].includes(rule)),
+assert(!/(?:^|[;{\n])\s*(?:display|position|visibility|order|grid-template-columns)\s*:/m.test(menuStyles[0]),
  'La estética no cambia la lógica de visualización ni la distribución estructural');
 console.log('Tema Examinator sincronizado en HTML web/autónomo, impresión intacta');
