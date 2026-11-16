@@ -9588,6 +9588,9 @@ loadTeacherLatinLexBanks();
  document.addEventListener('DOMContentLoaded',()=>{buttons();questionMenus()},{once:true});
 })();
 /* Resumen de la seleccion visible, sin modificar la configuracion ni generar datos. */
+/* Resumen de selección cargado en exam-selection-summary.js */
+
+</script><script>/* Resumen visual del examen: comportamiento idéntico, aislado del motor académico. */
 (function setupExamVisualSummary(){
  const panel=document.querySelector('#examLayout>aside.panel');
  const heading=panel?.querySelector(':scope>h2');
@@ -9628,7 +9631,6 @@ loadTeacherLatinLexBanks();
  }
  render();
 })();
-
 </script><script>/* UniMorph: local-only morphology reference, not an exam vocabulary source.
    Original datasets: https://github.com/unimorph/lat and https://github.com/unimorph/grc
    Licensing/attribution: consult each upstream repository before redistribution.
