@@ -76,7 +76,7 @@ function validateXml(xml,questions,before,gap){
  const paras=[...xml.matchAll(/<w:p(?:\s[^>]*)?>[\s\S]*?<\/w:p>/g)].map(x=>x[0]);
  const culture=questions.map(q=>paras.find(p=>p.includes(q)));
  assert(culture.every(Boolean),'Una pregunta de cultura se ha perdido del DOCX');
- assert(culture.every(p=>p.includes('<w:ind w:left="1200" w:hanging="480"/>')),
+ assert(culture.every(p=>p.includes('<w:ind w:left="1080" w:hanging="360"/>')),
   'La tabulación de a., b., c. sigue pegada al texto en Word');
  assert(culture.every(p=>p.includes('<w:tab/>')),
   'Falta el separador entre viñeta y texto cultural en Word');
@@ -108,7 +108,7 @@ function validateXml(xml,questions,before,gap){
      file+': valor inicial de enunciado distinto de 12 pt');
     assert(nearPt(defaultView.gap,5),file+': vista previa no respeta cinco puntos culturales');
     assert(nearPt(defaultView.before,12),file+': vista previa no respeta 12 puntos antes del enunciado');
-    assert(parseFloat(defaultView.padding)>=15,file+': letra cultural sin suficiente distancia al texto');
+    assert(Math.abs(parseFloat(defaultView.padding))<1,file+': cultura conserva una sangría adicional distinta de morfología');
     assert.equal(defaultView.qCount,defaultView.scoreCount,file+': controles de puntuación desincronizados');
     validateXml(await wordXml(page),defaultView.texts,12,5);
     // Exportar Word añade metadatos de puntuación al DOM sin cambiar ninguna pregunta;
