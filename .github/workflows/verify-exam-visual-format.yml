@@ -6,6 +6,7 @@ on:
       - 'offline.html'
       - 'scripts/test-question-visual-layout.cjs'
       - 'scripts/test-per-question-visual-format.cjs'
+      - 'scripts/test-exam-indent-consistency.cjs'
       - '.github/workflows/verify-exam-visual-format.yml'
   workflow_dispatch:
 permissions:
@@ -33,3 +34,5 @@ jobs:
         run: node scripts/test-question-visual-layout.cjs
       - name: Espacios individuales por pregunta en los tres cursos, Word y PWA
         run: node scripts/test-per-question-visual-format.cjs
+      - name: Sangrías uniformes en todos los exámenes, Word y PDF
+        run: node scripts/test-exam-indent-consistency.cjs

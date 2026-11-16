@@ -348,7 +348,7 @@ html[data-course="greek1"] .paper .exam-sheet *{font-style:normal!important}
 .paper .exam-sentence{min-height:0;padding-bottom:0}
 .paper p.exam-sentence + p.exam-sentence{margin-top:var(--exam-sentence-gap,42pt)}
 .paper .exam-etymology{display:flex;flex-wrap:wrap;gap:12pt 34pt;margin:0 0 8pt 36pt;min-height:20pt}
-.paper .exam-etymology span{min-width:143pt}
+.paper .exam-etymology > span{min-width:143pt}
 .paper .exam-gloss-title{margin:4pt 0 3pt;font-size:10.5pt;break-after:avoid}
 .paper .exam-sheet .final-gloss{line-height:1.45;column-gap:24pt;font-size:10.5pt}
 .paper .exam-sheet .gloss-item{margin:0;break-inside:avoid}
@@ -420,6 +420,28 @@ html[data-course="greek1"] .paper .exam-sheet *{font-style:normal!important}
  .paper .latin-standard-exam .exam-question + .small{margin-left:36pt}
  .paper .latin-standard-exam .task{margin-left:36pt}
  .paper .latin-standard-exam .answer{border-color:#777}
+}
+
+/* Sangría común siguiendo el análisis morfológico:
+   pregunta (número 18pt / texto 36pt); subpregunta (letra 36pt / texto 54pt).
+   Las tablas, puntuaciones y distancias verticales permanecen intactas. */
+.paper .exam-sheet > p.exam-question{margin-left:18pt;padding-left:18pt;text-indent:-18pt}
+.paper .exam-sheet > p.exam-question .exam-q-number{width:18pt;min-width:18pt;margin-right:-.25em;text-indent:0}
+.paper .exam-sheet > ol.task[type="a"],
+.paper .exam-sheet > ol.task[type="A"]{margin-left:36pt;padding-left:18pt;margin-right:0}
+.paper .exam-sheet > ol.task.exam-culture-items > li{padding-left:0}
+.paper .exam-sheet > ol.task > li > ol[type="a"],
+.paper .exam-sheet > ol.task > li > ol[type="A"]{margin:4pt 0 5pt 18pt;padding-left:18pt}
+.paper .exam-sheet > p.exam-etymology > span{padding-left:18pt;text-indent:-18pt}
+@media screen and (max-width:550px){
+ .paper .exam-sheet > ol.task[type="a"],
+ .paper .exam-sheet > ol.task[type="A"],
+ .paper .exam-sheet > p.exam-etymology{margin-left:12pt}
+}
+@media print{
+ .paper .exam-sheet > ol.task[type="a"],
+ .paper .exam-sheet > ol.task[type="A"],
+ .paper .exam-sheet > p.exam-etymology{margin-left:36pt}
 }
 
 /* The preview precedes the form in the DOM; desktop keeps the form at left. */
@@ -5061,7 +5083,7 @@ function examEditorPreviewValue(target,mode='plain'){
 }
 function linkExamWordEditor(target,input,mode='plain'){
  if(!target||!input)return;
- if(target.matches('.reference-verb-table td > i:first-child,[data-analysis-slot] > i:first-child'))
+ if(target.matches('.reference-verb-table td > i:first-child,[data-analysis-slot] > i:first-of-type'))
   target.setAttribute('contenteditable','plaintext-only');
  const id='exam-word-link-'+(++examEditorLinkSerial);
  target.dataset.examEditorLink=id;input.dataset.examEditorLink=id;
@@ -5136,7 +5158,7 @@ function refreshManualMorphWords(forceGreekDraft=false){
   if(!cell.closest('#answerkey'))add(cell.querySelector('i')||cell,'Pronombre');
  });
  paper.querySelectorAll('.morph-syntagm-item > i').forEach(el=>add(el,'Declinación'));
- paper.querySelectorAll('[data-analysis-slot] > i:first-child, .exam-form [data-greek-form-surface]')
+ paper.querySelectorAll('[data-analysis-slot] > i:first-of-type, .exam-form [data-greek-form-surface]')
   .forEach(el=>add(el,'Análisis morfológico'));
  paper.querySelectorAll('.exam-etymology [data-corpus-id]').forEach(el=>add(el,'Etimología'));
  if(!targets.length){
@@ -6005,7 +6027,7 @@ function morphSyntagmRows(cfg,greek=false){
  });
  return Array.from({length:cfg.offer},(_,i)=>
   '<p class="exam-item reference-analysis-item morph-syntagm-item" data-syntagm-slot="'+i+'" contenteditable="false">'+
-  String.fromCharCode(97+i)+'. <i contenteditable="plaintext-only" spellcheck="false">'+esc(lines[i]||proposed[i]?.title||
+  '<span class="exam-letter">'+String.fromCharCode(97+i)+'.</span> <i contenteditable="plaintext-only" spellcheck="false">'+esc(lines[i]||proposed[i]?.title||
   (morphCompoundIntroduced(greek)?(greek?'(artículo) + (sustantivo) + (adjetivo)':'(sustantivo) + (adjetivo)'):'(sustantivo)'))+'</i></p>').join('');
 }
 function morphCompoundIntroduced(greek=false){
@@ -6260,7 +6282,7 @@ function generateLatinMorphologyReference(){
  const verbItems=stickyExamRows('verb',()=>latinMorphologyVerbSelection(allVerbs,cfg.verbs));
  const pronouns=examQuestionEnabled('pronouns')?latinExamPronouns(chosen):[],pronItems=stickyExamRows('pronouns',()=>latinPrioritySample(pronouns,Math.min(10,pronouns.length),latinPronounPriorities(chosen)));
  const words=stickyExamRows('forms',()=>examQuotaPick(latinExamFormCandidates(chosen),cfg.words,()=>latinExamForms(chosen,cfg.words)));
- const question=(kind,index,heading)=>'<p class="exam-question" data-morph-kind="'+kind+'">'+index+'. '+esc(heading)+'</p>';
+ const question=(kind,index,heading)=>'<p class="exam-question" data-morph-kind="'+kind+'"><span class="exam-q-number">'+index+'.</span> '+esc(heading)+'</p>';
  let n=0;
  const first=examQuestionEnabled('decl')?question('decl',++n,morphSyntagmHeading(cfg,va)+' (1 p.).')+morphSyntagmRows(cfg):'';
  const second=examQuestionEnabled('verb')?question('verb',++n,t('Analiza morfológicamente las siguientes formas verbales (1 p.).','Analitza morfològicament les formes verbals següents (1 p.).'))+
@@ -6277,7 +6299,7 @@ function generateLatinMorphologyReference(){
    '</tbody></table>';
  }
  const last=examQuestionEnabled('forms')?question('forms',++n,t('Analiza morfológicamente las siguientes palabras (1 p.).','Analitza morfològicament les paraules següents (1 p.).'))+
-  words.map((x,i)=>'<p class="exam-item reference-analysis-item" data-analysis-slot="'+i+'">'+String.fromCharCode(97+i)+'. <i'+examAcademicAttrs(x)+'>'+
+  words.map((x,i)=>'<p class="exam-item reference-analysis-item" data-analysis-slot="'+i+'"><span class="exam-letter">'+String.fromCharCode(97+i)+'.</span> <i'+examAcademicAttrs(x)+'>'+
   esc(latinExamSurface(x.form,x.entry))+'</i>'+
   latinMorphologyEnunciationHtml(x,chosen)+
   ': <span class="reference-answer-line"></span></p>').join(''):'';
@@ -6846,10 +6868,11 @@ function wordBlock(el){
    const alphabetic=tag==='ol'&&['a','A'].includes(type);
    const letter=alphabetic?String.fromCharCode(97+(i%26))+'.':'';
    const cultural=el.classList.contains('exam-culture-items');
-   // La letra y el texto tienen tabulación independiente y separación suficiente.
-   const pr=alphabetic?(cultural
-    ?'<w:keepLines/><w:ind w:left="1200" w:hanging="480"/><w:tabs><w:tab w:val="left" w:pos="1200"/></w:tabs>'
-    :'<w:ind w:left="1080" w:hanging="360"/><w:tabs><w:tab w:val="left" w:pos="1080"/></w:tabs>'):
+   const nested=el.parentElement?.tagName==='LI'&&!!el.closest('ol.task');
+   // Un único patrón: a. a 36pt, texto a 54pt; opciones un nivel más.
+   const target=nested?1800:1080;
+   const pr=alphabetic?
+    '<w:keepLines/><w:ind w:left="'+target+'" w:hanging="360"/><w:tabs><w:tab w:val="left" w:pos="'+target+'"/></w:tabs>':
     '<w:numPr><w:ilvl w:val="0"/><w:numId w:val="'+(tag==='ol'?'1':'2')+'"/></w:numPr>';
    const owner=el.classList.contains('task')?examVisualOwner(el):null;
    const custom=examVisualItemGapOverride(owner);
@@ -6911,8 +6934,24 @@ function wordExamParagraph(el){
   else{const m=el.textContent.match(/^([a-z]\\.)\\s*(.*)$/s);
    if(m)runs=wordRun(m[1])+'<w:r><w:tab/></w:r>'+wordRun(m[2])}
  }else if(cls.contains('exam-etymology')){
-  props.push('<w:ind w:left="720"/><w:tabs><w:tab w:val="left" w:pos="4240"/></w:tabs><w:spacing w:before="0" w:after="160" w:line="300" w:lineRule="auto"/>');
-  runs=[...el.children].map(x=>wordInline(x)).join('<w:r><w:tab/></w:r>');
+  // Mantener dos columnas, con letras/texto alineados como en morfología.
+  const items=[...el.children];
+  const itemRuns=item=>{
+   const letter=item.querySelector(':scope > .exam-letter');
+   if(!letter)return wordInline(item);
+   return wordRun(letter.textContent.trim())+'<w:r><w:tab/></w:r>'+
+    [...item.childNodes].filter(n=>n!==letter).map(n=>wordInline(n)).join('');
+  };
+  const tabs='<w:tabs>'+[1080,4240,4600].map(pos=>
+   '<w:tab w:val="left" w:pos="'+pos+'"/>').join('')+'</w:tabs>';
+  const paras=[];
+  for(let i=0;i<items.length;i+=2){
+   const second=items[i+1]?'<w:r><w:tab/></w:r>'+itemRuns(items[i+1]):'';
+   paras.push('<w:p><w:pPr><w:ind w:left="720"/>'+tabs+
+    '<w:spacing w:before="0" w:after="'+(i+2>=items.length?160:0)+
+    '" w:line="300" w:lineRule="auto"/></w:pPr>'+itemRuns(items[i])+second+'</w:p>');
+  }
+  return paras.join('');
  }else if(cls.contains('exam-table-gap')){
   const gap=examVisualItemGapOverride(examVisualOwner(el));
   props.push('<w:spacing w:before="0" w:after="0" w:line="'+(gap===null?140:Math.max(1,Math.round(gap*20)))+'" w:lineRule="exact"/>');
@@ -7849,7 +7888,7 @@ function generateGreekMorphologyFixed(){
   ((x.category==='nouns'||/declinación|sustantivo|artículo/i.test(x.answer))&&categories.n)||
   (x.category==='verbs'||/verbo|persona|indicativo|deponente|infinitivo|participio|aoristo|imperativo|voz media/i.test(x.answer))
   )),cfg.words));
- const question=(kind,n,txt)=>'<p class="exam-question" data-morph-kind="'+kind+'">'+n+'. '+esc(txt)+'</p>';
+ const question=(kind,n,txt)=>'<p class="exam-question" data-morph-kind="'+kind+'"><span class="exam-q-number">'+n+'.</span> '+esc(txt)+'</p>';
  let n=0;
  const first=examQuestionEnabled('decl')?question('decl',++n,morphSyntagmHeading(cfg,va)+' (1 p.).')+morphSyntagmRows(cfg,true):'';
  const second=examQuestionEnabled('verb')?question('verb',++n,t('Analiza las siguientes formas verbales (1 p.).','Analitza les formes verbals següents (1 p.).'))+
@@ -7862,7 +7901,7 @@ function generateGreekMorphologyFixed(){
    pronouns.map(x=>'<tr data-corpus-id="'+x.id+'"><td><i>'+esc(x.prompt)+'</i></td><td></td><td></td><td></td><td></td></tr>').join('')+'</tbody></table>';
  }
  const last=examQuestionEnabled('forms')?question('forms',++n,t('Analiza morfológicamente las siguientes palabras (1 p.).','Analitza morfològicament les paraules següents (1 p.).'))+
-  words.map((x,i)=>'<p class="exam-item reference-analysis-item" data-analysis-slot="'+i+'" data-corpus-id="'+x.id+'">'+String.fromCharCode(97+i)+'. <i'+examAcademicAttrs(x)+'>'+esc(x.prompt)+'</i>'+(Array.isArray(x.lemmas)&&x.lemmas.length?' ('+esc(x.lemmas.filter(Boolean).join(' / '))+')':'')+': <span class="reference-answer-line"></span></p>').join(''):'';
+  words.map((x,i)=>'<p class="exam-item reference-analysis-item" data-analysis-slot="'+i+'" data-corpus-id="'+x.id+'"><span class="exam-letter">'+String.fromCharCode(97+i)+'.</span> <i'+examAcademicAttrs(x)+'>'+esc(x.prompt)+'</i>'+(Array.isArray(x.lemmas)&&x.lemmas.length?' ('+esc(x.lemmas.filter(Boolean).join(' / '))+')':'')+': <span class="reference-answer-line"></span></p>').join(''):'';
  const problems=[];
  if(second&&verbs.length<cfg.verbs)problems.push('Verbos: '+verbs.length+' de '+cfg.verbs);
  if(last&&words.length<cfg.words)problems.push('Palabras variables: '+words.length+' de '+cfg.words);
@@ -8103,7 +8142,7 @@ function generateGreekExam(){
   else if(kind==='declension')sections.push(items.map(x=>greekTable(x)).join('<p class="exam-table-gap"></p>'));
   else if(kind==='conjugation')sections.push(greekVerbTable(items));
   else if(kind==='pronouns')sections.push('<table class="exam-pronouns" data-col-widths="1500,3500,3500"><thead><tr><th>Forma</th><th>'+($('lang').value==='va'?'Cas, gènere, nombre':'Caso, género, número')+'</th><th>'+($('lang').value==='va'?'Tipus de pronom':'Tipo de pronombre')+'</th></tr></thead><tbody>'+items.map(x=>'<tr data-corpus-id="'+x.id+'"><td>'+esc(x.prompt)+'</td><td></td><td></td></tr>').join('')+'</tbody></table>');
-  else if(kind==='etymology')sections.push('<p class="exam-etymology">'+items.map((x,j)=>'<span data-corpus-id="'+x.id+'">'+String.fromCharCode(97+j)+'. '+esc(x.prompt)+':</span>').join('')+'</p>');
+  else if(kind==='etymology')sections.push('<p class="exam-etymology">'+items.map((x,j)=>'<span data-corpus-id="'+x.id+'"><span class="exam-letter">'+String.fromCharCode(97+j)+'.</span> '+esc(x.prompt)+':</span>').join('')+'</p>');
   else sections.push(items.map((x,j)=>{
    const enunciation=(x.lemmas||[]).filter(lemma=>typeof lemma==='string'&&lemma.trim()).join(' / ');
    // El enunciado no se incluye en la zona editable de la forma.
