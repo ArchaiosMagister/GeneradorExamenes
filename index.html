@@ -3017,21 +3017,8 @@ function wordTable(table){
  out+='</w:tc>';}out+='</w:tr>';
  }return out+'</w:tbl>';
 }
-function wordGlossTable(el){
- if(el.closest('.exam-sheet'))return wordExamGloss(el);
- const items=[...el.children].filter(x=>x.classList.contains('gloss-item'));
- if(!items.length)return '';
- const half=Math.ceil(items.length/2),w=4394;
- let out='<w:tbl><w:tblPr><w:tblW w:w="8788" w:type="dxa"/><w:tblLayout w:type="fixed"/><w:tblCellMar><w:top w:w="25" w:type="dxa"/><w:bottom w:w="25" w:type="dxa"/><w:left w:w="65" w:type="dxa"/><w:right w:w="150" w:type="dxa"/></w:tblCellMar></w:tblPr><w:tblGrid><w:gridCol w:w="4394"/><w:gridCol w:w="4394"/></w:tblGrid>';
- for(let i=0;i<half;i++){
-  out+='<w:tr>';
-  for(const item of [items[i],items[i+half]]){
-   out+='<w:tc><w:tcPr><w:tcW w:w="'+w+'" w:type="dxa"/></w:tcPr>'+(item?wordPara(item):'<w:p/>')+'</w:tc>';
-  }
-  out+='</w:tr>';
- }
- return out+'</w:tbl>';
-}
+// El glosario se exporta como párrafos en secciones reales de Word, no tablas.
+function wordGlossTable(el){return wordExamGloss(el)}
 function wordBlock(el){
  if(el.classList?.contains('no-print'))return '';
  if(el.classList?.contains('exam-header'))return wordExamHeader(el);
@@ -3153,6 +3140,9 @@ function wordExamParagraph(el){
   const gap=examVisualGlossBeforeFor(el);
   props.push('<w:keepNext/><w:spacing w:before="'+(gap===null?80:Math.round(gap*20))+
    '" w:after="60" w:line="300" w:lineRule="auto"/>');
+  // La sección anterior termina en una columna. La siguiente será el glosario.
+  if(el.nextElementSibling?.classList?.contains('final-gloss'))
+   props.push(wordSectionProperties(1,true));
  }
  else props.push('<w:spacing w:before="200" w:after="100"/>');
  return '<w:p><w:pPr>'+props.join('')+'</w:pPr>'+runs+'</w:p>';
@@ -3173,10 +3163,24 @@ function wordExamTable(table){
   }out+='</w:tr>';
  });return out+'</w:tbl>';
 }
+function wordSectionProperties(columns,continuous=false){
+ // Mantener A4, márgenes y numeración de páginas en cada sección del DOCX.
+ return '<w:sectPr><w:footerReference w:type="default" r:id="rId3"/>'+
+  (continuous?'<w:type w:val="continuous"/>':'')+
+  '<w:pgSz w:w="11906" w:h="16838"/>'+
+  '<w:pgMar w:top="1417" w:right="1701" w:bottom="1417" w:left="1417" w:footer="560"/>'+
+  '<w:cols w:num="'+columns+'" w:space="360"/></w:sectPr>';
+}
 function wordExamGloss(el){
- const items=[...el.children].filter(x=>x.classList.contains('gloss-item')),half=Math.ceil(items.length/2);
- if(!items.length)return '';let out='<w:tbl><w:tblPr><w:tblW w:w="8788" w:type="dxa"/><w:tblLayout w:type="fixed"/><w:tblCellMar><w:top w:w="0" w:type="dxa"/><w:bottom w:w="0" w:type="dxa"/><w:left w:w="0" w:type="dxa"/><w:right w:w="80" w:type="dxa"/></w:tblCellMar></w:tblPr><w:tblGrid><w:gridCol w:w="4756"/><w:gridCol w:w="4032"/></w:tblGrid>';
- for(let i=0;i<half;i++){out+='<w:tr><w:trPr><w:cantSplit/></w:trPr>';[items[i],items[i+half]].forEach((x,j)=>{out+='<w:tc><w:tcPr><w:tcW w:w="'+(j?4032:4756)+'" w:type="dxa"/></w:tcPr><w:p><w:pPr><w:spacing w:before="0" w:after="0" w:line="300" w:lineRule="atLeast"/></w:pPr>'+(x?wordInline(x):'')+'</w:p></w:tc>'});out+='</w:tr>'}return out+'</w:tbl>';
+ const items=[...el.children].filter(x=>x.classList.contains('gloss-item'));
+ if(!items.length)return '';
+ // Si no precede un título reconocido, cerrar explícitamente la sección normal.
+ const prefix=el.previousElementSibling?.classList?.contains('exam-gloss-title')?'': 
+  '<w:p><w:pPr><w:keepNext/>'+wordSectionProperties(1,true)+'</w:pPr></w:p>';
+ return prefix+items.map((item,i)=>
+  '<w:p><w:pPr><w:keepLines/><w:spacing w:before="0" w:after="0" w:line="300" w:lineRule="atLeast"/>'+
+  (i===items.length-1?wordSectionProperties(2,true):'')+
+  '</w:pPr>'+wordInline(item)+'</w:p>').join('');
 }
 function exportWord(includeAnswers){
  window.ExaminaFlushSentenceGlossary?.();
@@ -3194,7 +3198,7 @@ function exportWord(includeAnswers){
  if(key&&includeAnswers)key.classList.remove('solutions');
  const greekLayout=true;
  let body=[...copy.children].map(wordBlock).join('');
- const doc=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><w:body>${body}<w:sectPr>${greekLayout?'<w:footerReference w:type="default" r:id="rId3"/>':''}<w:pgSz w:w="11906" w:h="16838"/>${greekLayout?'<w:pgMar w:top="1417" w:right="1701" w:bottom="1417" w:left="1417" w:footer="560"/>':'<w:pgMar w:top="1417" w:right="1417" w:bottom="1417" w:left="1701"/>'}</w:sectPr></w:body></w:document>`;
+ const doc=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><w:body>${body}${wordSectionProperties(1)}</w:body></w:document>`;
  const wordDefaultFont='<w:rFonts w:ascii="Palatino Linotype" w:hAnsi="Palatino Linotype" w:eastAsia="Palatino Linotype" w:cs="Palatino Linotype"/>';
  let styles=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:docDefaults><w:rPrDefault><w:rPr>${wordDefaultFont}<w:sz w:val="21"/></w:rPr></w:rPrDefault><w:pPrDefault><w:pPr><w:spacing w:after="110" w:line="276" w:lineRule="auto"/></w:pPr></w:pPrDefault></w:docDefaults><w:style w:type="paragraph" w:default="1" w:styleId="Normal"><w:name w:val="Normal"/><w:rPr>${wordDefaultFont}</w:rPr></w:style><w:style w:type="paragraph" w:styleId="Heading1"><w:name w:val="heading 1"/><w:pPr><w:spacing w:before="180" w:after="140"/></w:pPr><w:rPr>${wordDefaultFont}<w:b/><w:sz w:val="30"/></w:rPr></w:style><w:style w:type="paragraph" w:styleId="Heading2"><w:name w:val="heading 2"/><w:pPr><w:spacing w:before="190" w:after="90"/><w:keepNext/></w:pPr><w:rPr>${wordDefaultFont}<w:b/><w:sz w:val="25"/></w:rPr></w:style><w:style w:type="paragraph" w:styleId="Heading3"><w:name w:val="heading 3"/><w:rPr>${wordDefaultFont}<w:b/><w:sz w:val="23"/></w:rPr></w:style></w:styles>`;
  if(greekLayout)styles=styles.replace(/w:sz w:val="(?:30|25|23)"/g,'w:sz w:val="21"').replace('w:before="190" w:after="90"','w:before="120" w:after="60"').replace('w:before="180" w:after="140"','w:before="120" w:after="80"');
