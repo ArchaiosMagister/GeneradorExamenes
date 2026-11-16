@@ -1,0 +1,28 @@
+name: Regenerar Examinator autónomo tras mejorar temas (temporal)
+on:
+  push:
+    branches: ['fix/examinator-teal-dark-oled-20261116']
+permissions:
+  contents: write
+jobs:
+  regenerate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Reconstruir offline.html
+        run: npm run offline:build
+      - name: Sincronizar HTML autónomo en rama de prueba
+        run: |
+          git add offline.html
+          if git diff --cached --quiet; then
+            echo 'Autónomo ya sincronizado'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'Sincronizar tema oscuro y OLED con versión autónoma'
+          git push origin "HEAD:fix/examinator-teal-dark-oled-20261116"

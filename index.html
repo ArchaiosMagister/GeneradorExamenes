@@ -6789,6 +6789,32 @@ html[data-appearance="oled"] body.exam-redesign #exam-ui-shell :is(#exam-ui-core
   --field-disabled-bg:#ebe6db;
   --editor-hover:#ebe6db;
  }
+ /* Mantener los verdes azulados de Examinator con fondos oscuro y OLED. */
+ :root[data-course]:is([data-appearance="dark"],[data-appearance="oled"]),
+ html:is([data-appearance="dark"],[data-appearance="oled"]){
+  --accent:#1d5466;
+  --ring:#96d5ce;
+  --focus-course:#96d5ce;
+  --soft:#204750;
+  --soft-ink:#d8f5f3;
+  --soft-border:#56878a;
+  --secondary-bg:#20343c;
+  --secondary-ink:#e5f5f1;
+  --secondary-border:#557b80;
+  --editor-hover:#29565c;
+  --appearance-subtle:#204750;
+  --appearance-accent:#96d5ce;
+  --appearance-button:#234950;
+  --appearance-button-hover:#2b5d62;
+  --appearance-border:#52747b;
+ }
+ /* El elemento activo conserva exactamente el acento del tema claro. */
+ :root[data-course]:is([data-appearance="dark"],[data-appearance="oled"]) .vocab-tabbar>button.active,
+ html:is([data-appearance="dark"],[data-appearance="oled"]) #examMobileTabs button[aria-selected="true"]{
+  background:#1d5466!important;
+  border-color:#1d5466!important;
+  color:#fff!important;
+ }
  html{
   --editor-hover:var(--appearance-subtle);
  }

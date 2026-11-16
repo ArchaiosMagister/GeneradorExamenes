@@ -244,8 +244,8 @@ async function checkReviewLocaleAndContrast(page,file){
 }
 
 async function checkCourseThemeContrast(page,file){
- // El tema Examinator unifica el fondo claro por asignatura; oscuro y OLED
- // mantienen su paleta y todas las modalidades exigen contraste WCAG >= 7:1.
+ // Examinator mantiene el verde azulado en las tres apariencias, con
+ // versiones oscuras de >=7:1 WCAG y papel académico siempre blanco.
  // El encabezado «Unidades del examen» usa --ink sobre --soft.
  const fixtures=[
   ['latin4','tablas','UD4','rgb(217, 232, 236)'],
@@ -282,10 +282,10 @@ async function checkCourseThemeContrast(page,file){
    if(mode==='light'){
     assert.equal(css.background,lightBackground,file+': ha cambiado la paleta clara de '+course);
    }else{
-    assert.equal(css.background,'rgb(48, 61, 80)',file+': fondo claro residual en '+course+'/'+mode);
-    assert.equal(css.foreground,'rgb(237, 243, 251)',file+': texto de título sin contraste en '+course+'/'+mode);
-    assert.equal(css.soft,'#303d50',file+': --soft ignora tema '+mode+'/'+course);
-    assert.equal(css.softInk,'#edf3fb',file+': --soft-ink ignora tema '+mode+'/'+course);
+    assert.equal(css.background,'rgb(32, 71, 80)',file+': fondo claro residual en '+course+'/'+mode);
+    assert.equal(css.foreground,'rgb(216, 245, 243)',file+': texto de título sin contraste en '+course+'/'+mode);
+    assert.equal(css.soft,'#204750',file+': --soft ignora tema '+mode+'/'+course);
+    assert.equal(css.softInk,'#d8f5f3',file+': --soft-ink ignora tema '+mode+'/'+course);
     assert.equal(css.canvas,mode==='oled'?'rgb(0, 0, 0)':'rgb(23, 29, 40)',
      file+': se ha cambiado el fondo del modo '+mode);
     assert.equal(css.page,'rgb(255, 255, 255)',file+': se ha oscurecido el documento imprimible');
