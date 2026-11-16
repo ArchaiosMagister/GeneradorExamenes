@@ -459,18 +459,26 @@ async function greekGlossSpacing(page,file){
     String(row.entry||'').trim()&&!String(row.entry).includes('+')&&
     glossAccept(row.entry,chosen));
    if(!candidate)throw Error('Falta una ficha de vocabulario griego aceptable');
-   document.getElementById('examExtra').value=candidate.entry;
-   generate();
    const sheet=document.querySelector('#paper .exam-sheet');
    const wrapper=sheet?.querySelector(':scope > #examSentenceGlossary');
+   const sentences=sheet?.querySelector(':scope > ol.exam-sentences');
+   if(!wrapper||!sentences)throw Error('Examen griego sin huecos ni contenedor de glosario');
+   // Simular la aparición del vocabulario DESPUÉS de generar el examen:
+   // actualizar el glosario en vivo, sin llamar a generate().
+   wrapper.replaceChildren();
+   applyExamVisualFormat();
+   document.getElementById('examExtra').value=candidate.entry;
+   refreshSentenceGlossary();
+   const stable=sheet===document.querySelector('#paper .exam-sheet')&&
+    sentences===sheet.querySelector(':scope > ol.exam-sentences');
    const heading=sheet?.querySelector(':scope > p.exam-question[data-greek-kind="sentences"]');
    const last=sheet?.querySelector(':scope > ol.exam-sentences > li:last-child');
    const title=wrapper?.querySelector(':scope > p.exam-gloss-title');
    if(!wrapper||!heading||!last||!title)
     throw Error('Examen griego sin glosario real: '+candidate.entry);
-   return {wrapper:wrapper.id,kind:heading.dataset.greekKind};
+   return {wrapper:wrapper.id,kind:heading.dataset.greekKind,stable};
   });
-  assert.deepEqual(structure,{wrapper:'examSentenceGlossary',kind:'sentences'});
+  assert.deepEqual(structure,{wrapper:'examSentenceGlossary',kind:'sentences',stable:true});
   // El test ES anterior deja 66 pt guardados en el mismo examen: limpiar
   // solo el ajuste del test antes de comprobar los 54 pt generales en VA.
   await setPer(page,key('greek1','complete','sentences','greek'),'items','');
