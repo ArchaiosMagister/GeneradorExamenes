@@ -17,6 +17,7 @@ on:
       - 'scripts/test-greek-morph-regeneration.cjs'
       - 'scripts/test-exam-ui-redesign.cjs'
       - 'scripts/test-examinator-theme.cjs'
+      - 'scripts/test-toolbar-button-sizes.cjs'
       - 'scripts/test-latin4-conjugation-isolated-forms.cjs'
       - 'scripts/test-subquestion-scoring.cjs'
       - '.github/workflows/phase-one-regression.yml'
@@ -53,6 +54,8 @@ jobs:
         run: node scripts/test-exam-ui-redesign.cjs
       - name: Verificar tema Examinator sin efectos sobre Word/PDF
         run: node scripts/test-examinator-theme.cjs
+      - name: Comprobar igualdad y desbordamientos de botones en iPad y móvil
+        run: node scripts/test-toolbar-button-sizes.cjs
       - name: Latin 4 regular conjugations and isolated form counts
         run: node scripts/test-latin4-conjugation-isolated-forms.cjs
       - name: All existing Word preview regressions
