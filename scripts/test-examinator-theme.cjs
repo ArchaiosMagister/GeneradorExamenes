@@ -23,4 +23,23 @@ for(const token of ['--accent:#1d5466','--soft:#204750','--soft-ink:#d8f5f3',
 assert(styles[0].includes(':root[data-course]:is([data-appearance="dark"],[data-appearance="oled"])'),
  'No se respeta el tema por asignatura');
 assert(!styles[0].includes('@media print'),'No alterar la maqueta impresa');
+const menuMarker='<style id="examinator2-menu-theme">';
+function menuStyle(html){
+ assert.equal(html.split(menuMarker).length,2,'Debe haber un solo bloque de estética Examinator2');
+ const start=html.indexOf(menuMarker),end=html.indexOf('</style>',start);
+ assert(end>start,'El CSS Examinator2 debe cerrar el estilo');
+ return html.slice(start,end+8);
+}
+const menuStyles=source.map(menuStyle);
+assert.equal(menuStyles[0],menuStyles[1],'Los menús deben coincidir en web y offline');
+assert(menuStyles[0].includes('@media screen {'),'La estética de menús solo afecta a pantalla');
+assert(menuStyles[0].includes('body.exam-redesign #examEditorPanel'),'Los selectores han de limitarse a los menús de exámenes');
+for(const x of ['#examQuestionMenus','#exam-ui-meta','#exam-ui-bulk','#group-drafts','.exam-score-stepper']){
+ assert(menuStyles[0].includes(x),'No se estiliza '+x);
+}
+assert(!menuStyles[0].includes('@media print'),'La estética Examinator2 no debe alterar impresión');
+assert(!menuStyles[0].includes('#paper'),'El CSS no debe alterar la hoja de examen');
+assert(!menuStyles[0].includes('.vocab-manager'),'La estética no afecta al gestor de vocabulario');
+assert(!/(?:^|[;{\\n])\\s*(?:display|position|visibility|order|grid-template-columns)\\s*:/m.test(menuStyles[0]),
+ 'La estética no cambia la lógica de visualización ni la distribución estructural');
 console.log('Tema Examinator sincronizado en HTML web/autónomo, impresión intacta');
