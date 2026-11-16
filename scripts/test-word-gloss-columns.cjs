@@ -72,6 +72,9 @@ const server=http.createServer((req,res)=>{
       context+': no hay un párrafo Word por entrada');
      assert(!contents.includes('<w:tbl>'),context+': glosario sigue siendo tabla Word');
      assert(xml.endsWith('</w:sectPr></w:body></w:document>'),context+': sección final incompleta');
+     // La última sección también debe ser continua: evita página vacía tras el glosario.
+     assert(xml.slice(-400).includes('<w:type w:val="continuous"/>'),
+      context+': final de documento provoca salto de página no solicitado');
      assert.match(xml,/<w:footerReference w:type="default" r:id="rId3"\/>/,
       context+': pie de página desaparecido en sección continua');
      assert(xml.includes('<w:pgMar w:top="1417" w:right="1701" w:bottom="1417" w:left="1417" w:footer="560"/>'),
