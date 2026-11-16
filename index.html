@@ -5553,16 +5553,36 @@ const builtInMorph={
  grc:[["λόγος","λόγος","N;NOM;SG;MASC"],["λόγος","λόγον","N;ACC;SG;MASC"],["λόγος","λόγου","N;GEN;SG;MASC"],["λόγος","λόγῳ","N;DAT;SG;MASC"]]
 };
 function morphologyNormalize(s){return norm(s).normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/ς/g,'σ')}
-const fullLookupCache=new Map();
+const fullLookupCache=new Map(),bundledLookupCache=new WeakMap();
+const SHARD_CACHE_LIMIT=12;
+function cachedShard(path){
+ const rows=fullLookupCache.get(path);
+ if(rows){fullLookupCache.delete(path);fullLookupCache.set(path,rows)}
+ return rows;
+}
+function indexShard(path,rows,mode){
+ const index=new Map();
+ for(const row of rows){
+  if(!Array.isArray(row))continue;
+  const k=morphologyNormalize(row[mode==='lemma'?0:1]);
+  if(!index.has(k))index.set(k,[]);
+  index.get(k).push(row);
+ }
+ fullLookupCache.set(path,index);
+ // Limitar shards residentes: podrán recuperarse de CacheStorage offline.
+ if(fullLookupCache.size>SHARD_CACHE_LIMIT)
+  fullLookupCache.delete(fullLookupCache.keys().next().value);
+ return index;
+}
 async function fullUniMorphLookup(language,word,mode){
  const key=morphologyNormalize(word),first=[...key][0];
  if(!first)return {rows:[],available:false};
  const hex=[...key].slice(0,2).map(char=>char.codePointAt(0).toString(16).padStart(4,'0')).join('-');
  const path='data/unimorph/lookup/'+language+'/'+(mode==='lemma'?'lemma':'form')+'-'+hex+'.json';
- let rows=fullLookupCache.get(path);
- if(!rows){
+ let indexed=cachedShard(path);
+ if(!indexed){
   try{
-   rows=examinaEmbeddedAsset(path);
+   let rows=examinaEmbeddedAsset(path);
    if(!rows){
     if(location.protocol==='file:')return {rows:[],available:false};
     const response=await fetch(path,{cache:'force-cache'});
@@ -5570,11 +5590,35 @@ async function fullUniMorphLookup(language,word,mode){
     rows=await response.json();
    }
    if(!Array.isArray(rows))return {rows:[],available:false};
-   fullLookupCache.set(path,rows);
+   indexed=indexShard(path,rows,mode);
   }catch(error){return {rows:[],available:false}}
  }
- return {rows:rows.filter(row=>Array.isArray(row)&&morphologyNormalize(row[mode==='lemma'?0:1])===key)
-  .map(row=>({headword:row[0],surface:row[1],features:row[2],source:'UniMorph completo'})),available:true};
+ return {rows:(indexed.get(key)||[]).map(row=>({headword:row[0],
+  surface:row[1],features:row[2],source:'UniMorph completo'})),available:true};
+}
+function indexedBundledMorphology(language,bundled,mode,query){
+ if(!bundled||typeof bundled!=='object')
+  return (builtInMorph[language]||[])
+   .filter(row=>morphologyNormalize(row[mode==='lemma'?0:1])===query)
+   .map(row=>({headword:row[0],surface:row[1],features:row[2],
+    subtype:row[4]||'',source:row.length>=5?'UniMorph':'Paradigma escolar'}));
+ let indexes=bundledLookupCache.get(bundled);
+ if(!indexes){
+  indexes={form:new Map(),lemma:new Map()};
+  const rows=[...(builtInMorph[language]||[]),
+   ...(['v','n','adj','pro'].flatMap(kind=>bundled[kind]||[]))];
+  for(const row of rows){
+   const record={headword:row[0],surface:row[1],features:row[2],
+    subtype:row[4]||'',source:row.length>=5?'UniMorph':'Paradigma escolar'};
+   for(const [kind,i] of [['form',1],['lemma',0]]){
+    const k=morphologyNormalize(row[i]);
+    if(!indexes[kind].has(k))indexes[kind].set(k,[]);
+    indexes[kind].get(k).push(record);
+   }
+  }
+  bundledLookupCache.set(bundled,indexes);
+ }
+ return indexes[mode].get(query)||[];
 }
 async function lookup(language,word,mode='form'){
  const query=morphologyNormalize(word),results=[];
@@ -5582,17 +5626,19 @@ async function lookup(language,word,mode='form'){
  results.push(...complete.rows);
  window.ExaminaMorphologyFullLookupAvailable=complete.available;
  const bundled=typeof bundledMorphology!=='undefined'?bundledMorphology[language]:null;
- const rows=[...(builtInMorph[language]||[]),...(['v','n','adj','pro'].flatMap(k=>bundled?.[k]||[]))];
- for(const row of rows){
-  if(morphologyNormalize(row[mode==='lemma'?0:1])===query)
-   results.push({headword:row[0],surface:row[1],features:row[2],subtype:row[4]||'',source:row.length>=5?'UniMorph':'Paradigma escolar'});
- }
+ results.push(...indexedBundledMorphology(language,bundled,mode,query));
  try{
   const d=await db(),t=transaction(d,['forms'],'readonly');
   const index=t.objectStore('forms').index(mode==='lemma'?'byLemma':'byForm');
   results.push(...await req(index.getAll(language+'|'+norm(word))));
  }catch(error){}
- return results.filter((r,i,a)=>a.findIndex(x=>x.headword===r.headword&&x.surface===r.surface&&x.features===r.features)===i);
+ // Mantener la misma deduplicación que findIndex, pero con coste lineal.
+ const seen=new Set();
+ return results.filter(row=>{
+  const k=JSON.stringify([row.headword,row.surface,row.features]);
+  if(seen.has(k))return false;
+  seen.add(k);return true;
+ });
 }
 const morphologyTerms={
  N:'sustantivo',V:'verbo',ADJ:'adjetivo',PRO:'pronombre',
