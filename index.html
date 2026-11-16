@@ -6766,4 +6766,153 @@ html[data-appearance="oled"] body.exam-redesign #exam-ui-shell :is(#exam-ui-core
 <!-- El motor PDF se carga solo al exportar; el SW lo mantiene disponible sin conexión. -->
 <script src="pdf-export.js" defer></script>
 <script src="export-workspace.js" defer></script>
+<style id="vista-previa-examinator">
+@media screen {
+ html:not([data-appearance="dark"]):not([data-appearance="oled"]){
+  --canvas:#f4f1ea;
+  --surface:#fbfaf6;
+  --ink:#26292b;
+  --muted:#555b5f;
+  --accent:#1d5466;
+  --line:#d8d3c7;
+  --ring:#1d5466;
+  --focus-course:#1d5466;
+  --soft:#d9e8ec;
+  --soft-ink:#194c5c;
+  --soft-border:#a9c2ca;
+  --secondary-bg:#f4f1ea;
+  --secondary-ink:#394249;
+  --secondary-border:#b6afa0;
+  --field-bg:#fffefa;
+  --field-text:#26292b;
+  --field-muted:#555b5f;
+  --field-disabled-bg:#ebe6db;
+  --editor-hover:#ebe6db;
+ }
+ html{
+  --editor-hover:var(--appearance-subtle);
+ }
+ body{
+  font-family:"Segoe UI",system-ui,-apple-system,sans-serif;
+ }
+ header.top,:root[data-course] header.top{
+  padding-block:17px 14px;
+  background:var(--surface);
+  border-bottom:1px solid var(--line);
+  color:var(--ink);
+ }
+ header.top h1{
+  color:var(--soft-ink);
+  font:600 clamp(22px,2.4vw,29px)/1.2 Palatino,"Palatino Linotype",Georgia,serif;
+  letter-spacing:.025em;
+  font-variant:small-caps;
+ }
+ header.top p{color:var(--muted);margin-top:5px}
+ .vocab-tabbar{
+  padding:8px 16px;
+  gap:8px;
+  background:var(--surface);
+  border-color:var(--line);
+  box-shadow:none;
+ }
+ :root[data-course] .vocab-tabbar>button{
+  min-height:39px;
+  padding:6px 11px;
+  border:1px solid var(--secondary-border);
+  border-radius:7px;
+  background:var(--surface);
+  color:var(--ink);
+  font-size:13px;
+  font-weight:650;
+ }
+ :root[data-course] .vocab-tabbar>button.active,
+ #examMobileTabs button[aria-selected="true"]{
+  color:#fff;
+  background:var(--accent);
+  border-color:var(--accent);
+  box-shadow:none;
+ }
+ .vocab-tabbar .appearance-picker{color:var(--ink)}
+ #appearanceMode{min-height:37px;padding-block:5px;border-color:var(--secondary-border)}
+ #examLayout,#vocabularyGenerator,#vocabManager,#academicWorkspace{margin-top:13px}
+ #examLayout #examEditorPanel,.vocab-manager,#academicWorkspace{
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:10px;
+  box-shadow:none;
+ }
+ #examLayout #examEditorPanel{padding:14px}
+ body.exam-redesign #exam-ui-shell{gap:10px}
+ body.exam-redesign #exam-ui-core,body.exam-redesign #examQuestionSettings,
+ body.exam-redesign #examEditorPanel #group-drafts,#examScoring,#examVisualSettings{
+  background:var(--surface);
+  color:var(--ink);
+  border:1px solid var(--line);
+  border-radius:10px;
+  box-shadow:none;
+ }
+ #examLayout #exam-ui-core #primaryExamSettings{
+  margin:0;
+  border:0;
+  border-radius:0;
+  background:transparent;
+  overflow:visible;
+ }
+ body.exam-redesign #examEditorPanel :is(.settings-group>summary,.exam-question-heading),
+ body.exam-redesign #examEditorPanel #primaryExamHeading{
+  background:var(--soft);
+  color:var(--soft-ink);
+  border-color:var(--line);
+  min-height:38px;
+  padding:7px 10px;
+ }
+ body.exam-redesign #examEditorPanel #primaryExamHeading{margin-bottom:5px}
+ body.exam-redesign #examEditorPanel :is(.settings-group>summary,.exam-question-heading):hover{
+  background:var(--editor-hover);
+ }
+ body.exam-redesign #exam-ui-shell :is(.field label,#exam-ui-meta label){color:var(--ink)}
+ #examEditorPanel :is(button,input,select,textarea),.vocab-manager :is(button,input,select,textarea),
+ #examLayout #examPreviewActions>button,#academicWorkspace :is(button,input,select,textarea){border-radius:7px}
+ body.exam-redesign #exam-ui-shell button:not(.exam-question-toggle),.vocab-manager button{
+  min-height:34px;
+  padding:4px 9px;
+  font-size:13px;
+ }
+ body.exam-redesign #exam-ui-shell button.secondary,
+ #examLayout #examPreviewActions :is(#saveDraft,#restoreDraft),
+ #examMobileTabs button:not([aria-selected="true"]){
+  background:var(--secondary-bg);
+  border:1px solid var(--secondary-border);
+  color:var(--secondary-ink);
+  box-shadow:none;
+ }
+ #examLayout #examPreviewActions>button{min-height:38px;padding:5px 11px;font-size:13px}
+ #examLayout #docx{background:#19599e;color:#fff}
+ #examLayout :is(#pdfDownload,#print){background:#a3222b;color:#fff}
+ #examLayout #examPreviewActions>button:hover{filter:brightness(.92)}
+ #examLayout :is(#examEditorPanel,#examPreviewActions) :is(button,select,textarea,input):focus-visible,
+ .vocab-tabbar :is(button,select):focus-visible{outline:2px solid var(--focus-course);outline-offset:2px}
+ #examEditorPanel #unitChoices label{
+  background:var(--canvas);
+  border-color:var(--line);
+  min-height:36px;
+  padding:5px 7px;
+ }
+ #examEditorPanel #unitChoices label:has(input:checked){
+  background:var(--soft);
+  border-color:var(--soft-border);
+  color:var(--soft-ink);
+ }
+ #examEditorPanel .curriculum-preview{background:var(--canvas);border-color:var(--line)}
+ #examEditorPanel .curriculum-preview>summary{color:var(--soft-ink)}
+ #examLayout #paper{background:#fff;color:#202630;border:1px solid var(--line);border-radius:5px;box-shadow:0 6px 20px #26292b26}
+ @media(max-width:760px), (pointer:coarse){
+  #examLayout #examPreviewActions>button,.vocab-tabbar>button,
+  body.exam-redesign #exam-ui-shell button:not(.exam-question-toggle),.vocab-manager button{min-height:44px}
+  .vocab-tabbar>button{flex:1 1 145px;max-width:none}
+  #appearanceMode,#examEditorPanel #unitChoices label{min-height:44px}
+ }
+}
+</style>
+
 </html>

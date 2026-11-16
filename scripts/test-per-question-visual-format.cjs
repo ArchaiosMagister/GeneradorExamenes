@@ -244,12 +244,13 @@ async function checkReviewLocaleAndContrast(page,file){
 }
 
 async function checkCourseThemeContrast(page,file){
- // El CSS específico del curso no puede ganar la cascada al tema oscuro/OLED.
+ // El tema Examinator unifica el fondo claro por asignatura; oscuro y OLED
+ // mantienen su paleta y todas las modalidades exigen contraste WCAG >= 7:1.
  // El encabezado «Unidades del examen» usa --ink sobre --soft.
  const fixtures=[
-  ['latin4','tablas','UD4','rgb(255, 251, 227)'],
-  ['greek1','morphology','UD8','rgb(234, 245, 255)'],
-  ['latin1','morf','UD4','rgb(255, 243, 226)']
+  ['latin4','tablas','UD4','rgb(217, 232, 236)'],
+  ['greek1','morphology','UD8','rgb(217, 232, 236)'],
+  ['latin1','morf','UD4','rgb(217, 232, 236)']
  ];
  const rgb=s=>String(s).match(/\d+(?:\.\d+)?/g).slice(0,3).map(Number);
  const luminance=c=>{
