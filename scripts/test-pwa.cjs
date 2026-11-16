@@ -48,7 +48,14 @@ const server=http.createServer(async(req,res)=>{
  const html=await fs.readFile(path.join(ROOT,'index.html'),'utf8');
  assert(html.includes('rel="apple-touch-icon" href="./icons/apple-touch-icon-180.png"'),
    'iPhone y iPad no tienen icono específico');
+ const deployment=await fs.readFile(path.join(ROOT,'.github/workflows/publish-online.yml'),'utf8');
+ assert(deployment.includes('exam-selection-summary.js'),
+  'GitHub Pages debe incluir el módulo extraído antes de publicar');
  const sw=await fs.readFile(path.join(ROOT,'sw.js'),'utf8');
+ assert(sw.includes("cache:'no-cache'")&&!sw.includes("cache:'reload'"),
+  'La nueva versión debe revalidar assets, no forzar su retransmisión incondicional');
+ assert(sw.includes('const batchSize=6')&&sw.includes('cache.addAll(CORE_FILES.slice('),
+  'La instalación debe limitar las peticiones simultáneas sin perder CORE_FILES');
  assert(extraIcons.every(([name])=>sw.includes('./icons/'+name)),
    'Los iconos de Apple, Android y navegador deben quedar disponibles sin conexión');
  await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
@@ -235,7 +242,7 @@ const server=http.createServer(async(req,res)=>{
    const reg=await navigator.serviceWorker.ready;
    const keys=await caches.keys();
    const storage=await caches.open(keys.find(k=>k.startsWith('examina-pwa-')));
-   const paths=['index.html','offline.html','pwa.js','exam-scoring.js','unified-backup.js','offline-lemmas.js','verification-review.js',
+   const paths=['index.html','offline.html','pwa.js','exam-selection-summary.js','exam-scoring.js','unified-backup.js','offline-lemmas.js','verification-review.js',
     'data/unimorph/lat-v.json','data/lemmas/teacher-forms.json',
     'data/latinismos-docente.json','data/prefijos-docente.json','data/modificacion-preverbial-docente.json',
     'data/modificacion-preverbial-unidades-lat1.json','data/lat4-progresion-lexico.json',
@@ -246,6 +253,8 @@ const server=http.createServer(async(req,res)=>{
     path:p,stored:!!await storage.match(new URL(p,reg.scope).href)
    })))};
   });
+  assert.equal(await page.locator('#examSelectionSummary').count(),1,
+   'El módulo externo no ha reconstruido el resumen visual del examen');
   assert.equal(cache.scope,origin+PREFIX);
   assert(cache.entries.every(x=>x.stored),'Precache incompleta: '+JSON.stringify(cache.entries));
   assert.equal(cache.rootDuplicate,false,'El SW conserva una copia adicional de la portada en ./');

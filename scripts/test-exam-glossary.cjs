@@ -175,6 +175,47 @@ assert(!engine.documentXml({...project,groupTypes:false}).includes('Sustantivos 
    x.course==='latin4'&&x.entry.startsWith('admīror')&&x.unit==='UD10'));
   assert.equal(stillRemoved,false,
    'Una corrección docente no puede revertirse al recargar la lista exigible');
+  // La gestión del exigible debe mantener edición y filtrado incluso con
+  // muchas filas. No se altera ningún registro docente persistente.
+  const managerBatch=await page.evaluate(()=>{
+   const originalLength=examRequired.length;
+   const selected=window.confirm;window.confirm=()=>true;
+   const course=document.getElementById('vmCourse');
+   const unit=document.getElementById('vmUnit');
+   const search=document.getElementById('vmSearch');
+   try{
+    for(let i=0;i<80;i++)examRequired.push({
+     course:'latin4',unit:'UD1',entry:'vocabulum-perf-'+i+', –i',
+     key:'vocabulum-perf-'+i,meaning:'prueba '+i
+    });
+    course.value='latin4';course.dispatchEvent(new Event('change',{bubbles:true}));
+    unit.value='UD1';unit.dispatchEvent(new Event('change',{bubbles:true}));
+    search.value='vocabulum-perf-';search.dispatchEvent(new Event('input',{bubbles:true}));
+    const entries=document.querySelectorAll('#vmRows tr');
+    const options=[...entries].map(tr=>tr.querySelector('select')?.options.length||0);
+    search.value='vocabulum-perf-17';search.dispatchEvent(new Event('input',{bubbles:true}));
+    const one=document.querySelector('#vmRows tr');
+    const name=one.querySelector('input[aria-label="Enunciado"]');
+    const meaning=one.querySelector('input[aria-label="Traducción"]');
+    meaning.value='traducción cambiada';meaning.dispatchEvent(new Event('change',{bubbles:true}));
+    const changed=examRequired.find(x=>x.entry==='vocabulum-perf-17, –i')?.meaning;
+    const selector=one.querySelector('select');
+    selector.value='UD2';selector.dispatchEvent(new Event('change',{bubbles:true}));
+    const moved=examRequired.find(x=>x.entry==='vocabulum-perf-17, –i')?.unit;
+    const gone=document.querySelectorAll('#vmRows tr').length;
+    unit.value='UD2';unit.dispatchEvent(new Event('change',{bubbles:true}));
+    const found=document.querySelectorAll('#vmRows tr').length;
+    return {count:entries.length,allOptions:options.every(n=>n>=10),
+     changed,moved,gone,found};
+   }finally{
+    examRequired.length=originalLength;
+    window.confirm=selected;search.value='';
+    saveRequired();unit.dispatchEvent(new Event('change',{bubbles:true}));
+   }
+  });
+  assert.deepEqual(managerBatch,{count:80,allOptions:true,
+   changed:'traducción cambiada',moved:'UD2',gone:0,found:1},
+   'El gestor exigible debe actualizar filas, traducciones y unidades sin pérdidas');
   await page.locator('#vmShowExam').click();
   await page.locator('#group-course').evaluate(el=>el.open=true);
   await page.locator('#group-content').evaluate(el=>el.open=true);
@@ -414,6 +455,54 @@ assert(!engine.documentXml({...project,groupTypes:false}).includes('Sustantivos 
   // No se crea un lema sintético doctusque ni se promociona nada a morfología.
   assert.equal(await page.evaluate(()=>latinSharedBank.vocabulary('latin4').some(x=>
    /^doctusque\b/i.test(x.entry))),false);
+  // Rendimiento: la vista del glosario conserva su identidad mientras su
+  // contenido sea idéntico, pero detecta TODO cambio del banco docente,
+  // incluso cuando se edita in situ sin modificar la longitud del array.
+  const memoized=await page.evaluate(()=>{
+   const original=latinSentenceGlossaryBank('latin4');
+   const same=latinSentenceGlossaryBank('latin4');
+   const latin1=latinSentenceGlossaryBank('latin1');
+   const before=buildFinalLexicon(['UD7'],[{text:'Arat et scribit.'}]);
+   const after=buildFinalLexicon(['UD7'],[{text:'Arat et scribit.'}]);
+   const row=original.find(r=>r.course==='latin4'&&vocab.includes(r)&&String(r.meaning||'').trim());
+   if(!row)throw Error('No se encontró una ficha editable del curso');
+   const meaning=row.meaning;
+   let edited=false,restored=false,added=false,removed=false,required=false;
+   try{
+    row.meaning=meaning+' [CAMBIO TEMPORAL]';
+    const changed=latinSentenceGlossaryBank('latin4');
+    edited=changed!==original&&changed.some(r=>r===row&&
+     r.meaning.endsWith('[CAMBIO TEMPORAL]'));
+   }finally{row.meaning=meaning}
+   const current=latinSentenceGlossaryBank('latin4');
+   restored=current!==original&&current.some(r=>r===row&&r.meaning===meaning);
+   const size=vocab.length;
+   try{
+    vocab.push({course:'latin4',unit:'UD3',entry:'tempuscache, –i',
+     meaning:'prueba temporal',meaning_va:'prova temporal'});
+    const grown=latinSentenceGlossaryBank('latin4');
+    added=grown!==current&&grown.some(r=>r.entry==='tempuscache, –i');
+   }finally{vocab.length=size}
+   const shrunk=latinSentenceGlossaryBank('latin4');
+   removed=!shrunk.some(r=>r.entry==='tempuscache, –i');
+   const requiredSize=examRequired.length;
+   try{
+    examRequired.push({course:'latin4',unit:'UD4',
+     entry:'quidditascache, –atis (f.)'});
+    const updated=latinSentenceGlossaryBank('latin4');
+    required=updated.some(r=>r.entry==='quidditascache, –atis (f.)');
+   }finally{examRequired.length=requiredSize}
+   const final=latinSentenceGlossaryBank('latin4');
+   const noResidual=!final.some(r=>r.entry==='quidditascache, –atis (f.)');
+   return {stable:original===same,differentCourse:original!==latin1,
+    identicalMarkup:before===after,edited,restored,added,removed,
+    required,noResidual};
+  });
+  assert.deepEqual(memoized,{
+   stable:true,differentCourse:true,identicalMarkup:true,
+   edited:true,restored:true,added:true,removed:true,
+   required:true,noResidual:true
+  },'La caché debe conservar la identidad y caducar tras cada edición real');
   const customOverride=await page.evaluate(()=>{
    const len=vocab.length;
    vocab.push({course:'latin4',unit:'UD3',entry:'aro, aravi, aratum (1ª)',
@@ -543,6 +632,97 @@ assert(!engine.documentXml({...project,groupTypes:false}).includes('Sustantivos 
   assert(/latus/i.test(wordHomographXml.normalize('NFD').replace(/\p{M}/gu,''))&&
    /[–-]a,\s*[–-]um/.test(wordHomographXml),
    'Word no conserva el adjetivo latus');
+  // La escritura de un texto largo se agrupa, sin dejar Word o el
+  // borrador con un glosario antiguo si se exporta inmediatamente.
+  const batching=await page.evaluate(()=>{
+   const course=document.getElementById('course');
+   course.value='latin1';course.dispatchEvent(new Event('change',{bubbles:true}));
+   const model=document.getElementById('model');
+   model.value='mixto';model.dispatchEvent(new Event('change',{bubbles:true}));
+   const source=document.getElementById('newSentences');
+   const long=('Puella in villa laborat. ').repeat(23)+'Puella amat.';
+   source.value=long;source.dispatchEvent(new Event('input',{bubbles:true}));
+   const stored=JSON.parse(localStorage.getItem('examina_exam_sentences_v1')||'{}');
+   const pending=typeof window.ExaminaFlushSentenceGlossary==='function'&&
+    document.getElementById('examSentenceGlossary')?.textContent.indexOf('villa')===-1;
+   return {pending,source:source.value,
+    preview:document.querySelector('[data-sentence-slot="0"]')?.textContent,
+    saved:(stored['latin1/mixto']||[])[0]};
+  });
+  assert.equal(batching.pending,true,'Un texto largo debe agruparse antes de analizarse');
+  assert.equal(batching.preview,batching.source,'La vista del enunciado debe actualizarse inmediatamente');
+  assert.equal(batching.saved,batching.source,'El borrador debe estar persistido al pulsar una tecla');
+  const pendingWord=page.waitForEvent('download');
+  await page.evaluate(()=>exportWord(false));
+  const immediateWord=await pendingWord;
+  const immediateXml=wordDocumentXml(fs.readFileSync(await immediateWord.path()));
+  assert(immediateXml.includes('Puella amat.')&&immediateXml.includes('villa'),
+   'La exportación inmediata después de escribir debe incluir la última oración');
+  const refreshed=await page.locator('#examSentenceGlossary .gloss-item').allTextContents();
+  assert(refreshed.length>0,'Word debe forzar el glosario antes de exportar');
+  await page.evaluate(()=>{
+   const input=document.getElementById('newSentences');
+   input.value='Puella amat.';
+   input.dispatchEvent(new Event('input',{bubbles:true}));
+  });
+  assert.equal(await page.locator('[data-sentence-slot="0"]').textContent(),'Puella amat.');
+  // Cambiar solo la cantidad de formas en Latín I no debe llamar a generate()
+  // ni perder los nodos y las ediciones de las otras preguntas.
+  const directResize=await page.evaluate(()=>{
+   const course=document.getElementById('course');
+   course.value='latin1';course.dispatchEvent(new Event('change',{bubbles:true}));
+   const model=document.getElementById('model');
+   model.value='tablas';model.dispatchEvent(new Event('change',{bubbles:true}));
+   const units=document.querySelectorAll('#unitChoices .unit-choice');
+   if(units[0]){units[0].checked=true;units[0].dispatchEvent(new Event('change',{bubbles:true}))}
+   const counter=document.getElementById('count-forms');
+   counter.value='4';generate();
+   const heading=document.querySelector('#paper .exam-question[data-exam-kind="decl"]');
+   const formHeading=document.querySelector('#paper .exam-question[data-exam-kind="forms"]');
+   if(!heading||!formHeading)throw Error('No hay pregunta nominal y de análisis en el examen completo');
+   heading.dataset.preserveResize='yes';
+   const formerGenerate=generate;let calls=0;
+   generate=function(){calls++;return formerGenerate()};
+   try{
+    counter.value='6';counter.dispatchEvent(new Event('change',{bubbles:true}));
+    const rows=document.querySelectorAll('#paper [data-analysis-slot]');
+    const answer=document.querySelector('#answerkey li[data-exam-kind="forms"] ol');
+    return {calls,stable:heading.isConnected,
+     sameHeading:heading.dataset.preserveResize==='yes',
+     forms:rows.length,answers:answer?.querySelectorAll('li').length||0,
+     initialHeadingPreserved:formHeading.isConnected};
+   }finally{generate=formerGenerate}
+  });
+  assert.equal(directResize.calls,0,'Cambiar formas no debe generar el examen latino completo');
+  assert.equal(directResize.stable,true,'Se ha sustituido la pregunta de declinación');
+  assert.equal(directResize.sameHeading,true,'Se ha perdido una edición en otra pregunta');
+  assert.equal(directResize.initialHeadingPreserved,true,'Se ha sustituido el enunciado de análisis');
+  assert.equal(directResize.forms,6,'El apartado de análisis no se ha redimensionado');
+  assert.equal(directResize.answers,6,'Las soluciones de análisis no están sincronizadas');
+  // Los índices morfológicos no cambian el orden, las etiquetas ni las
+  // ambigüedades de las formas; una consulta repetida da el mismo resultado.
+  const lookupIndex=await page.evaluate(async()=>{
+   const engine=window.ExaminaMorphology;
+   const lat=await engine.lookup('lat','puella','form');
+   const repeated=await engine.lookup('lat','puella','form');
+   const greek=await engine.lookup('grc','λόγος','lemma');
+   const greekRepeated=await engine.lookup('grc','λόγος','lemma');
+   const ids=rows=>rows.map(x=>JSON.stringify([x.headword,x.surface,x.features]));
+   return {latinCount:lat.length,greekCount:greek.length,
+    latinStable:JSON.stringify(lat)===JSON.stringify(repeated),
+    greekStable:JSON.stringify(greek)===JSON.stringify(greekRepeated),
+    latinUnique:new Set(ids(lat)).size===lat.length,
+    greekUnique:new Set(ids(greek)).size===greek.length,
+    latinNom:lat.some(x=>x.headword==='puella'),
+    greekGen:greek.some(x=>x.surface==='λόγου')};
+  });
+  assert(lookupIndex.latinCount>=1&&lookupIndex.greekCount>=4);
+  assert(lookupIndex.latinStable&&lookupIndex.greekStable,
+   'La caché morfológica alteró las respuestas consecutivas');
+  assert(lookupIndex.latinUnique&&lookupIndex.greekUnique,
+   'La deduplicación morfológica introdujo entradas repetidas');
+  assert(lookupIndex.latinNom&&lookupIndex.greekGen,
+   'No se recuperan los ejemplos nominales de referencia');
   assert.deepEqual(errors,[],'No deben aparecer errores JavaScript en la interfaz');
   console.log('Glosario de oraciones: elecciones, persistencia, edición, tipos y agrupación: OK');
  }finally{

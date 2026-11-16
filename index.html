@@ -1280,7 +1280,12 @@ try{
 const sentenceContext=()=>currentCourse()+'/'+$('model').value;
 const sentenceLines=()=>sentenceDrafts.get(sentenceContext())||[];
 function saveSentenceLines(lines,key=sentenceContext()){
- sentenceDrafts.set(key,lines);
+ const previous=sentenceDrafts.get(key);
+ // No escribir localStorage cuando una sincronización entre editores no
+ // modifica ninguna oración: las escrituras síncronas bloquean Safari/iPad.
+ if(previous&&previous.length===lines.length&&
+    previous.every((value,i)=>value===lines[i]))return;
+ sentenceDrafts.set(key,lines.slice());
  try{localStorage.setItem(sentenceDraftKey,JSON.stringify(Object.fromEntries(sentenceDrafts)))}catch{}
 }
 function sentenceList(count,lines,greek=false){
@@ -1293,13 +1298,33 @@ function sentenceGlossary(chosen){
  const rows=sentenceLines().slice(0,countFor('sent')).map(text=>({text}));
  return '<div id="examSentenceGlossary" contenteditable="false">'+buildFinalLexicon(chosen,rows)+'</div>';
 }
+let sentenceGlossTimer=null;
 function refreshSentenceGlossary(){
+ if(sentenceGlossTimer!==null){clearTimeout(sentenceGlossTimer);sentenceGlossTimer=null}
  const panel=$('examSentenceGlossary');
  if(!panel)return;
  const chosen=currentCourse()==='greek1'?greekMarkedUnits():selectedUnits();
- panel.innerHTML=buildFinalLexicon(chosen,[...$('paper').querySelectorAll('[data-sentence-slot]')]
+ const updated=buildFinalLexicon(chosen,[...$('paper').querySelectorAll('[data-sentence-slot]')]
   .map(node=>({text:node.textContent})));
+ // Mantener los selectores y el foco cuando no ha cambiado el glosario.
+ if(panel.innerHTML!==updated)panel.innerHTML=updated;
 }
+function scheduleSentenceGlossaryRefresh(){
+ // Las frases breves conservan la actualización inmediata original.
+ // En textos largos, acumular ráfagas de pulsaciones, nunca las decisiones
+ // filológicas ni los comandos de exportación.
+ const text=$('newSentences').value;
+ if(text.length<400){refreshSentenceGlossary();return}
+ if(sentenceGlossTimer!==null)clearTimeout(sentenceGlossTimer);
+ sentenceGlossTimer=setTimeout(refreshSentenceGlossary,110);
+}
+// Word/PDF/borradores deben leer siempre la última edición, aunque el
+// profesor pulse Exportar antes de que transcurran esos 110 ms.
+window.ExaminaFlushSentenceGlossary=refreshSentenceGlossary;
+$('newSentences').addEventListener('change',refreshSentenceGlossary);
+$('paper').addEventListener('focusout',event=>{
+ if(event.target.closest?.('[data-sentence-slot]'))refreshSentenceGlossary();
+});
 // Resolver las ambigüedades en la propia vista previa actualiza el Word,
 // pero nunca altera el banco acreditado ni regenera las preguntas.
 $('paper').addEventListener('change',event=>{
@@ -1329,9 +1354,10 @@ $('newSentences').addEventListener('input',()=>{
  const lines=$('newSentences').value.split('\n');
  saveSentenceLines(lines);
  $('paper').querySelectorAll('[data-sentence-slot]').forEach(node=>{
-  node.textContent=lines[Number(node.dataset.sentenceSlot)]||'';
+  const next=lines[Number(node.dataset.sentenceSlot)]||'';
+  if(node.textContent!==next)node.textContent=next;
  });
- refreshSentenceGlossary();
+ scheduleSentenceGlossaryRefresh();
 });
 $('paper').addEventListener('input',event=>{
  const slot=event.target.closest('[data-sentence-slot]');
@@ -1341,7 +1367,7 @@ $('paper').addEventListener('input',event=>{
  lines[index]=slot.textContent;
  saveSentenceLines(lines);
  syncSentenceEditor();
- refreshSentenceGlossary();
+ scheduleSentenceGlossaryRefresh();
 });
 $('paper').addEventListener('keydown',event=>{
  if(event.key==='Enter'&&event.target.closest('[data-sentence-slot]'))event.preventDefault();
@@ -1444,6 +1470,12 @@ const LATIN4_SENTENCE_GLOSS_SUPPLEMENTS=Object.freeze([
  {entry:'scribo, scripsi, scriptum (3ª)',meaning:'escribir',meaning_va:'escriure'},
  {entry:'doctus, –a, –um',meaning:'sabio/a, docto/a',meaning_va:'savi/sàvia, docte/docta'}
 ]);
+// El análisis de paradigmas conserva cachés WeakMap por referencia del banco.
+// Cuando el contenido docente no cambia entre pulsaciones, mantener la misma
+// lista evita reconstruir miles de formas latinas. La firma completa se calcula
+// CADA vez para invalidar la caché también ante ediciones de fichas in situ,
+// importaciones, cambios de acepción y modificaciones del exigible.
+const latinSentenceGlossaryCache=new Map();
 function latinSentenceGlossaryBank(course){
  if(course!=='latin1'&&course!=='latin4')return [];
  const other=course==='latin1'?'latin4':'latin1';
@@ -1476,6 +1508,12 @@ function latinSentenceGlossaryBank(course){
    if(row.course===c&&!lemmas.has(examKey(row.entry)))add({
     ...row,meaning:'',meaning_va:''
    });
+ // No basta con comprobar longitud ni comparar referencias: el profesor
+ // puede corregir el enunciado o la traducción en el mismo objeto.
+ const signature=JSON.stringify(result);
+ const previous=latinSentenceGlossaryCache.get(course);
+ if(previous?.signature===signature)return previous.bank;
+ latinSentenceGlossaryCache.set(course,{signature,bank:result});
  return result;
 }
 // La UD6 introduce el perfecto en Latín de 4.º: identificar la forma
@@ -2772,6 +2810,7 @@ function wordExamGloss(el){
  for(let i=0;i<half;i++){out+='<w:tr><w:trPr><w:cantSplit/></w:trPr>';[items[i],items[i+half]].forEach((x,j)=>{out+='<w:tc><w:tcPr><w:tcW w:w="'+(j?4032:4756)+'" w:type="dxa"/></w:tcPr><w:p><w:pPr><w:spacing w:before="0" w:after="0" w:line="300" w:lineRule="atLeast"/></w:pPr>'+(x?wordInline(x):'')+'</w:p></w:tc>'});out+='</w:tr>'}return out+'</w:tbl>';
 }
 function exportWord(includeAnswers){
+ window.ExaminaFlushSentenceGlossary?.();
  const paper=$('paper');
  if(!paper||!paper.textContent.trim()){alert('Genera primero un examen.');return;}
  if(window.ExaminaTeacherReview?.evidenceMayExport?.(paper,
@@ -2962,8 +3001,57 @@ const $v=id=>document.getElementById(id);
 const courseNames={latin4:'Latín 4.º ESO',latin1:'Latín I',greek1:'Griego I'};
 function vmUnits(course){let units=[...new Set(vocab.filter(x=>courseOf(x)===course).map(x=>x.unit).filter(Boolean))];let fromReq=examRequired.filter(x=>x.course===course).map(x=>x.unit);units=[...new Set([...units,...fromReq])];units.sort((a,b)=>(examUnitNumber(a)||999)-(examUnitNumber(b)||999)||a.localeCompare(b));if(course==='greek1')for(let n=0;n<=14;n++){let u='UD'+n;if(!units.includes(u))units.push(u)}if(!units.length)units=Array.from({length:12},(_,i)=>'UD'+(i+1));return units.sort((a,b)=>(examUnitNumber(a)||999)-(examUnitNumber(b)||999))}
 function refreshUnits(){let sel=$v('vmUnit'),prev=sel.value;sel.replaceChildren();for(const unit of vmUnits($v('vmCourse').value)){let o=document.createElement('option');o.value=unit;o.textContent=unit;sel.append(o)}if([...sel.options].some(x=>x.value===prev))sel.value=prev;render()}
-function render(){let c=$v('vmCourse').value,u=$v('vmUnit').value,q=$v('vmSearch').value.trim().toLocaleLowerCase();let rows=examRequired.map((x,i)=>({...x,index:i})).filter(x=>x.course===c&&x.unit===u&&(!q||(x.entry+' '+(x.meaning||'')).toLocaleLowerCase().includes(q)));$v('vmCount').textContent=`${rows.length} entradas en ${u} · ${examRequired.filter(x=>x.course===c).length} en ${courseNames[c]}.`;
-let body=$v('vmRows');body.replaceChildren();for(const x of rows){let tr=document.createElement('tr');let unit=document.createElement('select');for(const name of vmUnits(c)){let o=document.createElement('option');o.value=name;o.textContent=name;unit.append(o)}unit.value=x.unit;unit.onchange=()=>{examRequired[x.index].unit=unit.value;saveRequired();render()};let entry=document.createElement('input');entry.value=x.entry;entry.setAttribute('aria-label','Enunciado');entry.onchange=()=>{let val=entry.value.trim(),key=examKey(val);if(!key){entry.value=x.entry;return}if(examRequired.some((y,i)=>i!==x.index&&y.course===c&&y.unit===examRequired[x.index].unit&&y.key===key)){alert('Ya existe esa palabra en la unidad');entry.value=x.entry;return}examRequired[x.index].entry=val;examRequired[x.index].key=key;saveRequired();render()};let meaning=document.createElement('input');meaning.value=x.meaning||'';meaning.setAttribute('aria-label','Traducción');meaning.onchange=()=>{examRequired[x.index].meaning=meaning.value.trim();saveRequired()};let del=document.createElement('button');del.textContent='Eliminar';del.onclick=()=>{if(!confirm('¿Eliminar '+x.entry+' del vocabulario exigible?'))return;examRequired.splice(x.index,1);saveRequired();render()};for(let control of [unit,entry,meaning,del]){let td=document.createElement('td');td.append(control);tr.append(td)}body.append(tr)}
+function render(){
+ const c=$v('vmCourse').value,u=$v('vmUnit').value;
+ const q=$v('vmSearch').value.trim().toLocaleLowerCase();
+ const rows=[];let courseCount=0;
+ // Una sola pasada preserva los índices reales de edición/borrado.
+ for(let index=0;index<examRequired.length;index++){
+  const item=examRequired[index];
+  if(item.course!==c)continue;
+  courseCount++;
+  if(item.unit!==u||q&&!(item.entry+' '+(item.meaning||'')).toLocaleLowerCase().includes(q))continue;
+  rows.push({item,index});
+ }
+ $v('vmCount').textContent=`${rows.length} entradas en ${u} · ${courseCount} en ${courseNames[c]}.`;
+ // Antes se recomputaban todas las unidades para CADA fila y se insertaban
+ // controles directamente en la tabla dentro del bucle.
+ const unitTemplate=document.createElement('select');
+ for(const name of vmUnits(c)){
+  const option=document.createElement('option');
+  option.value=name;option.textContent=name;unitTemplate.append(option);
+ }
+ const body=$v('vmRows'),fragment=document.createDocumentFragment();
+ for(const {item:x,index} of rows){
+  const tr=document.createElement('tr'),unit=unitTemplate.cloneNode(true);
+  unit.value=x.unit;
+  unit.onchange=()=>{examRequired[index].unit=unit.value;saveRequired();render()};
+  const entry=document.createElement('input');entry.value=x.entry;
+  entry.setAttribute('aria-label','Enunciado');
+  entry.onchange=()=>{
+   const val=entry.value.trim(),key=examKey(val);
+   if(!key){entry.value=x.entry;return}
+   if(examRequired.some((y,i)=>i!==index&&y.course===c&&
+      y.unit===examRequired[index].unit&&y.key===key)){
+    alert('Ya existe esa palabra en la unidad');entry.value=x.entry;return;
+   }
+   examRequired[index].entry=val;examRequired[index].key=key;
+   saveRequired();render();
+  };
+  const meaning=document.createElement('input');meaning.value=x.meaning||'';
+  meaning.setAttribute('aria-label','Traducción');
+  meaning.onchange=()=>{examRequired[index].meaning=meaning.value.trim();saveRequired()};
+  const del=document.createElement('button');del.textContent='Eliminar';
+  del.onclick=()=>{
+   if(!confirm('¿Eliminar '+x.entry+' del vocabulario exigible?'))return;
+   examRequired.splice(index,1);saveRequired();render();
+  };
+  for(const control of [unit,entry,meaning,del]){
+   const td=document.createElement('td');td.append(control);tr.append(td);
+  }
+  fragment.append(tr);
+ }
+ body.replaceChildren(fragment);
 }
 function feedback(t){$v('vmFeedback').textContent=t}
 function add(unit,entry,meaning){let c=$v('vmCourse').value,key=examKey(entry);if(!unit||!key)return false;if(examRequired.some(x=>x.course===c&&x.unit===unit&&x.key===key))return false;examRequired.push({course:c,unit,entry,key,meaning:meaning||''});return true}
@@ -3020,7 +3108,9 @@ renderReview();
 // Borradores del examen: copia fiel del contenido editable, incluida la clave de respuestas.
 // La copia automática antes de regenerar protege las modificaciones manuales accidentales.
 const DRAFT_KEY='examina_draft_v14', PREVIOUS_KEY='examina_previous_v14';
-function snapshotExam(){return {
+function snapshotExam(){
+ window.ExaminaFlushSentenceGlossary?.();
+ return {
  schema:'examina-exam-draft',version:1,course:currentCourse(),model:$('model').value,
  language:$('lang').value,created:new Date().toISOString(),title:$('name').value,
  sheetType:$('sheetType')?.value==='review'?'review':'exam',
@@ -3041,7 +3131,7 @@ function cleanDraftHtml(raw){
  root.querySelectorAll('*').forEach(el=>{for(const attr of [...el.attributes]){if(/^on/i.test(attr.name)||['src','srcdoc','href','style'].includes(attr.name))el.removeAttribute(attr.name)}});
  return root.innerHTML;
 }
-function saveDraftTo(key){try{localStorage.setItem(key,JSON.stringify(snapshotExam()));return true}catch(e){$('draftStatus').textContent='No se pudo guardar localmente. Exporta el borrador JSON.';return false}}
+function saveDraftTo(key){try{window.ExaminaFlushSentenceGlossary?.();localStorage.setItem(key,JSON.stringify(snapshotExam()));return true}catch(e){$('draftStatus').textContent='No se pudo guardar localmente. Exporta el borrador JSON.';return false}}
 function restoreDraft(d){
  if(!validDraft(d))throw Error('Formato de borrador no reconocido');
  // Ajustar el contexto ANTES de reponer el HTML: los selectores pueden
@@ -3937,6 +4027,37 @@ function resizeOnlyExamAnalysis(){
   return nodes;
  };
  const oldBody=bodyNodes(oldHeading);
+ // Examen latino completo / traducción: la cantidad de formas puede
+ // recalcularse sin generar ni descartar las otras preguntas. Mantener el
+ // mecanismo conservador anterior para las variantes morfológicas/griegas.
+ if(currentCourse()!=='greek1'&&original?.classList.contains('latin-standard-exam')&&
+    oldHeading.matches('[data-exam-kind="forms"]')){
+  const chosen=selectedUnits(),count=examMorphQuotasActive()?examMorphQuotaCount():countFor('forms');
+  const forms=stickyExamRows('forms',()=>examQuotaPick(
+   latinExamFormCandidates(chosen),count,()=>latinExamForms(chosen,count)));
+  const lines=forms.length?'<ol class="task" type="a">'+forms.map((item,i)=>
+   '<li data-analysis-slot="'+i+'"><i'+examAcademicAttrs(item)+'>'+esc(item.form)+'</i>'+
+   latinMorphologyEnunciationHtml(item,chosen)+
+   ': <span class="reference-answer-line"></span></li>').join('')+'</ol>':
+   '<p class="small no-print">No hay formas variables verificadas para estas unidades.</p>';
+  const stage=document.createElement('template');
+  stage.innerHTML=lines;
+  const replacement=[...stage.content.childNodes];
+  if(oldBody.length){
+   oldBody[0].before(...replacement);
+   oldBody.forEach(node=>node.remove());
+  }else oldHeading.after(...replacement);
+  const answer=original.querySelector('#answerkey > ol > li[data-exam-kind="forms"]');
+  if(answer){
+   const list=answer.querySelector('ol');
+   if(list)list.innerHTML=forms.map(item=>
+    '<li>'+esc(item.form)+' — '+esc(item.answer)+'</li>').join('');
+  }
+  refreshManualMorphWords();
+  window.examinaLastLatinPreview=paper.innerHTML;
+  window.ExaminaScoring?.sync?.();
+  return;
+ }
  const previousGreek=currentCourse()==='greek1'&&typeof greekExamState!=='undefined'&&greekExamState?
   {ids:Object.fromEntries(Object.entries(greekExamState.ids).map(([key,ids])=>[key,[...ids]]))}:null;
  generate();
@@ -5341,48 +5462,9 @@ loadTeacherLatinLexBanks();
  document.addEventListener('DOMContentLoaded',()=>{buttons();questionMenus()},{once:true});
 })();
 /* Resumen de la seleccion visible, sin modificar la configuracion ni generar datos. */
-(function setupExamVisualSummary(){
- const panel=document.querySelector('#examLayout>aside.panel');
- const heading=panel?.querySelector(':scope>h2');
- if(!heading||document.getElementById('examSelectionSummary'))return;
- const host=document.createElement('div');
- host.id='examSelectionSummary';host.setAttribute('aria-live','polite');
- const caption=document.createElement('div'),title=document.createElement('div'),details=document.createElement('div');
- caption.className='exam-summary-caption';caption.textContent='Configuración actual';
- title.className='exam-summary-title';details.className='exam-summary-details';
- host.append(caption,title,details);heading.after(host);
- const courseNames={latin1:'Latín I',latin4:'Latín 4.º ESO',greek1:'Griego I'};
- function render(){
-  const course=document.getElementById('course'),model=document.getElementById('model'),lang=document.getElementById('lang');
-  if(!course||!model||!lang)return;
-  const mode=model.selectedOptions[0]?.textContent?.replace(/^\s*[123]\s*[·.]\s*/,'').trim()||'Examen';
-  title.textContent=(courseNames[course.value]||course.selectedOptions[0]?.textContent||'Curso')+' · '+mode;
-  const selected=[...document.querySelectorAll('#unitChoices .unit-choice:checked')]
-   .map(input=>typeof units!=='undefined'?units[Number(input.value)]:input.closest('label')?.textContent?.trim())
-   .filter(Boolean);
-  let description='Sin unidades seleccionadas';
-  if(selected.length){
-   const numbers=selected.map(x=>/^UD(\d+)$/i.exec(x)?.[1]).filter(Boolean).map(Number);
-   if(numbers.length===selected.length){
-    const consecutive=numbers.every((n,i)=>i===0||n===numbers[i-1]+1);
-    description=selected.length===1?'UD '+numbers[0]:
-     consecutive?'UDs '+numbers[0]+'–'+numbers[numbers.length-1]:
-     selected.length<=6?'UDs '+numbers.join(', '):selected.length+' unidades seleccionadas';
-   }else description=selected.length<=4?selected.join(', '):selected.length+' unidades seleccionadas';
-  }
-  const language=lang.value==='va'?'Valencià':'Castellano';
-  const cumulative=document.getElementById('cumulative');
-  const extra=cumulative?.checked&&!cumulative.closest('[hidden]')?' · Vocabulario acumulado':'';
-  details.textContent=description+' · '+language+extra;
- }
- document.addEventListener('change',()=>queueMicrotask(render),true);
- for(const id of ['allUnits','clearUnits']){
-  document.getElementById(id)?.addEventListener('click',()=>queueMicrotask(render));
- }
- render();
-})();
+/* Resumen de selección cargado en exam-selection-summary.js */
 
-</script><script>/* UniMorph: local-only morphology reference, not an exam vocabulary source.
+</script><script src="exam-selection-summary.js" defer></script><script>/* UniMorph: local-only morphology reference, not an exam vocabulary source.
    Original datasets: https://github.com/unimorph/lat and https://github.com/unimorph/grc
    Licensing/attribution: consult each upstream repository before redistribution.
    Import the upstream tab-separated files once; data stays in browser IndexedDB. */
@@ -5432,16 +5514,36 @@ const builtInMorph={
  grc:[["λόγος","λόγος","N;NOM;SG;MASC"],["λόγος","λόγον","N;ACC;SG;MASC"],["λόγος","λόγου","N;GEN;SG;MASC"],["λόγος","λόγῳ","N;DAT;SG;MASC"]]
 };
 function morphologyNormalize(s){return norm(s).normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/ς/g,'σ')}
-const fullLookupCache=new Map();
+const fullLookupCache=new Map(),bundledLookupCache=new WeakMap();
+const SHARD_CACHE_LIMIT=12;
+function cachedShard(path){
+ const rows=fullLookupCache.get(path);
+ if(rows){fullLookupCache.delete(path);fullLookupCache.set(path,rows)}
+ return rows;
+}
+function indexShard(path,rows,mode){
+ const index=new Map();
+ for(const row of rows){
+  if(!Array.isArray(row))continue;
+  const k=morphologyNormalize(row[mode==='lemma'?0:1]);
+  if(!index.has(k))index.set(k,[]);
+  index.get(k).push(row);
+ }
+ fullLookupCache.set(path,index);
+ // Limitar shards residentes: podrán recuperarse de CacheStorage offline.
+ if(fullLookupCache.size>SHARD_CACHE_LIMIT)
+  fullLookupCache.delete(fullLookupCache.keys().next().value);
+ return index;
+}
 async function fullUniMorphLookup(language,word,mode){
  const key=morphologyNormalize(word),first=[...key][0];
  if(!first)return {rows:[],available:false};
  const hex=[...key].slice(0,2).map(char=>char.codePointAt(0).toString(16).padStart(4,'0')).join('-');
  const path='data/unimorph/lookup/'+language+'/'+(mode==='lemma'?'lemma':'form')+'-'+hex+'.json';
- let rows=fullLookupCache.get(path);
- if(!rows){
+ let indexed=cachedShard(path);
+ if(!indexed){
   try{
-   rows=examinaEmbeddedAsset(path);
+   let rows=examinaEmbeddedAsset(path);
    if(!rows){
     if(location.protocol==='file:')return {rows:[],available:false};
     const response=await fetch(path,{cache:'force-cache'});
@@ -5449,11 +5551,35 @@ async function fullUniMorphLookup(language,word,mode){
     rows=await response.json();
    }
    if(!Array.isArray(rows))return {rows:[],available:false};
-   fullLookupCache.set(path,rows);
+   indexed=indexShard(path,rows,mode);
   }catch(error){return {rows:[],available:false}}
  }
- return {rows:rows.filter(row=>Array.isArray(row)&&morphologyNormalize(row[mode==='lemma'?0:1])===key)
-  .map(row=>({headword:row[0],surface:row[1],features:row[2],source:'UniMorph completo'})),available:true};
+ return {rows:(indexed.get(key)||[]).map(row=>({headword:row[0],
+  surface:row[1],features:row[2],source:'UniMorph completo'})),available:true};
+}
+function indexedBundledMorphology(language,bundled,mode,query){
+ if(!bundled||typeof bundled!=='object')
+  return (builtInMorph[language]||[])
+   .filter(row=>morphologyNormalize(row[mode==='lemma'?0:1])===query)
+   .map(row=>({headword:row[0],surface:row[1],features:row[2],
+    subtype:row[4]||'',source:row.length>=5?'UniMorph':'Paradigma escolar'}));
+ let indexes=bundledLookupCache.get(bundled);
+ if(!indexes){
+  indexes={form:new Map(),lemma:new Map()};
+  const rows=[...(builtInMorph[language]||[]),
+   ...(['v','n','adj','pro'].flatMap(kind=>bundled[kind]||[]))];
+  for(const row of rows){
+   const record={headword:row[0],surface:row[1],features:row[2],
+    subtype:row[4]||'',source:row.length>=5?'UniMorph':'Paradigma escolar'};
+   for(const [kind,i] of [['form',1],['lemma',0]]){
+    const k=morphologyNormalize(row[i]);
+    if(!indexes[kind].has(k))indexes[kind].set(k,[]);
+    indexes[kind].get(k).push(record);
+   }
+  }
+  bundledLookupCache.set(bundled,indexes);
+ }
+ return indexes[mode].get(query)||[];
 }
 async function lookup(language,word,mode='form'){
  const query=morphologyNormalize(word),results=[];
@@ -5461,17 +5587,19 @@ async function lookup(language,word,mode='form'){
  results.push(...complete.rows);
  window.ExaminaMorphologyFullLookupAvailable=complete.available;
  const bundled=typeof bundledMorphology!=='undefined'?bundledMorphology[language]:null;
- const rows=[...(builtInMorph[language]||[]),...(['v','n','adj','pro'].flatMap(k=>bundled?.[k]||[]))];
- for(const row of rows){
-  if(morphologyNormalize(row[mode==='lemma'?0:1])===query)
-   results.push({headword:row[0],surface:row[1],features:row[2],subtype:row[4]||'',source:row.length>=5?'UniMorph':'Paradigma escolar'});
- }
+ results.push(...indexedBundledMorphology(language,bundled,mode,query));
  try{
   const d=await db(),t=transaction(d,['forms'],'readonly');
   const index=t.objectStore('forms').index(mode==='lemma'?'byLemma':'byForm');
   results.push(...await req(index.getAll(language+'|'+norm(word))));
  }catch(error){}
- return results.filter((r,i,a)=>a.findIndex(x=>x.headword===r.headword&&x.surface===r.surface&&x.features===r.features)===i);
+ // Mantener la misma deduplicación que findIndex, pero con coste lineal.
+ const seen=new Set();
+ return results.filter(row=>{
+  const k=JSON.stringify([row.headword,row.surface,row.features]);
+  if(seen.has(k))return false;
+  seen.add(k);return true;
+ });
 }
 const morphologyTerms={
  N:'sustantivo',V:'verbo',ADJ:'adjetivo',PRO:'pronombre',

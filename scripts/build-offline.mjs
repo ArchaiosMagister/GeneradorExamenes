@@ -26,6 +26,13 @@ export async function renderOffline(root=projectRoot){
  const noHead=metadata.reduce((html,tag)=>html.replace(tag,''),sourceHtml);
  const noPanel=noHead.slice(0,noHead.indexOf(begin))+noHead.slice(noHead.indexOf(end)+end.length);
  let html=noPanel.replace('<script src="pwa.js" defer></script>','');
+ // Conservar un único origen para los widgets de interfaz en la PWA
+ // y el HTML autónomo, evitando dos implementaciones divergentes.
+ const summaryExternal='<script src="exam-selection-summary.js" defer></script>';
+ if(!html.includes(summaryExternal))throw new Error('Falta el resumen visual del examen');
+ const summaryModule=await readFile(resolve(root,'exam-selection-summary.js'),'utf8');
+ html=html.replace(summaryExternal,
+  '<script>'+summaryModule.replace(/<\/script/gi,'<\\/script')+'</script>');
  const qualityModule=await readFile(resolve(root,'vocabulary-quality.js'),'utf8');
  const qualityExternal='<script src="vocabulary-quality.js" defer></script>';
  if(!html.includes(qualityExternal))throw new Error('Falta el módulo de auditoría de vocabulario');
