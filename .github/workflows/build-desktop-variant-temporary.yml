@@ -1,0 +1,27 @@
+name: Regenerar HTML autónomo de la variante de escritorio
+on:
+  push:
+    branches: [experiment/desktop-interface-four-areas-20261116]
+    paths:
+      - '.github/workflows/build-desktop-variant-temporary.yml'
+permissions:
+  contents: write
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Reconstruir versión autónoma desde index.html
+        run: |
+          set -euo pipefail
+          npm run offline:build
+          git add offline.html
+          if ! git diff --cached --quiet; then
+            git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'build: sincronizar variante visual con HTML autónomo'
+            git push origin HEAD:experiment/desktop-interface-four-areas-20261116
+          fi
