@@ -442,6 +442,91 @@ async function latinLexSpacing(page,file){
  }finally{if(site)await site.close()}
 }
 
+// Antes la prueba sólo cubría un título directo: el examen griego real lo anida.
+async function greekGlossSpacing(page,file){
+ for(const lang of ['es','va']){
+  await configure(page,'greek1','complete',lang,'UD8');
+  const structure=await page.evaluate(()=>{
+   // Un lema REAL del banco griego garantiza que la sincronización previa a
+   // Word/PDF mantendrá el vocabulario y el título, sin usar HTML ficticio.
+   const scope=document.getElementById('glossScope');
+   if([...scope.options].some(x=>x.value==='all'))scope.value='all';
+   document.getElementById('autoGloss').checked=true;
+   for(const control of document.querySelectorAll('input[type="checkbox"][id^="gloss"]'))
+    control.checked=true;
+   const chosen=greekMarkedUnits();
+   const candidate=vocab.find(row=>courseOf(row)==='greek1'&&
+    String(row.entry||'').trim()&&!String(row.entry).includes('+')&&
+    glossAccept(row.entry,chosen));
+   if(!candidate)throw Error('Falta una ficha de vocabulario griego aceptable');
+   const sheet=document.querySelector('#paper .exam-sheet');
+   const wrapper=sheet?.querySelector(':scope > #examSentenceGlossary');
+   const sentences=sheet?.querySelector(':scope > ol.exam-sentences');
+   if(!wrapper||!sentences)throw Error('Examen griego sin huecos ni contenedor de glosario');
+   // Simular la aparición del vocabulario DESPUÉS de generar el examen:
+   // actualizar el glosario en vivo, sin llamar a generate().
+   wrapper.replaceChildren();
+   applyExamVisualFormat();
+   document.getElementById('examExtra').value=candidate.entry;
+   refreshSentenceGlossary();
+   const stable=sheet===document.querySelector('#paper .exam-sheet')&&
+    sentences===sheet.querySelector(':scope > ol.exam-sentences');
+   const heading=sheet?.querySelector(':scope > p.exam-question[data-greek-kind="sentences"]');
+   const last=sheet?.querySelector(':scope > ol.exam-sentences > li:last-child');
+   const title=wrapper?.querySelector(':scope > p.exam-gloss-title');
+   if(!wrapper||!heading||!last||!title)
+    throw Error('Examen griego sin glosario real: '+candidate.entry);
+   return {wrapper:wrapper.id,kind:heading.dataset.greekKind,stable};
+  });
+  assert.deepEqual(structure,{wrapper:'examSentenceGlossary',kind:'sentences',stable:true});
+  // El test ES anterior deja 66 pt guardados en el mismo examen: limpiar
+  // solo el ajuste del test antes de comprobar los 54 pt generales en VA.
+  await setPer(page,key('greek1','complete','sentences','greek'),'items','');
+  const previous=await page.locator('#paper .exam-sheet').innerHTML();
+  await page.evaluate(()=>{
+   const gap=document.getElementById('sentence-gap-pt');
+   gap.value='54';gap.dispatchEvent(new Event('change',{bubbles:true}));
+  });
+  const metrics=await page.evaluate(()=>{
+   const wrapper=document.querySelector('#paper #examSentenceGlossary');
+   const title=wrapper.querySelector(':scope > p.exam-gloss-title');
+   const last=document.querySelector('#paper .exam-sentences > li:last-child');
+   const preview={gap:getComputedStyle(wrapper).marginTop,
+    titleGap:getComputedStyle(title).marginTop,
+    distance:wrapper.getBoundingClientRect().top-last.getBoundingClientRect().bottom};
+   const stage=window.ExaminaPdfExport.prepareDocument();
+   const mount=document.createElement('div');
+   mount.style.cssText='position:absolute;left:-90000px;top:0;width:155mm;visibility:hidden';
+   mount.append(stage);document.body.append(mount);
+   let pdf;
+   try{
+    const g=stage.querySelector('#examSentenceGlossary');
+    const li=stage.querySelector('.exam-sentences > li:last-child');
+    pdf={gap:getComputedStyle(g).marginTop,
+     distance:g.getBoundingClientRect().top-li.getBoundingClientRect().bottom};
+   }finally{mount.remove()}
+   return {preview,pdf};
+  });
+  closeTo(metrics.preview.gap,54);
+  closeTo(metrics.preview.titleGap,0);
+  closeTo(metrics.pdf.gap,54);
+  assert(metrics.preview.distance>=point(54)-2,
+   file+': falta espacio en vista previa: '+JSON.stringify(metrics));
+  assert(metrics.pdf.distance>=point(54)-2,
+   file+': PDF pierde espacio sobre vocabulario: '+JSON.stringify(metrics));
+  const label=lang==='va'?'Vocabulari':'Vocabulario';
+  assert(para(await wordXml(page),label).includes('w:before="1080"'),
+   file+': Word no respeta 54pt en el glosario griego '+lang);
+  await setPer(page,key('greek1','complete','sentences','greek'),'items',66);
+  closeTo(await page.locator('#paper #examSentenceGlossary')
+   .evaluate(el=>getComputedStyle(el).marginTop),66);
+  assert(para(await wordXml(page),label).includes('w:before="1320"'),
+   file+': Word no respeta espaciado individual del griego '+lang);
+  assert.equal(await page.locator('#paper .exam-sheet').innerHTML(),previous,
+   file+': cambiar separación griega ha regenerado el examen');
+ }
+}
+
 (async()=>{
  const browser=await chromium.launch({headless:true});
  try{
@@ -457,6 +542,7 @@ async function latinLexSpacing(page,file){
     await checkReviewLocaleAndContrast(page,file);
     await checkCourseThemeContrast(page,file);
     await latinLexSpacing(page,file);
+    await greekGlossSpacing(page,file);
     assert.deepEqual(errors,[],file+': excepciones JavaScript tras cambiar valores por pregunta');
    }finally{await context.close()}
   }
