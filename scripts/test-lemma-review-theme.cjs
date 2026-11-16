@@ -36,6 +36,8 @@ const server=http.createServer((req,res)=>{
     await page.waitForFunction(()=>document.querySelectorAll('#examSentenceGlossary .exam-gloss-lemma').length>=2);
     for(const width of [1280,820,390]){
      await page.setViewportSize({width,height:980});
+     // En iPad/móvil el panel de vista previa es una pestaña, no está visible por defecto.
+     if(width<=900)await page.locator('#examPreviewTab').click();
      for(const appearance of ['light','dark','oled']){
       const display=await page.evaluate(appearance=>{
        document.documentElement.dataset.appearance=appearance;
