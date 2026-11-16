@@ -134,9 +134,21 @@ async function main(){
    // 25 mm, izquierda 30 mm. El contenido A4 se limita a 155 mm de ancho.
    const pdfOptions=await page.evaluate(async()=>{
     const old=window.html2pdf,details={};
+    let pageCount=1;
+    const pdf={
+     getNumberOfPages(){return pageCount},
+     addPage(){pageCount++},
+     addImage(){},
+     save(){}
+    };
     window.html2pdf=()=>({
      set(options){details.margin=Array.from(options.margin);details.filename=options.filename;return this},
      from(stage){details.stageWidth=stage.style.width;return this},
+     toPdf(){return this},
+     toCanvas(){return this},
+     get(key){return Promise.resolve(key==='pdf'?pdf:{
+      width:100,height:100,toDataURL(){return 'data:image/jpeg;base64,/9j/2Q=='}
+     })},
      save(){return Promise.resolve()}
     });
     try{details.success=await window.ExaminaPdfExport.generate()}
