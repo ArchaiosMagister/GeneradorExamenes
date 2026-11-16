@@ -4,6 +4,8 @@ on:
   pull_request:
     paths:
       - 'index.html'
+      - 'pdf-export.js'
+      - 'scripts/test-export-workspace.cjs'
       - 'offline.html'
       - 'exam-scoring.js'
       - 'scripts/test-device-compat.cjs'
@@ -33,3 +35,5 @@ jobs:
           git diff --exit-code -- offline.html
       - name: Verificar navegadores y perfiles táctiles
         run: node scripts/test-device-compat.cjs
+      - name: Verificar PDF multipágina en WebKit Safari simulado
+        run: PDF_TEST_BROWSER=webkit node scripts/test-export-workspace.cjs
