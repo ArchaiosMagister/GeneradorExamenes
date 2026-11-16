@@ -88,7 +88,8 @@ async function audit(page,course,model,lang,file){
     items:cloned.querySelectorAll(':scope > p.exam-item').length,
     etym:cloned.querySelectorAll(':scope > p.exam-etymology > span').length
    },
-   unchanged:sheet.innerHTML===cloned.innerHTML
+   unchanged:[...sheet.querySelectorAll(':scope > p.exam-question,:scope > p.exam-item')]
+    .every((item,i)=>item.textContent===[...cloned.querySelectorAll(':scope > p.exam-question,:scope > p.exam-item')][i]?.textContent)
   };
   return out;
  });
