@@ -16630,4 +16630,152 @@ html[data-appearance="oled"] body.exam-redesign #exam-ui-shell :is(#exam-ui-core
 }
 </style>
 
+<style id="examinator2-menu-theme">
+/* Menús de examen inspirados en Examinator2/styles.css.
+ * Solo presentación, sin modificar DOM, preguntas ni documento imprimible. */
+@media screen {
+ body.exam-redesign #examLayout #examEditorPanel {
+  font-family:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  font-size:14px;
+  line-height:1.42;
+ }
+ body.exam-redesign #examEditorPanel #exam-ui-shell { gap:12px; }
+ body.exam-redesign #examEditorPanel :is(#exam-ui-core,#examQuestionSettings,#examScoring,#examVisualSettings,#group-drafts) {
+  padding:12px;
+  background:var(--surface);
+  color:var(--ink);
+  border:1px solid var(--line);
+  border-radius:10px;
+  box-shadow:none;
+ }
+ body.exam-redesign #examEditorPanel #exam-ui-shell-title {
+  margin:0;
+  color:var(--soft-ink);
+  font:600 20px/1.25 Palatino,"Palatino Linotype",Georgia,serif;
+  font-variant:small-caps;
+  letter-spacing:.025em;
+ }
+ body.exam-redesign #examEditorPanel #exam-ui-shell-note {
+  margin:-4px 0 1px;
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.4;
+ }
+ body.exam-redesign #examEditorPanel :is(#primaryExamSettings,#examQuestionSettings,#examScoring,#examVisualSettings)>h3,
+ body.exam-redesign #examEditorPanel #primaryExamSettings h3 {
+  margin:0 0 9px;
+  color:var(--soft-ink);
+  font-size:14px;
+  font-weight:700;
+  line-height:1.3;
+ }
+ body.exam-redesign #examEditorPanel #exam-ui-meta {
+  gap:8px 10px;
+  padding-bottom:7px;
+ }
+ body.exam-redesign #examEditorPanel #exam-ui-meta .field>label,
+ body.exam-redesign #examEditorPanel #exam-ui-shell .field>label {
+  color:var(--muted);
+  font-size:12.5px;
+  font-weight:600;
+  line-height:1.3;
+ }
+ body.exam-redesign #examEditorPanel #exam-ui-shell :is(input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]),select,textarea) {
+  background-color:var(--field-bg);
+  color:var(--field-text);
+  border:1px solid var(--line);
+  border-radius:6px;
+  box-shadow:none;
+ }
+ body.exam-redesign #examEditorPanel #exam-ui-shell :is(input,select,textarea):focus-visible,
+ body.exam-redesign #examEditorPanel #exam-ui-shell button:focus-visible {
+  outline:2px solid var(--focus-course);
+  outline-offset:2px;
+ }
+ body.exam-redesign #examEditorPanel #examQuestionMenus {
+  gap:8px;
+ }
+ body.exam-redesign #examEditorPanel #examQuestionMenus>details.exam-question-panel {
+  margin:0;
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:9px;
+  box-shadow:none;
+ }
+ body.exam-redesign #examEditorPanel #examQuestionMenus>details.exam-question-panel>summary.exam-question-heading {
+  min-height:43px;
+  padding:9px 11px;
+  background:var(--surface);
+  color:var(--soft-ink);
+  border-color:var(--line);
+  font-size:13.5px;
+  font-weight:650;
+ }
+ body.exam-redesign #examEditorPanel #examQuestionMenus>details.exam-question-panel>summary.exam-question-heading:hover {
+  background:var(--secondary-bg);
+ }
+ body.exam-redesign #examEditorPanel #examQuestionMenus>details.exam-question-panel[open]>summary.exam-question-heading {
+  border-bottom:1px solid var(--line);
+ }
+ body.exam-redesign #examEditorPanel #examQuestionMenus .exam-question-name {
+  font-size:13.5px;
+  line-height:1.4;
+ }
+ body.exam-redesign #examEditorPanel #examQuestionMenus .exam-question-config {
+  padding:10px 12px 12px;
+  gap:8px;
+ }
+ body.exam-redesign #examEditorPanel #examQuestionMenus .exam-word-editor {
+  padding:8px 0;
+  border-top:1px solid var(--line);
+ }
+ body.exam-redesign #examEditorPanel #exam-ui-bulk {
+  padding:7px;
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:8px;
+  box-shadow:none;
+ }
+ body.exam-redesign #examEditorPanel #exam-ui-bulk>summary {
+  padding:7px 8px;
+  color:var(--soft-ink);
+  font-weight:650;
+  font-size:13px;
+ }
+ body.exam-redesign #examEditorPanel #exam-ui-shell button.secondary {
+  background:var(--secondary-bg);
+  border:1px solid var(--secondary-border);
+  border-radius:7px;
+  color:var(--secondary-ink);
+  box-shadow:none;
+ }
+ body.exam-redesign #examEditorPanel #exam-ui-shell button.secondary:hover:not(:disabled) {
+  background:var(--editor-hover);
+ }
+ body.exam-redesign #examEditorPanel #exam-ui-shell button[aria-pressed="true"]:not(:disabled) {
+  background:var(--soft);
+  border-color:var(--soft-border);
+  color:var(--soft-ink);
+ }
+ body.exam-redesign #examEditorPanel #exam-ui-shell .exam-score-stepper button {
+  background:var(--secondary-bg);
+  border:1px solid var(--secondary-border);
+  border-radius:6px;
+  color:var(--secondary-ink);
+  box-shadow:none;
+ }
+ body.exam-redesign #examEditorPanel #exam-ui-shell .exam-score-stepper button:hover:not(:disabled) {
+  background:var(--editor-hover);
+ }
+ body.exam-redesign #examEditorPanel #group-drafts .buttons { gap:7px; }
+ @media (max-width:760px), (pointer:coarse) {
+  body.exam-redesign #examEditorPanel :is(#exam-ui-core,#examQuestionSettings,#examScoring,#examVisualSettings,#group-drafts) {
+   padding:11px;
+  }
+  body.exam-redesign #examEditorPanel #examQuestionMenus>details.exam-question-panel>summary.exam-question-heading {
+   min-height:44px;
+  }
+ }
+}
+</style>
 </html>
