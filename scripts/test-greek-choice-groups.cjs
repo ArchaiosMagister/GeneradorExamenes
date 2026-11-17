@@ -61,6 +61,7 @@ async function run(page,file){
   await select(page,'greek1',model,'UD7');
   const pron=await page.evaluate(()=>ExaminaGreekNumber.candidates().filter(x=>x.id.includes(':autos:')).length);
   assert(pron>0,file+'/'+model+': no se usan pronombres de UD7');
+  await page.locator('[data-greek-custom="number"] > summary').click();
   const cnum=page.locator('[data-greek-custom-count="number"]');
   await cnum.fill('6');await cnum.dispatchEvent('change');
   assert.equal((await query(page)).numbers.length,6,file+'/'+model+': cantidad de cambio no configurable');
