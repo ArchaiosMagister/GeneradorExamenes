@@ -68,6 +68,12 @@
   const hasSentence=raw.some(x=>x.base==='sent'),sentence=hasSentence?sentenceCents():0;
   const latinLex=state().course!=='greek1'&&raw.some(x=>x.base==='lex');
   const available=Math.max(0,1000-sentence-(latinLex?200:0));
+  // Griego I: las alternativas optativas son UNA pregunta puntuable por grupo.
+  // Respeta la puntuación editable, también si Traducción conserva siete huecos.
+  if(state().course==='greek1'&&!morph()&&raw.some(x=>x.base==='greek-competence')){
+   return raw.map(x=>x.base==='greek-competence'?300:
+    x.base==='greek-plurilingual'?100:x.base==='sent'?600:0);
+  }
   const other=raw.filter(x=>x.base!=='sent'&&!(latinLex&&x.base==='lex'));
   let ordinal=0;
   // Los valores automáticos son puntos enteros, no céntimos repartidos:
@@ -131,6 +137,7 @@
    ...(node.matches(selector)?[node]:[]),...node.querySelectorAll(selector)
   ]);
   const base=question.base;
+  if(state().course==='greek1'&&['greek-competence','greek-plurilingual'].includes(base))return {optional:true,groups:[]};
   if(base==='lex'){
    // Latín I: se eligen DOS de varias alternativas, que no se responden juntas.
    // Únicamente el bloque de léxico tiene 2 p.; las alternativas no deben
