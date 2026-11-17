@@ -1,5 +1,6 @@
 'use strict';
-// Fase III: 1 p. por oración, 10 puntos, huecos estables, borradores y DOCX.
+// Latín: 1 p. por oración. Griego I completo/traducción: bloque editable de 6 p.
+// Ambos conservan huecos, borradores y DOCX.
 const assert=require('node:assert/strict');
 const fs=require('node:fs'),http=require('node:http'),path=require('node:path');
 const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
@@ -69,11 +70,38 @@ async function run(browser,file){
   await select(page,course,model,unit);
   const r=await report(page);
   assert.equal(r.slots,count,file+'/'+course+'/'+model+': huecos');
-  assert.equal(r.sentCents,count*100,file+'/'+course+'/'+model+': 1p. por oración '+JSON.stringify(r));
+  const groupedGreek=course==='greek1';
+  assert.equal(r.sentCents,groupedGreek?600:count*100,file+'/'+course+'/'+model+': puntuación de oraciones '+JSON.stringify(r));
   assert.equal(r.total,1000,file+'/'+course+'/'+model+': total 10 '+JSON.stringify(r));
-  assert.equal(r.disabled,true,file+'/'+course+'/'+model+': valor fijo');
+  assert.equal(r.disabled,!groupedGreek,file+'/'+course+'/'+model+': edición de puntuación según el curso');
   assert.deepEqual(r.indices,Array.from({length:count},(_,i)=>i),
    file+'/'+course+'/'+model+': posiciones');
+  if(groupedGreek){
+   // Cambiar el número de huecos no redistribuye el bloque 3 + 1 + 6.
+   await page.evaluate(n=>{
+    $('count-sent').value=String(n);$('count-sent').dispatchEvent(new Event('change',{bubbles:true}));
+   },count-1);
+   const resized=await report(page);
+   assert.equal(resized.slots,count-1);
+   assert.equal(resized.sentCents,600);
+   assert.equal(resized.total,1000);
+   await page.locator('#examPanelShortcuts button').nth(2).click();
+   const score=page.locator('#examScoring .exam-scoring-rows input[data-scoring-key="greek1/'+model+'/sent"]');
+   await score.fill('7');await score.dispatchEvent('input');
+   const edited=await report(page);
+   assert.equal(edited.sentCents,700,file+'/'+model+': bloque griego editable');
+   assert.equal(edited.total,1100,file+'/'+model+': no redistribuir otros bloques');
+   await page.evaluate(()=>{
+    $('saveDraft').click();
+    $('count-sent').value='3';$('count-sent').dispatchEvent(new Event('change',{bubbles:true}));
+    $('restoreDraft').click();
+   });
+   const restoredGreek=await report(page);
+   assert.equal(restoredGreek.slots,count-1);
+   assert.equal(restoredGreek.sentCents,700,file+'/'+model+': puntuación docente recuperada');
+   await score.fill('6');await score.dispatchEvent('input');
+   assert.equal((await report(page)).total,1000);
+  }
  }
  await select(page,'latin1','mixto','UD7');
  await page.evaluate(()=>{
@@ -130,7 +158,7 @@ async function run(browser,file){
  try{
   await run(browser,'index.html');
   await run(browser,'offline.html');
-  console.log('FASES III/VI: huecos, borradores, DOCX, 1p. por oración y ausencia de reparto automático (web/offline) OK');
+  console.log('FASES III/VI: huecos, borradores, DOCX, puntuación latina por oración y bloque griego editable, sin reparto automático (web/offline) OK');
  }finally{
   await browser.close();
   await new Promise(resolve=>server.close(resolve));

@@ -86,3 +86,11 @@ npm run vocabulary:test
 ```
 
 El resto de registros individuales conserva el nombre del script ejecutado. El informe consolidado enumera todas las pruebas y su resultado.
+
+## Seguimiento de las comprobaciones remotas
+
+La primera ejecución remota del cambio `bae61a8` superó cuatro baterías y se detuvo en la quinta por una expectativa histórica: `test-sentence-points-and-drafts.cjs` exigía un punto por oración también en los dos modelos griegos, incompatible con el bloque editable de seis puntos aprobado. La reconstrucción offline y todas las comprobaciones anteriores de esa batería habían pasado.
+
+Se ha actualizado esa prueba manteniendo intactas las exigencias latinas. Para Griego se comprueban los seis puntos con cinco y siete huecos, la conservación del bloque al cambiar su cantidad, la edición manual a siete puntos sin redistribución y la recuperación de la cantidad y de la puntuación docente desde un borrador. También se han actualizado los selectores de alternativas de la prueba combinada de fase III, manteniendo sus garantías de identidad de nodos y conservación de ediciones.
+
+Las cuatro pruebas específicas de oraciones y borradores, integración de fase III, aislamiento fonético y aislamiento morfológico han pasado localmente en web y offline. Esta corrección modifica pruebas y documentación; no cambia la aplicación ni los modelos. Los resultados remotos del nuevo cambio deben consultarse en GitHub.
