@@ -50,7 +50,7 @@ jobs:
       - name: Rebuild offline distribution in CI workspace
         run: npm run offline:build
       - name: Griego I competencias, filología, Word, PDF y offline
-        run: node scripts/test-greek-choice-groups.cjs && node scripts/test-greek-choice-audit.cjs
+        run: node scripts/test-greek-choice-groups.cjs && node scripts/test-greek-choice-audit.cjs && node scripts/test-greek-choice-bullets-spacing.cjs
       - name: Phase I synchronization regressions
         run: node scripts/test-phase-one.cjs
       - name: Verificar interfaz de guardar/exportar y PDF local sin publicar
