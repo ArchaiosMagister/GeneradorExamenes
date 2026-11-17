@@ -1973,7 +1973,7 @@ function init(){
    if(!mapped.has(form))mapped.set(form,new Map());
    const signature=entry.entry+'|'+proposal.analysis;
    if(!mapped.get(form).has(signature))mapped.get(form).set(signature,{
-    lemma:proposal.lemma,entry:teacher?.entry||entry.entry,meaning:teacher?.meaning||'',
+    lemma:proposal.lemma,entry:window.ExaminaGreekEulexisCitation?.(teacher?.entry||entry.entry)||teacher?.entry||entry.entry,meaning:teacher?.meaning||'',
     meaning_va:teacher?.meaning_va||'',analysis:proposal.analysis,eulexisUnverified:true
    });
   }
