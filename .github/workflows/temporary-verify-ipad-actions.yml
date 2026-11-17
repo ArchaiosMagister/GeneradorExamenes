@@ -37,3 +37,5 @@ jobs:
 # Comprobación revisada: cinco columnas y ancho adaptable.
 
 # Diagnóstico de dimensiones reales en iPad 1024.
+
+# Comprobar prioridad CSS sobre el tamaño fijo histórico.
