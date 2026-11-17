@@ -34,3 +34,5 @@ jobs:
           npx playwright install chromium
       - name: Verificar navegación y contraste fuerte en web/autónoma
         run: node scripts/test-compact-exam-sidebar.cjs
+
+# Segunda comprobación: insignia integrada sin desbordamiento.
