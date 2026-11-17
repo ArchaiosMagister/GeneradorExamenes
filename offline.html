@@ -15137,13 +15137,10 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   return true;
  };
  function replaceGenerated(kind,index=null){
-  window.ExaminaGreekChoiceGroups.lastDiagnostic={kind,index,called:true,active:onlyGreek()};
   if(!onlyGreek())return false;
   const api=kind==='change-number'?APIs.number():kind==='retroversion'?APIs.retro():APIs.roots();
   const oldSheet=$('paper').querySelector('.exam-sheet');if(!api||!oldSheet)return false;
   const result=kind==='roots'?api.regenerate():index===null?api.regenerateAll():api.regenerateOne(index);
-  window.ExaminaGreekChoiceGroups.lastDiagnostic.result=!!result;
-  window.ExaminaGreekChoiceGroups.lastDiagnostic.ids=APIs.number()?.state().ids;
   if(!result)return false;
   if(index!==null)edits.delete(kind+':'+index);
   if(kind==='roots')edits.delete('roots:0');
