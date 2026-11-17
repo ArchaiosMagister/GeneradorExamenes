@@ -158,6 +158,37 @@ const server=http.createServer((request,response)=>{
       await page.locator('#examSettingsTab').click();
      }
     }
+    // Mostrar Configuración antes de cambiar el idioma del formulario.
+    await page.setViewportSize({width:1440,height:820});
+    await page.locator('#examPanelShortcuts>button[data-target="exam-ui-core"]').click();
+    // Comprobar que Imprimir nunca salta bajo Word/PDF en iPad horizontal y vertical.
+    for(const language of ['es','va']){
+     await page.locator('#lang').selectOption(language);
+     for(const width of [834,1024,1112,1194,1279,1366]){
+      await page.setViewportSize({width,height:820});
+      const toolbar=await page.evaluate(()=>{
+       const bar=document.getElementById('examPreviewActions');
+       const ids=['saveDraft','restoreDraft','docx','pdfDownload','print'];
+       const rect=bar.getBoundingClientRect();
+       const items=ids.map(id=>{
+        const node=document.getElementById(id),r=node.getBoundingClientRect();
+        return {id,x:r.x,y:r.y,width:r.width,height:r.height,
+         fit:node.scrollWidth<=node.clientWidth+2&&node.scrollHeight<=node.clientHeight+2};
+       });
+       return {barLeft:rect.left,barRight:rect.right,items};
+      });
+      const where=filename+'/'+language+'/'+width+'/preview-actions';
+      assert.equal(toolbar.items.length,5,where+': faltan botones de vista previa');
+      assert(toolbar.items.every(b=>Math.abs(b.y-toolbar.items[0].y)<1),
+       where+': Imprimir u otra acción salta a una segunda fila: '+JSON.stringify(toolbar));
+      assert(toolbar.items.every(b=>b.x>=toolbar.barLeft-2&&b.x+b.width<=toolbar.barRight+2),
+       where+': las acciones desbordan la vista previa: '+JSON.stringify(toolbar));
+      assert(toolbar.items.every(b=>b.height>=44),
+       where+': los botones ya no ofrecen altura táctil suficiente');
+      assert(toolbar.items.every(b=>b.fit),where+': texto recortado en los botones');
+     }
+    }
+    await page.locator('#lang').selectOption('es');
     await page.setViewportSize({width:1440,height:820});
     await page.locator('#examPanelShortcuts>button[data-target="exam-ui-core"]').click();
     await page.locator('#lang').selectOption('va');
