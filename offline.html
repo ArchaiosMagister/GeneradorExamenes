@@ -6810,13 +6810,27 @@ function latinCompleteCompoundActive(chosen){
 }
 function latinCompleteAdjectives(chosen){
  const until=Math.max(0,...chosen.map(examUnitNumber).filter(Number.isInteger));
- return latinSharedBank.vocabulary(currentCourse())
-  .filter(x=>examUnitNumber(x.unit)!==null&&examUnitNumber(x.unit)<=until&&!isExcludedExamMorphLemma(x.entry,x.meaning))
-  .map(x=>({x,p:adjective(x)})).filter(item=>{
-   const lemma=mNormalize(headLex(item.x.entry)).toLowerCase();
-   // meus > mi y los adjetivos en -ius requieren vocativos propios.
-   return item.p&&/^[a-z]+us$/.test(lemma)&&lemma!=='meus'&&!lemma.endsWith('ius');
-  });
+ // No usar latinSharedBank.vocabulary(course) aquí: su deduplicación
+ // histórica conserva la ÚLTIMA unidad de cada enunciado. Por ejemplo,
+ // bonus de UD1 podría quedar sustituido por el de UD9–10 y desaparecer
+ // indebidamente de un examen de UD2. Seleccionar primero las fichas
+ // cronológicamente elegibles y sólo después deduplicar por lema.
+ const eligible=vocab.filter(x=>{
+  const unit=examUnitNumber(x.unit);
+  return courseOf(x)===currentCourse()&&Number.isInteger(unit)&&unit<=until&&
+   !isExcludedExamMorphLemma(x.entry,x.meaning);
+ }).map(x=>({x,p:adjective(x)})).filter(item=>{
+  const lemma=mNormalize(headLex(item.x.entry)).toLowerCase();
+  // meus > mi y los adjetivos en -ius requieren vocativos propios.
+  return item.p&&/^[a-z]+us$/.test(lemma)&&lemma!=='meus'&&!lemma.endsWith('ius');
+ });
+ const byLemma=new Map();
+ for(const item of eligible){
+  const lemma=mNormalize(headLex(item.x.entry)).toLowerCase();
+  if(!byLemma.has(lemma)||examUnitNumber(item.x.unit)<
+      examUnitNumber(byLemma.get(lemma).x.unit))byLemma.set(lemma,item);
+ }
+ return [...byLemma.values()];
 }
 function latinCompleteNounGender(item){
  const lemma=mNormalize(item.p.lemma).toLowerCase();
@@ -6844,8 +6858,19 @@ function latinApprovedSyntagmAdjective(noun,adjectives,limit){
  const key=mNormalize(noun.p.lemma).toLowerCase();
  const rule=(latinApprovedSyntagms[currentCourse()]||[])
   .find(([head,,unit])=>head===key&&limit>=unit);
- return rule?adjectives.find(({x})=>
-  mNormalize(headLex(x.entry)).toLowerCase()===rule[1].toLowerCase())||null:null;
+ if(!rule)return null;
+ const head=rule[1].toLowerCase();
+ const existing=adjectives.find(({x})=>
+  mNormalize(headLex(x.entry)).toLowerCase()===head);
+ if(existing)return existing;
+ // Romanus es gentilicio y sigue excluido del sorteo morfológico general.
+ // La aprobación docente habilita ÚNICAMENTE los pares explícitos.
+ if(head!=='romanus')return null;
+ const found=vocab.filter(x=>courseOf(x)===currentCourse()&&
+  Number.isInteger(examUnitNumber(x.unit))&&examUnitNumber(x.unit)<=limit&&
+  mNormalize(headLex(x.entry)).toLowerCase()===head)
+  .map(x=>({x,p:adjective(x)})).find(x=>x.p);
+ return found||null;
 }
 function latinCompleteDeclensionItems(chosen){
  const nouns=latinExamNominals(chosen);
@@ -6857,7 +6882,7 @@ function latinCompleteDeclensionItems(chosen){
  const approved=new Set((latinApprovedSyntagms[currentCourse()]||[])
   .filter(([, ,from])=>from<=limit).map(([lemma])=>lemma));
  const present=new Set(nouns.map(item=>mNormalize(item.p.lemma).toLowerCase()));
- for(const x of latinSharedBank.vocabulary(currentCourse())){
+ for(const x of vocab.filter(row=>courseOf(row)===currentCourse())){
   const wordUnit=examUnitNumber(x.unit);
   if(!Number.isInteger(wordUnit)||wordUnit>limit||isProperNounLemma(x.entry))continue;
   const p=mNoun(x.entry),lemma=p&&mNormalize(p.lemma).toLowerCase();
