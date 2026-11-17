@@ -22,7 +22,9 @@
   'δικαιοσ':{es:['justo','justa','justos','justas'],va:['just','justa','justos','justes']},
   'μικροσ':{es:['pequeño','pequeña','pequeños','pequeñas'],va:['menut','menuda','menuts','menudes']}
  };
- let selected=[],signature='',quantity=4;
+ let selected=[],signature='';
+ const quantities={complete:4,translation:4};
+ const count=()=>quantities[$('model').value]??4;
  const lang=()=>$('lang').value==='va'?'va':'es';
  const candidates=()=>{
   const limit=greekLimit();
@@ -81,15 +83,15 @@
   }
   return [...new Map(rows.map(x=>[x.id,x])).values()];
  };
- const signatureOf=()=>JSON.stringify([greekMarkedUnits(),$('model').value,quantity,lang()]);
+ const signatureOf=()=>JSON.stringify([greekMarkedUnits(),$('model').value,count(),lang()]);
  function current(){
   const sign=signatureOf(),pool=candidates();
-  if(sign!==signature){selected=sample(pool,Math.min(quantity,pool.length)).map(x=>x.id);signature=sign}
+  if(sign!==signature){selected=sample(pool,Math.min(count(),pool.length)).map(x=>x.id);signature=sign}
   return selected.map(id=>pool.find(x=>x.id===id)).filter(Boolean);
  }
  function setCount(value){
   const n=Math.max(1,Math.min(20,Math.round(Number(value)||4)));
-  if(n!==quantity){quantity=n;signature=''}
+  if(n!==count()){quantities[$('model').value]=n;signature=''}
  }
  function regenerateOne(index){
   const rows=current(),old=new Set(selected),pool=candidates().filter(x=>!old.has(x.id));
@@ -100,9 +102,9 @@
  }
  function regenerateAll(){
   const pool=candidates().filter(x=>!selected.includes(x.id));
-  if(pool.length<quantity)return false;
-  selected=sample(pool,quantity).map(x=>x.id);signature=signatureOf();return true;
+  if(pool.length<count())return false;
+  selected=sample(pool,count()).map(x=>x.id);signature=signatureOf();return true;
  }
- function state(){return {quantity,signature,ids:selected.slice(),items:current()}}
+ function state(){return {quantity:count(),signature,ids:selected.slice(),items:current()}}
  window.ExaminaGreekRetroversion={current,candidates,setCount,regenerateOne,regenerateAll,state};
 })();
