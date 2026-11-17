@@ -76,7 +76,12 @@ async function run(page,file){
   });
   const buttonDiagnostics=await page.evaluate(()=>{
    const b=document.querySelector('[aria-label="Regenerar sintagma 1 de 1.c · Cambio de número"]');
-   window.greekClickCapture=0;
+   window.greekClickCapture=0;window.greekClickEvents=[];
+   window.greekOriginalButton=b;window.greekMutations=0;
+   new MutationObserver(list=>{window.greekMutations+=list.length}).observe(document.querySelector('#examQuestionMenus'),{childList:true,subtree:true});
+   for(const type of ['pointerdown','pointerup','mousedown','mouseup','click'])
+    document.addEventListener(type,event=>{if(event.target?.matches?.('[data-greek-choice-single]'))
+     window.greekClickEvents.push({type,slot:event.target.dataset.greekChoiceSingle})},true);
    b?.addEventListener('click',()=>{window.greekClickCapture++},true);
    return {connected:b?.isConnected,onclick:String(b?.onclick),outer:b?.outerHTML.slice(0,350)};
   });
@@ -85,7 +90,8 @@ async function run(page,file){
   const afterIds=await page.evaluate(()=>ExaminaGreekNumber.state().ids);
   const diag=await page.evaluate(()=>ExaminaGreekChoiceGroups.lastDiagnostic);
   const capture=await page.evaluate(()=>window.greekClickCapture);
-  assert.notEqual(oldFirst,newFirst,file+'/'+model+': regeneración individual no cambió el sintagma: '+JSON.stringify({oldFirst,newFirst,beforeIds,afterIds,diag,capture,buttonDiagnostics}));
+  const events=await page.evaluate(()=>({events:window.greekClickEvents,mutations:window.greekMutations,originalConnected:window.greekOriginalButton?.isConnected}));
+  assert.notEqual(oldFirst,newFirst,file+'/'+model+': regeneración individual no cambió el sintagma: '+JSON.stringify({oldFirst,newFirst,beforeIds,afterIds,diag,capture,events,buttonDiagnostics}));
   assert((await page.locator('#paper').textContent()).includes('MARCA-DOCENTE'));
   assert((await page.locator('[data-greek-choice-slot="retroversion:1"]').textContent()).includes('GUARDA-RETRO'));
   await page.locator('[data-greek-custom="retro"] .exam-question-toggle').uncheck();
