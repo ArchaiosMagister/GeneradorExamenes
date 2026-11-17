@@ -173,7 +173,8 @@ async function checkFile(browser,filename){
    targets:forms.filter(row=>!!row.querySelector('[data-greek-form-surface]')).length,
    allReadOnly:withLemma.every(row=>row.querySelector('.exam-form-enunciation').contentEditable==='false')};
  });
- assert.equal(greekFull.pronouns,10,filename+': Griego I completo no presenta diez pronombres');
+ assert.equal(greekFull.pronouns,0,filename+': Griego I completo debe conservar las cinco alternativas acordadas, sin pregunta de pronombres independiente');
+ assert.equal(await page.locator('#paper [data-greek-option]').count(),7,filename+': cinco alternativas morfosintácticas y dos de plurilingüismo');
  assert(greekFull.totalForms>0&&greekFull.withLemma>0&&greekFull.allReadOnly&&
   greekFull.targets===greekFull.totalForms,
   filename+': enunciados griegos ausentes o forma editable sin destino único: '+JSON.stringify(greekFull));

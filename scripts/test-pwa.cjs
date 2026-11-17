@@ -51,6 +51,8 @@ const server=http.createServer(async(req,res)=>{
  const deployment=await fs.readFile(path.join(ROOT,'.github/workflows/publish-online.yml'),'utf8');
  assert(deployment.includes('exam-selection-summary.js'),
   'GitHub Pages debe incluir el módulo extraído antes de publicar');
+ for(const module of ['greek-choice-number.js','greek-choice-retroversion.js','greek-choice-etymology.js','greek-choice-groups.js'])
+  assert(deployment.includes(module),'Falta el motor griego en el paquete publicable: '+module);
  const sw=await fs.readFile(path.join(ROOT,'sw.js'),'utf8');
  assert(sw.includes("cache:'no-cache'")&&!sw.includes("cache:'reload'"),
   'La nueva versión debe revalidar assets, no forzar su retransmisión incondicional');
@@ -355,6 +357,18 @@ const server=http.createServer(async(req,res)=>{
   assert.equal(await page.evaluate(()=>typeof window.html2pdf),'function',
    'La PWA no inicializó el motor PDF desde la caché sin Internet');
 
+  // Las nuevas actividades deben cargar desde la PWA instalada sin red.
+  await page.evaluate(()=>{
+   $('course').value='greek1';$('course').dispatchEvent(new Event('change',{bubbles:true}));
+   $('model').value='complete';$('model').dispatchEvent(new Event('change',{bubbles:true}));
+   document.querySelectorAll('#unitChoices .unit-choice').forEach(x=>x.checked=units[Number(x.value)]==='UD7');generate();
+  });
+  assert.equal(await page.locator('[data-greek-choice-slot^="change-number:"]').count(),4);
+  assert.equal(await page.locator('[data-greek-choice-slot^="retroversion:"]').count(),4);
+  assert.equal(await page.locator('.greek-choice-etym-sentence u').count(),2);
+  assert.equal(await page.locator('[data-greek-extra-answer]').count(),3);
+  assert(await page.evaluate(()=>ExaminaGreekChoiceGroups.replaceGenerated('change-number',0)),
+   'No funciona la regeneración griega en la PWA sin red');
   await context.setOffline(false);
   release='test-two';
   await page.evaluate(()=>{window.__borradorSinGuardar=77});

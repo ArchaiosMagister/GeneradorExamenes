@@ -88,5 +88,13 @@
   return true;
  }
  function state(){return {quantity:count(),signature,ids:selected.slice(),items:current()}}
- window.ExaminaGreekNumber={current,candidates,setCount,regenerateOne,regenerateAll,state};
+ function restore(data){
+  if(!data||!Array.isArray(data.ids)||data.ids.length>20)return;
+  setCount(data.quantity);
+  const pool=new Set(candidates().map(x=>x.id));
+  if(data.ids.every(id=>typeof id==='string'&&pool.has(id))){
+   selected=[...new Set(data.ids)];signature=signatureOf();
+  }
+ }
+ window.ExaminaGreekNumber={current,candidates,setCount,regenerateOne,regenerateAll,state,restore};
 })();

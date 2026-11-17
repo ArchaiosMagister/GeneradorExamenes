@@ -2,6 +2,7 @@ name: Verificar formato Word de preguntas y cultura (sin publicación)
 on:
   pull_request:
     paths:
+      - 'greek-choice-*.js'
       - 'index.html'
       - 'offline.html'
       - 'scripts/test-question-visual-layout.cjs'

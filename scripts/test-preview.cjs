@@ -95,7 +95,7 @@ async function checkFile(browser,filename){
   ['latin1','tablas','UD3',['decl','verb','forms','lex','sent'],[]],
   ['latin4','tablas','UD3',['decl','verb','forms','lex','culture','sent'],[]],
   ['greek1','morphology','UD7',['decl','verb','pronouns','forms'],['etymology','sent']],
-  ['greek1','translation','UD7',['forms','etymology','sent'],['decl','verb','pronouns']],
+  ['greek1','translation','UD7',['decl','verb','forms','etymology','sent'],['pronouns']],
   ['greek1','complete','UD7',['decl','verb','forms','etymology','sent'],[]]
  ];
  for(const [course,model,unit,included,disabled] of matrix){

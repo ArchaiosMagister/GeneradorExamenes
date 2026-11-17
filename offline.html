@@ -7227,6 +7227,7 @@ function wordExamParagraph(el){
   if(cls.contains('exam-page-break'))props.push('<w:pageBreakBefore/>');
   if(m)runs=wordRun(m[1],true)+'<w:r><w:tab/></w:r>'+wordRun(m[2],true);
  }else if(cls.contains('exam-item')){
+  if(cls.contains('greek-choice-subquestion'))props.push('<w:keepNext/>');
   const owner=examVisualOwner(el),custom=examVisualItemGapOverride(owner);
   let repeated=el.previousElementSibling?.classList?.contains('exam-item');
   // No se consideran los avisos ocultos intercalados entre apartados de léxico.
@@ -7647,6 +7648,7 @@ function snapshotExam(){
  language:$('lang').value,created:new Date().toISOString(),title:$('name').value,
  sheetType:$('sheetType')?.value==='review'?'review':'exam',
  visualFormat:window.ExaminaVisualFormat?.snapshot?.()||{questionBeforePt:examQuestionBeforePt(),cultureGapPt:examCultureGapPt()},
+ ...(window.ExaminaGreekChoiceGroups?.active?.()?{greekChoices:window.ExaminaGreekChoiceGroups.snapshot()}:{}),
  html:$('paper').innerHTML,
  // El número de oraciones es parte del borrador, no solo su HTML visible.
  sentenceCount:countFor('sent'),
@@ -7713,6 +7715,7 @@ function restoreDraft(d){
  // Los WeakMap de edición no sobreviven a innerHTML: regenerar enlaces
  // de edición, pero no las preguntas ni sus valores.
  refreshManualMorphWords(true);
+ window.ExaminaGreekChoiceGroups?.restore?.(d);
  if(d.scores)window.ExaminaScoring?.restore?.(d.scores);
  else window.ExaminaScoring?.sync?.(); // Borradores de versiones anteriores.
  $('draftStatus').textContent='Borrador recuperado ('+d.course+', '+new Date(d.created).toLocaleString()+'). Campos editables y puntuaciones restaurados.';
@@ -7925,7 +7928,7 @@ const greekSentenceRows=[
 const greekExtraLemmas=[['ἄδικος, –ον','injusto/a'],['βία, –ας','fuerza'],['ἀγρός, –ου','campo'],['λύκος, –ου','lobo'],['παύω','parar'],['ὁ, ἡ, τό','artículo determinado'],['εἰμί','ser, estar, haber']];
 /* Programa de etimología de Griego I por unidades. Una entrada sin dos
    derivados no se convierte en ejercicio corregible. */
-const greekEtymologyUnits=[[["ἄνθρωπος","antropología, antropomorfo"],["βιβλίον","biblioteca, bibliografía"],["γράφω | γράμμα","grafología, gramática"],["δήμος","democracia, demografía"],["ζῷον","zoología, zoológico"],["θέος","teología, teocracia"],["κράτος","aristocracia, democracia"],["λόγος","logopedia, filología"]],[["βιβλίον","biblioteca, bibliografía"],["ζῷον","zoología, zoológico"],["ἔργον","ergonomía, energía"],["δῶρον",""],["χρόνος","cronómetro, cronología"],["ξύλον","xilófono, xilografía"],["σοφός | σοφία","filosofía, sofista"],["διδάσκω","didáctica, didascalia"],["ἵππος","hipódromo, hipopótamo"],["βίος","biografía, biología"]],[["δόξα","ortodoxia, doxología"],["δίκη",""],["οἰκία","economía, ecología"],["νόμος","autonomía, astronomía"],["ψυχή","psicología, psiquiatría"],["ἀρχή | ἄρχω","monarquía, anarquía"],["δεσπότης","déspota, despotismo"],["φωνή","fonética, teléfono"]],[["ἀμφί","anfibio, anfiteatro"],["ἀνά","anáfora, anacronismo"],["ἀντί","antídoto, antibiótico"],["ἀπό","apogeo, apóstrofo"],["διά","diámetro, diagonal"],["ἐκ | ἐξ","éxodo, exorcismo"],["ἐν","enciclopedia, entusiasmo"],["κατά","catástrofe, catálogo"],["μετά","metáfora, metástasis"],["παρά","paradoja, paráfrasis"],["περί","perímetro, periscopio"],["πρό","prólogo, pronóstico"],["πρός",""],["ὑπέρ","hipérbole, hipertensión"],["ὑπό","hipotermia, hipótesis"]],[["λέγω | λόγος","lógica, logopedia"],["μέγας","megalomanía, megáfono"],["μικρός","microscopio, microbio"],["μακρός","macroeconomía, macrobiótico"],["πολύς","políglota, polígono"],["καλός","caligrafía, calidoscopio"],["κακός","cacofonía, cacografía"],["θάνατος","tanatología, eutanasia"]],[["φέρω","metáfora, periferia"],["ἄγω","pedagogía, demagogia"],["ἀγγέλλω | ἄγγελλος","ángel, evangelio"],["πόλις","política, metrópoli"],["ὕδωρ","hidrógeno, hidroterapia"],["φίλος","filantropía, filosofía"],["στρατηγός","estrategia, estratégico"],["πράττω | πράγμα","pragmático, pragmatismo"],["φόβος","fobia, claustrofobia"],["γῆ","geografía, geología"]],[["αὐτός","autonomía, automóvil"],["δένδρον","dendrita, dendrología"],["θάλαττα (−σσα)","talasoterapia, talasocracia"],["παιδίον",""],["ἡμέρα","efeméride, hemeroteca"],["ὁδός","método, éxodo"],["ἥλιος","heliocentrismo, heliópolis"]],[["παῖς, παιδός","pediatría, pedagogía"],["πλοῦτος, −ου","plutocracia, plutócrata"],["χρήμα, −ματος","crematística, crematístico"],["δέρμα, −ματος","dermatología, epidermis"],["εἰκών, −ονος","icono, iconografía"],["ῥήτωρ, −ορος","retórica, rétor"],["σῶμα, −ματος","somático, cromosoma"],["γέρων, −οντος","geriatría, gerontología"],["πνεῦμα, −ματος","neumático, neumología"],["ἀνήρ, ἀνδρός","androcentrismo, andrógino"],["πόλις, −έως","política, metrópoli"],["γυνή, γυναικός","ginecología, misógino"]],[["αἷμα, −ματος","hematología, anemia"],["γάστηρ, −τρός","gastritis, gastroenteritis"],["ἧπαρ, ἥπατος","hepatitis, hepático"],["καρδία","cardiología, taquicardia"],["κεφαλή","cefalea, encéfalo"],["λάρυγξ, −υγγος","laringitis, laringología"],["ὀστέον","osteología, osteoporosis"],["ὀφθαλμός","oftalmología, oftálmico"],["πούς, ποδός","podología, podómetro"],["ῥίς, ῥινός","rinoplastia, rinitis"],["χείρ, χειρός","quiromancia, quirófano"]],[["ἀτέλο−",""],["βλέφαρον","blefaritis, blefaroplastia"],["γένειον","genioplastia"],["γυνή, γυναικός","ginecología, ginecólogo"],["−ῖτις","artritis, dermatitis"],["οὖς, ὠτός","otitis, otorrinolaringología"],["πλαστός","plástico, plastilina"],["πρόκτος","proctología, proctitis"],["τομή","anatomía, tomografía"]],[["μανία","megalomanía, cleptomanía"],["λόγος","logopedia, filología"],["μισέω","misógino, misántropo"],["φιλία","filosofía, filantropía"],["φοβός","fobia, claustrofobia"],["ψευδός","seudónimo, seudociencia"]],[["ἄλγος","analgesia, neuralgia"],["γλῶττα","políglota, glosario"],["ἴσος","isósceles, isobara"],["κρύπτω","criptografía, cripta"],["μόνος","monólogo, monarquía"],["ὁμοῖος","homeopatía, homeostasis"],["πρῶτος","prototipo, protocolo"],["πῦρ, πυρός","piromanía, pirómano"],["σκοπέω","microscopio, telescopio"],["ταχύς, −εια, −υ","taquicardia, taquígrafo"],["χρῶμα","cromático, cromosoma"],["κόσμος","cosmología, cosmopolita"],["ὅρος","horizonte, aforismo"]]];
+const greekEtymologyUnits=[[["ἄνθρωπος","antropología, antropomorfo"],["βιβλίον","biblioteca, bibliografía"],["γράφω | γράμμα","grafología, gramática"],["δήμος","democracia, demografía"],["ζῷον","zoología, zoológico"],["θεός","teología, teocracia"],["κράτος","aristocracia, democracia"],["λόγος","logopedia, filología"]],[["βιβλίον","biblioteca, bibliografía"],["ζῷον","zoología, zoológico"],["ἔργον","ergonomía, energía"],["δῶρον",""],["χρόνος","cronómetro, cronología"],["ξύλον","xilófono, xilografía"],["σοφός | σοφία","filosofía, sofista"],["διδάσκω","didáctica, didascalia"],["ἵππος","hipódromo, hipopótamo"],["βίος","biografía, biología"]],[["δόξα","ortodoxia, doxología"],["δίκη",""],["οἰκία","economía, ecología"],["νόμος","autonomía, astronomía"],["ψυχή","psicología, psiquiatría"],["ἀρχή | ἄρχω","monarquía, anarquía"],["δεσπότης","déspota, despotismo"],["φωνή","fonética, teléfono"]],[["ἀμφί","anfibio, anfiteatro"],["ἀνά","anáfora, anacronismo"],["ἀντί","antídoto, antibiótico"],["ἀπό","apogeo, apóstrofo"],["διά","diámetro, diagonal"],["ἐκ | ἐξ","éxodo, exorcismo"],["ἐν","enciclopedia, entusiasmo"],["κατά","catástrofe, catálogo"],["μετά","metáfora, metástasis"],["παρά","paradoja, paráfrasis"],["περί","perímetro, periscopio"],["πρό","prólogo, pronóstico"],["πρός",""],["ὑπέρ","hipérbole, hipertensión"],["ὑπό","hipotermia, hipótesis"]],[["λέγω | λόγος","lógica, logopedia"],["μέγας","megalomanía, megáfono"],["μικρός","microscopio, microbio"],["μακρός","macroeconomía, macrobiótico"],["πολύς","políglota, polígono"],["καλός","caligrafía, calidoscopio"],["κακός","cacofonía, cacografía"],["θάνατος","tanatología, eutanasia"]],[["φέρω","metáfora, periferia"],["ἄγω","pedagogía, demagogia"],["ἀγγέλλω | ἄγγελλος","ángel, evangelio"],["πόλις","política, metrópoli"],["ὕδωρ","hidrógeno, hidroterapia"],["φίλος","filantropía, filosofía"],["στρατηγός","estrategia, estratégico"],["πράττω | πράγμα","pragmático, pragmatismo"],["φόβος","fobia, claustrofobia"],["γῆ","geografía, geología"]],[["αὐτός","autonomía, automóvil"],["δένδρον","dendrita, dendrología"],["θάλαττα (−σσα)","talasoterapia, talasocracia"],["παιδίον",""],["ἡμέρα","efeméride, hemeroteca"],["ὁδός","método, éxodo"],["ἥλιος","heliocentrismo, heliópolis"]],[["παῖς, παιδός","pediatría, pedagogía"],["πλοῦτος, −ου","plutocracia, plutócrata"],["χρήμα, −ματος","crematística, crematístico"],["δέρμα, −ματος","dermatología, epidermis"],["εἰκών, −ονος","icono, iconografía"],["ῥήτωρ, −ορος","retórica, rétor"],["σῶμα, −ματος","somático, cromosoma"],["γέρων, −οντος","geriatría, gerontología"],["πνεῦμα, −ματος","neumático, neumología"],["ἀνήρ, ἀνδρός","androcentrismo, andrógino"],["πόλις, −έως","política, metrópoli"],["γυνή, γυναικός","ginecología, misógino"]],[["αἷμα, −ματος","hematología, anemia"],["γάστηρ, −τρός","gastritis, gastroenteritis"],["ἧπαρ, ἥπατος","hepatitis, hepático"],["καρδία","cardiología, taquicardia"],["κεφαλή","cefalea, encéfalo"],["λάρυγξ, −υγγος","laringitis, laringología"],["ὀστέον","osteología, osteoporosis"],["ὀφθαλμός","oftalmología, oftálmico"],["πούς, ποδός","podología, podómetro"],["ῥίς, ῥινός","rinoplastia, rinitis"],["χείρ, χειρός","quiromancia, quirófano"]],[["ἀτέλο−",""],["βλέφαρον","blefaritis, blefaroplastia"],["γένειον","genioplastia"],["γυνή, γυναικός","ginecología, ginecólogo"],["−ῖτις","artritis, dermatitis"],["οὖς, ὠτός","otitis, otorrinolaringología"],["πλαστός","plástico, plastilina"],["πρόκτος","proctología, proctitis"],["τομή","anatomía, tomografía"]],[["μανία","megalomanía, cleptomanía"],["λόγος","logopedia, filología"],["μισέω","misógino, misántropo"],["φιλία","filosofía, filantropía"],["φοβός","fobia, claustrofobia"],["ψευδός","seudónimo, seudociencia"]],[["ἄλγος","analgesia, neuralgia"],["γλῶττα","políglota, glosario"],["ἴσος","isósceles, isobara"],["κρύπτω","criptografía, cripta"],["μόνος","monólogo, monarquía"],["ὁμοῖος","homeopatía, homeostasis"],["πρῶτος","prototipo, protocolo"],["πῦρ, πυρός","piromanía, pirómano"],["σκοπέω","microscopio, telescopio"],["ταχύς, −εια, −υ","taquicardia, taquígrafo"],["χρῶμα","cromático, cromosoma"],["κόσμος","cosmología, cosmopolita"],["ὅρος","horizonte, aforismo"]]];
 const greekBankKey=word=>String(word).split(/[|,]/)[0].replace(/\s*\(.*/, '').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/ς/g,'σ').trim();
 const greekEtymologyBank=(()=>{
  const entries=new Map();
@@ -8556,7 +8559,7 @@ applySentenceGap();
 // Redimensionar el análisis sin reconstruir las otras preguntas del docente.
 function resizeOnlyExamAnalysis(){
  const paper=$('paper'),original=paper.querySelector('.exam-sheet');
- const questionSelector='.exam-question[data-exam-kind="forms"],.exam-question[data-morph-kind="forms"],.exam-question[data-greek-kind="forms"]';
+ const questionSelector='.exam-question[data-exam-kind="forms"],.exam-question[data-morph-kind="forms"],.exam-question[data-greek-kind="forms"],.greek-choice-subquestion[data-greek-kind="forms"]';
  const oldHeading=original?.querySelector(questionSelector);
  if(!oldHeading){generate();return}
  const bodyNodes=head=>{
@@ -14724,7 +14727,15 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   return true;
  }
  function state(){return {quantity:count(),signature,ids:selected.slice(),items:current()}}
- window.ExaminaGreekNumber={current,candidates,setCount,regenerateOne,regenerateAll,state};
+ function restore(data){
+  if(!data||!Array.isArray(data.ids)||data.ids.length>20)return;
+  setCount(data.quantity);
+  const pool=new Set(candidates().map(x=>x.id));
+  if(data.ids.every(id=>typeof id==='string'&&pool.has(id))){
+   selected=[...new Set(data.ids)];signature=signatureOf();
+  }
+ }
+ window.ExaminaGreekNumber={current,candidates,setCount,regenerateOne,regenerateAll,state,restore};
 })();
 </script><script>/* Retroversión · Griego I. Patrones castellanos y valencianos auditables;
  * únicamente lemas nominales con tablas escolares explícitas, concordancia
@@ -14738,7 +14749,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   'εργον':{es:['el trabajo','los trabajos'],va:['el treball','els treballs'],gender:'m',single:'trabajo'},
   'αγορα':{es:['la plaza','las plazas'],va:['la plaça','les places'],gender:'f',single:'plaza'},
   'χωρα':{es:['la región','las regiones'],va:['la regió','les regions'],gender:'f',single:'region'},
-  'θαλαττα':{es:['el mar','los mares'],va:['la mar','les mars'],gender:'m',single:'mar'},
+  'θαλαττα':{es:['el mar','los mares'],va:['la mar','les mars'],gender:'m',gender_va:'f',single:'mar'},
   'νεανιασ':{es:['el joven','los jóvenes'],va:['el jove','els jóvens'],gender:'m',single:'joven'},
   'παιδεια':{es:['la educación','las educaciones'],va:['l’educació','les educacions'],gender:'f',single:'educacion'},
   'αδελφοσ':{es:['el hermano','los hermanos'],va:['el germà','els germans'],gender:'m',single:'hermano'}
@@ -14802,7 +14813,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
      if(head==='παιδεια'&&number===1)continue;
      const forms=group.rows[0]?.[1],translated=info[lang()][number];
      if(!forms?.[number])continue;
-     const index=(number?2:0)+(info.gender==='f'?1:0);
+     const index=(number?2:0)+((lang()==='va'?(info.gender_va||info.gender):info.gender)==='f'?1:0);
      rows.push({id:item.id+':adj:'+adj.lemma+':'+number,
       prompt:translated+' '+word[lang()][index],answer:forms[number],
       minUnit:Math.max(5,item.minUnit),source:item.id,adjective:adj.lemma,type:'adjective'});
@@ -14834,26 +14845,37 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   selected=sample(pool,count()).map(x=>x.id);signature=signatureOf();return true;
  }
  function state(){return {quantity:count(),signature,ids:selected.slice(),items:current()}}
- window.ExaminaGreekRetroversion={current,candidates,setCount,regenerateOne,regenerateAll,state};
+ function restore(data){
+  if(!data||!Array.isArray(data.ids)||data.ids.length>20)return;
+  setCount(data.quantity);
+  const pool=new Set(candidates().map(x=>x.id));
+  if(data.ids.every(id=>typeof id==='string'&&pool.has(id))){
+   selected=[...new Set(data.ids)];signature=signatureOf();
+  }
+ }
+ window.ExaminaGreekRetroversion={current,candidates,setCount,regenerateOne,regenerateAll,state,restore};
 })();
 </script><script>/* Plurilingüismo inverso · Griego I. Cada palabra subrayada tiene dos
  * componentes documentados en el MISMO programa etimológico de 2.a.
  * No se admiten palabras si alguno de sus étimos aún no se ha estudiado. */
 (function(){
  'use strict';
+ // Criterio docente confirmado el 17-11-2026: se admiten familias
+ // etimológicas. οἰκία/οἶκος y νόμος/νέμω son equivalentes escolares;
+ // la disponibilidad se decide por los lemas efectivamente estudiados.
  const records=[
   {id:'democracia-teologia',es:['La ','democracia',' antigua influyó en la ','teología',' posterior.'],
    va:['La ','democràcia',' antiga va influir en la ','teologia',' posterior.'],
-   roots:[['δήμος','κράτος'],['θέος','λόγος']]},
+   roots:[['δήμος','κράτος'],['θεός','λόγος']]},
   {id:'bibliografia-antropologia',es:['La ','bibliografía',' permite preparar estudios de ','antropología','.'],
    va:['La ','bibliografia',' permet preparar estudis d’','antropologia','.'],
-   roots:[['βιβλίον','γράμμα'],['ἄνθρωπος','λόγος']]},
+   roots:[['βιβλίον','γράφω'],['ἄνθρωπος','λόγος']]},
   {id:'demografia-zoologia',es:['La ','demografía',' y la ','zoología',' son disciplinas diferentes.'],
    va:['La ','demografia',' i la ','zoologia',' són disciplines diferents.'],
-   roots:[['δήμος','γράμμα'],['ζῷον','λόγος']]},
+   roots:[['δήμος','γράφω'],['ζῷον','λόγος']]},
   {id:'teologia-antropologia',es:['En ','teología',' se emplean palabras conocidas por la ','antropología','.'],
    va:['En ','teologia',' s’empren paraules conegudes per l’','antropologia','.'],
-   roots:[['θέος','λόγος'],['ἄνθρωπος','λόγος']]},
+   roots:[['θεός','λόγος'],['ἄνθρωπος','λόγος']]},
   {id:'cronologia-zoologia',es:['La ','cronología',' ayuda a ordenar los descubrimientos de la ','zoología','.'],
    va:['La ','cronologia',' ajuda a ordenar els descobriments de la ','zoologia','.'],
    roots:[['χρόνος','λόγος'],['ζῷον','λόγος']]},
@@ -14888,6 +14910,13 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
    va:['La ','piromania',' pot estudiar-se des de la ','psicologia','.'],
    roots:[['πῦρ','μανία'],['ψυχή','λόγος']]}
  ];
+ const acceptedFamilies={
+  'οἰκία':['οἰκία','οἶκος'],'νόμος':['νόμος','νέμω'],
+  'γράφω':['γράφω','γράμμα']
+ };
+ function answerRoots(record){
+  return record.roots.map(pair=>pair.map(root=>(acceptedFamilies[root]||[root]).join(' / ')).join(' + '));
+ }
  const normalize=greekBankKey;
  function studied(root,limit){
   return greekEtymologyBank.entries.some(e=>
@@ -14919,7 +14948,9 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   return record.sentence.map((part,i)=>i%2?'<u>'+esc(part)+'</u>':esc(part)).join('');
  }
  function state(){return {selected,signature,item:current(),available:candidates().length}}
- window.ExaminaGreekEtymSentence={current,candidates,regenerate,render,state};
+ window.ExaminaGreekEtymSentence={current,candidates,regenerate,render,state,answerRoots,restore(data){
+  if(candidates().some(x=>x.id===data?.selected)){selected=data.selected;signature=signatureOf()}
+ }};
 })();
 </script><script>/* Griego I: dos bloques de competencias y traducción. No interviene
  * en la generación de exámenes de morfología ni en los cursos de latín.
@@ -14927,6 +14958,14 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 (function(){
  'use strict';
  const onlyGreek=()=>currentCourse()==='greek1'&&['complete','translation'].includes($('model').value);
+ // No propagar el paradigma oxítono heredado de ὀλιγός: el lema es
+ // ὀλίγος. Acotar la exclusión a los modelos de esta integración para
+ // conservar intacto el modelo de morfología solicitado por el docente.
+ const previousAdjectives=greekAvailableSyntagmAdjectives;
+ greekAvailableSyntagmAdjectives=function(limit){
+  const pool=previousAdjectives(limit);
+  return onlyGreek()?pool.filter(x=>greekBankKey(x.lemma)!=='ολιγοσ'):pool;
+ };
  const t=(es,va)=>$('lang').value==='va'?va:es;
  const numerals={es:['cero','una','dos','tres','cuatro','cinco'],
   va:['zero','una','dos','tres','quatre','cinc']};
@@ -15003,7 +15042,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   etymology:['Escribe al menos dos derivados etimológicos a partir de los siguientes términos griegos.',
     'Escriu almenys dos derivats etimològics a partir dels termes grecs següents.'],
   'change-number':['Pasa a singular o a plural estos sintagmas.','Passa a singular o a plural estos sintagmes.'],
-  retroversion:['Traduce al griego los siguientes sintagmas.','Traduïx al grec els sintagmes següents.'],
+  retroversion:['Traduce al griego los siguientes sintagmas; usa el nominativo salvo que haya preposición.','Traduïx al grec els sintagmes següents; usa el nominatiu llevat que hi haja preposició.'],
   roots:['Escribe los étimos griegos de los que derivan las palabras subrayadas en esta oración.',
     'Escriu els ètims grecs dels quals deriven les paraules subratllades en esta oració.']
  };
@@ -15030,13 +15069,26 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   });
   return box;
  }
+ function editedRoots(item,text){
+  if(!item)return esc(text);
+  const matches=item.sentence.filter((_,i)=>i%2).map(word=>({word,start:text.indexOf(word)}));
+  if(matches.some(x=>x.start<0))return esc(text);
+  matches.sort((a,b)=>a.start-b.start);
+  let end=0,out='';
+  for(const match of matches){
+   if(match.start<end)return esc(text);
+   out+=esc(text.slice(end,match.start))+'<u>'+esc(match.word)+'</u>';
+   end=match.start+match.word.length;
+  }
+  return out+esc(text.slice(end));
+ }
  function rootsOption(item){
   if(!item)return null;
   const box=document.createElement('section');box.className='greek-choice-option';box.dataset.greekOption='roots';
   box.append(subtitle('roots','a',label('roots')));
   const p=document.createElement('p');p.className='exam-item greek-choice-etym-sentence';
   p.dataset.greekChoiceSlot='roots:0';
-  p.innerHTML=edits.has('roots:0')?esc(edits.get('roots:0')):window.ExaminaGreekEtymSentence.render(item);
+  p.innerHTML=edits.has('roots:0')?editedRoots(item,edits.get('roots:0')):window.ExaminaGreekEtymSentence.render(item);
   box.append(p);return box;
  }
  function renumber(options){
@@ -15078,13 +15130,40 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   if(parts.sentences?.length){
    const sentences=parts.sentences.slice(),q=sentences[0];
    q.querySelector('.exam-q-number').textContent=(++currentNumber)+'.';
-   q.dataset.examKind='sent';delete q.dataset.greekKind;
+   delete q.dataset.examKind; // Conservar la identidad griega y sus ajustes de espaciado.
    frag.append(...sentences);
   }
   const anchor=sheet.querySelector(':scope > #examSentenceGlossary')||sheet.querySelector(':scope > #answerkey');
   if(anchor)sheet.insertBefore(frag,anchor);else sheet.append(frag);
+  syncExtraAnswers(sheet);
   window.greekLastPreview=$('paper').innerHTML;
   if(window.greekLastExam)window.greekLastExam.grouped=true;
+ }
+ // Las tres actividades nuevas se exportan también en la clave Word.
+ function syncExtraAnswers(sheet,onlyKind=null,index=null){
+  const key=sheet.querySelector('#answerkey');if(!key)return;
+  const specs=[['change-number',APIs.number(),included('number')],
+   ['retroversion',APIs.retro(),included('retro')],['roots',APIs.roots(),included('roots')]];
+  for(const [kind,api,enabled] of specs){
+   if(onlyKind&&kind!==onlyKind)continue;
+   let section=key.querySelector('[data-greek-extra-answer="'+kind+'"]');
+   if(!enabled||!sheet.querySelector('[data-greek-option="'+kind+'"]')){section?.remove();continue}
+   if(!section){section=document.createElement('section');section.dataset.greekExtraAnswer=kind;key.append(section)}
+   const items=kind==='roots'?[api.current()].filter(Boolean):api.current();
+   const answerRow=(item,i)=>{
+    const p=document.createElement('p');p.dataset.greekAnswerSlot=kind+':'+i;
+    p.textContent=kind==='roots'?item.sentence.filter((_,i)=>i%2).map((word,i)=>word+' — '+APIs.roots().answerRoots(item)[i]).join('; '):
+     (i+1)+'. '+item.prompt+' — '+item.answer;
+    return p;
+   };
+   if(index!==null){
+    const old=section.querySelector('[data-greek-answer-slot="'+kind+':'+index+'"]');
+    if(old&&items[index])old.replaceWith(answerRow(items[index],index));
+   }else{
+    const h=document.createElement('h3');h.textContent=label(kind);
+    section.replaceChildren(h,...items.map(answerRow));
+   }
+  }
  }
  const previousGenerate=generateGreekExam;
  generateGreekExam=function(){
@@ -15126,9 +15205,9 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   if(oldH&&newH){
    const oldNodes=[oldH],newNodes=[newH];
    let n=oldH.nextElementSibling;
-   while(n&&n.tagName!=='H3'){oldNodes.push(n);n=n.nextElementSibling}
+   while(n&&n.tagName!=='H3'&&!n.matches('[data-greek-extra-answer]')){oldNodes.push(n);n=n.nextElementSibling}
    n=newH.nextElementSibling;
-   while(n&&n.tagName!=='H3'){newNodes.push(n);n=n.nextElementSibling}
+   while(n&&n.tagName!=='H3'&&!n.matches('[data-greek-extra-answer]')){newNodes.push(n);n=n.nextElementSibling}
    oldH.before(...newNodes);oldNodes.forEach(node=>node.remove());
   }
   $('paper').replaceChildren(oldSheet);
@@ -15136,13 +15215,14 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   window.greekLastPreview=$('paper').innerHTML;refreshCustomRows();
   return true;
  };
- function replaceGenerated(kind,index=null){
+ function replaceGenerated(kind,index=null,regenerate=true){
   if(!onlyGreek())return false;
   const api=kind==='change-number'?APIs.number():kind==='retroversion'?APIs.retro():APIs.roots();
   const oldSheet=$('paper').querySelector('.exam-sheet');if(!api||!oldSheet)return false;
-  const result=kind==='roots'?api.regenerate():index===null?api.regenerateAll():api.regenerateOne(index);
+  const result=!regenerate?api.current():kind==='roots'?api.regenerate():index===null?api.regenerateAll():api.regenerateOne(index);
   if(!result)return false;
   if(index!==null)edits.delete(kind+':'+index);
+  else for(const slot of [...edits.keys()])if(slot.startsWith(kind+':'))edits.delete(slot);
   if(kind==='roots')edits.delete('roots:0');
   generateGreekExam();
   const fresh=$('paper').querySelector('.exam-sheet');
@@ -15160,6 +15240,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
    if(oldLetter&&newLetter)newLetter.textContent=oldLetter.textContent;
    before.replaceWith(after);
   }
+  syncExtraAnswers(oldSheet,kind,index);
   $('paper').replaceChildren(oldSheet);
   if($('model').value==='complete')greekExamControls();else refreshManualMorphWords();
   window.greekLastPreview=$('paper').innerHTML;refreshCustomRows();
@@ -15207,7 +15288,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
     // no puede cancelarse porque el botón se haya sustituido en pleno mousedown.
     if(api.state().quantity===previous)return;
     for(const key of [...edits.keys()])if(key.startsWith(config.kind+':'))edits.delete(key);
-    generateGreekExam();refreshCustomRows();
+    replaceGenerated(config.kind,null,false);
    };
   }
   const regenerate=document.createElement('button');regenerate.type='button';
@@ -15230,7 +15311,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
    if(config.kind==='roots'){
     const current=APIs.roots()?.current();
     const note=document.createElement('p');note.className='hint';
-    note.textContent=current?'Étimos: '+current.roots.map(x=>x.join(' + ')).join(' / '):
+    note.textContent=current?'Étimos: '+APIs.roots().answerRoots(current).join(' ; '):
      'No hay oraciones válidas con los étimos de las unidades seleccionadas.';
     editor.append(note);
    }
@@ -15245,7 +15326,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
      edits.set(slot,input.value);
      const target=$('paper').querySelector('[data-greek-choice-slot="'+slot+'"]');
      if(target){
-      if(config.kind==='roots')target.textContent=input.value;
+      if(config.kind==='roots')target.innerHTML=editedRoots(APIs.roots().current(),input.value);
       else{const letter=target.querySelector('.exam-letter');target.replaceChildren(letter,' '+input.value)}
       window.greekLastPreview=$('paper').innerHTML;
       if(typeof warnExamManualSolution==='function')warnExamManualSolution();
@@ -15281,6 +15362,14 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
    }
    for(const config of extras)
     if(!host.querySelector('[data-greek-custom="'+config.key+'"]'))host.append(menuBox(config));
+   for(const config of extras){
+    const panel=host.querySelector('[data-greek-custom="'+config.key+'"]');
+    const check=panel?.querySelector('.exam-question-toggle');
+    if(check){check.checked=included(config.key);panel.dataset.included=String(check.checked);
+     panel.querySelector('.exam-question-status').textContent=check.checked?'Incluida':'Omitida'}
+    const count=panel?.querySelector('[data-greek-custom-count]');
+    if(count)count.value=APIs[config.key]().state().quantity;
+   }
    const order=['decl','forms','change-number','retroversion','verb','etymology','roots','sent'];
    const panels=order.map(k=>host.querySelector(':scope > [data-question="'+k+'"]')).filter(Boolean);
    // Comparar solo paneles gestionados: los nodos auxiliares del menú
@@ -15323,12 +15412,31 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
  },true);
  const style=document.createElement('style');style.id='greek-choice-group-styles';
  style.textContent='.paper .greek-choice-option{margin:0 0 8pt 0;break-inside:auto}'+
-  '.paper .greek-choice-subquestion{margin-top:8pt;font-weight:normal}'+
+  '.paper .greek-choice-subquestion{margin-top:8pt;font-weight:normal;break-after:avoid}'+
   '.paper .greek-choice-option .exam-paradigm{margin-bottom:7pt}'+
   '.paper .greek-choice-option > .exam-item + .exam-item{margin-top:4pt}'+
   '.paper .greek-choice-etym-sentence u{text-decoration:underline;text-underline-offset:2px}';
  document.head.append(style);
- window.ExaminaGreekChoiceGroups={active:onlyGreek,regroup,replaceGenerated,ensureMenu,flags};
+ function snapshotChoices(){
+  return {flags:{...flags[$('model').value]},number:APIs.number().state(),
+   retro:APIs.retro().state(),roots:APIs.roots().state()};
+ }
+ function restoreChoices(draft){
+  if(!onlyGreek())return;
+  const data=draft.greekChoices;
+  if(data&&typeof data==='object'){
+   for(const key of ['number','retro','roots']){
+    if(typeof data.flags?.[key]==='boolean')flags[$('model').value][key]=data.flags[key];
+    APIs[key]().restore(data[key]);
+   }
+   save();
+  }
+  lastScope=scopeKey();edits.clear();
+  for(const row of $('paper').querySelectorAll('[data-greek-choice-slot]'))
+   edits.set(row.dataset.greekChoiceSlot,row.textContent.replace(/^\s*\d+\.\s*/,'').trim());
+  ensureMenu();
+ };
+ window.ExaminaGreekChoiceGroups={active:onlyGreek,regroup,replaceGenerated,ensureMenu,flags,snapshot:snapshotChoices,restore:restoreChoices};
  document.addEventListener('DOMContentLoaded',()=>{
   ensureMenu();
   if(onlyGreek())generateGreekExam();

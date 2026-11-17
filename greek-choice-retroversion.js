@@ -10,7 +10,7 @@
   'εργον':{es:['el trabajo','los trabajos'],va:['el treball','els treballs'],gender:'m',single:'trabajo'},
   'αγορα':{es:['la plaza','las plazas'],va:['la plaça','les places'],gender:'f',single:'plaza'},
   'χωρα':{es:['la región','las regiones'],va:['la regió','les regions'],gender:'f',single:'region'},
-  'θαλαττα':{es:['el mar','los mares'],va:['la mar','les mars'],gender:'m',single:'mar'},
+  'θαλαττα':{es:['el mar','los mares'],va:['la mar','les mars'],gender:'m',gender_va:'f',single:'mar'},
   'νεανιασ':{es:['el joven','los jóvenes'],va:['el jove','els jóvens'],gender:'m',single:'joven'},
   'παιδεια':{es:['la educación','las educaciones'],va:['l’educació','les educacions'],gender:'f',single:'educacion'},
   'αδελφοσ':{es:['el hermano','los hermanos'],va:['el germà','els germans'],gender:'m',single:'hermano'}
@@ -74,7 +74,7 @@
      if(head==='παιδεια'&&number===1)continue;
      const forms=group.rows[0]?.[1],translated=info[lang()][number];
      if(!forms?.[number])continue;
-     const index=(number?2:0)+(info.gender==='f'?1:0);
+     const index=(number?2:0)+((lang()==='va'?(info.gender_va||info.gender):info.gender)==='f'?1:0);
      rows.push({id:item.id+':adj:'+adj.lemma+':'+number,
       prompt:translated+' '+word[lang()][index],answer:forms[number],
       minUnit:Math.max(5,item.minUnit),source:item.id,adjective:adj.lemma,type:'adjective'});
@@ -106,5 +106,13 @@
   selected=sample(pool,count()).map(x=>x.id);signature=signatureOf();return true;
  }
  function state(){return {quantity:count(),signature,ids:selected.slice(),items:current()}}
- window.ExaminaGreekRetroversion={current,candidates,setCount,regenerateOne,regenerateAll,state};
+ function restore(data){
+  if(!data||!Array.isArray(data.ids)||data.ids.length>20)return;
+  setCount(data.quantity);
+  const pool=new Set(candidates().map(x=>x.id));
+  if(data.ids.every(id=>typeof id==='string'&&pool.has(id))){
+   selected=[...new Set(data.ids)];signature=signatureOf();
+  }
+ }
+ window.ExaminaGreekRetroversion={current,candidates,setCount,regenerateOne,regenerateAll,state,restore};
 })();

@@ -3,6 +3,7 @@ name: Phase I regression (no deployment)
 on:
   pull_request:
     paths:
+      - 'greek-choice-*.js'
       - 'index.html'
       - 'pdf-export.js'
       - 'scripts/test-export-workspace.cjs'
@@ -25,6 +26,7 @@ on:
       - 'scripts/test-lemma-review-theme.cjs'
       - 'scripts/test-latin4-conjugation-isolated-forms.cjs'
       - 'scripts/test-subquestion-scoring.cjs'
+      - 'scripts/test-greek-choice-*.cjs'
       - '.github/workflows/phase-one-regression.yml'
   workflow_dispatch:
 
@@ -47,6 +49,8 @@ jobs:
           npx playwright install --with-deps chromium
       - name: Rebuild offline distribution in CI workspace
         run: npm run offline:build
+      - name: Griego I competencias, filología, Word, PDF y offline
+        run: node scripts/test-greek-choice-groups.cjs && node scripts/test-greek-choice-audit.cjs
       - name: Phase I synchronization regressions
         run: node scripts/test-phase-one.cjs
       - name: Verificar interfaz de guardar/exportar y PDF local sin publicar

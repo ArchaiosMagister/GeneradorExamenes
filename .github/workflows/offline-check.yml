@@ -3,6 +3,7 @@ name: Comprobar versión autónoma
 on:
   pull_request:
     paths:
+      - 'greek-choice-*.js'
       - 'index.html'
       - 'exam-scoring.js'
       - 'unified-backup.js'

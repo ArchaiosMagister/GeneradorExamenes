@@ -3,19 +3,22 @@
  * No se admiten palabras si alguno de sus étimos aún no se ha estudiado. */
 (function(){
  'use strict';
+ // Criterio docente confirmado el 17-11-2026: se admiten familias
+ // etimológicas. οἰκία/οἶκος y νόμος/νέμω son equivalentes escolares;
+ // la disponibilidad se decide por los lemas efectivamente estudiados.
  const records=[
   {id:'democracia-teologia',es:['La ','democracia',' antigua influyó en la ','teología',' posterior.'],
    va:['La ','democràcia',' antiga va influir en la ','teologia',' posterior.'],
-   roots:[['δήμος','κράτος'],['θέος','λόγος']]},
+   roots:[['δήμος','κράτος'],['θεός','λόγος']]},
   {id:'bibliografia-antropologia',es:['La ','bibliografía',' permite preparar estudios de ','antropología','.'],
    va:['La ','bibliografia',' permet preparar estudis d’','antropologia','.'],
-   roots:[['βιβλίον','γράμμα'],['ἄνθρωπος','λόγος']]},
+   roots:[['βιβλίον','γράφω'],['ἄνθρωπος','λόγος']]},
   {id:'demografia-zoologia',es:['La ','demografía',' y la ','zoología',' son disciplinas diferentes.'],
    va:['La ','demografia',' i la ','zoologia',' són disciplines diferents.'],
-   roots:[['δήμος','γράμμα'],['ζῷον','λόγος']]},
+   roots:[['δήμος','γράφω'],['ζῷον','λόγος']]},
   {id:'teologia-antropologia',es:['En ','teología',' se emplean palabras conocidas por la ','antropología','.'],
    va:['En ','teologia',' s’empren paraules conegudes per l’','antropologia','.'],
-   roots:[['θέος','λόγος'],['ἄνθρωπος','λόγος']]},
+   roots:[['θεός','λόγος'],['ἄνθρωπος','λόγος']]},
   {id:'cronologia-zoologia',es:['La ','cronología',' ayuda a ordenar los descubrimientos de la ','zoología','.'],
    va:['La ','cronologia',' ajuda a ordenar els descobriments de la ','zoologia','.'],
    roots:[['χρόνος','λόγος'],['ζῷον','λόγος']]},
@@ -50,6 +53,13 @@
    va:['La ','piromania',' pot estudiar-se des de la ','psicologia','.'],
    roots:[['πῦρ','μανία'],['ψυχή','λόγος']]}
  ];
+ const acceptedFamilies={
+  'οἰκία':['οἰκία','οἶκος'],'νόμος':['νόμος','νέμω'],
+  'γράφω':['γράφω','γράμμα']
+ };
+ function answerRoots(record){
+  return record.roots.map(pair=>pair.map(root=>(acceptedFamilies[root]||[root]).join(' / ')).join(' + '));
+ }
  const normalize=greekBankKey;
  function studied(root,limit){
   return greekEtymologyBank.entries.some(e=>
@@ -81,5 +91,7 @@
   return record.sentence.map((part,i)=>i%2?'<u>'+esc(part)+'</u>':esc(part)).join('');
  }
  function state(){return {selected,signature,item:current(),available:candidates().length}}
- window.ExaminaGreekEtymSentence={current,candidates,regenerate,render,state};
+ window.ExaminaGreekEtymSentence={current,candidates,regenerate,render,state,answerRoots,restore(data){
+  if(candidates().some(x=>x.id===data?.selected)){selected=data.selected;signature=signatureOf()}
+ }};
 })();

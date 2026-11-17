@@ -5,6 +5,7 @@ on:
     paths:
       - 'scripts/test-real-exam-audit.cjs'
       - '.github/workflows/audit-real-exams.yml'
+      - 'greek-choice-*.js'
       - 'index.html'
       - 'offline.html'
       - 'exam-scoring.js'
