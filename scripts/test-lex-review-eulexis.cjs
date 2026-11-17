@@ -15,6 +15,7 @@ assert.doesNotMatch(html,/<small class="phonetic-origin-label" contenteditable="
 assert.doesNotMatch(html,/adaptaciones cultas etiquetadas en el examen y en Word/);
 assert.match(html,/x\.valencianPrefixEligible===false\|\|\/\\s\/u\.test/);
 assert.match(vocab,/window\.ExaminaGreekEulexisCitation\?\./);
+assert.match(vocab,/if\(course==='gr1'&&row\.eulexisUnverified===true\)/, 'El Word de fichas Eulexis guardadas debe normalizar el artículo');
 const helper=html.match(/function greekEulexisCitation\(value\)\{[\s\S]*?\n\}\nwindow\.ExaminaGreekEulexisCitation=/);
 assert.ok(helper,'No se encuentra la función para enunciados de Eulexis');
 const ctx=createContext({window:{}});
