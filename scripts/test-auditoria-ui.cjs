@@ -30,6 +30,7 @@ assert.match(index,/if\(\/artículo\|articulo\/\.test\(a\)\)return null/,
   const errors=[];
   page.on('pageerror',error=>errors.push(error.message));
   await page.goto('http://127.0.0.1:'+server.address().port+'/offline.html',{waitUntil:'load'});
+  await page.locator('#examPanelShortcuts>button[data-target="examQuestionSettings"]').click();
   await page.locator('#examQuestionMenus .exam-question-panel').first().waitFor();
   assert.equal(await page.locator('.vocab-tabbar>button').count(),4,
    'Tres módulos originales más Herramientas académicas');
@@ -78,7 +79,7 @@ assert.match(index,/if\(\/artículo\|articulo\/\.test\(a\)\)return null/,
   page.once('dialog',dialog=>dialog.accept());
   await page.locator('#generate').evaluate(el=>el.click());
   assert.notEqual(await snapshot(),prior,'El sorteo debe reconstruir las preguntas');
-  await page.locator('#group-drafts > summary').click();
+  await page.locator('#examPanelShortcuts>button[data-target="group-drafts"]').click();
   await page.locator('#undoGeneration').click();
   assert.match(await page.locator('#draftStatus').textContent(),/Borrador recuperado/);
   await page.locator('#vgShow').click();
@@ -105,6 +106,7 @@ assert.match(index,/if\(\/artículo\|articulo\/\.test\(a\)\)return null/,
   const decision=await page.evaluate(()=>JSON.parse(localStorage.examina_vocabulary_project_v1).units[0].decisions.gr1[0]);
   assert.equal(decision.eulexisUnverified,true);
   await page.locator('#vmShowExam').click();
+  await page.locator('#examPanelShortcuts>button[data-target="examQuestionSettings"]').click();
   await page.locator('#examQuestionMenus .exam-question-panel').first().waitFor();
   // El modo de la aplicación se respeta aun con el sistema en modo oscuro.
   await page.emulateMedia({colorScheme:'dark'});
