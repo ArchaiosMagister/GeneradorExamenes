@@ -50,6 +50,8 @@
   language:document.getElementById('lang')?.value||'es'
  });
  const morph=()=>['morf','morphology'].includes(state().model);
+ const greekGrouped=()=>state().course==='greek1'&&!morph()&&
+  !!paper.querySelector('.exam-question[data-exam-kind="greek-competence"]');
  const review=()=>document.getElementById('sheetType')?.value==='review';
  const latin4LateNoCulture=()=>{
   if(state().course!=='latin4'||typeof selectedUnits!=='function')return false;
@@ -431,7 +433,7 @@
  function setScore(key,cents,{source='field',activeInput=null}={}){
   if(cents===null)return false;
   const item=previousQuestions.find(item=>item.key===key);
-  if(item?.base==='sent')cents=sentenceCents();
+  if(item?.base==='sent'&&!greekGrouped())cents=sentenceCents();
   if(state().course!=='greek1'&&item?.base==='lex')cents=200;
   if(source==='auto')autoManaged.add(key);else autoManaged.delete(key);
   scores[key]=cents;persist();
@@ -483,7 +485,7 @@
    control.dataset.scoringKey=item.key;
    control.setAttribute('aria-label','Puntos de la pregunta '+(i+1)+': '+item.caption);
    control.value=value(scores[item.key]||0);
-   if(item.base==='sent'||(state().course!=='greek1'&&item.base==='lex')){
+   if((item.base==='sent'&&!greekGrouped())||(state().course!=='greek1'&&item.base==='lex')){
     control.disabled=true;
     control.title=item.base==='sent'?'Un punto por oración. Cambia el número de oraciones para variar el total.':'El léxico tiene puntuación fija de 2p.';
    }
@@ -533,7 +535,7 @@
    input.autocomplete='off';input.dataset.scoringKey=item.key;
    input.setAttribute('aria-label','Puntuación de '+item.caption);
    input.value=value(scores[item.key]||0);
-   if(target==='sent'||(state().course!=='greek1'&&target==='lex')){
+   if((target==='sent'&&!greekGrouped())||(state().course!=='greek1'&&target==='lex')){
     input.disabled=true;input.title=target==='sent'?'1 p. por oración':'Léxico: 2p. fijos';
    }
    input.addEventListener('input',()=>{
@@ -569,7 +571,8 @@
    const base=item.base;
    const duplicate=seen.get(base)||0;seen.set(base,duplicate+1);
    const key=storageKey(base+(duplicate?'#'+duplicate:''));
-   if(base==='sent')scores[key]=sentenceCents();
+   if(base==='sent'&&!greekGrouped())scores[key]=sentenceCents();
+   else if(base==='sent'&&greekGrouped()&&autoManaged.has(key))scores[key]=defaults[i];
    else if(state().course!=='greek1'&&base==='lex')scores[key]=200;
    else if(!Object.prototype.hasOwnProperty.call(scores,key)){
     // Los valores nuevos nacen de las preguntas realmente disponibles.
@@ -608,7 +611,7 @@
     pts.setAttribute('title','Modificar puntuación');
     pts.setAttribute('aria-label','Modificar puntuación de la pregunta '+(i+1));
     pts.textContent=label(scores[key]);
-    if(base==='sent'||(state().course!=='greek1'&&base==='lex')){
+    if((base==='sent'&&!greekGrouped())||(state().course!=='greek1'&&base==='lex')){
      pts.tabIndex=-1;
      pts.title=base==='sent'?'1 p. por oración':'Léxico: 2p. fijos';
     }
