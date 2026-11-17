@@ -63,6 +63,7 @@ async function pick(page,course,model,unit){
    assert.deepEqual(initial.vocabularyNodes,[1,1],file+': vocabularios modificados');
    assert(initial.export&&initial.drafts,file+': herramientas de examen ocultas');
    await pick(page,'greek1','translation','UD10');
+   await page.locator('#examPanelShortcuts>[data-target="examQuestionSettings"]').click();
    const greek=await page.evaluate(()=>{
     const words=[...document.querySelectorAll('#paper [data-greek-form-surface]')];
     const inputs=[...document.querySelectorAll('#examQuestionMenus [data-question="forms"] .question-editor input[type="text"]')];
@@ -87,6 +88,7 @@ async function pick(page,course,model,unit){
    assert.equal(await page.locator('#examQuestionMenus [data-question="decl"] .exam-ui-extra select').count(),1);
    assert.equal(await page.locator('#examQuestionMenus [data-question="forms"] .exam-ui-categories input').count(),3);
    assert.equal(await page.locator('#exam-ui-bulk').isVisible(),true);
+   await page.locator('#examPanelShortcuts>[data-target="examScoring"]').click();
    const score=page.locator('#examScoring .exam-scoring-row').first();
    const points=score.locator('input');
    const originalPoints=await points.inputValue();
@@ -97,6 +99,7 @@ async function pick(page,course,model,unit){
    await score.getByRole('button',{name:/Restar 1 punto/}).click();
    assert.equal(await points.inputValue(),'1,25');
    await points.fill(originalPoints);
+   await page.locator('#examPanelShortcuts>[data-target="examQuestionSettings"]').click();
    const morphOfferInfo=await page.locator('#morphOffer').evaluate(el=>({
     visible:!!el.getClientRects().length,display:getComputedStyle(el).display,
     countGrid:el.closest('.count-grid')?.outerHTML.slice(0,150),parent:el.parentElement?.outerHTML.slice(0,130),
@@ -118,6 +121,7 @@ async function pick(page,course,model,unit){
    await page.locator('#vmShowList').click();
    assert(await page.locator('#vocabManager.active').count(),file+': cambió el vocabulario exigible');
    await page.locator('#vmShowExam').click();
+   await page.locator('#examPanelShortcuts>[data-target="exam-ui-core"]').click();
    assert(await page.locator('#exam-ui-core').isVisible(),file+': examen no recuperado tras módulos de vocabulario');
    await page.setViewportSize({width:820,height:1180});
    await page.locator('#examQuestionsTab').click();
