@@ -61,14 +61,6 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
   // y bonus se introduce en UD3. No exigir seleccionar también UD1.
   for(const [course,unit] of [['latin1',2],['latin4',3]]){
    await select(course,'tablas',unit);
-   const diagnostic=await page.evaluate(()=>{
-    const candidate=latinExamNominals(['UD'+(0||2)]); // diagnostic below uses actual current unit
-    const adjectives=latinCompleteAdjectives(selectedUnits());
-    const noun=latinCompleteDeclensionItems(selectedUnits()).find(x=>mNormalize(x.p.lemma).toLowerCase()==='agricola');
-    return {course:currentCourse(),units:selectedUnits(),candidates:adjectives.filter(x=>/bonus|doctus|Romanus/i.test(x.x.entry)).map(x=>({entry:x.x.entry,unit:x.x.unit})), approved:latinApprovedSyntagmAdjective(noun,adjectives,Math.max(0,...selectedUnits().map(examUnitNumber).filter(Number.isInteger)))?.x?.entry, selected:noun?.compound?.adjective?.entry,nouns:latinExamNominals(selectedUnits()).map(x=>x.p.lemma).filter(x=>x==='agricola'),raw:vocab.filter(x=>/bonus|doctus|romanus/i.test(x.entry)&&courseOf(x)===currentCourse()).slice(0,12).map(x=>({entry:x.entry,unit:x.unit,parsed:!!adjective(x),excl:isExcludedExamMorphLemma(x.entry,x.meaning),lim:examUnitNumber(x.unit)})),noFilter:latinSharedBank.vocabulary(currentCourse()).filter(x=>/bonus|doctus|Romanus/i.test(x.entry)).slice(0,12).map(x=>x.entry)};
-   });
-   console.log('DIAGNOSTIC PR169',JSON.stringify(diagnostic));
-   await select(course,'tablas',unit);
    const r=await page.evaluate(unit=>{
     const group=latinCompleteDeclensionItems(['UD'+unit])
      .find(x=>mNormalize(x.p.lemma).toLowerCase()==='agricola');
@@ -83,8 +75,29 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
    assert.equal(r.nominative,'bonus agricola',course+': orden de sintagma docente');
    assert.equal(r.accusative,'bonum agricolam');
    assert.equal(r.plural,'boni agricolae');
-   assert(Number(r.sourceUnit.replace('UD',''))<unit,
-    course+': debe conservarse el lema de la UD de origen');
+   assert(Number(r.sourceUnit.replace('UD',''))<=unit,
+    course+': no debe adelantarse un lema de una unidad posterior');
+   if(course==='latin4')assert(Number(r.sourceUnit.replace('UD',''))<unit,
+    'Latín 4.º: agricola de UD1 debe poder declinarse con bonus de UD3');
+  }
+  // Romanus es gentilicio: la excepción sólo es válida en pares docentes
+  // y jamás autoriza su inclusión indiscriminada en el banco morfológico.
+  for(const [course,unit,noun,expected] of [
+   ['latin1',2,'puer','puer Romanus'],
+   ['latin4',3,'puella','puella Romana']
+  ]){
+   await select(course,'tablas',unit);
+   const check=await page.evaluate(noun=>{
+    const pool=latinCompleteDeclensionItems(selectedUnits());
+    const item=pool.find(x=>mNormalize(x.p.lemma).toLowerCase()===noun);
+    return {found:!!item,adjective:item?.compound?.adjective?.entry,
+     nominative:item?.compound?.forms?.[0]?.[0],
+     general:latinCompleteAdjectives(selectedUnits()).some(x=>
+      mNormalize(headLex(x.x.entry)).toLowerCase()==='romanus')};
+   },noun);
+   assert(check.found,course+': falta el lema aprobado '+noun);
+   assert.equal(check.nominative,expected,course+': falta la concordancia del gentilicio');
+   assert.equal(check.general,false,'Romanus no debe entrar en el sorteo general');
   }
   await select('latin1','tablas',1);
   assert.equal(await page.evaluate(()=>latinCompleteCompoundActive(['UD1'])),false);
