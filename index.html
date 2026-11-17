@@ -2746,6 +2746,23 @@ function latinApprovedSyntagmAdjective(noun,adjectives,limit){
   .map(x=>({x,p:adjective(x)})).find(x=>x.p);
  return found||null;
 }
+// Evidencia explícita sólo para el sintagma docente hostis Romanus de Latín I.
+// No desbloquea los demás i-stems de mNoun ni altera los análisis generales.
+// Paradigma escolar cotejado: https://en.wiktionary.org/wiki/hostis#Latin
+// [nom, voc, ac, gen, dat, abl] × [singular, plural].
+const latinApprovedHostis=Object.freeze({
+ lemma:'hostis',kind:'3mf',gender:'m',
+ forms:[
+  ['hostis','hostis','hostem','hostis','hosti','hoste'],
+  ['hostes','hostes','hostes','hostium','hostibus','hostibus']
+ ],
+ source:'Paradigma explícito del tema en -i; comprobación filológica 17/11/2026'
+});
+function latinApprovedNounParadigm(row){
+ const lemma=mNormalize(headLex(row.entry)).toLowerCase();
+ return currentCourse()==='latin1'&&lemma==='hostis'?
+  latinApprovedHostis:mNoun(row.entry);
+}
 function latinCompleteDeclensionItems(chosen){
  const nouns=latinExamNominals(chosen);
  if(!latinCompleteCompoundActive(chosen))return nouns;
@@ -2759,7 +2776,7 @@ function latinCompleteDeclensionItems(chosen){
  for(const x of vocab.filter(row=>courseOf(row)===currentCourse())){
   const wordUnit=examUnitNumber(x.unit);
   if(!Number.isInteger(wordUnit)||wordUnit>limit||isProperNounLemma(x.entry))continue;
-  const p=mNoun(x.entry),lemma=p&&mNormalize(p.lemma).toLowerCase();
+  const p=latinApprovedNounParadigm(x),lemma=p&&mNormalize(p.lemma).toLowerCase();
   if(!approved.has(lemma)||present.has(lemma)||
    (currentCourse()==='latin1'&&limit<4&&!/^[12]/.test(p.kind)))continue;
   nouns.push({x,p});present.add(lemma);
