@@ -71,7 +71,7 @@
   if(quantity!==next){quantity=next;signature=''}
  }
  function regenerateOne(i){
-  const rows=current(),used=new Set(selected),pool=candidates().filter(x=>!used.has(x.id));
+  const rows=current(),used=new Set(selected),pool=candidates().filter(x=>!used.has(x.id)&&x.prompt!==rows[i]?.prompt);
   if(i<0||i>=rows.length||!pool.length)return false;
   const previous=rows[i],preferred=pool.filter(x=>x.direction===previous.direction);
   const replacement=sample(preferred.length?preferred:pool,1)[0];
