@@ -177,7 +177,7 @@ const server=http.createServer((request,response)=>{
       const where=filename+'/'+language+'/'+width+'/preview-actions';
       assert.equal(toolbar.items.length,5,where+': faltan botones de vista previa');
       assert(toolbar.items.every(b=>Math.abs(b.y-toolbar.items[0].y)<1),
-       where+': Imprimir u otra acción salta a una segunda fila');
+       where+': Imprimir u otra acción salta a una segunda fila: '+JSON.stringify(toolbar));
       assert(toolbar.items.every(b=>b.x>=toolbar.barLeft-2&&b.x+b.width<=toolbar.barRight+2),
        where+': las acciones desbordan la vista previa');
       assert(toolbar.items.every(b=>b.height>=44),
