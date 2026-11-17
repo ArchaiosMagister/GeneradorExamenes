@@ -39,3 +39,5 @@ jobs:
 # Diagnóstico de dimensiones reales en iPad 1024.
 
 # Comprobar prioridad CSS sobre el tamaño fijo histórico.
+
+# Comprobar selectores de idioma visibles antes de las mediciones.
