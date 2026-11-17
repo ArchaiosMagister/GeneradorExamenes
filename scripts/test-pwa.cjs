@@ -263,6 +263,7 @@ const server=http.createServer(async(req,res)=>{
   assert(firstVersion?.includes('test-one'));
   // El documento es la misma aplicación en línea y sin conexión.
   // El rediseño usa los selectores únicos, sin botones duplicados en cabecera.
+  await page.locator('#examPanelShortcuts>button[data-target="exam-ui-core"]').click();
   await page.locator('#course').selectOption('latin1');
   await page.locator('#model').selectOption('tablas');
   assert.deepEqual(await page.evaluate(()=>[document.getElementById('course').value,document.getElementById('model').value]),['latin1','tablas'],
