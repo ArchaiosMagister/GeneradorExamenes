@@ -19,9 +19,9 @@
 | LI-03 | `bellum magnum` | Segunda declinación neutra y concordancia | UD1–2 | Confirmar UD |
 | LI-04 | `puer Romanus` | Segunda declinación, base sin -o en nominativo | UD2–3 | Confirmar UD |
 | LI-05 | `rex magnus` | Tercera declinación, tema consonántico | Desde UD3 | Contrastar ficha rex y unidad |
-| LI-06 | `hostis Romanus` | Tercera declinación, tema en -i | Desde UD3 | Contrastar ficha hostis y unidad |
+| LI-06 | `hostis Romanus` | Tercera declinación, tema en -i | **UD4** | Paradigma completo de tema en -i cotejado y aislado |
 
-Los seis candidatos están aprobados. Los pares sólo se activan cuando ambos lemas existen en el banco del curso y el motor puede declinar el sustantivo. **Importante:** el analizador actual excluye *hostis* por su tema en -i; la aprobación del sintagma no autoriza una flexión de tercera declinación incorrecta, y ese caso sigue pendiente de un paradigma expreso.
+Los seis candidatos están aprobados. Los pares sólo se activan cuando sus lemas están en el banco del curso y existe paradigma admisible. **Hostis Romanus (UD4) ya está habilitado** con las 12 casillas de un tema en -i contrastado individualmente, sin retirar la exclusión general de los temas en -i que carezcan de fuente.
 
 ## B. Latín de 4.º — cuadros de declinación
 
@@ -94,8 +94,36 @@ El docente **aprueba LI-01–LI-06, L4-01–L4-06 y GR-01–GR-16**. GR-17 queda
 - Latín 4.º: **bonus agricola**, **bonus nauta**, **bonus poeta**, desde UD3 si las palabras constan en el banco de ese curso.
 - En todos ellos el sustantivo es de primera declinación **masculino**, y el adjetivo conserva el género masculino: *bonus agricola*, *boni agricolae*, *bonum agricolam*; nunca *bona agricola* por analogía con la terminación -a.
 
-**Límites de la activación segura:** el motor no añade lemas ni paradigmas a partir de esta lista. Sólo prioriza los pares documentados si coincide un sustantivo de declinación analizable y un adjetivo de su propio banco. Cuando falta cualquiera de los dos componentes, la selección antigua permanece operativa. Las fichas aprobadas pero ausentes no se cuentan como ejercicios activados.
+**Límites de la activación segura:** no se añaden lemas a los bancos de vocabulario; los dos paradigmas explícitos de *hostis* y *nomen* están restringidos a la generación de sintagmas latinos aprobados. Sólo se priorizan parejas si consta la palabra en el banco del curso. Cuando falta un componente, la selección existente permanece operativa; una ficha aprobada pero ausente no es sorteable.
 
 **Griego:** UD1–2 conserva el sustantivo sin artículo; desde UD3 los cuadros de nominativo/acusativo/genitivo/dativo incluyen artículo, con vocativo sin artículo; UD4 ofrece preposiciones de régimen fijo; UD5 genera artículo + adjetivo + sustantivo; UD7 admite *αὐτός* de identidad en cambio de número. No se incorporan paradigmas de tercera por simple extrapolación.
 
 **Control de calidad:** `scripts/test-sintagmas-aprobados-169.cjs`, unido a `scripts/test-nominal-agreement.cjs`, `scripts/test-syntagm-variation.cjs` y las pruebas existentes de Griego I/Word/PDF/versión autónoma. Ninguna prueba autoriza fusión o publicación por sí misma.
+
+## Resultado contrastado tras la implementación — 17/11/2026
+
+| Curso | Pareja aprobada | UD inicial efectiva | Resultado |
+|---|---|---|---|
+| Latín I | *puella bona*, *servus bonus*, *bellum magnum*, *puer Romanus* | UD2 | Activas |
+| Latín I | *rex magnus*, *hostis Romanus* | UD4 | Activas; *hostis* verificado expresamente |
+| Latín I | *bonus agricola*, *bonus nauta* | UD2 | Activas, género masculino |
+| Latín I | *bonus poeta* | UD3 | Activa, género masculino |
+| Latín 4.º | *puella Romana*, *puer bonus*, *bonus agricola*, *bonus nauta* | UD3 | Activas |
+| Latín 4.º | *servus bonus* | UD4 | Activa: *servus* empieza en UD4 |
+| Latín 4.º | *rex bonus* | UD6 | Activa: *rex* figura en UD6 |
+| Latín 4.º | *bonus poeta* | UD7 | Activa: *poeta* figura en UD7 |
+| Latín 4.º | *nomen Romanum* | UD8 | Activa: neutro de tercera con paradigma expresamente cotejado |
+| Latín 4.º | *templum magnum* | — | **Aprobada, no sorteable:** *templum* no consta en el vocabulario de 4.º; no se ha añadido por inferencia |
+
+### Dos paradigmas individuales acreditados
+
+- **Latín I, *hostis, hostis* (m.)**, desde UD4. 3.ª declinación de tema en -i; genitivo plural **hostium** (no *hostum*), dativo y ablativo plural *hostibus*, ablativo singular *hoste*. Cotejo: [Wiktionary, hostis](https://en.wiktionary.org/wiki/hostis#Latin). Mantener la exclusión de los demás temas en -i del analizador genérico.
+- **Latín 4.º, *nomen, nominis* (n.)**, desde UD8. El sufijo del genitivo abreviado *-minis* se resuelve mediante el paradigma explicitado, no como tema *min-*; genitivo singular **nominis**, plural **nominum**, dativo/ablativo plural **nominibus**. Cotejo: [Latin is Simple, nomen](https://www.latin-is-simple.com/en/vocabulary/noun/117/). Neutro y concordancia comprobados en las doce casillas de *nomen Romanum*.
+- **Gentilicio *Romanus*.** Continúa excluido del sorteo libre de análisis morfológico; se habilita exclusivamente para las parejas ratificadas. Se respeta el orden *puer Romanus*, *puella Romana* y *nomen Romanum*.
+- **Masculinos en -a.** *Bonus agricola*, *bonus nauta*, *bonus poeta* conservan género masculino, independientemente de la declinación y de la unidad léxica del sustantivo.
+
+### Pruebas
+
+- `scripts/test-sintagmas-aprobados-169.cjs`: incluye paradigmas completos de *hostis Romanus* y *nomen Romanum*, progreso acumulado, 1.ª masculina y el aislamiento del gentilicio.
+- Regresiones preexistentes: `test-nominal-agreement.cjs`, `test-syntagm-variation.cjs`, auditoría de Griego I, Word y PDF, prueba sin conexión y versión web.
+- `offline.html` se regenera exclusivamente desde el código de la rama; la rutina temporal se retira después de sincronizar.
