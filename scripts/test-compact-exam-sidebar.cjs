@@ -75,13 +75,20 @@ const server=http.createServer((request,response)=>{
       const active=document.querySelector('#examPanelShortcuts>button[aria-pressed="true"]');
       const inactive=document.querySelector('#examPanelShortcuts>button[aria-pressed="false"]');
       const a=getComputedStyle(active),b=getComputedStyle(inactive);
+      const check=getComputedStyle(active,'::after');
       return {background:a.backgroundColor,inactive:b.backgroundColor,color:a.color,
-       shadow:a.boxShadow,weight:parseFloat(a.fontWeight)};
+       shadow:a.boxShadow,weight:parseFloat(a.fontWeight),
+       selectedBorder:a.borderTopWidth,check:check.content,
+       checkBackground:check.backgroundColor,checkColor:check.color};
      });
      assert.notEqual(marker.background,marker.inactive,filename+': la pestaña activa no se distingue '+target);
      assert.equal(marker.color,'rgb(255, 255, 255)',filename+': falta contraste del texto activo '+target);
      assert(marker.shadow.includes('inset'),filename+': falta subrayado interior activo '+target);
      assert(marker.weight>=800,filename+': falta énfasis tipográfico activo '+target);
+     assert.equal(marker.selectedBorder,'2px',filename+': falta borde destacado '+target);
+     assert.equal(marker.check,'"✓"',filename+': falta indicador de selección '+target);
+     assert.notEqual(marker.checkBackground,marker.checkColor,
+      filename+': el indicador de selección no contrasta '+target);
      assert.equal(state.backups,target==='group-drafts',filename+': copia completa mal ubicada');
      if(['examVisualSettings','group-drafts'].includes(target))
       assert.equal(await page.locator('#'+target).evaluate(el=>el.open),true,
