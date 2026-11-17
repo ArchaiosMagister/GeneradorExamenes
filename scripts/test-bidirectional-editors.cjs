@@ -43,6 +43,7 @@ async function configure(page,course,model,unit){
   generate();
  },{course,model,unit});
  await page.waitForFunction(()=>!!document.querySelector('#paper .exam-sheet'));
+ await page.locator('#examPanelShortcuts>button[data-target="examQuestionSettings"]').click();
 }
 async function bidirectionalGeneric(page,course,model,kind){
  const panel=page.locator('#examQuestionMenus [data-question="'+kind+'"]');
