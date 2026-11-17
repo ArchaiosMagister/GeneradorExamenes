@@ -57,6 +57,27 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
     evidence.push(r);
    }
   }
+  // Las unidades son acumulativas en gramática: agricola figura en LAT4 UD1
+  // y bonus se introduce en UD3. No exigir seleccionar también UD1.
+  for(const [course,unit] of [['latin1',2],['latin4',3]]){
+   await select(course,'tablas',unit);
+   const r=await page.evaluate(unit=>{
+    const group=latinCompleteDeclensionItems(['UD'+unit])
+     .find(x=>mNormalize(x.p.lemma).toLowerCase()==='agricola');
+    return {found:!!group,gender:group?.compound?.gender,
+     nominative:group?.compound?.forms?.[0]?.[0],
+     accusative:group?.compound?.forms?.[0]?.[2],
+     plural:group?.compound?.forms?.[1]?.[0],
+     sourceUnit:group?.x?.unit};
+   },unit);
+   assert(r.found,course+': agricola de UD previa debe poder salir en UD'+unit);
+   assert.equal(r.gender,'m',course+': género masculino de agricola');
+   assert.equal(r.nominative,'bonus agricola',course+': orden de sintagma docente');
+   assert.equal(r.accusative,'bonum agricolam');
+   assert.equal(r.plural,'boni agricolae');
+   assert(Number(r.sourceUnit.replace('UD',''))<unit,
+    course+': debe conservarse el lema de la UD de origen');
+  }
   await select('latin1','tablas',1);
   assert.equal(await page.evaluate(()=>latinCompleteCompoundActive(['UD1'])),false);
   await select('latin4','tablas',2);
