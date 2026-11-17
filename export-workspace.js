@@ -26,7 +26,7 @@
    '@media screen and (min-width:1000px){#examPreviewActions{position:sticky;top:18px;z-index:2;background:var(--canvas)}body.exam-redesign #examLayout.layout>#paper{top:calc(27px + var(--preview-actions-height,44px));max-height:calc(100vh - 45px - var(--preview-actions-height,44px))}}',
    '@media screen and (max-width:900px), screen and (max-width:950px) and (max-height:500px) and (pointer:coarse){#examPreviewActions{order:0;width:100%;gap:6px}#examPreviewActions button{flex:1 1 auto}}',
    '/* iPad: cinco botones de entrega en una sola fila sin reducir su área táctil. */',
-   '@media screen and (min-width:951px) and (max-width:1279px){#examLayout #examPreviewActions{gap:5px}#examLayout #examPreviewActions>button{flex:1 1 0;inline-size:auto;max-inline-size:none;min-inline-size:0;block-size:44px;min-block-size:44px;max-block-size:44px;padding:4px 5px;font-size:12px}}',
+   '@media screen and (min-width:951px) and (max-width:1279px){#examLayout #examPreviewActions{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px}#examLayout #examPreviewActions>button{flex:none;inline-size:100%;max-inline-size:100%;min-inline-size:0;block-size:44px;min-block-size:44px;max-block-size:44px;padding:4px 5px;font-size:12px}#examLayout #examPreviewActions [role="status"]{grid-column:1/-1}}',
    '@media print{#examPreviewActions{display:none!important}}',
    '#academicWorkspace{max-width:1080px;margin:18px auto;padding:20px;border:1px solid var(--line,#d4e0ed);border-radius:13px;background:var(--surface,#fff);color:var(--ink,#1c293a);min-height:260px}',
    '#academicWorkspace[hidden]{display:none!important}',
