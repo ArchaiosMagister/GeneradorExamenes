@@ -1,0 +1,39 @@
+name: Sincronizar offline de revisión léxica (temporal)
+on:
+  push:
+    branches:
+      - feat/exam-review-evolutio-greek-candidates-20261117
+    paths:
+      - .github/workflows/temp-review-lex-sync.yml
+permissions:
+  contents: write
+jobs:
+  sync:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Comprobación de lógica docente y JS
+        run: |
+          node scripts/test-lex-review-eulexis.cjs
+          node scripts/check-web.mjs
+      - name: Regenerar versión autónoma sin despliegue
+        run: npm run offline:build
+      - name: Confirmar HTML autónomo y retirar workflow temporal
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          rm .github/workflows/temp-review-lex-sync.yml
+          git add offline.html .github/workflows/temp-review-lex-sync.yml
+          if git diff --cached --quiet; then
+            echo "Sin modificaciones tras la sincronización"
+          else
+            git commit -m "Sincronizar offline y retirar verificación temporal de glosario"
+            git push origin HEAD:feat/exam-review-evolutio-greek-candidates-20261117
+          fi
