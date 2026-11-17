@@ -151,7 +151,7 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
   assert(number.some(x=>x.prompt==='ὁ αὐτὸς ἄνθρωπος'&&x.answer==='οἱ αὐτοὶ ἄνθρωποι'));
   assert(number.some(x=>x.prompt==='τὰ αὐτὰ δῶρα'&&x.answer==='τὸ αὐτὸ δῶρον'));
   await greek(8);
-  assert(!greekVerifiedCorpus.some(x=>x.id==='n-πολισ'),
+  assert(await page.evaluate(()=>!greekVerifiedCorpus.some(x=>x.id==='n-πολισ')),
    'UD8: πόλις no se promueve sin el paradigma completo');
   assert.deepEqual(exceptions,[],'Excepciones de navegador');
   console.log('PR169 SINTAGMAS OK:',JSON.stringify(evidence));
