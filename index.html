@@ -2698,14 +2698,39 @@ function latinCompleteNounGender(item){
  if(['agricola','nauta','poeta','pirata','incola','auriga','scriba','advena','conviva','collega','athleta','propheta','homicida','satrapa'].includes(lemma))return 'm';
  return item.p.gender;
 }
+/* Sintagmas ratificados por el docente (17/11/2026). La unidad mínima
+ * es gramatical: cada par sólo entra si ambos lemas ya están en el banco
+ * del curso y el sustantivo tiene paradigma admitido. No se importan lemas.
+ * La 1.ª declinación masculina conserva concordancia MASCULINA. */
+const latinApprovedSyntagms=Object.freeze({
+ latin1:[
+  ['puella','bonus',2],['servus','bonus',2],['bellum','magnus',2],
+  ['puer','Romanus',2],['rex','magnus',4],['hostis','Romanus',4],
+  ['agricola','bonus',2],['nauta','bonus',2],['poeta','bonus',3]
+ ],
+ latin4:[
+  ['puella','Romanus',3],['servus','bonus',3],['templum','magnus',3],
+  ['puer','bonus',3],['rex','bonus',5],['nomen','Romanus',5],
+  ['agricola','bonus',3],['nauta','bonus',3],['poeta','bonus',3]
+ ]
+});
+function latinApprovedSyntagmAdjective(noun,adjectives,limit){
+ const key=mNormalize(noun.p.lemma).toLowerCase();
+ const rule=(latinApprovedSyntagms[currentCourse()]||[])
+  .find(([head,,unit])=>head===key&&limit>=unit);
+ return rule?adjectives.find(({x})=>
+  mNormalize(headLex(x.entry)).toLowerCase()===rule[1].toLowerCase())||null:null;
+}
 function latinCompleteDeclensionItems(chosen){
  const nouns=latinExamNominals(chosen);
  if(!latinCompleteCompoundActive(chosen))return nouns;
  const adjectives=latinCompleteAdjectives(chosen);
  if(!adjectives.length)return []; // No se inventan adjetivos fuera del programa.
  const orderedAdjectives=sample(adjectives,adjectives.length);
+ const limit=Math.max(0,...chosen.map(examUnitNumber).filter(Number.isInteger));
  return nouns.map((item,index)=>{
-  const adjectival=orderedAdjectives[index%orderedAdjectives.length],gender=latinCompleteNounGender(item);
+  const adjectival=latinApprovedSyntagmAdjective(item,adjectives,limit)||
+   orderedAdjectives[index%orderedAdjectives.length],gender=latinCompleteNounGender(item);
   const lemma=mNormalize(headLex(adjectival.x.entry)),stem=lemma.slice(0,-2);
   const key={m:'2m',f:'1',n:'2n'}[gender];
   if(!key||!lemma.endsWith('us'))return null;
@@ -4137,10 +4162,18 @@ function greekCompleteNominalGroup(item,forMorphology=false,preferred=null){
 function greekTable(item,answers=false){
  const va=$('lang').value==='va',verb=item.kind==='conjugation';
  const articles={λογος:'ὁ',ανθρωπος:'ὁ',δωρον:'τὸ',εργον:'τὸ',αγορα:'ἡ',χωρα:'ἡ',θαλαττα:'ἡ',νεανιας:'ὁ',παιδεια:'ἡ',αδελφος:'ὁ'};
- const lemma=item.lemmas[0],article=articles[item.id.slice(2)]||'';
+ const lemma=item.lemmas[0],article=greekLimit()>=3?(articles[item.id.slice(2)]||''):'';
  const compound=!verb?greekCompleteNominalGroup(item):null;
  const title=compound?.title||(verb?headLex(lemma):(article?article+' ':'')+lemma);
- const tableRows=compound?compound.rows.map(row=>[row[0],...row[1]]):item.table.rows;
+ // Desde UD3 declinar artículo + sustantivo; el vocativo carece de artículo.
+ // UD1–2 mantienen sólo el sustantivo, sin anticipar la UD3.
+ const gender=greekSyntagmNounGenders[item.id.slice(2)];
+ const plainArticle=!verb&&!compound&&greekLimit()>=3&&gender;
+ const tableRows=compound?compound.rows.map(row=>[row[0],...row[1]]):
+  plainArticle?item.table.rows.map((row,k)=>[
+   row[0],...([0,1].map(n=>(greekArticles[gender][n][k]?
+    greekArticles[gender][n][k]+' ':'')+row[n+1]))
+  ]):item.table.rows;
  return '<table class="exam-paradigm '+(verb?'exam-verbs':'exam-nouns')+'" data-col-widths="'+(verb?'500,4000,4000':'1340,3580,3580')+'" data-corpus-id="'+item.id+'"><colgroup><col><col><col></colgroup><thead><tr><td class="exam-corner"></td><th colspan="2" scope="colgroup">'+examParadigmHeading(title,verb?'conjugation':'declension')+'</th></tr><tr><td class="exam-corner"></td><th scope="col">Singular</th><th scope="col">Plural</th></tr></thead><tbody>'+tableRows.map(row=>'<tr><th scope="row">'+esc(verb?row[0].replace('.',''):row[0][0].toUpperCase()+row[0].slice(1))+'</th><td>'+(answers?'<i>'+esc(row[1])+'</i>':'')+'</td><td>'+(answers?'<i>'+esc(row[2])+'</i>':'')+'</td></tr>').join('')+'</tbody></table>';
 }
 function greekVerbTable(items){
