@@ -6808,18 +6808,22 @@ function latinCompleteCompoundActive(chosen){
  const from={latin1:2,latin4:3}[currentCourse()];
  return Number.isInteger(from)&&Math.max(0,...chosen.map(examUnitNumber).filter(Number.isInteger))>=from;
 }
-function latinCompleteAdjectives(chosen){
+// Recopilar unidades acumulativas ANTES de la deduplicación del banco
+// compartido. Así bonus de UD1 nunca se pierde frente al de UD9–10.
+// El acceso se hace mediante la API pública del banco: las pruebas VM y
+// la importación docente no requieren conocer el array interno de fichas.
+function latinCumulativeVocabulary(chosen){
  const until=Math.max(0,...chosen.map(examUnitNumber).filter(Number.isInteger));
- // No usar latinSharedBank.vocabulary(course) aquí: su deduplicación
- // histórica conserva la ÚLTIMA unidad de cada enunciado. Por ejemplo,
- // bonus de UD1 podría quedar sustituido por el de UD9–10 y desaparecer
- // indebidamente de un examen de UD2. Seleccionar primero las fichas
- // cronológicamente elegibles y sólo después deduplicar por lema.
- const eligible=vocab.filter(x=>{
-  const unit=examUnitNumber(x.unit);
-  return courseOf(x)===currentCourse()&&Number.isInteger(unit)&&unit<=until&&
-   !isExcludedExamMorphLemma(x.entry,x.meaning);
- }).map(x=>({x,p:adjective(x)})).filter(item=>{
+ const cumulative=[...new Set([...chosen,
+  ...Array.from({length:until},(_,i)=>'UD'+(i+1))])];
+ return latinSharedBank.vocabulary(currentCourse(),cumulative)
+  .filter(x=>{const unit=examUnitNumber(x.unit);
+   return Number.isInteger(unit)&&unit<=until});
+}
+function latinCompleteAdjectives(chosen){
+ const eligible=latinCumulativeVocabulary(chosen)
+  .filter(x=>!isExcludedExamMorphLemma(x.entry,x.meaning))
+  .map(x=>({x,p:adjective(x)})).filter(item=>{
   const lemma=mNormalize(headLex(item.x.entry)).toLowerCase();
   // meus > mi y los adjetivos en -ius requieren vocativos propios.
   return item.p&&/^[a-z]+us$/.test(lemma)&&lemma!=='meus'&&!lemma.endsWith('ius');
@@ -6866,9 +6870,8 @@ function latinApprovedSyntagmAdjective(noun,adjectives,limit){
  // Romanus es gentilicio y sigue excluido del sorteo morfológico general.
  // La aprobación docente habilita ÚNICAMENTE los pares explícitos.
  if(head!=='romanus')return null;
- const found=vocab.filter(x=>courseOf(x)===currentCourse()&&
-  Number.isInteger(examUnitNumber(x.unit))&&examUnitNumber(x.unit)<=limit&&
-  mNormalize(headLex(x.entry)).toLowerCase()===head)
+ const found=latinCumulativeVocabulary(['UD'+limit])
+  .filter(x=>mNormalize(headLex(x.entry)).toLowerCase()===head)
   .map(x=>({x,p:adjective(x)})).find(x=>x.p);
  return found||null;
 }
@@ -6919,7 +6922,7 @@ function latinCompleteDeclensionItems(chosen){
  const approved=new Set((latinApprovedSyntagms[currentCourse()]||[])
   .filter(([, ,from])=>from<=limit).map(([lemma])=>lemma));
  const present=new Set(nouns.map(item=>mNormalize(item.p.lemma).toLowerCase()));
- for(const x of vocab.filter(row=>courseOf(row)===currentCourse())){
+ for(const x of latinCumulativeVocabulary(chosen)){
   const wordUnit=examUnitNumber(x.unit);
   if(!Number.isInteger(wordUnit)||wordUnit>limit||isProperNounLemma(x.entry))continue;
   const p=latinApprovedNounParadigm(x),lemma=p&&mNormalize(p.lemma).toLowerCase();
