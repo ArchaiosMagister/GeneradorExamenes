@@ -162,6 +162,7 @@ const server=http.createServer(async(req,res)=>{
   const before=examLex.exam.map(x=>({kind:x.kind,terms:x.terms.slice()}));
   const prefixEditor=()=>page.locator('[id^="lex-edit-prefixes-"]').evaluateAll(nodes=>nodes.map(el=>el.value));
   const beforeSlots=await prefixEditor();
+  await page.locator('#examPanelShortcuts>button[data-target="examQuestionSettings"]').click();
   await page.locator('#examQuestionSettings').evaluate(el=>el.open=true);
   await page.locator('#examQuestionMenus [data-question="lex"]').evaluate(el=>el.open=true);
   await page.locator('#lex-edit-prefixes-1 + button').click();
