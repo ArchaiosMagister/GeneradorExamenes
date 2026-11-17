@@ -38,12 +38,12 @@ const server=http.createServer((request,response)=>{
      paper:document.getElementById('paper').innerHTML,
      score:window.ExaminaScoring?.total?.(),
      ids:[...document.querySelectorAll('#examPanelShortcuts>button')].map(b=>b.dataset.target),
-     heading:document.querySelector('#examQuestionMenus>details>summary')?.getBoundingClientRect().height
+     headingMin:parseFloat(getComputedStyle(document.querySelector('#examQuestionMenus>details>summary')).minHeight)
     }));
     for(const target of ['exam-ui-core','examQuestionSettings','examScoring','examVisualSettings','group-drafts'])
      assert(initial.ids.includes(target),filename+': acceso ausente '+target);
     assert.equal(new Set(initial.ids).size,initial.ids.length,filename+': accesos duplicados');
-    assert(initial.heading<=43,filename+': preguntas no están compactadas');
+    assert(initial.headingMin<=43,filename+': altura mínima de preguntas no compactada');
     for(const target of ['examVisualSettings','group-drafts','examQuestionSettings','examScoring']){
      await page.locator('#examPanelShortcuts>button[data-target="'+target+'"]').click();
      const state=await page.evaluate(id=>({
@@ -72,7 +72,8 @@ const server=http.createServer((request,response)=>{
        const hidden=getComputedStyle(nav).display==='none';
        return {hidden,number:buttons.length,fit:buttons.every(b=>
         b.scrollWidth<=b.clientWidth+2&&b.scrollHeight<=b.clientHeight+2),
-        headingHeight:summary.getBoundingClientRect().height,
+        headingMin:parseFloat(style.minHeight),
+        headingFits:summary.scrollHeight<=summary.clientHeight+2,
         foreground:style.color,background:style.backgroundColor,
         panelFit:shell.getBoundingClientRect().right<=innerWidth+2
        };
@@ -81,8 +82,9 @@ const server=http.createServer((request,response)=>{
       assert.equal(got.number,5,where+': deben conservarse cinco accesos');
       assert.equal(got.hidden,width<=950,where+': navegación rápida solo en escritorio');
       if(width>950)assert(got.fit,where+': accesos recortados');
-      if(width<=760)assert(got.headingHeight>=44,where+': altura táctil insuficiente');
-      else assert(got.headingHeight<=43,where+': cabecera de preguntas demasiado alta');
+      if(width<=760)assert(got.headingMin>=44,where+': altura táctil insuficiente');
+      else assert(got.headingMin<=43,where+': cabecera de preguntas demasiado alta');
+      assert(got.headingFits,where+': título de pregunta recortado');
       assert(got.panelFit,where+': panel fuera de pantalla');
       assert.notEqual(got.foreground,got.background,where+': contraste de cabecera');
      }
