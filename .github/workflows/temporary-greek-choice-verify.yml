@@ -1,0 +1,47 @@
+name: Temporal · construir y verificar competencias Griego I
+on:
+  push:
+    branches:
+      - feat/greek1-etym-choice-and-qa-20261117-d
+permissions:
+  contents: write
+jobs:
+  greek:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Sintaxis de cuatro módulos y prueba
+        run: |
+          node --check greek-choice-number.js
+          node --check greek-choice-retroversion.js
+          node --check greek-choice-etymology.js
+          node --check greek-choice-groups.js
+          node --check scripts/test-greek-choice-groups.cjs
+          node --check scripts/build-offline.mjs
+      - name: Reconstruir HTML autónomo
+        run: npm run offline:build
+      - name: Preparar Chromium aislado
+        run: |
+          npm install --no-save --ignore-scripts playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Comprobar competencias y regresiones académicas
+        run: |
+          node scripts/test-greek-choice-groups.cjs
+          node scripts/test-greek-question-regeneration.cjs
+          node scripts/test-exam-models.cjs
+          node scripts/test-greek-ui.cjs
+      - name: Sincronizar HTML autónomo solo después de aprobar las pruebas
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add offline.html
+          if ! git diff --cached --quiet; then
+            git commit -m "Sincronizar HTML autónomo con competencias de Griego I"
+            git push origin "HEAD:${{ github.ref_name }}"
+          fi
