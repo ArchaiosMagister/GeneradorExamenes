@@ -5,7 +5,7 @@ const CACHE_NAME=CACHE_PREFIX+'__PWA_BUILD_VERSION__';
 const CORE_FILES=[
  // Una sola copia del documento principal: la navegación a ./ usa index.html.
  './index.html','./offline.html','./offline-lemmas.js','./verification-review.js','./greek-review.js','./eulexis-local.js',
- './culture-lat4.js','./lexicon-valenciano.js','./required-latin-units.js','./vocabulary-quality.js','./vocabulary-generator.js','./exam-scoring.js','./unified-backup.js','./exam-selection-summary.js','./pwa.js',
+ './culture-lat4.js','./lexicon-valenciano.js','./required-latin-units.js','./vocabulary-quality.js','./vocabulary-generator.js','./greek-choice-number.js','./greek-choice-retroversion.js','./greek-choice-etymology.js','./greek-choice-groups.js','./exam-scoring.js','./unified-backup.js','./exam-selection-summary.js','./pwa.js',
  './vendor/html2pdf.bundle.min.js','./pdf-export.js','./export-workspace.js','./manifest.webmanifest',
  './icons/icon-192.png','./icons/icon-512.png','./icons/icon-maskable-512.png',
  './icons/apple-touch-icon-180.png','./icons/favicon-48.png',
