@@ -83,6 +83,28 @@ async function run(page,file){
   assert.match(x.choose,/Elige tres de estas cuatro preguntas/,file+'/'+model+': enunciado de cuatro alternativas');
   await page.locator('[data-greek-custom="retro"] .exam-question-toggle').check();
   x=await query(page);assert.match(x.choose,/Elige tres de estas cinco preguntas/);
+  // Cinco, cuatro, tres, dos y una: el enunciado se adapta siempre con
+  // numerales escritos en letra y sin huecos en las alternativas.
+  await page.locator('[data-question="decl"] .exam-question-toggle').uncheck();
+  x=await query(page);
+  assert.match(x.choose,/Responde a las tres preguntas siguientes/,file+'/'+model+': quedan tres');
+  await page.locator('[data-question="forms"] .exam-question-toggle').uncheck();
+  x=await query(page);
+  assert.match(x.choose,/Responde a las dos preguntas siguientes/,file+'/'+model+': quedan dos');
+  await page.locator('[data-question="verb"] .exam-question-toggle').uncheck();
+  x=await query(page);
+  assert.match(x.choose,/Responde a la siguiente pregunta/,file+'/'+model+': queda una');
+  for(const kind of ['verb','forms','decl'])
+   await page.locator('[data-question="'+kind+'"] .exam-question-toggle').check();
+  x=await query(page);
+  assert.match(x.choose,/Elige tres de estas cinco preguntas/,file+'/'+model+': restaurar cinco');
+  // Edición de puntos: el grupo y las oraciones no quedan bloqueados por
+  // el antiguo sistema de un punto por oración.
+  const scoreControl=page.locator('#examScoring [data-scoring-key="greek1/'+model+'/greek-competence"]').first();
+  await scoreControl.fill('4');
+  assert.equal((await query(page)).total,1100,file+'/'+model+': puntuación de la pregunta 1 no editable');
+  await scoreControl.fill('3');
+  assert.equal((await query(page)).total,1000,file+'/'+model+': puntuación inicial no recuperada');
   await page.locator('[data-greek-custom="roots"] .exam-question-toggle').uncheck();
   x=await query(page);
   assert(!x.options.includes('roots'),file+'/'+model+': plurilingüismo no respeta desmarcado');
