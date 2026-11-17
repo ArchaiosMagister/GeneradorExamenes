@@ -6884,15 +6884,35 @@ const latinApprovedHostis=Object.freeze({
  ],
  source:'Paradigma explícito del tema en -i; comprobación filológica 17/11/2026'
 });
+// Nomen, nominis (neutro): la ficha de 4.º escribe -minis, abreviatura
+// que no debe tratarse como genitivo completo ni producir *minis/*mina.
+// Paradigma de tercera neutra cotejado:
+// https://www.latin-is-simple.com/en/vocabulary/noun/117/
+const latinApprovedNomen=Object.freeze({
+ lemma:'nomen',kind:'3n',gender:'n',
+ forms:[
+  ['nomen','nomen','nomen','nominis','nomini','nomine'],
+  ['nomina','nomina','nomina','nominum','nominibus','nominibus']
+ ],
+ source:'Paradigma explícito del neutro en -men; comprobación 17/11/2026'
+});
 function latinApprovedNounParadigm(row){
  const lemma=mNormalize(headLex(row.entry)).toLowerCase();
- return currentCourse()==='latin1'&&lemma==='hostis'?
-  latinApprovedHostis:mNoun(row.entry);
+ if(currentCourse()==='latin1'&&lemma==='hostis')
+  return latinApprovedHostis;
+ if(currentCourse()==='latin4'&&lemma==='nomen')
+  return latinApprovedNomen;
+ return mNoun(row.entry);
 }
 function latinCompleteDeclensionItems(chosen){
- const nouns=latinExamNominals(chosen);
- if(!latinCompleteCompoundActive(chosen))return nouns;
  const limit=Math.max(0,...chosen.map(examUnitNumber).filter(Number.isInteger));
+ // El enunciado abreviado de nomen requiere el paradigma cotejado también
+ // cuando el sustantivo procede de la selección general de la unidad.
+ const nouns=latinExamNominals(chosen).map(item=>
+  currentCourse()==='latin4'&&limit>=5&&
+   mNormalize(item.p.lemma).toLowerCase()==='nomen'?
+   {...item,p:latinApprovedNounParadigm(item.x)}:item);
+ if(!latinCompleteCompoundActive(chosen))return nouns;
  // Una UD con adjetivos también puede ejercitar sustantivos YA ESTUDIADOS
  // en UDs anteriores, pero exclusivamente los pares ratificados. No se
  // modifica el resto del banco de tablas ni los exigibles de la unidad.
