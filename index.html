@@ -2694,19 +2694,28 @@ function latinCumulativeVocabulary(chosen){
   .filter(x=>{const unit=examUnitNumber(x.unit);
    return Number.isInteger(unit)&&unit<=until});
 }
+// Las tablas de sintagmas evalúan MORFOLOGÍA, no el vocabulario de la UD.
+// Se admiten lemas regulares documentados de cualquiera de los dos cursos
+// latinos; las restricciones léxicas permanecen en los demás ejercicios.
+function latinSyntagmSources(){
+ const current=currentCourse(),other=current==='latin1'?'latin4':'latin1';
+ return [...latinSharedBank.vocabulary(current),
+  ...latinSharedBank.vocabulary(other)];
+}
 function latinCompleteAdjectives(chosen){
- const eligible=latinCumulativeVocabulary(chosen)
+ if(!latinCompleteCompoundActive(chosen))return [];
+ const eligible=latinSyntagmSources()
   .filter(x=>!isExcludedExamMorphLemma(x.entry,x.meaning))
   .map(x=>({x,p:adjective(x)})).filter(item=>{
-  const lemma=mNormalize(headLex(item.x.entry)).toLowerCase();
-  // meus > mi y los adjetivos en -ius requieren vocativos propios.
-  return item.p&&/^[a-z]+us$/.test(lemma)&&lemma!=='meus'&&!lemma.endsWith('ius');
- });
+   const lemma=mNormalize(headLex(item.x.entry)).toLowerCase();
+   // Primera clase regular: no adelantar adjetivos de tercera ni vocativos
+   // especiales; su flexión requiere otro paradigma verificado.
+   return item.p&&/^[a-z]+us$/.test(lemma)&&lemma!=='meus'&&!lemma.endsWith('ius');
+  });
  const byLemma=new Map();
  for(const item of eligible){
   const lemma=mNormalize(headLex(item.x.entry)).toLowerCase();
-  if(!byLemma.has(lemma)||examUnitNumber(item.x.unit)<
-      examUnitNumber(byLemma.get(lemma).x.unit))byLemma.set(lemma,item);
+  if(!byLemma.has(lemma))byLemma.set(lemma,item);
  }
  return [...byLemma.values()];
 }
@@ -2744,10 +2753,12 @@ function latinApprovedSyntagmAdjective(noun,adjectives,limit){
  // Romanus es gentilicio y sigue excluido del sorteo morfológico general.
  // La aprobación docente habilita ÚNICAMENTE los pares explícitos.
  if(head!=='romanus')return null;
- const found=latinCumulativeVocabulary(['UD'+limit])
+ const found=latinSyntagmSources()
   .filter(x=>mNormalize(headLex(x.entry)).toLowerCase()===head)
   .map(x=>({x,p:adjective(x)})).find(x=>x.p);
- return found||null;
+ // Paradigma de primera clase aprobado aunque el gentilicio no figure
+ // en el vocabulario seleccionado. No afecta al sorteo libre de análisis.
+ return found||{x:{entry:'Romanus, –a, –um',unit:'sintagmas'},p:adjective({entry:'Romanus, –a, –um'})};
 }
 // Evidencia explícita sólo para el sintagma docente hostis Romanus de Latín I.
 // No desbloquea los demás i-stems de mNoun ni altera los análisis generales.
@@ -2781,29 +2792,44 @@ function latinApprovedNounParadigm(row){
   return latinApprovedNomen;
  return mNoun(row.entry);
 }
+// Primer curso en que se ha explicado la declinación del sustantivo.
+// Los umbrales son curriculares y NO la unidad de su entrada léxica.
+function latinSyntagmNounUnit(kind){
+ const fourth=currentCourse()==='latin4';
+ if(kind==='1')return 1;
+ if(['2m','2n','2er'].includes(kind))return fourth?2:1;
+ if(['3mf','3n'].includes(kind))return fourth?5:4;
+ return Infinity; // Excluir 4.ª, 5.ª y temas no verificados.
+}
+function latinSyntagmNouns(chosen){
+ const limit=Math.max(0,...chosen.map(examUnitNumber).filter(Number.isInteger));
+ const originals=latinSyntagmSources();
+ // Ejemplos expresamente ratificados: no se presupone su presencia
+ // en una lista léxica ni se insertan en los bancos de vocabulario.
+ const approvedEntries={
+  puella:'puella, –ae',servus:'servus, –i',bellum:'bellum, –i',
+  puer:'puer, –i',rex:'rex, regis (m.)',
+  hostis:'hostis, hostis (m.)',templum:'templum, –i',
+  nomen:'nomen, nominis (n.)',agricola:'agricola, –ae (m.)',
+  nauta:'nauta, –ae (m.)',poeta:'poeta, –ae (m.)'
+ };
+ const approved=(latinApprovedSyntagms[currentCourse()]||[]).map(([lemma])=>({
+  entry:approvedEntries[lemma],unit:'paradigma académico'
+ })).filter(x=>x.entry);
+ const chosenByLemma=new Map();
+ for(const x of [...approved,...originals]){
+  if(isProperNounLemma(x.entry))continue;
+  const p=latinApprovedNounParadigm(x);
+  if(!p||latinSyntagmNounUnit(p.kind)>limit)continue;
+  const lemma=mNormalize(p.lemma).toLowerCase();
+  if(!chosenByLemma.has(lemma))chosenByLemma.set(lemma,{x,p});
+ }
+ return [...chosenByLemma.values()];
+}
 function latinCompleteDeclensionItems(chosen){
  const limit=Math.max(0,...chosen.map(examUnitNumber).filter(Number.isInteger));
- // El enunciado abreviado de nomen requiere el paradigma cotejado también
- // cuando el sustantivo procede de la selección general de la unidad.
- const nouns=latinExamNominals(chosen).map(item=>
-  currentCourse()==='latin4'&&limit>=5&&
-   mNormalize(item.p.lemma).toLowerCase()==='nomen'?
-   {...item,p:latinApprovedNounParadigm(item.x)}:item);
+ const nouns=latinSyntagmNouns(chosen);
  if(!latinCompleteCompoundActive(chosen))return nouns;
- // Una UD con adjetivos también puede ejercitar sustantivos YA ESTUDIADOS
- // en UDs anteriores, pero exclusivamente los pares ratificados. No se
- // modifica el resto del banco de tablas ni los exigibles de la unidad.
- const approved=new Set((latinApprovedSyntagms[currentCourse()]||[])
-  .filter(([, ,from])=>from<=limit).map(([lemma])=>lemma));
- const present=new Set(nouns.map(item=>mNormalize(item.p.lemma).toLowerCase()));
- for(const x of latinCumulativeVocabulary(chosen)){
-  const wordUnit=examUnitNumber(x.unit);
-  if(!Number.isInteger(wordUnit)||wordUnit>limit||isProperNounLemma(x.entry))continue;
-  const p=latinApprovedNounParadigm(x),lemma=p&&mNormalize(p.lemma).toLowerCase();
-  if(!approved.has(lemma)||present.has(lemma)||
-   (currentCourse()==='latin1'&&limit<4&&!/^[12]/.test(p.kind)))continue;
-  nouns.push({x,p});present.add(lemma);
- }
  const adjectives=latinCompleteAdjectives(chosen);
  if(!adjectives.length)return []; // No se inventan adjetivos fuera del programa.
  const orderedAdjectives=sample(adjectives,adjectives.length);
