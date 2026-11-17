@@ -4128,11 +4128,11 @@ function greekSelect(pool,chosen,counts){
 }
 // Reference layout: normal bordered header paragraphs; the word to decline
 // belongs to the first merged table row, with an open upper-left corner.
-/* Sintagmas griegos: paradigmas escolares acotados y derivados solo de lemas
- * que constan en el vocabulario de Griego I. No importa las candidatas
- * Wiktextract/Eulexis ni marca como verificadas sus flexiones aisladas.
- * El tipo 2-2 usa la misma flexión nominal para masculino y femenino.
- */
+/* Sintagmas griegos: la unidad habilita el TIPO GRAMATICAL, no el
+ * vocabulario concreto de esa unidad. Solo se emplean paradigmas áticos
+ * completos explícitos (greekNounData y greekCompleteAdjectives), sin
+ * inferir flexiones desde Wiktextract/Eulexis. En los adjetivos 2-2,
+ * masculino y femenino comparten paradigma nominal. */
 const greekCompleteAdjectives=[
  {lemma:'ἀγαθός',stem:'ἀγαθ',feminine:'η',accent:'oxytone'},
  {lemma:'καλός',stem:'καλ',feminine:'η',accent:'oxytone'},
@@ -4173,11 +4173,14 @@ function greekAvailableSyntagmAdjectives(limit){
    ?/,\s*-(?:ον)(?:\s|$)/u.test(entry)&&!/,.*,\s*-ον/u.test(entry)
    :new RegExp(',\\s*-'+item.feminine+',\\s*-ον(?:\\s|$)','u').test(entry);
   if(!valid)return false;
-  const starts=[...found.units].flatMap(unit=>{
-   const m=String(unit).match(/UD\s*(\d+)/i);
-   return m?[Number(m[1])]:[];
+  // La entrada puede proceder de cualquier unidad léxica:
+  // desde UD5 la primera clase ya está explicada. El lema es admisible
+  // por su paradigma morfológico explícito, no por su posición en listas.
+  return ['m','f','n'].every(gender=>{
+   const forms=greekCompleteAdjectiveForms(item,gender);
+   return forms?.length===2&&forms.every(number=>
+    number.length===5&&number.every(form=>typeof form==='string'&&form.trim()));
   });
-  return starts.length>0&&Math.min(...starts)<=limit;
  });
 }
 // Matriz [singular, plural] × [nominativo, vocativo, acusativo, genitivo, dativo].
