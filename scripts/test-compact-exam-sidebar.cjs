@@ -158,6 +158,9 @@ const server=http.createServer((request,response)=>{
       await page.locator('#examSettingsTab').click();
      }
     }
+    // Mostrar Configuración antes de cambiar el idioma del formulario.
+    await page.setViewportSize({width:1440,height:820});
+    await page.locator('#examPanelShortcuts>button[data-target="exam-ui-core"]').click();
     // Comprobar que Imprimir nunca salta bajo Word/PDF en iPad horizontal y vertical.
     for(const language of ['es','va']){
      await page.locator('#lang').selectOption(language);
