@@ -117,6 +117,37 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
    ['hostes Romani','hostes Romani','hostes Romanos','hostium Romanorum',
     'hostibus Romanis','hostibus Romanis']
   ],'Paradigma hostis Romanus de 12 casillas');
+  // Las unidades posteriores deben recuperar lemas anteriores, sin
+  // promover al banco un sustantivo que todavía no figura en el curso.
+  for(const [course,unit,noun,expected] of [
+   ['latin4',4,'servus','servus bonus'],
+   ['latin4',6,'rex','rex bonus'],
+   ['latin4',7,'poeta','bonus poeta'],
+   ['latin4',8,'nomen','nomen Romanum']
+  ]){
+   await select(course,'tablas',unit);
+   const found=await page.evaluate(noun=>{
+    const item=latinCompleteDeclensionItems(selectedUnits())
+     .find(x=>mNormalize(x.p.lemma).toLowerCase()===noun);
+    return {form:item?.compound?.forms?.[0]?.[0],
+      cells:item?.compound?.forms,source:item?.x?.unit};
+   },noun);
+   assert.equal(found.form,expected,course+'/UD'+unit+': no aparece '+expected);
+   assert(found.cells?.length===2&&found.cells.every(row=>row.length===6),
+    course+'/UD'+unit+': falta una casilla de '+expected);
+  }
+  await select('latin4','tablas',8);
+  const nomen=await page.evaluate(()=>{
+   const item=latinCompleteDeclensionItems(selectedUnits())
+    .find(x=>mNormalize(x.p.lemma).toLowerCase()==='nomen');
+   return item?.compound?.forms;
+  });
+  assert.deepEqual(nomen,[
+   ['nomen Romanum','nomen Romanum','nomen Romanum','nominis Romani',
+    'nomini Romano','nomine Romano'],
+   ['nomina Romana','nomina Romana','nomina Romana','nominum Romanorum',
+    'nominibus Romanis','nominibus Romanis']
+  ],'Nomen de tercera neutra conserva nomin- en todas las casillas');
   await select('latin1','tablas',1);
   assert.equal(await page.evaluate(()=>latinCompleteCompoundActive(['UD1'])),false);
   await select('latin4','tablas',2);
