@@ -332,9 +332,9 @@
      const single=document.createElement('button');single.type='button';
      single.className='secondary';single.textContent='Cambiar solo este sintagma';
      single.setAttribute('aria-label','Regenerar sintagma '+(i+1)+' de '+config.title);
-     single.onclick=()=>{
-      if(!replaceGenerated(config.kind,i))single.title='Banco agotado: no se ha modificado la pregunta.';
-     };
+     // Delegación estable: el inspector puede reconstruir el menú durante
+     // los cambios de puntuación sin invalidar el manejador del botón.
+     single.dataset.greekChoiceSingle=config.kind+':'+i;
      editor.append(single);
     }
    }
@@ -386,6 +386,17 @@
   const input=document.querySelector('[data-greek-custom-edit="'+slot+'"]');
   if(input)input.value=edits.get(slot);
  });
+ // El inspector y el sistema de notas pueden rehacer filas del menú.
+ // Resolver la acción desde un controlador permanente, no desde nodos efímeros.
+ document.addEventListener('click',event=>{
+  const button=event.target?.closest?.('[data-greek-choice-single]');
+  if(!button||!onlyGreek())return;
+  const match=/^([^:]+):(\d+)$/.exec(button.dataset.greekChoiceSingle||'');
+  if(!match)return;
+  event.preventDefault();
+  if(!replaceGenerated(match[1],Number(match[2])))
+   button.title='Banco agotado: no se ha modificado la pregunta.';
+ },true);
  const style=document.createElement('style');style.id='greek-choice-group-styles';
  style.textContent='.paper .greek-choice-option{margin:0 0 8pt 0;break-inside:auto}'+
   '.paper .greek-choice-subquestion{margin-top:8pt;font-weight:normal}'+
