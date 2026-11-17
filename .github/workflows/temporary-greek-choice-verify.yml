@@ -35,7 +35,9 @@ jobs:
           node scripts/test-greek-choice-groups.cjs
           node scripts/test-greek-question-regeneration.cjs
           node scripts/test-exam-models.cjs
-          node scripts/test-greek-ui.cjs
+          node scripts/test-subquestion-scoring.cjs
+          node scripts/test-exam-indent-consistency.cjs
+          node scripts/test-word-palatino.cjs
       - name: Sincronizar HTML autónomo solo después de aprobar las pruebas
         run: |
           git config user.name 'github-actions[bot]'
