@@ -5299,13 +5299,19 @@ function latin4PhoneticEligible(row,chosen){
  // Las normas impartidas, no la unidad original ni el patrón del étimo, determinan la elegibilidad.
  return row.normas.every(code=>allowed.has(code));
 }
+function valencianPrefixIsOneWord(row){
+ const form=String(row.prompt_va||'').trim();
+ // Las locuciones o traducciones sin prefijo reconocible no entran en el sorteo.
+ return row.valencianPrefixEligible!==false&&
+  /^[\p{L}\p{M}]+(?:['’·-][\p{L}\p{M}]+)*$/u.test(form);
+}
 function latinLexPool(course,kind,chosen){
  if(course==='latin1'&&kind==='preverbs')
   return latin1TaughtPreverbs(chosen).filter(x=>examLexFilter(x,course,kind,chosen));
  const taughtPrefixes=course==='latin4'&&kind==='prefixes'?latin4TaughtPrefixGroups(chosen):null;
  return (latinLexBanks[course]?.[kind]||[]).filter(x=>
   (!taughtPrefixes||taughtPrefixes.has(x.prefix))&&
-   !(kind==='prefixes'&&$('lang').value==='va'&&x.valencianPrefixEligible===false)&&
+   !(kind==='prefixes'&&$('lang').value==='va'&&!valencianPrefixIsOneWord(x))&&
   (course!=='latin4'||kind!=='phonetics'||latin4PhoneticEligible(x,chosen))&&
   examLexFilter(x,course,kind,chosen)&&(kind!=='preverbs'||!x.ambiguousPrompt));
 }
@@ -5395,13 +5401,8 @@ function latinLexStatus(kind,rows,message=''){
  const status=$('lex-status-'+kind);
  if(status){
   const review=rows.some(x=>x.reviewRequired);
-  const culta=kind==='phonetics'&&rows.some(x=>x.tipoTransmision==='ADAPTACION_CULTA');
-  const regional=kind==='phonetics'&&rows.some(x=>x.tipoTransmision==='REGIONAL_HISTORICA');
-  const acepcion=kind==='phonetics'&&rows.some(x=>x.etiquetaAcepcion);
-  status.textContent=message||(!rows.length?'No hay formas compatibles.':review?'Revisar formas no documentadas.':
-   culta?'Hay adaptaciones cultas etiquetadas en el examen y en Word.':
-   regional?'Hay una voz regional o histórica etiquetada en el examen y en Word.':
-   acepcion?'Una palabra tiene una acepción histórica documentada en el banco.':'');
+  status.textContent=message||(!rows.length?'No hay formas compatibles.':
+   review?'Revisar formas no documentadas.':'');
   status.hidden=!status.textContent;
   status.dataset.resultState=message||!rows.length?'missing':review?'review':'available';
  }
@@ -5464,19 +5465,9 @@ function setLatinPhoneticWord(index,value,fromPreview=false){
  if(fromPreview&&input)input.value=prompt;
  if(!fromPreview)$('paper').querySelectorAll('[data-lex-slot="phonetics:'+index+'"] i')
   .forEach(node=>{node.textContent=displayed});
- // Al editar una forma, la etiqueta culta también debe seguir su ficha exacta.
- for(const slot of $('paper').querySelectorAll('[data-lex-slot="phonetics:'+index+'"]')){
-  let tag=slot.querySelector('.phonetic-origin-label');
-  if(['ADAPTACION_CULTA','REGIONAL_HISTORICA'].includes(next.tipoTransmision)){
-   if(!tag){
-    tag=document.createElement('small');tag.className='phonetic-origin-label';
-    tag.contentEditable='false';slot.appendChild(tag);
-   }
-   tag.textContent=next.tipoTransmision==='REGIONAL_HISTORICA'
-    ?($('lang').value==='va'?' (veu regional o històrica)':' (voz regional o histórica)')
-    :($('lang').value==='va'?' (adaptació culta)':' (adaptación culta)');
-  }else tag?.remove();
- }
+ // Metadatos filológicos intactos, sin etiquetas en el examen.
+ for(const slot of $('paper').querySelectorAll('[data-lex-slot="phonetics:'+index+'"]'))
+  slot.querySelector('.phonetic-origin-label')?.remove();
  latinLexStatus('phonetics',updated);
 }
 $('paper').addEventListener('input',event=>{
@@ -5551,11 +5542,7 @@ function buildLatinLexQuestion(course,chosen){
     kind==='phonetics'?'Editar forma de evolución fonética':
     kind==='prefixes'?'Editar prefijo':'Editar latinismo')+'">'+
    esc(latinLexDisplayPrompt(kind,x))+'</i>'+
-   (kind==='phonetics'&&['ADAPTACION_CULTA','REGIONAL_HISTORICA'].includes(x.tipoTransmision)?
-    '<small class="phonetic-origin-label" contenteditable="false">'+
-    (x.tipoTransmision==='REGIONAL_HISTORICA'
-     ?(va?' (veu regional o històrica)':' (voz regional o histórica)')
-     :(va?' (adaptació culta)':' (adaptación culta)'))+'</small>':'')+'</span>';
+   ''+'</span>';
  let visibleLexIndex=0;
  for(const kind of parts){
   const available=latinLexPool(course,kind,chosen),rows=latinLexChosenRows(course,kind,chosen);
