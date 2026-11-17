@@ -155,7 +155,7 @@
   if(parts.sentences?.length){
    const sentences=parts.sentences.slice(),q=sentences[0];
    q.querySelector('.exam-q-number').textContent=(++currentNumber)+'.';
-   q.dataset.examKind='sent';delete q.dataset.greekKind;
+   q.dataset.examKind='sent'; // Conservar data-greek-kind para glosario y pruebas previas.
    frag.append(...sentences);
   }
   const anchor=sheet.querySelector(':scope > #examSentenceGlossary')||sheet.querySelector(':scope > #answerkey');
