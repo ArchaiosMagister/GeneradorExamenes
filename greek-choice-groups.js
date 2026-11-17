@@ -87,6 +87,21 @@
   if(!parts.sentences)return;
   const morph=[['declension','a'],['forms','b'],['conjugation','e']]
    .map(([kind,letter])=>option(kind,letter,parts[kind])).filter(Boolean);
+  const numberApi=window.ExaminaGreekNumber;
+  const numberItems=numberApi&&greekMarkedUnits().length?numberApi.current():[];
+  if(numberItems.length){
+   const box=document.createElement('section');box.className='greek-choice-option';box.dataset.greekOption='change-number';
+   box.append(subtitle('change-number','c',t('Pasa a singular o a plural estos sintagmas.',
+    'Passa a singular o a plural estos sintagmes.')));
+   numberItems.forEach((item,i)=>{
+    const row=document.createElement('p');row.className='exam-item greek-choice-number-item';
+    row.dataset.greekChoiceSlot='change-number:'+i;
+    row.innerHTML='<span class="exam-letter">'+(i+1)+'.</span> '+esc(
+     (item.direction==='singular'?t('A singular: ','A singular: '):t('A plural: ','A plural: '))+item.prompt);
+    box.append(row);
+   });
+   morph.splice(2,0,box);
+  }
   const etym=[option('etymology','a',parts.etymology)].filter(Boolean);
   const frag=document.createDocumentFragment();
   if(morph.length){frag.append(heading('greek-competence',1,choiceTitle(morph.length,1)));morph.forEach(x=>frag.append(x))}
