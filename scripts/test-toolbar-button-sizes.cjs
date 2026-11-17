@@ -14,6 +14,17 @@ function extract(html){
  return html.slice(pos,end+8);
 }
 const styles=source.map(extract);
+const compactMarker='<style id="examina-compact-main-navigation">';
+function compactStyle(html){
+ assert.equal(html.split(compactMarker).length,2,'Falta la navegación compacta');
+ const start=html.indexOf(compactMarker),end=html.indexOf('</style>',start);
+ assert(end>start,'Estilo compacto sin cierre');
+ return html.slice(start,end+8);
+}
+const compactStyles=source.map(compactStyle);
+assert.equal(compactStyles[0],compactStyles[1],'Navegación compacta distinta en web y autónoma');
+assert(compactStyles[0].includes('@media screen {'),'La navegación compacta no debe afectar a impresión');
+assert(compactStyles[0].includes('white-space:nowrap'),'Las pestañas deben conservar una sola línea');
 assert.equal(styles[0],styles[1],'Tema distinto entre web y autónoma');
 assert(styles[0].includes('@media screen {'),'No alterar impresión');
 assert(!styles[0].includes('@media print'),'El papel no debe modificarse');
@@ -68,7 +79,18 @@ function same(numbers,why){
        };
        const docx=getComputedStyle(document.getElementById('docx')).backgroundColor;
        const pdf=getComputedStyle(document.getElementById('pdfDownload')).backgroundColor;
-       return {nav:info('.vocab-tabbar'),toolbar:info('#examPreviewActions'),docx,pdf};
+       const buttons=Array.from(document.querySelectorAll('.vocab-tabbar > button'));
+       const navOneLine=buttons.every(button=>{
+        const css=getComputedStyle(button);
+        return css.whiteSpace==='nowrap'&&button.getBoundingClientRect().height<=45
+         &&button.scrollWidth<=button.clientWidth+2&&button.scrollHeight<=button.clientHeight+2;
+       });
+       const navSameRow=buttons.every(button=>
+        Math.abs(button.getBoundingClientRect().top-buttons[0].getBoundingClientRect().top)<1);
+       const selected=buttons.find(button=>button.classList.contains('active'));
+       const navDistinct=!!selected&&buttons.some(button=>!button.classList.contains('active')&&
+         getComputedStyle(button).backgroundColor!==getComputedStyle(selected).backgroundColor);
+       return {nav:info('.vocab-tabbar'),toolbar:info('#examPreviewActions'),docx,pdf,navOneLine,navSameRow,navDistinct};
       },appearance);
       const where=file+'/'+width+'/'+appearance;
       assert.equal(result.nav.total,4,where+': deben existir cuatro pestañas');
@@ -77,6 +99,9 @@ function same(numbers,why){
       same(result.toolbar.heights,where+' acciones altura');
       same(result.toolbar.widths,where+' acciones anchura');
       assert(result.nav.within,where+': algún botón de cabecera desborda o recorta su texto');
+      assert(result.navOneLine,where+': una pestaña parte o recorta el texto');
+      assert(result.navDistinct,where+': la pestaña activa no destaca');
+      if(width===1440)assert(result.navSameRow,where+': cuatro pestañas deben compartir fila');
       assert(result.toolbar.within,where+': alguna acción desborda o recorta su texto');
       assert.equal(result.docx,'rgb(25, 89, 158)',where+': Word pierde su color');
       assert.equal(result.pdf,'rgb(163, 34, 43)',where+': PDF pierde su color');
