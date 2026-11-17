@@ -48,6 +48,12 @@
   doc.head.append(css);
  }
  function labelize(){
+  const shortcuts=el('examPanelShortcuts');
+  if(shortcuts){
+   shortcuts.setAttribute('aria-label',tr('Accesos rápidos a los apartados del editor','Accessos ràpids als apartats de l’editor'));
+   for(const button of shortcuts.querySelectorAll('button[data-target]'))
+    button.textContent=tr(button.dataset.labelEs,button.dataset.labelVa);
+  }
   el('examPreviewActions')?.setAttribute('aria-label',tr('Acciones de la vista previa','Accions de la vista prèvia'));
   text(el('academicNav'),tr('Herramientas académicas','Eines acadèmiques'));
   text(el('academicWorkspaceTitle'),tr('Herramientas académicas','Eines acadèmiques'));
@@ -166,9 +172,43 @@
    if(target&&target!==button)leave();
   },true);
  }
+ function configurePanelShortcuts(){
+  // Enlaces internos de desplazamiento: no recrean controles ni disparan cambios del examen.
+  const shell=el('exam-ui-shell');
+  if(!shell||el('examPanelShortcuts'))return;
+  const destinations=[
+   ['exam-ui-core','Configuración','Configuració'],
+   ['examQuestionSettings','Preguntas','Preguntes'],
+   ['examScoring','Puntuación','Puntuació'],
+   ['examVisualSettings','Formato','Format'],
+   ['group-drafts','Borradores','Esborranys']
+  ];
+  const nav=doc.createElement('nav');
+  nav.id='examPanelShortcuts';nav.className='no-print';
+  nav.setAttribute('aria-label','Accesos rápidos a los apartados del editor');
+  for(const [id,es,val] of destinations){
+   const target=el(id);
+   if(!target||!shell.contains(target))continue;
+   const button=doc.createElement('button');
+   button.type='button';
+   button.dataset.target=id;
+   button.dataset.labelEs=es;button.dataset.labelVa=val;
+   button.textContent=tr(es,val);
+   button.addEventListener('click',()=>{
+    if(target.tagName==='DETAILS')target.open=true;
+    target.scrollIntoView({block:'start',behavior:'auto'});
+   });
+   nav.append(button);
+  }
+  if(nav.childElementCount){
+   const note=el('exam-ui-shell-note');
+   if(note?.parentElement===shell)note.after(nav);
+   else shell.prepend(nav);
+  }
+ }
  function init(){
   if(installed||!el('exam-ui-shell')||!el('examinaUnifiedBackup'))return;
-  installed=true;style();configureExport();configureAcademic();labelize();
+  installed=true;style();configureExport();configureAcademic();configurePanelShortcuts();labelize();
   const pwa1=el('pwaDataBackup'),pwa2=el('pwaExamBackup');
   if(pwa1)pwa1.hidden=true;
   if(pwa2)pwa2.hidden=true;
