@@ -16971,4 +16971,67 @@ html[data-appearance="oled"] body.exam-redesign #exam-ui-shell :is(#exam-ui-core
  }
 }
 </style>
+
+<style id="examina-compact-main-navigation">
+/* Pestañas principales compactas: solo presentación, sin alterar su navegación. */
+@media screen {
+ .vocab-tabbar{gap:8px;padding-block:9px}
+ :root[data-course] .vocab-tabbar > button{
+  box-sizing:border-box;
+  flex:0 0 auto;
+  inline-size:max-content;
+  min-inline-size:0;
+  max-inline-size:100%;
+  block-size:42px;
+  min-block-size:42px;
+  max-block-size:42px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:8px 13px;
+  border-radius:9px;
+  font-size:12.75px;
+  font-weight:750;
+  line-height:1.15;
+  letter-spacing:.005em;
+  text-align:center;
+  white-space:nowrap;
+  text-wrap:nowrap;
+  overflow-wrap:normal;
+ }
+ :root[data-course] .vocab-tabbar > button:not(.active){
+  background:var(--soft);
+  border:1px solid var(--accent);
+  color:var(--soft-ink);
+  box-shadow:0 2px 7px #172f4d22;
+ }
+ :root[data-course] .vocab-tabbar > button.active{
+  background:var(--accent);
+  border-color:var(--accent);
+  color:#fff;
+  box-shadow:0 3px 10px #12283c40;
+ }
+ @media(hover:hover){
+  :root[data-course] .vocab-tabbar > button:hover:not(.active){
+   filter:brightness(.96);
+   box-shadow:0 3px 10px #172f4d30;
+  }
+ }
+ @media(max-width:760px), (pointer:coarse){
+  :root[data-course] .vocab-tabbar > button{
+   block-size:44px;
+   min-block-size:44px;
+   max-block-size:44px;
+  }
+ }
+ @media(max-width:480px){
+  .vocab-tabbar{padding-inline:12px}
+  :root[data-course] .vocab-tabbar > button{
+   flex:1 1 100%;
+   inline-size:100%;
+  }
+  .vocab-tabbar .appearance-picker{margin-left:0;justify-content:center}
+ }
+}
+</style>
 </html>
