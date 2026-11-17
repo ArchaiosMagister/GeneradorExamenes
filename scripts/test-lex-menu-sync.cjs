@@ -81,8 +81,8 @@ function readStoredZipEntry(bytes,wanted){
    assert.equal(bankLoaded.recoveredGreek,17,filename+': falta recuperar grafías griegas anteriormente pendientes');
    assert(!bankLoaded.greekPotentiallyDubious,filename+': las opciones excluidas y circum deben permanecer fuera del sorteo');
 
-   // Las adaptaciones cultas aprobadas deben distinguirse de las evoluciones
-   // patrimoniales también en el Word. Su etiqueta no es parte del campo editable.
+   // Las clasificaciones cultas aprobadas se conservan solo como metadatos
+   // filológicos; la vista previa y el Word deben mostrar solo las palabras.
    const cultured=await page.evaluate(()=>{
     const course=$('course');course.value='latin1';course.dispatchEvent(new Event('change',{bubbles:true}));
     const model=$('model');model.value='tablas';model.dispatchEvent(new Event('change',{bubbles:true}));
@@ -105,7 +105,7 @@ function readStoredZipEntry(bytes,wanted){
    });
    assert(!cultured.missing&&cultured.word==='athletam',filename+': no se cargó el cultismo verificado');
    assert.equal(cultured.classified,'ADAPTACION_CULTA');
-   assert(cultured.label?.includes('adaptación culta'),filename+': cultismo sin etiqueta en vista previa');
+   assert.equal(cultured.label,undefined,filename+': etiqueta de transmisión visible en examen');
    assert.equal(cultured.editable,'athletam',filename+': la etiqueta contaminó el étimo');
    assert.equal(cultured.editor,'athletam',filename+': la etiqueta contaminó el editor');
    assert(cultured.otherStable,filename+': cambiar a cultismo modificó las demás formas');
@@ -113,7 +113,7 @@ function readStoredZipEntry(bytes,wanted){
    await page.evaluate(()=>exportWord(false));
    const culturedFile=await culturedDownload;
    const culturedXml=readStoredZipEntry(fs.readFileSync(await culturedFile.path()),'word/document.xml');
-   assert(culturedXml.includes('adaptación culta'),filename+': el Word no identifica la adaptación culta');
+   assert(!culturedXml.includes('adaptación culta'),filename+': etiqueta de transmisión visible en Word');
    const editedCultism=await page.evaluate(()=>{
     const node=$('paper').querySelector('[data-lex-slot="phonetics:0"] i');
     node.textContent='contum';
@@ -136,8 +136,8 @@ function readStoredZipEntry(bytes,wanted){
     return {label:slot?.querySelector('.phonetic-origin-label')?.textContent,
      editor:$('lex-edit-phonetics-0')?.value};
    });
-   assert(restoreCultism.label?.includes('adaptación culta'),
-    filename+': editar desde el menú no recupera la etiqueta culta');
+   assert.equal(restoreCultism.label,undefined,
+    filename+': el menú ha reintroducido una etiqueta de transmisión');
    assert.equal(restoreCultism.editor,'blasphemiam');
 
    // Regresión real: UD3 debe sortear centenares de palabras, no reservar las
