@@ -263,6 +263,8 @@ jobs:
         run: node scripts/test-nominal-agreement.cjs
       - name: Verificar variedad y concordancia de sintagmas nominales grecolatinos
         run: node scripts/test-syntagm-variation.cjs
+      - name: Verificar sintagmas aprobados (PR 169) y progresión gramatical
+        run: node scripts/test-sintagmas-aprobados-169.cjs
       - name: Probar PWA sin red y actualizaciones controladas
         run: npm run pwa:test
       - name: Probar en Chromium el lematizador sin conexión
