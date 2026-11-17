@@ -75,7 +75,7 @@ const server=http.createServer((request,response)=>{
       const active=document.querySelector('#examPanelShortcuts>button[aria-pressed="true"]');
       const inactive=document.querySelector('#examPanelShortcuts>button[aria-pressed="false"]');
       const a=getComputedStyle(active),b=getComputedStyle(inactive);
-      const check=getComputedStyle(active,'::after');
+      const check=getComputedStyle(active,'::before');
       return {background:a.backgroundColor,inactive:b.backgroundColor,color:a.color,
        shadow:a.boxShadow,weight:parseFloat(a.fontWeight),
        selectedBorder:a.borderTopWidth,check:check.content,
