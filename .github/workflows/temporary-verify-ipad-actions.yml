@@ -33,3 +33,5 @@ jobs:
           npx playwright install chromium
       - name: Probar tamaños iPad y navegación en web y HTML autónomo
         run: node scripts/test-compact-exam-sidebar.cjs
+
+# Comprobación revisada: cinco columnas y ancho adaptable.
