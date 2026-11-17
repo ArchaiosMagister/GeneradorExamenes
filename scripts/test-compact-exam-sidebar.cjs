@@ -44,21 +44,49 @@ const server=http.createServer((request,response)=>{
      assert(initial.ids.includes(target),filename+': acceso ausente '+target);
     assert.equal(new Set(initial.ids).size,initial.ids.length,filename+': accesos duplicados');
     assert(initial.headingMin<=43,filename+': altura mínima de preguntas no compactada');
-    for(const target of ['examVisualSettings','group-drafts','examQuestionSettings','examScoring']){
-     await page.locator('#examPanelShortcuts>button[data-target="'+target+'"]').click();
-     const state=await page.evaluate(id=>({
-      open:document.getElementById(id)?.open,
+    const panelState=async()=>page.evaluate(()=>{
+     const ids=['exam-ui-core','examQuestionSettings','examScoring','examVisualSettings','group-drafts'];
+     const visible=id=>{
+      const node=document.getElementById(id);
+      return !!node&&getComputedStyle(node).display!=='none'&&node.getBoundingClientRect().height>0;
+     };
+     return {
+      chosen:document.getElementById('examEditorPanel').dataset.editorSection,
+      visible:ids.filter(visible),
+      backups:visible('examinaUnifiedBackup'),
+      pressed:[...document.querySelectorAll('#examPanelShortcuts>button[aria-pressed="true"]')].map(b=>b.dataset.target),
       paper:document.getElementById('paper').innerHTML,
       score:window.ExaminaScoring?.total?.(),
-      form:[document.getElementById('course').value,document.getElementById('model').value,
-        document.getElementById('lang').value]
-     }),target);
+      form:['course','model','lang'].map(id=>document.getElementById(id).value)
+     };
+    });
+    const first=await panelState();
+    assert.equal(first.chosen,'exam-ui-core',filename+': debe comenzar en Configuración');
+    assert.deepEqual(first.visible,['exam-ui-core'],filename+': se muestran secciones no seleccionadas al iniciar');
+    assert.deepEqual(first.pressed,['exam-ui-core'],filename+': indicador activo inicial incorrecto');
+    assert(!first.backups,filename+': copia completa fuera de Borradores');
+    for(const target of ['examQuestionSettings','examScoring','examVisualSettings','group-drafts','exam-ui-core']){
+     await page.locator('#examPanelShortcuts>button[data-target="'+target+'"]').click();
+     const state=await panelState();
+     assert.equal(state.chosen,target,filename+': pestaña no activada '+target);
+     assert.deepEqual(state.visible,[target],filename+': no queda exclusivamente '+target);
+     assert.deepEqual(state.pressed,[target],filename+': indicador incorrecto '+target);
+     assert.equal(state.backups,target==='group-drafts',filename+': copia completa mal ubicada');
      if(['examVisualSettings','group-drafts'].includes(target))
-      assert.equal(state.open,true,filename+': no se abre el apartado '+target);
-     assert.equal(state.paper,initial.paper,filename+': saltar a '+target+' alteró el examen');
-     assert.equal(state.score,initial.score,filename+': saltar a '+target+' alteró la puntuación');
-     assert.deepEqual(state.form,initial.form,filename+': saltar a '+target+' modificó selectores');
+      assert.equal(await page.locator('#'+target).evaluate(el=>el.open),true,
+       filename+': no se abre el apartado '+target);
+     assert.equal(state.paper,initial.paper,filename+': cambiar a '+target+' alteró el examen');
+     assert.equal(state.score,initial.score,filename+': cambiar a '+target+' alteró la puntuación');
+     assert.deepEqual(state.form,initial.form,filename+': cambiar a '+target+' modificó selectores');
     }
+    // Un campo original sigue conservando su valor aunque su panel se oculte.
+    await page.locator('#name').fill('CONTROL_DE_PESTANAS');
+    await page.locator('#examPanelShortcuts>button[data-target="examQuestionSettings"]').click();
+    await page.locator('#examPanelShortcuts>button[data-target="exam-ui-core"]').click();
+    assert.equal(await page.locator('#name').inputValue(),'CONTROL_DE_PESTANAS',
+     filename+': la pestaña destruyó la edición de configuración');
+    // En móvil se conserva el editor anterior: no se aplica la exclusividad.
+    await page.locator('#examPanelShortcuts>button[data-target="examScoring"]').click();
     for(const width of [1440,1024,820,390,320]){
      await page.setViewportSize({width,height:820});
      for(const mode of ['light','dark','oled']){
@@ -81,6 +109,14 @@ const server=http.createServer((request,response)=>{
       const where=filename+'/'+width+'/'+mode;
       assert.equal(got.number,5,where+': deben conservarse cinco accesos');
       assert.equal(got.hidden,width<=950,where+': navegación rápida solo en escritorio');
+      const mobileState=await page.evaluate(()=>({
+       core:getComputedStyle(document.getElementById('exam-ui-core')).display,
+       score:getComputedStyle(document.getElementById('examScoring')).display
+      }));
+      if(width<=950)assert.notEqual(mobileState.core,'none',
+       where+': la selección del escritorio ocultó Configuración en iPad/móvil');
+      if(width<=950)assert.notEqual(mobileState.score,'none',
+       where+': la selección del escritorio ocultó Puntuación en iPad/móvil');
       if(width>950)assert(got.fit,where+': accesos recortados');
       if(width<=760)assert(got.headingMin>=44,where+': altura táctil insuficiente');
       else assert(got.headingMin<=43,where+': cabecera de preguntas demasiado alta');
@@ -90,10 +126,17 @@ const server=http.createServer((request,response)=>{
      }
     }
     await page.setViewportSize({width:1440,height:820});
+    await page.locator('#examPanelShortcuts>button[data-target="exam-ui-core"]').click();
     await page.locator('#lang').selectOption('va');
     await page.waitForFunction(()=>document.querySelector('#examPanelShortcuts>[data-target="examQuestionSettings"]')?.textContent==='Preguntes');
     assert.equal(await page.locator('#examPanelShortcuts>[data-target="examVisualSettings"]').innerText(),
       'Format',filename+': falta traducción de acceso a formato');
+    await page.locator('#examPanelShortcuts>button[data-target="examQuestionSettings"]').click();
+    assert.equal(await page.locator('#exam-ui-shell-title').innerText(),'Preguntes',
+     filename+': la cabecera activa no está traducida');
+    await page.locator('#examPanelShortcuts>button[data-target="exam-ui-core"]').click();
+    assert.equal(await page.locator('#exam-ui-shell-title').innerText(),'Preparar l’examen',
+     filename+': la cabecera inicial no está traducida');
     assert.deepEqual(errors,[],filename+': errores JS');
    } finally {await page.close()}
   }
