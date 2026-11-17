@@ -4,6 +4,8 @@ const assert=require('node:assert/strict');
 const path=require('node:path');
 const {pathToFileURL}=require('node:url');
 const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
+const mNormalizeLatin=entry=>String(entry||'').split(',')[0]
+ .normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
 (async()=>{
  const browser=await chromium.launch({headless:true});
  try{
@@ -19,67 +21,75 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
     generate();
    },{course,model,unit});
   }
+  // La unidad del sintagma depende de la DECLINACIÓN y del adjetivo,
+  // nunca de la presencia de los lemas en vocabulario exigible o general.
   const evidence=[];
-  for(const course of ['latin1','latin4']){
-   for(const [noun,adjective,minUnit] of (course==='latin1'?[
-    ['puella','bonus',2],['servus','bonus',2],['bellum','magnus',2],['puer','Romanus',2],
-    ['rex','magnus',4],['hostis','Romanus',4],['agricola','bonus',2],
-    ['nauta','bonus',2],['poeta','bonus',3]
-   ]:[
-    ['puella','Romanus',3],['servus','bonus',3],['templum','magnus',3],
-    ['puer','bonus',3],['rex','bonus',5],['nomen','Romanus',5],
-    ['agricola','bonus',3],['nauta','bonus',3],['poeta','bonus',3]
-   ])){
+  const pairs={
+   latin1:[
+    ['puella','bonus',2,'puella bona'],['servus','bonus',2,'servus bonus'],
+    ['bellum','magnus',2,'bellum magnum'],['puer','Romanus',2,'puer Romanus'],
+    ['rex','magnus',4,'rex magnus'],['hostis','Romanus',4,'hostis Romanus'],
+    ['agricola','bonus',2,'bonus agricola'],['nauta','bonus',2,'bonus nauta'],
+    ['poeta','bonus',3,'bonus poeta']
+   ],
+   latin4:[
+    ['puella','Romanus',3,'puella Romana'],
+    ['servus','bonus',3,'servus bonus'],
+    ['templum','magnus',3,'templum magnum'],
+    ['puer','bonus',3,'puer bonus'],
+    ['rex','bonus',5,'rex bonus'],
+    ['nomen','Romanus',5,'nomen Romanum'],
+    ['agricola','bonus',3,'bonus agricola'],
+    ['nauta','bonus',3,'bonus nauta'],
+    ['poeta','bonus',3,'bonus poeta']
+   ]
+  };
+  for(const [course,rules] of Object.entries(pairs)){
+   for(const [noun,adj,minUnit,expected] of rules){
     await select(course,'tablas',minUnit);
-    const r=await page.evaluate(({noun,adjective,minUnit})=>{
-     const available=latinExamNominals(['UD'+minUnit]);
-     const adjectives=latinCompleteAdjectives(['UD'+minUnit]);
-     const nounItem=available.find(x=>mNormalize(x.p.lemma).toLowerCase()===noun);
-     const adjectiveItem=adjectives.find(x=>mNormalize(headLex(x.x.entry)).toLowerCase()===adjective.toLowerCase());
-     const chosen=latinCompleteDeclensionItems(['UD'+minUnit]);
-     const item=chosen.find(x=>mNormalize(x.p.lemma).toLowerCase()===noun);
-     return {noun,adjective,minUnit,course:currentCourse(),
-      nounAvailable:!!nounItem,adjectiveAvailable:!!adjectiveItem,
-      selected:item?.compound?.adjective?.entry||null,
-      nominative:item?.compound?.forms?.[0]?.[0]||null,
-      gender:item?.compound?.gender||null};
-    },{noun,adjective,minUnit});
-    if(r.nounAvailable&&r.adjectiveAvailable){
-     assert(r.nominative,'Falta el sintagma aprobado '+course+'/'+noun);
-     assert.equal(r.nominative.split(' ').length,2,'Solo sustantivo + adjetivo');
-     assert.equal(r.selected.toLowerCase().normalize('NFD').replace(/\p{M}/gu,'').split(',')[0],
-      adjective.toLowerCase(),'Pareja docente no aplicada: '+course+'/'+noun);
-     if(['agricola','nauta','poeta'].includes(noun)){
-      assert.equal(r.gender,'m','Primera declinación masculina');
-      assert(!r.nominative.endsWith('bona'),'El adjetivo ha concordado en femenino');
-     }
-    }
-    evidence.push(r);
+    const r=await page.evaluate(noun=>{
+     const item=latinCompleteDeclensionItems(selectedUnits()).find(x=>
+      mNormalize(x.p.lemma).toLowerCase()===noun);
+     return {unit:Math.max(0,...selectedUnits().map(examUnitNumber)),
+      found:!!item,lemma:item?.p?.lemma,source:item?.x?.entry,
+      kind:item?.p?.kind,grammarUnit:item?latinSyntagmNounUnit(item.p.kind):null,
+      adjective:item?.compound?.adjective?.entry,
+      nominative:item?.compound?.forms?.[0]?.[0],
+      cells:item?.compound?.forms,gender:item?.compound?.gender};
+    },noun);
+    assert(r.found,course+': no aparece el lema '+noun+' en UD'+minUnit);
+    assert.equal(r.nominative,expected,course+': forma aprobada '+noun);
+    assert.equal(r.unit,minUnit);
+    assert(r.grammarUnit<=minUnit,course+': no anticipar declinación '+noun);
+    assert.equal(mNormalizeLatin(r.adjective),adj.toLowerCase(),
+     course+': no se respetó el adjetivo autorizado para '+noun);
+    assert.equal(r.cells.length,2);
+    assert(r.cells.every(x=>x.length===6&&x.every(Boolean)),
+     course+': doce casillas completas para '+noun);
+    if(['agricola','nauta','poeta'].includes(noun))assert.equal(r.gender,'m');
+    evidence.push({course,noun,ud:minUnit,form:r.nominative});
    }
   }
-  // Las unidades son acumulativas en gramática: agricola figura en LAT4 UD1
-  // y bonus se introduce en UD3. No exigir seleccionar también UD1.
-  for(const [course,unit] of [['latin1',2],['latin4',3]]){
-   await select(course,'tablas',unit);
-   const r=await page.evaluate(unit=>{
-    const group=latinCompleteDeclensionItems(['UD'+unit])
-     .find(x=>mNormalize(x.p.lemma).toLowerCase()==='agricola');
-    return {found:!!group,gender:group?.compound?.gender,
-     nominative:group?.compound?.forms?.[0]?.[0],
-     accusative:group?.compound?.forms?.[0]?.[2],
-     plural:group?.compound?.forms?.[1]?.[0],
-     sourceUnit:group?.x?.unit};
-   },unit);
-   assert(r.found,course+': agricola de UD previa debe poder salir en UD'+unit);
-   assert.equal(r.gender,'m',course+': género masculino de agricola');
-   assert.equal(r.nominative,'bonus agricola',course+': orden de sintagma docente');
-   assert.equal(r.accusative,'bonum agricolam');
-   assert.equal(r.plural,'boni agricolae');
-   assert(Number(r.sourceUnit.replace('UD',''))<=unit,
-    course+': no debe adelantarse un lema de una unidad posterior');
-   if(course==='latin4')assert(Number(r.sourceUnit.replace('UD',''))<unit,
-    'Latín 4.º: agricola de UD1 debe poder declinarse con bonus de UD3');
-  }
+  // Demostración de que el criterio no consulta la pertenencia a la UD:
+  // templum está en Latín I, pero NO en vocabulario de Latín 4.º.
+  await select('latin4','tablas',3);
+  assert(await page.evaluate(()=>
+   !latinSharedBank.vocabulary('latin4').some(x=>
+    mNormalize(headLex(x.entry)).toLowerCase()==='templum')&&
+   latinCompleteDeclensionItems(['UD3']).some(x=>
+    mNormalize(x.p.lemma).toLowerCase()==='templum'&&
+    x.compound?.forms?.[0]?.[0]==='templum magnum')),
+   'templum magnum desde UD3, aunque templum no figure en el léxico de 4.º');
+  // Aún sin adjetivos, permitir declinar palabras de categorías ya estudiadas.
+  await select('latin4','tablas',2);
+  assert(await page.evaluate(()=>latinCompleteDeclensionItems(['UD2']).some(x=>
+   mNormalize(x.p.lemma).toLowerCase()==='templum'&&x.p.kind==='2n')),
+   'El neutro de 2.ª ya es elegible en UD2, independientemente del vocabulario');
+  // El paradigma de 3.ª no puede anticiparse en UD2/3 de 4.º.
+  await select('latin4','tablas',3);
+  assert(await page.evaluate(()=>!latinCompleteDeclensionItems(['UD3']).some(x=>
+   mNormalize(x.p.lemma).toLowerCase()==='rex')),
+   'No anticipar 3.ª declinación latina antes de UD5');
   // Romanus es gentilicio: la excepción sólo es válida en pares docentes
   // y jamás autoriza su inclusión indiscriminada en el banco morfológico.
   for(const [course,unit,noun,expected] of [
@@ -117,26 +127,16 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
    ['hostes Romani','hostes Romani','hostes Romanos','hostium Romanorum',
     'hostibus Romanis','hostibus Romanis']
   ],'Paradigma hostis Romanus de 12 casillas');
-  // Las unidades posteriores deben recuperar lemas anteriores, sin
-  // promover al banco un sustantivo que todavía no figura en el curso.
-  for(const [course,unit,noun,expected] of [
-   ['latin4',4,'servus','servus bonus'],
-   ['latin4',6,'rex','rex bonus'],
-   ['latin4',7,'poeta','bonus poeta'],
-   ['latin4',8,'nomen','nomen Romanum']
-  ]){
-   await select(course,'tablas',unit);
-   const found=await page.evaluate(noun=>{
-    const item=latinCompleteDeclensionItems(selectedUnits())
-     .find(x=>mNormalize(x.p.lemma).toLowerCase()===noun);
-    return {form:item?.compound?.forms?.[0]?.[0],
-      cells:item?.compound?.forms,source:item?.x?.unit};
-   },noun);
-   assert.equal(found.form,expected,course+'/UD'+unit+': no aparece '+expected);
-   assert(found.cells?.length===2&&found.cells.every(row=>row.length===6),
-    course+'/UD'+unit+': falta una casilla de '+expected);
+  // Los paradigmas explicados antes pueden elegirse desde cualquier UD posterior.
+  for(const [unit,noun,expected] of [[3,'servus','servus bonus'],
+   [5,'rex','rex bonus'],[3,'poeta','bonus poeta'],[5,'nomen','nomen Romanum']]){
+   await select('latin4','tablas',unit);
+   assert.equal(await page.evaluate(noun=>
+    latinCompleteDeclensionItems(selectedUnits()).find(x=>
+     mNormalize(x.p.lemma).toLowerCase()===noun)?.compound?.forms?.[0]?.[0],noun),
+    expected,'Latín 4.º UD'+unit+': debe salir '+expected);
   }
-  await select('latin4','tablas',8);
+  await select('latin4','tablas',5);
   const nomen=await page.evaluate(()=>{
    const item=latinCompleteDeclensionItems(selectedUnits())
     .find(x=>mNormalize(x.p.lemma).toLowerCase()==='nomen');
