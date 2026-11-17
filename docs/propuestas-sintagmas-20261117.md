@@ -1,6 +1,6 @@
-# Sintagmas candidatos para GeneradorExamenes · pendiente de aprobación docente
+# Sintagmas aprobados por el docente para GeneradorExamenes · PR #169
 
-**Estado:** PROPUESTA. Nada de esta lista se incorpora a la generación ni modifica los bancos activos.
+**Estado (17/11/2026): APROBADOS CON CONDICIONES CURRICULARES.** Los 12 candidatos latinos y GR-01–GR-16 han sido ratificados por el docente; GR-17 (ἡ πόλις, UD8) sigue en espera de verificar su paradigma completo. Se han conectado al motor los pares latinos si ambos lemas existen y tienen paradigma admisible; los patrones griegos se conectan por unidades y por flexiones ya presentes. La PR sigue en borrador, sin fusionar ni publicar.
 
 ## Criterios
 
@@ -8,7 +8,7 @@
 - El número, caso, género y concordancia deben proceder de paradigmas verificables, no de concatenaciones automáticas de terminaciones.
 - El cuadro de declinación escolar mantiene NOM, VOC, AC, GEN y DAT cuando los sustantivos estén estudiados; los sintagmas preposicionales no se declinan libremente porque la preposición exige un régimen concreto.
 - Artículos griegos solo desde **UD3**, preposiciones desde **UD4**, adjetivos desde **UD5**, `αὐτός` de identidad desde **UD7** y sustantivos de tercera desde **UD8**, según la progresión ya empleada en las PR #163–166. La UD1 de Griego I corresponde a la segunda declinación de masculinos; UD2 añade neutros. Las unidades son acumulativas.
-- No se asignan automáticamente nuevas unidades latinas: su aprobación exige contrastar el curso y las declinaciones ya estudiadas en cada UD. En particular, ningún sintagma adjetival entrará antes de la introducción de la concordancia.
+- Las unidades mínimas se contrastan con los programas ya incorporados: **Latín I: adjetivos UD2, tercera declinación UD4. Latín 4.º: adjetivos UD3, tercera declinación UD5.** No se anticipan contenidos aunque un lema figure en el vocabulario antes de estudiarse su declinación.
 
 ## A. Latín I — cuadros de declinación
 
@@ -21,7 +21,7 @@
 | LI-05 | `rex magnus` | Tercera declinación, tema consonántico | Desde UD3 | Contrastar ficha rex y unidad |
 | LI-06 | `hostis Romanus` | Tercera declinación, tema en -i | Desde UD3 | Contrastar ficha hostis y unidad |
 
-Los seis son ejemplos filológicamente regulares, pero **su unidad y su presencia en el banco examinable deben ratificarse antes de habilitarlos**. El motor existente de cuadros y los ajustes de espaciado se mantendrán.
+Los seis candidatos están aprobados. Los pares sólo se activan cuando ambos lemas existen en el banco del curso y el motor puede declinar el sustantivo. **Importante:** el analizador actual excluye *hostis* por su tema en -i; la aprobación del sintagma no autoriza una flexión de tercera declinación incorrecta, y ese caso sigue pendiente de un paradigma expreso.
 
 ## B. Latín de 4.º — cuadros de declinación
 
@@ -34,7 +34,7 @@ Los seis son ejemplos filológicamente regulares, pero **su unidad y su presenci
 | L4-05 | `rex bonus` | Tercera declinación y adjetivo | Tras introducir la tercera |
 | L4-06 | `nomen Romanum` | Neutro de tercera y concordancia | Tras introducir los neutros de tercera |
 
-**Pendiente de decisión docente:** fijar los números de UD a partir de la programación de 4.º antes de incluirlos. Los candidatos no se evaluarán si el lema no pertenece al banco compatible.
+Aprobados, con umbral **UD3** para primera/segunda y **UD5** para tercera; no se introducen lemas nuevos si no constan en el banco del curso. La correspondencia real de lemas se prueba por separado; las parejas ausentes permanecen como candidatas no sorteables.
 
 ## C. Griego I — progresión de sintagmas
 
@@ -83,3 +83,19 @@ Las traducciones al valenciano se prepararán **por sintagma y por contexto** (n
 4. Una vez aprobados, ampliar desde lemas **ya verificados y presentes en el banco**: cada expansión necesita tabla completa, concordancia y pruebas de todas sus casillas. No activar por el mero hecho de compartir terminación.
 
 **No incorporado al motor. Sin publicación.**
+
+
+## Resolución docente 17/11/2026 y ampliación
+
+El docente **aprueba LI-01–LI-06, L4-01–L4-06 y GR-01–GR-16**. GR-17 queda **sin activar** hasta disponer de un paradigma completo comprobado.
+
+**Añadidos por petición expresa:**
+- Latín I: **bonus agricola** (UD2), **bonus nauta** (UD2), **bonus poeta** (UD3, según disponibilidad del banco).
+- Latín 4.º: **bonus agricola**, **bonus nauta**, **bonus poeta**, desde UD3 si las palabras constan en el banco de ese curso.
+- En todos ellos el sustantivo es de primera declinación **masculino**, y el adjetivo conserva el género masculino: *bonus agricola*, *boni agricolae*, *bonum agricolam*; nunca *bona agricola* por analogía con la terminación -a.
+
+**Límites de la activación segura:** el motor no añade lemas ni paradigmas a partir de esta lista. Sólo prioriza los pares documentados si coincide un sustantivo de declinación analizable y un adjetivo de su propio banco. Cuando falta cualquiera de los dos componentes, la selección antigua permanece operativa. Las fichas aprobadas pero ausentes no se cuentan como ejercicios activados.
+
+**Griego:** UD1–2 conserva el sustantivo sin artículo; desde UD3 los cuadros de nominativo/acusativo/genitivo/dativo incluyen artículo, con vocativo sin artículo; UD4 ofrece preposiciones de régimen fijo; UD5 genera artículo + adjetivo + sustantivo; UD7 admite *αὐτός* de identidad en cambio de número. No se incorporan paradigmas de tercera por simple extrapolación.
+
+**Control de calidad:** `scripts/test-sintagmas-aprobados-169.cjs`, unido a `scripts/test-nominal-agreement.cjs`, `scripts/test-syntagm-variation.cjs` y las pruebas existentes de Griego I/Word/PDF/versión autónoma. Ninguna prueba autoriza fusión o publicación por sí misma.
