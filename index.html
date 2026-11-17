@@ -7322,6 +7322,12 @@ html[data-appearance="oled"] body.exam-redesign #exam-ui-shell :is(#exam-ui-core
   color:#fff;
   box-shadow:0 3px 10px #12283c40;
  }
+ /* Dark y OLED deben compartir el mismo tono de botón, sin alterar su fondo general. */
+ :root[data-course]:is([data-appearance="dark"],[data-appearance="oled"]) .vocab-tabbar > button:not(.active){
+  background:#234950;
+  color:#e5f5f1;
+  border-color:#56878a;
+ }
  @media(hover:hover){
   :root[data-course] .vocab-tabbar > button:hover:not(.active){
    filter:brightness(.96);
