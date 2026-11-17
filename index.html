@@ -970,7 +970,7 @@ $('sheetType').addEventListener('change',()=>{const c=currentCourse();$('name').
 let examEditorLinks=new WeakMap(),examEditorLinkSerial=0;
 function examEditorPreviewValue(target,mode='plain'){
  let value=target.textContent.trim();
- if(mode==='etymology')value=value.replace(/^[a-z]\.\s*/iu,'').replace(/:\s*$/u,'');
+ if(mode==='etymology')value=value.replace(/^(?:[a-z]\.|◦)\s*/iu,'').replace(/:\s*$/u,'');
  else if(mode==='colon')value=value.replace(/:\s*$/u,'');
  return value.trim();
 }
@@ -1075,7 +1075,9 @@ function refreshManualMorphWords(forceGreekDraft=false){
     el.innerHTML=examParadigmHeading(input.value,kind==='Conjugación'?'conjugation':'declension');
    }else if(mode==='etymology'){
     const prefix=el.textContent.match(/^\s*[a-z]\.\s*/iu)?.[0]||'';
-    el.textContent=prefix+input.value+':';
+    const marker=el.closest('.greek-choice-option')&&el.querySelector(':scope > .exam-letter');
+    if(marker)el.replaceChildren(marker,' '+input.value+':');
+    else el.textContent=prefix+input.value+':';
    }else el.textContent=input.value+(mode==='colon'?':':'');
    if(el.closest('[data-syntagm-slot]'))syncMorphSyntagmTextarea();
    warnExamManualSolution();
@@ -1142,6 +1144,8 @@ function examVisualHeadingIdentity(el){
  return null;
 }
 function examVisualOwner(el){
+ const group=el?.closest?.('.greek-choice-option');
+ if(group&&group!==el)return examVisualOwner(group);
  if(!el?.parentElement?.classList?.contains('exam-sheet'))return null;
  for(let sibling=el.previousElementSibling;sibling;sibling=sibling.previousElementSibling)
   if(sibling.classList.contains('exam-question'))return sibling;
@@ -1200,6 +1204,19 @@ function applyExamVisualFormat(){
   text.push(head+'{margin-top:'+examVisualBeforeFor(heading)+'pt!important}');
   if(!custom||!Number.isFinite(custom.items))continue;
   const gap=custom.items;
+  // Las preguntas griegas 1 y 2 agrupan alternativas anidadas. El ajuste
+  // separa sus elementos, sin separar o regenerar las alternativas entre sí.
+  if(kind==='greek-competence'||kind==='greek-plurilingual'){
+   const option=head+'~section.greek-choice-option[data-greek-choice-group="'+kind+'"]';
+   const item=option+'>p.exam-item:not(.greek-choice-subquestion)';
+   text.push(item+'{margin-top:0!important;margin-bottom:0!important}',
+    item+'+p.exam-item:not(.greek-choice-subquestion){margin-top:'+gap+'pt!important}',
+    option+'>p.exam-table-gap{height:'+gap+'pt!important;line-height:'+Math.max(.05,gap)+'pt!important}',
+    option+'>table.exam-paradigm{margin-bottom:0!important}',
+    option+'>p.exam-etymology{display:grid;grid-template-columns:1fr;row-gap:'+gap+'pt!important}',
+    option+'>p.exam-etymology>[data-corpus-id]{display:block;width:auto;margin:0!important}');
+   continue;
+  }
   // Preguntas con lista de apartados, letras o frases.
   text.push(head+'+ol.task>li{margin-bottom:0!important;padding-bottom:0!important}');
   text.push(head+'+ol.task>li+li{margin-top:'+gap+'pt!important}');
@@ -3102,8 +3119,9 @@ function wordExamParagraph(el){
   if(m)runs=wordRun(m[1],true)+'<w:r><w:tab/></w:r>'+wordRun(m[2],true);
  }else if(cls.contains('exam-item')){
   if(cls.contains('greek-choice-subquestion'))props.push('<w:keepNext/>');
-  const owner=examVisualOwner(el),custom=examVisualItemGapOverride(owner);
-  let repeated=el.previousElementSibling?.classList?.contains('exam-item');
+  const owner=examVisualOwner(el),custom=cls.contains('greek-choice-subquestion')?null:examVisualItemGapOverride(owner);
+  let repeated=el.previousElementSibling?.classList?.contains('exam-item')&&
+   !el.previousElementSibling.classList.contains('greek-choice-subquestion');
   // No se consideran los avisos ocultos intercalados entre apartados de léxico.
   if(cls.contains('lex-subquestion')){
    repeated=false;
@@ -3124,7 +3142,8 @@ function wordExamParagraph(el){
   else{const m=el.textContent.match(/^([a-z]\\.)\\s*(.*)$/s);
    if(m)runs=wordRun(m[1])+'<w:r><w:tab/></w:r>'+wordRun(m[2])}
  }else if(cls.contains('exam-etymology')){
-  // Mantener dos columnas, con letras/texto alineados como en morfología.
+  // Las alternativas griegas usan viñetas; los demás modelos conservan dos columnas.
+  const custom=examVisualItemGapOverride(examVisualOwner(el));
   const items=[...el.children];
   const itemRuns=item=>{
    const letter=item.querySelector(':scope > .exam-letter');
@@ -3132,6 +3151,11 @@ function wordExamParagraph(el){
    return wordRun(letter.textContent.trim())+'<w:r><w:tab/></w:r>'+
     [...item.childNodes].filter(n=>n!==letter).map(n=>wordInline(n)).join('');
   };
+  if(el.closest('.greek-choice-option'))return items.map((item,i)=>
+   '<w:p><w:pPr><w:keepLines/><w:ind w:left="1080" w:hanging="360"/>'+
+   '<w:tabs><w:tab w:val="left" w:pos="1080"/></w:tabs>'+
+   '<w:spacing w:before="'+(i>0?(custom??4)*20:0)+'" w:after="0" w:line="260" w:lineRule="atLeast"/>'+
+   '</w:pPr>'+itemRuns(item)+'</w:p>').join('');
   const tabs='<w:tabs>'+[1080,4240,4600].map(pos=>
    '<w:tab w:val="left" w:pos="'+pos+'"/>').join('')+'</w:tabs>';
   const paras=[];
@@ -4337,7 +4361,9 @@ function greekExamControls(){
     if(kind==='declension')target.innerHTML=examParadigmHeading(value,'declension');
     else if(kind==='etymology'){
      const prefix=target.textContent.match(/^\s*[a-z]\.\s*/iu)?.[0]||'';
-     target.textContent=prefix+value+':';
+     const marker=target.closest('.greek-choice-option')&&target.querySelector(':scope > .exam-letter');
+     if(marker)target.replaceChildren(marker,' '+value+':');
+     else target.textContent=prefix+value+':';
     }else target.textContent=value;
     warnExamManualSolution();
    });
@@ -6675,7 +6701,8 @@ html[data-appearance="oled"] body.exam-redesign #exam-ui-shell :is(#exam-ui-core
     const paragraphItems=blocks.filter(el=>el.classList?.contains('exam-item')).length;
     const tableCount=blocks.filter(el=>el.tagName==='TABLE'&&el.classList.contains('exam-paradigm')).length;
     const hasTableGaps=blocks.some(el=>el.classList?.contains('exam-table-gap'));
-    const sectionType=tableCount>1||hasTableGaps?'tables':countItems>1||paragraphItems>1?'items':null;
+    const groupedGreek=['greek-competence','greek-plurilingual'].includes(identity.kind);
+    const sectionType=groupedGreek?'greek-items':tableCount>1||hasTableGaps?'tables':countItems>1||paragraphItems>1?'items':null;
     const addInput=(kind,title,placeholder)=>{
      const label=document.createElement('label');
      label.textContent=title;
@@ -6692,7 +6719,7 @@ html[data-appearance="oled"] body.exam-redesign #exam-ui-shell :is(#exam-ui-core
     addInput('before',va?'Abans de l’enunciat':'Antes del enunciado',String(examQuestionBeforePt()));
     if(sectionType){
      const fallback=examVisualItemGapFor(heading);
-     const title=sectionType==='tables'?(va?'Entre taules':'Entre tablas'):(va?'Entre elements (a., b., c.)':'Entre elementos (a., b., c.)');
+     const title=sectionType==='greek-items'?(va?'Entre elements de les subpreguntes':'Entre elementos de las subpreguntas'):sectionType==='tables'?(va?'Entre taules':'Entre tablas'):(va?'Entre elements (a., b., c.)':'Entre elementos (a., b., c.)');
      addInput('items',title,fallback===null?(va?'Actual':'Actual'):String(fallback));
     }
     group.append(body);formatRows.append(group);

@@ -107,10 +107,8 @@
    const row=document.createElement('p');row.className='exam-item greek-choice-generated-item';
    const slot=kind+':'+i;
    row.dataset.greekChoiceSlot=slot;
-   const text=kind==='change-number'?
-    t(item.direction==='singular'?'A singular: ':'A plural: ',item.direction==='singular'?'A singular: ':'A plural: ')+item.prompt:
-    item.prompt;
-   row.innerHTML='<span class="exam-letter">'+(i+1)+'.</span> '+esc(edits.has(slot)?edits.get(slot):text);
+   const text=item.prompt;
+   row.innerHTML='<span class="exam-letter greek-choice-item-marker">◦</span> '+esc(edits.has(slot)?edits.get(slot):text);
    box.append(row);
   });
   return box;
@@ -136,6 +134,28 @@
   p.dataset.greekChoiceSlot='roots:0';
   p.innerHTML=edits.has('roots:0')?editedRoots(item,edits.get('roots:0')):window.ExaminaGreekEtymSentence.render(item);
   box.append(p);return box;
+ }
+ function itemText(node){
+  const copy=node.cloneNode(true);copy.querySelector(':scope > .exam-letter')?.remove();
+  return copy.textContent.replace(/^\s*\d+\.\s*/,'').trim();
+ }
+ function decorateItems(sheet){
+  for(const option of sheet.querySelectorAll('.greek-choice-option')){
+   option.dataset.greekChoiceGroup=['etymology','roots'].includes(option.dataset.greekOption)
+    ?'greek-plurilingual':'greek-competence';
+   for(const item of option.querySelectorAll('.exam-form,.exam-etymology [data-corpus-id],.greek-choice-generated-item')){
+    let marker=item.querySelector(':scope > .exam-letter');
+    if(!marker){
+     const first=item.firstChild;
+     if(first?.nodeType===3)first.textContent=first.textContent.replace(/^\s*(?:[a-z]\.|\d+\.|◦)\s*/iu,'');
+     marker=document.createElement('span');marker.className='exam-letter';item.prepend(marker,' ');
+    }
+    marker.textContent='◦';marker.classList.add('greek-choice-item-marker');
+    if(item.dataset.greekChoiceSlot?.startsWith('change-number:'))
+     for(const node of item.childNodes)if(node.nodeType===3)
+      node.textContent=node.textContent.replace(/^(\s*)A (?:singular|plural):\s*/iu,'$1');
+   }
+  }
  }
  function renumber(options){
   options.forEach((section,i)=>{
@@ -167,11 +187,11 @@
   const frag=document.createDocumentFragment();let currentNumber=0;
   if(morph.length){
    renumber(morph);frag.append(heading('greek-competence',++currentNumber,choiceTitle(morph.length,1)));
-   morph.forEach(x=>frag.append(x));
+   morph.forEach(x=>{x.dataset.greekChoiceGroup='greek-competence';frag.append(x)});
   }
   if(etym.length){
    renumber(etym);frag.append(heading('greek-plurilingual',++currentNumber,choiceTitle(etym.length,2)));
-   etym.forEach(x=>frag.append(x));
+   etym.forEach(x=>{x.dataset.greekChoiceGroup='greek-plurilingual';frag.append(x)});
   }
   if(parts.sentences?.length){
    const sentences=parts.sentences.slice(),q=sentences[0];
@@ -181,6 +201,7 @@
   }
   const anchor=sheet.querySelector(':scope > #examSentenceGlossary')||sheet.querySelector(':scope > #answerkey');
   if(anchor)sheet.insertBefore(frag,anchor);else sheet.append(frag);
+  decorateItems(sheet);
   syncExtraAnswers(sheet);
   window.greekLastPreview=$('paper').innerHTML;
   if(window.greekLastExam)window.greekLastExam.grouped=true;
@@ -367,7 +388,7 @@
     label.textContent='Elemento '+(i+1)+' (editable) ';
     const input=document.createElement('input');input.type='text';
     input.dataset.greekCustomEdit=slot;
-    input.value=node.textContent.replace(/^\s*\d+\.\s*/,'').trim();
+    input.value=itemText(node);
     input.addEventListener('input',()=>{
      edits.set(slot,input.value);
      const target=$('paper').querySelector('[data-greek-choice-slot="'+slot+'"]');
@@ -441,7 +462,7 @@
   if(!onlyGreek())return;
   const row=event.target?.closest?.('[data-greek-choice-slot]');if(!row)return;
   const slot=row.dataset.greekChoiceSlot;
-  edits.set(slot,row.textContent.replace(/^\s*\d+\.\s*/,'').trim());
+  edits.set(slot,itemText(row));
   const input=document.querySelector('[data-greek-custom-edit="'+slot+'"]');
   if(input)input.value=edits.get(slot);
  });
@@ -461,6 +482,8 @@
   '.paper .greek-choice-subquestion{margin-top:8pt;font-weight:normal;break-after:avoid}'+
   '.paper .greek-choice-option .exam-paradigm{margin-bottom:7pt}'+
   '.paper .greek-choice-option > .exam-item + .exam-item{margin-top:4pt}'+
+  '.paper .greek-choice-option .exam-etymology{display:grid;grid-template-columns:1fr;row-gap:4pt}'+
+  '.paper .greek-choice-option .exam-etymology>[data-corpus-id]{display:block;width:auto;margin:0}'+
   '.paper .greek-choice-etym-sentence u{text-decoration:underline;text-underline-offset:2px}';
  document.head.append(style);
  function snapshotChoices(){
@@ -478,8 +501,9 @@
    save();
   }
   lastScope=scopeKey();edits.clear();
+  decorateItems($('paper'));
   for(const row of $('paper').querySelectorAll('[data-greek-choice-slot]'))
-   edits.set(row.dataset.greekChoiceSlot,row.textContent.replace(/^\s*\d+\.\s*/,'').trim());
+   edits.set(row.dataset.greekChoiceSlot,itemText(row));
   ensureMenu();
  };
  window.ExaminaGreekChoiceGroups={active:onlyGreek,regroup,replaceGenerated,ensureMenu,flags,snapshot:snapshotChoices,restore:restoreChoices};
