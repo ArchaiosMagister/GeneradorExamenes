@@ -99,6 +99,24 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
    assert.equal(check.nominative,expected,course+': falta la concordancia del gentilicio');
    assert.equal(check.general,false,'Romanus no debe entrar en el sorteo general');
   }
+  // Hostis es un tema en -i de tercera: el genitivo plural hostium
+  // no puede obtenerse del generador consonántico regular.
+  await select('latin1','tablas',4);
+  const hostis=await page.evaluate(()=>{
+   const item=latinCompleteDeclensionItems(['UD4'])
+    .find(x=>mNormalize(x.p.lemma).toLowerCase()==='hostis');
+   return {found:!!item,forms:item?.compound?.forms,
+    inGeneral:!!mNoun('hostis, –is (m.)'),gender:item?.compound?.gender};
+  });
+  assert(hostis.found,'Latín I UD4: falta hostis Romanus aprobado');
+  assert.equal(hostis.inGeneral,false,'La excepción no altera la regla general');
+  assert.equal(hostis.gender,'m','Género de hostis');
+  assert.deepEqual(hostis.forms,[
+   ['hostis Romanus','hostis Romane','hostem Romanum','hostis Romani',
+    'hosti Romano','hoste Romano'],
+   ['hostes Romani','hostes Romani','hostes Romanos','hostium Romanorum',
+    'hostibus Romanis','hostibus Romanis']
+  ],'Paradigma hostis Romanus de 12 casillas');
   await select('latin1','tablas',1);
   assert.equal(await page.evaluate(()=>latinCompleteCompoundActive(['UD1'])),false);
   await select('latin4','tablas',2);
