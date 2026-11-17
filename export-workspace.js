@@ -188,7 +188,7 @@
   nav.setAttribute('aria-label','Accesos rápidos a los apartados del editor');
   for(const [id,es,val] of destinations){
    const target=el(id);
-   if(!target||!shell.contains(target))continue;
+   if(!target)continue;
    const button=doc.createElement('button');
    button.type='button';
    button.dataset.target=id;
