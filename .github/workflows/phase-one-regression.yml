@@ -20,6 +20,7 @@ on:
       - 'scripts/test-toolbar-button-sizes.cjs'
       - 'scripts/test-word-palatino.cjs'
       - 'scripts/test-word-gloss-columns.cjs'
+      - 'scripts/test-lemma-review-theme.cjs'
       - 'scripts/test-latin4-conjugation-isolated-forms.cjs'
       - 'scripts/test-subquestion-scoring.cjs'
       - '.github/workflows/phase-one-regression.yml'
@@ -62,6 +63,12 @@ jobs:
         run: node scripts/test-word-palatino.cjs
       - name: Verificar glosario Word como párrafos en dos columnas reales
         run: node scripts/test-word-gloss-columns.cjs
+      - name: Verificar tarjetas de revisión de lemas y selección sin regresiones
+        run: node scripts/test-lemma-review-theme.cjs
+      - name: Auditoría de lematización de oraciones y opciones docentes
+        run: node scripts/test-exam-glossary.cjs
+      - name: Consultas Collatinus y Eulexis, confirmación docente y exportación
+        run: node scripts/test-exam-external-gloss.cjs
       - name: Latin 4 regular conjugations and isolated form counts
         run: node scripts/test-latin4-conjugation-isolated-forms.cjs
       - name: All existing Word preview regressions

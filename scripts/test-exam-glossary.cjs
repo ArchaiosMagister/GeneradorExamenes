@@ -244,7 +244,9 @@ assert(!engine.documentXml({...project,groupTypes:false}).includes('Sustantivos 
   },gallusValue);
   assert.match(await page.locator('#examSentenceGlossary').innerText(),/Lecturas elegidas/);
   assert.match(await page.locator('#examSentenceGlossary .final-gloss').innerText(),/Gallus/);
-  const bona=page.locator('#examSentenceGlossary .exam-gloss-review-choice').filter({hasText:/\bBona\b|\bbona\b/}).first();
+  const bona=page.locator('#examSentenceGlossary .exam-gloss-review-choice')
+   .filter({has:page.locator('.exam-review-form').filter({hasText:/^Bona$/i})}).first();
+  assert.equal(await bona.count(),1,'Debe existir exactamente una tarjeta para la forma Bona');
   const value=await bona.locator('option').filter({hasText:'bonus, –a, –um'}).first().getAttribute('value');
   await bona.locator('select').evaluate((el,value)=>{
    el.value=value;el.dispatchEvent(new Event('change',{bubbles:true}));

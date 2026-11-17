@@ -6061,7 +6061,11 @@ function buildFinalLexicon(chosen,sentences){
   const visible=x.source==='collatinus'?externalCitationForExam(entry,course,chosen):latinExamGlossEntry(entry,course,chosen);
   return '<div class="gloss-item">'+(greek?esc(entry):latinGlossCitation(visible))+gloss+'</div>';
  }).join('')+'</div>':'';
- if(pending.length)out+='<p class="notice no-print"><strong>'+($('lang').value==='va'?'Traduccions pendents de revisar:':'Traducciones pendientes de revisar:')+'</strong> '+esc(pending.map(x=>headLex(x.entry)).join(', '))+'. '+($('lang').value==='va'?'Es mostren els enunciats sense inventar significats.':'El examen muestra sus enunciados sin inventar significados.')+
+ const needsReview=!!(pending.length||passiveChoices.length||pendingChoices.size||selectedChoices.length||unresolved.size);
+ if(needsReview)out+='<section class="exam-gloss-review-workspace no-print" aria-label="'+
+  ($('lang').value==='va'?'Revisió del vocabulari':'Revisión del vocabulario')+'">'+
+  '<h4 class="exam-review-title">'+($('lang').value==='va'?'Revisió del vocabulari':'Revisión del vocabulario')+'</h4>';
+ if(pending.length)out+='<p class="notice no-print exam-gloss-pending"><strong>'+($('lang').value==='va'?'Traduccions pendents de revisar:':'Traducciones pendientes de revisar:')+'</strong> '+esc(pending.map(x=>headLex(x.entry)).join(', '))+'. '+($('lang').value==='va'?'Es mostren els enunciats sense inventar significats.':'El examen muestra sus enunciados sin inventar significados.')+
   pending.filter(row=>!bank.some(item=>examKey(item.entry)===examKey(row.entry)))
    .map(row=>examReaderButton(course,row)).join('')+'</p>';
  if(passiveChoices.length){
@@ -6092,12 +6096,15 @@ function buildFinalLexicon(chosen,sentences){
   out+='</div>';
  }
  if(pendingChoices.size){
-  out+='<div class="notice no-print exam-gloss-review"><strong>Elige el lema de cada forma ambigua:</strong>';
+  const va=$('lang').value==='va';
+  out+='<div class="notice no-print exam-gloss-review"><strong>'+
+   (va?'Tria el lema de cada forma ambigua:':'Elige el lema de cada forma ambigua:')+'</strong>';
   for(const [identity,row] of pendingChoices){
-   out+='<label class="exam-gloss-review-choice">'+esc(row.form)+
-    (row.context?' · '+esc(row.context):'')+
+   out+='<label class="exam-gloss-review-choice"><span class="exam-review-form"><i>'+esc(row.form)+'</i></span>'+
+    (row.context?'<span class="exam-review-context">'+esc(row.context)+'</span>':'')+
+    '<span class="exam-review-source">'+(va?'Lectures del banc':'Lecturas del banco')+'</span>'+
     '<select class="exam-gloss-lemma" data-identity="'+esc(identity)+'" aria-label="Lema de '+esc(row.form)+'">'+
-    '<option value="">Selecciona una lectura…</option>'+
+    '<option value="">'+(va?'Tria una lectura…':'Selecciona una lectura…')+'</option>'+
     row.candidates.map((candidate,i)=>'<option value="'+i+'">'+
      esc(candidate.entry)+' — '+esc(candidate.meaning||'Sin traducción registrada')+
      (candidate.attested?'':' (propuesta por revisar)')+'</option>').join('')+
@@ -6112,7 +6119,10 @@ function buildFinalLexicon(chosen,sentences){
     esc(examGlossIdentity(course,row.identity||row.form))+'">Cambiar</button>').join(' · ')+
    '</div>';
  }
- if(unresolved.size)out+='<p class="notice no-print"><strong>Revisión necesaria (sin candidatos):</strong> '+esc([...unresolved].join(', '))+'.'+unknownRows.map(row=>examReaderButton(course,row)).join('')+'</p>';
+ if(unresolved.size)out+='<p class="notice no-print exam-gloss-unknown"><strong>'+
+  ($('lang').value==='va'?'Revisió necessària (sense candidats):':'Revisión necesaria (sin candidatos):')+
+  '</strong> '+esc([...unresolved].join(', '))+'.'+unknownRows.map(row=>examReaderButton(course,row)).join('')+'</p>';
+ if(needsReview)out+='</section>';
  return out;
 }
 
@@ -16837,6 +16847,127 @@ html[data-appearance="oled"] body.exam-redesign #exam-ui-shell :is(#exam-ui-core
    min-block-size:58px;
    max-block-size:58px;
   }
+ }
+}
+</style>
+<style id="examina-lemma-review-theme">
+/* Revisión filológica: tarjetas de interfaz, nunca parte del examen imprimible. */
+@media screen {
+ #examSentenceGlossary .exam-gloss-review-workspace {
+  --review-bg:#f5f9f8;--review-card:#fffefa;--review-ink:#24383b;
+  --review-muted:#566970;--review-line:#b9ced0;--review-focus:#1d5466;
+  box-sizing:border-box;max-width:100%;min-width:0;margin:13px 0 5px;padding:13px;
+  display:grid;gap:10px;border:1px solid var(--review-line);border-radius:10px;
+  background:var(--review-bg);color:var(--review-ink);
+  font:13px/1.45 "Segoe UI",system-ui,-apple-system,sans-serif;
+  overflow-wrap:anywhere;
+ }
+ :root:is([data-appearance="dark"],[data-appearance="oled"]) #examSentenceGlossary .exam-gloss-review-workspace {
+  --review-bg:#1d3034;--review-card:#253e42;--review-ink:#e6f4f3;
+  --review-muted:#b8d2d1;--review-line:#5c8587;--review-focus:#96d5ce;
+ }
+ #examSentenceGlossary .exam-review-title {
+  margin:0;padding:0 0 7px;
+  border-bottom:1px solid var(--review-line);
+  color:var(--review-ink);font-size:14px;font-weight:750;line-height:1.35;
+  letter-spacing:.01em;
+ }
+ #examSentenceGlossary .exam-gloss-review-workspace :is(.exam-gloss-review,.exam-passive-review,.exam-gloss-selected,.exam-gloss-unknown,.exam-gloss-pending) {
+  box-sizing:border-box;min-width:0;max-width:100%;margin:0;padding:11px;
+  background:var(--review-card);color:var(--review-ink);
+  border:1px solid var(--review-line);border-radius:8px;box-shadow:none;
+ }
+ #examSentenceGlossary .exam-gloss-review-workspace :is(.exam-gloss-review,.exam-passive-review) {
+  display:grid;gap:9px;
+ }
+ #examSentenceGlossary .exam-gloss-review-workspace :is(.exam-gloss-review,.exam-passive-review)>strong {
+  display:block;margin:0;color:var(--review-ink);font-size:13px;line-height:1.4;
+ }
+ #examSentenceGlossary .exam-gloss-review-choice,
+ #examSentenceGlossary .exam-passive-label {
+  box-sizing:border-box;display:grid;grid-template-columns:minmax(0,1fr);gap:5px;
+  min-width:0;max-width:100%;margin:0;padding:10px;
+  border:1px solid var(--review-line);border-radius:7px;
+  background:var(--review-bg);color:var(--review-ink);
+  font-weight:500;
+ }
+ #examSentenceGlossary .exam-review-form {
+  font-size:15px;font-weight:700;color:var(--review-ink);
+ }
+ #examSentenceGlossary .exam-review-context,
+ #examSentenceGlossary .exam-review-source {
+  color:var(--review-muted);font-size:12px;line-height:1.35;
+ }
+ #examSentenceGlossary .exam-review-source {
+  font-weight:650;
+ }
+ #examSentenceGlossary .exam-gloss-review-workspace select {
+  box-sizing:border-box;display:block;width:100%;max-width:100%;min-width:0;
+  min-height:44px;margin:3px 0 0;padding:8px 30px 8px 10px;
+  border:1px solid var(--review-line);border-radius:7px;
+  background:var(--review-card);color:var(--review-ink);font:inherit;
+ }
+ #examSentenceGlossary .exam-gloss-review-workspace :is(select,button):focus-visible {
+  outline:2px solid var(--review-focus);outline-offset:2px;
+ }
+ #examSentenceGlossary .exam-gloss-review-workspace button {
+  box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;
+  min-height:36px;max-width:100%;margin:5px 2px 0 0;padding:6px 11px;
+  border:1px solid var(--review-line);border-radius:7px;
+  font:650 12.5px/1.3 "Segoe UI",system-ui,-apple-system,sans-serif;
+  white-space:normal;overflow-wrap:anywhere;cursor:pointer;
+ }
+ #examSentenceGlossary .exam-gloss-review-workspace .exam-reader-lookup {
+  background:#1d5466;color:#fff;border-color:#1d5466;
+ }
+ #examSentenceGlossary .exam-gloss-review-workspace .exam-gloss-reset {
+  background:var(--review-bg);color:var(--review-ink);
+ }
+ #examSentenceGlossary .exam-gloss-review-workspace button:hover:not(:disabled) {
+  filter:brightness(.94);
+ }
+ #examSentenceGlossary .exam-gloss-selected {line-height:1.8}
+ #examSentenceGlossary .exam-gloss-selected strong {color:var(--review-ink)}
+ #examSentenceGlossary .exam-gloss-pending,
+ #examSentenceGlossary .exam-gloss-unknown {line-height:1.55}
+ #examExternalGlossDialog {
+  box-sizing:border-box;width:min(36rem,calc(100vw - 28px));max-height:90dvh;
+  padding:0;overflow-y:auto;border:1px solid var(--line);border-radius:11px;
+  background:var(--surface);color:var(--ink);
+  box-shadow:0 14px 46px #0005;
+  font:13px/1.45 "Segoe UI",system-ui,-apple-system,sans-serif;
+ }
+ #examExternalGlossDialog::backdrop {background:rgba(12,18,22,.55)}
+ #examExternalGlossDialog>h2 {
+  margin:0;padding:15px 17px;border-bottom:1px solid var(--line);
+  background:var(--soft);color:var(--soft-ink);font-size:17px;font-weight:700;
+ }
+ #examExternalGlossDialog>[role="status"] {
+  display:block;min-height:42px;margin:0;padding:12px 17px;
+  color:var(--muted);background:var(--surface);
+  border-bottom:1px solid var(--line);
+ }
+ #examExternalGlossDialog form {padding:15px 17px}
+ #examExternalGlossDialog .field:not([hidden]) {display:grid;gap:7px;margin:0 0 12px}
+ #examExternalGlossDialog .field label {margin:4px 0 0;color:var(--muted);font-weight:650}
+ #examExternalGlossDialog .field :is(input,select) {
+  box-sizing:border-box;width:100%;max-width:100%;min-height:44px;
+  padding:8px 10px;border:1px solid var(--secondary-border);border-radius:7px;
+  background:var(--field-bg);color:var(--field-text);font:inherit;
+ }
+ #examExternalGlossDialog :is(input,select,button):focus-visible {
+  outline:2px solid var(--focus-course);outline-offset:2px;
+ }
+ #examExternalGlossDialog .buttons {display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap}
+ #examExternalGlossDialog .buttons>button:not([hidden]) {
+  box-sizing:border-box;min-height:42px;margin:0;padding:7px 12px;
+  border:1px solid var(--secondary-border);border-radius:7px;
+  font-weight:650;font-size:13px;
+ }
+ #examExternalGlossDialog button[type="submit"] {background:#1d5466;color:#fff;border-color:#1d5466}
+ #examExternalGlossDialog button[type="button"] {background:var(--secondary-bg);color:var(--secondary-ink)}
+ @media (pointer:coarse) {
+  #examSentenceGlossary .exam-gloss-review-workspace button {min-height:44px}
  }
 }
 </style>
