@@ -61,6 +61,8 @@ async function run(page,file){
   await select(page,'greek1',model,'UD7');
   const pron=await page.evaluate(()=>ExaminaGreekNumber.candidates().filter(x=>x.id.includes(':autos:')).length);
   assert(pron>0,file+'/'+model+': no se usan pronombres de UD7');
+  // El inspector abre Configuración por defecto: ir a Preguntas antes de editar.
+  await page.locator('#examPanelShortcuts button').nth(1).click();
   await page.locator('[data-greek-custom="number"] > summary').click();
   const cnum=page.locator('[data-greek-custom-count="number"]');
   await cnum.fill('6');await cnum.dispatchEvent('change');
