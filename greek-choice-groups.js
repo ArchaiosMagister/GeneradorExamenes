@@ -281,7 +281,11 @@
    const field=document.createElement('label');field.textContent='Número de sintagmas ';field.append(count);
    body.append(field);
    count.onchange=()=>{
-    APIs[config.key]().setCount(count.value);
+    const api=APIs[config.key](),previous=api.state().quantity;
+    api.setCount(count.value);
+    // Evitar reconstrucción duplicada al perder el foco: un clic posterior
+    // no puede cancelarse porque el botón se haya sustituido en pleno mousedown.
+    if(api.state().quantity===previous)return;
     for(const key of [...edits.keys()])if(key.startsWith(config.kind+':'))edits.delete(key);
     generateGreekExam();refreshCustomRows();
    };
