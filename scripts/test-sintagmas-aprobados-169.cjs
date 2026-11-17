@@ -90,8 +90,8 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
    return {heading:div.querySelector('thead th[colspan]')?.textContent.trim(),
     first:div.querySelector('tbody td')?.textContent.trim()};
   });
-  assert(!/^(ὁ|ἡ|τὸ)\\s/u.test(plain.heading),'UD1 no introduce artículos');
-  assert(plain.heading.normalize('NFD').replace(/\\p{M}/gu,'').startsWith('λογος'),
+  assert(!/^(ὁ|ἡ|τὸ)\s/u.test(plain.heading),'UD1 no introduce artículos');
+  assert(plain.heading.normalize('NFD').replace(/\p{M}/gu,'').startsWith('λογος'),
    'UD1 debe conservar el enunciado del sustantivo');
   assert.equal(plain.first,'λόγος');
   await greek(2);
@@ -105,7 +105,7 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
     cells:[...div.querySelectorAll('tbody tr')].map(tr=>[...tr.querySelectorAll('td')].map(td=>td.textContent.trim()))};
   });
   assert(article.title.startsWith('ἡ ')&&
-   article.title.normalize('NFD').replace(/\\p{M}/gu,'').includes('αγορα'),
+   article.title.normalize('NFD').replace(/\p{M}/gu,'').includes('αγορα'),
    'UD3 debe presentar artículo y enunciado de sustantivo');
   assert.equal(article.cells[0][0],'ἡ ἀγορά');
   assert.equal(article.cells[1][0],'ἀγορά','Vocativo sin artículo');
