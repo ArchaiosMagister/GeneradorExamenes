@@ -83,17 +83,21 @@ async function run(page,file){
   assert.match(x.choose,/Elige tres de estas cuatro preguntas/,file+'/'+model+': enunciado de cuatro alternativas');
   await page.locator('[data-greek-custom="retro"] .exam-question-toggle').check();
   x=await query(page);assert.match(x.choose,/Elige tres de estas cinco preguntas/);
-  // Cinco, cuatro, tres, dos y una: el enunciado se adapta siempre con
-  // numerales escritos en letra y sin huecos en las alternativas.
+  // Cinco, cuatro, tres, dos y una: la numeración se ajusta con
+  // numerales escritos en letra al retirar cualquier alternativa.
   await page.locator('[data-question="decl"] .exam-question-toggle').uncheck();
   x=await query(page);
-  assert.match(x.choose,/Responde a las tres preguntas siguientes/,file+'/'+model+': quedan tres');
+  assert.match(x.choose,/Elige tres de estas cuatro preguntas/,file+'/'+model+': quedan cuatro');
   await page.locator('[data-question="forms"] .exam-question-toggle').uncheck();
   x=await query(page);
-  assert.match(x.choose,/Responde a las dos preguntas siguientes/,file+'/'+model+': quedan dos');
+  assert.match(x.choose,/Responde a las tres preguntas siguientes/,file+'/'+model+': quedan tres');
   await page.locator('[data-question="verb"] .exam-question-toggle').uncheck();
   x=await query(page);
+  assert.match(x.choose,/Responde a las dos preguntas siguientes/,file+'/'+model+': quedan dos');
+  await page.locator('[data-greek-custom="retro"] .exam-question-toggle').uncheck();
+  x=await query(page);
   assert.match(x.choose,/Responde a la siguiente pregunta/,file+'/'+model+': queda una');
+  await page.locator('[data-greek-custom="retro"] .exam-question-toggle').check();
   for(const kind of ['verb','forms','decl'])
    await page.locator('[data-question="'+kind+'"] .exam-question-toggle').check();
   x=await query(page);
