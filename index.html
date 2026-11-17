@@ -1974,9 +1974,13 @@ function buildFinalLexicon(chosen,sentences){
  if(needsReview)out+='<section class="exam-gloss-review-workspace no-print" aria-label="'+
   ($('lang').value==='va'?'Revisió del vocabulari':'Revisión del vocabulario')+'">'+
   '<h4 class="exam-review-title">'+($('lang').value==='va'?'Revisió del vocabulari':'Revisión del vocabulario')+'</h4>';
- if(pending.length)out+='<p class="notice no-print exam-gloss-pending"><strong>'+($('lang').value==='va'?'Traduccions pendents de revisar:':'Traducciones pendientes de revisar:')+'</strong> '+esc(pending.map(x=>headLex(x.entry)).join(', '))+'. '+($('lang').value==='va'?'Es mostren els enunciats sense inventar significats.':'El examen muestra sus enunciados sin inventar significados.')+
-  pending.filter(row=>!bank.some(item=>examKey(item.entry)===examKey(row.entry)))
-   .map(row=>examReaderButton(course,row)).join('')+'</p>';
+ if(pending.length)out+='<div class="notice no-print exam-gloss-pending"><strong>'+
+  ($('lang').value==='va'?'Traduccions pendents de revisar:':'Traducciones pendientes de revisar:')+'</strong>'+
+  '<p class="exam-review-help">'+($('lang').value==='va'?'Es mostren els enunciats sense inventar significats.':
+   'El examen muestra sus enunciados sin inventar significados.')+'</p>'+
+  pending.map(row=>'<div class="exam-review-line"><span><i>'+esc(headLex(row.entry))+'</i></span>'+
+   (!bank.some(item=>examKey(item.entry)===examKey(row.entry))?examReaderButton(course,row):'')+
+   '</div>').join('')+'</div>';
  if(passiveChoices.length){
   const va=$('lang').value==='va';
   out+='<div class="notice no-print exam-passive-review"><strong>'+
@@ -2009,7 +2013,7 @@ function buildFinalLexicon(chosen,sentences){
   out+='<div class="notice no-print exam-gloss-review"><strong>'+
    (va?'Tria el lema de cada forma ambigua:':'Elige el lema de cada forma ambigua:')+'</strong>';
   for(const [identity,row] of pendingChoices){
-   out+='<label class="exam-gloss-review-choice"><span class="exam-review-form"><i>'+esc(row.form)+'</i></span>'+
+   out+='<label class="exam-gloss-review-choice exam-review-line"><span class="exam-review-form"><i>'+esc(row.form)+'</i></span>'+
     (row.context?'<span class="exam-review-context">'+esc(row.context)+'</span>':'')+
     '<span class="exam-review-source">'+(va?'Lectures del banc':'Lecturas del banco')+'</span>'+
     '<select class="exam-gloss-lemma" data-identity="'+esc(identity)+'" aria-label="Lema de '+esc(row.form)+'">'+
@@ -2022,15 +2026,18 @@ function buildFinalLexicon(chosen,sentences){
   out+='</div>';
  }
  if(selectedChoices.length){
-  out+='<div class="notice no-print exam-gloss-selected"><strong>Lecturas elegidas:</strong> '+
-   selectedChoices.map(row=>esc(row.form)+' → '+esc(row.entry)+
+  out+='<div class="notice no-print exam-gloss-selected"><strong>'+
+   ($('lang').value==='va'?'Lectures triades:':'Lecturas elegidas:')+'</strong>'+
+   selectedChoices.map(row=>'<div class="exam-review-line"><span><i>'+esc(row.form)+'</i> → '+esc(row.entry)+'</span>'+
     ' <button type="button" class="secondary exam-gloss-reset" data-identity="'+
-    esc(examGlossIdentity(course,row.identity||row.form))+'">Cambiar</button>').join(' · ')+
-   '</div>';
+    esc(examGlossIdentity(course,row.identity||row.form))+'">'+($('lang').value==='va'?'Canviar':'Cambiar')+
+    '</button></div>').join('')+'</div>';
  }
- if(unresolved.size)out+='<p class="notice no-print exam-gloss-unknown"><strong>'+
+ if(unresolved.size)out+='<div class="notice no-print exam-gloss-unknown"><strong>'+
   ($('lang').value==='va'?'Revisió necessària (sense candidats):':'Revisión necesaria (sin candidatos):')+
-  '</strong> '+esc([...unresolved].join(', '))+'.'+unknownRows.map(row=>examReaderButton(course,row)).join('')+'</p>';
+  '</strong>'+[...unresolved].map(word=>'<div class="exam-review-line"><span><i>'+esc(word)+
+   '</i></span>'+unknownRows.filter(row=>row.form===word).map(row=>examReaderButton(course,row)).join('')+
+   '</div>').join('')+'</div>';
  if(needsReview)out+='</section>';
  return out;
 }
@@ -7251,11 +7258,23 @@ html[data-appearance="oled"] body.exam-redesign #exam-ui-shell :is(#exam-ui-core
  }
  #examSentenceGlossary .exam-gloss-review-workspace button {
   box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;
-  min-height:36px;max-width:100%;margin:5px 2px 0 0;padding:6px 11px;
+  min-height:31px;max-width:100%;margin:0;padding:4px 8px;
   border:1px solid var(--review-line);border-radius:7px;
-  font:650 12.5px/1.3 "Segoe UI",system-ui,-apple-system,sans-serif;
+  font:650 11.5px/1.25 "Segoe UI",system-ui,-apple-system,sans-serif;
   white-space:normal;overflow-wrap:anywhere;cursor:pointer;
  }
+ #examSentenceGlossary .exam-review-help{margin:4px 0 6px;color:var(--review-muted);font-size:12px}
+ #examSentenceGlossary .exam-review-line{
+  position:relative;box-sizing:border-box;display:flex;align-items:center;
+  justify-content:flex-start;flex-wrap:wrap;gap:6px;min-width:0;
+  margin:4px 0;padding:4px 4px 4px 18px;line-height:1.35;
+ }
+ #examSentenceGlossary .exam-review-line::before{
+  content:"–";position:absolute;left:3px;top:5px;font-weight:700;color:var(--review-muted);
+ }
+ #examSentenceGlossary label.exam-review-line{display:grid;padding-left:21px}
+ #examSentenceGlossary .exam-review-line :is(i,span){overflow-wrap:anywhere}
+ #examSentenceGlossary .exam-review-line button{margin:0 0 0 3px;flex:0 0 auto}
  #examSentenceGlossary .exam-gloss-review-workspace .exam-reader-lookup {
   background:#1d5466;color:#fff;border-color:#1d5466;
  }
@@ -7306,7 +7325,7 @@ html[data-appearance="oled"] body.exam-redesign #exam-ui-shell :is(#exam-ui-core
  #examExternalGlossDialog button[type="submit"] {background:#1d5466;color:#fff;border-color:#1d5466}
  #examExternalGlossDialog button[type="button"] {background:var(--secondary-bg);color:var(--secondary-ink)}
  @media (pointer:coarse) {
-  #examSentenceGlossary .exam-gloss-review-workspace button {min-height:44px}
+  #examSentenceGlossary .exam-gloss-review-workspace button {min-height:40px}
  }
 }
 </style>
