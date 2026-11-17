@@ -179,7 +179,7 @@ const server=http.createServer((request,response)=>{
       assert(toolbar.items.every(b=>Math.abs(b.y-toolbar.items[0].y)<1),
        where+': Imprimir u otra acción salta a una segunda fila: '+JSON.stringify(toolbar));
       assert(toolbar.items.every(b=>b.x>=toolbar.barLeft-2&&b.x+b.width<=toolbar.barRight+2),
-       where+': las acciones desbordan la vista previa');
+       where+': las acciones desbordan la vista previa: '+JSON.stringify(toolbar));
       assert(toolbar.items.every(b=>b.height>=44),
        where+': los botones ya no ofrecen altura táctil suficiente');
       assert(toolbar.items.every(b=>b.fit),where+': texto recortado en los botones');
