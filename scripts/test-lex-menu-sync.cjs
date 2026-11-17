@@ -53,6 +53,7 @@ function readStoredZipEntry(bytes,wanted){
    await page.goto('http://127.0.0.1:'+server.address().port+'/'+filename,{waitUntil:'load'});
    await page.waitForFunction(()=>!!latin1PreverbCurriculum&&!!latin1PhoneticCurriculum&&
     latinLexBanks.latin1.preverbs.length>0&&latinLexBanks.latin1.phonetics.length>0,null,{timeout:15000});
+   await page.locator('#examPanelShortcuts>button[data-target="examQuestionSettings"]').click();
    // La carga real, online y offline, debe conservar el banco global tras leer el programa de UD.
    const bankLoaded=await page.evaluate(()=>({
     latin1:latinLexBanks.latin1.phonetics.length,
