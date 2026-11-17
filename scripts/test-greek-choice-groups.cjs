@@ -69,13 +69,15 @@ async function run(page,file){
   assert.equal((await query(page)).numbers.length,6,file+'/'+model+': cantidad de cambio no configurable');
   const first=page.locator('[data-greek-choice-slot="change-number:0"]');
   const oldFirst=await first.textContent();
+  const beforeIds=await page.evaluate(()=>ExaminaGreekNumber.state().ids);
   await page.evaluate(()=>{
    document.querySelector('#paper .exam-header').append(' MARCA-DOCENTE');
    document.querySelector('[data-greek-choice-slot="retroversion:1"]').append(' GUARDA-RETRO');
   });
   await page.locator('[aria-label="Regenerar sintagma 1 de 1.c · Cambio de número"]').click();
   const newFirst=await first.textContent();
-  assert.notEqual(oldFirst,newFirst,file+'/'+model+': regeneración individual no cambió el sintagma');
+  const afterIds=await page.evaluate(()=>ExaminaGreekNumber.state().ids);
+  assert.notEqual(oldFirst,newFirst,file+'/'+model+': regeneración individual no cambió el sintagma: '+JSON.stringify({oldFirst,newFirst,beforeIds,afterIds}));
   assert((await page.locator('#paper').textContent()).includes('MARCA-DOCENTE'));
   assert((await page.locator('[data-greek-choice-slot="retroversion:1"]').textContent()).includes('GUARDA-RETRO'));
   await page.locator('[data-greek-custom="retro"] .exam-question-toggle').uncheck();
