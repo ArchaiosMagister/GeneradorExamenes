@@ -37,18 +37,24 @@
    const info=nouns[head];if(!info)continue;
    const gender=greekSyntagmNounGenders[item.id.slice(2)];
    for(const [number,article] of [0,1].map(number=>[number,greekArticles[gender][number][0]])){
+    if(head==='παιδεια'&&number===1)continue; // Abstracción: plural castellano poco natural.
     const greek=article+' '+item.table.rows[0][number+1];
     rows.push({id:item.id+':nom:'+number,prompt:info[lang()][number],answer:greek,
      minUnit:item.minUnit,source:item.id,type:'nominal'});
    }
    // Ningún sintagma nominal libre exige adivinar nominativo/acusativo:
    // la pregunta usa el nominativo; las preposiciones fijan los otros casos.
-   if(limit>=4)for(const [number,sg] of [0,1].map(n=>[n,item.table.rows])){
+   if(limit>=4)for(const number of [0,1]){
+    if(head==='παιδεια'&&number===1)continue;
     for(const prep of [
      {id:'en',unit:4,caseIndex:4,gr:'ἐν',es:'en ',va:'en '},
      {id:'eis',unit:4,caseIndex:2,gr:'εἰς',es:'hacia ',va:'cap a '},
      {id:'syn',unit:4,caseIndex:4,gr:'σὺν',es:'con ',va:'amb '}
     ]){
+     // Evitar sintagmas castellanos como «en la palabra» o «con la región».
+     const locative=['αγορα','χωρα','θαλαττα'].includes(head);
+     const companion=['ανθρωποσ','νεανιασ','αδελφοσ'].includes(head);
+     if(prep.id==='syn'?!companion:!locative)continue;
      const k=prep.caseIndex,article=greekArticles[gender][number][k],noun=item.table.rows[k]?.[number+1];
      if(!article||!noun)continue;
      rows.push({id:item.id+':prep:'+prep.id+':'+number,
@@ -63,6 +69,7 @@
     const group=greekCompleteNominalGroup(item,true,adj);
     if(!group)continue;
     for(const number of [0,1]){
+     if(head==='παιδεια'&&number===1)continue;
      const forms=group.rows[0]?.[1],translated=info[lang()][number];
      if(!forms?.[number])continue;
      const index=(number?2:0)+(info.gender==='f'?1:0);
