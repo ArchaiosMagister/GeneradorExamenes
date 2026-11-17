@@ -2689,13 +2689,10 @@ function latinCompleteAdjectives(chosen){
  // bonus de UD1 podría quedar sustituido por el de UD9–10 y desaparecer
  // indebidamente de un examen de UD2. Seleccionar primero las fichas
  // cronológicamente elegibles y sólo después deduplicar por lema.
- const approvedGentilic=(latinApprovedSyntagms[currentCourse()]||[])
-  .some(([,adjective,from])=>from<=until&&adjective.toLowerCase()==='romanus');
  const eligible=vocab.filter(x=>{
-  const unit=examUnitNumber(x.unit),lemma=mNormalize(headLex(x.entry)).toLowerCase();
+  const unit=examUnitNumber(x.unit);
   return courseOf(x)===currentCourse()&&Number.isInteger(unit)&&unit<=until&&
-   (!isExcludedExamMorphLemma(x.entry,x.meaning)||
-    (approvedGentilic&&lemma==='romanus'));
+   !isExcludedExamMorphLemma(x.entry,x.meaning);
  }).map(x=>({x,p:adjective(x)})).filter(item=>{
   const lemma=mNormalize(headLex(item.x.entry)).toLowerCase();
   // meus > mi y los adjetivos en -ius requieren vocativos propios.
@@ -2735,8 +2732,19 @@ function latinApprovedSyntagmAdjective(noun,adjectives,limit){
  const key=mNormalize(noun.p.lemma).toLowerCase();
  const rule=(latinApprovedSyntagms[currentCourse()]||[])
   .find(([head,,unit])=>head===key&&limit>=unit);
- return rule?adjectives.find(({x})=>
-  mNormalize(headLex(x.entry)).toLowerCase()===rule[1].toLowerCase())||null:null;
+ if(!rule)return null;
+ const head=rule[1].toLowerCase();
+ const existing=adjectives.find(({x})=>
+  mNormalize(headLex(x.entry)).toLowerCase()===head);
+ if(existing)return existing;
+ // Romanus es gentilicio y sigue excluido del sorteo morfológico general.
+ // La aprobación docente habilita ÚNICAMENTE los pares explícitos.
+ if(head!=='romanus')return null;
+ const found=vocab.filter(x=>courseOf(x)===currentCourse()&&
+  Number.isInteger(examUnitNumber(x.unit))&&examUnitNumber(x.unit)<=limit&&
+  mNormalize(headLex(x.entry)).toLowerCase()===head)
+  .map(x=>({x,p:adjective(x)})).find(x=>x.p);
+ return found||null;
 }
 function latinCompleteDeclensionItems(chosen){
  const nouns=latinExamNominals(chosen);
