@@ -16998,6 +16998,8 @@ html[data-appearance="oled"] body.exam-redesign #exam-ui-shell :is(#exam-ui-core
   white-space:nowrap;
   text-wrap:nowrap;
   overflow-wrap:normal;
+  /* Evitar colores intermedios cuando cambia inmediatamente oscuro/OLED. */
+  transition:box-shadow .14s ease,filter .14s ease;
  }
  :root[data-course] .vocab-tabbar > button:not(.active){
   background:var(--soft);
