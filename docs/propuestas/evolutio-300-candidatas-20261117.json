@@ -1,0 +1,3022 @@
+{
+  "schema": "examina-evolutio-proposal/v1",
+  "state": "PROPUESTA_DOCENTE_SIN_APLICAR",
+  "rationale": "No hay nivel 'muy fácil' en Evolutio; 186 fichas fáciles sin nombres propios y 274 medias. Para completar 20 normas se propone una única excepción de nivel 3, saltum → soto, vocalización.",
+  "source": "Evolutio integrado en ScholaClassica: 522 fichas fijadas de EvolucionFonetica + 100 del lote castellano; dificultad criterio-deducibilidad-v3",
+  "version": "2026-11-17",
+  "normas": [
+    {
+      "codigo": "ABER",
+      "id": "N01",
+      "count": 137
+    },
+    {
+      "codigo": "AFER",
+      "id": "N02",
+      "count": 1
+    },
+    {
+      "codigo": "APOC",
+      "id": "N03",
+      "count": 58
+    },
+    {
+      "codigo": "ASMIL",
+      "id": "N04",
+      "count": 1
+    },
+    {
+      "codigo": "ASPIR",
+      "id": "N05",
+      "count": 19
+    },
+    {
+      "codigo": "CONS",
+      "id": "N06",
+      "count": 4
+    },
+    {
+      "codigo": "DIPT",
+      "id": "N07",
+      "count": 46
+    },
+    {
+      "codigo": "DISIMIL",
+      "id": "N08",
+      "count": 2
+    },
+    {
+      "codigo": "EPENT",
+      "id": "N09",
+      "count": 1
+    },
+    {
+      "codigo": "GRIE",
+      "id": "N10",
+      "count": 52
+    },
+    {
+      "codigo": "METAT",
+      "id": "N11",
+      "count": 4
+    },
+    {
+      "codigo": "MONOP",
+      "id": "N12",
+      "count": 32
+    },
+    {
+      "codigo": "PALAT",
+      "id": "N13",
+      "count": 49
+    },
+    {
+      "codigo": "PROT",
+      "id": "N14",
+      "count": 9
+    },
+    {
+      "codigo": "SIMPL",
+      "id": "N15",
+      "count": 12
+    },
+    {
+      "codigo": "SINC",
+      "id": "N16",
+      "count": 23
+    },
+    {
+      "codigo": "SONOR",
+      "id": "N17",
+      "count": 40
+    },
+    {
+      "codigo": "VOC",
+      "id": "N18",
+      "count": 1
+    },
+    {
+      "codigo": "MIN_MBR",
+      "id": "N19",
+      "count": 2
+    },
+    {
+      "codigo": "CUL",
+      "id": "N20",
+      "count": 1
+    }
+  ],
+  "nivelResumen": {
+    "facil": 186,
+    "medio": 113,
+    "dificilExcepcion": 1
+  },
+  "casosQueExigenAprobacion": [
+    {
+      "id": "xl-1029",
+      "latin": "saltum",
+      "castellano": "soto",
+      "normas": [
+        "N18"
+      ],
+      "level": 3,
+      "reason": "Única vocalización hasta nivel 3"
+    }
+  ],
+  "items": [
+    {
+      "sourceId": "ge-EVF-0009",
+      "latin": "alienam",
+      "castellano": "ajena",
+      "normas": [
+        "N13"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-1010",
+      "latin": "anatem",
+      "castellano": "ánade",
+      "normas": [
+        "N17"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-0345",
+      "latin": "angustum",
+      "castellano": "angosto",
+      "normas": [
+        "N01"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-0016",
+      "latin": "ansam",
+      "castellano": "asa",
+      "normas": [
+        "N15"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-1011",
+      "latin": "aperturam",
+      "castellano": "abertura",
+      "normas": [
+        "N17"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-1076",
+      "latin": "athletam",
+      "castellano": "atleta",
+      "normas": [
+        "N10"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-26",
+      "latin": "aucam",
+      "castellano": "oca",
+      "normas": [
+        "N12"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-807",
+      "latin": "ballænam",
+      "castellano": "ballena",
+      "normas": [
+        "N12",
+        "N13"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-0555",
+      "latin": "bene",
+      "castellano": "bien",
+      "normas": [
+        "N07",
+        "N03"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-0350",
+      "latin": "bibere",
+      "castellano": "beber",
+      "normas": [
+        "N01",
+        "N03"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-1077",
+      "latin": "blasphemiam",
+      "castellano": "blasfemia",
+      "normas": [
+        "N10"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-34",
+      "latin": "bŏnam",
+      "castellano": "buena",
+      "normas": [
+        "N07"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-0556",
+      "latin": "bonum",
+      "castellano": "bueno",
+      "normas": [
+        "N07",
+        "N01"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-810",
+      "latin": "caballum",
+      "castellano": "caballo",
+      "normas": [
+        "N13",
+        "N01"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-811",
+      "latin": "cabannam",
+      "castellano": "cabaña",
+      "normas": [
+        "N13"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-1154",
+      "latin": "cæsuram",
+      "castellano": "cesura",
+      "normas": [
+        "N12"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-44",
+      "latin": "calĕntem",
+      "castellano": "caliente",
+      "normas": [
+        "N07"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-0812",
+      "latin": "callum",
+      "castellano": "callo",
+      "normas": [
+        "N13",
+        "N01"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-46",
+      "latin": "cannam",
+      "castellano": "caña",
+      "normas": [
+        "N13"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-49",
+      "latin": "capram",
+      "castellano": "cabra",
+      "normas": [
+        "N17"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-0813",
+      "latin": "castellanum",
+      "castellano": "castellano",
+      "normas": [
+        "N13",
+        "N01"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-52",
+      "latin": "catenam",
+      "castellano": "cadena",
+      "normas": [
+        "N17"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-1187",
+      "latin": "catharticum",
+      "castellano": "catártico",
+      "normas": [
+        "N10",
+        "N01"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-1188",
+      "latin": "catholicum",
+      "castellano": "católico",
+      "normas": [
+        "N10",
+        "N01"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-54",
+      "latin": "causam",
+      "castellano": "cosa",
+      "normas": [
+        "N12"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-1190",
+      "latin": "characterem",
+      "castellano": "carácter",
+      "normas": [
+        "N10",
+        "N03"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-1191",
+      "latin": "charisma",
+      "castellano": "carisma",
+      "normas": [
+        "N10"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-633",
+      "latin": "chartam",
+      "castellano": "carta",
+      "normas": [
+        "N10"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-1082",
+      "latin": "chronicum",
+      "castellano": "crónico",
+      "normas": [
+        "N10",
+        "N01"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-0360",
+      "latin": "cistam",
+      "castellano": "cesta",
+      "normas": [
+        "N01"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-1084",
+      "latin": "citharistam",
+      "castellano": "citarista",
+      "normas": [
+        "N10"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-1155",
+      "latin": "coætaneum",
+      "castellano": "coetáneo",
+      "normas": [
+        "N12",
+        "N01"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-1156",
+      "latin": "cœliacum",
+      "castellano": "celíaco",
+      "normas": [
+        "N12",
+        "N01"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-1157",
+      "latin": "cœnobitam",
+      "castellano": "cenobita",
+      "normas": [
+        "N12"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-0817",
+      "latin": "collarem",
+      "castellano": "collar",
+      "normas": [
+        "N13",
+        "N03"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-1158",
+      "latin": "comœdiam",
+      "castellano": "comedia",
+      "normas": [
+        "N12"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-955",
+      "latin": "consuturam",
+      "castellano": "costura",
+      "normas": [
+        "N15"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-0363",
+      "latin": "continere",
+      "castellano": "contener",
+      "normas": [
+        "N01",
+        "N03"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-0364",
+      "latin": "conuincere",
+      "castellano": "convencer",
+      "normas": [
+        "N01",
+        "N03"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-0365",
+      "latin": "corrumpere",
+      "castellano": "corromper",
+      "normas": [
+        "N01",
+        "N03"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-0366",
+      "latin": "cumbam",
+      "castellano": "comba",
+      "normas": [
+        "N01"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-0367",
+      "latin": "cuminum",
+      "castellano": "comino",
+      "normas": [
+        "N01"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-81",
+      "latin": "cupam",
+      "castellano": "cuba",
+      "normas": [
+        "N17"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-0370",
+      "latin": "currere",
+      "castellano": "correr",
+      "normas": [
+        "N01",
+        "N03"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-1087",
+      "latin": "cyclopem",
+      "castellano": "cíclope",
+      "normas": [
+        "N10"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-0562",
+      "latin": "desertum",
+      "castellano": "desierto",
+      "normas": [
+        "N07",
+        "N01"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-912",
+      "latin": "desponsare",
+      "castellano": "desposar",
+      "normas": [
+        "N15",
+        "N03"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-1089",
+      "latin": "dyspepsiam",
+      "castellano": "dispepsia",
+      "normas": [
+        "N10"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-1090",
+      "latin": "epithalamium",
+      "castellano": "epitalamio",
+      "normas": [
+        "N10",
+        "N01"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-1091",
+      "latin": "epithetum",
+      "castellano": "epíteto",
+      "normas": [
+        "N10",
+        "N01"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-961",
+      "latin": "eremitam",
+      "castellano": "ermita",
+      "normas": [
+        "N16"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-105",
+      "latin": "fabam",
+      "castellano": "haba",
+      "normas": [
+        "N05"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-512",
+      "latin": "falconem",
+      "castellano": "halcón",
+      "normas": [
+        "N05",
+        "N03"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-111",
+      "latin": "farinam",
+      "castellano": "harina",
+      "normas": [
+        "N05"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-513",
+      "latin": "farturam",
+      "castellano": "hartura",
+      "normas": [
+        "N05"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-113",
+      "latin": "fĕbrem",
+      "castellano": "fiebre",
+      "normas": [
+        "N07"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-0565",
+      "latin": "ferum",
+      "castellano": "fiero",
+      "normas": [
+        "N07",
+        "N01"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-118",
+      "latin": "fĕstam",
+      "castellano": "fiesta",
+      "normas": [
+        "N07"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-123",
+      "latin": "filum",
+      "castellano": "hilo",
+      "normas": [
+        "N05",
+        "N01"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-127",
+      "latin": "fŏllem",
+      "castellano": "fuelle",
+      "normas": [
+        "N07",
+        "N13"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-128",
+      "latin": "fŏntem",
+      "castellano": "fuente",
+      "normas": [
+        "N07"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-129",
+      "latin": "formam",
+      "castellano": "horma",
+      "normas": [
+        "N05"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-519",
+      "latin": "formicam",
+      "castellano": "hormiga",
+      "normas": [
+        "N05",
+        "N17"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-130",
+      "latin": "fŏrtem",
+      "castellano": "fuerte",
+      "normas": [
+        "N07"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-136",
+      "latin": "fumum",
+      "castellano": "humo",
+      "normas": [
+        "N05",
+        "N01"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-138",
+      "latin": "furcam",
+      "castellano": "horca",
+      "normas": [
+        "N05",
+        "N01"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-523",
+      "latin": "furtum",
+      "castellano": "hurto",
+      "normas": [
+        "N01",
+        "N05"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-0834",
+      "latin": "gallinam",
+      "castellano": "gallina",
+      "normas": [
+        "N13"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-0837",
+      "latin": "grillum",
+      "castellano": "grillo",
+      "normas": [
+        "N13",
+        "N01"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-0380",
+      "latin": "gubernare",
+      "castellano": "gobernar",
+      "normas": [
+        "N01",
+        "N03"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-1200",
+      "latin": "gulam",
+      "castellano": "gola",
+      "normas": [
+        "N01"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-0382",
+      "latin": "gulosum",
+      "castellano": "goloso",
+      "normas": [
+        "N01"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-1094",
+      "latin": "gymnasium",
+      "castellano": "gimnasio",
+      "normas": [
+        "N10",
+        "N01"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-1096",
+      "latin": "hæresiarcham",
+      "castellano": "heresiarca",
+      "normas": [
+        "N12",
+        "N10"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-147",
+      "latin": "hĕrbam",
+      "castellano": "hierba",
+      "normas": [
+        "N07"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-0572",
+      "latin": "hostem",
+      "castellano": "hueste",
+      "normas": [
+        "N07"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-1097",
+      "latin": "hydram",
+      "castellano": "hidra",
+      "normas": [
+        "N10"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-1098",
+      "latin": "hydropicum",
+      "castellano": "hidrópico",
+      "normas": [
+        "N10",
+        "N01"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-1099",
+      "latin": "hyperboreum",
+      "castellano": "hiperbóreo",
+      "normas": [
+        "N10",
+        "N01"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-1101",
+      "latin": "hypnoticum",
+      "castellano": "hipnótico",
+      "normas": [
+        "N10",
+        "N01"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-1103",
+      "latin": "hypotenusam",
+      "castellano": "hipotenusa",
+      "normas": [
+        "N10"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-0391",
+      "latin": "intrare",
+      "castellano": "entrar",
+      "normas": [
+        "N01",
+        "N03"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-539",
+      "latin": "iuncum",
+      "castellano": "junco",
+      "normas": [
+        "N06",
+        "N01"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-161",
+      "latin": "iurare",
+      "castellano": "jurar",
+      "normas": [
+        "N06",
+        "N03"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-166",
+      "latin": "lacrimam",
+      "castellano": "lágrima",
+      "normas": [
+        "N17"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-169",
+      "latin": "lacum",
+      "castellano": "lago",
+      "normas": [
+        "N17",
+        "N01"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-172",
+      "latin": "latrare",
+      "castellano": "ladrar",
+      "normas": [
+        "N17",
+        "N03"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-173",
+      "latin": "latronem",
+      "castellano": "ladrón",
+      "normas": [
+        "N17",
+        "N03"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-0395",
+      "latin": "linguam",
+      "castellano": "lengua",
+      "normas": [
+        "N01"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-183",
+      "latin": "luctam",
+      "castellano": "lucha",
+      "normas": [
+        "N13"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-1163",
+      "latin": "mænadem",
+      "castellano": "ménade",
+      "normas": [
+        "N12"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-190",
+      "latin": "maiorem",
+      "castellano": "mayor",
+      "normas": [
+        "N06",
+        "N03"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-198",
+      "latin": "matrem",
+      "castellano": "madre",
+      "normas": [
+        "N17"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-199",
+      "latin": "maurum",
+      "castellano": "moro",
+      "normas": [
+        "N12",
+        "N01"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-575",
+      "latin": "mel",
+      "castellano": "miel",
+      "normas": [
+        "N07"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-576",
+      "latin": "membrum",
+      "castellano": "miembro",
+      "normas": [
+        "N07",
+        "N01"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-0201",
+      "latin": "mendicare",
+      "castellano": "mendigar",
+      "normas": [
+        "N17",
+        "N03"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-915",
+      "latin": "mensam",
+      "castellano": "mesa",
+      "normas": [
+        "N15"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-916",
+      "latin": "mensuram",
+      "castellano": "mesura",
+      "normas": [
+        "N15"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-579",
+      "latin": "molam",
+      "castellano": "muela",
+      "normas": [
+        "N07"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-206",
+      "latin": "mŏllem",
+      "castellano": "muelle",
+      "normas": [
+        "N07",
+        "N13"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-0405",
+      "latin": "muscam",
+      "castellano": "mosca",
+      "normas": [
+        "N01"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-0211",
+      "latin": "mutabĭlem",
+      "castellano": "mudable",
+      "normas": [
+        "N17",
+        "N16"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-1105",
+      "latin": "myopem",
+      "castellano": "miope",
+      "normas": [
+        "N10"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-214",
+      "latin": "nigram",
+      "castellano": "negra",
+      "normas": [
+        "N01"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-982",
+      "latin": "nobilem",
+      "castellano": "noble",
+      "normas": [
+        "N16"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-215",
+      "latin": "noctem",
+      "castellano": "noche",
+      "normas": [
+        "N13"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-581",
+      "latin": "nostrum",
+      "castellano": "nuestro",
+      "normas": [
+        "N07",
+        "N01"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-582",
+      "latin": "nouem",
+      "castellano": "nueve",
+      "normas": [
+        "N07"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-1166",
+      "latin": "obœdientem",
+      "castellano": "obediente",
+      "normas": [
+        "N12"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-1167",
+      "latin": "œconomicum",
+      "castellano": "económico",
+      "normas": [
+        "N12",
+        "N01"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-1168",
+      "latin": "œcumenicum",
+      "castellano": "ecuménico",
+      "normas": [
+        "N12",
+        "N01"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-221",
+      "latin": "ollam",
+      "castellano": "olla",
+      "normas": [
+        "N13"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-0416",
+      "latin": "ordinare",
+      "castellano": "ordenar",
+      "normas": [
+        "N01",
+        "N03"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-1170",
+      "latin": "pædagogum",
+      "castellano": "pedagogo",
+      "normas": [
+        "N12",
+        "N01"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-230",
+      "latin": "patrem",
+      "castellano": "padre",
+      "normas": [
+        "N17"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-0230",
+      "latin": "paucum",
+      "castellano": "poco",
+      "normas": [
+        "N12",
+        "N01"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-785",
+      "latin": "pausare",
+      "castellano": "posar",
+      "normas": [
+        "N12",
+        "N03"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-0234",
+      "latin": "pĕrnam",
+      "castellano": "pierna",
+      "normas": [
+        "N07"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-1109",
+      "latin": "phalangem",
+      "castellano": "falange",
+      "normas": [
+        "N10"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-1110",
+      "latin": "phantasmam",
+      "castellano": "fantasma",
+      "normas": [
+        "N10"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-1115",
+      "latin": "philologiam",
+      "castellano": "filología",
+      "normas": [
+        "N10"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-237",
+      "latin": "pineam",
+      "castellano": "piña",
+      "normas": [
+        "N13"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-243",
+      "latin": "pluuiam",
+      "castellano": "lluvia",
+      "normas": [
+        "N13"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-245",
+      "latin": "pœnam",
+      "castellano": "pena",
+      "normas": [
+        "N12"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-587",
+      "latin": "pontem",
+      "castellano": "puente",
+      "normas": [
+        "N07"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-248",
+      "latin": "pŏrtam",
+      "castellano": "puerta",
+      "normas": [
+        "N07"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-0589",
+      "latin": "portum",
+      "castellano": "puerto",
+      "normas": [
+        "N07",
+        "N01"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-1173",
+      "latin": "præfectum",
+      "castellano": "prefecto",
+      "normas": [
+        "N12",
+        "N01"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-1174",
+      "latin": "præludium",
+      "castellano": "preludio",
+      "normas": [
+        "N12",
+        "N01"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-1175",
+      "latin": "præmaturum",
+      "castellano": "prematuro",
+      "normas": [
+        "N12",
+        "N01"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-731",
+      "latin": "pro",
+      "castellano": "por",
+      "normas": [
+        "N11"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-1198",
+      "latin": "pyram",
+      "castellano": "pira",
+      "normas": [
+        "N10"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-0258",
+      "latin": "rallum",
+      "castellano": "rallo",
+      "normas": [
+        "N13",
+        "N01"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-0261",
+      "latin": "rapum",
+      "castellano": "rabo",
+      "normas": [
+        "N17",
+        "N01"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-266",
+      "latin": "regŭlam",
+      "castellano": "regla",
+      "normas": [
+        "N16"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-271",
+      "latin": "salutem",
+      "castellano": "salud",
+      "normas": [
+        "N17",
+        "N03"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-0860",
+      "latin": "sannam",
+      "castellano": "saña",
+      "normas": [
+        "N13"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-272",
+      "latin": "saporem",
+      "castellano": "sabor",
+      "normas": [
+        "N17",
+        "N03"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-874",
+      "latin": "scalam",
+      "castellano": "escala",
+      "normas": [
+        "N14"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-1022",
+      "latin": "securum",
+      "castellano": "seguro",
+      "normas": [
+        "N17",
+        "N01"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-732",
+      "latin": "semper",
+      "castellano": "siempre",
+      "normas": [
+        "N07",
+        "N11"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-282",
+      "latin": "senatum",
+      "castellano": "senado",
+      "normas": [
+        "N17",
+        "N01"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-285",
+      "latin": "serpĕntem",
+      "castellano": "serpiente",
+      "normas": [
+        "N07"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-0592",
+      "latin": "serram",
+      "castellano": "sierra",
+      "normas": [
+        "N07"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-0285",
+      "latin": "sĕruam",
+      "castellano": "sierva",
+      "normas": [
+        "N07"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-433",
+      "latin": "siluam",
+      "castellano": "selva",
+      "normas": [
+        "N01"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-0596",
+      "latin": "sortem",
+      "castellano": "suerte",
+      "normas": [
+        "N07"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-0882",
+      "latin": "spinam",
+      "castellano": "espina",
+      "normas": [
+        "N14"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-303",
+      "latin": "spirare",
+      "castellano": "espirar",
+      "normas": [
+        "N14",
+        "N03"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-0884",
+      "latin": "spumam",
+      "castellano": "espuma",
+      "normas": [
+        "N14"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-309",
+      "latin": "stylum",
+      "castellano": "estilo",
+      "normas": [
+        "N14",
+        "N10",
+        "N01"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-0437",
+      "latin": "subornare",
+      "castellano": "sobornar",
+      "normas": [
+        "N01",
+        "N03"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-0311",
+      "latin": "superbiam",
+      "castellano": "soberbia",
+      "normas": [
+        "N01",
+        "N17"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-1126",
+      "latin": "symposium",
+      "castellano": "simposio",
+      "normas": [
+        "N10",
+        "N01"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-1127",
+      "latin": "synagogam",
+      "castellano": "sinagoga",
+      "normas": [
+        "N10"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-1004",
+      "latin": "tabulam",
+      "castellano": "tabla",
+      "normas": [
+        "N16"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-315",
+      "latin": "taurum",
+      "castellano": "toro",
+      "normas": [
+        "N12",
+        "N01"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-320",
+      "latin": "tĕrram",
+      "castellano": "tierra",
+      "normas": [
+        "N07"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-1131",
+      "latin": "thapsiam",
+      "castellano": "tapsia",
+      "normas": [
+        "N10"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-1132",
+      "latin": "thecam",
+      "castellano": "teca",
+      "normas": [
+        "N10"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-1133",
+      "latin": "themam",
+      "castellano": "tema",
+      "normas": [
+        "N10"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-1135",
+      "latin": "theogoniam",
+      "castellano": "teogonía",
+      "normas": [
+        "N10"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-1136",
+      "latin": "theologum",
+      "castellano": "teólogo",
+      "normas": [
+        "N10",
+        "N01"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-1137",
+      "latin": "theoriam",
+      "castellano": "teoría",
+      "normas": [
+        "N10"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-0324",
+      "latin": "totum",
+      "castellano": "todo",
+      "normas": [
+        "N17",
+        "N01"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-1177",
+      "latin": "tragœdiam",
+      "castellano": "tragedia",
+      "normas": [
+        "N12"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-927",
+      "latin": "trans",
+      "castellano": "tras",
+      "normas": [
+        "N15"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-0868",
+      "latin": "tructam",
+      "castellano": "trucha",
+      "normas": [
+        "N13"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-449",
+      "latin": "truncum",
+      "castellano": "tronco",
+      "normas": [
+        "N01"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-0449",
+      "latin": "turpem",
+      "castellano": "torpe",
+      "normas": [
+        "N01"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-0450",
+      "latin": "turrem",
+      "castellano": "torre",
+      "normas": [
+        "N01"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-0328",
+      "latin": "uaginam",
+      "castellano": "vaina",
+      "normas": [
+        "N16"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-548",
+      "latin": "uallem",
+      "castellano": "valle",
+      "normas": [
+        "N13"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-0331",
+      "latin": "uĕntrem",
+      "castellano": "vientre",
+      "normas": [
+        "N07"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-0548",
+      "latin": "uentum",
+      "castellano": "viento",
+      "normas": [
+        "N07",
+        "N01"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-0545",
+      "latin": "uerrucam",
+      "castellano": "verruga",
+      "normas": [
+        "N17"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-736",
+      "latin": "uiduam",
+      "castellano": "viuda",
+      "normas": [
+        "N11"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-0550",
+      "latin": "uillam",
+      "castellano": "villa",
+      "normas": [
+        "N13"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-337",
+      "latin": "uineam",
+      "castellano": "viña",
+      "normas": [
+        "N13"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-544",
+      "latin": "uinum",
+      "castellano": "vino",
+      "normas": [
+        "N01"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-0338",
+      "latin": "uitam",
+      "castellano": "vida",
+      "normas": [
+        "N17"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-545",
+      "latin": "uiuum",
+      "castellano": "vivo",
+      "normas": [
+        "N01"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-455",
+      "latin": "undam",
+      "castellano": "onda",
+      "normas": [
+        "N01"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-0343",
+      "latin": "uoluntatem",
+      "castellano": "voluntad",
+      "normas": [
+        "N17",
+        "N03"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "ge-EVF-0326",
+      "latin": "urticam",
+      "castellano": "ortiga",
+      "normas": [
+        "N01",
+        "N17"
+      ],
+      "nivelSchola": 1
+    },
+    {
+      "sourceId": "xl-1029",
+      "latin": "saltum",
+      "castellano": "soto",
+      "normas": [
+        "N18",
+        "N01"
+      ],
+      "nivelSchola": 3
+    },
+    {
+      "sourceId": "xl-143",
+      "latin": "germanum",
+      "castellano": "hermano",
+      "normas": [
+        "N02",
+        "N01"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-502",
+      "latin": "rupturam",
+      "castellano": "rotura",
+      "normas": [
+        "N01",
+        "N04",
+        "N15"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-602",
+      "latin": "carcerem",
+      "castellano": "cárcel",
+      "normas": [
+        "N08",
+        "N03"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-614",
+      "latin": "stellam",
+      "castellano": "estrella",
+      "normas": [
+        "N14",
+        "N09",
+        "N13"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-1032",
+      "latin": "ferruminem",
+      "castellano": "herrumbre",
+      "normas": [
+        "N05",
+        "N19"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-1053",
+      "latin": "sorticulam",
+      "castellano": "sortija",
+      "normas": [
+        "N16",
+        "N20"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-748",
+      "latin": "aullam",
+      "castellano": "olla",
+      "normas": [
+        "N12",
+        "N13"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-851",
+      "latin": "plagam",
+      "castellano": "llaga",
+      "normas": [
+        "N13"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-61",
+      "latin": "clauem",
+      "castellano": "llave",
+      "normas": [
+        "N13"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-117",
+      "latin": "feruorem",
+      "castellano": "hervor",
+      "normas": [
+        "N05",
+        "N03"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-517",
+      "latin": "fibram",
+      "castellano": "hebra",
+      "normas": [
+        "N05",
+        "N01"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "ge-EVF-1067",
+      "latin": "pelagum",
+      "castellano": "piélago",
+      "normas": [
+        "N07",
+        "N01"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-56",
+      "latin": "cepullam",
+      "castellano": "cebolla",
+      "normas": [
+        "N17",
+        "N01",
+        "N13"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-106",
+      "latin": "fabŭlam",
+      "castellano": "habla",
+      "normas": [
+        "N05",
+        "N16"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-522",
+      "latin": "furonem",
+      "castellano": "hurón",
+      "normas": [
+        "N05",
+        "N03"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-178",
+      "latin": "lego",
+      "castellano": "leo",
+      "normas": [
+        "N16"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-218",
+      "latin": "octo",
+      "castellano": "ocho",
+      "normas": [
+        "N13"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-71",
+      "latin": "cŏrnu",
+      "castellano": "cuerno",
+      "normas": [
+        "N07",
+        "N01"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-87",
+      "latin": "decollare",
+      "castellano": "degollar",
+      "normas": [
+        "N17",
+        "N13",
+        "N03"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "ge-EVF-1147",
+      "latin": "ærarium",
+      "castellano": "erario",
+      "normas": [
+        "N12",
+        "N01"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "ge-EVF-1086",
+      "latin": "cyclicum",
+      "castellano": "cíclico",
+      "normas": [
+        "N10",
+        "N01"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-959",
+      "latin": "diabolum",
+      "castellano": "diablo",
+      "normas": [
+        "N01",
+        "N16"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-99",
+      "latin": "draconem",
+      "castellano": "dragón",
+      "normas": [
+        "N17",
+        "N03"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "ge-EVF-1162",
+      "latin": "fœtidum",
+      "castellano": "fétido",
+      "normas": [
+        "N12",
+        "N01"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "ge-EVF-1102",
+      "latin": "hypogeum",
+      "castellano": "hipogeo",
+      "normas": [
+        "N10",
+        "N01"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-197",
+      "latin": "materiam",
+      "castellano": "madera",
+      "normas": [
+        "N16",
+        "N17"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-226",
+      "latin": "palumbam",
+      "castellano": "paloma",
+      "normas": [
+        "N01",
+        "N15"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-251",
+      "latin": "proximum",
+      "castellano": "prójimo",
+      "normas": [
+        "N13",
+        "N01"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "ge-EVF-1128",
+      "latin": "syndicum",
+      "castellano": "síndico",
+      "normas": [
+        "N10",
+        "N01"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "ge-EVF-1130",
+      "latin": "thalamum",
+      "castellano": "tálamo",
+      "normas": [
+        "N10",
+        "N01"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "ge-EVF-1139",
+      "latin": "theurgum",
+      "castellano": "teúrgo",
+      "normas": [
+        "N10",
+        "N01"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-1006",
+      "latin": "turbidum",
+      "castellano": "turbio",
+      "normas": [
+        "N01",
+        "N16"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "ge-EVF-0869",
+      "latin": "uallatum",
+      "castellano": "vallado",
+      "normas": [
+        "N13",
+        "N17",
+        "N01"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-249",
+      "latin": "pretium",
+      "castellano": "precio",
+      "normas": [
+        "N13",
+        "N01"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-65",
+      "latin": "compărāre",
+      "castellano": "comprar",
+      "normas": [
+        "N16",
+        "N03"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "ge-EVF-1161",
+      "latin": "fœderare",
+      "castellano": "federar",
+      "normas": [
+        "N12",
+        "N03"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-917",
+      "latin": "monstrare",
+      "castellano": "mostrar",
+      "normas": [
+        "N15",
+        "N03"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "ge-EVF-0408",
+      "latin": "nauigare",
+      "castellano": "navegar",
+      "normas": [
+        "N01",
+        "N03"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-200",
+      "latin": "maxillam",
+      "castellano": "mejilla",
+      "normas": [
+        "N13"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "ge-EVF-0337",
+      "latin": "uirtutem",
+      "castellano": "virtud",
+      "normas": [
+        "N17",
+        "N03"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "ge-EVF-0757",
+      "latin": "cautum",
+      "castellano": "coto",
+      "normas": [
+        "N12",
+        "N01"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "ge-EVF-1196",
+      "latin": "chlamydem",
+      "castellano": "clámide",
+      "normas": [
+        "N10"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "ge-EVF-1074",
+      "latin": "contum",
+      "castellano": "cuento",
+      "normas": [
+        "N07",
+        "N01"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "ge-EVF-0372",
+      "latin": "curtum",
+      "castellano": "corto",
+      "normas": [
+        "N01"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-515",
+      "latin": "ferire",
+      "castellano": "herir",
+      "normas": [
+        "N05",
+        "N03"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "ge-EVF-0383",
+      "latin": "gurdum",
+      "castellano": "gordo",
+      "normas": [
+        "N01"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-151",
+      "latin": "hŏrtum",
+      "castellano": "huerto",
+      "normas": [
+        "N07",
+        "N01"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-187",
+      "latin": "macrum",
+      "castellano": "magro",
+      "normas": [
+        "N01",
+        "N17"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "ge-EVF-0406",
+      "latin": "mustum",
+      "castellano": "mosto",
+      "normas": [
+        "N01"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-236",
+      "latin": "petram",
+      "castellano": "piedra",
+      "normas": [
+        "N07",
+        "N17"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "ge-EVF-0246",
+      "latin": "pŏrcum",
+      "castellano": "puerco",
+      "normas": [
+        "N07",
+        "N01"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-855",
+      "latin": "quinionem",
+      "castellano": "quiñón",
+      "normas": [
+        "N13",
+        "N03"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-443",
+      "latin": "surdum",
+      "castellano": "sordo",
+      "normas": [
+        "N01"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "ge-EVF-0320",
+      "latin": "tĕstum",
+      "castellano": "tiesto",
+      "normas": [
+        "N07",
+        "N01"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "ge-EVF-0371",
+      "latin": "curtare",
+      "castellano": "cortar",
+      "normas": [
+        "N01",
+        "N03"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "ge-EVF-1197",
+      "latin": "chorographiam",
+      "castellano": "corografía",
+      "normas": [
+        "N10"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "ge-EVF-0411",
+      "latin": "nigrum",
+      "castellano": "negro",
+      "normas": [
+        "N01"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "ge-EVF-0359",
+      "latin": "circare",
+      "castellano": "cercar",
+      "normas": [
+        "N01",
+        "N03"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "ge-EVF-0423",
+      "latin": "piscare",
+      "castellano": "pescar",
+      "normas": [
+        "N01",
+        "N03"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-825",
+      "latin": "despoliare",
+      "castellano": "despojar",
+      "normas": [
+        "N13",
+        "N03"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "ge-EVF-1145",
+      "latin": "æmulum",
+      "castellano": "émulo",
+      "normas": [
+        "N12",
+        "N01"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "ge-EVF-1078",
+      "latin": "architectum",
+      "castellano": "arquitecto",
+      "normas": [
+        "N10",
+        "N01"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-950",
+      "latin": "calidum",
+      "castellano": "caldo",
+      "normas": [
+        "N16",
+        "N01"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "ge-EVF-1195",
+      "latin": "chirurgicum",
+      "castellano": "quirúrgico",
+      "normas": [
+        "N10",
+        "N01"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-58",
+      "latin": "chŏrdam",
+      "castellano": "cuerda",
+      "normas": [
+        "N10",
+        "N07"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "ge-EVF-1088",
+      "latin": "cynicum",
+      "castellano": "cínico",
+      "normas": [
+        "N10",
+        "N01"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-103",
+      "latin": "exercere",
+      "castellano": "ejercer",
+      "normas": [
+        "N13",
+        "N03"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-146",
+      "latin": "grunnire",
+      "castellano": "gruñir",
+      "normas": [
+        "N13",
+        "N03"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-570",
+      "latin": "hederam",
+      "castellano": "hiedra",
+      "normas": [
+        "N07",
+        "N16"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-965",
+      "latin": "honorare",
+      "castellano": "honrar",
+      "normas": [
+        "N16",
+        "N03"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-165",
+      "latin": "labŏrāre",
+      "castellano": "labrar",
+      "normas": [
+        "N16",
+        "N03"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-980",
+      "latin": "manicam",
+      "castellano": "manga",
+      "normas": [
+        "N16",
+        "N17"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-213",
+      "latin": "nĕbŭlam",
+      "castellano": "niebla",
+      "normas": [
+        "N07",
+        "N16"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "ge-EVF-1117",
+      "latin": "phreneticum",
+      "castellano": "frenético",
+      "normas": [
+        "N10",
+        "N01"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-859",
+      "latin": "relaxare",
+      "castellano": "relajar",
+      "normas": [
+        "N13",
+        "N03"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-1000",
+      "latin": "solidare",
+      "castellano": "soldar",
+      "normas": [
+        "N16",
+        "N03"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-298",
+      "latin": "spartum",
+      "castellano": "esparto",
+      "normas": [
+        "N14",
+        "N01"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "ge-EVF-1129",
+      "latin": "synodum",
+      "castellano": "sínodo",
+      "normas": [
+        "N10",
+        "N01"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "ge-EVF-1140",
+      "latin": "thiasum",
+      "castellano": "tíaso",
+      "normas": [
+        "N10",
+        "N01"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-260",
+      "latin": "rancidum",
+      "castellano": "rancio",
+      "normas": [
+        "N01",
+        "N13",
+        "N16"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "ge-EVF-1180",
+      "latin": "prædecessorem",
+      "castellano": "predecesor",
+      "normas": [
+        "N12",
+        "N15",
+        "N03"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "ge-EVF-0403",
+      "latin": "minorem",
+      "castellano": "menor",
+      "normas": [
+        "N01",
+        "N03"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "ge-EVF-0443",
+      "latin": "timorem",
+      "castellano": "temor",
+      "normas": [
+        "N01",
+        "N03"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "ge-EVF-0385",
+      "latin": "imperatorem",
+      "castellano": "emperador",
+      "normas": [
+        "N01",
+        "N17",
+        "N03"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "ge-EVF-1119",
+      "latin": "physiologiam",
+      "castellano": "fisiología",
+      "normas": [
+        "N10"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-217",
+      "latin": "octauum",
+      "castellano": "ochavo",
+      "normas": [
+        "N13",
+        "N01"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-514",
+      "latin": "fel",
+      "castellano": "hiel",
+      "normas": [
+        "N05",
+        "N07"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-605",
+      "latin": "marmorem",
+      "castellano": "mármol",
+      "normas": [
+        "N08",
+        "N03"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-233",
+      "latin": "perdicem",
+      "castellano": "perdiz",
+      "normas": [
+        "N03",
+        "N13"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-283",
+      "latin": "seniorem",
+      "castellano": "señor",
+      "normas": [
+        "N13",
+        "N03"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-307",
+      "latin": "stabĭlem",
+      "castellano": "estable",
+      "normas": [
+        "N14",
+        "N16"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-139",
+      "latin": "fustigare",
+      "castellano": "hostigar",
+      "normas": [
+        "N01",
+        "N05",
+        "N03"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-164",
+      "latin": "iuuentutem",
+      "castellano": "juventud",
+      "normas": [
+        "N06",
+        "N17",
+        "N03"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "ge-EVF-1179",
+      "latin": "crystallinum",
+      "castellano": "cristalino",
+      "normas": [
+        "N10",
+        "N15",
+        "N01"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "ge-EVF-1122",
+      "latin": "scholasticum",
+      "castellano": "escolástico",
+      "normas": [
+        "N14",
+        "N10",
+        "N01"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-216",
+      "latin": "nomĭnem",
+      "castellano": "nombre",
+      "normas": [
+        "N19"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-55",
+      "latin": "cĕntum",
+      "castellano": "ciento",
+      "normas": [
+        "N01",
+        "N07",
+        "N13"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-63",
+      "latin": "collum",
+      "castellano": "cuello",
+      "normas": [
+        "N07",
+        "N13",
+        "N01"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-511",
+      "latin": "facere",
+      "castellano": "hacer",
+      "normas": [
+        "N05",
+        "N13",
+        "N03"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-253",
+      "latin": "pullum",
+      "castellano": "pollo",
+      "normas": [
+        "N01",
+        "N13"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-458",
+      "latin": "uiridem",
+      "castellano": "verde",
+      "normas": [
+        "N01",
+        "N16"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-726",
+      "latin": "inter",
+      "castellano": "entre",
+      "normas": [
+        "N11",
+        "N01"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-341",
+      "latin": "uitium",
+      "castellano": "vicio",
+      "normas": [
+        "N13",
+        "N01"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-750",
+      "latin": "ausare",
+      "castellano": "osar",
+      "normas": [
+        "N12",
+        "N03"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-47",
+      "latin": "capere",
+      "castellano": "caber",
+      "normas": [
+        "N17",
+        "N03"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "ge-EVF-1186",
+      "latin": "asphodelum",
+      "castellano": "asfódelo",
+      "normas": [
+        "N10",
+        "N01"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "ge-EVF-0936",
+      "latin": "translatum",
+      "castellano": "traslado",
+      "normas": [
+        "N15",
+        "N17",
+        "N01"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-30",
+      "latin": "aurum",
+      "castellano": "oro",
+      "normas": [
+        "N12",
+        "N01"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-84",
+      "latin": "datum",
+      "castellano": "dado",
+      "normas": [
+        "N17",
+        "N01"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-132",
+      "latin": "forum",
+      "castellano": "fuero",
+      "normas": [
+        "N07",
+        "N01"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-268",
+      "latin": "rŏtam",
+      "castellano": "rueda",
+      "normas": [
+        "N07",
+        "N17"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "xl-326",
+      "latin": "tristitiam",
+      "castellano": "tristeza",
+      "normas": [
+        "N01",
+        "N13"
+      ],
+      "nivelSchola": 2
+    },
+    {
+      "sourceId": "ge-EVF-0452",
+      "latin": "ulmum",
+      "castellano": "olmo",
+      "normas": [
+        "N01"
+      ],
+      "nivelSchola": 2
+    }
+  ]
+}
