@@ -2990,20 +2990,20 @@ function crc32(b){let c=-1;for(let x of b){c^=x;for(let j=0;j<8;j++)c=(c>>>1)^((
 function zip(files){const enc=new TextEncoder(),parts=[],central=[];let off=0;const u16=(v)=>[v&255,(v>>>8)&255],u32=(v)=>[v&255,(v>>>8)&255,(v>>>16)&255,(v>>>24)&255];for(let [name,body] of files){let nb=enc.encode(name),data=enc.encode(body),crc=crc32(data),local=new Uint8Array([...u32(0x04034b50),...u16(20),...u16(0),...u16(0),...u16(0),...u16(0),...u32(crc),...u32(data.length),...u32(data.length),...u16(nb.length),...u16(0),...nb]);parts.push(local,data);central.push(new Uint8Array([...u32(0x02014b50),...u16(20),...u16(20),...u16(0),...u16(0),...u16(0),...u16(0),...u32(crc),...u32(data.length),...u32(data.length),...u16(nb.length),...u16(0),...u16(0),...u16(0),...u16(0),...u32(0),...u32(off),...nb]));off+=local.length+data.length}let cs=central.reduce((n,b)=>n+b.length,0),end=new Uint8Array([...u32(0x06054b50),...u16(0),...u16(0),...u16(central.length),...u16(central.length),...u32(cs),...u32(off),...u16(0)]);return new Blob([...parts,...central,end],{type:'application/vnd.openxmlformats-officedocument.wordprocessingml.document'})}
 // V12: structured, dependency-free WordprocessingML export. Keeps headings, tables,
 // numbered lists, emphasis and editable paragraphs; no network or external program.
-function wordRun(text,bold=false,italic=false){
+function wordRun(text,bold=false,italic=false,underline=false){
  // En exámenes de griego no se aplica cursiva ni en celdas ni en Word.
  if(currentCourse()==='greek1')italic=false;
  if(!text)return '';
- const pr=(bold||italic)?`<w:rPr>${bold?'<w:b/>':''}${italic?'<w:i/>':''}</w:rPr>`:'';
+ const pr=(bold||italic||underline)?`<w:rPr>${bold?'<w:b/>':''}${italic?'<w:i/>':''}${underline?'<w:u w:val="single"/>':''}</w:rPr>`:'';
  return `<w:r>${pr}<w:t xml:space="preserve">${xmlEsc(text)}</w:t></w:r>`;
 }
-function wordInline(node,b=false,i=false){
- if(node.nodeType===3)return wordRun(node.nodeValue,b,i);
+function wordInline(node,b=false,i=false,u=false){
+ if(node.nodeType===3)return wordRun(node.nodeValue,b,i,u);
  if(node.nodeType!==1)return '';
  const tag=node.tagName.toLowerCase();
  if(tag==='br')return '<w:r><w:br/></w:r>';
  const bold=b||['b','strong','th'].includes(tag),italic=i||['em','i'].includes(tag);
- return [...node.childNodes].map(n=>wordInline(n,bold,italic)).join('');
+ return [...node.childNodes].map(n=>wordInline(n,bold,italic,u||tag==='u')).join('');
 }
 function wordPara(node,style='',number=''){
  const props=[];
@@ -6401,7 +6401,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 })();
 </script><script src="offline-lemmas.js" defer></script>
 <script src="verification-review.js" defer></script><script src="eulexis-local.js" defer></script><script src="greek-review.js" defer></script><script src="vocabulary-quality.js" defer></script>
-<script src="vocabulary-generator.js" defer></script><script src="greek-choice-number.js" defer></script><script src="greek-choice-retroversion.js" defer></script><script src="greek-choice-groups.js" defer></script><script src="exam-scoring.js" defer></script><script src="unified-backup.js" defer></script><script src="pwa.js" defer></script><style id="examina-exam-redesign-css">
+<script src="vocabulary-generator.js" defer></script><script src="greek-choice-number.js" defer></script><script src="greek-choice-retroversion.js" defer></script><script src="greek-choice-etymology.js" defer></script><script src="greek-choice-groups.js" defer></script><script src="exam-scoring.js" defer></script><script src="unified-backup.js" defer></script><script src="pwa.js" defer></script><style id="examina-exam-redesign-css">
 /* Rediseño aislado del generador; los gestores de vocabulario no se modifican. */
 body.exam-redesign #examLayout aside.panel #primaryCoursePicker,
 body.exam-redesign #examLayout aside.panel #primaryModelPicker{display:block!important}
