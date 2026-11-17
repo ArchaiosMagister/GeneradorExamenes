@@ -102,6 +102,20 @@
    });
    morph.splice(2,0,box);
   }
+  const retroApi=window.ExaminaGreekRetroversion;
+  const retroItems=retroApi&&greekMarkedUnits().length?retroApi.current():[];
+  if(retroItems.length){
+   const box=document.createElement('section');box.className='greek-choice-option';box.dataset.greekOption='retroversion';
+   box.append(subtitle('retroversion','d',t('Traduce al griego los siguientes sintagmas.',
+    'Traduïx al grec els sintagmes següents.')));
+   retroItems.forEach((item,i)=>{
+    const row=document.createElement('p');row.className='exam-item greek-choice-retroversion-item';
+    row.dataset.greekChoiceSlot='retroversion:'+i;
+    row.innerHTML='<span class="exam-letter">'+(i+1)+'.</span> '+esc(item.prompt);
+    box.append(row);
+   });
+   morph.splice(morph.findIndex(x=>x.dataset.greekOption==='conjugation'),0,box);
+  }
   const etym=[option('etymology','a',parts.etymology)].filter(Boolean);
   const frag=document.createDocumentFragment();
   if(morph.length){frag.append(heading('greek-competence',1,choiceTitle(morph.length,1)));morph.forEach(x=>frag.append(x))}
