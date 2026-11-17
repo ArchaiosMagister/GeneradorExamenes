@@ -65,7 +65,7 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
     const candidate=latinExamNominals(['UD'+(0||2)]); // diagnostic below uses actual current unit
     const adjectives=latinCompleteAdjectives(selectedUnits());
     const noun=latinCompleteDeclensionItems(selectedUnits()).find(x=>mNormalize(x.p.lemma).toLowerCase()==='agricola');
-    return {course:currentCourse(),units:selectedUnits(),candidates:adjectives.filter(x=>/bonus|doctus|Romanus/i.test(x.x.entry)).map(x=>({entry:x.x.entry,unit:x.x.unit})), approved:latinApprovedSyntagmAdjective(noun,adjectives,Math.max(0,...selectedUnits().map(examUnitNumber).filter(Number.isInteger)))?.x?.entry, selected:noun?.compound?.adjective?.entry,nouns:latinExamNominals(selectedUnits()).map(x=>x.p.lemma).filter(x=>x==='agricola')};
+    return {course:currentCourse(),units:selectedUnits(),candidates:adjectives.filter(x=>/bonus|doctus|Romanus/i.test(x.x.entry)).map(x=>({entry:x.x.entry,unit:x.x.unit})), approved:latinApprovedSyntagmAdjective(noun,adjectives,Math.max(0,...selectedUnits().map(examUnitNumber).filter(Number.isInteger)))?.x?.entry, selected:noun?.compound?.adjective?.entry,nouns:latinExamNominals(selectedUnits()).map(x=>x.p.lemma).filter(x=>x==='agricola'),raw:vocab.filter(x=>/bonus|doctus|romanus/i.test(x.entry)&&courseOf(x)===currentCourse()).slice(0,12).map(x=>({entry:x.entry,unit:x.unit,parsed:!!adjective(x),excl:isExcludedExamMorphLemma(x.entry,x.meaning),lim:examUnitNumber(x.unit)})),noFilter:latinSharedBank.vocabulary(currentCourse()).filter(x=>/bonus|doctus|Romanus/i.test(x.entry)).slice(0,12).map(x=>x.entry)};
    });
    console.log('DIAGNOSTIC PR169',JSON.stringify(diagnostic));
    await select(course,'tablas',unit);
