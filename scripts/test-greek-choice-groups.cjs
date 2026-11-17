@@ -69,29 +69,13 @@ async function run(page,file){
   assert.equal((await query(page)).numbers.length,6,file+'/'+model+': cantidad de cambio no configurable');
   const first=page.locator('[data-greek-choice-slot="change-number:0"]');
   const oldFirst=await first.textContent();
-  const beforeIds=await page.evaluate(()=>ExaminaGreekNumber.state().ids);
   await page.evaluate(()=>{
    document.querySelector('#paper .exam-header').append(' MARCA-DOCENTE');
    document.querySelector('[data-greek-choice-slot="retroversion:1"]').append(' GUARDA-RETRO');
   });
-  const buttonDiagnostics=await page.evaluate(()=>{
-   const b=document.querySelector('[aria-label="Regenerar sintagma 1 de 1.c · Cambio de número"]');
-   window.greekClickCapture=0;window.greekClickEvents=[];
-   window.greekOriginalButton=b;window.greekMutations=0;
-   new MutationObserver(list=>{window.greekMutations+=list.length}).observe(document.querySelector('#examQuestionMenus'),{childList:true,subtree:true});
-   for(const type of ['pointerdown','pointerup','mousedown','mouseup','click'])
-    document.addEventListener(type,event=>{if(event.target?.matches?.('[data-greek-choice-single]'))
-     window.greekClickEvents.push({type,slot:event.target.dataset.greekChoiceSingle})},true);
-   b?.addEventListener('click',()=>{window.greekClickCapture++},true);
-   return {connected:b?.isConnected,onclick:String(b?.onclick),outer:b?.outerHTML.slice(0,350)};
-  });
   await page.locator('[aria-label="Regenerar sintagma 1 de 1.c · Cambio de número"]').click();
   const newFirst=await first.textContent();
-  const afterIds=await page.evaluate(()=>ExaminaGreekNumber.state().ids);
-  const diag=await page.evaluate(()=>ExaminaGreekChoiceGroups.lastDiagnostic);
-  const capture=await page.evaluate(()=>window.greekClickCapture);
-  const events=await page.evaluate(()=>({events:window.greekClickEvents,mutations:window.greekMutations,originalConnected:window.greekOriginalButton?.isConnected}));
-  assert.notEqual(oldFirst,newFirst,file+'/'+model+': regeneración individual no cambió el sintagma: '+JSON.stringify({oldFirst,newFirst,beforeIds,afterIds,diag,capture,events,buttonDiagnostics}));
+  assert.notEqual(oldFirst,newFirst,file+'/'+model+': regeneración individual no cambió el sintagma: '+JSON.stringify({oldFirst,newFirst}));
   assert((await page.locator('#paper').textContent()).includes('MARCA-DOCENTE'));
   assert((await page.locator('[data-greek-choice-slot="retroversion:1"]').textContent()).includes('GUARDA-RETRO'));
   await page.locator('[data-greek-custom="retro"] .exam-question-toggle').uncheck();
