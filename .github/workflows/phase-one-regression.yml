@@ -73,6 +73,8 @@ jobs:
         run: node scripts/test-word-gloss-columns.cjs
       - name: Verificar tarjetas de revisión de lemas y selección sin regresiones
         run: node scripts/test-lemma-review-theme.cjs
+      - name: Verificar glosas por guiones, Eulexis, prefijos VA y propuestas de Evolutio
+        run: node scripts/test-editorial-lexical-polish.cjs
       - name: Auditoría de lematización de oraciones y opciones docentes
         run: node scripts/test-exam-glossary.cjs
       - name: Consultas Collatinus y Eulexis, confirmación docente y exportación
