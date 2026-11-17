@@ -2,7 +2,9 @@
  * contrastados del curso; los pronombres se acotan a αὐτός, UD7. */
 (function(){
  'use strict';
- let selected=[],signature='',quantity=4;
+ let selected=[],signature='';
+ const quantities={complete:4,translation:4};
+ const count=()=>quantities[$('model').value]??4;
  const candidates=()=>{
   const limit=greekLimit();
   if(limit<3)return []; // El artículo se introduce en la UD3.
@@ -57,18 +59,18 @@
   }
   return rows;
  };
- const signatureOf=()=>JSON.stringify([greekMarkedUnits(),$('model').value,quantity]);
+ const signatureOf=()=>JSON.stringify([greekMarkedUnits(),$('model').value,count()]);
  function current(){
   const sign=signatureOf(),pool=candidates();
   if(sign!==signature){
-   selected=sample(pool,Math.min(quantity,pool.length)).map(x=>x.id);
+   selected=sample(pool,Math.min(count(),pool.length)).map(x=>x.id);
    signature=sign;
   }
   return selected.map(id=>pool.find(x=>x.id===id)).filter(Boolean);
  }
  function setCount(n){
   const next=Math.max(1,Math.min(20,Math.round(Number(n)||4)));
-  if(quantity!==next){quantity=next;signature=''}
+  if(count()!==next){quantities[$('model').value]=next;signature=''}
  }
  function regenerateOne(i){
   const rows=current(),used=new Set(selected),pool=candidates().filter(x=>!used.has(x.id)&&x.prompt!==rows[i]?.prompt);
@@ -81,10 +83,10 @@
  }
  function regenerateAll(){
   const before=new Set(selected);const pool=candidates().filter(x=>!before.has(x.id));
-  if(pool.length<quantity)return false;
-  selected=sample(pool,quantity).map(x=>x.id);signature=signatureOf();
+  if(pool.length<count())return false;
+  selected=sample(pool,count()).map(x=>x.id);signature=signatureOf();
   return true;
  }
- function state(){return {quantity,signature,ids:selected.slice(),items:current()}}
+ function state(){return {quantity:count(),signature,ids:selected.slice(),items:current()}}
  window.ExaminaGreekNumber={current,candidates,setCount,regenerateOne,regenerateAll,state};
 })();
