@@ -61,6 +61,14 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
   // y bonus se introduce en UD3. No exigir seleccionar también UD1.
   for(const [course,unit] of [['latin1',2],['latin4',3]]){
    await select(course,'tablas',unit);
+   const diagnostic=await page.evaluate(()=>{
+    const candidate=latinExamNominals(['UD'+(0||2)]); // diagnostic below uses actual current unit
+    const adjectives=latinCompleteAdjectives(selectedUnits());
+    const noun=latinCompleteDeclensionItems(selectedUnits()).find(x=>mNormalize(x.p.lemma).toLowerCase()==='agricola');
+    return {course:currentCourse(),units:selectedUnits(),candidates:adjectives.filter(x=>/bonus|doctus|Romanus/i.test(x.x.entry)).map(x=>({entry:x.x.entry,unit:x.x.unit})), approved:latinApprovedSyntagmAdjective(noun,adjectives,Math.max(0,...selectedUnits().map(examUnitNumber).filter(Number.isInteger)))?.x?.entry, selected:noun?.compound?.adjective?.entry,nouns:latinExamNominals(selectedUnits()).map(x=>x.p.lemma).filter(x=>x==='agricola')};
+   });
+   console.log('DIAGNOSTIC PR169',JSON.stringify(diagnostic));
+   await select(course,'tablas',unit);
    const r=await page.evaluate(unit=>{
     const group=latinCompleteDeclensionItems(['UD'+unit])
      .find(x=>mNormalize(x.p.lemma).toLowerCase()==='agricola');
