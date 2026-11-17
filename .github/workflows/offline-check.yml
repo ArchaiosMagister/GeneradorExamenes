@@ -212,6 +212,8 @@ jobs:
           name: vocabulario-diez-frases-word
           path: test-artifacts/vocabulario-latin-10-frases.docx
           if-no-files-found: ignore
+      - name: Verificar revisión léxica y género griego de Eulexis
+        run: node scripts/test-lex-review-eulexis.cjs
       - name: Comprobar menús léxicos, modificación preverbial y Word
         run: node scripts/test-lex-menu-sync.cjs
       - name: Verificar editores bidireccionales en todas las materias, modelos y Word
@@ -261,6 +263,8 @@ jobs:
         run: node scripts/test-nominal-agreement.cjs
       - name: Verificar variedad y concordancia de sintagmas nominales grecolatinos
         run: node scripts/test-syntagm-variation.cjs
+      - name: Verificar sintagmas aprobados (PR 169) y progresión gramatical
+        run: node scripts/test-sintagmas-aprobados-169.cjs
       - name: Probar PWA sin red y actualizaciones controladas
         run: npm run pwa:test
       - name: Probar en Chromium el lematizador sin conexión

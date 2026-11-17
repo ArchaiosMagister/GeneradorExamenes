@@ -1774,6 +1774,10 @@ function vocabularyGroups(rows,course,language='es'){
 
 function formatVocabularyEntry(row,mode,course,language='es'){
  let entry=displayEntry(row.entry,mode);
+ // Reaplicar la cita escolar a antiguas decisiones Eulexis sin reescribir
+ // los proyectos y conservando las indicaciones de tercera declinación.
+ if(course==='gr1'&&row.eulexisUnverified===true)
+  entry=window.ExaminaGreekEulexisCitation?.(entry)||entry;
  if(course==='gr1'){
   const raw=entry.trim();
   // Etiquetas gramaticales para invariables no etiquetadas en la fuente.
@@ -1973,7 +1977,7 @@ function init(){
    if(!mapped.has(form))mapped.set(form,new Map());
    const signature=entry.entry+'|'+proposal.analysis;
    if(!mapped.get(form).has(signature))mapped.get(form).set(signature,{
-    lemma:proposal.lemma,entry:teacher?.entry||entry.entry,meaning:teacher?.meaning||'',
+    lemma:proposal.lemma,entry:window.ExaminaGreekEulexisCitation?.(teacher?.entry||entry.entry)||teacher?.entry||entry.entry,meaning:teacher?.meaning||'',
     meaning_va:teacher?.meaning_va||'',analysis:proposal.analysis,eulexisUnverified:true
    });
   }

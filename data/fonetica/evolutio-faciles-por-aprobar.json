@@ -1,0 +1,2347 @@
+{
+  "schema": 1,
+  "status": "PROPUESTA_NO_ACTIVA_PENDIENTE_APROBACION_DOCENTE",
+  "source": "ScholaClassica Evolutio integrado: 522 fichas originales + lote100 y criterio-deducibilidad-v3",
+  "totalReviewed": 622,
+  "easyTotal": 199,
+  "easyWithoutProperNames": 186,
+  "required": 300,
+  "coverage": [
+    "N01",
+    "N03",
+    "N05",
+    "N06",
+    "N07",
+    "N10",
+    "N11",
+    "N12",
+    "N13",
+    "N14",
+    "N15",
+    "N16",
+    "N17"
+  ],
+  "missingRules": [
+    "N02",
+    "N04",
+    "N08",
+    "N09",
+    "N18",
+    "N19",
+    "N20"
+  ],
+  "notes": "Evolutio no define nivel muy fácil; solo fácil (1), medio (2), difícil (3), muy difícil (4). Las 186 cumplen nivel 1 y exclusión de nombres propios. No ampliar artificialmente ni publicar sin decisión docente.",
+  "items": [
+    {
+      "id": "xl-26",
+      "latin": "aucam",
+      "castellano": "oca",
+      "normas": [
+        "N12"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-52",
+      "latin": "catenam",
+      "castellano": "cadena",
+      "normas": [
+        "N17"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-105",
+      "latin": "fabam",
+      "castellano": "haba",
+      "normas": [
+        "N05"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-111",
+      "latin": "farinam",
+      "castellano": "harina",
+      "normas": [
+        "N05"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-161",
+      "latin": "iurare",
+      "castellano": "jurar",
+      "normas": [
+        "N03",
+        "N06"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-190",
+      "latin": "maiorem",
+      "castellano": "mayor",
+      "normas": [
+        "N03",
+        "N06"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-215",
+      "latin": "noctem",
+      "castellano": "noche",
+      "normas": [
+        "N13"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-245",
+      "latin": "pœnam",
+      "castellano": "pena",
+      "normas": [
+        "N12"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-248",
+      "latin": "pŏrtam",
+      "castellano": "puerta",
+      "normas": [
+        "N07"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-320",
+      "latin": "tĕrram",
+      "castellano": "tierra",
+      "normas": [
+        "N07"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-633",
+      "latin": "chartam",
+      "castellano": "carta",
+      "normas": [
+        "N10"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-915",
+      "latin": "mensam",
+      "castellano": "mesa",
+      "normas": [
+        "N15"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-34",
+      "latin": "bŏnam",
+      "castellano": "buena",
+      "normas": [
+        "N07"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-44",
+      "latin": "calĕntem",
+      "castellano": "caliente",
+      "normas": [
+        "N07"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-46",
+      "latin": "cannam",
+      "castellano": "caña",
+      "normas": [
+        "N13"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-54",
+      "latin": "causam",
+      "castellano": "cosa",
+      "normas": [
+        "N12"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-81",
+      "latin": "cupam",
+      "castellano": "cuba",
+      "normas": [
+        "N17"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-113",
+      "latin": "fĕbrem",
+      "castellano": "fiebre",
+      "normas": [
+        "N07"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-118",
+      "latin": "fĕstam",
+      "castellano": "fiesta",
+      "normas": [
+        "N07"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-123",
+      "latin": "filum",
+      "castellano": "hilo",
+      "normas": [
+        "N01",
+        "N05"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-127",
+      "latin": "fŏllem",
+      "castellano": "fuelle",
+      "normas": [
+        "N07",
+        "N13"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-128",
+      "latin": "fŏntem",
+      "castellano": "fuente",
+      "normas": [
+        "N07"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-129",
+      "latin": "formam",
+      "castellano": "horma",
+      "normas": [
+        "N05"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-147",
+      "latin": "hĕrbam",
+      "castellano": "hierba",
+      "normas": [
+        "N07"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-169",
+      "latin": "lacum",
+      "castellano": "lago",
+      "normas": [
+        "N01",
+        "N17"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-172",
+      "latin": "latrare",
+      "castellano": "ladrar",
+      "normas": [
+        "N03",
+        "N17"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-173",
+      "latin": "latronem",
+      "castellano": "ladrón",
+      "normas": [
+        "N03",
+        "N17"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-183",
+      "latin": "luctam",
+      "castellano": "lucha",
+      "normas": [
+        "N13"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-198",
+      "latin": "matrem",
+      "castellano": "madre",
+      "normas": [
+        "N17"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-199",
+      "latin": "maurum",
+      "castellano": "moro",
+      "normas": [
+        "N01",
+        "N12"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-271",
+      "latin": "salutem",
+      "castellano": "salud",
+      "normas": [
+        "N03",
+        "N17"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-272",
+      "latin": "saporem",
+      "castellano": "sabor",
+      "normas": [
+        "N03",
+        "N17"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-732",
+      "latin": "semper",
+      "castellano": "siempre",
+      "normas": [
+        "N07",
+        "N11"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-282",
+      "latin": "senatum",
+      "castellano": "senado",
+      "normas": [
+        "N01",
+        "N17"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-303",
+      "latin": "spirare",
+      "castellano": "espirar",
+      "normas": [
+        "N03",
+        "N14"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-309",
+      "latin": "stylum",
+      "castellano": "estilo",
+      "normas": [
+        "N01",
+        "N10",
+        "N14"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-539",
+      "latin": "iuncum",
+      "castellano": "junco",
+      "normas": [
+        "N01",
+        "N06"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-519",
+      "latin": "formicam",
+      "castellano": "hormiga",
+      "normas": [
+        "N05",
+        "N17"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-579",
+      "latin": "molam",
+      "castellano": "muela",
+      "normas": [
+        "N07"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-587",
+      "latin": "pontem",
+      "castellano": "puente",
+      "normas": [
+        "N07"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-874",
+      "latin": "scalam",
+      "castellano": "escala",
+      "normas": [
+        "N14"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-916",
+      "latin": "mensuram",
+      "castellano": "mesura",
+      "normas": [
+        "N15"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-130",
+      "latin": "fŏrtem",
+      "castellano": "fuerte",
+      "normas": [
+        "N07"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-136",
+      "latin": "fumum",
+      "castellano": "humo",
+      "normas": [
+        "N01",
+        "N05"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-138",
+      "latin": "furcam",
+      "castellano": "horca",
+      "normas": [
+        "N01",
+        "N05"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-206",
+      "latin": "mŏllem",
+      "castellano": "muelle",
+      "normas": [
+        "N07",
+        "N13"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-214",
+      "latin": "nigram",
+      "castellano": "negra",
+      "normas": [
+        "N01"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-221",
+      "latin": "ollam",
+      "castellano": "olla",
+      "normas": [
+        "N13"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-243",
+      "latin": "pluuiam",
+      "castellano": "lluvia",
+      "normas": [
+        "N13"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-266",
+      "latin": "regŭlam",
+      "castellano": "regla",
+      "normas": [
+        "N16"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-285",
+      "latin": "serpĕntem",
+      "castellano": "serpiente",
+      "normas": [
+        "N07"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-315",
+      "latin": "taurum",
+      "castellano": "toro",
+      "normas": [
+        "N01",
+        "N12"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-433",
+      "latin": "siluam",
+      "castellano": "selva",
+      "normas": [
+        "N01"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-449",
+      "latin": "truncum",
+      "castellano": "tronco",
+      "normas": [
+        "N01"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-455",
+      "latin": "undam",
+      "castellano": "onda",
+      "normas": [
+        "N01"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-548",
+      "latin": "uallem",
+      "castellano": "valle",
+      "normas": [
+        "N13"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-581",
+      "latin": "nostrum",
+      "castellano": "nuestro",
+      "normas": [
+        "N01",
+        "N07"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-575",
+      "latin": "mel",
+      "castellano": "miel",
+      "normas": [
+        "N07"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-576",
+      "latin": "membrum",
+      "castellano": "miembro",
+      "normas": [
+        "N01",
+        "N07"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-582",
+      "latin": "nouem",
+      "castellano": "nueve",
+      "normas": [
+        "N07"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-810",
+      "latin": "caballum",
+      "castellano": "caballo",
+      "normas": [
+        "N01",
+        "N13"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-731",
+      "latin": "pro",
+      "castellano": "por",
+      "normas": [
+        "N11"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-736",
+      "latin": "uiduam",
+      "castellano": "viuda",
+      "normas": [
+        "N11"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-785",
+      "latin": "pausare",
+      "castellano": "posar",
+      "normas": [
+        "N03",
+        "N12"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-807",
+      "latin": "ballænam",
+      "castellano": "ballena",
+      "normas": [
+        "N12",
+        "N13"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-912",
+      "latin": "desponsare",
+      "castellano": "desposar",
+      "normas": [
+        "N03",
+        "N15"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-927",
+      "latin": "trans",
+      "castellano": "tras",
+      "normas": [
+        "N15"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_con_filtro_didactico.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-0009",
+      "latin": "alienam",
+      "castellano": "ajena",
+      "normas": [
+        "N13"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-0016",
+      "latin": "ansam",
+      "castellano": "asa",
+      "normas": [
+        "N15"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-0201",
+      "latin": "mendicare",
+      "castellano": "mendigar",
+      "normas": [
+        "N03",
+        "N17"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-0211",
+      "latin": "mutabĭlem",
+      "castellano": "mudable",
+      "normas": [
+        "N16",
+        "N17"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-0230",
+      "latin": "paucum",
+      "castellano": "poco",
+      "normas": [
+        "N01",
+        "N12"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-0234",
+      "latin": "pĕrnam",
+      "castellano": "pierna",
+      "normas": [
+        "N07"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-0258",
+      "latin": "rallum",
+      "castellano": "rallo",
+      "normas": [
+        "N01",
+        "N13"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-0261",
+      "latin": "rapum",
+      "castellano": "rabo",
+      "normas": [
+        "N01",
+        "N17"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-0285",
+      "latin": "sĕruam",
+      "castellano": "sierva",
+      "normas": [
+        "N07"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-0324",
+      "latin": "totum",
+      "castellano": "todo",
+      "normas": [
+        "N01",
+        "N17"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-0326",
+      "latin": "urticam",
+      "castellano": "ortiga",
+      "normas": [
+        "N01",
+        "N17"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-0328",
+      "latin": "uaginam",
+      "castellano": "vaina",
+      "normas": [
+        "N16"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-0331",
+      "latin": "uĕntrem",
+      "castellano": "vientre",
+      "normas": [
+        "N07"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-0338",
+      "latin": "uitam",
+      "castellano": "vida",
+      "normas": [
+        "N17"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-0343",
+      "latin": "uoluntatem",
+      "castellano": "voluntad",
+      "normas": [
+        "N03",
+        "N17"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-0345",
+      "latin": "angustum",
+      "castellano": "angosto",
+      "normas": [
+        "N01"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-0350",
+      "latin": "bibere",
+      "castellano": "beber",
+      "normas": [
+        "N01",
+        "N03"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-0360",
+      "latin": "cistam",
+      "castellano": "cesta",
+      "normas": [
+        "N01"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-0363",
+      "latin": "continere",
+      "castellano": "contener",
+      "normas": [
+        "N01",
+        "N03"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-0365",
+      "latin": "corrumpere",
+      "castellano": "corromper",
+      "normas": [
+        "N01",
+        "N03"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-0366",
+      "latin": "cumbam",
+      "castellano": "comba",
+      "normas": [
+        "N01"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-0367",
+      "latin": "cuminum",
+      "castellano": "comino",
+      "normas": [
+        "N01"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-0370",
+      "latin": "currere",
+      "castellano": "correr",
+      "normas": [
+        "N01",
+        "N03"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-0380",
+      "latin": "gubernare",
+      "castellano": "gobernar",
+      "normas": [
+        "N01",
+        "N03"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-0382",
+      "latin": "gulosum",
+      "castellano": "goloso",
+      "normas": [
+        "N01"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-0391",
+      "latin": "intrare",
+      "castellano": "entrar",
+      "normas": [
+        "N01",
+        "N03"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-0395",
+      "latin": "linguam",
+      "castellano": "lengua",
+      "normas": [
+        "N01"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-0405",
+      "latin": "muscam",
+      "castellano": "mosca",
+      "normas": [
+        "N01"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-0416",
+      "latin": "ordinare",
+      "castellano": "ordenar",
+      "normas": [
+        "N01",
+        "N03"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-0449",
+      "latin": "turpem",
+      "castellano": "torpe",
+      "normas": [
+        "N01"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-0450",
+      "latin": "turrem",
+      "castellano": "torre",
+      "normas": [
+        "N01"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-0545",
+      "latin": "uerrucam",
+      "castellano": "verruga",
+      "normas": [
+        "N17"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-0548",
+      "latin": "uentum",
+      "castellano": "viento",
+      "normas": [
+        "N01",
+        "N07"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-0555",
+      "latin": "bene",
+      "castellano": "bien",
+      "normas": [
+        "N03",
+        "N07"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-0556",
+      "latin": "bonum",
+      "castellano": "bueno",
+      "normas": [
+        "N01",
+        "N07"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-0562",
+      "latin": "desertum",
+      "castellano": "desierto",
+      "normas": [
+        "N01",
+        "N07"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-0565",
+      "latin": "ferum",
+      "castellano": "fiero",
+      "normas": [
+        "N01",
+        "N07"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-0572",
+      "latin": "hostem",
+      "castellano": "hueste",
+      "normas": [
+        "N07"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-0589",
+      "latin": "portum",
+      "castellano": "puerto",
+      "normas": [
+        "N01",
+        "N07"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-0592",
+      "latin": "serram",
+      "castellano": "sierra",
+      "normas": [
+        "N07"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-0596",
+      "latin": "sortem",
+      "castellano": "suerte",
+      "normas": [
+        "N07"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-0812",
+      "latin": "callum",
+      "castellano": "callo",
+      "normas": [
+        "N01",
+        "N13"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-0860",
+      "latin": "sannam",
+      "castellano": "saña",
+      "normas": [
+        "N13"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-0882",
+      "latin": "spinam",
+      "castellano": "espina",
+      "normas": [
+        "N14"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-0884",
+      "latin": "spumam",
+      "castellano": "espuma",
+      "normas": [
+        "N14"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-1010",
+      "latin": "anatem",
+      "castellano": "ánade",
+      "normas": [
+        "N17"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-1022",
+      "latin": "securum",
+      "castellano": "seguro",
+      "normas": [
+        "N01",
+        "N17"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-0311",
+      "latin": "superbiam",
+      "castellano": "soberbia",
+      "normas": [
+        "N01",
+        "N17"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-0834",
+      "latin": "gallinam",
+      "castellano": "gallina",
+      "normas": [
+        "N13"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-0868",
+      "latin": "tructam",
+      "castellano": "trucha",
+      "normas": [
+        "N13"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-0364",
+      "latin": "conuincere",
+      "castellano": "convencer",
+      "normas": [
+        "N01",
+        "N03"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-0437",
+      "latin": "subornare",
+      "castellano": "sobornar",
+      "normas": [
+        "N01",
+        "N03"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-0550",
+      "latin": "uillam",
+      "castellano": "villa",
+      "normas": [
+        "N13"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-0813",
+      "latin": "castellanum",
+      "castellano": "castellano",
+      "normas": [
+        "N01",
+        "N13"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-0817",
+      "latin": "collarem",
+      "castellano": "collar",
+      "normas": [
+        "N03",
+        "N13"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-0837",
+      "latin": "grillum",
+      "castellano": "grillo",
+      "normas": [
+        "N01",
+        "N13"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-1011",
+      "latin": "aperturam",
+      "castellano": "abertura",
+      "normas": [
+        "N17"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-1076",
+      "latin": "athletam",
+      "castellano": "atleta",
+      "normas": [
+        "N10"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-1077",
+      "latin": "blasphemiam",
+      "castellano": "blasfemia",
+      "normas": [
+        "N10"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-1082",
+      "latin": "chronicum",
+      "castellano": "crónico",
+      "normas": [
+        "N01",
+        "N10"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-1084",
+      "latin": "citharistam",
+      "castellano": "citarista",
+      "normas": [
+        "N10"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-1087",
+      "latin": "cyclopem",
+      "castellano": "cíclope",
+      "normas": [
+        "N10"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-1089",
+      "latin": "dyspepsiam",
+      "castellano": "dispepsia",
+      "normas": [
+        "N10"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-1090",
+      "latin": "epithalamium",
+      "castellano": "epitalamio",
+      "normas": [
+        "N01",
+        "N10"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-1091",
+      "latin": "epithetum",
+      "castellano": "epíteto",
+      "normas": [
+        "N01",
+        "N10"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-1094",
+      "latin": "gymnasium",
+      "castellano": "gimnasio",
+      "normas": [
+        "N01",
+        "N10"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-1096",
+      "latin": "hæresiarcham",
+      "castellano": "heresiarca",
+      "normas": [
+        "N10",
+        "N12"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-1097",
+      "latin": "hydram",
+      "castellano": "hidra",
+      "normas": [
+        "N10"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-1098",
+      "latin": "hydropicum",
+      "castellano": "hidrópico",
+      "normas": [
+        "N01",
+        "N10"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-1099",
+      "latin": "hyperboreum",
+      "castellano": "hiperbóreo",
+      "normas": [
+        "N01",
+        "N10"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-1101",
+      "latin": "hypnoticum",
+      "castellano": "hipnótico",
+      "normas": [
+        "N01",
+        "N10"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-1103",
+      "latin": "hypotenusam",
+      "castellano": "hipotenusa",
+      "normas": [
+        "N10"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-1105",
+      "latin": "myopem",
+      "castellano": "miope",
+      "normas": [
+        "N10"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-1109",
+      "latin": "phalangem",
+      "castellano": "falange",
+      "normas": [
+        "N10"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-1110",
+      "latin": "phantasmam",
+      "castellano": "fantasma",
+      "normas": [
+        "N10"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-1115",
+      "latin": "philologiam",
+      "castellano": "filología",
+      "normas": [
+        "N10"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-1126",
+      "latin": "symposium",
+      "castellano": "simposio",
+      "normas": [
+        "N01",
+        "N10"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-1127",
+      "latin": "synagogam",
+      "castellano": "sinagoga",
+      "normas": [
+        "N10"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-1131",
+      "latin": "thapsiam",
+      "castellano": "tapsia",
+      "normas": [
+        "N10"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-1132",
+      "latin": "thecam",
+      "castellano": "teca",
+      "normas": [
+        "N10"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-1133",
+      "latin": "themam",
+      "castellano": "tema",
+      "normas": [
+        "N10"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-1135",
+      "latin": "theogoniam",
+      "castellano": "teogonía",
+      "normas": [
+        "N10"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-1136",
+      "latin": "theologum",
+      "castellano": "teólogo",
+      "normas": [
+        "N01",
+        "N10"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-1137",
+      "latin": "theoriam",
+      "castellano": "teoría",
+      "normas": [
+        "N10"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-1154",
+      "latin": "cæsuram",
+      "castellano": "cesura",
+      "normas": [
+        "N12"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-1155",
+      "latin": "coætaneum",
+      "castellano": "coetáneo",
+      "normas": [
+        "N01",
+        "N12"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-1156",
+      "latin": "cœliacum",
+      "castellano": "celíaco",
+      "normas": [
+        "N01",
+        "N12"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-1157",
+      "latin": "cœnobitam",
+      "castellano": "cenobita",
+      "normas": [
+        "N12"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-1158",
+      "latin": "comœdiam",
+      "castellano": "comedia",
+      "normas": [
+        "N12"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-1163",
+      "latin": "mænadem",
+      "castellano": "ménade",
+      "normas": [
+        "N12"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-1166",
+      "latin": "obœdientem",
+      "castellano": "obediente",
+      "normas": [
+        "N12"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-1167",
+      "latin": "œconomicum",
+      "castellano": "económico",
+      "normas": [
+        "N01",
+        "N12"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-1168",
+      "latin": "œcumenicum",
+      "castellano": "ecuménico",
+      "normas": [
+        "N01",
+        "N12"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-1170",
+      "latin": "pædagogum",
+      "castellano": "pedagogo",
+      "normas": [
+        "N01",
+        "N12"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-1173",
+      "latin": "præfectum",
+      "castellano": "prefecto",
+      "normas": [
+        "N01",
+        "N12"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-1174",
+      "latin": "præludium",
+      "castellano": "preludio",
+      "normas": [
+        "N01",
+        "N12"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-1175",
+      "latin": "præmaturum",
+      "castellano": "prematuro",
+      "normas": [
+        "N01",
+        "N12"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-1177",
+      "latin": "tragœdiam",
+      "castellano": "tragedia",
+      "normas": [
+        "N12"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-1187",
+      "latin": "catharticum",
+      "castellano": "catártico",
+      "normas": [
+        "N01",
+        "N10"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-1188",
+      "latin": "catholicum",
+      "castellano": "católico",
+      "normas": [
+        "N01",
+        "N10"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-1190",
+      "latin": "characterem",
+      "castellano": "carácter",
+      "normas": [
+        "N03",
+        "N10"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-1191",
+      "latin": "charisma",
+      "castellano": "carisma",
+      "normas": [
+        "N10"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-1198",
+      "latin": "pyram",
+      "castellano": "pira",
+      "normas": [
+        "N10"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "ge-EVF-1200",
+      "latin": "gulam",
+      "castellano": "gola",
+      "normas": [
+        "N01"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "ArchaiosMagister/GeneradorExamenes:data/fonetica/banco_examenes.json",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-49",
+      "latin": "capram",
+      "castellano": "cabra",
+      "normas": [
+        "N17"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_PAU_2026_actualizado.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-166",
+      "latin": "lacrimam",
+      "castellano": "lágrima",
+      "normas": [
+        "N17"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_PAU_2026_actualizado.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-230",
+      "latin": "patrem",
+      "castellano": "padre",
+      "normas": [
+        "N17"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_PAU_2026_actualizado.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-237",
+      "latin": "pineam",
+      "castellano": "piña",
+      "normas": [
+        "N13"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_PAU_2026_actualizado.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-337",
+      "latin": "uineam",
+      "castellano": "viña",
+      "normas": [
+        "N13"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_PAU_2026_actualizado.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-512",
+      "latin": "falconem",
+      "castellano": "halcón",
+      "normas": [
+        "N03",
+        "N05"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_PAU_2026_actualizado.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-513",
+      "latin": "farturam",
+      "castellano": "hartura",
+      "normas": [
+        "N05"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_PAU_2026_actualizado.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-523",
+      "latin": "furtum",
+      "castellano": "hurto",
+      "normas": [
+        "N01",
+        "N05"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_PAU_2026_actualizado.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-544",
+      "latin": "uinum",
+      "castellano": "vino",
+      "normas": [
+        "N01"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_PAU_2026_actualizado.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-545",
+      "latin": "uiuum",
+      "castellano": "vivo",
+      "normas": [
+        "N01"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_PAU_2026_actualizado.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-811",
+      "latin": "cabannam",
+      "castellano": "cabaña",
+      "normas": [
+        "N13"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_PAU_2026_actualizado.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-955",
+      "latin": "consuturam",
+      "castellano": "costura",
+      "normas": [
+        "N15"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_PAU_2026_actualizado.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-961",
+      "latin": "eremitam",
+      "castellano": "ermita",
+      "normas": [
+        "N16"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_PAU_2026_actualizado.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-982",
+      "latin": "nobilem",
+      "castellano": "noble",
+      "normas": [
+        "N16"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_PAU_2026_actualizado.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    },
+    {
+      "id": "xl-1004",
+      "latin": "tabulam",
+      "castellano": "tabla",
+      "normas": [
+        "N16"
+      ],
+      "status": "reviewed-pilot",
+      "origen": "banco_evolucion_fonetica_PAU_2026_actualizado.xlsx",
+      "dificultad": "facil",
+      "criterio": "criterio-deducibilidad-v3"
+    }
+  ]
+}
