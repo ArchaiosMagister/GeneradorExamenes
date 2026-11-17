@@ -2472,8 +2472,10 @@ function greekCurricularSample(pool,count,unit=greekLimit()){
  ]:[]);
 }
 function latinDeclensionPriorities(chosen){
- return [...(latinFocusUnit(chosen)===4?[item=>item.p.kind.startsWith('3')]:[]),
-  ...examUnitPriority(chosen,item=>[item.x.unit])];
+ const until=Math.max(0,...chosen.map(examUnitNumber).filter(Number.isInteger));
+ // Priorizar la categoría introducida en la unidad, no la procedencia
+ // léxica del lema. UD2 en 4.º: segunda; UD4 en I / UD5 en 4.º: tercera.
+ return until>0?[item=>latinSyntagmNounUnit(item.p.kind)===until]:[];
 }
 function latinPronounPriorities(chosen){
  const unit=latinFocusUnit(chosen);
