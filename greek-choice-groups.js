@@ -359,7 +359,11 @@
     if(!host.querySelector('[data-greek-custom="'+config.key+'"]'))host.append(menuBox(config));
    const order=['decl','forms','change-number','retroversion','verb','etymology','roots','sent'];
    const panels=order.map(k=>host.querySelector(':scope > [data-question="'+k+'"]')).filter(Boolean);
-   if(panels.length&&panels.some((node,i)=>host.children[i]!==node))
+   // Comparar solo paneles gestionados: los nodos auxiliares del menú
+   // no cuentan como preguntas. Evitar un bucle de MutationObserver
+   // que reconstruía controles antes de que el clic llegase al botón.
+   const visibleOrder=[...host.children].filter(node=>panels.includes(node));
+   if(panels.some((node,i)=>visibleOrder[i]!==node))
     panels.forEach(node=>host.append(node));
    refreshCustomRows();
   }finally{installing=false}
