@@ -116,6 +116,7 @@ async function checkFile(browser,filename){
   for(const kind of disabled)assert(!menu.some(x=>x.kind===kind),
    filename+' '+course+'/'+model+': pregunta incompatible '+kind);
  }
+ await page.locator('#examPanelShortcuts>button[data-target="examQuestionSettings"]').click();
  // Las marcas de morfología deben actuar sobre el examen real.
  for(const [course,model] of [['latin1','morf'],['greek1','morphology']]){
   await page.evaluate(({course,model})=>{
@@ -407,6 +408,7 @@ async function checkFile(browser,filename){
   // Las puntuaciones son campos propios, se reflejan en el enunciado y en Word.
   await page.waitForFunction(()=>!!window.ExaminaScoring&&
    [...document.querySelectorAll('#paper .exam-question')].every(el=>!!el.querySelector('.exam-question-points')));
+  await page.locator('#examPanelShortcuts>button[data-target="examScoring"]').click();
   const scoringRows=page.locator('#examScoring .exam-scoring-row input');
   const scoreCount=await page.locator('#paper .exam-question').count();
   assert.equal(await scoringRows.count(),scoreCount,filename+' '+course+'/'+model+': falta puntuación en una pregunta');
@@ -514,6 +516,7 @@ async function checkFile(browser,filename){
   }
   await page.emulateMedia({media:'screen'});
 
+  await page.locator('#examPanelShortcuts>button[data-target="exam-ui-core"]').click();
   const primary=page.locator('#primaryExamSettings'),header=page.locator('#exam-header-controls');
   assert.equal(await primary.count(),1,filename+': faltan las unidades visibles');
   await page.waitForFunction(([c,m])=>{
@@ -531,6 +534,7 @@ async function checkFile(browser,filename){
   assert.equal(await header.locator('fieldset').count(),3,filename+': faltan los tres grupos de botones');
   assert.equal(await header.locator('fieldset:nth-child(2) button').count(),course==='latin4'?1:3,
    filename+': modelos incorrectos en la cabecera');
+  await page.locator('#examPanelShortcuts>button[data-target="examQuestionSettings"]').click();
   const shouldHaveSent=!['morf','morphology'].includes(model);
   assert.equal(await page.locator('#group-sentences').isVisible(),shouldHaveSent,filename+': menú de oraciones fuera de contexto');
   if(shouldHaveSent)await page.locator('#group-sentences').evaluate(el=>el.open=true);
@@ -631,6 +635,7 @@ async function checkFile(browser,filename){
    assert.equal(await page.locator('#paper #answerkey [data-manual-warning]').count(),1,filename+' '+course+'/'+model+': falta advertencia de solucionario');
   }
  }
+ await page.locator('#examPanelShortcuts>button[data-target="exam-ui-core"]').click();
  // En el rediseño solo los selectores centralizados son interactivos.
  await page.locator('#course').selectOption('latin1');
  await page.locator('#model').selectOption('morf');
@@ -644,6 +649,7 @@ async function checkFile(browser,filename){
   document.querySelectorAll('.unit-choice').forEach(el=>el.checked=units[Number(el.value)]==='UD3');
   generate();
  });
+ await page.locator('#examPanelShortcuts>button[data-target="examQuestionSettings"]').click();
  const formsCountInput=page.locator('#examQuestionMenus [data-question="forms"] label:has-text("Número de formas") input');
  await page.locator('#examQuestionMenus [data-question="forms"]').evaluate(section=>section.open=true);
  const visibility=await formsCountInput.evaluate(input=>{
