@@ -104,11 +104,13 @@ async function run(page,file){
   assert.match(x.choose,/Elige tres de estas cinco preguntas/,file+'/'+model+': restaurar cinco');
   // Edición de puntos: el grupo y las oraciones no quedan bloqueados por
   // el antiguo sistema de un punto por oración.
+  await page.locator('#examPanelShortcuts button').nth(2).click(); // Puntuación
   const scoreControl=page.locator('#examScoring [data-scoring-key="greek1/'+model+'/greek-competence"]').first();
   await scoreControl.fill('4');
   assert.equal((await query(page)).total,1100,file+'/'+model+': puntuación de la pregunta 1 no editable');
   await scoreControl.fill('3');
   assert.equal((await query(page)).total,1000,file+'/'+model+': puntuación inicial no recuperada');
+  await page.locator('#examPanelShortcuts button').nth(1).click(); // Preguntas
   await page.locator('[data-greek-custom="roots"] .exam-question-toggle').uncheck();
   x=await query(page);
   assert(!x.options.includes('roots'),file+'/'+model+': plurilingüismo no respeta desmarcado');
