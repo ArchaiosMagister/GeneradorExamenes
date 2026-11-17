@@ -195,6 +195,23 @@ const mNormalizeLatin=entry=>String(entry||'').split(',')[0]
   assert.deepEqual(forms.map(x=>x.title),[
    'ὁ ἀγαθὸς ἄνθρωπος','ἡ καλὴ χώρα','τὸ καλὸν δῶρον'
   ]);
+  // Prueba de independencia léxica en griego: el adjetivo καλός es
+  // admisible en UD5 aunque su ficha se etiquete temporalmente UD12.
+  const greekGrammarOnly=await page.evaluate(()=>{
+   const lex=greekSharedBank.lookup('καλός');
+   if(!lex)return {hasLex:false,available:false};
+   const before=new Set(lex.units);
+   try{
+    lex.units.clear();lex.units.add('UD12');
+    return {hasLex:true,available:greekAvailableSyntagmAdjectives(5)
+     .some(x=>x.lemma==='καλός'),
+     noun:greekVerifiedCorpus.some(x=>x.id==='n-δωρον'&&
+      greekMorphologyEligible(x,2))};
+   }finally{lex.units.clear();for(const u of before)lex.units.add(u)}
+  });
+  assert(greekGrammarOnly.hasLex,'Lema griego contrastado καλός');
+  assert(greekGrammarOnly.available,'Un adjetivo de primera clase vale desde UD5 aunque figure en UD12');
+  assert(greekGrammarOnly.noun,'El neutro δῶρον está disponible desde la lección gramatical UD2');
   await greek(7);
   const number=await page.evaluate(()=>ExaminaGreekNumber.candidates());
   assert(number.some(x=>x.prompt==='ὁ αὐτὸς ἄνθρωπος'&&x.answer==='οἱ αὐτοὶ ἄνθρωποι'));
