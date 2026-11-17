@@ -212,6 +212,8 @@ jobs:
           name: vocabulario-diez-frases-word
           path: test-artifacts/vocabulario-latin-10-frases.docx
           if-no-files-found: ignore
+      - name: Verificar revisión léxica y género griego de Eulexis
+        run: node scripts/test-lex-review-eulexis.cjs
       - name: Comprobar menús léxicos, modificación preverbial y Word
         run: node scripts/test-lex-menu-sync.cjs
       - name: Verificar editores bidireccionales en todas las materias, modelos y Word
