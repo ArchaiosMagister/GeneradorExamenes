@@ -115,14 +115,20 @@ const server=http.createServer((request,response)=>{
       }));
       if(width<=950)assert.notEqual(mobileState.core,'none',
        where+': la selección del escritorio ocultó Configuración en iPad/móvil');
-      if(width<=950)assert.notEqual(mobileState.score,'none',
-       where+': la selección del escritorio ocultó Puntuación en iPad/móvil');
       if(width>950)assert(got.fit,where+': accesos recortados');
       if(width<=760)assert(got.headingMin>=44,where+': altura táctil insuficiente');
       else assert(got.headingMin<=43,where+': cabecera de preguntas demasiado alta');
       assert(got.headingFits,where+': título de pregunta recortado');
       assert(got.panelFit,where+': panel fuera de pantalla');
       assert.notEqual(got.foreground,got.background,where+': contraste de cabecera');
+     }
+     if(width<=900){
+      await page.locator('#examQuestionsTab').click();
+      assert(await page.locator('#examScoring').isVisible(),
+       filename+'/'+width+': Puntuación debe seguir disponible en Preguntas móvil');
+      assert(await page.locator('#examQuestionSettings').isVisible(),
+       filename+'/'+width+': Preguntas debe seguir disponible en móvil');
+      await page.locator('#examSettingsTab').click();
      }
     }
     await page.setViewportSize({width:1440,height:820});
