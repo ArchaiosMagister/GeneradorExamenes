@@ -6850,10 +6850,24 @@ function latinApprovedSyntagmAdjective(noun,adjectives,limit){
 function latinCompleteDeclensionItems(chosen){
  const nouns=latinExamNominals(chosen);
  if(!latinCompleteCompoundActive(chosen))return nouns;
+ const limit=Math.max(0,...chosen.map(examUnitNumber).filter(Number.isInteger));
+ // Una UD con adjetivos también puede ejercitar sustantivos YA ESTUDIADOS
+ // en UDs anteriores, pero exclusivamente los pares ratificados. No se
+ // modifica el resto del banco de tablas ni los exigibles de la unidad.
+ const approved=new Set((latinApprovedSyntagms[currentCourse()]||[])
+  .filter(([, ,from])=>from<=limit).map(([lemma])=>lemma));
+ const present=new Set(nouns.map(item=>mNormalize(item.p.lemma).toLowerCase()));
+ for(const x of latinSharedBank.vocabulary(currentCourse())){
+  const wordUnit=examUnitNumber(x.unit);
+  if(!Number.isInteger(wordUnit)||wordUnit>limit||isProperNounLemma(x.entry))continue;
+  const p=mNoun(x.entry),lemma=p&&mNormalize(p.lemma).toLowerCase();
+  if(!approved.has(lemma)||present.has(lemma)||
+   (currentCourse()==='latin1'&&limit<4&&!/^[12]/.test(p.kind)))continue;
+  nouns.push({x,p});present.add(lemma);
+ }
  const adjectives=latinCompleteAdjectives(chosen);
  if(!adjectives.length)return []; // No se inventan adjetivos fuera del programa.
  const orderedAdjectives=sample(adjectives,adjectives.length);
- const limit=Math.max(0,...chosen.map(examUnitNumber).filter(Number.isInteger));
  return nouns.map((item,index)=>{
   const adjectival=latinApprovedSyntagmAdjective(item,adjectives,limit)||
    orderedAdjectives[index%orderedAdjectives.length],gender=latinCompleteNounGender(item);
@@ -6865,10 +6879,14 @@ function latinCompleteDeclensionItems(chosen){
    if(i===0&&k===0)return stem+({m:'us',f:'a',n:'um'}[gender]);
    return stem+ending;
   }));
+  const adjectiveFirst=['agricola','nauta','poeta'].includes(
+   mNormalize(item.p.lemma).toLowerCase())&&
+   mNormalize(headLex(adjectival.x.entry)).toLowerCase()==='bonus';
   return {...item,compound:{
    adjective:adjectival.x,gender,
    title:latinDisplayEnunciation(adjectival.x.entry)+' + '+latinDisplayEnunciation(item.x.entry),
-   forms:item.p.forms.map((number,i)=>number.map((surface,k)=>surface+' '+adjectiveForms[i][k]))
+   forms:item.p.forms.map((number,i)=>number.map((surface,k)=>
+    adjectiveFirst?adjectiveForms[i][k]+' '+surface:surface+' '+adjectiveForms[i][k]))
   }};
  }).filter(Boolean);
 }
