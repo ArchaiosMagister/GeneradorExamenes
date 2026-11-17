@@ -35,3 +35,5 @@ jobs:
         run: node scripts/test-compact-exam-sidebar.cjs
 
 # Comprobación revisada: cinco columnas y ancho adaptable.
+
+# Diagnóstico de dimensiones reales en iPad 1024.
