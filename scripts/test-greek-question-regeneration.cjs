@@ -27,13 +27,19 @@ async function select(page,model,unit){
 async function testKind(page,kind){
  const r=await page.evaluate(kind=>{
   const root=$('paper').querySelector('.exam-sheet');
-  const heading=root?.querySelector('.exam-question[data-greek-kind="'+kind+'"]');
+  // Los modelos completo y traducción agrupan las antiguas preguntas en
+  // alternativas: comprobar exactamente la misma preservación de nodos.
+  const grouped=!!root?.querySelector('.greek-choice-option');
+  const selector=grouped?'.greek-choice-option[data-greek-option="'+kind+'"]':
+   '.exam-question[data-greek-kind="'+kind+'"]';
+  const heading=root?.querySelector(selector);
   const key=root?.querySelector('#answerkey');
   const answer=key?.querySelector('h3[data-greek-kind="'+kind+'"]');
   const ids=greekExamState?.ids[kind]||[],pool=greekChoicePool(kind);
   if(!heading||!answer||!ids.length)return {skip:true,kind,ids:ids.length,headings:[...root.querySelectorAll('[data-greek-kind]')].map(x=>x.dataset.greekKind)};
   if(pool.filter(x=>!ids.includes(x.id)).length<ids.length)return {insufficient:true,kind};
-  const other=root.querySelector('.exam-question[data-greek-kind]:not([data-greek-kind="'+kind+'"])');
+  const other=grouped?root.querySelector('.greek-choice-option:not([data-greek-option="'+kind+'"])'):
+   root.querySelector('.exam-question[data-greek-kind]:not([data-greek-kind="'+kind+'"])');
   const otherAnswer=key.querySelector('h3[data-greek-kind]:not([data-greek-kind="'+kind+'"])');
   const header=root.querySelector('.exam-header');
   const sentence=root.querySelector('[data-sentence-slot="0"]');
@@ -47,10 +53,12 @@ async function testKind(page,kind){
   const after=$('paper').querySelector('.exam-sheet'),newIds=greekExamState.ids[kind];
   return {
    result,kind,sameRoot:after===root,
-   newHeading:after.querySelector('.exam-question[data-greek-kind="'+kind+'"]')!==heading,
+   newHeading:after.querySelector(selector)!==heading,
    newAnswer:after.querySelector('#answerkey h3[data-greek-kind="'+kind+'"]')!==answer,
    changedIds:JSON.stringify(ids)!==JSON.stringify(newIds),
-   sameOther:!other||other===after.querySelector('.exam-question[data-greek-kind="'+other.dataset.greekKind+'"]'),
+   sameOther:!other||other===after.querySelector(grouped?
+    '.greek-choice-option[data-greek-option="'+other.dataset.greekOption+'"]':
+    '.exam-question[data-greek-kind="'+other.dataset.greekKind+'"]'),
    sameOtherAnswer:!otherAnswer||after.querySelector('#answerkey').contains(otherAnswer),
    sameHeader:!header||header===after.querySelector('.exam-header'),
    sameKey:key===after.querySelector('#answerkey'),
