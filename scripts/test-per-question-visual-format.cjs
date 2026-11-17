@@ -66,6 +66,7 @@ async function configure(page,course,model,lang,ud){
  },{course,model,lang,ud});
 }
 async function setPer(page,k,field,value){
+ await page.locator('#examPanelShortcuts>button[data-target="examVisualSettings"]').click();
  await page.locator('#examVisualSettings').evaluate(el=>el.open=true);
  const el=page.locator('#examVisualQuestionRows input[data-exam-visual-key="'+k+'"][data-exam-visual-field="'+field+'"]');
  assert.equal(await el.count(),1,'No hay control individual '+k+' / '+field);

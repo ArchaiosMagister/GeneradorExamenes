@@ -134,6 +134,7 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
   assert.deepEqual(lexicon.preverbs.exam,lexicon.preverbs.editor);
   assert.equal(lexicon.latinisms.canonical,'ex libris');
   await page.waitForFunction(()=>!!window.ExaminaScoring);
+  await page.locator('#examPanelShortcuts>button[data-target="examScoring"]').click();
   await page.locator('#examScoring .exam-scoring-heading button').click();
   const score=await page.evaluate(()=>{
    window.ExaminaScoring.sync();

@@ -211,6 +211,8 @@ async function word(page,file,course,model,unit,lang,cumulative=true){
 async function edit(page,file,course,model,unit){
  const where=file+' '+course+'/'+model+'/'+unit;
  await configure(page,course,model,unit,'es');
+ // El editor de escritorio usa pestañas excluyentes: abrir Preguntas antes de editar.
+ await page.locator('#examPanelShortcuts>button[data-target="examQuestionSettings"]').click();
  const editor=page.locator('#examQuestionMenus .question-editor input[data-exam-editor-link]').first();
  if(!await editor.count()){
   issue('revisión',where,'No hay editor genérico vinculado que probar; revisar categorías específicas');

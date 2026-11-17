@@ -72,6 +72,7 @@ async function testIntegers(page,name){
 }
 async function testManualAndReview(page,name){
  await configure(page,'latin1','tablas','UD7');
+ await page.locator('#examPanelShortcuts>button[data-target="examScoring"]').click();
  const input=page.locator('#examScoring .exam-scoring-row input[data-scoring-key]:not([disabled])').first();
  assert(await input.count(),name+': no hay puntuación de pregunta editable');
  await input.fill('1,25');
