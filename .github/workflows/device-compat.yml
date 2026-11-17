@@ -3,6 +3,7 @@ name: Revisar integración V→VI en Safari y Android (sin despliegue)
 on:
   pull_request:
     paths:
+      - 'greek-choice-*.js'
       - 'index.html'
       - 'pdf-export.js'
       - 'scripts/test-export-workspace.cjs'

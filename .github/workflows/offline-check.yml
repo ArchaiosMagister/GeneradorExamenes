@@ -3,6 +3,7 @@ name: Comprobar versión autónoma
 on:
   pull_request:
     paths:
+      - 'greek-choice-*.js'
       - 'index.html'
       - 'exam-scoring.js'
       - 'unified-backup.js'
@@ -223,7 +224,7 @@ jobs:
         run: node scripts/test-question-part-regeneration.cjs
       - name: Fase III - regeneración aislada de preguntas de Griego I
         run: node scripts/test-greek-question-regeneration.cjs
-      - name: Fase III - preservar huecos y puntuar una unidad por oración
+      - name: Fase III - preservar huecos y puntuación por curso y modelo
         run: node scripts/test-sentence-points-and-drafts.cjs
       - name: Fase III - normas fonéticas acumulativas sin regenerar el examen
         run: node scripts/test-phonetic-filter-isolation.cjs

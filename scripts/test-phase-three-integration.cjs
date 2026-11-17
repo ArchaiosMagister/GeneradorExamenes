@@ -126,8 +126,8 @@ async function auditGreek(page,file){
   const key=original.querySelector('#answerkey');
   const header=original.querySelector('.exam-header');
   const sentences=original.querySelector('.exam-sentences');
-  const other=original.querySelector('.exam-question[data-greek-kind="forms"]');
-  const etym=original.querySelector('.exam-question[data-greek-kind="etymology"]');
+  const other=original.querySelector('.greek-choice-option[data-greek-option="forms"]');
+  const etym=original.querySelector('.greek-choice-option[data-greek-option="etymology"]');
   if(!key||!header||!sentences||!etym||!other)throw Error('Faltan apartados de Griego I');
   header.append(' ΕΛΕΓΧΟΣ');
   other.append(' DOCENTE-GRIEGO');
@@ -141,7 +141,7 @@ async function auditGreek(page,file){
    sameHeader:after.querySelector('.exam-header')===header,
    sameSentences:after.querySelector('.exam-sentences')===sentences,
    sameOther:after.contains(other),sameSentence:after.contains(sentence),
-   changedEtym:after.querySelector('.exam-question[data-greek-kind="etymology"]')!==etym,
+   changedEtym:after.querySelector('.greek-choice-option[data-greek-option="etymology"]')!==etym,
    headerMark:after.textContent.includes('ΕΛΕΓΧΟΣ'),otherMark:after.textContent.includes('DOCENTE-GRIEGO'),
    values,points:window.ExaminaScoring.total()};
  });

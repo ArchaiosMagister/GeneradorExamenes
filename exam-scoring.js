@@ -50,6 +50,8 @@
   language:document.getElementById('lang')?.value||'es'
  });
  const morph=()=>['morf','morphology'].includes(state().model);
+ const greekGrouped=()=>state().course==='greek1'&&!morph()&&
+  !!paper.querySelector('.exam-question[data-exam-kind="greek-competence"]');
  const review=()=>document.getElementById('sheetType')?.value==='review';
  const latin4LateNoCulture=()=>{
   if(state().course!=='latin4'||typeof selectedUnits!=='function')return false;
@@ -68,6 +70,12 @@
   const hasSentence=raw.some(x=>x.base==='sent'),sentence=hasSentence?sentenceCents():0;
   const latinLex=state().course!=='greek1'&&raw.some(x=>x.base==='lex');
   const available=Math.max(0,1000-sentence-(latinLex?200:0));
+  // Griego I: las alternativas optativas son UNA pregunta puntuable por grupo.
+  // Respeta la puntuación editable, también si Traducción conserva siete huecos.
+  if(state().course==='greek1'&&!morph()&&raw.some(x=>x.base==='greek-competence')){
+   return raw.map(x=>x.base==='greek-competence'?300:
+    x.base==='greek-plurilingual'?100:x.base==='sent'?600:0);
+  }
   const other=raw.filter(x=>x.base!=='sent'&&!(latinLex&&x.base==='lex'));
   let ordinal=0;
   // Los valores automáticos son puntos enteros, no céntimos repartidos:
@@ -131,6 +139,7 @@
    ...(node.matches(selector)?[node]:[]),...node.querySelectorAll(selector)
   ]);
   const base=question.base;
+  if(state().course==='greek1'&&['greek-competence','greek-plurilingual'].includes(base))return {optional:true,groups:[]};
   if(base==='lex'){
    // Latín I: se eligen DOS de varias alternativas, que no se responden juntas.
    // Únicamente el bloque de léxico tiene 2 p.; las alternativas no deben
@@ -424,7 +433,7 @@
  function setScore(key,cents,{source='field',activeInput=null}={}){
   if(cents===null)return false;
   const item=previousQuestions.find(item=>item.key===key);
-  if(item?.base==='sent')cents=sentenceCents();
+  if(item?.base==='sent'&&!greekGrouped())cents=sentenceCents();
   if(state().course!=='greek1'&&item?.base==='lex')cents=200;
   if(source==='auto')autoManaged.add(key);else autoManaged.delete(key);
   scores[key]=cents;persist();
@@ -476,7 +485,7 @@
    control.dataset.scoringKey=item.key;
    control.setAttribute('aria-label','Puntos de la pregunta '+(i+1)+': '+item.caption);
    control.value=value(scores[item.key]||0);
-   if(item.base==='sent'||(state().course!=='greek1'&&item.base==='lex')){
+   if((item.base==='sent'&&!greekGrouped())||(state().course!=='greek1'&&item.base==='lex')){
     control.disabled=true;
     control.title=item.base==='sent'?'Un punto por oración. Cambia el número de oraciones para variar el total.':'El léxico tiene puntuación fija de 2p.';
    }
@@ -526,7 +535,7 @@
    input.autocomplete='off';input.dataset.scoringKey=item.key;
    input.setAttribute('aria-label','Puntuación de '+item.caption);
    input.value=value(scores[item.key]||0);
-   if(target==='sent'||(state().course!=='greek1'&&target==='lex')){
+   if((target==='sent'&&!greekGrouped())||(state().course!=='greek1'&&target==='lex')){
     input.disabled=true;input.title=target==='sent'?'1 p. por oración':'Léxico: 2p. fijos';
    }
    input.addEventListener('input',()=>{
@@ -562,7 +571,8 @@
    const base=item.base;
    const duplicate=seen.get(base)||0;seen.set(base,duplicate+1);
    const key=storageKey(base+(duplicate?'#'+duplicate:''));
-   if(base==='sent')scores[key]=sentenceCents();
+   if(base==='sent'&&!greekGrouped())scores[key]=sentenceCents();
+   else if(base==='sent'&&greekGrouped()&&autoManaged.has(key))scores[key]=defaults[i];
    else if(state().course!=='greek1'&&base==='lex')scores[key]=200;
    else if(!Object.prototype.hasOwnProperty.call(scores,key)){
     // Los valores nuevos nacen de las preguntas realmente disponibles.
@@ -601,7 +611,7 @@
     pts.setAttribute('title','Modificar puntuación');
     pts.setAttribute('aria-label','Modificar puntuación de la pregunta '+(i+1));
     pts.textContent=label(scores[key]);
-    if(base==='sent'||(state().course!=='greek1'&&base==='lex')){
+    if((base==='sent'&&!greekGrouped())||(state().course!=='greek1'&&base==='lex')){
      pts.tabIndex=-1;
      pts.title=base==='sent'?'1 p. por oración':'Léxico: 2p. fijos';
     }

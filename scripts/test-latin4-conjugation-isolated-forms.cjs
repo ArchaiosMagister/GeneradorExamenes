@@ -137,7 +137,11 @@ async function snapshotOther(page){
     nodes.push(node);
    // Los identificadores de enlace pueden renovarse al rehidratar los editores;
    // no forman parte del contenido académico ni de las modificaciones del docente.
-   results.push(nodes.map(n=>n.outerHTML).join('').replace(/data-exam-editor-link="[^"]*"/g,'data-exam-editor-link="linked"'));
+   const stable=nodes.filter(n=>!n.matches('[data-greek-option="forms"]')).map(n=>n.cloneNode(true));
+   // El análisis ahora es una alternativa dentro de la competencia 1.
+   // Excluir solo esa alternativa, conservando la comparación de las demás.
+   stable.forEach(n=>n.querySelectorAll('[data-greek-option="forms"]').forEach(x=>x.remove()));
+   results.push(stable.map(n=>n.outerHTML).join('').replace(/data-exam-editor-link="[^"]*"/g,'data-exam-editor-link="linked"').replace(/ data-scoring-original="[^"]*"/g,''));
   }
   return results;
  });

@@ -128,6 +128,14 @@ export async function renderOffline(root=projectRoot){
  // Bibliotecas PDF y organización docente inyectadas en el HTML único:
  // sin CDN, sin URL de red y sin introducir scripts tras cerrar el documento.
  let bundled=offline;
+ // HTML autónomo: mismos cuatro motores del examen griego que en la PWA.
+ for(const file of ['greek-choice-number.js','greek-choice-retroversion.js',
+  'greek-choice-etymology.js','greek-choice-groups.js']){
+  const tag='<script src="'+file+'" defer></script>';
+  if(!bundled.includes(tag))throw new Error('Falta la extensión griega: '+file);
+  const code=await readFile(resolve(root,file),'utf8');
+  bundled=bundled.replace(tag,'<script>'+code.replace(/<\/script/gi,'<\\/script')+'</script>');
+ }
  for(const file of ['vendor/html2pdf.bundle.min.js','pdf-export.js','export-workspace.js']){
   // La PWA carga el motor PDF bajo demanda, pero el HTML único debe seguir
   // conteniéndolo sin ninguna descarga ni dependencia de la caché del navegador.
