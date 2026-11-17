@@ -71,6 +71,17 @@ const server=http.createServer((request,response)=>{
      assert.equal(state.chosen,target,filename+': pestaña no activada '+target);
      assert.deepEqual(state.visible,[target],filename+': no queda exclusivamente '+target);
      assert.deepEqual(state.pressed,[target],filename+': indicador incorrecto '+target);
+     const marker=await page.evaluate(()=>{
+      const active=document.querySelector('#examPanelShortcuts>button[aria-pressed="true"]');
+      const inactive=document.querySelector('#examPanelShortcuts>button[aria-pressed="false"]');
+      const a=getComputedStyle(active),b=getComputedStyle(inactive);
+      return {background:a.backgroundColor,inactive:b.backgroundColor,color:a.color,
+       shadow:a.boxShadow,weight:parseFloat(a.fontWeight)};
+     });
+     assert.notEqual(marker.background,marker.inactive,filename+': la pestaña activa no se distingue '+target);
+     assert.equal(marker.color,'rgb(255, 255, 255)',filename+': falta contraste del texto activo '+target);
+     assert(marker.shadow.includes('inset'),filename+': falta subrayado interior activo '+target);
+     assert(marker.weight>=800,filename+': falta énfasis tipográfico activo '+target);
      assert.equal(state.backups,target==='group-drafts',filename+': copia completa mal ubicada');
      if(['examVisualSettings','group-drafts'].includes(target))
       assert.equal(await page.locator('#'+target).evaluate(el=>el.open),true,
@@ -103,7 +114,10 @@ const server=http.createServer((request,response)=>{
         headingMin:parseFloat(style.minHeight),
         headingFits:summary.scrollHeight<=summary.clientHeight+2,
         foreground:style.color,background:style.backgroundColor,
-        panelFit:shell.getBoundingClientRect().right<=innerWidth+2
+        panelFit:shell.getBoundingClientRect().right<=innerWidth+2,
+        activeBackground:getComputedStyle(nav.querySelector('[aria-pressed="true"]')).backgroundColor,
+        activeForeground:getComputedStyle(nav.querySelector('[aria-pressed="true"]')).color,
+        inactiveBackground:getComputedStyle(nav.querySelector('[aria-pressed="false"]')).backgroundColor
        };
       },mode);
       const where=filename+'/'+width+'/'+mode;
@@ -116,6 +130,12 @@ const server=http.createServer((request,response)=>{
       if(width<=950)assert.notEqual(mobileState.core,'none',
        where+': la selección del escritorio ocultó Configuración en iPad/móvil');
       if(width>950)assert(got.fit,where+': accesos recortados');
+      if(width>950){
+       assert.notEqual(got.activeBackground,got.inactiveBackground,
+        where+': botón activo visualmente idéntico al inactivo');
+       assert.equal(got.activeForeground,'rgb(255, 255, 255)',
+        where+': el botón activo debe conservar texto blanco');
+      }
       if(width<=760)assert(got.headingMin>=44,where+': altura táctil insuficiente');
       else assert(got.headingMin<=43,where+': cabecera de preguntas demasiado alta');
       assert(got.headingFits,where+': título de pregunta recortado');
