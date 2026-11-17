@@ -77,7 +77,8 @@ async function run(page,file){
   await page.locator('[aria-label="Regenerar sintagma 1 de 1.c · Cambio de número"]').click();
   const newFirst=await first.textContent();
   const afterIds=await page.evaluate(()=>ExaminaGreekNumber.state().ids);
-  assert.notEqual(oldFirst,newFirst,file+'/'+model+': regeneración individual no cambió el sintagma: '+JSON.stringify({oldFirst,newFirst,beforeIds,afterIds}));
+  const diag=await page.evaluate(()=>ExaminaGreekChoiceGroups.lastDiagnostic);
+  assert.notEqual(oldFirst,newFirst,file+'/'+model+': regeneración individual no cambió el sintagma: '+JSON.stringify({oldFirst,newFirst,beforeIds,afterIds,diag}));
   assert((await page.locator('#paper').textContent()).includes('MARCA-DOCENTE'));
   assert((await page.locator('[data-greek-choice-slot="retroversion:1"]').textContent()).includes('GUARDA-RETRO'));
   await page.locator('[data-greek-custom="retro"] .exam-question-toggle').uncheck();
