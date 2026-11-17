@@ -115,6 +115,7 @@ function validateXml(xml,questions,before,gap){
     // capturarlos ahora evita confundir esa sincronización con una regeneración.
     const htmlAfterWord=await page.locator('#paper .exam-sheet').evaluate(el=>el.innerHTML);
 
+    await page.locator('#examPanelShortcuts>button[data-target="examVisualSettings"]').click();
     const layout=page.locator('#examVisualSettings');
     await layout.evaluate(el=>el.open=true);
     const change=async(id,value)=>{
