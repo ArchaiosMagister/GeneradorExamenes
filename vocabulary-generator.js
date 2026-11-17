@@ -1774,6 +1774,10 @@ function vocabularyGroups(rows,course,language='es'){
 
 function formatVocabularyEntry(row,mode,course,language='es'){
  let entry=displayEntry(row.entry,mode);
+ // Reaplicar la cita escolar a antiguas decisiones Eulexis sin reescribir
+ // los proyectos y conservando las indicaciones de tercera declinación.
+ if(course==='gr1'&&row.eulexisUnverified===true)
+  entry=window.ExaminaGreekEulexisCitation?.(entry)||entry;
  if(course==='gr1'){
   const raw=entry.trim();
   // Etiquetas gramaticales para invariables no etiquetadas en la fuente.
