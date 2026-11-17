@@ -75,14 +75,14 @@ Los sintagmas con adjetivo deberán contrastarse caso por caso con la tabla real
 
 Las traducciones al valenciano se prepararán **por sintagma y por contexto** (no sustituyendo mecánicamente palabras); se revisarán, por ejemplo, `la mar` y las formas de concordancia femenina. Conservar las cuatro unidades de progresión y las formas de tratamiento escolar existentes.
 
-## Decisiones antes de activar
+## Condiciones de activación y verificaciones pendientes
 
-1. Aprobar o corregir los seis candidatos iniciales de cada curso latino y fijar su unidad mínima.
-2. Aprobar los grupos griegos por bloque: **UD1–3**, **UD4**, **UD5**, **UD7**, **UD8**.
-3. Confirmar si los cuadros de declinación deben admitir solo sustantivo + adjetivo / artículo o también pronombre de identidad + sustantivo desde UD7.
+1. **Resuelto:** aprobados los seis candidatos iniciales de cada curso latino, con mínimo UD2/UD4 en Latín I y UD3/UD5 en Latín 4.º según la declinación.
+2. **Resuelto para UD1–7:** aprobados los grupos de **UD1–3**, **UD4**, **UD5**, **UD7**; **UD8 bloqueada** hasta verificar todas las casillas de πόλις.
+3. **Resuelto:** UD7 admite el pronombre de identidad + sustantivo en los cambios de número, según los paradigmas ya disponibles.
 4. Una vez aprobados, ampliar desde lemas **ya verificados y presentes en el banco**: cada expansión necesita tabla completa, concordancia y pruebas de todas sus casillas. No activar por el mero hecho de compartir terminación.
 
-**No incorporado al motor. Sin publicación.**
+**Activación curricular condicionada en la PR. Sin fusión ni publicación.**
 
 
 ## Resolución docente 17/11/2026 y ampliación
