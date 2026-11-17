@@ -1552,6 +1552,22 @@ function queryExamReader(name,word){
   });
  });
 }
+// El artículo en un enunciado procedente de Eulexis solo se conserva como
+// indicación de género cuando la declinación no es claramente la 1.ª o 2.ª.
+// La forma original y los datos de Eulexis permanecen inalterados.
+function greekEulexisCitation(value){
+ const raw=String(value||'').trim();
+ const trailing=raw.match(/^(.*?)(?:\s*,\s*|\s+)\(?\s*(ὁ|ἡ|τό|τὸ)\s*\)?\s*$/u);
+ const nucleus=trailing?trailing[1].trim():raw;
+ const parts=nucleus.split(/\s*,\s*/u);
+ if(parts.length<2)return raw;
+ const bare=x=>x.normalize('NFD').replace(/\p{M}/gu,'').toLocaleLowerCase('el');
+ const nom=bare(parts[0].replace(/^(?:ὁ|ἡ|τό|τὸ)\s+/u,'').trim());
+ const gen=bare(parts[1].replace(/[.\s]/gu,''));
+ if(!/(?:ος|ον|α|η|ας|ης)$/u.test(nom)||!/(?:ου|ης|ας)$/u.test(gen))return raw;
+ return nucleus.replace(/^(?:ὁ|ἡ|τό|τὸ)\s+/u,'').replace(/[,\s]+$/u,'').trim();
+}
+window.ExaminaGreekEulexisCitation=greekEulexisCitation;
 function validExternalGloss(choice){
  return ['collatinus','eulexis'].includes(choice?.source)&&
   typeof choice.entry==='string'&&choice.entry.length<=240&&examKey(choice.entry)&&
@@ -1641,6 +1657,7 @@ async function openExternalGlossLookup(identity){
    const school=chosen.school;
    proposed=school?(short&&school.short?school.short:school.entry):
     row.status==='documented'&&examKey(row.entry)===examKey(chosen.lemme)?row.entry:chosen.lemme;
+   if(reader==='Eulexis')proposed=greekEulexisCitation(proposed);
    entry.value=proposed;
    const known=examKey(row.entry)===examKey(chosen.lemme);
    gloss.value=(known?localizedGloss(row).value:'')||(reader==='Eulexis'||(lang==='es'&&chosen.lang==='es')?chosen.trad||'':'');
@@ -1949,8 +1966,9 @@ function buildFinalLexicon(chosen,sentences){
  let out=rows.length?'<p class="exam-gloss-title"><strong>'+($('lang').value==='va'?'Vocabulari':'Vocabulario')+'</strong></p><div class="final-gloss">'+rows.map(x=>{
   const entry=x.entry,localized=localizedGloss(x),verified=!missingTranslation(x);
   const gloss=!verified||(isRequired(entry,chosen)&&hideRequired)?'':': '+esc(quoteGloss(localized.value));
-  const visible=x.source==='collatinus'?externalCitationForExam(entry,course,chosen):latinExamGlossEntry(entry,course,chosen);
-  return '<div class="gloss-item">'+(greek?esc(entry):latinGlossCitation(visible))+gloss+'</div>';
+  const visible=x.source==='collatinus'?externalCitationForExam(entry,course,chosen):
+   greek&&x.source==='eulexis'?greekEulexisCitation(entry):latinExamGlossEntry(entry,course,chosen);
+  return '<div class="gloss-item">'+(greek?esc(visible):latinGlossCitation(visible))+gloss+'</div>';
  }).join('')+'</div>':'';
  const needsReview=!!(pending.length||passiveChoices.length||pendingChoices.size||selectedChoices.length||unresolved.size);
  if(needsReview)out+='<section class="exam-gloss-review-workspace no-print" aria-label="'+
