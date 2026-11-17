@@ -1,0 +1,30 @@
+# Temporal: PR #169; regeneración offline sólo en su rama, sin despliegue.
+name: PR169 regenerar HTML offline en rama
+on:
+  push:
+    branches:
+      - feat/exam-review-evolutio-greek-candidates-20261117
+permissions:
+  contents: write
+jobs:
+  rebuild-offline:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Regenerar HTML autónomo desde origen
+        run: npm run offline:build
+      - name: Sincronizar sólo HTML autónomo si cambia
+        run: |
+          if git diff --quiet -- offline.html; then
+            echo "HTML autónomo idéntico"
+            exit 0
+          fi
+          git add -- offline.html
+          git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" commit -m "build: sincronizar offline.html PR169 tras cambios de sintagmas"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
