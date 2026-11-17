@@ -74,11 +74,18 @@ async function run(page,file){
    document.querySelector('#paper .exam-header').append(' MARCA-DOCENTE');
    document.querySelector('[data-greek-choice-slot="retroversion:1"]').append(' GUARDA-RETRO');
   });
+  const buttonDiagnostics=await page.evaluate(()=>{
+   const b=document.querySelector('[aria-label="Regenerar sintagma 1 de 1.c · Cambio de número"]');
+   window.greekClickCapture=0;
+   b?.addEventListener('click',()=>{window.greekClickCapture++},true);
+   return {connected:b?.isConnected,onclick:String(b?.onclick),outer:b?.outerHTML.slice(0,350)};
+  });
   await page.locator('[aria-label="Regenerar sintagma 1 de 1.c · Cambio de número"]').click();
   const newFirst=await first.textContent();
   const afterIds=await page.evaluate(()=>ExaminaGreekNumber.state().ids);
   const diag=await page.evaluate(()=>ExaminaGreekChoiceGroups.lastDiagnostic);
-  assert.notEqual(oldFirst,newFirst,file+'/'+model+': regeneración individual no cambió el sintagma: '+JSON.stringify({oldFirst,newFirst,beforeIds,afterIds,diag}));
+  const capture=await page.evaluate(()=>window.greekClickCapture);
+  assert.notEqual(oldFirst,newFirst,file+'/'+model+': regeneración individual no cambió el sintagma: '+JSON.stringify({oldFirst,newFirst,beforeIds,afterIds,diag,capture,buttonDiagnostics}));
   assert((await page.locator('#paper').textContent()).includes('MARCA-DOCENTE'));
   assert((await page.locator('[data-greek-choice-slot="retroversion:1"]').textContent()).includes('GUARDA-RETRO'));
   await page.locator('[data-greek-custom="retro"] .exam-question-toggle').uncheck();
