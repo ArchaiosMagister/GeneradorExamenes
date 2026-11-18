@@ -70,10 +70,12 @@ async function testOne(browser,file,lang){
    current:ExaminaVisualFormat.snapshot().indentPt,
    headingWord:wordExamParagraph(heading),
    itemWord:wordExamParagraph(analysis),
-   beforePt:ExaminaVisualFormat.snapshot().questionBeforePt
+   beforePt:ExaminaVisualFormat.snapshot().questionBeforePt,
+   pdfIndent:ExaminaPdfExport.prepareDocument().querySelector('.paper')?.style.getPropertyValue('--exam-indent-shift').trim()
   };
  });
  assert.equal(visual.current,18,file+': no se guardó la sangría');
+ assert.equal(visual.pdfIndent,'18pt',file+': el PDF pierde la sangría del profesor');
  assert(Math.abs((visual.after-visual.before)-24)<0.15,file+': sangría visual incorrecta '+JSON.stringify(visual));
  assert(visual.same,file+': cambiar sangría reconstruyó el examen');
  assert(visual.headingWord.includes('w:left="720"'),file+': sangría Word del número');
