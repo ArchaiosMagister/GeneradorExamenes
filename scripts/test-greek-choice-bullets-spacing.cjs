@@ -30,6 +30,32 @@ for(const file of ['index.html','offline.html'])for(const model of ['complete'])
     'La alternativa no reinicia i., ii., iii.: '+JSON.stringify(marks));
  assert(initial.number.every(x=>!/(?:singular|plural):/i.test(x)));
  assert(initial.customInputs.every(x=>!/^\s*◦/.test(x)),'La viñeta no pertenece al contenido del editor');
+ // Comprobar "Declina" y los 2 pt adicionales entre enunciado y primera tabla,
+ // tanto en vista previa como en documento PDF y en espaciado OOXML de Word.
+ const tableIntros=await page.evaluate(()=>{
+  const inspect=doc=>Object.fromEntries(['declension','conjugation'].map(kind=>{
+   const group=doc.querySelector('.greek-choice-option[data-greek-option="'+kind+'"]');
+   const heading=group?.querySelector(':scope > p.greek-choice-subquestion');
+   const table=heading?.nextElementSibling;
+   if(!heading||!table?.matches('table.exam-paradigm'))throw Error('Falta enunciado o tabla: '+kind);
+   return [kind,{label:heading.textContent.trim(),margin:parseFloat(getComputedStyle(table).marginTop),
+    word:wordBlock(heading)}];
+  }));
+  const screen=inspect(document);
+  const doc=ExaminaPdfExport.prepareDocument(),mount=document.createElement('div');
+  mount.style.cssText='position:absolute;left:-100000px';mount.append(doc);document.body.append(mount);
+  let pdf;try{pdf=inspect(doc)}finally{mount.remove()}
+  return {screen,pdf,menu:document.querySelector('#examQuestionMenus [data-question="decl"] .exam-question-name')?.textContent.trim()};
+ });
+ const targetPx=2*96/72;
+ assert.equal(tableIntros.menu,'1.a · Declina');
+ assert(!tableIntros.screen.declension.label.includes('Tablas para declinar'));
+ assert.match(tableIntros.screen.declension.label,/Declina[.]/u);
+ for(const kind of ['declension','conjugation']){
+  assert(Math.abs(tableIntros.screen[kind].margin-targetPx)<.3,kind+' sin 2 pt adicionales en pantalla');
+  assert(Math.abs(tableIntros.pdf[kind].margin-targetPx)<.3,kind+' sin 2 pt adicionales en PDF');
+  assert(tableIntros.screen[kind].word.includes('w:after="160"'),kind+' sin los 40 twips añadidos en Word');
+ }
  await page.evaluate(()=>{window.__spacingSheet=document.querySelector('#paper .exam-sheet');window.__spacingRows=[...document.querySelectorAll('[data-greek-choice-slot]')];document.querySelector('#paper .exam-header').append(' ESPACIO_DOCENTE')});
  const html=await page.locator('#paper .exam-sheet').innerHTML();
  await gap(page,model,'greek-competence',14);

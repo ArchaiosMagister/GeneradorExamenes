@@ -79,7 +79,7 @@
   nodes.forEach(n=>n.remove());return nodes;
  }
  const labels={
-  declension:['Tablas para declinar.','Taules per a declinar.'],
+  declension:['Declina.','Declina.'],
   forms:['Análisis morfológico.','Anàlisi morfològica.'],
   conjugation:['Conjugación de verbos.','Conjugació de verbs.'],
   etymology:['Escribe al menos dos derivados etimológicos a partir de los siguientes términos griegos.',
@@ -383,7 +383,7 @@
   return true;
  }
  const menuLabels={
-  decl:'1.a · Tablas para declinar',forms:'1.b · Análisis morfológico',
+  decl:'1.a · Declina',forms:'1.b · Análisis morfológico',
   verb:'1.e · Conjugación de verbos',etymology:'2.a · Derivación etimológica',
   sent:'3 · Análisis y traducción de oraciones'
  };
@@ -554,6 +554,9 @@
  style.textContent='.paper .greek-choice-option{margin:0 0 8pt 0;break-inside:auto}'+
   '.paper .greek-choice-subquestion{margin-top:8pt;font-weight:normal;break-after:avoid}'+
   '.paper .greek-choice-option .exam-paradigm{margin-bottom:7pt}'+
+  // Dos puntos entre el enunciado de declinación o conjugación y su primera tabla.
+  '.paper .greek-choice-option[data-greek-option="declension"] > p.greek-choice-subquestion + table.exam-paradigm,'+
+  '.paper .greek-choice-option[data-greek-option="conjugation"] > p.greek-choice-subquestion + table.exam-paradigm{margin-top:2pt!important}'+
   '.paper .greek-choice-option > .exam-item + .exam-item{margin-top:4pt}'+
   '.paper .greek-choice-option .exam-etymology{display:grid;grid-template-columns:1fr;row-gap:4pt}'+
   '.paper .greek-choice-option .exam-etymology>[data-corpus-id]{display:block;width:auto;margin:0}'+
