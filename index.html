@@ -5369,7 +5369,7 @@ function greekBalancedAdjectiveSample(pool,count,previousIds=[]){
   // La clase 2-1-2 incluye los dos paradigmas excepcionales. Si existen,
   // favorecerlos tres de cada cuatro sorteos, sin suprimir los regulares.
   const irregular=type==='2-1-2'?choices.filter(x=>x.greekIrregular):[];
-  pick(irregular.length&&Math.random()<.75?irregular:choices);
+  pick(irregular.length&&(count>=3||Math.random()<.75)?irregular:choices);
  }
  // Restantes casillas: priorizar fichas y superficies nuevas sin reducir
  // la cantidad elegida aunque el banco de una clase sea pequeño.
