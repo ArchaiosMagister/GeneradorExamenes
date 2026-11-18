@@ -32,16 +32,17 @@ async function configure(page,unit,lang,model='complete'){
 async function audit(page,lang,unit){
  return page.evaluate(({lang,unit})=>{
   const chosen=ExaminaGreekNumber.current();
-  const host=document.querySelector('#greekNumberGlossary');
+  const host=document.querySelector('#examSentenceGlossary');
   const terms=[...host?.querySelectorAll('.gloss-item')||[]].map(x=>x.textContent.trim());
+  const added=[...host?.querySelectorAll('[data-greek-number-entry]')||[]].map(x=>x.textContent.trim());
   const sources=chosen.map(x=>greekVerifiedCorpus.find(noun=>noun.id===x.source)).filter(Boolean);
   const expectedNouns=[...new Set(sources.map(greekNominalEnunciation))];
   return {
    chosen:chosen.map(x=>({id:x.id,source:x.source,prompt:x.prompt,answer:x.answer,adjective:x.adjective,pronoun:x.pronoun})),
    title:host?.querySelector('.exam-gloss-title')?.textContent.trim(),
-   terms,expectedNouns,selectedGroup:!!document.querySelector('.greek-choice-option[data-greek-option="change-number"]'),
+   terms,added,legacy:!!document.querySelector('#greekNumberGlossary'),expectedNouns,selectedGroup:!!document.querySelector('.greek-choice-option[data-greek-option="change-number"]'),
    className:host?.className||'',contenteditable:host?.getAttribute('contenteditable'),
-   pdf:!!ExaminaPdfExport.prepareDocument().querySelector('#greekNumberGlossary'),
+   pdf:!!ExaminaPdfExport.prepareDocument().querySelector('#examSentenceGlossary .final-gloss .gloss-item'),
    unit,lang,
   };
  },{lang,unit});
@@ -58,7 +59,9 @@ async function audit(page,lang,unit){
     const start=await audit(page,lang,unit);
     assert(start.selectedGroup,'No aparece la actividad de cambio de número');
     assert(start.terms.length>0,'Glosario vacío con actividad elegida');
-    assert(start.title.includes(lang==='va'?'Enunciats':'Enunciados'),'Cabecera de glosario sin traducir');
+    assert(start.title.includes(lang==='va'?'Vocabulari':'Vocabulario'),'No se unifica en el vocabulario de oraciones');
+    assert.equal(start.legacy,false,'Persistió el glosario independiente');
+    assert(start.added.length>0,'No se añadieron los enunciados de cambio de número al glosario central');
     for(const entry of start.expectedNouns)assert(start.terms.includes(entry),'Falta enunciado nominal '+entry);
     for(const row of start.chosen){
      assert(!start.terms.includes(row.answer),'El glosario ofrece por error la respuesta '+row.answer);
@@ -71,9 +74,9 @@ async function audit(page,lang,unit){
     assert(regenerated.terms.length>0,'Regenerar perdió los lemas');
     for(const entry of regenerated.expectedNouns)assert(regenerated.terms.includes(entry),'El glosario no actualiza '+entry);
     await page.evaluate(()=>{$('autoGloss').checked=false;$('autoGloss').dispatchEvent(new Event('change',{bubbles:true}))});
-    assert.equal(await page.locator('#greekNumberGlossary').count(),0,'Desmarcar glosario no oculta los enunciados');
+    assert.equal(await page.locator('[data-greek-number-entry]').count(),0,'Desmarcar glosario no oculta los enunciados');
     await page.evaluate(()=>{$('autoGloss').checked=true;$('autoGloss').dispatchEvent(new Event('change',{bubbles:true}))});
-    assert(await page.locator('#greekNumberGlossary').count(),'Reactivar glosario no restaura los lemas');
+    assert(await page.locator('[data-greek-number-entry]').count(),'Reactivar glosario no restaura los lemas');
    }
    const bytes=Buffer.from(await page.evaluate(async()=>{
     const original=downloadBlob;let blob;
@@ -82,11 +85,11 @@ async function audit(page,lang,unit){
     return [...new Uint8Array(await blob.arrayBuffer())];
    }));
    const xml=entry(bytes,'word/document.xml');
-   assert(xml.includes(lang==='va'?'Enunciats per al canvi de nombre':'Enunciados para el cambio de número'),
-    'El Word omite el glosario del cambio de número');
+   assert(xml.includes(lang==='va'?'Vocabulari':'Vocabulario')&&xml.includes('ὁ, ἡ, τό'),
+    'El Word omite los enunciados del glosario central');
    // El modelo de morfología no debe recibir la ampliación del examen completo.
    await configure(page,5,lang,'morphology');
-   assert.equal(await page.locator('#greekNumberGlossary').count(),0,
+   assert.equal(await page.locator('[data-greek-number-entry]').count(),0,
     'El glosario de cambio de número invade la morfología parcial');
    assert.deepEqual(errors,[],file+'/'+lang+': errores JS');
    console.log('NUMBER_GLOSSARY '+JSON.stringify({file,lang,word:true,pdf:true,units:[3,5]}));
