@@ -4442,7 +4442,7 @@ function greekCompleteNominalGroup(item,forMorphology=false,preferred=null){
  const gender=greekSyntagmNounGenders[item.id.slice(2)];
  if(!gender)return null; // No adivinar el género ni la declinación.
  const available=greekAvailableSyntagmModifiers(greekLimit()).filter(x=>greekSemanticallyValidSyntagm(item,x));
- const adjective=preferred&&available.find(x=>x.lemma===preferred.lemma)||
+ const adjective=preferred?available.find(x=>x.lemma===preferred.lemma):
   greekSyntagmAdjective(item,available);
  if(!adjective)return null;
  const forms=greekCompleteAdjectiveForms(adjective,gender),articles=greekArticles[gender];
