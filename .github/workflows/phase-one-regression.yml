@@ -18,6 +18,7 @@ on:
       - 'scripts/test-phase-five.cjs'
       - 'scripts/test-phase-six.cjs'
       - 'scripts/test-greek-morph-regeneration.cjs'
+      - 'scripts/test-greek-ud5-quota-indent.cjs'
       - 'scripts/test-exam-ui-redesign.cjs'
       - 'scripts/test-examinator-theme.cjs'
       - 'scripts/test-toolbar-button-sizes.cjs'
@@ -61,6 +62,8 @@ jobs:
         run: node scripts/test-latin-passive-phrases.cjs
       - name: Greek morphology regeneration web and offline
         run: node scripts/test-greek-morph-regeneration.cjs
+      - name: Greek UD5 noun, adjective and verb quotas; Word and screen indent
+        run: node scripts/test-greek-ud5-quota-indent.cjs
       - name: Exam UI redesign in iPad, forms, Word and vocabulary isolation
         run: node scripts/test-exam-ui-redesign.cjs
       - name: Verificar tema Examinator sin efectos sobre Word/PDF

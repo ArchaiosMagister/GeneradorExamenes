@@ -94,34 +94,35 @@ async function audit(page,course,model,lang,file){
   return out;
  });
  const context=file+' '+course+'/'+model+'/'+lang;
+ const greek=course==='greek1';
  assert(v.questions.length>0,context+': sin preguntas');
  for(const q of v.questions){
-  close(q.css.margin,18,context+' pregunta margen');
+  close(q.css.margin,greek?0:18,context+' pregunta margen');
   close(q.css.padding,18,context+' pregunta sangría francesa');
   close(q.css.indent,-18,context+' pregunta texto');
   assert(q.number,context+': falta número con ancho propio');
   close(q.number.css?.width||q.number.padding,0,context+' número padding');
-  assert(isExpectedWordIndent(q.word,720,360),context+': Word pregunta no alineada');
+  assert(isExpectedWordIndent(q.word,greek?360:720,360),context+': Word pregunta no alineada');
   assert(q.word.includes('<w:tab/>'),context+': Word sin tabulación tras número');
  }
  for(const p of v.paras){
-  close(p.css.margin,36,context+' subpregunta margen');
+  close(p.css.margin,greek?18:36,context+' subpregunta margen');
   close(p.css.padding,18,context+' subpregunta sangría');
   close(p.css.indent,-18,context+' subpregunta texto');
   assert(p.letter,context+': falta letra propia en análisis o léxico');
-  assert(isExpectedWordIndent(p.word,1080,360),context+': Word análisis/léxico');
+  assert(isExpectedWordIndent(p.word,greek?720:1080,360),context+': Word análisis/léxico');
  }
  for(const list of v.lists){
-  close(list.css.margin,36,context+' lista margen');
+  close(list.css.margin,greek?18:36,context+' lista margen');
   close(list.css.padding,18,context+' lista sangría');
   close(list.before,18,context+' ancho de marcador a.');
   if(list.culture)close(list.firstPadding,0,context+' cultura sin sangría añadida');
   assert(list.items>0,context+': lista vacía');
-  assert(isExpectedWordIndent(list.word,1080,360),context+': Word lista al margen incorrecto');
+  assert(isExpectedWordIndent(list.word,greek?720:1080,360),context+': Word lista al margen incorrecto');
   for(const opt of list.nested){
    close(opt.css.margin,18,context+' opción de cultura');
    close(opt.css.padding,18,context+' sangría de opción');
-   assert(isExpectedWordIndent(opt.word,1800,360),context+': Word opción anidada');
+   assert(isExpectedWordIndent(opt.word,greek?1440:1800,360),context+': Word opción anidada');
   }
  }
  for(const e of v.etym){

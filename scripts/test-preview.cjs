@@ -546,7 +546,7 @@ async function checkFile(browser,filename){
    filename+': sección de cultura incoherente');
   assert((await page.locator('#paper .exam-header').textContent()).includes('trimestre'),filename+': encabezado sin trimestre');
   const listXml=await page.evaluate(()=>{const ol=document.createElement('ol');ol.type='a';ol.innerHTML='<li>Primera línea y continuación</li>';return wordBlock(ol)});
-  assert(listXml.includes('w:left="1080" w:hanging="360"')&&listXml.includes('<w:tab/>'),filename+': lista Word sin sangría y tabulación');
+  assert(listXml.includes('w:left="'+(course==='greek1'?'720':'1080')+'" w:hanging="360"')&&listXml.includes('<w:tab/>'),filename+': lista Word sin sangría y tabulación');
 
   // Comprueba el Blob DOCX construido al pulsar los botones de exportación.
   // La captura evita el bloqueo de descargas en navegadores headless bajo file://
