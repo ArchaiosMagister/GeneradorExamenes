@@ -206,13 +206,6 @@ button:disabled{opacity:.55;cursor:not-allowed}
 .exam-accordion>.field{margin:0 12px}
 .exam-accordion .menu-section{margin:8px 10px}
 .exam-accordion .menu-section>summary{background:#fafcff}
-.exam-question-config{padding:10px 12px}
-.exam-question-config label{font-size:13px;display:block;margin:5px 0}
-.exam-question-config input[type=number]{max-width:115px}
-.exam-question-config select,.exam-question-config input[type=text]{width:100%}
-.exam-question-config button{margin-top:7px}
-.exam-question-config .hint{margin:5px 0}
-.exam-question-config .question-editor{margin:9px 0;padding:8px 0;border-top:1px solid #e4e9f0}
 .legacy-question-fields{display:none!important}
 #manualMorphField{padding:4px 0;border:0}
 #manualMorphField>label,#manualMorphField>.hint{display:none}
@@ -264,8 +257,6 @@ html[data-course="greek1"] .paper .exam-sheet *{font-style:normal!important}
 #examLayout aside.panel .settings-group .buttons{gap:8px;margin-top:10px}
 #examLayout aside.panel .exam-accordion{margin:7px 0}
 #examLayout aside.panel .exam-accordion>summary{min-height:44px;padding:9px 35px 9px 11px;font-size:13px}
-#examLayout aside.panel .exam-question-config{padding:8px 10px}
-#examLayout aside.panel .exam-question-config .question-editor{margin:7px 0;padding:7px 0}
 #examLayout aside.panel .curriculum-preview{margin:8px 0;padding:9px 10px}
 #examLayout aside.panel .settings-group:has(>.settings-group-body>.field.legacy-question-fields):not(:has(>.settings-group-body>:not(.legacy-question-fields))){display:none}
 </style><style id="exam-final-visual-polish">
@@ -275,28 +266,6 @@ html[data-course="greek1"] .paper .exam-sheet *{font-style:normal!important}
  #examSelectionSummary .exam-summary-caption{font-size:10px;font-weight:800;letter-spacing:.075em;color:#526783;text-transform:uppercase;margin-bottom:3px}
  #examSelectionSummary .exam-summary-title{font-size:14px;font-weight:750;color:#24354c}
  #examSelectionSummary .exam-summary-details{font-size:12px;color:#52637a;margin-top:3px;overflow-wrap:anywhere}
- #examQuestionMenus{counter-reset:exam-question;display:grid;gap:8px;margin:8px 10px}
- #examLayout aside.panel #examQuestionMenus>details.menu-section{counter-increment:exam-question;margin:0;border:1px solid #ccd8e8;border-radius:10px;background:#fff;box-shadow:0 1px 2px #20344c0a}
- #examLayout aside.panel #examQuestionMenus>details.menu-section[open]{border-color:#91b0d2;box-shadow:0 2px 10px #20344c12}
- #examLayout aside.panel #examQuestionMenus>details.menu-section>summary{display:flex;align-items:center;gap:9px;min-height:48px;padding:9px 32px 9px 10px;background:#f6f8fc;color:#1c385a;line-height:1.4}
- #examLayout aside.panel #examQuestionMenus>details.menu-section>summary::before{content:counter(exam-question, decimal-leading-zero);display:inline-flex;align-items:center;justify-content:center;min-width:27px;height:27px;border:1px solid #b9cde3;border-radius:7px;background:#e7eff9;color:#214870;font-size:11px;font-weight:800;flex:0 0 auto}
- #examLayout aside.panel #examQuestionMenus>details.menu-section[open]>summary{background:#edf4fc;border-bottom:1px solid #d6e3ef}
- #examLayout aside.panel #examQuestionMenus>details.menu-section[data-included="false"]>summary{color:#5d6d80;background:#fafbfc}
- #examLayout aside.panel #examQuestionMenus>details.menu-section[data-included="false"]>summary::before{background:#f2f4f7;color:#66778a;border-color:#d6dfe8}
- #examQuestionMenus .exam-question-status{margin-left:auto;white-space:nowrap;font-size:11px;font-weight:650;color:#3d5873;flex:0 0 auto}
- #examQuestionMenus details[data-included="false"] .exam-question-status{color:#677589}
- #examQuestionMenus .exam-question-config{padding:10px 12px 12px;min-width:0}
- #examQuestionMenus .exam-question-config>label:has(>input[type=number]){display:flex;justify-content:space-between;align-items:center;gap:8px;line-height:1.5}
- #examQuestionMenus .exam-question-config>label>input[type=number]{max-width:86px;min-width:70px}
- #examQuestionMenus .lex-subparts{padding:10px;margin:10px 0;background:#f9fbfe;border:1px solid #d7e2ef;border-radius:9px}
- #examQuestionMenus .lex-subparts>label:first-child{font-size:13px;font-weight:750;color:#203e61}
- #examQuestionMenus .lex-word-control{display:grid;grid-template-columns:minmax(0,1fr) minmax(112px,auto);gap:7px;align-items:center;padding:7px 0;border-top:1px solid #e4ebf3;font-size:13px}
- #examQuestionMenus .lex-word-control>span{overflow-wrap:anywhere;font-weight:600}
- #examQuestionMenus .lex-word-control>button{font-size:12px;min-height:44px;line-height:1.35;padding:7px 9px}
- #examQuestionMenus .lex-norms-accordion{margin-top:9px;border-top:1px solid #d7e2ef}
- #examQuestionMenus .lex-norms-accordion>summary{cursor:pointer;padding:10px 0;font-size:13px;font-weight:650}
- #examQuestionMenus .lex-norms-accordion .lex-norms{margin:4px 0 0}
- #examQuestionMenus .question-editor{border-top:1px solid #e3eaf2;margin-top:11px;padding-top:9px}
  #examLayout aside.panel .notice{border:1px solid #e8d8ad;border-left:3px solid #c58a26;border-radius:7px;background:#fff9ec;color:#694d1e;padding:10px 12px;line-height:1.55}
  #examLayout aside.panel .notice.notice-success{border-color:#b9d9c8;border-left-color:#32815a;background:#f1faf4;color:#20583b}
  #examLayout aside.panel .notice.notice-error{border-color:#e9bdbd;border-left-color:#b43b3b;background:#fff3f2;color:#7c2727}
@@ -310,10 +279,6 @@ html[data-course="greek1"] .paper .exam-sheet *{font-style:normal!important}
  #examLayout>.paper:focus-within{border-color:#8aafd4}
 }
 @media screen and (max-width:420px){
- #examQuestionMenus .lex-word-control{grid-template-columns:minmax(0,1fr)}
- #examQuestionMenus .lex-word-control>button{text-align:center}
- #examLayout aside.panel #examQuestionMenus>details.menu-section>summary{gap:6px;padding-left:8px}
- #examQuestionMenus .exam-question-status{font-size:10px}
 }
 </style>
 <style id="greek-reference-layout">
@@ -569,7 +534,6 @@ select option:disabled{color:var(--field-muted)}
 #examLayout aside.panel #examFormatSettings>summary,
 #examLayout aside.panel #examQuestionSettings>summary{font-weight:750;font-size:14px;padding:12px;min-height:46px}
 #examLayout aside.panel #examFormatSettings>.field{padding:10px 12px}
-#examLayout aside.panel #examQuestionSettings #examQuestionMenus{padding:2px 7px 10px}
 #examLayout aside.panel #examQuestionSettings .menu-section{margin:8px 0}
 #examLayout aside.panel #examQuestionSettings .menu-section>summary{font-size:13px}
 #examLayout aside.panel #examSelectionSummary{margin:7px 0 11px}
@@ -632,27 +596,10 @@ html[data-appearance="dark"] #vocabularyGenerator #vgClearAll:hover,
 html[data-appearance="oled"] #vocabularyGenerator #vgClearAll:hover{background:#683333;color:#fff}
 #vgUnit[hidden]{display:none!important}
 </style><style id="examina-question-toggle-style">
-#examQuestionMenus .exam-question-toggle{flex:0 0 auto;width:19px;height:19px;margin:0;accent-color:var(--accent,#315cb1);cursor:pointer}
-#examQuestionMenus .exam-question-name{flex:1;min-width:0}
-#examQuestionMenus .exam-question-panel[data-available="false"]{opacity:.5}
-#examQuestionMenus .exam-question-panel[data-available="false"]>.exam-question-heading{background:#eceff2!important;color:#68717d!important}
-#examQuestionMenus .exam-question-panel[data-available="false"] .exam-question-toggle{cursor:not-allowed}
-#examQuestionMenus .exam-question-panel{border:1px solid var(--line,#dce3ec);border-radius:9px;margin:10px 0;overflow:hidden}
-#examQuestionMenus .exam-question-heading{display:flex;gap:9px;align-items:center;padding:12px;background:var(--soft,#eef3f9);color:var(--soft-ink,#243952);font-weight:700}
-#examQuestionMenus .exam-question-config{padding:10px 12px 13px}
-#examQuestionMenus .question-editor input{width:100%;min-height:42px}
 
 
 #examQuestionSettings.exam-questions-group{margin:12px 0;padding:8px 0}
 #examQuestionSettings.exam-questions-group>h3{margin:8px 12px;font-size:15px}
-#examQuestionMenus>details.exam-question-panel{margin:8px 0}
-#examQuestionMenus>details.exam-question-panel>summary{cursor:pointer;list-style:none}
-#examQuestionMenus>details.exam-question-panel>summary::-webkit-details-marker{display:none}
-#examQuestionMenus>details.exam-question-panel>summary:after{content:'▾';margin-left:6px}
-#examQuestionMenus>details.exam-question-panel[open]>summary:after{content:'▴'}
-#examQuestionMenus .exam-question-heading .exam-question-name{font-size:14px}
-#examQuestionMenus .exam-question-config{border-top:1px solid var(--line,#dae2ed)}
-#examQuestionMenus .exam-word-editor .exam-regenerate-word{margin-top:5px;font-size:12px}
 </style><style id="examina-question-points-style">
 #examScoring{margin:12px 0;border:1px solid var(--line,#ccd6e3);
  border-radius:10px;padding:12px;background:var(--surface,#fff)}
@@ -1062,9 +1009,7 @@ function refreshManualMorphWords(forceGreekDraft=false){
  targets.forEach(({el,kind})=>{
   const i=counters[kind]||0;counters[kind]=i+1;
   const row=document.createElement('div');row.className='exam-word-editor';
-  row.style.display='block';row.style.margin='7px 0';
   const caption=document.createElement('label');caption.textContent=kind+' '+(i+1);
-  caption.style.display='block';
   const input=document.createElement('input');input.type='text';
   const mode=kind==='Etimología'?'etymology':el.textContent.trim().endsWith(':')?'colon':'plain';
   input.value=examEditorPreviewValue(el,mode);
@@ -1091,7 +1036,8 @@ function refreshManualMorphWords(forceGreekDraft=false){
   if(cacheKind){
    const button=document.createElement('button');button.type='button';
    button.className='secondary exam-regenerate-word';
-   button.textContent=greekMorph?'Regenerar solo esta forma':'Cambiar solo esta palabra';
+   button.title=greekMorph?'Regenerar solo esta forma':'Cambiar solo esta palabra';
+   button.textContent=$('lang').value==='va'?'Una altra':'Otra';
    button.setAttribute('aria-label','Regenerar '+kind.toLowerCase()+' '+(i+1));
    button.dataset.regenerateKind=cacheKind;
    button.dataset.regenerateIndex=String(Number(el.parentElement.dataset.analysisSlot??i));
@@ -4617,7 +4563,7 @@ function greekExamControls(){
  const labels={declension:'Declinación',conjugation:'Conjugación',forms:'Análisis morfológico',pronouns:'Pronombres',etymology:'Derivados etimológicos'};
  for(const [kind,label] of Object.entries(labels)){
   const pool=greekChoicePool(kind),selected=greekExamState.ids[kind]||[];
-  const row=document.createElement('div');row.style.margin='12px 0';row.style.padding='9px';row.style.border='1px solid #dce3ec';row.style.borderRadius='8px';
+  const row=document.createElement('div');row.className='greek-question-options';
   const heading=document.createElement('strong');heading.textContent=label;row.append(heading);
   if(kind==='etymology'){
    const status=document.createElement('p');status.className='hint';
@@ -4643,17 +4589,18 @@ function greekExamControls(){
    const current=document.createElement('div');current.className='hint';
    current.textContent='Seleccionadas: ninguna';row.append(current);
   }
+  const actions=document.createElement('div');actions.className='greek-question-actions';
   const select=document.createElement('select');select.setAttribute('aria-label','Elegir '+label);
   for(const item of pool.filter(x=>!selected.includes(x.id))){const option=document.createElement('option');option.value=item.id;option.textContent=kind==='conjugation'?headLex(item.lemmas[0]):item.prompt;select.append(option)}
-  row.append(select);
+  actions.append(select);
   const add=document.createElement('button');add.type='button';add.className='secondary';add.textContent='Añadir al apartado';
-  add.disabled=!select.options.length;add.addEventListener('click',()=>greekAddChoice(kind,select.value));row.append(add);
+  add.disabled=!select.options.length;add.addEventListener('click',()=>greekAddChoice(kind,select.value));actions.append(add);
   const regen=document.createElement('button');regen.type='button';regen.className='secondary';regen.textContent='Regenerar '+label.toLowerCase();
-  regen.disabled=!pool.length;regen.addEventListener('click',()=>greekRegenerate(kind));row.append(regen);
+  regen.disabled=!pool.length;regen.addEventListener('click',()=>greekRegenerate(kind));actions.append(regen);row.append(actions);
   for(const [index,id] of selected.entries()){const item=pool.find(x=>x.id===id);if(!item)continue;
-   const edit=document.createElement('label');edit.style.display='block';edit.style.margin='9px 0';
-   edit.textContent=label+' '+(index+1)+' (editable): ';
-   const input=document.createElement('input');input.type='text';input.style.width='100%';
+   const word=document.createElement('div');word.className='exam-word-editor';
+   const edit=document.createElement('label');edit.textContent=label+' '+(index+1);
+   const input=document.createElement('input');input.type='text';
    const node=[...$('paper').querySelectorAll('[data-corpus-id]')]
     .find(element=>element.dataset.corpusId===id);
    // La palabra es el único elemento editable: el enunciado que la sigue
@@ -4679,19 +4626,21 @@ function greekExamControls(){
     }else target.textContent=value;
     warnExamManualSolution();
    });
-   edit.append(input);row.append(edit);
+   edit.append(input);word.append(edit);
    if(['declension','conjugation','forms'].includes(kind)){
     const single=document.createElement('button');single.type='button';
     single.className='secondary exam-regenerate-word';
-    single.textContent='Cambiar solo esta palabra';
+    single.title='Cambiar solo esta palabra';
+    single.textContent=$('lang').value==='va'?'Una altra':'Otra';
     single.setAttribute('aria-label','Regenerar '+label.toLowerCase()+' '+(index+1));
     single.onclick=()=>regenerateExamWord(({declension:'decl',conjugation:'verb',forms:'forms'})[kind],index);
-    row.append(single);
+    word.append(single);
    }
    const remove=document.createElement('button');remove.type='button';remove.className='secondary';
    remove.textContent='Quitar forma '+(index+1);
    remove.setAttribute('aria-label','Quitar '+(kind==='conjugation'?headLex(item.lemmas[0]):item.prompt));
-   remove.addEventListener('click',()=>greekRemoveChoice(kind,id));row.append(remove);
+   remove.addEventListener('click',()=>greekRemoveChoice(kind,id));word.append(remove);
+   row.append(word);
   }
   if(!pool.length){const note=document.createElement('p');note.className='hint';note.textContent='No hay entradas verificadas para las unidades seleccionadas.';row.append(note)}
   host.append(row);
@@ -6180,7 +6129,8 @@ loadTeacherLatinLexBanks();
      });
     }
     const button=document.createElement('button');button.type='button';button.className='secondary';
-    button.textContent='Cambiar solo esta forma';
+    button.title='Cambiar solo esta forma';
+    button.textContent=$('lang').value==='va'?'Una altra':'Otra';
     button.setAttribute('aria-label','Regenerar forma '+(i+1)+' de '+latinLexTitles[kind]);
     button.onclick=()=>regenerateLatinLexWord(kind,i);
     row.append(input,button);group.append(row);
@@ -6296,7 +6246,9 @@ loadTeacherLatinLexBanks();
    countControl(body,kind,morph);
    if(['decl','verb','forms','pronouns','lex','etymology','culture'].includes(kind)){
     const button=document.createElement('button');button.type='button';button.className='secondary';
-    button.textContent=currentCourse()==='greek1'&&morph?'Regenerar pregunta completa':'Regenerar palabras de esta pregunta';
+    const description=currentCourse()==='greek1'&&morph?'Regenerar pregunta completa':'Regenerar palabras de esta pregunta';
+    button.title=description;button.setAttribute('aria-label',description);
+    button.textContent='Regenerar pregunta';
     button.dataset.regenerateQuestion=kind;
     button.disabled=kind==='lex'&&!Object.values(latinLexBanks[currentCourse()]||{}).some(x=>x.length);
     button.onclick=()=>regenerateExamQuestion(kind);body.append(button);
@@ -6917,16 +6869,7 @@ body.exam-redesign #exam-ui-meta .ui-wide{grid-column:1/-1}
 body.exam-redesign #exam-ui-meta :is(#primaryCoursePicker,#primaryModelPicker){grid-column:span 3}
 body.exam-redesign #examQuestionSettings{margin:0}
 body.exam-redesign #examQuestionSettings>h3{margin:0 0 12px;font-size:16px}
-body.exam-redesign #examQuestionMenus{display:grid;gap:8px}
-body.exam-redesign #examQuestionMenus>details.exam-question-panel{margin:0;border-radius:10px;border:1px solid var(--line,#ccd7e4)}
-body.exam-redesign #examQuestionMenus .exam-question-heading{padding:12px;align-items:center;min-height:47px;gap:8px}
-body.exam-redesign #examQuestionMenus .exam-question-name{font-size:14px;line-height:1.4}
-body.exam-redesign #examQuestionMenus .exam-question-config{padding:12px;display:grid;gap:10px}
-body.exam-redesign #examQuestionMenus [data-included="false"]{opacity:.68;border-style:dashed}
 body.exam-redesign #examQuestionMenus [data-included="false"] .exam-question-config{display:none}
-body.exam-redesign #examQuestionMenus .question-editor{display:grid;gap:7px}
-body.exam-redesign #examQuestionMenus .exam-word-editor{padding:8px 0;border-top:1px solid var(--line,#ccd7e4)}
-body.exam-redesign #examQuestionMenus .exam-word-editor input{width:100%}
 body.exam-redesign #group-drafts .buttons{display:flex;gap:8px;flex-wrap:wrap}
 body.exam-redesign #group-drafts .buttons button{flex:1 1 152px}
 body.exam-redesign #exam-ui-bulk>summary{padding:8px;cursor:pointer;font-weight:700}
@@ -6972,7 +6915,6 @@ html[data-appearance="oled"] body.exam-redesign #exam-ui-shell :is(#exam-ui-core
 #examLayout aside.panel #exam-ui-meta :is(#course,#model){min-height:36px}
 #examLayout aside.panel #exam-ui-meta .sidebar-choices{display:none!important}
 #examLayout aside.panel #primaryUnitsPicker{margin-top:0}
-#examQuestionMenus #group-vocab{margin:0 12px 12px}
 #examScoring .exam-scoring-row,.exam-question-score-row{display:flex;align-items:center;flex-wrap:wrap;gap:8px}
 #examScoring .exam-scoring-row>span:first-child,.exam-question-score-row>span:first-child{flex:1 1 100px}
 .exam-score-stepper{display:inline-flex;align-items:center;gap:4px}
@@ -7386,7 +7328,7 @@ html[data-appearance="oled"] body.exam-redesign #exam-ui-shell :is(#exam-ui-core
   background:transparent;
   overflow:visible;
  }
- body.exam-redesign #examEditorPanel :is(.settings-group>summary,.exam-question-heading),
+ body.exam-redesign #examEditorPanel .settings-group>summary,
  body.exam-redesign #examEditorPanel #primaryExamHeading{
   background:var(--soft);
   color:var(--soft-ink);
@@ -7395,7 +7337,7 @@ html[data-appearance="oled"] body.exam-redesign #exam-ui-shell :is(#exam-ui-core
   padding:7px 10px;
  }
  body.exam-redesign #examEditorPanel #primaryExamHeading{margin-bottom:5px}
- body.exam-redesign #examEditorPanel :is(.settings-group>summary,.exam-question-heading):hover{
+ body.exam-redesign #examEditorPanel .settings-group>summary:hover{
   background:var(--editor-hover);
  }
  body.exam-redesign #exam-ui-shell :is(.field label,#exam-ui-meta label){color:var(--ink)}
@@ -7444,8 +7386,7 @@ html[data-appearance="oled"] body.exam-redesign #exam-ui-shell :is(#exam-ui-core
 </style>
 
 <style id="examinator2-menu-theme">
-/* Menús de examen inspirados en Examinator2/styles.css.
- * Solo presentación, sin modificar DOM, preguntas ni documento imprimible. */
+/* Estilos de pantalla de los menús de examen, inspirados en Examinator2/styles.css. */
 @media screen {
  body.exam-redesign #examLayout #examEditorPanel {
   font-family:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
@@ -7505,52 +7446,190 @@ html[data-appearance="oled"] body.exam-redesign #exam-ui-shell :is(#exam-ui-core
   outline:2px solid var(--focus-course);
   outline-offset:2px;
  }
- body.exam-redesign #examEditorPanel #examQuestionMenus {
-  gap:8px;
+ body.exam-redesign #examEditorPanel #examQuestionSettings {
+  --question-control-height:30px;
+  padding:8px;
  }
- body.exam-redesign #examEditorPanel #examQuestionMenus>details.exam-question-panel {
+ body.exam-redesign #examEditorPanel #examQuestionSettings>h3 {
+  margin:0 2px 6px;
+  font-size:14px;
+ }
+ body.exam-redesign #examEditorPanel #examQuestionMenus {
+  display:grid;
+  grid-template-columns:minmax(0,1fr);
+  gap:5px;
+  padding:0;
+ }
+ #examQuestionMenus>.exam-question-panel {
+  min-width:0;
   margin:0;
   background:var(--surface);
   border:1px solid var(--line);
-  border-radius:9px;
-  box-shadow:none;
+  border-radius:8px;
  }
- body.exam-redesign #examEditorPanel #examQuestionMenus>details.exam-question-panel>summary.exam-question-heading {
-  min-height:43px;
-  padding:9px 11px;
-  background:var(--surface);
+ #examQuestionMenus .exam-question-heading {
+  display:flex;
+  align-items:center;
+  gap:7px;
+  min-height:34px;
+  padding:4px 8px;
+  border-radius:7px;
   color:var(--soft-ink);
-  border-color:var(--line);
-  font-size:13.5px;
+  background:var(--surface);
+  font-size:13px;
   font-weight:650;
+  line-height:1.3;
+  cursor:pointer;
+  list-style:none;
  }
- body.exam-redesign #examEditorPanel #examQuestionMenus>details.exam-question-panel>summary.exam-question-heading:hover {
-  background:var(--secondary-bg);
+ #examQuestionMenus .exam-question-heading::-webkit-details-marker { display:none; }
+ #examQuestionMenus .exam-question-heading::after {
+  content:'';
+  flex:0 0 6px;
+  height:6px;
+  margin:0 2px 3px;
+  border:solid currentColor;
+  border-width:0 1px 1px 0;
+  transform:rotate(45deg);
  }
- body.exam-redesign #examEditorPanel #examQuestionMenus>details.exam-question-panel[open]>summary.exam-question-heading {
+ #examQuestionMenus details[open]>.exam-question-heading {
   border-bottom:1px solid var(--line);
+  border-radius:7px 7px 0 0;
  }
- body.exam-redesign #examEditorPanel #examQuestionMenus .exam-question-name {
-  font-size:13.5px;
-  line-height:1.4;
+ #examQuestionMenus details[open]>.exam-question-heading::after { transform:rotate(225deg); }
+ #examQuestionMenus .exam-question-heading:hover { background:var(--editor-hover); }
+ #examQuestionMenus .exam-question-heading:focus-visible {
+  outline:2px solid var(--focus-course);
+  outline-offset:-2px;
  }
- body.exam-redesign #examEditorPanel #examQuestionMenus .exam-question-config {
-  padding:10px 12px 12px;
-  gap:8px;
+ #examQuestionMenus [data-included="false"]>.exam-question-heading {
+  color:var(--muted);
  }
- body.exam-redesign #examEditorPanel #examQuestionMenus .exam-word-editor {
-  padding:8px 0;
+ #examQuestionMenus .exam-question-name { flex:1; min-width:0; }
+ #examQuestionMenus .exam-question-status {
+  color:var(--muted);
+  font-size:11px;
+  font-weight:500;
+  white-space:nowrap;
+ }
+ body.exam-redesign #exam-ui-shell #examQuestionMenus .exam-question-toggle {
+  flex:none;
+  width:17px;
+  height:17px;
+  min-height:0;
+  margin:0;
+  accent-color:var(--accent);
+ }
+ #examQuestionMenus .exam-question-config,
+ #examQuestionMenus .question-editor,
+ #examQuestionMenus .greek-question-options,
+ #examQuestionMenus .greek-choice-editor-rows {
+  display:grid;
+  grid-template-columns:minmax(0,1fr);
+  gap:5px;
+  min-width:0;
+ }
+ #examQuestionMenus .exam-question-config { padding:6px 8px 8px; }
+ #examQuestionMenus .question-editor:empty { display:none; }
+ #examQuestionMenus :is(label,.hint) {
+  margin:0;
+  font-size:12px;
+  line-height:1.35;
+ }
+ #examQuestionMenus .exam-question-config>label:has(> :is(input[type=number],select)) {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:6px;
+ }
+ #examQuestionMenus .exam-question-config>label>input[type=number] {
+  flex:0 0 5rem;
+  width:5rem;
+  text-align:end;
+ }
+ #examQuestionMenus .exam-question-config>label>select { max-width:65%; }
+ #examQuestionMenus .exam-ui-extra { grid-template-columns:minmax(0,1fr); }
+ #examQuestionMenus .lex-subparts {
+  display:grid;
+  grid-template-columns:minmax(0,1fr);
+  gap:4px;
+  padding:5px 0;
   border-top:1px solid var(--line);
  }
+ #examQuestionMenus .lex-subparts>label:first-child,
+ #examQuestionMenus .lex-norms-accordion>summary { font-weight:650; }
+ #examQuestionMenus .lex-norms-accordion>summary { padding:4px 0; cursor:pointer; }
+ #examQuestionMenus .greek-question-options>strong {
+  position:absolute;
+  width:1px;
+  height:1px;
+  overflow:hidden;
+  clip-path:inset(50%);
+ }
+ #examQuestionMenus :is(.exam-word-editor,.lex-word-control,.greek-question-actions) {
+  display:flex;
+  align-items:end;
+  flex-wrap:wrap;
+  gap:4px 6px;
+  min-width:0;
+  padding:3px 0;
+  border-bottom:1px solid var(--line);
+ }
+ #examQuestionMenus .exam-word-editor>label {
+  flex:1 1 8rem;
+  min-width:0;
+ }
+ #examQuestionMenus :is(.lex-word-control>input,.greek-question-actions>select) {
+  flex:1 1 6rem;
+  min-width:0;
+ }
+ body.exam-redesign #exam-ui-shell #examQuestionMenus :is(input:not([type=checkbox]):not([type=radio]),select) {
+  min-height:var(--question-control-height);
+  min-width:0;
+  padding:4px 7px;
+ }
+ #examQuestionMenus .exam-word-editor input { display:block; width:100%; margin-top:3px; }
+ body.exam-redesign #exam-ui-shell #examQuestionMenus :is(.exam-word-editor,.lex-word-control) input[type=text] {
+  font-family:Palatino,"Palatino Linotype","Book Antiqua",Georgia,serif;
+  font-size:16px;
+ }
+ body.exam-redesign #exam-ui-shell #examQuestionMenus button:not(.exam-question-toggle) {
+  justify-self:start;
+  min-height:var(--question-control-height);
+  max-width:100%;
+  margin:0;
+  padding:4px 8px;
+  font-size:12px;
+  line-height:1.3;
+ }
+ body.exam-redesign #examEditorPanel #exam-ui-shell #examQuestionMenus :is([data-regenerate-question],.exam-regenerate-question) {
+  background:var(--soft);
+  border-color:var(--soft-border);
+  color:var(--soft-ink);
+  font-weight:650;
+ }
+ body.exam-redesign #examEditorPanel #exam-ui-shell #examQuestionMenus :is([data-regenerate-question],.exam-regenerate-question):hover:not(:disabled) {
+  background:var(--editor-hover);
+ }
+ #examQuestionMenus :is(.exam-regenerate-word,.lex-word-control>button) { white-space:nowrap; }
+ #examQuestionMenus #group-vocab { margin:0 8px 8px; }
+ @media (max-width:760px), (pointer:coarse) {
+  body.exam-redesign #examEditorPanel #examQuestionSettings { --question-control-height:44px; }
+  #examQuestionMenus .exam-question-heading { min-height:44px; }
+  body.exam-redesign #exam-ui-shell #examQuestionMenus .exam-question-toggle {
+   width:24px;
+   height:24px;
+  }
+ }
  body.exam-redesign #examEditorPanel #exam-ui-bulk {
-  padding:7px;
+  padding:5px;
   background:var(--surface);
   border:1px solid var(--line);
   border-radius:8px;
   box-shadow:none;
  }
  body.exam-redesign #examEditorPanel #exam-ui-bulk>summary {
-  padding:7px 8px;
+  padding:5px 7px;
   color:var(--soft-ink);
   font-weight:650;
   font-size:13px;
@@ -7582,11 +7661,8 @@ html[data-appearance="oled"] body.exam-redesign #exam-ui-shell :is(#exam-ui-core
  }
  body.exam-redesign #examEditorPanel #group-drafts .buttons { gap:7px; }
  @media (max-width:760px), (pointer:coarse) {
-  body.exam-redesign #examEditorPanel :is(#exam-ui-core,#examQuestionSettings,#examScoring,#examVisualSettings,#group-drafts) {
+  body.exam-redesign #examEditorPanel :is(#exam-ui-core,#examScoring,#examVisualSettings,#group-drafts) {
    padding:11px;
-  }
-  body.exam-redesign #examEditorPanel #examQuestionMenus>details.exam-question-panel>summary.exam-question-heading {
-   min-height:44px;
   }
  }
 }

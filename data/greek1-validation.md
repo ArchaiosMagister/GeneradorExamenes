@@ -29,7 +29,7 @@ Los ejercicios de etimología piden derivados, no la traducción del lema. Las r
 
 ## Pruebas reproducibles
 
-`node scripts/check-web.mjs` verifica sintaxis y controles principales. `node scripts/test-greek-ui.cjs`, con Playwright y un navegador instalado, comprueba 300 generaciones aleatorias para las tres modalidades, combinaciones de dos y varias unidades, límites gramaticales, cobertura disponible, puntuaciones, borradores, cambio de idioma, diseño móvil, colores por curso y nueve descargas DOCX. Permite configurar `PLAYWRIGHT_PATH`, `BROWSER_PATH` y `TEST_OUTPUT_DIR` sin instalar dependencias en la aplicación.
+`node scripts/check-web.mjs` verifica sintaxis y controles principales. `node scripts/test-greek-ui.cjs`, con Playwright y un navegador instalado, comprueba las 14 unidades, los dos modelos actuales, la selección de unidades, el idioma y el menú móvil en web y en el HTML autónomo. Las pruebas de borradores del modelo retirado y del enunciado de traducción están en `scripts/test-greek-two-modes-legacy-drafts.cjs`. La auditoría curricular y las exportaciones DOCX se verifican con `scripts/test-real-exam-audit.cjs`.
 
 Las exportaciones se comprueban además como ZIP y XML WordprocessingML, con separación de alumnado y soluciones. Las páginas renderizadas sirven para revisar tablas, politónico, espacio de respuesta y paginación. Tauri mantiene la fuente única `index.html`; el flujo de Mac sigue siendo exclusivamente manual y no se ha iniciado.
 

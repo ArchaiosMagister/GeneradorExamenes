@@ -40,6 +40,11 @@ for(const x of ['#examQuestionMenus','#exam-ui-meta','#exam-ui-bulk','#group-dra
 assert(!menuStyles[0].includes('@media print'),'La estética Examinator2 no debe alterar impresión');
 assert(!menuStyles[0].includes('#paper'),'El CSS no debe alterar la hoja de examen');
 assert(!menuStyles[0].includes('.vocab-manager'),'La estética no afecta al gestor de vocabulario');
-assert(!/(?:^|[;{\n])\s*(?:display|position|visibility|order|grid-template-columns)\s*:/m.test(menuStyles[0]),
- 'La estética no cambia la lógica de visualización ni la distribución estructural');
+for(const match of menuStyles[0].matchAll(/([^{}]+)\{([^{}]+)\}/g)){
+ const [,selector,declarations]=match;
+ if(/(?:^|[;\n])\s*(?:display|position|visibility|order|grid-template-columns)\s*:/.test(declarations)){
+  assert(selector.replace(/\([^()]*\)/g,'').replace(/\([^()]*\)/g,'').split(',').every(part=>part.includes('#examQuestionMenus')),
+   'La distribución solo puede cambiar en Preguntas: '+selector.trim());
+ }
+}
 console.log('Tema Examinator sincronizado en HTML web/autónomo, impresión intacta');

@@ -88,6 +88,82 @@ async function getState(page){
   };
  });
 }
+async function checkQuestionLayout(page,p,filename){
+ const profiles=['Safari escritorio','Safari iPad vertical','Android vertical'];
+ if(!profiles.includes(p.name))return;
+ if(p.expectedTabs)await page.locator('#examQuestionsTab').click();
+ else await page.locator('#examPanelShortcuts>[data-target="examQuestionSettings"]').click();
+ const menu=page.locator('#examQuestionMenus');
+ const combinations=[
+  ['latin1','tablas','UD4'],['latin1','morf','UD4'],['latin1','mixto','UD4'],
+  ['latin4','tablas','UD4'],['greek1','complete','UD10'],['greek1','morphology','UD10']
+ ];
+ for(const [course,model,unit] of combinations){
+  await page.evaluate(({course,model,unit})=>{
+   const change=(id,value)=>{
+    const input=document.getElementById(id);
+    input.value=value;
+    input.dispatchEvent(new Event('change',{bubbles:true}));
+   };
+   change('course',course);
+   change('model',model);
+   const selectors=[...document.querySelectorAll('#unitChoices .unit-choice')];
+   const selected=selectors.find(el=>units[Number(el.value)]===unit);
+   if(!selected)throw Error('Unidad no disponible: '+unit);
+   for(const input of selectors)input.checked=input===selected;
+   selected.dispatchEvent(new Event('change',{bubbles:true}));
+  },{course,model,unit});
+  const headings=menu.locator('details[data-included="true"] > summary.exam-question-heading');
+  assert(await headings.count(),course+'/'+model+': ninguna pregunta incluida');
+  const first=headings.first();
+  const cards=menu.locator(':scope > details');
+  await cards.evaluateAll(items=>items.forEach(el=>el.open=false));
+  await first.click({position:{x:42,y:14}});
+  assert(await first.evaluate(el=>el.parentElement.open),'El primer desplegable no se abre');
+  if(await headings.count()>1){
+   const second=headings.nth(1);
+   await second.click({position:{x:42,y:14}});
+   assert(await second.evaluate(el=>el.parentElement.open),'El segundo desplegable no se abre');
+   assert(await first.evaluate(el=>el.parentElement.open),'Se cerró otro desplegable');
+   await second.click({position:{x:42,y:14}});
+   assert(await second.evaluate(el=>!el.parentElement.open),'El segundo desplegable no se cierra');
+  }
+  await cards.evaluateAll(items=>items.forEach(el=>el.open=el.dataset.included==='true'));
+  for(const theme of ['light','dark','oled']){
+   await page.locator('#appearanceMode').selectOption(theme);
+   const issues=await menu.evaluate(el=>{
+    const errors=[];
+    const box=el.getBoundingClientRect();
+    const visible=node=>node.getClientRects().length&&node.getBoundingClientRect().height>0;
+    if(el.scrollWidth>el.clientWidth+1)errors.push('menú desbordado');
+    el.querySelectorAll('input:not([type=hidden]),select,textarea,button,summary').forEach(node=>{
+     if(!visible(node))return;
+     const rect=node.getBoundingClientRect();
+     if(rect.left<box.left-1||rect.right>box.right+1)errors.push(node.outerHTML.slice(0,160));
+    });
+    el.querySelectorAll('.exam-regenerate-word,.lex-word-control>button').forEach(button=>{
+     if(!visible(button))return;
+     const input=button.parentElement.querySelector('input[type=text]');
+     const field=input.getBoundingClientRect(),action=button.getBoundingClientRect();
+     if(Math.abs(field.bottom-action.bottom)>1||field.right>action.left)
+      errors.push('campo y sustitución en filas distintas');
+     if(!button.getAttribute('aria-label')||!button.title)errors.push('sustitución sin descripción');
+    });
+    return errors;
+   });
+   const label=[p.name,filename,course,model,theme].join(' ');
+   assert.deepEqual(issues,[],label);
+   if(process.env.QUESTION_SCREENSHOTS&&filename==='index.html'){
+    const name=[p.engine,p.width,course,model,theme].join('-')+'.png';
+    await headings.evaluateAll(items=>items.slice(1).forEach(el=>el.parentElement.open=false));
+    await menu.screenshot({path:path.join(process.env.QUESTION_SCREENSHOTS,name)});
+    await headings.evaluateAll(items=>items.slice(1).forEach(el=>el.parentElement.open=true));
+   }
+  }
+ }
+ console.log('Diseño de Preguntas comprobado en',p.name,filename,'6 modelos × 3 apariencias');
+}
+
 async function checkProfile(browser,p,filename,origin){
  const context=await browser.newContext({
   viewport:{width:p.width,height:p.height},hasTouch:p.mobile,isMobile:p.mobile,
@@ -249,6 +325,7 @@ async function checkProfile(browser,p,filename,origin){
      'Safari iPad WebKit no ejecutó el motor PDF tras solicitarlo');
    }
   }
+  await checkQuestionLayout(page,p,filename);
   assert.deepEqual(exceptions,[],filename+' '+p.name+': excepciones JavaScript');
   console.log('OK',p.name,filename,'preguntas',initial.questions,'subapartados',initial.details);
  }finally{await context.close()}
