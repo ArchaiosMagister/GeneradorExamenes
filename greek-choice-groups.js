@@ -167,7 +167,10 @@
   const previous=sheet.querySelector(':scope > #greekNumberGlossary');
   const allowed=$('autoGloss')?.checked!==false&&included('number')&&
    !!sheet.querySelector(':scope > .greek-choice-option[data-greek-option="change-number"]');
-  const terms=allowed?numberGlossaryLemmas():[];
+  const known=new Set([...sheet.querySelectorAll('#examSentenceGlossary .gloss-item')]
+   .map(x=>normLex(headLex(x.textContent))));
+  const terms=allowed?numberGlossaryLemmas().filter(
+   entry=>!known.has(normLex(headLex(entry)))):[];
   if(!terms.length){previous?.remove();return}
   const section=previous||document.createElement('section');
   section.id='greekNumberGlossary';
