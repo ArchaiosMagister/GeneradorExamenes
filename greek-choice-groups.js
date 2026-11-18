@@ -90,6 +90,14 @@
     'Escriu els ètims grecs dels quals deriven les paraules subratllades en esta oració.']
  };
  const label=kind=>t(...labels[kind]);
+ // Numeración real del tercer nivel: i., ii., iii.… (sin viñetas).
+ // El marcador reside en el DOM y se exporta igual a Word y PDF.
+ function roman(n){
+  const symbols=[[10,'x'],[9,'ix'],[5,'v'],[4,'iv'],[1,'i']];
+  let out='';
+  for(const [value,glyph] of symbols)while(n>=value){out+=glyph;n-=value}
+  return out;
+ }
  function option(kind,nodes){
   if(!nodes||!nodes.slice(1).some(el=>el.matches('[data-corpus-id]')||!!el.querySelector('[data-corpus-id]')))return null;
   const box=document.createElement('section');box.className='greek-choice-option';box.dataset.greekOption=kind;
@@ -105,7 +113,7 @@
    const slot=kind+':'+i;
    row.dataset.greekChoiceSlot=slot;
    const text=item.prompt;
-   row.innerHTML='<span class="exam-letter greek-choice-item-marker">◦</span> '+esc(edits.has(slot)?edits.get(slot):text);
+   row.innerHTML='<span class="exam-letter greek-choice-item-marker">'+roman(i+1)+'.</span> '+esc(edits.has(slot)?edits.get(slot):text);
    box.append(row);
   });
   return box;
@@ -132,22 +140,66 @@
   p.innerHTML=edits.has('roots:0')?editedRoots(item,edits.get('roots:0')):window.ExaminaGreekEtymSentence.render(item);
   box.append(p);return box;
  }
+ // El cambio de número evalúa la flexión, no la memoria léxica.
+ // Mostrar los enunciados de los paradigmas ya seleccionados, nunca la respuesta.
+ function numberGlossaryLemmas(){
+  const rows=APIs.number()?.current()||[];
+  const nouns=new Map(greekVerifiedCorpus.filter(x=>x.kind==='declension').map(x=>[x.id,x]));
+  const adjectives=greekAvailableSyntagmAdjectives(greekLimit());
+  const result=new Set();
+  for(const row of rows){
+   const noun=nouns.get(row.source);
+   if(noun){
+    const entry=greekNominalEnunciation(noun);
+    if(entry)result.add(entry);
+   }
+   if(row.adjective&&noun){
+    const modifier=adjectives.find(x=>x.lemma===row.adjective);
+    const parts=modifier?greekSyntagmEnunciation(noun,modifier).split(' + '):[];
+    result.add(parts[1]||row.adjective);
+   }
+   if(row.pronoun==='αὐτός')result.add('αὐτός, αὐτή, αὐτό');
+  }
+  return [...result].filter(Boolean);
+ }
+ function refreshNumberGlossary(sheet){
+  if(!sheet||!sheet.classList.contains('greek-choice-complete-exam'))return;
+  const previous=sheet.querySelector(':scope > #greekNumberGlossary');
+  const allowed=$('autoGloss')?.checked!==false&&included('number')&&
+   !!sheet.querySelector(':scope > .greek-choice-option[data-greek-option="change-number"]');
+  const known=new Set([...sheet.querySelectorAll('#examSentenceGlossary .gloss-item')]
+   .map(x=>normLex(headLex(x.textContent))));
+  const terms=allowed?numberGlossaryLemmas().filter(
+   entry=>!known.has(normLex(headLex(entry)))):[];
+  if(!terms.length){previous?.remove();return}
+  const section=previous||document.createElement('section');
+  section.id='greekNumberGlossary';
+  section.className='greek-number-glossary';
+  section.contentEditable='false';
+  const head=t('Enunciados para el cambio de número','Enunciats per al canvi de nombre');
+  section.innerHTML='<p class="exam-gloss-title"><strong>'+esc(head)+'</strong></p>'+
+   '<div class="greek-number-lexicon">'+terms.map(entry=>'<div class="gloss-item">'+esc(entry)+'</div>').join('')+'</div>';
+  if(!previous)sheet.querySelector(':scope > #answerkey')?.before(section);
+ }
  function itemText(node){
   const copy=node.cloneNode(true);copy.querySelector(':scope > .exam-letter')?.remove();
   return copy.textContent.replace(/^\s*\d+\.\s*/,'').trim();
  }
  function decorateItems(sheet){
+  sheet.classList.add('greek-choice-complete-exam');
   for(const option of sheet.querySelectorAll('.greek-choice-option')){
    option.dataset.greekChoiceGroup=['etymology','roots'].includes(option.dataset.greekOption)
     ?'greek-plurilingual':'greek-competence';
+   let index=0;
    for(const item of option.querySelectorAll('.exam-form,.exam-etymology [data-corpus-id],.greek-choice-generated-item')){
     let marker=item.querySelector(':scope > .exam-letter');
     if(!marker){
      const first=item.firstChild;
-     if(first?.nodeType===3)first.textContent=first.textContent.replace(/^\s*(?:[a-z]\.|\d+\.|◦)\s*/iu,'');
+     if(first?.nodeType===3)first.textContent=first.textContent.replace(/^\s*(?:[a-z]\.|\d+\.|[ivxlcdm]+\.|◦)\s*/iu,'');
      marker=document.createElement('span');marker.className='exam-letter';item.prepend(marker,' ');
     }
-    marker.textContent='◦';marker.classList.add('greek-choice-item-marker');
+    marker.textContent=roman(++index)+'.';
+    marker.classList.add('greek-choice-item-marker','greek-choice-roman-marker');
     if(item.dataset.greekChoiceSlot?.startsWith('change-number:'))
      for(const node of item.childNodes)if(node.nodeType===3)
       node.textContent=node.textContent.replace(/^(\s*)A (?:singular|plural):\s*/iu,'$1');
@@ -199,7 +251,12 @@
   const anchor=sheet.querySelector(':scope > #examSentenceGlossary')||sheet.querySelector(':scope > #answerkey');
   if(anchor)sheet.insertBefore(frag,anchor);else sheet.append(frag);
   decorateItems(sheet);
+  refreshNumberGlossary(sheet);
   syncExtraAnswers(sheet);
+  // El motor aplica ajustes antes del reagrupamiento. Recalcular las reglas
+  // sobre los títulos definitivos 1, 2 y 3 evita perder espaciados al cambiar
+  // unidad, regenerar un apartado o recuperar un borrador.
+  applyExamVisualFormat();
   window.greekLastPreview=$('paper').innerHTML;
   if(window.greekLastExam)window.greekLastExam.grouped=true;
  }
@@ -229,6 +286,14 @@
    }
   }
  }
+ // El glosario de oraciones se recalcula al editar; evitar duplicidades
+ // con el bloque de enunciados del cambio de número en esa misma operación.
+ const previousSentenceGlossaryRefresh=refreshSentenceGlossary;
+ refreshSentenceGlossary=function(...args){
+  const result=previousSentenceGlossaryRefresh(...args);
+  if(onlyGreek())refreshNumberGlossary($('paper').querySelector('.exam-sheet'));
+  return result;
+ };
  const previousGenerate=generateGreekExam;
  generateGreekExam=function(){
   previousGenerate();
@@ -311,6 +376,7 @@
    before.replaceWith(after);
   }
   syncExtraAnswers(oldSheet,kind,index);
+  if(kind==='change-number')refreshNumberGlossary(oldSheet);
   $('paper').replaceChildren(oldSheet);
   if($('model').value==='complete')greekExamControls();else refreshManualMorphWords();
   window.greekLastPreview=$('paper').innerHTML;refreshCustomRows();
@@ -462,6 +528,8 @@
  for(const id of ['course','model','lang'])$(id)?.addEventListener('change',()=>queueMicrotask(ensureMenu));
  document.addEventListener('change',event=>{
   if(event.target?.matches?.('#unitChoices .unit-choice'))queueMicrotask(ensureMenu);
+  if(event.target?.matches?.('#autoGloss'))queueMicrotask(()=>
+   refreshNumberGlossary($('paper').querySelector('.exam-sheet')));
  });
  $('paper')?.addEventListener('input',event=>{
   if(!onlyGreek())return;
@@ -489,7 +557,10 @@
   '.paper .greek-choice-option > .exam-item + .exam-item{margin-top:4pt}'+
   '.paper .greek-choice-option .exam-etymology{display:grid;grid-template-columns:1fr;row-gap:4pt}'+
   '.paper .greek-choice-option .exam-etymology>[data-corpus-id]{display:block;width:auto;margin:0}'+
-  '.paper .greek-choice-etym-sentence u{text-decoration:underline;text-underline-offset:2px}';
+  '.paper .greek-choice-etym-sentence u{text-decoration:underline;text-underline-offset:2px}'+
+  '.paper .greek-number-glossary{margin:8pt 0 0;break-inside:auto}'+
+  '.paper .greek-number-glossary .exam-gloss-title{margin-bottom:4pt}'+
+  '.paper .greek-number-glossary .greek-number-lexicon{columns:2;column-gap:24pt}';
  document.head.append(style);
  function snapshotChoices(){
   return {flags:{...flags[$('model').value]},number:APIs.number().state(),
@@ -507,6 +578,7 @@
   }
   lastScope=scopeKey();edits.clear();
   decorateItems($('paper'));
+  refreshNumberGlossary($('paper').querySelector('.exam-sheet'));
   for(const row of $('paper').querySelectorAll('[data-greek-choice-slot]'))
    edits.set(row.dataset.greekChoiceSlot,itemText(row));
   ensureMenu();

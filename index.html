@@ -3242,12 +3242,17 @@ function wordExamHeader(el){
  const border='<w:pBdr>'+['top','left','bottom','right'].map(side=>'<w:'+side+' w:val="single" w:sz="4" w:space="'+(side==='top'?0:side==='bottom'?2:4)+'" w:color="000000"/>').join('')+'</w:pBdr>';
  return [...el.children].map((p,i)=>'<w:p><w:pPr><w:keepNext/><w:keepLines/><w:tabs><w:tab w:val="left" w:pos="6591"/></w:tabs><w:ind w:left="45" w:right="45"/><w:spacing w:before="0" w:after="0" w:line="'+(i===0?340:380)+'" w:lineRule="exact"/>'+border+'</w:pPr>'+([...p.children].length===2?wordInline(p.children[0],true)+'<w:r><w:tab/></w:r>'+wordInline(p.children[1],true):wordInline(p,true))+'</w:p>').join('')+'<w:p><w:pPr><w:spacing w:before="0" w:after="0" w:line="50" w:lineRule="exact"/></w:pPr></w:p>';
 }
+// Sangrías docentes OOXML en centímetros (1 cm = 1440/2,54 twips).
+function wordCmTwips(cm){return Math.round(cm*1440/2.54)}
 function wordExamParagraph(el){
  const cls=el.classList,props=['<w:keepLines/>'];let runs=wordInline(el);
+ const greekFull=currentCourse()==='greek1'&&!!el.closest('.greek-choice-complete-exam');
+ const listHang=greekFull?wordCmTwips(.65):360;
+ const shift=examIndentPt()*20;
  if(cls.contains('exam-question')){
   const m=el.textContent.match(/^(\d+\.)\s*(.*)$/s);
-  const left=(currentCourse()==='greek1'?360:720)+examIndentPt()*20;
-  props.push('<w:keepNext/><w:ind w:left="'+left+'" w:hanging="360"/><w:tabs><w:tab w:val="left" w:pos="'+left+'"/></w:tabs><w:spacing w:before="'+(examVisualBeforeFor(el)*20)+'" w:after="120" w:line="290" w:lineRule="auto"/>');
+  const left=(greekFull?wordCmTwips(.6):currentCourse()==='greek1'?360:720)+shift;
+  props.push('<w:keepNext/><w:ind w:left="'+left+'" w:hanging="'+listHang+'"/><w:tabs><w:tab w:val="left" w:pos="'+left+'"/></w:tabs><w:spacing w:before="'+(examVisualBeforeFor(el)*20)+'" w:after="120" w:line="290" w:lineRule="auto"/>');
   if(cls.contains('exam-page-break'))props.push('<w:pageBreakBefore/>');
   if(m)runs=wordRun(m[1],true)+'<w:r><w:tab/></w:r>'+wordRun(m[2],true);
  }else if(cls.contains('exam-item')){
@@ -3268,15 +3273,17 @@ function wordExamParagraph(el){
     (custom??sentenceGapPoints())*20:0;
   // Al personalizar los intervalos, se suprime el margen posterior heredado.
   const after=custom!==null||cls.contains('exam-sentence')?0:currentCourse()==='greek1'?120:180;
-  const left=(currentCourse()==='greek1'?(cls.contains('greek-choice-generated-item')?1440:720):1080)+examIndentPt()*20;
-  props.push('<w:ind w:left="'+left+'" w:hanging="360"/><w:tabs><w:tab w:val="left" w:pos="'+left+'"/></w:tabs><w:spacing w:before="'+before+'" w:after="'+after+'" w:line="'+(cls.contains('exam-sentence')?'310':'260')+'" w:lineRule="atLeast"/>');
+  const firstLevel=cls.contains('greek-choice-subquestion');
+  const left=(greekFull?wordCmTwips(firstLevel?1.25:1.9):
+   currentCourse()==='greek1'?(cls.contains('greek-choice-generated-item')?1440:720):1080)+shift;
+  props.push('<w:ind w:left="'+left+'" w:hanging="'+listHang+'"/><w:tabs><w:tab w:val="left" w:pos="'+left+'"/></w:tabs><w:spacing w:before="'+before+'" w:after="'+after+'" w:line="'+(cls.contains('exam-sentence')?'310':'260')+'" w:lineRule="atLeast"/>');
   const letter=el.querySelector(':scope > .exam-letter');
   if(letter)runs=wordRun(letter.textContent.trim())+'<w:r><w:tab/></w:r>'+
    [...el.childNodes].filter(n=>n!==letter).map(n=>wordInline(n)).join('');
   else{const m=el.textContent.match(/^([a-z]\\.)\\s*(.*)$/s);
    if(m)runs=wordRun(m[1])+'<w:r><w:tab/></w:r>'+wordRun(m[2])}
  }else if(cls.contains('exam-etymology')){
-  // Las alternativas griegas usan viñetas; los demás modelos conservan dos columnas.
+  // Las alternativas griegas usan romanos; los otros modelos conservan dos columnas.
   const custom=examVisualItemGapOverride(examVisualOwner(el));
   const items=[...el.children];
   const itemRuns=item=>{
@@ -3285,11 +3292,14 @@ function wordExamParagraph(el){
    return wordRun(letter.textContent.trim())+'<w:r><w:tab/></w:r>'+
     [...item.childNodes].filter(n=>n!==letter).map(n=>wordInline(n)).join('');
   };
-  if(el.closest('.greek-choice-option'))return items.map((item,i)=>
-   '<w:p><w:pPr><w:keepLines/><w:ind w:left="1080" w:hanging="360"/>'+
-   '<w:tabs><w:tab w:val="left" w:pos="1080"/></w:tabs>'+
-   '<w:spacing w:before="'+(i>0?(custom??4)*20:0)+'" w:after="0" w:line="260" w:lineRule="atLeast"/>'+
-   '</w:pPr>'+itemRuns(item)+'</w:p>').join('');
+  if(el.closest('.greek-choice-option')){
+   const left=wordCmTwips(1.9)+shift;
+   return items.map((item,i)=>
+    '<w:p><w:pPr><w:keepLines/><w:ind w:left="'+left+'" w:hanging="'+wordCmTwips(.65)+'"/>'+
+    '<w:tabs><w:tab w:val="left" w:pos="'+left+'"/></w:tabs>'+
+    '<w:spacing w:before="'+(i>0?(custom??4)*20:0)+'" w:after="0" w:line="260" w:lineRule="atLeast"/>'+
+    '</w:pPr>'+itemRuns(item)+'</w:p>').join('');
+  }
   const tabs='<w:tabs>'+[1080,4240,4600].map(pos=>
    '<w:tab w:val="left" w:pos="'+pos+'"/>').join('')+'</w:tabs>';
   const paras=[];
@@ -4315,6 +4325,37 @@ function greekCompleteAdjectiveForms(adjective,gender){
  }
  return null;
 }
+
+// Formas documentadas de los dos adjetivos de doble tema estudiados desde
+// UD5. Se reutilizan las flexiones ya contrastadas para los sintagmas,
+// conservando las lecturas homógrafas de caso, número y género.
+function greekIrregularAdjectiveAnalyses(){
+ const cases=['NOM','VOC','ACC','GEN','DAT'],numbers=['SG','PL'];
+ const adjectives=[
+  {key:'megas',lemma:'μέγας, μεγάλη, μέγα',accent:'mixed-megas'},
+  {key:'polys',lemma:'πολύς, πολλή, πολύ',accent:'mixed-polys'}
+ ];
+ return adjectives.flatMap(adjective=>{
+  const readings=new Map();
+  for(const gender of ['m','f','n']){
+   const paradigm=greekCompleteAdjectiveForms(adjective,gender);
+   if(!paradigm||paradigm.length!==2)throw Error('Paradigma irregular incompleto: '+adjective.key);
+   for(let number=0;number<2;number++)for(let k=0;k<5;k++){
+    const form=String(paradigm[number][k]||'').normalize('NFC');
+    if(!form)throw Error('Flexión irregular vacía: '+adjective.key);
+    if(!readings.has(form))readings.set(form,new Set());
+    readings.get(form).add(cases[k]+';'+numbers[number]+';'+gender);
+   }
+  }
+  return [...readings.entries()].map(([prompt,tags],i)=>({
+   kind:'forms',id:'girr-'+adjective.key+'-'+i,minUnit:5,contentUnits:[5],
+   prompt,answer:greekExamNominalAnswer([...tags],'adjectives'),
+   lemmas:[adjective.lemma],category:'adjectives',verified:true,
+   greekIrregular:true,source:'Smyth, Greek Grammar, §315; paradigma explícito de UD5'
+  }));
+ });
+}
+greekVerifiedCorpus.push(...greekIrregularAdjectiveAnalyses());
 // Orden aleatorio ponderado sin reposición: triple peso por doble tema.
 function greekWeightedSyntagmAdjectives(available){
  return available.map(item=>({
@@ -4345,8 +4386,17 @@ function greekAccentBeforeNoun(surface){
  if(/[αεηιουω]/iu.test(after))return surface;
  return (text.slice(0,at)+'\u0300'+text.slice(at+1)).normalize('NFC');
 }
+// En 1.ª y 2.ª declinación el enunciado no necesita artículo: –ου,
+// –ης, –ας o –ᾶς muestran el paradigma. Conservarlo en 3.ª,
+// cuya terminación no determina el género (p. ej., πατήρ, πατρός (ὁ)).
+function greekNominalEnunciation(item){
+ const lemma=String(item?.lemmas?.[0]||'').trim();
+ const noun=examGreekWordClass(item)==='nouns'||item?.kind==='declension';
+ if(!noun)return lemma;
+ return lemma.replace(/(,\s*[–−—-]?\s*(?:ου|ης|ας|ᾶς))\s*\((?:ὁ|ἡ|τό|τὸ)\)\s*$/u,'$1');
+}
 function greekSyntagmEnunciation(item,modifier=null){
- const noun=item.lemmas?.[0]||greekLemma(item.table?.rows?.[0]?.[1]||'').entry;
+ const noun=greekNominalEnunciation(item)||greekLemma(item.table?.rows?.[0]?.[1]||'').entry;
  if(greekLimit()<3)return noun;
  const article='ὁ, ἡ, τό';
  if(!modifier)return article+' + '+noun;
@@ -4450,7 +4500,7 @@ function generateGreekMorphologyFixed(){
    pronouns.map(x=>'<tr data-corpus-id="'+x.id+'"><td><i>'+esc(x.prompt)+'</i></td><td></td><td></td><td></td><td></td></tr>').join('')+'</tbody></table>';
  }
  const last=examQuestionEnabled('forms')?question('forms',++n,t('Analiza morfológicamente las siguientes palabras (1 p.).','Analitza morfològicament les paraules següents (1 p.).'))+
-  words.map((x,i)=>'<p class="exam-item reference-analysis-item" data-analysis-slot="'+i+'" data-corpus-id="'+x.id+'"><span class="exam-letter">'+String.fromCharCode(97+i)+'.</span> <i'+examAcademicAttrs(x)+'>'+esc(x.prompt)+'</i>'+(Array.isArray(x.lemmas)&&x.lemmas.length?' ('+esc(x.lemmas.filter(Boolean).join(' / '))+')':'')+': <span class="reference-answer-line"></span></p>').join(''):'';
+  words.map((x,i)=>'<p class="exam-item reference-analysis-item" data-analysis-slot="'+i+'" data-corpus-id="'+x.id+'"><span class="exam-letter">'+String.fromCharCode(97+i)+'.</span> <i'+examAcademicAttrs(x)+'>'+esc(x.prompt)+'</i>'+(Array.isArray(x.lemmas)&&x.lemmas.length?' ('+esc(x.lemmas.filter(Boolean).map(lemma=>greekNominalEnunciation({...x,lemmas:[lemma]})).join(' / '))+')':'')+': <span class="reference-answer-line"></span></p>').join(''):'';
  const problems=[];
  if(second&&verbs.length<cfg.verbs)problems.push('Verbos: '+verbs.length+' de '+cfg.verbs);
  if(last&&words.length<cfg.words)problems.push('Palabras variables: '+words.length+' de '+cfg.words);
@@ -4687,7 +4737,7 @@ function generateGreekExam(){
   (x.kind!=='forms'||(!x.prompt.includes(' ')&&!(x.lemmas||[]).some(lemma=>isExcludedExamMorphLemma(lemma)))))
   .concat(enabled.includes('forms')?examAuthorizedProposals('greek1',max).filter(x=>x.kind==='forms'&&!x.prompt.includes(' ')):[])
   .concat(enabled.includes('forms')&&examMorphQuotaValues()[2]>0?examGreekVerbFormCandidates(greekVerifiedCorpus,max):[]);
- const counts={declension:Math.min(2,countFor('decl')),conjugation:Math.min(2,countFor('verb')),forms:examMorphQuotasActive()?examMorphQuotaCount():countFor('greek-forms'),pronouns:10,etymology:Math.min(2,countFor('lex')),sentences:countFor('sent')};
+ const counts={declension:Math.min(2,countFor('decl')),conjugation:Math.min(2,countFor('verb')),forms:examMorphQuotasActive()?examMorphQuotaCount():countFor('greek-forms'),pronouns:10,etymology:countFor('lex'),sentences:countFor('sent')};
  const result=greekSelectedItems(pool,chosen,counts),sections=[],answers=[];
 
  let total=0,index=0;
@@ -4703,7 +4753,8 @@ function generateGreekExam(){
   else if(kind==='pronouns')sections.push('<table class="exam-pronouns" data-col-widths="1500,3500,3500"><thead><tr><th>Forma</th><th>'+($('lang').value==='va'?'Cas, gènere, nombre':'Caso, género, número')+'</th><th>'+($('lang').value==='va'?'Tipus de pronom':'Tipo de pronombre')+'</th></tr></thead><tbody>'+items.map(x=>'<tr data-corpus-id="'+x.id+'"><td>'+esc(x.prompt)+'</td><td></td><td></td></tr>').join('')+'</tbody></table>');
   else if(kind==='etymology')sections.push('<p class="exam-etymology">'+items.map((x,j)=>'<span data-corpus-id="'+x.id+'"><span class="exam-letter">'+String.fromCharCode(97+j)+'.</span> '+esc(x.prompt)+':</span>').join('')+'</p>');
   else sections.push(items.map((x,j)=>{
-   const enunciation=(x.lemmas||[]).filter(lemma=>typeof lemma==='string'&&lemma.trim()).join(' / ');
+   const enunciation=(x.lemmas||[]).filter(lemma=>typeof lemma==='string'&&lemma.trim())
+    .map(lemma=>greekNominalEnunciation({...x,lemmas:[lemma]})).join(' / ');
    // El enunciado no se incluye en la zona editable de la forma.
    return '<p class="exam-item exam-form" data-corpus-id="'+x.id+'"><span class="exam-letter">'+String.fromCharCode(97+j)+'.</span> '+
     '<span data-greek-form-surface="1"'+examAcademicAttrs(x)+'>'+esc(x.prompt)+'</span>'+
@@ -5313,7 +5364,12 @@ function greekBalancedAdjectiveSample(pool,count,previousIds=[]){
   (Math.random()<0.5?'2-2':'2-1-2')):'2-2';
  const types=count===1?[first]:['2-2','2-1-2'];
  for(const type of types){
-  if(picked.length<count)pick(pool.filter(x=>greekExamAdjectiveEndingType(x)===type));
+  if(picked.length>=count)break;
+  const choices=pool.filter(x=>greekExamAdjectiveEndingType(x)===type);
+  // La clase 2-1-2 incluye los dos paradigmas excepcionales. Si existen,
+  // favorecerlos tres de cada cuatro sorteos, sin suprimir los regulares.
+  const irregular=type==='2-1-2'?choices.filter(x=>x.greekIrregular):[];
+  pick(irregular.length&&(count>=3||Math.random()<.75)?irregular:choices);
  }
  // Restantes casillas: priorizar fichas y superficies nuevas sin reducir
  // la cantidad elegida aunque el banco de una clase sea pequeño.
@@ -8045,5 +8101,35 @@ html[data-appearance="oled"] body.exam-redesign #exam-ui-shell :is(#exam-ui-core
 .paper[data-format-course="greek1"] .greek-choice-option > p.exam-item:not(.greek-choice-subquestion){margin-left:calc(54pt + var(--exam-indent-shift,0pt))!important}
 .paper[data-format-course="greek1"] .greek-choice-option > p.exam-etymology{margin-left:calc(54pt + var(--exam-indent-shift,0pt))!important}
 #examLayout aside.panel #examVisualSettings select#examIndentPt{width:100%;min-height:42px;max-width:300px}
+
+/* Examen completo de Griego I. Sangrías del Word del profesor:
+   sangría de texto en 0,60 / 1,25 / 1,90 cm; numerales con sangría francesa de 0,65 cm.
+   El control de sangría desplaza los tres niveles; el resto de los exámenes
+   conserva su maquetación. */
+.paper[data-format-course="greek1"] .exam-sheet.greek-choice-complete-exam > p.exam-question {
+ margin-left:var(--exam-indent-shift,0pt)!important;
+ padding-left:.6cm!important;text-indent:-.65cm!important;
+}
+.paper[data-format-course="greek1"] .exam-sheet.greek-choice-complete-exam > p.exam-question .exam-q-number {
+ width:.65cm!important;min-width:.65cm!important;margin-right:0!important;
+}
+.paper[data-format-course="greek1"] .exam-sheet.greek-choice-complete-exam .greek-choice-option > p.greek-choice-subquestion {
+ margin-left:calc(.6cm + var(--exam-indent-shift,0pt))!important;
+ padding-left:.65cm!important;text-indent:-.65cm!important;
+}
+.paper[data-format-course="greek1"] .exam-sheet.greek-choice-complete-exam .greek-choice-option > p.exam-item:not(.greek-choice-subquestion) {
+ margin-left:calc(1.25cm + var(--exam-indent-shift,0pt))!important;
+ padding-left:.65cm!important;text-indent:-.65cm!important;
+}
+.paper[data-format-course="greek1"] .exam-sheet.greek-choice-complete-exam .greek-choice-option > p.exam-etymology {
+ margin-left:calc(1.25cm + var(--exam-indent-shift,0pt))!important;
+ padding-left:0!important;text-indent:0!important;
+}
+.paper[data-format-course="greek1"] .exam-sheet.greek-choice-complete-exam .greek-choice-option > p.exam-etymology > [data-corpus-id] {
+ padding-left:.65cm!important;text-indent:-.65cm!important;
+}
+.paper[data-format-course="greek1"] .exam-sheet.greek-choice-complete-exam .greek-choice-option .exam-letter {
+ width:.65cm!important;min-width:.65cm!important;margin-right:0!important;
+}
 </style>
 </html>

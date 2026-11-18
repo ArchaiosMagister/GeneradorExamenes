@@ -95,6 +95,7 @@ async function audit(page,course,model,lang,file){
  });
  const context=file+' '+course+'/'+model+'/'+lang;
  const greek=course==='greek1';
+ const greekComplete=greek&&model==='complete';
  assert(v.questions.length>0,context+': sin preguntas');
  for(const q of v.questions){
   close(q.css.margin,greek?0:18,context+' pregunta margen');
@@ -102,7 +103,10 @@ async function audit(page,course,model,lang,file){
   close(q.css.indent,-18,context+' pregunta texto');
   assert(q.number,context+': falta número con ancho propio');
   close(q.number.css?.width||q.number.padding,0,context+' número padding');
-  assert(isExpectedWordIndent(q.word,greek?360:720,360),context+': Word pregunta no alineada');
+  // En Griego I completo se replica el modelo Word: izquierda 0,60 cm,
+  // sangría francesa de 0,65 cm; los demás modelos no se alteran.
+  assert(isExpectedWordIndent(q.word,greekComplete?340:greek?360:720,
+   greekComplete?369:360),context+': Word pregunta no alineada');
   assert(q.word.includes('<w:tab/>'),context+': Word sin tabulación tras número');
  }
  for(const p of v.paras){

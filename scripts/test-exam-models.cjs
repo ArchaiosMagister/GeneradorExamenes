@@ -241,6 +241,8 @@ function greekSuite(){
   greekExamHeader:()=>'<div class="exam-header">Griego</div>',
   greekQuestionLabel:kind=>({declension:'Declina',conjugation:'Conjuga',forms:'Analiza',pronouns:'Pronombres',etymology:'Etimología',sentences:'Traduce'}[kind]),
   greekLemma:head=>({entry:head,meaning:'palabra'}),examKey:x=>x,
+  // El banco ficticio de la VM no incluye enunciados nominales de verdad.
+  greekNominalEnunciation:item=>item?.lemmas?.[0]||'',
   localizedGloss:row=>({value:row.meaning,ready:!!row.meaning}),
   glossAccept:()=>true,isRequired:()=>false,quoteGloss:x=>"'"+x+"'",esc:x=>String(x),tr:x=>x,document:{getElementById:()=>null},
   greekExamControls:()=>{},refreshManualMorphWords:()=>{},window:{},
