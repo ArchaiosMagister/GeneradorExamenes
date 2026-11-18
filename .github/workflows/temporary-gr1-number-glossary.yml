@@ -14,6 +14,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Synchronize the latest PR revision before testing
+        run: |
+          git fetch origin style/gr1-complete-roman-lists-spacing-20261118
+          git reset --hard FETCH_HEAD
       - name: Rebuild offline
         run: npm run offline:build
       - name: Install Chromium
@@ -27,10 +31,23 @@ jobs:
           node scripts/test-greek-complete-ud5-regressions.cjs
       - name: Publish standalone HTML to the PR branch only
         run: |
-          git add offline.html
-          if ! git diff --cached --quiet; then
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          for attempt in 1 2 3; do
+            git fetch origin style/gr1-complete-roman-lists-spacing-20261118
+            git reset --hard FETCH_HEAD
+            npm run offline:build
+            node scripts/test-greek-choice-number-glossary.cjs
+            node scripts/test-greek-choice-bullets-spacing.cjs
+            node scripts/test-greek-complete-ud5-regressions.cjs
+            git add offline.html
+            if git diff --cached --quiet; then
+              echo "offline.html already synchronized"
+              exit 0
+            fi
             git commit -m "build: synchronize standalone Greek complete and glossary"
-            git push origin HEAD:style/gr1-complete-roman-lists-spacing-20261118
-          fi
+            if git push origin HEAD:style/gr1-complete-roman-lists-spacing-20261118; then
+              exit 0
+            fi
+          done
+          exit 1
