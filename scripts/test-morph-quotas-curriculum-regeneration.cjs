@@ -77,8 +77,10 @@ async function testGreek(page,model,unit,lang,quotas){
    const choices=greekChoicePool('forms');
    const planned=model==='complete'?examQuotaGreek(choices,greekExamState.ids.forms.length,greekExamState.ids.forms)
     .map(x=>({id:x.id,kind:examGreekWordClass(x)})):[];
+   const source=String(greekRegenerate).includes('regenerationDebug');
    const operation=model==='complete'?greekRegenerate('forms'):(regenerateExamQuestion('forms'),true);
-   return {operation,liveQuotas,planned,
+   return {operation,liveQuotas,planned,source,
+    debugImmediately:window.ExaminaGreekRegenerationDebug,
     resultingIds:model==='complete'?[...greekExamState.ids.forms]:[]};
   },model);
   assert.equal(attempt.operation,true,label+' no se pudo regenerar');
