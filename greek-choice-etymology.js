@@ -7,8 +7,8 @@
  // etimológicas. οἰκία/οἶκος y νόμος/νέμω son equivalentes escolares;
  // la disponibilidad se decide por los lemas efectivamente estudiados.
  const records=[
-  {id:'democracia-teologia',es:['La ','democracia',' antigua influyó en la ','teología',' posterior.'],
-   va:['La ','democràcia',' antiga va influir en la ','teologia',' posterior.'],
+  {id:'democracia-teologia',es:["La ","democracia"," protege la libertad de debatir sobre ","teología","."],
+   va:["La ","democràcia"," protegix la llibertat de debatre sobre ","teologia","."],
    roots:[['δήμος','κράτος'],['θεός','λόγος']]},
   {id:'bibliografia-antropologia',es:['La ','bibliografía',' permite preparar estudios de ','antropología','.'],
    va:['La ','bibliografia',' permet preparar estudis d’','antropologia','.'],
@@ -31,8 +31,8 @@
   {id:'biologia-demografia',es:['La ','biología',' y la ','demografía',' estudian realidades diferentes.'],
    va:['La ','biologia',' i la ','demografia',' estudien realitats diferents.'],
    roots:[['βίος','λόγος'],['δήμος','γράφω']]},
-  {id:'filologia-economia',es:['El alumnado de ','filología',' también adquiere conocimientos de ','economía','.'],
-   va:['L’alumnat de ','filologia',' també adquirix coneixements d’','economia','.'],
+  {id:'filologia-economia',es:["La ","filología"," estudia las palabras que utilizamos para hablar de ","economía","."],
+   va:["La ","filologia"," estudia les paraules que utilitzem per a parlar d’","economia","."],
    roots:[['φίλος','λόγος'],['οἰκία','νόμος']]},
   {id:'filosofia-geologia',es:['La ','filosofía',' y la ','geología',' utilizan numerosos términos griegos.'],
    va:['La ','filosofia',' i la ','geologia',' utilitzen nombrosos termes grecs.'],
@@ -43,11 +43,11 @@
   {id:'cardiologia-economia',es:['La financiación de la ','cardiología',' también depende de la ','economía','.'],
    va:['El finançament de la ','cardiologia',' també depén de l’','economia','.'],
    roots:[['καρδία','λόγος'],['οἰκία','νόμος']]},
-  {id:'rinoplastia-podologia',es:['La ','rinoplastia',' no pertenece al campo de la ','podología','.'],
-   va:['La ','rinoplàstia',' no pertany al camp de la ','podologia','.'],
+  {id:'rinoplastia-podologia',es:["La ","rinoplastia"," interviene en la nariz y la ","podología"," se ocupa de los pies."],
+   va:["La ","rinoplàstia"," intervé en el nas i la ","podologia"," s’ocupa dels peus."],
    roots:[['ῥίς','πλαστός'],['πούς','λόγος']]},
-  {id:'taquicardia-piromania',es:['La ','taquicardia',' y la ','piromanía',' son fenómenos clínicos distintos.'],
-   va:['La ','taquicàrdia',' i la ','piromania',' són fenòmens clínics diferents.'],
+  {id:'taquicardia-piromania',es:["La ","taquicardia"," altera el ritmo del corazón, mientras que la ","piromanía"," implica el impulso de provocar incendios."],
+   va:["La ","taquicàrdia"," altera el ritme del cor, mentre que la ","piromania"," implica l’impuls de provocar incendis."],
    roots:[['ταχύς','καρδία'],['πῦρ','μανία']]},
   {id:'piromania-psicologia',es:['La ','piromanía',' puede estudiarse desde la ','psicología','.'],
    va:['La ','piromania',' pot estudiar-se des de la ','psicologia','.'],
@@ -67,14 +67,14 @@
   {id:'paradoja-bibliografia',es:['La ','bibliografía',' explica aquella ','paradoja',' filosófica.'],
    va:['La ','bibliografia',' explica aquella ','paradoxa',' filosòfica.'],
    roots:[['βιβλίον','γράφω'],['παρά','δόξα']]},
-  {id:'hipodermis-filosofia',es:['La ','hipodermis',' es una estructura anatómica, no un concepto de ','filosofía','.'],
-   va:['La ','hipodermis',' és una estructura anatòmica, no un concepte de ','filosofia','.'],
+  {id:'hipodermis-filosofia',es:["La ","hipodermis"," se estudia en anatomía, pero su investigación también plantea preguntas de ","filosofía"," de la ciencia."],
+   va:["La ","hipodermis"," s’estudia en anatomia, però la seua investigació també planteja preguntes de ","filosofia"," de la ciència."],
    roots:[['ὑπό','δέρμα'],['φίλος','σοφία']]},
-  {id:'hiperemia-psicologia',es:['La ','hiperemia',' puede estudiarse en medicina y no en ','psicología','.'],
-   va:['La ','hiperèmia',' es pot estudiar en medicina i no en ','psicologia','.'],
+  {id:'hiperemia-psicologia',es:["La ","hiperemia"," se detecta mediante una exploración clínica, y la ","psicología"," puede ayudar a afrontar la ansiedad del paciente."],
+   va:["La ","hiperèmia"," es detecta amb una exploració clínica, i la ","psicologia"," pot ajudar a afrontar l’ansietat del pacient."],
    roots:[['ὑπέρ','αἷμα'],['ψυχή','λόγος']]},
-  {id:'hipercromia-economia',es:['La ','hipercromía',' es un fenómeno biológico y no un concepto de ','economía','.'],
-   va:['La ','hipercromia',' és un fenomen biològic i no un concepte d’','economia','.'],
+  {id:'hipercromia-economia',es:["La ","hipercromía"," se observa en ciertas muestras celulares, mientras que la ","economía"," sanitaria condiciona los recursos de laboratorio."],
+   va:["La ","hipercromia"," s’observa en algunes mostres cel·lulars, mentre que l’","economia"," sanitària condiciona els recursos del laboratori."],
    roots:[['ὑπέρ','χρῶμα'],['οἰκία','νόμος']]}
  ];
  const acceptedFamilies={
@@ -1109,14 +1109,14 @@
   "es": [
    "La ",
    "antropología",
-   " analiza la organización de algunas antiguas ",
+   " analiza la organización de una antigua ",
    "talasocracia",
    "."
   ],
   "va": [
    "L’",
    "antropologia",
-   " analitza l’organització d’algunes antigues ",
+   " analitza l’organització d’una antiga ",
    "talassocràcia",
    "."
   ],
@@ -1593,18 +1593,18 @@
  {
   "id": "quirografia",
   "es": [
-   "La ",
+   "El estudio de ",
    "antropología",
-   " estudia los manuscritos antiguos y el uso histórico de la ",
+   " permite investigar la escritura manuscrita y la ",
    "quirografía",
-   "."
+   " antigua."
   ],
   "va": [
-   "L’",
+   "L’estudi d’",
    "antropologia",
-   " estudia els manuscrits antics i l’ús històric de la ",
+   " permet investigar l’escriptura manuscrita i la ",
    "quirografia",
-   "."
+   " antiga."
   ],
   "roots": [
    [
