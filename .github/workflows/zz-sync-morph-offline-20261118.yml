@@ -1,0 +1,34 @@
+name: TEMP sync standalone morphology branch
+on:
+  push:
+    branches:
+      - fix/morph-quotas-curricular-variety-20261118
+    paths:
+      - index.html
+      - greek-choice-groups.js
+      - .github/workflows/zz-sync-morph-offline-20261118.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Build standalone HTML without deployment
+        run: npm run offline:build
+      - name: Commit deterministic rebuilt offline.html only
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add offline.html
+          if ! git diff --cached --quiet; then
+            git commit -m 'Sincronizar offline.html con corrección de morfología'
+            git push origin HEAD:fix/morph-quotas-curricular-variety-20261118
+          fi
