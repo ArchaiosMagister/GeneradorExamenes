@@ -5336,7 +5336,7 @@ function greekAdjectiveReplacementChoices(previous,otherItems,options){
  if(examGreekWordClass(previous)!=='adjectives')return options;
  const covered=new Set(otherItems.filter(x=>examGreekWordClass(x)==='adjectives')
   .map(greekExamAdjectiveEndingType));
- const absent=['2-2','2-1-2'].find(type=>!covered.has(type));
+ const absent=current.length?['2-2','2-1-2'].find(type=>!covered.has(type)):null;
  const desired=absent||(
   greekExamAdjectiveEndingType(previous)==='2-2'?'2-1-2':'2-2');
  const found=options.filter(x=>greekExamAdjectiveEndingType(x)===desired);
