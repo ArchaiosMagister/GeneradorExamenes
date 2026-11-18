@@ -9367,13 +9367,19 @@ function examGreekVerbFormCandidates(pool,limit){
 // Separate the grammatical quota from the random draw: diversify lemmas before
 // drawing a second inflection of the same word, and never duplicate a surface.
 function greekDiverseMorphSample(pool,count){
- const shuffled=sample(pool,pool.length),picked=[],seenForms=new Set(),seenLemmas=new Set();
- for(const distinctLemma of [true,false]){
+ const shuffled=sample(pool,pool.length),picked=[],seenIds=new Set(),seenLemmas=new Set(),
+  seenSurfaces=new Set();
+ // Distinct grammatical fichas may share a spelling, e.g. homographic
+ // pronouns. Prefer different lemmas and written forms, but never drop a
+ // validated ficha when that would underfill a requested word-class quota.
+ for(const [distinctLemma,distinctSurface] of [[true,true],[false,true],[false,false]]){
   for(const item of shuffled){
    if(picked.length>=count)break;
-   const surface=normLex(item.prompt||''),lemma=normLex(item.lemmas?.[0]||item.prompt||'');
-   if(!surface||seenForms.has(surface)||(distinctLemma&&seenLemmas.has(lemma)))continue;
-   picked.push(item);seenForms.add(surface);seenLemmas.add(lemma);
+   const id=String(item.id||item.prompt||''),surface=String(item.prompt||'').normalize('NFC');
+   const lemma=normLex(item.lemmas?.[0]||item.prompt||'');
+   if(!surface||seenIds.has(id)||(distinctSurface&&seenSurfaces.has(surface))||
+    (distinctLemma&&seenLemmas.has(lemma)))continue;
+   picked.push(item);seenIds.add(id);seenSurfaces.add(surface);seenLemmas.add(lemma);
   }
  }
  return picked;
@@ -9381,22 +9387,20 @@ function greekDiverseMorphSample(pool,count){
 function examQuotaGreek(pool,count,previousIds=[]){
  const quotas=examMorphQuotaValues();
  if(!quotas.some(Boolean))return greekCurricularSample(pool,count);
- const types=['nouns','adjectives','verbs','pronouns'],picked=[],usedSurfaces=new Set();
+ const types=['nouns','adjectives','verbs','pronouns'],picked=[],usedIds=new Set();
  const previous=new Set(previousIds);
  types.forEach((kind,i)=>{
   const wanted=quotas[i];
   if(!wanted)return;
-  const options=pool.filter(x=>examGreekWordClass(x)===kind&&!usedSurfaces.has(normLex(x.prompt||'')));
-  // On regeneration, prefer unseen forms, but keep the old ones when
-  // the verified pool cannot replace every slot of this category.
+  const options=pool.filter(x=>examGreekWordClass(x)===kind&&!usedIds.has(x.id));
+  // A former ficha is permitted only when the category has too few unseen
+  // alternatives. Maintain distinct IDs even with syncretic surface forms.
   const fresh=greekDiverseMorphSample(options.filter(x=>!previous.has(x.id)),wanted);
-  const freshSurfaces=new Set(fresh.map(x=>normLex(x.prompt)));
-  const retained=greekDiverseMorphSample(options.filter(x=>!freshSurfaces.has(normLex(x.prompt))),
+  const freshIds=new Set(fresh.map(x=>x.id));
+  const retained=greekDiverseMorphSample(options.filter(x=>!freshIds.has(x.id)),
    Math.max(0,wanted-fresh.length));
-  for(const item of [...fresh,...retained]){
-   const surface=normLex(item.prompt);
-   if(!usedSurfaces.has(surface)){usedSurfaces.add(surface);picked.push(item)}
-  }
+  for(const item of [...fresh,...retained])
+   if(!usedIds.has(item.id)){usedIds.add(item.id);picked.push(item)}
  });
  return picked;
 }
