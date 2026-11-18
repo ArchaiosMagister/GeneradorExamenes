@@ -1,0 +1,29 @@
+name: Temporary Greek semantic standalone sync
+on:
+  push:
+    branches: [fix/greek-declina-table-gap-20261118]
+permissions:
+  contents: write
+jobs:
+  sync:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - name: Update autonomous HTML from latest PR branch
+        run: |
+          set -euo pipefail
+          git fetch origin fix/greek-declina-table-gap-20261118
+          git reset --hard FETCH_HEAD
+          npm run offline:build
+          git add offline.html
+          if git diff --cached --quiet; then
+            echo "Standalone already synchronized"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "build: synchronize Greek semantic complete exam offline"
+          git push origin HEAD:fix/greek-declina-table-gap-20261118
