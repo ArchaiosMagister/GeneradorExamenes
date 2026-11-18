@@ -276,7 +276,7 @@ function greekSuite(){
  assert(output.includes('exam-pronouns')&&output.includes('Analiza morfológicamente las siguientes palabras (1 p.).'));
  assert(output.includes('Declina 1 de los 3 sintagmas propuestos.'),'Griego: enunciado dinámico');
  assert(!output.includes('Tria i declina')&&!output.includes('Elige y declina'),'Griego: subtítulo duplicado');
- assert(output.includes('(artículo) + (sustantivo) + (adjetivo)'));
+ assert(output.includes('(artículo) + (adjetivo/pronombre) + (sustantivo)'));
  assert(output.includes('(λύω)'),'Griego: falta enunciado del verbo en análisis');
  assert(!output.includes('οἵδε ()'),'Griego: no inventar lema para formas sin enunciado');
 }
