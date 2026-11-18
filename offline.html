@@ -6472,8 +6472,10 @@ function latinAmbiguousDeponentForm(item){
 function latinMorphologyVerbPool(chosen){
  const max=Math.max(0,...chosen.map(examUnitNumber).filter(Number.isInteger));
  const result=[];
- for(const {x,p} of latinSharedBank.paradigms(currentCourse(),chosen,'verb')){
+ for(const {x,p} of latinSharedBank.paradigms(currentCourse(),
+  currentCourse()==='latin1'?null:chosen,'verb')){
   if(!Array.isArray(p.forms)||p.forms.length!==6)continue;
+  if((p.evidenceVoice==='deponente'&&max<7)||(p.evidenceVoice==='semideponente'&&max<9))continue;
   const entry=x.entry,sourceEntry=p.sourceEntry||entry,paradigm=mVerb(sourceEntry);
   const explicitSeries=latinExplicitVerbEvidence[examKey(entry)]||[];
   const add=(forms,tense,voice)=>forms.forEach((form,i)=>{
@@ -7046,7 +7048,17 @@ function latinFormPriorities(chosen){
  }[unit]||[];
 }
 function latinExamFormCandidates(chosen,allForms=false){
- const data=latinSharedBank.vocabulary(currentCourse(),chosen),groups=[[],[],[],[]];
+ const isMorphology=$('model')?.value==='morf';
+ // A form is admitted by its grammatical paradigm, not by the unit where
+ // its lemma happened to appear in a vocabulary list.
+ // El análisis admite lemas del repertorio latino compartido, con filtro
+ // por declinación y categoría ya explicadas; la unidad léxica no restringe.
+ const course=currentCourse(),other=course==='latin1'?'latin4':'latin1';
+ const sources=isMorphology?
+  [...latinSharedBank.vocabulary(course,null),...latinSharedBank.vocabulary(other,null)]:
+  latinSharedBank.vocabulary(course,chosen);
+ const data=[...new Map(sources.map(x=>[examKey(x.entry),x])).values()],groups=[[],[],[],[]];
+ const unitVerbs=new Set(latinSharedBank.vocabulary(currentCourse(),chosen).map(x=>examKey(x.entry)));
  const unitsByEntry=new Map();
  for(const item of data){
   const key=examKey(item.entry);
@@ -7054,7 +7066,11 @@ function latinExamFormCandidates(chosen,allForms=false){
   unitsByEntry.get(key).push(item.unit);
  }
  const limit=Math.max(0,...chosen.map(examUnitNumber).filter(Number.isInteger));
- const isMorphology=$('model')?.value==='morf';
+ // Reglas iguales a las de los sintagmas: la declinación explicada decide
+ // la admisión incluso si el lema procede del otro banco latino.
+ const minNounUnit=kind=>kind==='1'?1:
+  ['2m','2n','2er'].includes(kind)?(course==='latin4'?2:1):
+  ['3mf','3n'].includes(kind)?(course==='latin4'?5:4):Infinity;
  const permitted=category=>{
   if(!isMorphology||category==='verbs')return true;
   const control={nouns:'n',adjectives:'adj',pronouns:'pro'}[category];
@@ -7085,14 +7101,18 @@ function latinExamFormCandidates(chosen,allForms=false){
   }else if(n){
    // La tercera declinación de Latín I se introduce en UD4, aunque el
    // vocabulario de unidades anteriores ya contenga un lema de esta clase.
-   if(permitted('nouns')&&(currentCourse()!=='latin1'||limit>=4||/^[12]/.test(mNoun(x.entry).kind)))
+   if(permitted('nouns')&&minNounUnit(n.kind)<=limit)
     add(0,n.forms.flat(),['singular','plural'].flatMap(number=>M_CASES.map(c=>c+', '+number)),'nouns',x.entry,'',n.kind);
   }
-  else if(a){if(permitted('adjectives')&&(currentCourse()!=='latin1'||limit>=2))
+  else if(a){if(permitted('adjectives')&&limit>=(currentCourse()==='latin4'?3:2))
    add(1,a.forms,a.labels,'adjectives',x.entry)}
   else if(v){
-   add(2,v.forms,v.labels.map(label=>label+', presente de indicativo '+(v.evidenceVoice==='deponente'?'deponente':'activo')),'verbs',x.entry);
-   indexedVerbs.add(examKey(x.entry));
+   // Latín I: el presente de las conjugaciones regulares se estudia en UD1.
+   // Latín 4.º conserva la selección verbal curricular existente.
+   if(currentCourse()!=='latin4'||unitVerbs.has(examKey(x.entry))){
+    add(2,v.forms,v.labels.map(label=>label+', presente de indicativo '+(v.evidenceVoice==='deponente'?'deponente':'activo')),'verbs',x.entry);
+    indexedVerbs.add(examKey(x.entry));
+   }
   }
  }
  for(const {x,p} of latinSharedBank.paradigms(currentCourse(),chosen,'verb')){
@@ -8654,12 +8674,16 @@ function greekRegenerate(kind){
   !['declension','conjugation','forms','pronouns','etymology'].includes(kind))return false;
  const pool=greekChoicePool(kind),previous=[...(greekExamState.ids[kind]||[])];
  const candidates=pool.filter(x=>!previous.includes(x.id));
- // No escoger de nuevo una ficha usada ni destruir el borrador por escasez.
- if(!previous.length||candidates.length<previous.length)return false;
+ // Con cuotas, el sorteo debe reconstruirse por categoría y no por el total.
+ // Cuando una clase agota sus alternativas, se conservan solo esas casillas.
+ const quotaForms=kind==='forms'&&examMorphQuotasActive();
+ const next=quotaForms?examQuotaGreek(pool,previous.length,previous):
+  greekCurricularSample(candidates,previous.length);
+ if(!previous.length||next.length!==previous.length)return false;
  const priorAdjectives=greekExamState.adjectiveChoices?
   {...greekExamState.adjectiveChoices}:undefined;
  const priorExam=window.greekLastExam,priorCoverage=$('greekCoverage')?.textContent;
- greekExamState.ids[kind]=greekCurricularSample(candidates,previous.length).map(x=>x.id);
+ greekExamState.ids[kind]=next.map(x=>x.id);
  if(kind==='declension')greekExamState.adjectiveChoices={};
  if(renderOnlyRegeneratedGreekQuestion(kind,generateGreekExam))return true;
  greekExamState.ids[kind]=previous;
@@ -9311,8 +9335,12 @@ function examQuotaPick(groups,count,fallback){
  const groupOrder=[groups[0]||[],groups[1]||[],groups[2]||[],groups[3]||[]];
  const picked=[],seen=new Set();
  quotas.forEach((quantity,i)=>{
-  for(const item of latinPrioritySample(groupOrder[i],quantity,latinFormPriorities(selectedUnits()).concat(examUnitPriority(selectedUnits(),item=>item.units||[])),normLatinExamItem)){
-   const key=String(item.form||item.entry||'').normalize('NFC');
+  const available=groupOrder[i].filter(item=>!seen.has(normLatinExamItem(item)));
+  const choices=latinPrioritySample(available,quantity,
+   latinFormPriorities(selectedUnits()).concat(examUnitPriority(selectedUnits(),item=>item.units||[])),
+   normLatinExamItem);
+  for(const item of choices){
+   const key=normLatinExamItem(item);
    if(!seen.has(key)){seen.add(key);picked.push(item)}
   }
  });
@@ -9347,11 +9375,44 @@ function examGreekVerbFormCandidates(pool,limit){
      ' del '+(x.verbTense||'presente')+' de indicativo '+(x.verbVoice||'activo')+'.'};
   }).filter(Boolean)));
 }
-function examQuotaGreek(pool,count){
+// Separate the grammatical quota from the random draw: diversify lemmas before
+// drawing a second inflection of the same word, and never duplicate a surface.
+function greekDiverseMorphSample(pool,count){
+ const shuffled=sample(pool,pool.length),picked=[],seenIds=new Set(),seenLemmas=new Set(),
+  seenSurfaces=new Set();
+ // Distinct grammatical fichas may share a spelling, e.g. homographic
+ // pronouns. Prefer different lemmas and written forms, but never drop a
+ // validated ficha when that would underfill a requested word-class quota.
+ for(const [distinctLemma,distinctSurface] of [[true,true],[false,true],[false,false]]){
+  for(const item of shuffled){
+   if(picked.length>=count)break;
+   const id=String(item.id||item.prompt||''),surface=String(item.prompt||'').normalize('NFC');
+   const lemma=normLex(item.lemmas?.[0]||item.prompt||'');
+   if(!surface||seenIds.has(id)||(distinctSurface&&seenSurfaces.has(surface))||
+    (distinctLemma&&seenLemmas.has(lemma)))continue;
+   picked.push(item);seenIds.add(id);seenSurfaces.add(surface);seenLemmas.add(lemma);
+  }
+ }
+ return picked;
+}
+function examQuotaGreek(pool,count,previousIds=[]){
  const quotas=examMorphQuotaValues();
  if(!quotas.some(Boolean))return greekCurricularSample(pool,count);
- const types=['nouns','adjectives','verbs','pronouns'],picked=[];
- types.forEach((kind,i)=>picked.push(...greekCurricularSample(pool.filter(x=>examGreekWordClass(x)===kind),quotas[i])));
+ const types=['nouns','adjectives','verbs','pronouns'],picked=[],usedIds=new Set();
+ const previous=new Set(previousIds);
+ types.forEach((kind,i)=>{
+  const wanted=quotas[i];
+  if(!wanted)return;
+  const options=pool.filter(x=>examGreekWordClass(x)===kind&&!usedIds.has(x.id));
+  // A former ficha is permitted only when the category has too few unseen
+  // alternatives. Maintain distinct IDs even with syncretic surface forms.
+  const fresh=greekDiverseMorphSample(options.filter(x=>!previous.has(x.id)),wanted);
+  const freshIds=new Set(fresh.map(x=>x.id));
+  const retained=greekDiverseMorphSample(options.filter(x=>!freshIds.has(x.id)),
+   Math.max(0,wanted-fresh.length));
+  for(const item of [...fresh,...retained])
+   if(!usedIds.has(item.id)){usedIds.add(item.id);picked.push(item)}
+ });
  return picked;
 }
 function examCacheSignature(kind){
@@ -9668,14 +9729,9 @@ function regenerateExamQuestion(kind){
   const used=new Set(previous.map(identity));
   const options=greekMorphologyReplacementPool(kind).filter(x=>!used.has(identity(x)));
   if(kind==='forms'&&examMorphQuotasActive()){
-   const taken=new Set(),next=previous.map(item=>{
-    const alternatives=options.filter(x=>!taken.has(identity(x))&&
-     examGreekWordClass(x)===examGreekWordClass(item));
-    const chosen=greekCurricularSample(alternatives,1)[0];
-    if(chosen)taken.add(identity(chosen));
-    return chosen;
-   });
-   if(next.every(Boolean))examSelectionCache.set(key,next);
+   const next=examQuotaGreek(greekMorphologyReplacementPool('forms'),
+    examMorphQuotaCount(),previous.map(x=>x.id));
+   if(next.length===previous.length)examSelectionCache.set(key,next);
   }else{
    const unique=[...new Map(options.map(x=>[identity(x),x])).values()];
    if(unique.length>=previous.length)
@@ -15583,11 +15639,17 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   if(!['declension','forms','conjugation','etymology'].includes(kind))return false;
   const ids=greekExamState?.ids?.[kind],oldSheet=$('paper').querySelector('.exam-sheet');
   if(!ids?.length||!oldSheet)return false;
-  const candidates=greekChoicePool(kind).filter(x=>!ids.includes(x.id));
-  if(candidates.length<ids.length)return false;
+  const pool=greekChoicePool(kind),candidates=pool.filter(x=>!ids.includes(x.id));
+  // Esta presentación por alternativas sustituye al regenerador principal:
+  // debe mantener también las cuatro cuotas docentes de análisis morfológico.
+  const quotaForms=kind==='forms'&&examMorphQuotasActive();
+  if(!quotaForms&&candidates.length<ids.length)return false;
+  const next=quotaForms?examQuotaGreek(pool,ids.length,ids):
+   greekCurricularSample(candidates,ids.length);
+  if(next.length!==ids.length)return false;
   const before=ids.slice(),previousAdjectives=greekExamState.adjectiveChoices?
    {...greekExamState.adjectiveChoices}:undefined;
-  greekExamState.ids[kind]=greekCurricularSample(candidates,ids.length).map(x=>x.id);
+  greekExamState.ids[kind]=next.map(x=>x.id);
   if(kind==='declension')greekExamState.adjectiveChoices={};
   generateGreekExam();
   const fresh=$('paper').querySelector('.exam-sheet');

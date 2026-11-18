@@ -242,11 +242,17 @@
   if(!['declension','forms','conjugation','etymology'].includes(kind))return false;
   const ids=greekExamState?.ids?.[kind],oldSheet=$('paper').querySelector('.exam-sheet');
   if(!ids?.length||!oldSheet)return false;
-  const candidates=greekChoicePool(kind).filter(x=>!ids.includes(x.id));
-  if(candidates.length<ids.length)return false;
+  const pool=greekChoicePool(kind),candidates=pool.filter(x=>!ids.includes(x.id));
+  // Esta presentación por alternativas sustituye al regenerador principal:
+  // debe mantener también las cuatro cuotas docentes de análisis morfológico.
+  const quotaForms=kind==='forms'&&examMorphQuotasActive();
+  if(!quotaForms&&candidates.length<ids.length)return false;
+  const next=quotaForms?examQuotaGreek(pool,ids.length,ids):
+   greekCurricularSample(candidates,ids.length);
+  if(next.length!==ids.length)return false;
   const before=ids.slice(),previousAdjectives=greekExamState.adjectiveChoices?
    {...greekExamState.adjectiveChoices}:undefined;
-  greekExamState.ids[kind]=greekCurricularSample(candidates,ids.length).map(x=>x.id);
+  greekExamState.ids[kind]=next.map(x=>x.id);
   if(kind==='declension')greekExamState.adjectiveChoices={};
   generateGreekExam();
   const fresh=$('paper').querySelector('.exam-sheet');
