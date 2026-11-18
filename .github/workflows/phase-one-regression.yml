@@ -22,6 +22,8 @@ on:
       - 'scripts/test-greek-all-unit-form-quotas.cjs'
       - 'scripts/test-morph-quotas-curriculum-regeneration.cjs'
       - 'scripts/test-greek-two-modes-legacy-drafts.cjs'
+      - 'scripts/test-greek-ui.cjs'
+      - 'tests/test_unimorph*.py'
       - 'scripts/test-greek-reviewed-nominal-expansion.cjs'
       - 'scripts/test-exam-ui-redesign.cjs'
       - 'scripts/test-examinator-theme.cjs'
@@ -54,6 +56,10 @@ jobs:
           npx playwright install --with-deps chromium
       - name: Rebuild offline distribution in CI workspace
         run: npm run offline:build
+      - name: Clasificación curricular UniMorph
+        run: python3 -m unittest discover -s tests
+      - name: Griego I, 14 unidades y menú móvil
+        run: node scripts/test-greek-ui.cjs
       - name: Griego I dos modelos, enunciado seleccionable y migración de borradores
         run: node scripts/test-greek-two-modes-legacy-drafts.cjs
       - name: Verificar procedencia individual de sustantivos y adjetivos griegos
