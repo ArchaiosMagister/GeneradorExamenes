@@ -362,7 +362,7 @@
    };
   }
   const regenerate=document.createElement('button');regenerate.type='button';
-  regenerate.className='secondary';regenerate.textContent='Regenerar esta alternativa';
+  regenerate.className='secondary exam-regenerate-question';regenerate.textContent='Regenerar esta alternativa';
   regenerate.onclick=()=>{
    if(!replaceGenerated(config.kind))regenerate.title='No hay nuevos elementos disponibles para las unidades marcadas.';
   };
@@ -387,8 +387,8 @@
    }
    for(const [i,node] of items.entries()){
     const slot=config.kind+':'+i;
-    const label=document.createElement('label');label.className='exam-word-editor';
-    label.textContent='Elemento '+(i+1)+' (editable) ';
+    const row=document.createElement('div');row.className='exam-word-editor';
+    const label=document.createElement('label');label.textContent='Elemento '+(i+1);
     const input=document.createElement('input');input.type='text';
     input.dataset.greekCustomEdit=slot;
     input.value=itemText(node);
@@ -402,15 +402,17 @@
       if(typeof warnExamManualSolution==='function')warnExamManualSolution();
      }
     });
-    label.append(input);editor.append(label);
+    label.append(input);row.append(label);editor.append(row);
     if(config.kind!=='roots'){
      const single=document.createElement('button');single.type='button';
-     single.className='secondary';single.textContent='Cambiar solo este sintagma';
+     single.className='secondary exam-regenerate-word';
+     single.title='Cambiar solo este sintagma';
+     single.textContent=$('lang').value==='va'?'Una altra':'Otra';
      single.setAttribute('aria-label','Regenerar sintagma '+(i+1)+' de '+config.title);
      // Delegación estable: el inspector puede reconstruir el menú durante
      // los cambios de puntuación sin invalidar el manejador del botón.
      single.dataset.greekChoiceSingle=config.kind+':'+i;
-     editor.append(single);
+     row.append(single);
     }
    }
   }

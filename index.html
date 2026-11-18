@@ -7475,6 +7475,7 @@ html[data-appearance="oled"] body.exam-redesign #exam-ui-shell :is(#exam-ui-core
   padding:4px 8px;
   border-radius:7px;
   color:var(--soft-ink);
+  background:var(--surface);
   font-size:13px;
   font-weight:650;
   line-height:1.3;
@@ -7521,7 +7522,8 @@ html[data-appearance="oled"] body.exam-redesign #exam-ui-shell :is(#exam-ui-core
  }
  #examQuestionMenus .exam-question-config,
  #examQuestionMenus .question-editor,
- #examQuestionMenus .greek-question-options {
+ #examQuestionMenus .greek-question-options,
+ #examQuestionMenus .greek-choice-editor-rows {
   display:grid;
   grid-template-columns:minmax(0,1fr);
   gap:5px;
@@ -7600,13 +7602,13 @@ html[data-appearance="oled"] body.exam-redesign #exam-ui-shell :is(#exam-ui-core
   font-size:12px;
   line-height:1.3;
  }
- body.exam-redesign #examEditorPanel #exam-ui-shell #examQuestionMenus [data-regenerate-question] {
+ body.exam-redesign #examEditorPanel #exam-ui-shell #examQuestionMenus :is([data-regenerate-question],.exam-regenerate-question) {
   background:var(--soft);
   border-color:var(--soft-border);
   color:var(--soft-ink);
   font-weight:650;
  }
- body.exam-redesign #examEditorPanel #exam-ui-shell #examQuestionMenus [data-regenerate-question]:hover:not(:disabled) {
+ body.exam-redesign #examEditorPanel #exam-ui-shell #examQuestionMenus :is([data-regenerate-question],.exam-regenerate-question):hover:not(:disabled) {
   background:var(--editor-hover);
  }
  #examQuestionMenus :is(.exam-regenerate-word,.lex-word-control>button) { white-space:nowrap; }
@@ -7620,14 +7622,14 @@ html[data-appearance="oled"] body.exam-redesign #exam-ui-shell :is(#exam-ui-core
   }
  }
  body.exam-redesign #examEditorPanel #exam-ui-bulk {
-  padding:7px;
+  padding:5px;
   background:var(--surface);
   border:1px solid var(--line);
   border-radius:8px;
   box-shadow:none;
  }
  body.exam-redesign #examEditorPanel #exam-ui-bulk>summary {
-  padding:7px 8px;
+  padding:5px 7px;
   color:var(--soft-ink);
   font-weight:650;
   font-size:13px;

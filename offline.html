@@ -18027,7 +18027,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
    };
   }
   const regenerate=document.createElement('button');regenerate.type='button';
-  regenerate.className='secondary';regenerate.textContent='Regenerar esta alternativa';
+  regenerate.className='secondary exam-regenerate-question';regenerate.textContent='Regenerar esta alternativa';
   regenerate.onclick=()=>{
    if(!replaceGenerated(config.kind))regenerate.title='No hay nuevos elementos disponibles para las unidades marcadas.';
   };
@@ -18052,8 +18052,8 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
    }
    for(const [i,node] of items.entries()){
     const slot=config.kind+':'+i;
-    const label=document.createElement('label');label.className='exam-word-editor';
-    label.textContent='Elemento '+(i+1)+' (editable) ';
+    const row=document.createElement('div');row.className='exam-word-editor';
+    const label=document.createElement('label');label.textContent='Elemento '+(i+1);
     const input=document.createElement('input');input.type='text';
     input.dataset.greekCustomEdit=slot;
     input.value=itemText(node);
@@ -18067,15 +18067,17 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
       if(typeof warnExamManualSolution==='function')warnExamManualSolution();
      }
     });
-    label.append(input);editor.append(label);
+    label.append(input);row.append(label);editor.append(row);
     if(config.kind!=='roots'){
      const single=document.createElement('button');single.type='button';
-     single.className='secondary';single.textContent='Cambiar solo este sintagma';
+     single.className='secondary exam-regenerate-word';
+     single.title='Cambiar solo este sintagma';
+     single.textContent=$('lang').value==='va'?'Una altra':'Otra';
      single.setAttribute('aria-label','Regenerar sintagma '+(i+1)+' de '+config.title);
      // Delegación estable: el inspector puede reconstruir el menú durante
      // los cambios de puntuación sin invalidar el manejador del botón.
      single.dataset.greekChoiceSingle=config.kind+':'+i;
-     editor.append(single);
+     row.append(single);
     }
    }
   }
@@ -19892,7 +19894,7 @@ html[data-appearance="oled"] body.exam-redesign #exam-ui-shell :is(#exam-ui-core
    '#academicWorkspace #group-import>summary{font-weight:700}',
    '@media(max-width:500px){#academicWorkspace{padding:13px;margin:10px}}',
    "\n/* Pestañas del inspector: únicamente la sección activa, sin ocultar nada al imprimir. */\n@media screen and (min-width:951px){\n body.exam-redesign #examEditorPanel[data-editor-section] #exam-ui-shell > :not(:where(#exam-ui-shell-title,#examPanelShortcuts)){\n  display:none!important\n }\n body.exam-redesign #examEditorPanel[data-editor-section=\"exam-ui-core\"] #exam-ui-shell > :is(#exam-ui-core,#exam-ui-shell-note),\n body.exam-redesign #examEditorPanel[data-editor-section=\"examQuestionSettings\"] #exam-ui-shell > #examQuestionSettings,\n body.exam-redesign #examEditorPanel[data-editor-section=\"examVisualSettings\"] #exam-ui-shell > #examVisualSettings,\n body.exam-redesign #examEditorPanel[data-editor-section=\"examQuestionSettings\"] #exam-ui-shell > #group-culture:not([hidden]),\n body.exam-redesign #examEditorPanel[data-editor-section=\"group-drafts\"] #exam-ui-shell > :is(#group-drafts,#examinaUnifiedBackup){\n  display:block!important\n }\n body.exam-redesign #examEditorPanel[data-editor-section] > #examScoring{\n  display:none!important\n }\n body.exam-redesign #examEditorPanel[data-editor-section=\"examScoring\"] > #examScoring:not([hidden]){\n  display:block!important\n }\n}\n\n@media screen{\n /* Estado activo inequívoco: borde de alto contraste, marca y superficie propia. */\n body.exam-redesign #examEditorPanel #exam-ui-shell #examPanelShortcuts > button[aria-pressed=\"true\"],\n body.exam-redesign #examEditorPanel #exam-ui-shell #examPanelShortcuts > button[aria-pressed=\"true\"]:hover{\n  position:relative;\n  z-index:1;\n  background:#075b76;\n  border:2px solid #68e9bd;\n  color:#fff;\n  font-weight:850;\n  filter:none;\n  box-shadow:inset 0 -4px 0 #68e9bd,0 0 0 2px #2da88b45,0 4px 11px #0004;\n }\n body.exam-redesign #examEditorPanel #exam-ui-shell #examPanelShortcuts > button[aria-pressed=\"true\"]::before{\n  content:\"✓\";\n  display:inline-flex;\n  align-items:center;\n  justify-content:center;\n  vertical-align:middle;\n  width:16px;\n  height:16px;\n  margin-right:5px;\n  box-sizing:border-box;\n  border-radius:50%;\n  background:#fff;\n  color:#075b76;\n  font:900 11px/1 system-ui,sans-serif;\n  pointer-events:none;\n }\n}\n",
-   "\n/* Inspector de examen: densidad equilibrada sin modificar controles originales. */\n@media screen {\n body.exam-redesign #examEditorPanel #exam-ui-shell{gap:9px}\n body.exam-redesign #examEditorPanel #exam-ui-shell-title{font-size:18px;line-height:1.2}\n body.exam-redesign #examEditorPanel #exam-ui-shell-note{margin:-3px 0 0;font-size:12px;line-height:1.32}\n body.exam-redesign #examEditorPanel #exam-ui-shell :is(#exam-ui-core,#examQuestionSettings,#examScoring,#examVisualSettings,#group-drafts){\n  padding:10px;border-radius:9px\n }\n body.exam-redesign #examEditorPanel #exam-ui-meta{gap:5px 8px;padding-bottom:6px}\n body.exam-redesign #examEditorPanel #exam-ui-meta .field>label{margin-bottom:2px;font-size:12px}\n body.exam-redesign #examEditorPanel #exam-ui-meta .field :is(input,select){min-height:36px;padding:5px 7px}\n body.exam-redesign #examEditorPanel #primaryExamSettings h3,\n body.exam-redesign #examEditorPanel #examQuestionSettings>h3{\n  font-size:13.5px;margin-bottom:6px;line-height:1.3\n }\n body.exam-redesign #examEditorPanel #primaryExamHeading{\n  min-height:32px;padding:6px 9px;border-left:3px solid var(--accent);border-radius:5px\n }\n body.exam-redesign #examEditorPanel #examQuestionMenus{gap:6px;margin:0}\n body.exam-redesign #examEditorPanel #examQuestionMenus>details.exam-question-panel{\n  border-radius:7px;overflow:hidden\n }\n body.exam-redesign #examEditorPanel #examQuestionMenus>details.exam-question-panel>summary.exam-question-heading{\n  min-height:39px;padding:6px 9px;gap:6px;border-left:3px solid var(--accent);\n  background:var(--soft);color:var(--soft-ink);font-size:13px;line-height:1.3\n }\n body.exam-redesign #examEditorPanel #examQuestionMenus .exam-question-name{\n  font-size:13px;line-height:1.32\n }\n body.exam-redesign #examEditorPanel #examQuestionMenus .exam-question-config{\n  padding:9px;gap:7px\n }\n body.exam-redesign #examEditorPanel #examQuestionMenus .exam-word-editor{padding:6px 0}\n body.exam-redesign #examEditorPanel :is(#examVisualSettings,#group-drafts)>summary{\n  min-height:39px;padding:7px 9px;border-left:3px solid var(--accent);\n  background:var(--soft);color:var(--soft-ink);\n  font-size:13px;line-height:1.3;font-weight:700\n }\n body.exam-redesign #examEditorPanel #examVisualSettings .exam-ui-visual-body{\n  padding:9px;gap:8px\n }\n body.exam-redesign #examEditorPanel #examVisualSettings .exam-ui-question-rows{gap:7px}\n body.exam-redesign #examEditorPanel #examVisualSettings .exam-ui-question-row{\n  padding:8px;gap:7px\n }\n body.exam-redesign #examEditorPanel #exam-ui-bulk{padding:5px;margin:4px 0}\n body.exam-redesign #examEditorPanel #exam-ui-bulk>summary{padding:5px 7px}\n body.exam-redesign #examEditorPanel #group-drafts .buttons{gap:6px}\n body.exam-redesign #examEditorPanel #exam-ui-meta :is(#primaryCoursePicker,#primaryModelPicker){grid-column:span 3}\n /* Atajos de desplazamiento, sin reemplazar los desplegables reales. */\n body.exam-redesign #examEditorPanel #examPanelShortcuts{\n  display:flex;flex-wrap:wrap;align-items:center;gap:5px;margin:0;\n  padding:0 0 2px;scroll-margin-top:16px\n }\n body.exam-redesign #examEditorPanel #examPanelShortcuts>button{\n  flex:0 0 auto;min-height:32px;padding:5px 9px;\n  border:1px solid var(--soft-border);border-radius:7px;\n  background:var(--soft);color:var(--soft-ink);\n  font-size:11.5px;font-weight:700;line-height:1.2;white-space:nowrap;cursor:pointer\n }\n body.exam-redesign #examEditorPanel #examPanelShortcuts>button:hover{\n  background:var(--editor-hover)\n }\n body.exam-redesign #examEditorPanel #examPanelShortcuts>button:focus-visible{\n  outline:2px solid var(--focus-course);outline-offset:2px\n }\n body.exam-redesign #examEditorPanel #exam-ui-shell :is(#exam-ui-core,#examQuestionSettings,#examScoring,#examVisualSettings,#group-drafts){\n  scroll-margin-top:14px\n }\n @media (max-width:950px){\n  body.exam-redesign #examEditorPanel #examPanelShortcuts{display:none}\n }\n @media(max-width:760px), (pointer:coarse){\n  body.exam-redesign #examEditorPanel #examQuestionMenus>details.exam-question-panel>summary.exam-question-heading,\n  body.exam-redesign #examEditorPanel :is(#examVisualSettings,#group-drafts)>summary{min-height:44px}\n  body.exam-redesign #examEditorPanel #exam-ui-meta .field :is(input,select){min-height:44px}\n }\n}",
+   "\n/* Inspector de examen: densidad equilibrada sin modificar controles originales. */\n@media screen {\n body.exam-redesign #examEditorPanel #exam-ui-shell{gap:9px}\n body.exam-redesign #examEditorPanel #exam-ui-shell-title{font-size:18px;line-height:1.2}\n body.exam-redesign #examEditorPanel #exam-ui-shell-note{margin:-3px 0 0;font-size:12px;line-height:1.32}\n body.exam-redesign #examEditorPanel #exam-ui-shell :is(#exam-ui-core,#examScoring,#examVisualSettings,#group-drafts){\n  padding:10px;border-radius:9px\n }\n body.exam-redesign #examEditorPanel #exam-ui-meta{gap:5px 8px;padding-bottom:6px}\n body.exam-redesign #examEditorPanel #exam-ui-meta .field>label{margin-bottom:2px;font-size:12px}\n body.exam-redesign #examEditorPanel #exam-ui-meta .field :is(input,select){min-height:36px;padding:5px 7px}\n body.exam-redesign #examEditorPanel #primaryExamSettings h3{\n  font-size:13.5px;margin-bottom:6px;line-height:1.3\n }\n body.exam-redesign #examEditorPanel #primaryExamHeading{\n  min-height:32px;padding:6px 9px;border-left:3px solid var(--accent);border-radius:5px\n }\n body.exam-redesign #examEditorPanel :is(#examVisualSettings,#group-drafts)>summary{\n  min-height:39px;padding:7px 9px;border-left:3px solid var(--accent);\n  background:var(--soft);color:var(--soft-ink);\n  font-size:13px;line-height:1.3;font-weight:700\n }\n body.exam-redesign #examEditorPanel #examVisualSettings .exam-ui-visual-body{\n  padding:9px;gap:8px\n }\n body.exam-redesign #examEditorPanel #examVisualSettings .exam-ui-question-rows{gap:7px}\n body.exam-redesign #examEditorPanel #examVisualSettings .exam-ui-question-row{\n  padding:8px;gap:7px\n }\n body.exam-redesign #examEditorPanel #group-drafts .buttons{gap:6px}\n body.exam-redesign #examEditorPanel #exam-ui-meta :is(#primaryCoursePicker,#primaryModelPicker){grid-column:span 3}\n /* Atajos de desplazamiento, sin reemplazar los desplegables reales. */\n body.exam-redesign #examEditorPanel #examPanelShortcuts{\n  display:flex;flex-wrap:wrap;align-items:center;gap:5px;margin:0;\n  padding:0 0 2px;scroll-margin-top:16px\n }\n body.exam-redesign #examEditorPanel #examPanelShortcuts>button{\n  flex:0 0 auto;min-height:32px;padding:5px 9px;\n  border:1px solid var(--soft-border);border-radius:7px;\n  background:var(--soft);color:var(--soft-ink);\n  font-size:11.5px;font-weight:700;line-height:1.2;white-space:nowrap;cursor:pointer\n }\n body.exam-redesign #examEditorPanel #examPanelShortcuts>button:hover{\n  background:var(--editor-hover)\n }\n body.exam-redesign #examEditorPanel #examPanelShortcuts>button:focus-visible{\n  outline:2px solid var(--focus-course);outline-offset:2px\n }\n body.exam-redesign #examEditorPanel #exam-ui-shell :is(#exam-ui-core,#examQuestionSettings,#examScoring,#examVisualSettings,#group-drafts){\n  scroll-margin-top:14px\n }\n @media (max-width:950px){\n  body.exam-redesign #examEditorPanel #examPanelShortcuts{display:none}\n }\n @media(max-width:760px), (pointer:coarse){\n  body.exam-redesign #examEditorPanel :is(#examVisualSettings,#group-drafts)>summary{min-height:44px}\n  body.exam-redesign #examEditorPanel #exam-ui-meta .field :is(input,select){min-height:44px}\n }\n}",
   ].join('\n');
   doc.head.append(css);
  }
@@ -20358,6 +20360,7 @@ html[data-appearance="oled"] body.exam-redesign #exam-ui-shell :is(#exam-ui-core
   padding:4px 8px;
   border-radius:7px;
   color:var(--soft-ink);
+  background:var(--surface);
   font-size:13px;
   font-weight:650;
   line-height:1.3;
@@ -20404,7 +20407,8 @@ html[data-appearance="oled"] body.exam-redesign #exam-ui-shell :is(#exam-ui-core
  }
  #examQuestionMenus .exam-question-config,
  #examQuestionMenus .question-editor,
- #examQuestionMenus .greek-question-options {
+ #examQuestionMenus .greek-question-options,
+ #examQuestionMenus .greek-choice-editor-rows {
   display:grid;
   grid-template-columns:minmax(0,1fr);
   gap:5px;
@@ -20483,13 +20487,13 @@ html[data-appearance="oled"] body.exam-redesign #exam-ui-shell :is(#exam-ui-core
   font-size:12px;
   line-height:1.3;
  }
- body.exam-redesign #examEditorPanel #exam-ui-shell #examQuestionMenus [data-regenerate-question] {
+ body.exam-redesign #examEditorPanel #exam-ui-shell #examQuestionMenus :is([data-regenerate-question],.exam-regenerate-question) {
   background:var(--soft);
   border-color:var(--soft-border);
   color:var(--soft-ink);
   font-weight:650;
  }
- body.exam-redesign #examEditorPanel #exam-ui-shell #examQuestionMenus [data-regenerate-question]:hover:not(:disabled) {
+ body.exam-redesign #examEditorPanel #exam-ui-shell #examQuestionMenus :is([data-regenerate-question],.exam-regenerate-question):hover:not(:disabled) {
   background:var(--editor-hover);
  }
  #examQuestionMenus :is(.exam-regenerate-word,.lex-word-control>button) { white-space:nowrap; }
@@ -20503,14 +20507,14 @@ html[data-appearance="oled"] body.exam-redesign #exam-ui-shell :is(#exam-ui-core
   }
  }
  body.exam-redesign #examEditorPanel #exam-ui-bulk {
-  padding:7px;
+  padding:5px;
   background:var(--surface);
   border:1px solid var(--line);
   border-radius:8px;
   box-shadow:none;
  }
  body.exam-redesign #examEditorPanel #exam-ui-bulk>summary {
-  padding:7px 8px;
+  padding:5px 7px;
   color:var(--soft-ink);
   font-weight:650;
   font-size:13px;
