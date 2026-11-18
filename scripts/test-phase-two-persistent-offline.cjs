@@ -38,8 +38,9 @@ for(const record of source.paradigms){
 }
 function explicit(source,name,after){
  const marker='const '+name+'=';
- const start=source.indexOf(marker),end=source.indexOf(';\n'+after,start);
- assert(start>=0&&end>start,'Falta bloque explícito '+name);
+ const start=source.indexOf(marker),end=source.indexOf(';\n',start);
+ assert(start>=0&&end>start&&source.indexOf(after,end)>end,
+  'Falta bloque explícito o consumidor '+name);
  return JSON.parse(source.slice(start+marker.length,end));
 }
 for(const [name,after] of [

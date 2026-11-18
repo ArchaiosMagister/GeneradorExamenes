@@ -9,8 +9,9 @@ const source=JSON.parse(fs.readFileSync(path.join(root,'data/lemmas/verified-ove
 const index=JSON.parse(fs.readFileSync(path.join(root,'data/lemmas/teacher-forms.json'),'utf8'));
 const html=fs.readFileSync(path.join(root,'index.html'),'utf8');
 const latinMatch=html.match(/const latinExplicitVerbEvidence=(\{[^\n]+\});\nfunction latinExplicitVerbRows/);
-const greekMatch=html.match(/const greekExplicitVerbEvidence=(\{[^\n]+\});\nfunction greekCorpus/);
-assert(latinMatch&&greekMatch,'La app debe contener solo extractos de los paradigmas contrastados');
+const greekMatch=html.match(/const greekExplicitVerbEvidence=(\{[^\n]+\});\n/);
+assert(latinMatch&&greekMatch&&html.indexOf('function greekCorpus(){')>html.indexOf('const greekExplicitVerbEvidence='),
+ 'La app debe conservar los extractos de los paradigmas contrastados y su consumidor');
 const latin=JSON.parse(latinMatch[1]),greek=JSON.parse(greekMatch[1]);
 const records=source.paradigms.filter(x=>['possum','confero','loquor','sequor','βουλομαι','ερχομαι','eo','redeo','transeo','proficiscor','ηγεομαι','μαχομαι'].includes(x.lemma));
 assert.equal(records.length,12);

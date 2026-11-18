@@ -8175,6 +8175,29 @@ function greekLexKey(entry){return examKey(String(entry).split('+')[0].trim())}
 function greekLemma(head){const item=greekSharedBank.lookup(head);return item?{entry:item.entry,meaning:item.meaning||'[Traducción pendiente de revisión]',meaning_va:item.meaning_va||''}:{entry:head,meaning:'[Traducción pendiente de revisión]'}}
 /* Extracto de las formas contrastadas del índice; sin inferencia de tiempos. */
 const greekExplicitVerbEvidence={"βουλομαι":{"forms":["βούλομαι","βούλει","βούλεται","βουλόμεθα","βούλεσθε","βούλονται"],"lemma":"βούλομαι","voice":"medio (deponente)","tense":"presente","sourceCode":5,"unit":6},"ερχομαι":{"forms":["ἦλθον","ἦλθες","ἦλθε","ἤλθομεν","ἤλθετε","ἦλθον"],"lemma":"ἔρχομαι","voice":"activo","tense":"aoristo segundo","sourceCode":5,"unit":12},"ηγεομαι":{"forms":["ἡγοῦμαι","ἡγεῖ","ἡγεῖται","ἡγούμεθα","ἡγεῖσθε","ἡγοῦνται"],"lemma":"ἡγέομαι","voice":"medio (deponente)","tense":"presente","sourceCode":5,"unit":10},"ηγεομαι-future":{"forms":["ἡγήσομαι","ἡγήσει","ἡγήσεται","ἡγησόμεθα","ἡγήσεσθε","ἡγήσονται"],"lemma":"ἡγέομαι","voice":"medio (deponente)","tense":"futuro","sourceCode":5,"unit":11},"μαχομαι":{"forms":["μάχομαι","μάχει","μάχεται","μαχόμεθα","μάχεσθε","μάχονται"],"lemma":"μάχομαι","voice":"medio (deponente)","tense":"presente","sourceCode":5,"unit":6}};
+const greekCorpusNounGenders={
+ λογος:'m',ανθρωπος:'m',δωρον:'n',εργον:'n',αγορα:'f',χωρα:'f',
+ θαλαττα:'f',νεανιας:'m',παιδεια:'f',αδελφος:'m'
+};
+// Solo formas individuales cotejadas en data/lemmas/verified-overrides.json
+// (sourceCode 5); el catálogo provisional greek-nominal-candidates.json
+// sigue expresamente excluido de los exámenes. No se generan flexiones.
+const greekExamReviewedNominalRows=[["βασιλειον","βασίλειον, –ου (τό)",2,"nouns","n","segunda","https://greekdoc.github.io/lexicon/bas.html",[["βασίλεια","ACC;PL|NOM;PL|VOC;PL"],["βασιλείοις","DAT;PL"],["βασίλειον","ACC;SG|NOM;SG|VOC;SG"],["βασιλείου","GEN;SG"],["βασιλείῳ","DAT;SG"],["βασιλείων","GEN;PL"]]],["ξυλον","ξύλον, –ου",2,"nouns","n","segunda","https://en.wiktionary.org/wiki/%CE%BE%CF%8D%CE%BB%CE%BF%CE%BD",[["ξύλον","ACC;SG|NOM;SG|VOC;SG"],["ξύλου","GEN;SG"],["ξύλῳ","DAT;SG"],["ξύλα","ACC;PL|NOM;PL|VOC;PL"],["ξύλων","GEN;PL"],["ξύλοις","DAT;PL"]]],["πενια","πενία, –ας",3,"nouns","f","primera","https://en.wiktionary.org/wiki/%CF%80%CE%B5%CE%BD%CE%AF%CE%B1",[["πενία","NOM;SG|VOC;SG"],["πενίας","ACC;PL|GEN;SG"],["πενίᾳ","DAT;SG"],["πενίαν","ACC;SG"],["πενίαι","NOM;PL|VOC;PL"],["πενιῶν","GEN;PL"],["πενίαις","DAT;PL"]]],["πολεμοσ","πόλεμος, –ου",1,"nouns","m","segunda","https://en.wiktionary.org/wiki/%CF%80%CF%8C%CE%BB%CE%B5%CE%BC%CE%BF%CF%82",[["πόλεμος","NOM;SG"],["πολέμου","GEN;SG"],["πολέμῳ","DAT;SG"],["πόλεμον","ACC;SG"],["πόλεμε","VOC;SG"],["πόλεμοι","NOM;PL|VOC;PL"],["πολέμων","GEN;PL"],["πολέμοις","DAT;PL"],["πολέμους","ACC;PL"]]],["σοφια","σοφία, –ας",3,"nouns","f","primera","https://en.wiktionary.org/wiki/%CF%83%CE%BF%CF%86%CE%AF%CE%B1",[["σοφία","NOM;SG|VOC;SG"],["σοφίᾳ","DAT;SG"],["σοφίαι","NOM;PL|VOC;PL"],["σοφίαις","DAT;PL"],["σοφίαν","ACC;SG"],["σοφίας","ACC;PL|GEN;SG"],["σοφιῶν","GEN;PL"]]],["αρχων","ἄρχων, –οντος (ὁ)",8,"nouns","m","tercera","https://en.wiktionary.org/wiki/%E1%BC%84%CF%81%CF%87%CF%89%CE%BD",[["ἄρχον","VOC;SG"],["ἄρχοντα","ACC;SG"],["ἄρχοντας","ACC;PL"],["ἄρχοντες","NOM;PL|VOC;PL"],["ἄρχοντι","DAT;SG"],["ἄρχοντος","GEN;SG"],["ἀρχόντων","GEN;PL"],["ἄρχων","NOM;SG"]]],["γυνη","γυνή, γυναικός (ἡ)",8,"nouns","f","tercera","https://en.wiktionary.org/wiki/%CE%B3%CF%85%CE%BD%CE%AE",[["γύναι","VOC;SG"],["γυναῖκα","ACC;SG"],["γυναῖκας","ACC;PL"],["γυναῖκες","NOM;PL|VOC;PL"],["γυναικί","DAT;SG"],["γυναικῶν","GEN;PL"]]],["ηλιοσ","ἥλιος, –ου",1,"nouns","m","segunda","https://en.wiktionary.org/wiki/%E1%BC%A5%CE%BB%CE%B9%CE%BF%CF%82",[["ἥλιε","VOC;SG"],["ἥλιοι","NOM;PL|VOC;PL"],["ἥλιον","ACC;SG"],["ἥλιος","NOM;SG"],["ἡλίου","GEN;SG"],["ἡλίους","ACC;PL"],["ἡλίῳ","DAT;SG"],["ἡλίων","GEN;PL"]]],["στρατευμα","στράτευμα, –ατος",8,"nouns","n","tercera","https://en.wiktionary.org/wiki/%CF%83%CF%84%CF%81%CE%AC%CF%84%CE%B5%CF%85%CE%BC%CE%B1",[["στράτευμα","ACC;SG|NOM;SG|VOC;SG"],["στρατεύματα","ACC;PL|NOM;PL|VOC;PL"],["στρατεύματι","DAT;SG"],["στρατεύματος","GEN;SG"],["στρατευμάτων","GEN;PL"]]],["φυσισ","φύσις, –εως (ἡ)",8,"nouns","f","tercera","https://en.wiktionary.org/wiki/%CF%86%CF%8D%CF%83%CE%B9%CF%82",[["φύσει","DAT;SG"],["φύσεις","ACC;PL|NOM;PL|VOC;PL"],["φύσεων","GEN;PL"],["φύσεως","GEN;SG"],["φύσι","VOC;SG"],["φύσιν","ACC;SG"],["φύσις","NOM;SG"]]],["αδικια","ἀδικία, –ας",3,"nouns","f","primera","https://en.wiktionary.org/wiki/%E1%BC%80%CE%B4%CE%B9%CE%BA%CE%AF%CE%B1",[["ἀδικίᾳ","DAT;SG"]]],["αιξ","αἰξ, αἰγός",8,"nouns","f","tercera","https://en.wiktionary.org/wiki/%CE%B1%E1%BC%B0%CE%BE",[["αἰγί","DAT;SG"]]],["αληθεια","ἀληθεία, –ας",3,"nouns","f","primera","https://en.wiktionary.org/wiki/%E1%BC%80%CE%BB%CE%B7%CE%B8%CE%B5%CE%AF%CE%B1",[["ἀληθείᾳ","DAT;SG"]]],["αρετη","ἀρετή, –ης",3,"nouns","f","primera","https://en.wiktionary.org/wiki/%E1%BC%80%CF%81%CE%B5%CF%84%CE%AE",[["ἀρετῇ","DAT;SG"]]],["ασπισ","ἀσπίς, –ίδος (ἡ)",8,"nouns","f","tercera","https://en.wiktionary.org/wiki/%E1%BC%80%CF%83%CF%80%CE%AF%CF%82",[["ἀσπίδι","DAT;SG"]]],["βιβλιον","βιβλίον, –ου",2,"nouns","n","segunda","https://en.wiktionary.org/wiki/%CE%B2%CE%B9%CE%B2%CE%BB%CE%AF%CE%BF%CE%BD",[["βιβλίῳ","DAT;SG"]]],["δερμα","δέρμα, –ματος",8,"nouns","n","tercera","https://en.wiktionary.org/wiki/%CE%B4%CE%AD%CF%81%CE%BC%CE%B1",[["δέρματι","DAT;SG"]]],["δικη","δίκη, –ης",3,"nouns","f","primera","https://en.wiktionary.org/wiki/%CE%B4%CE%AF%CE%BA%CE%B7",[["δίκῃ","DAT;SG"]]],["ελευθερια","ἐλευθερία, –ας",3,"nouns","f","primera","https://en.wiktionary.org/wiki/%E1%BC%90%CE%BB%CE%B5%CF%85%CE%B8%CE%B5%CF%81%CE%AF%CE%B1",[["ἐλευθερίᾳ","DAT;SG"]]],["επιστολη","ἐπιστολή, –ης",3,"nouns","f","primera","https://en.wiktionary.org/wiki/%E1%BC%90%CF%80%CE%B9%CF%83%CF%84%CE%BF%CE%BB%CE%AE",[["ἐπιστολῇ","DAT;SG"]]],["ηγεμων","ἡγεμών, –ονος (M)",8,"nouns","m","tercera","https://en.wiktionary.org/wiki/%E1%BC%A1%CE%B3%CE%B5%CE%BC%CF%8E%CE%BD",[["ἡγεμόνι","DAT;SG"]]],["θωραξ","θώραξ, –ακος (ὁ)",8,"nouns","m","tercera","https://en.wiktionary.org/wiki/%CE%B8%CF%8E%CF%81%CE%B1%CE%BE",[["θώρακι","DAT;SG"]]],["ιατροσ","ἰατρός, –ου",1,"nouns","m","segunda","https://en.wiktionary.org/wiki/%E1%BC%B0%CE%B1%CF%84%CF%81%CF%8C%CF%82",[["ἰατρῷ","DAT;SG"]]],["λεων","λέων, λεόντος",8,"nouns","m","tercera","https://en.wiktionary.org/wiki/%CE%BB%CE%AD%CF%89%CE%BD",[["λέοντι","DAT;SG"]]],["μαχη","μάχη, –ης",3,"nouns","f","primera","https://en.wiktionary.org/wiki/%CE%BC%CE%AC%CF%87%CE%B7",[["μάχῃ","DAT;SG"]]],["νικη","νίκη, –ης",3,"nouns","f","primera","https://en.wiktionary.org/wiki/%CE%BD%CE%AF%CE%BA%CE%B7",[["νίκῃ","DAT;SG"]]],["νυξ","νύξ, νυκτός (ἡ)",8,"nouns","f","tercera","https://en.wiktionary.org/wiki/%CE%BD%CF%8D%CE%BE",[["νυκτί","DAT;SG"]]],["οπλον","ὅπλον, –ου",2,"nouns","n","segunda","https://en.wiktionary.org/wiki/%E1%BD%85%CF%80%CE%BB%CE%BF%CE%BD",[["ὅπλῳ","DAT;SG"]]],["ουρανοσ","οὐράνος, –ου",1,"nouns","m","segunda","https://en.wiktionary.org/wiki/%CE%BF%E1%BD%90%CF%81%CE%AC%CE%BD%CE%BF%CF%82",[["οὐρανῷ","DAT;SG"]]],["πετρα","πέτρα, –ας",3,"nouns","f","primera","https://en.wiktionary.org/wiki/%CF%80%CE%AD%CF%84%CF%81%CE%B1",[["πέτρᾳ","DAT;SG"]]],["πραγμα","πράγμα, πραγμάτος (N)",8,"nouns","n","tercera","https://en.wiktionary.org/wiki/%CF%80%CF%81%CE%AC%CE%B3%CE%BC%CE%B1",[["πράγματι","DAT;SG"]]],["σωμα","σῶμα, –ματος",8,"nouns","n","tercera","https://en.wiktionary.org/wiki/%CF%83%E1%BF%B6%CE%BC%CE%B1",[["σώματι","DAT;SG"]]],["κεφαλη","κεφαλή, –ῆς",3,"nouns","f","primera","https://en.wiktionary.org/wiki/%CE%BA%CE%B5%CF%86%CE%B1%CE%BB%CE%AE",[["κεφαλῇ","DAT;SG"]]],["ρητωρ","ῥήτωρ, –ορος (ὁ)",8,"nouns","m","tercera","https://en.wiktionary.org/wiki/%E1%BF%A5%CE%AE%CF%84%CF%89%CF%81",[["ῥήτορι","DAT;SG"]]],["ρισ","ῥίς, ῥινός (ἡ)",8,"nouns","f","tercera","https://en.wiktionary.org/wiki/%E1%BF%A5%CE%AF%CF%82",[["ῥινί","DAT;SG"]]],["στρατηγοσ","στρατηγός, –ου",1,"nouns","m","segunda","https://en.wiktionary.org/wiki/%CF%83%CF%84%CF%81%CE%B1%CF%84%CE%B7%CE%B3%CF%8C%CF%82",[["στρατηγῷ","DAT;SG"]]],["αγαθοσ","ἀγαθός, –η, –ον",5,"adjectives","","","https://en.wiktionary.org/wiki/%E1%BC%80%CE%B3%CE%B1%CE%B8%CF%8C%CF%82",[["ἀγαθός","NOM;SG;MASC"],["ἀγαθοῦ","GEN;SG;MASC|GEN;SG;NEUT"],["ἀγαθῷ","DAT;SG;MASC|DAT;SG;NEUT"],["ἀγαθόν","ACC;SG;MASC|ACC;SG;NEUT|NOM;SG;NEUT|VOC;SG;NEUT"],["ἀγαθέ","VOC;SG;MASC"],["ἀγαθή","NOM;SG;FEM|VOC;SG;FEM"],["ἀγαθῆς","GEN;SG;FEM"],["ἀγαθῇ","DAT;SG;FEM"],["ἀγαθήν","ACC;SG;FEM"],["ἀγαθοί","NOM;PL;MASC|VOC;PL;MASC"],["ἀγαθῶν","GEN;PL;FEM|GEN;PL;MASC|GEN;PL;NEUT"],["ἀγαθοῖς","DAT;PL;MASC|DAT;PL;NEUT"],["ἀγαθούς","ACC;PL;MASC"],["ἀγαθαί","NOM;PL;FEM|VOC;PL;FEM"],["ἀγαθαῖς","DAT;PL;FEM"],["ἀγαθάς","ACC;PL;FEM"],["ἀγαθά","ACC;PL;NEUT|NOM;PL;NEUT|VOC;PL;NEUT"]]],["δικαιοσ","δίκαιος, –α, –ον",5,"adjectives","","","https://en.wiktionary.org/wiki/%CE%B4%CE%AF%CE%BA%CE%B1%CE%B9%CE%BF%CF%82",[["δίκαιος","NOM;SG;MASC"],["δικαίου","GEN;SG;MASC|GEN;SG;NEUT"],["δικαίῳ","DAT;SG;MASC|DAT;SG;NEUT"],["δίκαιον","ACC;SG;MASC|ACC;SG;NEUT|NOM;SG;NEUT|VOC;SG;NEUT"],["δίκαιε","VOC;SG;MASC"],["δικαία","NOM;SG;FEM|VOC;SG;FEM"],["δικαίας","ACC;PL;FEM|GEN;SG;FEM"],["δικαίᾳ","DAT;SG;FEM"],["δικαίαν","ACC;SG;FEM"],["δίκαιοι","NOM;PL;MASC|VOC;PL;MASC"],["δικαίων","GEN;PL;FEM|GEN;PL;MASC|GEN;PL;NEUT"],["δικαίοις","DAT;PL;MASC|DAT;PL;NEUT"],["δικαίους","ACC;PL;MASC"],["δίκαιαι","NOM;PL;FEM|VOC;PL;FEM"],["δικαίαις","DAT;PL;FEM"],["δίκαια","ACC;PL;NEUT|NOM;PL;NEUT|VOC;PL;NEUT"]]],["εχθροσ","ἐχθρός, –ά, –όν",5,"adjectives","","","https://en.wiktionary.org/wiki/%E1%BC%90%CF%87%CE%B8%CF%81%CF%8C%CF%82",[["ἐχθρά","ACC;PL;NEUT|NOM;PL;NEUT|NOM;SG;FEM|VOC;PL;NEUT|VOC;SG;FEM"],["ἐχθρέ","VOC;SG;MASC"],["ἐχθροί","NOM;PL;MASC|VOC;PL;MASC"],["ἐχθροῖς","DAT;PL;MASC|DAT;PL;NEUT"],["ἐχθρόν","ACC;SG;MASC|ACC;SG;NEUT|NOM;SG;NEUT|VOC;SG;NEUT"],["ἐχθρός","NOM;SG;MASC"],["ἐχθροῦ","GEN;SG;MASC|GEN;SG;NEUT"],["ἐχθρούς","ACC;PL;MASC"],["ἐχθρῷ","DAT;SG;MASC|DAT;SG;NEUT"],["ἐχθρῶν","GEN;PL;FEM|GEN;PL;MASC|GEN;PL;NEUT"],["ἐχθρᾷ","DAT;SG;FEM"],["ἐχθραί","NOM;PL;FEM|VOC;PL;FEM"],["ἐχθραῖς","DAT;PL;FEM"],["ἐχθράν","ACC;SG;FEM"],["ἐχθράς","ACC;PL;FEM"],["ἐχθρᾶς","GEN;SG;FEM"]]],["αθανατοσ","ἀθάνατος, −ον",5,"adjectives","","","https://en.wiktionary.org/wiki/%E1%BC%80%CE%B8%CE%AC%CE%BD%CE%B1%CF%84%CE%BF%CF%82",[["ἀθάνατα","ACC;PL;NEUT|NOM;PL;NEUT|VOC;PL;NEUT"],["ἀθάνατε","VOC;SG;MASC"],["ἀθάνατοι","NOM;PL;MASC|VOC;PL;MASC"],["ἀθάνατον","ACC;SG;MASC|ACC;SG;NEUT|NOM;SG;NEUT|VOC;SG;NEUT"],["ἀθάνατος","NOM;SG;MASC"],["ἀθανάτους","ACC;PL;MASC"],["ἀθανάτῳ","DAT;SG;MASC|DAT;SG;NEUT"],["ἀθανάτων","GEN;PL;MASC|GEN;PL;NEUT"]]],["κακοσ","κακός, –η, –ον",5,"adjectives","","","https://en.wiktionary.org/wiki/%CE%BA%CE%B1%CE%BA%CF%8C%CF%82",[["κακά","ACC;PL;NEUT|NOM;PL;NEUT|VOC;PL;NEUT"],["κακαί","NOM;PL;FEM|VOC;PL;FEM"],["κακάς","ACC;PL;FEM"],["κακέ","VOC;SG;MASC"],["κακή","NOM;SG;FEM|VOC;SG;FEM"],["κακῇ","DAT;SG;FEM"],["κακήν","ACC;SG;FEM"],["κακῆς","GEN;SG;FEM"],["κακοί","NOM;PL;MASC|VOC;PL;MASC"],["κακόν","ACC;SG;MASC|ACC;SG;NEUT|NOM;SG;NEUT|VOC;SG;NEUT"],["κακός","NOM;SG;MASC"],["κακούς","ACC;PL;MASC"],["κακῷ","DAT;SG;MASC|DAT;SG;NEUT"],["κακῶν","GEN;PL;MASC|GEN;PL;NEUT"]]],["καλοσ","καλός, –η, –ον",5,"adjectives","","","https://en.wiktionary.org/wiki/%CE%BA%CE%B1%CE%BB%CF%8C%CF%82",[["καλά","ACC;PL;NEUT|NOM;PL;NEUT|VOC;PL;NEUT"],["καλαί","NOM;PL;FEM|VOC;PL;FEM"],["καλάς","ACC;PL;FEM"],["καλέ","VOC;SG;MASC"],["καλή","NOM;SG;FEM|VOC;SG;FEM"],["καλῇ","DAT;SG;FEM"],["καλήν","ACC;SG;FEM"],["καλῆς","GEN;SG;FEM"],["καλοί","NOM;PL;MASC|VOC;PL;MASC"],["καλόν","ACC;SG;MASC|ACC;SG;NEUT|NOM;SG;NEUT|VOC;SG;NEUT"],["καλός","NOM;SG;MASC"],["καλούς","ACC;PL;MASC"],["καλῷ","DAT;SG;MASC|DAT;SG;NEUT"],["καλῶν","GEN;PL;MASC|GEN;PL;NEUT"]]],["μικροσ","μίκρος, –α, –ον",5,"adjectives","","","https://en.wiktionary.org/wiki/%CE%BC%CE%AF%CE%BA%CF%81%CE%BF%CF%82",[["μικρά","ACC;PL;NEUT|NOM;PL;NEUT|NOM;SG;FEM|VOC;PL;NEUT|VOC;SG;FEM"],["μικρᾷ","DAT;SG;FEM"],["μικραί","NOM;PL;FEM|VOC;PL;FEM"],["μικραῖς","DAT;PL;FEM"],["μικράν","ACC;SG;FEM"],["μικράς","ACC;PL;FEM"],["μικρᾶς","GEN;SG;FEM"],["μικρέ","VOC;SG;MASC"],["μικροί","NOM;PL;MASC|VOC;PL;MASC"],["μικροῖς","DAT;PL;MASC|DAT;PL;NEUT"],["μικρόν","ACC;SG;MASC|ACC;SG;NEUT|NOM;SG;NEUT|VOC;SG;NEUT"],["μικρός","NOM;SG;MASC"],["μικροῦ","GEN;SG;MASC|GEN;SG;NEUT"],["μικρούς","ACC;PL;MASC"],["μικρῷ","DAT;SG;MASC|DAT;SG;NEUT"],["μικρῶν","GEN;PL;FEM|GEN;PL;MASC|GEN;PL;NEUT"]]],["νεοσ","νέος, –α, –ον",5,"adjectives","","","https://en.wiktionary.org/wiki/%CE%BD%CE%AD%CE%BF%CF%82",[["νέα","ACC;PL;NEUT|NOM;PL;NEUT|VOC;PL;NEUT"],["νέαι","NOM;PL;FEM|VOC;PL;FEM"],["νέας","ACC;PL;FEM"],["νέε","VOC;SG;MASC"],["νέοι","NOM;PL;MASC|VOC;PL;MASC"],["νέον","ACC;SG;MASC|ACC;SG;NEUT|NOM;SG;NEUT|VOC;SG;NEUT"],["νέος","NOM;SG;MASC"],["νέους","ACC;PL;MASC"],["νέῳ","DAT;SG;MASC|DAT;SG;NEUT"],["νέων","GEN;PL;MASC|GEN;PL;NEUT"]]],["πονηροσ","πονηρός, –α, –ον",5,"adjectives","","","https://en.wiktionary.org/wiki/%CF%80%CE%BF%CE%BD%CE%B7%CF%81%CF%8C%CF%82",[["πονηρά","ACC;PL;NEUT|NOM;PL;NEUT|VOC;PL;NEUT"],["πονηραί","NOM;PL;FEM|VOC;PL;FEM"],["πονηράς","ACC;PL;FEM"],["πονηρέ","VOC;SG;MASC"],["πονηροί","NOM;PL;MASC|VOC;PL;MASC"],["πονηρόν","ACC;SG;MASC|ACC;SG;NEUT|NOM;SG;NEUT|VOC;SG;NEUT"],["πονηρός","NOM;SG;MASC"],["πονηροῦ","GEN;SG;MASC|GEN;SG;NEUT"],["πονηρούς","ACC;PL;MASC"],["πονηρῷ","DAT;SG;MASC|DAT;SG;NEUT"],["πονηρῶν","GEN;PL;MASC|GEN;PL;NEUT"]]],["ημετεροσ","ἡμετέρος, –α, –ον",7,"adjectives","","","https://en.wiktionary.org/wiki/%E1%BC%A1%CE%BC%CE%B5%CF%84%CE%AD%CF%81%CE%BF%CF%82",[["ἡμέτερα","ACC;PL;NEUT|NOM;PL;NEUT|VOC;PL;NEUT"],["ἡμέτεραι","NOM;PL;FEM|VOC;PL;FEM"],["ἡμετέρας","ACC;PL;FEM"],["ἡμέτερε","VOC;SG;MASC"],["ἡμέτεροι","NOM;PL;MASC|VOC;PL;MASC"],["ἡμέτερον","ACC;SG;MASC|ACC;SG;NEUT|NOM;SG;NEUT|VOC;SG;NEUT"],["ἡμέτερος","NOM;SG;MASC"],["ἡμετέρους","ACC;PL;MASC"],["ἡμετέρῳ","DAT;SG;MASC|DAT;SG;NEUT"],["ἡμετέρων","GEN;PL;MASC|GEN;PL;NEUT"]]]];
+function greekExamNominalAnswer(readings,category,gender,declension){
+ const cases={NOM:'nominativo',VOC:'vocativo',ACC:'acusativo',GEN:'genitivo',DAT:'dativo'};
+ const numbers={SG:'singular',PL:'plural'};
+ const genders={m:'masculino',f:'femenino',n:'neutro',MASC:'masculino',FEM:'femenino',NEUT:'neutro'};
+ const analyses=[...new Set(readings)].map(tags=>{
+  const [cas,num,adjectiveGender]=tags.split(';');
+  if(!cases[cas]||!numbers[num]||
+   (category==='adjectives'&&!genders[adjectiveGender])||
+   (category==='nouns'&&!genders[gender]))throw Error('Casilla nominal griega sin contrastar: '+tags);
+  return cases[cas]+' '+numbers[num]+' '+genders[category==='nouns'?gender:adjectiveGender];
+ });
+ return analyses.join(' o ')+(category==='nouns'?
+  '; sustantivo de la '+declension+' declinación.':
+  '; adjetivo de primera clase.');
+}
 function greekCorpus(){
  const items=[];
  const add=(kind,id,minUnit,contentUnits,prompt,answer,lemmas=[],table=null)=>items.push({kind,id,minUnit,contentUnits,prompt,answer,lemmas,table,verified:true});
@@ -8239,6 +8262,46 @@ function greekCorpus(){
   add('pronouns','p-'+i,7,[7],form,answer,lemma?[lemma]:[]);
   add('forms','pf-'+i,7,[7],form,answer,lemma?[lemma]:[]);
  });
+ // Formas aisladas adicionales: cada casilla de los diez paradigmas
+ // nominales cerrados (v19), con las lecturas sincréticas reunidas.
+ // Las otras entradas provienen EXCLUSIVAMENTE de las filas de revisión
+ // individual con URL de contraste, nunca del banco provisional.
+ const occupiedNominalSurfaces=new Set(items.filter(x=>x.kind==='forms')
+  .map(x=>x.prompt.normalize('NFC')));
+ function addNominalForm(id,minUnit,form,readings,entry,category,gender,declension,reference){
+  const surface=String(form).normalize('NFC');
+  if(!surface||/\s/u.test(surface)||occupiedNominalSurfaces.has(surface)||
+   isExcludedExamMorphLemma(entry))return;
+  occupiedNominalSurfaces.add(surface);
+  add('forms',id,minUnit,[minUnit],surface,
+   greekExamNominalAnswer(readings,category,gender,declension),[entry]);
+  const item=items[items.length-1];
+  item.category=category;
+  item.source=reference?'revisión individual de forma':'paradigma nominal explícito v19';
+  if(reference){item.sourceRef=reference;item.sourceCode=5}
+ }
+ for(const [key,forms] of Object.entries(greekNounData)){
+  const unit=greekNounUnits[key],gender=greekCorpusNounGenders[key];
+  if(!unit||!gender)continue;
+  const entry=items.find(x=>x.id==='n-'+key)?.lemmas?.[0];
+  if(!entry)continue;
+  const matrix=new Map();
+  forms.forEach((form,index)=>{
+   const surface=String(form).normalize('NFC'),caseTag=['NOM','GEN','DAT','ACC','VOC'][index%5],
+    numberTag=index<5?'SG':'PL';
+   if(!matrix.has(surface))matrix.set(surface,[]);
+   matrix.get(surface).push(caseTag+';'+numberTag);
+  });
+  let offset=0;
+  for(const [surface,readings] of matrix)
+   addNominalForm('gn-v19-'+key+'-'+offset++,unit,surface,readings,entry,
+    'nouns',gender,unit===3?'primera':'segunda',null);
+ }
+ for(const [lemma,entry,unit,category,gender,declension,source,forms] of greekExamReviewedNominalRows){
+  forms.forEach(([surface,readings],i)=>
+   addNominalForm('gn-reviewed-'+lemma+'-'+i,unit,surface,readings.split('|'),
+    entry,category,gender,declension,source));
+ }
  greekEtymology.forEach(([word,min,us,answer],i)=>add('etymology','e-'+i,min,us,word,answer,[greekSharedBank.lookup(word)?.entry||word]));
  greekSentenceRows.forEach(([text,min,us,sol,analysis,lemmas],i)=>add('sentences','s-'+i,min,us,text,sol+' Análisis: '+analysis,lemmas));
  return items;
@@ -8285,10 +8348,7 @@ const greekCompleteAdjectives=[
  {lemma:'σύμμαχος',short:'σύμμαχ',long:'συμμάχ',feminine:null,accent:'recessive'},
  {lemma:'δίκαιος',feminine:'α',accent:'dikaios'}
 ];
-const greekSyntagmNounGenders={
- λογος:'m',ανθρωπος:'m',δωρον:'n',εργον:'n',αγορα:'f',χωρα:'f',
- θαλαττα:'f',νεανιας:'m',παιδεια:'f',αδελφος:'m'
-};
+const greekSyntagmNounGenders=greekCorpusNounGenders;
 const greekArticles={
  m:[['ὁ','','τὸν','τοῦ','τῷ'],['οἱ','','τοὺς','τῶν','τοῖς']],
  f:[['ἡ','','τὴν','τῆς','τῇ'],['αἱ','','τὰς','τῶν','ταῖς']],
@@ -8497,8 +8557,8 @@ function generateGreekMorphologyFixed(){
 let greekExamState=null;
 function greekChoicePool(kind){
  const curated=greekVerifiedCorpus.filter(x=>x.verified&&x.kind===kind&&greekMorphologyEligible(x,greekLimit())&&
-  (kind!=='forms'||!(x.lemmas||[]).some(lemma=>isExcludedExamMorphLemma(lemma))));
- return kind==='forms'?curated.concat(examAuthorizedProposals('greek1',greekLimit())).concat(examMorphQuotaValues()[2]>0?examGreekVerbFormCandidates(greekVerifiedCorpus,greekLimit()):[]):curated;
+  (kind!=='forms'||(!x.prompt.includes(' ')&&!(x.lemmas||[]).some(lemma=>isExcludedExamMorphLemma(lemma)))));
+ return kind==='forms'?curated.concat(examAuthorizedProposals('greek1',greekLimit()).filter(x=>x.kind==='forms'&&!x.prompt.includes(' '))).concat(examMorphQuotaValues()[2]>0?examGreekVerbFormCandidates(greekVerifiedCorpus,greekLimit()):[]):curated;
 }
 function greekSelectedItems(pool,chosen,counts){
  const signature=JSON.stringify([chosen.map(examUnitNumber),$('model').value,counts,examMorphQuotaValues()]);
@@ -8701,8 +8761,8 @@ function generateGreekExam(){
  const chosen=greekMarkedUnits(),max=greekLimit(),mode=greekModes[$('model').value]||greekModes.complete;
  const enabled=greekKinds.filter((k,i)=>(mode.points[i]>0||(k==='pronouns'&&$('model').value==='complete'))&&examQuestionEnabled(k==='conjugation'?'verb':k==='declension'?'decl':k==='sentences'?'sent':k==='etymology'?'etymology':k));
  const pool=greekVerifiedCorpus.filter(x=>x.verified&&x.kind!=='sentences'&&greekMorphologyEligible(x,max)&&enabled.includes(x.kind)&&
-  (x.kind!=='forms'||!(x.lemmas||[]).some(lemma=>isExcludedExamMorphLemma(lemma))))
-  .concat(enabled.includes('forms')?examAuthorizedProposals('greek1',max):[])
+  (x.kind!=='forms'||(!x.prompt.includes(' ')&&!(x.lemmas||[]).some(lemma=>isExcludedExamMorphLemma(lemma)))))
+  .concat(enabled.includes('forms')?examAuthorizedProposals('greek1',max).filter(x=>x.kind==='forms'&&!x.prompt.includes(' ')):[])
   .concat(enabled.includes('forms')&&examMorphQuotaValues()[2]>0?examGreekVerbFormCandidates(greekVerifiedCorpus,max):[]);
  const counts={declension:Math.min(2,countFor('decl')),conjugation:Math.min(2,countFor('verb')),forms:examMorphQuotasActive()?examMorphQuotaCount():countFor('greek-forms'),pronouns:10,etymology:Math.min($('model').value==='translation'?3:2,countFor('lex')),sentences:countFor('sent')};
  const result=greekSelectedItems(pool,chosen,counts),sections=[],answers=[];
@@ -8766,7 +8826,91 @@ $('count-sent').onchange=()=>{
 };
 applySentenceGap();
 // Redimensionar el análisis sin reconstruir las otras preguntas del docente.
+// El examen completo de Griego agrupa las preguntas por competencias.
+// Al quedarse sin formas de una clase, desaparece el subtítulo "forms":
+// la sustitución conservadora basada en un encabezado plano devolvía el
+// apartado anterior (p. ej. sustantivos al solicitar adjetivos en UD1).
+// Actualizar solamente la opción agrupada, sin perder otros textos editados.
+function resizeOnlyGreekGroupedAnalysis(){
+ const paper=$('paper'),original=paper.querySelector('.exam-sheet');
+ if(!original)return false;
+ generate();
+ const fresh=paper.querySelector('.exam-sheet');
+ if(!fresh)return true;
+ const query=kind=>':scope > .greek-choice-option[data-greek-option="'+kind+'"]';
+ const oldForm=original.querySelector(query('forms'));
+ const newForm=fresh.querySelector(query('forms'));
+ oldForm?.remove();
+ if(newForm){
+  const order=['declension','forms','change-number','retroversion','conjugation'];
+  const index=order.indexOf('forms');
+  const following=order.slice(index+1).map(k=>original.querySelector(query(k))).find(Boolean);
+  const preceding=order.slice(0,index).reverse().map(k=>original.querySelector(query(k))).find(Boolean);
+  const copy=newForm.cloneNode(true);
+  if(following)following.before(copy);
+  else if(preceding)preceding.after(copy);
+  else{
+   const anchor=original.querySelector(':scope > .exam-question[data-exam-kind="greek-plurilingual"],:scope > .exam-question[data-greek-kind="sentences"],:scope > #answerkey');
+   if(anchor)anchor.before(copy);else original.append(copy);
+  }
+ }
+ // Las letras de las opciones y el encabezado "elige..." dependen de la
+ // cantidad de preguntas que permanecen en el bloque de competencias.
+ for(const [kind,selector] of [
+  ['greek-competence',':scope > .exam-question[data-exam-kind="greek-competence"]'],
+  ['greek-plurilingual',':scope > .exam-question[data-exam-kind="greek-plurilingual"]']]){
+  const current=original.querySelector(selector),replacement=fresh.querySelector(selector);
+  if(current&&replacement)current.innerHTML=replacement.innerHTML;
+  else if(current&&!replacement)current.remove();
+  else if(!current&&replacement){
+   const first=original.querySelector(':scope > .greek-choice-option[data-greek-choice-group="'+kind+'"]');
+   const anchor=first||original.querySelector(':scope > .exam-question[data-greek-kind="sentences"],:scope > #answerkey');
+   if(anchor)anchor.before(replacement.cloneNode(true));
+  }
+ }
+ const freshSent=fresh.querySelector(':scope > .exam-question[data-greek-kind="sentences"]');
+ const oldSent=original.querySelector(':scope > .exam-question[data-greek-kind="sentences"]');
+ if(freshSent&&oldSent){
+  const a=freshSent.querySelector('.exam-q-number'),b=oldSent.querySelector('.exam-q-number');
+  if(a&&b)b.textContent=a.textContent;
+ }
+ for(const kind of ['declension','forms','change-number','retroversion','conjugation','etymology','roots']){
+  const old=original.querySelector(query(kind)),now=fresh.querySelector(query(kind));
+  const oldLetter=old?.querySelector(':scope > .greek-choice-subquestion .exam-letter');
+  const newLetter=now?.querySelector(':scope > .greek-choice-subquestion .exam-letter');
+  if(oldLetter&&newLetter)oldLetter.textContent=newLetter.textContent;
+ }
+ // Cambiar únicamente las soluciones de la clase afectada, sin alterar
+ // ninguna corrección docente en los otros apartados.
+ const oldKey=original.querySelector('#answerkey'),newKey=fresh.querySelector('#answerkey');
+ const answerHead=key=>key?.querySelector(':scope > h3[data-greek-kind="forms"]');
+ const group=head=>{
+  const nodes=[];
+  for(let node=head;node;node=node.nextElementSibling){
+   if(node!==head&&node.matches('h3,[data-greek-extra-answer]'))break;
+   nodes.push(node);
+  }
+  return nodes;
+ };
+ const previous=group(answerHead(oldKey)),updated=group(answerHead(newKey)).map(x=>x.cloneNode(true));
+ if(previous.length){
+  previous[0].before(...updated);
+  previous.forEach(x=>x.remove());
+ }else if(updated.length&&oldKey){
+  const after=oldKey.querySelector(':scope > h3[data-greek-kind="pronouns"],:scope > h3[data-greek-kind="etymology"],:scope > h3[data-greek-kind="sentences"],:scope > [data-greek-extra-answer]');
+  if(after)after.before(...updated);else oldKey.append(...updated);
+ }
+ paper.replaceChildren(original);
+ refreshManualMorphWords();
+ greekExamControls();
+ window.greekLastPreview=paper.innerHTML;
+ window.ExaminaScoring?.sync?.();
+ return true;
+}
 function resizeOnlyExamAnalysis(){
+ if(currentCourse()==='greek1'&&window.ExaminaGreekChoiceGroups?.active?.()){
+  if(resizeOnlyGreekGroupedAnalysis())return;
+ }
  const paper=$('paper'),original=paper.querySelector('.exam-sheet');
  const questionSelector='.exam-question[data-exam-kind="forms"],.exam-question[data-morph-kind="forms"],.exam-question[data-greek-kind="forms"],.greek-choice-subquestion[data-greek-kind="forms"]';
  const oldHeading=original?.querySelector(questionSelector);
