@@ -7053,8 +7053,11 @@ function latinExamFormCandidates(chosen,allForms=false){
  // its lemma happened to appear in a vocabulary list.
  // El análisis admite lemas del repertorio latino compartido, con filtro
  // por declinación y categoría ya explicadas; la unidad léxica no restringe.
- const data=isMorphology?unique(latinSyntagmSources()):
-  latinSharedBank.vocabulary(currentCourse(),chosen),groups=[[],[],[],[]];
+ const course=currentCourse(),other=course==='latin1'?'latin4':'latin1';
+ const sources=isMorphology?
+  [...latinSharedBank.vocabulary(course,null),...latinSharedBank.vocabulary(other,null)]:
+  latinSharedBank.vocabulary(course,chosen);
+ const data=[...new Map(sources.map(x=>[examKey(x.entry),x])).values()],groups=[[],[],[],[]];
  const unitVerbs=new Set(latinSharedBank.vocabulary(currentCourse(),chosen).map(x=>examKey(x.entry)));
  const unitsByEntry=new Map();
  for(const item of data){
@@ -7063,6 +7066,11 @@ function latinExamFormCandidates(chosen,allForms=false){
   unitsByEntry.get(key).push(item.unit);
  }
  const limit=Math.max(0,...chosen.map(examUnitNumber).filter(Number.isInteger));
+ // Reglas iguales a las de los sintagmas: la declinación explicada decide
+ // la admisión incluso si el lema procede del otro banco latino.
+ const minNounUnit=kind=>kind==='1'?1:
+  ['2m','2n','2er'].includes(kind)?(course==='latin4'?2:1):
+  ['3mf','3n'].includes(kind)?(course==='latin4'?5:4):Infinity;
  const permitted=category=>{
   if(!isMorphology||category==='verbs')return true;
   const control={nouns:'n',adjectives:'adj',pronouns:'pro'}[category];
@@ -7093,7 +7101,7 @@ function latinExamFormCandidates(chosen,allForms=false){
   }else if(n){
    // La tercera declinación de Latín I se introduce en UD4, aunque el
    // vocabulario de unidades anteriores ya contenga un lema de esta clase.
-   if(permitted('nouns')&&latinSyntagmNounUnit(n.kind)<=limit)
+   if(permitted('nouns')&&minNounUnit(n.kind)<=limit)
     add(0,n.forms.flat(),['singular','plural'].flatMap(number=>M_CASES.map(c=>c+', '+number)),'nouns',x.entry,'',n.kind);
   }
   else if(a){if(permitted('adjectives')&&limit>=(currentCourse()==='latin4'?3:2))
