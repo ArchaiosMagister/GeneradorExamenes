@@ -33,7 +33,7 @@
 
 ## Selección ponderada y diversidad
 
-- Cuando hay ejemplos de la última unidad seleccionada y ejemplos de repaso, la elección favorece los **primeros con probabilidad del 70 %** antes de aplicar el filtro de diversidad.
+- Cuando hay ejemplos de la última unidad seleccionada y ejemplos de repaso, la elección favorece los **primeros con probabilidad del 70 %**, una vez descartadas las opciones que repetirían raíces cuando existen alternativas.
 - Si la unidad no introduce nuevos étimos, se favorecen los ejemplos más recientes, sin eliminar los anteriores.
 - Al regenerar, se evita repetir la oración actual y, si existe alternativa, **cualquier raíz** usada en ella. Se intentan excluir además las últimas cuatro oraciones y se penalizan las raíces de las tres elecciones recientes.
 - El historial se conserva en los borradores. Cambiar entre castellano y valenciano traduce la oración **sin sustituirla**.
