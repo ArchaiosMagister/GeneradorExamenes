@@ -168,6 +168,27 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
     if(api.current()?.id!==selectedBefore||
       JSON.stringify(api.state().recent)!==JSON.stringify(snapshot.recent))
      throw Error('El borrador no conserva la oración y su historial');
+    // Un borrador anterior a la auditoría conserva su oración,
+    // aunque esa voz haya sido excluida del banco de sorteos nuevos.
+    const oldDraft={selected:'cobertura-bibliologia',item:{
+     id:'cobertura-bibliologia',
+     es:['El libro menciona la ','bibliología',' y la ','democracia','.'],
+     va:['El llibre esmenta la ','bibliologia',' i la ','democràcia','.'],
+     roots:[['βιβλίον','λόγος'],['δήμος','κράτος']]
+    }};
+    api.restore(oldDraft);
+    if(api.current()?.id!==oldDraft.selected)
+     throw Error('Se pierde la oración retirada de un borrador antiguo');
+    $('lang').value='es';$('lang').dispatchEvent(new Event('change',{bubbles:true}));
+    if(api.current()?.sentence[1]!=='bibliología')
+     throw Error('Borrador antiguo no se puede presentar en castellano');
+    $('lang').value='va';$('lang').dispatchEvent(new Event('change',{bubbles:true}));
+    if(api.current()?.sentence[1]!=='bibliologia')
+     throw Error('Borrador antiguo no se puede presentar en valenciano');
+    if(!api.regenerate()||api.current().id===oldDraft.selected)
+     throw Error('La regeneración recupera una oración editorialmente retirada');
+    if(api.candidates().some(x=>x.id===oldDraft.selected))
+     throw Error('Un término retirado vuelve al banco nuevo');
     stats.weighted={fresh,total:250,streakAvoided};
     return stats;
    });
