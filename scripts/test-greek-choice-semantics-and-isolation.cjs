@@ -64,6 +64,8 @@ function unchangedExcept(before,after,kind){
     badSquare:greekSemanticallyValidSyntagm({lemmas:['ἀγορά, –ας']},{lemma:'θνητός'}),
     badMan:greekSemanticallyValidSyntagm({lemmas:['ἄνθρωπος, –ου']},{lemma:'πολύς'}),
     valid:greekSemanticallyValidSyntagm({lemmas:['ἀγορά, –ας']},{lemma:'καλός'}),
+    justWord:greekSemanticallyValidSyntagm({lemmas:['λόγος, –ου']},{lemma:'δίκαιος'}),
+    unjustEducation:greekSemanticallyValidSyntagm({lemmas:['παιδεία, –ας']},{lemma:'ἄδικος'}),
     numberBad:ExaminaGreekNumber.candidates().filter(row=>row.adjective&&
      !greekSemanticallyValidSyntagm(greekVerifiedCorpus.find(x=>x.id===row.source),
       {lemma:row.adjective})).length,
@@ -72,7 +74,8 @@ function unchangedExcept(before,after,kind){
    }));
    assert(pools.verbs>=6,'Banco verbal de UD5 insuficiente');
    assert(pools.count>=3,'La conjugación continúa limitada a dos verbos');
-   assert(!pools.badSquare&&!pools.badMan&&pools.valid,'La auditoría semántica no está aplicada');
+   assert(!pools.badSquare&&!pools.badMan&&pools.valid&&pools.justWord&&pools.unjustEducation,
+    'La auditoría semántica no reconoce combinaciones naturales tras normalizar el sigma');
    assert.equal(pools.numberBad,0,'Cambio de número combina nombres y adjetivos absurdos');
    assert(pools.retro.length>0,'Retroversión sin sintagmas disponibles');
    assert(pools.retro.every(row=>row.adjective&&row.prompt.trim().includes(' ')),
