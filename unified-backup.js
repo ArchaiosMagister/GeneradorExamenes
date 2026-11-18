@@ -58,8 +58,10 @@
   }
   const liveDraft=root.ExaminaUnifiedCurrentExam?.()||null;
   if(liveDraft&&!validateDraft(liveDraft))throw Error('La vista previa actual no es un borrador válido');
-  return {schema:SCHEMA,version:1,created:new Date().toISOString(),
-   entries,liveDraft,archive:readArchive()};
+  // No ofrecer como copia de seguridad un archivo que después no se pueda importar.
+  // La validación incluye el historial, los límites de tamaño y los borradores.
+  return validateBackup({schema:SCHEMA,version:1,created:new Date().toISOString(),
+   entries,liveDraft,archive:readArchive()});
  }
  function validateBackup(data){
   if(!record(data)||data.schema!==SCHEMA||data.version!==1||
