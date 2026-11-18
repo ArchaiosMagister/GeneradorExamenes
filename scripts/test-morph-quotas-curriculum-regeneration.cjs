@@ -120,13 +120,19 @@ async function testLatin(page,course,unit,lang,quotas){
   const invalidAdj=unit<(currentCourse()==='latin4'?3:2)?adjectives.length:0;
   const selected=new Set(latinSharedBank.vocabulary(currentCourse(),chosen).map(x=>examKey(x.entry)));
   const fromElsewhere=nouns.concat(adjectives).filter(x=>!selected.has(examKey(x.entry)));
+  const outsidePotential=latinSyntagmSources().filter(x=>!selected.has(examKey(x.entry)))
+   .some(x=>{
+    const n=mNoun(x.entry),a=adjective(x);
+    return n&&latinSyntagmNounUnit(n.kind)<=unit||
+     a&&unit>=(currentCourse()==='latin4'?3:2);
+   });
   return {invalidNouns:invalidNouns.length,invalidAdj,fromElsewhere:fromElsewhere.length,
-   nouns:nouns.length,adjectives:adjectives.length};
+   outsidePotential,nouns:nouns.length,adjectives:adjectives.length};
  },unit);
  assert.equal(curricular.invalidNouns,0,label+': declinación aún no explicada');
  assert.equal(curricular.invalidAdj,0,label+': adjetivo aún no explicado');
- if(unit>=2)assert(curricular.fromElsewhere>0,
-  label+': todavía restringido al vocabulario de las unidades elegidas '+JSON.stringify(curricular));
+ if(curricular.outsidePotential)assert(curricular.fromElsewhere>0,
+  label+': hay lemas admitidos fuera de las unidades elegidas que no se sortearon '+JSON.stringify(curricular));
  return curricular;
 }
 
