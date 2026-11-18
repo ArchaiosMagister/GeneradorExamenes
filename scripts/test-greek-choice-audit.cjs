@@ -68,7 +68,7 @@ async function select(page,model,unit,lang='es'){
   const match=await page.evaluate(()=>ExaminaGreekNumber.current()[0].answer);
   assert.match(await page.locator('[data-greek-answer-slot="change-number:0"]').textContent(),new RegExp(match));
   const draft=await page.evaluate(()=>window.ExaminaUnifiedCurrentExam());
-  await select(page,'greek1'==='latin1'?'translation':'morphology',3);
+  await select(page,'morphology',3);
   await page.evaluate(d=>window.ExaminaUnifiedRestoreDraft(d),draft);
   assert.equal(await page.evaluate(()=>ExaminaGreekNumber.state().quantity),6);
   assert.deepEqual(await page.evaluate(()=>ExaminaGreekNumber.state().ids),draft.greekChoices.number.ids);
