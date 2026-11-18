@@ -474,7 +474,7 @@ async function checkFile(browser,filename){
    assert.equal(groups.length,10,filename+': faltan las diez bases griegas verificadas');
    assert(groups.every(g=>/^(?:ὁ|ἡ|τὸ)\s+\S+\s+\S+$/u.test(g.title)),
     filename+': se ha usado un orden predicativo en vez del atributivo');
-   assert(groups.every(g=>g.rows.length===5&&g.rows.every(r=>r[1].length===2&&r[1].every(v=>v.trim().split(/\s+/).length>=2))),
+   assert(groups.every(g=>g.rows.length===5&&g.rows.every((r,i)=>r[1].length===2&&r[1].every(v=>v==='—'?g.adjective==='αὐτός'&&i===1:v.trim().split(/\s+/).length>=2))),
     filename+': paradigma nominal griego incompleto');
    assert(groups.every(g=>g.rows[1][1].every(form=>!form.startsWith('ὁ ')&&!form.startsWith('ἡ ')&&!form.startsWith('τὸ '))),
     filename+': se ha inventado un artículo para el vocativo');
