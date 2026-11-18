@@ -1,0 +1,35 @@
+name: Temporary Greek complete model visual regression and offline build
+on:
+  push:
+    branches:
+      - style/gr1-complete-roman-lists-spacing-20261118
+permissions:
+  contents: write
+jobs:
+  test-and-build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Rebuild autonomous HTML
+        run: npm run offline:build
+      - name: Install Chromium
+        run: |
+          npm install --no-save --ignore-scripts playwright@1.56.1
+          npx playwright install chromium
+      - name: Verify Greek list numbering and formatting in Word, PDF and preview
+        run: |
+          node scripts/test-greek-choice-bullets-spacing.cjs
+          node scripts/test-greek-choice-groups.cjs
+      - name: Commit reproducibly generated standalone HTML
+        run: |
+          git add offline.html
+          if ! git diff --cached --quiet; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -m "build: synchronize autonomous Greek complete model"
+            git push origin HEAD:style/gr1-complete-roman-lists-spacing-20261118
+          fi
