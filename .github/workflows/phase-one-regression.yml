@@ -51,6 +51,8 @@ jobs:
           npx playwright install --with-deps chromium
       - name: Rebuild offline distribution in CI workspace
         run: npm run offline:build
+      - name: Auditar las cuatro cuotas morfológicas griegas en las 14 unidades
+        run: node scripts/test-greek-all-unit-form-quotas.cjs
       - name: Griego I competencias, filología, Word, PDF y offline
         run: node scripts/test-greek-choice-groups.cjs && node scripts/test-greek-choice-audit.cjs && node scripts/test-greek-choice-bullets-spacing.cjs
       - name: Phase I synchronization regressions
@@ -65,8 +67,6 @@ jobs:
         run: node scripts/test-greek-morph-regeneration.cjs
       - name: Greek UD5 noun, adjective and verb quotas; Word and screen indent
         run: node scripts/test-greek-ud5-quota-indent.cjs
-      - name: Auditar las cuatro cuotas morfológicas griegas en las 14 unidades
-        run: node scripts/test-greek-all-unit-form-quotas.cjs
       - name: Exam UI redesign in iPad, forms, Word and vocabulary isolation
         run: node scripts/test-exam-ui-redesign.cjs
       - name: Verificar tema Examinator sin efectos sobre Word/PDF
