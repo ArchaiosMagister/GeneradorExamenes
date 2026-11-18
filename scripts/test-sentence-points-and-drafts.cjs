@@ -1,6 +1,6 @@
 'use strict';
-// Latín: 1 p. por oración. Griego I completo/traducción: bloque editable de 6 p.
-// Ambos conservan huecos, borradores y DOCX.
+// Latín: 1 p. por oración. Griego I completo: bloque editable de 6 p.
+// Se conservan huecos, borradores y DOCX.
 const assert=require('node:assert/strict');
 const fs=require('node:fs'),http=require('node:http'),path=require('node:path');
 const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
@@ -34,7 +34,7 @@ async function select(page,course,model,unit){
   const m=$('model');m.value=model;m.dispatchEvent(new Event('change',{bubbles:true}));
   document.querySelectorAll('#unitChoices .unit-choice').forEach(x=>
    x.checked=units[Number(x.value)]===unit);
-  const count=$('count-sent');count.value=['mixto','translation'].includes(model)?'7':'5';
+  const count=$('count-sent');count.value=model==='mixto'?'7':'5';
   greekExamState=null;
   examSelectionCache.clear();
   generate();
@@ -64,10 +64,11 @@ async function run(browser,file){
   ['latin1','mixto','UD7',7],
   ['latin4','tablas','UD7',5],
   ['greek1','complete','UD12',5],
-  ['greek1','translation','UD12',7]
+  ['greek1','complete','UD12',7]
  ];
  for(const [course,model,unit,count] of cases){
   await select(page,course,model,unit);
+  await page.evaluate(n=>{$('count-sent').value=String(n);$('count-sent').dispatchEvent(new Event('change',{bubbles:true}))},count);
   const r=await report(page);
   assert.equal(r.slots,count,file+'/'+course+'/'+model+': huecos');
   const groupedGreek=course==='greek1';
