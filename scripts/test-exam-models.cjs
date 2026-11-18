@@ -230,7 +230,7 @@ function greekSuite(){
   currentCourse:()=> 'greek1',
   greekVerifiedCorpus:rows,greekMorphologyEligible:(x,n)=>x.minUnit<=n,
   // En este test sintético no hay banco nominal ni diccionario de adjetivos.
-  greekAvailableSyntagmAdjectives:()=>[],greekSyntagmNounGenders:{},
+  greekAvailableSyntagmAdjectives:()=>[],greekAvailableSyntagmModifiers:()=>[],greekSyntagmNounGenders:{},
   isProperNounLemma:()=>false,isExcludedExamMorphLemma:()=>false,greekMarkedUnits:()=>['UD7'],greekLimit:()=>scope.limit,
   examUnitNumber:x=>{const m=String(x).match(/\d+/);return m?Number(m[0]):null;},
   morphConfig:()=>({offer:3,decline:1,verbs:3,words:5}),
@@ -276,7 +276,7 @@ function greekSuite(){
  assert(output.includes('exam-pronouns')&&output.includes('Analiza morfológicamente las siguientes palabras (1 p.).'));
  assert(output.includes('Declina 1 de los 3 sintagmas propuestos.'),'Griego: enunciado dinámico');
  assert(!output.includes('Tria i declina')&&!output.includes('Elige y declina'),'Griego: subtítulo duplicado');
- assert(output.includes('(artículo) + (sustantivo) + (adjetivo)'));
+ assert(output.includes('(artículo) + (adjetivo/pronombre) + (sustantivo)'));
  assert(output.includes('(λύω)'),'Griego: falta enunciado del verbo en análisis');
  assert(!output.includes('οἵδε ()'),'Griego: no inventar lema para formas sin enunciado');
 }

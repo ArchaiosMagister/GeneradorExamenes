@@ -64,6 +64,8 @@ jobs:
         run: node scripts/test-morph-quotas-curriculum-regeneration.cjs
       - name: Griego I competencias, filología, Word, PDF y offline
         run: node scripts/test-greek-choice-groups.cjs && node scripts/test-greek-choice-audit.cjs && node scripts/test-greek-choice-bullets-spacing.cjs
+      - name: Sintagmas griegos, enunciados completos, clases 2-2 y pronombres desde UD7
+        run: node scripts/test-syntagm-variation.cjs && node scripts/test-sintagmas-aprobados-169.cjs
       - name: Phase I synchronization regressions
         run: node scripts/test-phase-one.cjs
       - name: Verificar interfaz de guardar/exportar y PDF local sin publicar

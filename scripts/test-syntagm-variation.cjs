@@ -55,6 +55,8 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
    'En UD5 deben estar disponibles varios adjetivos 2-1-2 y 2-2 del banco: '+result.adjectives.join(', '));
   assert(result.classes.includes('2-2')&&result.classes.includes('2-1-2'),'Falta una clase de adjetivo');
   assert(result.adjectives.includes('ἐχθρός'),'ἐχθρός debe poder sortearse desde UD5 tras los diez cotejos individuales');
+  for(const lemma of ['ἀθάνατος','αὐτόνομος','φρόνιμος','θνητός'])
+   assert(result.adjectives.includes(lemma),'Falta adjetivo 2-2 '+lemma);
   assert.match(result.feminine22.title,/^ἡ αἰσχρὸς ἀγορά$/u,'El adjetivo 2-2 conserva flexión masculina con artículo femenino');
   assert.match(result.feminine22.rows[3][1][0],/^τῆς αἰσχροῦ /u);
   assert.match(result.feminine212.title,/^ἡ πονηρὰ ἀγορά$/u);
@@ -85,9 +87,9 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
    return items;
   });
   assert.equal(morphological.length,3);
-  assert(morphological.every(x=>/^[abc]\. (ὁ|ἡ|τὸ) \S+ \S+$/u.test(x)),
-   'La pregunta de morfología debe proponer sintagmas reales: '+morphological.join(' | '));
-  const stems=morphological.map(x=>x.split(' ')[2]);
+  assert(morphological.every(x=>/^[abc]\. ὁ, ἡ, τό \+ \S+, .+ \+ \S+, /u.test(x)),
+   'La pregunta de morfología debe dar enunciados completos: '+morphological.join(' | '));
+  const stems=morphological.map(x=>x.split(' + ')[1].split(',')[0]);
   assert.equal(new Set(stems).size,stems.length,'La morfología debe diversificar los adjetivos dentro de la pregunta');
   // La edición docente tiene prioridad sobre la propuesta automática.
   const manual=await page.evaluate(()=>{
@@ -96,6 +98,28 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
    return document.querySelector('.reference-analysis-item')?.textContent.trim();
   });
   assert.equal(manual,'a. ὁ σοφὸς ἄνθρωπος');
+  // UD7: pronominal de identidad, pero nunca demostrativo tras artículo.
+  await configure('greek1','complete','UD7');
+  const pronoun=await page.evaluate(()=>{
+   const available=greekAvailableSyntagmModifiers(greekLimit());
+   const item=greekVerifiedCorpus.find(x=>x.id==='n-ανθρωπος');
+   const autos=available.find(x=>x.lemma==='αὐτός');
+   const group=greekCompleteNominalGroup(item,true,autos);
+   const original=greekExamState;
+   let heading='';
+   try{
+    greekExamState={ids:{declension:[item.id]},adjectiveChoices:{[item.id]:'αὐτός'}};
+    const node=document.createElement('div');node.innerHTML=greekTable(item);
+    heading=node.querySelector('.exam-nouns thead th[colspan]')?.textContent.trim()||'';
+   }finally{greekExamState=original}
+   return {available:available.map(x=>x.lemma),group,heading};
+  });
+  assert(pronoun.available.includes('αὐτός'),'El pronominal debe estar disponible desde UD7');
+  assert.equal(pronoun.group.title,'ὁ αὐτὸς ἄνθρωπος');
+  assert.match(pronoun.group.enunciation,/^ὁ, ἡ, τό \+ αὐτός, αὐτή, αὐτό \+ ἄνθρωπος,/u);
+  assert.equal(pronoun.heading,pronoun.group.enunciation);
+  assert.deepEqual(pronoun.group.rows[1][1],['—','—'],'αὐτός carece de vocativo');
+  assert.equal(pronoun.group.rows[3][1][0],'τοῦ αὐτοῦ ἀνθρώπου');
   await configure('latin1','tablas','UD2');
   const latin=await page.evaluate(()=>{
    const nouns=latinCompleteDeclensionItems(selectedUnits()).filter(x=>x.compound);

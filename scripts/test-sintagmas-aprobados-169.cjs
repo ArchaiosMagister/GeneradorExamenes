@@ -174,7 +174,7 @@ const mNormalizeLatin=entry=>String(entry||'').split(',')[0]
    return {title:div.querySelector('thead th[colspan]')?.textContent.trim(),
     cells:[...div.querySelectorAll('tbody tr')].map(tr=>[...tr.querySelectorAll('td')].map(td=>td.textContent.trim()))};
   });
-  assert(article.title.startsWith('ἡ ')&&
+  assert(article.title.startsWith('ὁ, ἡ, τό + ')&&
    article.title.normalize('NFD').replace(/\p{M}/gu,'').includes('αγορα'),
    'UD3 debe presentar artículo y enunciado de sustantivo');
   assert.equal(article.cells[0][0],'ἡ ἀγορά');
