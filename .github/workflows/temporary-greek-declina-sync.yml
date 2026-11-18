@@ -1,0 +1,30 @@
+name: Temporary standalone sync Greek Declina
+on:
+  push:
+    branches:
+      - fix/greek-declina-table-gap-20261118
+permissions:
+  contents: write
+jobs:
+  rebuild:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Synchronize standalone distribution
+        run: |
+          git fetch origin fix/greek-declina-table-gap-20261118
+          git reset --hard FETCH_HEAD
+          npm run offline:build
+          git add offline.html
+          if git diff --cached --quiet; then
+            echo "Already reproducibly synchronized"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "build: update autonomous Greek Declina spacing"
+          git push origin HEAD:fix/greek-declina-table-gap-20261118
