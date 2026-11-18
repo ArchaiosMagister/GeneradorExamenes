@@ -4371,8 +4371,8 @@ function generateGreekMorphologyFixed(){
 let greekExamState=null;
 function greekChoicePool(kind){
  const curated=greekVerifiedCorpus.filter(x=>x.verified&&x.kind===kind&&greekMorphologyEligible(x,greekLimit())&&
-  (kind!=='forms'||!(x.lemmas||[]).some(lemma=>isExcludedExamMorphLemma(lemma))));
- return kind==='forms'?curated.concat(examAuthorizedProposals('greek1',greekLimit())).concat(examMorphQuotaValues()[2]>0?examGreekVerbFormCandidates(greekVerifiedCorpus,greekLimit()):[]):curated;
+  (kind!=='forms'||(!x.prompt.includes(' ')&&!(x.lemmas||[]).some(lemma=>isExcludedExamMorphLemma(lemma)))));
+ return kind==='forms'?curated.concat(examAuthorizedProposals('greek1',greekLimit()).filter(x=>x.kind==='forms'&&!x.prompt.includes(' '))).concat(examMorphQuotaValues()[2]>0?examGreekVerbFormCandidates(greekVerifiedCorpus,greekLimit()):[]):curated;
 }
 function greekSelectedItems(pool,chosen,counts){
  const signature=JSON.stringify([chosen.map(examUnitNumber),$('model').value,counts,examMorphQuotaValues()]);
@@ -4575,8 +4575,8 @@ function generateGreekExam(){
  const chosen=greekMarkedUnits(),max=greekLimit(),mode=greekModes[$('model').value]||greekModes.complete;
  const enabled=greekKinds.filter((k,i)=>(mode.points[i]>0||(k==='pronouns'&&$('model').value==='complete'))&&examQuestionEnabled(k==='conjugation'?'verb':k==='declension'?'decl':k==='sentences'?'sent':k==='etymology'?'etymology':k));
  const pool=greekVerifiedCorpus.filter(x=>x.verified&&x.kind!=='sentences'&&greekMorphologyEligible(x,max)&&enabled.includes(x.kind)&&
-  (x.kind!=='forms'||!(x.lemmas||[]).some(lemma=>isExcludedExamMorphLemma(lemma))))
-  .concat(enabled.includes('forms')?examAuthorizedProposals('greek1',max):[])
+  (x.kind!=='forms'||(!x.prompt.includes(' ')&&!(x.lemmas||[]).some(lemma=>isExcludedExamMorphLemma(lemma)))))
+  .concat(enabled.includes('forms')?examAuthorizedProposals('greek1',max).filter(x=>x.kind==='forms'&&!x.prompt.includes(' ')):[])
   .concat(enabled.includes('forms')&&examMorphQuotaValues()[2]>0?examGreekVerbFormCandidates(greekVerifiedCorpus,max):[]);
  const counts={declension:Math.min(2,countFor('decl')),conjugation:Math.min(2,countFor('verb')),forms:examMorphQuotasActive()?examMorphQuotaCount():countFor('greek-forms'),pronouns:10,etymology:Math.min($('model').value==='translation'?3:2,countFor('lex')),sentences:countFor('sent')};
  const result=greekSelectedItems(pool,chosen,counts),sections=[],answers=[];
