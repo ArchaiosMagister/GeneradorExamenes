@@ -62,7 +62,7 @@ async function pick(page,course,model,unit){
    assert(initial.core&&initial.hiddenTop&&initial.hiddenPills&&initial.oneField,file+': selector duplicado o ausente');
    assert.deepEqual(initial.vocabularyNodes,[1,1],file+': vocabularios modificados');
    assert(initial.export&&initial.drafts,file+': herramientas de examen ocultas');
-   await pick(page,'greek1','translation','UD10');
+   await pick(page,'greek1','complete','UD10');
    await page.locator('#examPanelShortcuts>[data-target="examQuestionSettings"]').click();
    const greek=await page.evaluate(()=>{
     const words=[...document.querySelectorAll('#paper [data-greek-form-surface]')];
