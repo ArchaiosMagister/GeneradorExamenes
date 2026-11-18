@@ -531,7 +531,7 @@ async function checkFile(browser,filename){
   assert(await page.locator('#lang').isVisible(),filename+': selector de idioma inaccesible');
   assert.equal(await page.locator('#exam-ui-meta #lang').count(),1,filename+': idioma duplicado');
   assert.equal(await header.locator('fieldset').count(),3,filename+': faltan los tres grupos de botones');
-  assert.equal(await header.locator('fieldset:nth-child(2) button').count(),course==='latin4'?1:3,
+  assert.equal(await header.locator('fieldset:nth-child(2) button').count(),course==='latin4'?1:course==='greek1'?2:3,
    filename+': modelos incorrectos en la cabecera');
   await page.locator('#examPanelShortcuts>button[data-target="examQuestionSettings"]').click();
   const shouldHaveSent=!['morf','morphology'].includes(model);
