@@ -2278,13 +2278,14 @@
   if(!pool.length)return null;
   let options=pool.filter(item=>item.id!==previous?.id);
   if(!options.length)return null;
-  const notRecent=options.filter(item=>!recent.includes(item.id));
-  if(notRecent.length)options=notRecent;
   if(previous){
    const used=rootsOf(previous);
    const disjoint=options.filter(item=>[...rootsOf(item)].every(root=>!used.has(root)));
    if(disjoint.length)options=disjoint;
   }
+  // La ausencia de raíces repetidas prima sobre la simple recencia.
+  const notRecent=options.filter(item=>!recent.includes(item.id));
+  if(notRecent.length)options=notRecent;
   const limit=greekLimit();
   const fresh=options.filter(item=>item.minUnit===limit);
   const revision=options.filter(item=>item.minUnit<limit);
