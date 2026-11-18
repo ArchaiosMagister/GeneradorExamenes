@@ -45,6 +45,62 @@ for(const file of ['index.html','offline.html'])for(const model of ['complete'])
  });
  assert(metrics.same);assert.equal(parseFloat(metrics.first),0);assert(Math.abs(parseFloat(metrics.gap)-14*96/72)<.2);assert(Math.abs(parseFloat(metrics.etym)-9*96/72)<.2);
  assert(metrics.word.includes('ii.')&&!metrics.word.includes('◦')&&metrics.word.includes('w:before="280"'));assert(metrics.wordEtym.includes('w:before="180"'));
+ // El modelo docente exige marcadores a 0,60 / 1,25 / 1,90 cm.
+ // Comparar las sangrías efectivas de pantalla y PDF y los twips del Word,
+ // con y sin desplazamiento adicional, sin reconstruir el examen.
+ const cmPx=96/2.54, tolerance=.7;
+ const getMargins=async(pdf=false)=>page.evaluate(pdf=>{
+  const resolve=doc=>{
+   const sheet=doc.querySelector('.greek-choice-complete-exam');
+   if(!sheet)throw Error('No está identificada la versión completa');
+   const main=sheet.querySelector('p.exam-question[data-exam-kind="greek-competence"]');
+   const sub=sheet.querySelector('.greek-choice-subquestion');
+   const roman=sheet.querySelector('.greek-choice-generated-item');
+   const etym=sheet.querySelector('.greek-choice-option .exam-etymology');
+   return {main:parseFloat(getComputedStyle(main).marginLeft),
+    sub:parseFloat(getComputedStyle(sub).marginLeft),
+    roman:parseFloat(getComputedStyle(roman).marginLeft),
+    etym:parseFloat(getComputedStyle(etym).marginLeft),
+    before:parseFloat(getComputedStyle(main).marginTop),
+    markers:[...sheet.querySelectorAll('.greek-choice-roman-marker')].map(x=>x.textContent)};
+  };
+  if(!pdf)return resolve(document);
+  const prepared=ExaminaPdfExport.prepareDocument(),mount=document.createElement('div');
+  mount.style.cssText='position:absolute;left:-100000px';mount.append(prepared);document.body.append(mount);
+  try{return resolve(prepared)}finally{mount.remove()}
+ },pdf);
+ const approx=(actual,expected,where)=>assert(Math.abs(actual-expected)<tolerance,
+  where+': '+actual+' px frente a '+expected+' px');
+ const base=await getMargins();
+ approx(base.main,.6*cmPx,'principal');
+ approx(base.sub,1.25*cmPx,'primera sublista a.');
+ approx(base.roman,1.9*cmPx,'sublista romana i.');
+ approx(base.etym,1.9*cmPx,'lista etimológica romana i.');
+ assert(!base.markers.includes('◦'));
+ await page.locator('#examIndentPt').selectOption('18');
+ await page.locator('#examQuestionBeforePt').fill('21');
+ await page.locator('#examQuestionBeforePt').press('Tab');
+ const shifted=await getMargins(),afterPdf=await getMargins(true);
+ for(const key of ['main','sub','roman','etym']){
+  approx(shifted[key]-base[key],24,'desplazamiento '+key);
+  approx(afterPdf[key],shifted[key],'PDF '+key);
+ }
+ approx(shifted.before,21*96/72,'espaciado superior pregunta 1');
+ const firstWord=await page.evaluate(()=>wordBlock(document.querySelector('.greek-choice-subquestion')));
+ const thirdWord=await page.evaluate(()=>wordBlock(document.querySelector('.greek-choice-generated-item')));
+ const mainWord=await page.evaluate(()=>wordBlock(document.querySelector('p.exam-question[data-exam-kind="greek-competence"]')));
+ assert(firstWord.includes('w:left="1437"')&&firstWord.includes('w:hanging="369"'));
+ assert(thirdWord.includes('w:left="1806"')&&thirdWord.includes('w:hanging="369"'));
+ assert(mainWord.includes('w:left="1069"')&&mainWord.includes('w:before="420"'));
+ const plurilingual=page.locator('input[data-exam-visual-key="greek1/complete/exam:greek-plurilingual"][data-exam-visual-field="before"]');
+ await plurilingual.fill('30');await plurilingual.press('Tab');
+ const secondHeading=await page.evaluate(()=>({
+  css:parseFloat(getComputedStyle(document.querySelector('p.exam-question[data-exam-kind="greek-plurilingual"]')).marginTop),
+  word:wordBlock(document.querySelector('p.exam-question[data-exam-kind="greek-plurilingual"]'))
+ }));
+ approx(secondHeading.css,30*96/72,'espaciado individual de Plurilingüismo');
+ assert(secondHeading.word.includes('w:before="600"'));
+
  const pdfMetrics=await page.evaluate(()=>{
   const doc=ExaminaPdfExport.prepareDocument(),mount=document.createElement('div');mount.style.cssText='position:absolute;left:-100000px';mount.append(doc);document.body.append(mount);
   try{return {number:getComputedStyle(doc.querySelectorAll('[data-greek-choice-slot^="change-number:"]')[1]).marginTop,etym:getComputedStyle(doc.querySelector('.greek-choice-option .exam-etymology')).rowGap}}finally{mount.remove()}
@@ -75,7 +131,7 @@ for(const file of ['index.html','offline.html'])for(const model of ['complete'])
   return {text:target.textContent,marker:target.querySelector('.exam-letter')?.textContent,input:input.value};
  });assert.equal(edited.marker,'i.');assert(edited.text.includes('λόγος'));assert.equal(edited.input,'λόγος');
  const bytes=Buffer.from(await page.evaluate(async()=>{const old=downloadBlob;let b;try{downloadBlob=(_n,x)=>b=x;exportWord(false)}finally{downloadBlob=old}if(!b)throw Error('Word bloqueado');return [...new Uint8Array(await b.arrayBuffer())]}));
- const xml=entry(bytes,'word/document.xml');assert(!xml.includes('◦')&&xml.includes('i.')&&xml.includes('ii.'));assert(!/A (?:singular|plural):/.test(xml));assert(xml.includes('w:before="280"')&&xml.includes('w:before="180"'));assert(xml.includes('<w:u w:val="single"/>'));
+ const xml=entry(bytes,'word/document.xml');assert(!xml.includes('◦')&&xml.includes('i.')&&xml.includes('ii.'));assert(xml.includes('w:left="1806"')&&xml.includes('w:left="1437"'),'Word no respeta las sangrías docentes');assert(!/A (?:singular|plural):/.test(xml));assert(xml.includes('w:before="280"')&&xml.includes('w:before="180"'));assert(xml.includes('<w:u w:val="single"/>'));
  const stem=file.replace('.html','')+'-'+model+'-'+lang;fs.writeFileSync(path.join(out,stem+'.docx'),bytes);
  const pending=page.waitForEvent('download');await page.locator('#pdfDownload').click({force:true});await (await pending).saveAs(path.join(out,stem+'.pdf'));
  assert.deepEqual(errors,[]);cases.push({file,model,lang,markers:after.markers.length,points:after.score,spacing:[14,9],draft:true,pdf:true,word:true});await ctx.close();
