@@ -26,7 +26,7 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
     if(newRecords.length<100)throw Error('Faltan nuevos ejercicios: '+newRecords.length);
     const firstStudiedUnit=root=>{
      const matches=greekEtymologyBank.entries.filter(e=>e.verified&&
-      String(e.word).split(/\\s*\\|\\s*/).some(variant=>greekBankKey(variant)===greekBankKey(root)));
+      String(e.word).split(/\s*\|\s*/).some(variant=>greekBankKey(variant)===greekBankKey(root)));
      return matches.length?Math.min(...matches.map(e=>e.firstUnit)):Infinity;
     };
     const newByUnit=Object.fromEntries(Array.from({length:12},(_,i)=>[i+1,0]));
@@ -41,7 +41,7 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
     // repeticiones de una misma ficha entre unidades.
     const represented=new Set(catalog.flatMap(r=>r.roots.flat().map(api.canonicalRoot)));
     const uncovered=greekEtymologyBank.entries.filter(e=>e.verified&&
-     !String(e.word).split(/\\s*\\|\\s*/).some(w=>represented.has(api.canonicalRoot(w))))
+     !String(e.word).split(/\s*\|\s*/).some(w=>represented.has(api.canonicalRoot(w))))
      .map(e=>e.word);
     if(uncovered.length>5)throw Error('Raíces verificadas sin cobertura: '+uncovered.join(', '));
     for(const record of catalog){
