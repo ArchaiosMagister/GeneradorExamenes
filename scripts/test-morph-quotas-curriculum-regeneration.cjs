@@ -132,8 +132,8 @@ async function testLatin(page,course,unit,lang,quotas){
  },unit);
  assert.equal(curricular.invalidNouns,0,label+': declinación aún no explicada');
  assert.equal(curricular.invalidAdj,0,label+': adjetivo aún no explicado');
- if(curricular.outsidePotential)assert(curricular.fromElsewhere>0,
-  label+': hay lemas admitidos fuera de las unidades elegidas que no se sortearon '+JSON.stringify(curricular));
+ assert(curricular.nouns>=quotas[0],
+  label+': no hay variedad nominal suficiente para las cuotas '+JSON.stringify(curricular));
  return curricular;
 }
 
