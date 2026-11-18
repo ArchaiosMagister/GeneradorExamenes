@@ -42,7 +42,7 @@ async function configure(page,course,model,text){
 
   for(const [course,model,text,word,reader,choice,translation] of [
    ['latin1','mixto','Puella lupum videt.','lupum','Collatinus',/l[uŭū]pus/i,'lobo'],
-   ['greek1','translation','κροκόδειλον βλέπει.','κροκόδειλον','Eulexis',/κροκ[όο]δειλος/i,'cocodrilo']
+   ['greek1','complete','κροκόδειλον βλέπει.','κροκόδειλον','Eulexis',/κροκ[όο]δειλος/i,'cocodrilo']
   ]){
    await configure(page,course,model,text);
    const glossary=page.locator('#examSentenceGlossary');
