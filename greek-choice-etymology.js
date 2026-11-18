@@ -1593,14 +1593,14 @@
  {
   "id": "quirografia",
   "es": [
-   "El estudio de ",
+   "Un estudio de ",
    "antropología",
    " permite investigar la escritura manuscrita y la ",
    "quirografía",
    " antigua."
   ],
   "va": [
-   "L’estudi d’",
+   "Un estudi d’",
    "antropologia",
    " permet investigar l’escriptura manuscrita i la ",
    "quirografia",
@@ -2260,30 +2260,89 @@
   const limit=greekLimit();
   if(limit<1)return [];
   return eligibleRecords.filter(x=>x.minUnit<=limit)
-   .map(x=>({...x.record,sentence:x.record[$('lang').value==='va'?'va':'es']}));
+   .map(x=>({...x.record,minUnit:x.minUnit,
+    sentence:x.record[$('lang').value==='va'?'va':'es']}));
  }
- let selected=null,signature='';
- const signatureOf=()=>JSON.stringify([greekMarkedUnits(),$('model').value,$('lang').value]);
- function current(){
-  const sign=signatureOf(),pool=candidates();
-  if(sign!==signature||!pool.some(x=>x.id===selected)){
-   selected=sample(pool,1)[0]?.id||null;signature=sign;
+ let selected=null,signature='',scope='',recent=[];
+ const scopeOf=()=>JSON.stringify([greekMarkedUnits(),$('model').value]);
+ const signatureOf=()=>JSON.stringify([scopeOf(),$('lang').value]);
+ const rootsOf=item=>new Set(item.roots.flat().map(canonicalRoot));
+ function noteSelection(item){
+  recent.push(item.id);
+  if(recent.length>4)recent.shift();
+ }
+ // Favorecer la UD más reciente, conservando una fracción de repaso.
+ // Primero se descartan las tres últimas oraciones y, si hay alternativa,
+ // las raíces de la oración inmediatamente anterior.
+ function choose(pool,previous=null){
+  if(!pool.length)return null;
+  let options=pool.filter(item=>item.id!==previous?.id);
+  if(!options.length)return null;
+  const notRecent=options.filter(item=>!recent.includes(item.id));
+  if(notRecent.length)options=notRecent;
+  if(previous){
+   const used=rootsOf(previous);
+   const disjoint=options.filter(item=>[...rootsOf(item)].every(root=>!used.has(root)));
+   if(disjoint.length)options=disjoint;
   }
+  const limit=greekLimit();
+  const fresh=options.filter(item=>item.minUnit===limit);
+  const revision=options.filter(item=>item.minUnit<limit);
+  // 70% de preguntas nuevas cuando las dos categorías tienen opciones.
+  if(fresh.length&&revision.length)
+   options=Math.random()<0.7?fresh:revision;
+  else if(fresh.length)options=fresh;
+  // En unidades sin nuevos étimos se priorizan los más recientes,
+  // penalizando a su vez familias que acaban de salir.
+  const previousRoots=recent.slice(-3).map(id=>pool.find(item=>item.id===id))
+   .filter(Boolean).flatMap(item=>[...rootsOf(item)]);
+  const frequency=new Map();
+  previousRoots.forEach(root=>frequency.set(root,(frequency.get(root)||0)+1));
+  const weights=options.map(item=>{
+   const overlap=[...rootsOf(item)].reduce((n,root)=>n+(frequency.get(root)||0),0);
+   return (1+3/(1+Math.max(0,limit-item.minUnit)))/(1+overlap);
+  });
+  let roll=Math.random()*weights.reduce((a,b)=>a+b,0);
+  for(let i=0;i<options.length;i++){
+   roll-=weights[i];
+   if(roll<0)return options[i];
+  }
+  return options[options.length-1];
+ }
+ function current(){
+  const sign=signatureOf(),newScope=scopeOf(),pool=candidates();
+  if(newScope!==scope){
+   scope=newScope;recent=[];selected=null;
+  }
+  if(!pool.some(x=>x.id===selected)){
+   const next=choose(pool);
+   selected=next?.id||null;
+   if(next)noteSelection(next);
+  }
+  // Cambiar castellano/valenciano no regenera la pregunta.
+  signature=sign;
   return pool.find(x=>x.id===selected)||null;
  }
  function regenerate(){
-  const old=current(),others=candidates().filter(x=>x.id!==old?.id);
-  const next=sample(others,1)[0];if(!next)return false;
-  selected=next.id;return next;
+  const old=current(),pool=candidates();
+  const next=choose(pool,old);
+  if(!next)return false;
+  selected=next.id;noteSelection(next);signature=signatureOf();
+  return next;
  }
  function render(record){
   if(!record)return '';
   return record.sentence.map((part,i)=>i%2?'<u>'+esc(part)+'</u>':esc(part)).join('');
  }
- function state(){return {selected,signature,item:current(),available:candidates().length}}
+ function state(){const item=current();return {selected,signature,item,available:candidates().length,recent:recent.slice()}}
  window.ExaminaGreekEtymSentence={current,candidates,regenerate,render,state,answerRoots,
   catalog:()=>records.map(x=>({...x,roots:x.roots.map(pair=>pair.slice())})),
   canonicalRoot,restore(data){
-  if(candidates().some(x=>x.id===data?.selected)){selected=data.selected;signature=signatureOf()}
+  const pool=candidates(),valid=new Set(pool.map(x=>x.id));
+  if(valid.has(data?.selected)){
+   selected=data.selected;scope=scopeOf();signature=signatureOf();
+   recent=Array.isArray(data?.recent)?data.recent.filter(id=>valid.has(id)).slice(-4):[];
+   if(recent[recent.length-1]!==selected)noteSelection({id:selected});
+  }
  }};
 })();
