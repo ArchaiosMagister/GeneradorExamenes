@@ -87,6 +87,20 @@ function unchangedExcept(before,after,kind){
    });
    assert.equal(added.after,added.before+1,'No permite añadir el quinto verbo');
    assert.equal(added.rendered,added.after,'No se muestran todos los verbos añadidos');
+   // El primer verbo no puede alternar únicamente entre los dos lemas de
+   // la unidad foco: explorar varias regeneraciones de entre todos los elegibles.
+   const varied=await page.evaluate(()=>{
+    const seen=new Set([greekExamState.ids.conjugation[0]]);
+    const other=greekExamState.ids.conjugation.slice(1);
+    for(let i=0;i<15;i++){
+     regenerateExamWord('verb',0);
+     seen.add(greekExamState.ids.conjugation[0]);
+     if(JSON.stringify(greekExamState.ids.conjugation.slice(1))!==JSON.stringify(other))
+      throw Error('Regenerar primer verbo modificó otros lemas');
+    }
+    return [...seen];
+   });
+   assert(varied.length>=4,'El primer verbo no explora suficiente variedad curricular: '+varied);
    for(const [kind,index] of [['decl',0],['verb',0],['forms',0],['verb',1],['decl',1]]){
     const before=await snapshot(page);
     await page.evaluate(({kind,index})=>regenerateExamWord(kind,index),{kind,index});
