@@ -2,6 +2,21 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('nod
 const root=path.resolve(__dirname,'..'),ctx={window:{},document:{readyState:'loading',addEventListener(){}}};
 for(const file of ['offline-lemmas.js','vocabulary-generator.js'])vm.runInNewContext(fs.readFileSync(path.join(root,file),'utf8'),ctx);
 const api=ctx.window.ExaminaVocabulary,data=JSON.parse(fs.readFileSync(path.join(root,'data/lemmas/teacher-forms.json')));
+ // Filtro del glosario: todas las preposiciones de la UD4 deben quedar
+ // clasificadas en su categoría propia; εἷς no debe confundirse con εἰς.
+ for(const lemma of ['ἀμφί','ἀνά','ἀντί','ἀπό','διά','εἰς','ἐκ','ἐξ',
+  'ἐν','ἐπί','κατά','μετά','παρά','περί','πρό','πρός','σύν','ὑπέρ','ὑπό','ἄνευ']){
+  assert.equal(api.classifyVocabularyEntry(lemma,'gr1'),'prepositions',
+   'Preposición griega sin clasificar: '+lemma);
+ }
+ for(const form of ['μετὰ','παρὰ','κατὰ','περὶ','ἐπὶ','ὑπὸ'])
+  assert.equal(api.classifyVocabularyEntry(form,'gr1'),'prepositions',
+   'La variante contextual ha de obedecer al filtro: '+form);
+ assert.equal(api.classifyVocabularyEntry('εἷς','gr1'),'pronouns');
+ assert.equal(api.classifyVocabularyEntry('ἀγαθός, -ή, -όν','gr1'),'adjectives');
+ assert.equal(api.classifyVocabularyEntry('ad (prep. + ac.)','lat1'),'prepositions');
+ assert.equal(api.classifyVocabularyEntry('cum (conj.)','lat1'),'other');
+
 // Decisiones docentes aprobadas: una sola ficha en el índice, dos unidades
 // que comparten adjetivo, y una sola oración de UD10 que debe corregirse.
 const latinSource=fs.readFileSync(path.join(root,'index.html'),'utf8');
