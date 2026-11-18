@@ -22,66 +22,83 @@
   'δικαιοσ':{es:['justo','justa','justos','justas'],va:['just','justa','justos','justes']},
   'μικροσ':{es:['pequeño','pequeña','pequeños','pequeñas'],va:['menut','menuda','menuts','menudes']}
  };
+// Solo entradas estudiadas del vocabulario, no lemas disponibles
+// exclusivamente en el banco de etimología o en paradigmas externos.
+const additionalAdjectives={
+ 'μεγασ':{es:['grande','grande','grandes','grandes'],va:['gran','gran','grans','grans']},
+ 'αδικος':{es:['injusto','injusta','injustos','injustas'],va:['injust','injusta','injustos','injustes']},
+ 'βαρβαροσ':{es:['bárbaro','bárbara','bárbaros','bárbaras'],va:['bàrbar','bàrbara','bàrbars','bàrbares']},
+ 'ενδοξοσ':{es:['famoso','famosa','famosos','famosas'],va:['famós','famosa','famosos','famoses']},
+ 'πονηροσ':{es:['malvado','malvada','malvados','malvadas'],va:['malvat','malvada','malvats','malvades']},
+ 'αθανατοσ':{es:['inmortal','inmortal','inmortales','inmortales'],va:['immortal','immortal','immortals','immortals']},
+ 'φρονιμοσ':{es:['prudente','prudente','prudentes','prudentes'],va:['prudent','prudent','prudents','prudents']},
+ 'θνητοσ':{es:['mortal','mortal','mortales','mortales'],va:['mortal','mortal','mortals','mortals']}
+};
+Object.assign(adjectives,additionalAdjectives);
  let selected=[],signature='';
  const quantities={complete:4};
  const count=()=>quantities[$('model').value]??4;
  const lang=()=>$('lang').value==='va'?'va':'es';
+ const studied=(lemma,limit)=>{
+  const key=greekBankKey(lemma);
+  const required=greekMaterials.required.some(row=>greekBankKey(row.entry)===key&&
+   greekRequiredStart(row.unit)<=limit);
+  const general=vocab.some(row=>courseOf(row)==='greek1'&&
+   greekBankKey(row.entry)===key&&
+   greekRequiredStart(String(row.unit||''))<=limit);
+  return required||general;
+ };
  const candidates=()=>{
   const limit=greekLimit();
   if(limit<3)return [];
   const nominative=greekVerifiedCorpus.filter(x=>x.kind==='declension'&&x.verified&&
    greekMorphologyEligible(x,limit)&&x.table?.rows?.length>=5&&
-   greekSyntagmNounGenders[x.id.slice(2)]&&!(x.lemmas||[]).some(isProperNounLemma));
-  const available=limit>=5?greekAvailableSyntagmAdjectives(limit):[];
+   greekSyntagmNounGenders[x.id.slice(2)]&&!(x.lemmas||[]).some(isProperNounLemma)&&
+   (limit<5||studied(x.lemmas[0],limit)));
+  const available=limit>=5?greekAvailableSyntagmAdjectives(limit)
+   .filter(adj=>studied(adj.lemma,limit)&&adjectives[greekBankKey(adj.lemma)]):[];
+  const prepositions=[
+   {id:'en',unit:4,caseIndex:4,gr:'ἐν',es:'en ',va:'en '},
+   {id:'eis',unit:4,caseIndex:2,gr:'εἰς',es:'hacia ',va:'cap a '},
+   {id:'syn',unit:4,caseIndex:4,gr:'σὺν',es:'con ',va:'amb '}
+  ];
   const rows=[];
   for(const item of nominative){
-   const head=greekBankKey(item.lemmas[0]);
-   const info=nouns[head];if(!info)continue;
+   const head=greekBankKey(item.lemmas[0]),info=nouns[head];if(!info)continue;
    const gender=greekSyntagmNounGenders[item.id.slice(2)];
-   for(const [number,article] of [0,1].map(number=>[number,greekArticles[gender][number][0]])){
-    if(head==='παιδεια'&&number===1)continue; // Abstracción: plural castellano poco natural.
-    const greek=article+' '+item.table.rows[0][number+1];
-    rows.push({id:item.id+':nom:'+number,prompt:info[lang()][number],answer:greek,
-     minUnit:item.minUnit,source:item.id,type:'nominal'});
-   }
-   // Ningún sintagma nominal libre exige adivinar nominativo/acusativo:
-   // la pregunta usa el nominativo; las preposiciones fijan los otros casos.
-   if(limit>=4)for(const number of [0,1]){
+   // Desde UD5 todas las retroversiones contienen artículo + adjetivo + nombre.
+   // Se seleccionan solo colocaciones naturales y voces del vocabulario estudiado.
+   const modifiers=limit>=5?available.filter(adj=>greekSemanticallyValidSyntagm(item,adj))
+    .map(adj=>({adj,group:greekCompleteNominalGroup(item,true,adj),
+      word:adjectives[greekBankKey(adj.lemma)]})).filter(x=>x.group):[null];
+   for(const modifier of modifiers)for(const number of [0,1]){
     if(head==='παιδεια'&&number===1)continue;
-    for(const prep of [
-     {id:'en',unit:4,caseIndex:4,gr:'ἐν',es:'en ',va:'en '},
-     {id:'eis',unit:4,caseIndex:2,gr:'εἰς',es:'hacia ',va:'cap a '},
-     {id:'syn',unit:4,caseIndex:4,gr:'σὺν',es:'con ',va:'amb '}
-    ]){
-     // Evitar sintagmas castellanos como «en la palabra» o «con la región».
+    const base=info[lang()][number],index=(number?2:0)+
+     ((lang()==='va'?(info.gender_va||info.gender):info.gender)==='f'?1:0);
+    const suffix=modifier?' '+modifier.word[lang()][index]:'';
+    const greek=modifier?modifier.group.rows[0]?.[1]?.[number]:
+     greekArticles[gender][number][0]+' '+item.table.rows[0][number+1];
+    if(!greek)continue;
+    rows.push({id:item.id+':nom:'+(modifier?.adj.lemma||'plain')+':'+number,
+     prompt:base+suffix,answer:greek,minUnit:Math.max(item.minUnit,modifier?5:3),
+     source:item.id,adjective:modifier?.adj.lemma,type:modifier?'adjective':'nominal'});
+    if(limit<4)continue;
+    for(const prep of prepositions){
      const locative=['αγορα','χωρα','θαλαττα'].includes(head);
      const companion=['ανθρωποσ','νεανιασ','αδελφοσ'].includes(head);
      if(prep.id==='syn'?!companion:!locative)continue;
-     const k=prep.caseIndex,article=greekArticles[gender][number][k],noun=item.table.rows[k]?.[number+1];
-     if(!article||!noun)continue;
-     rows.push({id:item.id+':prep:'+prep.id+':'+number,
-      prompt:(lang()==='va'?prep.va:prep.es)+info[lang()][number],
-      answer:prep.gr+' '+article+' '+noun,minUnit:Math.max(4,item.minUnit),
-      source:item.id,type:'preposition',preposition:prep.id});
-    }
-   }
-   if(limit>=5)for(const adj of available){
-    const word=adjectives[greekBankKey(adj.lemma)];
-    if(!word)continue;
-    const group=greekCompleteNominalGroup(item,true,adj);
-    if(!group)continue;
-    for(const number of [0,1]){
-     if(head==='παιδεια'&&number===1)continue;
-     const forms=group.rows[0]?.[1],translated=info[lang()][number];
-     if(!forms?.[number])continue;
-     const index=(number?2:0)+((lang()==='va'?(info.gender_va||info.gender):info.gender)==='f'?1:0);
-     rows.push({id:item.id+':adj:'+adj.lemma+':'+number,
-      prompt:translated+' '+word[lang()][index],answer:forms[number],
-      minUnit:Math.max(5,item.minUnit),source:item.id,adjective:adj.lemma,type:'adjective'});
+     const k=prep.caseIndex,inflected=modifier?modifier.group.rows[k]?.[1]?.[number]:
+      greekArticles[gender][number][k]+' '+item.table.rows[k]?.[number+1];
+     if(!inflected||inflected.includes('undefined'))continue;
+     rows.push({id:item.id+':prep:'+prep.id+':'+(modifier?.adj.lemma||'plain')+':'+number,
+      prompt:(lang()==='va'?prep.va:prep.es)+base+suffix,
+      answer:prep.gr+' '+inflected,minUnit:Math.max(4,item.minUnit,modifier?5:3),
+      source:item.id,adjective:modifier?.adj.lemma,
+      type:'preposition',preposition:prep.id});
     }
    }
   }
-  return [...new Map(rows.map(x=>[x.id,x])).values()];
+  return [...new Map(rows.map(item=>[item.id,item])).values()];
  };
  const signatureOf=()=>JSON.stringify([greekMarkedUnits(),$('model').value,count(),lang()]);
  function current(){

@@ -17,8 +17,9 @@ const server=http.createServer((request,response)=>{
  });
 });
 
-async function select(page,course,model,unit){
- await page.evaluate(({course,model,unit})=>{
+async function select(page,course,model,unit,lang='es'){
+ await page.evaluate(({course,model,unit,lang})=>{
+  document.getElementById('lang').value=lang;
   const c=document.getElementById('course');c.value=course;c.dispatchEvent(new Event('change',{bubbles:true}));
   const m=document.getElementById('model');m.value=model;m.dispatchEvent(new Event('change',{bubbles:true}));
   document.querySelectorAll('#unitChoices .unit-choice').forEach(input=>{
@@ -27,7 +28,7 @@ async function select(page,course,model,unit){
   examSelectionCache.clear();
   if(course==='greek1')greekExamState=null;
   generate();
- },{course,model,unit});
+ },{course,model,unit,lang});
  await page.waitForFunction(()=>!!document.querySelector('#paper .exam-sheet'));
 }
 
@@ -40,7 +41,7 @@ async function checkSingle(page,course,model,kind,index=0){
   const cacheKey=examCacheSignature(key),beforeRows=examSelectionCache.get(cacheKey);
   const greek=course=>course==='greek1';
   const greekWhole=greek(currentCourse())&&$('model').value!=='morphology';
-  const kindG={decl:'declension',verb:'conjugation',forms:'forms'}[kind];
+  const kindG={decl:'declension',verb:'conjugation',forms:'forms',pronouns:'pronouns',etymology:'etymology'}[kind];
   const ids=greekWhole&&kindG&&greekExamState?.ids?.[kindG]?[...greekExamState.ids[kindG]]:null;
   const otherCaches=[...examSelectionCache].filter(([k])=>k!==cacheKey)
     .map(([k,v])=>[k,JSON.stringify(v)]);
@@ -49,7 +50,7 @@ async function checkSingle(page,course,model,kind,index=0){
   // oraciones: deben sobrevivir a todas las sustituciones individuales.
   const head=root.querySelector('.exam-header span');
   if(head&&!head.textContent.includes('MARCA-DOCENTE'))head.textContent+=' MARCA-DOCENTE';
-  const other=(kind==='forms'&&examRegenerationSlot(root,kind,1))?
+  const other=(kind==='forms'&&index===0&&examRegenerationSlot(root,kind,1))?
    examRegenerationSlot(root,kind,1):examRegenerationSlot(root,'forms',0);
   if(other&&other!==slot){
    const inner=other.querySelector('i,span:last-child,th[colspan]')||other;
@@ -60,7 +61,17 @@ async function checkSingle(page,course,model,kind,index=0){
   }
   const untouched=()=>{
    const clone=paper.querySelector('.exam-sheet').cloneNode(true);
-   clone.querySelector('#answerkey')?.remove();
+   if(currentCourse()==='greek1'){
+    const key=clone.querySelector('#answerkey');
+    if(greekWhole){
+     let answer=key?.querySelector('h3[data-greek-kind="'+kindG+'"]')?.nextElementSibling;
+     for(let i=0;i<index&&answer?.tagName==='P';i++)answer=answer.nextElementSibling;
+     if(answer?.tagName==='P')answer.replaceWith(document.createComment('solo-esta-solución'));
+    }else{
+     key?.querySelector('li[data-morph-kind="'+kind+'"]')?.children[index]
+      ?.replaceWith(document.createComment('solo-esta-solución'));
+    }
+   }else clone.querySelector('#answerkey')?.remove();
    if(kind.startsWith('lex-'))clone.querySelector('.lex-subquestion[data-lex-kind="'+kind.slice(4)+'"]')
     ?.replaceWith(document.createComment('apartado-léxico-ordenado'));
    else examRegenerationSlot(clone,kind,index)?.replaceWith(document.createComment('solo-esta-palabra'));
@@ -128,15 +139,26 @@ async function runPage(browser,filename){
   ['latin1','morf','UD7',['decl','verb','forms']],
   ['latin1','mixto','UD7',['forms']],
   ['latin4','tablas','UD7',['decl','verb','forms']],
-  ['greek1','complete','UD7',['decl','verb','forms']],
-  ['greek1','morphology','UD7',['decl','verb','forms']],
+  ['greek1','complete','UD7',['decl','verb','forms','etymology']],
+  ['greek1','morphology','UD7',['decl','verb','forms','pronouns']],
   ['greek1','translation','UD7',['forms']]
  ];
  let count=0;
  for(const [course,model,unit,kinds] of cases){
-  for(const kind of kinds){
-   await select(page,course,model,unit);
-   if(await checkSingle(page,course,model,kind))count++;
+  for(const lang of course==='greek1'?['es','va']:['es'])for(const kind of kinds){
+   await select(page,course,model,unit,lang);
+   if(course==='greek1'&&model!=='translation'){
+    const slots=await page.evaluate(kind=>{
+     let count=0;
+     const sheet=$('paper').querySelector('.exam-sheet');
+     while(examRegenerationSlot(sheet,kind,count))count++;
+     return count;
+    },kind);
+    assert(slots>0,filename+': falta la pregunta griega '+kind+' en '+model);
+    for(let index=0;index<slots;index++){
+     if(await checkSingle(page,course,model,kind,index))count++;
+    }
+   }else if(await checkSingle(page,course,model,kind))count++;
   }
  }
  assert(count>=13,filename+': no se cubrieron suficientes clases de regeneración ('+count+')');
