@@ -7051,7 +7051,10 @@ function latinExamFormCandidates(chosen,allForms=false){
  const isMorphology=$('model')?.value==='morf';
  // A form is admitted by its grammatical paradigm, not by the unit where
  // its lemma happened to appear in a vocabulary list.
- const data=latinSharedBank.vocabulary(currentCourse(),isMorphology?null:chosen),groups=[[],[],[],[]];
+ // El análisis admite lemas del repertorio latino compartido, con filtro
+ // por declinación y categoría ya explicadas; la unidad léxica no restringe.
+ const data=isMorphology?unique(latinSyntagmSources()):
+  latinSharedBank.vocabulary(currentCourse(),chosen),groups=[[],[],[],[]];
  const unitVerbs=new Set(latinSharedBank.vocabulary(currentCourse(),chosen).map(x=>examKey(x.entry)));
  const unitsByEntry=new Map();
  for(const item of data){
@@ -15628,11 +15631,17 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   if(!['declension','forms','conjugation','etymology'].includes(kind))return false;
   const ids=greekExamState?.ids?.[kind],oldSheet=$('paper').querySelector('.exam-sheet');
   if(!ids?.length||!oldSheet)return false;
-  const candidates=greekChoicePool(kind).filter(x=>!ids.includes(x.id));
-  if(candidates.length<ids.length)return false;
+  const pool=greekChoicePool(kind),candidates=pool.filter(x=>!ids.includes(x.id));
+  // Esta presentación por alternativas sustituye al regenerador principal:
+  // debe mantener también las cuatro cuotas docentes de análisis morfológico.
+  const quotaForms=kind==='forms'&&examMorphQuotasActive();
+  if(!quotaForms&&candidates.length<ids.length)return false;
+  const next=quotaForms?examQuotaGreek(pool,ids.length,ids):
+   greekCurricularSample(candidates,ids.length);
+  if(next.length!==ids.length)return false;
   const before=ids.slice(),previousAdjectives=greekExamState.adjectiveChoices?
    {...greekExamState.adjectiveChoices}:undefined;
-  greekExamState.ids[kind]=greekCurricularSample(candidates,ids.length).map(x=>x.id);
+  greekExamState.ids[kind]=next.map(x=>x.id);
   if(kind==='declension')greekExamState.adjectiveChoices={};
   generateGreekExam();
   const fresh=$('paper').querySelector('.exam-sheet');
