@@ -44,9 +44,16 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
    const neuter22=pair('n-δωρον','αἰσχρός');
    const nominative=pair('n-λογος','δίκαιος');
    const check=pair('n-αγορα','δίκαιος');
+   const megasM=pair('n-λογος','μέγας'),megasF=pair('n-αγορα','μέγας');
+   const polysN=pair('n-δωρον','πολύς'),polysF=pair('n-αγορα','πολύς');
+   const draws=2400,firstMixed=Array.from({length:draws},()=>
+    ['μέγας','πολύς'].includes(greekWeightedSyntagmAdjectives(adjs)[0]?.lemma))
+    .filter(Boolean).length;
+   const weightedRatio=firstMixed/draws,unweightedRatio=2/adjs.length;
    return {
     adjectives:adjs.map(x=>x.lemma),classes:adjs.map(x=>x.feminine===null?'2-2':'2-1-2'),
     feminine22,feminine212,echthros,neuter22,nominative,check,
+    megasM,megasF,polysN,polysF,weightedRatio,unweightedRatio,
     selected:greekExamState.ids.declension,
     chosen:greekExamState.adjectiveChoices||{}
    };
@@ -55,6 +62,21 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
    'En UD5 deben estar disponibles varios adjetivos 2-1-2 y 2-2 del banco: '+result.adjectives.join(', '));
   assert(result.classes.includes('2-2')&&result.classes.includes('2-1-2'),'Falta una clase de adjetivo');
   assert(result.adjectives.includes('ἐχθρός'),'ἐχθρός debe poder sortearse desde UD5 tras los diez cotejos individuales');
+  for(const lemma of ['μέγας','πολύς'])
+   assert(result.adjectives.includes(lemma),'Falta un adjetivo de doble tema de UD5: '+lemma);
+  assert(result.weightedRatio>result.unweightedRatio*1.45,
+   'Los adjetivos de doble tema deben aparecer con una ponderación aproximadamente triple');
+  assert.match(result.megasM.title,/^ὁ μέγας λόγος$/u);
+  assert.match(result.megasM.rows[2][1][0],/^τὸν μέγαν /u);
+  assert.match(result.megasM.rows[3][1][0],/^τοῦ μεγάλου /u);
+  assert.match(result.megasF.title,/^ἡ μεγάλη ἀγορά$/u);
+  assert.match(result.megasF.rows[4][1][0],/^τῇ μεγάλῃ /u);
+  assert.match(result.polysN.title,/^τὸ πολὺ δῶρον$/u);
+  assert.match(result.polysN.rows[3][1][0],/^τοῦ πολλοῦ /u);
+  assert.match(result.polysF.title,/^ἡ πολλὴ ἀγορά$/u);
+  assert.match(result.polysF.rows[4][1][0],/^τῇ πολλῇ /u);
+  assert.match(result.megasM.enunciation,/μέγας, μεγάλη, μέγα/u);
+  assert.match(result.polysN.enunciation,/πολύς, πολλή, πολύ/u);
   for(const lemma of ['ἀθάνατος','αὐτόνομος','φρόνιμος','θνητός'])
    assert(result.adjectives.includes(lemma),'Falta adjetivo 2-2 '+lemma);
   assert.match(result.feminine22.title,/^ἡ αἰσχρὸς ἀγορά$/u,'El adjetivo 2-2 conserva flexión masculina con artículo femenino');

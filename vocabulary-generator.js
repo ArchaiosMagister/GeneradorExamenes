@@ -1705,6 +1705,16 @@ function classifyVocabularyEntry(item,course='lat1'){
  if(greek&&(/\((?:part\.?|part[íi]cula)\)/iu.test(entry)||
   ['μεν','δε','τε','γε','δη','περ','τοι','ουν','αρα'].includes(lemma)))
   return 'particles';
+ // Todas las preposiciones áticas de UD4 y otras del banco tienen
+ // categoría independiente: el filtro del glosario debe excluirlas.
+ // Se comprueba εἰς antes de los pronombres sin confundirlo con εἷς.
+ const greekPrepositionLemmas=new Set([
+  'αμφι','ανα','αντι','απο','δια','εισ','εκ','εξ','εν','επι',
+  'κατα','μετα','παρα','περι','προ','προσ','συν','υπερ','υπο','ανευ'
+ ]);
+ if(greek&&greekPrepositionLemmas.has(lemma)&&
+  (lemma!=='εισ'||first.normalize('NFC')==='εἰς'))
+  return 'prepositions';
  const pronouns=greek?
   new Set(['εγω','συ','ημεισ','υμεισ','αυτοσ','ουτοσ','οδε','εκεινοσ',
    'οσ','οστισ','τισ','τι','εμαυτου','σεαυτου','αλληλων','εισ','ουδεισ']):

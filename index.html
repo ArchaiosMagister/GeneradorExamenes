@@ -2211,7 +2211,7 @@ function morphSyntagmRows(cfg,greek=false){
    const nouns=greekCurricularSample(greekVerifiedCorpus.filter(x=>x.verified&&x.kind==='declension'&&
     x.minUnit<=greekLimit()&&greekSyntagmNounGenders[x.id.slice(2)]&&
     !(x.lemmas||[]).some(isProperNounLemma)),cfg.offer);
-   const adjectives=sample(available,available.length);
+   const adjectives=greekWeightedSyntagmAdjectives(available);
    return nouns.map((item,i)=>greekCompleteNominalGroup(item,true,
     adjectives.length?adjectives[i%adjectives.length]:null)).filter(Boolean)
     .map(x=>({...x,title:x.enunciation}));
@@ -4201,7 +4201,10 @@ const greekCompleteAdjectives=[
  {lemma:'βάρβαρος',short:'βάρβαρ',long:'βαρβάρ',feminine:null,accent:'recessive'},
  {lemma:'ἔνδοξος',short:'ἔνδοξ',long:'ἐνδόξ',feminine:null,accent:'recessive'},
  {lemma:'σύμμαχος',short:'σύμμαχ',long:'συμμάχ',feminine:null,accent:'recessive'},
- {lemma:'δίκαιος',feminine:'α',accent:'dikaios'}
+ {lemma:'δίκαιος',feminine:'α',accent:'dikaios'},
+ // Los dos adjetivos de doble tema de UD5 requieren paradigmas explícitos.
+ {lemma:'μέγας',accent:'mixed-megas'},
+ {lemma:'πολύς',accent:'mixed-polys'}
 ];
 const greekSyntagmNounGenders=greekCorpusNounGenders;
 const greekArticles={
@@ -4222,9 +4225,10 @@ function greekAvailableSyntagmAdjectives(limit){
   if(head!==properNounKey(item.lemma))return false;
   const entry=String(found.entry).normalize('NFD').replace(/\p{M}/gu,'')
    .replace(/[–−—]/g,'-').replace(/\s+/g,' ').trim();
-  const valid=item.feminine===null
-   ?/,\s*-(?:ον)(?:\s|$)/u.test(entry)&&!/,.*,\s*-ον/u.test(entry)
-   :new RegExp(',\\s*-'+item.feminine+',\\s*-ον(?:\\s|$)','u').test(entry);
+  const valid=item.accent==='mixed-megas'||item.accent==='mixed-polys'||
+   (item.feminine===null
+    ?/,\s*-(?:ον)(?:\s|$)/u.test(entry)&&!/,.*,\s*-ον/u.test(entry)
+    :new RegExp(',\\s*-'+item.feminine+',\\s*-ον(?:\\s|$)','u').test(entry));
   if(!valid)return false;
   // La entrada puede proceder de cualquier unidad léxica:
   // desde UD5 la primera clase ya está explicada. El lema es admisible
@@ -4247,6 +4251,23 @@ function greekAvailableSyntagmModifiers(limit){
 // Matriz [singular, plural] × [nominativo, vocativo, acusativo, genitivo, dativo].
 function greekCompleteAdjectiveForms(adjective,gender){
  if(!adjective||!['m','f','n'].includes(gender))return null;
+ // Paradigmas áticos de doble tema; orden [nom., voc., ac., gen., dat.].
+ // Fuente: Smyth, Greek Grammar, §315 (sin deducir flexiones automáticamente).
+ if(adjective.accent==='mixed-megas'||adjective.accent==='mixed-polys'){
+  const mixed={
+   'mixed-megas':{
+    m:[['μέγας','μεγάλε','μέγαν','μεγάλου','μεγάλῳ'],['μεγάλοι','μεγάλοι','μεγάλους','μεγάλων','μεγάλοις']],
+    f:[['μεγάλη','μεγάλη','μεγάλην','μεγάλης','μεγάλῃ'],['μεγάλαι','μεγάλαι','μεγάλας','μεγάλων','μεγάλαις']],
+    n:[['μέγα','μέγα','μέγα','μεγάλου','μεγάλῳ'],['μεγάλα','μεγάλα','μεγάλα','μεγάλων','μεγάλοις']]
+   },
+   'mixed-polys':{
+    m:[['πολύς','πολύς','πολύν','πολλοῦ','πολλῷ'],['πολλοί','πολλοί','πολλούς','πολλῶν','πολλοῖς']],
+    f:[['πολλή','πολλή','πολλήν','πολλῆς','πολλῇ'],['πολλαί','πολλαί','πολλάς','πολλῶν','πολλαῖς']],
+    n:[['πολύ','πολύ','πολύ','πολλοῦ','πολλῷ'],['πολλά','πολλά','πολλά','πολλῶν','πολλοῖς']]
+   }
+  };
+  return mixed[adjective.accent][gender];
+ }
  if(adjective.accent==='autos'){
   // αὐτός carece de vocativo; null evita inventar un paradigma inexistente.
   const paradigms={
@@ -4294,6 +4315,13 @@ function greekCompleteAdjectiveForms(adjective,gender){
  }
  return null;
 }
+// Orden aleatorio ponderado sin reposición: triple peso por doble tema.
+function greekWeightedSyntagmAdjectives(available){
+ return available.map(item=>({
+  item,key:-Math.log(Math.max(Number.MIN_VALUE,Math.random()))/
+   (item.accent==='mixed-megas'||item.accent==='mixed-polys'?3:1)
+ })).sort((a,b)=>a.key-b.key).map(({item})=>item);
+}
 function greekSyntagmAdjective(item,available){
  const state=typeof greekExamState!=='undefined'?greekExamState:null;
  if(!state?.ids?.declension?.includes(item.id))return available[0]||null;
@@ -4304,7 +4332,7 @@ function greekSyntagmAdjective(item,available){
  const used=new Set(Object.values(state.adjectiveChoices));
  const fresh=available.filter(x=>!used.has(x.lemma));
  const pool=fresh.length?fresh:available;
- const chosen=sample(pool,1)[0];
+ const chosen=greekWeightedSyntagmAdjectives(pool)[0];
  if(chosen)state.adjectiveChoices[item.id]=chosen.lemma;
  return chosen||null;
 }
@@ -4323,6 +4351,8 @@ function greekSyntagmEnunciation(item,modifier=null){
  const article='ὁ, ἡ, τό';
  if(!modifier)return article+' + '+noun;
  if(modifier.kind==='pronoun')return article+' + αὐτός, αὐτή, αὐτό + '+noun;
+ if(modifier.accent==='mixed-megas')return article+' + μέγας, μεγάλη, μέγα + '+noun;
+ if(modifier.accent==='mixed-polys')return article+' + πολύς, πολλή, πολύ + '+noun;
  const oxytone=modifier.accent==='oxytone',neuter=oxytone?'–όν':'–ον';
  if(modifier.feminine===null)return article+' + '+modifier.lemma+', '+neuter+' + '+noun;
  const feminine=oxytone?(modifier.feminine==='η'?'–ή':'–ά'):'–'+modifier.feminine;
@@ -5438,7 +5468,7 @@ function regenerateExamWord(kind,index){
    const allocated=greekExamState.adjectiveChoices||={};
    const available=greekAvailableSyntagmAdjectives(greekLimit())
     .filter(x=>x.lemma!==allocated[ids[index]]);
-   const alternate=sample(available,1)[0];
+   const alternate=greekWeightedSyntagmAdjectives(available)[0];
    if(noun&&alternate){allocated[ids[index]]=alternate.lemma;renderOnlyRegeneratedExamWord(kind,index,generateGreekExam)}
   }
   return;
