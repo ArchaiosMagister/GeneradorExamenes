@@ -6,7 +6,6 @@ const path=require('node:path');
 const {pathToFileURL}=require('node:url');
 const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
 
-const kinds=['nouns','adjectives','verbs','pronouns'];
 async function configure(page,course,model,unit,lang){
  await page.evaluate(({course,model,unit,lang})=>{
   function change(id,value){
@@ -38,19 +37,11 @@ async function audit(page,course,model,quotas){
    return cache.map(x=>course==='greek1'?examGreekWordClass(x):x.category);
   }
   const ids=course==='greek1'&&model==='complete'?[...(greekExamState?.ids?.forms||[])]:null;
-  const liveQuotas=examMorphQuotaValues();
-  const pool=course==='greek1'&&model==='complete'?greekChoicePool('forms'):null;
-  const poolCounts=pool?['nouns','adjectives','verbs','pronouns'].map(kind=>
-   pool.filter(x=>examGreekWordClass(x)===kind).length):null;
-  const selectionCounts=pool?['nouns','adjectives','verbs','pronouns'].map(kind=>
-   examQuotaGreek(pool,liveQuotas.reduce((a,b)=>a+b,0),ids||[])
-    .filter(x=>examGreekWordClass(x)===kind).length):null;
   const actual=categories();
   const counts=['nouns','adjectives','verbs','pronouns'].map(kind=>actual.filter(x=>x===kind).length);
   const display=[...document.querySelectorAll(course==='greek1'&&model==='complete'?
    '#paper .exam-form[data-corpus-id]':'#paper [data-analysis-slot]')].length;
-  return {actual,counts,display,ids,quotas,liveQuotas,poolCounts,selectionCounts,signature:greekExamState?.signature,
-   regenerationDebug:window.ExaminaGreekRegenerationDebug};
+  return {actual,counts,display,ids,quotas};
  },{course,model,quotas});
 }
 async function selectQuotas(page,quotas){
@@ -72,21 +63,14 @@ async function testGreek(page,model,unit,lang,quotas){
  assert.equal(before.display,quotas.reduce((a,b)=>a+b,0),label+' filas visibles');
  let distinct=[];
  for(let iteration=0;iteration<5;iteration++){
-  const attempt=await page.evaluate(model=>{
-   const liveQuotas=examMorphQuotaValues();
-   const choices=greekChoicePool('forms');
-   const planned=model==='complete'?examQuotaGreek(choices,greekExamState.ids.forms.length,greekExamState.ids.forms)
-    .map(x=>({id:x.id,kind:examGreekWordClass(x)})):[];
-   const source=String(greekRegenerate).includes('regenerationDebug');
-   const operation=model==='complete'?greekRegenerate('forms'):(regenerateExamQuestion('forms'),true);
-   return {operation,liveQuotas,planned,source,
-    debugImmediately:window.ExaminaGreekRegenerationDebug,
-    resultingIds:model==='complete'?[...greekExamState.ids.forms]:[]};
+  const operation=await page.evaluate(model=>{
+   if(model==='complete')return greekRegenerate('forms');
+   regenerateExamQuestion('forms');
+   return true;
   },model);
-  assert.equal(attempt.operation,true,label+' no se pudo regenerar');
+  assert.equal(operation,true,label+' no se pudo regenerar');
   const after=await audit(page,'greek1',model,quotas);
-  assert.deepEqual(after.counts,quotas,label+' cuotas al regenerar '+iteration+': '+
-   JSON.stringify({after,attempt}));
+  assert.deepEqual(after.counts,quotas,label+' cuotas al regenerar '+iteration+': '+JSON.stringify(after));
   assert.equal(after.display,quotas.reduce((a,b)=>a+b,0),label+' número de filas '+iteration);
   distinct.push(after.ids?after.ids.join('|'):after.actual.join('|'));
   before=after;
@@ -120,15 +104,8 @@ async function testLatin(page,course,unit,lang,quotas){
   const invalidAdj=unit<(currentCourse()==='latin4'?3:2)?adjectives.length:0;
   const selected=new Set(latinSharedBank.vocabulary(currentCourse(),chosen).map(x=>examKey(x.entry)));
   const fromElsewhere=nouns.concat(adjectives).filter(x=>!selected.has(examKey(x.entry)));
-  const outsidePotential=latinSyntagmSources().filter(x=>!selected.has(examKey(x.entry))&&
-   !isExcludedExamMorphLemma(x.entry,x.meaning))
-   .some(x=>{
-    const n=mNoun(x.entry),a=adjective(x);
-    return n&&latinSyntagmNounUnit(n.kind)<=unit||
-     a&&unit>=(currentCourse()==='latin4'?3:2);
-   });
   return {invalidNouns:invalidNouns.length,invalidAdj,fromElsewhere:fromElsewhere.length,
-   outsidePotential,nouns:nouns.length,adjectives:adjectives.length};
+   nouns:nouns.length,adjectives:adjectives.length};
  },unit);
  assert.equal(curricular.invalidNouns,0,label+': declinación aún no explicada');
  assert.equal(curricular.invalidAdj,0,label+': adjetivo aún no explicado');
