@@ -4500,7 +4500,7 @@ function generateGreekMorphologyFixed(){
    pronouns.map(x=>'<tr data-corpus-id="'+x.id+'"><td><i>'+esc(x.prompt)+'</i></td><td></td><td></td><td></td><td></td></tr>').join('')+'</tbody></table>';
  }
  const last=examQuestionEnabled('forms')?question('forms',++n,t('Analiza morfológicamente las siguientes palabras (1 p.).','Analitza morfològicament les paraules següents (1 p.).'))+
-  words.map((x,i)=>'<p class="exam-item reference-analysis-item" data-analysis-slot="'+i+'" data-corpus-id="'+x.id+'"><span class="exam-letter">'+String.fromCharCode(97+i)+'.</span> <i'+examAcademicAttrs(x)+'>'+esc(x.prompt)+'</i>'+(Array.isArray(x.lemmas)&&x.lemmas.length?' ('+esc(x.lemmas.filter(Boolean).join(' / '))+')':'')+': <span class="reference-answer-line"></span></p>').join(''):'';
+  words.map((x,i)=>'<p class="exam-item reference-analysis-item" data-analysis-slot="'+i+'" data-corpus-id="'+x.id+'"><span class="exam-letter">'+String.fromCharCode(97+i)+'.</span> <i'+examAcademicAttrs(x)+'>'+esc(x.prompt)+'</i>'+(Array.isArray(x.lemmas)&&x.lemmas.length?' ('+esc(x.lemmas.filter(Boolean).map(lemma=>greekNominalEnunciation({...x,lemmas:[lemma]})).join(' / '))+')':'')+': <span class="reference-answer-line"></span></p>').join(''):'';
  const problems=[];
  if(second&&verbs.length<cfg.verbs)problems.push('Verbos: '+verbs.length+' de '+cfg.verbs);
  if(last&&words.length<cfg.words)problems.push('Palabras variables: '+words.length+' de '+cfg.words);
