@@ -27,7 +27,7 @@ async function select(page,model,unit){
 async function testKind(page,kind){
  const r=await page.evaluate(kind=>{
   const root=$('paper').querySelector('.exam-sheet');
-  // Los modelos completo y traducción agrupan las antiguas preguntas en
+  // El modelo completo agrupa las antiguas preguntas en
   // alternativas: comprobar exactamente la misma preservación de nodos.
   const grouped=!!root?.querySelector('.greek-choice-option');
   const selector=grouped?'.greek-choice-option[data-greek-option="'+kind+'"]':
@@ -86,7 +86,7 @@ async function run(browser,file){
  await page.goto('http://127.0.0.1:'+server.address().port+'/'+file,{waitUntil:'load'});
  await page.waitForFunction(()=>!!document.querySelector('#course')&&!!document.querySelector('#paper'));
  let successes=0;const covered=[];
- for(const [model,kinds] of [['complete',['declension','conjugation','forms','pronouns','etymology']],['translation',['forms','etymology']]]){
+ for(const [model,kinds] of [['complete',['declension','conjugation','forms','pronouns','etymology']]]){
   for(const kind of kinds){
    await select(page,model,'UD12');
    if(await testKind(page,kind)){successes++;covered.push(model+'/'+kind)}

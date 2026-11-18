@@ -29,7 +29,7 @@ const query=page=>page.evaluate(()=>({
   choose:document.querySelector('.exam-question[data-exam-kind="greek-competence"]')?.textContent
  }));
 async function run(page,file){
- for(const model of ['complete','translation']){
+ for(const model of ['complete']){
   await select(page,'greek1',model,'UD2');
   let x=await query(page);
   assert(!x.options.includes('change-number'),file+'/'+model+': artículo antes de UD3');

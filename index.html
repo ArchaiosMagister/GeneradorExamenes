@@ -3711,6 +3711,7 @@ function snapshotExam(){
  schema:'examina-exam-draft',version:1,course:currentCourse(),model:$('model').value,
  language:$('lang').value,created:new Date().toISOString(),title:$('name').value,
  sheetType:$('sheetType')?.value==='review'?'review':'exam',
+ ...(currentCourse()==='greek1'&&$('model').value==='complete'?{greekSentenceTask:$('greekSentenceTask')?.value==='translate'?'translate':'analyze'}:{}),
  visualFormat:window.ExaminaVisualFormat?.snapshot?.()||{questionBeforePt:examQuestionBeforePt(),cultureGapPt:examCultureGapPt()},
  ...(window.ExaminaGreekChoiceGroups?.active?.()?{greekChoices:window.ExaminaGreekChoiceGroups.snapshot()}:{}),
  html:$('paper').innerHTML,
@@ -3734,14 +3735,17 @@ function cleanDraftHtml(raw){
 function saveDraftTo(key){try{window.ExaminaFlushSentenceGlossary?.();localStorage.setItem(key,JSON.stringify(snapshotExam()));return true}catch(e){$('draftStatus').textContent='No se pudo guardar localmente. Exporta el borrador JSON.';return false}}
 function restoreDraft(d){
  if(!validDraft(d))throw Error('Formato de borrador no reconocido');
+ const oldGreekTranslation=d.course==='greek1'&&d.model==='translation';
+ const targetModel=oldGreekTranslation?'complete':d.model;
  // Ajustar el contexto ANTES de reponer el HTML: los selectores pueden
  // generar un examen intermedio, pero nunca sobrescribirán el borrador final.
  if(d.course!==currentCourse()){
   $('course').value=d.course;$('course').dispatchEvent(new Event('change',{bubbles:true}));
  }
- if(d.model&&d.model!==$('model').value&&[...$('model').options].some(x=>x.value===d.model)){
-  $('model').value=d.model;$('model').dispatchEvent(new Event('change',{bubbles:true}));
+ if(targetModel&&targetModel!==$('model').value&&[...$('model').options].some(x=>x.value===targetModel)){
+  $('model').value=targetModel;$('model').dispatchEvent(new Event('change',{bubbles:true}));
  }
+ if(d.course==='greek1')$('greekSentenceTask').value=oldGreekTranslation||d.greekSentenceTask==='translate'?'translate':'analyze';
  if(d.language&&d.language!==$('lang').value&&['es','va'].includes(d.language)){
   $('lang').value=d.language;$('lang').dispatchEvent(new Event('change',{bubbles:true}));
  }
@@ -3780,8 +3784,13 @@ function restoreDraft(d){
  // de edición, pero no las preguntas ni sus valores.
  refreshManualMorphWords(true);
  window.ExaminaGreekChoiceGroups?.restore?.(d);
- if(d.scores)window.ExaminaScoring?.restore?.(d.scores);
- else window.ExaminaScoring?.sync?.(); // Borradores de versiones anteriores.
+ if(d.scores){
+  // Los borradores anteriores mantienen intactos los puntos editados aunque
+  // desaparezca del selector el modelo «translation».
+  const scores=oldGreekTranslation?Object.fromEntries(Object.entries(d.scores).map(([key,value])=>
+   [key.startsWith('greek1/translation/')?'greek1/complete/'+key.slice('greek1/translation/'.length):key,value])):d.scores;
+  window.ExaminaScoring?.restore?.(scores);
+ }else window.ExaminaScoring?.sync?.(); // Borradores de versiones anteriores.
  $('draftStatus').textContent='Borrador recuperado ('+d.course+', '+new Date(d.created).toLocaleString()+'). Campos editables y puntuaciones restaurados.';
 }
 window.ExaminaUnifiedRestoreDraft=restoreDraft;
@@ -3847,8 +3856,7 @@ $v('importExamVocab').addEventListener('click',()=>{if($v('vocabManager').classL
 const greekMaterials={"syllabus": ["El griego como lengua indoeuropea. El alfabeto griego.", "Segunda declinación. Verbo εἰμί. Oraciones copulativas.", "Segunda declinación: neutros. El presente de indicativo. Oraciones predicativas.", "Primera declinación. El artículo.", "Preposiciones. El complemento de régimen verbal.", "El adjetivo. Las oraciones coordinadas.", "Voz media y pasiva. Infinitivo concertado.", "Los pronombres en griego: demostrativos, anafórico, personales.", "Oraciones interrogativas. Tercera declinación.", "La oración de relativo.", "Participios: apositivo y atributivo. El genitivo absoluto.", "El futuro y el imperfecto.", "El aoristo sigmático y temático.", "Perfecto y pluscuamperfecto.", "Temas en silbante. Verbos contractos."], "required": [{"unit": "Básicas", "entry": "ἀλλά (conj.)", "meaning": "pero’, ‘sino"}, {"unit": "Básicas", "entry": "γάρ (part.)", "meaning": "pues"}, {"unit": "Básicas", "entry": "ἐπεί (conj.)", "meaning": "cuando"}, {"unit": "Básicas", "entry": "ἤ (conj.)", "meaning": "o"}, {"unit": "Básicas", "entry": "καί", "meaning": "y"}, {"unit": "Básicas", "entry": "μέν… δέ (part.)", "meaning": "“por un lado… por otro”"}, {"unit": "Básicas", "entry": "οὐ μόνον ἀλλὰ καὶ", "meaning": "“no sólo, sino también”"}, {"unit": "Básicas", "entry": "οὐδέ (conj.)", "meaning": "y no"}, {"unit": "Básicas", "entry": "οὖν (part.)", "meaning": "así pues"}, {"unit": "Básicas", "entry": "οὔτε… οὔτε (conj.)", "meaning": "“ni… ni”"}, {"unit": "Básicas", "entry": "πρῶτον (adv.)", "meaning": "en primer lugar"}, {"unit": "Preposiciones", "entry": "ἄνευ + genitivo", "meaning": "sin"}, {"unit": "Preposiciones", "entry": "ἀπό + genitivo", "meaning": "de, desde"}, {"unit": "Preposiciones", "entry": "διά + acusativo", "meaning": "a través de, por, a causa de"}, {"unit": "Preposiciones", "entry": "εἰς + acusativo", "meaning": "a, hacia"}, {"unit": "Preposiciones", "entry": "ἐκ/ἐξ + genitivo", "meaning": "de, desde"}, {"unit": "Preposiciones", "entry": "ἐν + dativo", "meaning": "en"}, {"unit": "Preposiciones", "entry": "μετά + genitivo | acusativo", "meaning": "entre, con’ (gen.) | después de’ (ac.)"}, {"unit": "Preposiciones", "entry": "περί + genitivo", "meaning": "alrededor de, sobre"}, {"unit": "Preposiciones", "entry": "πρός + acusativo", "meaning": "a, hacia, junto a"}, {"unit": "Preposiciones", "entry": "σύν + dativo", "meaning": "con"}, {"unit": "Preposiciones", "entry": "ὐπό + genitivo", "meaning": "debajo de, por"}, {"unit": "UDs 1–4", "entry": "ἀγορά, –ας", "meaning": "plaza"}, {"unit": "UDs 1–4", "entry": "ἀδικία, –ας", "meaning": "injusticia"}, {"unit": "UDs 1–4", "entry": "Ἀθηνᾶ, –ᾶς", "meaning": "Atenea"}, {"unit": "UDs 1–4", "entry": "Ἀθῆναι, –ῶν", "meaning": "Atenas' (sólo pl.)"}, {"unit": "UDs 1–4", "entry": "ἀκούω", "meaning": "escuchar’ (+ gen. CRV)"}, {"unit": "UDs 1–4", "entry": "ἀληθεία, –ας", "meaning": "verdad"}, {"unit": "UDs 1–4", "entry": "ἄνθρωπος, –ου", "meaning": "hombre"}, {"unit": "UDs 1–4", "entry": "ἀρετή, –ης", "meaning": "virtud"}, {"unit": "UDs 1–4", "entry": "ἄρχω", "meaning": "gobernar’ (+ gen. CRV)"}, {"unit": "UDs 1–4", "entry": "βασιλεύω", "meaning": "reinar’ (+ gen. CRV)"}, {"unit": "UDs 1–4", "entry": "βιβλίον, –ου", "meaning": "libro"}, {"unit": "UDs 1–4", "entry": "βίος, –ου", "meaning": "vida"}, {"unit": "UDs 1–4", "entry": "δῆμος, –ου", "meaning": "pueblo"}, {"unit": "UDs 1–4", "entry": "δίκη, –ης", "meaning": "justicia"}, {"unit": "UDs 1–4", "entry": "δοῦλος, –ου", "meaning": "esclavo"}, {"unit": "UDs 1–4", "entry": "ἐλευθερία, –ας", "meaning": "libertad"}, {"unit": "UDs 1–4", "entry": "ἐπιθυμέω", "meaning": "desear’ (+ gen. CRV)"}, {"unit": "UDs 1–4", "entry": "ζῷον, –ου", "meaning": "animal"}, {"unit": "UDs 1–4", "entry": "θάλαττα, –ης", "meaning": "mar"}, {"unit": "UDs 1–4", "entry": "θέα, –ας", "meaning": "diosa"}, {"unit": "UDs 1–4", "entry": "θέος, –ου", "meaning": "dios"}, {"unit": "UDs 1–4", "entry": "ἵππος, –ου", "meaning": "caballo"}, {"unit": "UDs 1–4", "entry": "μαθητής, –ου", "meaning": "alumno"}, {"unit": "UDs 1–4", "entry": "μετέχω", "meaning": "participar en’ (+ gen. CRV)"}, {"unit": "UDs 1–4", "entry": "οἰκία, –ας", "meaning": "casa"}, {"unit": "UDs 1–4", "entry": "πολίτης, –ου", "meaning": "ciudadano"}, {"unit": "UDs 1–4", "entry": "σοφία, –ας", "meaning": "sabiduría"}, {"unit": "UDs 1–4", "entry": "σοφός, –οῦ (ὁ)", "meaning": "sabio"}, {"unit": "UDs 1–4", "entry": "φίλος, –ου", "meaning": "amigo"}, {"unit": "UD5", "entry": "ἀγαθός, –η, –ον", "meaning": "bueno/a"}, {"unit": "UD5", "entry": "ἄγω", "meaning": "conducir"}, {"unit": "UD5", "entry": "ἀεί (adv.)", "meaning": "siempre"}, {"unit": "UD5", "entry": "αἰσχρός, –ον", "meaning": "vergonzoso/a"}, {"unit": "UD5", "entry": "ἀλλά (conj.)", "meaning": "pero’, ‘sino"}, {"unit": "UD5", "entry": "ἀρχή, –ῆς", "meaning": "gobierno’, ‘origen"}, {"unit": "UD5", "entry": "βάρβαρος, –ου", "meaning": "bárbaro"}, {"unit": "UD5", "entry": "γή, –ης", "meaning": "tierra"}, {"unit": "UD5", "entry": "γιγνώσκω", "meaning": "conocer"}, {"unit": "UD5", "entry": "γράφω", "meaning": "escribir"}, {"unit": "UD5", "entry": "δεσπότης, –ου", "meaning": "amo, señor"}, {"unit": "UD5", "entry": "διδάσκαλος, –ου", "meaning": "profesor"}, {"unit": "UD5", "entry": "δίκαιος, –α, –ον", "meaning": "justo/a"}, {"unit": "UD5", "entry": "διώκω", "meaning": "perseguir"}, {"unit": "UD5", "entry": "Ἑλληνικός, –η, ον", "meaning": "helénico/a"}, {"unit": "UD5", "entry": "ἔνδοξος, –ον", "meaning": "famoso"}, {"unit": "UD5", "entry": "ἐχθρός, –ά, –όν", "meaning": "enemigo/a"}, {"unit": "UD5", "entry": "ἥκω", "meaning": "llegar"}, {"unit": "UD5", "entry": "ἡμέρα, –ας", "meaning": "día"}, {"unit": "UD5", "entry": "ἡμετέρος, –α, –ον", "meaning": "nuestro/a"}, {"unit": "UD5", "entry": "κακός, –η, –ον", "meaning": "malo/a"}, {"unit": "UD5", "entry": "καλός, –η, –ον", "meaning": "bonito/a"}, {"unit": "UD5", "entry": "κίνδυνος, –ου", "meaning": "peligro"}, {"unit": "UD5", "entry": "λέγω", "meaning": "decir’, ‘hablar"}, {"unit": "UD5", "entry": "μέγας, μεγάλη, μέγα", "meaning": "grande"}, {"unit": "UD5", "entry": "μέν… δέ (conj.)", "meaning": "“por un lado… por otro”"}, {"unit": "UD5", "entry": "μίκρος, –α, –ον", "meaning": "pequeño/a"}, {"unit": "UD5", "entry": "ὁδός, –ου (ἡ)", "meaning": "camino"}, {"unit": "UD5", "entry": "οἰκέω", "meaning": "habitar"}, {"unit": "UD5", "entry": "ὀλιγός, –η, –ον", "meaning": "poco/a"}, {"unit": "UD5", "entry": "παιδεύω", "meaning": "educar"}, {"unit": "UD5", "entry": "πολύς, πολλή, πολύ", "meaning": "mucho/a"}, {"unit": "UD5", "entry": "πονηρός, –α, –ον", "meaning": "desdichado/a, pobre, malo, perverso"}, {"unit": "UD5", "entry": "στρατηγός, –ου", "meaning": "estratego", "meaning_va": "estrateg (general)"}, {"unit": "UD5", "entry": "στρατιώτης, –ου", "meaning": "soldado"}, {"unit": "UD5", "entry": "σύμμαχος, –ον", "meaning": "aliado/a"}, {"unit": "UD5", "entry": "φέρω", "meaning": "llevar"}, {"unit": "UD5", "entry": "φεύγω", "meaning": "rechazar’, ‘huir"}, {"unit": "UD5", "entry": "φιλέω", "meaning": "amar"}, {"unit": "UDs 6–7", "entry": "ἀδικός, –ον", "meaning": "injusto/a"}, {"unit": "UDs 6–7", "entry": "βούλομαι", "meaning": "querer"}, {"unit": "UDs 6–7", "entry": "γίγνομαι", "meaning": "llegar a ser’ (copulativo)"}, {"unit": "UDs 6–7", "entry": "δεῖ (impers.)", "meaning": "es necesario"}, {"unit": "UDs 6–7", "entry": "δῶρον, –ου", "meaning": "regalo"}, {"unit": "UDs 6–7", "entry": "εἰρήνη, –ης", "meaning": "paz"}, {"unit": "UDs 6–7", "entry": "ἐπιστολή, –ης", "meaning": "carta"}, {"unit": "UDs 6–7", "entry": "ἔχω", "meaning": "tener"}, {"unit": "UDs 6–7", "entry": "ἥλιος, –ου", "meaning": "sol"}, {"unit": "UDs 6–7", "entry": "θάνατος, –ου", "meaning": "muerte"}, {"unit": "UDs 6–7", "entry": "ἰατρός, –ου", "meaning": "médico"}, {"unit": "UDs 6–7", "entry": "κεφαλή, –ῆς", "meaning": "cabeza"}, {"unit": "UDs 6–7", "entry": "λόγος, –ου", "meaning": "palabra"}, {"unit": "UDs 6–7", "entry": "μάχη, –ης", "meaning": "batalla"}, {"unit": "UDs 6–7", "entry": "μάχομαι", "meaning": "luchar"}, {"unit": "UDs 6–7", "entry": "ναύτης, –ου", "meaning": "marinero"}, {"unit": "UDs 6–7", "entry": "νεανίας, –ου", "meaning": "joven"}, {"unit": "UDs 6–7", "entry": "νίκη, –ης", "meaning": "victoria"}, {"unit": "UDs 6–7", "entry": "νόμος, –ου", "meaning": "ley"}, {"unit": "UDs 6–7", "entry": "ξένος, –ου", "meaning": "extranjero"}, {"unit": "UDs 6–7", "entry": "ξύλον, –ου", "meaning": "madera"}, {"unit": "UDs 6–7", "entry": "πενία, –ας", "meaning": "pobreza"}, {"unit": "UDs 6–7", "entry": "πέτρα, –ας", "meaning": "piedra"}, {"unit": "UDs 6–7", "entry": "πλοῦτος, –ου", "meaning": "riqueza"}, {"unit": "UDs 6–7", "entry": "πόλεμος, –ου", "meaning": "guerra"}, {"unit": "UDs 6–7", "entry": "πολλάκις (adv.)", "meaning": "muchas veces"}, {"unit": "UDs 6–7", "entry": "τύραννος, –ου", "meaning": "tirano"}, {"unit": "UDs 6–7", "entry": "χρή (impers.)", "meaning": "es necesario"}, {"unit": "UD8", "entry": "ἀθάνατος, –ον", "meaning": "inmortal"}, {"unit": "UD8", "entry": "αἴξ, αἰγός (ἡ)", "meaning": "cabra"}, {"unit": "UD8", "entry": "ἀνήρ, ἀνδρός (ὁ)", "meaning": "hombre"}, {"unit": "UD8", "entry": "ἄρχων, −οντος (ὁ)", "meaning": "arconte"}, {"unit": "UD8", "entry": "ἀσπίς, ἀσπίδος (ἡ)", "meaning": "escudo"}, {"unit": "UD8", "entry": "γέρων, −οντος (ὁ)", "meaning": "anciano"}, {"unit": "UD8", "entry": "γυνή, γυναικός (ἡ)", "meaning": "mujer"}, {"unit": "UD8", "entry": "δέρμα, –ματος (τὸ)", "meaning": "piel"}, {"unit": "UD8", "entry": "Ἕλλας, Ἑλλάδος (ἡ)", "meaning": "Grecia"}, {"unit": "UD8", "entry": "Ἕλλην, Ἕλληνος (ὁ o ἡ)", "meaning": "griego/a"}, {"unit": "UD8", "entry": "ἡγεμών, −όνος (ὁ)", "meaning": "líder’, ‘soberano"}, {"unit": "UD8", "entry": "θήρ, θηρός (ὁ o ἡ)", "meaning": "fiera"}, {"unit": "UD8", "entry": "θώραξ, –ακος (ὁ)", "meaning": "coraza"}, {"unit": "UD8", "entry": "λέων, λεόντος (ὁ)", "meaning": "león"}, {"unit": "UD8", "entry": "μήτηρ, −τρός (ἡ)", "meaning": "madre"}, {"unit": "UD8", "entry": "νύξ, νυκτός (ἡ)", "meaning": "noche"}, {"unit": "UD8", "entry": "ὄνομα, −ματος (τὸ)", "meaning": "nombre"}, {"unit": "UD8", "entry": "παῖς, παιδός (ὁ o ἡ)", "meaning": "niño/a"}, {"unit": "UD8", "entry": "πάτηρ, −τρός (ὁ)", "meaning": "padre"}, {"unit": "UD8", "entry": "πατρίς, πατρίδος (ἡ)", "meaning": "patria"}, {"unit": "UD8", "entry": "ποῖ (adv.)", "meaning": "a dónde"}, {"unit": "UD8", "entry": "ποῦ (adv.)", "meaning": "dónde"}, {"unit": "UD8", "entry": "πράγμα, −ματος (τὸ)", "meaning": "asunto"}, {"unit": "UD8", "entry": "πῶς (adv.)", "meaning": "cómo"}, {"unit": "UD8", "entry": "ῥήτωρ, −ορος (ὁ)", "meaning": "orador"}, {"unit": "UD8", "entry": "ῥίς, ῥινός (ἡ)", "meaning": "nariz"}, {"unit": "UD8", "entry": "σῶμα, –ματος (τὸ)", "meaning": "cuerpo"}, {"unit": "UD8", "entry": "ὕδωρ, ὕδατος (τὸ)", "meaning": "agua"}, {"unit": "UD8", "entry": "φύλαξ, –ακος (ὁ o ἡ)", "meaning": "guardián/a"}, {"unit": "UD8", "entry": "χρῆμα, –ατος (τὸ)", "meaning": "cosa’ (sing.), ‘riqueza’ (pl.)"}, {"unit": "UD9", "entry": "ἀποθνῄσκω", "meaning": "morir"}, {"unit": "UD9", "entry": "διδάσκω", "meaning": "enseñar"}, {"unit": "UD9", "entry": "ἐθέλω", "meaning": "querer"}, {"unit": "UD9", "entry": "ἔρχομαι", "meaning": "ir"}, {"unit": "UD9", "entry": "θαυμάζω", "meaning": "admirar"}, {"unit": "UD9", "entry": "θεραπεύω", "meaning": "curar’, ‘venerar"}, {"unit": "UD9", "entry": "λαμβάνω", "meaning": "coger, tomar"}, {"unit": "UD9", "entry": "λείπω", "meaning": "dejar"}, {"unit": "UD9", "entry": "λύω", "meaning": "liberar"}, {"unit": "UD9", "entry": "μανθάνω", "meaning": "estudiar"}, {"unit": "UD9", "entry": "οὐράνος, –ου", "meaning": "cielo"}, {"unit": "UD9", "entry": "στράτευμα, –ατος", "meaning": "ejército"}, {"unit": "UD9", "entry": "σῴζω", "meaning": "salvar"}, {"unit": "UD9", "entry": "τόπος, –ου", "meaning": "lugar"}, {"unit": "UD10", "entry": "ἔτι (adv.)", "meaning": "ya’, ‘aún"}, {"unit": "UD10", "entry": "ἡγέομαι", "meaning": "liderar’, ‘pensar"}, {"unit": "UD10", "entry": "ναῦς, νεώς (ἡ)", "meaning": "nave"}, {"unit": "UD10", "entry": "νέος, –α, –ον", "meaning": "nuevo/a’, ‘joven"}, {"unit": "UD10", "entry": "ὁπλίτης, –ου", "meaning": "hoplita"}, {"unit": "UD10", "entry": "ὅπλον, –ου", "meaning": "arma"}, {"unit": "UD10", "entry": "ποιητής, –ου", "meaning": "poeta"}, {"unit": "UD10", "entry": "πρῶτος, –η, –ον", "meaning": "primero/a"}, {"unit": "UD10", "entry": "φόβος, –ου", "meaning": "miedo"}, {"unit": "UD10", "entry": "φύσις, –εως (ἡ)", "meaning": "naturaleza"}]};
 const greekModes={
  complete:{es:'1 · Examen completo',va:'1 · Examen complet',points:[1,1,1,0,1,6]},
- morphology:{es:'2 · Examen de morfología',va:'2 · Examen de morfologia',points:[0,0,0,0,0,0]},
- translation:{es:'3 · Examen de traducción',va:'3 · Examen de traducció',points:[0,0,2,0,2,6]}
+ morphology:{es:'2 · Examen de morfología',va:'2 · Examen de morfologia',points:[0,0,0,0,0,0]}
 };
 const greekKinds=['declension','conjugation','forms','pronouns','etymology','sentences'];
 const greekKindNames={es:['Declinación','Conjugación','Análisis morfológico','Pronombres','Etimología','Análisis y traducción'],va:['Declinació','Conjugació','Anàlisi morfològica','Pronoms','Etimologia','Anàlisi i traducció']};
@@ -4367,11 +4375,11 @@ function greekVerbTable(items){
 function greekExamHeader(chosen,mode){
  const va=$('lang').value==='va';
  const titleInput=$('name').value.trim(),custom=titleInput&&!['Examen de Griego I','Examen de Grec I','Ficha de repaso de Griego I','Fitxa de repàs de Grec I'].includes(titleInput);
- const prefix=$('sheetType').value==='review'?(va?'Fitxa de repàs de ':'Ficha de repaso de '):$('model').value==='morphology'?(va?'Examen de morfologia de ':'Examen de morfología de '):$('model').value==='translation'?(va?'Examen de traducció de ':'Examen de traducción de '):'Examen de ';
+ const prefix=$('sheetType').value==='review'?(va?'Fitxa de repàs de ':'Ficha de repaso de '):$('model').value==='morphology'?(va?'Examen de morfologia de ':'Examen de morfología de '):'Examen de ';
  const title=examHeadingWithUnits(custom?titleInput:prefix+(va?'Grec I':'Griego I'),chosen)+($('seed').value?' · '+$('seed').value:'');
  return '<div class="exam-header"><p class="exam-header-line"><span>'+esc(title)+'</span><span>'+trimesterHeading()+'</span></p><p class="exam-header-line"><span>'+(va?'Nom i cognoms:':'Nombre y apellidos:')+'</span><span>'+examDateLabel(va)+'</span></p></div>';
 }
-function greekQuestionLabel(kind){if(kind==='declension'&&$('model').value==='complete'&&greekLimit()>=5)return $('lang').value==='va'?'Declina els sintagmes: article, substantiu i adjectiu':'Declina los sintagmas: artículo, sustantivo y adjetivo';if(kind==='sentences'&&$('model').value==='translation')return $('lang').value==='va'?'Traduïx les oracions següents':'Traduce las siguientes oraciones';return ({es:{declension:'Declina',conjugation:'Conjuga',forms:'Analiza morfológicamente',pronouns:'Completa la tabla con el análisis morfológico adecuado',etymology:'Escribe dos derivados etimológicos de cada una de estas palabras griegas',sentences:'Analiza y traduce las siguientes oraciones'},va:{declension:'Declina',conjugation:'Conjuga',forms:'Analitza morfològicament',pronouns:'Completa la taula amb l’anàlisi morfològica adequada',etymology:'Escriu dos derivats etimològics de cadascuna d’aquestes paraules gregues',sentences:'Analitza i traduïx les oracions següents'}})[$('lang').value][kind]}
+function greekQuestionLabel(kind){if(kind==='declension'&&$('model').value==='complete'&&greekLimit()>=5)return $('lang').value==='va'?'Declina els sintagmes: article, substantiu i adjectiu':'Declina los sintagmas: artículo, sustantivo y adjetivo';if(kind==='sentences'&&$('greekSentenceTask')?.value==='translate')return $('lang').value==='va'?'Traduïx les oracions següents':'Traduce las siguientes oraciones';return ({es:{declension:'Declina',conjugation:'Conjuga',forms:'Analiza morfológicamente',pronouns:'Completa la tabla con el análisis morfológico adecuado',etymology:'Escribe dos derivados etimológicos de cada una de estas palabras griegas',sentences:'Analiza y traduce las siguientes oraciones'},va:{declension:'Declina',conjugation:'Conjuga',forms:'Analitza morfològicament',pronouns:'Completa la taula amb l’anàlisi morfològica adequada',etymology:'Escriu dos derivats etimològics de cadascuna d’aquestes paraules gregues',sentences:'Analitza i traduïx les oracions següents'}})[$('lang').value][kind]}
 function greekPoints(kind){const v=Number($('greek-points-'+kind).value);if(kind==='pronouns'&&$('model').value==='complete'&&examQuestionEnabled('pronouns')&&v===0)return 1;return Number.isFinite(v)?Math.max(0,Math.min(100,v)):0}
 function generateGreekMorphologyFixed(){
  const marked=greekMarkedUnits(),limit=greekLimit(),cfg=morphConfig(),va=$('lang').value==='va';
@@ -4638,7 +4646,7 @@ function generateGreekExam(){
   (x.kind!=='forms'||(!x.prompt.includes(' ')&&!(x.lemmas||[]).some(lemma=>isExcludedExamMorphLemma(lemma)))))
   .concat(enabled.includes('forms')?examAuthorizedProposals('greek1',max).filter(x=>x.kind==='forms'&&!x.prompt.includes(' ')):[])
   .concat(enabled.includes('forms')&&examMorphQuotaValues()[2]>0?examGreekVerbFormCandidates(greekVerifiedCorpus,max):[]);
- const counts={declension:Math.min(2,countFor('decl')),conjugation:Math.min(2,countFor('verb')),forms:examMorphQuotasActive()?examMorphQuotaCount():countFor('greek-forms'),pronouns:10,etymology:Math.min($('model').value==='translation'?3:2,countFor('lex')),sentences:countFor('sent')};
+ const counts={declension:Math.min(2,countFor('decl')),conjugation:Math.min(2,countFor('verb')),forms:examMorphQuotasActive()?examMorphQuotaCount():countFor('greek-forms'),pronouns:10,etymology:Math.min(2,countFor('lex')),sentences:countFor('sent')};
  const result=greekSelectedItems(pool,chosen,counts),sections=[],answers=[];
 
  let total=0,index=0;
@@ -4676,7 +4684,7 @@ function generateGreekExam(){
 const legacyUpdateUnits=updateUnits;
 updateUnits=function(){if(currentCourse()!=='greek1')return legacyUpdateUnits();const marked=new Set(greekMarkedUnits());units=greekMaterials.syllabus.slice(1).map((_,i)=>'UD'+(i+1));$('unitChoices').innerHTML=units.map((u,i)=>'<label title="'+esc(greekMaterials.syllabus[i+1])+'"><input class="unit-choice" type="checkbox" value="'+i+'" '+(marked.has(u)?'checked':'')+'>'+u+'</label>').join('');document.querySelectorAll('.unit-choice').forEach(e=>e.onchange=()=>generate())};
 const greekPanel=document.createElement('div');greekPanel.className='field';greekPanel.id='greekSettings';greekPanel.hidden=true;
-greekPanel.innerHTML='<p class="hint">Modelo 1: declinación, conjugación, análisis de formas, etimología y oraciones. Modelo 2: declinación, análisis verbal, pronombres cuando se hayan estudiado y palabras variables. Modelo 3: análisis de formas, etimología y siete huecos para oraciones por defecto.</p><p id="greekCoverage" class="notice" role="status" aria-live="polite"></p><label id="greekPointsLabel">Puntuación por apartado</label><div id="greekPointsGrid" class="count-grid">'+greekKinds.map((k,i)=>'<label>'+greekKindNames.es[i]+'<input id="greek-points-'+k+'" type="number" min="0" max="100" step="0.1"></label>').join('')+'</div><p class="hint">Morfología: 2 + 1 + 1 puntos. Solo se utilizan formas y soluciones verificadas.</p>';
+greekPanel.innerHTML='<p class="hint">Examen completo: competencias morfosintácticas, plurilingüismo y oraciones, con apartados configurables. Examen de morfología: prueba parcial independiente. Puedes elegir si las oraciones se analizan y traducen o solo se traducen.</p><p id="greekCoverage" class="notice" role="status" aria-live="polite"></p><label id="greekPointsLabel">Puntuación por apartado</label><div id="greekPointsGrid" class="count-grid">'+greekKinds.map((k,i)=>'<label>'+greekKindNames.es[i]+'<input id="greek-points-'+k+'" type="number" min="0" max="100" step="0.1"></label>').join('')+'</div><p class="hint">Morfología: 2 + 1 + 1 puntos. Solo se utilizan formas y soluciones verificadas.</p>';
 document.querySelector('label[for="model"]').parentElement.after(greekPanel);
 for(const k of greekKinds)$('greek-points-'+k).onchange=()=>generate();
 // Three visible examination models; only the complete exam exists in Latin 4 ESO.
@@ -4685,6 +4693,23 @@ const latinFormsControl=document.createElement('label');
 latinFormsControl.id='latinFormsCountControl';
 latinFormsControl.innerHTML='Formas sueltas <input type="number" id="count-forms" min="1" max="30" value="4">';
 $('count-decl').closest('.count-grid').append(latinFormsControl);
+const greekSentenceTaskControl=document.createElement('label');
+greekSentenceTaskControl.id='greekSentenceTaskControl';
+greekSentenceTaskControl.innerHTML='Enunciado de las oraciones <select id="greekSentenceTask" aria-label="Enunciado de las oraciones"><option value="analyze">Analiza y traduce</option><option value="translate">Traduce</option></select>';
+$('count-sent').parentElement.after(greekSentenceTaskControl);
+$('greekSentenceTask').onchange=()=>{
+ // Cambiar solo el enunciado: conservar las oraciones, correcciones y puntuaciones.
+ const question=$('paper').querySelector('.exam-question[data-greek-kind="sentences"]');
+ const caption=question?.querySelector('.exam-question-caption');
+ if(!question||!caption)return;
+ // El gestor de puntuación ya ha creado sus controles: modificar solo el
+ // texto académico y su etiqueta persistente, sin suprimir ni recrear botones.
+ const label=greekQuestionLabel('sentences');
+ caption.textContent=' '+label+' ';
+ question.dataset.scoringCaption=label;
+ window.ExaminaScoring?.sync?.();
+ window.greekLastPreview=$('paper').innerHTML;
+};
 const sentenceSpaceControl=document.createElement('label');
 sentenceSpaceControl.id='sentenceSpacingControl';
 sentenceSpaceControl.innerHTML='Separación entre oraciones (pt) <input id="sentence-gap-pt" type="number" min="12" max="100" step="2" value="42">';
@@ -4886,7 +4911,7 @@ const latinModes={
 };
 function examModelOptions(course){
  const modes=course==='greek1'?greekModes:latinModes;
- const values=course==='latin4'?['tablas']:course==='greek1'?['complete','morphology','translation']:['tablas','morf','mixto'];
+ const values=course==='latin4'?['tablas']:course==='greek1'?['complete','morphology']:['tablas','morf','mixto'];
  return values.map(value=>'<option value="'+value+'">'+modes[value][$('lang').value]+'</option>').join('');
 }
 function syncExamModelControls(){
@@ -4894,12 +4919,13 @@ function syncExamModelControls(){
  const full=course!=='greek1'&&model==='tablas';
  $('decl').parentElement.parentElement.hidden=!full;
  const relevant=course==='greek1'?
-  (model==='complete'?['decl','verb','lex','sent']:model==='translation'?['verb','lex','sent']:[]):
+  (model==='complete'?['decl','verb','lex','sent']:[]):
   (model==='morf'?[]:model==='mixto'?['sent']:['decl','verb','sent']);
  for(const id of ['decl','verb','lex','sent'])$('count-'+id).parentElement.hidden=!relevant.includes(id);
  latinFormsControl.hidden=course==='greek1'||model==='morf';
+ greekSentenceTaskControl.hidden=course!=='greek1'||model!=='complete';
  $('count-verb').parentElement.firstChild.textContent=course==='greek1'?
-  (model==='translation'?'Formas sueltas ':'Verbos / formas '):'Verbos ';
+  'Verbos / formas ':'Verbos ';
  $('count-lex').parentElement.firstChild.textContent=course==='greek1'?'Derivación etimológica ':'Léxico ';
  // Léxico (2/3) y cultura (4) son cantidades fijas.
  const cultureCount=$('count-culture');
@@ -4917,7 +4943,7 @@ function latinDefaultCounts(){
  $('count-forms').value=4;
 }
 function configureExamGlossary(){
- const enabled=currentCourse()==='greek1'?['complete','translation'].includes($('model').value):$('model').value!=='morf';
+ const enabled=currentCourse()==='greek1'?$('model').value==='complete':$('model').value!=='morf';
  $('autoGloss').checked=enabled;
  $('glossScope').value='all';
 }
@@ -4938,9 +4964,9 @@ let modelCourse=null;
 function greekDefaultCounts(){
  const m=$('model').value;
  $('count-decl').value=m==='morphology'?1:2;
- $('count-verb').value=m==='morphology'?10:m==='translation'?8:5;
- $('count-lex').value=m==='translation'?3:2;
- $('count-sent').value=m==='translation'?7:5;
+ $('count-verb').value=m==='morphology'?10:5;
+ $('count-lex').value=2;
+ $('count-sent').value=5;
 }
 function greekApplyMode(){
  const mode=greekModes[$('model').value]||greekModes.complete;
@@ -4993,6 +5019,11 @@ translateUI=function(){
  legacyTranslateUI();
  const modes=currentCourse()==='greek1'?greekModes:latinModes;
  for(const option of $('model').options)if(modes[option.value])option.textContent=modes[option.value][$('lang').value];
+ const va=$('lang').value==='va';
+ greekSentenceTaskControl.firstChild.textContent=va?'Enunciat de les oracions ':'Enunciado de las oraciones ';
+ $('greekSentenceTask').options[0].textContent=va?'Analitza i traduïx':'Analiza y traduce';
+ $('greekSentenceTask').options[1].textContent=va?'Traduïx':'Traduce';
+ $('greekSentenceTask').setAttribute('aria-label',va?'Enunciat de les oracions':'Enunciado de las oraciones');
 };
 $('lang').onchange=()=>{translateUI();generate()};
 // Earlier controls captured the original function. Its Greek branch delegates
@@ -5129,7 +5160,7 @@ function examQuestionAvailable(kind){
  if(!supported.includes(kind))return false;
  if(kind==='culture'&&latin4CultureExcludedForUnit())return false;
  if(['morf','morphology'].includes(model)&&!['decl','verb','pronouns','forms'].includes(kind))return false;
- if(['mixto','translation'].includes(model)&&!['forms','lex','etymology','sent'].includes(kind))return false;
+ if(model==='mixto'&&!['forms','lex','etymology','sent'].includes(kind))return false;
  if(kind==='pronouns'){
   if(course==='latin1')return latinExamPronouns(selectedUnits()).length>0;
   if(course==='greek1')return greekVerifiedCorpus.some(x=>x.verified&&x.kind==='pronouns'&&greekMorphologyEligible(x,greekLimit()));
@@ -5975,7 +6006,7 @@ loadTeacherLatinLexBanks();
   pronouns:'Análisis de pronombres',lex:'Léxico',culture:'Cultura',sent:'Oraciones y traducción',etymology:'Derivación etimológica'
  };
  const courseNames={'latin1':'Latín I','latin4':'Latín 4.º ESO','greek1':'Griego I'};
- const typeKeys=()=>currentCourse()==='latin4'?['tablas']:currentCourse()==='greek1'?['complete','morphology','translation']:['tablas','morf','mixto'];
+ const typeKeys=()=>currentCourse()==='latin4'?['tablas']:currentCourse()==='greek1'?['complete','morphology']:['tablas','morf','mixto'];
  function buttons(){
   courseButtons.replaceChildren();modelButtons.replaceChildren();
   for(const [value,label] of Object.entries(courseNames)){
@@ -6649,10 +6680,10 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   const modelNames={
    tablas:['Examen completo','Examen complet'],morf:['Morfología','Morfologia'],
    mixto:['Traducción','Traducció'],complete:['Examen completo','Examen complet'],
-   morphology:['Morfología','Morfologia'],translation:['Traducción','Traducció']
+   morphology:['Morfología','Morfologia']
   };
   const activeModels=c==='latin4'?['tablas']:c==='greek1'?
-   ['complete','morphology','translation']:['tablas','morf','mixto'];
+   ['complete','morphology']:['tablas','morf','mixto'];
   const options=activeModels.map(value=>{
    const option=Array.from($('model').options).find(o=>o.value===value);
    const name=modelNames[value]||[option?.textContent||value,option?.textContent||value];

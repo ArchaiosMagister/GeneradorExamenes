@@ -20,7 +20,7 @@ async function select(page,model,unit,lang='es'){
   page.on('pageerror',e=>errors.push(e.message));
   await ctx.route(/^https?:\/\//,r=>r.abort());
   await page.goto(pathToFileURL(path.resolve(file)).href);
-  for(const model of ['complete','translation'])for(const lang of ['es','va'])for(let unit=1;unit<=14;unit++){
+  for(const model of ['complete'])for(const lang of ['es','va'])for(let unit=1;unit<=14;unit++){
    await select(page,model,unit,lang);
    const row=await page.evaluate(({unit,lang})=>{
     const must=(condition,message)=>{if(!condition)throw Error('UD'+unit+'/'+lang+': '+message)};
@@ -68,7 +68,7 @@ async function select(page,model,unit,lang='es'){
   const match=await page.evaluate(()=>ExaminaGreekNumber.current()[0].answer);
   assert.match(await page.locator('[data-greek-answer-slot="change-number:0"]').textContent(),new RegExp(match));
   const draft=await page.evaluate(()=>window.ExaminaUnifiedCurrentExam());
-  await select(page,'translation',3);
+  await select(page,'morphology',3);
   await page.evaluate(d=>window.ExaminaUnifiedRestoreDraft(d),draft);
   assert.equal(await page.evaluate(()=>ExaminaGreekNumber.state().quantity),6);
   assert.deepEqual(await page.evaluate(()=>ExaminaGreekNumber.state().ids),draft.greekChoices.number.ids);
@@ -84,7 +84,7 @@ async function select(page,model,unit,lang='es'){
   assert(!((await page.locator('[data-greek-option="change-number"]').textContent()).includes('EDITADO_NUMERO')));
   assert.match(await page.locator('#paper').textContent(),/RETRO_CONSERVADA/);
   // Actual DOCX exports, with and without solutions, in both languages/models.
-  for(const model of ['complete','translation'])for(const lang of ['es','va']){
+  for(const model of ['complete'])for(const lang of ['es','va']){
    await select(page,model,5,lang);
    await page.evaluate(()=>{ExaminaGreekNumber.setCount(4);ExaminaGreekRetroversion.setCount(4);generate()});
    const stem=file.replace('.html','')+'-'+model+'-'+lang;
@@ -95,7 +95,9 @@ async function select(page,model,unit,lang='es'){
      if(!blob)throw Error('Word bloqueado');return [...new Uint8Array(await blob.arrayBuffer())];
     },solutions));
     const xml=entry(bytes,'word/document.xml');
-    assert.match(xml,/<w:u w:val="single"\/>/);
+    const underlineCount=(xml.match(/<w:u w:val="single"\/>/g)||[]).length;
+    const sourceUnderlines=await page.locator('.greek-choice-etym-sentence u').count();
+    assert(underlineCount>0,'Word sin subrayados '+file+'/'+model+'/'+lang+' · fuente='+sourceUnderlines+' · modo='+await page.evaluate(()=>$('model').value));
     const subheads=await page.evaluate(()=>[...document.querySelectorAll('.greek-choice-subquestion')].map(x=>wordBlock(x)));
     assert(subheads.every(x=>x.includes('<w:keepNext/>')),'Enunciado de alternativa huérfano en Word');
     for(const answer of answers)assert.equal(xml.includes(answer),solutions,'Clave Word '+stem+': '+answer);
@@ -109,6 +111,6 @@ async function select(page,model,unit,lang='es'){
   assert.deepEqual(errors,[]);await ctx.close();
  }
  fs.writeFileSync(path.join(out,'curriculum-audit.json'),JSON.stringify(report,null,2));
- console.log('AUDITORÍA GRIEGO I: 112 contextos curriculares, paradigmas testigo, concordancia ES/VA, claves, borradores, regeneración y DOCX/PDF web/offline sin red: OK');
+ console.log('AUDITORÍA GRIEGO I: 56 contextos curriculares, paradigmas testigo, concordancia ES/VA, claves, borradores, regeneración y DOCX/PDF web/offline sin red: OK');
  }finally{await browser.close()}
 })().catch(e=>{console.error(e);process.exitCode=1});

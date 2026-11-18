@@ -34,7 +34,7 @@ const server=http.createServer((request,response)=>{
 const cases=[
  {course:'latin1',models:['tablas','morf','mixto']},
  {course:'latin4',models:['tablas']},
- {course:'greek1',models:['complete','morphology','translation']}
+ {course:'greek1',models:['complete','morphology']}
 ];
 const report={
  schema:'examina-real-exam-audit/v1',

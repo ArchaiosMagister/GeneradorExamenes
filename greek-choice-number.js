@@ -3,7 +3,7 @@
 (function(){
  'use strict';
  let selected=[],signature='';
- const quantities={complete:4,translation:4};
+ const quantities={complete:4};
  const count=()=>quantities[$('model').value]??4;
  const candidates=()=>{
   const limit=greekLimit();

@@ -17,7 +17,7 @@ const shape=page=>page.evaluate(()=>({
  score:ExaminaScoring.total()
 }));
 (async()=>{const browser=await chromium.launch();const cases=[];try{
-for(const file of ['index.html','offline.html'])for(const model of ['complete','translation'])for(const lang of ['es','va']){
+for(const file of ['index.html','offline.html'])for(const model of ['complete'])for(const lang of ['es','va']){
  const ctx=await browser.newContext({viewport:{width:1440,height:1000},acceptDownloads:true});
  await ctx.route(/^https?:\/\//,r=>r.abort());const page=await ctx.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));
  await page.goto(pathToFileURL(path.resolve(file)).href);
@@ -76,5 +76,5 @@ for(const file of ['index.html','offline.html'])for(const model of ['complete','
  const pending=page.waitForEvent('download');await page.locator('#pdfDownload').click({force:true});await (await pending).saveAs(path.join(out,stem+'.pdf'));
  assert.deepEqual(errors,[]);cases.push({file,model,lang,markers:after.markers.length,points:after.score,spacing:[14,9],draft:true,pdf:true,word:true});await ctx.close();
 }
-fs.writeFileSync(path.join(out,'feature-results.json'),JSON.stringify(cases,null,2));console.log('GRIEGO I: círculos huecos, subpreguntas a–e, sintagmas sin dirección, espaciado independiente 1/2, edición, borradores, Word y PDF sin red: 8 contextos OK');
+fs.writeFileSync(path.join(out,'feature-results.json'),JSON.stringify(cases,null,2));console.log('GRIEGO I: círculos huecos, subpreguntas a–e, sintagmas sin dirección, espaciado independiente 1/2, edición, borradores, Word y PDF sin red: 4 contextos OK');
 }finally{await browser.close()}})().catch(e=>{console.error(e);process.exitCode=1});

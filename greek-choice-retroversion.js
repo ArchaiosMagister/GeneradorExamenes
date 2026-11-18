@@ -23,7 +23,7 @@
   'μικροσ':{es:['pequeño','pequeña','pequeños','pequeñas'],va:['menut','menuda','menuts','menudes']}
  };
  let selected=[],signature='';
- const quantities={complete:4,translation:4};
+ const quantities={complete:4};
  const count=()=>quantities[$('model').value]??4;
  const lang=()=>$('lang').value==='va'?'va':'es';
  const candidates=()=>{

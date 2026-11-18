@@ -95,7 +95,6 @@ async function checkFile(browser,filename){
   ['latin1','tablas','UD3',['decl','verb','forms','lex','sent'],[]],
   ['latin4','tablas','UD3',['decl','verb','forms','lex','culture','sent'],[]],
   ['greek1','morphology','UD7',['decl','verb','pronouns','forms'],['etymology','sent']],
-  ['greek1','translation','UD7',['decl','verb','forms','etymology','sent'],['pronouns']],
   ['greek1','complete','UD7',['decl','verb','forms','etymology','sent'],[]]
  ];
  for(const [course,model,unit,included,disabled] of matrix){
@@ -370,7 +369,7 @@ async function checkFile(browser,filename){
  const cases=[
   ['latin1','tablas','UD3'],['latin1','morf','UD3'],['latin1','morf','UD9–10'],['latin1','mixto','UD3'],
   ['latin4','tablas','UD3'],
-  ['greek1','complete','UD7'],['greek1','morphology','UD7'],['greek1','translation','UD7']
+  ['greek1','complete','UD7'],['greek1','morphology','UD7']
  ];
  for(const [course,model,unit] of cases){
   await page.evaluate(course=>{const select=document.getElementById('course');select.value=course;select.dispatchEvent(new Event('change',{bubbles:true}))},course);
@@ -440,7 +439,7 @@ async function checkFile(browser,filename){
   await page.evaluate(()=>generate());
   await page.waitForFunction(expected=>document.querySelector('#examScoring .exam-scoring-row input')?.value===expected,scoreValue);
 
-  if(course==='greek1'&&model==='translation'&&result.greekAnalysisItems>=2){
+  if(course==='greek1'&&model==='complete'&&result.greekAnalysisItems>=2){
    // El contador del análisis griego es independiente del de conjugación.
    const numberOfForms=await page.evaluate(()=>{
     const counter=document.getElementById('count-greek-forms'),previous=counter.value;
@@ -532,7 +531,7 @@ async function checkFile(browser,filename){
   assert(await page.locator('#lang').isVisible(),filename+': selector de idioma inaccesible');
   assert.equal(await page.locator('#exam-ui-meta #lang').count(),1,filename+': idioma duplicado');
   assert.equal(await header.locator('fieldset').count(),3,filename+': faltan los tres grupos de botones');
-  assert.equal(await header.locator('fieldset:nth-child(2) button').count(),course==='latin4'?1:3,
+  assert.equal(await header.locator('fieldset:nth-child(2) button').count(),course==='latin4'?1:course==='greek1'?2:3,
    filename+': modelos incorrectos en la cabecera');
   await page.locator('#examPanelShortcuts>button[data-target="examQuestionSettings"]').click();
   const shouldHaveSent=!['morf','morphology'].includes(model);
@@ -587,7 +586,7 @@ async function checkFile(browser,filename){
     else assert(documentXml.includes('<w:i/>'),caseLabel+': cursiva latina ausente en Word');
    }
   }
-  if(course==='greek1'&&model==='translation'){
+  if(course==='greek1'&&model==='complete'){
    await page.locator('#group-sentences').evaluate(el=>el.open=true);
    await page.locator('#newSentences').fill('ὁ ἄνθρωπος ἐν τῇ οἰκίᾳ μένει.');
    const greekGloss=await page.evaluate(()=>({
@@ -611,10 +610,6 @@ async function checkFile(browser,filename){
    await page.locator('.question-editor button').filter({hasText:'Añadir al apartado'}).first().click();
    const after=await page.evaluate(()=>window.greekLastExam.ids.length);
    assert(after>before,filename+': el selector de Griego completo no modifica el examen');
-  }else if(course==='greek1'&&model==='translation'&&!result.controls&&!result.greekAnalysisItems){
-   // Si el banco de UD elegida no tiene formas griegas verificadas,
-   // no debe inventarse una entrada editable vacía.
-   assert.equal(result.greekAnalysisItems,0,'No se deben editar formas inexistentes');
   }else{
    assert(result.controls>0,filename+' '+course+'/'+model+': no se pueden editar formas: '+JSON.stringify(result));
    const input=page.locator('.question-editor input[type="text"]').first();
