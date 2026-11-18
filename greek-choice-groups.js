@@ -90,6 +90,14 @@
     'Escriu els ètims grecs dels quals deriven les paraules subratllades en esta oració.']
  };
  const label=kind=>t(...labels[kind]);
+ // Numeración real del tercer nivel: i., ii., iii.… (sin viñetas).
+ // El marcador reside en el DOM y se exporta igual a Word y PDF.
+ function roman(n){
+  const symbols=[[10,'x'],[9,'ix'],[5,'v'],[4,'iv'],[1,'i']];
+  let out='';
+  for(const [value,glyph] of symbols)while(n>=value){out+=glyph;n-=value}
+  return out;
+ }
  function option(kind,nodes){
   if(!nodes||!nodes.slice(1).some(el=>el.matches('[data-corpus-id]')||!!el.querySelector('[data-corpus-id]')))return null;
   const box=document.createElement('section');box.className='greek-choice-option';box.dataset.greekOption=kind;
@@ -105,7 +113,7 @@
    const slot=kind+':'+i;
    row.dataset.greekChoiceSlot=slot;
    const text=item.prompt;
-   row.innerHTML='<span class="exam-letter greek-choice-item-marker">◦</span> '+esc(edits.has(slot)?edits.get(slot):text);
+   row.innerHTML='<span class="exam-letter greek-choice-item-marker">'+roman(i+1)+'.</span> '+esc(edits.has(slot)?edits.get(slot):text);
    box.append(row);
   });
   return box;
@@ -140,14 +148,16 @@
   for(const option of sheet.querySelectorAll('.greek-choice-option')){
    option.dataset.greekChoiceGroup=['etymology','roots'].includes(option.dataset.greekOption)
     ?'greek-plurilingual':'greek-competence';
+   let index=0;
    for(const item of option.querySelectorAll('.exam-form,.exam-etymology [data-corpus-id],.greek-choice-generated-item')){
     let marker=item.querySelector(':scope > .exam-letter');
     if(!marker){
      const first=item.firstChild;
-     if(first?.nodeType===3)first.textContent=first.textContent.replace(/^\s*(?:[a-z]\.|\d+\.|◦)\s*/iu,'');
+     if(first?.nodeType===3)first.textContent=first.textContent.replace(/^\s*(?:[a-z]\.|\d+\.|[ivxlcdm]+\.|◦)\s*/iu,'');
      marker=document.createElement('span');marker.className='exam-letter';item.prepend(marker,' ');
     }
-    marker.textContent='◦';marker.classList.add('greek-choice-item-marker');
+    marker.textContent=roman(++index)+'.';
+    marker.classList.add('greek-choice-item-marker','greek-choice-roman-marker');
     if(item.dataset.greekChoiceSlot?.startsWith('change-number:'))
      for(const node of item.childNodes)if(node.nodeType===3)
       node.textContent=node.textContent.replace(/^(\s*)A (?:singular|plural):\s*/iu,'$1');
