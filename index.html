@@ -2925,7 +2925,10 @@ function latinExamFormCandidates(chosen,allForms=false){
  const isMorphology=$('model')?.value==='morf';
  // A form is admitted by its grammatical paradigm, not by the unit where
  // its lemma happened to appear in a vocabulary list.
- const data=latinSharedBank.vocabulary(currentCourse(),isMorphology?null:chosen),groups=[[],[],[],[]];
+ // El análisis admite lemas del repertorio latino compartido, con filtro
+ // por declinación y categoría ya explicadas; la unidad léxica no restringe.
+ const data=isMorphology?unique(latinSyntagmSources()):
+  latinSharedBank.vocabulary(currentCourse(),chosen),groups=[[],[],[],[]];
  const unitVerbs=new Set(latinSharedBank.vocabulary(currentCourse(),chosen).map(x=>examKey(x.entry)));
  const unitsByEntry=new Map();
  for(const item of data){
