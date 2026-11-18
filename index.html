@@ -4075,7 +4075,12 @@ function greekCorpus(){
    items[items.length-1].sourceCode=record.sourceCode;
   });
  }
- greekFormRows.forEach(([form,min,us,lemma,answer],i)=>add('forms','f-'+i,min,us,form,answer,[lemma]));
+ greekFormRows.forEach(([form,min,us,lemma,answer],i)=>{
+  add('forms','f-'+i,min,us,form,answer,[lemma]);
+  if(i>=7&&i<=10)items[items.length-1].category='adjectives';
+  else if(i===6)items[items.length-1].category='verbs';
+  else if(i!==2)items[items.length-1].category='nouns';
+ });
  // Los pronombres carecían de enunciado aunque sus flexiones ya estaban
  // verificadas. Asociar cada forma exclusivamente a su paradigma atestiguado.
  const greekPronounParadigms=[
@@ -4319,7 +4324,7 @@ function generateGreekMorphologyFixed(){
  const pronPool=examQuestionEnabled('pronouns')?eligible.filter(x=>x.kind==='pronouns'):[];
  const pronouns=stickyExamRows('pronouns',()=>sample(pronPool,Math.min(10,pronPool.length)));
  const categories={n:$('morphCategory-n')?.checked!==false,adj:$('morphCategory-adj')?.checked!==false,pro:$('morphCategory-pro')?.checked!==false};
- const words=stickyExamRows('forms',()=>examQuotaGreek(eligible.concat(examAuthorizedProposals('greek1',limit)).filter(x=>x.kind==='forms'&&!x.prompt.includes(' ')&&(
+ const words=stickyExamRows('forms',()=>examQuotaGreek(eligible.concat(examAuthorizedProposals('greek1',limit)).concat(examGreekVerbFormCandidates(eligible,limit)).filter(x=>x.kind==='forms'&&!x.prompt.includes(' ')&&(
   ((x.category==='pronouns'||/pronombre|demostrativo|anafórico|personal|interrogativo/i.test(x.answer))&&categories.pro)||
   ((x.category==='adjectives'||/adjetivo/i.test(x.answer))&&categories.adj)||
   ((x.category==='nouns'||/declinación|sustantivo|artículo/i.test(x.answer))&&categories.n)||
@@ -4362,7 +4367,7 @@ let greekExamState=null;
 function greekChoicePool(kind){
  const curated=greekVerifiedCorpus.filter(x=>x.verified&&x.kind===kind&&greekMorphologyEligible(x,greekLimit())&&
   (kind!=='forms'||!(x.lemmas||[]).some(lemma=>isExcludedExamMorphLemma(lemma))));
- return kind==='forms'?curated.concat(examAuthorizedProposals('greek1',greekLimit())):curated;
+ return kind==='forms'?curated.concat(examAuthorizedProposals('greek1',greekLimit())).concat(examMorphQuotaValues()[2]>0?examGreekVerbFormCandidates(greekVerifiedCorpus,greekLimit()):[]):curated;
 }
 function greekSelectedItems(pool,chosen,counts){
  const signature=JSON.stringify([chosen.map(examUnitNumber),$('model').value,counts,examMorphQuotaValues()]);
@@ -4566,7 +4571,8 @@ function generateGreekExam(){
  const enabled=greekKinds.filter((k,i)=>(mode.points[i]>0||(k==='pronouns'&&$('model').value==='complete'))&&examQuestionEnabled(k==='conjugation'?'verb':k==='declension'?'decl':k==='sentences'?'sent':k==='etymology'?'etymology':k));
  const pool=greekVerifiedCorpus.filter(x=>x.verified&&x.kind!=='sentences'&&greekMorphologyEligible(x,max)&&enabled.includes(x.kind)&&
   (x.kind!=='forms'||!(x.lemmas||[]).some(lemma=>isExcludedExamMorphLemma(lemma))))
-  .concat(enabled.includes('forms')?examAuthorizedProposals('greek1',max):[]);
+  .concat(enabled.includes('forms')?examAuthorizedProposals('greek1',max):[])
+  .concat(enabled.includes('forms')&&examMorphQuotaValues()[2]>0?examGreekVerbFormCandidates(greekVerifiedCorpus,max):[]);
  const counts={declension:Math.min(2,countFor('decl')),conjugation:Math.min(2,countFor('verb')),forms:examMorphQuotasActive()?examMorphQuotaCount():countFor('greek-forms'),pronouns:10,etymology:Math.min($('model').value==='translation'?3:2,countFor('lex')),sentences:countFor('sent')};
  const result=greekSelectedItems(pool,chosen,counts),sections=[],answers=[];
 
@@ -5016,6 +5022,22 @@ function examGreekWordClass(item){
  if(/sustantivo|declinación/.test(a))return 'nouns';
  return null;
 }
+// La categoría verbos incluye formas procedentes exclusivamente de paradigmas
+// presentes y verificados: no se crean nuevas flexiones a partir de reglas.
+function examGreekVerbFormCandidates(pool,limit){
+ const seen=new Set(pool.filter(x=>x.kind==='forms').map(x=>normLex(x.prompt)));
+ return pool.filter(x=>x.verified&&x.kind==='conjugation'&&x.table&&greekMorphologyEligible(x,limit))
+  .flatMap(x=>x.table.rows.flatMap((row,i)=>[1,2].map(column=>{
+   const prompt=String(row[column]||'').trim(),key=normLex(prompt);
+   if(!prompt||/[()]/u.test(prompt)||seen.has(key))return null;
+   seen.add(key);
+   return {kind:'forms',id:'gvf-'+x.id+'-'+i+'-'+column,verified:true,
+    minUnit:x.minUnit,contentUnits:[...x.contentUnits],category:'verbs',
+    prompt,lemmas:[...(x.lemmas||[])],
+    answer:['primera','segunda','tercera'][i]+' persona '+(column===1?'singular':'plural')+
+     ' del '+(x.verbTense||'presente')+' de indicativo '+(x.verbVoice||'activo')+'.'};
+  }).filter(Boolean)));
+}
 function examQuotaGreek(pool,count){
  const quotas=examMorphQuotaValues();
  if(!quotas.some(Boolean))return greekCurricularSample(pool,count);
@@ -5139,7 +5161,7 @@ function greekMorphologyReplacementPool(kind){
  if(kind==='forms'){
   const categories={n:$('morphCategory-n')?.checked!==false,adj:$('morphCategory-adj')?.checked!==false,
    pro:$('morphCategory-pro')?.checked!==false};
-  return eligible.concat(examAuthorizedProposals('greek1',limit)).filter(x=>x.kind==='forms'&&
+  return eligible.concat(examAuthorizedProposals('greek1',limit)).concat(examGreekVerbFormCandidates(eligible,limit)).filter(x=>x.kind==='forms'&&
    !x.prompt.includes(' ')&&(
     ((x.category==='pronouns'||/pronombre|demostrativo|anafórico|personal|interrogativo/i.test(x.answer))&&categories.pro)||
     ((x.category==='adjectives'||/adjetivo/i.test(x.answer))&&categories.adj)||
