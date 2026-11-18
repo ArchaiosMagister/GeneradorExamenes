@@ -9412,6 +9412,62 @@ function greekDiverseMorphSample(pool,count){
  }
  return picked;
 }
+// En UD5 se introducen también los adjetivos de DOS terminaciones (–ος, –ον).
+// Su clase se determina por el enunciado contrastado, no por una forma en –ον,
+// que puede pertenecer igualmente a un adjetivo de tres terminaciones.
+function greekExamAdjectiveEndingType(item){
+ if(examGreekWordClass(item)!=='adjectives')return null;
+ const parts=String(item.lemmas?.[0]||'').normalize('NFD').replace(/\p{M}/gu,'')
+  .replace(/[–−—]/g,'-').split(',').map(x=>x.trim());
+ return parts.length===2&&/^-?ον$/u.test(parts[1])?'2-2':'2-1-2';
+}
+// Si se solicitan al menos dos adjetivos, se incluyen ambas clases cuando
+// existen formas verificadas. Con uno se alterna de clase al regenerar.
+function greekBalancedAdjectiveSample(pool,count,previousIds=[]){
+ const previous=new Set(previousIds),picked=[],used=new Set(),surfaces=new Set();
+ const pick=options=>{
+  let free=options.filter(x=>!used.has(x.id));
+  const nonrepeating=free.filter(x=>!surfaces.has(normLex(x.prompt)));
+  if(nonrepeating.length)free=nonrepeating;
+  const fresh=free.filter(x=>!previous.has(x.id));
+  const next=greekDiverseMorphSample(fresh.length?fresh:free,1)[0];
+  if(next){picked.push(next);used.add(next.id);surfaces.add(normLex(next.prompt))}
+ };
+ const prior=pool.find(x=>previous.has(x.id));
+ const first=count===1?(prior?
+  (greekExamAdjectiveEndingType(prior)==='2-2'?'2-1-2':'2-2'):
+  (Math.random()<0.5?'2-2':'2-1-2')):'2-2';
+ const types=count===1?[first]:['2-2','2-1-2'];
+ for(const type of types){
+  if(picked.length<count)pick(pool.filter(x=>greekExamAdjectiveEndingType(x)===type));
+ }
+ // Restantes casillas: priorizar fichas y superficies nuevas sin reducir
+ // la cantidad elegida aunque el banco de una clase sea pequeño.
+ for(const freshOnly of [true,false]){
+  if(picked.length>=count)break;
+  const available=pool.filter(x=>!used.has(x.id)&&!surfaces.has(normLex(x.prompt))&&
+   (!freshOnly||!previous.has(x.id)));
+  for(const item of greekDiverseMorphSample(available,count-picked.length)){
+   if(!used.has(item.id)){picked.push(item);used.add(item.id);surfaces.add(normLex(item.prompt))}
+  }
+ }
+ if(picked.length<count){
+  for(const item of greekDiverseMorphSample(pool.filter(x=>!used.has(x.id)),count-picked.length)){
+   if(!used.has(item.id)){picked.push(item);used.add(item.id)}
+  }
+ }
+ return sample(picked,picked.length);
+}
+function greekAdjectiveReplacementChoices(previous,otherItems,options){
+ if(examGreekWordClass(previous)!=='adjectives')return options;
+ const remaining=otherItems.filter(x=>examGreekWordClass(x)==='adjectives');
+ const covered=new Set(remaining.map(greekExamAdjectiveEndingType));
+ const absent=remaining.length?['2-2','2-1-2'].find(type=>!covered.has(type)):null;
+ const desired=absent||(
+  greekExamAdjectiveEndingType(previous)==='2-2'?'2-1-2':'2-2');
+ const found=options.filter(x=>greekExamAdjectiveEndingType(x)===desired);
+ return found.length?found:options;
+}
 function examQuotaGreek(pool,count,previousIds=[]){
  const quotas=examMorphQuotaValues();
  if(!quotas.some(Boolean))return greekCurricularSample(pool,count);
@@ -9423,9 +9479,11 @@ function examQuotaGreek(pool,count,previousIds=[]){
   const options=pool.filter(x=>examGreekWordClass(x)===kind&&!usedIds.has(x.id));
   // A former ficha is permitted only when the category has too few unseen
   // alternatives. Maintain distinct IDs even with syncretic surface forms.
-  const fresh=greekDiverseMorphSample(options.filter(x=>!previous.has(x.id)),wanted);
+  const balanced=kind==='adjectives'?
+   greekBalancedAdjectiveSample(options,wanted,previousIds):null;
+  const fresh=balanced||greekDiverseMorphSample(options.filter(x=>!previous.has(x.id)),wanted);
   const freshIds=new Set(fresh.map(x=>x.id));
-  const retained=greekDiverseMorphSample(options.filter(x=>!freshIds.has(x.id)),
+  const retained=balanced?[]:greekDiverseMorphSample(options.filter(x=>!freshIds.has(x.id)),
    Math.max(0,wanted-fresh.length));
   for(const item of [...fresh,...retained])
    if(!usedIds.has(item.id)){usedIds.add(item.id);picked.push(item)}
@@ -9578,7 +9636,10 @@ function regenerateExamWord(kind,index){
   const preserveQuota=gkind==='forms'&&examMorphQuotasActive();
   const candidates=pool.filter(x=>!used.has(x.id)&&x.id!==ids[index]&&
    (!preserveQuota||examGreekWordClass(x)===examGreekWordClass(previous)));
-  const next=(previous?.minUnit===greekLimit()?greekCurricularSample(candidates,1):sample(candidates,1))[0];
+  const otherItems=ids.filter((_,i)=>i!==index).map(id=>pool.find(x=>x.id===id)).filter(Boolean);
+  const alternatives=gkind==='forms'?
+   greekAdjectiveReplacementChoices(previous,otherItems,candidates):candidates;
+  const next=(previous?.minUnit===greekLimit()?greekCurricularSample(alternatives,1):sample(alternatives,1))[0];
   if(next){
    const former=ids[index];ids[index]=next.id;
    if(gkind==='declension'){
@@ -9643,6 +9704,9 @@ function regenerateExamWord(kind,index){
   const category=greek?examGreekWordClass:item=>item.category;
   alternatives=alternatives.filter(x=>category(x)===category(previous));
  }
+ if(greek&&kind==='forms'&&examGreekWordClass(previous)==='adjectives')
+  alternatives=greekAdjectiveReplacementChoices(previous,
+   current.filter((_,i)=>i!==index),alternatives);
  if(!alternatives.length)return;
  const focus=latinFocusUnit(chosen);
  const matches=kind==='forms'?latinFormPriorities(chosen).concat(examUnitPriority(chosen,item=>item.units||[])).find(test=>test(previous)):
