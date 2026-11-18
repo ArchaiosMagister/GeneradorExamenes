@@ -596,14 +596,14 @@
   "es": [
    "La ",
    "bibliografía",
-   " del estudio incluía investigaciones sobre la dieta ",
+   " del estudio incluía investigaciones sobre el régimen ",
    "macrobiótico",
    "."
   ],
   "va": [
    "La ",
    "bibliografia",
-   " de l’estudi incloïa investigacions sobre la dieta ",
+   " de l’estudi incloïa investigacions sobre el règim ",
    "macrobiòtic",
    "."
   ],
@@ -1055,14 +1055,14 @@
   "es": [
    "El autor del tratado de ",
    "zoología",
-   " firmó un ",
+   " dejó un ",
    "autógrafo",
    " para la biblioteca."
   ],
   "va": [
    "L’autor del tractat de ",
    "zoologia",
-   " va firmar un ",
+   " va deixar un ",
    "autògraf",
    " per a la biblioteca."
   ],
@@ -1546,7 +1546,7 @@
    " reconstruye su población."
   ],
   "va": [
-   "La ",
+   "L’",
    "osteologia",
    " ajuda a interpretar esquelets antics i la ",
    "demografia",
@@ -1593,18 +1593,18 @@
  {
   "id": "quirografia",
   "es": [
-   "Un estudio de ",
+   "La ",
    "antropología",
-   " permite investigar la escritura manuscrita y la ",
+   " histórica estudió la ",
    "quirografía",
-   " antigua."
+   " de los contratos antiguos."
   ],
   "va": [
-   "Un estudi d’",
+   "L’",
    "antropologia",
-   " permet investigar l’escriptura manuscrita i la ",
+   " històrica va estudiar la ",
    "quirografia",
-   " antiga."
+   " dels contractes antics."
   ],
   "roots": [
    [
@@ -1865,14 +1865,14 @@
   "es": [
    "La ",
    "demografía",
-   " registra cuántas lenguas habla una población ",
+   " registra cuántas lenguas habla un grupo ",
    "políglota",
    "."
   ],
   "va": [
    "La ",
    "demografia",
-   " registra quantes llengües parla una població ",
+   " registra quantes llengües parla un grup ",
    "políglot",
    "."
   ],
