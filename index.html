@@ -2201,20 +2201,9 @@ function morphSyntagmRows(cfg,greek=false){
   .split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
  const proposed=stickyExamRows('decl',()=>{
   if(greek){
-   // Antes de UD5 no se han introducido adjetivos: usar sustantivos documentados.
-   if(greekLimit()<5)return greekCurricularSample(greekVerifiedCorpus.filter(x=>x.verified&&
-    x.kind==='declension'&&greekMorphologyEligible(x,greekLimit())&&
-    !(x.lemmas||[]).some(isProperNounLemma)),cfg.offer)
-    .map(x=>({title:greekLimit()>=3?greekSyntagmEnunciation(x):
-     (x.lemmas?.[0]||String(x.prompt).replace(/^Declina\s+/u,''))}));
-   const available=greekAvailableSyntagmModifiers(greekLimit());
-   const nouns=greekCurricularSample(greekVerifiedCorpus.filter(x=>x.verified&&x.kind==='declension'&&
-    x.minUnit<=greekLimit()&&greekSyntagmNounGenders[x.id.slice(2)]&&
-    !(x.lemmas||[]).some(isProperNounLemma)),cfg.offer);
-   const adjectives=greekWeightedSyntagmAdjectives(available);
-   return nouns.map((item,i)=>greekCompleteNominalGroup(item,true,
-    adjectives.length?adjectives[i%adjectives.length]:null)).filter(Boolean)
-    .map(x=>({...x,title:x.enunciation}));
+   const pool=greekMorphologyReplacementPool('decl');
+   return greekLimit()<5?greekCurricularSample(pool,cfg.offer):
+    greekSelectMorphSyntagms(pool,cfg.offer);
   }
   if(!latinCompleteCompoundActive(selectedUnits()))return sample(latinExamNominals(selectedUnits()),cfg.offer)
    .map(item=>({title:latinDisplayEnunciation(item.x.entry)}));
@@ -5520,7 +5509,7 @@ function renderOnlyRegeneratedExamWord(kind,index,render){
  const previous=examRegenerationSlot(original,kind,index);
  if(!original||!previous){
   // No reconstruir todo el examen si falta una sola casilla de Griego.
-  if(currentCourse()==='greek1'&&$('model').value==='complete')return false;
+  if(currentCourse()==='greek1')return false;
   render();return false;
  }
  const oldKey=original.querySelector('#answerkey');
@@ -5611,11 +5600,52 @@ function greekMorphologyReplacementPool(kind){
  if(kind!=='decl')return [];
  const nouns=eligible.filter(x=>x.kind==='declension');
  if(limit<5)return nouns.map(x=>({title:limit>=3?greekSyntagmEnunciation(x):
-  (x.lemmas?.[0]||String(x.prompt).replace(/^Declina\s+/u,''))}));
- const adjectives=greekAvailableSyntagmModifiers(limit);
+  (x.lemmas?.[0]||String(x.prompt).replace(/^Declina\s+/u,'')),minUnit:x.minUnit}));
+ const modifiers=greekAvailableSyntagmModifiers(limit);
  return nouns.filter(x=>greekSyntagmNounGenders[x.id.slice(2)])
-  .flatMap(noun=>adjectives.map(adj=>greekCompleteNominalGroup(noun,true,adj))).filter(Boolean)
-  .map(x=>({...x,title:x.enunciation}));
+  .flatMap(noun=>modifiers.map(modifier=>{
+   const group=greekCompleteNominalGroup(noun,true,modifier);
+   return group&&{...group,title:group.enunciation,minUnit:noun.minUnit};
+  })).filter(Boolean);
+}
+function greekSelectMorphSyntagms(pool,count){
+ const byNoun=new Map();
+ for(const group of pool){
+  if(!byNoun.has(group.noun))byNoun.set(group.noun,new Map());
+  byNoun.get(group.noun).set(group.adjective,group);
+ }
+ const modifiers=greekWeightedSyntagmAdjectives(greekAvailableSyntagmModifiers(greekLimit()));
+ const matches=new Map();
+ // Reasignar un sustantivo si otro solo puede usar su modificador.
+ const assign=(choices,visited)=>{
+  for(const {lemma} of modifiers){
+   if(!choices.has(lemma)||visited.has(lemma))continue;
+   visited.add(lemma);
+   if(!matches.has(lemma)||assign(matches.get(lemma),visited)){
+    matches.set(lemma,choices);
+    return true;
+   }
+  }
+  return false;
+ };
+ const nouns=greekCurricularSample([...byNoun.values()].map(choices=>({
+  choices,minUnit:choices.values().next().value.minUnit
+ })),byNoun.size);
+ for(const {choices} of nouns){
+  assign(choices,new Set());
+  if(matches.size===count)break;
+ }
+ const picked=[...matches].map(([lemma,choices])=>choices.get(lemma));
+ const usedNouns=new Set(picked.map(group=>group.noun));
+ const usedModifiers=new Set(picked.map(group=>group.adjective));
+ const remaining=sample(pool,pool.length).filter(group=>!picked.includes(group));
+ while(picked.length<count&&remaining.length){
+  let index=remaining.findIndex(group=>!usedNouns.has(group.noun));
+  if(index<0)index=remaining.findIndex(group=>!usedModifiers.has(group.adjective));
+  const [group]=remaining.splice(Math.max(0,index),1);
+  picked.push(group);usedNouns.add(group.noun);usedModifiers.add(group.adjective);
+ }
+ return picked;
 }
 function regenerateExamWord(kind,index){
  if(!['decl','verb','forms','pronouns'].includes(kind)||!Number.isInteger(index)||index<0)return;
@@ -5637,7 +5667,9 @@ function regenerateExamWord(kind,index){
   // gramatical ya explicado es válido y proporciona más alternativas.
   const next=sample(alternatives,1)[0];
   if(next){
-   const former=ids[index];ids[index]=next.id;
+   const former=ids[index],adjectives=greekExamState.adjectiveChoices;
+   const savedAdjectives=adjectives&&{...adjectives};
+   ids[index]=next.id;
    if(gkind==='declension'){
     if(greekExamState.adjectiveChoices){
      delete greekExamState.adjectiveChoices[former];
@@ -5646,8 +5678,10 @@ function regenerateExamWord(kind,index){
    }
    if(renderOnlyRegeneratedExamWord(kind,index,generateGreekExam)===false){
     ids[index]=former;
-    if(gkind==='declension'&&greekExamState.adjectiveChoices)
-     delete greekExamState.adjectiveChoices[next.id];
+    if(gkind==='declension'){
+     if(savedAdjectives)greekExamState.adjectiveChoices=savedAdjectives;
+     else delete greekExamState.adjectiveChoices;
+    }
    }
   }else if(gkind==='declension'){
    // Si las bases están agotadas, un nuevo adjetivo también cambia el sintagma.
@@ -5705,7 +5739,10 @@ function regenerateExamWord(kind,index){
   normLex(item?.prompt||item?.form||''):
   String(item?.id||item?.title||item?.x?.entry||item?.prompt||item?.form||'');
  const previous=current[index],used=new Set(current.filter((_,i)=>i!==index).map(identity));
- let alternatives=candidates.filter(item=>identity(item)!==identity(previous)&&!used.has(identity(item)));
+ const visibleTitle=morph&&kind==='decl'?
+  examRegenerationSlot($('paper').querySelector('.exam-sheet'),kind,index)?.querySelector('i')?.textContent.trim():null;
+ let alternatives=candidates.filter(item=>identity(item)!==identity(previous)&&
+  identity(item)!==visibleTitle&&!used.has(identity(item)));
  if(kind==='forms'&&examMorphQuotasActive()){
   const category=greek?examGreekWordClass:item=>item.category;
   alternatives=alternatives.filter(x=>category(x)===category(previous));
@@ -5724,14 +5761,26 @@ function regenerateExamWord(kind,index){
   latinPrioritySample(alternatives,1,matches?[matches]:[])[0],updated=current.slice();
  updated[index]=next;
  examSelectionCache.set(cacheKey,updated);
- if(morph&&kind==='decl'){
-  const textarea=$('morphSyntagms'),title=next?.title||next?.compound?.title;
-  if(textarea&&title){
+ const textarea=morph&&kind==='decl'?$('morphSyntagms'):null;
+ const saved=textarea?.value;
+ if(textarea&&next?.title){
+  if(!greek){
    const entries=[...$('paper').querySelectorAll('[data-syntagm-slot] > i')].map(node=>node.textContent.trim());
-   entries[index]=title;textarea.value=entries.join('\n');
+   entries[index]=next.title;
+   textarea.value=entries.join('\n');
+  }else{
+   const lines=saved.split(/\r?\n/);
+   const occupied=lines.map((text,i)=>text.trim()?i:-1).filter(i=>i>=0);
+   if(index<occupied.length){
+    lines[occupied[index]]=next.title;
+    textarea.value=lines.join('\n');
+   }
   }
  }
- renderOnlyRegeneratedExamWord(kind,index,generate);
+ if(renderOnlyRegeneratedExamWord(kind,index,generate)===false){
+  examSelectionCache.set(cacheKey,current);
+  if(textarea)textarea.value=saved;
+ }
 }
 
 function examLatinQuestionNodes(heading){
