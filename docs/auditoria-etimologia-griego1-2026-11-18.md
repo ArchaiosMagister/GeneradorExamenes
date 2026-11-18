@@ -36,7 +36,7 @@
 - Cuando hay ejemplos de la última unidad seleccionada y ejemplos de repaso, la elección favorece los **primeros con probabilidad del 70 %**, una vez descartadas las opciones que repetirían raíces cuando existen alternativas.
 - Si la unidad no introduce nuevos étimos, se favorecen los ejemplos más recientes, sin eliminar los anteriores.
 - Al regenerar, se evita repetir la oración actual y, si existe alternativa, **cualquier raíz** usada en ella. Se intentan excluir además las últimas cuatro oraciones y se penalizan las raíces de las tres elecciones recientes.
-- El historial se conserva en los borradores. Cambiar entre castellano y valenciano traduce la oración **sin sustituirla**.
+- El historial se conserva en los borradores. Cambiar entre castellano y valenciano traduce la oración **sin sustituirla**. Los borradores históricos que contienen una de las 25 oraciones retiradas **mantienen esa oración** hasta que se regenere; la regeneración incorpora únicamente ejercicios del banco revisado.
 - Se mantiene el índice precalculado de unidad mínima por raíz para que la selección sea inmediata incluso con el catálogo completo.
 
 ## Controles de regresión
