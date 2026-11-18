@@ -24,6 +24,7 @@ jobs:
         run: |
           node scripts/test-greek-choice-bullets-spacing.cjs
           node scripts/test-greek-choice-groups.cjs
+          node scripts/test-greek-complete-ud5-regressions.cjs
       - name: Commit reproducibly generated standalone HTML
         run: |
           git add offline.html
