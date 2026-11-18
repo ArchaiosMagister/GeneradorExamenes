@@ -71,14 +71,19 @@ async function testGreek(page,model,unit,lang,quotas){
  assert.equal(before.display,quotas.reduce((a,b)=>a+b,0),label+' filas visibles');
  let distinct=[];
  for(let iteration=0;iteration<5;iteration++){
-  const operation=await page.evaluate(model=>{
-   if(model==='complete')return greekRegenerate('forms');
-   regenerateExamQuestion('forms');
-   return true;
+  const attempt=await page.evaluate(model=>{
+   const liveQuotas=examMorphQuotaValues();
+   const choices=greekChoicePool('forms');
+   const planned=model==='complete'?examQuotaGreek(choices,greekExamState.ids.forms.length,greekExamState.ids.forms)
+    .map(x=>({id:x.id,kind:examGreekWordClass(x)})):[];
+   const operation=model==='complete'?greekRegenerate('forms'):(regenerateExamQuestion('forms'),true);
+   return {operation,liveQuotas,planned,
+    resultingIds:model==='complete'?[...greekExamState.ids.forms]:[]};
   },model);
-  assert.equal(operation,true,label+' no se pudo regenerar');
+  assert.equal(attempt.operation,true,label+' no se pudo regenerar');
   const after=await audit(page,'greek1',model,quotas);
-  assert.deepEqual(after.counts,quotas,label+' cuotas al regenerar '+iteration+': '+JSON.stringify(after));
+  assert.deepEqual(after.counts,quotas,label+' cuotas al regenerar '+iteration+': '+
+   JSON.stringify({after,attempt}));
   assert.equal(after.display,quotas.reduce((a,b)=>a+b,0),label+' número de filas '+iteration);
   distinct.push(after.ids?after.ids.join('|'):after.actual.join('|'));
   before=after;
