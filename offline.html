@@ -7377,7 +7377,7 @@ function wordExamParagraph(el){
  const shift=examIndentPt()*20;
  if(cls.contains('exam-question')){
   const m=el.textContent.match(/^(\d+\.)\s*(.*)$/s);
-  const left=(greekFull?wordCmTwips(1.25):currentCourse()==='greek1'?360:720)+shift;
+  const left=(greekFull?wordCmTwips(.6):currentCourse()==='greek1'?360:720)+shift;
   props.push('<w:keepNext/><w:ind w:left="'+left+'" w:hanging="'+listHang+'"/><w:tabs><w:tab w:val="left" w:pos="'+left+'"/></w:tabs><w:spacing w:before="'+(examVisualBeforeFor(el)*20)+'" w:after="120" w:line="290" w:lineRule="auto"/>');
   if(cls.contains('exam-page-break'))props.push('<w:pageBreakBefore/>');
   if(m)runs=wordRun(m[1],true)+'<w:r><w:tab/></w:r>'+wordRun(m[2],true);
@@ -7400,7 +7400,7 @@ function wordExamParagraph(el){
   // Al personalizar los intervalos, se suprime el margen posterior heredado.
   const after=custom!==null||cls.contains('exam-sentence')?0:currentCourse()==='greek1'?120:180;
   const firstLevel=cls.contains('greek-choice-subquestion');
-  const left=(greekFull?wordCmTwips(firstLevel?1.9:2.55):
+  const left=(greekFull?wordCmTwips(firstLevel?1.25:1.9):
    currentCourse()==='greek1'?(cls.contains('greek-choice-generated-item')?1440:720):1080)+shift;
   props.push('<w:ind w:left="'+left+'" w:hanging="'+listHang+'"/><w:tabs><w:tab w:val="left" w:pos="'+left+'"/></w:tabs><w:spacing w:before="'+before+'" w:after="'+after+'" w:line="'+(cls.contains('exam-sentence')?'310':'260')+'" w:lineRule="atLeast"/>');
   const letter=el.querySelector(':scope > .exam-letter');
@@ -7419,7 +7419,7 @@ function wordExamParagraph(el){
     [...item.childNodes].filter(n=>n!==letter).map(n=>wordInline(n)).join('');
   };
   if(el.closest('.greek-choice-option')){
-   const left=wordCmTwips(2.55)+shift;
+   const left=wordCmTwips(1.9)+shift;
    return items.map((item,i)=>
     '<w:p><w:pPr><w:keepLines/><w:ind w:left="'+left+'" w:hanging="'+wordCmTwips(.65)+'"/>'+
     '<w:tabs><w:tab w:val="left" w:pos="'+left+'"/></w:tabs>'+
@@ -21009,26 +21009,26 @@ html[data-appearance="oled"] body.exam-redesign #exam-ui-shell :is(#exam-ui-core
 #examLayout aside.panel #examVisualSettings select#examIndentPt{width:100%;min-height:42px;max-width:300px}
 
 /* Examen completo de Griego I. Sangrías del Word del profesor:
-   marcador en 0,60 / 1,25 / 1,90 cm; texto en 1,25 / 1,90 / 2,55 cm.
+   sangría de texto en 0,60 / 1,25 / 1,90 cm; numerales con sangría francesa de 0,65 cm.
    El control de sangría desplaza los tres niveles; el resto de los exámenes
    conserva su maquetación. */
 .paper[data-format-course="greek1"] .exam-sheet.greek-choice-complete-exam > p.exam-question {
- margin-left:calc(.6cm + var(--exam-indent-shift,0pt))!important;
- padding-left:.65cm!important;text-indent:-.65cm!important;
+ margin-left:var(--exam-indent-shift,0pt)!important;
+ padding-left:.6cm!important;text-indent:-.65cm!important;
 }
 .paper[data-format-course="greek1"] .exam-sheet.greek-choice-complete-exam > p.exam-question .exam-q-number {
  width:.65cm!important;min-width:.65cm!important;margin-right:0!important;
 }
 .paper[data-format-course="greek1"] .exam-sheet.greek-choice-complete-exam .greek-choice-option > p.greek-choice-subquestion {
- margin-left:calc(1.25cm + var(--exam-indent-shift,0pt))!important;
+ margin-left:calc(.6cm + var(--exam-indent-shift,0pt))!important;
  padding-left:.65cm!important;text-indent:-.65cm!important;
 }
 .paper[data-format-course="greek1"] .exam-sheet.greek-choice-complete-exam .greek-choice-option > p.exam-item:not(.greek-choice-subquestion) {
- margin-left:calc(1.9cm + var(--exam-indent-shift,0pt))!important;
+ margin-left:calc(1.25cm + var(--exam-indent-shift,0pt))!important;
  padding-left:.65cm!important;text-indent:-.65cm!important;
 }
 .paper[data-format-course="greek1"] .exam-sheet.greek-choice-complete-exam .greek-choice-option > p.exam-etymology {
- margin-left:calc(1.9cm + var(--exam-indent-shift,0pt))!important;
+ margin-left:calc(1.25cm + var(--exam-indent-shift,0pt))!important;
  padding-left:0!important;text-indent:0!important;
 }
 .paper[data-format-course="greek1"] .exam-sheet.greek-choice-complete-exam .greek-choice-option > p.exam-etymology > [data-corpus-id] {
