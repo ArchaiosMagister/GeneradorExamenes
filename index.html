@@ -5578,6 +5578,9 @@ function regenerateExamWord(kind,index){
   const category=greek?examGreekWordClass:item=>item.category;
   alternatives=alternatives.filter(x=>category(x)===category(previous));
  }
+ if(greek&&kind==='forms'&&examGreekWordClass(previous)==='adjectives')
+  alternatives=greekAdjectiveReplacementChoices(previous,
+   current.filter((_,i)=>i!==index),alternatives);
  if(!alternatives.length)return;
  const focus=latinFocusUnit(chosen);
  const matches=kind==='forms'?latinFormPriorities(chosen).concat(examUnitPriority(chosen,item=>item.units||[])).find(test=>test(previous)):
