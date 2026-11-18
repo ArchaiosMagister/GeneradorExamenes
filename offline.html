@@ -5248,7 +5248,8 @@ function examVisualPt(id,fallback){
  const n=Number(text);
  return Number.isFinite(n)?Math.max(0,Math.min(72,Math.round(n*2)/2)):fallback;
 }
-function examQuestionBeforePt(){return examVisualPt('examQuestionBeforePt',12)}
+function examQuestionBeforePt(){return examVisualPt('examQuestionBeforePt',10)}
+function examIndentPt(){const value=Number($('examIndentPt')?.value);return Number.isFinite(value)&&value>=0&&value<=36?value:0}
 function examCultureGapPt(){return examVisualPt('examCultureGapPt',5)}
 // Los ajustes de cada pregunta se identifican por curso, modelo y tipo, nunca
 // por el número mostrado (que cambia al excluir un apartado del examen).
@@ -5316,6 +5317,8 @@ function applyExamVisualFormat(){
  if(!paper)return;
  paper.style.setProperty('--exam-question-before',examQuestionBeforePt()+'pt');
  paper.style.setProperty('--exam-culture-gap',examCultureGapPt()+'pt');
+ paper.style.setProperty('--exam-indent-shift',examIndentPt()+'pt');
+ paper.dataset.formatCourse=currentCourse();
  const sheet=paper.querySelector('.exam-sheet');
  let rules=document.getElementById('examina-per-question-rules');
  if(!rules){rules=document.createElement('style');rules.id='examina-per-question-rules';document.head.append(rules)}
@@ -7363,7 +7366,7 @@ function wordBlock(el){
    const cultural=el.classList.contains('exam-culture-items');
    const nested=el.parentElement?.tagName==='LI'&&!!el.closest('ol.task');
    // Un único patrón: a. a 36pt, texto a 54pt; opciones un nivel más.
-   const target=nested?1800:1080;
+   const target=(currentCourse()==='greek1'?(nested?1440:720):(nested?1800:1080))+examIndentPt()*20;
    const pr=alphabetic?
     '<w:keepLines/><w:ind w:left="'+target+'" w:hanging="360"/><w:tabs><w:tab w:val="left" w:pos="'+target+'"/></w:tabs>':
     '<w:numPr><w:ilvl w:val="0"/><w:numId w:val="'+(tag==='ol'?'1':'2')+'"/></w:numPr>';
@@ -7401,7 +7404,8 @@ function wordExamParagraph(el){
  const cls=el.classList,props=['<w:keepLines/>'];let runs=wordInline(el);
  if(cls.contains('exam-question')){
   const m=el.textContent.match(/^(\d+\.)\s*(.*)$/s);
-  props.push('<w:keepNext/><w:ind w:left="720" w:hanging="360"/><w:tabs><w:tab w:val="left" w:pos="720"/></w:tabs><w:spacing w:before="'+(examVisualBeforeFor(el)*20)+'" w:after="80" w:line="290" w:lineRule="auto"/>');
+  const left=(currentCourse()==='greek1'?360:720)+examIndentPt()*20;
+  props.push('<w:keepNext/><w:ind w:left="'+left+'" w:hanging="360"/><w:tabs><w:tab w:val="left" w:pos="'+left+'"/></w:tabs><w:spacing w:before="'+(examVisualBeforeFor(el)*20)+'" w:after="120" w:line="290" w:lineRule="auto"/>');
   if(cls.contains('exam-page-break'))props.push('<w:pageBreakBefore/>');
   if(m)runs=wordRun(m[1],true)+'<w:r><w:tab/></w:r>'+wordRun(m[2],true);
  }else if(cls.contains('exam-item')){
@@ -7421,8 +7425,9 @@ function wordExamParagraph(el){
    cls.contains('exam-sentence')&&el.previousElementSibling?.classList?.contains('exam-sentence')?
     (custom??sentenceGapPoints())*20:0;
   // Al personalizar los intervalos, se suprime el margen posterior heredado.
-  const after=custom!==null||cls.contains('exam-sentence')?0:180;
-  props.push('<w:ind w:left="1080" w:hanging="360"/><w:tabs><w:tab w:val="left" w:pos="1080"/></w:tabs><w:spacing w:before="'+before+'" w:after="'+after+'" w:line="'+(cls.contains('exam-sentence')?'310':'260')+'" w:lineRule="atLeast"/>');
+  const after=custom!==null||cls.contains('exam-sentence')?0:currentCourse()==='greek1'?120:180;
+  const left=(currentCourse()==='greek1'?(cls.contains('greek-choice-generated-item')?1440:720):1080)+examIndentPt()*20;
+  props.push('<w:ind w:left="'+left+'" w:hanging="360"/><w:tabs><w:tab w:val="left" w:pos="'+left+'"/></w:tabs><w:spacing w:before="'+before+'" w:after="'+after+'" w:line="'+(cls.contains('exam-sentence')?'310':'260')+'" w:lineRule="atLeast"/>');
   const letter=el.querySelector(':scope > .exam-letter');
   if(letter)runs=wordRun(letter.textContent.trim())+'<w:r><w:tab/></w:r>'+
    [...el.childNodes].filter(n=>n!==letter).map(n=>wordInline(n)).join('');
@@ -8201,7 +8206,12 @@ function greekCorpus(){
    items[items.length-1].sourceCode=record.sourceCode;
   });
  }
- greekFormRows.forEach(([form,min,us,lemma,answer],i)=>add('forms','f-'+i,min,us,form,answer,[lemma]));
+ greekFormRows.forEach(([form,min,us,lemma,answer],i)=>{
+  add('forms','f-'+i,min,us,form,answer,[lemma]);
+  if(i>=7&&i<=10)items[items.length-1].category='adjectives';
+  else if(i===6)items[items.length-1].category='verbs';
+  else if(i!==2)items[items.length-1].category='nouns';
+ });
  // Los pronombres carecían de enunciado aunque sus flexiones ya estaban
  // verificadas. Asociar cada forma exclusivamente a su paradigma atestiguado.
  const greekPronounParadigms=[
@@ -8445,7 +8455,7 @@ function generateGreekMorphologyFixed(){
  const pronPool=examQuestionEnabled('pronouns')?eligible.filter(x=>x.kind==='pronouns'):[];
  const pronouns=stickyExamRows('pronouns',()=>sample(pronPool,Math.min(10,pronPool.length)));
  const categories={n:$('morphCategory-n')?.checked!==false,adj:$('morphCategory-adj')?.checked!==false,pro:$('morphCategory-pro')?.checked!==false};
- const words=stickyExamRows('forms',()=>examQuotaGreek(eligible.concat(examAuthorizedProposals('greek1',limit)).filter(x=>x.kind==='forms'&&!x.prompt.includes(' ')&&(
+ const words=stickyExamRows('forms',()=>examQuotaGreek(eligible.concat(examAuthorizedProposals('greek1',limit)).concat(examGreekVerbFormCandidates(eligible,limit)).filter(x=>x.kind==='forms'&&!x.prompt.includes(' ')&&(
   ((x.category==='pronouns'||/pronombre|demostrativo|anafórico|personal|interrogativo/i.test(x.answer))&&categories.pro)||
   ((x.category==='adjectives'||/adjetivo/i.test(x.answer))&&categories.adj)||
   ((x.category==='nouns'||/declinación|sustantivo|artículo/i.test(x.answer))&&categories.n)||
@@ -8488,7 +8498,7 @@ let greekExamState=null;
 function greekChoicePool(kind){
  const curated=greekVerifiedCorpus.filter(x=>x.verified&&x.kind===kind&&greekMorphologyEligible(x,greekLimit())&&
   (kind!=='forms'||!(x.lemmas||[]).some(lemma=>isExcludedExamMorphLemma(lemma))));
- return kind==='forms'?curated.concat(examAuthorizedProposals('greek1',greekLimit())):curated;
+ return kind==='forms'?curated.concat(examAuthorizedProposals('greek1',greekLimit())).concat(examMorphQuotaValues()[2]>0?examGreekVerbFormCandidates(greekVerifiedCorpus,greekLimit()):[]):curated;
 }
 function greekSelectedItems(pool,chosen,counts){
  const signature=JSON.stringify([chosen.map(examUnitNumber),$('model').value,counts,examMorphQuotaValues()]);
@@ -8692,7 +8702,8 @@ function generateGreekExam(){
  const enabled=greekKinds.filter((k,i)=>(mode.points[i]>0||(k==='pronouns'&&$('model').value==='complete'))&&examQuestionEnabled(k==='conjugation'?'verb':k==='declension'?'decl':k==='sentences'?'sent':k==='etymology'?'etymology':k));
  const pool=greekVerifiedCorpus.filter(x=>x.verified&&x.kind!=='sentences'&&greekMorphologyEligible(x,max)&&enabled.includes(x.kind)&&
   (x.kind!=='forms'||!(x.lemmas||[]).some(lemma=>isExcludedExamMorphLemma(lemma))))
-  .concat(enabled.includes('forms')?examAuthorizedProposals('greek1',max):[]);
+  .concat(enabled.includes('forms')?examAuthorizedProposals('greek1',max):[])
+  .concat(enabled.includes('forms')&&examMorphQuotaValues()[2]>0?examGreekVerbFormCandidates(greekVerifiedCorpus,max):[]);
  const counts={declension:Math.min(2,countFor('decl')),conjugation:Math.min(2,countFor('verb')),forms:examMorphQuotasActive()?examMorphQuotaCount():countFor('greek-forms'),pronouns:10,etymology:Math.min($('model').value==='translation'?3:2,countFor('lex')),sentences:countFor('sent')};
  const result=greekSelectedItems(pool,chosen,counts),sections=[],answers=[];
 
@@ -9142,6 +9153,22 @@ function examGreekWordClass(item){
  if(/sustantivo|declinación/.test(a))return 'nouns';
  return null;
 }
+// La categoría verbos incluye formas procedentes exclusivamente de paradigmas
+// presentes y verificados: no se crean nuevas flexiones a partir de reglas.
+function examGreekVerbFormCandidates(pool,limit){
+ const seen=new Set(pool.filter(x=>x.kind==='forms').map(x=>normLex(x.prompt)));
+ return pool.filter(x=>x.verified&&x.kind==='conjugation'&&x.table&&greekMorphologyEligible(x,limit))
+  .flatMap(x=>x.table.rows.flatMap((row,i)=>[1,2].map(column=>{
+   const prompt=String(row[column]||'').trim(),key=normLex(prompt);
+   if(!prompt||/[()]/u.test(prompt)||seen.has(key))return null;
+   seen.add(key);
+   return {kind:'forms',id:'gvf-'+x.id+'-'+i+'-'+column,verified:true,
+    minUnit:x.minUnit,contentUnits:[...x.contentUnits],category:'verbs',
+    prompt,lemmas:[...(x.lemmas||[])],
+    answer:['primera','segunda','tercera'][i]+' persona '+(column===1?'singular':'plural')+
+     ' del '+(x.verbTense||'presente')+' de indicativo '+(x.verbVoice||'activo')+'.'};
+  }).filter(Boolean)));
+}
 function examQuotaGreek(pool,count){
  const quotas=examMorphQuotaValues();
  if(!quotas.some(Boolean))return greekCurricularSample(pool,count);
@@ -9265,7 +9292,7 @@ function greekMorphologyReplacementPool(kind){
  if(kind==='forms'){
   const categories={n:$('morphCategory-n')?.checked!==false,adj:$('morphCategory-adj')?.checked!==false,
    pro:$('morphCategory-pro')?.checked!==false};
-  return eligible.concat(examAuthorizedProposals('greek1',limit)).filter(x=>x.kind==='forms'&&
+  return eligible.concat(examAuthorizedProposals('greek1',limit)).concat(examGreekVerbFormCandidates(eligible,limit)).filter(x=>x.kind==='forms'&&
    !x.prompt.includes(' ')&&(
     ((x.category==='pronouns'||/pronombre|demostrativo|anafórico|personal|interrogativo/i.test(x.answer))&&categories.pro)||
     ((x.category==='adjectives'||/adjetivo/i.test(x.answer))&&categories.adj)||
@@ -16916,7 +16943,9 @@ html[data-appearance="oled"] body.exam-redesign #exam-ui-shell :is(#exam-ui-core
    '<div class="exam-ui-visual-body">'+
    '<h4 id="examVisualDefaultsTitle">Valores predeterminados</h4>'+
    '<label for="examQuestionBeforePt"><span id="examQuestionBeforeLabel">Espacio antes del enunciado de cada pregunta</span>'+
-   '<span class="exam-ui-point-input"><input id="examQuestionBeforePt" type="number" min="0" max="72" step="0.5" value="12" inputmode="decimal"><span>pt (Word)</span></span></label>'+
+   '<span class="exam-ui-point-input"><input id="examQuestionBeforePt" type="number" min="0" max="72" step="0.5" value="10" inputmode="decimal"><span>pt (Word)</span></span></label>'+
+   '<label for="examIndentPt"><span id="examIndentLabel">Sangría adicional de todas las preguntas</span>'+
+   '<select id="examIndentPt" aria-label="Sangría adicional"><option value="0">0 pt · Modelo adjunto</option><option value="6">6 pt</option><option value="12">12 pt</option><option value="18">18 pt</option><option value="24">24 pt</option><option value="36">36 pt</option></select></label>'+
    '<label id="examCultureFormatRow" for="examCultureGapPt"><span id="examCultureGapLabel">Cultura (a., b., c.): espacio entre preguntas</span>'+
    '<span class="exam-ui-point-input"><input id="examCultureGapPt" type="number" min="0" max="72" step="0.5" value="5" inputmode="decimal"><span>pt (Word)</span></span></label>'+
    '<h4 id="examVisualIndividualsTitle">Por pregunta</h4>'+
@@ -16939,7 +16968,7 @@ html[data-appearance="oled"] body.exam-redesign #exam-ui-shell :is(#exam-ui-core
   panel.prepend(shell);
   // Los selectores solo existen para document.getElementById una vez montado el panel.
   const formatKey='examina_exam_visual_format_v1';
-  const qBefore=$('examQuestionBeforePt'),cGap=$('examCultureGapPt');
+  const qBefore=$('examQuestionBeforePt'),cGap=$('examCultureGapPt'),indent=$('examIndentPt');
   const fill=(v,id,fallback)=>{if(v!==undefined&&v!==null&&v!==''){
    const num=Number(v);if(Number.isFinite(num)&&num>=0&&num<=72)$(id).value=String(Math.round(num*2)/2);
   }else $(id).value=String(fallback)};
@@ -16947,6 +16976,7 @@ html[data-appearance="oled"] body.exam-redesign #exam-ui-shell :is(#exam-ui-core
    const va=$('lang').value==='va';
    $('examVisualTitle').textContent=va?'Format i espaiat de les preguntes':'Formato y espaciado de las preguntas';
    $('examQuestionBeforeLabel').textContent=va?'Espai abans de l’enunciat de cada pregunta':'Espacio antes del enunciado de cada pregunta';
+   $('examIndentLabel').textContent=va?'Sagnia addicional de totes les preguntes':'Sangría adicional de todas las preguntas';
    $('examCultureGapLabel').textContent=va?'Cultura (a., b., c.): espai entre preguntes':'Cultura (a., b., c.): espacio entre preguntas';
    $('examVisualHint').textContent=va
     ?'Ajustos per a la vista prèvia, impressió i Word. Cultura sense línies de resposta. No regeneren l’examen.'
@@ -17016,14 +17046,15 @@ html[data-appearance="oled"] body.exam-redesign #exam-ui-shell :is(#exam-ui-core
    });
   };
   const formatSnapshot=()=>({
-   questionBeforePt:examQuestionBeforePt(),cultureGapPt:examCultureGapPt(),
+   questionBeforePt:examQuestionBeforePt(),cultureGapPt:examCultureGapPt(),indentPt:examIndentPt(),
    perQuestion:Object.fromEntries(Object.entries(examVisualPerQuestion).map(([key,v])=>[key,{...v}]))
   });
   const store=()=>{try{localStorage.setItem(formatKey,JSON.stringify(formatSnapshot()))}
    catch(e){/* El formato puede funcionar sin permiso para el almacenamiento local. */}};
   const restoreFormat=v=>{
    if(!v||typeof v!=='object')return;
-   fill(v.questionBeforePt,'examQuestionBeforePt',12);
+   fill(v.questionBeforePt,'examQuestionBeforePt',10);
+   if([0,6,12,18,24,36].includes(Number(v.indentPt)))indent.value=String(v.indentPt);
    fill(v.cultureGapPt,'examCultureGapPt',5);
    if(v.perQuestion&&typeof v.perQuestion==='object'&&!Array.isArray(v.perQuestion)){
     for(const key of Object.keys(examVisualPerQuestion))delete examVisualPerQuestion[key];
@@ -17045,12 +17076,12 @@ html[data-appearance="oled"] body.exam-redesign #exam-ui-shell :is(#exam-ui-core
    snapshot:formatSnapshot,restore:restoreFormat,render:renderVisualRows
   };
   try{restoreFormat(JSON.parse(localStorage.getItem(formatKey)||'null'))}catch(e){}
-  for(const field of [qBefore,cGap]){
+  for(const field of [qBefore,cGap,indent]){
    field.addEventListener('input',()=>{
     applyExamVisualFormat();renderVisualRows();
    });
    field.addEventListener('change',()=>{
-    field.value=String(examVisualPt(field.id,field===qBefore?12:5));
+    field.value=String(examVisualPt(field.id,field===qBefore?10:field===indent?0:5));
     applyExamVisualFormat();renderVisualRows();store();
    });
   }
@@ -18143,5 +18174,17 @@ html[data-appearance="oled"] body.exam-redesign #exam-ui-shell :is(#exam-ui-core
   .vocab-tabbar .appearance-picker{margin-left:0;justify-content:center}
  }
 }
+</style>
+<style id="examina-teacher-model-indent-2026">
+/* Modelo docente: numeración, subapartados y viñetas con sangría escalonada. */
+.paper .exam-sheet > p.exam-question{margin-left:calc(18pt + var(--exam-indent-shift,0pt))!important;padding-left:18pt!important;text-indent:-18pt!important}
+.paper[data-format-course="greek1"] .exam-sheet > p.exam-question{margin-left:var(--exam-indent-shift,0pt)!important}
+.paper .exam-sheet > ol.task[type="a"],.paper .exam-sheet > ol.task[type="A"]{margin-left:calc(36pt + var(--exam-indent-shift,0pt))!important;padding-left:18pt!important}
+.paper[data-format-course="greek1"] .exam-sheet > ol.task[type="a"],.paper[data-format-course="greek1"] .exam-sheet > ol.task[type="A"]{margin-left:calc(18pt + var(--exam-indent-shift,0pt))!important}
+.paper .exam-sheet > p.exam-item{margin-left:calc(36pt + var(--exam-indent-shift,0pt))!important}
+.paper[data-format-course="greek1"] .exam-sheet > p.exam-item,.paper[data-format-course="greek1"] .greek-choice-option > p.greek-choice-subquestion{margin-left:calc(18pt + var(--exam-indent-shift,0pt))!important}
+.paper[data-format-course="greek1"] .greek-choice-option > p.exam-item:not(.greek-choice-subquestion){margin-left:calc(54pt + var(--exam-indent-shift,0pt))!important}
+.paper[data-format-course="greek1"] .greek-choice-option > p.exam-etymology{margin-left:calc(54pt + var(--exam-indent-shift,0pt))!important}
+#examLayout aside.panel #examVisualSettings select#examIndentPt{width:100%;min-height:42px;max-width:300px}
 </style>
 </html>
