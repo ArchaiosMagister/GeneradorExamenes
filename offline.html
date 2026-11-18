@@ -8497,8 +8497,8 @@ function generateGreekMorphologyFixed(){
 let greekExamState=null;
 function greekChoicePool(kind){
  const curated=greekVerifiedCorpus.filter(x=>x.verified&&x.kind===kind&&greekMorphologyEligible(x,greekLimit())&&
-  (kind!=='forms'||!(x.lemmas||[]).some(lemma=>isExcludedExamMorphLemma(lemma))));
- return kind==='forms'?curated.concat(examAuthorizedProposals('greek1',greekLimit())).concat(examMorphQuotaValues()[2]>0?examGreekVerbFormCandidates(greekVerifiedCorpus,greekLimit()):[]):curated;
+  (kind!=='forms'||(!x.prompt.includes(' ')&&!(x.lemmas||[]).some(lemma=>isExcludedExamMorphLemma(lemma)))));
+ return kind==='forms'?curated.concat(examAuthorizedProposals('greek1',greekLimit()).filter(x=>x.kind==='forms'&&!x.prompt.includes(' '))).concat(examMorphQuotaValues()[2]>0?examGreekVerbFormCandidates(greekVerifiedCorpus,greekLimit()):[]):curated;
 }
 function greekSelectedItems(pool,chosen,counts){
  const signature=JSON.stringify([chosen.map(examUnitNumber),$('model').value,counts,examMorphQuotaValues()]);
@@ -8701,8 +8701,8 @@ function generateGreekExam(){
  const chosen=greekMarkedUnits(),max=greekLimit(),mode=greekModes[$('model').value]||greekModes.complete;
  const enabled=greekKinds.filter((k,i)=>(mode.points[i]>0||(k==='pronouns'&&$('model').value==='complete'))&&examQuestionEnabled(k==='conjugation'?'verb':k==='declension'?'decl':k==='sentences'?'sent':k==='etymology'?'etymology':k));
  const pool=greekVerifiedCorpus.filter(x=>x.verified&&x.kind!=='sentences'&&greekMorphologyEligible(x,max)&&enabled.includes(x.kind)&&
-  (x.kind!=='forms'||!(x.lemmas||[]).some(lemma=>isExcludedExamMorphLemma(lemma))))
-  .concat(enabled.includes('forms')?examAuthorizedProposals('greek1',max):[])
+  (x.kind!=='forms'||(!x.prompt.includes(' ')&&!(x.lemmas||[]).some(lemma=>isExcludedExamMorphLemma(lemma)))))
+  .concat(enabled.includes('forms')?examAuthorizedProposals('greek1',max).filter(x=>x.kind==='forms'&&!x.prompt.includes(' ')):[])
   .concat(enabled.includes('forms')&&examMorphQuotaValues()[2]>0?examGreekVerbFormCandidates(greekVerifiedCorpus,max):[]);
  const counts={declension:Math.min(2,countFor('decl')),conjugation:Math.min(2,countFor('verb')),forms:examMorphQuotasActive()?examMorphQuotaCount():countFor('greek-forms'),pronouns:10,etymology:Math.min($('model').value==='translation'?3:2,countFor('lex')),sentences:countFor('sent')};
  const result=greekSelectedItems(pool,chosen,counts),sections=[],answers=[];
@@ -8766,7 +8766,91 @@ $('count-sent').onchange=()=>{
 };
 applySentenceGap();
 // Redimensionar el análisis sin reconstruir las otras preguntas del docente.
+// El examen completo de Griego agrupa las preguntas por competencias.
+// Al quedarse sin formas de una clase, desaparece el subtítulo "forms":
+// la sustitución conservadora basada en un encabezado plano devolvía el
+// apartado anterior (p. ej. sustantivos al solicitar adjetivos en UD1).
+// Actualizar solamente la opción agrupada, sin perder otros textos editados.
+function resizeOnlyGreekGroupedAnalysis(){
+ const paper=$('paper'),original=paper.querySelector('.exam-sheet');
+ if(!original)return false;
+ generate();
+ const fresh=paper.querySelector('.exam-sheet');
+ if(!fresh)return true;
+ const query=kind=>':scope > .greek-choice-option[data-greek-option="'+kind+'"]';
+ const oldForm=original.querySelector(query('forms'));
+ const newForm=fresh.querySelector(query('forms'));
+ oldForm?.remove();
+ if(newForm){
+  const order=['declension','forms','change-number','retroversion','conjugation'];
+  const index=order.indexOf('forms');
+  const following=order.slice(index+1).map(k=>original.querySelector(query(k))).find(Boolean);
+  const preceding=order.slice(0,index).reverse().map(k=>original.querySelector(query(k))).find(Boolean);
+  const copy=newForm.cloneNode(true);
+  if(following)following.before(copy);
+  else if(preceding)preceding.after(copy);
+  else{
+   const anchor=original.querySelector(':scope > .exam-question[data-exam-kind="greek-plurilingual"],:scope > .exam-question[data-greek-kind="sentences"],:scope > #answerkey');
+   if(anchor)anchor.before(copy);else original.append(copy);
+  }
+ }
+ // Las letras de las opciones y el encabezado "elige..." dependen de la
+ // cantidad de preguntas que permanecen en el bloque de competencias.
+ for(const [kind,selector] of [
+  ['greek-competence',':scope > .exam-question[data-exam-kind="greek-competence"]'],
+  ['greek-plurilingual',':scope > .exam-question[data-exam-kind="greek-plurilingual"]']]){
+  const current=original.querySelector(selector),replacement=fresh.querySelector(selector);
+  if(current&&replacement)current.innerHTML=replacement.innerHTML;
+  else if(current&&!replacement)current.remove();
+  else if(!current&&replacement){
+   const first=original.querySelector(':scope > .greek-choice-option[data-greek-choice-group="'+kind+'"]');
+   const anchor=first||original.querySelector(':scope > .exam-question[data-greek-kind="sentences"],:scope > #answerkey');
+   if(anchor)anchor.before(replacement.cloneNode(true));
+  }
+ }
+ const freshSent=fresh.querySelector(':scope > .exam-question[data-greek-kind="sentences"]');
+ const oldSent=original.querySelector(':scope > .exam-question[data-greek-kind="sentences"]');
+ if(freshSent&&oldSent){
+  const a=freshSent.querySelector('.exam-q-number'),b=oldSent.querySelector('.exam-q-number');
+  if(a&&b)b.textContent=a.textContent;
+ }
+ for(const kind of ['declension','forms','change-number','retroversion','conjugation','etymology','roots']){
+  const old=original.querySelector(query(kind)),now=fresh.querySelector(query(kind));
+  const oldLetter=old?.querySelector(':scope > .greek-choice-subquestion .exam-letter');
+  const newLetter=now?.querySelector(':scope > .greek-choice-subquestion .exam-letter');
+  if(oldLetter&&newLetter)oldLetter.textContent=newLetter.textContent;
+ }
+ // Cambiar únicamente las soluciones de la clase afectada, sin alterar
+ // ninguna corrección docente en los otros apartados.
+ const oldKey=original.querySelector('#answerkey'),newKey=fresh.querySelector('#answerkey');
+ const answerHead=key=>key?.querySelector(':scope > h3[data-greek-kind="forms"]');
+ const group=head=>{
+  const nodes=[];
+  for(let node=head;node;node=node.nextElementSibling){
+   if(node!==head&&node.matches('h3,[data-greek-extra-answer]'))break;
+   nodes.push(node);
+  }
+  return nodes;
+ };
+ const previous=group(answerHead(oldKey)),updated=group(answerHead(newKey)).map(x=>x.cloneNode(true));
+ if(previous.length){
+  previous[0].before(...updated);
+  previous.forEach(x=>x.remove());
+ }else if(updated.length&&oldKey){
+  const after=oldKey.querySelector(':scope > h3[data-greek-kind="pronouns"],:scope > h3[data-greek-kind="etymology"],:scope > h3[data-greek-kind="sentences"],:scope > [data-greek-extra-answer]');
+  if(after)after.before(...updated);else oldKey.append(...updated);
+ }
+ paper.replaceChildren(original);
+ refreshManualMorphWords();
+ greekExamControls();
+ window.greekLastPreview=paper.innerHTML;
+ window.ExaminaScoring?.sync?.();
+ return true;
+}
 function resizeOnlyExamAnalysis(){
+ if(currentCourse()==='greek1'&&window.ExaminaGreekChoiceGroups?.active?.()){
+  if(resizeOnlyGreekGroupedAnalysis())return;
+ }
  const paper=$('paper'),original=paper.querySelector('.exam-sheet');
  const questionSelector='.exam-question[data-exam-kind="forms"],.exam-question[data-morph-kind="forms"],.exam-question[data-greek-kind="forms"],.greek-choice-subquestion[data-greek-kind="forms"]';
  const oldHeading=original?.querySelector(questionSelector);
