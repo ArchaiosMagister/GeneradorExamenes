@@ -1,0 +1,33 @@
+name: Actualizar HTML autónomo tras ampliación nominal (temporal)
+
+on:
+  push:
+    branches:
+      - test/auditar-cuotas-griego-todas-uds-20261118
+    paths:
+      - .github/workflows/rebuild-offline-nominal-171.yml
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Reconstruir la aplicación autónoma
+        run: npm run offline:build
+      - name: Versionar el resultado en esta rama, sin desplegar
+        run: |
+          git add offline.html
+          if git diff --cached --quiet; then
+            echo "No hay cambios en offline.html"
+          else
+            git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" commit -m "Sincronizar offline con ampliación de formas griegas"
+            git push origin HEAD:test/auditar-cuotas-griego-todas-uds-20261118
+          fi
