@@ -39,7 +39,7 @@ async function audit(page,course,model,quotas){
   }
   const ids=course==='greek1'&&model==='complete'?[...(greekExamState?.ids?.forms||[])]:null;
   const actual=categories();
-  const counts=kinds.map(kind=>actual.filter(x=>x===kind).length);
+  const counts=['nouns','adjectives','verbs','pronouns'].map(kind=>actual.filter(x=>x===kind).length);
   const display=[...document.querySelectorAll(course==='greek1'&&model==='complete'?
    '#paper .exam-form[data-corpus-id]':'#paper [data-analysis-slot]')].length;
   return {actual,counts,display,ids,quotas};
