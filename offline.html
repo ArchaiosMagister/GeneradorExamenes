@@ -8451,6 +8451,37 @@ function greekCompleteAdjectiveForms(adjective,gender){
  }
  return null;
 }
+
+// Formas documentadas de los dos adjetivos de doble tema estudiados desde
+// UD5. Se reutilizan las flexiones ya contrastadas para los sintagmas,
+// conservando las lecturas homógrafas de caso, número y género.
+function greekIrregularAdjectiveAnalyses(){
+ const cases=['NOM','VOC','ACC','GEN','DAT'],numbers=['SG','PL'];
+ const adjectives=[
+  {key:'megas',lemma:'μέγας, μεγάλη, μέγα',accent:'mixed-megas'},
+  {key:'polys',lemma:'πολύς, πολλή, πολύ',accent:'mixed-polys'}
+ ];
+ return adjectives.flatMap(adjective=>{
+  const readings=new Map();
+  for(const gender of ['m','f','n']){
+   const paradigm=greekCompleteAdjectiveForms(adjective,gender);
+   if(!paradigm||paradigm.length!==2)throw Error('Paradigma irregular incompleto: '+adjective.key);
+   for(let number=0;number<2;number++)for(let k=0;k<5;k++){
+    const form=String(paradigm[number][k]||'').normalize('NFC');
+    if(!form)throw Error('Flexión irregular vacía: '+adjective.key);
+    if(!readings.has(form))readings.set(form,new Set());
+    readings.get(form).add(cases[k]+';'+numbers[number]+';'+gender);
+   }
+  }
+  return [...readings.entries()].map(([prompt,tags],i)=>({
+   kind:'forms',id:'girr-'+adjective.key+'-'+i,minUnit:5,contentUnits:[5],
+   prompt,answer:greekExamNominalAnswer([...tags],'adjectives'),
+   lemmas:[adjective.lemma],category:'adjectives',verified:true,
+   greekIrregular:true,source:'Smyth, Greek Grammar, §315; paradigma explícito de UD5'
+  }));
+ });
+}
+greekVerifiedCorpus.push(...greekIrregularAdjectiveAnalyses());
 // Orden aleatorio ponderado sin reposición: triple peso por doble tema.
 function greekWeightedSyntagmAdjectives(available){
  return available.map(item=>({
@@ -8481,8 +8512,17 @@ function greekAccentBeforeNoun(surface){
  if(/[αεηιουω]/iu.test(after))return surface;
  return (text.slice(0,at)+'\u0300'+text.slice(at+1)).normalize('NFC');
 }
+// En 1.ª y 2.ª declinación el enunciado no necesita artículo: –ου,
+// –ης, –ας o –ᾶς muestran el paradigma. Conservarlo en 3.ª,
+// cuya terminación no determina el género (p. ej., πατήρ, πατρός (ὁ)).
+function greekNominalEnunciation(item){
+ const lemma=String(item?.lemmas?.[0]||'').trim();
+ const noun=examGreekWordClass(item)==='nouns'||item?.kind==='declension';
+ if(!noun)return lemma;
+ return lemma.replace(/(,\s*[–−—-]?\s*(?:ου|ης|ας|ᾶς))\s*\((?:ὁ|ἡ|τό|τὸ)\)\s*$/u,'$1');
+}
 function greekSyntagmEnunciation(item,modifier=null){
- const noun=item.lemmas?.[0]||greekLemma(item.table?.rows?.[0]?.[1]||'').entry;
+ const noun=greekNominalEnunciation(item)||greekLemma(item.table?.rows?.[0]?.[1]||'').entry;
  if(greekLimit()<3)return noun;
  const article='ὁ, ἡ, τό';
  if(!modifier)return article+' + '+noun;
@@ -8823,7 +8863,7 @@ function generateGreekExam(){
   (x.kind!=='forms'||(!x.prompt.includes(' ')&&!(x.lemmas||[]).some(lemma=>isExcludedExamMorphLemma(lemma)))))
   .concat(enabled.includes('forms')?examAuthorizedProposals('greek1',max).filter(x=>x.kind==='forms'&&!x.prompt.includes(' ')):[])
   .concat(enabled.includes('forms')&&examMorphQuotaValues()[2]>0?examGreekVerbFormCandidates(greekVerifiedCorpus,max):[]);
- const counts={declension:Math.min(2,countFor('decl')),conjugation:Math.min(2,countFor('verb')),forms:examMorphQuotasActive()?examMorphQuotaCount():countFor('greek-forms'),pronouns:10,etymology:Math.min(2,countFor('lex')),sentences:countFor('sent')};
+ const counts={declension:Math.min(2,countFor('decl')),conjugation:Math.min(2,countFor('verb')),forms:examMorphQuotasActive()?examMorphQuotaCount():countFor('greek-forms'),pronouns:10,etymology:countFor('lex'),sentences:countFor('sent')};
  const result=greekSelectedItems(pool,chosen,counts),sections=[],answers=[];
 
  let total=0,index=0;
@@ -8839,7 +8879,8 @@ function generateGreekExam(){
   else if(kind==='pronouns')sections.push('<table class="exam-pronouns" data-col-widths="1500,3500,3500"><thead><tr><th>Forma</th><th>'+($('lang').value==='va'?'Cas, gènere, nombre':'Caso, género, número')+'</th><th>'+($('lang').value==='va'?'Tipus de pronom':'Tipo de pronombre')+'</th></tr></thead><tbody>'+items.map(x=>'<tr data-corpus-id="'+x.id+'"><td>'+esc(x.prompt)+'</td><td></td><td></td></tr>').join('')+'</tbody></table>');
   else if(kind==='etymology')sections.push('<p class="exam-etymology">'+items.map((x,j)=>'<span data-corpus-id="'+x.id+'"><span class="exam-letter">'+String.fromCharCode(97+j)+'.</span> '+esc(x.prompt)+':</span>').join('')+'</p>');
   else sections.push(items.map((x,j)=>{
-   const enunciation=(x.lemmas||[]).filter(lemma=>typeof lemma==='string'&&lemma.trim()).join(' / ');
+   const enunciation=(x.lemmas||[]).filter(lemma=>typeof lemma==='string'&&lemma.trim())
+    .map(lemma=>greekNominalEnunciation({...x,lemmas:[lemma]})).join(' / ');
    // El enunciado no se incluye en la zona editable de la forma.
    return '<p class="exam-item exam-form" data-corpus-id="'+x.id+'"><span class="exam-letter">'+String.fromCharCode(97+j)+'.</span> '+
     '<span data-greek-form-surface="1"'+examAcademicAttrs(x)+'>'+esc(x.prompt)+'</span>'+
@@ -9449,7 +9490,12 @@ function greekBalancedAdjectiveSample(pool,count,previousIds=[]){
   (Math.random()<0.5?'2-2':'2-1-2')):'2-2';
  const types=count===1?[first]:['2-2','2-1-2'];
  for(const type of types){
-  if(picked.length<count)pick(pool.filter(x=>greekExamAdjectiveEndingType(x)===type));
+  if(picked.length>=count)break;
+  const choices=pool.filter(x=>greekExamAdjectiveEndingType(x)===type);
+  // La clase 2-1-2 incluye los dos paradigmas excepcionales. Si existen,
+  // favorecerlos tres de cada cuatro sorteos, sin suprimir los regulares.
+  const irregular=type==='2-1-2'?choices.filter(x=>x.greekIrregular):[];
+  pick(irregular.length&&Math.random()<.75?irregular:choices);
  }
  // Restantes casillas: priorizar fichas y superficies nuevas sin reducir
  // la cantidad elegida aunque el banco de una clase sea pequeño.
