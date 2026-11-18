@@ -4699,11 +4699,14 @@ greekSentenceTaskControl.innerHTML='Enunciado de las oraciones <select id="greek
 $('count-sent').parentElement.after(greekSentenceTaskControl);
 $('greekSentenceTask').onchange=()=>{
  // Cambiar solo el enunciado: conservar las oraciones, correcciones y puntuaciones.
- const heading=$('paper').querySelector('.exam-question[data-greek-kind="sentences"] strong');
- if(!heading)return;
- const number=heading.querySelector('.exam-q-number')?.cloneNode(true);
- const score=heading.textContent.match(/\([\d.,]+\s*p\.\)\s*:\s*$/u)?.[0]||'';
- heading.replaceChildren(...(number?[number]:[]),' '+greekQuestionLabel('sentences')+(score?' '+score:''));
+ const question=$('paper').querySelector('.exam-question[data-greek-kind="sentences"]');
+ const caption=question?.querySelector('.exam-question-caption');
+ if(!question||!caption)return;
+ // El gestor de puntuación ya ha creado sus controles: modificar solo el
+ // texto académico y su etiqueta persistente, sin suprimir ni recrear botones.
+ const label=greekQuestionLabel('sentences');
+ caption.textContent=' '+label+' ';
+ question.dataset.scoringCaption=label;
  window.ExaminaScoring?.sync?.();
  window.greekLastPreview=$('paper').innerHTML;
 };
