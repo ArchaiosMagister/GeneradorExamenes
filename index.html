@@ -5034,7 +5034,10 @@ function examGreekVerbFormCandidates(pool,limit){
  return pool.filter(x=>x.verified&&x.kind==='conjugation'&&x.table&&greekMorphologyEligible(x,limit))
   .flatMap(x=>x.table.rows.flatMap((row,i)=>[1,2].map(column=>{
    const prompt=String(row[column]||'').trim(),key=normLex(prompt);
-   if(!prompt||/[()]/u.test(prompt)||seen.has(key))return null;
+   // ἦλθον: 1.ª singular y 3.ª plural de aoristo; no reducir dos
+   // interpretaciones válidas a una lectura incorrectamente única.
+   if(!prompt||/[()]/u.test(prompt)||seen.has(key)||
+      (x.verbTense==='aoristo segundo'&&prompt==='ἦλθον'))return null;
    seen.add(key);
    return {kind:'forms',id:'gvf-'+x.id+'-'+i+'-'+column,verified:true,
     minUnit:x.minUnit,contentUnits:[...x.contentUnits],category:'verbs',
