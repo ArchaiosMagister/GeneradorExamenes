@@ -20,6 +20,7 @@ on:
       - 'scripts/test-greek-morph-regeneration.cjs'
       - 'scripts/test-greek-ud5-quota-indent.cjs'
       - 'scripts/test-greek-all-unit-form-quotas.cjs'
+      - 'scripts/test-morph-quotas-curriculum-regeneration.cjs'
       - 'scripts/test-greek-two-modes-legacy-drafts.cjs'
       - 'scripts/test-greek-reviewed-nominal-expansion.cjs'
       - 'scripts/test-exam-ui-redesign.cjs'
@@ -59,6 +60,8 @@ jobs:
         run: node scripts/test-greek-reviewed-nominal-expansion.cjs
       - name: Auditar las cuatro cuotas morfológicas griegas en las 14 unidades
         run: node scripts/test-greek-all-unit-form-quotas.cjs
+      - name: Regeneración morfológica y progresión gramatical en griego y latín
+        run: node scripts/test-morph-quotas-curriculum-regeneration.cjs
       - name: Griego I competencias, filología, Word, PDF y offline
         run: node scripts/test-greek-choice-groups.cjs && node scripts/test-greek-choice-audit.cjs && node scripts/test-greek-choice-bullets-spacing.cjs
       - name: Phase I synchronization regressions
