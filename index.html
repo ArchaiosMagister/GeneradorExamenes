@@ -5457,7 +5457,7 @@ function greekMorphologyReplacementPool(kind){
   (x.lemmas?.[0]||String(x.prompt).replace(/^Declina\s+/u,''))}));
  const adjectives=greekAvailableSyntagmModifiers(limit);
  return nouns.filter(x=>greekSyntagmNounGenders[x.id.slice(2)])
-  .flatMap(noun=>adjectives.map(adj=>greekCompleteNominalGroup(noun,true,adj))).filter(Boolean))
+  .flatMap(noun=>adjectives.map(adj=>greekCompleteNominalGroup(noun,true,adj))).filter(Boolean)
   .map(x=>({...x,title:x.enunciation}));
 }
 function regenerateExamWord(kind,index){
