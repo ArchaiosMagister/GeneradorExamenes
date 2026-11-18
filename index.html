@@ -1122,7 +1122,7 @@ function examVisualPt(id,fallback){
  const n=Number(text);
  return Number.isFinite(n)?Math.max(0,Math.min(72,Math.round(n*2)/2)):fallback;
 }
-function examQuestionBeforePt(){return examVisualPt('examQuestionBeforePt',10)}
+function examQuestionBeforePt(){return examVisualPt('examQuestionBeforePt',12)}
 function examIndentPt(){const value=Number($('examIndentPt')?.value);return Number.isFinite(value)&&value>=0&&value<=36?value:0}
 function examCultureGapPt(){return examVisualPt('examCultureGapPt',5)}
 // Los ajustes de cada pregunta se identifican por curso, modelo y tipo, nunca
@@ -6805,7 +6805,7 @@ html[data-appearance="oled"] body.exam-redesign #exam-ui-shell :is(#exam-ui-core
    '<div class="exam-ui-visual-body">'+
    '<h4 id="examVisualDefaultsTitle">Valores predeterminados</h4>'+
    '<label for="examQuestionBeforePt"><span id="examQuestionBeforeLabel">Espacio antes del enunciado de cada pregunta</span>'+
-   '<span class="exam-ui-point-input"><input id="examQuestionBeforePt" type="number" min="0" max="72" step="0.5" value="10" inputmode="decimal"><span>pt (Word)</span></span></label>'+
+   '<span class="exam-ui-point-input"><input id="examQuestionBeforePt" type="number" min="0" max="72" step="0.5" value="12" inputmode="decimal"><span>pt (Word)</span></span></label>'+
    '<label for="examIndentPt"><span id="examIndentLabel">Sangría adicional de todas las preguntas</span>'+
    '<select id="examIndentPt" aria-label="Sangría adicional"><option value="0">0 pt · Modelo adjunto</option><option value="6">6 pt</option><option value="12">12 pt</option><option value="18">18 pt</option><option value="24">24 pt</option><option value="36">36 pt</option></select></label>'+
    '<label id="examCultureFormatRow" for="examCultureGapPt"><span id="examCultureGapLabel">Cultura (a., b., c.): espacio entre preguntas</span>'+
@@ -6915,7 +6915,7 @@ html[data-appearance="oled"] body.exam-redesign #exam-ui-shell :is(#exam-ui-core
    catch(e){/* El formato puede funcionar sin permiso para el almacenamiento local. */}};
   const restoreFormat=v=>{
    if(!v||typeof v!=='object')return;
-   fill(v.questionBeforePt,'examQuestionBeforePt',10);
+   fill(v.questionBeforePt,'examQuestionBeforePt',12);
    if([0,6,12,18,24,36].includes(Number(v.indentPt)))indent.value=String(v.indentPt);
    fill(v.cultureGapPt,'examCultureGapPt',5);
    if(v.perQuestion&&typeof v.perQuestion==='object'&&!Array.isArray(v.perQuestion)){
@@ -6943,7 +6943,7 @@ html[data-appearance="oled"] body.exam-redesign #exam-ui-shell :is(#exam-ui-core
     applyExamVisualFormat();renderVisualRows();
    });
    field.addEventListener('change',()=>{
-    field.value=String(examVisualPt(field.id,field===qBefore?10:field===indent?0:5));
+    field.value=String(examVisualPt(field.id,field===qBefore?12:field===indent?0:5));
     applyExamVisualFormat();renderVisualRows();store();
    });
   }
