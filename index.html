@@ -4240,8 +4240,9 @@ const greekSemanticSyntagms={
 function greekSemanticallyValidSyntagm(noun,modifier){
  if(!noun||!modifier)return false;
  if(modifier.kind==='pronoun'&&modifier.lemma==='αὐτός')return true;
+ const lemma=greekBankKey(modifier.lemma);
  return (greekSemanticSyntagms[greekBankKey(noun.lemmas?.[0]||'')]||[])
-  .includes(greekBankKey(modifier.lemma));
+  .some(candidate=>greekBankKey(candidate)===lemma);
 }
 const greekSyntagmNounGenders=greekCorpusNounGenders;
 const greekArticles={
