@@ -263,15 +263,12 @@ function greekSuite(){
  let output=run('complete');
  assert.equal((output.match(/class="exam-question/g)||[]).length,5,'Griego completo: cinco apartados');
  assert(output.includes('final-gloss'));
- output=run('translation');
- assert.equal((output.match(/class="exam-question/g)||[]).length,3,'Griego traducción: formas, etimología y oraciones');
- assert(!output.includes('exam-nouns')&&!output.includes('exam-verbs'));
- assert(output.includes('final-gloss'),'Griego traducción debe llevar vocabulario de las oraciones');
+ assert.equal(modes.translation,undefined,'Griego: solo existen completo y morfología');
  assert.equal(sandbox.window.greekLastExam.total,10);
  assert(!output.includes('ὁ ἄνθρωπος λέγει'),'Griego tampoco rellena el examen desde el banco');
  sandbox.sentenceLines=()=>['ὁ δοῦλος λέγει.'];
  state['count-sent'].value=12;
- output=run('translation');
+ output=run('complete');
  assert.match(output,/data-sentence-slot="0"[^>]*>ὁ δοῦλος λέγει\./);
  assert.match(output,/data-sentence-slot="11"[^>]*><\/span>/);
  output=run('morphology');
@@ -289,4 +286,4 @@ assert(html.indexOf('<nav class="vocab-tabbar"')<html.indexOf('<header class="to
 assert(html.includes("course==='latin4'?['tablas']"),'Latín 4 solamente tiene el modelo completo');
 assert(html.includes("const alphabetic=tag==='ol'"),'Word debe conservar listas a–d');
 assert(html.includes('class="small no-print"'),'Los avisos docentes no deben salir en impresión');
-console.log('Exámenes comprobados: Latín 4 completo; Latín I completo, morfología y traducción; Griego I completo, morfología y traducción.');
+console.log('Exámenes comprobados: Latín 4 completo; Latín I completo, morfología y traducción; Griego I completo y morfología (sin tercer modelo).');
