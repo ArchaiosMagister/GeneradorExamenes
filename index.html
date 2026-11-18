@@ -4546,16 +4546,9 @@ function greekRegenerate(kind){
  const priorAdjectives=greekExamState.adjectiveChoices?
   {...greekExamState.adjectiveChoices}:undefined;
  const priorExam=window.greekLastExam,priorCoverage=$('greekCoverage')?.textContent;
- const regenerationDebug={kind,quotaForms,startSig:greekExamState.signature,
-  startQuotas:examMorphQuotaValues(),nextIds:next.map(x=>x.id),
-  nextCategories:next.map(examGreekWordClass)};
  greekExamState.ids[kind]=next.map(x=>x.id);
  if(kind==='declension')greekExamState.adjectiveChoices={};
- const rendered=renderOnlyRegeneratedGreekQuestion(kind,generateGreekExam);
- Object.assign(regenerationDebug,{rendered,finalSig:greekExamState?.signature,
-  finalQuotas:examMorphQuotaValues(),finalIds:[...(greekExamState?.ids?.[kind]||[])]});
- window.ExaminaGreekRegenerationDebug=regenerationDebug;
- if(rendered)return true;
+ if(renderOnlyRegeneratedGreekQuestion(kind,generateGreekExam))return true;
  greekExamState.ids[kind]=previous;
  if(priorAdjectives)greekExamState.adjectiveChoices=priorAdjectives;
  else delete greekExamState.adjectiveChoices;
@@ -5195,14 +5188,7 @@ function examQuestionEnabled(kind){
  return kind!=='pronouns'||['morf','morphology'].includes(model);
 }
 function examMorphQuotaValues(){
- // La vista previa y la regeneración pueden reconstruir el menú mientras
- // se conserva el examen. No interpretar un control desmontado como cuota 0:
- // recuperar la última cantidad confirmada por el profesor.
- return ['nouns','adjectives','verbs','pronouns'].map(kind=>{
-  const control=$('quota-'+kind);
-  const value=control?Number(control.value):Number(window.ExaminaMorphQuotaMemory?.[kind]||0);
-  return Math.max(0,Math.min(30,Number.isFinite(value)?value:0));
- });
+ return ['nouns','adjectives','verbs','pronouns'].map(kind=>Math.max(0,Math.min(30,Number($('quota-'+kind)?.value)||0)));
 }
 function examMorphQuotaCount(){return examMorphQuotaValues().reduce((a,b)=>a+b,0)}
 function examMorphQuotasActive(){return examMorphQuotaCount()>0}
@@ -6221,8 +6207,6 @@ loadTeacherLatinLexBanks();
   }
  }
  const quotaMemory={nouns:0,adjectives:0,verbs:0,pronouns:0};
- // Mantener una referencia viva incluso durante el reemplazo del panel.
- window.ExaminaMorphQuotaMemory=quotaMemory;
  let lexMenuCourse=null;
  function questionMenus(){
   const open=new Set([...questionHost.querySelectorAll('details[data-question][open]')].map(panel=>panel.dataset.question));
