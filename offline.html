@@ -6404,7 +6404,7 @@ function morphSyntagmRows(cfg,greek=false){
  return Array.from({length:cfg.offer},(_,i)=>
   '<p class="exam-item reference-analysis-item morph-syntagm-item" data-syntagm-slot="'+i+'" contenteditable="false">'+
   '<span class="exam-letter">'+String.fromCharCode(97+i)+'.</span> <i contenteditable="plaintext-only" spellcheck="false">'+esc(lines[i]||proposed[i]?.title||
-  (morphCompoundIntroduced(greek)?(greek?'(artículo) + (sustantivo) + (adjetivo)':'(sustantivo) + (adjetivo)'):'(sustantivo)'))+'</i></p>').join('');
+  (morphCompoundIntroduced(greek)?(greek?(greekLimit()>=7?'(artículo) + (adjetivo/pronombre) + (sustantivo)':'(artículo) + (adjetivo) + (sustantivo)'):'(sustantivo) + (adjetivo)'):'(sustantivo)'))+'</i></p>').join('');
 }
 function morphCompoundIntroduced(greek=false){
  return greek?greekLimit()>=5:latinCompleteCompoundActive(selectedUnits());
