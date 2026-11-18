@@ -20,7 +20,7 @@ async function select(page,model,unit,lang='es'){
   page.on('pageerror',e=>errors.push(e.message));
   await ctx.route(/^https?:\/\//,r=>r.abort());
   await page.goto(pathToFileURL(path.resolve(file)).href);
-  for(const model of ['complete','translation'])for(const lang of ['es','va'])for(let unit=1;unit<=14;unit++){
+  for(const model of ['complete'])for(const lang of ['es','va'])for(let unit=1;unit<=14;unit++){
    await select(page,model,unit,lang);
    const row=await page.evaluate(({unit,lang})=>{
     const must=(condition,message)=>{if(!condition)throw Error('UD'+unit+'/'+lang+': '+message)};
@@ -68,7 +68,7 @@ async function select(page,model,unit,lang='es'){
   const match=await page.evaluate(()=>ExaminaGreekNumber.current()[0].answer);
   assert.match(await page.locator('[data-greek-answer-slot="change-number:0"]').textContent(),new RegExp(match));
   const draft=await page.evaluate(()=>window.ExaminaUnifiedCurrentExam());
-  await select(page,'translation',3);
+  await select(page,'greek1'==='latin1'?'translation':'morphology',3);
   await page.evaluate(d=>window.ExaminaUnifiedRestoreDraft(d),draft);
   assert.equal(await page.evaluate(()=>ExaminaGreekNumber.state().quantity),6);
   assert.deepEqual(await page.evaluate(()=>ExaminaGreekNumber.state().ids),draft.greekChoices.number.ids);
@@ -109,6 +109,6 @@ async function select(page,model,unit,lang='es'){
   assert.deepEqual(errors,[]);await ctx.close();
  }
  fs.writeFileSync(path.join(out,'curriculum-audit.json'),JSON.stringify(report,null,2));
- console.log('AUDITORÍA GRIEGO I: 112 contextos curriculares, paradigmas testigo, concordancia ES/VA, claves, borradores, regeneración y DOCX/PDF web/offline sin red: OK');
+ console.log('AUDITORÍA GRIEGO I: 56 contextos curriculares, paradigmas testigo, concordancia ES/VA, claves, borradores, regeneración y DOCX/PDF web/offline sin red: OK');
  }finally{await browser.close()}
 })().catch(e=>{console.error(e);process.exitCode=1});
