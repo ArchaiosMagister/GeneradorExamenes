@@ -3,7 +3,7 @@
  * Los datos nuevos viven en los tres bancos greek-choice-*.js. */
 (function(){
  'use strict';
- const onlyGreek=()=>currentCourse()==='greek1'&&['complete','translation'].includes($('model').value);
+ const onlyGreek=()=>currentCourse()==='greek1'&&$('model').value==='complete';
  // No propagar el paradigma oxítono heredado de ὀλιγός: el lema es
  // ὀλίγος. Acotar la exclusión a los modelos de esta integración para
  // conservar intacto el modelo de morfología solicitado por el docente.
@@ -17,10 +17,10 @@
   va:['zero','una','dos','tres','quatre','cinc']};
  const num=n=>numerals[$('lang').value][n]||String(n);
  const storeKey='examina_greek_choice_options_v1';
- let flags={complete:{number:true,retro:true,roots:true},translation:{number:true,retro:true,roots:true}};
+ let flags={complete:{number:true,retro:true,roots:true}};
  try{
   const old=JSON.parse(localStorage.getItem(storeKey)||'{}');
-  for(const mode of ['complete','translation'])
+  for(const mode of ['complete'])
    for(const key of ['number','retro','roots'])
     if(typeof old?.[mode]?.[key]==='boolean')flags[mode][key]=old[mode][key];
  }catch(_){}
@@ -40,9 +40,6 @@
   }
   return previousAvailability(kind);
  };
- // Traducción mantiene su número propio de oraciones, pero ahora también
- // puede ofrecer las cinco alternativas morfosintácticas.
- greekModes.translation.points=[1,1,1,0,1,6];
  function subtitle(kind,letter,title){
   const node=document.createElement('p');
   node.className='exam-item greek-choice-subquestion';
