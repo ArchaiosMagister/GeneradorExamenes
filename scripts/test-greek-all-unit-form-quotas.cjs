@@ -68,7 +68,7 @@ async function checkUnit(page,unit,model){
     const distinct=new Set(available.map(x=>x.id));
     const expected=Math.min(requested,distinct.size);
     if(rendered.count!==expected||rendered.names.some(x=>x!==kind)){
-     throw Error(JSON.stringify({unit,model,kind,requested,expected,available:distinct.size,rendered}));
+     throw Error(JSON.stringify({unit,model,kind,requested,expected,available:distinct.size,rendered,actualQuotas:examMorphQuotaValues(),stateForms:greekExamState?.ids?.forms,signature:greekExamState?.signature,dom:document.querySelector("#paper [data-greek-kind=forms]")?.nextElementSibling?.outerHTML?.slice(0,350)}));
     }
     seen.push({requested,actual:rendered.count,available:distinct.size});
    }
