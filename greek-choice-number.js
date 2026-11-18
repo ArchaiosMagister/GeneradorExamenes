@@ -26,6 +26,8 @@
     continue;
    }
    for(const adj of adjectives){
+    // Reutilizar el repertorio de colocaciones semánticamente revisadas.
+    if(!greekSemanticallyValidSyntagm(noun,adj))continue;
     const group=greekCompleteNominalGroup(noun,true,adj);
     if(!group)continue;
     for(const k of cases){
