@@ -118,14 +118,15 @@ async function testLatin(page,course,unit,lang,quotas){
   const nouns=all[0],adjectives=all[1];
   const invalidNouns=nouns.filter(x=>latinSyntagmNounUnit(x.declension)>unit);
   const invalidAdj=unit<(currentCourse()==='latin4'?3:2)?adjectives.length:0;
-  const later=nouns.concat(adjectives).filter(x=>(x.units||[])
-   .some(label=>examUnitNumber(label)>unit));
-  return {invalidNouns:invalidNouns.length,invalidAdj,later:later.length,
+  const selected=new Set(latinSharedBank.vocabulary(currentCourse(),chosen).map(x=>examKey(x.entry)));
+  const fromElsewhere=nouns.concat(adjectives).filter(x=>!selected.has(examKey(x.entry)));
+  return {invalidNouns:invalidNouns.length,invalidAdj,fromElsewhere:fromElsewhere.length,
    nouns:nouns.length,adjectives:adjectives.length};
  },unit);
  assert.equal(curricular.invalidNouns,0,label+': declinación aún no explicada');
  assert.equal(curricular.invalidAdj,0,label+': adjetivo aún no explicado');
- if(unit>=2)assert(curricular.later>0,label+': todavía restringido al vocabulario de la unidad '+JSON.stringify(curricular));
+ if(unit>=2)assert(curricular.fromElsewhere>0,
+  label+': todavía restringido al vocabulario de las unidades elegidas '+JSON.stringify(curricular));
  return curricular;
 }
 
