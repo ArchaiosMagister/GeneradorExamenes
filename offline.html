@@ -15458,7 +15458,7 @@ Object.assign(adjectives,additionalAdjectives);
   const nominative=greekVerifiedCorpus.filter(x=>x.kind==='declension'&&x.verified&&
    greekMorphologyEligible(x,limit)&&x.table?.rows?.length>=5&&
    greekSyntagmNounGenders[x.id.slice(2)]&&!(x.lemmas||[]).some(isProperNounLemma)&&
-   studied(x.lemmas[0],limit));
+   (limit<5||studied(x.lemmas[0],limit)));
   const available=limit>=5?greekAvailableSyntagmAdjectives(limit)
    .filter(adj=>studied(adj.lemma,limit)&&adjectives[greekBankKey(adj.lemma)]):[];
   const prepositions=[
