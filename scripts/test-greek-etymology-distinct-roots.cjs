@@ -21,7 +21,29 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
     const expected=['prologo-democracia','anfibio-zoologia','hipofonia-biografia',
      'hipergrafia-psicologia','paradoja-bibliografia','hipodermis-filosofia',
      'hiperemia-psicologia','hipercromia-economia'];
-    if(catalog.length<23)throw Error('Se han perdido oraciones del banco etimológico');
+    if(catalog.length<125)throw Error('La cobertura etimológica se ha reducido: '+catalog.length);
+    const newRecords=catalog.filter(r=>r.id.startsWith('cobertura-'));
+    if(newRecords.length<100)throw Error('Faltan nuevos ejercicios: '+newRecords.length);
+    const firstStudiedUnit=root=>{
+     const matches=greekEtymologyBank.entries.filter(e=>e.verified&&
+      String(e.word).split(/\\s*\\|\\s*/).some(variant=>greekBankKey(variant)===greekBankKey(root)));
+     return matches.length?Math.min(...matches.map(e=>e.firstUnit)):Infinity;
+    };
+    const newByUnit=Object.fromEntries(Array.from({length:12},(_,i)=>[i+1,0]));
+    for(const record of newRecords){
+     const first=Math.max(...record.roots.flat().map(firstStudiedUnit));
+     if(!Number.isFinite(first)||first>12)throw Error('Étimo sin estudiar: '+record.id);
+     newByUnit[first]++;
+    }
+    for(let unit=1;unit<=12;unit++)
+     if(newByUnit[unit]<3)throw Error('Insuficientes oraciones nuevas para UD'+unit+': '+newByUnit[unit]);
+    // Cobertura por familia léxica, evitando contar como nuevos las
+    // repeticiones de una misma ficha entre unidades.
+    const represented=new Set(catalog.flatMap(r=>r.roots.flat().map(api.canonicalRoot)));
+    const uncovered=greekEtymologyBank.entries.filter(e=>e.verified&&
+     !String(e.word).split(/\\s*\\|\\s*/).some(w=>represented.has(api.canonicalRoot(w))))
+     .map(e=>e.word);
+    if(uncovered.length>5)throw Error('Raíces verificadas sin cobertura: '+uncovered.join(', '));
     for(const record of catalog){
      if(known.has(record.id))throw Error('ID duplicado: '+record.id);
      known.add(record.id);
@@ -36,7 +58,8 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
       throw Error('Étimo repetido en '+record.id+': '+record.roots.flat().join(', '));
     }
     for(const id of expected)if(!known.has(id))throw Error('Falta oración '+id);
-    const stats={catalog:catalog.length,perUnit:{},prefixes:{}};
+    const stats={catalog:catalog.length,newRecords:newRecords.length,newByUnit,
+     uncovered,perUnit:{},prefixes:{}};
     for(let unit=1;unit<=14;unit++)for(const lang of ['es','va']){
      $('lang').value=lang;$('lang').dispatchEvent(new Event('change',{bubbles:true}));
      document.querySelectorAll('#unitChoices .unit-choice').forEach(x=>x.checked=
@@ -89,7 +112,7 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
    });
    assert.deepEqual(errors,[],filename+': errores del navegador');
    assert(audit.perUnit['4-es']>=6,'Cobertura insuficiente en UD4');
-   console.log(filename+': '+audit.catalog+' oraciones; UD1–14 ES/VA, prefijos desde UD4, raíces distintas, subrayados y regeneración OK');
+   console.log(filename+': '+audit.catalog+' oraciones ('+audit.newRecords+' nuevas); cobertura UD1–12 '+JSON.stringify(audit.newByUnit)+'; sin representar: '+audit.uncovered.join(', ')+'; UD1–14 ES/VA online/offline OK');
    await page.close();
   }
  }finally{await browser.close()}
