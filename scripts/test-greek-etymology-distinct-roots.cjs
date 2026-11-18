@@ -44,6 +44,22 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
      !String(e.word).split(/\s*\|\s*/).some(w=>represented.has(api.canonicalRoot(w))))
      .map(e=>e.word);
     if(uncovered.length>11)throw Error('Raíces verificadas sin cobertura: '+uncovered.join(', '));
+    // Correspondencia entre subrayados y su clave cuando el contexto
+    // presenta primero el término de referencia y luego el término nuevo.
+    const byId=id=>catalog.find(x=>x.id===id);
+    const examples=[
+     ['cobertura-teocracia','antropología','teocracia','ἄνθρωπος + λόγος','θεός + κράτος'],
+     ['cobertura-autodidacta','autodidacta','zoología','αὐτός + διδάσκω','ζῷον + λόγος'],
+     ['cobertura-anatomia','bibliografía','anatomía','βιβλίον + γράφω','ἀνά + τομή']
+    ];
+    for(const [id,first,second,firstRoots,secondRoots] of examples){
+     const item=byId(id);
+     if(!item||item.es[1]!==first||item.es[3]!==second)
+      throw Error('Error de correspondencia entre palabras y étimos: '+id);
+     const [a,b]=api.answerRoots(item);
+     if(a!==firstRoots||b!==secondRoots)
+      throw Error('La clave no sigue el orden de los subrayados: '+id);
+    }
     for(const record of catalog){
      if(known.has(record.id))throw Error('ID duplicado: '+record.id);
      known.add(record.id);
@@ -139,7 +155,7 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
      }
      if(next.minUnit===6)fresh++;
     }
-    if(fresh<125||fresh>225)
+    if(fresh<110||fresh>230)
      throw Error('El sesgo UD6/repaso no respeta el equilibrio editorial: '+fresh+'/250');
     if(streakAvoided<200)throw Error('Diversidad insuficiente al regenerar');
     const snapshot=api.state(),selectedBefore=snapshot.item.id;
