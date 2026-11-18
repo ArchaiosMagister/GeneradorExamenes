@@ -95,7 +95,9 @@ async function select(page,model,unit,lang='es'){
      if(!blob)throw Error('Word bloqueado');return [...new Uint8Array(await blob.arrayBuffer())];
     },solutions));
     const xml=entry(bytes,'word/document.xml');
-    assert.match(xml,/<w:u w:val="single"\/>/);
+    const underlineCount=(xml.match(/<w:u w:val="single"\/>/g)||[]).length;
+    const sourceUnderlines=await page.locator('.greek-choice-etym-sentence u').count();
+    assert(underlineCount>0,'Word sin subrayados '+file+'/'+model+'/'+lang+' · fuente='+sourceUnderlines+' · modo='+await page.evaluate(()=>$('model').value));
     const subheads=await page.evaluate(()=>[...document.querySelectorAll('.greek-choice-subquestion')].map(x=>wordBlock(x)));
     assert(subheads.every(x=>x.includes('<w:keepNext/>')),'Enunciado de alternativa huérfano en Word');
     for(const answer of answers)assert.equal(xml.includes(answer),solutions,'Clave Word '+stem+': '+answer);
