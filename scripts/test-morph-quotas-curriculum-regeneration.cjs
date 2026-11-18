@@ -49,7 +49,8 @@ async function audit(page,course,model,quotas){
   const counts=['nouns','adjectives','verbs','pronouns'].map(kind=>actual.filter(x=>x===kind).length);
   const display=[...document.querySelectorAll(course==='greek1'&&model==='complete'?
    '#paper .exam-form[data-corpus-id]':'#paper [data-analysis-slot]')].length;
-  return {actual,counts,display,ids,quotas,liveQuotas,poolCounts,selectionCounts,signature:greekExamState?.signature};
+  return {actual,counts,display,ids,quotas,liveQuotas,poolCounts,selectionCounts,signature:greekExamState?.signature,
+   regenerationDebug:window.ExaminaGreekRegenerationDebug};
  },{course,model,quotas});
 }
 async function selectQuotas(page,quotas){
