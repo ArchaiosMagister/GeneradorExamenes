@@ -2263,7 +2263,7 @@
    .map(x=>({...x.record,minUnit:x.minUnit,
     sentence:x.record[$('lang').value==='va'?'va':'es']}));
  }
- let selected=null,signature='',scope='',recent=[];
+ let selected=null,signature='',scope='',recent=[],legacyDraft=null;
  const scopeOf=()=>JSON.stringify([greekMarkedUnits(),$('model').value]);
  const signatureOf=()=>JSON.stringify([scopeOf(),$('lang').value]);
  const rootsOf=item=>new Set(item.roots.flat().map(canonicalRoot));
@@ -2313,7 +2313,13 @@
  function current(){
   const sign=signatureOf(),newScope=scopeOf(),pool=candidates();
   if(newScope!==scope){
-   scope=newScope;recent=[];selected=null;
+   scope=newScope;recent=[];selected=null;legacyDraft=null;
+  }
+  // Los borradores pueden contener un ejemplo retirado del sorteo nuevo.
+  // Conservarlo hasta que el docente regenere esa alternativa.
+  if(legacyDraft&&selected===legacyDraft.id){
+   signature=sign;
+   return {...legacyDraft,sentence:legacyDraft[$('lang').value==='va'?'va':'es']};
   }
   if(!pool.some(x=>x.id===selected)){
    const next=choose(pool);
@@ -2328,7 +2334,7 @@
   const old=current(),pool=candidates();
   const next=choose(pool,old);
   if(!next)return false;
-  selected=next.id;noteSelection(next);signature=signatureOf();
+  legacyDraft=null;selected=next.id;noteSelection(next);signature=signatureOf();
   return next;
  }
  function render(record){
@@ -2340,8 +2346,26 @@
   catalog:()=>records.map(x=>({...x,roots:x.roots.map(pair=>pair.slice())})),
   canonicalRoot,restore(data){
   const pool=candidates(),valid=new Set(pool.map(x=>x.id));
-  if(valid.has(data?.selected)){
-   selected=data.selected;scope=scopeOf();signature=signatureOf();
+  let restored=null;
+  if(valid.has(data?.selected))restored={id:data.selected};
+  else {
+   const item=data?.item,roots=item?.roots;
+   const acceptable=String(data?.selected||'').startsWith('cobertura-')&&
+    item?.id===data.selected&&
+    ['es','va'].every(lang=>Array.isArray(item[lang])&&item[lang].length===5)&&
+    Array.isArray(roots)&&roots.length===2&&roots.every(pair=>Array.isArray(pair)&&pair.length===2)&&
+    distinctRoots(item)&&
+    roots.flat().every(root=>firstStudiedUnit.has(normalize(root)));
+   const minUnit=acceptable?Math.max(...roots.flat().map(root=>firstStudiedUnit.get(normalize(root)))):Infinity;
+   if(acceptable&&minUnit<=greekLimit()){
+    legacyDraft={id:item.id,es:item.es.slice(),va:item.va.slice(),
+     roots:roots.map(pair=>pair.slice())};
+    restored=legacyDraft;
+   }
+  }
+  if(restored){
+   if(valid.has(data?.selected))legacyDraft=null;
+   selected=restored.id;scope=scopeOf();signature=signatureOf();
    recent=Array.isArray(data?.recent)?data.recent.filter(id=>valid.has(id)).slice(-4):[];
    if(recent[recent.length-1]!==selected)noteSelection({id:selected});
   }
