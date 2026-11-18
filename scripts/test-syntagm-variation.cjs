@@ -119,6 +119,15 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
    'La pregunta de morfología debe dar enunciados completos: '+morphological.join(' | '));
   const stems=morphological.map(x=>x.split(' + ')[1].split(',')[0]);
   assert.equal(new Set(stems).size,stems.length,'La morfología debe diversificar los adjetivos dentro de la pregunta');
+  const largest=await page.evaluate(()=>{
+   $('morphOffer').value='12';
+   generate();
+   return [...$('paper').querySelectorAll('[data-syntagm-slot] > i')].map(node=>node.textContent);
+  });
+  assert.equal(largest.length,12);
+  assert(largest.every(text=>/^ὁ, ἡ, τό \+ \S+, .+ \+ \S+, /u.test(text)),
+   'Las 12 opciones de UD5 deben tener un enunciado completo');
+  assert.equal(new Set(largest).size,largest.length,'No repetir sintagmas si hay alternativas');
   // La edición docente tiene prioridad sobre la propuesta automática.
   const manual=await page.evaluate(()=>{
    document.getElementById('morphSyntagms').value='ὁ σοφὸς ἄνθρωπος';

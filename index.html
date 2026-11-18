@@ -2196,12 +2196,64 @@ const latinSharedBank=(()=>{
  };
 })();
 /* Editable syntagm slots; auto-agreement requires verified paradigms. */
+function greekMorphSyntagmPool(){
+ const limit=greekLimit();
+ const nouns=greekVerifiedCorpus.filter(x=>x.verified&&x.kind==='declension'&&
+  greekMorphologyEligible(x,limit)&&!(x.lemmas||[]).some(isProperNounLemma));
+ if(limit<5)return nouns.map(x=>({title:limit>=3?greekSyntagmEnunciation(x):
+  (x.lemmas?.[0]||String(x.prompt).replace(/^Declina\s+/u,'')),minUnit:x.minUnit}));
+ const modifiers=greekAvailableSyntagmModifiers(limit);
+ return nouns.filter(x=>greekSyntagmNounGenders[x.id.slice(2)])
+  .flatMap(noun=>modifiers.map(modifier=>{
+   const group=greekCompleteNominalGroup(noun,true,modifier);
+   return group&&{...group,title:group.enunciation,minUnit:noun.minUnit};
+  })).filter(Boolean);
+}
+function greekSelectMorphSyntagms(pool,count){
+ const byNoun=new Map();
+ for(const group of pool){
+  if(!byNoun.has(group.noun))byNoun.set(group.noun,new Map());
+  byNoun.get(group.noun).set(group.adjective,group);
+ }
+ const modifiers=greekWeightedSyntagmAdjectives(greekAvailableSyntagmModifiers(greekLimit()));
+ const matches=new Map();
+ // Reasignar un sustantivo si otro solo puede usar su modificador.
+ const assign=(choices,visited)=>{
+  for(const {lemma} of modifiers){
+   if(!choices.has(lemma)||visited.has(lemma))continue;
+   visited.add(lemma);
+   if(!matches.has(lemma)||assign(matches.get(lemma),visited)){
+    matches.set(lemma,choices);
+    return true;
+   }
+  }
+  return false;
+ };
+ const nouns=greekCurricularSample([...byNoun.values()].map(choices=>({
+  choices,minUnit:choices.values().next().value.minUnit
+ })),byNoun.size);
+ for(const {choices} of nouns){
+  assign(choices,new Set());
+  if(matches.size===count)break;
+ }
+ const picked=[...matches].map(([lemma,choices])=>choices.get(lemma));
+ const usedNouns=new Set(picked.map(group=>group.noun));
+ const usedModifiers=new Set(picked.map(group=>group.adjective));
+ const remaining=sample(pool,pool.length).filter(group=>!picked.includes(group));
+ while(picked.length<count&&remaining.length){
+  let index=remaining.findIndex(group=>!usedNouns.has(group.noun));
+  if(index<0)index=remaining.findIndex(group=>!usedModifiers.has(group.adjective));
+  const [group]=remaining.splice(Math.max(0,index),1);
+  picked.push(group);usedNouns.add(group.noun);usedModifiers.add(group.adjective);
+ }
+ return picked;
+}
 function morphSyntagmRows(cfg,greek=false){
  const lines=String(document.getElementById('morphSyntagms')?.value||'')
   .split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
  const proposed=stickyExamRows('decl',()=>{
   if(greek){
-   const pool=greekMorphologyReplacementPool('decl');
+   const pool=greekMorphSyntagmPool();
    return greekLimit()<5?greekCurricularSample(pool,cfg.offer):
     greekSelectMorphSyntagms(pool,cfg.offer);
   }
@@ -4731,15 +4783,13 @@ function greekExamControls(){
     warnExamManualSolution();
    });
    edit.append(input);word.append(edit);
-   if(['declension','conjugation','forms'].includes(kind)){
-    const single=document.createElement('button');single.type='button';
-    single.className='secondary exam-regenerate-word';
-    single.title='Cambiar solo esta palabra';
-    single.textContent=$('lang').value==='va'?'Una altra':'Otra';
-    single.setAttribute('aria-label','Regenerar '+label.toLowerCase()+' '+(index+1));
-    single.onclick=()=>regenerateExamWord(({declension:'decl',conjugation:'verb',forms:'forms'})[kind],index);
-    word.append(single);
-   }
+   const single=document.createElement('button');single.type='button';
+   single.className='secondary exam-regenerate-word';
+   single.title='Cambiar solo esta palabra';
+   single.textContent=$('lang').value==='va'?'Una altra':'Otra';
+   single.setAttribute('aria-label','Regenerar '+label.toLowerCase()+' '+(index+1));
+   single.onclick=()=>regenerateExamWord(({declension:'decl',conjugation:'verb',forms:'forms',pronouns:'pronouns',etymology:'etymology'})[kind],index);
+   word.append(single);
    const remove=document.createElement('button');remove.type='button';remove.className='secondary';
    remove.textContent='Quitar forma '+(index+1);
    remove.setAttribute('aria-label','Quitar '+(kind==='conjugation'?headLex(item.lemmas[0]):item.prompt));
@@ -5497,6 +5547,8 @@ function examRegenerationSlot(sheet,kind,index){
   if(kind==='forms')return greek?
    sheet.querySelectorAll('.exam-form')[index]||null:
    sheet.querySelector('[data-analysis-slot="'+index+'"]');
+  if(greek&&kind==='pronouns')return sheet.querySelectorAll('.exam-pronouns tbody tr')[index]||null;
+  if(greek&&kind==='etymology')return sheet.querySelectorAll('.exam-etymology > [data-corpus-id]')[index]||null;
  }
  if(kind.startsWith('lex-')){
   const [part]=kind.slice(4).split(':');
@@ -5540,7 +5592,7 @@ function renderOnlyRegeneratedExamWord(kind,index,render){
  if(oldKey&&newKey&&!kind.startsWith('lex-')){
   if(currentCourse()==='greek1'&&$('model').value==='complete'){
    // No sustituir todas las soluciones cuando se cambia solo una palabra.
-   const part={decl:'declension',verb:'conjugation',forms:'forms'}[kind];
+   const part={decl:'declension',verb:'conjugation',forms:'forms',pronouns:'pronouns',etymology:'etymology'}[kind];
    const oldHeading=oldKey.querySelector('h3[data-greek-kind="'+part+'"]');
    const newHeading=newKey.querySelector('h3[data-greek-kind="'+part+'"]');
    const answerAt=(head,position)=>{
@@ -5597,72 +5649,29 @@ function greekMorphologyReplacementPool(kind){
     (x.category==='verbs'||/verbo|persona|indicativo|deponente|infinitivo|participio|aoristo|imperativo|voz media/i.test(x.answer))
    ));
  }
- if(kind!=='decl')return [];
- const nouns=eligible.filter(x=>x.kind==='declension');
- if(limit<5)return nouns.map(x=>({title:limit>=3?greekSyntagmEnunciation(x):
-  (x.lemmas?.[0]||String(x.prompt).replace(/^Declina\s+/u,'')),minUnit:x.minUnit}));
- const modifiers=greekAvailableSyntagmModifiers(limit);
- return nouns.filter(x=>greekSyntagmNounGenders[x.id.slice(2)])
-  .flatMap(noun=>modifiers.map(modifier=>{
-   const group=greekCompleteNominalGroup(noun,true,modifier);
-   return group&&{...group,title:group.enunciation,minUnit:noun.minUnit};
-  })).filter(Boolean);
-}
-function greekSelectMorphSyntagms(pool,count){
- const byNoun=new Map();
- for(const group of pool){
-  if(!byNoun.has(group.noun))byNoun.set(group.noun,new Map());
-  byNoun.get(group.noun).set(group.adjective,group);
- }
- const modifiers=greekWeightedSyntagmAdjectives(greekAvailableSyntagmModifiers(greekLimit()));
- const matches=new Map();
- // Reasignar un sustantivo si otro solo puede usar su modificador.
- const assign=(choices,visited)=>{
-  for(const {lemma} of modifiers){
-   if(!choices.has(lemma)||visited.has(lemma))continue;
-   visited.add(lemma);
-   if(!matches.has(lemma)||assign(matches.get(lemma),visited)){
-    matches.set(lemma,choices);
-    return true;
-   }
-  }
-  return false;
- };
- const nouns=greekCurricularSample([...byNoun.values()].map(choices=>({
-  choices,minUnit:choices.values().next().value.minUnit
- })),byNoun.size);
- for(const {choices} of nouns){
-  assign(choices,new Set());
-  if(matches.size===count)break;
- }
- const picked=[...matches].map(([lemma,choices])=>choices.get(lemma));
- const usedNouns=new Set(picked.map(group=>group.noun));
- const usedModifiers=new Set(picked.map(group=>group.adjective));
- const remaining=sample(pool,pool.length).filter(group=>!picked.includes(group));
- while(picked.length<count&&remaining.length){
-  let index=remaining.findIndex(group=>!usedNouns.has(group.noun));
-  if(index<0)index=remaining.findIndex(group=>!usedModifiers.has(group.adjective));
-  const [group]=remaining.splice(Math.max(0,index),1);
-  picked.push(group);usedNouns.add(group.noun);usedModifiers.add(group.adjective);
- }
- return picked;
+ return kind==='decl'?greekMorphSyntagmPool():[];
 }
 function regenerateExamWord(kind,index){
- if(!['decl','verb','forms','pronouns'].includes(kind)||!Number.isInteger(index)||index<0)return;
+ if(!['decl','verb','forms','pronouns','etymology'].includes(kind)||!Number.isInteger(index)||index<0)return;
  const greek=currentCourse()==='greek1',morph=['morf','morphology'].includes($('model').value);
- if(kind==='pronouns'&&(!greek||!morph))return;
+ if((kind==='pronouns'&&!greek)||(kind==='etymology'&&(!greek||morph)))return;
  if(greek&&!morph){
-  const gkind=({decl:'declension',verb:'conjugation',forms:'forms'})[kind];
+  const gkind=({decl:'declension',verb:'conjugation',forms:'forms',pronouns:'pronouns',etymology:'etymology'})[kind];
   const ids=greekExamState?.ids?.[gkind],pool=greekChoicePool(gkind);
   if(!ids||index>=ids.length)return;
   const used=new Set(ids.filter((_,i)=>i!==index));
   const previous=pool.find(x=>x.id===ids[index]);
   const preserveQuota=gkind==='forms'&&examMorphQuotasActive();
+  const otherItems=pool.filter(x=>used.has(x.id));
+  const identity=item=>gkind==='conjugation'?headLex(item.lemmas[0]):item.prompt;
+  const usedPrompts=new Set(otherItems.map(identity));
   const candidates=pool.filter(x=>!used.has(x.id)&&x.id!==ids[index]&&
+   (!previous||identity(x)!==identity(previous))&&
    (!preserveQuota||examGreekWordClass(x)===examGreekWordClass(previous)));
-  const otherItems=ids.filter((_,i)=>i!==index).map(id=>pool.find(x=>x.id===id)).filter(Boolean);
+  const distinct=candidates.filter(x=>!usedPrompts.has(identity(x)));
+  const eligible=distinct.length?distinct:candidates;
   const alternatives=gkind==='forms'?
-   greekAdjectiveReplacementChoices(previous,otherItems,candidates):candidates;
+   greekAdjectiveReplacementChoices(previous,otherItems,eligible):eligible;
   // Regeneración individual sin sesgo a la última UD: todo el repertorio
   // gramatical ya explicado es válido y proporciona más alternativas.
   const next=sample(alternatives,1)[0];
