@@ -308,10 +308,19 @@
  // con el bloque de enunciados del cambio de número en esa misma operación.
  const previousSentenceGlossaryRefresh=refreshSentenceGlossary;
  refreshSentenceGlossary=function(...args){
+  if(onlyGreek()){
+   // Evitar reconstruir el glosario ordinario solo porque contenga los lemas
+   // adicionales de cambio de número: sus selectores docentes conservan foco.
+   $('examSentenceGlossary')?.querySelectorAll('[data-greek-number-entry]')
+    .forEach(el=>el.remove());
+  }
   const result=previousSentenceGlossaryRefresh(...args);
   if(onlyGreek())refreshNumberGlossary($('paper').querySelector('.exam-sheet'));
   return result;
  };
+ // Word y PDF llaman al cierre sincronizado registrado antes de instalar
+ // esta extensión: apuntarlo al glosario unificado, no a la versión antigua.
+ window.ExaminaFlushSentenceGlossary=refreshSentenceGlossary;
  const previousGenerate=generateGreekExam;
  generateGreekExam=function(){
   previousGenerate();
