@@ -140,6 +140,44 @@
   p.innerHTML=edits.has('roots:0')?editedRoots(item,edits.get('roots:0')):window.ExaminaGreekEtymSentence.render(item);
   box.append(p);return box;
  }
+ // El cambio de número evalúa la flexión, no la memoria léxica.
+ // Mostrar los enunciados de los paradigmas ya seleccionados, nunca la respuesta.
+ function numberGlossaryLemmas(){
+  const rows=APIs.number()?.current()||[];
+  const nouns=new Map(greekVerifiedCorpus.filter(x=>x.kind==='declension').map(x=>[x.id,x]));
+  const adjectives=greekAvailableSyntagmAdjectives(greekLimit());
+  const result=new Set();
+  for(const row of rows){
+   const noun=nouns.get(row.source);
+   if(noun){
+    const entry=greekNominalEnunciation(noun);
+    if(entry)result.add(entry);
+   }
+   if(row.adjective&&noun){
+    const modifier=adjectives.find(x=>x.lemma===row.adjective);
+    const parts=modifier?greekSyntagmEnunciation(noun,modifier).split(' + '):[];
+    result.add(parts[1]||row.adjective);
+   }
+   if(row.pronoun==='αὐτός')result.add('αὐτός, αὐτή, αὐτό');
+  }
+  return [...result].filter(Boolean);
+ }
+ function refreshNumberGlossary(sheet){
+  if(!sheet||!sheet.classList.contains('greek-choice-complete-exam'))return;
+  const previous=sheet.querySelector(':scope > #greekNumberGlossary');
+  const allowed=$('autoGloss')?.checked!==false&&included('number')&&
+   !!sheet.querySelector(':scope > .greek-choice-option[data-greek-option="change-number"]');
+  const terms=allowed?numberGlossaryLemmas():[];
+  if(!terms.length){previous?.remove();return}
+  const section=previous||document.createElement('section');
+  section.id='greekNumberGlossary';
+  section.className='greek-number-glossary';
+  section.contentEditable='false';
+  const head=t('Enunciados para el cambio de número','Enunciats per al canvi de nombre');
+  section.innerHTML='<p class="exam-gloss-title"><strong>'+esc(head)+'</strong></p>'+
+   '<div class="final-gloss">'+terms.map(entry=>'<div class="gloss-item">'+esc(entry)+'</div>').join('')+'</div>';
+  if(!previous)sheet.querySelector(':scope > #answerkey')?.before(section);
+ }
  function itemText(node){
   const copy=node.cloneNode(true);copy.querySelector(':scope > .exam-letter')?.remove();
   return copy.textContent.replace(/^\s*\d+\.\s*/,'').trim();
@@ -210,6 +248,7 @@
   const anchor=sheet.querySelector(':scope > #examSentenceGlossary')||sheet.querySelector(':scope > #answerkey');
   if(anchor)sheet.insertBefore(frag,anchor);else sheet.append(frag);
   decorateItems(sheet);
+  refreshNumberGlossary(sheet);
   syncExtraAnswers(sheet);
   window.greekLastPreview=$('paper').innerHTML;
   if(window.greekLastExam)window.greekLastExam.grouped=true;
@@ -322,6 +361,7 @@
    before.replaceWith(after);
   }
   syncExtraAnswers(oldSheet,kind,index);
+  if(kind==='change-number')refreshNumberGlossary(oldSheet);
   $('paper').replaceChildren(oldSheet);
   if($('model').value==='complete')greekExamControls();else refreshManualMorphWords();
   window.greekLastPreview=$('paper').innerHTML;refreshCustomRows();
@@ -473,6 +513,8 @@
  for(const id of ['course','model','lang'])$(id)?.addEventListener('change',()=>queueMicrotask(ensureMenu));
  document.addEventListener('change',event=>{
   if(event.target?.matches?.('#unitChoices .unit-choice'))queueMicrotask(ensureMenu);
+  if(event.target?.matches?.('#autoGloss'))queueMicrotask(()=>
+   refreshNumberGlossary($('paper').querySelector('.exam-sheet')));
  });
  $('paper')?.addEventListener('input',event=>{
   if(!onlyGreek())return;
@@ -500,7 +542,10 @@
   '.paper .greek-choice-option > .exam-item + .exam-item{margin-top:4pt}'+
   '.paper .greek-choice-option .exam-etymology{display:grid;grid-template-columns:1fr;row-gap:4pt}'+
   '.paper .greek-choice-option .exam-etymology>[data-corpus-id]{display:block;width:auto;margin:0}'+
-  '.paper .greek-choice-etym-sentence u{text-decoration:underline;text-underline-offset:2px}';
+  '.paper .greek-choice-etym-sentence u{text-decoration:underline;text-underline-offset:2px}'+
+  '.paper .greek-number-glossary{margin:8pt 0 0;break-inside:auto}'+
+  '.paper .greek-number-glossary .exam-gloss-title{margin-bottom:4pt}'+
+  '.paper .greek-number-glossary .final-gloss{columns:2;column-gap:24pt}';
  document.head.append(style);
  function snapshotChoices(){
   return {flags:{...flags[$('model').value]},number:APIs.number().state(),
@@ -518,6 +563,7 @@
   }
   lastScope=scopeKey();edits.clear();
   decorateItems($('paper'));
+  refreshNumberGlossary($('paper').querySelector('.exam-sheet'));
   for(const row of $('paper').querySelectorAll('[data-greek-choice-slot]'))
    edits.set(row.dataset.greekChoiceSlot,itemText(row));
   ensureMenu();
