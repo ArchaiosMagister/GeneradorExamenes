@@ -253,6 +253,10 @@
   decorateItems(sheet);
   refreshNumberGlossary(sheet);
   syncExtraAnswers(sheet);
+  // El motor aplica ajustes antes del reagrupamiento. Recalcular las reglas
+  // sobre los títulos definitivos 1, 2 y 3 evita perder espaciados al cambiar
+  // unidad, regenerar un apartado o recuperar un borrador.
+  applyExamVisualFormat();
   window.greekLastPreview=$('paper').innerHTML;
   if(window.greekLastExam)window.greekLastExam.grouped=true;
  }
@@ -282,6 +286,14 @@
    }
   }
  }
+ // El glosario de oraciones se recalcula al editar; evitar duplicidades
+ // con el bloque de enunciados del cambio de número en esa misma operación.
+ const previousSentenceGlossaryRefresh=refreshSentenceGlossary;
+ refreshSentenceGlossary=function(...args){
+  const result=previousSentenceGlossaryRefresh(...args);
+  if(onlyGreek())refreshNumberGlossary($('paper').querySelector('.exam-sheet'));
+  return result;
+ };
  const previousGenerate=generateGreekExam;
  generateGreekExam=function(){
   previousGenerate();
