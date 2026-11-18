@@ -57,10 +57,11 @@ for(const file of ['index.html','offline.html'])for(const model of ['complete'])
    const sub=sheet.querySelector('.greek-choice-subquestion');
    const roman=sheet.querySelector('.greek-choice-generated-item');
    const etym=sheet.querySelector('.greek-choice-option .exam-etymology');
-   return {main:parseFloat(getComputedStyle(main).marginLeft),
-    sub:parseFloat(getComputedStyle(sub).marginLeft),
-    roman:parseFloat(getComputedStyle(roman).marginLeft),
-    etym:parseFloat(getComputedStyle(etym).marginLeft),
+   const start=el=>parseFloat(getComputedStyle(el).marginLeft)+
+    parseFloat(getComputedStyle(el).paddingLeft);
+   const etymFirst=etym.querySelector('[data-corpus-id]');
+   return {main:start(main),sub:start(sub),roman:start(roman),
+    etym:start(etym)+parseFloat(getComputedStyle(etymFirst).paddingLeft),
     before:parseFloat(getComputedStyle(main).marginTop),
     markers:[...sheet.querySelectorAll('.greek-choice-roman-marker')].map(x=>x.textContent)};
   };
@@ -89,9 +90,9 @@ for(const file of ['index.html','offline.html'])for(const model of ['complete'])
  const firstWord=await page.evaluate(()=>wordBlock(document.querySelector('.greek-choice-subquestion')));
  const thirdWord=await page.evaluate(()=>wordBlock(document.querySelector('.greek-choice-generated-item')));
  const mainWord=await page.evaluate(()=>wordBlock(document.querySelector('p.exam-question[data-exam-kind="greek-competence"]')));
- assert(firstWord.includes('w:left="1437"')&&firstWord.includes('w:hanging="369"'));
- assert(thirdWord.includes('w:left="1806"')&&thirdWord.includes('w:hanging="369"'));
- assert(mainWord.includes('w:left="1069"')&&mainWord.includes('w:before="420"'));
+ assert(firstWord.includes('w:left="1069"')&&firstWord.includes('w:hanging="369"'));
+ assert(thirdWord.includes('w:left="1437"')&&thirdWord.includes('w:hanging="369"'));
+ assert(mainWord.includes('w:left="700"')&&mainWord.includes('w:before="420"'));
  const plurilingual=page.locator('input[data-exam-visual-key="greek1/complete/exam:greek-plurilingual"][data-exam-visual-field="before"]');
  await plurilingual.fill('30');await plurilingual.press('Tab');
  const secondHeading=await page.evaluate(()=>({
@@ -131,7 +132,7 @@ for(const file of ['index.html','offline.html'])for(const model of ['complete'])
   return {text:target.textContent,marker:target.querySelector('.exam-letter')?.textContent,input:input.value};
  });assert.equal(edited.marker,'i.');assert(edited.text.includes('λόγος'));assert.equal(edited.input,'λόγος');
  const bytes=Buffer.from(await page.evaluate(async()=>{const old=downloadBlob;let b;try{downloadBlob=(_n,x)=>b=x;exportWord(false)}finally{downloadBlob=old}if(!b)throw Error('Word bloqueado');return [...new Uint8Array(await b.arrayBuffer())]}));
- const xml=entry(bytes,'word/document.xml');assert(!xml.includes('◦')&&xml.includes('i.')&&xml.includes('ii.'));assert(xml.includes('w:left="1806"')&&xml.includes('w:left="1437"'),'Word no respeta las sangrías docentes');assert(!/A (?:singular|plural):/.test(xml));assert(xml.includes('w:before="280"')&&xml.includes('w:before="180"'));assert(xml.includes('<w:u w:val="single"/>'));
+ const xml=entry(bytes,'word/document.xml');assert(!xml.includes('◦')&&xml.includes('i.')&&xml.includes('ii.'));assert(xml.includes('w:left="1437"')&&xml.includes('w:left="1069"'),'Word no respeta las sangrías docentes');assert(!/A (?:singular|plural):/.test(xml));assert(xml.includes('w:before="280"')&&xml.includes('w:before="180"'));assert(xml.includes('<w:u w:val="single"/>'));
  const stem=file.replace('.html','')+'-'+model+'-'+lang;fs.writeFileSync(path.join(out,stem+'.docx'),bytes);
  const pending=page.waitForEvent('download');await page.locator('#pdfDownload').click({force:true});await (await pending).saveAs(path.join(out,stem+'.pdf'));
  assert.deepEqual(errors,[]);cases.push({file,model,lang,markers:after.markers.length,points:after.score,spacing:[14,9],draft:true,pdf:true,word:true});await ctx.close();
