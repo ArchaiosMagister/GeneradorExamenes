@@ -1,6 +1,7 @@
 'use strict';
 // Regresión docente: enunciados (sin soluciones) del cambio de número griego.
 // Web / offline, ES / VA, UD3 / UD5, regeneración, controles y Word / PDF.
+// La batería comprueba únicamente enunciados, sin facilitar la solución.
 const assert=require('node:assert/strict');
 const path=require('node:path');
 const {pathToFileURL}=require('node:url');
