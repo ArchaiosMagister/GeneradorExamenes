@@ -15439,12 +15439,6 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   const roots=record.roots.flat().map(canonicalRoot);
   return roots.length===new Set(roots).size;
  }
- function studied(root,limit){
-  return greekEtymologyBank.entries.some(e=>
-   e.verified&&e.firstUnit<=limit&&
-   String(e.word).split(/\s*\|\s*/).some(variant=>normalize(variant)===normalize(root)));
- }
-
  // Compuestos de dos étimos realmente cursados en el banco de etimología.
  // El catálogo se compone en frases nuevas y estables; no se reutiliza
  // ninguna raíz entre las dos palabras subrayadas.
@@ -15464,11 +15458,27 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
    roots:[[first,second],anchor.roots.slice()]
   });
  });
+ // Índice curricular calculado una única vez al cargar el banco: evita
+ // 127 × 4 búsquedas morfológicas al generar o regenerar cada oración.
+ const firstStudiedUnit=new Map();
+ greekEtymologyBank.entries.forEach(e=>{
+  if(!e.verified)return;
+  String(e.word).split(/\s*\|\s*/).forEach(variant=>{
+   const key=normalize(variant),previous=firstStudiedUnit.get(key);
+   if(previous===undefined||e.firstUnit<previous)
+    firstStudiedUnit.set(key,e.firstUnit);
+  });
+ });
+ const eligibleRecords=records.filter(distinctRoots).map(record=>({
+  record,
+  minUnit:Math.max(...record.roots.flat().map(root=>
+   firstStudiedUnit.get(normalize(root))??Infinity))
+ }));
  function candidates(){
   const limit=greekLimit();
   if(limit<1)return [];
-  return records.filter(x=>distinctRoots(x)&&x.roots.every(roots=>roots.every(root=>studied(root,limit))))
-   .map(x=>({...x,sentence:x[$('lang').value==='va'?'va':'es']}));
+  return eligibleRecords.filter(x=>x.minUnit<=limit)
+   .map(x=>({...x.record,sentence:x.record[$('lang').value==='va'?'va':'es']}));
  }
  let selected=null,signature='';
  const signatureOf=()=>JSON.stringify([greekMarkedUnits(),$('model').value,$('lang').value]);
