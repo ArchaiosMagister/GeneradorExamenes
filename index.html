@@ -5344,7 +5344,18 @@ function greekAdjectiveReplacementChoices(previous,otherItems,options){
 }
 function examQuotaGreek(pool,count,previousIds=[]){
  const quotas=examMorphQuotaValues();
- if(!quotas.some(Boolean))return greekCurricularSample(pool,count);
+ if(!quotas.some(Boolean)){
+  const picked=greekCurricularSample(pool,count);
+  const indices=picked.flatMap((item,i)=>examGreekWordClass(item)==='adjectives'?[i]:[]);
+  // Sin cuotas no se fuerza ninguna categoría: solo equilibramos las
+  // dos clases entre los adjetivos que ya ha sorteado el motor.
+  if(indices.length){
+   const choices=greekBalancedAdjectiveSample(
+    pool.filter(item=>examGreekWordClass(item)==='adjectives'),indices.length);
+   indices.forEach((position,i)=>{if(choices[i])picked[position]=choices[i]});
+  }
+  return picked;
+ }
  const types=['nouns','adjectives','verbs','pronouns'],picked=[],usedIds=new Set();
  const previous=new Set(previousIds);
  types.forEach((kind,i)=>{
@@ -5692,7 +5703,8 @@ function regenerateExamQuestion(kind){
   }else{
    const unique=[...new Map(options.map(x=>[identity(x),x])).values()];
    if(unique.length>=previous.length)
-    examSelectionCache.set(key,greekCurricularSample(unique,previous.length));
+    examSelectionCache.set(key,kind==='forms'?
+     examQuotaGreek(unique,previous.length):greekCurricularSample(unique,previous.length));
   }
  }
  if(['morf','morphology'].includes($('model').value)&&
