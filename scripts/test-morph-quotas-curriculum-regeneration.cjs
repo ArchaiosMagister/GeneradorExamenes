@@ -38,11 +38,18 @@ async function audit(page,course,model,quotas){
    return cache.map(x=>course==='greek1'?examGreekWordClass(x):x.category);
   }
   const ids=course==='greek1'&&model==='complete'?[...(greekExamState?.ids?.forms||[])]:null;
+  const liveQuotas=examMorphQuotaValues();
+  const pool=course==='greek1'&&model==='complete'?greekChoicePool('forms'):null;
+  const poolCounts=pool?['nouns','adjectives','verbs','pronouns'].map(kind=>
+   pool.filter(x=>examGreekWordClass(x)===kind).length):null;
+  const selectionCounts=pool?['nouns','adjectives','verbs','pronouns'].map(kind=>
+   examQuotaGreek(pool,liveQuotas.reduce((a,b)=>a+b,0),ids||[])
+    .filter(x=>examGreekWordClass(x)===kind).length):null;
   const actual=categories();
   const counts=['nouns','adjectives','verbs','pronouns'].map(kind=>actual.filter(x=>x===kind).length);
   const display=[...document.querySelectorAll(course==='greek1'&&model==='complete'?
    '#paper .exam-form[data-corpus-id]':'#paper [data-analysis-slot]')].length;
-  return {actual,counts,display,ids,quotas};
+  return {actual,counts,display,ids,quotas,liveQuotas,poolCounts,selectionCounts,signature:greekExamState?.signature};
  },{course,model,quotas});
 }
 async function selectQuotas(page,quotas){
