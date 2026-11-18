@@ -1,0 +1,33 @@
+name: Reconstruir HTML autónomo PR172 (temporal)
+
+on:
+  push:
+    branches:
+      - fix/greek-one-full-model-20261118
+    paths:
+      - .github/workflows/rebuild-greek-two-models-172.yml
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Reconstruir HTML sin publicar
+        run: npm run offline:build
+      - name: Confirmar resultado autónomo en la rama de pruebas
+        run: |
+          git add offline.html
+          if git diff --cached --quiet; then
+            echo "offline.html ya estaba actualizado"
+          else
+            git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" commit -m "Sincronizar versión autónoma con dos modelos de Griego I"
+            git push origin HEAD:fix/greek-one-full-model-20261118
+          fi
