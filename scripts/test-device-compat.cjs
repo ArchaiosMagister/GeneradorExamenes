@@ -155,10 +155,9 @@ async function checkQuestionLayout(page,p,filename){
    assert.deepEqual(issues,[],label);
    if(process.env.QUESTION_SCREENSHOTS&&filename==='index.html'){
     const name=[p.engine,p.width,course,model,theme].join('-')+'.png';
-    const open=await menu.locator(':scope > details[open]').all();
-    for(const panel of open.slice(1))await panel.evaluate(el=>el.open=false);
+    await headings.evaluateAll(items=>items.slice(1).forEach(el=>el.parentElement.open=false));
     await menu.screenshot({path:path.join(process.env.QUESTION_SCREENSHOTS,name)});
-    for(const panel of open.slice(1))await panel.evaluate(el=>el.open=true);
+    await headings.evaluateAll(items=>items.slice(1).forEach(el=>el.parentElement.open=true));
    }
   }
  }
