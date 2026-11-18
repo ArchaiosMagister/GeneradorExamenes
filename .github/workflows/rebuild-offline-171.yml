@@ -1,0 +1,33 @@
+name: Reconstruir HTML autónomo de PR171 (temporal)
+
+on:
+  push:
+    branches:
+      - test/auditar-cuotas-griego-todas-uds-20261118
+    paths:
+      - .github/workflows/rebuild-offline-171.yml
+
+permissions:
+  contents: write
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Reconstruir HTML autónomo sin publicar
+        run: npm run offline:build
+      - name: Guardar solo el HTML autónomo en la rama
+        run: |
+          git add offline.html
+          if git diff --cached --quiet; then
+            echo "offline.html ya estaba actualizado"
+          else
+            git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" commit -m "Actualizar HTML autónomo tras corregir cuotas griegas"
+            git push origin HEAD:test/auditar-cuotas-griego-todas-uds-20261118
+          fi
