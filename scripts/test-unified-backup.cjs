@@ -111,6 +111,26 @@ const bundle=(entries,extra={})=>({schema,version:1,created:'2026-11-13T00:00:00
  assert.equal(state.storage.getItem('examina_unified_archive_v1'),null);
 }
 {
+ // Una copia descargada tiene que superar los mismos límites que su importación.
+ const local=create({'examina-morph-review-v1':{ok:{decision:'excluir'}}});
+ const exported=local.api.makeBackup();
+ assert.equal(local.api.validateBackup(exported),exported,'La copia preparada debe ser reimportable');
+ assert.equal(create().api.prepareImport(exported).stats.newKeys,1);
+
+ // Cada registro individual cabe, pero su suma no cabe en el paquete portable.
+ const huge='x'.repeat(2900000);
+ const full=create({
+  'examina_exam_sentences_v1':{payload:huge},
+  'examina_exam_gloss_choices_v1':{payload:huge},
+  'examina-morph-review-v1':{payload:huge},
+  'examina-greek-discrepancy-v1':{payload:huge},
+  'examina_question_points_v1':{payload:huge},
+  'examina_extra':{payload:huge}
+ });
+ assert.throws(()=>full.api.makeBackup(),/16 MB/,'No descargar copias que no puedan importarse');
+ assert.equal(full.values.size,6,'El rechazo de la exportación nunca modifica los datos locales');
+}
+{
  // Las copias NO activan acreditación morfológica. Solo transportan valores.
  const source=fs.readFileSync(require('node:path').join(__dirname,'../index.html'),'utf8');
  assert.ok(source.includes('window.ExaminaUnifiedCurrentExam='));
