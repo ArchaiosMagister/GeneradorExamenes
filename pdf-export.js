@@ -53,7 +53,14 @@
   paper.removeAttribute('id');
   paper.removeAttribute('contenteditable');
   paper.removeAttribute('spellcheck');
+  // Los ajustes de sangría y separación viven en propiedades del papel.
+  // No eliminarlos al convertir el clon en página de exportación PDF.
+  const formatVars=['--exam-question-before','--exam-culture-gap',
+   '--exam-indent-shift','--exam-sentence-gap']
+   .map(name=>[name,original.style.getPropertyValue(name).trim()])
+   .filter(([,value])=>value);
   paper.style.cssText='width:100%;max-width:none;min-height:0;height:auto;overflow:visible;position:static;padding:0;margin:0;background:white;color:#000;border:0;box-shadow:none;';
+  for(const [name,value] of formatVars)paper.style.setProperty(name,value);
   paper.querySelectorAll('#answerkey,.no-print,[data-exam-subscore],.exam-subscore-inline,.exam-subpoint-label,.exam-print-controls').forEach(el=>el.remove());
   paper.querySelectorAll('[contenteditable]').forEach(el=>el.removeAttribute('contenteditable'));
   const stage=root.document.createElement('div');
