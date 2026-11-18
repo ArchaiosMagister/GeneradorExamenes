@@ -49,7 +49,7 @@ for(const file of ['index.html','offline.html'])for(const model of ['complete'])
  });
  const targetPx=2*96/72;
  assert.equal(tableIntros.menu,'1.a · Declina');
- assert.match(tableIntros.screen.declension.label,/Declina\\./u);
+ assert.match(tableIntros.screen.declension.label,/Declina[.]/u);
  for(const kind of ['declension','conjugation']){
   assert(Math.abs(tableIntros.screen[kind].margin-targetPx)<.3,kind+' sin 2 pt adicionales en pantalla');
   assert(Math.abs(tableIntros.pdf[kind].margin-targetPx)<.3,kind+' sin 2 pt adicionales en PDF');
