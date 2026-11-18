@@ -47,6 +47,21 @@ async function regenerate(page,model){
 async function verify(page,model,lang,unit){
  const mark=model+'/'+lang+'/UD'+unit;
  await configure(page,model,lang,unit,2);
+ // Sin cuotas explícitas, el sorteo mantiene sus categorías aleatorias,
+ // pero entre los adjetivos presentes debe representar ambas terminaciones.
+ if(unit>=5&&model==='morphology'){
+  const unquoted=await page.evaluate(()=>{
+   for(const kind of ['nouns','adjectives','verbs','pronouns']){
+    const el=document.getElementById('quota-'+kind);
+    el.value='0';el.dispatchEvent(new Event('change',{bubbles:true}));
+   }
+   const adjectives=greekMorphologyReplacementPool('forms')
+    .filter(x=>examGreekWordClass(x)==='adjectives');
+   return examQuotaGreek(adjectives,2).map(greekExamAdjectiveEndingType).sort();
+  });
+  assert.deepEqual(unquoted,['2-1-2','2-2'],mark+': sin cuotas no hay representación de ambas clases');
+  await configure(page,model,lang,unit,2);
+ }
  const check=(x,when)=>{
   const classes=x.rows.map(y=>y.type);
   assert.equal(x.review,'review',mark+': la ficha ha cambiado de modalidad');
