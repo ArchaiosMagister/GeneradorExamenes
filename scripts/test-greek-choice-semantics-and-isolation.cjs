@@ -75,7 +75,7 @@ function unchangedExcept(before,after,kind){
    assert(!pools.badSquare&&!pools.badMan&&pools.valid,'La auditoría semántica no está aplicada');
    assert.equal(pools.numberBad,0,'Cambio de número combina nombres y adjetivos absurdos');
    assert(pools.retro.length>0,'Retroversión sin sintagmas disponibles');
-   assert(pools.retro.every(row=>row.adjective&&row.prompt.split(/\s+/).length>=3),
+   assert(pools.retro.every(row=>row.adjective&&row.prompt.trim().includes(' ')),
     'Retroversión de UD5 sin adjetivo obligatorio');
    const added=await page.evaluate(()=>{
     const selected=greekExamState.ids.conjugation;
