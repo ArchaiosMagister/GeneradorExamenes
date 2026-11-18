@@ -50,7 +50,7 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
     const examples=[
      ['cobertura-teocracia','antropología','teocracia','ἄνθρωπος + λόγος','θεός + κράτος'],
      ['cobertura-autodidacta','autodidacta','zoología','αὐτός + διδάσκω','ζῷον + λόγος'],
-     ['cobertura-anatomia','bibliografía','anatomía','βιβλίον + γράφω','ἀνά + τομή']
+     ['cobertura-anatomia','bibliografía','anatomía','βιβλίον + γράφω / γράμμα','ἀνά + τομή']
     ];
     for(const [id,first,second,firstRoots,secondRoots] of examples){
      const item=byId(id);
