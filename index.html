@@ -4546,9 +4546,16 @@ function greekRegenerate(kind){
  const priorAdjectives=greekExamState.adjectiveChoices?
   {...greekExamState.adjectiveChoices}:undefined;
  const priorExam=window.greekLastExam,priorCoverage=$('greekCoverage')?.textContent;
+ const regenerationDebug={kind,quotaForms,startSig:greekExamState.signature,
+  startQuotas:examMorphQuotaValues(),nextIds:next.map(x=>x.id),
+  nextCategories:next.map(examGreekWordClass)};
  greekExamState.ids[kind]=next.map(x=>x.id);
  if(kind==='declension')greekExamState.adjectiveChoices={};
- if(renderOnlyRegeneratedGreekQuestion(kind,generateGreekExam))return true;
+ const rendered=renderOnlyRegeneratedGreekQuestion(kind,generateGreekExam);
+ Object.assign(regenerationDebug,{rendered,finalSig:greekExamState?.signature,
+  finalQuotas:examMorphQuotaValues(),finalIds:[...(greekExamState?.ids?.[kind]||[])]});
+ window.ExaminaGreekRegenerationDebug=regenerationDebug;
+ if(rendered)return true;
  greekExamState.ids[kind]=previous;
  if(priorAdjectives)greekExamState.adjectiveChoices=priorAdjectives;
  else delete greekExamState.adjectiveChoices;
