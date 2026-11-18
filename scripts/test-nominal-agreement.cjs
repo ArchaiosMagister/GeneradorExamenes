@@ -101,12 +101,12 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
    titles:[...document.querySelectorAll('#paper .morph-syntagm-item > i')].map(x=>x.textContent.trim())
   }));
   assert.match(greekEarlyMorph.heading,/sustantivos propuestos/);
-  assert(greekEarlyMorph.titles.length>0&&greekEarlyMorph.titles.every(x=>!x.includes('+')),
-   'Griego I UD4: no generar sintagmas con adjetivos de UD5');
+  assert(greekEarlyMorph.titles.length>0&&greekEarlyMorph.titles.every(x=>/^ὁ, ἡ, τό \+ [^+]+$/u.test(x)&&!/(ἀγαθ|καλ|κακ|ἀθάνατ|αὐτόνομ|φρόνιμ|θνητ|αὐτός)/u.test(x)),
+   'Griego I UD4: enunciado completo de artículo + sustantivo, sin adjetivos de UD5 ni pronombres de UD7');
   const greek=await choose('greek1','complete','UD5');
   assert(greek.tableCount>0,'Griego I UD5: faltan tablas nominales');
-  assert(greek.headings.every(x=>/^(ὁ|ἡ|τὸ)\s+\S+\s+\S+/u.test(x)),
-   'Griego I UD5 debe mostrar artículo, adjetivo y sustantivo del banco: '+greek.headings.join(' / '));
+  assert(greek.headings.every(x=>/^ὁ, ἡ, τό \+ [^+]+ \+ [^+]+$/u.test(x)),
+   'Griego I UD5 debe mostrar los tres enunciados completos, unidos por +: '+greek.headings.join(' / '));
   assert(greek.answers.every(rows=>rows.every((cols,k)=>
    cols.every(x=>k===1?x.split(' ').length===2:x.split(' ').length===3))),
    'En el vocativo no hay artículo; en los demás casos deben aparecer tres palabras');
