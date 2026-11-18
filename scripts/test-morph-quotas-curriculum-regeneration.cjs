@@ -120,7 +120,8 @@ async function testLatin(page,course,unit,lang,quotas){
   const invalidAdj=unit<(currentCourse()==='latin4'?3:2)?adjectives.length:0;
   const selected=new Set(latinSharedBank.vocabulary(currentCourse(),chosen).map(x=>examKey(x.entry)));
   const fromElsewhere=nouns.concat(adjectives).filter(x=>!selected.has(examKey(x.entry)));
-  const outsidePotential=latinSyntagmSources().filter(x=>!selected.has(examKey(x.entry)))
+  const outsidePotential=latinSyntagmSources().filter(x=>!selected.has(examKey(x.entry))&&
+   !isExcludedExamMorphLemma(x.entry,x.meaning))
    .some(x=>{
     const n=mNoun(x.entry),a=adjective(x);
     return n&&latinSyntagmNounUnit(n.kind)<=unit||
