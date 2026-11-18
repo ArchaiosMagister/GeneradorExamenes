@@ -37,3 +37,15 @@ Las exportaciones se comprueban además como ZIP y XML WordprocessingML, con sep
 ## Maquetación v21
 
 El PDF UD3–4 sirve de referencia visual: Palatino 10,5 pt, cabecera de texto con borde exterior, tablas con lema en celdas combinadas y esquina abierta, dos verbos en una tabla, numeración con letras, espacio en blanco y vocabulario a dos columnas. El DOCX conserva los párrafos de cabecera como `w:p` con `w:pBdr`, no como tabla ni imagen. La impresión del navegador y la exportación Word se comprueban por separado; el ejemplo UD3–4 ocupa dos páginas en ambos. La paginación es dinámica para otros números de ejercicios. No se modifica el corpus en esta revisión.
+
+## Ampliación de formas nominales comprobadas · PR #171
+
+La pregunta «Analiza morfológicamente» incorpora una segunda fuente estrictamente verificable:
+
+- Los diez paradigmas nominales explícitos de `greekNounData`, incorporados previamente en v19: sus casillas se muestran como palabras aisladas, reuniendo las lecturas sincréticas (por ejemplo, nominativo y vocativo de plural) sin seleccionar arbitrariamente una única respuesta.
+- 46 lemas (36 sustantivos y 10 adjetivos) escogidos del registro de revisión individual `data/lemmas/verified-overrides.json`. Son 227 superficies distintas **por lema** tras quitar solo marcas de cantidad vocálica y reunir las lecturas idénticas del mismo lema. Cada una tiene su casilla morfológica atestiguada y su URL original. La prueba `test-greek-reviewed-nominal-expansion.cjs` exige la concordancia individual con dicho registro.
+- El catálogo `data/lemmas/greek-nominal-candidates.json` mantiene el estado `WIKTIONARY_CANDIDATES_NOT_FOR_GRADING` y **no** participa en la selección, el solucionario ni la generación del examen.
+
+Restricciones curriculares: segunda declinación masculina/femenina desde UD1, neutra desde UD2, primera desde UD3, adjetivos de primera clase desde UD5, posesivo `ἡμέτερος` desde UD7 y tercera declinación desde UD8. Son unidades **gramaticales**, no unidades de aprendizaje léxico. Los sustantivos `Ἕλλην` (gentilicio) y `τόπος` (paradigma con revisión pendiente) no forman parte de esta ampliación; tampoco se ha rehabilitado el paradigma controvertido `ὀλιγός`.
+
+Cada forma ofrece todas sus lecturas atestiguadas **para el mismo lema**; se evita duplicar una superficie ya presente en el corpus anterior. Quedan intactos los identificadores originales, el vocabulario exigible y los solucionarios manuales del profesor. Los test de cuotas por UD1–14, por tipo de examen y en ambas lenguas se ejecutan sobre la PWA y su versión autónoma.
