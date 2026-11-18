@@ -58,7 +58,7 @@ async function checkUnit(page,unit,model){
   for(const kind of ['nouns','adjectives','verbs','pronouns']){
    for(const other of ['nouns','adjectives','verbs','pronouns'])setQuota(other,0);
    const seen=[];
-   for(const requested of [1,3,10]){
+   for(const requested of [1,3,10,20]){
     setQuota(kind,requested);
     const rendered=visible();
     const available=allowed.concat(examAuthorizedProposals('greek1',unit).filter(
@@ -91,6 +91,11 @@ async function checkUnit(page,unit,model){
   }
   if(mixed.names.some(x=>!['nouns','adjectives','verbs','pronouns'].includes(x)))
    throw Error('Categoria no solicitada '+JSON.stringify({unit,mixed}));
+  if(unit===1&&capacity.nouns<20)throw Error('UD1 sin sustantivos suficientes: '+JSON.stringify(capacity));
+  if(unit===5&&capacity.adjectives<60)throw Error('UD5 sin adjetivos suficientes: '+JSON.stringify(capacity));
+  if(unit===8&&capacity.nouns<80)throw Error('UD8 sin tercera declinación contrastada: '+JSON.stringify(capacity));
+  if(unit<5&&capacity.adjectives!==0)throw Error('Adjetivos adelantados en UD'+unit);
+  if(unit<7&&capacity.pronouns!==0)throw Error('Pronombres adelantados en UD'+unit);
   return {unit,capacity,mixed:summary};
  },{unit,model});
 }
@@ -109,6 +114,6 @@ async function checkUnit(page,unit,model){
    console.log('GREEK_QUOTA_MATRIX '+JSON.stringify({file,lang,model,report}));
    await context.close();
   }
-  console.log('PASS: 14 UDs x 4 categorías x 3 incrementos y mezcla; ES/VA, web/autónoma, morfología/completo.');
+  console.log('PASS: 14 UDs x 4 categorías x 4 incrementos y mezcla; ES/VA, web/autónoma, morfología/completo.');
  }finally{await browser.close()}
 })().catch(error=>{console.error(error);process.exitCode=1});
