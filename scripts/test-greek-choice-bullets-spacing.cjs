@@ -12,6 +12,7 @@ async function gap(page,model,kind,value){
 const shape=page=>page.evaluate(()=>({
  subheads:[...document.querySelectorAll('.greek-choice-subquestion > .exam-letter')].map(x=>x.textContent),
  markers:[...document.querySelectorAll('.greek-choice-option .exam-form > .exam-letter,.greek-choice-option .exam-etymology [data-corpus-id] > .exam-letter,.greek-choice-generated-item > .exam-letter')].map(x=>x.textContent),
+ romanGroups:[...document.querySelectorAll('.greek-choice-option')].map(option=>[...option.querySelectorAll('.exam-form > .exam-letter,.exam-etymology [data-corpus-id] > .exam-letter,.greek-choice-generated-item > .exam-letter')].map(x=>x.textContent)),
  number:[...document.querySelectorAll('[data-greek-choice-slot^="change-number:"]')].map(x=>x.textContent),
  customInputs:[...document.querySelectorAll('[data-greek-custom-edit]')].map(x=>x.value),
  score:ExaminaScoring.total()
@@ -23,7 +24,10 @@ for(const file of ['index.html','offline.html'])for(const model of ['complete'])
  await page.goto(pathToFileURL(path.resolve(file)).href);
  await page.evaluate(({model,lang})=>{$('course').value='greek1';$('course').dispatchEvent(new Event('change',{bubbles:true}));$('model').value=model;$('model').dispatchEvent(new Event('change',{bubbles:true}));$('lang').value=lang;$('lang').dispatchEvent(new Event('change',{bubbles:true}));document.querySelectorAll('#unitChoices .unit-choice').forEach(x=>x.checked=units[Number(x.value)]==='UD7');generate()},{model,lang});
  await page.waitForFunction(()=>ExaminaScoring.total()===1000&&document.querySelectorAll('.greek-choice-option').length===7);
- const initial=await shape(page);assert.deepEqual(initial.subheads,['a.','b.','c.','d.','e.','a.','b.']);assert(initial.markers.length>=14&&initial.markers.every(x=>x==='◦'));
+ const initial=await shape(page);assert.deepEqual(initial.subheads,['a.','b.','c.','d.','e.','a.','b.']);assert(initial.markers.length>=14&&!initial.markers.some(x=>x==='◦'));
+  for(const marks of initial.romanGroups)for(let i=0;i<marks.length;i++)
+   assert.equal(marks[i],['i.','ii.','iii.','iv.','v.','vi.','vii.','viii.','ix.','x.'][i],
+    'La alternativa no reinicia i., ii., iii.: '+JSON.stringify(marks));
  assert(initial.number.every(x=>!/(?:singular|plural):/i.test(x)));
  assert(initial.customInputs.every(x=>!/^\s*◦/.test(x)),'La viñeta no pertenece al contenido del editor');
  await page.evaluate(()=>{window.__spacingSheet=document.querySelector('#paper .exam-sheet');window.__spacingRows=[...document.querySelectorAll('[data-greek-choice-slot]')];document.querySelector('#paper .exam-header').append(' ESPACIO_DOCENTE')});
@@ -40,7 +44,7 @@ for(const file of ['index.html','offline.html'])for(const model of ['complete'])
    word:wordBlock(numbers[1]),wordEtym:wordBlock(etym)};
  });
  assert(metrics.same);assert.equal(parseFloat(metrics.first),0);assert(Math.abs(parseFloat(metrics.gap)-14*96/72)<.2);assert(Math.abs(parseFloat(metrics.etym)-9*96/72)<.2);
- assert(metrics.word.includes('◦')&&metrics.word.includes('w:before="280"'));assert(metrics.wordEtym.includes('w:before="180"'));
+ assert(metrics.word.includes('ii.')&&!metrics.word.includes('◦')&&metrics.word.includes('w:before="280"'));assert(metrics.wordEtym.includes('w:before="180"'));
  const pdfMetrics=await page.evaluate(()=>{
   const doc=ExaminaPdfExport.prepareDocument(),mount=document.createElement('div');mount.style.cssText='position:absolute;left:-100000px';mount.append(doc);document.body.append(mount);
   try{return {number:getComputedStyle(doc.querySelectorAll('[data-greek-choice-slot^="change-number:"]')[1]).marginTop,etym:getComputedStyle(doc.querySelector('.greek-choice-option .exam-etymology')).rowGap}}finally{mount.remove()}
@@ -59,22 +63,22 @@ for(const file of ['index.html','offline.html'])for(const model of ['complete'])
   host.querySelectorAll('.exam-etymology .exam-letter').forEach(x=>x.textContent='a.');
   draft.html=host.innerHTML;ExaminaUnifiedRestoreDraft(draft);
  });
- const migrated=await shape(page);assert(migrated.markers.every(x=>x==='◦'));assert(migrated.number.every(x=>!/(?:singular|plural):/i.test(x)));
+ const migrated=await shape(page);assert(migrated.markers.every(x=>/^[ivxlcdm]+\.$/u.test(x)));assert(migrated.number.every(x=>!/(?:singular|plural):/i.test(x)));
  assert.equal(await page.locator('.greek-choice-option:not([data-greek-choice-group])').count(),0);
  assert(await page.evaluate(()=>ExaminaGreekChoiceGroups.replaceGenerated('change-number',0)));
- const after=await shape(page);assert(after.markers.every(x=>x==='◦'));assert(after.number.every(x=>!/(?:singular|plural):/i.test(x)));assert.equal(after.score,1000);
+ const after=await shape(page);assert(after.markers.every(x=>/^[ivxlcdm]+\.$/u.test(x)));assert(after.number.every(x=>!/(?:singular|plural):/i.test(x)));assert.equal(after.score,1000);
  // Edición de etimología: mantener viñeta, palabra y el vínculo de edición.
  const edited=await page.evaluate(()=>{
   const target=document.querySelector('.greek-choice-option .exam-etymology [data-corpus-id]');
   const input=document.querySelector('input[data-exam-editor-link="'+target.dataset.examEditorLink+'"]');
   if(!input)throw Error('Editor etimológico ausente');input.value='λόγος';input.dispatchEvent(new Event('input',{bubbles:true}));
   return {text:target.textContent,marker:target.querySelector('.exam-letter')?.textContent,input:input.value};
- });assert.equal(edited.marker,'◦');assert(edited.text.includes('λόγος'));assert.equal(edited.input,'λόγος');
+ });assert.equal(edited.marker,'i.');assert(edited.text.includes('λόγος'));assert.equal(edited.input,'λόγος');
  const bytes=Buffer.from(await page.evaluate(async()=>{const old=downloadBlob;let b;try{downloadBlob=(_n,x)=>b=x;exportWord(false)}finally{downloadBlob=old}if(!b)throw Error('Word bloqueado');return [...new Uint8Array(await b.arrayBuffer())]}));
- const xml=entry(bytes,'word/document.xml');assert(xml.includes('◦'));assert(!/A (?:singular|plural):/.test(xml));assert(xml.includes('w:before="280"')&&xml.includes('w:before="180"'));assert(xml.includes('<w:u w:val="single"/>'));
+ const xml=entry(bytes,'word/document.xml');assert(!xml.includes('◦')&&xml.includes('i.')&&xml.includes('ii.'));assert(!/A (?:singular|plural):/.test(xml));assert(xml.includes('w:before="280"')&&xml.includes('w:before="180"'));assert(xml.includes('<w:u w:val="single"/>'));
  const stem=file.replace('.html','')+'-'+model+'-'+lang;fs.writeFileSync(path.join(out,stem+'.docx'),bytes);
  const pending=page.waitForEvent('download');await page.locator('#pdfDownload').click({force:true});await (await pending).saveAs(path.join(out,stem+'.pdf'));
  assert.deepEqual(errors,[]);cases.push({file,model,lang,markers:after.markers.length,points:after.score,spacing:[14,9],draft:true,pdf:true,word:true});await ctx.close();
 }
-fs.writeFileSync(path.join(out,'feature-results.json'),JSON.stringify(cases,null,2));console.log('GRIEGO I: círculos huecos, subpreguntas a–e, sintagmas sin dirección, espaciado independiente 1/2, edición, borradores, Word y PDF sin red: 4 contextos OK');
+fs.writeFileSync(path.join(out,'feature-results.json'),JSON.stringify(cases,null,2));console.log('GRIEGO I: listas 1 / a / i–iv, sangría 1,25 / 1,9 cm, espaciados, edición, borradores, Word y PDF sin red: 4 contextos OK');
 }finally{await browser.close()}})().catch(e=>{console.error(e);process.exitCode=1});
