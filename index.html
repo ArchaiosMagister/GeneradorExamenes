@@ -5652,10 +5652,16 @@ function regenerateExamWord(kind,index){
    // Si las bases están agotadas, un nuevo adjetivo también cambia el sintagma.
    const noun=pool.find(x=>x.id===ids[index]);
    const allocated=greekExamState.adjectiveChoices||={};
-   const available=greekAvailableSyntagmAdjectives(greekLimit())
-    .filter(x=>x.lemma!==allocated[ids[index]]);
+   const available=greekAvailableSyntagmModifiers(greekLimit())
+    .filter(x=>x.lemma!==allocated[ids[index]]&&
+     greekSemanticallyValidSyntagm(noun,x));
    const alternate=greekWeightedSyntagmAdjectives(available)[0];
-   if(noun&&alternate){allocated[ids[index]]=alternate.lemma;renderOnlyRegeneratedExamWord(kind,index,generateGreekExam)}
+   if(noun&&alternate){
+    const before=allocated[ids[index]];
+    allocated[ids[index]]=alternate.lemma;
+    if(renderOnlyRegeneratedExamWord(kind,index,generateGreekExam)===false)
+     allocated[ids[index]]=before;
+   }
   }
   return;
  }
