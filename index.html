@@ -5517,7 +5517,11 @@ function examRegenerationSlot(sheet,kind,index){
 function renderOnlyRegeneratedExamWord(kind,index,render){
  const paper=$('paper'),original=paper.querySelector('.exam-sheet');
  const previous=examRegenerationSlot(original,kind,index);
- if(!original||!previous){render();return}
+ if(!original||!previous){
+  // No reconstruir todo el examen si falta una sola casilla de Griego.
+  if(currentCourse()==='greek1'&&$('model').value==='complete')return false;
+  render();return false;
+ }
  const oldKey=original.querySelector('#answerkey');
  render();
  const fresh=paper.querySelector('.exam-sheet');
@@ -5572,8 +5576,10 @@ function renderOnlyRegeneratedExamWord(kind,index,render){
  paper.replaceChildren(original);
  // Los enlaces bidireccionales apuntaban al HTML recién generado y deben
  // volver a enlazarse con el examen preservado, sin alterar sus textos.
- if(currentCourse()==='greek1'&&$('model').value==='complete')greekExamControls();
- else refreshManualMorphWords();
+ if(currentCourse()==='greek1'&&$('model').value==='complete'){
+  greekExamControls();window.greekLastPreview=paper.innerHTML;
+ }else refreshManualMorphWords();
+ return true;
 }
 // Regeneración de una sola palabra, sin descartar las otras del apartado.
 // Mantiene las restricciones de la unidad y las lecturas verificadas del banco.
@@ -5635,7 +5641,11 @@ function regenerateExamWord(kind,index){
      delete greekExamState.adjectiveChoices[next.id];
     }
    }
-   renderOnlyRegeneratedExamWord(kind,index,generateGreekExam);
+   if(renderOnlyRegeneratedExamWord(kind,index,generateGreekExam)===false){
+    ids[index]=former;
+    if(gkind==='declension'&&greekExamState.adjectiveChoices)
+     delete greekExamState.adjectiveChoices[next.id];
+   }
   }else if(gkind==='declension'){
    // Si las bases están agotadas, un nuevo adjetivo también cambia el sintagma.
    const noun=pool.find(x=>x.id===ids[index]);
