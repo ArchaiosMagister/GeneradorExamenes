@@ -230,7 +230,7 @@ function greekSuite(){
   currentCourse:()=> 'greek1',
   greekVerifiedCorpus:rows,greekMorphologyEligible:(x,n)=>x.minUnit<=n,
   // En este test sintético no hay banco nominal ni diccionario de adjetivos.
-  greekAvailableSyntagmAdjectives:()=>[],greekSyntagmNounGenders:{},
+  greekAvailableSyntagmAdjectives:()=>[],greekAvailableSyntagmModifiers:()=>[],greekSyntagmNounGenders:{},
   isProperNounLemma:()=>false,isExcludedExamMorphLemma:()=>false,greekMarkedUnits:()=>['UD7'],greekLimit:()=>scope.limit,
   examUnitNumber:x=>{const m=String(x).match(/\d+/);return m?Number(m[0]):null;},
   morphConfig:()=>({offer:3,decline:1,verbs:3,words:5}),
