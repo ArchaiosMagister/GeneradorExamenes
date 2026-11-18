@@ -19,6 +19,7 @@ on:
       - 'scripts/test-phase-six.cjs'
       - 'scripts/test-greek-morph-regeneration.cjs'
       - 'scripts/test-greek-ud5-quota-indent.cjs'
+      - 'scripts/test-greek-two-ending-adjectives.cjs'
       - 'scripts/test-greek-all-unit-form-quotas.cjs'
       - 'scripts/test-morph-quotas-curriculum-regeneration.cjs'
       - 'scripts/test-greek-two-modes-legacy-drafts.cjs'
@@ -86,6 +87,8 @@ jobs:
         run: node scripts/test-greek-morph-regeneration.cjs
       - name: Greek UD5 noun, adjective and verb quotas; Word and screen indent
         run: node scripts/test-greek-ud5-quota-indent.cjs
+      - name: Griego UD5, adjetivos de dos terminaciones en fichas y regeneraciones
+        run: node scripts/test-greek-two-ending-adjectives.cjs
       - name: Exam UI redesign in iPad, forms, Word and vocabulary isolation
         run: node scripts/test-exam-ui-redesign.cjs
       - name: Verificar tema Examinator sin efectos sobre Word/PDF
