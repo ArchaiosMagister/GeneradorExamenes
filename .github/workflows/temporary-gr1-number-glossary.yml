@@ -1,0 +1,36 @@
+name: Temporary Greek number glossary validation and offline synchronization
+on:
+  push:
+    branches:
+      - style/gr1-complete-roman-lists-spacing-20261118
+permissions:
+  contents: write
+jobs:
+  verify-and-build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Rebuild offline
+        run: npm run offline:build
+      - name: Install Chromium
+        run: |
+          npm install --no-save --ignore-scripts playwright@1.56.1
+          npx playwright install chromium
+      - name: Verify number glossary, formatting and Greek UD5
+        run: |
+          node scripts/test-greek-choice-number-glossary.cjs
+          node scripts/test-greek-choice-bullets-spacing.cjs
+          node scripts/test-greek-complete-ud5-regressions.cjs
+      - name: Publish standalone HTML to the PR branch only
+        run: |
+          git add offline.html
+          if ! git diff --cached --quiet; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -m "build: synchronize standalone Greek complete and glossary"
+            git push origin HEAD:style/gr1-complete-roman-lists-spacing-20261118
+          fi
