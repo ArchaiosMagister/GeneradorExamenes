@@ -98,6 +98,28 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
    return document.querySelector('.reference-analysis-item')?.textContent.trim();
   });
   assert.equal(manual,'a. ὁ σοφὸς ἄνθρωπος');
+  // UD7: pronominal de identidad, pero nunca demostrativo tras artículo.
+  await configure('greek1','complete','UD7');
+  const pronoun=await page.evaluate(()=>{
+   const available=greekAvailableSyntagmModifiers(greekLimit());
+   const item=greekVerifiedCorpus.find(x=>x.id==='n-ανθρωπος');
+   const autos=available.find(x=>x.lemma==='αὐτός');
+   const group=greekCompleteNominalGroup(item,true,autos);
+   const original=greekExamState;
+   let heading='';
+   try{
+    greekExamState={ids:{declension:[item.id]},adjectiveChoices:{[item.id]:'αὐτός'}};
+    const node=document.createElement('div');node.innerHTML=greekTable(item);
+    heading=node.querySelector('.exam-nouns thead th[colspan]')?.textContent.trim()||'';
+   }finally{greekExamState=original}
+   return {available:available.map(x=>x.lemma),group,heading};
+  });
+  assert(pronoun.available.includes('αὐτός'),'El pronominal debe estar disponible desde UD7');
+  assert.equal(pronoun.group.title,'ὁ αὐτὸς ἄνθρωπος');
+  assert.match(pronoun.group.enunciation,/^ὁ, ἡ, τό \+ αὐτός, αὐτή, αὐτό \+ ἄνθρωπος,/u);
+  assert.equal(pronoun.heading,pronoun.group.enunciation);
+  assert.deepEqual(pronoun.group.rows[1][1],['—','—'],'αὐτός carece de vocativo');
+  assert.equal(pronoun.group.rows[3][1][0],'τοῦ αὐτοῦ ἀνθρώπου');
   await configure('latin1','tablas','UD2');
   const latin=await page.evaluate(()=>{
    const nouns=latinCompleteDeclensionItems(selectedUnits()).filter(x=>x.compound);
