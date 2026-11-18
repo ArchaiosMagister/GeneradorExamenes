@@ -1,0 +1,41 @@
+name: Temporary Greek Declina spacing verification and offline synchronization
+on:
+  push:
+    branches:
+      - fix/greek-declina-table-gap-20261118
+permissions:
+  contents: write
+jobs:
+  verify-build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Build standalone HTML
+        run: npm run offline:build
+      - name: Install Chromium
+        run: |
+          npm install --no-save --ignore-scripts playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Verify Greek preview, PDF, Word and labels
+        run: |
+          node scripts/test-greek-choice-bullets-spacing.cjs
+          node scripts/test-greek-choice-groups.cjs
+          node scripts/test-exam-indent-consistency.cjs
+      - name: Synchronize offline.html in PR branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin fix/greek-declina-table-gap-20261118
+          git reset --hard FETCH_HEAD
+          npm run offline:build
+          git add offline.html
+          if git diff --cached --quiet; then
+            echo "Standalone HTML already matches source"
+            exit 0
+          fi
+          git commit -m "build: synchronize standalone Greek Declina formatting"
+          git push origin HEAD:fix/greek-declina-table-gap-20261118
