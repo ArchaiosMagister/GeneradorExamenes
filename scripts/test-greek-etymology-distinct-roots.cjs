@@ -21,9 +21,9 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
     const expected=['prologo-democracia','anfibio-zoologia','hipofonia-biografia',
      'hipergrafia-psicologia','paradoja-bibliografia','hipodermis-filosofia',
      'hiperemia-psicologia','hipercromia-economia'];
-    if(catalog.length<125)throw Error('La cobertura etimológica se ha reducido: '+catalog.length);
+    if(catalog.length!==102)throw Error('La revisión editorial debe mantener 102 oraciones: '+catalog.length);
     const newRecords=catalog.filter(r=>r.id.startsWith('cobertura-'));
-    if(newRecords.length<100)throw Error('Faltan nuevos ejercicios: '+newRecords.length);
+    if(newRecords.length!==79)throw Error('La selección editorial debe conservar 79 oraciones revisadas: '+newRecords.length);
     const firstStudiedUnit=root=>{
      const matches=greekEtymologyBank.entries.filter(e=>e.verified&&
       String(e.word).split(/\s*\|\s*/).some(variant=>greekBankKey(variant)===greekBankKey(root)));
@@ -36,14 +36,30 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
      newByUnit[first]++;
     }
     for(let unit=1;unit<=12;unit++)
-     if(newByUnit[unit]<3)throw Error('Insuficientes oraciones nuevas para UD'+unit+': '+newByUnit[unit]);
+     if(newByUnit[unit]<2)throw Error('Insuficientes oraciones revisadas para UD'+unit+': '+newByUnit[unit]);
     // Cobertura por familia léxica, evitando contar como nuevos las
     // repeticiones de una misma ficha entre unidades.
     const represented=new Set(catalog.flatMap(r=>r.roots.flat().map(api.canonicalRoot)));
     const uncovered=greekEtymologyBank.entries.filter(e=>e.verified&&
      !String(e.word).split(/\s*\|\s*/).some(w=>represented.has(api.canonicalRoot(w))))
      .map(e=>e.word);
-    if(uncovered.length>5)throw Error('Raíces verificadas sin cobertura: '+uncovered.join(', '));
+    if(uncovered.length>11)throw Error('Raíces verificadas sin cobertura: '+uncovered.join(', '));
+    // Correspondencia entre subrayados y su clave cuando el contexto
+    // presenta primero el término de referencia y luego el término nuevo.
+    const byId=id=>catalog.find(x=>x.id===id);
+    const examples=[
+     ['cobertura-teocracia','antropología','teocracia','ἄνθρωπος + λόγος','θεός + κράτος'],
+     ['cobertura-autodidacta','autodidacta','zoología','αὐτός + διδάσκω','ζῷον + λόγος'],
+     ['cobertura-anatomia','bibliografía','anatomía','βιβλίον + γράφω / γράμμα','ἀνά + τομή']
+    ];
+    for(const [id,first,second,firstRoots,secondRoots] of examples){
+     const item=byId(id);
+     if(!item||item.es[1]!==first||item.es[3]!==second)
+      throw Error('Error de correspondencia entre palabras y étimos: '+id);
+     const [a,b]=api.answerRoots(item);
+     if(a!==firstRoots||b!==secondRoots)
+      throw Error('La clave no sigue el orden de los subrayados: '+id);
+    }
     for(const record of catalog){
      if(known.has(record.id))throw Error('ID duplicado: '+record.id);
      known.add(record.id);
@@ -58,6 +74,15 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
       throw Error('Étimo repetido en '+record.id+': '+record.roots.flat().join(', '));
     }
     for(const id of expected)if(!known.has(id))throw Error('Falta oración '+id);
+    // Los tecnicismos eliminados en la revisión editorial no deben
+    // reaparecer al regenerar, tampoco en la versión autónoma.
+    for(const id of ['bibliologia','hipologia','gastrologia','protologia',
+      'pseudologia','somatologia','hipomania','cosmopolis','crematologia'])
+     if(known.has('cobertura-'+id))throw Error('Término reservado para revisión: '+id);
+    for(const record of newRecords){
+     if(/^(En clase analizamos|El diccionario recoge|El glosario reúne|Buscamos los étimos de|En este ejercicio aparecen|La actividad propone investigar|Las palabras ).*«/u.test(record.es.join('')))
+      throw Error('Permanece una plantilla automática: '+record.id);
+    }
     const stats={catalog:catalog.length,newRecords:newRecords.length,newByUnit,
      uncovered,perUnit:{},prefixes:{}};
     for(let unit=1;unit<=14;unit++)for(const lang of ['es','va']){
@@ -108,11 +133,68 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
      if(!api.regenerate()||api.current()?.id===old)
       throw Error('No se puede regenerar una oración distinta');
     }
+    // Selección ponderada: 70% de preferencia de la unidad frente a
+    // repaso acumulativo, sin dos oraciones consecutivas con raíz común
+    // cuando existe alternativa válida.
+    $('lang').value='es';$('lang').dispatchEvent(new Event('change',{bubbles:true}));
+    document.querySelectorAll('#unitChoices .unit-choice').forEach(x=>x.checked=
+     units[Number(x.value)]==='UD6');
+    generate();
+    const sixth=api.candidates();
+    let fresh=0,streakAvoided=0;
+    for(let n=0;n<250;n++){
+     const before=api.current(),next=api.regenerate();
+     if(!next||next.id===before.id)throw Error('Regeneración sin cambio en UD6');
+     const previousRoots=new Set(before.roots.flat().map(api.canonicalRoot));
+     const compatible=sixth.filter(x=>x.id!==before.id&&
+      x.roots.flat().every(root=>!previousRoots.has(api.canonicalRoot(root))));
+     if(compatible.length){
+      if(next.roots.flat().some(root=>previousRoots.has(api.canonicalRoot(root))))
+       throw Error('Étimos repetidos entre regeneraciones pese a alternativas: '+before.id+'/'+next.id);
+      streakAvoided++;
+     }
+     if(next.minUnit===6)fresh++;
+    }
+    if(fresh<110||fresh>230)
+     throw Error('El sesgo UD6/repaso no respeta el equilibrio editorial: '+fresh+'/250');
+    if(streakAvoided<200)throw Error('Diversidad insuficiente al regenerar');
+    const snapshot=api.state(),selectedBefore=snapshot.item.id;
+    $('lang').value='va';$('lang').dispatchEvent(new Event('change',{bubbles:true}));
+    if(api.current()?.id!==selectedBefore)
+     throw Error('Cambiar a valenciano no debe sustituir la oración seleccionada');
+    if(api.current().sentence!==api.current().va)
+     throw Error('La oración valenciana no se actualizó');
+    api.regenerate();api.restore(snapshot);
+    if(api.current()?.id!==selectedBefore||
+      JSON.stringify(api.state().recent)!==JSON.stringify(snapshot.recent))
+     throw Error('El borrador no conserva la oración y su historial');
+    // Un borrador anterior a la auditoría conserva su oración,
+    // aunque esa voz haya sido excluida del banco de sorteos nuevos.
+    const oldDraft={selected:'cobertura-bibliologia',item:{
+     id:'cobertura-bibliologia',
+     es:['El libro menciona la ','bibliología',' y la ','democracia','.'],
+     va:['El llibre esmenta la ','bibliologia',' i la ','democràcia','.'],
+     roots:[['βιβλίον','λόγος'],['δήμος','κράτος']]
+    }};
+    api.restore(oldDraft);
+    if(api.current()?.id!==oldDraft.selected)
+     throw Error('Se pierde la oración retirada de un borrador antiguo');
+    $('lang').value='es';$('lang').dispatchEvent(new Event('change',{bubbles:true}));
+    if(api.current()?.sentence[1]!=='bibliología')
+     throw Error('Borrador antiguo no se puede presentar en castellano');
+    $('lang').value='va';$('lang').dispatchEvent(new Event('change',{bubbles:true}));
+    if(api.current()?.sentence[1]!=='bibliologia')
+     throw Error('Borrador antiguo no se puede presentar en valenciano');
+    if(!api.regenerate()||api.current().id===oldDraft.selected)
+     throw Error('La regeneración recupera una oración editorialmente retirada');
+    if(api.candidates().some(x=>x.id===oldDraft.selected))
+     throw Error('Un término retirado vuelve al banco nuevo');
+    stats.weighted={fresh,total:250,streakAvoided};
     return stats;
    });
    assert.deepEqual(errors,[],filename+': errores del navegador');
    assert(audit.perUnit['4-es']>=6,'Cobertura insuficiente en UD4');
-   console.log(filename+': '+audit.catalog+' oraciones ('+audit.newRecords+' nuevas); cobertura UD1–12 '+JSON.stringify(audit.newByUnit)+'; sin representar: '+audit.uncovered.join(', ')+'; UD1–14 ES/VA online/offline OK');
+   console.log(filename+': '+audit.catalog+' oraciones revisadas ('+audit.newRecords+' de cobertura); UD1–12 '+JSON.stringify(audit.newByUnit)+'; raíces reservadas: '+audit.uncovered.join(', ')+'; ponderación UD6 '+audit.weighted.fresh+'/'+audit.weighted.total+'; ES/VA web/offline OK');
    await page.close();
   }
  }finally{await browser.close()}
