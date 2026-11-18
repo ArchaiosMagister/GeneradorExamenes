@@ -16,42 +16,66 @@
   {id:'demografia-zoologia',es:['La ','demografía',' y la ','zoología',' son disciplinas diferentes.'],
    va:['La ','demografia',' i la ','zoologia',' són disciplines diferents.'],
    roots:[['δήμος','γράφω'],['ζῷον','λόγος']]},
-  {id:'teologia-antropologia',es:['En ','teología',' se emplean palabras conocidas por la ','antropología','.'],
-   va:['En ','teologia',' s’empren paraules conegudes per l’','antropologia','.'],
-   roots:[['θεός','λόγος'],['ἄνθρωπος','λόγος']]},
-  {id:'cronologia-zoologia',es:['La ','cronología',' ayuda a ordenar los descubrimientos de la ','zoología','.'],
-   va:['La ','cronologia',' ajuda a ordenar els descobriments de la ','zoologia','.'],
-   roots:[['χρόνος','λόγος'],['ζῷον','λόγος']]},
+  {id:'teologia-demografia',es:['La ','teología',' estudia las creencias, mientras que la ','demografía',' analiza las poblaciones.'],
+   va:['La ','teologia',' estudia les creences, mentre que la ','demografia',' analitza les poblacions.'],
+   roots:[['θεός','λόγος'],['δήμος','γράφω']]},
+  {id:'cronologia-democracia',es:['La ','cronología',' permite fechar los cambios de la ','democracia','.'],
+   va:['La ','cronologia',' permet datar els canvis de la ','democràcia','.'],
+   roots:[['χρόνος','λόγος'],['δήμος','κράτος']]},
   {id:'economia-psicologia',es:['El alumnado de ','economía',' también puede estudiar ','psicología','.'],
    va:['L’alumnat d’','economia',' també pot estudiar ','psicologia','.'],
    roots:[['οἰκία','νόμος'],['ψυχή','λόγος']]},
   {id:'economia-democracia',es:['La ','economía',' afecta a la estabilidad de la ','democracia','.'],
    va:['L’','economia',' afecta l’estabilitat de la ','democràcia','.'],
    roots:[['οἰκία','νόμος'],['δήμος','κράτος']]},
-  {id:'biologia-psicologia',es:['La ','biología',' y la ','psicología',' estudian aspectos diferentes de la vida.'],
-   va:['La ','biologia',' i la ','psicologia',' estudien aspectes diferents de la vida.'],
-   roots:[['βίος','λόγος'],['ψυχή','λόγος']]},
+  {id:'biologia-demografia',es:['La ','biología',' y la ','demografía',' estudian realidades diferentes.'],
+   va:['La ','biologia',' i la ','demografia',' estudien realitats diferents.'],
+   roots:[['βίος','λόγος'],['δήμος','γράφω']]},
   {id:'filologia-economia',es:['El alumnado de ','filología',' también adquiere conocimientos de ','economía','.'],
    va:['L’alumnat de ','filologia',' també adquirix coneixements d’','economia','.'],
    roots:[['φίλος','λόγος'],['οἰκία','νόμος']]},
   {id:'filosofia-geologia',es:['La ','filosofía',' y la ','geología',' utilizan numerosos términos griegos.'],
    va:['La ','filosofia',' i la ','geologia',' utilitzen nombrosos termes grecs.'],
    roots:[['φίλος','σοφία'],['γῆ','λόγος']]},
-  {id:'filologia-geologia',es:['La ','filología',' y la ','geología',' tienen raíces etimológicas griegas.'],
-   va:['La ','filologia',' i la ','geologia',' tenen arrels etimològiques gregues.'],
-   roots:[['φίλος','λόγος'],['γῆ','λόγος']]},
-  {id:'cardiologia-psicologia',es:['La ','cardiología',' y la ','psicología',' se ocupan de problemas distintos.'],
-   va:['La ','cardiologia',' i la ','psicologia',' s’ocupen de problemes diferents.'],
-   roots:[['καρδία','λόγος'],['ψυχή','λόγος']]},
+  {id:'filologia-democracia',es:['La ','filología',' estudia textos sobre la ','democracia',' antigua.'],
+   va:['La ','filologia',' estudia textos sobre la ','democràcia',' antiga.'],
+   roots:[['φίλος','λόγος'],['δήμος','κράτος']]},
+  {id:'cardiologia-economia',es:['La financiación de la ','cardiología',' también depende de la ','economía','.'],
+   va:['El finançament de la ','cardiologia',' també depén de l’','economia','.'],
+   roots:[['καρδία','λόγος'],['οἰκία','νόμος']]},
   {id:'rinoplastia-podologia',es:['La ','rinoplastia',' no pertenece al campo de la ','podología','.'],
    va:['La ','rinoplàstia',' no pertany al camp de la ','podologia','.'],
    roots:[['ῥίς','πλαστός'],['πούς','λόγος']]},
-  {id:'taquicardia-cardiologia',es:['La ','taquicardia',' es un término frecuente en ','cardiología','.'],
-   va:['La ','taquicàrdia',' és un terme freqüent en ','cardiologia','.'],
-   roots:[['ταχύς','καρδία'],['καρδία','λόγος']]},
+  {id:'taquicardia-piromania',es:['La ','taquicardia',' y la ','piromanía',' son fenómenos clínicos distintos.'],
+   va:['La ','taquicàrdia',' i la ','piromania',' són fenòmens clínics diferents.'],
+   roots:[['ταχύς','καρδία'],['πῦρ','μανία']]},
   {id:'piromania-psicologia',es:['La ','piromanía',' puede estudiarse desde la ','psicología','.'],
    va:['La ','piromania',' pot estudiar-se des de la ','psicologia','.'],
-   roots:[['πῦρ','μανία'],['ψυχή','λόγος']]}
+   roots:[['πῦρ','μανία'],['ψυχή','λόγος']]},
+  {id:'prologo-democracia',es:['El ','prólogo',' del libro presenta la ','democracia',' ateniense.'],
+   va:['El ','pròleg',' del llibre presenta la ','democràcia',' atenesa.'],
+   roots:[['πρό','λόγος'],['δήμος','κράτος']]},
+  {id:'anfibio-zoologia',es:['La ','zoología',' estudia animales como los ','anfibios','.'],
+   va:['La ','zoologia',' estudia animals com els ','amfibis','.'],
+   roots:[['ζῷον','λόγος'],['ἀμφί','βίος']]},
+  {id:'hipofonia-biografia',es:['Su ','biografía',' menciona la ','hipofonía',' que padecía.'],
+   va:['La seua ','biografia',' esmenta la ','hipofonia',' que patia.'],
+   roots:[['βίος','γράφω'],['ὑπό','φωνή']]},
+  {id:'hipergrafia-psicologia',es:['La ','hipergrafía',' puede estudiarse desde la ','psicología','.'],
+   va:['La ','hipergrafia',' pot estudiar-se des de la ','psicologia','.'],
+   roots:[['ὑπέρ','γράφω'],['ψυχή','λόγος']]},
+  {id:'paradoja-bibliografia',es:['La ','bibliografía',' explica aquella ','paradoja',' filosófica.'],
+   va:['La ','bibliografia',' explica aquella ','paradoxa',' filosòfica.'],
+   roots:[['βιβλίον','γράφω'],['παρά','δόξα']]},
+  {id:'hipodermis-filosofia',es:['La ','hipodermis',' es una estructura anatómica, no un concepto de ','filosofía','.'],
+   va:['La ','hipodermis',' és una estructura anatòmica, no un concepte de ','filosofia','.'],
+   roots:[['ὑπό','δέρμα'],['φίλος','σοφία']]},
+  {id:'hiperemia-psicologia',es:['La ','hiperemia',' puede estudiarse en medicina y no en ','psicología','.'],
+   va:['La ','hiperèmia',' es pot estudiar en medicina i no en ','psicologia','.'],
+   roots:[['ὑπέρ','αἷμα'],['ψυχή','λόγος']]},
+  {id:'hipercromia-economia',es:['La ','hipercromía',' es un fenómeno biológico y no un concepto de ','economía','.'],
+   va:['La ','hipercromia',' és un fenomen biològic i no un concepte d’','economia','.'],
+   roots:[['ὑπέρ','χρῶμα'],['οἰκία','νόμος']]}
  ];
  const acceptedFamilies={
   'οἰκία':['οἰκία','οἶκος'],'νόμος':['νόμος','νέμω'],
@@ -61,6 +85,20 @@
   return record.roots.map(pair=>pair.map(root=>(acceptedFamilies[root]||[root]).join(' / ')).join(' + '));
  }
  const normalize=greekBankKey;
+ // Un mismo lexema no puede repetirse en las dos palabras subrayadas,
+ // tampoco bajo variantes escolares o étimos de una misma familia.
+ const rootFamilies=[
+  ['οἰκία','οἶκος'],['νόμος','νέμω'],['γράφω','γράμμα'],
+  ['λόγος','λέγω'],['φίλος','φιλία'],['σοφός','σοφία'],['ἀρχή','ἄρχω']
+ ];
+ function canonicalRoot(root){
+  const family=rootFamilies.find(group=>group.some(member=>normalize(member)===normalize(root)));
+  return normalize(family?family[0]:root);
+ }
+ function distinctRoots(record){
+  const roots=record.roots.flat().map(canonicalRoot);
+  return roots.length===new Set(roots).size;
+ }
  function studied(root,limit){
   return greekEtymologyBank.entries.some(e=>
    e.verified&&e.firstUnit<=limit&&
@@ -69,7 +107,7 @@
  function candidates(){
   const limit=greekLimit();
   if(limit<1)return [];
-  return records.filter(x=>x.roots.every(roots=>roots.every(root=>studied(root,limit))))
+  return records.filter(x=>distinctRoots(x)&&x.roots.every(roots=>roots.every(root=>studied(root,limit))))
    .map(x=>({...x,sentence:x[$('lang').value==='va'?'va':'es']}));
  }
  let selected=null,signature='';
@@ -91,7 +129,9 @@
   return record.sentence.map((part,i)=>i%2?'<u>'+esc(part)+'</u>':esc(part)).join('');
  }
  function state(){return {selected,signature,item:current(),available:candidates().length}}
- window.ExaminaGreekEtymSentence={current,candidates,regenerate,render,state,answerRoots,restore(data){
+ window.ExaminaGreekEtymSentence={current,candidates,regenerate,render,state,answerRoots,
+  catalog:()=>records.map(x=>({...x,roots:x.roots.map(pair=>pair.slice())})),
+  canonicalRoot,restore(data){
   if(candidates().some(x=>x.id===data?.selected)){selected=data.selected;signature=signatureOf()}
  }};
 })();
