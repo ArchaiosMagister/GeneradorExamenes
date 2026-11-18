@@ -4049,6 +4049,10 @@ function greekLexKey(entry){return examKey(String(entry).split('+')[0].trim())}
 function greekLemma(head){const item=greekSharedBank.lookup(head);return item?{entry:item.entry,meaning:item.meaning||'[Traducción pendiente de revisión]',meaning_va:item.meaning_va||''}:{entry:head,meaning:'[Traducción pendiente de revisión]'}}
 /* Extracto de las formas contrastadas del índice; sin inferencia de tiempos. */
 const greekExplicitVerbEvidence={"βουλομαι":{"forms":["βούλομαι","βούλει","βούλεται","βουλόμεθα","βούλεσθε","βούλονται"],"lemma":"βούλομαι","voice":"medio (deponente)","tense":"presente","sourceCode":5,"unit":6},"ερχομαι":{"forms":["ἦλθον","ἦλθες","ἦλθε","ἤλθομεν","ἤλθετε","ἦλθον"],"lemma":"ἔρχομαι","voice":"activo","tense":"aoristo segundo","sourceCode":5,"unit":12},"ηγεομαι":{"forms":["ἡγοῦμαι","ἡγεῖ","ἡγεῖται","ἡγούμεθα","ἡγεῖσθε","ἡγοῦνται"],"lemma":"ἡγέομαι","voice":"medio (deponente)","tense":"presente","sourceCode":5,"unit":10},"ηγεομαι-future":{"forms":["ἡγήσομαι","ἡγήσει","ἡγήσεται","ἡγησόμεθα","ἡγήσεσθε","ἡγήσονται"],"lemma":"ἡγέομαι","voice":"medio (deponente)","tense":"futuro","sourceCode":5,"unit":11},"μαχομαι":{"forms":["μάχομαι","μάχει","μάχεται","μαχόμεθα","μάχεσθε","μάχονται"],"lemma":"μάχομαι","voice":"medio (deponente)","tense":"presente","sourceCode":5,"unit":6}};
+const greekCorpusNounGenders={
+ λογος:'m',ανθρωπος:'m',δωρον:'n',εργον:'n',αγορα:'f',χωρα:'f',
+ θαλαττα:'f',νεανιας:'m',παιδεια:'f',αδελφος:'m'
+};
 // Solo formas individuales cotejadas en data/lemmas/verified-overrides.json
 // (sourceCode 5); el catálogo provisional greek-nominal-candidates.json
 // sigue expresamente excluido de los exámenes. No se generan flexiones.
@@ -4151,7 +4155,7 @@ function greekCorpus(){
   if(reference){item.sourceRef=reference;item.sourceCode=5}
  }
  for(const [key,forms] of Object.entries(greekNounData)){
-  const unit=greekNounUnits[key],gender=greekSyntagmNounGenders[key];
+  const unit=greekNounUnits[key],gender=greekCorpusNounGenders[key];
   if(!unit||!gender)continue;
   const entry=items.find(x=>x.id==='n-'+key)?.lemmas?.[0];
   if(!entry)continue;
@@ -4218,10 +4222,7 @@ const greekCompleteAdjectives=[
  {lemma:'σύμμαχος',short:'σύμμαχ',long:'συμμάχ',feminine:null,accent:'recessive'},
  {lemma:'δίκαιος',feminine:'α',accent:'dikaios'}
 ];
-const greekSyntagmNounGenders={
- λογος:'m',ανθρωπος:'m',δωρον:'n',εργον:'n',αγορα:'f',χωρα:'f',
- θαλαττα:'f',νεανιας:'m',παιδεια:'f',αδελφος:'m'
-};
+const greekSyntagmNounGenders=greekCorpusNounGenders;
 const greekArticles={
  m:[['ὁ','','τὸν','τοῦ','τῷ'],['οἱ','','τοὺς','τῶν','τοῖς']],
  f:[['ἡ','','τὴν','τῆς','τῇ'],['αἱ','','τὰς','τῶν','ταῖς']],
