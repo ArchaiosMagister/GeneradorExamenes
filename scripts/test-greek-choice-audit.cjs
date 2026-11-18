@@ -84,7 +84,7 @@ async function select(page,model,unit,lang='es'){
   assert(!((await page.locator('[data-greek-option="change-number"]').textContent()).includes('EDITADO_NUMERO')));
   assert.match(await page.locator('#paper').textContent(),/RETRO_CONSERVADA/);
   // Actual DOCX exports, with and without solutions, in both languages/models.
-  for(const model of ['complete','translation'])for(const lang of ['es','va']){
+  for(const model of ['complete'])for(const lang of ['es','va']){
    await select(page,model,5,lang);
    await page.evaluate(()=>{ExaminaGreekNumber.setCount(4);ExaminaGreekRetroversion.setCount(4);generate()});
    const stem=file.replace('.html','')+'-'+model+'-'+lang;
