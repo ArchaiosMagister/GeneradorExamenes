@@ -8360,14 +8360,15 @@ const greekSemanticSyntagms={
  χωρα:['αγαθοσ','καλοσ','κακοσ','μεγασ','βαρβαροσ','αυτονομοσ','ενδοξοσ'],
  θαλαττα:['καλοσ','μεγασ','κακοσ'],
  νεανιασ:['αγαθοσ','καλοσ','κακοσ','πονηροσ','αισχροσ','αδικος','αθανατοσ','αυτονομοσ','φρονιμοσ','θνητοσ','βαρβαροσ','ενδοξοσ','συμμαχοσ','δικαιοσ','μεγασ'],
- παιδεια:['αγαθοσ','καλοσ','κακοσ','δικαιοσ'],
+ παιδεια:['αγαθοσ','καλοσ','κακοσ','δικαιοσ','αδικος'],
  αδελφοσ:['αγαθοσ','καλοσ','κακοσ','πονηροσ','αδικος','αθανατοσ','φρονιμοσ','θνητοσ','βαρβαροσ','ενδοξοσ','συμμαχοσ','δικαιοσ','μεγασ']
 };
 function greekSemanticallyValidSyntagm(noun,modifier){
  if(!noun||!modifier)return false;
  if(modifier.kind==='pronoun'&&modifier.lemma==='αὐτός')return true;
+ const lemma=greekBankKey(modifier.lemma);
  return (greekSemanticSyntagms[greekBankKey(noun.lemmas?.[0]||'')]||[])
-  .includes(greekBankKey(modifier.lemma));
+  .some(candidate=>greekBankKey(candidate)===lemma);
 }
 const greekSyntagmNounGenders=greekCorpusNounGenders;
 const greekArticles={
@@ -9778,10 +9779,16 @@ function regenerateExamWord(kind,index){
    // Si las bases están agotadas, un nuevo adjetivo también cambia el sintagma.
    const noun=pool.find(x=>x.id===ids[index]);
    const allocated=greekExamState.adjectiveChoices||={};
-   const available=greekAvailableSyntagmAdjectives(greekLimit())
-    .filter(x=>x.lemma!==allocated[ids[index]]);
+   const available=greekAvailableSyntagmModifiers(greekLimit())
+    .filter(x=>x.lemma!==allocated[ids[index]]&&
+     greekSemanticallyValidSyntagm(noun,x));
    const alternate=greekWeightedSyntagmAdjectives(available)[0];
-   if(noun&&alternate){allocated[ids[index]]=alternate.lemma;renderOnlyRegeneratedExamWord(kind,index,generateGreekExam)}
+   if(noun&&alternate){
+    const before=allocated[ids[index]];
+    allocated[ids[index]]=alternate.lemma;
+    if(renderOnlyRegeneratedExamWord(kind,index,generateGreekExam)===false)
+     allocated[ids[index]]=before;
+   }
   }
   return;
  }
