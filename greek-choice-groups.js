@@ -178,7 +178,7 @@
   section.contentEditable='false';
   const head=t('Enunciados para el cambio de número','Enunciats per al canvi de nombre');
   section.innerHTML='<p class="exam-gloss-title"><strong>'+esc(head)+'</strong></p>'+
-   '<div class="final-gloss">'+terms.map(entry=>'<div class="gloss-item">'+esc(entry)+'</div>').join('')+'</div>';
+   '<div class="greek-number-lexicon">'+terms.map(entry=>'<div class="gloss-item">'+esc(entry)+'</div>').join('')+'</div>';
   if(!previous)sheet.querySelector(':scope > #answerkey')?.before(section);
  }
  function itemText(node){
@@ -560,7 +560,7 @@
   '.paper .greek-choice-etym-sentence u{text-decoration:underline;text-underline-offset:2px}'+
   '.paper .greek-number-glossary{margin:8pt 0 0;break-inside:auto}'+
   '.paper .greek-number-glossary .exam-gloss-title{margin-bottom:4pt}'+
-  '.paper .greek-number-glossary .final-gloss{columns:2;column-gap:24pt}';
+  '.paper .greek-number-glossary .greek-number-lexicon{columns:2;column-gap:24pt}';
  document.head.append(style);
  function snapshotChoices(){
   return {flags:{...flags[$('model').value]},number:APIs.number().state(),
