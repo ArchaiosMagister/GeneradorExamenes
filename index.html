@@ -5632,7 +5632,9 @@ function regenerateExamWord(kind,index){
   const otherItems=ids.filter((_,i)=>i!==index).map(id=>pool.find(x=>x.id===id)).filter(Boolean);
   const alternatives=gkind==='forms'?
    greekAdjectiveReplacementChoices(previous,otherItems,candidates):candidates;
-  const next=(previous?.minUnit===greekLimit()?greekCurricularSample(alternatives,1):sample(alternatives,1))[0];
+  // Regeneración individual sin sesgo a la última UD: todo el repertorio
+  // gramatical ya explicado es válido y proporciona más alternativas.
+  const next=sample(alternatives,1)[0];
   if(next){
    const former=ids[index];ids[index]=next.id;
    if(gkind==='declension'){
