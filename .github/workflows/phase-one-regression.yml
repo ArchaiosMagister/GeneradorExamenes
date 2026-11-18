@@ -70,7 +70,7 @@ jobs:
       - name: Regeneración morfológica y progresión gramatical en griego y latín
         run: node scripts/test-morph-quotas-curriculum-regeneration.cjs
       - name: Griego I competencias, filología, Word, PDF y offline
-        run: node scripts/test-greek-choice-groups.cjs && node scripts/test-greek-choice-audit.cjs && node scripts/test-greek-choice-bullets-spacing.cjs
+        run: node scripts/test-greek-choice-groups.cjs && node scripts/test-greek-choice-audit.cjs && node scripts/test-greek-choice-bullets-spacing.cjs && node scripts/test-greek-complete-ud5-regressions.cjs
       - name: Auditar étimos distintos y raíces estudiadas en Griego I (ES/VA, web y PWA)
         run: node scripts/test-greek-etymology-distinct-roots.cjs
       - name: Sintagmas griegos, enunciados completos, clases 2-2 y pronombres desde UD7
