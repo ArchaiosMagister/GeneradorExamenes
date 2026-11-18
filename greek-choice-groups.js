@@ -145,6 +145,7 @@
   return copy.textContent.replace(/^\s*\d+\.\s*/,'').trim();
  }
  function decorateItems(sheet){
+  sheet.classList.add('greek-choice-complete-exam');
   for(const option of sheet.querySelectorAll('.greek-choice-option')){
    option.dataset.greekChoiceGroup=['etymology','roots'].includes(option.dataset.greekOption)
     ?'greek-plurilingual':'greek-competence';
