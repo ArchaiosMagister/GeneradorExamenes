@@ -38,14 +38,19 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
    const nouns=greekVerifiedCorpus.filter(x=>x.kind==='declension'&&x.minUnit<=greekLimit());
    const find=id=>nouns.find(x=>x.id===id);
    const pair=(id,lemma)=>greekCompleteNominalGroup(find(id),true,adjs.find(x=>x.lemma===lemma));
-   const feminine22=pair('n-αγορα','αἰσχρός');
-   const feminine212=pair('n-αγορα','πονηρός');
-   const echthros=pair('n-αγορα','ἐχθρός');
-   const neuter22=pair('n-δωρον','αἰσχρός');
+   // Mantener cobertura de flexión 2-2, 2-1-2 e irregular
+   // sin convertir las combinaciones absurdas en ejemplos docentes.
+   const feminine22=pair('n-παιδεια','ἄδικος');
+   const feminine212=pair('n-χωρα','καλός');
+   const echthros=pair('n-ανθρωπος','ἐχθρός');
+   const neuter22=pair('n-εργον','ἄδικος');
    const nominative=pair('n-λογος','δίκαιος');
-   const check=pair('n-αγορα','δίκαιος');
+   const check=pair('n-παιδεια','δίκαιος');
    const megasM=pair('n-λογος','μέγας'),megasF=pair('n-αγορα','μέγας');
    const polysN=pair('n-δωρον','πολύς'),polysF=pair('n-αγορα','πολύς');
+   const echthrosFemale=greekCompleteAdjectiveForms(adjs.find(x=>x.lemma==='ἐχθρός'),'f');
+   const polysNeuter=greekCompleteAdjectiveForms(adjs.find(x=>x.lemma==='πολύς'),'n');
+   const polysFemale=greekCompleteAdjectiveForms(adjs.find(x=>x.lemma==='πολύς'),'f');
    const draws=2400,firstMixed=Array.from({length:draws},()=>
     ['μέγας','πολύς'].includes(greekWeightedSyntagmAdjectives(adjs)[0]?.lemma))
     .filter(Boolean).length;
@@ -53,7 +58,7 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
    return {
     adjectives:adjs.map(x=>x.lemma),classes:adjs.map(x=>x.feminine===null?'2-2':'2-1-2'),
     feminine22,feminine212,echthros,neuter22,nominative,check,
-    megasM,megasF,polysN,polysF,weightedRatio,unweightedRatio,
+    megasM,megasF,polysN,polysF,echthrosFemale,polysNeuter,polysFemale,weightedRatio,unweightedRatio,
     selected:greekExamState.ids.declension,
     chosen:greekExamState.adjectiveChoices||{}
    };
@@ -71,23 +76,24 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
   assert.match(result.megasM.rows[3][1][0],/^τοῦ μεγάλου /u);
   assert.match(result.megasF.title,/^ἡ μεγάλη ἀγορά$/u);
   assert.match(result.megasF.rows[4][1][0],/^τῇ μεγάλῃ /u);
-  assert.match(result.polysN.title,/^τὸ πολὺ δῶρον$/u);
-  assert.match(result.polysN.rows[3][1][0],/^τοῦ πολλοῦ /u);
-  assert.match(result.polysF.title,/^ἡ πολλὴ ἀγορά$/u);
-  assert.match(result.polysF.rows[4][1][0],/^τῇ πολλῇ /u);
+  assert.equal(result.polysN,null,'No generar «el mucho regalo»');
+  assert.equal(result.polysF,null,'No generar «la mucha plaza»');
   assert.match(result.megasM.enunciation,/μέγας, μεγάλη, μέγα/u);
-  assert.match(result.polysN.enunciation,/πολύς, πολλή, πολύ/u);
+  assert.equal(result.polysNeuter[0][0],'πολύ');
+  assert.equal(result.polysNeuter[0][3],'πολλοῦ');
+  assert.equal(result.polysFemale[0][0],'πολλή');
+  assert.equal(result.polysFemale[0][4],'πολλῇ');
   for(const lemma of ['ἀθάνατος','αὐτόνομος','φρόνιμος','θνητός'])
    assert(result.adjectives.includes(lemma),'Falta adjetivo 2-2 '+lemma);
-  assert.match(result.feminine22.title,/^ἡ αἰσχρὸς ἀγορά$/u,'El adjetivo 2-2 conserva flexión masculina con artículo femenino');
-  assert.match(result.feminine22.rows[3][1][0],/^τῆς αἰσχροῦ /u);
-  assert.match(result.feminine212.title,/^ἡ πονηρὰ ἀγορά$/u);
-  assert.match(result.echthros.title,/^ἡ ἐχθρὰ ἀγορά$/u);
-  assert.match(result.echthros.rows[3][1][0],/^τῆς ἐχθρᾶς /u,'Genitivo singular femenino circunflejo');
-  assert.match(result.echthros.rows[2][1][0],/^τὴν ἐχθρὰν /u,'Acusativo singular con artículo y acento grave');
-  assert.match(result.echthros.rows[4][1][0],/^τῇ ἐχθρᾷ /u,'Dativo femenino conserva iota suscrita');
-  assert.match(result.feminine212.rows[3][1][0],/^τῆς πονηρᾶς /u);
-  assert.match(result.neuter22.title,/^τὸ αἰσχρὸν δῶρον$/u);
+  assert.match(result.feminine22.title,/^ἡ ἄδικος παιδεία$/u);
+  assert.match(result.feminine22.rows[3][1][0],/^τῆς ἀδίκου /u);
+  assert.match(result.feminine212.title,/^ἡ καλὴ χώρα$/u);
+  assert.match(result.echthros.title,/^ὁ ἐχθρὸς ἄνθρωπος$/u);
+  assert.equal(result.echthrosFemale[0][3],'ἐχθρᾶς','Genitivo singular femenino circunflejo');
+  assert.equal(result.echthrosFemale[0][2],'ἐχθράν','Acusativo singular femenino');
+  assert.equal(result.echthrosFemale[0][4],'ἐχθρᾷ','Dativo femenino conserva iota suscrita');
+  assert.match(result.feminine212.rows[3][1][0],/^τῆς καλῆς /u);
+  assert.match(result.neuter22.title,/^τὸ ἄδικον ἔργον$/u);
   assert.match(result.nominative.title,/^ὁ δίκαιος λόγος$/u);
   assert.match(result.check.rows[3][1][0],/^τῆς δικαίας /u);
   for(const noun of [result.feminine22,result.feminine212,result.echthros,result.neuter22,result.nominative]){
