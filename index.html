@@ -8060,29 +8060,29 @@ html[data-appearance="oled"] body.exam-redesign #exam-ui-shell :is(#exam-ui-core
    marcador en 0,60 / 1,25 / 1,90 cm; texto en 1,25 / 1,90 / 2,55 cm.
    El control de sangría desplaza los tres niveles; el resto de los exámenes
    conserva su maquetación. */
-.paper .greek-choice-complete-exam > p.exam-question {
+.paper[data-format-course="greek1"] .exam-sheet.greek-choice-complete-exam > p.exam-question {
  margin-left:calc(.6cm + var(--exam-indent-shift,0pt))!important;
  padding-left:.65cm!important;text-indent:-.65cm!important;
 }
-.paper .greek-choice-complete-exam > p.exam-question .exam-q-number {
+.paper[data-format-course="greek1"] .exam-sheet.greek-choice-complete-exam > p.exam-question .exam-q-number {
  width:.65cm!important;min-width:.65cm!important;margin-right:0!important;
 }
-.paper .greek-choice-complete-exam .greek-choice-option > p.greek-choice-subquestion {
+.paper[data-format-course="greek1"] .exam-sheet.greek-choice-complete-exam .greek-choice-option > p.greek-choice-subquestion {
  margin-left:calc(1.25cm + var(--exam-indent-shift,0pt))!important;
  padding-left:.65cm!important;text-indent:-.65cm!important;
 }
-.paper .greek-choice-complete-exam .greek-choice-option > p.exam-item:not(.greek-choice-subquestion) {
+.paper[data-format-course="greek1"] .exam-sheet.greek-choice-complete-exam .greek-choice-option > p.exam-item:not(.greek-choice-subquestion) {
  margin-left:calc(1.9cm + var(--exam-indent-shift,0pt))!important;
  padding-left:.65cm!important;text-indent:-.65cm!important;
 }
-.paper .greek-choice-complete-exam .greek-choice-option > p.exam-etymology {
+.paper[data-format-course="greek1"] .exam-sheet.greek-choice-complete-exam .greek-choice-option > p.exam-etymology {
  margin-left:calc(1.9cm + var(--exam-indent-shift,0pt))!important;
  padding-left:0!important;text-indent:0!important;
 }
-.paper .greek-choice-complete-exam .greek-choice-option > p.exam-etymology > [data-corpus-id] {
+.paper[data-format-course="greek1"] .exam-sheet.greek-choice-complete-exam .greek-choice-option > p.exam-etymology > [data-corpus-id] {
  padding-left:.65cm!important;text-indent:-.65cm!important;
 }
-.paper .greek-choice-complete-exam .greek-choice-option .exam-letter {
+.paper[data-format-course="greek1"] .exam-sheet.greek-choice-complete-exam .greek-choice-option .exam-letter {
  width:.65cm!important;min-width:.65cm!important;margin-right:0!important;
 }
 </style>
