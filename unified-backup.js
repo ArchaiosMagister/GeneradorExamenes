@@ -39,12 +39,32 @@
     !Number.isInteger(value.count)||value.count<1||value.count>100))
    throw Error('Proyecto de vocabulario no válido');
  }
- function readArchive(){
+ function readArchive(strict=false){
+  const raw=storage().getItem(ARCHIVE);
+  if(raw===null)return [];
   try{
-   const data=JSON.parse(storage().getItem(ARCHIVE)||'[]');
-   return Array.isArray(data)?data.filter(x=>record(x)&&
-    (own(GROUPS,x.key)||x.key==='liveDraft')&&own(x,'value')).slice(0,MAX_ARCHIVE):[];
-  }catch{return []}
+   const data=JSON.parse(raw);
+   if(!Array.isArray(data))throw Error('Formato de historial incorrecto');
+   if(strict){
+    if(data.length>MAX_ARCHIVE)throw Error('Demasiadas entradas archivadas');
+    for(const item of data){
+     if(!record(item)||!own(item,'value')||
+        !(own(GROUPS,item.key)||item.key==='liveDraft'))
+      throw Error('Entrada del historial incorrecta');
+     if(item.key==='liveDraft'){
+      if(!validateDraft(item.value))throw Error('Borrador archivado incorrecto');
+     }else validateItem(item.key,item.value);
+    }
+    return data;
+   }
+   // La interfaz puede mostrar un historial parcialmente dañado, pero nunca
+   // usar una lectura tolerante para exportarlo o sobrescribirlo.
+   return data.filter(x=>record(x)&&
+    (own(GROUPS,x.key)||x.key==='liveDraft')&&own(x,'value')).slice(0,MAX_ARCHIVE);
+  }catch(error){
+   if(strict)throw Error('El historial local está dañado: '+error.message);
+   return [];
+  }
  }
  function makeBackup(){
   const entries=Object.create(null);
@@ -61,13 +81,14 @@
   // No ofrecer como copia de seguridad un archivo que después no se pueda importar.
   // La validación incluye el historial, los límites de tamaño y los borradores.
   return validateBackup({schema:SCHEMA,version:1,created:new Date().toISOString(),
-   entries,liveDraft,archive:readArchive()});
+   entries,liveDraft,archive:readArchive(true)});
  }
  function validateBackup(data){
   if(!record(data)||data.schema!==SCHEMA||data.version!==1||
     !record(data.entries)||!Array.isArray(data.archive)||data.archive.length>MAX_ARCHIVE)
    throw Error('No es una copia unificada compatible');
-  if(json(data).length>MAX_FILE)throw Error('La copia supera 16 MB');
+  // La descarga y la importación limitan bytes UTF-8, no caracteres UTF-16.
+  if(new Blob([json(data)+'\n']).size>MAX_FILE)throw Error('La copia supera 16 MB');
   for(const [key,value] of Object.entries(data.entries))validateItem(key,value);
   if(data.liveDraft!==null&&data.liveDraft!==undefined&&!validateDraft(data.liveDraft))
    throw Error('Borrador de la vista previa incorrecto');
@@ -141,7 +162,7 @@
   }
   if(data.liveDraft)addArchive.push({key:'liveDraft',value:data.liveDraft});
   for(const item of data.archive)addArchive.push({key:item.key,value:item.value});
-  const existing=readArchive(),all=existing.slice();
+  const existing=readArchive(true),all=existing.slice();
   const seen=new Set(all.map(x=>x.key+'|'+json(x.value)));
   for(const item of addArchive){
    const fingerprint=item.key+'|'+json(item.value);
