@@ -6331,7 +6331,7 @@ function greekMorphSyntagmPool(){
  const modifiers=greekAvailableSyntagmModifiers(limit);
  return nouns.filter(x=>greekSyntagmNounGenders[x.id.slice(2)])
   .flatMap(noun=>modifiers.map(modifier=>{
-   const group=greekCompleteNominalGroup(noun,true,modifier);
+   const group=greekCompleteNominalGroup(noun,true,modifier,modifiers);
    return group&&{...group,title:group.enunciation,minUnit:noun.minUnit};
   })).filter(Boolean);
 }
@@ -8604,12 +8604,15 @@ function greekSyntagmEnunciation(item,modifier=null){
  const feminine=oxytone?(modifier.feminine==='η'?'–ή':'–ά'):'–'+modifier.feminine;
  return article+' + '+modifier.lemma+', '+feminine+', '+neuter+' + '+noun;
 }
-function greekCompleteNominalGroup(item,forMorphology=false,preferred=null){
+function greekCompleteNominalGroup(item,forMorphology=false,preferred=null,modifierPool=null){
  if((!forMorphology&&$('model').value!=='complete')||greekLimit()<5||
   item.kind!=='declension'||!item.table?.rows?.length)return null;
  const gender=greekSyntagmNounGenders[item.id.slice(2)];
  if(!gender)return null; // No adivinar el género ni la declinación.
- const available=greekAvailableSyntagmModifiers(greekLimit()).filter(x=>greekSemanticallyValidSyntagm(item,x));
+ // El generador de lotes comparte la misma lista ya validada: no consultar
+ // el banco léxico de nuevo para cada combinación de nombre y adjetivo.
+ const available=(modifierPool||greekAvailableSyntagmModifiers(greekLimit()))
+  .filter(x=>greekSemanticallyValidSyntagm(item,x));
  const adjective=preferred?available.find(x=>x.lemma===preferred.lemma):
   greekSyntagmAdjective(item,available);
  if(!adjective)return null;
