@@ -1121,6 +1121,7 @@ function examVisualItemGapFor(heading){
 }
 function examVisualItemGapOverride(heading){return examVisualValue(heading,'items')}
 function examVisualGlossBeforeFor(gloss){
+ if(gloss?.hasAttribute('data-greek-number-glossary'))return null;
  // El glosario se aloja dentro de #examSentenceGlossary. Localizar la
  // pregunta previa desde el contenedor hermano, no desde su título anidado.
  const block=gloss?.parentElement?.id==='examSentenceGlossary'
@@ -1204,7 +1205,7 @@ function applyExamVisualFormat(){
   // El margen de un título dentro de un contenedor colapsa; anclarlo al
   // contenedor evita perder separación al rasterizar páginas A4.
   '.paper .exam-sheet > #examSentenceGlossary{margin-top:'+glossGap+'pt!important;display:flow-root}',
-  '.paper .exam-sheet > #examSentenceGlossary > p.exam-gloss-title{margin-top:0!important}'
+  '.paper .exam-sheet > #examSentenceGlossary > p.exam-gloss-title:not([data-greek-number-glossary]){margin-top:0!important}'
  );
  rules.textContent=text.join('\n');
 }
