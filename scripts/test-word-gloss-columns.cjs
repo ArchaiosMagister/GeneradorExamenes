@@ -41,7 +41,8 @@ const server=http.createServer((req,res)=>{
       sentences.dispatchEvent(new Event('input',{bubbles:true}));
       generate();
       window.ExaminaFlushSentenceGlossary?.();
-      const count=document.querySelectorAll('#paper .final-gloss .gloss-item').length;
+      const counts=[...document.querySelectorAll('#paper .final-gloss')]
+       .map(block=>block.querySelectorAll('.gloss-item').length).filter(Boolean);
       const before=document.getElementById('paper').innerText;
       const download=window.downloadBlob;
       const review=window.ExaminaTeacherReview,old=review?.evidenceMayExport;
@@ -58,19 +59,23 @@ const server=http.createServer((req,res)=>{
        if(scoring)scoring.canExport=prior;
       }
       if(!blob)throw Error('No se ha generado un Word');
-      return {count,before,bytes:Array.from(new Uint8Array(await blob.arrayBuffer()))};
+      return {counts,before,bytes:Array.from(new Uint8Array(await blob.arrayBuffer()))};
      },course);
      const context=filename+'/'+course;
-     assert(result.count>0,context+': falta glosario en la vista previa');
+     assert(result.counts.length>0,context+': falta glosario en la vista previa');
      const xml=entry(Buffer.from(result.bytes),'word/document.xml');
      assert.match(xml,/<w:cols w:num="2" w:space="360"\/>/,context+': faltan columnas reales');
-     const first=xml.indexOf('<w:cols w:num="1" w:space="360"/>');
-     const second=xml.indexOf('<w:cols w:num="2" w:space="360"/>',first);
-     assert(first>=0&&second>first,context+': secciones no consecutivas');
-     const contents=xml.slice(first,second);
-     assert((contents.match(/<w:p>/g)||[]).length>=result.count,
-      context+': no hay un párrafo Word por entrada');
-     assert(!contents.includes('<w:tbl>'),context+': glosario sigue siendo tabla Word');
+     let offset=0;
+     for(const count of result.counts){
+      const first=xml.indexOf('<w:cols w:num="1" w:space="360"/>',offset);
+      const second=xml.indexOf('<w:cols w:num="2" w:space="360"/>',first);
+      assert(first>=offset&&second>first,context+': secciones no consecutivas');
+      const contents=xml.slice(first,second);
+      assert.equal((contents.match(/<w:p>/g)||[]).length,count,
+       context+': no hay un párrafo Word por entrada');
+      assert(!contents.includes('<w:tbl>'),context+': glosario sigue siendo tabla Word');
+      offset=second;
+     }
      assert(xml.endsWith('</w:sectPr></w:body></w:document>'),context+': sección final incompleta');
      // La última sección también debe ser continua: evita página vacía tras el glosario.
      assert(xml.slice(-400).includes('<w:type w:val="continuous"/>'),

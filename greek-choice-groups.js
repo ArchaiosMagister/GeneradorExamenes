@@ -163,13 +163,17 @@
   }
   return [...result].filter(Boolean);
  }
+ function clearNumberGlossary(panel){
+  panel?.querySelectorAll('[data-greek-number-glossary], [data-greek-number-entry]')
+   .forEach(item=>item.remove());
+ }
  function refreshNumberGlossary(sheet){
   if(!sheet||!sheet.classList.contains('greek-choice-complete-exam'))return;
   // Migrar cualquier glosario heredado: el examen tiene ahora UN único bloque
   // de vocabulario (el de oraciones), también para el cambio de número.
   sheet.querySelector(':scope > #greekNumberGlossary')?.remove();
   let panel=sheet.querySelector(':scope > #examSentenceGlossary');
-  panel?.querySelectorAll('[data-greek-number-entry]').forEach(item=>item.remove());
+  clearNumberGlossary(panel);
   const allowed=$('autoGloss')?.checked!==false&&included('number')&&
    !!sheet.querySelector(':scope > .greek-choice-option[data-greek-option="change-number"]');
   if(!allowed)return;
@@ -178,20 +182,24 @@
    panel.contentEditable='false';
    sheet.querySelector(':scope > #answerkey')?.before(panel);
   }
-  let final=panel.querySelector(':scope > .final-gloss');
   const known=new Set([...panel.querySelectorAll('.gloss-item')].map(
    x=>normLex(headLex(x.textContent))));
   const terms=numberGlossaryLemmas().filter(entry=>!known.has(normLex(headLex(entry))));
   if(!terms.length)return;
-  if(!final){
-   if(!panel.querySelector(':scope > .exam-gloss-title')){
-    const heading=document.createElement('p');heading.className='exam-gloss-title';
-    const strong=document.createElement('strong');
-    strong.textContent=t('Vocabulario','Vocabulari');heading.append(strong);
-    panel.prepend(heading);
-   }
-   final=document.createElement('div');final.className='final-gloss';panel.append(final);
+  if(!panel.querySelector(':scope > .exam-gloss-title')){
+   const heading=document.createElement('p');heading.className='exam-gloss-title';
+   const strong=document.createElement('strong');
+   strong.textContent=t('Vocabulario','Vocabulari');heading.append(strong);
+   panel.prepend(heading);
   }
+  const heading=document.createElement('p');heading.className='exam-gloss-title';
+  heading.dataset.greekNumberGlossary='1';
+  const strong=document.createElement('strong');
+  strong.textContent=t('Palabras para cambio de número','Paraules per al canvi de nombre');
+  heading.append(strong);
+  const final=document.createElement('div');final.className='final-gloss';
+  final.dataset.greekNumberGlossary='1';
+  panel.append(heading,final);
   for(const entry of terms){
    const item=document.createElement('div');
    item.className='gloss-item';item.dataset.greekNumberEntry='1';
@@ -311,8 +319,7 @@
   if(onlyGreek()){
    // Evitar reconstruir el glosario ordinario solo porque contenga los lemas
    // adicionales de cambio de número: sus selectores docentes conservan foco.
-   $('examSentenceGlossary')?.querySelectorAll('[data-greek-number-entry]')
-    .forEach(el=>el.remove());
+   clearNumberGlossary($('examSentenceGlossary'));
   }
   const result=previousSentenceGlossaryRefresh(...args);
   if(onlyGreek())refreshNumberGlossary($('paper').querySelector('.exam-sheet'));
