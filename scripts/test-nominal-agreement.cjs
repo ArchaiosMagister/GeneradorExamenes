@@ -111,26 +111,45 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
    cols.every(x=>k===1?x.split(' ').length===2:x.split(' ').length===3))),
    'En el vocativo no hay artículo; en los demás casos deben aparecer tres palabras');
   const agreement=await page.evaluate(()=>{
-   const selected=['n-λογος','n-αγορα','n-δωρον'];
-   return selected.map(id=>{
-    const x=greekVerifiedCorpus.find(y=>y.id===id);
-    if(!x)throw Error('Falta el sustantivo '+id);
-    const c=greekCompleteNominalGroup(x);
-    return {id,title:c.title,nom:c.rows[0][1][0],gen:c.rows[3][1][0],voc:c.rows[1][1][0]};
+   const nouns=['n-λογος','n-αγορα','n-δωρον'];
+   const available=greekAvailableSyntagmAdjectives(greekLimit());
+   return nouns.map(id=>{
+    const noun=greekVerifiedCorpus.find(item=>item.id===id);
+    if(!noun)throw Error('Falta el sustantivo '+id);
+    return available.filter(adjective=>greekSemanticallyValidSyntagm(noun,adjective)).map(adjective=>{
+     const group=greekCompleteNominalGroup(noun,false,adjective,available);
+     return {lemma:adjective.lemma,title:group.title,nom:group.rows[0][1][0],
+      gen:group.rows[3][1][0],voc:group.rows[1][1][0]};
+    });
    });
   });
-  assert(agreement[0].title.startsWith('ὁ '),'Masculino griego: artículo equivocado');
-  assert(/^ἡ \S+ ἀγορά$/u.test(agreement[1].title),'Femenino griego: orden atributivo incorrecto');
-  assert(agreement[2].title.startsWith('τὸ '),'Neutro griego: artículo equivocado');
-  assert(agreement[0].gen.startsWith('τοῦ '),'Genitivo masculino: falta artículo');
-  assert(agreement[1].gen.startsWith('τῆς '),'Genitivo femenino: falta artículo');
-  assert(agreement[2].gen.startsWith('τοῦ '),'Genitivo neutro: falta artículo');
-  assert(agreement.every(x=>!x.voc.startsWith('ὁ ')&&!x.voc.startsWith('ἡ ')&&!x.voc.startsWith('τὸ ')),
-   'El artículo griego no tiene vocativo');
-  assert(agreement[0].nom.split(' ')[1].normalize('NFD').replace(/\p{M}/gu,'').endsWith('ος')&&
-   agreement[1].nom.split(' ')[1].normalize('NFD').replace(/\p{M}/gu,'').match(/(?:ος|η|α)$/u)&&
-   agreement[2].nom.split(' ')[1].normalize('NFD').replace(/\p{M}/gu,'').endsWith('ον'),
-   'Concordancia griega incorrecta en el nominativo');
+  const mixedNominatives={
+   'μέγας':['μέγας','μεγάλη','μέγα'],
+   'πολύς':['πολύς','πολλή','πολύ']
+  };
+  const genders=[
+   {article:'ὁ',genitive:'τοῦ',noun:'λόγος',regular:/ος$/u},
+   {article:'ἡ',genitive:'τῆς',noun:'ἀγορά',regular:/(?:ος|η|α)$/u},
+   {article:'τὸ',genitive:'τοῦ',noun:'δῶρον',regular:/ον$/u}
+  ];
+  const unaccented=value=>value.normalize('NFD').replace(/\p{M}/gu,'');
+  agreement.forEach((groups,index)=>{
+   const {article,genitive,noun,regular}=genders[index];
+   assert(groups.length>0,'Faltan adjetivos compatibles con '+noun);
+   for(const {lemma,title,nom,gen,voc} of groups){
+    const nominative=nom.split(' ')[1];
+    assert.equal(title,article+' '+nominative+' '+noun,'Orden atributivo incorrecto: '+nom);
+    assert.equal(nom,title,'La tabla debe conservar el nominativo del sintagma');
+    assert(gen.startsWith(genitive+' '),'Genitivo sin el artículo esperado: '+gen);
+    assert(!/^(?:ὁ|ἡ|τὸ) /u.test(voc),'El artículo griego no tiene vocativo: '+voc);
+    if(mixedNominatives[lemma]){
+     assert.equal(unaccented(nominative),unaccented(mixedNominatives[lemma][index]),
+      'Concordancia griega incorrecta en el nominativo: '+nom);
+    }else{
+     assert.match(unaccented(nominative),regular,'Concordancia griega incorrecta en el nominativo: '+nom);
+    }
+   }
+  });
 
   const morph=await choose('greek1','morphology','UD5');
   assert(morph.headings.every(x=>!/(ἀγαθ|καλ|κακ)/u.test(x)),

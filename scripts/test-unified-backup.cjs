@@ -111,6 +111,60 @@ const bundle=(entries,extra={})=>({schema,version:1,created:'2026-11-13T00:00:00
  assert.equal(state.storage.getItem('examina_unified_archive_v1'),null);
 }
 {
+ // Una copia descargada tiene que superar los mismos límites que su importación.
+ const local=create({'examina-morph-review-v1':{ok:{decision:'excluir'}}});
+ const exported=local.api.makeBackup();
+ assert.equal(local.api.validateBackup(exported),exported,'La copia preparada debe ser reimportable');
+ assert.equal(create().api.prepareImport(exported).stats.newKeys,1);
+
+ // Cada registro individual cabe, pero su suma no cabe en el paquete portable.
+ const huge='x'.repeat(2900000);
+ const full=create({
+  'examina_exam_sentences_v1':{payload:huge},
+  'examina_exam_gloss_choices_v1':{payload:huge},
+  'examina-morph-review-v1':{payload:huge},
+  'examina-greek-discrepancy-v1':{payload:huge},
+  'examina_question_points_v1':{payload:huge},
+  'examina_extra':{payload:huge}
+ });
+ assert.throws(()=>full.api.makeBackup(),/16 MB/,'No descargar copias que no puedan importarse');
+ assert.equal(full.values.size,6,'El rechazo de la exportación nunca modifica los datos locales');
+}
+{
+ // Un archivo local dañado no se puede transformar silenciosamente en una copia incompleta.
+ const corrupt=create({
+  'examina_draft_v14':validDraft('<p>Borrador valioso</p>'),
+  'examina_unified_archive_v1':'{invalid-json'
+ });
+ assert.throws(()=>corrupt.api.makeBackup(),/historial local está dañado/);
+ assert.throws(()=>corrupt.api.applyImport(bundle({
+  'examina_exam_sentences_v1':{new:['Nueva oración']}
+ })),/historial local está dañado/);
+ assert.equal(corrupt.storage.getItem('examina_unified_archive_v1'),'{invalid-json');
+ assert.equal(corrupt.storage.getItem('examina_exam_sentences_v1'),null);
+ assert.equal(JSON.parse(corrupt.storage.getItem('examina_draft_v14')).html,'<p>Borrador valioso</p>');
+
+ // El límite de 150 registros no debe truncar automáticamente lo que ya está guardado.
+ const archive=Array.from({length:151},(_,i)=>({key:'liveDraft',value:validDraft('<p>'+i+'</p>')}));
+ const excess=create({'examina_unified_archive_v1':archive});
+ assert.throws(()=>excess.api.makeBackup(),/historial local está dañado/);
+ assert.throws(()=>excess.api.applyImport(bundle({})),/historial local está dañado/);
+ assert.equal(JSON.parse(excess.storage.getItem('examina_unified_archive_v1')).length,151);
+}
+{
+ // Las letras griegas suelen ocupar más de un byte: el archivo debe respetar
+ // el límite real de 16 MiB incluso cuando cuenta menos caracteres JS.
+ const greek='α'.repeat(2200000);
+ const unicode=create({
+  'examina_exam_sentences_v1':{payload:greek},
+  'examina_exam_gloss_choices_v1':{payload:greek},
+  'examina-morph-review-v1':{payload:greek},
+  'examina-greek-discrepancy-v1':{payload:greek}
+ });
+ assert.throws(()=>unicode.api.makeBackup(),/16 MB/);
+ assert.equal(unicode.values.size,4,'No modificar bancos si la copia es demasiado grande');
+}
+{
  // Las copias NO activan acreditación morfológica. Solo transportan valores.
  const source=fs.readFileSync(require('node:path').join(__dirname,'../index.html'),'utf8');
  assert.ok(source.includes('window.ExaminaUnifiedCurrentExam='));
