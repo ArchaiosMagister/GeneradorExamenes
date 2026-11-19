@@ -35,7 +35,8 @@ jobs:
       - name: Construir distribución autónoma y comprobar reproducibilidad
         run: |
           npm run offline:build
-          git diff --exit-code -- offline.html
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git -C "$GITHUB_WORKSPACE" diff --exit-code -- offline.html
       - name: Verificar navegadores y perfiles táctiles
         run: node scripts/test-device-compat.cjs
       - name: Verificar PDF multipágina en WebKit Safari simulado
