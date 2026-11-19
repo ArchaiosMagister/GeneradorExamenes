@@ -106,6 +106,27 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
   const allocated=Object.values(result.chosen);
   assert.equal(allocated.length,new Set(allocated).size,'El mismo examen repite innecesariamente un adjetivo');
   await configure('greek1','morphology','UD5');
+  const poolReuse=await page.evaluate(()=>{
+   const limit=greekLimit();
+   const nouns=greekVerifiedCorpus.filter(x=>x.verified&&x.kind==='declension'&&
+    greekMorphologyEligible(x,limit)&&!(x.lemmas||[]).some(isProperNounLemma))
+    .filter(x=>greekSyntagmNounGenders[x.id.slice(2)]);
+   const modifiers=greekAvailableSyntagmModifiers(limit);
+   const expected=nouns.flatMap(noun=>modifiers.map(modifier=>
+    greekCompleteNominalGroup(noun,true,modifier))).filter(Boolean)
+    .map(x=>x.enunciation).sort();
+   const original=greekAvailableSyntagmModifiers;
+   let calls=0,actual;
+   try{
+    greekAvailableSyntagmModifiers=(...args)=>{calls++;return original(...args)};
+    actual=greekMorphSyntagmPool().map(x=>x.enunciation).sort();
+   }finally{greekAvailableSyntagmModifiers=original}
+   return {calls,actual,expected};
+  });
+  assert.deepEqual(poolReuse.actual,poolReuse.expected,
+   'Reutilizar modificadores no puede cambiar los sintagmas curriculares disponibles');
+  assert.equal(poolReuse.calls,1,
+   'Construir el banco de sintagmas solo debe validar los modificadores una vez');
   const morphological=await page.evaluate(()=>{
    document.getElementById('morphSyntagms').value='';
    document.getElementById('morphOffer').value='3';
