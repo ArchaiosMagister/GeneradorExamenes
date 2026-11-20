@@ -435,7 +435,7 @@ function latinExpandedForms(bank){
   if(!l||!row.meaning||!(/^[a-z]+$/.test(l)))continue;
   const fields=latinPrincipalParts(raw);
   const annotated=raw.match(/\((1ª|2ª|3ª|4ª|mx\.)\)\s*$/u);
-  const record={lemma:l,entry:raw,meaning:row.meaning,meaning_va:row.meaning_va||'',
+  const record={lemma:key(lemma),entry:raw,meaning:row.meaning,meaning_va:row.meaning_va||'',
    attested:true,origin:'paradigma regular escolar derivado del enunciado (no flexión individual certificada)'};
   add(l,record); // La forma de cita del propio enunciado es léxica, no inferida.
   const proper=/^\p{Lu}/u.test(raw);
