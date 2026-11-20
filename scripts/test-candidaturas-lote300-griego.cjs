@@ -16,7 +16,8 @@ assert.equal(report.summary.promoted,300);
 assert.equal(report.status,'TRASLADADO_FUENTE5_EN_RAMA_FILOLÓGICA');
 assert.equal(bank.counts.grc.wikcionario,545);
 assert.equal(bank.counts.grc.contrastado,478);
-assert.equal(bank.counts.lat.modelo,3244);
+assert.equal(bank.counts.lat.modelo,bank.extensions.candidate_rows,
+ 'No se puede fijar el inventario latino de otra revisión en la prueba del lote griego');
 assert.equal(bank.counts.lat.contrastado,619);
 assert.equal(bank.extensions.greek_nominal_candidates.rows,545);
 assert.equal(source.singleForms.length,479);
