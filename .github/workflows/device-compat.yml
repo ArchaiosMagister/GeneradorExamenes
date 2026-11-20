@@ -5,6 +5,8 @@ on:
     paths:
       - 'greek-choice-*.js'
       - 'index.html'
+      - 'export-workspace.js'
+      - 'scripts/test-ui-refinement.cjs'
       - 'pdf-export.js'
       - 'scripts/test-export-workspace.cjs'
       - 'offline.html'
@@ -37,6 +39,24 @@ jobs:
           npm run offline:build
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
           git -C "$GITHUB_WORKSPACE" diff --exit-code -- offline.html
+      - name: Descargar base estable para comparación visual
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: baseline
+      - name: Comprobar los siete modelos de examen
+        run: |
+          node scripts/test-exam-models.cjs
+          npm run preview:test
+      - name: Comprobar refinamiento y capturas antes/después
+        run: UI_BASELINE_DIR=baseline node scripts/test-ui-refinement.cjs
+      - name: Conservar capturas de comparación
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ui-refinement-safari-chromium
+          path: test-results/ui-refinement/
+          if-no-files-found: ignore
       - name: Verificar navegadores y perfiles táctiles
         run: node scripts/test-device-compat.cjs
       - name: Verificar PDF multipágina en WebKit Safari simulado
