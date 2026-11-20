@@ -76,6 +76,22 @@ assert.equal(mVerb('deligo, delegi, delectum (3ª)').supine,'delectum');
 assert.equal(mVerb('appropinquo, appropinquavi, appropinquatum (1ª)').supine,'appropinquatum');
 // Garantizar que no se etiqueta como contrastada una derivación regular.
 assert.equal(index.counts.lat.contrastado,619,'No promover formas derivadas a fuente contrastada');
+// La forma victi pertenece al paradigma documentado de vinco, NO a una
+// pasiva personal inexistente de vivo, aunque vivo tenga el supino victum.
+const lexCtx={window:{},document:{readyState:'loading',addEventListener(){}}};
+for(const file of ['offline-lemmas.js','vocabulary-generator.js'])
+ vm.runInNewContext(read(file),lexCtx,{filename:file});
+const lexical=lexCtx.window.ExaminaVocabulary;
+const victi=lexical.analyze(index,'victi','lat1',banks.latin1,{contextual:true})[0];
+assert.equal(victi.status,'documented','victi debe conservar su acreditación tras corregir vivo');
+assert.equal(victi.lemma,'vinco','victi es participio de vinco y no de vivo');
+assert(!victi.candidates.some(x=>x.lemma==='vivo'),'No inventar participio personal de vivo');
+const vixerunt=lexical.analyze(index,'vixerunt','lat1',banks.latin1,{contextual:true})[0];
+assert(vixerunt.candidates.some(x=>x.lemma==='vivo'),'Mantener perfecto activo de vivo');
+const vivid=lexical.analyze(index,'vivis','lat1',banks.latin1,{contextual:true})[0];
+assert(vivid.candidates.some(x=>x.lemma==='vivo'),'Mantener presente activo de vivo');
+const fictitious=lexical.analyze(index,'vivor','lat1',banks.latin1,{contextual:true})[0];
+assert(!fictitious.candidates.some(x=>x.lemma==='vivo'),'No inventar voz pasiva personal de vivo');
 // Persistencia de listas exigibles antiguas: migrar solo registros sembrados,
 // preservar un registro modificado manualmente y no repetir la migración.
 const migrationStart=html.indexOf('function migrateSeededLatinVerbEntries(items){');
