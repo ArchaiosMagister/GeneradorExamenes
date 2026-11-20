@@ -90,6 +90,11 @@ const vixerunt=lexical.analyze(index,'vixerunt','lat1',banks.latin1,{contextual:
 assert(vixerunt.candidates.some(x=>x.lemma?.replace(/v/g,'u')==='uiuo'),'Mantener perfecto activo de vivo');
 const vivid=lexical.analyze(index,'vivis','lat1',banks.latin1,{contextual:true})[0];
 assert(vivid.candidates.some(x=>x.lemma?.replace(/v/g,'u')==='uiuo'),'Mantener presente activo de vivo');
+const vivunt=lexical.analyze(index,'vivunt','lat1',banks.latin1,{contextual:true})[0];
+assert.equal(vivunt.lemma,'vivo','La grafía de vivo debe conservar la v en el glosario');
+const solvunt=lexical.analyze(index,'solvunt','lat1',banks.latin1,{contextual:true})[0];
+assert(solvunt.candidates.some(x=>x.lemma==='solvo'),
+ 'Las flexiones recuperadas deben mantener el lema escolar solvo');
 const fictitious=lexical.analyze(index,'vivor','lat1',banks.latin1,{contextual:true})[0];
 assert(!fictitious.candidates.some(x=>x.lemma?.replace(/v/g,'u')==='uiuo'),'No inventar voz pasiva personal de vivo');
 // Persistencia de listas exigibles antiguas: migrar solo registros sembrados,
