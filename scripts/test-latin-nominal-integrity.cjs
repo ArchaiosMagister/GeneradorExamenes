@@ -94,12 +94,18 @@ const checks=[];
        lemma:nounKey(x.p.lemma),kind:x.p.kind
       }));
      }
-     set('model','morf');
+     set('model',course==='latin1'?'morf':'tablas');
      document.querySelectorAll('.unit-choice').forEach(x=>x.checked=true);
      const sourceEntries=[...latinSharedBank.vocabulary(course),
       ...latinSharedBank.vocabulary(course==='latin1'?'latin4':'latin1')];
      const selected=latinExamMorphologyEntries(sourceEntries);
      const byCategory=new Set(selected.map(x=>x.latinMorphCategory+'|'+examKey(x.entry)));
+     const selectedCourseHeads=new Set(latinSharedBank.vocabulary(course,selectedUnits())
+      .map(x=>examKey(x.entry)));
+     const expectedNounHeads=[...new Set(selected.filter(x=>
+      x.latinMorphCategory==='nouns'&&
+      (course==='latin1'||selectedCourseHeads.has(examKey(x.entry))))
+      .map(x=>examKey(x.entry)))];
      const groups=latinExamFormCandidates(selectedUnits(),true);
      const nounForms=groups[0].map(x=>({
       lemma:examKey(x.entry),form:mNormalize(x.form),declension:x.declension
@@ -110,7 +116,7 @@ const checks=[];
       semanticNouns:all.length,semanticCombinations:allowed,
       semantic,tableCount:tables.length,poolCount:nouns.length,
       tables:data,grammaticalUnits,byCategory:[...byCategory],
-      nounForms,ver,legacyVer,
+      nounForms,expectedNounHeads,ver,legacyVer,
       selectedCount:selected.length,
       diagnostics:{model:document.getElementById('model')?.value,
        course:currentCourse(),units:selectedUnits(),
@@ -173,10 +179,13 @@ const checks=[];
     const candidates=new Set(result.byCategory);
     const nounHeads=new Set(result.nounForms.map(x=>x.lemma));
     for(const lemma of ['consul','frater','homo','miles','tempus',
-      'corpus','nomen','senator','ver']){
-     assert(candidates.has('nouns|'+lemma),context+' ficha perdida '+lemma);
-     assert(nounHeads.has(lemma),context+' no se ofrecen las formas de '+lemma+' '+JSON.stringify(result.diagnostics));
-    }
+      'corpus','nomen','senator','ver'])
+     assert(candidates.has('nouns|'+lemma),context+' ficha verificada perdida '+lemma);
+    for(const lemma of result.expectedNounHeads)
+     assert(nounHeads.has(lemma),context+' no se ofrecen las formas elegibles de '+
+      lemma+' '+JSON.stringify(result.diagnostics));
+    assert(result.expectedNounHeads.length>=(course==='latin1'?190:125),
+     context+' cobertura nominal insuficiente');
     assert(candidates.has('nouns|latus'),context+' falta latus sustantivo');
     assert(candidates.has('adjectives|latus'),context+' falta latus adjetivo');
     const wantVer=[
@@ -188,9 +197,11 @@ const checks=[];
     assert.deepEqual(result.ver.forms,wantVer,context+' ver 12 formas');
     assert.deepEqual(result.legacyVer?.forms,wantVer,
       context+' fichas locales antiguas aún originan formas falsas');
-    for(const form of wantVer.flat())assert(result.nounForms.some(x=>
-      x.lemma==='ver'&&normalize(x.form)===form),
+    if(course==='latin1')for(const form of wantVer.flat())
+     assert(result.nounForms.some(x=>x.lemma==='ver'&&normalize(x.form)===form),
       context+' no aparece la forma de ver '+form);
+    if(course==='latin4')assert(nounHeads.has('nomen'),
+     context+' el enunciado abreviado de nomen no se ha recuperado');
     checks.push({file,course,lang,tables:result.tableCount,sourceChecked,
      independentlyChecked,wordCells,selected:result.selectedCount});
     console.log('LATIN_NOMINAL_AUDIT '+JSON.stringify(checks[checks.length-1]));
