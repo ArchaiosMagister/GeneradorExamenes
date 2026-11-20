@@ -4198,6 +4198,28 @@ function greekCorpus(){
    }
   });
  });
+ // Participios explícitos de UD10: formas concretas, no construcciones
+ // sintácticas deducidas. Genitivos útiles para reconocer el absoluto.
+ const greekReviewedParticiples=[
+  ['λύων','Nominativo singular masculino del participio de presente activo de λύω.'],
+  ['λύουσα','Nominativo singular femenino del participio de presente activo de λύω.'],
+  ['λῦον','Nominativo o acusativo singular neutro del participio de presente activo de λύω.'],
+  ['λύοντος','Genitivo singular masculino o neutro del participio de presente activo de λύω.'],
+  ['λυούσης','Genitivo singular femenino del participio de presente activo de λύω.'],
+  ['λυόντων','Genitivo plural masculino o neutro del participio de presente activo de λύω.'],
+  ['λυουσῶν','Genitivo plural femenino del participio de presente activo de λύω.'],
+  ['λυόμενος','Nominativo singular masculino del participio de presente medio o pasivo de λύω.'],
+  ['λυομένη','Nominativo singular femenino del participio de presente medio o pasivo de λύω.'],
+  ['λυόμενον','Nominativo o acusativo singular neutro del participio de presente medio o pasivo de λύω.'],
+  ['λυομένου','Genitivo singular masculino o neutro del participio de presente medio o pasivo de λύω.'],
+  ['λυομένης','Genitivo singular femenino del participio de presente medio o pasivo de λύω.']
+ ];
+ greekReviewedParticiples.forEach(([surface,answer],i)=>{
+  add('forms','part-λυω-'+i,10,[10],surface,answer,['λύω']);
+  const item=items[items.length-1];
+  item.category='verbs';item.sourceCode=5;
+  item.sourceRef='https://grammars.alpheios.net/smyth/xhtml/body.1_div1.2_div2.4.html';
+ });
  // Formas aisladas adicionales: cada casilla de los diez paradigmas
  // nominales cerrados (v19), con las lecturas sincréticas reunidas.
  // Las otras entradas provienen EXCLUSIVAMENTE de las filas de revisión
