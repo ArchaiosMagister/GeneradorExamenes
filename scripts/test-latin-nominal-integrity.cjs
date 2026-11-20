@@ -112,6 +112,13 @@ const checks=[];
       tables:data,grammaticalUnits,byCategory:[...byCategory],
       nounForms,ver,legacyVer,
       selectedCount:selected.length,
+      diagnostics:{model:document.getElementById('model')?.value,
+       course:currentCourse(),units:selectedUnits(),
+       nChecked:document.getElementById('morphCategory-n')?.checked,
+       fraterSources:sourceEntries.filter(x=>examKey(x.entry)==='frater').map(x=>x.entry),
+       fraterSelected:selected.filter(x=>examKey(x.entry)==='frater')
+        .map(x=>({entry:x.entry,category:x.latinMorphCategory})),
+       fraterReturned:groups[0].filter(x=>examKey(x.entry)==='frater').length},
       missingPairs:removed.filter(([noun,adj])=>
        (semantic[noun]||'').split(' ').includes(adj))
      };
@@ -168,7 +175,7 @@ const checks=[];
     for(const lemma of ['consul','frater','homo','miles','tempus',
       'corpus','nomen','senator','ver']){
      assert(candidates.has('nouns|'+lemma),context+' ficha perdida '+lemma);
-     assert(nounHeads.has(lemma),context+' no se ofrecen las formas de '+lemma);
+     assert(nounHeads.has(lemma),context+' no se ofrecen las formas de '+lemma+' '+JSON.stringify(result.diagnostics));
     }
     assert(candidates.has('nouns|latus'),context+' falta latus sustantivo');
     assert(candidates.has('adjectives|latus'),context+' falta latus adjetivo');
