@@ -59,13 +59,30 @@
     }
    }
   }
-  return rows;
+  // Nominativo y acusativo neutros pueden compartir forma y solución:
+  // son lecturas distintas, pero una sola pregunta visible.
+  const seen=new Set();
+  return rows.filter(row=>{
+   const key=row.prompt.normalize('NFC')+'\u241F'+row.answer.normalize('NFC');
+   if(seen.has(key))return false;
+   seen.add(key);return true;
+  });
+ };
+ const distinctive=(pool,quantity)=>{
+  const taken=[],prompts=new Set();
+  for(const row of sample(pool,pool.length)){
+   const key=row.prompt.normalize('NFC');
+   if(prompts.has(key))continue;
+   taken.push(row);prompts.add(key);
+   if(taken.length>=quantity)break;
+  }
+  return taken;
  };
  const signatureOf=()=>JSON.stringify([greekMarkedUnits(),$('model').value,count()]);
  function current(){
   const sign=signatureOf(),pool=candidates();
   if(sign!==signature){
-   selected=sample(pool,Math.min(count(),pool.length)).map(x=>x.id);
+   selected=distinctive(pool,count()).map(x=>x.id);
    signature=sign;
   }
   return selected.map(id=>pool.find(x=>x.id===id)).filter(Boolean);
@@ -75,7 +92,10 @@
   if(count()!==next){quantities[$('model').value]=next;signature=''}
  }
  function regenerateOne(i){
-  const rows=current(),used=new Set(selected),pool=candidates().filter(x=>!used.has(x.id)&&x.prompt!==rows[i]?.prompt);
+  const rows=current(),used=new Set(selected);
+  const otherPrompts=new Set(rows.filter((_,j)=>j!==i).map(x=>x.prompt.normalize('NFC')));
+  const pool=candidates().filter(x=>!used.has(x.id)&&x.prompt!==rows[i]?.prompt&&
+   !otherPrompts.has(x.prompt.normalize('NFC')));
   if(i<0||i>=rows.length||!pool.length)return false;
   const previous=rows[i],preferred=pool.filter(x=>x.direction===previous.direction);
   const replacement=sample(preferred.length?preferred:pool,1)[0];
@@ -85,8 +105,9 @@
  }
  function regenerateAll(){
   const before=new Set(selected);const pool=candidates().filter(x=>!before.has(x.id));
-  if(pool.length<count())return false;
-  selected=sample(pool,count()).map(x=>x.id);signature=signatureOf();
+  const fresh=distinctive(pool,count());
+  if(fresh.length<count())return false;
+  selected=fresh.map(x=>x.id);signature=signatureOf();
   return true;
  }
  function state(){return {quantity:count(),signature,ids:selected.slice(),items:current()}}
