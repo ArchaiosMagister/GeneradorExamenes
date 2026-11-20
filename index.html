@@ -3045,7 +3045,11 @@ function latinCompleteDeclensionItems(chosen){
   const approved=latinApprovedSyntagmAdjective(item,adjectives,limit);
   const choices=approved?[approved]:latinSemanticSyntagmChoices(item,adjectives);
   if(!choices.length)return null; // No inventar parejas ni ampliar sin revisión.
-  const alternatives=sample(choices,choices.length).sort((a,b)=>
+  // Alternar libertad de sorteo y compensación de adjetivos frecuentes.
+  // Penalizar siempre los muy usados fijaba sustantivos como «senator»
+  // en un único adjetivo, aunque hubiera varias parejas aprobadas.
+  const alternatives=sample(choices,choices.length);
+  if(Math.random()<0.5)alternatives.sort((a,b)=>
    (usage.get(mNormalize(headLex(a.x.entry)).toLowerCase())||0)-
    (usage.get(mNormalize(headLex(b.x.entry)).toLowerCase())||0));
   const adjectival=alternatives[0];
