@@ -41,8 +41,9 @@ for(const x of records){
    assert(selectedGreek,'Falta el modelo griego explícito '+x.lemma);
    assert.deepEqual(selectedGreek.forms,block.forms);
    assert.equal(selectedGreek.sourceCode,5);
+   // ἡγέομαι es contracto: se introduce con los contractos de UD14.
    assert.equal(selectedGreek.unit,x.lemma==='βουλομαι'||x.lemma==='μαχομαι'?6:
-    x.lemma==='ηγεομαι'?(block.tags.endsWith(';FUT')?11:10):12);
+    x.lemma==='ηγεομαι'?14:12);
    assert.equal(selectedGreek.voice,['βουλομαι','ηγεομαι','μαχομαι'].includes(x.lemma)?'medio (deponente)':'activo');
    if(x.lemma==='ερχομαι')assert.equal(selectedGreek.tense,'aoristo segundo');
   }
