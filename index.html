@@ -1247,6 +1247,35 @@ if(!latinRequiredSeeded){
  saveRequired();
  try{localStorage.setItem(LATIN_REQUIRED_SEED,'1')}catch(e){}
 }
+// Migración idempotente y estrictamente limitada a fichas exigibles sembradas
+// por el documento docente. No altera entradas añadidas o editadas a mano.
+function migrateSeededLatinVerbEntries(items){
+ const fixes={
+  latin1:[
+   ['solvo, solvi, solutum (2ª)','solvo, solvi, solutum (3ª)'],
+   ['vivo, vixi, vivitum (4ª)','vivo, vixi, victum (3ª)'],
+   ['sepelio, sepelii, sepultum (3ª)','sepelio, sepelii, sepultum (4ª)'],
+   ['cognosco, cognovit, cognotum (3ª)','cognosco, cognovi, cognitum (3ª)'],
+   ['deligo, delegi, delictum (3ª)','deligo, delegi, delectum (3ª)'],
+   ['maneo, manui, mansum (2ª)','maneo, mansi, mansum (2ª)'],
+   ['appropinquo, appropinquavi, approprinquatum (1ª)','appropinquo, appropinquavi, appropinquatum (1ª)'],
+   ['peto, petivi, petitium (3ª)','peto, petii, petitum (3ª)'],
+   ['occido, occidi, occissum (3ª)','occido, occidi, occisum (3ª)'],
+   ['adiuvo, adiuvavi, adiuvatum (1ª)','adiuvo, adiuvi, adiutum (1ª)']
+  ],
+  latin4:[['pollĭcĕor, pollĭcĭtus sum (3ª)','pollĭcĕor, pollĭcĭtus sum (2ª)']]
+ };
+ let changed=false;
+ for(const item of items){
+  if(item?.origin!=='listado docente exigible')continue;
+  for(const [before,after] of fixes[item.course]||[]){
+   if(item.entry!==before)continue;
+   item.entry=after;item.key=examKey(after);changed=true;break;
+  }
+ }
+ return changed;
+}
+if(migrateSeededLatinVerbEntries(examRequired))saveRequired();
 
 $('importExamVocab').onclick=()=>{let count=0,bad=0;for(const line of $('examVocabInput').value.split(/\r?\n/)){if(!line.trim())continue;let i=line.indexOf(';');if(i<0){bad++;continue}let unit=line.slice(0,i).trim(),entry=line.slice(i+1).trim(),key=examKey(entry);if(!unit||!key){bad++;continue}if(!examRequired.some(x=>x.course===currentCourse()&&x.unit===unit&&x.key===key)){examRequired.push({course:currentCourse(),unit,key,entry});count++}}saveRequired();generate();$('examVocabStatus').textContent+=' Añadidas: '+count+'. Omitidas: '+bad+'.'};
 $('clearExamVocab').onclick=()=>{if(!confirm('¿Vaciar el vocabulario exigible de este curso?'))return;examRequired=examRequired.filter(x=>x.course!==currentCourse());saveRequired();generate()};
