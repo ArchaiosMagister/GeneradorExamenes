@@ -15,8 +15,9 @@ async function check(page,course,lang,unit){
   select('course',course);
   select('model','tablas');
   select('lang',lang);
-  const target=[...document.querySelectorAll('.unit-choice')]
-   .find(x=>units[Number(x.value)]==='UD'+unit);
+  const choices=[...document.querySelectorAll('.unit-choice')];
+  const target=choices.find(x=>units[Number(x.value)]==='UD'+unit)||
+   (unit===9?choices.find(x=>/^UD9(?:\D|$)/u.test(units[Number(x.value)])):null);
   if(!target)throw Error('UD'+unit+' no existe en '+course);
   document.querySelectorAll('.unit-choice').forEach(x=>x.checked=x===target);
   target.dispatchEvent(new Event('change',{bubbles:true}));
