@@ -4013,7 +4013,7 @@ const greekSentenceRows=[
  ['ὁ ναύτης ἀπὸ τῆς νεώς πρός τήν γήν ἥκει.',8,[3,4,8],'El marinero llega desde la nave hacia tierra.','ὁ ναύτης: sujeto; ἥκει: núcleo verbal; ἀπὸ τῆς νεώς: procedencia; πρός τήν γήν: dirección.',['ναύτης','ἀπό','ναῦς','πρός','γή','ἥκω']],
  ['οἱ ἀνθρώποι ἀδικοί οὐκ ἀεὶ εἰσίν, ἀλλὰ ἡ δίκη τοὺς ἀδίκους ἀνθρώπους ἀεί διώκει.',5,[1,3,5],'Los seres humanos no siempre son injustos, pero la justicia siempre persigue a los seres humanos injustos.','Coordinadas adversativas; οἱ ἀνθρώποι: sujeto de εἰσίν; ἀδικοί: atributo; ἡ δίκη: sujeto de διώκει; τοὺς ἀδίκους ἀνθρώπους: objeto directo.',['ἄνθρωπος','ἄδικος','οὐ','ἀεί','εἰμί','ἀλλά','δίκη','διώκω']],
  ['οἱ ἀνθρώποι πολλάκις τοῦ λύκου ἀκούουσιν.',4,[3,4],'Los seres humanos escuchan muchas veces al lobo.','οἱ ἀνθρώποι: sujeto; ἀκούουσιν: núcleo verbal; τοῦ λύκου: complemento de régimen en genitivo; πολλάκις: complemento adverbial.',['ἄνθρωπος','πολλάκις','λύκος','ἀκούω']],
- ['οἱ σοφοί περὶ τῆς σοφίας λέγουσιν.',4,[3,4],'Los sabios hablan sobre la sabiduría.','οἱ σοφοί: sujeto (sustantivo en el vocabulario aportado); λέγουσιν: núcleo verbal; περὶ τῆς σοφίας: complemento de tema.',['σοφός','περί','σοφία','λέγω']],
+ ['οἱ σοφοί περὶ τῆς σοφίας λέγουσιν.',5,[3,4,5],'Los sabios hablan sobre la sabiduría.','οἱ σοφοί: sujeto (sustantivo en el vocabulario aportado); λέγουσιν: núcleo verbal; περὶ τῆς σοφίας: complemento de tema.',['σοφός','περί','σοφία','λέγω']],
  ['ὁ δοῦλος εἰς τὸν τοῦ δεσπότου ἀγρόν σὺν ἵπποις τὰ ξύλα φέρει.',4,[2,3,4],'El esclavo lleva la madera al campo del amo con caballos.','ὁ δοῦλος: sujeto; φέρει: núcleo verbal; τὰ ξύλα: objeto directo; εἰς τὸν τοῦ δεσπότου ἀγρόν: dirección, con genitivo de posesión; σὺν ἵπποις: compañía.',['δοῦλος','εἰς','δεσπότης','ἀγρός','σύν','ἵππος','ξύλον','φέρω']],
  ['οἵδε οἱ ἵπποι οὐκ εἰσὶν ἀθάνατοι, ἀλλὰ θνητοί.',7,[5,7],'Estos caballos no son inmortales, sino mortales.','οἵδε οἱ ἵπποι: sujeto; εἰσὶν: cópula; ἀθάνατοι y θνητοί: atributos coordinados adversativamente.',['ἵππος','οὐ','εἰμί','ἀθάνατος','ἀλλά','θνητός']],
  ['ἐκείνοι μὲν δοῦλοι εἰσίν τῆς ἡδονῆς, οὗτοι δὲ τῆς ἀρετῆς.',7,[5,7],'Aquellos son esclavos del placer; estos, de la virtud.','ἐκείνοι y οὗτοι: sujetos; δοῦλοι: atributo; τῆς ἡδονῆς y τῆς ἀρετῆς: complementos del nombre; correlación μὲν… δὲ y elipsis en la segunda proposición.',['δοῦλος','εἰμί','ἡδονή','ἀρετή','μέν… δέ']],
@@ -4055,7 +4055,20 @@ const greekSharedBank=(()=>{
 })();
 
 // Only morphology already explicitly represented in v19 is used for full tables.
-const greekNounUnits={λογος:1,ανθρωπος:1,δωρον:2,εργον:2,αγορα:3,χωρα:3,θαλαττα:3,νεανιας:3,παιδεια:3,αδελφος:1};
+// Paradigmas nominales completos, cotejados individualmente antes de habilitar
+// tablas de tercera declinación en UD8. ἄρχον es el VOCATIVO del nombre
+// ἄρχων «gobernante», distinto del vocativo del participio presente ἄρχων.
+const greekAuditedThirdDeclensions={
+ αρχων:{source:'https://greekdoc.github.io/lexicon/arc.html',forms:[
+  'ἄρχων','ἄρχοντος','ἄρχοντι','ἄρχοντα','ἄρχον',
+  'ἄρχοντες','ἀρχόντων','ἄρχουσι(ν)','ἄρχοντας','ἄρχοντες']},
+ γυνη:{source:'https://www.azimonti.com/philology/ancient-greek/resources/paradigms-nouns/',forms:[
+  'γυνή','γυναικός','γυναικί','γυναῖκα','γύναι',
+  'γυναῖκες','γυναικῶν','γυναιξί(ν)','γυναῖκας','γυναῖκες']}
+};
+for(const [key,record] of Object.entries(greekAuditedThirdDeclensions))
+ greekNounData[key]=record.forms;
+const greekNounUnits={λογος:1,ανθρωπος:1,δωρον:2,εργον:2,αγορα:3,χωρα:3,θαλαττα:3,νεανιας:3,παιδεια:3,αδελφος:1,αρχων:8,γυνη:8};
 const greekVerbUnits={λυω:2,παιδευω:2,πεμπω:2,ειμι:1};
 // εἰμί: paradigma completo del presente desde UD1; no se infiere.
 Object.assign(greekVerbData,{ειμι:['εἰμί','εἶ','ἐστί(ν)','ἐσμέν','ἐστέ','εἰσί(ν)']});
@@ -4083,10 +4096,10 @@ try{if(!localStorage.getItem('examina_greek_materials_v20')){for(const x of gree
 function greekLexKey(entry){return examKey(String(entry).split('+')[0].trim())}
 function greekLemma(head){const item=greekSharedBank.lookup(head);return item?{entry:item.entry,meaning:item.meaning||'[Traducción pendiente de revisión]',meaning_va:item.meaning_va||''}:{entry:head,meaning:'[Traducción pendiente de revisión]'}}
 /* Extracto de las formas contrastadas del índice; sin inferencia de tiempos. */
-const greekExplicitVerbEvidence={"βουλομαι":{"forms":["βούλομαι","βούλει","βούλεται","βουλόμεθα","βούλεσθε","βούλονται"],"lemma":"βούλομαι","voice":"medio (deponente)","tense":"presente","sourceCode":5,"unit":6},"ερχομαι":{"forms":["ἦλθον","ἦλθες","ἦλθε","ἤλθομεν","ἤλθετε","ἦλθον"],"lemma":"ἔρχομαι","voice":"activo","tense":"aoristo segundo","sourceCode":5,"unit":12},"ηγεομαι":{"forms":["ἡγοῦμαι","ἡγεῖ","ἡγεῖται","ἡγούμεθα","ἡγεῖσθε","ἡγοῦνται"],"lemma":"ἡγέομαι","voice":"medio (deponente)","tense":"presente","sourceCode":5,"unit":10},"ηγεομαι-future":{"forms":["ἡγήσομαι","ἡγήσει","ἡγήσεται","ἡγησόμεθα","ἡγήσεσθε","ἡγήσονται"],"lemma":"ἡγέομαι","voice":"medio (deponente)","tense":"futuro","sourceCode":5,"unit":11},"μαχομαι":{"forms":["μάχομαι","μάχει","μάχεται","μαχόμεθα","μάχεσθε","μάχονται"],"lemma":"μάχομαι","voice":"medio (deponente)","tense":"presente","sourceCode":5,"unit":6}};
+const greekExplicitVerbEvidence={"βουλομαι":{"forms":["βούλομαι","βούλει","βούλεται","βουλόμεθα","βούλεσθε","βούλονται"],"lemma":"βούλομαι","voice":"medio (deponente)","tense":"presente","sourceCode":5,"unit":6},"ερχομαι":{"forms":["ἦλθον","ἦλθες","ἦλθε","ἤλθομεν","ἤλθετε","ἦλθον"],"lemma":"ἔρχομαι","voice":"activo","tense":"aoristo segundo","sourceCode":5,"unit":12},"ηγεομαι":{"forms":["ἡγοῦμαι","ἡγεῖ","ἡγεῖται","ἡγούμεθα","ἡγεῖσθε","ἡγοῦνται"],"lemma":"ἡγέομαι","voice":"medio (deponente)","tense":"presente","sourceCode":5,"unit":14},"ηγεομαι-future":{"forms":["ἡγήσομαι","ἡγήσει","ἡγήσεται","ἡγησόμεθα","ἡγήσεσθε","ἡγήσονται"],"lemma":"ἡγέομαι","voice":"medio (deponente)","tense":"futuro","sourceCode":5,"unit":14},"μαχομαι":{"forms":["μάχομαι","μάχει","μάχεται","μαχόμεθα","μάχεσθε","μάχονται"],"lemma":"μάχομαι","voice":"medio (deponente)","tense":"presente","sourceCode":5,"unit":6},"λυω-imperfect":{"forms":["ἔλυον","ἔλυες","ἔλυε(ν)","ἐλύομεν","ἐλύετε","ἔλυον"],"lemma":"λύω","voice":"activo","tense":"imperfecto","sourceCode":5,"unit":11,"reference":"https://www.azimonti.com/philology/ancient-greek/resources/paradigms-regular-verbs/"},"λυω-future":{"forms":["λύσω","λύσεις","λύσει","λύσομεν","λύσετε","λύσουσι(ν)"],"lemma":"λύω","voice":"activo","tense":"futuro","sourceCode":5,"unit":11,"reference":"https://www.azimonti.com/philology/ancient-greek/resources/paradigms-regular-verbs/"},"λυω-aorist":{"forms":["ἔλυσα","ἔλυσας","ἔλυσε(ν)","ἐλύσαμεν","ἐλύσατε","ἔλυσαν"],"lemma":"λύω","voice":"activo","tense":"aoristo sigmático","sourceCode":5,"unit":12,"reference":"https://www.azimonti.com/philology/ancient-greek/resources/paradigms-regular-verbs/"},"λυω-perfect":{"forms":["λέλυκα","λέλυκας","λέλυκε(ν)","λελύκαμεν","λελύκατε","λελύκασι(ν)"],"lemma":"λύω","voice":"activo","tense":"perfecto","sourceCode":5,"unit":13,"reference":"https://www.azimonti.com/philology/ancient-greek/resources/paradigms-regular-verbs/"},"λυω-pluperfect":{"forms":["ἐλελύκη","ἐλελύκης","ἐλελύκει(ν)","ἐλελύκεμεν","ἐλελύκετε","ἐλελύκεσαν"],"lemma":"λύω","voice":"activo","tense":"pluscuamperfecto","sourceCode":5,"unit":13,"reference":"https://www.azimonti.com/philology/ancient-greek/resources/paradigms-regular-verbs/"}};
 const greekCorpusNounGenders={
  λογος:'m',ανθρωπος:'m',δωρον:'n',εργον:'n',αγορα:'f',χωρα:'f',
- θαλαττα:'f',νεανιας:'m',παιδεια:'f',αδελφος:'m'
+ θαλαττα:'f',νεανιας:'m',παιδεια:'f',αδελφος:'m',αρχων:'m',γυνη:'f'
 };
 // Solo formas individuales cotejadas en data/lemmas/verified-overrides.json
 // (sourceCode 5); el catálogo provisional greek-nominal-candidates.json
@@ -4171,6 +4184,20 @@ function greekCorpus(){
   add('pronouns','p-'+i,7,[7],form,answer,lemma?[lemma]:[]);
   add('forms','pf-'+i,7,[7],form,answer,lemma?[lemma]:[]);
  });
+ // Interrogativos de UD8 y relativos de UD9: formas completas cotejadas
+ // con Smyth (§334 y §338). Cada superficie conserva sus lecturas sincréticas.
+ const greekReviewedAdvancedPronouns=[{"unit":8,"lemma":"τίς, τί","ref":"https://grammars.alpheios.net/smyth/xhtml/body.1_div1.2_div2.6.html","rows":[["τίς","Nominativo singular masculino o femenino; pronombre interrogativo."],["τί","Nominativo o acusativo singular neutro; pronombre interrogativo."],["τίνος","Genitivo singular masculino, femenino o neutro; pronombre interrogativo."],["τίνι","Dativo singular masculino, femenino o neutro; pronombre interrogativo."],["τίνα","Acusativo singular masculino o femenino, o nominativo o acusativo plural neutro; pronombre interrogativo."],["τίνες","Nominativo plural masculino o femenino; pronombre interrogativo."],["τίνων","Genitivo plural masculino, femenino o neutro; pronombre interrogativo."],["τίσι","Dativo plural masculino, femenino o neutro; pronombre interrogativo."],["τίνας","Acusativo plural masculino o femenino; pronombre interrogativo."]]},{"unit":9,"lemma":"ὅς, ἥ, ὅ","ref":"https://grammars.alpheios.net/smyth/xhtml/body.1_div1.2_div2.6.html","rows":[["ὅς","Nominativo singular masculino; pronombre relativo."],["ἥ","Nominativo singular femenino; pronombre relativo."],["ὅ","Nominativo o acusativo singular neutro; pronombre relativo."],["οὗ","Genitivo singular masculino o neutro; pronombre relativo."],["ἧς","Genitivo singular femenino; pronombre relativo."],["ᾧ","Dativo singular masculino o neutro; pronombre relativo."],["ᾗ","Dativo singular femenino; pronombre relativo."],["ὅν","Acusativo singular masculino; pronombre relativo."],["ἥν","Acusativo singular femenino; pronombre relativo."],["οἵ","Nominativo plural masculino; pronombre relativo."],["αἵ","Nominativo plural femenino; pronombre relativo."],["ἅ","Nominativo o acusativo plural neutro; pronombre relativo."],["ὧν","Genitivo plural masculino, femenino o neutro; pronombre relativo."],["οἷς","Dativo plural masculino o neutro; pronombre relativo."],["αἷς","Dativo plural femenino; pronombre relativo."],["οὕς","Acusativo plural masculino; pronombre relativo."],["ἅς","Acusativo plural femenino; pronombre relativo."]]}];
+ greekReviewedAdvancedPronouns.forEach((group,g)=>{
+  group.rows.forEach(([surface,answer],j)=>{
+   for(const kind of ['pronouns','forms']){
+    add(kind,(kind==='forms'?'apf-':'ap-')+g+'-'+j,group.unit,[group.unit],
+     surface,answer,[group.lemma]);
+    const entry=items[items.length-1];
+    entry.sourceRef=group.ref;entry.sourceCode=5;
+    entry.category='pronouns';
+   }
+  });
+ });
  // Formas aisladas adicionales: cada casilla de los diez paradigmas
  // nominales cerrados (v19), con las lecturas sincréticas reunidas.
  // Las otras entradas provienen EXCLUSIVAMENTE de las filas de revisión
@@ -4204,7 +4231,8 @@ function greekCorpus(){
   let offset=0;
   for(const [surface,readings] of matrix)
    addNominalForm('gn-v19-'+key+'-'+offset++,unit,surface,readings,entry,
-    'nouns',gender,unit===3?'primera':'segunda',null);
+    'nouns',gender,unit>=8?'tercera':unit===3?'primera':'segunda',
+    greekAuditedThirdDeclensions[key]?.source||null);
  }
  for(const [lemma,entry,unit,category,gender,declension,source,forms] of greekExamReviewedNominalRows){
   forms.forEach(([surface,readings],i)=>
@@ -4277,7 +4305,9 @@ const greekSemanticSyntagms={
  θαλαττα:['καλοσ','μεγασ','κακοσ'],
  νεανιασ:['αγαθοσ','καλοσ','κακοσ','πονηροσ','αισχροσ','αδικος','αθανατοσ','αυτονομοσ','φρονιμοσ','θνητοσ','βαρβαροσ','ενδοξοσ','συμμαχοσ','δικαιοσ','μεγασ'],
  παιδεια:['αγαθοσ','καλοσ','κακοσ','δικαιοσ','αδικος'],
- αδελφοσ:['αγαθοσ','καλοσ','κακοσ','πονηροσ','αδικος','αθανατοσ','φρονιμοσ','θνητοσ','βαρβαροσ','ενδοξοσ','συμμαχοσ','δικαιοσ','μεγασ']
+ αδελφοσ:['αγαθοσ','καλοσ','κακοσ','πονηροσ','αδικος','αθανατοσ','φρονιμοσ','θνητοσ','βαρβαροσ','ενδοξοσ','συμμαχοσ','δικαιοσ','μεγασ'],
+ αρχων:['αγαθοσ','κακοσ','δικαιοσ','αδικος','φρονιμοσ','ενδοξοσ','μεγασ'],
+ γυνη:['αγαθοσ','καλοσ','κακοσ','δικαιοσ','φρονιμοσ','μεγασ']
 };
 function greekSemanticallyValidSyntagm(noun,modifier){
  if(!noun||!modifier)return false;
