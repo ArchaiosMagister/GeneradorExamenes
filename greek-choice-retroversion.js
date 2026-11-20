@@ -13,7 +13,9 @@
   'θαλαττα':{es:['el mar','los mares'],va:['la mar','les mars'],gender:'m',gender_va:'f',single:'mar'},
   'νεανιασ':{es:['el joven','los jóvenes'],va:['el jove','els jóvens'],gender:'m',single:'joven'},
   'παιδεια':{es:['la educación','las educaciones'],va:['l’educació','les educacions'],gender:'f',single:'educacion'},
-  'αδελφοσ':{es:['el hermano','los hermanos'],va:['el germà','els germans'],gender:'m',single:'hermano'}
+  'αδελφοσ':{es:['el hermano','los hermanos'],va:['el germà','els germans'],gender:'m',single:'hermano'},
+  'αρχων':{es:['el gobernante','los gobernantes'],va:['el governant','els governants'],gender:'m',single:'gobernante'},
+  'γυνη':{es:['la mujer','las mujeres'],va:['la dona','les dones'],gender:'f',single:'mujer'}
  };
  const adjectives={
   'αγαθοσ':{es:['bueno','buena','buenos','buenas'],va:['bo','bona','bons','bones']},
@@ -85,7 +87,7 @@ Object.assign(adjectives,additionalAdjectives);
     if(limit<4)continue;
     for(const prep of prepositions){
      const locative=['αγορα','χωρα','θαλαττα'].includes(head);
-     const companion=['ανθρωποσ','νεανιασ','αδελφοσ'].includes(head);
+     const companion=['ανθρωποσ','νεανιασ','αδελφοσ','αρχων','γυνη'].includes(head);
      if(prep.id==='syn'?!companion:!locative)continue;
      const k=prep.caseIndex,inflected=modifier?modifier.group.rows[k]?.[1]?.[number]:
       greekArticles[gender][number][k]+' '+item.table.rows[k]?.[number+1];
@@ -98,12 +100,24 @@ Object.assign(adjectives,additionalAdjectives);
     }
    }
   }
+  // Una misma frase castellana o valenciana no se repetirá en un examen
+  // por proceder de distintas lecturas nominales o casos sincréticos.
   return [...new Map(rows.map(item=>[item.id,item])).values()];
+ };
+ const distinctive=(pool,quantity)=>{
+  const shuffled=sample(pool,pool.length),taken=[],prompts=new Set();
+  for(const row of shuffled){
+   const text=row.prompt.normalize('NFC').replace(/\s+/gu,' ').trim();
+   if(prompts.has(text))continue;
+   prompts.add(text);taken.push(row);
+   if(taken.length>=quantity)break;
+  }
+  return taken;
  };
  const signatureOf=()=>JSON.stringify([greekMarkedUnits(),$('model').value,count(),lang()]);
  function current(){
   const sign=signatureOf(),pool=candidates();
-  if(sign!==signature){selected=sample(pool,Math.min(count(),pool.length)).map(x=>x.id);signature=sign}
+  if(sign!==signature){selected=distinctive(pool,count()).map(x=>x.id);signature=sign}
   return selected.map(id=>pool.find(x=>x.id===id)).filter(Boolean);
  }
  function setCount(value){
@@ -111,7 +125,10 @@ Object.assign(adjectives,additionalAdjectives);
   if(n!==count()){quantities[$('model').value]=n;signature=''}
  }
  function regenerateOne(index){
-  const rows=current(),old=new Set(selected),pool=candidates().filter(x=>!old.has(x.id));
+  const rows=current(),old=new Set(selected);
+  const otherPrompts=new Set(rows.filter((_,j)=>j!==index).map(x=>x.prompt.normalize('NFC')));
+  const pool=candidates().filter(x=>!old.has(x.id)&&!otherPrompts.has(x.prompt.normalize('NFC'))&&
+   x.prompt!==rows[index]?.prompt);
   if(index<0||index>=rows.length||!pool.length)return false;
   const sameType=pool.filter(x=>x.type===rows[index].type);
   const next=sample(sameType.length?sameType:pool,1)[0];
@@ -119,8 +136,9 @@ Object.assign(adjectives,additionalAdjectives);
  }
  function regenerateAll(){
   const pool=candidates().filter(x=>!selected.includes(x.id));
-  if(pool.length<count())return false;
-  selected=sample(pool,count()).map(x=>x.id);signature=signatureOf();return true;
+  const fresh=distinctive(pool,count());
+  if(fresh.length<count())return false;
+  selected=fresh.map(x=>x.id);signature=signatureOf();return true;
  }
  function state(){return {quantity:count(),signature,ids:selected.slice(),items:current()}}
  function restore(data){
