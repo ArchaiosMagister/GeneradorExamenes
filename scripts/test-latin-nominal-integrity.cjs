@@ -82,7 +82,9 @@ const checks=[];
      const grammaticalUnits={};
      for(let unit=1;unit<=(course==='latin1'?12:10);unit++){
       const target=[...document.querySelectorAll('.unit-choice')]
-       .find(x=>/^UD/.test(x.value)&&Number((x.value.match(/\d+/)||[])[0])===unit);
+       .find(x=>{const label=units[Number(x.value)];
+        return /^UD/.test(label||'')&&Number((label.match(/\d+/)||[])[0])===unit;
+       });
       // Algunas unidades aparecen agrupadas. Utilizar la misma selección del
       // generador en lugar de inferir el currículo a partir del vocabulario.
       if(!target)continue;
