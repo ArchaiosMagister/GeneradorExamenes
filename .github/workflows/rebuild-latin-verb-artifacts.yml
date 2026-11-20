@@ -1,4 +1,4 @@
-name: Reconstrucción temporal de correcciones verbales latinas
+name: Reconstrucción temporal de correcciones verbales latinas v2
 on:
   push:
     branches:
