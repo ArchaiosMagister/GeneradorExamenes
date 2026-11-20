@@ -20,6 +20,7 @@ async function inspect(browser,file,label){
  page.on('pageerror',error=>errors.push(error.message));
  await page.goto(pathToFileURL(file).href);
  await page.waitForSelector('#examQuestionMenus details[data-question]',{state:'attached',timeout:30000});
+ await page.waitForSelector('#examPreviewActions',{state:'attached',timeout:30000});
  const metadata=await page.evaluate(()=>{
   const nav=document.getElementById('examPanelShortcuts');
   nav?.querySelector('[data-target="examQuestionSettings"]')?.click();
