@@ -40,7 +40,7 @@ const test=async(page,lang,model,unit)=>{
   const advancedPronouns=greekVerifiedCorpus.filter(x=>x.kind==='pronouns'&&
     x.id.startsWith('ap-')&&greekMorphologyEligible(x,unit));
   const participles=greekVerifiedCorpus.filter(x=>x.id.startsWith('part-')&&greekMorphologyEligible(x,unit));
-  const nounSyntagms=unit>=5?greekMorphSyntagmPool().map(x=>x.noun):[];
+  const nounSyntagms=unit>=5?greekMorphSyntagmPool().map(x=>greekBankKey(x.noun)):[];
   const changed=ExaminaGreekNumber.candidates();
   const numberUnique=changed.length===new Set(changed.map(x=>x.prompt.normalize('NFC')+'|'+x.answer.normalize('NFC'))).size;
   const numberSources=[...new Set(changed.map(x=>x.source))];
@@ -90,9 +90,9 @@ const test=async(page,lang,model,unit)=>{
      assert.equal(report.participles,unit>=10?12:0,label+': participios fuera de unidad');
      assert(report.numberUnique,label+': cambio de número con filas duplicadas');
      if(unit>=8){
-      assert(report.nounSyntagms.some(x=>x.includes('ἄρχων')),
+      assert(report.nounSyntagms.includes('αρχων'),
        label+': faltan sintagmas de tercera declinación de ἄρχων');
-      assert(report.nounSyntagms.some(x=>x.includes('γυνή')),
+      assert(report.nounSyntagms.includes('γυνη'),
        label+': faltan sintagmas de tercera declinación de γυνή');
       assert(report.numberSources.includes('n-αρχων')&&report.numberSources.includes('n-γυνη'),
        label+': el cambio de número excluye sustantivos de tercera declinación');
