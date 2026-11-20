@@ -5,6 +5,15 @@ const assert=require('node:assert/strict');
 const path=require('node:path');
 const {pathToFileURL}=require('node:url');
 const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
+const fs=require('node:fs');
+const source=fs.readFileSync(path.resolve(__dirname,'../index.html'),'utf8');
+const index=JSON.parse(fs.readFileSync(path.resolve(__dirname,'../data/lemmas/teacher-forms.json'),'utf8'));
+for(const text of [source,JSON.stringify(index)]){
+ assert(!text.includes('ordo, ordinis (f.)'),'Ordo debe figurar como masculino en todos los bancos');
+ assert(!text.includes('rĕgĭō, –onis (m.)'),'Regio debe figurar como femenino en Latín 4.º');
+}
+assert.equal(index.vocabulary.lat.ordo.lat1.entry,'ordo, ordinis (m.)');
+assert.equal(index.vocabulary.lat.regio.lat4.entry,'rĕgĭō, –onis (f.)');
 
 // [lema, fragmento de genitivo del banco, tema íntegro, género].
 // Fixture editorial deliberadamente independiente de mNoun/M_END.
