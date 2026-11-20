@@ -1,0 +1,40 @@
+name: Reconstrucción temporal de correcciones verbales latinas
+on:
+  push:
+    branches:
+      - fix/latin-verb-lexical-integrity-20261120
+    paths:
+      - '.github/workflows/rebuild-latin-verb-artifacts.yml'
+permissions:
+  contents: write
+jobs:
+  rebuild:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validar evidencia verbal y glosario contextual
+        run: |
+          node scripts/test-latin-verb-entry-integrity.cjs
+          node scripts/audit-next-100-lemmas.cjs --check
+          node scripts/test-latin-passive-phrases.cjs
+      - name: Reconstruir HTML autónomo
+        run: npm run offline:build
+      - name: Comprobar sincronización e índice
+        run: |
+          node scripts/test-lemma-index.mjs
+          node scripts/test-required-latin-vocabulary.cjs
+          node scripts/test-candidaturas-lote200.cjs
+          node scripts/test-candidaturas-lote300-griego.cjs
+      - name: Confirmar reproducibilidad y guardar en rama de la PR
+        run: |
+          git add offline.html
+          if ! git diff --cached --quiet; then
+            git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'build(latin): embed corrected contextual passive policy in standalone HTML'
+            git push origin HEAD:fix/latin-verb-lexical-integrity-20261120
+          fi
