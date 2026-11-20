@@ -48,8 +48,8 @@ const test=async(page,lang,model,unit)=>{
   let numSelected={count:0,unique:true};
   if(model==='complete'&&unit>=8){
    const retros=ExaminaGreekRetroversion.candidates();
-   const retroSelected=ExaminaGreekRetroversion.current().items;
-   const numberSelected=ExaminaGreekNumber.current().items;
+   const retroSelected=ExaminaGreekRetroversion.current();
+   const numberSelected=ExaminaGreekNumber.current();
    retro={
     count:retros.length,
     sources:[...new Set(retros.map(x=>x.source))],
