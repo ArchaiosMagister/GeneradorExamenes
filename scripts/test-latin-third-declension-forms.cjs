@@ -144,8 +144,11 @@ const expected=(nom,stem,gender)=>{
      assert(!found.semantic[noun]?.split(' ').includes(adjective),
       context+' reaparece '+noun+' '+adjective);
     }
-    for(const noun of ['pecunia','ferrum','littera','ludus','cognomen','signum','oraculum']){
+    for(const noun of ['pecunia','ludus','cognomen','signum','oraculum']){
      assert(found.semantic[noun],context+' se descartó sin permiso '+noun);
+    }
+    for(const noun of ['ferrum','littera']){
+     assert(!found.semantic[noun],context+' reapareció la combinación retirada de '+noun);
     }
     assert(!Object.values(found.semantic).some(allowed=>/\b(unus|nullus)\b/u.test(allowed)),
      context+' pronombres irregulares indebidamente habilitados');

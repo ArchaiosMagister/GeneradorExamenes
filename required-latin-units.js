@@ -709,7 +709,7 @@ window.ExaminaRequiredLatinUnits={
         "usque (adv.)",
         "vallis, –is (f.)",
         "venator, –oris (m.)",
-        "ver, veris (f.)",
+        "ver, veris (n.)",
         "vereor, veritus sum (2ª)",
         "vetus, veteris",
         "video, vidi, visum (2ª)"

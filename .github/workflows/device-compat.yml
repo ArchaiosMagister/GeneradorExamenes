@@ -8,6 +8,7 @@ on:
       - 'export-workspace.js'
       - 'scripts/test-ui-refinement.cjs'
       - 'scripts/test-latin-semantic-syntagms.cjs'
+      - 'scripts/test-latin-nominal-integrity.cjs'
       - 'scripts/test-greek-academic-expansion.cjs'
       - 'pdf-export.js'
       - 'scripts/test-export-workspace.cjs'
@@ -56,6 +57,8 @@ jobs:
         run: node scripts/test-latin-semantic-syntagms.cjs
       - name: Cotejar las doce formas de los 28 lemas de tercera y casos especiales
         run: node scripts/test-latin-third-declension-forms.cjs
+      - name: Auditar el repertorio completo y la deduplicación por categoría
+        run: node scripts/test-latin-nominal-integrity.cjs
       - name: Comprobar refinamiento y capturas antes/después
         run: UI_BASELINE_DIR=baseline node scripts/test-ui-refinement.cjs
       - name: Conservar capturas de comparación

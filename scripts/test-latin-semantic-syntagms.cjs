@@ -31,7 +31,20 @@ async function check(page,course,lang,unit){
   const normal=x=>mNormalize(headLex(x)).toLowerCase();
   if(active&&adjs.some(a=>a==='unus'||a==='nullus'))issues.push('adjetivo irregular permitido');
   const exists=Object.entries(latinSyntagmSemanticPairs);
-  if(exists.length<170)issues.push('repertorio de parejas insuficiente '+exists.length);
+  if(exists.length!==189||exists.reduce((sum,[,adjs])=>sum+adjs.split(' ').length,0)!==540)
+   issues.push('repertorio semántico inesperado: '+exists.length+' sustantivos');
+  for(const [noun,removed] of [
+   ['ferrum','durus clarus'],['littera','parvus clarus'],
+   ['cognomen','verus'],['signum','clarus'],['oraculum','occultus']
+  ]){
+   const allowed=(latinSyntagmSemanticPairs[noun]||'').split(' ');
+   if(removed.split(' ').some(adj=>allowed.includes(adj)))
+    issues.push('pareja eliminada reaparece en '+noun);
+  }
+  for(const [noun,required] of [['pecunia','magnus'],['ludus','publicus']]){
+   if(!(latinSyntagmSemanticPairs[noun]||'').split(' ').includes(required))
+    issues.push('se retiró la pareja conservada '+noun+' '+required);
+  }
   for(const [noun,allowed] of exists){
    if(/(?:^|\s)(?:unus|nullus)(?:\s|$)/u.test(allowed))
     issues.push('paradigma prohibido en lista de '+noun);
@@ -121,6 +134,6 @@ async function check(page,course,lang,unit){
     'No se utiliza «silva densa» junto a otras alternativas: '+JSON.stringify(varied));
    await ctx.close();
   }
-  console.log('PASS: 56 contextos latinos, 193 lemas revisados, singular/plural, variación y veto permanente unus/nullus.');
+  console.log('PASS: 56 contextos latinos, 189 lemas revisados, singular/plural, variación y veto permanente unus/nullus.');
  }finally{await browser.close()}
 })().catch(error=>{console.error(error);process.exitCode=1});
