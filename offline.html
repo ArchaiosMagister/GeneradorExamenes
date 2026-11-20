@@ -6833,7 +6833,10 @@ function latinCompleteAdjectives(chosen){
    const lemma=mNormalize(headLex(item.x.entry)).toLowerCase();
    // Primera clase regular: no adelantar adjetivos de tercera ni vocativos
    // especiales; su flexión requiere otro paradigma verificado.
-   return item.p&&/^[a-z]+us$/.test(lemma)&&lemma!=='meus'&&!lemma.endsWith('ius');
+   // «unus» y «nullus» están prohibidos permanentemente en tablas
+   // de declinación: NO son adjetivos de flexión regular como bonus.
+   return item.p&&/^[a-z]+us$/.test(lemma)&&
+    !['meus','unus','nullus'].includes(lemma)&&!lemma.endsWith('ius');
   });
  const byLemma=new Map();
  for(const item of eligible){
@@ -6949,16 +6952,236 @@ function latinSyntagmNouns(chosen){
  }
  return [...chosenByLemma.values()];
 }
+/* Listas de combinaciones expresamente admitidas por criterio docente:
+ * en cada par se exige sentido natural en singular Y plural.
+ * Nunca completar con un adjetivo aleatorio, aunque concuerde.
+ * Los sintagmas aprobados el 17/11 se preservan de manera preferente.
+ * La lista editorial no acredita citas literales de autores clásicos.
+ */
+const latinSyntagmSemanticPairs=Object.freeze({
+ adversarius: 'improbus malus strenuus',
+ aedificium: 'magnus altus publicus',
+ aestas: 'longus serenus',
+ ager: 'magnus latus parvus publicus finitimus',
+ agricola: 'bonus fessus strenuus doctus',
+ amicitia: 'verus longus magnus',
+ amicus: 'bonus fidus verus doctus',
+ ancilla: 'bonus fessus doctus fidus',
+ animus: 'magnus bonus serenus',
+ annus: 'longus bonus malus',
+ anulus: 'magnus parvus albus',
+ aratrum: 'magnus parvus',
+ arbor: 'altus magnus parvus formosus',
+ asinus: 'magnus parvus fessus',
+ audacia: 'magnus improbus strenuus',
+ aula: 'magnus publicus parvus',
+ autumnus: 'longus serenus',
+ auxilium: 'magnus parvus idoneus bonus',
+ barbarus: 'malus bonus strenuus perterritus',
+ bellum: 'longus magnus iustus durus',
+ bibliotheca: 'magnus publicus parvus',
+ caelum: 'serenus clarus',
+ capra: 'albus magnus parvus',
+ carmen: 'longus magnus clarus',
+ cathedra: 'magnus parvus altus',
+ centurio: 'strenuus bonus fessus doctus severus',
+ cervus: 'magnus parvus fessus',
+ charta: 'albus longus',
+ civitas: 'magnus parvus finitimus vicinus',
+ clamor: 'magnus longus',
+ cloaca: 'longus magnus',
+ cognomen: 'clarus verus',
+ collega: 'bonus doctus fidus probus',
+ coniuratio: 'magnus improbus occultus',
+ consilium: 'bonus malus occultus magnus',
+ consul: 'bonus iustus severus doctus',
+ contentio: 'magnus longus',
+ cor: 'bonus magnus malus',
+ corpus: 'magnus parvus vulneratus',
+ crimen: 'magnus occultus malus',
+ cura: 'magnus longus',
+ custos: 'bonus fidus strenuus fessus',
+ delectatio: 'magnus gratus',
+ dictator: 'bonus malus severus iustus',
+ discipula: 'bonus doctus fessus strenuus',
+ discipulus: 'bonus doctus fessus strenuus',
+ dolor: 'magnus longus durus',
+ domina: 'bonus severus doctus',
+ dominus: 'bonus malus severus iustus',
+ dux: 'bonus magnus strenuus doctus',
+ epistula: 'longus occultus publicus',
+ eques: 'bonus strenuus fessus',
+ exsilium: 'longus durus',
+ fabula: 'longus bonus malus verus',
+ factio: 'magnus improbus',
+ familia: 'magnus parvus beatus',
+ femina: 'bonus doctus strenuus formosus',
+ ferrum: 'durus clarus',
+ flumen: 'altus longus magnus',
+ fortuna: 'bonus malus magnus secundus',
+ forum: 'magnus publicus',
+ frater: 'bonus doctus fessus fidus',
+ furor: 'magnus malus',
+ gemma: 'magnus parvus albus formosus',
+ gladiator: 'strenuus fessus vulneratus',
+ gladius: 'longus magnus parvus',
+ gloria: 'magnus verus longus',
+ graculus: 'magnus parvus',
+ grex: 'magnus parvus',
+ hiems: 'longus durus',
+ historia: 'longus verus clarus',
+ homo: 'bonus malus doctus fessus',
+ hora: 'longus',
+ hortus: 'magnus parvus densus',
+ imperator: 'magnus bonus malus strenuus',
+ imperium: 'magnus longus',
+ incendium: 'magnus longus',
+ incola: 'bonus malus fessus',
+ initium: 'bonus malus magnus',
+ insula: 'magnus parvus vicinus',
+ ira: 'magnus longus',
+ iudicium: 'iustus verus malus',
+ labor: 'magnus longus durus',
+ latus: 'magnus',
+ legatus: 'bonus doctus fidus',
+ legio: 'magnus strenuus fessus',
+ leo: 'magnus parvus fessus',
+ lex: 'iustus verus bonus',
+ liber: 'longus magnus clarus bonus',
+ littera: 'parvus clarus',
+ locus: 'magnus parvus occultus idoneus',
+ ludus: 'magnus parvus publicus',
+ magister: 'bonus doctus severus',
+ magistra: 'bonus doctus severus',
+ mandatum: 'bonus malus occultus',
+ mater: 'bonus fessus doctus',
+ mercator: 'bonus malus fidus',
+ miles: 'strenuus fessus vulneratus',
+ miseria: 'magnus longus',
+ morbus: 'magnus longus malus',
+ mos: 'bonus malus',
+ mulier: 'bonus doctus fessus',
+ municipium: 'magnus parvus',
+ munitio: 'magnus longus',
+ murus: 'altus longus magnus',
+ nauta: 'bonus strenuus fessus',
+ nomen: 'magnus clarus verus',
+ numerus: 'magnus parvus',
+ nuntius: 'fidus bonus fessus',
+ obses: 'vulneratus fessus salvus',
+ odium: 'magnus longus',
+ oppidum: 'magnus parvus',
+ oppugnatio: 'magnus longus',
+ opus: 'magnus longus bonus',
+ ora: 'longus latus',
+ oraculum: 'verus clarus occultus',
+ orator: 'doctus clarus bonus',
+ ordo: 'magnus longus',
+ origo: 'clarus verus',
+ osculum: 'longus parvus',
+ pastor: 'bonus fidus fessus',
+ pater: 'bonus severus doctus',
+ patria: 'magnus parvus',
+ pavo: 'magnus parvus formosus',
+ pax: 'longus verus iustus',
+ pecunia: 'magnus',
+ philosophia: 'verus magnus',
+ philosophus: 'doctus clarus bonus',
+ pirata: 'malus improbus fessus',
+ poeta: 'bonus clarus doctus',
+ populus: 'magnus parvus bonus malus',
+ porta: 'magnus altus latus',
+ postulatum: 'iustus magnus',
+ praeceptum: 'bonus malus iustus',
+ praemium: 'magnus parvus bonus',
+ praesidium: 'magnus parvus',
+ princeps: 'bonus malus strenuus',
+ proelium: 'magnus longus',
+ provincia: 'magnus parvus finitimus',
+ puella: 'bonus formosus doctus fessus',
+ puer: 'bonus malus fessus strenuus',
+ pugna: 'magnus longus durus',
+ raptum: 'magnus malus occultus',
+ regina: 'bonus severus doctus',
+ regio: 'magnus parvus finitimus vicinus',
+ regnum: 'magnus longus',
+ rex: 'bonus magnus iustus severus',
+ ripa: 'altus longus',
+ rivus: 'longus parvus',
+ rosa: 'albus formosus parvus',
+ sacerdos: 'bonus doctus severus',
+ saxum: 'magnus parvus altus',
+ scelus: 'magnus malus occultus',
+ schola: 'magnus parvus publicus',
+ scutum: 'magnus parvus albus',
+ senator: 'doctus bonus iustus severus',
+ senex: 'bonus doctus severus fessus',
+ serpens: 'magnus parvus longus',
+ serva: 'bonus fessus strenuus',
+ servus: 'bonus malus fidus fessus',
+ signum: 'magnus parvus clarus',
+ silva: 'densus magnus parvus',
+ societas: 'magnus longus',
+ spectaculum: 'magnus longus',
+ stabulum: 'magnus parvus',
+ stella: 'clarus magnus parvus',
+ supplicium: 'magnus longus durus',
+ tabula: 'magnus parvus albus',
+ taurus: 'magnus parvus fessus',
+ telum: 'longus magnus parvus',
+ templum: 'magnus parvus clarus',
+ tempus: 'longus bonus malus',
+ terra: 'magnus parvus',
+ theatrum: 'magnus parvus publicus',
+ thesaurus: 'magnus parvus occultus',
+ tribunus: 'bonus iustus strenuus severus',
+ tunica: 'albus longus',
+ turba: 'magnus parvus perterritus',
+ umbra: 'longus magnus densus',
+ uxor: 'bonus doctus fessus',
+ venator: 'strenuus fessus bonus',
+ ventus: 'magnus',
+ verbum: 'longus verus malus',
+ versiculus: 'longus parvus clarus',
+ vestigium: 'magnus parvus occultus',
+ via: 'longus latus publicus',
+ victoria: 'magnus clarus',
+ vicus: 'magnus parvus',
+ villa: 'magnus parvus formosus',
+ virgo: 'bonus doctus formosus',
+ virtus: 'magnus verus',
+ vita: 'longus bonus beatus',
+ voluptas: 'magnus longus'
+});
+function latinSemanticSyntagmChoices(noun,adjectives){
+ const head=mNormalize(noun.p.lemma).toLowerCase();
+ const allowed=latinSyntagmSemanticPairs[head];
+ if(!allowed)return [];
+ const keys=new Set(allowed.split(' '));
+ return adjectives.filter(({x})=>keys.has(mNormalize(headLex(x.entry)).toLowerCase()));
+}
 function latinCompleteDeclensionItems(chosen){
  const limit=Math.max(0,...chosen.map(examUnitNumber).filter(Number.isInteger));
  const nouns=latinSyntagmNouns(chosen);
  if(!latinCompleteCompoundActive(chosen))return nouns;
  const adjectives=latinCompleteAdjectives(chosen);
  if(!adjectives.length)return []; // No se inventan adjetivos fuera del programa.
- const orderedAdjectives=sample(adjectives,adjectives.length);
- return nouns.map((item,index)=>{
-  const adjectival=latinApprovedSyntagmAdjective(item,adjectives,limit)||
-   orderedAdjectives[index%orderedAdjectives.length],gender=latinCompleteNounGender(item);
+ const usage=new Map(); // Repartir adjetivos dentro de cada generación.
+ return nouns.map(item=>{
+  const approved=latinApprovedSyntagmAdjective(item,adjectives,limit);
+  const choices=approved?[approved]:latinSemanticSyntagmChoices(item,adjectives);
+  if(!choices.length)return null; // No inventar parejas ni ampliar sin revisión.
+  // Alternar libertad de sorteo y compensación de adjetivos frecuentes.
+  // Penalizar siempre los muy usados fijaba sustantivos como «senator»
+  // en un único adjetivo, aunque hubiera varias parejas aprobadas.
+  const alternatives=sample(choices,choices.length);
+  if(Math.random()<0.5)alternatives.sort((a,b)=>
+   (usage.get(mNormalize(headLex(a.x.entry)).toLowerCase())||0)-
+   (usage.get(mNormalize(headLex(b.x.entry)).toLowerCase())||0));
+  const adjectival=alternatives[0];
+  const adjKey=mNormalize(headLex(adjectival.x.entry)).toLowerCase();
+  usage.set(adjKey,(usage.get(adjKey)||0)+1);
+  const gender=latinCompleteNounGender(item);
   const lemma=mNormalize(headLex(adjectival.x.entry)),stem=lemma.slice(0,-2);
   const key={m:'2m',f:'1',n:'2n'}[gender];
   if(!key||!lemma.endsWith('us'))return null;

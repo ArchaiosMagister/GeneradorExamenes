@@ -7,6 +7,7 @@ on:
       - 'index.html'
       - 'export-workspace.js'
       - 'scripts/test-ui-refinement.cjs'
+      - 'scripts/test-latin-semantic-syntagms.cjs'
       - 'scripts/test-greek-academic-expansion.cjs'
       - 'pdf-export.js'
       - 'scripts/test-export-workspace.cjs'
@@ -51,6 +52,8 @@ jobs:
           npm run preview:test
       - name: Auditar Griego I por unidad, paradigmas y regeneración sin repeticiones
         run: node scripts/test-greek-academic-expansion.cjs
+      - name: Auditar sintagmas latinos aprobados y prohibición de unus/nullus
+        run: node scripts/test-latin-semantic-syntagms.cjs
       - name: Comprobar refinamiento y capturas antes/después
         run: UI_BASELINE_DIR=baseline node scripts/test-ui-refinement.cjs
       - name: Conservar capturas de comparación
