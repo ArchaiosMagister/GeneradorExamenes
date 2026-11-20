@@ -470,9 +470,10 @@ async function checkFile(browser,filename){
   }
   if(course==='greek1'&&model==='complete'){
    const groups=await page.evaluate(()=>greekVerifiedCorpus.filter(x=>x.kind==='declension')
-    .map(x=>greekCompleteNominalGroup(x)).filter(Boolean));
+    .map(x=>greekCompleteNominalGroup(x)).filter(Boolean)
+    .map(group=>({...group,lemmaKey:greekBankKey(group.noun)})));
    assert.equal(groups.length,12,filename+': deben conservarse diez bases originales y las dos terceras declinaciones nuevas');
-   assert(groups.some(g=>g.noun?.includes('ἄρχων'))&&groups.some(g=>g.noun?.includes('γυνή')),
+   assert(groups.some(g=>g.lemmaKey==='αρχων')&&groups.some(g=>g.lemmaKey==='γυνη'),
     filename+': faltan las dos bases contrastadas de tercera declinación en los sintagmas');
    assert(groups.every(g=>/^(?:ὁ|ἡ|τὸ)\s+\S+\s+\S+$/u.test(g.title)),
     filename+': se ha usado un orden predicativo en vez del atributivo');
