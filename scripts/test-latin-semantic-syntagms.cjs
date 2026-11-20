@@ -5,7 +5,7 @@ const assert=require('node:assert/strict');
 const path=require('node:path');
 const {pathToFileURL}=require('node:url');
 const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
-const units=[1,2,3,4,5,8,10];
+const units=[1,2,3,4,5,8,9];
 async function check(page,course,lang,unit){
  return page.evaluate(({course,lang,unit})=>{
   const select=(id,value)=>{
