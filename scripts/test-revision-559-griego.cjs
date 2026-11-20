@@ -93,7 +93,8 @@ assert.equal(bank.counts.grc.wikcionario,545);
 assert.equal(bank.counts.grc.contrastado,478);
 assert.equal(bank.extensions.greek_nominal_candidates.historicalRows,559);
 assert.equal(bank.extensions.greek_nominal_candidates.migratedIndividualSource5,14);
-assert.equal(bank.counts.lat.modelo,3244);
+assert.equal(bank.counts.lat.modelo,bank.extensions.candidate_rows,
+ 'La auditoría griega no debe alterar las propuestas latinas del índice');
 // Comprobar que la auditoría no ha convertido accidentalmente a fuente 5 ninguna propuesta.
 const verifiedKeys=new Set(bank.rows.grc.filter(x=>x[3]===5).map(x=>key(x[0],x[1],x[2])));
 assert(review.items.every(x=>migratedIds.has(x.id)||!verifiedKeys.has(key(x.lemma,x.sourceForm,x.analysis))));
