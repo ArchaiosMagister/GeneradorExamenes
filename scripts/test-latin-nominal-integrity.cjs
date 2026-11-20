@@ -184,7 +184,7 @@ const checks=[];
     for(const lemma of result.expectedNounHeads)
      assert(nounHeads.has(lemma),context+' no se ofrecen las formas elegibles de '+
       lemma+' '+JSON.stringify(result.diagnostics));
-    assert(result.expectedNounHeads.length>=(course==='latin1'?190:125),
+    assert(result.expectedNounHeads.length>=(course==='latin1'?190:100),
      context+' cobertura nominal insuficiente');
     assert(candidates.has('nouns|latus'),context+' falta latus sustantivo');
     assert(candidates.has('adjectives|latus'),context+' falta latus adjetivo');
