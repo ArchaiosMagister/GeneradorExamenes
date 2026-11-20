@@ -263,6 +263,8 @@ jobs:
         run: node scripts/test-nominal-agreement.cjs
       - name: Verificar doce formas, genitivos abreviados y excepciones de tercera declinación
         run: node scripts/test-latin-third-declension-forms.cjs
+      - name: Auditar todas las formas latinas, selecciones y progresión de unidades
+        run: node scripts/test-latin-nominal-integrity.cjs
       - name: Verificar variedad y concordancia de sintagmas nominales grecolatinos
         run: node scripts/test-syntagm-variation.cjs
       - name: Verificar sintagmas aprobados (PR 169) y progresión gramatical
