@@ -1,0 +1,39 @@
+name: Reconstrucción temporal de integridad verbal latina
+on:
+  push:
+    branches:
+      - fix/latin-verb-lexical-integrity-20261120
+    paths:
+      - '.github/workflows/rebuild-latin-verb-artifacts.yml'
+permissions:
+  contents: write
+jobs:
+  rebuild:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verificar glosas históricas y formas latinas corregidas
+        run: |
+          node scripts/test-latin-verb-entry-integrity.cjs
+          node scripts/audit-next-100-lemmas.cjs --check
+          node scripts/audit-latin1-rest-183.cjs
+          node scripts/test-latin-vocabulary-corpus.cjs
+      - name: Reconstruir HTML autónomo
+        run: npm run offline:build
+      - name: Comprobar sincronización e índice
+        run: |
+          node scripts/test-lemma-index.mjs
+          node scripts/test-required-latin-vocabulary.cjs
+      - name: Guardar reconstrucción en rama aislada
+        run: |
+          git add offline.html
+          if ! git diff --cached --quiet; then
+            git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'build(latin): synchronize corrected glossary source with offline HTML'
+            git push origin HEAD:fix/latin-verb-lexical-integrity-20261120
+          fi
