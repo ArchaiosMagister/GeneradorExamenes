@@ -14,6 +14,14 @@ for(const text of [source,JSON.stringify(index)]){
 }
 assert.equal(index.vocabulary.lat.ordo.lat1.entry,'ordo, ordinis (m.)');
 assert.equal(index.vocabulary.lat.regio.lat4.entry,'rĕgĭō, –onis (f.)');
+const offlineSource=fs.readFileSync(path.resolve(__dirname,'../offline.html'),'utf8');
+for(const [wrong,right] of [
+ ['ordo, ordinis (f.)','ordo, ordinis (m.)'],
+ ['rĕgĭō, –onis (m.)','rĕgĭō, –onis (f.)']
+]){
+ assert(!offlineSource.includes(wrong),'HTML autónomo aún contiene género incorrecto: '+wrong);
+ assert(offlineSource.includes(right),'HTML autónomo sin género docente corregido: '+right);
+}
 
 // [lema, fragmento de genitivo del banco, tema íntegro, género].
 // Fixture editorial deliberadamente independiente de mNoun/M_END.
