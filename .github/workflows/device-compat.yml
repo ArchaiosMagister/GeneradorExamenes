@@ -54,6 +54,8 @@ jobs:
         run: node scripts/test-greek-academic-expansion.cjs
       - name: Auditar sintagmas latinos aprobados y prohibición de unus/nullus
         run: node scripts/test-latin-semantic-syntagms.cjs
+      - name: Cotejar las doce formas de los 28 lemas de tercera y casos especiales
+        run: node scripts/test-latin-third-declension-forms.cjs
       - name: Comprobar refinamiento y capturas antes/después
         run: UI_BASELINE_DIR=baseline node scripts/test-ui-refinement.cjs
       - name: Conservar capturas de comparación
