@@ -88,11 +88,70 @@ for(const item of systematic.contextualHomographies){
  assert(origin.split(item.context).length===2,'Cambió el contexto único de νέων en UD11');
  editorialByForm.set(item.form,{...item,kind:'contextual-homography'});
 }
+// Tres superficies de relativos son homógrafas para el lematizador.
+// Cada ocurrencia se coteja por oración íntegra y por posición de UD.
+// Solo el informe de auditoría las considera resueltas en este contexto.
+const relativeContext=JSON.parse(load('data/vocabulary/greek1-relative-contextual-attestations-20261121.json'));
+assert.equal(relativeContext.schema,1);
+assert.equal(relativeContext.course,'gr1');
+assert.equal(relativeContext.autoPromote,false);
+assert.equal(relativeContext.automaticGradingEnabled,false);
+assert.equal(relativeContext.morphologyPromotion,false);
+assert.equal(relativeContext.items.length,15);
+assert.equal(relativeContext.totals.distinctForms,3);
+assert.equal(relativeContext.totals.occurrences,15);
+const allowedRelativeForms=new Map([
+ ['οἳ',{parse:'PRON;NOM;PL;MASC',lemmas:['ο','οσ'],count:11}],
+ ['ὃν',{parse:'PRON;ACC;SG;MASC',lemmas:['ειμι','οσ'],count:3}],
+ ['ἣν',{parse:'PRON;ACC;SG;FEM',lemmas:['ειμι','οσ'],count:1}]
+]);
+const relativeByForm=new Map(),relativeByPlace=new Map();
+for(const entry of relativeContext.items){
+ const expected=allowedRelativeForms.get(entry.form);
+ assert(expected,'Relativo no autorizable en este lote: '+entry.form);
+ assert.equal(entry.lemma,'οσ');
+ assert.equal(entry.entry,'ὅς, ἥ, ὅ (pron. rel.)');
+ assert.equal(entry.morphology,expected.parse);
+ assert.equal(entry.analyzerStatus,'review');
+ assert.deepEqual(entry.analyzerCandidates,expected.lemmas);
+ assert(/^https:\/\//.test(entry.reference));
+ assert(/^https:\/\//.test(entry.accentReference));
+ assert.equal(entry.role,entry.morphology==='PRON;NOM;PL;MASC'?
+  'sujeto de subordinada de relativo':'complemento directo de subordinada de relativo');
+ assert(entry.context.includes(entry.antecedent),'No consta el antecedente: '+entry.unit+':'+entry.line);
+ const source=project.units[entry.unit-1];
+ assert.equal(source?.title,'UD'+entry.unit);
+ const realLine=source.text.split(/\r?\n/)[entry.line-1];
+ assert.equal(realLine,entry.context,'Colación contextual obsoleta: '+entry.unit+':'+entry.line);
+ const place=entry.unit+':'+entry.line;
+ assert(!relativeByPlace.has(place),'Anclaje duplicado '+place);
+ relativeByPlace.set(place,entry);
+ if(!relativeByForm.has(entry.form))relativeByForm.set(entry.form,[]);
+ relativeByForm.get(entry.form).push(entry);
+}
+for(const [form,expected] of allowedRelativeForms)
+ assert.equal(relativeByForm.get(form)?.length,expected.count,'Falta cotejo de alguna aparición '+form);
+
 const externalCounts=new Map();
 
 const all=new Map(),unitReports=[];
 const clean=t=>t.replace(/([\p{L}\p{M}])[’'](?=[\p{L}\p{M}])/gu,'$1 ');
 const tokens=t=>[...clean(t).matchAll(/[\p{L}\p{M}]+(?:[’'][\p{L}\p{M}]+)*/gu)].map(x=>x[0].normalize('NFC'));
+const seenRelativePlaces=new Set();
+for(let i=0;i<project.units.length;i++){
+ const unit=i+1,lines=project.units[i].text.split(/\r?\n/);
+ for(let j=0;j<lines.length;j++){
+  const eligible=tokens(lines[j]).filter(form=>allowedRelativeForms.has(form));
+  if(!eligible.length)continue;
+  assert.equal(eligible.length,1,'Varias apariciones de relativos cotejados en una oración');
+  const key=unit+':'+(j+1),item=relativeByPlace.get(key);
+  assert(item,'Forma homógrafa de relativo sin cotejo editorial: '+key);
+  assert.equal(item.form,eligible[0]);assert.equal(item.context,lines[j]);
+  seenRelativePlaces.add(key);
+ }
+}
+assert.equal(seenRelativePlaces.size,relativeContext.items.length,
+ 'Alguna forma relativa acreditada no está presente en el texto real');
 for(const u of project.units){
  const unit=Number(u.title.slice(2)),byForm=new Map();
  for(const line of u.text.split(/\r?\n/)){
@@ -110,7 +169,19 @@ for(const u of project.units){
   const found=byResult.get(form);
   assert.ok(found,'No analysis record for '+u.title+': '+form);
   const citation=editorialByForm.get(form);
+  const relativeItems=relativeByForm.get(form);
   let status=found.status;
+  if(relativeItems){
+   assert(!citation,'Cotejos superpuestos en una superficie: '+form);
+   assert.equal(found.status,'review','Cambió el estado de la ambigüedad: '+form);
+   assert.deepEqual([...found.candidates.map(c=>c.lemma)].sort(),
+    [...allowedRelativeForms.get(form).lemmas].sort(),'Candidatos modificados: '+form);
+   assert(found.candidates.some(c=>c.lemma==='οσ'&&c.entry==='ὅς, ἥ, ὅ (pron. rel.)'),
+    'El lematizador no presenta el pronombre relativo: '+form);
+   assert.equal(slot.count,relativeItems.filter(x=>x.unit===unit).length,
+    'Cambió la frecuencia de los relativos en UD'+unit+': '+form);
+   status='documented'; // Reconocimiento local únicamente en este informe.
+  }
   if(citation){
    assert(citation.units.includes(unit),'Forma con colación fuera de UD autorizada: '+form);
    if(citation.kind==='contextual-homography'){
@@ -151,8 +222,8 @@ for(const u of project.units){
   }
   byStatus.set(form,status);
   const prior=all.get(form)||{form,count:0,units:[],contexts:[],status,
-   entry:citation?.lemma||citation?.entry||found.entry,meaning:found.meaning,
-   warning:citation?'Acreditado exclusivamente para el corpus docente, no evaluable':found.warning||'',
+   entry:citation?.lemma||citation?.entry||(relativeItems?'ὅς, ἥ, ὅ (pron. rel.)':found.entry),meaning:found.meaning,
+   warning:relativeItems?'Desambiguación editorial por contexto, no evaluable automáticamente':citation?'Acreditado exclusivamente para el corpus docente, no evaluable':found.warning||'',
    candidates:found.candidates.map(c=>({lemma:c.lemma,entry:c.entry,attested:c.attested}))};
   prior.count+=slot.count;
   if(!prior.units.includes(unit))prior.units.push(unit);
