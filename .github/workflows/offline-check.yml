@@ -219,6 +219,8 @@ jobs:
         run: node scripts/test-greek-lexical-filology-20261121.cjs
       - name: Griego I lemas generales, acentos y catálogo provisional
         run: node scripts/test-greek-lexical-followup-20261121.cjs
+      - name: Auditar cantidades filologicas y vocabulario grecolatino
+        run: node scripts/test-filologia-latin-griego-20261121.cjs --offline
       - name: Evitar notaciones abreviadas del ν móvil en las formas evaluables
         run: node scripts/test-greek-movable-nu.cjs
       - name: Auditar las 100 formas más frecuentes de Griego I

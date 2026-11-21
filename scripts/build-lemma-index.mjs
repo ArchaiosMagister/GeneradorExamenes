@@ -20,7 +20,7 @@ const latinEditorialPath=path.join(root,'data/lemmas/latin-editorial-decisions.j
 const norm=s=>String(s||'').toLowerCase().normalize('NFD')
  .replace(/\u0345/g,'ι').replace(/\p{M}/gu,'').replace(/æ/g,'ae').replace(/œ/g,'oe')
  .replace(/ς/g,'σ').trim();
-const head=s=>{const first=String(s||'').split(/[,+(]/)[0].trim().split('/')[0];return first&&!/\s/u.test(first)?norm(first):null};
+const head=s=>{const first=String(s||'').split(/[,+(]/)[0].trim().split('/')[0];return first&&!/\s/u.test(first)?({'mуro':'myro','stуlus':'stilus'}[norm(first)]||norm(first)):null};
 async function fetchText(name){
  const url=base+name;
  for(let attempt=0;attempt<3;attempt++){
@@ -269,6 +269,8 @@ async function main(){
   verifiedCells.get(id).add(norm(surface));
  }
  for(const [lemma,v]of Object.entries(catalog.lat)){
+  // Lemas normalizados: ninguna forma adicional sin contraste individual.
+  if(lemma==='myro'||lemma==='stilus')continue;
   const entry=Object.values(v).sort((a,b)=>
    (b.entry.match(/,/g)||[]).length-(a.entry.match(/,/g)||[]).length)[0]?.entry;
   const proposals=proposeRegularLatin(lemma,entry);
