@@ -35,6 +35,8 @@ on:
       - 'scripts/test-filologia-regimen-acento-20261121.cjs'
       - 'scripts/test-greek-noun-case-attestation-20261121.cjs'
       - 'scripts/test-filologia-cantidad-latina-20261121.cjs'
+      - 'scripts/test-filologia-latin4-cantidades-ronda2-20261121.cjs'
+      - 'scripts/apply-latin4-quantities-20261121.cjs'
       - 'scripts/test-greek-all-unit-form-quotas.cjs'
       - 'scripts/test-morph-quotas-curriculum-regeneration.cjs'
       - 'scripts/test-greek-two-modes-legacy-drafts.cjs'
@@ -138,6 +140,8 @@ jobs:
         run: node scripts/test-latin-ud7-nix-sol-20261121.cjs
       - name: Revisar cantidad vocálica latina sin cancelar variantes métricas
         run: node scripts/test-filologia-cantidad-latina-20261121.cjs --offline
+      - name: Auditar once cantidades/enunciados de Latín 4.º, migración y PWA
+        run: node scripts/test-filologia-latin4-cantidades-ronda2-20261121.cjs
       - name: Exam UI redesign in iPad, forms, Word and vocabulary isolation
         run: node scripts/test-exam-ui-redesign.cjs
       - name: Verificar tema Examinator sin efectos sobre Word/PDF
