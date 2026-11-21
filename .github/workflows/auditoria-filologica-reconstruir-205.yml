@@ -1,0 +1,57 @@
+name: Reconstruir auditoría filológica 205 (sin despliegue)
+on:
+  push:
+    branches:
+      - fix/auditoria-griego-acentos-espiritus-20261121
+    paths:
+      - '.github/workflows/auditoria-filologica-reconstruir-205.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: auditoria-filologica-205-rebuild
+  cancel-in-progress: false
+
+jobs:
+  rebuild:
+    name: Reconstruir indice y copia autonoma, verificar y guardar en PR
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Obtener rama exacta de auditoría (sin publicar)
+        uses: actions/checkout@v4
+        with:
+          ref: fix/auditoria-griego-acentos-espiritus-20261121
+          fetch-depth: 0
+          persist-credentials: true
+      - name: Preparar Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Reconstruir índice desde origen fijado
+        run: node scripts/build-lemma-index.mjs
+      - name: Reconstruir el HTML autónomo
+        run: npm run offline:build
+      - name: Ejecutar pruebas específicas sobre los archivos reconstruidos
+        run: |
+          node scripts/test-filologia-regimen-acento-20261121.cjs --offline
+          node scripts/test-filologia-latin4-quantity-clusters-20261121.cjs
+      - name: Comprobar que solo cambian los artefactos reconstruidos
+        run: |
+          git diff --name-only > /tmp/changed-files
+          if grep -Ev '^(offline\.html|data/lemmas/teacher-forms\.json)$' /tmp/changed-files; then
+            echo 'Cambios inesperados durante la reconstrucción'; exit 1
+          fi
+      - name: Guardar artefactos reconstruidos en la rama de la PR (sin merge ni deploy)
+        run: |
+          git add -- offline.html data/lemmas/teacher-forms.json
+          if git diff --cached --quiet; then
+            echo 'Los artefactos ya estaban actualizados'
+          else
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git commit -m 'build: sincronizar indice y offline para correcciones filologicas 205'
+            git push origin HEAD:fix/auditoria-griego-acentos-espiritus-20261121
+          fi
