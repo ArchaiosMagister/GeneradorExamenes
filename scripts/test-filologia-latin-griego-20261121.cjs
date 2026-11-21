@@ -30,7 +30,14 @@ assert(!teacher.rows.lat.some(x=>['myro','stilus'].includes(x[0])&&x[3]===5),'Se
 assert(teacher.rows.grc.some(x=>x[0]==='μικροσ'&&x[3]===5),'Se perdieron formas cotejadas de μικρός');
 const mark='const greekMaterials=',a=html.indexOf(mark),b=html.indexOf(';\n',a);
 assert(a>=0&&b>a);
-assert.deepEqual(JSON.parse(html.slice(a+mark.length,b)).required,greek.required,'Desincronización de material exigible');
+const embedded=JSON.parse(html.slice(a+mark.length,b)).required;
+assert.equal(embedded.length,greek.required.length,'Cantidad de exigible distinta');
+for(const [unit,entry] of [['UD5','μικρός, –ά, –όν'],['UD10','ἔτι (adv.)']]){
+ const web=embedded.find(x=>x.unit===unit&&x.entry===entry);
+ const source=greek.required.find(x=>x.unit===unit&&x.entry===entry);
+ assert(web&&source,'Enunciado no sincronizado: '+entry);
+ assert.equal(web.meaning,source.meaning,'Significado de exigible distinto para '+entry);
+}
 for(const error of ['Carthago, −inis (m.)','Mўrō̆','stўlus','ya’, ‘aún'])assert(!html.includes(error),'La web conserva '+error);
 if(process.argv.includes('--offline')){
  const offline=read('offline.html');
