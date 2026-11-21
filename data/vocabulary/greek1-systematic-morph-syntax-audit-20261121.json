@@ -1,0 +1,80 @@
+{
+  "schema": 1,
+  "purpose": "cotejo-localizado-griego-14-unidades-y-oraciones-evaluables",
+  "course": "gr1",
+  "unitCount": 14,
+  "sourceLines": 471,
+  "gradedSentenceCount": 11,
+  "automaticGradingEnabled": false,
+  "morphologyPromotion": false,
+  "corrections": [
+    {
+      "scope": "corpus",
+      "unit": 10,
+      "line": 39,
+      "old": "τῶν νέων",
+      "updated": "τῶν νεῶν",
+      "lemma": "ναῦς",
+      "reading": "genitivo plural de ναῦς en genitivo absoluto",
+      "rationale": "Interpretación contextual: son naves que zarparon del puerto, no los jóvenes de νέος; si el texto pretendía personas, debe revisarse esta decisión.",
+      "reference": "https://atlas.perseus.tufts.edu/dictionaries/entry/urn%3Acite2%3Ascaife-viewer%3Adictionaries.v1%3Alsj-n69863/"
+    },
+    {
+      "scope": "corpus",
+      "unit": 12,
+      "line": 19,
+      "old": "ἔλειψαν",
+      "updated": "ἔλιπον",
+      "lemma": "λείπω",
+      "reading": "aoristo segundo de indicativo activo, tercera persona plural",
+      "rationale": "Uso ático clásico normal; ἔλειψαν es una variante sigmática histórica especialmente posterior, no absolutamente imposible.",
+      "reference": "https://atticism.eu/corpus/item/view?id=535d329c-9c02-48d2-8bda-18dcd318e65e"
+    },
+    {
+      "scope": "corpus",
+      "unit": 14,
+      "line": 16,
+      "old": "ἠρωτᾶντο",
+      "updated": "ἠρωτῶντο",
+      "lemma": "ἐρωτάω",
+      "reading": "imperfecto medio-pasivo tercera plural del contracto -άω",
+      "rationale": "Contracción ática regular de ἠρωτάοντο.",
+      "reference": "https://en.wiktionary.org/wiki/%E1%BC%90%CF%81%CF%89%CF%84%CE%AC%CF%89"
+    },
+    {
+      "scope": "gradedSentence",
+      "index": 2,
+      "old": "ἀπὸ τῆς νεώς πρὸς",
+      "updated": "ἀπὸ τῆς νεὼς πρὸς",
+      "lemma": "ναῦς",
+      "reading": "νεώς: gen. sing. de ναῦς; grave contextual ante πρὸς",
+      "rationale": "Smyth §154, acento final grave antes de palabra siguiente.",
+      "reference": "https://ccel.org/s/smyth/grammar/html/smyth_1f_uni.htm"
+    },
+    {
+      "scope": "gradedSentence",
+      "index": 3,
+      "old": "οἱ ἀνθρώποι ἀδικοί",
+      "updated": "οἱ ἀνθρώποι ἄδικοι",
+      "lemma": "ἄδικος",
+      "reading": "adjetivo de dos terminaciones, nominativo plural masculino",
+      "rationale": "ἄδικος, -ον tiene nominativo plural ἄδικοι; ἀδικοί no es el nominativo de este lema.",
+      "reference": "https://pressbooks.pub/ancientgreek/chapter/30/"
+    },
+    {
+      "scope": "gradedSentence",
+      "index": 11,
+      "old": "αὐτοί μέν ἡμᾶς",
+      "updated": "αὐτοὶ μὲν ἡμᾶς",
+      "lemma": "αὐτός / μέν",
+      "reading": "grave contextual de oxítonas seguidas de otras palabras",
+      "rationale": "Smyth §154; se mantiene la correlación μὲν...δὲ.",
+      "reference": "https://ccel.org/s/smyth/grammar/html/smyth_1f_uni.htm"
+    }
+  ],
+  "safeguards": [
+    "Índice verificado griego intacto; ninguna forma creada por analogía se convierte en fuente 5.",
+    "Fixture histórico mantiene su grafía anterior ἠρωτᾶντο para poder contrastarla, no como respuesta correcta.",
+    "172 entradas exigibles y reglas de evaluación inalteradas."
+  ]
+}
