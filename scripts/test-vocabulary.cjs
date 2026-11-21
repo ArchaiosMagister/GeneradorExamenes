@@ -399,8 +399,23 @@ assert.ok(success.length>100,'El corpus prioritario sigue sin cobertura nominal 
 // El corpus original de 14 unidades se conserva sin reescribir:
  // las grafías descartadas en la revisión filológica no pueden rehabilitarse
  // como «documentadas» únicamente para conseguir un test verde.
-const knownSuperseded=new Set(['Δημοσθήνης','θέᾳ']);
-assert.ok(unknown.every(x=>knownSuperseded.has(x.form)),
+// El fixture histórico guarda la grafía original, incluso cuando la
+// auditoría posterior ha documentado una sustitución curricular. No reintroducir
+// terminaciones tardías ni una raíz errónea solamente para mantenerlo verde.
+const perfectUd13=JSON.parse(fs.readFileSync(path.join(root,
+ 'data/vocabulary/greek1-perfect-pluperfect-audit-20261121.json'),'utf8'));
+assert.equal(perfectUd13.morphologyPromotion,false);
+const supersededForms=perfectUd13.corrections.map(x=>x.old.normalize('NFC'));
+const knownSuperseded=new Set(['Δημοσθήνης','θέᾳ',...supersededForms]
+ .map(x=>x.normalize('NFC')));
+for(const old of supersededForms)
+ assert(unknown.some(x=>x.form.normalize('NFC')===old),
+  'El fixture histórico ha dejado de recoger la forma retirada: '+old);
+const corrected=api.analyze(data,perfectUd13.corrections.map(x=>x.updated).join('\n'),'gr1',GreekBank);
+for(const item of perfectUd13.corrections)
+ assert(corrected.some(x=>x.form.normalize('NFC')===item.updated&&x.status==='documented'),
+  'La grafía clásica corregida no se lematiza: '+item.updated);
+assert.ok(unknown.every(x=>knownSuperseded.has(x.form.normalize('NFC'))),
  'Hay formas nuevas sin lematizar fuera de las grafías ya descartadas: '+
  JSON.stringify(unknown.map(x=>x.form)));
 console.log('Formas del corpus antiguo aún pendientes de corrección textual:',
