@@ -18,6 +18,7 @@ on:
       - 'scripts/test-phase-five.cjs'
       - 'scripts/test-phase-six.cjs'
       - 'scripts/test-greek-morph-regeneration.cjs'
+      - 'scripts/test-greek-verb-syncretism.cjs'
       - 'scripts/test-greek-ud5-quota-indent.cjs'
       - 'scripts/test-greek-two-ending-adjectives.cjs'
       - 'scripts/test-greek-all-unit-form-quotas.cjs'
@@ -85,6 +86,8 @@ jobs:
         run: node scripts/test-latin-passive-phrases.cjs
       - name: Greek morphology regeneration web and offline
         run: node scripts/test-greek-morph-regeneration.cjs
+      - name: Preservar sincretismos griegos al crear y regenerar formas verbales
+        run: node scripts/test-greek-verb-syncretism.cjs
       - name: Greek UD5 noun, adjective and verb quotas; Word and screen indent
         run: node scripts/test-greek-ud5-quota-indent.cjs
       - name: Griego UD5, adjetivos de dos terminaciones en fichas y regeneraciones
