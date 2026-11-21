@@ -1,0 +1,36 @@
+name: Temporal · UD13 revisar autonomía (NO publicación)
+on:
+  push:
+    branches:
+      - fix/auditoria-filologica-latin-griego-continuacion-20261121
+    paths:
+      - vocabulary-generator.js
+      - data/vocabulary/greek1-units-corrected.json
+      - .github/workflows/temp-audit-greek-ud13-offline-20261121.yml
+permissions:
+  contents: write
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/auditoria-filologica-latin-griego-continuacion-20261121
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Reconstrucción controlada y retirada del workflow temporal
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm run offline:build
+          node scripts/test-greek-perfect-pluperfect-ud13-20261121.cjs
+          node scripts/test-filologia-regimen-acento-20261121.cjs --offline
+          git add -- offline.html
+          git rm -- .github/workflows/temp-audit-greek-ud13-offline-20261121.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "build: sincronizar UD13 y retirar reconstrucción temporal"
+          git push origin HEAD:fix/auditoria-filologica-latin-griego-continuacion-20261121

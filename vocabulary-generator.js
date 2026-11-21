@@ -1065,7 +1065,7 @@ function greekReferenceForms(bank){
   ['ἐκκλησία','asamblea',['ἐκκλησίᾳ','ἐκκλησίαν','ἐκκλησίας']],
   ['κομίζω','llevarse',['ἐκόμισε']],
   ['λείπω','dejar',['ἔλειψαν','ἔλιπον']],
-  ['λύω','liberar',['ἐλελύκειμεν']],
+  ['λύω','liberar',['ἐλελύκεμεν']],
   // Formas individuales contrastadas con los textos de UD13–14;
   // no implican comprobación de paradigmas enteros ni elevan el índice a source 5.
   ['σωτηρία','salvación',['σωτηρίας']],
@@ -1137,7 +1137,7 @@ function greekReferenceForms(bank){
   ['Καλλίας','Calias',['Καλλίαν']],
   ['κατέχω','retener',['κατεῖχε']],
   ['καταλείπω','dejar atrás',['κατέλιπε']],
-  ['κινδυνεύω','correr peligro',['κεκινδυμεύκαμεν']],
+  ['κινδυνεύω','correr peligro',['κεκινδυνεύκαμεν']],
   ['κωλύω','impedir',['κεκωλύκαμεν']],
   ['κελεύω','ordenar',['κελεύσαντος']],
   ['Κρήτη','Creta',['Κρήτην']],
@@ -1200,7 +1200,7 @@ function greekReferenceForms(bank){
   ['ὦ','oh (vocativo)',['ὦ']],
   ['οὐδέ','ni, tampoco',['οὐδ']],
   ['ὅσπερ','el cual precisamente',['ἅπερ']],
-  ['πυρεύω','encender, incendiar',['ἐπεπυρεύκεισαν','ἐπεπυρεύκεισαν','ἐπεπυρεύκεσαν','ἐπεπυρεύκεσαν']],
+  ['πυρεύω','encender, incendiar',['ἐπεπυρεύκεσαν','ἐπεπυρεύκεσαν']],
   ['τιμάω','honrar',['ἐτίμητο','ἐτιμητο']]
  ];
  for(const [lemma,meaning,forms] of secondPass)addIrregular(forms,lemma,meaning);
