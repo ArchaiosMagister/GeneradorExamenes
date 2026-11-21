@@ -26,3 +26,7 @@ Se han actualizado exactamente cuatro apariciones del corpus (30 líneas de UD13
 `scripts/test-greek-perfect-pluperfect-ud13-20261121.cjs` comprueba las frecuencias exactas, las posiciones, la conservación de formas válidas, la ausencia de promociones a fuente 5 y la paridad del glosario con `offline.html`. Se ejecuta en CI Phase I y CI offline. La prueba previa `scripts/test-filologia-regimen-acento-20261121.cjs` exige ahora `ἐπεπυρεύκεσαν` en vez de la variante posterior.
 
 **No fusionar ni publicar sin autorización docente expresa, y no hacerlo si no se valida toda la CI del último commit.**
+
+## Reconstrucción controlada
+
+El workflow temporal [#44939877999](https://github.com/ArchaiosMagister/GeneradorExamenes/actions/runs/44939877999) finalizó **success**: generó `offline.html`, ejecutó `scripts/test-greek-perfect-pluperfect-ud13-20261121.cjs` y `scripts/test-filologia-regimen-acento-20261121.cjs --offline` y eliminó el workflow temporal del árbol de la rama. La CI general debe comprobarse sobre el último commit firmado por el titular del repositorio. Sin fusión ni despliegue.
