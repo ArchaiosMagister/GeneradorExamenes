@@ -20,6 +20,15 @@ El aoristo sigmático `ἔλειψαν` **no es universalmente imposible**: es u
 - [*Ancient Greek for Everyone*, adjetivos de dos terminaciones](https://pressbooks.pub/ancientgreek/chapter/30/): `ἄδικοι`.
 - [Smyth, *Greek Grammar*, §154](https://ccel.org/s/smyth/grammar/html/smyth_1f_uni.htm): grave en contexto.
 
+## Desambiguación contextual: νέων frente a νεῶν
+
+La revisión ha descubierto **una ambigüedad real del lematizador** al ampliar la entrada de **ναῦς**. El sistema normaliza la acentuación para recuperar candidatos y, por ello, ofrece dos posibles lemas para `νέων` en la UD11:
+
+- `πονηροὶ ἄνθρωποι τὰς τῶν νέων ψυχὰς διέφθειρον.`: **νέων**, genitivo plural de *νέος*, «de los jóvenes», por contexto de las almas;
+- `ἀποπλευσάντων τῶν νεῶν ἐκ τοῦ λιμένος`: **νεῶν**, genitivo plural de *ναῦς*, «de las naves», por contexto náutico.
+
+Esta es una **desambiguación editorial puntual**, registrada con contexto, unidad, número de apariciones y ambos candidatos en el expediente JSON. El analizador conserva la ambigüedad fuera del contexto; **no** se cambia el índice ni se habilita un resultado automático. `scripts/audit-greek-all-units.cjs --require-clean` solo excluye del listado de pendientes esa ocurrencia contextual explícitamente cotejada, como los otros testimonios del informe, y obliga a volver a revisarla si cambia el texto, los candidatos o la frecuencia.
+
 ## Comprobaciones
 La regresión `scripts/test-greek-systematic-morph-syntax-20261121.cjs` comprueba seis correcciones, las 14 unidades y 471 renglones, las 11 oraciones evaluables idénticas en web y en la distribución autónoma, las entradas del glosario y la ausencia de promociones al índice de fuente 5. Se incorpora a las dos baterías CI principales.
 
