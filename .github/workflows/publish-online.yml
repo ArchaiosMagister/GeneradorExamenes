@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: read
+  actions: read
   pages: write
   id-token: write
 
@@ -78,6 +79,27 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: _site
+      - name: Esperar a que GitHub indexe exactamente un artefacto de Pages
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          for intento in $(seq 1 20); do
+            encontrados=$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}/artifacts?per_page=100" \
+              --jq '[.artifacts[] | select(.name == "github-pages")] | length')
+            if [[ "$encontrados" == "1" ]]; then
+              echo "Un único artefacto de GitHub Pages disponible"
+              exit 0
+            fi
+            if [[ "$encontrados" != "0" ]]; then
+              echo "Error: ${encontrados} artefactos con el mismo nombre en este intento"
+              exit 1
+            fi
+            sleep 3
+          done
+          echo "Error: GitHub no ha indexado el artefacto de Pages"
+          exit 1
       - name: Publicar en GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
