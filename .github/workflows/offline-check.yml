@@ -73,6 +73,8 @@ jobs:
         run: node scripts/test-latin-verb-entry-integrity.cjs
       - name: Auditar todas las entradas verbales latinas y la coherencia entre bancos, exigible, índice y PWA
         run: node scripts/test-latin-verb-corpus-audit.cjs
+      - name: Verificar identidad de committo, migración exigible y PWA
+        run: node scripts/test-committo-lemma-unification.cjs
       - name: Cotejar paradigmas individuales verificados con la fuente persistente
         run: node scripts/test-verified-verb-overrides.cjs
       - name: Garantizar coherencia de la evidencia en web y PWA guardada
