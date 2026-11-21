@@ -51,7 +51,7 @@ const choices=[
  ['μάλιστα (adv.)','muy','moltíssim, especialment',1],
  ['Ἀθηναῖος, –α, –ον','ateniense','atenenc/atenenca',1],
  ['στρατηγός, –ου','estratego','estrateg (general)',1],
- ['Gērmānus, –a, –um','germano/a','germànic/germànica',1],
+ ['Gĕrmānus, –a, –um','germano/a','germànic/germànica',1],
  ['Paulus, –i','Paulo','Paulus',1],
  ['Callus, –i','Calo’ (gentilicio)','Calo (gentilici)',1],
  ['Orgetorix, –igis','Orgétorix','Orgétorix',1],

@@ -1,0 +1,64 @@
+{
+  "schema": 1,
+  "purpose": "cotejo-filologico-ud13-solo-corpus-no-analisis-evaluable",
+  "course": "gr1",
+  "unit": 13,
+  "automaticGradingEnabled": false,
+  "morphologyPromotion": false,
+  "policy": "Normalización escolar del pluscuamperfecto activo ático (-εμεν, -εσαν), sin negar variantes posteriores (-ειμεν, -εισαν) ni certificar por analogía todas las formas del paradigma.",
+  "corrections": [
+    {
+      "lemma": "κινδυνεύω",
+      "old": "κεκινδυμεύκαμεν",
+      "updated": "κεκινδυνεύκαμεν",
+      "occurrencesCorrected": 1,
+      "totalFinalOccurrences": 1,
+      "lines": [
+        25
+      ],
+      "reading": "Perfecto de indicativo activo, primera persona plural",
+      "basis": "El tema del verbo es κινδυνευ-, no κινδυμευ-. El perfecto léxico κεκινδύνευκα está documentado; la 1.ª plural se restaura conforme al paradigma.",
+      "lexicalReference": "https://www.greek-language.gr/digitalResources/ancient_greek/tools/liddell-scott/search.html?lq=%CE%BA%CE%B9%CE%BD%CE%B4%CF%85%CE%BD%CE%B5%CF%8D%CF%89",
+      "paradigmReference": "https://el.wiktionary.org/wiki/%CE%BA%CE%B9%CE%BD%CE%B4%CF%85%CE%BD%CE%B5%CF%8D%CF%89",
+      "individuallyAttestedInSource5": false
+    },
+    {
+      "lemma": "λύω",
+      "old": "ἐλελύκειμεν",
+      "updated": "ἐλελύκεμεν",
+      "occurrencesCorrected": 1,
+      "totalFinalOccurrences": 1,
+      "lines": [
+        20
+      ],
+      "reading": "Pluscuamperfecto de indicativo activo, primera persona plural",
+      "basis": "Preferencia ática clásica -εμεν; -ειμεν es posterior. Ya existe ἐλελύκεμεν como paradigma docente explícito fuente 1, no como contraste individual fuente 5.",
+      "lexicalReference": "https://grammars.alpheios.net/smyth/xhtml/body.1_div1.2_div2.10.html",
+      "paradigmReference": "https://www.klassphil.uni-mainz.de/files/2025/01/Graecum-Compendium-2019.pdf",
+      "individuallyAttestedInSource5": false
+    },
+    {
+      "lemma": "πυρεύω",
+      "old": "ἐπεπυρεύκεισαν",
+      "updated": "ἐπεπυρεύκεσαν",
+      "occurrencesCorrected": 2,
+      "totalFinalOccurrences": 3,
+      "lines": [
+        7,
+        22
+      ],
+      "reading": "Pluscuamperfecto de indicativo activo, tercera persona plural",
+      "basis": "Preferencia ática clásica -εσαν; -εισαν es muy posterior. La UD13 ya contenía ἐπεπυρεύκεσαν en una tercera oración (línea 29). No se afirma atestiguación individual del verbo πυρεύω.",
+      "lexicalReference": "https://www.ccel.org/s/smyth/grammar/html/smyth_2Vq_uni.htm",
+      "paradigmReference": "https://www.klassphil.uni-mainz.de/files/2025/01/Graecum-Compendium-2019.pdf",
+      "individuallyAttestedInSource5": false
+    }
+  ],
+  "protectedForms": [
+    "ἐλελύκεσαν",
+    "ἐπεπαιδεύκει",
+    "ἐπεφύκει",
+    "πεπαύκαμεν",
+    "ἐπεπρεσβεύκεσάν"
+  ]
+}

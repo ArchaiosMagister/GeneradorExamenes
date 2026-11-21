@@ -44,23 +44,36 @@ cases.sort((a,b)=>b.frequency-a.frequency||a.form.localeCompare(b.form,'el'));
 const selected=cases.slice(0,100);
 const unresolved=cases.filter(x=>x.status!=='documented');
 unresolved.sort((a,b)=>b.frequency-a.frequency||a.form.localeCompare(b.form,'el'));
+// Este fixture conserva literalmente errores y terminaciones posteriores
+// retirados de la UD13 en la auditoría. Son históricos, no lagunas del
+// corpus ACTIVO. No reintegrarlos al lematizador para maquillar cobertura.
+const ud13Audit=JSON.parse(read('data/vocabulary/greek1-perfect-pluperfect-audit-20261121.json'));
+assert.equal(ud13Audit.morphologyPromotion,false);
+const superseded=new Set(ud13Audit.corrections.map(x=>x.old.normalize('NFC')));
+const historical=unresolved.filter(x=>x.status==='unknown'&&
+ superseded.has(x.form.normalize('NFC'))&&x.units.includes(13));
+for(const old of superseded)
+ assert(historical.some(x=>x.form.normalize('NFC')===old),
+  'Ha cambiado la referencia histórica de UD13: '+old);
+const stillUnresolved=unresolved.filter(x=>!historical.includes(x));
 const summary={totalDistinct:cases.length,top100:{
  documented:selected.filter(x=>x.status==='documented').length,
  review:selected.filter(x=>x.status==='review').length,
  unknown:selected.filter(x=>x.status==='unknown').length},
  all:{documented:cases.filter(x=>x.status==='documented').length,review:cases.filter(x=>x.status==='review').length,
- unknown:cases.filter(x=>x.status==='unknown').length},unresolvedDistinct:unresolved.length};
+ unknown:cases.filter(x=>x.status==='unknown').length},unresolvedDistinct:stillUnresolved.length,historicalSupersededDistinct:historical.length};
 console.log('GREEK_FREQUENCY_AUDIT '+JSON.stringify(summary));
 console.log('GREEK_TOP_100 '+JSON.stringify(selected.map(x=>({form:x.form,frequency:x.frequency,status:x.status,entry:x.entry,warning:x.warning}))));
-console.log('GREEK_PENDING_100 '+JSON.stringify(unresolved.slice(0,100).map(x=>({form:x.form,frequency:x.frequency,status:x.status,units:x.units,options:x.candidates.map(c=>c.entry),warning:x.warning}))));
+console.log('GREEK_HISTORIC_UD13 '+JSON.stringify(historical.map(x=>({form:x.form,frequency:x.frequency,units:x.units}))));
+console.log('GREEK_PENDING_100 '+JSON.stringify(stillUnresolved.slice(0,100).map(x=>({form:x.form,frequency:x.frequency,status:x.status,units:x.units,options:x.candidates.map(c=>c.entry),warning:x.warning}))));
 // Regression gates: distinguish runtime coverage from philological verification.
  // Reviewable spelling anomalies remain flagged; unidentified frequent forms do not.
 if(selected.length!==100||selected.some(x=>x.status!=='documented'))
  throw Error('Regresión en las 100 formas más recurrentes');
-if(cases.some(x=>x.status==='unknown'))
+if(stillUnresolved.some(x=>x.status==='unknown'))
  throw Error('Quedan formas sin diagnóstico: revisar GREEK_PENDING_100');
-if(unresolved.some(x=>x.status==='review'&&!x.warning&&
+if(stillUnresolved.some(x=>x.status==='review'&&!x.warning&&
  new Set(x.candidates.map(c=>c.lemma)).size<=1))
  throw Error('Revisión sin explicación ni verdadera ambigüedad');
-if(process.argv.includes('--require-clean')&&unresolved.length)
+if(process.argv.includes('--require-clean')&&stillUnresolved.length)
  throw Error('Persisten erratas o ambigüedades docentes: consulta GREEK_PENDING_100');

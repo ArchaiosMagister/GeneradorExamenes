@@ -176,4 +176,31 @@ assert.equal(untouched.entry,'nāuta, –æ');
 assert.equal(migrate(oldDiphthongSeeds),false);
 assert.equal(idx.counts.lat.contrastado,619);
 
+// Extensión de auditoría tras PR205: 14 lemas, 16 ubicaciones curriculares.
+const pendingQuantitySpec=[["silva","sīlva, –æ","sĭlva, –æ",["UD6","UD7"]],["umbra","ūmbra, –æ","ŭmbra, –æ",["UD3"]],["semper","sēmpĕr (adv.)","sĕmpĕr (adv.)",["UD3","UD4"]],["barbarus","bārbărus, –ī","bărbărus, –ī",["UD8"]],["fessus","fēssus, –a, –um","fĕssus, –a, –um",["UD3"]],["hispania","Hīspānĭa, –æ","Hĭspānĭa, –æ",["UD3"]],["gallus","Gāllus, –a, um","Găllus, –a, –um",["UD9"]],["germanus","Gērmānus, –a, –um","Gĕrmānus, –a, –um",["UD9"]],["immensus","īmmēnsus, –a, –um","ĭmmēnsus, –a, –um",["UD9"]],["imperium","īmpĕrĭŭm, –ī (n.)","ĭmpĕrĭŭm, –ī (n.)",["UD9"]],["invenio","īnvĕnĭo (4ª)","ĭnvĕnĭo (4ª)",["UD3"]],["argentum","ārgēntŭm, –ī","ărgĕntŭm, –ī",["UD3"]],["sacerdos","săcērdōs, –dotis (m.)","săcĕrdōs, –dotis (m.)",["UD7"]],["patria","pā̆trĭa, æ","pătrĭa, æ",["UD7"]]];
+let checkedRonda=0;const newSeeds=[];
+for(const [lemma,before,after,uds] of pendingQuantitySpec){
+ const present=over.entryCorrections.filter(x=>x.lang==='lat'&&x.course==='lat4'&&x.lemma===lemma);
+ assert.equal(present.length,1,'Override único '+lemma);
+ assert.equal(present[0].from,before);assert.equal(present[0].to,after);
+ assert.equal(idx.vocabulary.lat[lemma]?.lat4?.entry,after,'Índice nuevo '+lemma);
+ assert.equal(embedded.vocabulary.lat[lemma]?.lat4?.entry,after,'Offline nuevo '+lemma);
+ for(const ud of uds){
+  assert.equal(required.courses.latin4[ud].filter(x=>x===after).length,1,'Exigible '+lemma+'/'+ud);
+  assert(!required.courses.latin4[ud].includes(before));
+  assert.equal(bank.filter(x=>x.course==='latin4'&&x.unit===ud&&x.entry===after).length,1,'Banco '+lemma+'/'+ud);
+  assert(!bank.some(x=>x.course==='latin4'&&x.unit===ud&&x.entry===before));
+  newSeeds.push({course:'latin4',unit:ud,entry:before,origin:'listado docente exigible',meaning:'Glosa intacta'});
+  checkedRonda++;
+ }
+}
+assert.equal(checkedRonda,16);
+const customNew={course:'latin4',unit:'UD3',entry:'sīlva, –æ',origin:'manual',meaning:'No modificar'};
+newSeeds.push(customNew);
+assert.equal(migrate(newSeeds),true);
+assert(newSeeds.slice(0,-1).every(x=>x.meaning==='Glosa intacta'));
+assert.equal(customNew.entry,'sīlva, –æ');
+assert.equal(migrate(newSeeds),false,'Idempotencia de migración');
+assert.equal(idx.counts.lat.contrastado,619);
+
 console.log('LAT4: 9/9 grafías, 4 overrides, 541 exigibles, 619 formas acreditadas, migración y offline concordantes');

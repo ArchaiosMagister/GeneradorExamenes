@@ -32,6 +32,7 @@ on:
       - 'scripts/test-filologia-latin-griego-20261121.cjs'
       - 'scripts/test-greek-sentence-philology-20261121.cjs'
       - 'scripts/test-greek-aorist-attestation-20261121.cjs'
+      - 'scripts/test-greek-perfect-pluperfect-ud13-20261121.cjs'
       - 'scripts/test-filologia-regimen-acento-20261121.cjs'
       - 'scripts/test-greek-noun-case-attestation-20261121.cjs'
       - 'scripts/test-filologia-cantidad-latina-20261121.cjs'
@@ -134,6 +135,8 @@ jobs:
         run: node scripts/test-greek-sentence-philology-20261121.cjs --offline
       - name: Comprobar tres aoristos con evidencias y cero promociones morfológicas
         run: node scripts/test-greek-aorist-attestation-20261121.cjs
+      - name: Auditar perfectos y pluscuamperfectos de UD13 sin promoción automática
+        run: node scripts/test-greek-perfect-pluperfect-ud13-20261121.cjs
       - name: Auditar régimen verbal, demonstrativos y concordancias restantes
         run: node scripts/test-filologia-regimen-acento-20261121.cjs --offline
       - name: Atestación aislada del dativo en -ματι sin promoción morfológica

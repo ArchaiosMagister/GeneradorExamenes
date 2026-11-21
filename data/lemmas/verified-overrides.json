@@ -737,6 +737,132 @@
       "to": "proelĭŭm, –ī",
       "reference": "https://en.wiktionary.org/wiki/proelium",
       "note": "Convención de diptongos au/oe: no marcar un macrón en su primera vocal. Edición del enunciado, sin nuevas flexiones acreditadas."
+    },
+    {
+      "lang": "lat",
+      "course": "lat4",
+      "lemma": "silva",
+      "from": "sīlva, –æ",
+      "to": "sĭlva, –æ",
+      "reference": "https://en.wiktionary.org/wiki/silva",
+      "note": "Cantidad vocálica breve acreditada en pronunciación clásica. No confundir vocal con sílaba larga por posición; sin nuevas flexiones."
+    },
+    {
+      "lang": "lat",
+      "course": "lat4",
+      "lemma": "umbra",
+      "from": "ūmbra, –æ",
+      "to": "ŭmbra, –æ",
+      "reference": "https://en.wiktionary.org/wiki/umbra",
+      "note": "Cantidad vocálica breve acreditada en pronunciación clásica. No confundir vocal con sílaba larga por posición; sin nuevas flexiones."
+    },
+    {
+      "lang": "lat",
+      "course": "lat4",
+      "lemma": "semper",
+      "from": "sēmpĕr (adv.)",
+      "to": "sĕmpĕr (adv.)",
+      "reference": "https://en.wiktionary.org/wiki/semper",
+      "note": "Cantidad vocálica breve acreditada en pronunciación clásica. No confundir vocal con sílaba larga por posición; sin nuevas flexiones."
+    },
+    {
+      "lang": "lat",
+      "course": "lat4",
+      "lemma": "barbarus",
+      "from": "bārbărus, –ī",
+      "to": "bărbărus, –ī",
+      "reference": "https://en.wiktionary.org/wiki/barbarus",
+      "note": "Cantidad vocálica breve acreditada en pronunciación clásica. No confundir vocal con sílaba larga por posición; sin nuevas flexiones."
+    },
+    {
+      "lang": "lat",
+      "course": "lat4",
+      "lemma": "fessus",
+      "from": "fēssus, –a, –um",
+      "to": "fĕssus, –a, –um",
+      "reference": "https://en.wiktionary.org/wiki/fessus",
+      "note": "Cantidad vocálica breve acreditada en pronunciación clásica. No confundir vocal con sílaba larga por posición; sin nuevas flexiones."
+    },
+    {
+      "lang": "lat",
+      "course": "lat4",
+      "lemma": "hispania",
+      "from": "Hīspānĭa, –æ",
+      "to": "Hĭspānĭa, –æ",
+      "reference": "https://en.wiktionary.org/wiki/Hispania",
+      "note": "Cantidad vocálica breve acreditada en pronunciación clásica. No confundir vocal con sílaba larga por posición; sin nuevas flexiones."
+    },
+    {
+      "lang": "lat",
+      "course": "lat4",
+      "lemma": "gallus",
+      "from": "Gāllus, –a, um",
+      "to": "Găllus, –a, –um",
+      "reference": "https://en.wiktionary.org/wiki/Gallus",
+      "note": "Cantidad vocálica breve acreditada en pronunciación clásica. No confundir vocal con sílaba larga por posición; sin nuevas flexiones."
+    },
+    {
+      "lang": "lat",
+      "course": "lat4",
+      "lemma": "germanus",
+      "from": "Gērmānus, –a, –um",
+      "to": "Gĕrmānus, –a, –um",
+      "reference": "https://en.wiktionary.org/wiki/Germanus",
+      "note": "Cantidad vocálica breve acreditada en pronunciación clásica. No confundir vocal con sílaba larga por posición; sin nuevas flexiones."
+    },
+    {
+      "lang": "lat",
+      "course": "lat4",
+      "lemma": "immensus",
+      "from": "īmmēnsus, –a, –um",
+      "to": "ĭmmēnsus, –a, –um",
+      "reference": "https://en.wiktionary.org/wiki/immensus",
+      "note": "Cantidad vocálica breve acreditada en pronunciación clásica. No confundir vocal con sílaba larga por posición; sin nuevas flexiones."
+    },
+    {
+      "lang": "lat",
+      "course": "lat4",
+      "lemma": "imperium",
+      "from": "īmpĕrĭŭm, –ī (n.)",
+      "to": "ĭmpĕrĭŭm, –ī (n.)",
+      "reference": "https://en.wiktionary.org/wiki/imperium",
+      "note": "Cantidad vocálica breve acreditada en pronunciación clásica. No confundir vocal con sílaba larga por posición; sin nuevas flexiones."
+    },
+    {
+      "lang": "lat",
+      "course": "lat4",
+      "lemma": "invenio",
+      "from": "īnvĕnĭo (4ª)",
+      "to": "ĭnvĕnĭo (4ª)",
+      "reference": "https://en.wiktionary.org/wiki/invenio",
+      "note": "Cantidad vocálica breve acreditada en pronunciación clásica. No confundir vocal con sílaba larga por posición; sin nuevas flexiones."
+    },
+    {
+      "lang": "lat",
+      "course": "lat4",
+      "lemma": "argentum",
+      "from": "ārgēntŭm, –ī",
+      "to": "ărgĕntŭm, –ī",
+      "reference": "https://cld.bbaw.de/lemma/lat/argentum",
+      "note": "Cantidad vocálica breve acreditada en pronunciación clásica. No confundir vocal con sílaba larga por posición; sin nuevas flexiones."
+    },
+    {
+      "lang": "lat",
+      "course": "lat4",
+      "lemma": "sacerdos",
+      "from": "săcērdōs, –dotis (m.)",
+      "to": "săcĕrdōs, –dotis (m.)",
+      "reference": "https://en.wiktionary.org/wiki/sacerdos",
+      "note": "Cantidad vocálica breve acreditada en pronunciación clásica. No confundir vocal con sílaba larga por posición; sin nuevas flexiones."
+    },
+    {
+      "lang": "lat",
+      "course": "lat4",
+      "lemma": "patria",
+      "from": "pā̆trĭa, æ",
+      "to": "pătrĭa, æ",
+      "reference": "https://en.wiktionary.org/wiki/patria",
+      "note": "Cantidad vocálica breve acreditada en pronunciación clásica. No confundir vocal con sílaba larga por posición; sin nuevas flexiones."
     }
   ],
   "paradigms": [

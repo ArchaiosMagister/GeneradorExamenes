@@ -427,8 +427,16 @@ function latinExpandedForms(bank){
  const complete=[...bank];
  for(const [entry,meaning,meaning_va] of supplementary){
   const lemma=latinKey(head(entry));
-  if(!bank.some(x=>latinKey(head(x.entry))===lemma))
-   complete.push({entry,meaning,meaning_va});
+  if(bank.some(x=>latinKey(head(x.entry))===lemma))continue;
+  // Enunciado abreviado del docente («certo − (1ª)»):
+  // recuperar sus temas del suplemento sin sustituir su traducción original.
+  const abbreviated=bank.find(row=>{
+   const raw=String(row.entry||'').trim();
+   return /\s+[–−—-]\s*\((?:1ª|2ª|3ª|4ª|mx\.)\)\s*$/u.test(raw)&&
+    latinKey(head(raw).replace(/\s+[–−—-]\s*$/u,''))===lemma;
+  });
+  complete.push({entry,meaning:abbreviated?.meaning||meaning,
+   meaning_va:abbreviated?.meaning_va||meaning_va});
  }
  for(const row of complete){
   const raw=String(row.entry||'').trim(),lemma=head(raw),l=latinKey(lemma);
@@ -1057,7 +1065,7 @@ function greekReferenceForms(bank){
   ['ἐκκλησία','asamblea',['ἐκκλησίᾳ','ἐκκλησίαν','ἐκκλησίας']],
   ['κομίζω','llevarse',['ἐκόμισε']],
   ['λείπω','dejar',['ἔλειψαν','ἔλιπον']],
-  ['λύω','liberar',['ἐλελύκειμεν']],
+  ['λύω','liberar',['ἐλελύκεμεν']],
   // Formas individuales contrastadas con los textos de UD13–14;
   // no implican comprobación de paradigmas enteros ni elevan el índice a source 5.
   ['σωτηρία','salvación',['σωτηρίας']],
@@ -1129,7 +1137,7 @@ function greekReferenceForms(bank){
   ['Καλλίας','Calias',['Καλλίαν']],
   ['κατέχω','retener',['κατεῖχε']],
   ['καταλείπω','dejar atrás',['κατέλιπε']],
-  ['κινδυνεύω','correr peligro',['κεκινδυμεύκαμεν']],
+  ['κινδυνεύω','correr peligro',['κεκινδυνεύκαμεν']],
   ['κωλύω','impedir',['κεκωλύκαμεν']],
   ['κελεύω','ordenar',['κελεύσαντος']],
   ['Κρήτη','Creta',['Κρήτην']],
@@ -1192,7 +1200,7 @@ function greekReferenceForms(bank){
   ['ὦ','oh (vocativo)',['ὦ']],
   ['οὐδέ','ni, tampoco',['οὐδ']],
   ['ὅσπερ','el cual precisamente',['ἅπερ']],
-  ['πυρεύω','encender, incendiar',['ἐπεπυρεύκεισαν','ἐπεπυρεύκεισαν','ἐπεπυρεύκεσαν','ἐπεπυρεύκεσαν']],
+  ['πυρεύω','encender, incendiar',['ἐπεπυρεύκεσαν','ἐπεπυρεύκεσαν']],
   ['τιμάω','honrar',['ἐτίμητο','ἐτιμητο']]
  ];
  for(const [lemma,meaning,forms] of secondPass)addIrregular(forms,lemma,meaning);

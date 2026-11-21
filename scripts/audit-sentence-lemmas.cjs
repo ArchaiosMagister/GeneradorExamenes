@@ -79,6 +79,26 @@ const unknown=analyze('lat1','PalabraSinBanco.');
 const pendingXml=engine.documentXml({...project,units:[{title:'UD6',mode:'complete',rows:unknown}]});
 assert(pendingXml.includes('Pendientes de revisión (*)'),'El Word ocultó una forma sin prueba');
 assert(!pendingXml.includes('documentada automáticamente'),'No atribuir una verificación falsa');
+// Los modelos auxiliares no deben alterar la traducción exigible ni
+// fingir una certificación individual del índice académico.
+for(const [form,lemma,meaning] of [
+ ['certant','certo','combatir'],
+ ['certaverunt','certo','combatir'],
+ ['aufugit','aufugio','huir'],
+ ['aufugerunt','aufugio','huir'],
+ ['aufugerat','aufugio','huir']
+]){
+ const found=get(analyze('lat1',form),form);
+ assert(found,'Forma no tokenizada: '+form);
+ const candidate=found.candidates.find(x=>reference.normalize(x.lemma)===lemma);
+ assert(candidate,'El glosario ha perdido el lema '+lemma+' para '+form);
+ assert.equal(candidate.meaning,meaning,'Se sustituyó la glosa docente de '+lemma);
+ assert.equal(data.rows.lat.filter(x=>x[0]===lemma).length,0,
+  'Un modelo del glosario no debe certificar el índice: '+lemma);
+}
+const separated=reference.query(data,{course:'lat1',mode:'form',text:'non vis'});
+assert(separated.invalid&&separated.total===0,'non vis no es token único');
+assert.equal(analyze('lat1','non vis').length,2,'Dos palabras no deben fusionarse');
 const coverage={};
 for(const [course,courseBank] of Object.entries(banks)){
  assert(courseBank.length>0,'Banco vacío: '+course);

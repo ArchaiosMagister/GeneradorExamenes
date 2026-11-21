@@ -24,8 +24,10 @@ for(const [course,units] of Object.entries(courses))
    assert(row.trim(),course+unit+': entrada vacía');
    assert(!/[\u0400-\u052f]/u.test(row),course+unit+': signo cirílico');
   }
-assert(courses.latin4.UD7.includes('pā̆trĭa, æ'),
- 'La notación de cantidad variable de patria no se altera sin cotejo contextual');
+assert(courses.latin4.UD7.includes('pătrĭa, æ'),
+ 'La primera a de patria es breve; no conservar simultáneamente macrón y breve');
+assert(!courses.latin4.UD7.includes('pā̆trĭa, æ'),
+ 'El enunciado de patria conserva marcas contradictorias');
 if(process.argv.includes('--offline')){
  const offline=fs.readFileSync('offline.html','utf8');
  for(const [,form] of expectations)assert(offline.includes(form),'Offline: '+form);

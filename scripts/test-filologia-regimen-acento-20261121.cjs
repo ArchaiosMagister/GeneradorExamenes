@@ -47,7 +47,7 @@ const greekAccentFixes=[
  ['UD7','ὑμεῖς δ’ ἐμοῦ οὐκ ἀκούετε','ὑμεῖς δ’ ἑμοῦ οὐκ ἀκούετε'],
  ['UD10','οἱ δὲ μένοντες','οἱ δε μένοντες'],
  ['UD10','τῶν πτερῶν','τών πτερῶν'],
- ['UD13','θνητῆς δὲ μητρὸς','θνητῆς δε μητρὸς'],
+ ['UD13','θνητῆς δὲ μητρὸς','θνητῆς δε μητρὸς'],
  ['UD13','τῶν ἐχθρῶν κώμας','τῶν ἑχθρῶν κώμας']
 ];
 for(const [unit,correct,incorrect] of greekAccentFixes){
@@ -124,4 +124,11 @@ for(const [ud,correct,incorrect] of [["UD5","ὁ ἄνθρωπος οὐκ ἀε
  assert(text.includes(correct),ud+': falta acentuación enclítica '+correct);
  assert(!text.includes(incorrect),ud+': persiste acentuación errónea '+incorrect);
 }
+// Sólo los cuatro renglones de UD13 con marcas combinantes se normalizan, sin rehacer el resto.
+const comb=/[\u0370-\u03ff\u1f00-\u1fff][\u0300-\u036f]/u;
+assert(project.units.every(x=>!comb.test(x.text)),'Aún quedan marcas de acentuación descompuestas');
+const ud13b=project.units.find(x=>x.title==='UD13').text;
+for(const token of ['ἐπεπυρεύκεσαν:','πατρὸς:','οἱ στρατιῶται τὰς τῶν ἐχθρῶν κώμας','Ἡρακλῆς ἐπεφύκει'])
+ assert(ud13b.includes(token),'Falta grafía Ud13 '+token);
+
 console.log('TERCERA RONDA FILOLÓGICA: 14 UD, 471 entradas, 11 oraciones seleccionables y análisis coherentes');
