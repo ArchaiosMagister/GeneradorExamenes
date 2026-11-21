@@ -57,3 +57,5 @@ console.log('Griego I: '+count+' formas individuales no duplicadas en 10 series,
  'ἔλυον y ἦλθον con doble interpretación; web, PWA y regeneración sincronizadas.');
 
 // Reconstrucción de distribución offline en rama aislada, sin publicación.
+
+// Segunda ejecución: dependencias de navegador se validarán en la PR.
