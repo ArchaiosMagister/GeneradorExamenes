@@ -191,3 +191,9 @@ Corregidas **16 apariciones curriculares de once lemas** de Latín 4.º que marc
 **Griego I, elisión:** `οἱ δ’Ἕλληνες → οἱ δ’ Ἕλληνες` (UD11) y `οὐδ’ἔλεξε → οὐδ’ ἔλεξε` (UD12); son ajustes de espaciado y no de régimen ni concordancia. Véase Smyth §§70–74 https://ccel.org/s/smyth/grammar/html/smyth_1c_uni.htm y Goodell https://dcc.dickinson.edu/pl/grammar/goodell/elision.
 
 Se añaden aserciones a las baterías filológicas y se conserva el inventario de **1106 / 541 exigibles latinos**, **14 UD / 471 renglones griegos**, sin incrementar las **619 lecturas latinas contrastadas**. Regenerar el índice y `offline.html` desde la fuente académica fijada y cotejar CI general en commit final. Sin autorización para fusionar ni publicar.
+
+### Acentuación de οὐκ ἔστιν (UD5)
+
+El cotejo contextual de las tres apariciones negativas del presente de `εἰμί` en UD5 evidencia dos lecturas `οὔκ ἐστιν` y una `οὐκ ἐστιν`. Las tres pasan a **`οὐκ ἔστιν`**. Smyth, *Greek Grammar*, §187.b, establece que `ἐστίν` se escribe `ἔστιν` después de `οὐκ`; y §179 clasifica `οὐκ` como proclítico. Fuente: https://ccel.org/ccel/smyth/grammar/html/smyth_1f_uni.htm. La corrección no cambia estructura ni traducción y se valida en `scripts/test-filologia-regimen-acento-20261121.cjs`. Sin nuevos lemas ni flexiones acreditados.
+
+La ejecución aislada de reconstrucción de la ronda de diptongos https://github.com/ArchaiosMagister/GeneradorExamenes/actions/runs/44929366836 finalizó con **success** sobre `141c5cef4ffeced12cd12131fcedec7019a327a9`; los artefactos se incorporaron en `06c18c7d56b6e5fe89ee9b7763c8b5eb5018a7ab`. Los seis checks que surgen del commit del bot figuran como `action_required`; no equivalen a pruebas suspendidas ni aprobadas y deben ejecutarse nuevamente sobre el commit definitivo de un colaborador.

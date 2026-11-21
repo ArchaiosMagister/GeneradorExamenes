@@ -112,4 +112,10 @@ for(const [unit,good,bad] of [
  const t=project.units.find(x=>x.title===unit)?.text;
  assert(t?.includes(good),unit+' elision absent');assert(!t.includes(bad),unit+' elision not spaced');
 }
+// Smyth §187b: ἔστιν tras οὐκ, no ἐστιν ni proclítico οὔκ.
+const ud5neg=project.units.find(x=>x.title==='UD5').text.normalize('NFC');
+assert.equal(ud5neg.split('οὐκ ἔστιν').length-1,3,'Tres casos de negación + ἔστιν');
+assert(!ud5neg.includes('οὔκ ἐστιν'));
+assert(!ud5neg.includes('οὐκ ἐστιν'));
+
 console.log('TERCERA RONDA FILOLÓGICA: 14 UD, 471 entradas, 11 oraciones seleccionables y análisis coherentes');
