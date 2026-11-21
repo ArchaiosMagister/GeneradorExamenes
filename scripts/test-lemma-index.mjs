@@ -85,7 +85,8 @@ const ctx={window:{},document:{readyState:'loading',addEventListener(){}},consol
 runInNewContext(script,ctx,{filename:'offline-lemmas.js'});
 const {normalize,query,describe,coverage,coverageByUnit,uniqueLemmaFromData}=ctx.window.ExaminaOfflineLemmatizer;
 const latCoverage=coverage(data,'lat1'),grCoverage=coverage(data,'gr1');
-assert.ok(latCoverage.lemmas>=664,'No puede perderse ningún lema del temario de Latín I');
+// Solo se reduce una clave histórica: solis y sol eran el mismo lema latino.
+assert.ok(latCoverage.lemmas>=663,'Tras fusionar solis con sol deben conservarse todos los lemas reales de Latín I');
 for(const course of ['lat1','lat4','gr1']){
  const units=coverageByUnit(data,course);
  assert.ok(units.length>=5,'Faltan unidades de '+course);
