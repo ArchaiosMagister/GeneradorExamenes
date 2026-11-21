@@ -18,13 +18,13 @@ const correction=decisions.entryCorrections.filter(x=>x.lang==='grc'&&x.lemma===
 assert.equal(correction.length,1,'Corrección editorial debe ser única');
 assert.equal(correction[0].from,prior);
 assert.equal(correction[0].to,actual);
-assert.equal(index.vocabulary.grc.ηγεμων.gr1.entry,'ἡγεμών, –ονος (ὁ)',
+assert.equal(index.vocabulary.grc.ηγεμων.gr1.entry,'ἡγεμών, –όνος (ὁ)',
  'El índice de ἡγεμών conserva la abreviatura latina M');
 const hegemonCorrection=decisions.entryCorrections.filter(x=>x.lang==='grc'&&
  x.lemma==='ηγεμων'&&x.course==='gr1');
 assert.equal(hegemonCorrection.length,1);
 assert.equal(hegemonCorrection[0].from,'ἡγεμών, –ονος (M)');
-assert.equal(hegemonCorrection[0].to,'ἡγεμών, –ονος (ὁ)');
+assert.equal(hegemonCorrection[0].to,'ἡγεμών, –όνος (ὁ)');
 const required=material.required.filter(x=>x.unit==='UD8'&&/πρ[άᾶ]γμα/u.test(x.entry));
 assert.equal(required.length,1,'Material docente UD8: lema no único');
 assert.equal(required[0].entry,ud8);
@@ -61,7 +61,7 @@ for(const [name,html] of htmls){
   name+': no alterar las formas concretas contrastadas');
  const hegemon=rows.filter(x=>x[0]==='ηγεμων');
  assert.equal(hegemon.length,1,name+': ficha verificada ἡγεμών ausente');
- assert.equal(hegemon[0][1],'ἡγεμών, –ονος (ὁ)',
+ assert.equal(hegemon[0][1],'ἡγεμών, –όνος (ὁ)',
   name+': género masculino de 3.ª debe presentarse con artículo griego');
  const marker='function migrateGreekPragmaAccent(';
  const start=html.indexOf(marker),end=html.indexOf('\n}\n',start);
