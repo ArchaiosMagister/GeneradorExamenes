@@ -71,7 +71,8 @@ for(const [lemma,paradigm,handling,count,entry,verified] of expected){
 assert.equal(records.size,21);
 assert.equal(promoted,10);assert.equal(blocked,11);
 assert.equal(history.summary.requiresTeacherDecision,21,'Historial original intacto');
-assert.equal(bank.counts.grc.wikcionario,545);
+assert.equal(bank.counts.grc.wikcionario,521);
+assert.equal(bank.extensions.greek_nominal_candidates.quarantinedAccentForms,24);
 assert.equal(bank.counts.grc.contrastado,478);
 assert.equal(bank.extensions.verifiedIndividualForms,479);
 assert.equal(bank.extensions.greek_nominal_candidates.historicalRows,559);

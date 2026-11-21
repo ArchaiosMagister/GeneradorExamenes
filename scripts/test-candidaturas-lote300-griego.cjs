@@ -14,12 +14,13 @@ assert.equal(report.summary.latin,0);
 assert.equal(report.summary.lemmas,42);
 assert.equal(report.summary.promoted,300);
 assert.equal(report.status,'TRASLADADO_FUENTE5_EN_RAMA_FILOLÓGICA');
-assert.equal(bank.counts.grc.wikcionario,545);
+assert.equal(bank.counts.grc.wikcionario,521);
 assert.equal(bank.counts.grc.contrastado,478);
 assert.equal(bank.counts.lat.modelo,bank.extensions.candidate_rows,
  'No se puede fijar el inventario latino de otra revisión en la prueba del lote griego');
 assert.equal(bank.counts.lat.contrastado,619);
-assert.equal(bank.extensions.greek_nominal_candidates.rows,545);
+assert.equal(bank.extensions.greek_nominal_candidates.rows,521);
+assert.equal(bank.extensions.greek_nominal_candidates.quarantinedAccentForms,24);
 assert.equal(source.singleForms.length,479);
 assert.equal(bank.extensions.verifiedIndividualForms,479);
 const original=load('data/lemmas/revision-candidaturas-lote200-20261113.json');
@@ -69,13 +70,15 @@ assert(!bank.rows.grc.some(x=>x[0]==='πρωτοσ'&&x[3]===5),
 for(const lemma of ['αθανατοσ'])
  assert(!bank.rows.grc.some(x=>x[0]===lemma&&x[3]===5&&x[2].endsWith('FEM')),
   'Una terminación femenina ajena al enunciado docente no puede promocionarse');
-assert(bank.rows.grc.some(x=>x[0]==='πρωτοσ'&&x[3]===4),
- 'Las propuestas dudosas deben permanecer visibles para revisión');
+assert(!bank.rows.grc.some(x=>x[0]==='πρωτοσ'&&x[3]===4),
+ 'No se debe mostrar πρῶτος con acentos incorrectos en el índice vivo');
+assert.equal(bank.extensions.greek_nominal_candidates.quarantinedAccentForms,24,
+ 'El archivo histórico debe contabilizar las formas en cuarentena');
 assert.equal(bank.source.externalVerification.length,source.paradigms.length+source.singleForms.length+
  source.paradigms.reduce((n,p)=>n+p.blocks.filter(b=>b.reference).length,0));
 const countsRows={};
 for(const row of bank.rows.grc)countsRows[row[3]]=(countsRows[row[3]]||0)+1;
-assert.equal(countsRows[4],545);
+assert.equal(countsRows[4],521);
 assert.equal(countsRows[5],478);
 assert.equal(bank.rows.grc.filter(x=>x[0]==='εχθροσ'&&x[3]===5&&x[2].endsWith(';FEM')).length,10);
 console.log('LOTE300_GRIEGO_OK: 300 análisis únicos de 42 lemas; grafías, iota, fuente5, unidades y cuarentena conservadas');

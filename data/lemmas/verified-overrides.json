@@ -287,6 +287,42 @@
       "to": "ἀλήθεια, –ας",
       "reference": "https://dcc.dickinson.edu/greek-core-list",
       "note": "Corregir únicamente el acento del nominativo en el enunciado de 1.ª declinación; mantener intactas las lecturas individuales acreditadas, como ἀληθείᾳ."
+    },
+    {
+      "lang": "grc",
+      "lemma": "σωκρατησ",
+      "course": "gr1",
+      "from": "Σωκράτης, –ου",
+      "to": "Σωκράτης, Σωκράτους (ὁ)",
+      "reference": "https://dcc.dickinson.edu/grammar/age/stems-ending-%CE%B5%CF%83",
+      "note": "Genitivo ático escolar; –έος es variante histórica."
+    },
+    {
+      "lang": "grc",
+      "lemma": "ακροαμα",
+      "course": "gr1",
+      "from": "ἀκρόαμα, –ματος",
+      "to": "ἀκρόαμα, –ματος (τό)",
+      "reference": "https://atticism.eu/corpus/item/view?id=dd0c1758-f5f3-4c07-8631-ee895cbfcee8",
+      "note": "Sustantivo neutro, no adjetivo."
+    },
+    {
+      "lang": "grc",
+      "lemma": "αιθηρ",
+      "course": "gr1",
+      "from": "αἰθήρ, αἰθέρος",
+      "to": "αἰθήρ, αἰθέρος (ὁ/ἡ)",
+      "reference": "https://atlas.perseus.tufts.edu/dictionaries/entry/urn%3Acite2%3Ascaife-viewer%3Adictionaries.atlas_v1%3Apindar-slater-n192/",
+      "note": "Ambos géneros documentados."
+    },
+    {
+      "lang": "grc",
+      "lemma": "αιμα",
+      "course": "gr1",
+      "from": "αἷμα, αἵματος",
+      "to": "αἷμα, αἵματος (τό)",
+      "reference": "https://www.greek-language.gr/digitalResources/ancient_greek/tools/liddell-scott/search.html?lq=%CE%B1%E1%BC%B7%CE%BC%CE%B1",
+      "note": "Género neutro sin nuevas flexiones."
     }
   ],
   "paradigms": [

@@ -28,6 +28,7 @@ on:
       - 'scripts/test-greek-third-decl-gender-five.cjs'
       - 'scripts/test-greek-ud8-lexical-accents.cjs'
       - 'scripts/test-greek-lexical-filology-20261121.cjs'
+      - 'scripts/test-greek-lexical-followup-20261121.cjs'
       - 'scripts/test-greek-all-unit-form-quotas.cjs'
       - 'scripts/test-morph-quotas-curriculum-regeneration.cjs'
       - 'scripts/test-greek-two-modes-legacy-drafts.cjs'
@@ -113,6 +114,8 @@ jobs:
         run: node scripts/test-greek-ud8-lexical-accents.cjs
       - name: "Griego I: acentos del exigible y valores de διά"
         run: node scripts/test-greek-lexical-filology-20261121.cjs
+      - name: Griego I lemas generales, acentos y catálogo provisional
+        run: node scripts/test-greek-lexical-followup-20261121.cjs
       - name: Exam UI redesign in iPad, forms, Word and vocabulary isolation
         run: node scripts/test-exam-ui-redesign.cjs
       - name: Verificar tema Examinator sin efectos sobre Word/PDF

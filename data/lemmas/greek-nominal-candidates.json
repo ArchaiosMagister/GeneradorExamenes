@@ -11,13 +11,15 @@
     "matched": 234,
     "unsafeForms": 5423,
     "unmatchedEntries": 38378,
-    "acceptedLemmas": 110,
-    "additionalRows": 918,
+    "acceptedLemmas": 109,
+    "additionalRows": 894,
     "consistentSlots": 484,
     "conflicts": 4,
     "lexicalMismatch": 89,
     "insufficient": 0,
-    "ambiguousCells": 414
+    "ambiguousCells": 414,
+    "rejectedAccentParadigms": 1,
+    "rejectedAccentForms": 24
   },
   "entries": [
     {
@@ -3731,111 +3733,6 @@
         [
           "πρᾱ́γμᾰτῐ",
           "N;DAT;SG"
-        ]
-      ]
-    },
-    {
-      "lemma": "πρωτοσ",
-      "kind": "ADJ",
-      "word": "πρῶτος",
-      "source_page": "https://en.wiktionary.org/wiki/%CF%80%CF%81%E1%BF%B6%CF%84%CE%BF%CF%82",
-      "matchingSlots": 0,
-      "forms": [
-        [
-          "πρωτᾱ́ς",
-          "ADJ;ACC;PL;FEM"
-        ],
-        [
-          "πρωτούς",
-          "ADJ;ACC;PL;MASC"
-        ],
-        [
-          "πρωτᾰ́",
-          "ADJ;ACC;PL;NEUT"
-        ],
-        [
-          "πρωτήν",
-          "ADJ;ACC;SG;FEM"
-        ],
-        [
-          "πρωτόν",
-          "ADJ;ACC;SG;MASC"
-        ],
-        [
-          "πρωτόν",
-          "ADJ;ACC;SG;NEUT"
-        ],
-        [
-          "πρωτῇ",
-          "ADJ;DAT;SG;FEM"
-        ],
-        [
-          "πρωτῷ",
-          "ADJ;DAT;SG;MASC"
-        ],
-        [
-          "πρωτῷ",
-          "ADJ;DAT;SG;NEUT"
-        ],
-        [
-          "πρωτῶν",
-          "ADJ;GEN;PL;MASC"
-        ],
-        [
-          "πρωτῶν",
-          "ADJ;GEN;PL;NEUT"
-        ],
-        [
-          "πρωτῆς",
-          "ADJ;GEN;SG;FEM"
-        ],
-        [
-          "πρωταί",
-          "ADJ;NOM;PL;FEM"
-        ],
-        [
-          "πρωτοί",
-          "ADJ;NOM;PL;MASC"
-        ],
-        [
-          "πρωτᾰ́",
-          "ADJ;NOM;PL;NEUT"
-        ],
-        [
-          "πρωτή",
-          "ADJ;NOM;SG;FEM"
-        ],
-        [
-          "πρωτός",
-          "ADJ;NOM;SG;MASC"
-        ],
-        [
-          "πρωτόν",
-          "ADJ;NOM;SG;NEUT"
-        ],
-        [
-          "πρωταί",
-          "ADJ;VOC;PL;FEM"
-        ],
-        [
-          "πρωτοί",
-          "ADJ;VOC;PL;MASC"
-        ],
-        [
-          "πρωτᾰ́",
-          "ADJ;VOC;PL;NEUT"
-        ],
-        [
-          "πρωτή",
-          "ADJ;VOC;SG;FEM"
-        ],
-        [
-          "πρωτέ",
-          "ADJ;VOC;SG;MASC"
-        ],
-        [
-          "πρωτόν",
-          "ADJ;VOC;SG;NEUT"
         ]
       ]
     },

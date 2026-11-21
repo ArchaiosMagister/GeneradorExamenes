@@ -114,7 +114,8 @@ const output={
  license:'CC BY-SA 4.0',license_url:'https://creativecommons.org/licenses/by-sa/4.0/',
  warning:'Forms retain source accents but are provisional; NEVER use for answer keys or automatic glossary resolution.',
  stats:{...stats,acceptedLemmas:0,additionalRows:0,consistentSlots:0,
-  conflicts:0,lexicalMismatch:0,insufficient:0,ambiguousCells:0},
+  conflicts:0,lexicalMismatch:0,insufficient:0,ambiguousCells:0,
+  rejectedAccentParadigms:0,rejectedAccentForms:0},
  entries:[]
 };
 for(const g of grouped.values()){
@@ -126,6 +127,13 @@ for(const g of grouped.values()){
  if(!matchesTeacher(g.lemma,g.kind,cells)){output.stats.lexicalMismatch++;continue}
  const min=g.kind==='N'?7:9;
  if(cells.size<min){output.stats.insufficient++;continue}
+ // 24 acentuaciones incompatibles de πρῶτος: no exportar candidaturas.
+ // El expediente histórico se conserva, pero ninguna forma se acredita.
+ if(g.lemma==='πρωτοσ'){
+  output.stats.rejectedAccentParadigms++;
+  output.stats.rejectedAccentForms+=cells.size;
+  continue;
+ }
  let conflicts=0,matched=0;
  const news=[];
  for(const [tag,vals]of cells){
