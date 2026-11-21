@@ -34,7 +34,7 @@ Esta es una **desambiguación editorial puntual**, registrada con contexto, unid
 
 ## Cotejo individual de siete testimonios evaluables
 
-El expediente registra **siete lecturas contextualizadas, sin promoción morfológica**: `Ἀθήναις` (dativo plural de *Ἀθῆναι*), `μετέχουσι τῆς ἀρχῆς` (régimen genitivo; Smyth §1343), `νεὼς` (genitivo singular de *ναῦς*), `ἄδικοι` (adjetivo atributivo en función de atributo), `οἱ σοφοὶ` (adjetivo sustantivado; Smyth §1153), `φίλον ἡμῖν` (dativo adjetival; Smyth §1499) y `αὐτοὶ μὲν` (grave contextual; Smyth §154). Los enlaces bibliográficos se individualizan en `gradedAttestations`.
+El expediente registra **siete lecturas contextualizadas, sin promoción morfológica**: `Ἀθήναις` (dativo plural de *Ἀθῆναι*), `μετέχουσι τῆς ἀρχῆς` (régimen genitivo; Smyth §1343), `νεὼς` (genitivo singular de *ναῦς*), `ἄδικοι` (adjetivo de dos terminaciones en función de atributo), `οἱ σοφοὶ` (adjetivo sustantivado; Smyth §1153), `φίλον ἡμῖν` (dativo adjetival; Smyth §1499) y `αὐτοὶ μὲν` (grave contextual; Smyth §154). Los enlaces bibliográficos se individualizan en `gradedAttestations`.
 
 Estos siete cotejos no certifican las restantes flexiones de sus lemas ni toda la gramática de las once oraciones. Las formas con acento adicional ante enclítico (Smyth §183c) no deben someterse a sustituciones generalizadas.
 
