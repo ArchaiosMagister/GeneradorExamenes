@@ -96,3 +96,5 @@ for(const course of ['lat1','lat4']){
   course+': la lematización conserva una identidad duplicada');
 }
 console.log('Unificación committo: Latín I y Latín 4.º comparten un lema, 18 candidaturas no evaluables, migración estricta y PWA coherente.');
+
+// CI final: ejecutar también esta regresión tras crear la PR de revisión.
