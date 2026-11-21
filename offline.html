@@ -9047,6 +9047,33 @@ function greekExamHeader(chosen,mode){
 }
 function greekQuestionLabel(kind){if(kind==='declension'&&$('model').value==='complete'&&greekLimit()>=5){const pron=greekLimit()>=7;return $('lang').value==='va'?(pron?'Declina els sintagmes: article + adjectiu o pronom + substantiu':'Declina els sintagmes: article + adjectiu + substantiu'):(pron?'Declina los sintagmas: artículo + adjetivo o pronombre + sustantivo':'Declina los sintagmas: artículo + adjetivo + sustantivo')}if(kind==='sentences'&&$('greekSentenceTask')?.value==='translate')return $('lang').value==='va'?'Traduïx les oracions següents':'Traduce las siguientes oraciones';return ({es:{declension:'Declina',conjugation:'Conjuga',forms:'Analiza morfológicamente',pronouns:'Completa la tabla con el análisis morfológico adecuado',etymology:'Escribe dos derivados etimológicos de cada una de estas palabras griegas',sentences:'Analiza y traduce las siguientes oraciones'},va:{declension:'Declina',conjugation:'Conjuga',forms:'Analitza morfològicament',pronouns:'Completa la taula amb l’anàlisi morfològica adequada',etymology:'Escriu dos derivats etimològics de cadascuna d’aquestes paraules gregues',sentences:'Analitza i traduïx les oracions següents'}})[$('lang').value][kind]}
 function greekPoints(kind){const v=Number($('greek-points-'+kind).value);if(kind==='pronouns'&&$('model').value==='complete'&&examQuestionEnabled('pronouns')&&v===0)return 1;return Number.isFinite(v)?Math.max(0,Math.min(100,v)):0}
+// Lecturas griegas de la tabla de conjugación, agrupadas por forma escrita.
+// ἔλυον (imperfecto) y ἦλθον (aoristo segundo) admiten 1.ª sg. y 3.ª pl.
+// Las variantes editoriales como λύσουσι(ν) no son palabras individuales.
+function greekVerbAnalysisCandidates(eligible){
+ return eligible.filter(x=>x.verified&&x.kind==='conjugation'&&x.table)
+  .flatMap(x=>{
+   const bySurface=new Map();
+   x.table.rows.forEach((row,i)=>[1,2].forEach(column=>{
+    const prompt=String(row[column]||'').trim();
+    if(!prompt||/[()\s]/u.test(prompt))return;
+    const key=normLex(prompt),person=['primera','segunda','tercera'][i]+
+     ' persona '+(column===1?'singular':'plural');
+    const brief=(i+1)+'ª '+(column===1?'singular':'plural');
+    if(!bySurface.has(key))bySurface.set(key,{prompt,persons:[],briefs:[]});
+    const entry=bySurface.get(key);
+    if(!entry.persons.includes(person)){
+     entry.persons.push(person);entry.briefs.push(brief);
+    }
+   }));
+   return [...bySurface.values()].map(record=>({
+    prompt:record.prompt,answer:record.persons.join(' o ')+' del '+
+     (x.verbTense||'presente')+' de indicativo '+(x.verbVoice||'activo'),
+    lemma:x.lemmas?.[0]||'',minUnit:x.minUnit,
+    person:record.briefs.join(' o ')
+   }));
+  });
+}
 function generateGreekMorphologyFixed(){
  const marked=greekMarkedUnits(),limit=greekLimit(),cfg=morphConfig(),va=$('lang').value==='va';
  if(examMorphQuotasActive())cfg.words=examMorphQuotaCount();
@@ -9054,12 +9081,7 @@ function generateGreekMorphologyFixed(){
  const eligible=greekVerifiedCorpus.filter(x=>x.verified&&greekMorphologyEligible(x,limit)&&
   !(x.kind==='declension'&&(x.lemmas||[]).some(isProperNounLemma))&&
   !(x.kind==='forms'&&(x.lemmas||[]).some(lemma=>isExcludedExamMorphLemma(lemma))));
- const verbs=stickyExamRows('verb',()=>greekCurricularSample(eligible.filter(x=>x.kind==='conjugation'&&x.table)
-  .flatMap(x=>x.table.rows.flatMap((row,i)=>[row[1],row[2]].map((form,j)=>({
-   prompt:form,answer:(i+1)+'ª persona '+(j===0?'singular':'plural')+' del '+(x.verbTense||'presente')+' de indicativo '+(x.verbVoice||'activo'),
-   lemma:x.lemmas[0],minUnit:x.minUnit,person:(i+1)+'ª '+(j===0?'singular':'plural'),
-   syncretic:x.verbTense==='aoristo segundo'&&form==='ἦλθον'
-  })).filter(x=>x.prompt&&!x.syncretic))),cfg.verbs));
+ const verbs=stickyExamRows('verb',()=>greekCurricularSample(greekVerbAnalysisCandidates(eligible),cfg.verbs));
  const pronPool=examQuestionEnabled('pronouns')?eligible.filter(x=>x.kind==='pronouns'):[];
  const pronouns=stickyExamRows('pronouns',()=>sample(pronPool,Math.min(10,pronPool.length)));
  const categories={n:$('morphCategory-n')?.checked!==false,adj:$('morphCategory-adj')?.checked!==false,pro:$('morphCategory-pro')?.checked!==false};
@@ -10138,12 +10160,7 @@ function greekMorphologyReplacementPool(kind){
   !(x.kind==='declension'&&(x.lemmas||[]).some(isProperNounLemma))&&
   !(x.kind==='forms'&&(x.lemmas||[]).some(lemma=>isExcludedExamMorphLemma(lemma))));
  if(kind==='pronouns')return eligible.filter(x=>x.kind==='pronouns');
- if(kind==='verb')return eligible.filter(x=>x.kind==='conjugation'&&x.table)
-  .flatMap(x=>x.table.rows.flatMap((row,i)=>[row[1],row[2]].map((form,j)=>({
-   prompt:form,answer:(i+1)+'ª persona '+(j===0?'singular':'plural')+' del '+(x.verbTense||'presente')+' de indicativo '+(x.verbVoice||'activo'),
-   lemma:x.lemmas[0],minUnit:x.minUnit,person:(i+1)+'ª '+(j===0?'singular':'plural'),
-   syncretic:x.verbTense==='aoristo segundo'&&form==='ἦλθον'
-  })).filter(x=>x.prompt&&!x.syncretic)));
+ if(kind==='verb')return greekVerbAnalysisCandidates(eligible);
  if(kind==='forms'){
   const categories={n:$('morphCategory-n')?.checked!==false,adj:$('morphCategory-adj')?.checked!==false,
    pro:$('morphCategory-pro')?.checked!==false};
