@@ -8570,6 +8570,15 @@ function greekExamNominalAnswer(readings,category,gender,declension){
   '; sustantivo de la '+declension+' declinación.':
   '; adjetivo de primera clase.');
 }
+// La grafía editorial (ν) indica dos superficies reales, no una palabra
+// con paréntesis. Se admiten solo las variantes explícitas del paradigma.
+// No inferir flexiones ni cambiar los enunciados de las tablas de conjugación.
+function greekWrittenFormVariants(form){
+ const spelling=String(form||'').trim().normalize('NFC');
+ const movable=spelling.match(/^([\p{Script=Greek}\p{M}]+)\(ν\)$/u);
+ if(movable)return [movable[1],movable[1]+'ν'];
+ return /^[\p{Script=Greek}\p{M}]+$/u.test(spelling)?[spelling]:[];
+}
 function greekCorpus(){
  const items=[];
  const add=(kind,id,minUnit,contentUnits,prompt,answer,lemmas=[],table=null)=>items.push({kind,id,minUnit,contentUnits,prompt,answer,lemmas,table,verified:true});
@@ -8591,14 +8600,21 @@ function greekCorpus(){
   items[items.length-1].sourceCode=record.sourceCode;
   const recorded=new Set();
   forms.forEach((form,i)=>{
-   if(recorded.has(form)||greekFormRows.some(row=>row[0].normalize('NFC')===form.normalize('NFC')))return;
-   recorded.add(form);
-   const persons=forms.flatMap((other,j)=>other===form?[j]:[]);
-   const identity=persons.map(j=>['primera','segunda','tercera'][j%3]+' persona del '+(j<3?'singular':'plural')).join(' o ');
-   add('forms','ef-'+key+'-'+i,record.unit,[record.unit],form,
-    identity+' del '+record.tense+' de indicativo '+record.voice+'.',[entry]);
-   items[items.length-1].category='verbs';
-   items[items.length-1].sourceCode=record.sourceCode;
+   greekWrittenFormVariants(form).forEach((surface,variantIndex)=>{
+    const spelling=normLex(surface);
+    if(recorded.has(spelling)||greekFormRows.some(row=>normLex(row[0])===spelling))return;
+    recorded.add(spelling);
+    const persons=forms.flatMap((other,j)=>
+     greekWrittenFormVariants(other).some(x=>normLex(x)===spelling)?[j]:[]);
+    const identity=persons.map(j=>['primera','segunda','tercera'][j%3]+
+     ' persona del '+(j<3?'singular':'plural')).join(' o ');
+    // La primera variante conserva el ID histórico del borrador; la segunda
+    // recibe una clave nueva, sin modificar fichas previamente editadas.
+    add('forms','ef-'+key+'-'+i+(variantIndex?'-nu':''),record.unit,[record.unit],surface,
+     identity+' del '+record.tense+' de indicativo '+record.voice+'.',[entry]);
+    items[items.length-1].category='verbs';
+    items[items.length-1].sourceCode=record.sourceCode;
+   });
   });
  }
  greekFormRows.forEach(([form,min,us,lemma,answer],i)=>{
@@ -8677,16 +8693,19 @@ function greekCorpus(){
  const occupiedNominalSurfaces=new Set(items.filter(x=>x.kind==='forms')
   .map(x=>x.prompt.normalize('NFC')));
  function addNominalForm(id,minUnit,form,readings,entry,category,gender,declension,reference){
-  const surface=String(form).normalize('NFC');
-  if(!surface||/\s/u.test(surface)||occupiedNominalSurfaces.has(surface)||
-   isExcludedExamMorphLemma(entry))return;
-  occupiedNominalSurfaces.add(surface);
-  add('forms',id,minUnit,[minUnit],surface,
-   greekExamNominalAnswer(readings,category,gender,declension),[entry]);
-  const item=items[items.length-1];
-  item.category=category;
-  item.source=reference?'revisión individual de forma':'paradigma nominal explícito v19';
-  if(reference){item.sourceRef=reference;item.sourceCode=5}
+  // El dativo plural de ἄρχων y γυνή también admite ν móvil.
+  // Expandir solo esta marca editorial, manteniendo el ID original sin ν.
+  if(isExcludedExamMorphLemma(entry))return;
+  greekWrittenFormVariants(form).forEach((surface,variantIndex)=>{
+   if(occupiedNominalSurfaces.has(surface))return;
+   occupiedNominalSurfaces.add(surface);
+   add('forms',id+(variantIndex?'-nu':''),minUnit,[minUnit],surface,
+    greekExamNominalAnswer(readings,category,gender,declension),[entry]);
+   const item=items[items.length-1];
+   item.category=category;
+   item.source=reference?'revisión individual de forma':'paradigma nominal explícito v19';
+   if(reference){item.sourceRef=reference;item.sourceCode=5}
+  });
  }
  for(const [key,forms] of Object.entries(greekNounData)){
   const unit=greekNounUnits[key],gender=greekCorpusNounGenders[key];
@@ -9055,22 +9074,22 @@ function greekVerbAnalysisCandidates(eligible){
   .flatMap(x=>{
    const bySurface=new Map();
    x.table.rows.forEach((row,i)=>[1,2].forEach(column=>{
-    const prompt=String(row[column]||'').trim();
-    if(!prompt||/[()\s]/u.test(prompt))return;
-    const key=normLex(prompt),person=['primera','segunda','tercera'][i]+
-     ' persona '+(column===1?'singular':'plural');
-    const brief=(i+1)+'ª '+(column===1?'singular':'plural');
-    if(!bySurface.has(key))bySurface.set(key,{prompt,persons:[],briefs:[]});
-    const entry=bySurface.get(key);
-    if(!entry.persons.includes(person)){
-     entry.persons.push(person);entry.briefs.push(brief);
+    for(const prompt of greekWrittenFormVariants(row[column])){
+     const key=normLex(prompt),person=['primera','segunda','tercera'][i]+
+      ' persona '+(column===1?'singular':'plural');
+     const brief=(i+1)+'ª '+(column===1?'singular':'plural');
+     if(!bySurface.has(key))bySurface.set(key,{prompt,persons:[],briefs:[],row:i,column});
+     const entry=bySurface.get(key);
+     if(!entry.persons.includes(person)){
+      entry.persons.push(person);entry.briefs.push(brief);
+     }
     }
    }));
    return [...bySurface.values()].map(record=>({
     prompt:record.prompt,answer:record.persons.join(' o ')+' del '+
      (x.verbTense||'presente')+' de indicativo '+(x.verbVoice||'activo'),
     lemma:x.lemmas?.[0]||'',minUnit:x.minUnit,
-    person:record.briefs.join(' o ')
+    person:record.briefs.join(' o '),row:record.row,column:record.column
    }));
   });
 }
@@ -9905,19 +9924,15 @@ function examGreekWordClass(item){
 function examGreekVerbFormCandidates(pool,limit){
  const seen=new Set(pool.filter(x=>x.kind==='forms').map(x=>normLex(x.prompt)));
  return pool.filter(x=>x.verified&&x.kind==='conjugation'&&x.table&&greekMorphologyEligible(x,limit))
-  .flatMap(x=>x.table.rows.flatMap((row,i)=>[1,2].map(column=>{
-   const prompt=String(row[column]||'').trim(),key=normLex(prompt);
-   // ἦλθον: 1.ª singular y 3.ª plural de aoristo; no reducir dos
-   // interpretaciones válidas a una lectura incorrectamente única.
-   if(!prompt||/[()]/u.test(prompt)||seen.has(key)||
-      (x.verbTense==='aoristo segundo'&&prompt==='ἦλθον'))return null;
-   seen.add(key);
-   return {kind:'forms',id:'gvf-'+x.id+'-'+i+'-'+column,verified:true,
+  .flatMap(x=>greekVerbAnalysisCandidates([x]).map(item=>{
+   const spelling=normLex(item.prompt);
+   if(seen.has(spelling))return null;
+   seen.add(spelling);
+   // Se conserva el ID de fila y columna para no invalidar borradores.
+   return {kind:'forms',id:'gvf-'+x.id+'-'+item.row+'-'+item.column,verified:true,
     minUnit:x.minUnit,contentUnits:[...x.contentUnits],category:'verbs',
-    prompt,lemmas:[...(x.lemmas||[])],
-    answer:['primera','segunda','tercera'][i]+' persona '+(column===1?'singular':'plural')+
-     ' del '+(x.verbTense||'presente')+' de indicativo '+(x.verbVoice||'activo')+'.'};
-  }).filter(Boolean)));
+    prompt:item.prompt,lemmas:[...(x.lemmas||[])],answer:item.answer};
+  }).filter(Boolean));
 }
 // Separate the grammatical quota from the random draw: diversify lemmas before
 // drawing a second inflection of the same word, and never duplicate a surface.
@@ -15831,8 +15846,15 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   }
   // Nominativo y acusativo neutros pueden compartir forma y solución:
   // son lecturas distintas, pero una sola pregunta visible.
+  // En el cambio de número se escribe una forma real, no la notación
+  // abreviada del paradigma. Elegimos la variante sin ν móvil; la
+  // alternativa con ν conserva exactamente el mismo análisis gramatical.
+  const written=rows.map(row=>({
+   ...row,prompt:row.prompt.replace(/\(ν\)/gu,''),
+   answer:row.answer.replace(/\(ν\)/gu,'')
+  }));
   const seen=new Set();
-  return rows.filter(row=>{
+  return written.filter(row=>{
    const key=row.prompt.normalize('NFC')+'\u241F'+row.answer.normalize('NFC');
    if(seen.has(key))return false;
    seen.add(key);return true;

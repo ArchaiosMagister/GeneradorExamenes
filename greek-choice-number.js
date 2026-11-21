@@ -61,8 +61,15 @@
   }
   // Nominativo y acusativo neutros pueden compartir forma y solución:
   // son lecturas distintas, pero una sola pregunta visible.
+  // En el cambio de número se escribe una forma real, no la notación
+  // abreviada del paradigma. Elegimos la variante sin ν móvil; la
+  // alternativa con ν conserva exactamente el mismo análisis gramatical.
+  const written=rows.map(row=>({
+   ...row,prompt:row.prompt.replace(/\(ν\)/gu,''),
+   answer:row.answer.replace(/\(ν\)/gu,'')
+  }));
   const seen=new Set();
-  return rows.filter(row=>{
+  return written.filter(row=>{
    const key=row.prompt.normalize('NFC')+'\u241F'+row.answer.normalize('NFC');
    if(seen.has(key))return false;
    seen.add(key);return true;

@@ -12,7 +12,8 @@ const morphologyHelpers=part('/* Editable syntagm slots;','function generateLati
 const latinCode=part('const latinPronounRows=','let culture=')+morphologyHelpers+
  part('function generateLatinMorphologyReference(){','/* El título refleja las unidades')+
  part('function mVerb(','function mTable(');
-const greekCode=morphologyHelpers+part('function examGreekVerbFormCandidates(','function examQuotaGreek(')+
+const greekCode=morphologyHelpers+part('function greekWrittenFormVariants(form){','function greekCorpus(){')+
+ part('function examGreekVerbFormCandidates(','function examQuotaGreek(')+
  part('const greekModes=','// Vista del temario:')+
  part('function greekVerbAnalysisCandidates(eligible){','function generateGreekMorphologyFixed(){')+
  part('function generateGreekMorphologyFixed(){','let greekExamState=null;')+
