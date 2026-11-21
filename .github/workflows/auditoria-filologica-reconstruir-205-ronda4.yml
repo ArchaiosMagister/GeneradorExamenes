@@ -42,3 +42,4 @@ jobs:
             git commit -m 'build: reflejar acentuación griega en versión autónoma'
             git push origin HEAD:fix/auditoria-griego-acentos-espiritus-20261121
           fi
+# Reejecución tras actualizar el test de δικαιός/δίκαιός.

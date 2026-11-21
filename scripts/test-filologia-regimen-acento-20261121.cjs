@@ -64,7 +64,7 @@ assert(!unit13.includes('ζῶα'),'UD13 conserva grafías sin iota de ζῷον
 // Continuación: acentos graves ante palabra siguiente y οὐκ ante vocal suave.
 const greekContextualAccentFixes=[
  ['UD3','ἡ φωνὴ τῆς Ἀθηνᾶς','ἡ φωνή τῆς Ἀθηνᾶς'],
- ['UD5','οὐκ ἀεὶ δικαιός','οὐκ ἀεί δικαιός'],
+ ['UD5','οὐκ ἀεὶ δίκαιός','οὐκ ἀεί δικαιός'],
  ['UD5','οὐκ ἀεὶ οἱ ἄνθρωποί','οὐ ἀεί οἱ ἄνθρωποί'],
  ['UD9','οἱ θεοὶ γιγνώσκουσι','οἱ θεοί γιγνώσκουσι'],
  ['UD10','ἀγαθοὶ οὐκ εἰσίν','ἀγαθοί οὐκ εἰσίν'],
