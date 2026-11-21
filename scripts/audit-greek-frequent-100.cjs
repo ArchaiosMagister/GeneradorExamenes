@@ -49,12 +49,14 @@ unresolved.sort((a,b)=>b.frequency-a.frequency||a.form.localeCompare(b.form,'el'
 // corpus ACTIVO. No reintegrarlos al lematizador para maquillar cobertura.
 const ud13Audit=JSON.parse(read('data/vocabulary/greek1-perfect-pluperfect-audit-20261121.json'));
 assert.equal(ud13Audit.morphologyPromotion,false);
-const superseded=new Set(ud13Audit.corrections.map(x=>x.old.normalize('NFC')));
+const supersededByUnit=new Map(ud13Audit.corrections.map(x=>[x.old.normalize('NFC'),13]));
+// UD14 conserva su testigo histórico de imperfecto no contraído correctamente.
+supersededByUnit.set('ἠρωτᾶντο',14);
 const historical=unresolved.filter(x=>x.status==='unknown'&&
- superseded.has(x.form.normalize('NFC'))&&x.units.includes(13));
-for(const old of superseded)
- assert(historical.some(x=>x.form.normalize('NFC')===old),
-  'Ha cambiado la referencia histórica de UD13: '+old);
+ x.units.includes(supersededByUnit.get(x.form.normalize('NFC'))));
+for(const [old,unit] of supersededByUnit)
+ assert(historical.some(x=>x.form.normalize('NFC')===old&&x.units.includes(unit)),
+  'Ha cambiado la referencia histórica de UD'+unit+': '+old);
 const stillUnresolved=unresolved.filter(x=>!historical.includes(x));
 const summary={totalDistinct:cases.length,top100:{
  documented:selected.filter(x=>x.status==='documented').length,
