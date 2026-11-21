@@ -54,8 +54,18 @@ for(const [i,record] of records.entries()){
  // Permitir que una forma antes pendiente pase a documentada tras contraste.
  if(published.estado==='reconocida'){
   assert.equal(record.status,'documented','Regresión en '+record.form);
-  assert.equal(published.lema||'',record.lemma,'Lema reconocido alterado: '+record.form);
-  assert.equal(published.enunciado||'',record.entry,'Enunciado reconocido alterado: '+record.form);
+  // La revisión histórica usaba u/v normalizadas; el glosario conserva
+  // ahora el lema escolar latino sin perder su identidad.
+  const sameLemma=x=>norm(x||'').replace(/v/g,'u');
+  assert.equal(sameLemma(published.lema),sameLemma(record.lemma),
+   'Lema reconocido alterado: '+record.form);
+  // Solo las enunciaciones previamente erróneas pueden variar en este informe.
+  const correctedEntries={
+   'vivo, vixi, vivitum (4ª)':'vivo, vixi, victum (3ª)',
+   'solvo, solvi, solutum (2ª)':'solvo, solvi, solutum (3ª)'
+  };
+  const expectedEntry=correctedEntries[published.enunciado]||published.enunciado||'';
+  assert.equal(expectedEntry,record.entry,'Enunciado reconocido alterado: '+record.form);
  }
 }
 assert.ok(summary.recognizedTotal>=report.summary.reconocidas,

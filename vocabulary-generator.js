@@ -199,6 +199,10 @@ const latinSpellingNotes={
  'm':'inicial, cifra o abreviatura, no lema autónomo; consultar la oración',
  't':'inicial o abreviatura, no lema autónomo; consultar la oración'
 };
+// Una cuarta parte principal (supino) no acredita pasiva PERSONAL.
+// En particular vivo, vixi, victum NO autoriza victi como participio de vivo:
+// victi es una lectura documentada de vinco que debe seguir siendo inequívoca.
+const latinNoPersonalPassive=new Set(['uiuo']);
 const latinExpandedCache=new WeakMap();
 function latinExpandedForms(bank){
  if(latinExpandedCache.has(bank))return latinExpandedCache.get(bank);
@@ -431,7 +435,7 @@ function latinExpandedForms(bank){
   if(!l||!row.meaning||!(/^[a-z]+$/.test(l)))continue;
   const fields=latinPrincipalParts(raw);
   const annotated=raw.match(/\((1ª|2ª|3ª|4ª|mx\.)\)\s*$/u);
-  const record={lemma:l,entry:raw,meaning:row.meaning,meaning_va:row.meaning_va||'',
+  const record={lemma:key(lemma),entry:raw,meaning:row.meaning,meaning_va:row.meaning_va||'',
    attested:true,origin:'paradigma regular escolar derivado del enunciado (no flexión individual certificada)'};
   add(l,record); // La forma de cita del propio enunciado es léxica, no inferida.
   const proper=/^\p{Lu}/u.test(raw);
@@ -551,7 +555,7 @@ function latinExpandedForms(bank){
   }[group];
   addMany(stem,present,record);
   add(stem+rule.inf,record);
-  if(l!=='facio')add(stem+({
+  if(l!=='facio'&&!latinNoPersonalPassive.has(l))add(stem+({
    '1ª':'ari','2ª':'eri','3ª':'i','4ª':'iri','mx.':'i'
   }[group]),record); // infinitivo de presente pasivo
 
@@ -562,7 +566,7 @@ function latinExpandedForms(bank){
   const endingActive=['am','as','at','amus','atis','ant'];
   for(const ending of endingActive)add(stem+rule.imperf+ending,record);
   // Pasiva de presente e imperfecto: no se extrapola a facio -> fio.
-  if(l!=='facio'){
+  if(l!=='facio'&&!latinNoPersonalPassive.has(l)){
    const pres={
     '1ª':['or','aris','atur','amur','amini','antur'],
     '2ª':['eor','eris','etur','emur','emini','entur'],
@@ -578,11 +582,11 @@ function latinExpandedForms(bank){
   if(rule.future==='ab'||rule.future==='eb'){
    const p=rule.future;
    for(const end of ['o','is','it','imus','itis','unt'])add(stem+p+end,record);
-   if(l!=='facio')for(const end of ['or','eris','itur','imur','imini','untur'])add(stem+p+end,record);
+   if(l!=='facio'&&!latinNoPersonalPassive.has(l))for(const end of ['or','eris','itur','imur','imini','untur'])add(stem+p+end,record);
   }else{
    const p=group==='3ª'?'':'i';
    for(const end of ['am','es','et','emus','etis','ent'])add(stem+p+end,record);
-   if(l!=='facio')for(const end of ['ar','eris','etur','emur','emini','entur'])add(stem+p+end,record);
+   if(l!=='facio'&&!latinNoPersonalPassive.has(l))for(const end of ['ar','eris','etur','emur','emini','entur'])add(stem+p+end,record);
   }
 
   // Perfecto y pluscuamperfecto solo con el tema expresamente aportado.
@@ -593,7 +597,7 @@ function latinExpandedForms(bank){
     add(root+end,record);
    }
    const sup=fields[2]||'';
-   if(sup.endsWith('um')&&sup.length>3){
+   if(sup.endsWith('um')&&sup.length>3&&!latinNoPersonalPassive.has(l)){
     // Un error en el supino docente no puede validar un falso participio.
     // Ofrecer como hipótesis revisable, conservando el índice contrastado.
     const proposal={...record,attested:false,
@@ -1569,7 +1573,7 @@ function latinPassiveParticiples(data,bank){
   const supine=/^([a-z]+)um\b/.exec(fields[2]||'');
   if(fields.length<3||!supine||!fields[1]?.endsWith('i'))continue;
   const lemma=latinKey(head(row.entry));
-  if(!lemma||/or$/.test(lemma))continue;
+  if(!lemma||/or$/.test(lemma)||latinNoPersonalPassive.has(lemma))continue;
   bankStems.push([lemma,supine[1]]);
  }
  const signature=[...new Set(bankStems.map(pair=>pair.join('|')))].sort().join(';');
@@ -1584,7 +1588,7 @@ function latinPassiveParticiples(data,bank){
  };
  // Una forma deducida del supino es candidata, no forma acreditada.
  for(const [lemma,courses] of Object.entries(data.vocabulary?.lat||{})){
-  if(/or$/.test(latinKey(lemma)))continue; // no crear pasivas de deponentes
+  if(/or$/.test(latinKey(lemma))||latinNoPersonalPassive.has(latinKey(lemma)))continue; // no crear pasivas personales de deponentes ni vivo
   for(const curriculum of Object.values(courses)){
    const fields=latinPrincipalParts(curriculum.entry);
    const supine=/^([a-z]+)um\b/.exec(fields[2]||'');

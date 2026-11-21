@@ -10,9 +10,23 @@ const report=JSON.parse(fs.readFileSync(path.join(root,'test-artifacts/auditoria
 const summary=JSON.parse(fs.readFileSync(path.join(root,'test-artifacts/auditoria-integral-resumen.json'),'utf8'));
 assert.equal(report.schema,'examina-comprehensive-morph-audit/v1');
 assert.equal(report.status,'REVIEW_ONLY_NOT_FOR_GRADING');
-assert.equal(report.totalCandidates,3789,'Cambio de fichas pendientes: examinar antes de variar el inventario');
-assert.equal(report.latin.entries.length,3244);
-assert.equal(report.greek.entries.length,545);
+const persisted=JSON.parse(original);
+assert.equal(report.totalCandidates,report.latin.entries.length+report.greek.entries.length,
+ 'La auditoría no puede perder candidaturas respecto de su propio desglose');
+assert.equal(report.latin.entries.length,persisted.counts.lat.modelo,
+ 'La auditoría debe coincidir con las propuestas latinas reales del índice');
+assert.equal(report.greek.entries.length,persisted.counts.grc.wikcionario,
+ 'La auditoría debe coincidir con las propuestas griegas reales del índice');
+// Las correcciones de tres conjugaciones recuperan 18 candidaturas por lema;
+// siguen siendo fuente 2, NO forms contrastadas ni soluciones evaluables.
+for(const lemma of ['sepelio','solvo','vivo']){
+ const added=report.latin.entries.filter(x=>x.lemma===lemma);
+ assert.equal(added.length,18,'Propuestas regulares inesperadas para '+lemma);
+ assert(added.every(x=>x.source==='MODELO_REGULAR'&&
+  x.individualVerification===false&&x.eligibleForNewAutomaticGrading===false));
+}
+assert.equal(persisted.counts.lat.modelo,3244+3*18,
+ 'Cambio de candidaturas ajeno a las tres conjugaciones corregidas');
 assert.deepEqual(summary.latin,report.latin.summary);
 assert.deepEqual(summary.greek,report.greek.summary);
 assert.equal(summary.verifiedPromoted,0);
@@ -28,6 +42,6 @@ for(const lang of ['latin','greek']){
 // mediante el auditor de candidaturas.
 assert.equal(fs.readFileSync(indexFile,'utf8'),original,'El auditor alteró el índice persistente');
 assert.equal(fs.readFileSync(sourceFile,'utf8'),originalSource,'El auditor alteró las fuentes verificadas');
-console.log('Auditoría integral: 3789 propuestas restantes (545 griegas, 3244 latinas), cero promociones por el auditor.');
+console.log('Auditoría integral: '+report.totalCandidates+' propuestas ('+report.greek.entries.length+' griegas, '+report.latin.entries.length+' latinas), cero promociones por el auditor.');
 // Revisión histórica del griego: 559 identidades inmutables, 14 migradas y 545 candidatas vigentes.
 require('./test-revision-559-griego.cjs');
