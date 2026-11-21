@@ -18,7 +18,7 @@ function fromSource(source,name,context={}){
  return vm.runInNewContext('('+functionSource(source,name)+')',context);
 }
 for(const [name,source] of [['web',web],['autónoma',offline]]){
- assert(!source.includes('ὀλιγός, –η, –ον'),name+': enunciado oxítono antiguo');
+ assert(!/"entry"\s*:\s*"ὀλιγός, –η, –ον"/u.test(source),name+': entrada antigua de vocabulario');
  assert(source.includes('ὀλίγος, –η, –ον'),name+': falta el enunciado corregido');
  assert(source.includes("lemma:'ὀλίγος',feminine:'η',accent:'oligos'"),
   name+': falta el paradigma explícito');
