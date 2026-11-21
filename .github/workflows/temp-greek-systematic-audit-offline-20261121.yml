@@ -1,0 +1,37 @@
+name: TEMP reconstruir Griego I sistematico sin despliegue
+on:
+  push:
+    branches: [fix/auditoria-griego-sistematica-morfosintaxis-20261121]
+permissions:
+  contents: write
+jobs:
+  rebuild:
+    if: github.ref == 'refs/heads/fix/auditoria-griego-sistematica-morfosintaxis-20261121'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout rama auditada
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Reconstruir archivo autonomo
+        run: npm run offline:build
+      - name: Cotejar corpus, examen y analisis docente
+        run: |
+          node scripts/test-greek-systematic-morph-syntax-20261121.cjs
+          node scripts/test-greek-sentence-philology-20261121.cjs --offline
+          node scripts/test-filologia-regimen-acento-20261121.cjs --offline
+      - name: Incorporar offline y retirar workflow temporal
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/workflows/temp-greek-systematic-audit-offline-20261121.yml
+          git add offline.html
+          git diff --cached --stat
+          git diff --cached --quiet && { echo "El arbol no ha cambiado"; exit 1; }
+          git commit -m "build: reconstruir offline para la auditoria griega y retirar workflow temporal"
+          git push origin HEAD:fix/auditoria-griego-sistematica-morfosintaxis-20261121
