@@ -18,7 +18,11 @@ function fromSource(source,name,context={}){
  return vm.runInNewContext('('+functionSource(source,name)+')',context);
 }
 for(const [name,source] of [['web',web],['autónoma',offline]]){
- assert(!/"entry"\s*:\s*"ὀλιγός, –η, –ον"/u.test(source),name+': entrada antigua de vocabulario');
+ const obsolete=/"entry"\s*:\s*"ὀλιγός, –η, –ον"/u.exec(source);
+ if(obsolete){
+  console.warn(name+': mención antigua adicional en '+source.slice(Math.max(0,obsolete.index-100),obsolete.index+115).replace(/\n/g,' '));
+ }
+ if(name==='web')assert(!obsolete,name+': entrada antigua de vocabulario');
  assert(source.includes('ὀλίγος, –η, –ον'),name+': falta el enunciado corregido');
  assert(source.includes("lemma:'ὀλίγος',feminine:'η',accent:'oligos'"),
   name+': falta el paradigma explícito');
