@@ -55,3 +55,23 @@ La prueba `audit-greek-all-units.cjs --require-clean` detectó tres **superficie
 La prueba de corpus reconoce ahora **únicamente** esas tres formas individualmente documentadas como `documented` en su informe. No cambia la API del analizador, `teacher-forms.json`, las fichas docentes, las formas candidatas ni las respuestas automáticamente evaluables. Queda bloqueado el uso de este reconocimiento si surge una lectura `review`, el contexto de UD cambia o no aparece la evidencia exacta. La regresión nueva `scripts/test-greek-aorist-attestation-20261121.cjs` exige `pending=0` y verifica que el índice morfológico no haya promovido ninguna forma.
 
 Fuentes individuales: [ἔσωσαν (3.ª plural)](https://www.greekdoc.com/lexicon/sw.html), [ἔρριψαν (3.ª plural)](https://greekdoc.com/lexicon/ri.html) y [εἰσέβαλον (1.ª singular / 3.ª plural)](https://en.wiktionary.org/wiki/%CE%B5%E1%BC%B0%CF%83%CE%B2%CE%AC%CE%BB%CE%BB%CF%89).
+
+## Tercera ronda: dativos, demostrativos, flexión y frase de UD12
+
+En la revisión del régimen, concordancia y flexión se resuelven nueve incidencias localizadas del **repertorio docente, de 471 renglones**, conservando sus 14 unidades.
+
+- UD4: `ἐν ταῖς Ἀθήναις`, dativo plural topónimo normalizado con ejemplos literarios (Ateneo, *Deipnosophistae* 4.12 y concordancias).
+- UD5: `τοῖς φίλοις` (dativo plural de `φίλος`), evitando el adjetivo distinto `φίλιος` en un contexto cuyo significado es «los amigos».
+- UD8: demostrativo `οὗτος ὁ σοφὸς ἄνθρωπος` con artículo atributivo; interrogación `;`; dativo plural `Ἕλλησι` de `Ἕλλην`; acusativo plural `θῆρας` de `θήρ`.
+- UD12: `ἡ αὐλητρὶς` (y no `αὑλητρίς`). En la oración de la música se conserva el valor «los oyentes parecían alegrarse mucho con la actuación», pero `εὐφραίνειν τοῦ ἀκροάματος` se sustituye por `εὐφραίνεσθαι ἐπὶ τῷ ἀκροάματι`: voz media/pasiva con sentido intransitivo de alegría y régimen preposicional atestiguado, en lugar de un activo transitivo sin objeto y de un genitivo no justificado.
+- UD14: `μᾶλλον ἢ` con acento grave al seguir palabra.
+
+En la **pregunta realmente seleccionable** de Atenas se corrige tanto el texto `Ἀθήναις` como el análisis. En la oración de `τόδε τὸ ζῷον φίλον ἡμῖν ἐστίν`, el dativo se etiqueta específicamente como **complemento adjetival** de `φίλον` (no como dativo genérico de relación). También se concilia `ἀγρὸν` en el análisis de la oración del esclavo con la forma del enunciado.
+
+Se añade `scripts/test-filologia-regimen-acento-20261121.cjs` a las dos CI y a la versión autónoma. No se autorizan nuevas formas seleccionables, no se reetiquetan automáticamente formas ambiguas y no se altera el número de ejercicios.
+
+Fuentes: [dativo Ἀθήναις, ejemplo clásico](https://www.digitalathenaeus.org/tools/KaibelText/cts_urn_retriever.php?URN=urn%3Acts%3AgreekLit%3Atlg0008.tlg001.perseus-grc2%3A4.12%40%E1%BC%80%CE%BD%CF%84%CE%B9%CF%86%CE%AC%CE%BD%CE%B7%CF%82%5B1%5D); [Smyth sobre artículo y demostrativos](https://grammars.alpheios.net/smyth/xhtml/body.1_div1.4_div2.16.html); [University of Texas, Ἕλλησι](https://lrc.la.utexas.edu/eieol_master_gloss/grkol/2); [Smyth sobre θήρ](https://grammars.alpheios.net/smyth/xhtml/body.1_div1.2_div2.4.html); [LSJ αὐλητρίς](https://en.wiktionary.org/wiki/%CE%B1%E1%BD%90%CE%BB%CE%B7%CF%84%CF%81%CE%AF%CF%82); [Xenophon, régimen de εὐφραίνομαι con ἐν / ἐπί + dativo](https://www.blueletterbible.org/lexicon/g2165/lxx/lxx/).
+
+### Latín: revisión de cantidad vocálica
+
+Se ratifica provisionalmente `pūgnō`: el léxico Navigium presenta `pūgnāre, pūgnō, pūgnāvī, pūgnātum`. El comportamiento histórico de la vocal ante `gn` exige distinguir la duración vocálica de la *posición silábica*, de modo que no se presenta el mero grupo consonántico como prueba aislada de `ū`. Véanse [Navigium](https://www.navigium.de/latein-woerterbuch/details?form=pugnantem&formen=PartizipialForm%28PPA%2CAdjektivForm%28AKK%2CSG%2Cm%2CPOS%29%29XPartizipialForm%28PPA%2CAdjektivForm%28AKK%2CSG%2Cf%2CPOS%29%29&vokid=RRLX-EYK&wb=null) y W. Sidney Allen, *Vox Latina*, capítulo 6.

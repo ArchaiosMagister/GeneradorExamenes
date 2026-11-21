@@ -1,0 +1,34 @@
+name: Reconstruir regimen y corpus sin publicacion
+on:
+  push:
+    branches:
+      - fix/auditoria-filologica-latin-griego-20261121
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Actualizar indice y HTML autonomo
+        run: |
+          node scripts/build-lemma-index.mjs
+          npm run offline:build
+          node scripts/test-filologia-regimen-acento-20261121.cjs --offline
+          node scripts/test-greek-sentence-philology-20261121.cjs --offline
+          node scripts/audit-greek-all-units.cjs
+      - name: Guardar paquete y eliminar flujo efimero
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/lemmas/teacher-forms.json offline.html
+          git rm ".github/workflows/filologia-regimen-reconstruccion-temporal.yml"
+          git commit -m "build: regenerar offline tras auditoria del regimen griego"
+          git push origin "HEAD:fix/auditoria-filologica-latin-griego-20261121"

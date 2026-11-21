@@ -225,6 +225,8 @@ jobs:
         run: node scripts/test-greek-sentence-philology-20261121.cjs --offline
       - name: Comprobar tres aoristos con evidencias y cero promociones morfológicas
         run: node scripts/test-greek-aorist-attestation-20261121.cjs
+      - name: Auditar régimen verbal, demonstrativos y concordancias restantes
+        run: node scripts/test-filologia-regimen-acento-20261121.cjs --offline
       - name: Evitar notaciones abreviadas del ν móvil en las formas evaluables
         run: node scripts/test-greek-movable-nu.cjs
       - name: Auditar las 100 formas más frecuentes de Griego I

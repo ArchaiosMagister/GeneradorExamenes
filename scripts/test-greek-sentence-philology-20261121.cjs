@@ -25,7 +25,7 @@ const rows=vm.runInNewContext('(['+web.slice(a+anchor.length,b)+'])');
 assert.equal(rows.length,11,'Inventario evaluable modificado');
 assert(rows.every(row=>row.length===6&&typeof row[0]==='string'&&Array.isArray(row[2])&&Array.isArray(row[5])));
 assert(rows.some(row=>row[0]==='τόδε τὸ ζῷον φίλον ἡμῖν ἐστίν.'&&
- row[4].includes('τόδε τὸ ζῷον: sujeto')&&row[4].includes('ἡμῖν: dativo')),'Demostrativo, dativo o análisis no sincronizados');
+ row[4].includes('τόδε τὸ ζῷον: sujeto')&&row[4].includes('ἡμῖν: dativo complemento del adjetivo φίλον')),'Demostrativo, dativo o análisis no sincronizados');
 assert(rows.some(row=>row[0].includes('ἀγρὸν σὺν ἵπποις')),'Falta grave ante σὺν');
 for(const typo of ['τὸδε τὸ ζῷον','ἡμίν','ἀγρόν σὺν'])assert(!rows.some(x=>x[0].includes(typo)),typo);
 assert(web.includes("['s-2','s-3','s-7','s-9','p-13','pf-13']"),'Cuarentena histórica alterada');
