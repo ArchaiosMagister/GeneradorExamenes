@@ -33,7 +33,7 @@ const explicit=JSON.parse(html.match(/const greekExplicitVerbEvidence=(\{[^\n]+\
 const first=JSON.parse(html.match(/const greekVerbData=(\{[^\n]+\});\n/)[1]);
 const section=fragment('Object.assign(greekVerbData,{ειμι:','Object.assign(greekVerbUnits,{');
 const regular=new Function('greekVerbData',
- 'Object.assign(greekVerbData,{ειμι:'+section+'return greekVerbData;')(first);
+ section+'return greekVerbData;')(first);
 assert(regular['ειμι'].includes('ἐστί(ν)'),'Se ha perdido el ν móvil de εἰμί');
 let optional=0,covered=0,synthetic=[];
 function item(id,formsArray,minUnit,tense='presente',voice='activo'){
