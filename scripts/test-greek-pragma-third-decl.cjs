@@ -18,6 +18,13 @@ const correction=decisions.entryCorrections.filter(x=>x.lang==='grc'&&x.lemma===
 assert.equal(correction.length,1,'Corrección editorial debe ser única');
 assert.equal(correction[0].from,prior);
 assert.equal(correction[0].to,actual);
+assert.equal(index.vocabulary.grc.ηγεμων.gr1.entry,'ἡγεμών, –ονος (ὁ)',
+ 'El índice de ἡγεμών conserva la abreviatura latina M');
+const hegemonCorrection=decisions.entryCorrections.filter(x=>x.lang==='grc'&&
+ x.lemma==='ηγεμων'&&x.course==='gr1');
+assert.equal(hegemonCorrection.length,1);
+assert.equal(hegemonCorrection[0].from,'ἡγεμών, –ονος (M)');
+assert.equal(hegemonCorrection[0].to,'ἡγεμών, –ονος (ὁ)');
 const required=material.required.filter(x=>x.unit==='UD8'&&/πρ[άᾶ]γμα/u.test(x.entry));
 assert.equal(required.length,1,'Material docente UD8: lema no único');
 assert.equal(required[0].entry,ud8);
