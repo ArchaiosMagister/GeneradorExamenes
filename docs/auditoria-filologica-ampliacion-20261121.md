@@ -133,3 +133,18 @@ Se añade `scripts/test-greek-onoma-source0-audit-20261121.cjs` a las dos CI par
 ### Contraste independiente de las formas realmente evaluables
 
 Se cotejan las **15 fichas nominales verificadas de tercera declinación** que figuran en `greekExamReviewedNominalRows`, desglosando las lecturas sincréticas de cada forma. El cotejo exacto por **lema, superficie, caso/número y fuente 5** en `teacher-forms.json` arroja **45 de 45 lecturas presentes**. Este control cubre `ἄρχων`, `γυνή`, `στράτευμα`, `φύσις` y once lemas adicionales. La aserción se incorpora a `scripts/test-greek-onoma-source0-audit-20261121.cjs` y queda separada de la incidencia de `ὄνομα`, que no forma parte del conjunto evaluable. Una coincidencia con la fuente 5 acredita la trazabilidad del dato, pero no sustituye por sí sola la comprobación filológica externa.
+
+## Octava ronda: cotejo inicial de tercera declinación latina
+
+Se examinan las **1647 entradas exigibles** de Latín I y Latín 4.º, concentrándose en la tercera declinación (al menos **290 apariciones candidatas** identificadas con genitivos en `-is`, `-inis` y `-oris`; varias corresponden al mismo lema o a adjetivos). El índice de referencia contiene las flexiones correctas de algunos sustantivos especialmente sensibles: `carmen → carminis, carminum`, `gladiator → gladiātōrem`, `pater → patrem, patrum` y `regio → regiōnem, regiōnum`. El motor de propuestas regulares limita expresamente la tercera declinación a genitivos completos de masculinos y femeninos, y deja el genitivo plural sin inferir: decisión conservadora para no confundir `-um` y `-ium`. Referencia: [The National Archives, tercera declinación](https://www.nationalarchives.gov.uk/latin/stage-1-latin/lessons/lesson-7-third-declension-nouns-and-adjectives/).
+
+Se detectan **dos enunciados exigibles incorrectos** en Latín I, **UD7**, que necesitan corrección coordinada entre la fuente docente, la web, el índice y la versión autónoma:
+
+1. `nivis, –is (f.)` es una confusión entre nominativo y genitivo. Enunciado correcto: **`nix, nivis (f.)`**. [Lewis–Short, nix](https://atlas.perseus.tufts.edu/dictionaries/entry/urn%3Acite2%3Ascaife-viewer%3Adictionary-entries.atlas_v1%3Alat.ls.perseus-eng2-n31054/).
+2. `solis, –is (m.)` debe ser **`sol, solis (m.)`**. Este lema **ya existe** en el índice para Latín I, UD11–12, con doce formas de fuente 0; por tanto, la futura corrección debe integrar UD7 en esa ficha, **no duplicar ni borrar sus análisis existentes**. [Diccionario gramatical de latín, sol](https://www.mobot.org/mobot/latindict/keyDetail.aspx?keyWord=sol).
+
+Ambos registros erróneos son actualmente formas de **cita léxica** (fuente 3), no doce formas morfológicas certificadas. **Todavía no se modifican**: la unificación `solis → sol` requiere una decisión explícita de migración interna entre dos fichas del mismo curso, que el constructor aún no admite. Introducir una sustitución superficial sin sincronización dañaría la coherencia del índice y del `offline.html`. Estas observaciones quedan verificadas y pendientes para la próxima corrección atómica. El trabajo de esta ronda se concentra en cerrar primero la reconstrucción de `ὄνομα` y pasar la regresión completa.
+
+### Reconstrucción temporal sin publicación
+
+Se añade `.github/workflows/filologia-onoma-sync-203.yml`, restringido exclusivamente a la **PR #203 en borrador y con rama del mismo repositorio**, para regenerar `data/lemmas/teacher-forms.json` y `offline.html`, comprobar paridad y pruebas de tercera declinación, y guardar únicamente esos dos archivos en la rama de revisión. No contiene paso de despliegue ni permite fusionar la PR. Este flujo debe retirarse de la rama una vez terminada y validada la sincronización.
