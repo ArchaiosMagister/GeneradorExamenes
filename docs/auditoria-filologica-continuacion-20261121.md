@@ -116,3 +116,9 @@ Una primera propuesta confundió la cantidad de la sílaba con una cantidad voc�
 - Las discusiones filológicas son reales y no meramente tipográficas: Carl Darling Buck, «The Quantity of Vowels Before gn», *The Classical Review* 15 (1901), 311–314, https://doi.org/10.1017/S0009840X00030808.
 
 En consecuencia, `magnus` queda **excluido de automatismos de cantidad** hasta que se adopte un criterio editorial. El índice no debe incorporar un `entryCorrection` que sustituya `māgnus` por `măgnus`. La prueba comprueba expresamente su conservación. La cantidad vocálica y el peso silábico se mantienen como categorías distintas.
+
+### Paridad autónoma verificada después de la rectificación de `magnus`
+
+El workflow aislado **44926622832** ha finalizado con éxito y ha regenerado `offline.html` en el commit `7391d4ab2615685babb07bdd2ee2691e2d143482`. Un cotejo posterior por lectura directa del blob de GitHub confirma igualdad estructural del índice `data/lemmas/teacher-forms.json` y su copia embebida, presencia de `māgnus` y ausencia de `măgnus`, sin modificar las 541 fichas exigibles de Latín de 4.º. Los fallos de CI inmediatamente anteriores correspondían a la copia autónoma desfasada, no a nuevos errores morfológicos.
+
+La integración completa de Phase I, formato Word, pruebas de exámenes reales y versión autónoma **debe repetirse sobre el commit final**. Los eventos `pull_request` iniciados por el bot de Actions después de reconstruir el archivo pueden aparecer como `action_required`: la comprobación definitiva requiere un commit normal del colaborador o autorización de GitHub Actions; no equivale a un fallo de la lógica de exámenes.
