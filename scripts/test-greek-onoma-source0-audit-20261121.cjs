@@ -32,4 +32,21 @@ assert(start>=0&&end>start);
 const verified=JSON.parse(html.slice(start+mark.length,end));
 assert(!verified.some(row=>row[0]==='ονομα'),
  'Una casilla de ὄνομα ha llegado al conjunto de respuestas revisadas');
+// Mantener separados los errores de la fuente 0 de las fichas de examen
+// realmente contrastadas de tercera declinación.
+const third=verified.filter(row=>row[3]==='nouns'&&row[5]==='tercera');
+assert.equal(third.length,15,'Ha cambiado el conjunto nominal revisado de tercera');
+let checked=0;
+for(const row of third){
+ for(const [surface,analyses] of row[7]){
+  for(const analysis of analyses.split('|')){
+   assert(data.rows.grc.some(r=>r[0]===row[0]&&r[1]===surface&&
+     r[2]==='N;'+analysis&&r[3]===5),
+    'Falta evidencia individual de fuente 5: '+row[0]+' '+surface+' '+analysis);
+   checked++;
+  }
+ }
+}
+assert.equal(checked,45,'Han cambiado las casillas contrastadas de tercera');
+console.log('TERCERA DECLINACIÓN: 15 lemas revisados; 45/45 lecturas exactas en fuente 5');
 console.log('AUDITORÍA ὄνομα: 11 asignaciones de UniMorph detectadas como INCORRECTAS; no hay formas de ὄνομα promovidas a examen. Pendiente depuración sincronizada de índice y HTML autónomo.');
