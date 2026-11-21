@@ -33,6 +33,9 @@ on:
       - 'scripts/test-greek-sentence-philology-20261121.cjs'
       - 'scripts/test-greek-aorist-attestation-20261121.cjs'
       - 'scripts/test-greek-perfect-pluperfect-ud13-20261121.cjs'
+      - 'scripts/test-greek-systematic-morph-syntax-20261121.cjs'
+      - 'scripts/test-greek-relative-grave-20261121.cjs'
+      - 'data/vocabulary/greek1-units-corrected.json'
       - 'scripts/test-filologia-regimen-acento-20261121.cjs'
       - 'scripts/test-greek-noun-case-attestation-20261121.cjs'
       - 'scripts/test-filologia-cantidad-latina-20261121.cjs'
@@ -137,7 +140,10 @@ jobs:
         run: node scripts/test-greek-aorist-attestation-20261121.cjs
       - name: Auditar perfectos y pluscuamperfectos de UD13 sin promoción automática
         run: node scripts/test-greek-perfect-pluperfect-ud13-20261121.cjs
-          node scripts/test-greek-systematic-morph-syntax-20261121.cjs
+      - name: Ejecutar realmente regresión sistemática de 14 unidades griegas
+        run: node scripts/test-greek-systematic-morph-syntax-20261121.cjs
+      - name: Comprobar 26 relativos con grave contextual por oración
+        run: node scripts/test-greek-relative-grave-20261121.cjs --offline
       - name: Auditar régimen verbal, demonstrativos y concordancias restantes
         run: node scripts/test-filologia-regimen-acento-20261121.cjs --offline
       - name: Atestación aislada del dativo en -ματι sin promoción morfológica

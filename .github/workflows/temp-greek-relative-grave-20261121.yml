@@ -1,0 +1,37 @@
+name: TEMP reconstruir relativos griegos sin desplegar
+on:
+  push:
+    branches: [fix/griego-relativos-grave-contextual-20261121]
+permissions:
+  contents: write
+jobs:
+  rebuild:
+    if: github.ref == 'refs/heads/fix/griego-relativos-grave-contextual-20261121'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Reconstruir offline desde las fuentes
+        run: npm run offline:build
+      - name: Verificar relativos, corpus y versión autónoma
+        run: |
+          node scripts/test-greek-relative-grave-20261121.cjs --offline
+          node scripts/test-greek-systematic-morph-syntax-20261121.cjs
+          node scripts/test-greek-sentence-philology-20261121.cjs --offline
+      - name: Retirar workflow temporal e incorporar archivo autónomo
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/workflows/temp-greek-relative-grave-20261121.yml
+          git add offline.html
+          git diff --cached --stat
+          git diff --cached --quiet && { echo "No se ha modificado el árbol"; exit 1; }
+          git commit -m "build: sincronizar relativos griegos offline y retirar workflow temporal"
+          git push origin HEAD:fix/griego-relativos-grave-contextual-20261121

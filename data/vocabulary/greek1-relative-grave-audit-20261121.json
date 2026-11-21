@@ -1,0 +1,274 @@
+{
+  "schema": 1,
+  "course": "gr1",
+  "unitCount": 14,
+  "sourceLines": 471,
+  "contextualCorrections": 26,
+  "automaticGradingEnabled": false,
+  "morphologyPromotion": false,
+  "scope": "Solo acentos de relativos concretos en contexto; no formas de diccionario ni generalizaciones.",
+  "reference": "https://grammars.alpheios.net/smyth/xhtml/body.1_div1.1_div2.7.html",
+  "morphologyReference": "https://grammars.alpheios.net/smyth/xhtml/body.1_div1.2_div2.6.html",
+  "items": [
+    {
+      "unit": 9,
+      "line": 1,
+      "form": "ὅν",
+      "updatedForm": "ὃν",
+      "nextWord": "οἱ",
+      "before": "ὁ ἄνθρωπος ὅν οἱ στρατιῶται διώκουσιν δοῦλος ἐστιν.",
+      "after": "ὁ ἄνθρωπος ὃν οἱ στρατιῶται διώκουσιν δοῦλος ἐστιν.",
+      "rule": "Smyth §154; relativo oxítono ante palabra independiente"
+    },
+    {
+      "unit": 9,
+      "line": 2,
+      "form": "οἵ",
+      "updatedForm": "οἳ",
+      "nextWord": "τοῦ",
+      "before": "οἱ νέοι οἵ τοῦ σοφοῦ ἀκούουσιν δίκαιοι εἰσιν.",
+      "after": "οἱ νέοι οἳ τοῦ σοφοῦ ἀκούουσιν δίκαιοι εἰσιν.",
+      "rule": "Smyth §154; relativo oxítono ante palabra independiente"
+    },
+    {
+      "unit": 9,
+      "line": 3,
+      "form": "ὅς",
+      "updatedForm": "ὃς",
+      "nextWord": "τὸ",
+      "before": "ὁ στρατιώτης ὅς τὸ ὅπλον λείπει δειλός ἐστιν.",
+      "after": "ὁ στρατιώτης ὃς τὸ ὅπλον λείπει δειλός ἐστιν.",
+      "rule": "Smyth §154; relativo oxítono ante palabra independiente"
+    },
+    {
+      "unit": 9,
+      "line": 4,
+      "form": "ὅς",
+      "updatedForm": "ὃς",
+      "nextWord": "ἐκ",
+      "before": "ὁ στρατιώτης ὅς ἐκ τῆς μάχης φεύγει Ἀθήναιος ἐστιν.",
+      "after": "ὁ στρατιώτης ὃς ἐκ τῆς μάχης φεύγει Ἀθήναιος ἐστιν.",
+      "rule": "Smyth §154; relativo oxítono ante palabra independiente"
+    },
+    {
+      "unit": 9,
+      "line": 5,
+      "form": "ὅς",
+      "updatedForm": "ὃς",
+      "nextWord": "τοὺς",
+      "before": "ὁ σοφὸς ὅς τοὺς παῖδας παιδεύει αὐτοῖς περὶ τῆς δίκης λέγει.",
+      "after": "ὁ σοφὸς ὃς τοὺς παῖδας παιδεύει αὐτοῖς περὶ τῆς δίκης λέγει.",
+      "rule": "Smyth §154; relativo oxítono ante palabra independiente"
+    },
+    {
+      "unit": 9,
+      "line": 6,
+      "form": "ἥν",
+      "updatedForm": "ἣν",
+      "nextWord": "ὁ",
+      "before": "ὁ δοῦλος τὴν ἐπιστολὴν ἥν ὁ δεσπότης γράφει εἰς τὰς Ἀθηνὰς φέρει.",
+      "after": "ὁ δοῦλος τὴν ἐπιστολὴν ἣν ὁ δεσπότης γράφει εἰς τὰς Ἀθηνὰς φέρει.",
+      "rule": "Smyth §154; relativo oxítono ante palabra independiente"
+    },
+    {
+      "unit": 9,
+      "line": 7,
+      "form": "ὅ",
+      "updatedForm": "ὃ",
+      "nextWord": "ὁ",
+      "before": "ὁ παῖς τὸ βιβλίον ὅ ὁ ποιητὴς γράφει ἀναγιγνώσκει.",
+      "after": "ὁ παῖς τὸ βιβλίον ὃ ὁ ποιητὴς γράφει ἀναγιγνώσκει.",
+      "rule": "Smyth §154; relativo oxítono ante palabra independiente"
+    },
+    {
+      "unit": 9,
+      "line": 9,
+      "form": "οὕς",
+      "updatedForm": "οὓς",
+      "nextWord": "ὁ",
+      "before": "ὁ πολίτης τῶν λόγων οὕς ὁ ῥήτωρ λέγει ἀκούει.",
+      "after": "ὁ πολίτης τῶν λόγων οὓς ὁ ῥήτωρ λέγει ἀκούει.",
+      "rule": "Smyth §154; relativo oxítono ante palabra independiente"
+    },
+    {
+      "unit": 9,
+      "line": 10,
+      "form": "οἵ",
+      "updatedForm": "οἳ",
+      "nextWord": "κακὰ",
+      "before": "ὁ νόμος τοὺς πολίτας οἵ κακὰ πράττουσιν, διώκει.",
+      "after": "ὁ νόμος τοὺς πολίτας οἳ κακὰ πράττουσιν, διώκει.",
+      "rule": "Smyth §154; relativo oxítono ante palabra independiente"
+    },
+    {
+      "unit": 9,
+      "line": 12,
+      "form": "οἵ",
+      "updatedForm": "οἳ",
+      "nextWord": "δίκαιοι",
+      "before": "οἱ φίλοι οἵ δίκαιοι εἰσιν, ἀεὶ τὴν ἀλήθειαν λέγουσιν.",
+      "after": "οἱ φίλοι οἳ δίκαιοι εἰσιν, ἀεὶ τὴν ἀλήθειαν λέγουσιν.",
+      "rule": "Smyth §154; relativo oxítono ante palabra independiente"
+    },
+    {
+      "unit": 9,
+      "line": 14,
+      "form": "οἵ",
+      "updatedForm": "οἳ",
+      "nextWord": "οὐκ",
+      "before": "ἐγὼ τοὺς πολίτας οἵ οὐκ ἀεὶ τὴν ἀλήθειαν λέγουσιν, οὐ θαυμάζω.",
+      "after": "ἐγὼ τοὺς πολίτας οἳ οὐκ ἀεὶ τὴν ἀλήθειαν λέγουσιν, οὐ θαυμάζω.",
+      "rule": "Smyth §154; relativo oxítono ante palabra independiente"
+    },
+    {
+      "unit": 9,
+      "line": 15,
+      "form": "ὅν",
+      "updatedForm": "ὃν",
+      "nextWord": "διδάσκω",
+      "before": "ὁ παῖς ὅν διδάσκω ἵππον ἔχει.",
+      "after": "ὁ παῖς ὃν διδάσκω ἵππον ἔχει.",
+      "rule": "Smyth §154; relativo oxítono ante palabra independiente"
+    },
+    {
+      "unit": 9,
+      "line": 16,
+      "form": "ὅς",
+      "updatedForm": "ὃς",
+      "nextWord": "τὴν",
+      "before": "πιστεύομεν τῷ παιδὶ ὅς τὴν ἀλήθειαν λέγει.",
+      "after": "πιστεύομεν τῷ παιδὶ ὃς τὴν ἀλήθειαν λέγει.",
+      "rule": "Smyth §154; relativo oxítono ante palabra independiente"
+    },
+    {
+      "unit": 9,
+      "line": 18,
+      "form": "οἵ",
+      "updatedForm": "οἳ",
+      "nextWord": "ταχέως",
+      "before": "οἱ πολλοὶ τῶν ἀνθρώπων οἵ ταχέως πλουτοῦσιν, ἄδικοί εἰσιν.",
+      "after": "οἱ πολλοὶ τῶν ἀνθρώπων οἳ ταχέως πλουτοῦσιν, ἄδικοί εἰσιν.",
+      "rule": "Smyth §154; relativo oxítono ante palabra independiente"
+    },
+    {
+      "unit": 9,
+      "line": 19,
+      "form": "οἵ",
+      "updatedForm": "οἳ",
+      "nextWord": "ἀγαθὰ",
+      "before": "οἱ ἄνθρωποι οἵ ἀγαθὰ ἔργα ποιοῦσιν, οὐκ ἀεὶ πλουτοῦσιν.",
+      "after": "οἱ ἄνθρωποι οἳ ἀγαθὰ ἔργα ποιοῦσιν, οὐκ ἀεὶ πλουτοῦσιν.",
+      "rule": "Smyth §154; relativo oxítono ante palabra independiente"
+    },
+    {
+      "unit": 9,
+      "line": 20,
+      "form": "ὅ",
+      "updatedForm": "ὃ",
+      "nextWord": "λέγουσιν",
+      "before": "τοῦτο ἐστιν ὅ λέγουσιν οἱ ποιηταί.",
+      "after": "τοῦτο ἐστιν ὃ λέγουσιν οἱ ποιηταί.",
+      "rule": "Smyth §154; relativo oxítono ante palabra independiente"
+    },
+    {
+      "unit": 9,
+      "line": 21,
+      "form": "οἵ",
+      "updatedForm": "οἳ",
+      "nextWord": "τὴν",
+      "before": "ἐκεῖνοι οἵ τὴν δίκην διώκουσιν φίλοι τῆς ἀρετῆς εἰσιν.",
+      "after": "ἐκεῖνοι οἳ τὴν δίκην διώκουσιν φίλοι τῆς ἀρετῆς εἰσιν.",
+      "rule": "Smyth §154; relativo oxítono ante palabra independiente"
+    },
+    {
+      "unit": 9,
+      "line": 22,
+      "form": "οἵ",
+      "updatedForm": "οἳ",
+      "nextWord": "δίκαιά",
+      "before": "οἱ θεοὶ γιγνώσκουσι πάντας οἵ δίκαιά τε καὶ ἄδικα πράττουσιν.",
+      "after": "οἱ θεοὶ γιγνώσκουσι πάντας οἳ δίκαιά τε καὶ ἄδικα πράττουσιν.",
+      "rule": "Smyth §154; relativo oxítono ante palabra independiente"
+    },
+    {
+      "unit": 9,
+      "line": 23,
+      "form": "ἅ",
+      "updatedForm": "ἃ",
+      "nextWord": "κελεύει",
+      "before": "ἐκεῖνοι οἱ δοῦλοι πάντα ποιοῦσιν ἅ κελεύει ὁ δεσπότης.",
+      "after": "ἐκεῖνοι οἱ δοῦλοι πάντα ποιοῦσιν ἃ κελεύει ὁ δεσπότης.",
+      "rule": "Smyth §154; relativo oxítono ante palabra independiente"
+    },
+    {
+      "unit": 10,
+      "line": 15,
+      "form": "οὕς",
+      "updatedForm": "οὓς",
+      "nextWord": "ἡ",
+      "before": "ὁ Σωκράτης ἀδικεῖ οὐ νομίζων τοὺς θεοὺς οὕς ἡ πόλις νομίζει.",
+      "after": "ὁ Σωκράτης ἀδικεῖ οὐ νομίζων τοὺς θεοὺς οὓς ἡ πόλις νομίζει.",
+      "rule": "Smyth §154; relativo oxítono ante palabra independiente"
+    },
+    {
+      "unit": 11,
+      "line": 28,
+      "form": "ἅ",
+      "updatedForm": "ἃ",
+      "nextWord": "ὁ",
+      "before": "οἱ δούλοι τὰ χρήματα ἅ ὁ δεσπότης εἶχεν, ηὕρισκον.",
+      "after": "οἱ δούλοι τὰ χρήματα ἃ ὁ δεσπότης εἶχεν, ηὕρισκον.",
+      "rule": "Smyth §154; relativo oxítono ante palabra independiente"
+    },
+    {
+      "unit": 11,
+      "line": 38,
+      "form": "ὅν",
+      "updatedForm": "ὃν",
+      "nextWord": "εἶχε",
+      "before": "ὁ πατὴρ τῷ παιδὶ τὸν πλούτον ὅν εἶχε λείπειν οὐκ ἤθελεν.",
+      "after": "ὁ πατὴρ τῷ παιδὶ τὸν πλούτον ὃν εἶχε λείπειν οὐκ ἤθελεν.",
+      "rule": "Smyth §154; relativo oxítono ante palabra independiente"
+    },
+    {
+      "unit": 12,
+      "line": 5,
+      "form": "οἵ",
+      "updatedForm": "οἳ",
+      "nextWord": "ἐν",
+      "before": "ὁ στρατηγὸς τοὺς ὁπλίτας οἵ ἐν τῇ πόλει ἔμενον ἀποκτείνειν ἐκέλευσεν.",
+      "after": "ὁ στρατηγὸς τοὺς ὁπλίτας οἳ ἐν τῇ πόλει ἔμενον ἀποκτείνειν ἐκέλευσεν.",
+      "rule": "Smyth §154; relativo oxítono ante palabra independiente"
+    },
+    {
+      "unit": 12,
+      "line": 19,
+      "form": "οἵ",
+      "updatedForm": "οἳ",
+      "nextWord": "τῶν",
+      "before": "οἱ ἄνθρωποι οἵ τῶν τοῦ στρατηγοῦ λόγων ἤκουσαν, τὴν πόλιν ἔλιπον.",
+      "after": "οἱ ἄνθρωποι οἳ τῶν τοῦ στρατηγοῦ λόγων ἤκουσαν, τὴν πόλιν ἔλιπον.",
+      "rule": "Smyth §154; relativo oxítono ante palabra independiente"
+    },
+    {
+      "unit": 12,
+      "line": 20,
+      "form": "οἵ",
+      "updatedForm": "οἳ",
+      "nextWord": "ἐν",
+      "before": "οἱ στρατιῶται τοὺς ἀνθρώπους οἵ ἐν τῇ χώρᾳ ἔμενον, ἔσωσαν.",
+      "after": "οἱ στρατιῶται τοὺς ἀνθρώπους οἳ ἐν τῇ χώρᾳ ἔμενον, ἔσωσαν.",
+      "rule": "Smyth §154; relativo oxítono ante palabra independiente"
+    },
+    {
+      "unit": 13,
+      "line": 30,
+      "form": "ὅς",
+      "updatedForm": "ὃς",
+      "nextWord": "Ἀχιλλέα",
+      "before": "Χείρων, ὅς Ἀχιλλέα ἐπαίδευσε, Ἀσκληπιὸν ἐπεπαιδεύκει.",
+      "after": "Χείρων, ὃς Ἀχιλλέα ἐπαίδευσε, Ἀσκληπιὸν ἐπεπαιδεύκει.",
+      "rule": "Smyth §154; relativo oxítono ante palabra independiente"
+    }
+  ]
+}
