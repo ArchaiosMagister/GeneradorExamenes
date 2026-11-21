@@ -99,7 +99,7 @@ jobs:
         run: node scripts/test-greek-ud5-quota-indent.cjs
       - name: Griego UD5, adjetivos de dos terminaciones en fichas y regeneraciones
         run: node scripts/test-greek-two-ending-adjectives.cjs
-      - name: Griego UD5: ὀλίγος y πολύς, acentos, vocativos y migración local
+      - name: "Griego UD5: ὀλίγος y πολύς, acentos, vocativos y migración local"
         run: node scripts/test-greek-adjective-accent-vocative.cjs
       - name: Exam UI redesign in iPad, forms, Word and vocabulary isolation
         run: node scripts/test-exam-ui-redesign.cjs
