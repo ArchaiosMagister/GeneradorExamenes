@@ -21,3 +21,7 @@ Se auditan las 14 unidades del fichero docente `data/vocabulary/greek1-units-cor
 La prueba `scripts/test-filologia-latin-griego-20261121.cjs` comprueba el índice, el banco exigible, las fuentes, la versión autónoma y la ausencia de contaminación de claves por cirílico. Se ejecuta junto a las baterías Phase I y offline-check. La fusión y publicación siguen condicionadas a autorización posterior y a CI satisfactoria.
 
 La compilación reproducible del índice y del HTML autónomo se completó en GitHub Actions para esta rama; el flujo temporal se retiró de la PR. Las verificaciones generales son independientes de ese control.
+
+## Coherencia bilingüe
+
+Tras detectar que los dos significados nuevos no tenían correspondencia valenciana, se añaden «aún, todavía» → «encara» y «estilo, punzón para escribir» → «estil, punxó per a escriure». La prueba valenciana es obligatoria en la reconstrucción y en la CI normal.
