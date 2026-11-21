@@ -95,3 +95,5 @@ const files=['index.html','offline.html'],languages=['es','va'];
   console.log('OK: ν móvil verbal y nominal en 56 contextos, sin adelantar UD ni imprimir grafías editoriales.');
  }finally{await browser.close()}
 })().catch(error=>{console.error(error);process.exitCode=1});
+
+// Validación definitiva: corpus verbal y nominal, sin workflows temporales.
