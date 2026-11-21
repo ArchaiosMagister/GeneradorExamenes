@@ -88,7 +88,7 @@ for(const [course,rows] of Object.entries(banks)){
   }
   const k=course+':'+lemma;
   if(!gradeMap.has(k))gradeMap.set(k,new Set());
-  gradeMap.get(k).add(grade);
+  gradeMap.get(k).add(grade.replace(/\.$/,'')); // (irr) y (irr.) son equivalentes
  }
  for(const [k,grades] of gradeMap)
   assert.equal(grades.size,1,'El mismo lema tiene conjugaciones incompatibles: '+k+' '+[...grades]);
