@@ -20,6 +20,8 @@ assert.equal(greek.required.length,172);
 assert.equal(greek.required.find(x=>x.unit==='UD5'&&x.entry.startsWith('μικρός'))?.entry,'μικρός, –ά, –όν');
 assert.equal(greek.required.find(x=>x.unit==='UD10'&&x.entry==='ἔτι (adv.)')?.meaning,'aún, todavía');
 assert.equal(examples.units.length,14);
+for(const correct of ['οἱ πολῖται μετέχουσι','πρὸς τὴν γῆν','αἱ γυναῖκες αὐταὶ τὸν πόλεμον παύουσιν.','τὴν αὐτῶν πόλιν','οἱ σοφοὶ περὶ τῆς σοφίας'])
+ assert(html.includes(correct),'No se corrigió oración evaluable: '+correct);
 const valenciano=read('lexicon-valenciano.js');
 for(const term of ['"aún, todavía": "encara"','"estilo, punzón para escribir": "estil, punxó per a escriure"'])
  assert(valenciano.includes(term),'Falta traducción valenciana '+term);

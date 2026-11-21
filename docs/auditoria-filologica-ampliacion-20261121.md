@@ -25,3 +25,7 @@ La compilación reproducible del índice y del HTML autónomo se completó en Gi
 ## Coherencia bilingüe
 
 Tras detectar que los dos significados nuevos no tenían correspondencia valenciana, se añaden «aún, todavía» → «encara» y «estilo, punzón para escribir» → «estil, punxó per a escriure». La prueba valenciana es obligatoria en la reconstrucción y en la CI normal.
+
+## Comprobación de las oraciones realmente evaluables
+
+Además de los diez fragmentos del repertorio docente, se examina `greekSentenceRows` y su filtro de exclusiones. Se corrigen localmente cinco filas seleccionables: nominativo plural `πολῖται`, dirección `πρὸς τὴν γῆν`, concordancia del sintagma `αἱ γυναῖκες αὐταὶ τὸν πόλεμον`, acusativo `τὴν αὐτῶν πόλιν` y acento grave en `οἱ σοφοὶ`. Se mantienen las traducciones, análisis, lemas y restricciones por UD. Las filas que estaban en cuarentena siguen sin evaluarse.
