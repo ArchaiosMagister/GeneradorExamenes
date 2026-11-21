@@ -1,10 +1,14 @@
-name: Sincronizar ὄνομα en la PR 203 sin publicación
+name: Sincronizar correcciones filológicas PR 203 sin publicación
 on:
   pull_request:
     types: [opened, reopened, synchronize]
     paths:
       - 'scripts/build-lemma-index.mjs'
       - 'scripts/test-greek-onoma-source0-audit-20261121.cjs'
+      - 'data/lemmas/latin-editorial-decisions.json'
+      - 'scripts/test-latin-ud7-nix-sol-20261121.cjs'
+      - 'required-latin-units.js'
+      - 'index.html'
       - '.github/workflows/filologia-onoma-sync-203.yml'
 
 permissions:
@@ -37,9 +41,13 @@ jobs:
         run: node scripts/build-lemma-index.mjs
       - name: Reconstruir HTML autonomo desde el mismo indice
         run: npm run offline:build
-      - name: Probar cuarentena y paridad estricta
+      - name: Probar morfología griega y latina, cuarentena y paridad estricta
         run: |
           node scripts/test-greek-onoma-source0-audit-20261121.cjs
+          node scripts/test-latin-ud7-nix-sol-20261121.cjs
+          node scripts/test-regular-latin.mjs
+          node scripts/test-required-latin-vocabulary.cjs
+          node scripts/test-vocabulary.cjs
           node scripts/test-lemma-index.mjs
           node scripts/test-greek-third-decl-gender-five.cjs
           node scripts/test-greek-ud8-lexical-accents.cjs
@@ -60,5 +68,5 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add data/lemmas/teacher-forms.json offline.html
-          git commit -m 'build(filologia): conciliar índice griego y HTML autónomo tras cuarentena de ὄνομα'
+          git commit -m 'build(filologia): sincronizar nix, sol y ὄνομα en índice y HTML autónomo'
           git push origin "HEAD:$TARGET_BRANCH"
