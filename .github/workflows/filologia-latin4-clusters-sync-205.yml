@@ -1,0 +1,55 @@
+name: Reconstruir tercera ronda de cantidades latinas PR205 (sin despliegue)
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'scripts/apply-latin4-quantity-clusters-20261121.cjs'
+      - '.github/workflows/filologia-latin4-clusters-sync-205.yml'
+permissions:
+  contents: write
+concurrency:
+  group: filologia-latin4-clusters-sync-205
+  cancel-in-progress: false
+jobs:
+  sync:
+    if: >-
+      github.event.pull_request.number == 205 &&
+      github.event.pull_request.head.repo.full_name == 'ArchaiosMagister/GeneradorExamenes' &&
+      github.event.pull_request.head.ref == 'fix/auditoria-griego-acentos-espiritus-20261121'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Recuperar commit de la PR revisada
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Corregir 16 cantidades exactas y migraciones
+        run: node scripts/apply-latin4-quantity-clusters-20261121.cjs
+      - name: Reconstruir índice desde banco académico fijado
+        run: node scripts/build-lemma-index.mjs
+      - name: Reconstruir HTML autónomo
+        run: npm run offline:build
+      - name: Exigir auditorías filológicas y paridad offline
+        run: |
+          node scripts/test-filologia-latin4-quantity-clusters-20261121.cjs
+          node scripts/test-filologia-latin4-quantity-followup-20261121.cjs
+          node scripts/test-filologia-latin4-cantidades-ronda2-20261121.cjs
+          node scripts/test-filologia-cantidad-latina-20261121.cjs --offline
+          node scripts/test-latin-ud7-nix-sol-20261121.cjs
+          node scripts/test-greek-onoma-source0-audit-20261121.cjs
+          git diff --check
+      - name: Guardar únicamente fuentes e índices tras las pruebas
+        run: |
+          git add -- required-latin-units.js index.html data/lemmas/verified-overrides.json data/lemmas/teacher-forms.json offline.html
+          if git diff --cached --quiet; then echo 'Sin cambios'; exit 0; fi
+          git diff --cached --stat
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'fix(latin4): sincronizar 16 cantidades y versión autónoma'
+          git fetch origin fix/auditoria-griego-acentos-espiritus-20261121
+          git rebase origin/fix/auditoria-griego-acentos-espiritus-20261121
+          git push origin HEAD:refs/heads/fix/auditoria-griego-acentos-espiritus-20261121
