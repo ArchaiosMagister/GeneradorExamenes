@@ -207,6 +207,16 @@ jobs:
         run: node scripts/test-greek-audit-fixture.cjs
       - name: Auditar sincretismos de formas verbales griegas y paridad offline
         run: node scripts/test-greek-verb-syncretism.cjs
+      - name: Verificar ὀλίγος, πολύς y su persistencia web/PWA
+        run: node scripts/test-greek-adjective-accent-vocative.cjs
+      - name: Verificar πρᾶγμα y enunciados de tercera declinación en web/PWA
+        run: node scripts/test-greek-pragma-third-decl.cjs
+      - name: Verificar otros cinco sustantivos de tercera y sus artículos
+        run: node scripts/test-greek-third-decl-gender-five.cjs
+      - name: Verificar Ἑλλάς, πατήρ y otros enunciados UD8 en web/PWA
+        run: node scripts/test-greek-ud8-lexical-accents.cjs
+      - name: Comprobar seis grafías exigibles y διά en Griego I (web/PWA)
+        run: node scripts/test-greek-lexical-filology-20261121.cjs
       - name: Evitar notaciones abreviadas del ν móvil en las formas evaluables
         run: node scripts/test-greek-movable-nu.cjs
       - name: Auditar las 100 formas más frecuentes de Griego I

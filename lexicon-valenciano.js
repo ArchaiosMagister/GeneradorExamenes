@@ -10,6 +10,8 @@
   "a salvo": "sa i estalvi",
   "a salvo, seguro/a": "sa i estalvi, segur/segura",
   "a través de, por, a causa de": "a través de, per, a causa de",
+  "gen.: a través de, por medio de | ac.: por, a causa de": "gen.: a través de, per mitjà de | ac.: per, a causa de",
+  "por, a causa de": "per, a causa de",
   "abandonar": "abandonar",
   "abrazar": "abraçar",
   "abundancia": "abundància",

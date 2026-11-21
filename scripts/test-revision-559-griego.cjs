@@ -7,6 +7,7 @@ const get=p=>JSON.parse(fs.readFileSync(path.join(root,p),'utf8'));
 const bank=get('data/lemmas/teacher-forms.json');
 const extract=get('data/lemmas/greek-nominal-candidates.json');
 const review=get('data/lemmas/revision-559-griego-20261113.json');
+const editorial=get('data/lemmas/verified-overrides.json').entryCorrections;
 const simplify=s=>String(s).normalize('NFD').replace(/[\u0304\u0306]/g,'').normalize('NFC');
 const key=(lemma,form,tags)=>JSON.stringify([lemma,form,tags]);
 assert.equal(review.schema,'examina-greek-morphology-triage/v1');
@@ -47,6 +48,16 @@ for(const item of review.items){
  if(item.lemma==='εχθροσ'){
   assert.equal(item.teacherEntry,'ἐχθρός, –ον');
   assert.equal(vocab.entry,'ἐχθρός, –ά, –όν');
+ }else if(item.teacherEntry!==vocab.entry){
+  // Las 559 fichas son una fotografía histórica; la forma evaluable
+  // posterior puede corregir el enunciado SIN modificar ninguna lectura
+  // antigua, exclusivamente mediante una decisión editorial trazable.
+  const approved=editorial.filter(x=>x.lang==='grc'&&x.course==='gr1'&&
+   x.lemma===item.lemma&&x.from===item.teacherEntry&&x.to===vocab.entry);
+  assert.equal(approved.length,1,
+   'Enunciado histórico cambió sin corrección editorial documentada: '+item.lemma);
+  assert(approved[0].reference?.startsWith('https://'),
+   'Decisión editorial sin fuente: '+item.lemma);
  }else assert.equal(item.teacherEntry,vocab.entry);
  assert.deepEqual(item.units,vocab.units);
  const entry=sourceByLemma.get(item.lemma);
