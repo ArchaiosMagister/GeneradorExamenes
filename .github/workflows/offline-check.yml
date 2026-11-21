@@ -213,6 +213,8 @@ jobs:
         run: node scripts/test-greek-pragma-third-decl.cjs
       - name: Verificar otros cinco sustantivos de tercera y sus artículos
         run: node scripts/test-greek-third-decl-gender-five.cjs
+      - name: Verificar Ἑλλάς, πατήρ y otros enunciados UD8 en web/PWA
+        run: node scripts/test-greek-ud8-lexical-accents.cjs
       - name: Evitar notaciones abreviadas del ν móvil en las formas evaluables
         run: node scripts/test-greek-movable-nu.cjs
       - name: Auditar las 100 formas más frecuentes de Griego I
