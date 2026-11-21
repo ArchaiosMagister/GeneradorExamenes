@@ -12,9 +12,9 @@ assert.equal(ledger.rows.length,200);
 assert.equal(ledger.summary.latin,100);
 assert.equal(ledger.summary.greek,100);
 assert.equal(ledger.summary.promoted,200);
-assert.equal(bank.counts.lat.modelo,3244+3*18,
- 'Solo se incorporan las 54 propuestas provisionales de sepelio, solvo y vivo');
-for(const lemma of ['sepelio','solvo','vivo']){
+assert.equal(bank.counts.lat.modelo,3244+4*18,
+ 'Únicamente 72 propuestas provisionales: sepelio, solvo, vivo e invenio (18 cada uno)');
+for(const lemma of ['sepelio','solvo','vivo','invenio']){
  const provisional=bank.rows.lat.filter(x=>x[0]===lemma&&x[3]===2);
  assert.equal(provisional.length,18,'Solo 18 propuestas provisionales por verbo corregido: '+lemma);
  assert(provisional.every(x=>x[2].startsWith('V;IND;ACT;')),
