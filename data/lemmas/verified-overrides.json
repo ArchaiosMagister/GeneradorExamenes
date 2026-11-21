@@ -422,6 +422,24 @@
       "to": "ŏppūgnātĭō, –onis (f.)",
       "reference": "https://logeion.uchicago.edu/oppugnatio",
       "note": "Solo o inicial breve de ob-; conservar ū y notación de cantidad final variable."
+    },
+    {
+      "lang": "lat",
+      "course": "lat4",
+      "lemma": "impero",
+      "from": "īmpĕro (1ª)",
+      "to": "ĭmpĕro (1ª)",
+      "reference": "https://en.wiktionary.org/wiki/impero",
+      "note": "Vocal inicial i breve; la sílaba im- es larga por posición, no la vocal."
+    },
+    {
+      "lang": "lat",
+      "course": "lat4",
+      "lemma": "oppidum",
+      "from": "ōppĭdŭm, –ī",
+      "to": "ŏppĭdŭm, –ī",
+      "reference": "https://alatius.com/ls/index.php?l=oppidorum",
+      "note": "Primera o breve; la sílaba op- es larga por la geminada pp."
     }
   ],
   "paradigms": [
