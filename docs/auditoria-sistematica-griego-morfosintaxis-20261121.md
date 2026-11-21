@@ -1,6 +1,6 @@
 # Auditoría sistemática de morfología y sintaxis griega — 21/11/2026
 
-**Estado: rama aislada, sin fusionar ni publicar.** Cotejo de 14 unidades del corpus de Griego I (471 renglones, entre formas aisladas y oraciones) y de las 11 oraciones seleccionables del examen. Se corrigen **seis superficies contextualizadas** sin promover formas no acreditadas al índice morfológico.
+**Estado: rama aislada, sin fusionar ni publicar.** Cotejo de 14 unidades del corpus de Griego I (471 renglones, entre formas aisladas y oraciones) y de las 11 oraciones seleccionables del examen. Se corrigen **seis superficies contextualizadas y tres análisis docentes** sin promover formas no acreditadas al índice morfológico.
 
 | Ubicación | Original | Forma docente actual | Justificación |
 |---|---|---|---|
@@ -10,6 +10,9 @@
 | Oración evaluable 2 | `νεώς πρὸς` | `νεὼς πρὸς` | Grave contextual ante otra palabra |
 | Oración evaluable 3 | `ἀδικοί` | `ἄδικοι` | Nominativo plural de *ἄδικος, -ον*, adjetivo de dos terminaciones |
 | Oración evaluable 11 | `αὐτοί μέν` | `αὐτοὶ μὲν` | Grave contextual de las dos oxítonas |
+| Análisis evaluable 2 | `ἀπὸ τῆς νεώς: procedencia` | `ἀπὸ τῆς νεὼς: procedencia` | Concordancia con el enunciado (Smyth §154) |
+| Análisis evaluable 5 | `οἱ σοφοὶ: sujeto (sustantivo en el vocabulario aportado)` | `οἱ σοφοὶ: sujeto (adjetivo sustantivado)` | Artículo sustantivador (Smyth §1153) |
+| Análisis evaluable 11 | `αὐτοί y ἡμεῖς: sujetos` | `αὐτοὶ y ἡμεῖς: sujetos` | Concordancia con el enunciado (Smyth §154) |
 
 El aoristo sigmático `ἔλειψαν` **no es universalmente imposible**: es una variante histórica especialmente frecuente con posterioridad al período clásico. Continúa reconocible en el glosario auxiliar, después del aoristo preferente `ἔλιπον`. La lectura `τῶν νεῶν` es una **decisión interpretativa explícita**: si el material docente pretendía referirse a los jóvenes que partían del puerto, debe revisarse, no propagar automáticamente la sustitución por otras apariciones de `νέων`.
 
@@ -29,8 +32,14 @@ La revisión ha descubierto **una ambigüedad real del lematizador** al ampliar 
 
 Esta es una **desambiguación editorial puntual**, registrada con contexto, unidad, número de apariciones y ambos candidatos en el expediente JSON. El analizador conserva la ambigüedad fuera del contexto; **no** se cambia el índice ni se habilita un resultado automático. `scripts/audit-greek-all-units.cjs --require-clean` solo excluye del listado de pendientes esa ocurrencia contextual explícitamente cotejada, como los otros testimonios del informe, y obliga a volver a revisarla si cambia el texto, los candidatos o la frecuencia.
 
+## Cotejo individual de siete testimonios evaluables
+
+El expediente registra **siete lecturas contextualizadas, sin promoción morfológica**: `Ἀθήναις` (dativo plural de *Ἀθῆναι*), `μετέχουσι τῆς ἀρχῆς` (régimen genitivo; Smyth §1343), `νεὼς` (genitivo singular de *ναῦς*), `ἄδικοι` (adjetivo atributivo en función de atributo), `οἱ σοφοὶ` (adjetivo sustantivado; Smyth §1153), `φίλον ἡμῖν` (dativo adjetival; Smyth §1499) y `αὐτοὶ μὲν` (grave contextual; Smyth §154). Los enlaces bibliográficos se individualizan en `gradedAttestations`.
+
+Estos siete cotejos no certifican las restantes flexiones de sus lemas ni toda la gramática de las once oraciones. Las formas con acento adicional ante enclítico (Smyth §183c) no deben someterse a sustituciones generalizadas.
+
 ## Comprobaciones
-La regresión `scripts/test-greek-systematic-morph-syntax-20261121.cjs` comprueba seis correcciones, las 14 unidades y 471 renglones, las 11 oraciones evaluables idénticas en web y en la distribución autónoma, las entradas del glosario y la ausencia de promociones al índice de fuente 5. Se incorpora a las dos baterías CI principales.
+La regresión `scripts/test-greek-systematic-morph-syntax-20261121.cjs` comprueba nueve correcciones, siete lecturas morfosintácticas contextuales, las 14 unidades y 471 renglones, las 11 oraciones evaluables idénticas en web y en la distribución autónoma, las entradas del glosario y la ausencia de promociones al índice de fuente 5. Se incorpora a las dos baterías CI principales.
 
 **Inalterados:** las 172 entradas exigibles, las 2817 filas griegas del índice, los métodos de puntuación, cuotas, criterios de selección y soluciones. El fixture histórico conserva formas anteriores para auditoría; no se equiparan a lecturas acreditadas. No fusionar ni publicar sin consentimiento docente y CI satisfactoria del último commit.
 

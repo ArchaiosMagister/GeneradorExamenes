@@ -23,7 +23,8 @@ assert.equal(evidence.schema,1);assert.equal(evidence.course,'gr1');
 assert.equal(evidence.unitCount,14);assert.equal(evidence.sourceLines,471);
 assert.equal(evidence.gradedSentenceCount,11);
 assert.equal(evidence.automaticGradingEnabled,false);assert.equal(evidence.morphologyPromotion,false);
-assert.equal(evidence.corrections.length,6);
+assert.equal(evidence.corrections.length,9);
+assert.equal(evidence.gradedAttestations.length,7);
 assert.equal(evidence.contextualHomographies.length,1);
 const homonym=evidence.contextualHomographies[0];
 assert.equal(homonym.form,'νέων');
@@ -39,13 +40,25 @@ for(const fix of evidence.corrections){
   const lines=source.units[fix.unit-1].text.split('\n');
   assert(lines[fix.line-1]?.includes(fix.updated),'UD'+fix.unit+': '+fix.updated);
   assert(!source.units.some(u=>u.text.includes(fix.old)),'Persiste '+fix.old);
- }else{
+ }else if(fix.scope==='gradedSentence'){
   assert.equal(fix.scope,'gradedSentence');
   assert(ons[fix.index-1]?.[0].includes(fix.updated),'Enunciado web '+fix.index);
   assert(offs[fix.index-1]?.[0].includes(fix.updated),'Enunciado offline '+fix.index);
   assert(!ons.some(x=>x[0].includes(fix.old)),'Web conserva error '+fix.old);
   assert(!offs.some(x=>x[0].includes(fix.old)),'Autónoma conserva error '+fix.old);
+ }else{
+  assert.equal(fix.scope,'gradedAnalysis');
+  assert(ons[fix.index-1]?.[4].includes(fix.updated),'Análisis web '+fix.index);
+  assert(offs[fix.index-1]?.[4].includes(fix.updated),'Análisis offline '+fix.index);
+  assert(!ons[fix.index-1][4].includes(fix.old),'Análisis web desactualizado '+fix.index);
+  assert(!offs[fix.index-1][4].includes(fix.old),'Análisis offline desactualizado '+fix.index);
  }
+}
+for(const att of evidence.gradedAttestations){
+ assert(Number.isInteger(att.index)&&att.index>=1&&att.index<=11);
+ assert(/^https:\/\//.test(att.reference));
+ assert(ons[att.index-1][0].includes(att.form),'Forma web sin cotejar: '+att.form);
+ assert(offs[att.index-1][0].includes(att.form),'Forma offline sin cotejar: '+att.form);
 }
 assert(ons[2][4].includes('ἀδίκους')||ons[2][4].includes('ἀδίκους'),
  'Se ha perdido el análisis del acusativo de ἄδικος');
@@ -63,4 +76,4 @@ assert(!verified.rows.grc.some(row=>
  'Se elevó una forma contextual al índice de fuente 5');
 assert(historical.units[13].forms.includes('ἠρωτᾶντο'),
  'La ficha histórica debe preservar el testigo retirado');
-console.log('GRIEGO 14 UD / 471 renglones / 11 evaluables: 6 correcciones contrastadas, web y autónoma sincronizadas, ninguna promoción morfológica.');
+console.log('GRIEGO 14 UD / 471 renglones / 11 evaluables: 9 correcciones contrastadas y 7 cotejos individuales, web y autónoma sincronizadas, ninguna promoción morfológica.');

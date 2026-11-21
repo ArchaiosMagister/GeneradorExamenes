@@ -70,6 +70,36 @@
       "reading": "grave contextual de oxítonas seguidas de otras palabras",
       "rationale": "Smyth §154; se mantiene la correlación μὲν...δὲ.",
       "reference": "https://ccel.org/s/smyth/grammar/html/smyth_1f_uni.htm"
+    },
+    {
+      "scope": "gradedAnalysis",
+      "index": 2,
+      "old": "ἀπὸ τῆς νεώς: procedencia",
+      "updated": "ἀπὸ τῆς νεὼς: procedencia",
+      "lemma": "ναῦς",
+      "reading": "Genitivo singular ναῦς; grave contextual en el comentario docente",
+      "rationale": "El análisis debe conservar la grafía contextual del enunciado.",
+      "reference": "https://grammars.alpheios.net/smyth/xhtml/body.1_div1.1_div2.7.html"
+    },
+    {
+      "scope": "gradedAnalysis",
+      "index": 5,
+      "old": "οἱ σοφοὶ: sujeto (sustantivo en el vocabulario aportado)",
+      "updated": "οἱ σοφοὶ: sujeto (adjetivo sustantivado)",
+      "lemma": "σοφός",
+      "reading": "Nominativo plural masculino con artículo sustantivador",
+      "rationale": "Smyth §1153: el artículo sustantiva el adjetivo; no cambia su categoría morfológica.",
+      "reference": "https://grammars.alpheios.net/smyth/xhtml/body.1_div1.4_div2.16.html"
+    },
+    {
+      "scope": "gradedAnalysis",
+      "index": 11,
+      "old": "αὐτοί y ἡμεῖς: sujetos",
+      "updated": "αὐτοὶ y ἡμεῖς: sujetos",
+      "lemma": "αὐτός",
+      "reading": "Nominativo masculino plural con grave ante μὲν",
+      "rationale": "El análisis de los sujetos debe coincidir con el texto de la oración.",
+      "reference": "https://grammars.alpheios.net/smyth/xhtml/body.1_div1.1_div2.7.html"
     }
   ],
   "safeguards": [
@@ -96,6 +126,57 @@
       "reference": "https://en.wiktionary.org/wiki/%CE%BD%CE%AD%CE%BF%CF%82",
       "context": "πονηροὶ ἄνθρωποι τὰς τῶν νέων ψυχὰς διέφθειρον.",
       "note": "νέων en esta oración se interpreta como «de los jóvenes»; la coincidencia de clave normalizada con νεῶν de ναῦς no debe promover una solución general ni eliminar los dos candidatos posibles en el analizador."
+    }
+  ],
+  "gradedAttestations": [
+    {
+      "index": 1,
+      "form": "Ἀθήναις",
+      "lemma": "Ἀθῆναι",
+      "reading": "Dativo plural de Ἀθῆναι con ἐν",
+      "reference": "https://logeion.uchicago.edu/morpho/%E1%BC%88%CE%B8%E1%BF%86%CE%BD%CE%B1%CE%B9"
+    },
+    {
+      "index": 1,
+      "form": "μετέχουσι τῆς ἀρχῆς",
+      "lemma": "μετέχω",
+      "reading": "Presente de indicativo activo, 3.ª plural; régimen genitivo",
+      "reference": "https://grammars.alpheios.net/smyth/xhtml/body.1_div1.4_div2.18.html"
+    },
+    {
+      "index": 2,
+      "form": "νεὼς",
+      "lemma": "ναῦς",
+      "reading": "Genitivo singular de ναῦς con grave contextual",
+      "reference": "https://atlas.perseus.tufts.edu/dictionaries/entry/urn%3Acite2%3Ascaife-viewer%3Adictionaries.v1%3Alsj-n69863/"
+    },
+    {
+      "index": 3,
+      "form": "ἄδικοι",
+      "lemma": "ἄδικος",
+      "reading": "Nominativo plural masculino; atributo",
+      "reference": "https://pressbooks.pub/ancientgreek/chapter/30/"
+    },
+    {
+      "index": 5,
+      "form": "οἱ σοφοὶ",
+      "lemma": "σοφός",
+      "reading": "Nominativo plural masculino; adjetivo sustantivado",
+      "reference": "https://grammars.alpheios.net/smyth/xhtml/body.1_div1.4_div2.16.html"
+    },
+    {
+      "index": 10,
+      "form": "φίλον ἡμῖν",
+      "lemma": "φίλος",
+      "reading": "Atributo neutro singular con complemento adjetival en dativo; Smyth §1499",
+      "reference": "https://services.perseids.org/sg/body.1_div1.4_div2.18.html"
+    },
+    {
+      "index": 11,
+      "form": "αὐτοὶ μὲν",
+      "lemma": "αὐτός",
+      "reading": "Nominativo masculino plural, grave antes de μὲν",
+      "reference": "https://grammars.alpheios.net/smyth/xhtml/body.1_div1.1_div2.7.html"
     }
   ]
 }
