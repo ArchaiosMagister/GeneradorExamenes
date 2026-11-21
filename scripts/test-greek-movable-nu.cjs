@@ -90,3 +90,5 @@ assert(!html.includes("if(!prompt||/[()]/u.test(prompt)"),
  'La ruta secundaria sigue descartando variantes legítimas');
 console.log('Griego I: '+optional+' terminaciones de ν móvil entre paradigmas explícitos y regulares; '+
  covered+' formas explícitas con doble lectura cuando corresponda; no se evalúan grafías abreviadas.');
+
+// Reconstrucción temporal del paquete autónomo antes de la PR.
