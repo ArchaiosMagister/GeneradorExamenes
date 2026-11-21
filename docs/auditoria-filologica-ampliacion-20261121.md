@@ -47,3 +47,11 @@ Referencias: [Smyth, acentos](https://grammars.alpheios.net/smyth/xhtml/body.1_d
 Se deja pendiente una oración de UD12 con `αὐλητρίς`, `εὐφραίνω` y `ἀκρόαμα` cuyo régimen exige una solución textual, sin reescribirla de manera automática.
 
 La reconstrucción de `offline.html` y del índice desde las fuentes originales se completó en Actions y eliminó el flujo temporal. Queda condicionada la publicación a la CI completa y a autorización expresa.
+
+## Conciliación de la auditoría total sin certificar respuestas nuevas
+
+La prueba `audit-greek-all-units.cjs --require-clean` detectó tres **superficies griegas corregidas y todavía desconocidas para el indexador**: `ἔσωσαν` (2 apariciones), `ἔρριψαν` y `εἰσέβαλον`. Se cotejan individualmente con fuentes externas, en `data/vocabulary/greek1-aorist-audit-evidence-20261121.json`, registrando lema, lectura contextual, UD, frecuencia y referencia. Para `εἰσέβαλον` se señala explícitamente el sincretismo de 1.ª singular y 3.ª plural; el sujeto plural decide su lectura en la oración.
+
+La prueba de corpus reconoce ahora **únicamente** esas tres formas individualmente documentadas como `documented` en su informe. No cambia la API del analizador, `teacher-forms.json`, las fichas docentes, las formas candidatas ni las respuestas automáticamente evaluables. Queda bloqueado el uso de este reconocimiento si surge una lectura `review`, el contexto de UD cambia o no aparece la evidencia exacta. La regresión nueva `scripts/test-greek-aorist-attestation-20261121.cjs` exige `pending=0` y verifica que el índice morfológico no haya promovido ninguna forma.
+
+Fuentes individuales: [ἔσωσαν (3.ª plural)](https://www.greekdoc.com/lexicon/sw.html), [ἔρριψαν (3.ª plural)](https://greekdoc.com/lexicon/ri.html) y [εἰσέβαλον (1.ª singular / 3.ª plural)](https://en.wiktionary.org/wiki/%CE%B5%E1%BC%B0%CF%83%CE%B2%CE%AC%CE%BB%CE%BB%CF%89).

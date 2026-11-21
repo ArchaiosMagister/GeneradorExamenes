@@ -34,4 +34,8 @@ if(process.argv.includes('--offline')){
  for(const token of ['τόδε τὸ ζῷον φίλον ἡμῖν ἐστίν.','ἀγρὸν σὺν ἵπποις'])
   assert(offline.includes(token),'Versión autónoma sin revisar: '+token);
 }
+const citations=JSON.parse(fs.readFileSync('data/vocabulary/greek1-aorist-audit-evidence-20261121.json','utf8'));
+assert.equal(citations.items.length,3,'Faltan las tres colaciones externas');
+assert.equal(citations.morphologyPromotion,false);
+assert.equal(citations.automaticGradingEnabled,false);
 console.log('FILOLÓGICA GRIEGA: 471 renglones docentes, 11 oraciones evaluables, acentos, formas y cuarentena OK');

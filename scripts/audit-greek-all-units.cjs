@@ -19,6 +19,27 @@ assert.ok(start>10);
 const bank=JSON.parse(html.slice(start,html.indexOf(';',start)));
 for(const m of html.matchAll(/vocab\.push\(\.\.\.(\[.*\])\);/g))bank.push(...JSON.parse(m[1]));
 const greekBank=bank.filter(x=>x.course==='greek1');
+// Colación independiente, restringida a textos docentes; nunca entra en el
+// índice de lematización ni convierte estas formas en soluciones evaluables.
+const editorial=JSON.parse(load('data/vocabulary/greek1-aorist-audit-evidence-20261121.json'));
+assert.equal(editorial.schema,1);
+assert.equal(editorial.course,'gr1');
+assert.equal(editorial.automaticGradingEnabled,false);
+assert.equal(editorial.morphologyPromotion,false);
+assert.equal(editorial.items.length,3);
+const editorialByForm=new Map();
+for(const item of editorial.items){
+ assert(typeof item.form==='string'&&item.form===item.form.normalize('NFC'));
+ assert(typeof item.lemma==='string'&&item.lemma.trim());
+ assert(typeof item.reading==='string'&&item.reading.includes('plural'));
+ assert.deepEqual(item.units,[12]);
+ assert(Number.isInteger(item.occurrences)&&item.occurrences>0);
+ assert(/^https:\/\//.test(item.reference));
+ assert(!editorialByForm.has(item.form),'Cotejo editorial duplicado: '+item.form);
+ editorialByForm.set(item.form,item);
+}
+const externalCounts=new Map();
+
 const all=new Map(),unitReports=[];
 const clean=t=>t.replace(/([\p{L}\p{M}])[’'](?=[\p{L}\p{M}])/gu,'$1 ');
 const tokens=t=>[...clean(t).matchAll(/[\p{L}\p{M}]+(?:[’'][\p{L}\p{M}]+)*/gu)].map(x=>x[0].normalize('NFC'));
@@ -34,23 +55,39 @@ for(const u of project.units){
  }
  const result=api.analyze(data,[...byForm.keys()].join('\n'),'gr1',greekBank);
  const byResult=new Map(result.map(x=>[x.form.normalize('NFC'),x]));
+ const byStatus=new Map();
  for(const [form,slot] of byForm){
   const found=byResult.get(form);
   assert.ok(found,'No analysis record for '+u.title+': '+form);
-  const prior=all.get(form)||{form,count:0,units:[],contexts:[],status:found.status,
-   entry:found.entry,meaning:found.meaning,warning:found.warning||'',
+  const citation=editorialByForm.get(form);
+  let status=found.status;
+  if(citation){
+   assert(citation.units.includes(unit),'Forma con colación fuera de UD autorizada: '+form);
+   assert(['unknown','documented'].includes(found.status),'Ambigüedad no resuelta: '+form);
+   externalCounts.set(form,(externalCounts.get(form)||0)+slot.count);
+   // Reconocimiento de una forma concreta en el informe de auditoría;
+   // no altera el analizador, el índice, la calificación ni los paradigmas.
+   status='documented';
+  }
+  byStatus.set(form,status);
+  const prior=all.get(form)||{form,count:0,units:[],contexts:[],status,
+   entry:citation?.lemma||found.entry,meaning:found.meaning,
+   warning:citation?'Acreditado exclusivamente para el corpus docente, no evaluable':found.warning||'',
    candidates:found.candidates.map(c=>({lemma:c.lemma,entry:c.entry,attested:c.attested}))};
   prior.count+=slot.count;
   if(!prior.units.includes(unit))prior.units.push(unit);
   for(const line of slot.lines)if(prior.contexts.length<3)prior.contexts.push({unit,line});
   all.set(form,prior);
  }
- const rows=[...byForm].map(([form,slot])=>({form,frequency:slot.count,status:byResult.get(form).status}));
+ const rows=[...byForm].map(([form,slot])=>({form,frequency:slot.count,status:byStatus.get(form)}));
  unitReports.push({unit,tokens:[...byForm.values()].reduce((n,x)=>n+x.count,0),distinct:byForm.size,
   documented:rows.filter(x=>x.status==='documented').length,
   review:rows.filter(x=>x.status==='review').length,
   unknown:rows.filter(x=>x.status==='unknown').length});
 }
+for(const citation of editorial.items)
+ assert.equal(externalCounts.get(citation.form),citation.occurrences,
+  'Superficie externa eliminada o modificada: '+citation.form);
 const rows=[...all.values()].sort((a,b)=>b.count-a.count||a.form.localeCompare(b.form,'el'));
 const countStatus=kind=>rows.filter(r=>r.status===kind).length;
 const pending=rows.filter(r=>r.status!=='documented');

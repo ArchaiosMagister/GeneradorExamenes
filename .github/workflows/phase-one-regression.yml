@@ -31,6 +31,7 @@ on:
       - 'scripts/test-greek-lexical-followup-20261121.cjs'
       - 'scripts/test-filologia-latin-griego-20261121.cjs'
       - 'scripts/test-greek-sentence-philology-20261121.cjs'
+      - 'scripts/test-greek-aorist-attestation-20261121.cjs'
       - 'scripts/test-greek-all-unit-form-quotas.cjs'
       - 'scripts/test-morph-quotas-curriculum-regeneration.cjs'
       - 'scripts/test-greek-two-modes-legacy-drafts.cjs'
@@ -122,6 +123,8 @@ jobs:
         run: node scripts/test-filologia-latin-griego-20261121.cjs --offline
       - name: Segunda ronda filológica de oraciones, acentos y aoristos
         run: node scripts/test-greek-sentence-philology-20261121.cjs --offline
+      - name: Comprobar tres aoristos con evidencias y cero promociones morfológicas
+        run: node scripts/test-greek-aorist-attestation-20261121.cjs
       - name: Exam UI redesign in iPad, forms, Word and vocabulary isolation
         run: node scripts/test-exam-ui-redesign.cjs
       - name: Verificar tema Examinator sin efectos sobre Word/PDF
