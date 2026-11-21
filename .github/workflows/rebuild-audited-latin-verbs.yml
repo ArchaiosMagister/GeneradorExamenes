@@ -1,0 +1,48 @@
+name: Reconstrucción auditada de verbos latinos (rama aislada)
+on:
+  push:
+    branches:
+      - audit/latin-verbs-continuation-20261121
+    paths:
+      - scripts/apply-latin-verb-audit.cjs
+
+permissions:
+  contents: write
+
+jobs:
+  rebuild-verified:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Comprobar sintaxis del lote
+        run: |
+          node --check scripts/apply-latin-verb-audit.cjs
+          node --check scripts/test-latin-verb-corpus-audit.cjs
+      - name: Aplicar únicamente correcciones editoriales y migraciones
+        run: node scripts/apply-latin-verb-audit.cjs
+      - name: Reconstruir índice de lemas desde la fuente fija con correcciones auditadas
+        run: node scripts/build-lemma-index.mjs
+      - name: Regenerar PWA independiente desde las fuentes corregidas
+        run: npm run offline:build
+      - name: Ejecutar auditoría de todo el repertorio latino y sus capas persistentes
+        run: node scripts/test-latin-verb-corpus-audit.cjs
+      - name: Asegurar las once correcciones previas y la separación de evidencia
+        run: |
+          node scripts/test-latin-verb-entry-integrity.cjs
+          node scripts/test-latin-verb-evidence.cjs
+          node scripts/test-verified-verb-overrides.cjs
+      - name: Publicar cambios exclusivamente en esta rama y no desplegar
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html required-latin-units.js data/lemmas/verified-overrides.json data/lemmas/teacher-forms.json offline.html
+          git diff --cached --stat
+          git diff --cached --quiet && { echo "La reconstrucción no produjo cambios"; exit 1; }
+          git commit -m "fix: corregir seis lemas latinos y sincronizar bancos, índice y PWA"
+          git push origin HEAD:audit/latin-verbs-continuation-20261121
