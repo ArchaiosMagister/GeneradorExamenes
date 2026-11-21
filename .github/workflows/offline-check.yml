@@ -215,6 +215,8 @@ jobs:
         run: node scripts/test-greek-third-decl-gender-five.cjs
       - name: Verificar Ἑλλάς, πατήρ y otros enunciados UD8 en web/PWA
         run: node scripts/test-greek-ud8-lexical-accents.cjs
+      - name: Comprobar seis grafías exigibles y διά en Griego I (web/PWA)
+        run: node scripts/test-greek-lexical-filology-20261121.cjs
       - name: Evitar notaciones abreviadas del ν móvil en las formas evaluables
         run: node scripts/test-greek-movable-nu.cjs
       - name: Auditar las 100 formas más frecuentes de Griego I
