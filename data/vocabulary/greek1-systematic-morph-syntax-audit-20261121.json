@@ -76,5 +76,26 @@
     "Índice verificado griego intacto; ninguna forma creada por analogía se convierte en fuente 5.",
     "Fixture histórico mantiene su grafía anterior ἠρωτᾶντο para poder contrastarla, no como respuesta correcta.",
     "172 entradas exigibles y reglas de evaluación inalteradas."
+  ],
+  "contextualHomographies": [
+    {
+      "form": "νέων",
+      "indexLemma": "νεοσ",
+      "competingLemma": "ναυσ",
+      "entry": "νέος, –α, –ον",
+      "reading": "genitivo plural de νέος, –α, –ον, en «las almas de los jóvenes»",
+      "units": [
+        11
+      ],
+      "occurrences": 1,
+      "expectedStatus": "review",
+      "expectedCandidateLemmas": [
+        "νεοσ",
+        "ναυσ"
+      ],
+      "reference": "https://en.wiktionary.org/wiki/%CE%BD%CE%AD%CE%BF%CF%82",
+      "context": "πονηροὶ ἄνθρωποι τὰς τῶν νέων ψυχὰς διέφθειρον.",
+      "note": "νέων en esta oración se interpreta como «de los jóvenes»; la coincidencia de clave normalizada con νεῶν de ναῦς no debe promover una solución general ni eliminar los dos candidatos posibles en el analizador."
+    }
   ]
 }
