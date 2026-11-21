@@ -66,6 +66,28 @@ for(const item of nounCaseEvidence.items){
  editorialByForm.set(item.form,{...item,kind:'noun-case'});
 }
 assert.equal(new Set(nounCaseEvidence.items.map(x=>x.form)).size,2,'Colaciones nominales duplicadas');
+// La lectura de νέων en UD11 es contextual: el motor conserva DOS candidatos
+// distintos por normalizar el acento de νέων (jóvenes) y νεῶν (naves).
+// Resolverla en este informe no altera el índice ni la calificación automática.
+const systematic=JSON.parse(load('data/vocabulary/greek1-systematic-morph-syntax-audit-20261121.json'));
+assert.equal(systematic.course,'gr1');
+assert.equal(systematic.automaticGradingEnabled,false);
+assert.equal(systematic.morphologyPromotion,false);
+assert.equal(systematic.contextualHomographies.length,1);
+for(const item of systematic.contextualHomographies){
+ assert.equal(item.form,'νέων');
+ assert.equal(item.indexLemma,'νεοσ');
+ assert.equal(item.competingLemma,'ναυσ');
+ assert.equal(item.expectedStatus,'review');
+ assert.deepEqual(item.expectedCandidateLemmas,['νεοσ','ναυσ']);
+ assert.deepEqual(item.units,[11]);
+ assert.equal(item.occurrences,1);
+ assert(/^https:\/\//.test(item.reference));
+ assert(!editorialByForm.has(item.form),'Colación contextual duplicada: '+item.form);
+ const origin=project.units.find(x=>x.title==='UD11').text;
+ assert(origin.split(item.context).length===2,'Cambió el contexto único de νέων en UD11');
+ editorialByForm.set(item.form,{...item,kind:'contextual-homography'});
+}
 const externalCounts=new Map();
 
 const all=new Map(),unitReports=[];
@@ -91,7 +113,14 @@ for(const u of project.units){
   let status=found.status;
   if(citation){
    assert(citation.units.includes(unit),'Forma con colación fuera de UD autorizada: '+form);
-   if(citation.kind==='noun-case'){
+   if(citation.kind==='contextual-homography'){
+    assert.equal(found.status,'review','Cambió el diagnóstico de la homografía '+form);
+    assert.equal(slot.count,citation.occurrences,'Cambió el número de apariciones de '+form);
+    assert.deepEqual([...found.candidates.map(c=>c.lemma)].sort(),[...citation.expectedCandidateLemmas].sort(),
+     'Se modificaron los dos lemas de la homografía contextual '+form);
+    assert(found.candidates.some(c=>c.lemma===citation.indexLemma&&c.entry===citation.entry),
+     'El contexto de UD11 dejó de proponer el lema de jóvenes');
+   }else if(citation.kind==='noun-case'){
     assert.equal(found.status,citation.expectedStatus,
      'Ha cambiado el estado del lematizador: revisar de nuevo '+form);
     if(citation.expectedStatus==='review'){
@@ -136,7 +165,7 @@ for(const u of project.units){
   review:rows.filter(x=>x.status==='review').length,
   unknown:rows.filter(x=>x.status==='unknown').length});
 }
-for(const citation of [...editorial.items,...nounCaseEvidence.items])
+for(const citation of [...editorial.items,...nounCaseEvidence.items,...systematic.contextualHomographies])
  assert.equal(externalCounts.get(citation.form),citation.occurrences,
   'Superficie externa eliminada o modificada: '+citation.form);
 const rows=[...all.values()].sort((a,b)=>b.count-a.count||a.form.localeCompare(b.form,'el'));
