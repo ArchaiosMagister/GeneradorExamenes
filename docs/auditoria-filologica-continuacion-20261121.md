@@ -79,3 +79,17 @@ Se han buscado en todas las oraciones de las catorce unidades las apariciones de
 Se conserva `οὐχ ὁ` (UD10) porque `ὁ` lleva espíritu áspero; también los `οὐ` ante consonante y `οὐκ` ante vocal suave correctos. Se añaden estas dos aserciones a la prueba filológica. **Total de la presente PR: 18 sustituciones griegas localizadas (no 18 paradigmas ni 18 respuestas nuevas)**. Se conserva exactamente el inventario de 14 unidades y 471 registros.
 
 Referencia sobre negación: https://ccel.org/ccel/smyth/grammar/html/smyth_1e_uni.htm (Smyth §137, οὐκ ante espíritu suave y οὐχ ante áspero); https://dcc.dickinson.edu/grammar/age/no-and-not.
+
+## Ronda posterior: imperō y oppidum (cinco apariciones de Latín 4.º)
+
+La lectura de las **541 entradas latinas exigibles de 4.º** detectó `īmpĕro (1ª)` en UD5 y `ōppĭdŭm, –ī` en UD2, UD5, UD7 y UD8. La primera vocal de ambos lemas es breve, sin perjuicio de que las sílabas iniciales sean largas por posición (`im-` ante `mp`, `op-` ante `pp`).
+
+- Corrección localizada: `īmpĕro` → **`ĭmpĕro`** (UD5). El genitivo latino no interviene: es la primera persona de indicativo, primera conjugación. Evidencia de pronunciación clásica: https://en.wiktionary.org/wiki/impero y Lewis–Short: https://atlas.perseus.tufts.edu/dictionaries/entry/urn%3Acite2%3Ascaife-viewer%3Adictionary-entries.atlas_v1%3Alat.ls.perseus-eng2-n21886/.
+- Corrección localizada: `ōppĭdŭm` → **`ŏppĭdŭm`** (cuatro UD). Lewis–Short: https://alatius.com/ls/index.php?l=oppidorum y https://logeion.uchicago.edu/oppidum.
+- No se modifica el `impero` ni el `oppidum` de Latín I, cuyos enunciados no contienen ese macrón.
+- Se dispone un script delimitado `scripts/apply-latin4-quantities-followup-20261121.cjs`, que solo actualiza los exigibles de 4.º, su banco de examen, la migración de semillas (sin tocar glosas manuales) y dos correcciones persistentes. El índice y `offline.html` se reconstruyen juntos desde el origen académico fijado, sin crear flexiones certificadas.
+- La prueba `scripts/test-filologia-latin4-quantity-followup-20261121.cjs` comprueba cinco grafías, 1106/541 exigibles, dos overrides, migración idempotente y paridad offline. Se añade a Phase I y offline-check.
+
+### Riesgo sistemático detectado, sin corrección automática
+
+El barrido por macrón delante de grupos consonánticos de Latín 4.º devuelve numerosos candidatos, pero **no es un detector de errores**: una vocal larga puede preceder dos consonantes y una breve también. Se exige contraste individual y distinción entre cantidad de vocal y sílaba. Por ejemplo, `līttĕra` merece cotejo adicional con Lewis–Short, que recoge `littĕra` y califica `lītĕra` de grafía menos recomendable (https://atlas.perseus.tufts.edu/dictionaries/entry/urn%3Acite2%3Ascaife-viewer%3Adictionary-entries.atlas_v1%3Alat.ls.perseus-eng2-n26829/). También deben estudiarse `āltus`, `gēmma`, `māgnus`, `lōngus` y `pūlchĕr` antes de modificar el listado. La reconstrucción de estas cinco apariciones de `impero/oppidum` se hará de forma aislada y sin despliegue.
