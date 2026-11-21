@@ -207,6 +207,8 @@ jobs:
         run: node scripts/test-greek-audit-fixture.cjs
       - name: Auditar sincretismos de formas verbales griegas y paridad offline
         run: node scripts/test-greek-verb-syncretism.cjs
+      - name: Evitar notaciones abreviadas del ν móvil en las formas evaluables
+        run: node scripts/test-greek-movable-nu.cjs
       - name: Auditar las 100 formas más frecuentes de Griego I
         run: node scripts/audit-greek-frequent-100.cjs
       - name: Verificar las 15 correcciones persistentes de Griego I
