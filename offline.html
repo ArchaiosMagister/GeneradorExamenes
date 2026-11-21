@@ -13946,8 +13946,16 @@ function latinExpandedForms(bank){
  const complete=[...bank];
  for(const [entry,meaning,meaning_va] of supplementary){
   const lemma=latinKey(head(entry));
-  if(!bank.some(x=>latinKey(head(x.entry))===lemma))
-   complete.push({entry,meaning,meaning_va});
+  if(bank.some(x=>latinKey(head(x.entry))===lemma))continue;
+  // Enunciado abreviado del docente («certo − (1ª)»):
+  // recuperar sus temas del suplemento sin sustituir su traducción original.
+  const abbreviated=bank.find(row=>{
+   const raw=String(row.entry||'').trim();
+   return /\s+[–−—-]\s*\((?:1ª|2ª|3ª|4ª|mx\.)\)\s*$/u.test(raw)&&
+    latinKey(head(raw).replace(/\s+[–−—-]\s*$/u,''))===lemma;
+  });
+  complete.push({entry,meaning:abbreviated?.meaning||meaning,
+   meaning_va:abbreviated?.meaning_va||meaning_va});
  }
  for(const row of complete){
   const raw=String(row.entry||'').trim(),lemma=head(raw),l=latinKey(lemma);
