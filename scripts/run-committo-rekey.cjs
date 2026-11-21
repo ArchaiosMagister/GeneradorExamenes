@@ -120,3 +120,5 @@ for(const [p,data] of [
 console.log('Fuentes y pruebas actualizadas; reconstruir índice y offline antes de evaluar.');
 
 // Activación única de la reconstrucción en la rama aislada.
+
+// Reintento: commit de fuentes sin modificar los workflows mediante Actions.
