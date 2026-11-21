@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "purpose": "atestacion-filologica-solo-auditoria-de-oraciones",
+  "course": "gr1",
+  "automaticGradingEnabled": false,
+  "morphologyPromotion": false,
+  "items": [
+    {
+      "form": "ἔσωσαν",
+      "lemma": "σῴζω",
+      "reading": "Aoristo primero de indicativo activo, tercera persona del plural",
+      "units": [
+        12
+      ],
+      "occurrences": 2,
+      "reference": "https://www.greekdoc.com/lexicon/sw.html",
+      "note": "Forma explícitamente listada como 3.ª plural; sin crear las demás casillas del paradigma."
+    },
+    {
+      "form": "ἔρριψαν",
+      "lemma": "ῥίπτω",
+      "reading": "Aoristo primero de indicativo activo, tercera persona del plural",
+      "units": [
+        12
+      ],
+      "occurrences": 1,
+      "reference": "https://greekdoc.com/lexicon/ri.html",
+      "note": "Forma ática con doble rho y aumento; las variantes literarias se conservan como no evaluadas."
+    },
+    {
+      "form": "εἰσέβαλον",
+      "lemma": "εἰσβάλλω",
+      "reading": "Segundo aoristo de indicativo activo, tercera persona del plural en contexto",
+      "units": [
+        12
+      ],
+      "occurrences": 1,
+      "reference": "https://en.wiktionary.org/wiki/%CE%B5%E1%BC%B0%CF%83%CE%B2%CE%AC%CE%BB%CE%BB%CF%89",
+      "note": "Sincretismo 1.ª singular / 3.ª plural; aquí el sujeto οἱ Λακεδαιμόνιοι exige tercera plural."
+    }
+  ]
+}

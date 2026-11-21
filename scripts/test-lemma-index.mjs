@@ -21,7 +21,7 @@ assert.ok(data.extensions?.citation_only.lat>=100&&data.extensions?.citation_onl
 assert.ok(data.rows.lat.some(x=>x[3]===2)&&data.rows.grc.some(x=>x[3]===3));
 const latinEditorial=JSON.parse(fs.readFileSync(path.join(root,'data/lemmas/latin-editorial-decisions.json'),'utf8'));
 assert.equal(latinEditorial.verifiedMorphology,false);
-assert.equal(latinEditorial.decisions.length,2);
+assert.equal(latinEditorial.decisions.length,4);
 assert.equal(latinEditorial.textCorrections[0].corrected,'Pecunia carere nonnullis philosophis placebat.');
 assert.equal(data.vocabulary.lat.tener.lat1.entry,'tener, tenera, tenerum');
 assert.deepEqual([...data.vocabulary.lat.tener.lat1.units].sort(),['UD 2','UD 3']);
@@ -32,6 +32,21 @@ assert(!data.vocabulary.lat.commito&&!data.rows.lat.some(row=>row[0]==='commito'
  'No puede quedar una segunda clave por la errata commito');
 assert(data.vocabulary.lat.committo.lat1&&data.vocabulary.lat.committo.lat4,
  'Ambos cursos deben compartir committo');
+// UD7: dos enunciados de tercera corregidos, sin perder la ficha de sol
+// registrada previamente en UD11–12 ni convertir la cita de nix en una flexión.
+assert.equal(data.vocabulary.lat.nivis,undefined,'Nivis es genitivo, no nominativo');
+assert.equal(data.vocabulary.lat.solis,undefined,'Solis es genitivo, no nominativo');
+assert.equal(data.vocabulary.lat.nix?.lat1?.entry,'nix, nivis (f.)');
+assert.deepEqual(data.vocabulary.lat.nix.lat1.units,['UD 7']);
+assert.equal(data.vocabulary.lat.sol?.lat1?.entry,'sol, solis (m.)');
+assert.deepEqual([...data.vocabulary.lat.sol.lat1.units].sort(),
+ ['UD 11–12','UD 7'],'Las dos unidades deben quedar asociadas al mismo lema');
+assert.equal(data.rows.lat.filter(r=>r[0]==='sol'&&r[3]===0).length,12,
+ 'No perder las doce formas externas de sol');
+assert(data.rows.lat.some(r=>r[0]==='nix'&&r[1]==='nix'&&r[2]==='LEX;ENTRY'&&r[3]===3),
+ 'Nix debe conservarse como cita sin certificar un paradigma');
+assert(!data.rows.lat.some(r=>r[0]==='solis'||r[0]==='nivis'),
+ 'Las claves morfológicas antiguas no pueden sobrevivir a la migración');
 assert.equal(data.extensions.latin_editorial_decisions.verifiedFormsAdded,0,
  'La corrección de un enunciado no acredita nuevas flexiones');
 assert.equal(data.vocabulary.lat.moveo.lat1.entry,'moveo, movi, motum (2ª)');
@@ -59,7 +74,7 @@ for(const row of overrides.singleForms){
 }
 
 assert.ok(data.extensions.rejected_for_conflict.every(x=>x.lemma&&x.features.length>0));
-assert.equal(Object.keys(data.vocabulary.lat).length,771+(data.extensions?.readerEnrichment?.additions?.lat||0),
+assert.equal(Object.keys(data.vocabulary.lat).length,770+(data.extensions?.readerEnrichment?.additions?.lat||0),
  'El enriquecimiento solo puede añadir lemas presentes en el banco docente');
 assert.equal(Object.keys(data.vocabulary.grc).length,351+(data.extensions?.readerEnrichment?.additions?.grc||0),
  'El enriquecimiento griego solo puede añadir lemas presentes en el banco docente');
@@ -70,7 +85,8 @@ const ctx={window:{},document:{readyState:'loading',addEventListener(){}},consol
 runInNewContext(script,ctx,{filename:'offline-lemmas.js'});
 const {normalize,query,describe,coverage,coverageByUnit,uniqueLemmaFromData}=ctx.window.ExaminaOfflineLemmatizer;
 const latCoverage=coverage(data,'lat1'),grCoverage=coverage(data,'gr1');
-assert.ok(latCoverage.lemmas>=664,'No puede perderse ningún lema del temario de Latín I');
+// Solo se reduce una clave histórica: solis y sol eran el mismo lema latino.
+assert.ok(latCoverage.lemmas>=663,'Tras fusionar solis con sol deben conservarse todos los lemas reales de Latín I');
 for(const course of ['lat1','lat4','gr1']){
  const units=coverageByUnit(data,course);
  assert.ok(units.length>=5,'Faltan unidades de '+course);

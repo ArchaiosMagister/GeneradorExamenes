@@ -323,6 +323,69 @@
       "to": "αἷμα, αἵματος (τό)",
       "reference": "https://www.greek-language.gr/digitalResources/ancient_greek/tools/liddell-scott/search.html?lq=%CE%B1%E1%BC%B7%CE%BC%CE%B1",
       "note": "Género neutro sin nuevas flexiones."
+    },
+    {
+      "lang": "lat",
+      "lemma": "carthago",
+      "course": "lat1",
+      "from": "Carthago, −inis (m.)",
+      "to": "Carthago, −inis (f.)",
+      "reference": "https://logeion.uchicago.edu/Carthago",
+      "note": "Topónimo femenino, no promociona flexiones."
+    },
+    {
+      "lang": "lat",
+      "lemma": "pugno",
+      "course": "lat4",
+      "from": "pūgno (1ª)",
+      "to": "pūgnō (1ª)",
+      "reference": "https://logeion.uchicago.edu/pugno",
+      "note": "Cantidad larga de ū y -ō; fuente del exigible tenía pŭgno."
+    },
+    {
+      "lang": "lat",
+      "lemma": "myro",
+      "course": "lat4",
+      "from": "Mўrō̆, –onis (m.)",
+      "to": "Myro, –ōnis (m.)",
+      "reference": "https://logeion.uchicago.edu/Myro",
+      "note": "Reemplazar carácter cirílico por y latina; sin extrapolación de paradigma."
+    },
+    {
+      "lang": "lat",
+      "lemma": "stilus",
+      "course": "lat4",
+      "from": "stўlus, –ī",
+      "to": "stĭlus, –ī",
+      "reference": "https://logeion.uchicago.edu/stilus",
+      "note": "Latín clásico: estilo, punzón para escribir."
+    },
+    {
+      "lang": "grc",
+      "lemma": "μικροσ",
+      "course": "gr1",
+      "from": "μίκρος, –α, –ον",
+      "to": "μικρός, –ά, –όν",
+      "reference": "https://logeion.uchicago.edu/%CE%BC%CE%B9%CE%BA%CF%81%CF%8C%CF%82",
+      "note": "Oxítono; se preservan lecturas individuales acreditadas."
+    },
+    {
+      "lang": "lat",
+      "lemma": "agricola",
+      "course": "lat4",
+      "from": "ā̆grĭcŏla, –æ",
+      "to": "ăgrĭcŏla, –æ",
+      "reference": "https://www.online-latin-dictionary.com/latin-english-dictionary.php?lemma=AGRICOLA100",
+      "note": "Vocal inicial breve según repertorio lexicográfico; corrección editorial del enunciado, no flexiones nuevas."
+    },
+    {
+      "lang": "lat",
+      "lemma": "africa",
+      "course": "lat4",
+      "from": "Ā̆frĭca, –æ",
+      "to": "Āfrĭca, –æ",
+      "reference": "https://es.pons.com/traducci%C3%B3n/lat%C3%ADn-alem%C3%A1n/Africa",
+      "note": "Vocal inicial larga del topónimo; no se convierte en paradigma verificado."
     }
   ],
   "paradigms": [

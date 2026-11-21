@@ -20,7 +20,7 @@ const latinEditorialPath=path.join(root,'data/lemmas/latin-editorial-decisions.j
 const norm=s=>String(s||'').toLowerCase().normalize('NFD')
  .replace(/\u0345/g,'ι').replace(/\p{M}/gu,'').replace(/æ/g,'ae').replace(/œ/g,'oe')
  .replace(/ς/g,'σ').trim();
-const head=s=>{const first=String(s||'').split(/[,+(]/)[0].trim().split('/')[0];return first&&!/\s/u.test(first)?norm(first):null};
+const head=s=>{const first=String(s||'').split(/[,+(]/)[0].trim().split('/')[0];return first&&!/\s/u.test(first)?({'mуro':'myro','stуlus':'stilus'}[norm(first)]||norm(first)):null};
 async function fetchText(name){
  const url=base+name;
  for(let attempt=0;attempt<3;attempt++){
@@ -102,21 +102,38 @@ async function main(){
    throw Error('Decisión latina mal formada: '+decision.id);
   const original=catalog.lat[decision.fromLemma],revised=catalog.lat[decision.toLemma];
   if(original?.lat1){
-   // Solo autorizar la fusión explícita commito -> committo entre cursos disjuntos.
-   const joining=decision.mergeExistingCourse==='lat4';
-   if(joining&&(decision.fromLemma!=='commito'||decision.toLemma!=='committo'))
-    throw Error('Fusión no autorizada: '+decision.id);
-   if((revised&&!joining)||(!revised&&joining)||
-      (joining&&(original.lat4||!revised.lat4||revised.lat1))||
+   // Proteger ambos tipos de unificación por identificador y curso.
+   // La fusión solis -> sol comparte curso y debe conservar las DOS UDs.
+   const joiningOther=decision.mergeExistingCourse==='lat4';
+   const joiningSame=decision.mergeExistingCourse==='lat1';
+   if(joiningOther&&(decision.fromLemma!=='commito'||decision.toLemma!=='committo'))
+    throw Error('Fusión intercurso no autorizada: '+decision.id);
+   if(joiningSame&&(
+      decision.id!=='solis-ud7-sol'||
+      decision.fromLemma!=='solis'||decision.toLemma!=='sol'||
+      decision.existingEntry!=='sol, solis (m.)'||
+      JSON.stringify(decision.existingUnits)!==JSON.stringify(['UD 11–12'])||
+      !revised?.lat1||revised.lat1.entry!==decision.existingEntry||
+      JSON.stringify(revised.lat1.units)!==JSON.stringify(decision.existingUnits)||
+      original.lat4||revised.lat4))
+    throw Error('Fusión latina dentro del mismo curso no autorizada: '+decision.id);
+   if((revised&&!joiningOther&&!joiningSame)||
+      (!revised&&(joiningOther||joiningSame))||
+      (joiningOther&&(original.lat4||!revised.lat4||revised.lat1))||
       original.lat1.entry!==decision.fromEntry||
       JSON.stringify([...original.lat1.units].sort())!==JSON.stringify([...decision.units].sort()))
     throw Error('La ficha latina cambió inesperadamente: '+decision.id);
-   catalog.lat[decision.toLemma]={
-    ...(joining?revised:original),
+   catalog.lat[decision.toLemma]=joiningSame?{
+    ...revised,lat1:{
+     ...revised.lat1,entry:decision.toEntry,
+     units:[...new Set([...revised.lat1.units,...original.lat1.units])]
+    }
+   }:{
+    ...(joiningOther?revised:original),
     lat1:{...original.lat1,entry:decision.toEntry}
    };
    delete catalog.lat[decision.fromLemma];
-   if(joining)mergedLatinEditorialLemmas++;
+   if(joiningOther||joiningSame)mergedLatinEditorialLemmas++;
   }else if(!revised?.lat1||revised.lat1.entry!==decision.toEntry){
    throw Error('No se puede reproducir la decisión latina: '+decision.id);
   }
@@ -160,6 +177,18 @@ async function main(){
    suspendedGreekCandidates.add(next);
   else if(item.candidatePolicy)throw Error('Política de candidatas no reconocida: '+item.id);
  }
+ // Corrupción identificada en el extracto griego fijado: el paradigma de
+ // ὄνομα mezcla rótulos ingleses con casillas morfológicas desplazadas.
+ // Excluir SOLO estas once filas y fallar si cambia la fuente; jamás
+ // reinterpretar un caso por analogía ni verificar automáticamente formas.
+ const badOnomaCells=new Set([
+  'Dual|N;GEN;DU','Plural|N;GEN;PL','Singular|N;GEN;SG',
+  'ὄνομᾰ|N;DAT;SG','ὀνόμᾰσῐ|N;VOC;PL',
+  'ὀνόμᾰτᾰ|N;DAT;PL','ὀνόμᾰτε|N;DAT;DU',
+  'ὀνομᾰ́τοιν|N;ACC;DU','ὀνομᾰ́τοιν|N;VOC;DU',
+  'ὀνόμᾰτος|N;ACC;SG','ὀνομᾰ́των|N;ACC;PL'
+ ]);
+ const quarantinedOnomaCells=new Set();
  const rows={lat:[],grc:[]};
  const counts={lat:{unimorph:0,docente:0,modelo:0,lema:0,contrastado:0},grc:{unimorph:0,docente:0,modelo:0,lema:0,wikcionario:0,contrastado:0}};
  const seen={lat:new Set(),grc:new Set()};
@@ -190,6 +219,13 @@ async function main(){
     for(const row of shard){
      total++;
      if(!Array.isArray(row)||row.length<3)throw Error('Fila UniMorph incorrecta');
+     if(lang==='grc'&&norm(row[0])==='ονομα'){
+      const sig=row[1]+'|'+row[2];
+      if(!badOnomaCells.has(sig)||quarantinedOnomaCells.has(sig))
+       throw Error('Revisar origen griego de ὄνομα: casilla inesperada '+sig);
+      quarantinedOnomaCells.add(sig);
+      continue;
+     }
      add(lang,row[0],row[1],row[2],'unimorph');
     }
    }
@@ -197,6 +233,8 @@ async function main(){
   if(total!==expected||counts[lang].unimorph<expected*0.99)
    throw Error(lang+': filas inesperadas '+total+' de '+expected);
  }
+ if(quarantinedOnomaCells.size!==badOnomaCells.size)
+  throw Error('Han cambiado las 11 casillas de ὄνομα: cotejo individual obligatorio');
  // Explicit teacher models also contribute forms when their lemma belongs to
  // the course vocabulary. Descriptions remain separate from UniMorph tags.
  for(const p of paradigms){
@@ -262,6 +300,11 @@ async function main(){
   citation_only:{lat:0,grc:0},
   warning:'Generated forms are provisional lookup suggestions, NEVER exam solutions.'};
  extensions.verifiedIndividualForms=overrides.singleForms.length;
+ extensions.quarantinedGreekOnoma={
+  lemma:'ονομα',count:quarantinedOnomaCells.size,source:0,
+  policy:'Excluidas lecturas corruptas; lema consultable, flexiones no acreditadas',
+  automaticallyVerified:false
+ };
  const verifiedCells=new Map();
  for(const [lemma,surface,features]of rows.lat){
   const id=lemma+'|'+features;
@@ -269,6 +312,8 @@ async function main(){
   verifiedCells.get(id).add(norm(surface));
  }
  for(const [lemma,v]of Object.entries(catalog.lat)){
+  // Lemas normalizados: ninguna forma adicional sin contraste individual.
+  if(lemma==='myro'||lemma==='stilus')continue;
   const entry=Object.values(v).sort((a,b)=>
    (b.entry.match(/,/g)||[]).length-(a.entry.match(/,/g)||[]).length)[0]?.entry;
   const proposals=proposeRegularLatin(lemma,entry);

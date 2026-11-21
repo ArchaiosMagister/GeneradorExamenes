@@ -1,0 +1,57 @@
+'use strict';
+// PR #203. Auditoría filológica latina UD7, preservación del índice y paridad offline.
+const assert=require('node:assert/strict');
+const fs=require('node:fs');
+const vm=require('node:vm');
+const source=fs.readFileSync('required-latin-units.js','utf8');
+const ctx={window:{}};
+vm.runInNewContext(source,ctx,{filename:'required-latin-units.js'});
+const required=ctx.window.ExaminaRequiredLatinUnits;
+assert.equal(required.schema,1);
+const ud7=required.courses.latin1.UD7;
+const later=required.courses.latin1['UD11-12']||required.courses.latin1['UD11–12'];
+assert(Array.isArray(ud7)&&Array.isArray(later));
+assert.equal(ud7.length,112,'UD7 no puede perder ni añadir entradas exigibles');
+assert.equal(Object.values(required.courses.latin1).reduce((n,rows)=>n+rows.length,0),1106,
+ 'Latín I debe conservar las 1106 entradas, incluidas repeticiones legítimas');
+assert.equal(Object.values(required.courses.latin4).reduce((n,rows)=>n+rows.length,0),541,
+ 'El repertorio exigible de Latín 4.º no debe cambiar');
+assert.equal(ud7.filter(x=>x==='nix, nivis (f.)').length,1);
+assert.equal(ud7.filter(x=>x==='sol, solis (m.)').length,1);
+assert(!ud7.includes('nivis, –is (f.)')&&!ud7.includes('solis, –is (m.)'));
+assert.equal(later.filter(x=>x==='sol, solis (m.)').length,1,
+ 'La aparición independiente de UD11–12 no debe desaparecer');
+const editorial=JSON.parse(fs.readFileSync('data/lemmas/latin-editorial-decisions.json','utf8'));
+assert.equal(editorial.decisions.length,4);
+for(const id of ['nivis-ud7-nix','solis-ud7-sol']){
+ const item=editorial.decisions.find(x=>x.id===id);
+ assert(item&&item.verifiedMorphology===false&&/^https:\/\//.test(item.reference));
+}
+const index=JSON.parse(fs.readFileSync('data/lemmas/teacher-forms.json','utf8'));
+assert.equal(Object.keys(index.vocabulary.lat).length,770);
+assert(!index.vocabulary.lat.nivis&&!index.vocabulary.lat.solis);
+assert.equal(index.vocabulary.lat.nix?.lat1?.entry,'nix, nivis (f.)');
+assert.deepEqual(index.vocabulary.lat.nix.lat1.units,['UD 7']);
+assert.equal(index.vocabulary.lat.sol?.lat1?.entry,'sol, solis (m.)');
+assert.deepEqual([...index.vocabulary.lat.sol.lat1.units].sort(),['UD 11–12','UD 7']);
+assert.equal(index.rows.lat.filter(x=>x[0]==='sol'&&x[3]===0).length,12);
+assert(index.rows.lat.some(x=>x[0]==='nix'&&x[1]==='nix'&&x[2]==='LEX;ENTRY'&&x[3]===3));
+assert(!index.rows.lat.some(x=>x[0]==='nix'&&x[3]===5),
+ 'Ninguna flexión de nix se debe certificar sin contraste independiente');
+assert(!index.rows.lat.some(x=>x[0]==='solis'||x[0]==='nivis'));
+const html=fs.readFileSync('index.html','utf8');
+for(const form of ['nix, nivis (f.)','sol, solis (m.)'])assert(html.includes(form),'Falta en la web: '+form);
+for(const form of ['nivis, –is (f.)','solis, –is (m.)'])assert(!html.includes(form),'Error antiguo en la web: '+form);
+const offline=fs.readFileSync('offline.html','utf8');
+const tag='<script id="examina-offline-assets" type="application/json">';
+const start=offline.indexOf(tag),end=offline.indexOf('</script>',start);
+assert(start>=0&&end>start);
+const assets=JSON.parse(offline.slice(start+tag.length,end));
+const embedded=assets['data/lemmas/teacher-forms.json'];
+assert(embedded&&embedded.vocabulary?.lat&&Array.isArray(embedded.rows?.lat));
+assert.deepEqual(embedded.vocabulary.lat,index.vocabulary.lat);
+assert.deepEqual(embedded.rows.lat,index.rows.lat);
+assert.equal(offline.includes('nix, nivis (f.)'),true);
+assert(!offline.includes('nivis, –is (f.)'));
+assert(!offline.includes('solis, –is (m.)'));
+console.log('LATIN III UD7: nix y sol, UD7/UD11–12 preservadas, doce lecturas de sol y paridad offline OK.');
