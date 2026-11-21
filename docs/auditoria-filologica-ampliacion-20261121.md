@@ -45,3 +45,5 @@ Prueba de regresión reproducible: `scripts/test-greek-sentence-philology-202611
 Referencias: [Smyth, acentos](https://grammars.alpheios.net/smyth/xhtml/body.1_div1.1_div2.7.html); [Smyth, aoristos](https://grammars.alpheios.net/smyth/xhtml/body.1_div1.2_div2.9.html); [Smyth, enclíticos](https://grammars.alpheios.net/smyth/xhtml/body.1_div1.1_div2.7.html); [Logeion σῴζω](https://www.logeion.org/%CF%83%E1%BF%B4%CE%B6%CF%89); [Open University, ῥίπτω](https://fass.open.ac.uk/sites/fass.open.ac.uk/files/files/classical-studies/Reading_Greek_Language_Reference_Book_May_2022.pdf); [Smyth, demostrativos](https://grammars.alpheios.net/smyth/xhtml/body.1_div1.2_div2.6.html); [pronombre ἡμῖν](https://pressbooks.pub/ancientgreek/chapter/25/).
 
 Se deja pendiente una oración de UD12 con `αὐλητρίς`, `εὐφραίνω` y `ἀκρόαμα` cuyo régimen exige una solución textual, sin reescribirla de manera automática.
+
+La reconstrucción de `offline.html` y del índice desde las fuentes originales se completó en Actions y eliminó el flujo temporal. Queda condicionada la publicación a la CI completa y a autorización expresa.
