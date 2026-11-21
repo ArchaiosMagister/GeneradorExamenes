@@ -1064,7 +1064,8 @@ function greekReferenceForms(bank){
   ['κιθαρίζω','tocar la cítara',['ἐκιθάρισε']],
   ['ἐκκλησία','asamblea',['ἐκκλησίᾳ','ἐκκλησίαν','ἐκκλησίας']],
   ['κομίζω','llevarse',['ἐκόμισε']],
-  ['λείπω','dejar',['ἔλειψαν','ἔλιπον']],
+  ['λείπω','dejar',['ἔλιπον','ἔλειψαν']],
+  ['ναῦς','nave',['νεῶν']],
   ['λύω','liberar',['ἐλελύκεμεν']],
   // Formas individuales contrastadas con los textos de UD13–14;
   // no implican comprobación de paradigmas enteros ni elevan el índice a source 5.
@@ -1097,7 +1098,7 @@ function greekReferenceForms(bank){
   ['ῥίπτω','arrojar',['ἐρίψαν']],
   ['ἔρχομαι','ir, venir',['ἐρχόμενος']],
   ['Ἔρως','Eros',['Ἔρως']],
-  ['ἐρωτάω','preguntar',['ἐρωτᾶται','ἠρωτᾶντο']],
+  ['ἐρωτάω','preguntar',['ἐρωτᾶται','ἠρωτῶντο']],
   ['εἰσβάλλω','invadir',['ἐσέβαλον']],
   ['στρατεύω','hacer una expedición',['ἐστράτευσαν','στρατεύσουσιν']],
   ['ἔχω','tener',['ἔσχον']],
