@@ -167,3 +167,9 @@ Se añade `.github/workflows/filologia-onoma-sync-203.yml`, restringido exclusiv
 
 ### Validación
 La ejecución de sincronización completó satisfactoriamente sus pruebas filológicas y el guardado de ambos artefactos. El control general de CI de la rama debe evaluarse **independientemente** después del último cambio, sin confundir los fallos transitorios de commits anteriores (índice/autónomo desactualizados) con los resultados definitivos. No se autoriza automáticamente fusionar ni publicar.
+
+### Colación específica de ὀνόματα en UD12 (sin restaurar UniMorph)
+
+La CI general reveló una dependencia legítima de la cuarentena de `ὄνομα`: el token **`ὀνόματα`** de «`οἱ Ἀθηναῖοι ἔγραψαν τὰ τῶν στρατιωτῶν ὀνόματα.`» pasó a estado `unknown`, porque la fuente original lo etiquetaba erróneamente como dativo plural. En esa frase es **acusativo plural neutro, complemento directo de `ἔγραψαν`**. Confirman el paradigma [Wiktionary: ὄνομα](https://en.wiktionary.org/wiki/%E1%BD%84%CE%BD%CE%BF%CE%BC%CE%B1) y [Perseus: ονοματα](https://perseus.tube/word/onomata).
+
+Se añade exclusivamente una segunda colación a `data/vocabulary/greek1-noun-case-attestation-20261121.json`, junto a `ἀκροάματι`. `scripts/audit-greek-all-units.cjs` comprueba el contexto exacto, la lectura `NOUN;ACC;PL;NEUT`, el estado previo `unknown` y la ausencia de formas verificadas del lema. Solamente el **informe del corpus** la considera documentada. Ni `teacher-forms.json`, ni `verified-overrides.json`, ni el HTML autónomo, ni la calificación de exámenes reciben nuevas formas. Si cambian el texto, el lema o las candidaturas, la auditoría falla y exige nueva colación. Prueba de regresión: `scripts/test-greek-noun-case-attestation-20261121.cjs`; la batería de tres aoristos exige de nuevo cero formas pendientes para las catorce unidades.
