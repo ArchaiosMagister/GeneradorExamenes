@@ -1,0 +1,31 @@
+'use strict';
+// Evidencia de un dativo regular sin darlo por atestiguado en la fuente 5.
+const assert=require('node:assert/strict'),fs=require('node:fs');
+const itemFile='data/vocabulary/greek1-noun-case-attestation-20261121.json';
+const evidence=JSON.parse(fs.readFileSync(itemFile,'utf8'));
+assert.equal(evidence.schema,1);
+assert.equal(evidence.purpose,'atestacion-filologica-puntual-solo-auditoria');
+assert.equal(evidence.course,'gr1');
+assert.equal(evidence.automaticGradingEnabled,false);
+assert.equal(evidence.morphologyPromotion,false);
+assert.equal(evidence.items.length,1);
+const item=evidence.items[0];
+assert.equal(item.form,'ἀκροάματι');
+assert.equal(item.indexLemma,'ακροαμα');
+assert.equal(item.entry,'ἀκρόαμα, –ματος (τό)');
+assert.equal(item.case,'NOUN;DAT;SG;NEUT');
+assert.equal(item.expectedStatus,'review');
+assert.equal(item.expectedCandidateAttested,false);
+assert.deepEqual(item.units,[12]);
+assert.equal(item.occurrences,1);
+assert(/^https:\/\//.test(item.reference));
+assert(/^https:\/\//.test(item.secondaryReference));
+const source=JSON.parse(fs.readFileSync('data/vocabulary/greek1-units-corrected.json','utf8'));
+const words=[...source.units.find(x=>x.title==='UD12').text.matchAll(/[\p{L}\p{M}]+/gu)]
+ .map(x=>x[0].normalize('NFC'));
+assert.equal(words.filter(x=>x===item.form).length,1,'Se ha modificado el único contexto');
+const teacher=JSON.parse(fs.readFileSync('data/lemmas/teacher-forms.json','utf8'));
+const overrides=JSON.parse(fs.readFileSync('data/lemmas/verified-overrides.json','utf8'));
+assert(!teacher.rows.grc.some(x=>x[1]===item.form),'No promover al índice de respuestas');
+assert(!overrides.singleForms.some(x=>x.lang==='grc'&&x.form===item.form),'No verificar propuestas');
+console.log('DATIVO ἀκροάματι acreditado como contexto singular; sin promoverlo a fuente 5');
