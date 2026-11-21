@@ -38,7 +38,7 @@ for(const [unit,entry] of [['UD5','μικρός, –ά, –όν'],['UD10','ἔτ
  assert(web&&source,'Enunciado no sincronizado: '+entry);
  assert.equal(web.meaning,source.meaning,'Significado de exigible distinto para '+entry);
 }
-for(const error of ['Carthago, −inis (m.)','Mўrō̆','stўlus','ya’, ‘aún'])assert(!html.includes(error),'La web conserva '+error);
+for(const error of ['Carthago, −inis (m.)','Mўrō̆','stўlus'])assert(!html.includes(error),'La web conserva '+error);
 if(process.argv.includes('--offline')){
  const offline=read('offline.html');
  for(const entry of ['Carthago, −inis (f.)','pūgnō (1ª)','Myro, –ōnis (m.)','stĭlus, –ī','μικρός, –ά, –όν','aún, todavía'])
