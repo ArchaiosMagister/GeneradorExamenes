@@ -205,6 +205,8 @@ jobs:
         run: node scripts/test-vg-unit-controls.cjs
       - name: Comprobar 15 correcciones de grafía en el corpus de regresión
         run: node scripts/test-greek-audit-fixture.cjs
+      - name: Auditar sincretismos de formas verbales griegas y paridad offline
+        run: node scripts/test-greek-verb-syncretism.cjs
       - name: Auditar las 100 formas más frecuentes de Griego I
         run: node scripts/audit-greek-frequent-100.cjs
       - name: Verificar las 15 correcciones persistentes de Griego I
