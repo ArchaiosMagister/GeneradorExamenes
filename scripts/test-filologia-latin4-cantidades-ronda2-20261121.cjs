@@ -23,9 +23,9 @@ const variants=[
  ['UD6','ōppūgnātĭō̆, –onis','ŏppūgnātĭō̆, –onis'],
  ['UD8','mŭlĭĕr, –ris','mŭlĭĕr, –eris (f.)']
 ];
-const start=html.indexOf('let vocab='),end=html.indexOf(';\n',start);
-assert(start>0&&end>start,'No se ha encontrado el banco de la web');
-const bank=JSON.parse(html.slice(start+'let vocab='.length,end));
+const start=html.indexOf('vocab.push(...'),end=html.indexOf(');\n',start);
+assert(start>0&&end>start,'No se ha encontrado el banco latino de 4.º');
+const bank=JSON.parse(html.slice(start+'vocab.push(...'.length,end));
 for(const [ud,before,after] of variants){
  const expected=required.courses.latin4[ud];
  assert.equal(expected.filter(s=>s===after).length,1,'Exigible '+ud+' '+after);
