@@ -1,0 +1,55 @@
+name: Reconstrucción segura de committo (rama aislada)
+on:
+  push:
+    branches:
+      - fix/committo-lemma-unification-20261121
+    paths:
+      - scripts/run-committo-rekey.cjs
+
+permissions:
+  contents: write
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validar herramienta temporal y prueba permanente
+        run: |
+          node --check scripts/run-committo-rekey.cjs
+          node --check scripts/test-committo-lemma-unification.cjs
+      - name: Aplicar correcciones docentes, clave canónica y migración
+        run: node scripts/run-committo-rekey.cjs
+      - name: Reconstruir índice desde la fuente fijada y decisión persistente
+        run: node scripts/build-lemma-index.mjs
+      - name: Regenerar versión independiente sin conexión
+        run: npm run offline:build
+      - name: Comprobar identidad de committo y conservacion de datos
+        run: node scripts/test-committo-lemma-unification.cjs
+      - name: Verificar lematización, auditoría, candidaturas y regresiones verbales
+        run: |
+          node scripts/test-lemma-index.mjs
+          node scripts/test-comprehensive-morph-audit.cjs
+          node scripts/test-candidaturas-lote200.cjs
+          node scripts/test-latin-verb-corpus-audit.cjs
+          node scripts/test-latin-verb-entry-integrity.cjs
+          node scripts/test-latin-verb-evidence.cjs
+          node scripts/test-verified-verb-overrides.cjs
+          node scripts/test-required-latin-vocabulary.cjs
+      - name: Confirmar que las formas contrastadas siguen siendo 619
+        run: node -e "const x=require('./data/lemmas/teacher-forms.json'); if(x.counts.lat.contrastado!==619)process.exit(1);"
+      - name: Guardar cambios únicamente en la rama de auditoría
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html offline.html required-latin-units.js data/lemmas/teacher-forms.json data/lemmas/latin-editorial-decisions.json scripts/build-lemma-index.mjs scripts/test-lemma-index.mjs scripts/test-comprehensive-morph-audit.cjs scripts/test-candidaturas-lote200.cjs scripts/test-latin-verb-corpus-audit.cjs .github/workflows/offline-check.yml
+          git diff --cached --stat
+          git diff --cached --quiet && { echo "Faltan cambios reconstruidos"; exit 1; }
+          git commit -m "fix: unificar committo entre Latín I y 4.º sin perder información"
+          git push origin HEAD:fix/committo-lemma-unification-20261121
