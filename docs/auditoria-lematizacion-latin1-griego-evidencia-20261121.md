@@ -27,3 +27,7 @@ Referencias: [LSJ: ἡγέομαι](https://atlas.perseus.tufts.edu/dictionaries
 ## Pruebas y alcance
 
 `scripts/audit-sentence-lemmas.cjs` incorpora cinco aserciones latinas y una pluriverbal. El archivo autónomo debe reconstruirse desde el generador actualizado y pasar la CI completa del commit final. Los cambios no amplían las 619 lecturas latinas contrastadas. No se han cambiado solucionarios, preguntas, asignaciones de UD ni la lógica de exportación. **Prohibida la fusión/publicación sin autorización.**
+
+## Reconstrucción aislada y CI
+
+El flujo temporal de GitHub Actions [44938216838](https://github.com/ArchaiosMagister/GeneradorExamenes/actions/runs/44938216838) terminó en **success**. Reconstruyó `offline.html` con el motor corregido, ejecutó las pruebas de lematización antes y después y se retiró de la rama en el mismo commit de reconstrucción. **No hubo publicación ni fusión.** La CI general del último commit debe confirmarse separadamente.
