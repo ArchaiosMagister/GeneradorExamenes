@@ -215,6 +215,51 @@
       "to": "ἡγεμών, –ονος (ὁ)",
       "reference": "https://atlas.perseus.tufts.edu/dictionaries/entry/urn%3Acite2%3Ascaife-viewer%3Adictionaries.v1%3Alsj-n46612/",
       "note": "Normalizar el género masculino de tercera declinación con artículo griego, coherente con el banco general docente; no certificar nuevas formas."
+    },
+    {
+      "lang": "grc",
+      "lemma": "στρατευμα",
+      "course": "gr1",
+      "from": "στράτευμα, –ατος",
+      "to": "στράτευμα, –ατος (τό)",
+      "reference": "https://logeion.uchicago.edu/%CF%83%CF%84%CF%81%CE%AC%CF%84%CE%B5%CF%85%CE%BC%CE%B1",
+      "note": "Sustantivo neutro de tercera declinación. UD9: expresar género mediante artículo; no añadir formas."
+    },
+    {
+      "lang": "grc",
+      "lemma": "αιξ",
+      "course": "gr1",
+      "from": "αἰξ, αἰγός",
+      "to": "αἴξ, αἰγός (ἡ)",
+      "reference": "https://logeion.uchicago.edu/morpho/%CE%B1%E1%BC%B4%CE%B3%CE%B5%CF%83%CE%B9%CE%BD",
+      "note": "Restaurar el acento de αἴξ y el artículo femenino del currículo; uso masculino históricamente posible, no descartar por regla léxica."
+    },
+    {
+      "lang": "grc",
+      "lemma": "δερμα",
+      "course": "gr1",
+      "from": "δέρμα, –ματος",
+      "to": "δέρμα, –ματος (τό)",
+      "reference": "https://logeion.uchicago.edu/%CE%B4%CE%AD%CF%81%CE%BC%CE%B1",
+      "note": "Neutro de tercera declinación. Solo normalizar enunciado y artículo; no alterar flexiones."
+    },
+    {
+      "lang": "grc",
+      "lemma": "λεων",
+      "course": "gr1",
+      "from": "λέων, λεόντος",
+      "to": "λέων, λέοντος (ὁ)",
+      "reference": "https://logeion.uchicago.edu/%CE%BB%CE%AD%CF%89%CE%BD",
+      "note": "Masculino de tercera declinación. Artículo docente ya presente en banco general y exigible; no ampliar corpus."
+    },
+    {
+      "lang": "grc",
+      "lemma": "σωμα",
+      "course": "gr1",
+      "from": "σῶμα, –ματος",
+      "to": "σῶμα, –ματος (τό)",
+      "reference": "https://www.logeion.org/%CF%83%E1%BF%B6%CE%BC%CE%B1",
+      "note": "Neutro de tercera declinación. Solo enunciado editorial sin extrapolación morfológica."
     }
   ],
   "paradigms": [
