@@ -440,6 +440,51 @@
       "to": "ŏppĭdŭm, –ī",
       "reference": "https://alatius.com/ls/index.php?l=oppidorum",
       "note": "Primera o breve; la sílaba op- es larga por la geminada pp."
+    },
+    {
+      "lang": "lat",
+      "lemma": "altus",
+      "course": "lat4",
+      "from": "āltus, –a, –um",
+      "to": "ăltus, –a, –um",
+      "reference": "https://en.wiktionary.org/wiki/altus",
+      "note": "Breve inicial contrastada; no equivale a cantidad silábica ni certifica nuevas flexiones."
+    },
+    {
+      "lang": "lat",
+      "lemma": "magnus",
+      "course": "lat4",
+      "from": "māgnus, –a, –um",
+      "to": "măgnus, –a, –um",
+      "reference": "https://en.wiktionary.org/wiki/magnus",
+      "note": "Breve inicial contrastada; no equivale a cantidad silábica ni certifica nuevas flexiones."
+    },
+    {
+      "lang": "lat",
+      "lemma": "longus",
+      "course": "lat4",
+      "from": "lōngus, –a, –um",
+      "to": "lŏngus, –a, –um",
+      "reference": "https://en.wiktionary.org/wiki/longus",
+      "note": "Breve inicial contrastada; no equivale a cantidad silábica ni certifica nuevas flexiones."
+    },
+    {
+      "lang": "lat",
+      "lemma": "gemma",
+      "course": "lat4",
+      "from": "gēmma, –æ",
+      "to": "gĕmma, –æ",
+      "reference": "https://en.wiktionary.org/wiki/gemma",
+      "note": "Breve inicial contrastada; no equivale a cantidad silábica ni certifica nuevas flexiones."
+    },
+    {
+      "lang": "lat",
+      "lemma": "littera",
+      "course": "lat4",
+      "from": "līttĕra, –æ",
+      "to": "lĭttĕra, –æ",
+      "reference": "https://atlas.perseus.tufts.edu/dictionaries/entry/urn%3Acite2%3Ascaife-viewer%3Adictionary-entries.atlas_v1%3Alat.ls.perseus-eng2-n26829/",
+      "note": "Breve inicial contrastada; no equivale a cantidad silábica ni certifica nuevas flexiones."
     }
   ],
   "paradigms": [
