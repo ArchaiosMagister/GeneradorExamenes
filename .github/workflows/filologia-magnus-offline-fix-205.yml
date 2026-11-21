@@ -1,0 +1,53 @@
+name: Recuperar paridad offline y cantidad de magnus en PR205 (sin despliegue)
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - '.github/workflows/filologia-magnus-offline-fix-205.yml'
+permissions:
+  contents: write
+concurrency:
+  group: filologia-magnus-offline-fix-205
+  cancel-in-progress: false
+jobs:
+  offline-magnus:
+    if: >-
+      github.event.pull_request.number == 205 &&
+      github.event.pull_request.head.repo.full_name == 'ArchaiosMagister/GeneradorExamenes' &&
+      github.event.pull_request.head.ref == 'fix/auditoria-griego-acentos-espiritus-20261121'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - name: Recuperar versión aprobada de la rama, sin publicar
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Regenerar índice desde fuente fijada, cotejando el cambio del lema
+        run: |
+          node scripts/build-lemma-index.mjs
+          git diff --exit-code -- data/lemmas/teacher-forms.json
+      - name: Regenerar HTML autónomo con el mismo índice
+        run: npm run offline:build
+      - name: Verificar las nueve lecturas y conservación de magnus
+        run: |
+          node scripts/test-filologia-latin4-quantity-clusters-20261121.cjs
+          node scripts/test-filologia-latin4-quantity-followup-20261121.cjs
+          node scripts/test-filologia-latin4-cantidades-ronda2-20261121.cjs
+          node scripts/test-filologia-cantidad-latina-20261121.cjs --offline
+          node scripts/test-latin-ud7-nix-sol-20261121.cjs
+          node scripts/test-filologia-regimen-acento-20261121.cjs --offline
+          git diff --check
+      - name: Actualizar solo offline.html después de verificar la paridad
+        run: |
+          git add -- offline.html
+          if git diff --cached --quiet; then echo 'Offline ya sincronizado'; exit 0; fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'fix(offline): conservar māgnus y sincronizar nueve lecturas'
+          git fetch origin fix/auditoria-griego-acentos-espiritus-20261121
+          git rebase origin/fix/auditoria-griego-acentos-espiritus-20261121
+          git push origin HEAD:refs/heads/fix/auditoria-griego-acentos-espiritus-20261121
