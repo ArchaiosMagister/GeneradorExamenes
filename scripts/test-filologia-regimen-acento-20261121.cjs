@@ -89,4 +89,19 @@ for(const [unit,good,bad] of greekNegationCorrections){
 }
 assert.equal(greekNegationCorrections.length,2);
 
+// Ronda complementaria: nominativo plural de πολέμιος, sin tocar otros casos.
+const polemioFixes={UD6:2,UD7:2,UD11:2,UD12:1};
+let correctedPolemioi=0;
+for(const [unit,number] of Object.entries(polemioFixes)){
+ const raw=project.units.find(row=>row.title===unit).text.normalize('NFC');
+ const correct=(raw.match(/πολέμιοι/g)||[]).length;
+ assert(correct>=number,unit+': faltan nominativos πολέμιοι ('+correct+'/'+number+')');
+ correctedPolemioi+=number;
+}
+for(const unit of project.units){
+ const raw=unit.text.normalize('NFC');
+ assert(!raw.includes('πολεμίοι'),unit.title+': nominativo plural mal acentuado');
+}
+assert.equal(correctedPolemioi,7);
+
 console.log('TERCERA RONDA FILOLÓGICA: 14 UD, 471 entradas, 11 oraciones seleccionables y análisis coherentes');
