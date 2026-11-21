@@ -68,3 +68,14 @@ Se inspeccionan las **541 entradas exigibles de diez unidades** y se identifican
 **Control de alcance:** los doble signos en `hŏmō̆`, `Cĭcĕrō̆`, `lĕgĭō̆` y `pā̆trĭa` se mantienen como casos de cantidad variable o política editorial pendiente, sin borrado indiscriminado. Tampoco se reescriben los genitivos abreviados de tercera declinación por analogía: las anteriores incidencias de `nix/sol` permanecen resueltas en la PR #203.
 
 **Siguiente cambio latino condicionado:** corregir los once registros de forma atómica, añadir decisiones persistentes con referencia, regenerar `teacher-forms.json` y `offline.html` juntos y exigir pruebas de paridad e integridad. No promocionar paradigmas por el mero cambio de cantidad de un lema.
+
+## Barrido adicional de negación οὐ / οὐκ / οὐχ
+
+Se han buscado en todas las oraciones de las catorce unidades las apariciones de la negación delante de la siguiente palabra, distinguiendo vocal con espíritu suave, vocal con espíritu áspero y consonante. Dos apariciones no respetaban la elisión condicionada por la aspiración:
+
+- UD10: `μάχεσθαι οὐ ἐβούλοντο` → **`μάχεσθαι οὐκ ἐβούλοντο`**.
+- UD12: `οἱ Λακεδαιμόνιοι οὐ ἔσωσαν` → **`οἱ Λακεδαιμόνιοι οὐκ ἔσωσαν`**.
+
+Se conserva `οὐχ ὁ` (UD10) porque `ὁ` lleva espíritu áspero; también los `οὐ` ante consonante y `οὐκ` ante vocal suave correctos. Se añaden estas dos aserciones a la prueba filológica. **Total de la presente PR: 18 sustituciones griegas localizadas (no 18 paradigmas ni 18 respuestas nuevas)**. Se conserva exactamente el inventario de 14 unidades y 471 registros.
+
+Referencia sobre negación: https://grammars.alpheios.net/smyth/xhtml/body.1_div1.4_div2.16.html (véase también cualquier gramática de griego antiguo en su apartado de οὐ/οὐκ/οὐχ).
