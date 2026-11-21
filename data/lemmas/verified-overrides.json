@@ -548,6 +548,96 @@
       "to": "ŏmnĭs, –e",
       "reference": "https://en.wiktionary.org/wiki/omnis",
       "note": "Cantidad de vocal breve contrastada; distinguir de sílaba larga por posición. No acredita paradigmas nuevos."
+    },
+    {
+      "lang": "lat",
+      "course": "lat4",
+      "lemma": "parvus",
+      "from": "pārvus, –a, –um",
+      "to": "părvus, –a, –um",
+      "reference": "https://en.wiktionary.org/wiki/parvus",
+      "note": "Cantidad vocal breve confirmada en pronunciacion clasica; no equivale a cantidad silabica ni acredita nuevas flexiones."
+    },
+    {
+      "lang": "lat",
+      "course": "lat4",
+      "lemma": "victoria",
+      "from": "vīctōrĭa, –æ",
+      "to": "vĭctōrĭa, –æ",
+      "reference": "https://en.wiktionary.org/wiki/victoria",
+      "note": "Cantidad vocal breve confirmada en pronunciacion clasica; no equivale a cantidad silabica ni acredita nuevas flexiones."
+    },
+    {
+      "lang": "lat",
+      "course": "lat4",
+      "lemma": "arma",
+      "from": "ārma, –orum",
+      "to": "ărma, –orum",
+      "reference": "https://en.wiktionary.org/wiki/arma",
+      "note": "Cantidad vocal breve confirmada en pronunciacion clasica; no equivale a cantidad silabica ni acredita nuevas flexiones."
+    },
+    {
+      "lang": "lat",
+      "course": "lat4",
+      "lemma": "castra",
+      "from": "cāstra, –orum",
+      "to": "căstra, –orum",
+      "reference": "https://en.wiktionary.org/wiki/castra",
+      "note": "Cantidad vocal breve confirmada en pronunciacion clasica; no equivale a cantidad silabica ni acredita nuevas flexiones."
+    },
+    {
+      "lang": "lat",
+      "course": "lat4",
+      "lemma": "porta",
+      "from": "pōrta, –æ",
+      "to": "pŏrta, –æ",
+      "reference": "https://en.wiktionary.org/wiki/porta",
+      "note": "Cantidad vocal breve confirmada en pronunciacion clasica; no equivale a cantidad silabica ni acredita nuevas flexiones."
+    },
+    {
+      "lang": "lat",
+      "course": "lat4",
+      "lemma": "porto",
+      "from": "pōrto (1ª)",
+      "to": "pŏrto (1ª)",
+      "reference": "https://en.wiktionary.org/wiki/porto",
+      "note": "Cantidad vocal breve confirmada en pronunciacion clasica; no equivale a cantidad silabica ni acredita nuevas flexiones."
+    },
+    {
+      "lang": "lat",
+      "course": "lat4",
+      "lemma": "fortis",
+      "from": "fōrtĭs, –e",
+      "to": "fŏrtĭs, –e",
+      "reference": "https://en.wiktionary.org/wiki/fortis",
+      "note": "Cantidad vocal breve confirmada en pronunciacion clasica; no equivale a cantidad silabica ni acredita nuevas flexiones."
+    },
+    {
+      "lang": "lat",
+      "course": "lat4",
+      "lemma": "serva",
+      "from": "sērva, –æ",
+      "to": "sĕrva, –æ",
+      "reference": "https://en.wiktionary.org/wiki/serva",
+      "note": "Cantidad vocal breve confirmada en pronunciacion clasica; no equivale a cantidad silabica ni acredita nuevas flexiones."
+    },
+    {
+      "lang": "lat",
+      "course": "lat4",
+      "lemma": "servus",
+      "from": "sērvus, –ī",
+      "to": "sĕrvus, –ī",
+      "reference": "https://en.wiktionary.org/wiki/servus",
+      "note": "Cantidad vocal breve confirmada en pronunciacion clasica; no equivale a cantidad silabica ni acredita nuevas flexiones."
+    },
+    {
+      "lang": "lat",
+      "course": "lat4",
+      "lemma": "incola",
+      "from": "īncŏla, –æ",
+      "to": "ĭncŏla, –æ",
+      "reference": "https://en.wiktionary.org/wiki/incola",
+      "note": "Cantidad vocal breve confirmada en pronunciacion clasica; no equivale a cantidad silabica ni acredita nuevas flexiones."
     }
   ],
   "paradigms": [
