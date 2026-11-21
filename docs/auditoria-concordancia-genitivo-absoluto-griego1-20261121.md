@@ -29,3 +29,11 @@ Se han cotejado individualmente los **doce genitivos absolutos** de UD10, línea
 **Inalterados:** lematizador, 2817 registros griegos del índice, 478 registros de fuente 5, once oraciones evaluables, tipos de preguntas, puntuación, glosas, métodos de exportación y solucionarios.
 
 **Pendiente metodológico:** continuar el cotejo de concordancias griegas y flexiones latinas en rondas posteriores; esta revisión no equivale a certificar toda la morfosintaxis del corpus.
+
+## Incidencia de lematización detectada en CI y resuelta sin promoción
+
+La primera batería de la PR señaló que la forma correcta `ἀποπλευσασῶν` resultaba **desconocida** para el lematizador local (`unknown`, cero candidatos, una aparición en UD10:39). Esto no invalida la concordancia: el índice contiene el lema `ἀποπλέω`, pero no certifica esa flexión femenina.
+
+El expediente de las doce construcciones incorpora `editorialFormAttestation` para la forma concreta, con un contexto, unidad, posición, lectura gramatical y referencias. `scripts/audit-greek-all-units.cjs` exige que siga siendo una forma desconocida para el motor, verifica el texto y la frecuencia y **solo la cuenta como cotejada en el informe docente**. Si aparecen otras ocurrencias o el lematizador cambia sus candidatos, la comprobación vuelve a fallar hasta revisar la evidencia.
+
+No se añaden formas a `data/lemmas/teacher-forms.json`, no se modifica el lematizador, ni se habilita `ἀποπλευσασῶν` para generar preguntas o corregir respuestas automáticamente. Se exige la CI completa sobre el último commit.

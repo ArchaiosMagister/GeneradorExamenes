@@ -132,6 +132,37 @@ for(const entry of relativeContext.items){
 for(const [form,expected] of allowedRelativeForms)
  assert.equal(relativeByForm.get(form)?.length,expected.count,'Falta cotejo de alguna aparición '+form);
 
+// ἀποπλευσασῶν no se reconoce de forma automática en el índice actual;
+// la lectura se acredita únicamente en el contexto exacto de UD10:39.
+const genitiveEvidence=JSON.parse(load('data/vocabulary/greek1-absolute-genitive-agreement-20261121.json'));
+assert.equal(genitiveEvidence.schema,1);
+assert.equal(genitiveEvidence.course,'gr1');
+assert.equal(genitiveEvidence.unit,10);
+assert.equal(genitiveEvidence.items.length,12);
+assert.equal(genitiveEvidence.automaticGradingEnabled,false);
+assert.equal(genitiveEvidence.morphologyPromotion,false);
+const genitiveForm=genitiveEvidence.editorialFormAttestation;
+assert.equal(genitiveForm.form,'ἀποπλευσασῶν');
+assert.equal(genitiveForm.indexLemma,'αποπλεω');
+assert.equal(genitiveForm.lemma,'ἀποπλέω');
+assert.equal(genitiveForm.entry,'ἀποπλέω');
+assert.equal(genitiveForm.reading,'PARTICIPLE;AOR;ACT;GEN;PL;FEM');
+assert.equal(genitiveForm.expectedStatus,'unknown');
+assert.equal(genitiveForm.expectedCandidateCount,0);
+assert.deepEqual(genitiveForm.units,[10]);
+assert.equal(genitiveForm.line,39);
+assert.equal(genitiveForm.occurrences,1);
+assert.equal(genitiveForm.context,project.units[9].text.split(/\r?\n/)[38]);
+assert.equal(genitiveEvidence.items[10].participle,genitiveForm.form);
+assert.equal(genitiveEvidence.items[10].subject,genitiveForm.subject);
+assert(/^https:\/\//.test(genitiveForm.reference));
+assert(/^https:\/\//.test(genitiveForm.secondaryReference));
+assert.equal(data.vocabulary.grc[genitiveForm.indexLemma]?.gr1?.entry,genitiveForm.entry);
+assert(!data.rows.grc.some(r=>r[0]===genitiveForm.indexLemma&&r[3]===5),
+ 'No certificar el paradigma de ἀποπλέω desde una única forma editorial');
+assert(!editorialByForm.has(genitiveForm.form),'Cotejo individual duplicado');
+editorialByForm.set(genitiveForm.form,{...genitiveForm,kind:'absolute-participle'});
+
 const externalCounts=new Map();
 
 const all=new Map(),unitReports=[];
@@ -184,7 +215,14 @@ for(const u of project.units){
   }
   if(citation){
    assert(citation.units.includes(unit),'Forma con colación fuera de UD autorizada: '+form);
-   if(citation.kind==='contextual-homography'){
+   if(citation.kind==='absolute-participle'){
+    assert.equal(found.status,citation.expectedStatus,
+     'Cambió el estado no acreditado del participio: '+form);
+    assert.equal(found.candidates.length,citation.expectedCandidateCount,
+     'Se han introducido candidaturas morfológicas que requieren nueva auditoría');
+    assert.equal(slot.count,citation.occurrences,'Cambió el número de participios: '+form);
+    assert(slot.lines.includes(citation.context),'Cambió el contexto de la nave');
+   }else if(citation.kind==='contextual-homography'){
     assert.equal(found.status,'review','Cambió el diagnóstico de la homografía '+form);
     assert.equal(slot.count,citation.occurrences,'Cambió el número de apariciones de '+form);
     assert.deepEqual([...found.candidates.map(c=>c.lemma)].sort(),[...citation.expectedCandidateLemmas].sort(),
@@ -236,7 +274,7 @@ for(const u of project.units){
   review:rows.filter(x=>x.status==='review').length,
   unknown:rows.filter(x=>x.status==='unknown').length});
 }
-for(const citation of [...editorial.items,...nounCaseEvidence.items,...systematic.contextualHomographies])
+for(const citation of [...editorial.items,...nounCaseEvidence.items,...systematic.contextualHomographies,genitiveForm])
  assert.equal(externalCounts.get(citation.form),citation.occurrences,
   'Superficie externa eliminada o modificada: '+citation.form);
 const rows=[...all.values()].sort((a,b)=>b.count-a.count||a.form.localeCompare(b.form,'el'));

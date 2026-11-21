@@ -19,6 +19,15 @@ const lines=greek.units[9].text.split('\n');
 const oldPart='ἀποπλευσάντων τῶν νεῶν';
 const goodPart='ἀποπλευσασῶν τῶν νεῶν';
 assert(lines[38].includes(goodPart),'El genitivo absoluto de las naves no concuerda');
+assert.equal(audit.editorialFormAttestation?.form,'ἀποπλευσασῶν');
+assert.equal(audit.editorialFormAttestation?.expectedStatus,'unknown');
+assert.equal(audit.editorialFormAttestation?.expectedCandidateCount,0);
+assert.equal(audit.editorialFormAttestation?.occurrences,1);
+assert.equal(audit.editorialFormAttestation?.context,lines[38]);
+assert.equal(audit.editorialFormAttestation?.reading,'PARTICIPLE;AOR;ACT;GEN;PL;FEM');
+assert(!verified.rows.grc.some(row=>row[0]==='αποπλεω'&&row[3]===5),
+ 'Un test contextual no debe promocionar el paradigma de ἀποπλέω');
+
 assert(!lines.some(s=>s.includes(oldPart)),'Se ha recuperado el participio masculino');
 assert(!lines[38].includes('τῶν νέων')&&!lines[38].includes('τῶν νέων'),
  'No sustituir las naves por jóvenes sin revisión editorial');

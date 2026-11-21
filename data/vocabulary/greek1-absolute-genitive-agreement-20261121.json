@@ -182,5 +182,24 @@
       "syntax": "genitivo absoluto",
       "interpretation": "Concordancia de participio y sujeto del genitivo absoluto conservada."
     }
-  ]
+  ],
+  "editorialFormAttestation": {
+    "form": "ἀποπλευσασῶν",
+    "lemma": "ἀποπλέω",
+    "indexLemma": "αποπλεω",
+    "entry": "ἀποπλέω",
+    "reading": "PARTICIPLE;AOR;ACT;GEN;PL;FEM",
+    "expectedStatus": "unknown",
+    "expectedCandidateCount": 0,
+    "units": [
+      10
+    ],
+    "occurrences": 1,
+    "line": 39,
+    "context": "ἀποπλευσασῶν τῶν νεῶν ἐκ τοῦ λιμένος, οἱ πολῖται εἰς τὴν πόλιν ἀπήρχοντο.",
+    "subject": "τῶν νεῶν",
+    "reference": "https://fass.open.ac.uk/sites/fass.open.ac.uk/files/files/classical-studies/Reading_Greek_Language_Reference_Book_May_2022.pdf",
+    "secondaryReference": "https://logeion.org/morpho/%CE%BD%CE%B1%E1%BF%A6%CF%82",
+    "note": "Cotejo editorial restringido a esta oración. No certificar ni añadir paradigmas a la fuente 5."
+  }
 }
