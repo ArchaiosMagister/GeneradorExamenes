@@ -118,4 +118,10 @@ assert.equal(ud5neg.split('οὐκ ἔστιν').length-1,3,'Tres casos de negac
 assert(!ud5neg.includes('οὔκ ἐστιν'));
 assert(!ud5neg.includes('οὐκ ἐστιν'));
 
+// Smyth §§183c, 187b: acento léxico y ἐστιν enclítico en predicaciones no existenciales.
+for(const [ud,correct,incorrect] of [["UD5","ὁ ἄνθρωπος οὐκ ἀεὶ δίκαιός ἐστιν.","ὁ ἄνθρωπος οὐκ ἀεὶ δικαιός ἐστιν."],["UD5","ὁ ἄνθρωπός ἐστιν οὔτε ἰατρός οὔτε φιλόσοφος.","ὁ ἄνθρωπος ἔστιν οὔτε ἰατρός οὔτε φιλόσοφος."],["UD5","ὁ πόλεμος οὔτε καλὸς οὔτε δίκαιός ἐστιν.","ὁ πόλεμος οὔτε καλὸς οὔτε δίκαιος ἔστιν."],["UD8","διὰ τί ὁ πόλεμος κακός ἐστιν;","διὰ τί ὁ πόλεμος κακός ἔστιν;"]]){
+ const text=project.units.find(x=>x.title===ud).text;
+ assert(text.includes(correct),ud+': falta acentuación enclítica '+correct);
+ assert(!text.includes(incorrect),ud+': persiste acentuación errónea '+incorrect);
+}
 console.log('TERCERA RONDA FILOLÓGICA: 14 UD, 471 entradas, 11 oraciones seleccionables y análisis coherentes');

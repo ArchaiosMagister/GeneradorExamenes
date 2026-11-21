@@ -197,3 +197,14 @@ Se añaden aserciones a las baterías filológicas y se conserva el inventario d
 El cotejo contextual de las tres apariciones negativas del presente de `εἰμί` en UD5 evidencia dos lecturas `οὔκ ἐστιν` y una `οὐκ ἐστιν`. Las tres pasan a **`οὐκ ἔστιν`**. Smyth, *Greek Grammar*, §187.b, establece que `ἐστίν` se escribe `ἔστιν` después de `οὐκ`; y §179 clasifica `οὐκ` como proclítico. Fuente: https://ccel.org/ccel/smyth/grammar/html/smyth_1f_uni.htm. La corrección no cambia estructura ni traducción y se valida en `scripts/test-filologia-regimen-acento-20261121.cjs`. Sin nuevos lemas ni flexiones acreditados.
 
 La ejecución aislada de reconstrucción de la ronda de diptongos https://github.com/ArchaiosMagister/GeneradorExamenes/actions/runs/44929366836 finalizó con **success** sobre `141c5cef4ffeced12cd12131fcedec7019a327a9`; los artefactos se incorporaron en `06c18c7d56b6e5fe89ee9b7763c8b5eb5018a7ab`. Los seis checks que surgen del commit del bot figuran como `action_required`; no equivalen a pruebas suspendidas ni aprobadas y deben ejecutarse nuevamente sobre el commit definitivo de un colaborador.
+
+### Cuatro casos de acento enclítico y predicación (UD5/UD8)
+
+Revisadas las secuencias de `δίκαιος`, `ἄνθρωπος` y `κακός` con la cópula enclítica, aplicando Smyth §§183.a/c y 187.b (https://ccel.org/ccel/smyth/grammar/html/smyth_1f_uni.htm) y LSJ `δίκαιος` (https://atlas.perseus.tufts.edu/dictionaries/entry/urn%3Acite2%3Ascaife-viewer%3Adictionaries.v1%3Alsj-n26886/). Cuatro correcciones localizadas:
+
+- UD5: `δικαιός ἐστιν` → `δίκαιός ἐστιν` (recupera la acentuación léxica y añade el agudo final por enclisis).
+- UD5: `ἄνθρωπος ἔστιν` → `ἄνθρωπός ἐστιν`.
+- UD5: `δίκαιος ἔστιν` → `δίκαιός ἐστιν`.
+- UD8: `κακός ἔστιν` → `κακός ἐστιν` (oxítona conservada ante enclítica).
+
+Las proposiciones son copulativas, no existenciales; no se aplica la excepción `ἔστιν` con valor existencial. Mantener 14 UD, 471 entradas docentes y el motor de 11 oraciones seleccionables. Se agregan aserciones exactas de buenas y malas grafías, sin alterar opciones de examen ni indexar formas nuevas.
