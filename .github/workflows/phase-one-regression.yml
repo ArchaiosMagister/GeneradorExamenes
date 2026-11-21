@@ -23,6 +23,7 @@ on:
       - 'scripts/test-greek-movable-nu-browser.cjs'
       - 'scripts/test-greek-ud5-quota-indent.cjs'
       - 'scripts/test-greek-two-ending-adjectives.cjs'
+      - 'scripts/test-greek-adjective-accent-vocative.cjs'
       - 'scripts/test-greek-all-unit-form-quotas.cjs'
       - 'scripts/test-morph-quotas-curriculum-regeneration.cjs'
       - 'scripts/test-greek-two-modes-legacy-drafts.cjs'
@@ -98,6 +99,8 @@ jobs:
         run: node scripts/test-greek-ud5-quota-indent.cjs
       - name: Griego UD5, adjetivos de dos terminaciones en fichas y regeneraciones
         run: node scripts/test-greek-two-ending-adjectives.cjs
+      - name: Griego UD5: ὀλίγος y πολύς, acentos, vocativos y migración local
+        run: node scripts/test-greek-adjective-accent-vocative.cjs
       - name: Exam UI redesign in iPad, forms, Word and vocabulary isolation
         run: node scripts/test-exam-ui-redesign.cjs
       - name: Verificar tema Examinator sin efectos sobre Word/PDF
