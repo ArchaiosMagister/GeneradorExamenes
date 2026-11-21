@@ -239,6 +239,8 @@ jobs:
         run: node scripts/test-filologia-latin4-cantidades-ronda2-20261121.cjs
       - name: Auditar cantidad vocal inicial de impero y oppidum en Latín 4.º
         run: node scripts/test-filologia-latin4-quantity-followup-20261121.cjs
+      - name: Auditar altus, magnus, longus, gemma y littera (16 entradas)
+        run: node scripts/test-filologia-latin4-quantity-clusters-20261121.cjs
       - name: Evitar notaciones abreviadas del ν móvil en las formas evaluables
         run: node scripts/test-greek-movable-nu.cjs
       - name: Auditar las 100 formas más frecuentes de Griego I
