@@ -55,3 +55,5 @@ assert(!html.includes("syncretic:x.verbTense==='aoristo segundo'"),
  'No mantener el viejo filtro que excluía ἦλθον sin explicar sus lecturas');
 console.log('Griego I: '+count+' formas individuales no duplicadas en 10 series, '+
  'ἔλυον y ἦλθον con doble interpretación; web, PWA y regeneración sincronizadas.');
+
+// Reconstrucción de distribución offline en rama aislada, sin publicación.
