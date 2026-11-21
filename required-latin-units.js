@@ -1141,7 +1141,7 @@ window.ExaminaRequiredLatinUnits={
     "latin4": {
       "UD1": [
         "Æmĭlĭa, –æ",
-        "ā̆grĭcŏla, –æ",
+        "ăgrĭcŏla, –æ",
         "āltus, –a, –um",
         "ămo",
         "ăqua, –æ",
@@ -1218,7 +1218,7 @@ window.ExaminaRequiredLatinUnits={
       ],
       "UD3": [
         "ādvērsārĭus, –ī",
-        "Ā̆frĭca, –æ",
+        "Āfrĭca, –æ",
         "āltus, –a, –um",
         "āmbŭlo (1ª)",
         "ămīcus, –ī",

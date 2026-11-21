@@ -81,3 +81,15 @@ Se ratifica provisionalmente `pūgnō`: el léxico Navigium presenta `pūgnāre,
 Después de la tercera ronda, el auditor de las 14 UD encontró un solo **caso de revisión**, `ἀκροάματι`. El lematizador ofrece exactamente un candidato —`ἀκρόαμα, –ματος (τό)`—, pero lo declara no atestiguado por el índice. Se ha cotejado externamente el **dativo singular**, documentado en el testimonio gramatical antiguo recogido por [Atticism.eu](https://atticism.eu/corpus/item/view?id=dd0c1758-f5f3-4c07-8631-ee895cbfcee8), y contrastado con el [paradigma del neutro -μα](https://en.wiktionary.org/wiki/%E1%BC%80%CE%BA%CF%81%CF%8C%CE%B1%CE%BC%CE%B1). No hay conflicto de lemas: el contexto es «complacerse con la actuación», con `ἐπὶ τῷ ἀκροάματι`.
 
 El expediente `data/vocabulary/greek1-noun-case-attestation-20261121.json` acredita **solo esta superficie, con esta interpretación y en UD12**, para que la auditoría docente pueda concluir. Se exige explícitamente que el analizador continúe mostrando exactamente un candidato no atestiguado y estado `review`; si cambia, la prueba falla para forzar nuevo examen. No se promueve `ἀκροάματι` a formas de respuesta, no se lo marca como fuente 5 ni se modifican otros paradigmas.
+
+## Cuarta ronda: cantidad latina y distinción entre macrón/breve y variantes métricas
+
+Un control exhaustivo de las **1647 entradas exigibles de Latín I y Latín de 4.º** (1106 + 541, sin alterar las unidades) encontró diez apariciones con macrón y breve sobre la misma vocal, correspondientes a nueve enunciados distintos. **No se borran esas marcas indiscriminadamente:** algunas obras las usan precisamente para indicar cantidad variable. Por ejemplo, `pā̆trĭa` tiene documentadas `pātrĭa` y `pătrĭa` según la tradición poética; se conserva pendiente de criterio editorial.
+
+Se rectifican únicamente dos casos cuyo valor vocálico está respaldado por diccionarios:
+1. Latín 4.º UD1: `ā̆grĭcŏla, –æ` → **`ăgrĭcŏla, –æ`**, con vocal inicial breve, conforme al [Diccionario Olivetti](https://www.online-latin-dictionary.com/latin-english-dictionary.php?lemma=AGRICOLA100).
+2. Latín 4.º UD3: `Ā̆frĭca, –æ` → **`Āfrĭca, –æ`**, con vocal inicial larga, conforme al [diccionario PONS](https://es.pons.com/traducci%C3%B3n/lat%C3%ADn-alem%C3%A1n/Africa) y [Āfer de Lewis-Short](https://atlas.perseus.tufts.edu/dictionaries/entry/urn%3Acite2%3Ascaife-viewer%3Adictionary-entries.atlas_v1%3Alat.ls.perseus-eng2-n1436/).
+
+El macrón/breve doble de `homō̆`, `Cicerō̆`, `legiō̆`, `oppūgnātiō̆` y `pā̆tria` no se interpreta automáticamente como corrupción del dato: la final `-ō` admite acortamientos en tradiciones métricas; el caso `pā̆tria` presenta variantes. La revisión filológica posterior deberá distinguir cuidadosamente *cantidad vocálica usual, variación cuantitativa atestiguada y cantidad silábica por posición*, y decidir la política de presentación docente antes de normalizarla.
+
+La prueba `scripts/test-filologia-cantidad-latina-20261121.cjs` coteja las dos formas corregidas contra el listado exigible, el índice de lemas, la web y el paquete autónomo, verificando asimismo que no se modifiquen los 1647 registros ni aparezcan letras cirílicas nuevas.
