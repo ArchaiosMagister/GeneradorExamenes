@@ -6,7 +6,6 @@ const html=read('index.html'),offline=read('offline.html');
 const idx=JSON.parse(read('data/lemmas/teacher-forms.json')),over=JSON.parse(read('data/lemmas/verified-overrides.json'));
 const spec=[
  ['altus','āltus, –a, –um','ăltus, –a, –um',['UD1','UD3','UD4','UD7']],
- ['magnus','māgnus, –a, –um','măgnus, –a, –um',['UD1','UD2','UD3','UD5','UD6','UD7','UD9']],
  ['longus','lōngus, –a, –um','lŏngus, –a, –um',['UD1','UD2']],
  ['gemma','gēmma, –æ','gĕmma, –æ',['UD1']],
  ['littera','līttĕra, –æ','lĭttĕra, –æ',['UD2','UD3']]
@@ -38,7 +37,7 @@ for(const [lemma,before,after,units] of spec){
  assert.equal(idx.vocabulary.lat[lemma].lat4.entry,after);
  assert.equal(embedded.vocabulary.lat[lemma].lat4.entry,after);
 }
-assert.equal(checked,16);
+assert.equal(checked,9);
 assert.equal(idx.counts.lat.contrastado,619);
 assert.deepEqual(idx.rows.lat,embedded.rows.lat,'Índice offline distinto');
 const f=html.indexOf('function migrateSeededLatinVerbEntries(items){');
@@ -57,5 +56,9 @@ for(const [lemma,old,after,units] of spec)for(const unit of units){
  assert.equal(seeded[i].entry,after);assert.equal(seeded[i].meaning,'Conservar glosa');i++;
 }
 assert.equal(custom.entry,'māgnus, –a, –um');
+assert(required.courses.latin4.UD1.includes('māgnus, –a, –um'),'Conservar māgnus; cantidad ante gn no es inequívoca');
+assert(!required.courses.latin4.UD1.includes('măgnus, –a, –um'));
+assert.equal(idx.vocabulary.lat.magnus.lat4.entry,'māgnus, –a, –um');
+assert.equal(embedded.vocabulary.lat.magnus.lat4.entry,'māgnus, –a, –um');
 assert.equal(migrate(seeded),false,'La migración debe ser idempotente');
-console.log('LAT4: 16/16 grafías, 5 overrides, 541 exigibles, 619 formas acreditadas, migración y offline concordantes');
+console.log('LAT4: 9/9 grafías, 4 overrides, 541 exigibles, 619 formas acreditadas, migración y offline concordantes');
