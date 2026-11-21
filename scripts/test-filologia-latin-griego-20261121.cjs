@@ -20,6 +20,9 @@ assert.equal(greek.required.length,172);
 assert.equal(greek.required.find(x=>x.unit==='UD5'&&x.entry.startsWith('μικρός'))?.entry,'μικρός, –ά, –όν');
 assert.equal(greek.required.find(x=>x.unit==='UD10'&&x.entry==='ἔτι (adv.)')?.meaning,'aún, todavía');
 assert.equal(examples.units.length,14);
+const valenciano=read('lexicon-valenciano.js');
+for(const term of ['"aún, todavía": "encara"','"estilo, punzón para escribir": "estil, punxó per a escriure"'])
+ assert(valenciano.includes(term),'Falta traducción valenciana '+term);
 for(const wrong of ['πολλοὶ ἂνθρωποι','ἀκούειν των Ἀθηναίων','ὁ τὴς πόλεως νόμος','τοῦς δούλους','τῇ θέᾳ','ὁ φιλόσοφὸς'])
  assert(!examples.units.some(x=>x.text.includes(wrong)),'Oración antigua: '+wrong);
 for(const entry of ['Carthago, −inis (f.)','pūgnō (1ª)','Myro, –ōnis (m.)','stĭlus, –ī'])assert(lat.includes(entry));
