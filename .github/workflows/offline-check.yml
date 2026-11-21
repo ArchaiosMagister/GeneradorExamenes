@@ -235,6 +235,8 @@ jobs:
         run: node scripts/test-latin-ud7-nix-sol-20261121.cjs
       - name: Revisar cantidad vocálica latina sin cancelar variantes métricas
         run: node scripts/test-filologia-cantidad-latina-20261121.cjs --offline
+      - name: Auditar once cantidades/enunciados de Latín 4.º, migración y PWA
+        run: node scripts/test-filologia-latin4-cantidades-ronda2-20261121.cjs
       - name: Evitar notaciones abreviadas del ν móvil en las formas evaluables
         run: node scripts/test-greek-movable-nu.cjs
       - name: Auditar las 100 formas más frecuentes de Griego I
