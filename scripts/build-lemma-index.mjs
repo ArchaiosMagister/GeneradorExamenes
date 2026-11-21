@@ -160,6 +160,18 @@ async function main(){
    suspendedGreekCandidates.add(next);
   else if(item.candidatePolicy)throw Error('Política de candidatas no reconocida: '+item.id);
  }
+ // Corrupción identificada en el extracto griego fijado: el paradigma de
+ // ὄνομα mezcla rótulos ingleses con casillas morfológicas desplazadas.
+ // Excluir SOLO estas once filas y fallar si cambia la fuente; jamás
+ // reinterpretar un caso por analogía ni verificar automáticamente formas.
+ const badOnomaCells=new Set([
+  'Dual|N;GEN;DU','Plural|N;GEN;PL','Singular|N;GEN;SG',
+  'ὄνομᾰ|N;DAT;SG','ὀνόμᾰσῐ|N;VOC;PL',
+  'ὀνόμᾰτᾰ|N;DAT;PL','ὀνόμᾰτε|N;DAT;DU',
+  'ὀνομᾰ́τοιν|N;ACC;DU','ὀνομᾰ́τοιν|N;VOC;DU',
+  'ὀνόμᾰτος|N;ACC;SG','ὀνομᾰ́των|N;ACC;PL'
+ ]);
+ const quarantinedOnomaCells=new Set();
  const rows={lat:[],grc:[]};
  const counts={lat:{unimorph:0,docente:0,modelo:0,lema:0,contrastado:0},grc:{unimorph:0,docente:0,modelo:0,lema:0,wikcionario:0,contrastado:0}};
  const seen={lat:new Set(),grc:new Set()};
@@ -190,6 +202,13 @@ async function main(){
     for(const row of shard){
      total++;
      if(!Array.isArray(row)||row.length<3)throw Error('Fila UniMorph incorrecta');
+     if(lang==='grc'&&norm(row[0])==='ονομα'){
+      const sig=row[1]+'|'+row[2];
+      if(!badOnomaCells.has(sig)||quarantinedOnomaCells.has(sig))
+       throw Error('Revisar origen griego de ὄνομα: casilla inesperada '+sig);
+      quarantinedOnomaCells.add(sig);
+      continue;
+     }
      add(lang,row[0],row[1],row[2],'unimorph');
     }
    }
@@ -197,6 +216,8 @@ async function main(){
   if(total!==expected||counts[lang].unimorph<expected*0.99)
    throw Error(lang+': filas inesperadas '+total+' de '+expected);
  }
+ if(quarantinedOnomaCells.size!==badOnomaCells.size)
+  throw Error('Han cambiado las 11 casillas de ὄνομα: cotejo individual obligatorio');
  // Explicit teacher models also contribute forms when their lemma belongs to
  // the course vocabulary. Descriptions remain separate from UniMorph tags.
  for(const p of paradigms){
@@ -262,6 +283,11 @@ async function main(){
   citation_only:{lat:0,grc:0},
   warning:'Generated forms are provisional lookup suggestions, NEVER exam solutions.'};
  extensions.verifiedIndividualForms=overrides.singleForms.length;
+ extensions.quarantinedGreekOnoma={
+  lemma:'ονομα',count:quarantinedOnomaCells.size,source:0,
+  policy:'Excluidas lecturas corruptas; lema consultable, flexiones no acreditadas',
+  automaticallyVerified:false
+ };
  const verifiedCells=new Map();
  for(const [lemma,surface,features]of rows.lat){
   const id=lemma+'|'+features;
