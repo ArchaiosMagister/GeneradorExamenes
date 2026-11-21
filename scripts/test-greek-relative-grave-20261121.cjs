@@ -28,6 +28,31 @@ for(const item of ledger.items){
  distribution[item.unit]=(distribution[item.unit]||0)+1;
 }
 assert.deepEqual(distribution,{9:19,10:1,11:2,12:3,13:1});
+
+const contextual=JSON.parse(fs.readFileSync('data/vocabulary/greek1-relative-contextual-attestations-20261121.json','utf8'));
+assert.equal(contextual.schema,1);
+assert.equal(contextual.course,'gr1');
+assert.equal(contextual.autoPromote,false);
+assert.equal(contextual.automaticGradingEnabled,false);
+assert.equal(contextual.morphologyPromotion,false);
+assert.equal(contextual.items.length,15);
+const expectedEntries={'οἳ':11,'ὃν':3,'ἣν':1},recorded={};
+const seenContext=new Set();
+for(const item of contextual.items){
+ const key=item.unit+':'+item.line;
+ assert(!seenContext.has(key),'Colación repetida: '+key);seenContext.add(key);
+ const original=ledger.items.find(x=>x.unit===item.unit&&x.line===item.line);
+ assert(original,'No procede de las correcciones verificadas: '+key);
+ assert.equal(item.form,original.updatedForm,'Forma no idéntica: '+key);
+ assert.equal(item.context,original.after,'Oración no idéntica: '+key);
+ assert(item.context.includes(item.antecedent),'Antecedente no localizado '+key);
+ assert(item.role.includes('subordinada de relativo'),'No hay función de relativo '+key);
+ assert.equal(item.analyzerStatus,'review');
+ assert.deepEqual(item.analyzerCandidates,item.form==='οἳ'?['ο','οσ']:['ειμι','οσ']);
+ recorded[item.form]=(recorded[item.form]||0)+1;
+}
+assert.deepEqual(recorded,expectedEntries);
+
 const html=fs.readFileSync('index.html','utf8'),marker='const greekSentenceRows=[';
 function sentences(t){
  const i=t.indexOf(marker),j=t.indexOf('];',i);
