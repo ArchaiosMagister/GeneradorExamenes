@@ -56,4 +56,9 @@ for(const [unit,correct,incorrect] of greekAccentFixes){
  assert(!text.includes(incorrect),unit+': persiste '+incorrect);
 }
 assert.equal(greekAccentFixes.length,6);
+// Dos superficies de ζῷον (UD13): el nominativo/acusativo neutro plural es ζῷα.
+const unit13=project.units.find(row=>row.title==='UD13').text;
+assert(unit13.includes('ζῷα:'),'UD13: listado nominal sin iota suscrita');
+assert(unit13.includes('τεθηρεύκασι ζῷα ἐν τῇ νήσῳ'),'UD13: oración sin iota suscrita');
+assert(!unit13.includes('ζῶα'),'UD13 conserva grafías sin iota de ζῷον');
 console.log('TERCERA RONDA FILOLÓGICA: 14 UD, 471 entradas, 11 oraciones seleccionables y análisis coherentes');
