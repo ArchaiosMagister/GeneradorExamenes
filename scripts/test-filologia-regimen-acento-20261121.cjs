@@ -100,7 +100,7 @@ for(const [unit,number] of Object.entries(polemioFixes)){
 }
 for(const unit of project.units){
  const raw=unit.text.normalize('NFC');
- assert(!raw.includes('πολεμίοι'),unit.title+': nominativo plural mal acentuado');
+ assert(!/(^|[^\p{L}])πολεμίοι($|[^\p{L}])/u.test(raw),unit.title+': nominativo plural mal acentuado');
 }
 assert.equal(correctedPolemioi,7);
 
