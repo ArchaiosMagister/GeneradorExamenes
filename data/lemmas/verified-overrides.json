@@ -386,6 +386,42 @@
       "to": "Āfrĭca, –æ",
       "reference": "https://es.pons.com/traducci%C3%B3n/lat%C3%ADn-alem%C3%A1n/Africa",
       "note": "Vocal inicial larga del topónimo; no se convierte en paradigma verificado."
+    },
+    {
+      "lang": "lat",
+      "lemma": "hostis",
+      "course": "lat4",
+      "from": "hōstĭs, –is (m.)",
+      "to": "hŏstĭs, –is (m.)",
+      "reference": "https://en.wiktionary.org/wiki/hostis",
+      "note": "O breve fonológica; sílaba hos- larga por posición ante -st-. No acredita flexiones nuevas."
+    },
+    {
+      "lang": "lat",
+      "lemma": "imperator",
+      "course": "lat4",
+      "from": "īmpĕrātŏr, –oris (m.)",
+      "to": "ĭmpĕrātŏr, –oris (m.)",
+      "reference": "https://en.wiktionary.org/wiki/imperator",
+      "note": "I inicial breve; sílaba im- larga por posición ante mp."
+    },
+    {
+      "lang": "lat",
+      "lemma": "collis",
+      "course": "lat4",
+      "from": "cōllĭs, –is (m.)",
+      "to": "cŏllĭs, –is (m.)",
+      "reference": "https://en.wiktionary.org/wiki/collis",
+      "note": "O breve fonológica; sílaba col- larga por ll."
+    },
+    {
+      "lang": "lat",
+      "lemma": "oppugnatio",
+      "course": "lat4",
+      "from": "ōppūgnātĭō, –onis (f.)",
+      "to": "ŏppūgnātĭō, –onis (f.)",
+      "reference": "https://logeion.uchicago.edu/oppugnatio",
+      "note": "Solo o inicial breve de ob-; conservar ū y notación de cantidad final variable."
     }
   ],
   "paradigms": [
