@@ -174,7 +174,7 @@ for(const u of project.units){
   if(relativeItems){
    assert(!citation,'Cotejos superpuestos en una superficie: '+form);
    assert.equal(found.status,'review','Cambió el estado de la ambigüedad: '+form);
-   assert.deepEqual(found.candidates.map(c=>c.lemma).sort(),
+   assert.deepEqual([...found.candidates.map(c=>c.lemma)].sort(),
     [...allowedRelativeForms.get(form).lemmas].sort(),'Candidatos modificados: '+form);
    assert(found.candidates.some(c=>c.lemma==='οσ'&&c.entry==='ὅς, ἥ, ὅ (pron. rel.)'),
     'El lematizador no presenta el pronombre relativo: '+form);
