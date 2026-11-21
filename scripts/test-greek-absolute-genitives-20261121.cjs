@@ -7,7 +7,7 @@ const audit=JSON.parse(load('data/vocabulary/greek1-absolute-genitive-agreement-
 const verified=JSON.parse(load('data/lemmas/teacher-forms.json'));
 assert.equal(greek.course,'gr1');
 assert.equal(greek.units.length,14);
-assert.equal(greek.units.reduce((n,u)=>n+u.text.split('\\n').filter(Boolean).length,0),471);
+assert.equal(greek.units.reduce((n,u)=>n+u.text.split('\n').filter(Boolean).length,0),471);
 assert.equal(audit.schema,1);
 assert.equal(audit.unit,10);
 assert.equal(audit.total,12);
@@ -15,7 +15,7 @@ assert.equal(audit.automaticGradingEnabled,false);
 assert.equal(audit.morphologyPromotion,false);
 assert.equal(verified.rows.grc.length,2817);
 assert.equal(verified.rows.grc.filter(row=>row[3]===5).length,478);
-const lines=greek.units[9].text.split('\\n');
+const lines=greek.units[9].text.split('\n');
 const oldPart='ἀποπλευσάντων τῶν νεῶν';
 const goodPart='ἀποπλευσασῶν τῶν νεῶν';
 assert(lines[38].includes(goodPart),'El genitivo absoluto de las naves no concuerda');
