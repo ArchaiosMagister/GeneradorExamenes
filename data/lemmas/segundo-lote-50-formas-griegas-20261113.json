@@ -1,0 +1,1585 @@
+{
+  "schema": "examina-greek-curricular-review-lot/v1",
+  "date": "2026-11-13",
+  "sourceCommit": "0d71498efe1af50ab9101d4b96c650cdc8677a15",
+  "scope": "50 grafías escolares distintas de fuente 4. Incluye las 32 grafías curriculares pendientes de cotejo de este lote tras excluir las cinco del primer expediente y las de ἐχθρός ya migradas. Se completa con todas las grafías pendientes de χρόνος y φιλόσοφος, ambos sin unidad asignada.",
+  "method": "Cotejo por caso, número y género cuando corresponde, con el paradigma citado y con las filas exactas del extracto y del índice. Solo se neutralizan las marcas de cantidad vocálica para comparar grafías. Las lecturas del paradigma se enumeran en singular y plural, y las demás lecturas del índice aparecen aparte. Las correcciones de cotejo y decisiones editoriales de este expediente no habilitan el sorteo.",
+  "summary": {
+    "forms": 50,
+    "readings": 73,
+    "formsWithCurriculum": 32,
+    "formsWithoutCurriculum": 18,
+    "readingsByDecision": {
+      "FEMENINO_DOCUMENTADO_EXCLUIDO": 11,
+      "CORROBORADA_DOCUMENTALMENTE": 16,
+      "CORROBORADA_ENUNCIADO_CORREGIDO": 1,
+      "VARIANTE_EXCLUIDA_COTEJO_ATICO": 1,
+      "CORRECCION_ATICA_CORROBORADA": 24,
+      "CORROBORADA_SIN_UNIDAD": 20
+    },
+    "promotions": 0
+  },
+  "items": [
+    {
+      "lemma": "αθανατοσ",
+      "teacherEntry": "ἀθάνατος, −ον",
+      "units": [
+        "UD 8"
+      ],
+      "schoolFormInSource": "ἀθάναται",
+      "comparisonForm": "ἀθάναται",
+      "references": [
+        "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B8%CE%AC%CE%BD%CE%B1%CF%84%CE%BF%CF%82#Declension"
+      ],
+      "readings": [
+        {
+          "id": "grc-pending-020",
+          "analysis": "ADJ;NOM;PL;FEM",
+          "sourceForm": "ᾱ̓θᾰ́νᾰται",
+          "sourceCode": 4,
+          "decision": "FEMENINO_DOCUMENTADO_EXCLUIDO",
+          "note": "El paradigma externo documenta la flexión femenina de primera declinación. Se mantiene la decisión docente de usar el adjetivo escolar de dos terminaciones."
+        },
+        {
+          "id": "grc-pending-021",
+          "analysis": "ADJ;VOC;PL;FEM",
+          "sourceForm": "ᾱ̓θᾰ́νᾰται",
+          "sourceCode": 4,
+          "decision": "FEMENINO_DOCUMENTADO_EXCLUIDO",
+          "note": "El paradigma externo documenta la flexión femenina de primera declinación. Se mantiene la decisión docente de usar el adjetivo escolar de dos terminaciones."
+        }
+      ],
+      "paradigmReadingsForComparisonForm": [
+        "ADJ;NOM;PL;FEM",
+        "ADJ;VOC;PL;FEM"
+      ],
+      "otherBankReadingsForComparisonForm": [],
+      "automaticGradingEnabled": false
+    },
+    {
+      "lemma": "αθανατοσ",
+      "teacherEntry": "ἀθάνατος, −ον",
+      "units": [
+        "UD 8"
+      ],
+      "schoolFormInSource": "ἀθανάτας",
+      "comparisonForm": "ἀθανάτας",
+      "references": [
+        "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B8%CE%AC%CE%BD%CE%B1%CF%84%CE%BF%CF%82#Declension"
+      ],
+      "readings": [
+        {
+          "id": "grc-pending-022",
+          "analysis": "ADJ;ACC;PL;FEM",
+          "sourceForm": "ᾱ̓θᾰνᾰ́τᾱς",
+          "sourceCode": 4,
+          "decision": "FEMENINO_DOCUMENTADO_EXCLUIDO",
+          "note": "El paradigma externo documenta la flexión femenina de primera declinación. Se mantiene la decisión docente de usar el adjetivo escolar de dos terminaciones."
+        }
+      ],
+      "paradigmReadingsForComparisonForm": [
+        "ADJ;ACC;PL;FEM"
+      ],
+      "otherBankReadingsForComparisonForm": [],
+      "automaticGradingEnabled": false
+    },
+    {
+      "lemma": "αθανατοσ",
+      "teacherEntry": "ἀθάνατος, −ον",
+      "units": [
+        "UD 8"
+      ],
+      "schoolFormInSource": "ἀθανάτη",
+      "comparisonForm": "ἀθανάτη",
+      "references": [
+        "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B8%CE%AC%CE%BD%CE%B1%CF%84%CE%BF%CF%82#Declension"
+      ],
+      "readings": [
+        {
+          "id": "grc-pending-023",
+          "analysis": "ADJ;NOM;SG;FEM",
+          "sourceForm": "ᾱ̓θᾰνᾰ́τη",
+          "sourceCode": 4,
+          "decision": "FEMENINO_DOCUMENTADO_EXCLUIDO",
+          "note": "El paradigma externo documenta la flexión femenina de primera declinación. Se mantiene la decisión docente de usar el adjetivo escolar de dos terminaciones."
+        },
+        {
+          "id": "grc-pending-024",
+          "analysis": "ADJ;VOC;SG;FEM",
+          "sourceForm": "ᾱ̓θᾰνᾰ́τη",
+          "sourceCode": 4,
+          "decision": "FEMENINO_DOCUMENTADO_EXCLUIDO",
+          "note": "El paradigma externo documenta la flexión femenina de primera declinación. Se mantiene la decisión docente de usar el adjetivo escolar de dos terminaciones."
+        }
+      ],
+      "paradigmReadingsForComparisonForm": [
+        "ADJ;NOM;SG;FEM",
+        "ADJ;VOC;SG;FEM"
+      ],
+      "otherBankReadingsForComparisonForm": [],
+      "automaticGradingEnabled": false
+    },
+    {
+      "lemma": "αθανατοσ",
+      "teacherEntry": "ἀθάνατος, −ον",
+      "units": [
+        "UD 8"
+      ],
+      "schoolFormInSource": "ἀθανάτῃ",
+      "comparisonForm": "ἀθανάτῃ",
+      "references": [
+        "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B8%CE%AC%CE%BD%CE%B1%CF%84%CE%BF%CF%82#Declension"
+      ],
+      "readings": [
+        {
+          "id": "grc-pending-025",
+          "analysis": "ADJ;DAT;SG;FEM",
+          "sourceForm": "ᾱ̓θᾰνᾰ́τῃ",
+          "sourceCode": 4,
+          "decision": "FEMENINO_DOCUMENTADO_EXCLUIDO",
+          "note": "El paradigma externo documenta la flexión femenina de primera declinación. Se mantiene la decisión docente de usar el adjetivo escolar de dos terminaciones."
+        }
+      ],
+      "paradigmReadingsForComparisonForm": [
+        "ADJ;DAT;SG;FEM"
+      ],
+      "otherBankReadingsForComparisonForm": [],
+      "automaticGradingEnabled": false
+    },
+    {
+      "lemma": "αθανατοσ",
+      "teacherEntry": "ἀθάνατος, −ον",
+      "units": [
+        "UD 8"
+      ],
+      "schoolFormInSource": "ἀθανάτην",
+      "comparisonForm": "ἀθανάτην",
+      "references": [
+        "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B8%CE%AC%CE%BD%CE%B1%CF%84%CE%BF%CF%82#Declension"
+      ],
+      "readings": [
+        {
+          "id": "grc-pending-026",
+          "analysis": "ADJ;ACC;SG;FEM",
+          "sourceForm": "ᾱ̓θᾰνᾰ́την",
+          "sourceCode": 4,
+          "decision": "FEMENINO_DOCUMENTADO_EXCLUIDO",
+          "note": "El paradigma externo documenta la flexión femenina de primera declinación. Se mantiene la decisión docente de usar el adjetivo escolar de dos terminaciones."
+        }
+      ],
+      "paradigmReadingsForComparisonForm": [
+        "ADJ;ACC;SG;FEM"
+      ],
+      "otherBankReadingsForComparisonForm": [],
+      "automaticGradingEnabled": false
+    },
+    {
+      "lemma": "αθανατοσ",
+      "teacherEntry": "ἀθάνατος, −ον",
+      "units": [
+        "UD 8"
+      ],
+      "schoolFormInSource": "ἀθανάτης",
+      "comparisonForm": "ἀθανάτης",
+      "references": [
+        "https://en.wiktionary.org/wiki/%E1%BC%80%CE%B8%CE%AC%CE%BD%CE%B1%CF%84%CE%BF%CF%82#Declension"
+      ],
+      "readings": [
+        {
+          "id": "grc-pending-027",
+          "analysis": "ADJ;GEN;SG;FEM",
+          "sourceForm": "ᾱ̓θᾰνᾰ́της",
+          "sourceCode": 4,
+          "decision": "FEMENINO_DOCUMENTADO_EXCLUIDO",
+          "note": "El paradigma externo documenta la flexión femenina de primera declinación. Se mantiene la decisión docente de usar el adjetivo escolar de dos terminaciones."
+        }
+      ],
+      "paradigmReadingsForComparisonForm": [
+        "ADJ;GEN;SG;FEM"
+      ],
+      "otherBankReadingsForComparisonForm": [],
+      "automaticGradingEnabled": false
+    },
+    {
+      "lemma": "αισχροσ",
+      "teacherEntry": "αἰσχρός, –ον",
+      "units": [
+        "UD 5"
+      ],
+      "schoolFormInSource": "αἰσχρά",
+      "comparisonForm": "αἰσχρά",
+      "references": [
+        "https://en.wiktionary.org/wiki/%CE%B1%E1%BC%B0%CF%83%CF%87%CF%81%CF%8C%CF%82#Declension"
+      ],
+      "readings": [
+        {
+          "id": "grc-pending-060",
+          "analysis": "ADJ;ACC;PL;NEUT",
+          "sourceForm": "αἰσχρᾰ́",
+          "sourceCode": 4,
+          "decision": "CORROBORADA_DOCUMENTALMENTE",
+          "note": "El paradigma ático corrobora esta lectura. El género y el caso se determinan por el contexto si la grafía es compartida. La misma grafía escolar figura también como nominativo y vocativo singular femenino en el paradigma de tres terminaciones."
+        },
+        {
+          "id": "grc-pending-061",
+          "analysis": "ADJ;NOM;PL;NEUT",
+          "sourceForm": "αἰσχρᾰ́",
+          "sourceCode": 4,
+          "decision": "CORROBORADA_DOCUMENTALMENTE",
+          "note": "El paradigma ático corrobora esta lectura. El género y el caso se determinan por el contexto si la grafía es compartida. La misma grafía escolar figura también como nominativo y vocativo singular femenino en el paradigma de tres terminaciones."
+        },
+        {
+          "id": "grc-pending-062",
+          "analysis": "ADJ;VOC;PL;NEUT",
+          "sourceForm": "αἰσχρᾰ́",
+          "sourceCode": 4,
+          "decision": "CORROBORADA_DOCUMENTALMENTE",
+          "note": "El paradigma ático corrobora esta lectura. El género y el caso se determinan por el contexto si la grafía es compartida. La misma grafía escolar figura también como nominativo y vocativo singular femenino en el paradigma de tres terminaciones."
+        }
+      ],
+      "paradigmReadingsForComparisonForm": [
+        "ADJ;ACC;PL;NEUT",
+        "ADJ;NOM;PL;NEUT",
+        "ADJ;NOM;SG;FEM",
+        "ADJ;VOC;PL;NEUT",
+        "ADJ;VOC;SG;FEM"
+      ],
+      "otherBankReadingsForComparisonForm": [],
+      "automaticGradingEnabled": false
+    },
+    {
+      "lemma": "αισχροσ",
+      "teacherEntry": "αἰσχρός, –ον",
+      "units": [
+        "UD 5"
+      ],
+      "schoolFormInSource": "αἰσχραί",
+      "comparisonForm": "αἰσχραί",
+      "references": [
+        "https://en.wiktionary.org/wiki/%CE%B1%E1%BC%B0%CF%83%CF%87%CF%81%CF%8C%CF%82#Declension"
+      ],
+      "readings": [
+        {
+          "id": "grc-pending-063",
+          "analysis": "ADJ;NOM;PL;FEM",
+          "sourceForm": "αἰσχραί",
+          "sourceCode": 4,
+          "decision": "FEMENINO_DOCUMENTADO_EXCLUIDO",
+          "note": "El paradigma externo documenta la flexión femenina de primera declinación. Se mantiene la decisión docente de usar el adjetivo escolar de dos terminaciones."
+        },
+        {
+          "id": "grc-pending-064",
+          "analysis": "ADJ;VOC;PL;FEM",
+          "sourceForm": "αἰσχραί",
+          "sourceCode": 4,
+          "decision": "FEMENINO_DOCUMENTADO_EXCLUIDO",
+          "note": "El paradigma externo documenta la flexión femenina de primera declinación. Se mantiene la decisión docente de usar el adjetivo escolar de dos terminaciones."
+        }
+      ],
+      "paradigmReadingsForComparisonForm": [
+        "ADJ;NOM;PL;FEM",
+        "ADJ;VOC;PL;FEM"
+      ],
+      "otherBankReadingsForComparisonForm": [],
+      "automaticGradingEnabled": false
+    },
+    {
+      "lemma": "αισχροσ",
+      "teacherEntry": "αἰσχρός, –ον",
+      "units": [
+        "UD 5"
+      ],
+      "schoolFormInSource": "αἰσχράς",
+      "comparisonForm": "αἰσχράς",
+      "references": [
+        "https://en.wiktionary.org/wiki/%CE%B1%E1%BC%B0%CF%83%CF%87%CF%81%CF%8C%CF%82#Declension"
+      ],
+      "readings": [
+        {
+          "id": "grc-pending-065",
+          "analysis": "ADJ;ACC;PL;FEM",
+          "sourceForm": "αἰσχρᾱ́ς",
+          "sourceCode": 4,
+          "decision": "FEMENINO_DOCUMENTADO_EXCLUIDO",
+          "note": "El paradigma externo documenta la flexión femenina de primera declinación. Se mantiene la decisión docente de usar el adjetivo escolar de dos terminaciones."
+        }
+      ],
+      "paradigmReadingsForComparisonForm": [
+        "ADJ;ACC;PL;FEM"
+      ],
+      "otherBankReadingsForComparisonForm": [],
+      "automaticGradingEnabled": false
+    },
+    {
+      "lemma": "αισχροσ",
+      "teacherEntry": "αἰσχρός, –ον",
+      "units": [
+        "UD 5"
+      ],
+      "schoolFormInSource": "αἰσχρέ",
+      "comparisonForm": "αἰσχρέ",
+      "references": [
+        "https://en.wiktionary.org/wiki/%CE%B1%E1%BC%B0%CF%83%CF%87%CF%81%CF%8C%CF%82#Declension"
+      ],
+      "readings": [
+        {
+          "id": "grc-pending-066",
+          "analysis": "ADJ;VOC;SG;MASC",
+          "sourceForm": "αἰσχρέ",
+          "sourceCode": 4,
+          "decision": "CORROBORADA_DOCUMENTALMENTE",
+          "note": "El paradigma ático corrobora esta lectura. El género y el caso se determinan por el contexto si la grafía es compartida."
+        }
+      ],
+      "paradigmReadingsForComparisonForm": [
+        "ADJ;VOC;SG;MASC"
+      ],
+      "otherBankReadingsForComparisonForm": [],
+      "automaticGradingEnabled": false
+    },
+    {
+      "lemma": "αισχροσ",
+      "teacherEntry": "αἰσχρός, –ον",
+      "units": [
+        "UD 5"
+      ],
+      "schoolFormInSource": "αἰσχροί",
+      "comparisonForm": "αἰσχροί",
+      "references": [
+        "https://en.wiktionary.org/wiki/%CE%B1%E1%BC%B0%CF%83%CF%87%CF%81%CF%8C%CF%82#Declension"
+      ],
+      "readings": [
+        {
+          "id": "grc-pending-067",
+          "analysis": "ADJ;NOM;PL;MASC",
+          "sourceForm": "αἰσχροί",
+          "sourceCode": 4,
+          "decision": "CORROBORADA_DOCUMENTALMENTE",
+          "note": "El paradigma ático corrobora esta lectura. El género y el caso se determinan por el contexto si la grafía es compartida."
+        },
+        {
+          "id": "grc-pending-068",
+          "analysis": "ADJ;VOC;PL;MASC",
+          "sourceForm": "αἰσχροί",
+          "sourceCode": 4,
+          "decision": "CORROBORADA_DOCUMENTALMENTE",
+          "note": "El paradigma ático corrobora esta lectura. El género y el caso se determinan por el contexto si la grafía es compartida."
+        }
+      ],
+      "paradigmReadingsForComparisonForm": [
+        "ADJ;NOM;PL;MASC",
+        "ADJ;VOC;PL;MASC"
+      ],
+      "otherBankReadingsForComparisonForm": [],
+      "automaticGradingEnabled": false
+    },
+    {
+      "lemma": "αισχροσ",
+      "teacherEntry": "αἰσχρός, –ον",
+      "units": [
+        "UD 5"
+      ],
+      "schoolFormInSource": "αἰσχρόν",
+      "comparisonForm": "αἰσχρόν",
+      "references": [
+        "https://en.wiktionary.org/wiki/%CE%B1%E1%BC%B0%CF%83%CF%87%CF%81%CF%8C%CF%82#Declension"
+      ],
+      "readings": [
+        {
+          "id": "grc-pending-069",
+          "analysis": "ADJ;ACC;SG;MASC",
+          "sourceForm": "αἰσχρόν",
+          "sourceCode": 4,
+          "decision": "CORROBORADA_DOCUMENTALMENTE",
+          "note": "El paradigma ático corrobora esta lectura. El género y el caso se determinan por el contexto si la grafía es compartida."
+        },
+        {
+          "id": "grc-pending-070",
+          "analysis": "ADJ;ACC;SG;NEUT",
+          "sourceForm": "αἰσχρόν",
+          "sourceCode": 4,
+          "decision": "CORROBORADA_DOCUMENTALMENTE",
+          "note": "El paradigma ático corrobora esta lectura. El género y el caso se determinan por el contexto si la grafía es compartida."
+        },
+        {
+          "id": "grc-pending-071",
+          "analysis": "ADJ;NOM;SG;NEUT",
+          "sourceForm": "αἰσχρόν",
+          "sourceCode": 4,
+          "decision": "CORROBORADA_DOCUMENTALMENTE",
+          "note": "El paradigma ático corrobora esta lectura. El género y el caso se determinan por el contexto si la grafía es compartida."
+        },
+        {
+          "id": "grc-pending-072",
+          "analysis": "ADJ;VOC;SG;NEUT",
+          "sourceForm": "αἰσχρόν",
+          "sourceCode": 4,
+          "decision": "CORROBORADA_DOCUMENTALMENTE",
+          "note": "El paradigma ático corrobora esta lectura. El género y el caso se determinan por el contexto si la grafía es compartida."
+        }
+      ],
+      "paradigmReadingsForComparisonForm": [
+        "ADJ;ACC;SG;MASC",
+        "ADJ;ACC;SG;NEUT",
+        "ADJ;NOM;SG;NEUT",
+        "ADJ;VOC;SG;NEUT"
+      ],
+      "otherBankReadingsForComparisonForm": [],
+      "automaticGradingEnabled": false
+    },
+    {
+      "lemma": "αισχροσ",
+      "teacherEntry": "αἰσχρός, –ον",
+      "units": [
+        "UD 5"
+      ],
+      "schoolFormInSource": "αἰσχρός",
+      "comparisonForm": "αἰσχρός",
+      "references": [
+        "https://en.wiktionary.org/wiki/%CE%B1%E1%BC%B0%CF%83%CF%87%CF%81%CF%8C%CF%82#Declension"
+      ],
+      "readings": [
+        {
+          "id": "grc-pending-073",
+          "analysis": "ADJ;NOM;SG;MASC",
+          "sourceForm": "αἰσχρός",
+          "sourceCode": 4,
+          "decision": "CORROBORADA_DOCUMENTALMENTE",
+          "note": "El paradigma ático corrobora esta lectura. El género y el caso se determinan por el contexto si la grafía es compartida."
+        }
+      ],
+      "paradigmReadingsForComparisonForm": [
+        "ADJ;NOM;SG;MASC"
+      ],
+      "otherBankReadingsForComparisonForm": [],
+      "automaticGradingEnabled": false
+    },
+    {
+      "lemma": "αισχροσ",
+      "teacherEntry": "αἰσχρός, –ον",
+      "units": [
+        "UD 5"
+      ],
+      "schoolFormInSource": "αἰσχρούς",
+      "comparisonForm": "αἰσχρούς",
+      "references": [
+        "https://en.wiktionary.org/wiki/%CE%B1%E1%BC%B0%CF%83%CF%87%CF%81%CF%8C%CF%82#Declension"
+      ],
+      "readings": [
+        {
+          "id": "grc-pending-074",
+          "analysis": "ADJ;ACC;PL;MASC",
+          "sourceForm": "αἰσχρούς",
+          "sourceCode": 4,
+          "decision": "CORROBORADA_DOCUMENTALMENTE",
+          "note": "El paradigma ático corrobora esta lectura. El género y el caso se determinan por el contexto si la grafía es compartida."
+        }
+      ],
+      "paradigmReadingsForComparisonForm": [
+        "ADJ;ACC;PL;MASC"
+      ],
+      "otherBankReadingsForComparisonForm": [],
+      "automaticGradingEnabled": false
+    },
+    {
+      "lemma": "αισχροσ",
+      "teacherEntry": "αἰσχρός, –ον",
+      "units": [
+        "UD 5"
+      ],
+      "schoolFormInSource": "αἰσχρῷ",
+      "comparisonForm": "αἰσχρῷ",
+      "references": [
+        "https://en.wiktionary.org/wiki/%CE%B1%E1%BC%B0%CF%83%CF%87%CF%81%CF%8C%CF%82#Declension"
+      ],
+      "readings": [
+        {
+          "id": "grc-pending-075",
+          "analysis": "ADJ;DAT;SG;MASC",
+          "sourceForm": "αἰσχρῷ",
+          "sourceCode": 4,
+          "decision": "CORROBORADA_DOCUMENTALMENTE",
+          "note": "El paradigma ático corrobora esta lectura. El género y el caso se determinan por el contexto si la grafía es compartida."
+        },
+        {
+          "id": "grc-pending-076",
+          "analysis": "ADJ;DAT;SG;NEUT",
+          "sourceForm": "αἰσχρῷ",
+          "sourceCode": 4,
+          "decision": "CORROBORADA_DOCUMENTALMENTE",
+          "note": "El paradigma ático corrobora esta lectura. El género y el caso se determinan por el contexto si la grafía es compartida."
+        }
+      ],
+      "paradigmReadingsForComparisonForm": [
+        "ADJ;DAT;SG;MASC",
+        "ADJ;DAT;SG;NEUT"
+      ],
+      "otherBankReadingsForComparisonForm": [],
+      "automaticGradingEnabled": false
+    },
+    {
+      "lemma": "αισχροσ",
+      "teacherEntry": "αἰσχρός, –ον",
+      "units": [
+        "UD 5"
+      ],
+      "schoolFormInSource": "αἰσχρῶν",
+      "comparisonForm": "αἰσχρῶν",
+      "references": [
+        "https://en.wiktionary.org/wiki/%CE%B1%E1%BC%B0%CF%83%CF%87%CF%81%CF%8C%CF%82#Declension"
+      ],
+      "readings": [
+        {
+          "id": "grc-pending-077",
+          "analysis": "ADJ;GEN;PL;MASC",
+          "sourceForm": "αἰσχρῶν",
+          "sourceCode": 4,
+          "decision": "CORROBORADA_DOCUMENTALMENTE",
+          "note": "El paradigma ático corrobora esta lectura. El género y el caso se determinan por el contexto si la grafía es compartida."
+        },
+        {
+          "id": "grc-pending-078",
+          "analysis": "ADJ;GEN;PL;NEUT",
+          "sourceForm": "αἰσχρῶν",
+          "sourceCode": 4,
+          "decision": "CORROBORADA_DOCUMENTALMENTE",
+          "note": "El paradigma ático corrobora esta lectura. El género y el caso se determinan por el contexto si la grafía es compartida."
+        }
+      ],
+      "paradigmReadingsForComparisonForm": [
+        "ADJ;GEN;PL;FEM",
+        "ADJ;GEN;PL;MASC",
+        "ADJ;GEN;PL;NEUT"
+      ],
+      "otherBankReadingsForComparisonForm": [],
+      "automaticGradingEnabled": false
+    },
+    {
+      "lemma": "κεφαλη",
+      "teacherEntry": "κεφαλή, –ῆς",
+      "units": [
+        "UD 6–7"
+      ],
+      "schoolFormInSource": "κεφαλῇ",
+      "comparisonForm": "κεφαλῇ",
+      "references": [
+        "https://en.wiktionary.org/wiki/%CE%BA%CE%B5%CF%86%CE%B1%CE%BB%CE%AE#Declension"
+      ],
+      "readings": [
+        {
+          "id": "grc-pending-201",
+          "analysis": "N;DAT;SG",
+          "sourceForm": "κεφᾰλῇ",
+          "sourceCode": 4,
+          "decision": "CORROBORADA_ENUNCIADO_CORREGIDO",
+          "note": "El paradigma confirma κεφαλῇ como dativo singular y κεφαλή como nominativo del lema."
+        }
+      ],
+      "paradigmReadingsForComparisonForm": [
+        "N;DAT;SG"
+      ],
+      "otherBankReadingsForComparisonForm": [],
+      "automaticGradingEnabled": false
+    },
+    {
+      "lemma": "παισ",
+      "teacherEntry": "παῖς, παιδός (ὁ o ἡ)",
+      "units": [
+        "UD 8"
+      ],
+      "schoolFormInSource": "παῖδι",
+      "comparisonForm": "παιδί",
+      "references": [
+        "https://en.wiktionary.org/wiki/%CF%80%CE%B1%E1%BF%96%CF%82#Declension"
+      ],
+      "readings": [
+        {
+          "id": "grc-pending-363",
+          "analysis": "N;DAT;SG",
+          "sourceForm": "παῖδῐ",
+          "sourceCode": 4,
+          "decision": "VARIANTE_EXCLUIDA_COTEJO_ATICO",
+          "note": "La tabla ática da παιδί; la tabla épica recoge también παῖδι. Se conserva la variante en el historial y fuera del sorteo escolar."
+        }
+      ],
+      "paradigmReadingsForComparisonForm": [
+        "N;DAT;SG"
+      ],
+      "otherBankReadingsForComparisonForm": [],
+      "automaticGradingEnabled": false
+    },
+    {
+      "lemma": "πρωτοσ",
+      "teacherEntry": "πρῶτος, –η, –ον",
+      "units": [
+        "UD 10"
+      ],
+      "schoolFormInSource": "πρωτά",
+      "comparisonForm": "πρῶτα",
+      "references": [
+        "https://en.wiktionary.org/wiki/%CF%80%CF%81%E1%BF%B6%CF%84%CE%BF%CF%82#Declension"
+      ],
+      "readings": [
+        {
+          "id": "grc-pending-425",
+          "analysis": "ADJ;ACC;PL;NEUT",
+          "sourceForm": "πρωτᾰ́",
+          "sourceCode": 4,
+          "decision": "CORRECCION_ATICA_CORROBORADA",
+          "note": "La grafía de la candidatura queda en cuarentena. El paradigma ático confirma la forma de cotejo para este análisis. La fuente registra además un uso adverbial de la misma grafía."
+        },
+        {
+          "id": "grc-pending-426",
+          "analysis": "ADJ;NOM;PL;NEUT",
+          "sourceForm": "πρωτᾰ́",
+          "sourceCode": 4,
+          "decision": "CORRECCION_ATICA_CORROBORADA",
+          "note": "La grafía de la candidatura queda en cuarentena. El paradigma ático confirma la forma de cotejo para este análisis. La fuente registra además un uso adverbial de la misma grafía."
+        },
+        {
+          "id": "grc-pending-427",
+          "analysis": "ADJ;VOC;PL;NEUT",
+          "sourceForm": "πρωτᾰ́",
+          "sourceCode": 4,
+          "decision": "CORRECCION_ATICA_CORROBORADA",
+          "note": "La grafía de la candidatura queda en cuarentena. El paradigma ático confirma la forma de cotejo para este análisis. La fuente registra además un uso adverbial de la misma grafía."
+        }
+      ],
+      "paradigmReadingsForComparisonForm": [
+        "ADJ;ACC;PL;NEUT",
+        "ADJ;NOM;PL;NEUT",
+        "ADJ;VOC;PL;NEUT"
+      ],
+      "otherBankReadingsForComparisonForm": [],
+      "automaticGradingEnabled": false
+    },
+    {
+      "lemma": "πρωτοσ",
+      "teacherEntry": "πρῶτος, –η, –ον",
+      "units": [
+        "UD 10"
+      ],
+      "schoolFormInSource": "πρωταί",
+      "comparisonForm": "πρῶται",
+      "references": [
+        "https://en.wiktionary.org/wiki/%CF%80%CF%81%E1%BF%B6%CF%84%CE%BF%CF%82#Declension"
+      ],
+      "readings": [
+        {
+          "id": "grc-pending-428",
+          "analysis": "ADJ;NOM;PL;FEM",
+          "sourceForm": "πρωταί",
+          "sourceCode": 4,
+          "decision": "CORRECCION_ATICA_CORROBORADA",
+          "note": "La grafía de la candidatura queda en cuarentena. El paradigma ático confirma la forma de cotejo para este análisis."
+        },
+        {
+          "id": "grc-pending-429",
+          "analysis": "ADJ;VOC;PL;FEM",
+          "sourceForm": "πρωταί",
+          "sourceCode": 4,
+          "decision": "CORRECCION_ATICA_CORROBORADA",
+          "note": "La grafía de la candidatura queda en cuarentena. El paradigma ático confirma la forma de cotejo para este análisis."
+        }
+      ],
+      "paradigmReadingsForComparisonForm": [
+        "ADJ;NOM;PL;FEM",
+        "ADJ;VOC;PL;FEM"
+      ],
+      "otherBankReadingsForComparisonForm": [],
+      "automaticGradingEnabled": false
+    },
+    {
+      "lemma": "πρωτοσ",
+      "teacherEntry": "πρῶτος, –η, –ον",
+      "units": [
+        "UD 10"
+      ],
+      "schoolFormInSource": "πρωτάς",
+      "comparisonForm": "πρώτας",
+      "references": [
+        "https://en.wiktionary.org/wiki/%CF%80%CF%81%E1%BF%B6%CF%84%CE%BF%CF%82#Declension"
+      ],
+      "readings": [
+        {
+          "id": "grc-pending-430",
+          "analysis": "ADJ;ACC;PL;FEM",
+          "sourceForm": "πρωτᾱ́ς",
+          "sourceCode": 4,
+          "decision": "CORRECCION_ATICA_CORROBORADA",
+          "note": "La grafía de la candidatura queda en cuarentena. El paradigma ático confirma la forma de cotejo para este análisis."
+        }
+      ],
+      "paradigmReadingsForComparisonForm": [
+        "ADJ;ACC;PL;FEM"
+      ],
+      "otherBankReadingsForComparisonForm": [],
+      "automaticGradingEnabled": false
+    },
+    {
+      "lemma": "πρωτοσ",
+      "teacherEntry": "πρῶτος, –η, –ον",
+      "units": [
+        "UD 10"
+      ],
+      "schoolFormInSource": "πρωτέ",
+      "comparisonForm": "πρῶτε",
+      "references": [
+        "https://en.wiktionary.org/wiki/%CF%80%CF%81%E1%BF%B6%CF%84%CE%BF%CF%82#Declension"
+      ],
+      "readings": [
+        {
+          "id": "grc-pending-431",
+          "analysis": "ADJ;VOC;SG;MASC",
+          "sourceForm": "πρωτέ",
+          "sourceCode": 4,
+          "decision": "CORRECCION_ATICA_CORROBORADA",
+          "note": "La grafía de la candidatura queda en cuarentena. El paradigma ático confirma la forma de cotejo para este análisis."
+        }
+      ],
+      "paradigmReadingsForComparisonForm": [
+        "ADJ;VOC;SG;MASC"
+      ],
+      "otherBankReadingsForComparisonForm": [],
+      "automaticGradingEnabled": false
+    },
+    {
+      "lemma": "πρωτοσ",
+      "teacherEntry": "πρῶτος, –η, –ον",
+      "units": [
+        "UD 10"
+      ],
+      "schoolFormInSource": "πρωτή",
+      "comparisonForm": "πρώτη",
+      "references": [
+        "https://en.wiktionary.org/wiki/%CF%80%CF%81%E1%BF%B6%CF%84%CE%BF%CF%82#Declension"
+      ],
+      "readings": [
+        {
+          "id": "grc-pending-432",
+          "analysis": "ADJ;NOM;SG;FEM",
+          "sourceForm": "πρωτή",
+          "sourceCode": 4,
+          "decision": "CORRECCION_ATICA_CORROBORADA",
+          "note": "La grafía de la candidatura queda en cuarentena. El paradigma ático confirma la forma de cotejo para este análisis."
+        },
+        {
+          "id": "grc-pending-433",
+          "analysis": "ADJ;VOC;SG;FEM",
+          "sourceForm": "πρωτή",
+          "sourceCode": 4,
+          "decision": "CORRECCION_ATICA_CORROBORADA",
+          "note": "La grafía de la candidatura queda en cuarentena. El paradigma ático confirma la forma de cotejo para este análisis."
+        }
+      ],
+      "paradigmReadingsForComparisonForm": [
+        "ADJ;NOM;SG;FEM",
+        "ADJ;VOC;SG;FEM"
+      ],
+      "otherBankReadingsForComparisonForm": [],
+      "automaticGradingEnabled": false
+    },
+    {
+      "lemma": "πρωτοσ",
+      "teacherEntry": "πρῶτος, –η, –ον",
+      "units": [
+        "UD 10"
+      ],
+      "schoolFormInSource": "πρωτῇ",
+      "comparisonForm": "πρώτῃ",
+      "references": [
+        "https://en.wiktionary.org/wiki/%CF%80%CF%81%E1%BF%B6%CF%84%CE%BF%CF%82#Declension"
+      ],
+      "readings": [
+        {
+          "id": "grc-pending-434",
+          "analysis": "ADJ;DAT;SG;FEM",
+          "sourceForm": "πρωτῇ",
+          "sourceCode": 4,
+          "decision": "CORRECCION_ATICA_CORROBORADA",
+          "note": "La grafía de la candidatura queda en cuarentena. El paradigma ático confirma la forma de cotejo para este análisis."
+        }
+      ],
+      "paradigmReadingsForComparisonForm": [
+        "ADJ;DAT;SG;FEM"
+      ],
+      "otherBankReadingsForComparisonForm": [],
+      "automaticGradingEnabled": false
+    },
+    {
+      "lemma": "πρωτοσ",
+      "teacherEntry": "πρῶτος, –η, –ον",
+      "units": [
+        "UD 10"
+      ],
+      "schoolFormInSource": "πρωτήν",
+      "comparisonForm": "πρώτην",
+      "references": [
+        "https://en.wiktionary.org/wiki/%CF%80%CF%81%E1%BF%B6%CF%84%CE%BF%CF%82#Declension"
+      ],
+      "readings": [
+        {
+          "id": "grc-pending-435",
+          "analysis": "ADJ;ACC;SG;FEM",
+          "sourceForm": "πρωτήν",
+          "sourceCode": 4,
+          "decision": "CORRECCION_ATICA_CORROBORADA",
+          "note": "La grafía de la candidatura queda en cuarentena. El paradigma ático confirma la forma de cotejo para este análisis."
+        }
+      ],
+      "paradigmReadingsForComparisonForm": [
+        "ADJ;ACC;SG;FEM"
+      ],
+      "otherBankReadingsForComparisonForm": [],
+      "automaticGradingEnabled": false
+    },
+    {
+      "lemma": "πρωτοσ",
+      "teacherEntry": "πρῶτος, –η, –ον",
+      "units": [
+        "UD 10"
+      ],
+      "schoolFormInSource": "πρωτῆς",
+      "comparisonForm": "πρώτης",
+      "references": [
+        "https://en.wiktionary.org/wiki/%CF%80%CF%81%E1%BF%B6%CF%84%CE%BF%CF%82#Declension"
+      ],
+      "readings": [
+        {
+          "id": "grc-pending-436",
+          "analysis": "ADJ;GEN;SG;FEM",
+          "sourceForm": "πρωτῆς",
+          "sourceCode": 4,
+          "decision": "CORRECCION_ATICA_CORROBORADA",
+          "note": "La grafía de la candidatura queda en cuarentena. El paradigma ático confirma la forma de cotejo para este análisis."
+        }
+      ],
+      "paradigmReadingsForComparisonForm": [
+        "ADJ;GEN;SG;FEM"
+      ],
+      "otherBankReadingsForComparisonForm": [],
+      "automaticGradingEnabled": false
+    },
+    {
+      "lemma": "πρωτοσ",
+      "teacherEntry": "πρῶτος, –η, –ον",
+      "units": [
+        "UD 10"
+      ],
+      "schoolFormInSource": "πρωτοί",
+      "comparisonForm": "πρῶτοι",
+      "references": [
+        "https://en.wiktionary.org/wiki/%CF%80%CF%81%E1%BF%B6%CF%84%CE%BF%CF%82#Declension"
+      ],
+      "readings": [
+        {
+          "id": "grc-pending-437",
+          "analysis": "ADJ;NOM;PL;MASC",
+          "sourceForm": "πρωτοί",
+          "sourceCode": 4,
+          "decision": "CORRECCION_ATICA_CORROBORADA",
+          "note": "La grafía de la candidatura queda en cuarentena. El paradigma ático confirma la forma de cotejo para este análisis."
+        },
+        {
+          "id": "grc-pending-438",
+          "analysis": "ADJ;VOC;PL;MASC",
+          "sourceForm": "πρωτοί",
+          "sourceCode": 4,
+          "decision": "CORRECCION_ATICA_CORROBORADA",
+          "note": "La grafía de la candidatura queda en cuarentena. El paradigma ático confirma la forma de cotejo para este análisis."
+        }
+      ],
+      "paradigmReadingsForComparisonForm": [
+        "ADJ;NOM;PL;MASC",
+        "ADJ;VOC;PL;MASC"
+      ],
+      "otherBankReadingsForComparisonForm": [],
+      "automaticGradingEnabled": false
+    },
+    {
+      "lemma": "πρωτοσ",
+      "teacherEntry": "πρῶτος, –η, –ον",
+      "units": [
+        "UD 10"
+      ],
+      "schoolFormInSource": "πρωτόν",
+      "comparisonForm": "πρῶτον",
+      "references": [
+        "https://en.wiktionary.org/wiki/%CF%80%CF%81%E1%BF%B6%CF%84%CE%BF%CF%82#Declension"
+      ],
+      "readings": [
+        {
+          "id": "grc-pending-439",
+          "analysis": "ADJ;ACC;SG;MASC",
+          "sourceForm": "πρωτόν",
+          "sourceCode": 4,
+          "decision": "CORRECCION_ATICA_CORROBORADA",
+          "note": "La grafía de la candidatura queda en cuarentena. El paradigma ático confirma la forma de cotejo para este análisis. La fuente registra además un uso adverbial de la misma grafía."
+        },
+        {
+          "id": "grc-pending-440",
+          "analysis": "ADJ;ACC;SG;NEUT",
+          "sourceForm": "πρωτόν",
+          "sourceCode": 4,
+          "decision": "CORRECCION_ATICA_CORROBORADA",
+          "note": "La grafía de la candidatura queda en cuarentena. El paradigma ático confirma la forma de cotejo para este análisis. La fuente registra además un uso adverbial de la misma grafía."
+        },
+        {
+          "id": "grc-pending-441",
+          "analysis": "ADJ;NOM;SG;NEUT",
+          "sourceForm": "πρωτόν",
+          "sourceCode": 4,
+          "decision": "CORRECCION_ATICA_CORROBORADA",
+          "note": "La grafía de la candidatura queda en cuarentena. El paradigma ático confirma la forma de cotejo para este análisis. La fuente registra además un uso adverbial de la misma grafía."
+        },
+        {
+          "id": "grc-pending-442",
+          "analysis": "ADJ;VOC;SG;NEUT",
+          "sourceForm": "πρωτόν",
+          "sourceCode": 4,
+          "decision": "CORRECCION_ATICA_CORROBORADA",
+          "note": "La grafía de la candidatura queda en cuarentena. El paradigma ático confirma la forma de cotejo para este análisis. La fuente registra además un uso adverbial de la misma grafía."
+        }
+      ],
+      "paradigmReadingsForComparisonForm": [
+        "ADJ;ACC;SG;MASC",
+        "ADJ;ACC;SG;NEUT",
+        "ADJ;NOM;SG;NEUT",
+        "ADJ;VOC;SG;NEUT"
+      ],
+      "otherBankReadingsForComparisonForm": [],
+      "automaticGradingEnabled": false
+    },
+    {
+      "lemma": "πρωτοσ",
+      "teacherEntry": "πρῶτος, –η, –ον",
+      "units": [
+        "UD 10"
+      ],
+      "schoolFormInSource": "πρωτός",
+      "comparisonForm": "πρῶτος",
+      "references": [
+        "https://en.wiktionary.org/wiki/%CF%80%CF%81%E1%BF%B6%CF%84%CE%BF%CF%82#Declension"
+      ],
+      "readings": [
+        {
+          "id": "grc-pending-443",
+          "analysis": "ADJ;NOM;SG;MASC",
+          "sourceForm": "πρωτός",
+          "sourceCode": 4,
+          "decision": "CORRECCION_ATICA_CORROBORADA",
+          "note": "La grafía de la candidatura queda en cuarentena. El paradigma ático confirma la forma de cotejo para este análisis."
+        }
+      ],
+      "paradigmReadingsForComparisonForm": [
+        "ADJ;NOM;SG;MASC"
+      ],
+      "otherBankReadingsForComparisonForm": [],
+      "automaticGradingEnabled": false
+    },
+    {
+      "lemma": "πρωτοσ",
+      "teacherEntry": "πρῶτος, –η, –ον",
+      "units": [
+        "UD 10"
+      ],
+      "schoolFormInSource": "πρωτούς",
+      "comparisonForm": "πρώτους",
+      "references": [
+        "https://en.wiktionary.org/wiki/%CF%80%CF%81%E1%BF%B6%CF%84%CE%BF%CF%82#Declension"
+      ],
+      "readings": [
+        {
+          "id": "grc-pending-444",
+          "analysis": "ADJ;ACC;PL;MASC",
+          "sourceForm": "πρωτούς",
+          "sourceCode": 4,
+          "decision": "CORRECCION_ATICA_CORROBORADA",
+          "note": "La grafía de la candidatura queda en cuarentena. El paradigma ático confirma la forma de cotejo para este análisis."
+        }
+      ],
+      "paradigmReadingsForComparisonForm": [
+        "ADJ;ACC;PL;MASC"
+      ],
+      "otherBankReadingsForComparisonForm": [],
+      "automaticGradingEnabled": false
+    },
+    {
+      "lemma": "πρωτοσ",
+      "teacherEntry": "πρῶτος, –η, –ον",
+      "units": [
+        "UD 10"
+      ],
+      "schoolFormInSource": "πρωτῷ",
+      "comparisonForm": "πρώτῳ",
+      "references": [
+        "https://en.wiktionary.org/wiki/%CF%80%CF%81%E1%BF%B6%CF%84%CE%BF%CF%82#Declension"
+      ],
+      "readings": [
+        {
+          "id": "grc-pending-445",
+          "analysis": "ADJ;DAT;SG;MASC",
+          "sourceForm": "πρωτῷ",
+          "sourceCode": 4,
+          "decision": "CORRECCION_ATICA_CORROBORADA",
+          "note": "La grafía de la candidatura queda en cuarentena. El paradigma ático confirma la forma de cotejo para este análisis."
+        },
+        {
+          "id": "grc-pending-446",
+          "analysis": "ADJ;DAT;SG;NEUT",
+          "sourceForm": "πρωτῷ",
+          "sourceCode": 4,
+          "decision": "CORRECCION_ATICA_CORROBORADA",
+          "note": "La grafía de la candidatura queda en cuarentena. El paradigma ático confirma la forma de cotejo para este análisis."
+        }
+      ],
+      "paradigmReadingsForComparisonForm": [
+        "ADJ;DAT;SG;MASC",
+        "ADJ;DAT;SG;NEUT"
+      ],
+      "otherBankReadingsForComparisonForm": [],
+      "automaticGradingEnabled": false
+    },
+    {
+      "lemma": "πρωτοσ",
+      "teacherEntry": "πρῶτος, –η, –ον",
+      "units": [
+        "UD 10"
+      ],
+      "schoolFormInSource": "πρωτῶν",
+      "comparisonForm": "πρώτων",
+      "references": [
+        "https://en.wiktionary.org/wiki/%CF%80%CF%81%E1%BF%B6%CF%84%CE%BF%CF%82#Declension"
+      ],
+      "readings": [
+        {
+          "id": "grc-pending-447",
+          "analysis": "ADJ;GEN;PL;MASC",
+          "sourceForm": "πρωτῶν",
+          "sourceCode": 4,
+          "decision": "CORRECCION_ATICA_CORROBORADA",
+          "note": "La grafía de la candidatura queda en cuarentena. El paradigma ático confirma la forma de cotejo para este análisis."
+        },
+        {
+          "id": "grc-pending-448",
+          "analysis": "ADJ;GEN;PL;NEUT",
+          "sourceForm": "πρωτῶν",
+          "sourceCode": 4,
+          "decision": "CORRECCION_ATICA_CORROBORADA",
+          "note": "La grafía de la candidatura queda en cuarentena. El paradigma ático confirma la forma de cotejo para este análisis."
+        }
+      ],
+      "paradigmReadingsForComparisonForm": [
+        "ADJ;GEN;PL;FEM",
+        "ADJ;GEN;PL;MASC",
+        "ADJ;GEN;PL;NEUT"
+      ],
+      "otherBankReadingsForComparisonForm": [],
+      "automaticGradingEnabled": false
+    },
+    {
+      "lemma": "φιλοσοφοσ",
+      "teacherEntry": "φιλόσοφος, –ου",
+      "units": [],
+      "schoolFormInSource": "φιλόσοφε",
+      "comparisonForm": "φιλόσοφε",
+      "references": [
+        "https://en.wiktionary.org/wiki/%CF%86%CE%B9%CE%BB%CF%8C%CF%83%CE%BF%CF%86%CE%BF%CF%82",
+        "https://hellas.bab2min.pe.kr/hk/filosofos?l=en"
+      ],
+      "readings": [
+        {
+          "id": "grc-pending-496",
+          "analysis": "N;VOC;SG",
+          "sourceForm": "φῐλόσοφε",
+          "sourceCode": 4,
+          "decision": "CORROBORADA_SIN_UNIDAD",
+          "note": "La flexión coincide con el paradigma consultado. La ficha carece de adscripción curricular. La tabla de Hellas Alive documenta también la flexión adjetival. Por ejemplo, φιλόσοφον coincide con lecturas neutras adjetivales además del acusativo del sustantivo."
+        }
+      ],
+      "paradigmReadingsForComparisonForm": [
+        "ADJ;VOC;SG;FEM",
+        "ADJ;VOC;SG;MASC",
+        "N;VOC;SG"
+      ],
+      "otherBankReadingsForComparisonForm": [],
+      "automaticGradingEnabled": false
+    },
+    {
+      "lemma": "φιλοσοφοσ",
+      "teacherEntry": "φιλόσοφος, –ου",
+      "units": [],
+      "schoolFormInSource": "φιλόσοφοι",
+      "comparisonForm": "φιλόσοφοι",
+      "references": [
+        "https://en.wiktionary.org/wiki/%CF%86%CE%B9%CE%BB%CF%8C%CF%83%CE%BF%CF%86%CE%BF%CF%82",
+        "https://hellas.bab2min.pe.kr/hk/filosofos?l=en"
+      ],
+      "readings": [
+        {
+          "id": "grc-pending-497",
+          "analysis": "N;NOM;PL",
+          "sourceForm": "φῐλόσοφοι",
+          "sourceCode": 4,
+          "decision": "CORROBORADA_SIN_UNIDAD",
+          "note": "La flexión coincide con el paradigma consultado. La ficha carece de adscripción curricular. La tabla de Hellas Alive documenta también la flexión adjetival. Por ejemplo, φιλόσοφον coincide con lecturas neutras adjetivales además del acusativo del sustantivo."
+        },
+        {
+          "id": "grc-pending-498",
+          "analysis": "N;VOC;PL",
+          "sourceForm": "φῐλόσοφοι",
+          "sourceCode": 4,
+          "decision": "CORROBORADA_SIN_UNIDAD",
+          "note": "La flexión coincide con el paradigma consultado. La ficha carece de adscripción curricular. La tabla de Hellas Alive documenta también la flexión adjetival. Por ejemplo, φιλόσοφον coincide con lecturas neutras adjetivales además del acusativo del sustantivo."
+        }
+      ],
+      "paradigmReadingsForComparisonForm": [
+        "ADJ;NOM;PL;FEM",
+        "ADJ;NOM;PL;MASC",
+        "ADJ;VOC;PL;FEM",
+        "ADJ;VOC;PL;MASC",
+        "N;NOM;PL",
+        "N;VOC;PL"
+      ],
+      "otherBankReadingsForComparisonForm": [],
+      "automaticGradingEnabled": false
+    },
+    {
+      "lemma": "φιλοσοφοσ",
+      "teacherEntry": "φιλόσοφος, –ου",
+      "units": [],
+      "schoolFormInSource": "φιλοσόφοις",
+      "comparisonForm": "φιλοσόφοις",
+      "references": [
+        "https://en.wiktionary.org/wiki/%CF%86%CE%B9%CE%BB%CF%8C%CF%83%CE%BF%CF%86%CE%BF%CF%82",
+        "https://hellas.bab2min.pe.kr/hk/filosofos?l=en"
+      ],
+      "readings": [
+        {
+          "id": "grc-pending-499",
+          "analysis": "N;DAT;PL",
+          "sourceForm": "φῐλοσόφοις",
+          "sourceCode": 4,
+          "decision": "CORROBORADA_SIN_UNIDAD",
+          "note": "La flexión coincide con el paradigma consultado. La ficha carece de adscripción curricular. La tabla de Hellas Alive documenta también la flexión adjetival. Por ejemplo, φιλόσοφον coincide con lecturas neutras adjetivales además del acusativo del sustantivo."
+        }
+      ],
+      "paradigmReadingsForComparisonForm": [
+        "ADJ;DAT;PL;FEM",
+        "ADJ;DAT;PL;MASC",
+        "ADJ;DAT;PL;NEUT",
+        "N;DAT;PL"
+      ],
+      "otherBankReadingsForComparisonForm": [],
+      "automaticGradingEnabled": false
+    },
+    {
+      "lemma": "φιλοσοφοσ",
+      "teacherEntry": "φιλόσοφος, –ου",
+      "units": [],
+      "schoolFormInSource": "φιλόσοφον",
+      "comparisonForm": "φιλόσοφον",
+      "references": [
+        "https://en.wiktionary.org/wiki/%CF%86%CE%B9%CE%BB%CF%8C%CF%83%CE%BF%CF%86%CE%BF%CF%82",
+        "https://hellas.bab2min.pe.kr/hk/filosofos?l=en"
+      ],
+      "readings": [
+        {
+          "id": "grc-pending-500",
+          "analysis": "N;ACC;SG",
+          "sourceForm": "φῐλόσοφον",
+          "sourceCode": 4,
+          "decision": "CORROBORADA_SIN_UNIDAD",
+          "note": "La flexión coincide con el paradigma consultado. La ficha carece de adscripción curricular. La tabla de Hellas Alive documenta también la flexión adjetival. Por ejemplo, φιλόσοφον coincide con lecturas neutras adjetivales además del acusativo del sustantivo."
+        }
+      ],
+      "paradigmReadingsForComparisonForm": [
+        "ADJ;ACC;SG;FEM",
+        "ADJ;ACC;SG;MASC",
+        "ADJ;ACC;SG;NEUT",
+        "ADJ;NOM;SG;NEUT",
+        "ADJ;VOC;SG;NEUT",
+        "N;ACC;SG"
+      ],
+      "otherBankReadingsForComparisonForm": [],
+      "automaticGradingEnabled": false
+    },
+    {
+      "lemma": "φιλοσοφοσ",
+      "teacherEntry": "φιλόσοφος, –ου",
+      "units": [],
+      "schoolFormInSource": "φιλόσοφος",
+      "comparisonForm": "φιλόσοφος",
+      "references": [
+        "https://en.wiktionary.org/wiki/%CF%86%CE%B9%CE%BB%CF%8C%CF%83%CE%BF%CF%86%CE%BF%CF%82",
+        "https://hellas.bab2min.pe.kr/hk/filosofos?l=en"
+      ],
+      "readings": [
+        {
+          "id": "grc-pending-501",
+          "analysis": "N;NOM;SG",
+          "sourceForm": "φῐλόσοφος",
+          "sourceCode": 4,
+          "decision": "CORROBORADA_SIN_UNIDAD",
+          "note": "La flexión coincide con el paradigma consultado. La ficha carece de adscripción curricular. La tabla de Hellas Alive documenta también la flexión adjetival. Por ejemplo, φιλόσοφον coincide con lecturas neutras adjetivales además del acusativo del sustantivo."
+        }
+      ],
+      "paradigmReadingsForComparisonForm": [
+        "ADJ;NOM;SG;FEM",
+        "ADJ;NOM;SG;MASC",
+        "N;NOM;SG"
+      ],
+      "otherBankReadingsForComparisonForm": [],
+      "automaticGradingEnabled": false
+    },
+    {
+      "lemma": "φιλοσοφοσ",
+      "teacherEntry": "φιλόσοφος, –ου",
+      "units": [],
+      "schoolFormInSource": "φιλοσόφου",
+      "comparisonForm": "φιλοσόφου",
+      "references": [
+        "https://en.wiktionary.org/wiki/%CF%86%CE%B9%CE%BB%CF%8C%CF%83%CE%BF%CF%86%CE%BF%CF%82",
+        "https://hellas.bab2min.pe.kr/hk/filosofos?l=en"
+      ],
+      "readings": [
+        {
+          "id": "grc-pending-502",
+          "analysis": "N;GEN;SG",
+          "sourceForm": "φῐλοσόφου",
+          "sourceCode": 4,
+          "decision": "CORROBORADA_SIN_UNIDAD",
+          "note": "La flexión coincide con el paradigma consultado. La ficha carece de adscripción curricular. La tabla de Hellas Alive documenta también la flexión adjetival. Por ejemplo, φιλόσοφον coincide con lecturas neutras adjetivales además del acusativo del sustantivo."
+        }
+      ],
+      "paradigmReadingsForComparisonForm": [
+        "ADJ;GEN;SG;FEM",
+        "ADJ;GEN;SG;MASC",
+        "ADJ;GEN;SG;NEUT",
+        "N;GEN;SG"
+      ],
+      "otherBankReadingsForComparisonForm": [],
+      "automaticGradingEnabled": false
+    },
+    {
+      "lemma": "φιλοσοφοσ",
+      "teacherEntry": "φιλόσοφος, –ου",
+      "units": [],
+      "schoolFormInSource": "φιλοσόφους",
+      "comparisonForm": "φιλοσόφους",
+      "references": [
+        "https://en.wiktionary.org/wiki/%CF%86%CE%B9%CE%BB%CF%8C%CF%83%CE%BF%CF%86%CE%BF%CF%82",
+        "https://hellas.bab2min.pe.kr/hk/filosofos?l=en"
+      ],
+      "readings": [
+        {
+          "id": "grc-pending-503",
+          "analysis": "N;ACC;PL",
+          "sourceForm": "φῐλοσόφους",
+          "sourceCode": 4,
+          "decision": "CORROBORADA_SIN_UNIDAD",
+          "note": "La flexión coincide con el paradigma consultado. La ficha carece de adscripción curricular. La tabla de Hellas Alive documenta también la flexión adjetival. Por ejemplo, φιλόσοφον coincide con lecturas neutras adjetivales además del acusativo del sustantivo."
+        }
+      ],
+      "paradigmReadingsForComparisonForm": [
+        "ADJ;ACC;PL;FEM",
+        "ADJ;ACC;PL;MASC",
+        "N;ACC;PL"
+      ],
+      "otherBankReadingsForComparisonForm": [],
+      "automaticGradingEnabled": false
+    },
+    {
+      "lemma": "φιλοσοφοσ",
+      "teacherEntry": "φιλόσοφος, –ου",
+      "units": [],
+      "schoolFormInSource": "φιλοσόφῳ",
+      "comparisonForm": "φιλοσόφῳ",
+      "references": [
+        "https://en.wiktionary.org/wiki/%CF%86%CE%B9%CE%BB%CF%8C%CF%83%CE%BF%CF%86%CE%BF%CF%82",
+        "https://hellas.bab2min.pe.kr/hk/filosofos?l=en"
+      ],
+      "readings": [
+        {
+          "id": "grc-pending-504",
+          "analysis": "N;DAT;SG",
+          "sourceForm": "φῐλοσόφῳ",
+          "sourceCode": 4,
+          "decision": "CORROBORADA_SIN_UNIDAD",
+          "note": "La flexión coincide con el paradigma consultado. La ficha carece de adscripción curricular. La tabla de Hellas Alive documenta también la flexión adjetival. Por ejemplo, φιλόσοφον coincide con lecturas neutras adjetivales además del acusativo del sustantivo."
+        }
+      ],
+      "paradigmReadingsForComparisonForm": [
+        "ADJ;DAT;SG;FEM",
+        "ADJ;DAT;SG;MASC",
+        "ADJ;DAT;SG;NEUT",
+        "N;DAT;SG"
+      ],
+      "otherBankReadingsForComparisonForm": [],
+      "automaticGradingEnabled": false
+    },
+    {
+      "lemma": "φιλοσοφοσ",
+      "teacherEntry": "φιλόσοφος, –ου",
+      "units": [],
+      "schoolFormInSource": "φιλοσόφων",
+      "comparisonForm": "φιλοσόφων",
+      "references": [
+        "https://en.wiktionary.org/wiki/%CF%86%CE%B9%CE%BB%CF%8C%CF%83%CE%BF%CF%86%CE%BF%CF%82",
+        "https://hellas.bab2min.pe.kr/hk/filosofos?l=en"
+      ],
+      "readings": [
+        {
+          "id": "grc-pending-505",
+          "analysis": "N;GEN;PL",
+          "sourceForm": "φῐλοσόφων",
+          "sourceCode": 4,
+          "decision": "CORROBORADA_SIN_UNIDAD",
+          "note": "La flexión coincide con el paradigma consultado. La ficha carece de adscripción curricular. La tabla de Hellas Alive documenta también la flexión adjetival. Por ejemplo, φιλόσοφον coincide con lecturas neutras adjetivales además del acusativo del sustantivo."
+        }
+      ],
+      "paradigmReadingsForComparisonForm": [
+        "ADJ;GEN;PL;FEM",
+        "ADJ;GEN;PL;MASC",
+        "ADJ;GEN;PL;NEUT",
+        "N;GEN;PL"
+      ],
+      "otherBankReadingsForComparisonForm": [],
+      "automaticGradingEnabled": false
+    },
+    {
+      "lemma": "χρονοσ",
+      "teacherEntry": "χρόνος, –ου",
+      "units": [],
+      "schoolFormInSource": "χρόνε",
+      "comparisonForm": "χρόνε",
+      "references": [
+        "https://en.wiktionary.org/wiki/%CF%87%CF%81%CF%8C%CE%BD%CE%BF%CF%82#Declension"
+      ],
+      "readings": [
+        {
+          "id": "grc-pending-518",
+          "analysis": "N;VOC;SG",
+          "sourceForm": "χρόνε",
+          "sourceCode": 4,
+          "decision": "CORROBORADA_SIN_UNIDAD",
+          "note": "La flexión coincide con el paradigma consultado. La ficha carece de adscripción curricular."
+        }
+      ],
+      "paradigmReadingsForComparisonForm": [
+        "N;VOC;SG"
+      ],
+      "otherBankReadingsForComparisonForm": [],
+      "automaticGradingEnabled": false
+    },
+    {
+      "lemma": "χρονοσ",
+      "teacherEntry": "χρόνος, –ου",
+      "units": [],
+      "schoolFormInSource": "χρόνοι",
+      "comparisonForm": "χρόνοι",
+      "references": [
+        "https://en.wiktionary.org/wiki/%CF%87%CF%81%CF%8C%CE%BD%CE%BF%CF%82#Declension"
+      ],
+      "readings": [
+        {
+          "id": "grc-pending-519",
+          "analysis": "N;NOM;PL",
+          "sourceForm": "χρόνοι",
+          "sourceCode": 4,
+          "decision": "CORROBORADA_SIN_UNIDAD",
+          "note": "La flexión coincide con el paradigma consultado. La ficha carece de adscripción curricular."
+        },
+        {
+          "id": "grc-pending-520",
+          "analysis": "N;VOC;PL",
+          "sourceForm": "χρόνοι",
+          "sourceCode": 4,
+          "decision": "CORROBORADA_SIN_UNIDAD",
+          "note": "La flexión coincide con el paradigma consultado. La ficha carece de adscripción curricular."
+        }
+      ],
+      "paradigmReadingsForComparisonForm": [
+        "N;NOM;PL",
+        "N;VOC;PL"
+      ],
+      "otherBankReadingsForComparisonForm": [],
+      "automaticGradingEnabled": false
+    },
+    {
+      "lemma": "χρονοσ",
+      "teacherEntry": "χρόνος, –ου",
+      "units": [],
+      "schoolFormInSource": "χρόνοις",
+      "comparisonForm": "χρόνοις",
+      "references": [
+        "https://en.wiktionary.org/wiki/%CF%87%CF%81%CF%8C%CE%BD%CE%BF%CF%82#Declension"
+      ],
+      "readings": [
+        {
+          "id": "grc-pending-521",
+          "analysis": "N;DAT;PL",
+          "sourceForm": "χρόνοις",
+          "sourceCode": 4,
+          "decision": "CORROBORADA_SIN_UNIDAD",
+          "note": "La flexión coincide con el paradigma consultado. La ficha carece de adscripción curricular."
+        }
+      ],
+      "paradigmReadingsForComparisonForm": [
+        "N;DAT;PL"
+      ],
+      "otherBankReadingsForComparisonForm": [],
+      "automaticGradingEnabled": false
+    },
+    {
+      "lemma": "χρονοσ",
+      "teacherEntry": "χρόνος, –ου",
+      "units": [],
+      "schoolFormInSource": "χρόνον",
+      "comparisonForm": "χρόνον",
+      "references": [
+        "https://en.wiktionary.org/wiki/%CF%87%CF%81%CF%8C%CE%BD%CE%BF%CF%82#Declension"
+      ],
+      "readings": [
+        {
+          "id": "grc-pending-522",
+          "analysis": "N;ACC;SG",
+          "sourceForm": "χρόνον",
+          "sourceCode": 4,
+          "decision": "CORROBORADA_SIN_UNIDAD",
+          "note": "La flexión coincide con el paradigma consultado. La ficha carece de adscripción curricular."
+        }
+      ],
+      "paradigmReadingsForComparisonForm": [
+        "N;ACC;SG"
+      ],
+      "otherBankReadingsForComparisonForm": [],
+      "automaticGradingEnabled": false
+    },
+    {
+      "lemma": "χρονοσ",
+      "teacherEntry": "χρόνος, –ου",
+      "units": [],
+      "schoolFormInSource": "χρόνος",
+      "comparisonForm": "χρόνος",
+      "references": [
+        "https://en.wiktionary.org/wiki/%CF%87%CF%81%CF%8C%CE%BD%CE%BF%CF%82#Declension"
+      ],
+      "readings": [
+        {
+          "id": "grc-pending-523",
+          "analysis": "N;NOM;SG",
+          "sourceForm": "χρόνος",
+          "sourceCode": 4,
+          "decision": "CORROBORADA_SIN_UNIDAD",
+          "note": "La flexión coincide con el paradigma consultado. La ficha carece de adscripción curricular."
+        }
+      ],
+      "paradigmReadingsForComparisonForm": [
+        "N;NOM;SG"
+      ],
+      "otherBankReadingsForComparisonForm": [],
+      "automaticGradingEnabled": false
+    },
+    {
+      "lemma": "χρονοσ",
+      "teacherEntry": "χρόνος, –ου",
+      "units": [],
+      "schoolFormInSource": "χρόνου",
+      "comparisonForm": "χρόνου",
+      "references": [
+        "https://en.wiktionary.org/wiki/%CF%87%CF%81%CF%8C%CE%BD%CE%BF%CF%82#Declension"
+      ],
+      "readings": [
+        {
+          "id": "grc-pending-524",
+          "analysis": "N;GEN;SG",
+          "sourceForm": "χρόνου",
+          "sourceCode": 4,
+          "decision": "CORROBORADA_SIN_UNIDAD",
+          "note": "La flexión coincide con el paradigma consultado. La ficha carece de adscripción curricular."
+        }
+      ],
+      "paradigmReadingsForComparisonForm": [
+        "N;GEN;SG"
+      ],
+      "otherBankReadingsForComparisonForm": [],
+      "automaticGradingEnabled": false
+    },
+    {
+      "lemma": "χρονοσ",
+      "teacherEntry": "χρόνος, –ου",
+      "units": [],
+      "schoolFormInSource": "χρόνους",
+      "comparisonForm": "χρόνους",
+      "references": [
+        "https://en.wiktionary.org/wiki/%CF%87%CF%81%CF%8C%CE%BD%CE%BF%CF%82#Declension"
+      ],
+      "readings": [
+        {
+          "id": "grc-pending-525",
+          "analysis": "N;ACC;PL",
+          "sourceForm": "χρόνους",
+          "sourceCode": 4,
+          "decision": "CORROBORADA_SIN_UNIDAD",
+          "note": "La flexión coincide con el paradigma consultado. La ficha carece de adscripción curricular."
+        }
+      ],
+      "paradigmReadingsForComparisonForm": [
+        "N;ACC;PL"
+      ],
+      "otherBankReadingsForComparisonForm": [],
+      "automaticGradingEnabled": false
+    },
+    {
+      "lemma": "χρονοσ",
+      "teacherEntry": "χρόνος, –ου",
+      "units": [],
+      "schoolFormInSource": "χρόνῳ",
+      "comparisonForm": "χρόνῳ",
+      "references": [
+        "https://en.wiktionary.org/wiki/%CF%87%CF%81%CF%8C%CE%BD%CE%BF%CF%82#Declension"
+      ],
+      "readings": [
+        {
+          "id": "grc-pending-526",
+          "analysis": "N;DAT;SG",
+          "sourceForm": "χρόνῳ",
+          "sourceCode": 4,
+          "decision": "CORROBORADA_SIN_UNIDAD",
+          "note": "La flexión coincide con el paradigma consultado. La ficha carece de adscripción curricular."
+        }
+      ],
+      "paradigmReadingsForComparisonForm": [
+        "N;DAT;SG"
+      ],
+      "otherBankReadingsForComparisonForm": [],
+      "automaticGradingEnabled": false
+    },
+    {
+      "lemma": "χρονοσ",
+      "teacherEntry": "χρόνος, –ου",
+      "units": [],
+      "schoolFormInSource": "χρόνων",
+      "comparisonForm": "χρόνων",
+      "references": [
+        "https://en.wiktionary.org/wiki/%CF%87%CF%81%CF%8C%CE%BD%CE%BF%CF%82#Declension"
+      ],
+      "readings": [
+        {
+          "id": "grc-pending-527",
+          "analysis": "N;GEN;PL",
+          "sourceForm": "χρόνων",
+          "sourceCode": 4,
+          "decision": "CORROBORADA_SIN_UNIDAD",
+          "note": "La flexión coincide con el paradigma consultado. La ficha carece de adscripción curricular."
+        }
+      ],
+      "paradigmReadingsForComparisonForm": [
+        "N;GEN;PL"
+      ],
+      "otherBankReadingsForComparisonForm": [],
+      "automaticGradingEnabled": false
+    }
+  ]
+}
