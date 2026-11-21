@@ -102,21 +102,38 @@ async function main(){
    throw Error('Decisión latina mal formada: '+decision.id);
   const original=catalog.lat[decision.fromLemma],revised=catalog.lat[decision.toLemma];
   if(original?.lat1){
-   // Solo autorizar la fusión explícita commito -> committo entre cursos disjuntos.
-   const joining=decision.mergeExistingCourse==='lat4';
-   if(joining&&(decision.fromLemma!=='commito'||decision.toLemma!=='committo'))
-    throw Error('Fusión no autorizada: '+decision.id);
-   if((revised&&!joining)||(!revised&&joining)||
-      (joining&&(original.lat4||!revised.lat4||revised.lat1))||
+   // Proteger ambos tipos de unificación por identificador y curso.
+   // La fusión solis -> sol comparte curso y debe conservar las DOS UDs.
+   const joiningOther=decision.mergeExistingCourse==='lat4';
+   const joiningSame=decision.mergeExistingCourse==='lat1';
+   if(joiningOther&&(decision.fromLemma!=='commito'||decision.toLemma!=='committo'))
+    throw Error('Fusión intercurso no autorizada: '+decision.id);
+   if(joiningSame&&(
+      decision.id!=='solis-ud7-sol'||
+      decision.fromLemma!=='solis'||decision.toLemma!=='sol'||
+      decision.existingEntry!=='sol, solis (m.)'||
+      JSON.stringify(decision.existingUnits)!==JSON.stringify(['UD 11–12'])||
+      !revised?.lat1||revised.lat1.entry!==decision.existingEntry||
+      JSON.stringify(revised.lat1.units)!==JSON.stringify(decision.existingUnits)||
+      original.lat4||revised.lat4))
+    throw Error('Fusión latina dentro del mismo curso no autorizada: '+decision.id);
+   if((revised&&!joiningOther&&!joiningSame)||
+      (!revised&&(joiningOther||joiningSame))||
+      (joiningOther&&(original.lat4||!revised.lat4||revised.lat1))||
       original.lat1.entry!==decision.fromEntry||
       JSON.stringify([...original.lat1.units].sort())!==JSON.stringify([...decision.units].sort()))
     throw Error('La ficha latina cambió inesperadamente: '+decision.id);
-   catalog.lat[decision.toLemma]={
-    ...(joining?revised:original),
+   catalog.lat[decision.toLemma]=joiningSame?{
+    ...revised,lat1:{
+     ...revised.lat1,entry:decision.toEntry,
+     units:[...new Set([...revised.lat1.units,...original.lat1.units])]
+    }
+   }:{
+    ...(joiningOther?revised:original),
     lat1:{...original.lat1,entry:decision.toEntry}
    };
    delete catalog.lat[decision.fromLemma];
-   if(joining)mergedLatinEditorialLemmas++;
+   if(joiningOther||joiningSame)mergedLatinEditorialLemmas++;
   }else if(!revised?.lat1||revised.lat1.entry!==decision.toEntry){
    throw Error('No se puede reproducir la decisión latina: '+decision.id);
   }
