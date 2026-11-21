@@ -132,6 +132,8 @@ jobs:
         run: node scripts/test-filologia-regimen-acento-20261121.cjs --offline
       - name: Atestación aislada del dativo en -ματι sin promoción morfológica
         run: node scripts/test-greek-noun-case-attestation-20261121.cjs
+      - name: Auditar ὄνομα y bloquear promoción de las once casillas corruptas
+        run: node scripts/test-greek-onoma-source0-audit-20261121.cjs
       - name: Revisar cantidad vocálica latina sin cancelar variantes métricas
         run: node scripts/test-filologia-cantidad-latina-20261121.cjs --offline
       - name: Exam UI redesign in iPad, forms, Word and vocabulary isolation
