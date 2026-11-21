@@ -12,14 +12,14 @@ const begin=html.indexOf('function greekVerbAnalysisCandidates(eligible){');
 const end=html.indexOf('function generateGreekMorphologyFixed(){',begin);
 assert(begin>0&&end>begin,'No se localiza la función compartida de lecturas verbales');
 const snippet=html.slice(begin,end);
-const helperBegin=html.indexOf('function greekWrittenVerbVariants(form){');
+const helperBegin=html.indexOf('function greekWrittenFormVariants(form){');
 const helperEnd=html.indexOf('function greekCorpus(){',helperBegin);
 assert(helperBegin>0&&helperEnd>helperBegin,'No se encontró el expansor griego de ν móvil');
 const helper=html.slice(helperBegin,helperEnd);
 assert(offline.includes(helper),'La PWA no contiene el expansor de ν móvil');
 assert(offline.includes(snippet),'La PWA no contiene el mismo motor de análisis griego');
 const sandbox=new Function('normLex',helper+snippet+
- 'return {generator:greekVerbAnalysisCandidates,expand:greekWrittenVerbVariants};')
+ 'return {generator:greekVerbAnalysisCandidates,expand:greekWrittenFormVariants};')
  (x=>String(x).toLocaleLowerCase('el').normalize('NFC'));
 const generator=sandbox.generator,expand=sandbox.expand;
 const m=html.match(/const greekExplicitVerbEvidence=(\{[^\n]+\});\n/);
