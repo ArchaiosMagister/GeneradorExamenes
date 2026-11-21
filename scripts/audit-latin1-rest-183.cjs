@@ -62,7 +62,8 @@ for(const [i,record] of records.entries()){
   // Solo las enunciaciones previamente erróneas pueden variar en este informe.
   const correctedEntries={
    'vivo, vixi, vivitum (4ª)':'vivo, vixi, victum (3ª)',
-   'solvo, solvi, solutum (2ª)':'solvo, solvi, solutum (3ª)'
+   'solvo, solvi, solutum (2ª)':'solvo, solvi, solutum (3ª)',
+   'fugio, fugi – (4ª)':'fugio, fugi – (mx.)'
   };
   const expectedEntry=correctedEntries[published.enunciado]||published.enunciado||'';
   assert.equal(expectedEntry,record.entry,'Enunciado reconocido alterado: '+record.form);
