@@ -18472,14 +18472,9 @@ Object.assign(adjectives,additionalAdjectives);
 (function(){
  'use strict';
  const onlyGreek=()=>currentCourse()==='greek1'&&$('model').value==='complete';
- // No propagar el paradigma oxítono heredado de ὀλιγός: el lema es
- // ὀλίγος. Acotar la exclusión a los modelos de esta integración para
- // conservar intacto el modelo de morfología solicitado por el docente.
- const previousAdjectives=greekAvailableSyntagmAdjectives;
- greekAvailableSyntagmAdjectives=function(limit){
-  const pool=previousAdjectives(limit);
-  return onlyGreek()?pool.filter(x=>greekBankKey(x.lemma)!=='ολιγοσ'):pool;
- };
+ // ὀλίγος vuelve a regirse por el paradigma corregido de index.html.
+ // La compatibilidad semántica se limita por greekSemanticSyntagms, no
+ // mediante una exclusión ligada a una errata ortográfica ya subsanada.
  const t=(es,va)=>$('lang').value==='va'?va:es;
  const numerals={es:['cero','una','dos','tres','cuatro','cinco'],
   va:['zero','una','dos','tres','quatre','cinc']};
