@@ -47,7 +47,7 @@ jobs:
           node scripts/test-latin-ud7-nix-sol-20261121.cjs
           node scripts/test-regular-latin.mjs
           node scripts/test-required-latin-vocabulary.cjs
-          node scripts/test-vocabulary.cjs
+          # test-vocabulary.cjs requiere Playwright; lo ejecuta la CI visual habitual.
           node scripts/test-lemma-index.mjs
           node scripts/test-greek-third-decl-gender-five.cjs
           node scripts/test-greek-ud8-lexical-accents.cjs
