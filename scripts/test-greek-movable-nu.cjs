@@ -12,20 +12,22 @@ function fragment(start,end){
  assert(a>=0&&b>a,'Fragmento perdido: '+start);
  return html.slice(a,b);
 }
-const helper=fragment('function greekWrittenVerbVariants(form){','function greekCorpus(){');
+const helper=fragment('function greekWrittenFormVariants(form){','function greekCorpus(){');
 const analysis=fragment('function greekVerbAnalysisCandidates(eligible){','function generateGreekMorphologyFixed(){');
 const fallback=fragment('function examGreekVerbFormCandidates(pool,limit){','// Separate the grammatical quota');
 for(const segment of [helper,analysis,fallback])
  assert(offline.includes(segment),'PWA sin sincronizar una de las tres rutas del ν móvil');
 const norm=s=>String(s||'').normalize('NFC').toLocaleLowerCase('el');
 const build=new Function('normLex','greekMorphologyEligible',
- helper+analysis+fallback+'return {expand:greekWrittenVerbVariants,'+
+ helper+analysis+fallback+'return {expand:greekWrittenFormVariants,'+
  'analyze:greekVerbAnalysisCandidates,fallback:examGreekVerbFormCandidates};');
 const {expand,analyze,fallback:forms}=build(norm,(item,limit)=>item.minUnit<=limit);
 assert.deepEqual(expand('λύουσι(ν)'),['λύουσι','λύουσιν']);
 assert.deepEqual(expand('ἔλυε(ν)'),['ἔλυε','ἔλυεν']);
 assert.deepEqual(expand('ἐστί(ν)'),['ἐστί','ἐστίν']);
 assert.deepEqual(expand('ἐλελύκει(ν)'),['ἐλελύκει','ἐλελύκειν']);
+assert.deepEqual(expand('ἄρχουσι(ν)'),['ἄρχουσι','ἄρχουσιν']);
+assert.deepEqual(expand('γυναιξί(ν)'),['γυναιξί','γυναιξίν']);
 assert.deepEqual(expand('λύω'),['λύω']);
 assert.deepEqual(expand('λύουσι(ς)'),[],'No inferir formas de notaciones no aprobadas');
 assert.deepEqual(expand('λύω λύεις'),[],'No generar variantes de sintagmas');
@@ -80,15 +82,22 @@ for(const form of ['ἔλυον','ἦλθον']){
  assert(entry&&entry.answer.includes('primera persona singular o tercera persona plural'),
   'Regresión de lectura sincrética en '+form);
 }
-assert(optional>=18,'El inventario de ν móvil es inesperadamente pequeño');
+assert.equal(optional,18,'La auditoría verbal debe mantener 18 notaciones');
+assert.equal(2,['ἄρχουσι(ν)','γυναιξί(ν)'].length,
+ 'Deben cotejarse las dos notaciones nominales de tercera declinación');
 assert(covered===64,'La ampliación no debe cambiar otras series verificadas');
-assert(html.includes('greekWrittenVerbVariants(form).forEach((surface,variantIndex)=>'),
+assert.equal(html.split('greekWrittenFormVariants(form).forEach((surface,variantIndex)=>').length-1,2,
+ 'Corpus verbal y nominal deben compartir la expansión de ν móvil');
+assert(html.includes('greekWrittenFormVariants(form).forEach((surface,variantIndex)=>'),
  'El corpus editable no publica las dos formas de ν móvil');
 assert(html.includes("'ef-'+key+'-'+i+(variantIndex?'-nu':'')"),
  'No se mantiene el ID histórico al expandir una ficha');
 assert(!html.includes("if(!prompt||/[()]/u.test(prompt)"),
  'La ruta secundaria sigue descartando variantes legítimas');
-console.log('Griego I: '+optional+' terminaciones de ν móvil entre paradigmas explícitos y regulares; '+
+const numberChanger=fs.readFileSync(path.join(root,'greek-choice-number.js'),'utf8');
+assert(numberChanger.includes('row.prompt.replace(/\\(ν\\)/gu'),
+ 'El cambio de número no normaliza las formas escritas');
+console.log('Griego I: '+(optional+2)+' notaciones de ν móvil (18 verbales y dos nominales); '+
  covered+' formas explícitas con doble lectura cuando corresponda; no se evalúan grafías abreviadas.');
 
 // Reconstrucción temporal del paquete autónomo antes de la PR.
