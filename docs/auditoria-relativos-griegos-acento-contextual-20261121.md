@@ -20,7 +20,7 @@ Se identifican por **unidad, número de línea, contexto íntegro y secuencia co
 
 ## Control de regresión
 
-- `scripts/test-greek-relative-grave-20261121.cjs` comprueba las **26 líneas exactas**, su lectura original, la sustitución únicamente diacrítica, 14 UD, 471 renglones, 11 oraciones evaluables y sincronización offline.
+- `scripts/test-greek-relative-grave-20261121.cjs` comprueba las **26 líneas exactas del JSON curricular**, su lectura original, la sustitución únicamente diacrítica, 14 UD, 471 renglones y la identidad de las 11 oraciones evaluables entre la web y el HTML autónomo. El corpus curricular no está embebido literalmente en `offline.html` y se comprueba en su fuente persistente; no se afirma una paridad textual inexistente.
 - El índice `teacher-forms.json` permanece inalterado: **2817 filas griegas, 478 de fuente 5**. No hay nuevas certificaciones ni aceptación automática.
 - Se corrige en las **dos CI** un defecto previo del YAML: `test-greek-systematic-morph-syntax-20261121.cjs` figuraba como continuación plegada del `run:` de perfectos de UD13, por lo que no se ejecutaba como comando independiente. Ahora cuenta con paso propio.
 - La nueva prueba se añade a Phase I y a la batería offline. `offline.html` debe reconstruirse mediante un workflow aislado y después verificarse con la CI completa.
