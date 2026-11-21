@@ -4721,8 +4721,13 @@ function greekAvailableSyntagmAdjectives(limit){
   // por su paradigma morfológico explícito, no por su posición en listas.
   return ['m','f','n'].every(gender=>{
    const forms=greekCompleteAdjectiveForms(item,gender);
-   return forms?.length===2&&forms.every(number=>
-    number.length===5&&number.every(form=>typeof form==='string'&&form.trim()));
+   return forms?.length===2&&forms.every((number,n)=>
+    number.length===5&&number.every((form,k)=>
+     // πολύς no tiene aquí vocativo singular evaluable, pero sigue
+     // disponible para los otros nueve casos/números del sintagma.
+     (item.accent==='mixed-polys'&&n===0&&k===1&&form===null)||
+     (typeof form==='string'&&form.trim())));
+
   });
  });
 }
