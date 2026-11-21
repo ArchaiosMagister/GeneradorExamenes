@@ -21,13 +21,17 @@ assert.ok(data.extensions?.citation_only.lat>=100&&data.extensions?.citation_onl
 assert.ok(data.rows.lat.some(x=>x[3]===2)&&data.rows.grc.some(x=>x[3]===3));
 const latinEditorial=JSON.parse(fs.readFileSync(path.join(root,'data/lemmas/latin-editorial-decisions.json'),'utf8'));
 assert.equal(latinEditorial.verifiedMorphology,false);
-assert.equal(latinEditorial.decisions.length,1);
+assert.equal(latinEditorial.decisions.length,2);
 assert.equal(latinEditorial.textCorrections[0].corrected,'Pecunia carere nonnullis philosophis placebat.');
 assert.equal(data.vocabulary.lat.tener.lat1.entry,'tener, tenera, tenerum');
 assert.deepEqual([...data.vocabulary.lat.tener.lat1.units].sort(),['UD 2','UD 3']);
 assert.equal(data.vocabulary.lat.tenerus,undefined,'La clave antigua no debe sobrevivir a la reconstrucción');
 assert(data.rows.lat.some(row=>row[0]==='tener'&&row[1]==='tener'&&row[2]==='LEX;ENTRY'&&row[3]===3));
 assert(!data.rows.lat.some(row=>row[0]==='tenerus'),'No deben conservarse registros huérfanos');
+assert(!data.vocabulary.lat.commito&&!data.rows.lat.some(row=>row[0]==='commito'),
+ 'No puede quedar una segunda clave por la errata commito');
+assert(data.vocabulary.lat.committo.lat1&&data.vocabulary.lat.committo.lat4,
+ 'Ambos cursos deben compartir committo');
 assert.equal(data.extensions.latin_editorial_decisions.verifiedFormsAdded,0,
  'La corrección de un enunciado no acredita nuevas flexiones');
 assert.equal(data.vocabulary.lat.moveo.lat1.entry,'moveo, movi, motum (2ª)');
@@ -55,7 +59,7 @@ for(const row of overrides.singleForms){
 }
 
 assert.ok(data.extensions.rejected_for_conflict.every(x=>x.lemma&&x.features.length>0));
-assert.equal(Object.keys(data.vocabulary.lat).length,772+(data.extensions?.readerEnrichment?.additions?.lat||0),
+assert.equal(Object.keys(data.vocabulary.lat).length,771+(data.extensions?.readerEnrichment?.additions?.lat||0),
  'El enriquecimiento solo puede añadir lemas presentes en el banco docente');
 assert.equal(Object.keys(data.vocabulary.grc).length,351+(data.extensions?.readerEnrichment?.additions?.grc||0),
  'El enriquecimiento griego solo puede añadir lemas presentes en el banco docente');

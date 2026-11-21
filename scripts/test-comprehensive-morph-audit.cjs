@@ -25,8 +25,8 @@ for(const lemma of ['sepelio','solvo','vivo','invenio']){
  assert(added.every(x=>x.source==='MODELO_REGULAR'&&
   x.individualVerification===false&&x.eligibleForNewAutomaticGrading===false));
 }
-assert.equal(persisted.counts.lat.modelo,3244+4*18,
- 'Cambio de candidaturas ajeno a los cuatro lemas con propuestas regulares recuperadas');
+assert.equal(persisted.counts.lat.modelo,3244+4*18-18,
+ 'Cambio ajeno a cuatro lemas recuperados y a la fusión de 18 propuestas duplicadas');
 assert.deepEqual(summary.latin,report.latin.summary);
 assert.deepEqual(summary.greek,report.greek.summary);
 assert.equal(summary.verifiedPromoted,0);

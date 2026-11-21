@@ -230,7 +230,7 @@ window.ExaminaRequiredLatinUnits={
         "charta, –æ",
         "Cicero, –onis (m.)",
         "civis, –is (m. o f.)",
-        "commito, commisi, commissum (3ª)",
+        "committo, commisi, commissum (3ª)",
         "consul, consulis (m.)",
         "crimen, criminis (n.)",
         "cum (prep. + abl.)",
