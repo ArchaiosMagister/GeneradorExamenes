@@ -35,8 +35,15 @@ for(const file of ['index.html','offline.html']){
   assert.equal(same[0].meaning,meaning,file+': significado '+lemma);
   assert.notEqual(same[0].entry,from);
  }
- assert(html.includes('"ακροαμα":{"gr1":{"entry":"ἀκρόαμα, –ματος (τό)"'),file+': índice incrustado obsoleto');
- assert(html.includes('"audición, recitación o espectáculo para escuchar": "audició, recitació o espectacle per a escoltar"'),file+': falta traducción');
+ if(file==='offline.html'){
+  // La web obtiene el índice y las traducciones de recursos externos;
+  // solo offline.html los embebe como parte del empaquetado.
+  assert(html.includes('"ακροαμα":{"gr1":{"entry":"ἀκρόαμα, –ματος (τό)"'),
+   'Archivo autónomo: índice incrustado obsoleto');
+  assert(html.includes('"audición, recitación o espectáculo para escuchar": "audició, recitació o espectacle per a escoltar"'),
+   'Archivo autónomo: falta traducción valenciana');
+ }
+
 }
 assert.equal(cand.entries.find(x=>x.lemma==='πρωτοσ'),undefined,'πρῶτος provisional reutilizable');
 assert.equal(cand.stats.rejectedAccentForms,24);
