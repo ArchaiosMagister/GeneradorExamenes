@@ -380,14 +380,25 @@ async function main(){
    throw Error('Ficha histórica griega no segura: '+x.id);
   add('grc',x.lemma,x.sourceForm,x.analysis,'wikcionario');
  }
- if(counts.grc.wikcionario-greekCountBefore!==559-echthrosLedger.items.length-dativesLedger.items.length)
-  throw Error('La reconstrucción no concilia las catorce promociones con el inventario histórico');
+ // Cuaternario histórico: 24 fichas de πρῶτος mantienen su ID, pero
+ // las grafías erróneas no pueden estar en el índice vivo ni en el examen.
+ const quarantinedGreek=historicGreek.items.filter(x=>x.lemma==='πρωτοσ'&&
+  x.status==='ACENTO_INCORRECTO_EN_FUENTE');
+ if(quarantinedGreek.length!==24||quarantinedGreek.some(x=>!x.extractPresent||
+    x.gradeEligible||x.verifiedIndividual)||
+    greekCandidateData.entries.some(x=>x.lemma==='πρωτοσ')||
+    rows.grc.some(x=>x[0]==='πρωτοσ'&&x[3]===4))
+  throw Error('Las 24 formas de πρῶτος no se han mantenido bajo cuarentena');
+ if(counts.grc.wikcionario-greekCountBefore!==559-
+    echthrosLedger.items.length-dativesLedger.items.length-quarantinedGreek.length)
+  throw Error('La reconstrucción no concilia cotejos, cuarentena e inventario histórico');
  extensions.greek_nominal_candidates={
   lemmas:greekCandidateData.entries.length,
   rows:counts.grc.wikcionario-greekCountBefore,
   historicalRows:historicGreek.items.length,
   migratedIndividualSource5:echthrosLedger.items.length+dativesLedger.items.length,
   archivedRowsWithoutExtract:missingGreek.length,
+  quarantinedAccentForms:quarantinedGreek.length,
   license:greekCandidateData.license,
   attribution:greekCandidateData.attribution,
   status:greekCandidateData.status,

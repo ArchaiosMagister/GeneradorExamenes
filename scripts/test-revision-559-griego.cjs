@@ -14,16 +14,16 @@ assert.equal(review.schema,'examina-greek-morphology-triage/v1');
 assert.equal(review.items.length,559);
 assert.equal(review.summary.total,559);
 const original=bank.rows.grc.filter(x=>x[3]===4);
-assert.equal(original.length,545);
+assert.equal(original.length,521);
 const originalKeys=new Set(original.map(x=>key(x[0],x[1],x[2])));
-assert.equal(originalKeys.size,545);
+assert.equal(originalKeys.size,521);
 const migrated=get('data/lemmas/cotejo-10-echthros-20261113.json');
 const newlyMigrated=get('data/lemmas/cotejo-4-dativos-fuente5-20261115.json');
 const migratedIds=new Set([...migrated.items,...newlyMigrated.items].map(x=>x.id));
 assert.equal(migratedIds.size,14);
 const sourceByLemma=new Map(extract.entries.map(x=>[x.lemma,x]));
 const ids=new Set(),seen=new Set(),byStatus={},byUnit={with:0,without:0};
-let matches=0,missing=0,teacher=0,corrections=0;
+let matches=0,missing=0,quarantined=0,teacher=0,corrections=0;
 for(const item of review.items){
  assert(item.id&& !ids.has(item.id),'ID ausente o duplicado');
  ids.add(item.id);
@@ -34,10 +34,14 @@ for(const item of review.items){
  assert(Boolean(item.sourceForm&&item.schoolForm));
  assert.equal(item.analysis.includes(';'),true);
  const k=key(item.lemma,item.sourceForm,item.analysis);
+ const underQuarantine=item.lemma==='πρωτοσ'&&item.status==='ACENTO_INCORRECTO_EN_FUENTE';
  if(migratedIds.has(item.id)){
   assert(!originalKeys.has(k),'La candidata ya contrastada debe salir de fuente 4: '+k);
   assert(bank.rows.grc.some(r=>r[0]===item.lemma&&r[1]===item.schoolForm&&
    r[2]===item.analysis&&r[3]===5),'Falta migración individual: '+item.id);
+ }else if(underQuarantine){
+  assert(!originalKeys.has(k),'Acentuación de πρῶτος volvió al índice: '+k);
+  assert(item.extractPresent,'Falta origen histórico de πρῶτος');
  }else assert(originalKeys.has(k),'La forma fuente cambió: '+k);
  assert(!seen.has(k),'Forma duplicada');
  seen.add(k);
@@ -62,9 +66,17 @@ for(const item of review.items){
  assert.deepEqual(item.units,vocab.units);
  const entry=sourceByLemma.get(item.lemma);
  const has=Boolean(entry?.forms?.some(y=>y[0]===item.sourceForm&&y[1]===item.analysis));
- assert.equal(item.extractPresent,has,'Trazabilidad extracto: '+k);
- assert.equal(item.reference,entry?.source_page||null);
- if(has)matches++;else missing++;
+ // extractPresent indica presencia en 13/11, no autorización para usos posteriores.
+ if(underQuarantine){
+  assert.equal(has,false,'La forma de πρῶτος reapareció en extracto: '+k);
+  assert.equal(item.extractPresent,true);
+  assert.equal(item.reference,'https://en.wiktionary.org/wiki/%CF%80%CF%81%E1%BF%B6%CF%84%CE%BF%CF%82');
+  quarantined++;
+ }else{
+  assert.equal(item.extractPresent,has,'Trazabilidad extracto: '+k);
+  assert.equal(item.reference,entry?.source_page||null);
+  if(has)matches++;else missing++;
+ }
  if(item.units.length)byUnit.with++;else byUnit.without++;
  byStatus[item.status]=(byStatus[item.status]||0)+1;
  const mustTeacher=['αθανατοσ','εχθροσ'].includes(item.lemma)||
@@ -83,8 +95,9 @@ for(const item of review.items){
   assert.equal(item.proposedCorrection,'κεφαλή, –ῆς');
  }
 }
-assert.equal(matches,510);
+assert.equal(matches,486);
 assert.equal(missing,49);
+assert.equal(quarantined,24);
 assert.equal(byUnit.with,68);
 assert.equal(byUnit.without,491);
 assert.equal(teacher,21);
@@ -100,7 +113,8 @@ assert.deepEqual(byStatus,expected);
 assert.deepEqual(review.summary.byStatus,expected);
 assert.equal(review.summary.verifiedPromoted,0);
 assert.equal(review.summary.gradeEligibleNew,0);
-assert.equal(bank.counts.grc.wikcionario,545);
+assert.equal(bank.counts.grc.wikcionario,521);
+assert.equal(bank.extensions.greek_nominal_candidates.quarantinedAccentForms,24);
 assert.equal(bank.counts.grc.contrastado,478);
 assert.equal(bank.extensions.greek_nominal_candidates.historicalRows,559);
 assert.equal(bank.extensions.greek_nominal_candidates.migratedIndividualSource5,14);
@@ -109,4 +123,4 @@ assert.equal(bank.counts.lat.modelo,bank.extensions.candidate_rows,
 // Comprobar que la auditoría no ha convertido accidentalmente a fuente 5 ninguna propuesta.
 const verifiedKeys=new Set(bank.rows.grc.filter(x=>x[3]===5).map(x=>key(x[0],x[1],x[2])));
 assert(review.items.every(x=>migratedIds.has(x.id)||!verifiedKeys.has(key(x.lemma,x.sourceForm,x.analysis))));
-console.log('Revisión griega: 559/559 identidades históricas, 14 lecturas migradas (10 femeninas y 4 dativos), 545 candidaturas restantes; inventario original intacto.');
+console.log('Revisión griega: 559 expedientes históricos, 14 cotejos fuente 5, 24 formas bajo cuarentena y 521 candidaturas fuente 4.');
