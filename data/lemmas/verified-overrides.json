@@ -452,15 +452,6 @@
     },
     {
       "lang": "lat",
-      "lemma": "magnus",
-      "course": "lat4",
-      "from": "māgnus, –a, –um",
-      "to": "măgnus, –a, –um",
-      "reference": "https://en.wiktionary.org/wiki/magnus",
-      "note": "Breve inicial contrastada; no equivale a cantidad silábica ni certifica nuevas flexiones."
-    },
-    {
-      "lang": "lat",
       "lemma": "longus",
       "course": "lat4",
       "from": "lōngus, –a, –um",
