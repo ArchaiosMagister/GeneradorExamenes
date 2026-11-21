@@ -208,3 +208,9 @@ Revisadas las secuencias de `δίκαιος`, `ἄνθρωπος` y `κακός`
 - UD8: `κακός ἔστιν` → `κακός ἐστιν` (oxítona conservada ante enclítica).
 
 Las proposiciones son copulativas, no existenciales; no se aplica la excepción `ἔστιν` con valor existencial. Mantener 14 UD, 471 entradas docentes y el motor de 11 oraciones seleccionables. Se agregan aserciones exactas de buenas y malas grafías, sin alterar opciones de examen ni indexar formas nuevas.
+
+### Validación final de la ronda duodécima
+
+La primera ejecución aislada de reconstrucción de acentos (https://github.com/ArchaiosMagister/GeneradorExamenes/actions/runs/44929639822) detectó una aserción obsoleta que aún exigía `δικαιός`. Se corrigió el test para exigir `δίκαιός` y se reejecutó la reconstrucción. La ejecución https://github.com/ArchaiosMagister/GeneradorExamenes/actions/runs/44929722404 terminó con **success**, incluyendo construcción del índice fijado y del HTML autónomo, las pruebas latinas de cantidades y todas las pruebas griegas de acentuación y régimen. Se conservan 1106/541 exigibles latinos, 14 UD y 471 renglones griegos y 619 lecturas latinas contrastadas. No hubo promoción de formas ni cambios imprevistos en la reconstrucción. Se retira el flujo temporal de esta ronda.
+
+La CI general debe comprobarse sobre el commit final, sin confundir checks `action_required` del bot con `success`. No fusionar ni publicar sin autorización.
