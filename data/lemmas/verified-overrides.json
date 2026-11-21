@@ -197,6 +197,15 @@
       "to": "ὀλίγος, –η, –ον",
       "reference": "https://dcc.dickinson.edu/greek-core/%E1%BD%80%CE%BB%CE%AF%CE%B3%CE%BF%CF%82-%E1%BD%80%CE%BB%CE%AF%CE%B3%CE%B7-%E1%BD%80%CE%BB%CE%AF%CE%B3%CE%BF%CE%BD",
       "note": "Corrección de acentuación del enunciado exigible de UD5. No incorpora ni certifica nuevas flexiones."
+    },
+    {
+      "lang": "grc",
+      "lemma": "πραγμα",
+      "course": "gr1",
+      "from": "πράγμα, πραγμάτος (N)",
+      "to": "πρᾶγμα, πράγματος (τό)",
+      "reference": "https://logeion.uchicago.edu/%CF%80%CF%81%CE%B1%CD%82%CE%B3%CE%BC%CE%B1",
+      "note": "Corregir acentos clásicos del enunciado de 3.ª declinación y marcar género neutro con artículo griego; sin añadir ni promover flexiones."
     }
   ],
   "paradigms": [
