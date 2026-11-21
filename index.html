@@ -4447,7 +4447,7 @@ function greekExamNominalAnswer(readings,category,gender,declension){
 // La grafía editorial (ν) indica dos superficies reales, no una palabra
 // con paréntesis. Se admiten solo las variantes explícitas del paradigma.
 // No inferir flexiones ni cambiar los enunciados de las tablas de conjugación.
-function greekWrittenVerbVariants(form){
+function greekWrittenFormVariants(form){
  const spelling=String(form||'').trim().normalize('NFC');
  const movable=spelling.match(/^([\p{Script=Greek}\p{M}]+)\(ν\)$/u);
  if(movable)return [movable[1],movable[1]+'ν'];
@@ -4474,12 +4474,12 @@ function greekCorpus(){
   items[items.length-1].sourceCode=record.sourceCode;
   const recorded=new Set();
   forms.forEach((form,i)=>{
-   greekWrittenVerbVariants(form).forEach((surface,variantIndex)=>{
+   greekWrittenFormVariants(form).forEach((surface,variantIndex)=>{
     const spelling=normLex(surface);
     if(recorded.has(spelling)||greekFormRows.some(row=>normLex(row[0])===spelling))return;
     recorded.add(spelling);
     const persons=forms.flatMap((other,j)=>
-     greekWrittenVerbVariants(other).some(x=>normLex(x)===spelling)?[j]:[]);
+     greekWrittenFormVariants(other).some(x=>normLex(x)===spelling)?[j]:[]);
     const identity=persons.map(j=>['primera','segunda','tercera'][j%3]+
      ' persona del '+(j<3?'singular':'plural')).join(' o ');
     // La primera variante conserva el ID histórico del borrador; la segunda
@@ -4567,16 +4567,19 @@ function greekCorpus(){
  const occupiedNominalSurfaces=new Set(items.filter(x=>x.kind==='forms')
   .map(x=>x.prompt.normalize('NFC')));
  function addNominalForm(id,minUnit,form,readings,entry,category,gender,declension,reference){
-  const surface=String(form).normalize('NFC');
-  if(!surface||/\s/u.test(surface)||occupiedNominalSurfaces.has(surface)||
-   isExcludedExamMorphLemma(entry))return;
-  occupiedNominalSurfaces.add(surface);
-  add('forms',id,minUnit,[minUnit],surface,
-   greekExamNominalAnswer(readings,category,gender,declension),[entry]);
-  const item=items[items.length-1];
-  item.category=category;
-  item.source=reference?'revisión individual de forma':'paradigma nominal explícito v19';
-  if(reference){item.sourceRef=reference;item.sourceCode=5}
+  // El dativo plural de ἄρχων y γυνή también admite ν móvil.
+  // Expandir solo esta marca editorial, manteniendo el ID original sin ν.
+  if(isExcludedExamMorphLemma(entry))return;
+  greekWrittenFormVariants(form).forEach((surface,variantIndex)=>{
+   if(occupiedNominalSurfaces.has(surface))return;
+   occupiedNominalSurfaces.add(surface);
+   add('forms',id+(variantIndex?'-nu':''),minUnit,[minUnit],surface,
+    greekExamNominalAnswer(readings,category,gender,declension),[entry]);
+   const item=items[items.length-1];
+   item.category=category;
+   item.source=reference?'revisión individual de forma':'paradigma nominal explícito v19';
+   if(reference){item.sourceRef=reference;item.sourceCode=5}
+  });
  }
  for(const [key,forms] of Object.entries(greekNounData)){
   const unit=greekNounUnits[key],gender=greekCorpusNounGenders[key];
@@ -4945,7 +4948,7 @@ function greekVerbAnalysisCandidates(eligible){
   .flatMap(x=>{
    const bySurface=new Map();
    x.table.rows.forEach((row,i)=>[1,2].forEach(column=>{
-    for(const prompt of greekWrittenVerbVariants(row[column])){
+    for(const prompt of greekWrittenFormVariants(row[column])){
      const key=normLex(prompt),person=['primera','segunda','tercera'][i]+
       ' persona '+(column===1?'singular':'plural');
      const brief=(i+1)+'ª '+(column===1?'singular':'plural');
