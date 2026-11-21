@@ -29,3 +29,5 @@ Tras detectar que los dos significados nuevos no tenían correspondencia valenci
 ## Comprobación de las oraciones realmente evaluables
 
 Además de los diez fragmentos del repertorio docente, se examina `greekSentenceRows` y su filtro de exclusiones. Se corrigen localmente cinco filas seleccionables: nominativo plural `πολῖται`, dirección `πρὸς τὴν γῆν`, concordancia del sintagma `αἱ γυναῖκες αὐταὶ τὸν πόλεμον`, acusativo `τὴν αὐτῶν πόλιν` y acento grave en `οἱ σοφοὶ`. Se mantienen las traducciones, análisis, lemas y restricciones por UD. Las filas que estaban en cuarentena siguen sin evaluarse.
+
+La reconstrucción final que incluye las correcciones del corpus seleccionable también ha terminado satisfactoriamente, sin fusionar ni desplegar ninguna versión.
