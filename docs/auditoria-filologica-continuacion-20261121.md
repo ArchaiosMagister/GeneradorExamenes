@@ -154,3 +154,30 @@ Referencias individualizadas en `data/lemmas/verified-overrides.json`. Se conser
 - El flujo temporal de reconstrucción se ha retirado tras finalizar. Las baterías generales deben evaluarse sobre el último commit de la PR.
 
 **Sin fusión ni publicación.** Ninguna de estas modificaciones otorga acreditación nueva de formas flexivas.
+
+## Undécima ronda de cantidades: diez lemas, 17 apariciones
+
+Continuación de la auditoría después de los 25 ajustes de ocho lemas registrados en el apartado anterior. Se han contrastado individualmente **17 apariciones de diez lemas** de Latín 4.º; no se han modificado otras entradas ni flexiones.
+
+| Lema | Antes | Después | UD | Apariciones |
+| --- | --- | --- | --- | ---: |
+| parvus | `pārvus, –a, –um` | `părvus, –a, –um` | 1, 10 | 2 |
+| victoria | `vīctōrĭa, –æ` | `vĭctōrĭa, –æ` | 1, 3, 4 | 3 |
+| arma | `ārma, –orum` | `ărma, –orum` | 2 | 1 |
+| castra | `cāstra, –orum` | `căstra, –orum` | 2, 3, 10 | 3 |
+| porta | `pōrta, –æ` | `pŏrta, –æ` | 2 | 1 |
+| porto | `pōrto (1ª)` | `pŏrto (1ª)` | 2 | 1 |
+| fortis | `fōrtĭs, –e` | `fŏrtĭs, –e` | 6, 7, 9 | 3 |
+| serva | `sērva, –æ` | `sĕrva, –æ` | 4 | 1 |
+| servus | `sērvus, –ī` | `sĕrvus, –ī` | 4 | 1 |
+| incola | `īncŏla, –æ` | `ĭncŏla, –æ` | 2 | 1 |
+
+**Evidencia de cantidad vocal (no de peso silábico):** pronunciación clásica y entradas léxicas en https://en.wiktionary.org/wiki/parvus, https://en.wiktionary.org/wiki/victoria, https://en.wiktionary.org/wiki/arma, https://en.wiktionary.org/wiki/castra, https://en.wiktionary.org/wiki/porta, https://en.wiktionary.org/wiki/porto, https://en.wiktionary.org/wiki/fortis, https://en.wiktionary.org/wiki/serva, https://en.wiktionary.org/wiki/servus y https://en.wiktionary.org/wiki/incola. Criterio fonético: W. Sidney Allen, *Vox Latina*, «Quantity», https://www.cambridge.org/core/books/abs/vox-latina/quantity/BC0CDCDDF39D67E0A4E72DD9EF9FB0E5.
+
+**Excepciones conservadas:** `stēlla` no se cambia porque la vocal `ē` es larga aun ante `ll` (https://en.wiktionary.org/wiki/stella). `māgnus` sigue suspendido por disputa de cantidad ante `gn`; no se impone otra lectura.
+
+**Aplicación técnica:** modificados de forma delimitada `required-latin-units.js`, el banco de Latín 4.º y la migración de semillas de `index.html` y diez `entryCorrections` de `data/lemmas/verified-overrides.json`. La prueba existente `scripts/test-filologia-latin4-quantity-clusters-20261121.cjs` incorpora 17 aserciones por unidad, existencia y unicidad de diez overrides, paridad de fuentes / índice / HTML offline, migraciones idempotentes, conservación de glosas y preservación de entradas manuales. El inventario exigible sigue en **1106/541**, y el número de formas latinas contrastadas en **619**.
+
+**Prueba aislada GitHub Actions:** https://github.com/ArchaiosMagister/GeneradorExamenes/actions/runs/44928753689 finalizó con `success`. Regeneró índice y versión autónoma desde origen fijado, ejecutó ambas pruebas filológicas en los artefactos nuevos y verificó que solo cambiaban los dos artefactos esperados. Se incorporó el commit generado `dbe4648a0191ba7aa00e0839fcaa60b6fe8e4640` y se eliminó el workflow temporal.
+
+**Garantía de publicación:** todavía falta contrastar las baterías generales sobre el **HEAD definitivo de la PR**. No fusionar ni publicar sin comprobación y autorización docente.
