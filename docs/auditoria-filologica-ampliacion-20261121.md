@@ -97,3 +97,5 @@ La prueba `scripts/test-filologia-cantidad-latina-20261121.cjs` coteja las dos f
 ### Persistencia ante el índice externo fijo
 
 El constructor `scripts/build-lemma-index.mjs` lee un inventario de `VocabulaLatinaGraecaque` fijado a un commit inmutable. Por ello no basta con corregir `required-latin-units.js` e `index.html`: al reconstruir el índice docente reaparecían las grafías anteriores. Se documentan ahora las dos transformaciones `agricola` y `africa` en `data/lemmas/verified-overrides.json` como `entryCorrections`, de forma que el mismo generador produce el enunciado correcto en cada compilación. Este mecanismo modifica únicamente la descripción del lema, no su conjunto de formas ni su estatus de verificación.
+
+Reconstrucción persistente completada con las dos correcciones incorporadas al registro editorial. El índice `data/lemmas/teacher-forms.json` y `offline.html` se han recompilado, el flujo temporal de mantenimiento se ha eliminado y las pruebas específicas de cantidades, régimen griego y dativos individuales han concluido correctamente. La batería integral se repite sobre el commit definitivo sin publicar.
