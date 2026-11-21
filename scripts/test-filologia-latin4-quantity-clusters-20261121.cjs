@@ -61,4 +61,39 @@ assert(!required.courses.latin4.UD1.includes('măgnus, –a, –um'));
 assert.equal(idx.vocabulary.lat.magnus.lat4.entry,'māgnus, –a, –um');
 assert.equal(embedded.vocabulary.lat.magnus.lat4.entry,'māgnus, –a, –um');
 assert.equal(migrate(seeded),false,'La migración debe ser idempotente');
+// Nueva ronda de ocho lemas: 25 apariciones, sin promover flexiones.
+const continued=[
+ ['pulcher','pūlchĕr, –chra, –chrum','pŭlchĕr, –chra, –chrum',['UD1','UD3']],
+ ['puella','pŭēlla, –æ','pŭĕlla, –æ',['UD1','UD2','UD3','UD8']],
+ ['albus','ālbus, –a, –um','ălbus, –a, –um',['UD2']],
+ ['multus','mūltus, –a, –um','mŭltus, –a, –um',['UD2','UD4','UD8','UD9']],
+ ['bellum','bēllŭm, –ī','bĕllŭm, –ī',['UD3','UD4','UD5','UD7']],
+ ['noster','nōstĕr, –tra, –trum','nŏstĕr, –tra, –trum',['UD3','UD5','UD6','UD7','UD8']],
+ ['vinco','vīnco (3ª)','vĭnco (3ª)',['UD4']],
+ ['omnis','ōmnĭs, –e','ŏmnĭs, –e',['UD7','UD8','UD9','UD10']]
+];
+let counted=0;
+const oldSeeds=[];
+for(const [lemma,oldEntry,newEntry,uds] of continued){
+ const override=over.entryCorrections.filter(r=>r.lang==='lat'&&r.course==='lat4'&&r.lemma===lemma);
+ assert.equal(override.length,1,'Override único '+lemma);
+ assert.equal(override[0].from,oldEntry);assert.equal(override[0].to,newEntry);
+ assert.equal(idx.vocabulary.lat[lemma]?.lat4?.entry,newEntry,'Índice '+lemma);
+ assert.equal(embedded.vocabulary.lat[lemma]?.lat4?.entry,newEntry,'Offline '+lemma);
+ for(const unit of uds){
+  assert.equal(required.courses.latin4[unit].filter(e=>e===newEntry).length,1,'Exigible '+lemma+'/'+unit);
+  assert(!required.courses.latin4[unit].includes(oldEntry));
+  assert.equal(bank.filter(e=>e.course==='latin4'&&e.unit===unit&&e.entry===newEntry).length,1,'Banco '+lemma+'/'+unit);
+  assert(!bank.some(e=>e.course==='latin4'&&e.unit===unit&&e.entry===oldEntry));
+  oldSeeds.push({course:'latin4',unit,entry:oldEntry,origin:'listado docente exigible',meaning:'Glosa intacta'});
+  counted++;
+ }
+}
+assert.equal(counted,25);
+assert.equal(migrate(oldSeeds),true,'Migración de semillas 25');
+assert(oldSeeds.every(x=>x.meaning==='Glosa intacta'));
+assert(oldSeeds.every(x=>!continued.some(([k,old])=>x.entry===old)));
+assert.equal(migrate(oldSeeds),false,'Migración idempotente 25');
+assert.equal(idx.counts.lat.contrastado,619,'No promover flexiones por cambios de cantidad');
+
 console.log('LAT4: 9/9 grafías, 4 overrides, 541 exigibles, 619 formas acreditadas, migración y offline concordantes');
