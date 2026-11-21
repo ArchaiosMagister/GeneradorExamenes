@@ -78,4 +78,15 @@ for(const [unit,good,bad] of greekContextualAccentFixes){
  assert(!text.includes(bad),unit+': persiste '+bad);
 }
 assert.equal(greekContextualAccentFixes.length,8);
+const greekNegationCorrections=[
+ ['UD10','μάχεσθαι οὐκ ἐβούλοντο.','μάχεσθαι οὐ ἐβούλοντο.'],
+ ['UD12','οἱ Λακεδαιμόνιοι οὐκ ἔσωσαν','οἱ Λακεδαιμόνιοι οὐ ἔσωσαν']
+];
+for(const [unit,good,bad] of greekNegationCorrections){
+ const text=project.units.find(row=>row.title===unit)?.text;
+ assert(text&&text.includes(good),unit+': falta '+good);
+ assert(!text.includes(bad),unit+': persiste '+bad);
+}
+assert.equal(greekNegationCorrections.length,2);
+
 console.log('TERCERA RONDA FILOLÓGICA: 14 UD, 471 entradas, 11 oraciones seleccionables y análisis coherentes');
