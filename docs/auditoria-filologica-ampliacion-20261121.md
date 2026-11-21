@@ -99,3 +99,12 @@ La prueba `scripts/test-filologia-cantidad-latina-20261121.cjs` coteja las dos f
 El constructor `scripts/build-lemma-index.mjs` lee un inventario de `VocabulaLatinaGraecaque` fijado a un commit inmutable. Por ello no basta con corregir `required-latin-units.js` e `index.html`: al reconstruir el índice docente reaparecían las grafías anteriores. Se documentan ahora las dos transformaciones `agricola` y `africa` en `data/lemmas/verified-overrides.json` como `entryCorrections`, de forma que el mismo generador produce el enunciado correcto en cada compilación. Este mecanismo modifica únicamente la descripción del lema, no su conjunto de formas ni su estatus de verificación.
 
 Reconstrucción persistente completada con las dos correcciones incorporadas al registro editorial. El índice `data/lemmas/teacher-forms.json` y `offline.html` se han recompilado, el flujo temporal de mantenimiento se ha eliminado y las pruebas específicas de cantidades, régimen griego y dativos individuales han concluido correctamente. La batería integral se repite sobre el commit definitivo sin publicar.
+
+## Quinta ronda: acentuación léxica del corpus docente
+
+Revisión puntual de las catorce unidades, sin modificar el inventario de oraciones ni el corpus seleccionable por el motor:
+
+- **UD2 (dos apariciones):** `ζῳόν` → `ζῷον`. Se trata del nominativo/acusativo singular del sustantivo neutro `ζῷον, ζῴου`: la acentuación correcta lleva circunflejo en la penúltima, no agudo en la última. Cotejo: *Learn to Read Greek*, Yale University Press, y LSJ/Logeion, https://logeion.uchicago.edu/%CE%B6%CF%89%CE%BF%CE%BD.
+- **UD5 (una aparición):** `Ἁσίας` → `Ἀσίας`. El topónimo `Ἀσία, –ας (ἡ)` lleva espíritu suave; el genitivo singular es `Ἀσίας`. Cotejo: LSJ, https://atlas.perseus.tufts.edu/dictionaries/entry/urn%3Acite2%3Ascaife-viewer%3Adictionaries.v1%3Alsj-n16188/.
+
+Se fijan estas tres sustituciones con aserciones en `scripts/test-greek-sentence-philology-20261121.cjs`, sin promocionar formas al índice, sin cambiar las unidades ni reescribir traducciones. **Pendiente:** comprobar la CI correspondiente al commit de esta quinta ronda. La PR permanece en borrador; sin autorización de fusión ni publicación.
