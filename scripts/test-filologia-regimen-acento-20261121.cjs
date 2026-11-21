@@ -41,4 +41,19 @@ if(process.argv.includes('--offline')){
  for(const term of ['ἐν ταῖς Ἀθήναις οἱ πολῖται','ἡμῖν: dativo complemento del adjetivo φίλον','ἀγρὸν: dirección'])
   assert(offline.includes(term),'La versión offline conserva una versión previa: '+term);
 }
+// Continuación 21/11: seis correcciones sin ampliar el repertorio ni tocar el motor evaluable.
+const greekAccentFixes=[
+ ['UD5','ἀγαθὴν ψυχὴν','ἀγαθήν ψυχὴν'],
+ ['UD7','ὑμεῖς δ’ ἐμοῦ οὐκ ἀκούετε','ὑμεῖς δ’ ἑμοῦ οὐκ ἀκούετε'],
+ ['UD10','οἱ δὲ μένοντες','οἱ δε μένοντες'],
+ ['UD10','τῶν πτερῶν','τών πτερῶν'],
+ ['UD13','θνητῆς δὲ μητρὸς','θνητῆς δε μητρὸς'],
+ ['UD13','τῶν ἐχθρῶν κώμας','τῶν ἑχθρῶν κώμας']
+];
+for(const [unit,correct,incorrect] of greekAccentFixes){
+ const text=project.units.find(row=>row.title===unit)?.text;
+ assert(text&&text.includes(correct),unit+': falta '+correct);
+ assert(!text.includes(incorrect),unit+': persiste '+incorrect);
+}
+assert.equal(greekAccentFixes.length,6);
 console.log('TERCERA RONDA FILOLÓGICA: 14 UD, 471 entradas, 11 oraciones seleccionables y análisis coherentes');
