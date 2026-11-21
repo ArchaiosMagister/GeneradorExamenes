@@ -1,0 +1,52 @@
+name: Sincronizar segunda ronda latina PR205 (sin despliegue)
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'scripts/apply-latin4-quantities-followup-20261121.cjs'
+      - '.github/workflows/filologia-latin4-followup-sync-205.yml'
+permissions:
+  contents: write
+concurrency:
+  group: filologia-latin4-followup-sync-205
+  cancel-in-progress: false
+jobs:
+  sync:
+    if: >-
+      github.event.pull_request.number == 205 &&
+      github.event.pull_request.head.repo.full_name == 'ArchaiosMagister/GeneradorExamenes' &&
+      github.event.pull_request.head.ref == 'fix/auditoria-griego-acentos-espiritus-20261121'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Checkout del commit conocido
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Aplicar cinco cambios exactos
+        run: node scripts/apply-latin4-quantities-followup-20261121.cjs
+      - name: Reconstruir índice docente
+        run: node scripts/build-lemma-index.mjs
+      - name: Reconstruir web autónoma
+        run: npm run offline:build
+      - name: Exigir pruebas filológicas y de paridad
+        run: |
+          node scripts/test-filologia-latin4-quantity-followup-20261121.cjs
+          node scripts/test-filologia-latin4-cantidades-ronda2-20261121.cjs
+          node scripts/test-filologia-cantidad-latina-20261121.cjs --offline
+          node scripts/test-latin-ud7-nix-sol-20261121.cjs
+          node scripts/test-greek-onoma-source0-audit-20261121.cjs
+          git diff --check
+      - name: Guardar solo los cinco artefactos sincronizados en la PR
+        run: |
+          git add -- required-latin-units.js index.html data/lemmas/verified-overrides.json data/lemmas/teacher-forms.json offline.html
+          if git diff --cached --quiet; then echo 'Sin cambios'; exit 0; fi
+          git diff --cached --stat
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'fix(latin4): sincronizar impero, oppidum e índice offline'
+          git push origin HEAD:refs/heads/fix/auditoria-griego-acentos-espiritus-20261121
