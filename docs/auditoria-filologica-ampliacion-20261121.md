@@ -75,3 +75,9 @@ Fuentes: [dativo Ἀθήναις, ejemplo clásico](https://www.digitalathenaeus
 ### Latín: revisión de cantidad vocálica
 
 Se ratifica provisionalmente `pūgnō`: el léxico Navigium presenta `pūgnāre, pūgnō, pūgnāvī, pūgnātum`. El comportamiento histórico de la vocal ante `gn` exige distinguir la duración vocálica de la *posición silábica*, de modo que no se presenta el mero grupo consonántico como prueba aislada de `ū`. Véanse [Navigium](https://www.navigium.de/latein-woerterbuch/details?form=pugnantem&formen=PartizipialForm%28PPA%2CAdjektivForm%28AKK%2CSG%2Cm%2CPOS%29%29XPartizipialForm%28PPA%2CAdjektivForm%28AKK%2CSG%2Cf%2CPOS%29%29&vokid=RRLX-EYK&wb=null) y W. Sidney Allen, *Vox Latina*, capítulo 6.
+
+### Resolución de una única forma pendiente en UD12
+
+Después de la tercera ronda, el auditor de las 14 UD encontró un solo **caso de revisión**, `ἀκροάματι`. El lematizador ofrece exactamente un candidato —`ἀκρόαμα, –ματος (τό)`—, pero lo declara no atestiguado por el índice. Se ha cotejado externamente el **dativo singular**, documentado en el testimonio gramatical antiguo recogido por [Atticism.eu](https://atticism.eu/corpus/item/view?id=dd0c1758-f5f3-4c07-8631-ee895cbfcee8), y contrastado con el [paradigma del neutro -μα](https://en.wiktionary.org/wiki/%E1%BC%80%CE%BA%CF%81%CF%8C%CE%B1%CE%BC%CE%B1). No hay conflicto de lemas: el contexto es «complacerse con la actuación», con `ἐπὶ τῷ ἀκροάματι`.
+
+El expediente `data/vocabulary/greek1-noun-case-attestation-20261121.json` acredita **solo esta superficie, con esta interpretación y en UD12**, para que la auditoría docente pueda concluir. Se exige explícitamente que el analizador continúe mostrando exactamente un candidato no atestiguado y estado `review`; si cambia, la prueba falla para forzar nuevo examen. No se promueve `ἀκροάματι` a formas de respuesta, no se lo marca como fuente 5 ni se modifican otros paradigmas.

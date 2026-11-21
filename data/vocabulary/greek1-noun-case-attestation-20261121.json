@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "purpose": "atestacion-filologica-puntual-solo-auditoria",
+  "course": "gr1",
+  "automaticGradingEnabled": false,
+  "morphologyPromotion": false,
+  "items": [
+    {
+      "form": "ἀκροάματι",
+      "indexLemma": "ακροαμα",
+      "entry": "ἀκρόαμα, –ματος (τό)",
+      "reading": "sustantivo neutro, dativo singular de ἀκρόαμα, –ατος",
+      "case": "NOUN;DAT;SG;NEUT",
+      "units": [
+        12
+      ],
+      "occurrences": 1,
+      "expectedStatus": "review",
+      "expectedCandidateAttested": false,
+      "reference": "https://atticism.eu/corpus/item/view?id=dd0c1758-f5f3-4c07-8631-ee895cbfcee8",
+      "secondaryReference": "https://en.wiktionary.org/wiki/%E1%BC%80%CE%BA%CF%81%CF%8C%CE%B1%CE%BC%CE%B1",
+      "note": "Forma singular dativa; el índice conoce el lema, pero no la acredita. El asiento se limita al contexto específico de UD12 y no convierte la propuesta del motor en análisis evaluable."
+    }
+  ]
+}

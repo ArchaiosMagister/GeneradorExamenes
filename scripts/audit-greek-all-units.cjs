@@ -38,6 +38,25 @@ for(const item of editorial.items){
  assert(!editorialByForm.has(item.form),'Cotejo editorial duplicado: '+item.form);
  editorialByForm.set(item.form,item);
 }
+const nounCaseEvidence=JSON.parse(load('data/vocabulary/greek1-noun-case-attestation-20261121.json'));
+assert.equal(nounCaseEvidence.schema,1);
+assert.equal(nounCaseEvidence.course,'gr1');
+assert.equal(nounCaseEvidence.automaticGradingEnabled,false);
+assert.equal(nounCaseEvidence.morphologyPromotion,false);
+assert.equal(nounCaseEvidence.items.length,1);
+for(const item of nounCaseEvidence.items){
+ assert.equal(item.form,'ἀκροάματι');
+ assert.equal(item.indexLemma,'ακροαμα');
+ assert.equal(item.entry,'ἀκρόαμα, –ματος (τό)');
+ assert.equal(item.case,'NOUN;DAT;SG;NEUT');
+ assert.equal(item.expectedStatus,'review');
+ assert.equal(item.expectedCandidateAttested,false);
+ assert.deepEqual(item.units,[12]);
+ assert.equal(item.occurrences,1);
+ assert(/^https:\/\//.test(item.reference));
+ assert(!editorialByForm.has(item.form),'Una forma tiene cotejos incompatibles: '+item.form);
+ editorialByForm.set(item.form,{...item,kind:'noun-case'});
+}
 const externalCounts=new Map();
 
 const all=new Map(),unitReports=[];
@@ -63,7 +82,19 @@ for(const u of project.units){
   let status=found.status;
   if(citation){
    assert(citation.units.includes(unit),'Forma con colación fuera de UD autorizada: '+form);
-   assert(['unknown','documented'].includes(found.status),'Ambigüedad no resuelta: '+form);
+   if(citation.kind==='noun-case'){
+    assert.equal(found.status,citation.expectedStatus,
+     'Ha cambiado el estado del lematizador: revisar de nuevo '+form);
+    assert.equal(found.candidates.length,1,'Candidatos múltiples: '+form);
+    assert.equal(found.candidates[0].lemma,citation.indexLemma,
+     'Lema propuesto diferente: '+form);
+    assert.equal(found.candidates[0].entry,citation.entry,
+     'Enunciado propuesto diferente: '+form);
+    assert.equal(found.candidates[0].attested,citation.expectedCandidateAttested,
+     'Evidencia interna nueva: volver a cotejar '+form);
+   }else{
+    assert(['unknown','documented'].includes(found.status),'Ambigüedad no resuelta: '+form);
+   }
    externalCounts.set(form,(externalCounts.get(form)||0)+slot.count);
    // Reconocimiento de una forma concreta en el informe de auditoría;
    // no altera el analizador, el índice, la calificación ni los paradigmas.
@@ -85,7 +116,7 @@ for(const u of project.units){
   review:rows.filter(x=>x.status==='review').length,
   unknown:rows.filter(x=>x.status==='unknown').length});
 }
-for(const citation of editorial.items)
+for(const citation of [...editorial.items,...nounCaseEvidence.items])
  assert.equal(externalCounts.get(citation.form),citation.occurrences,
   'Superficie externa eliminada o modificada: '+citation.form);
 const rows=[...all.values()].sort((a,b)=>b.count-a.count||a.form.localeCompare(b.form,'el'));
