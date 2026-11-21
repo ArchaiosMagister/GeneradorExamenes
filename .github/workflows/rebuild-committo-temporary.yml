@@ -48,7 +48,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add index.html offline.html required-latin-units.js data/lemmas/teacher-forms.json data/lemmas/latin-editorial-decisions.json scripts/build-lemma-index.mjs scripts/test-lemma-index.mjs scripts/test-comprehensive-morph-audit.cjs scripts/test-candidaturas-lote200.cjs scripts/test-latin-verb-corpus-audit.cjs .github/workflows/offline-check.yml
+          git add index.html offline.html required-latin-units.js data/lemmas/teacher-forms.json data/lemmas/latin-editorial-decisions.json scripts/build-lemma-index.mjs scripts/test-lemma-index.mjs scripts/test-comprehensive-morph-audit.cjs scripts/test-candidaturas-lote200.cjs scripts/test-latin-verb-corpus-audit.cjs
           git diff --cached --stat
           git diff --cached --quiet && { echo "Faltan cambios reconstruidos"; exit 1; }
           git commit -m "fix: unificar committo entre Latín I y 4.º sin perder información"
