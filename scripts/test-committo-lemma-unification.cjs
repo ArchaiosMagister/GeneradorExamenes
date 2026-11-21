@@ -44,8 +44,13 @@ assert(rowsCanonical.some(x=>x[1]==='committunt'&&x[2]==='V;IND;ACT;PRS;3;PL'&&x
 assert(rowsCanonical.some(x=>x[1]==='committebam'&&x[2]==='V;IND;ACT;PST;IPFV;1;SG'&&x[3]===2));
 assert(!rowsCanonical.some(x=>/^commiteb|^commitis$|^commito$/.test(x[1])));
 assert.equal(corpus.counts.lat.contrastado,619,'No acreditar formas derivadas automáticamente');
-assert.equal(corpus.counts.lat.modelo,3298,
- 'Unificar los dos registros debe retirar las dieciocho propuestas incorrectas');
+// La corrección de nix, nivis añade once formas regulares NO acreditadas
+// como propuestas de fuente 2; no son duplicaciones del verbo committo.
+const newNixProposals=corpus.rows.lat.filter(row=>row[0]==='nix'&&row[3]===2);
+assert.equal(newNixProposals.length,11,
+ 'Nix no debe promover sus propuestas a formas contrastadas');
+assert.equal(corpus.counts.lat.modelo,3298+newNixProposals.length,
+ 'El incremento por nix no puede ocultar duplicados del paradigma de committo');
 const decision=policy.decisions.find(x=>x.id==='committo-lat1-unify');
 assert(decision,'Falta la decisión persistente de unificación');
 assert.equal(decision.fromLemma,'commito');
