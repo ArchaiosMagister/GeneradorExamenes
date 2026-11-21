@@ -43,5 +43,9 @@ La regresión `scripts/test-greek-systematic-morph-syntax-20261121.cjs` comprueb
 
 **Inalterados:** las 172 entradas exigibles, las 2817 filas griegas del índice, los métodos de puntuación, cuotas, criterios de selección y soluciones. El fixture histórico conserva formas anteriores para auditoría; no se equiparan a lecturas acreditadas. No fusionar ni publicar sin consentimiento docente y CI satisfactoria del último commit.
 
+## Reconstrucción controlada de la distribución offline
+
+El workflow temporal de rama [#44947657465](https://github.com/ArchaiosMagister/GeneradorExamenes/actions/runs/44947657465) reconstruyó `offline.html` desde las fuentes, ejecutó la regresión de once oraciones y retiró su propio YAML al confirmar el resultado. El commit de reconstrucción `7cf51926` no promociona datos, ni fusiona ni publica. Se exige además la ejecución de la CI completa en el último commit de la PR.
+
 ## Siguiente fase
 Ampliar la verificación *por forma evaluable* de cada unidad y cotejar construcciones sintácticas del conjunto de oraciones; evitar concluir «corpus completo certificado» por estas seis correcciones. No aplicar transformaciones automáticas de acentos ni equivalencias de lemas fuera de los contextos contrastados.
