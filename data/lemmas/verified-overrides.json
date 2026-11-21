@@ -278,6 +278,15 @@
       "to": "ὄνομα, –ματος (τό)",
       "reference": "https://logeion.uchicago.edu/%CE%BF%CC%93%CC%81%CE%BD%CE%BF%CE%BC%CE%B1",
       "note": "Artículo griego del neutro en el enunciado de tercera declinación; no ampliar análisis morfológico."
+    },
+    {
+      "lang": "grc",
+      "lemma": "αληθεια",
+      "course": "gr1",
+      "from": "ἀληθεία, –ας",
+      "to": "ἀλήθεια, –ας",
+      "reference": "https://dcc.dickinson.edu/greek-core-list",
+      "note": "Corregir únicamente el acento del nominativo en el enunciado de 1.ª declinación; mantener intactas las lecturas individuales acreditadas, como ἀληθείᾳ."
     }
   ],
   "paradigms": [
