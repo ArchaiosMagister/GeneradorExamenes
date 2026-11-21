@@ -181,3 +181,13 @@ Continuación de la auditoría después de los 25 ajustes de ocho lemas registra
 **Prueba aislada GitHub Actions:** https://github.com/ArchaiosMagister/GeneradorExamenes/actions/runs/44928753689 finalizó con `success`. Regeneró índice y versión autónoma desde origen fijado, ejecutó ambas pruebas filológicas en los artefactos nuevos y verificó que solo cambiaban los dos artefactos esperados. Se incorporó el commit generado `dbe4648a0191ba7aa00e0839fcaa60b6fe8e4640` y se eliminó el workflow temporal.
 
 **Garantía de publicación:** todavía falta contrastar las baterías generales sobre el **HEAD definitivo de la PR**. No fusionar ni publicar sin comprobación y autorización docente.
+
+## Duodécima ronda: diptongos latinos y elisión griega
+
+Corregidas **16 apariciones curriculares de once lemas** de Latín 4.º que marcaban un macrón sobre la primera vocal de un diptongo, contra la convención gráfica adoptada: `āula → aula` (UD1); `Clāudĭa → Claudĭa` (UD1); `nāuta → nauta` (UD1/6); `āuxĭlĭŭm → auxĭlĭŭm` (UD2/7); `āudācĭa → audācĭa` (UD3/8); `āurŭm → aurŭm` (UD3/8); `fōedus → foedus` (UD3); `āudĭo → audĭo` (UD4); `thēsāurus → thēsaurus` (UD4); `āudāx → audāx` (UD8); `prōelĭŭm → proelĭŭm` (UD7/9). Fuentes: Allen y Greenough §§2, 8, 10 https://dcc.dickinson.edu/grammar/latin/quantity-syllables, https://dcc.dickinson.edu/es/grammar/latin/vowel-and-consonant-pronunciation, https://en.wiktionary.org/wiki/proelium y Lewis–Short https://cld.bbaw.de/lemma/lat/thesaurus.
+
+**Nota del índice externo:** el lema `thesaurus` aparece como `thesaurus, –ī` sin cantidades en la fuente fijada, mientras el exigible mostraba `thēsāurus, –ī`. La entrada persistente usa por ello `from=thesaurus, –ī` y `to=thēsaurus, –ī`; el banco y la migración curricular pasan de `thēsāurus, –ī` a `thēsaurus, –ī`. La `ē` inicial larga se confirma lexicográficamente. Ninguna forma flexiva se incorpora como acreditada.
+
+**Griego I, elisión:** `οἱ δ’Ἕλληνες → οἱ δ’ Ἕλληνες` (UD11) y `οὐδ’ἔλεξε → οὐδ’ ἔλεξε` (UD12); son ajustes de espaciado y no de régimen ni concordancia. Véase Smyth §§70–74 https://ccel.org/s/smyth/grammar/html/smyth_1c_uni.htm y Goodell https://dcc.dickinson.edu/pl/grammar/goodell/elision.
+
+Se añaden aserciones a las baterías filológicas y se conserva el inventario de **1106 / 541 exigibles latinos**, **14 UD / 471 renglones griegos**, sin incrementar las **619 lecturas latinas contrastadas**. Regenerar el índice y `offline.html` desde la fuente académica fijada y cotejar CI general en commit final. Sin autorización para fusionar ni publicar.

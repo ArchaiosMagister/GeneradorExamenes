@@ -638,6 +638,105 @@
       "to": "ĭncŏla, –æ",
       "reference": "https://en.wiktionary.org/wiki/incola",
       "note": "Cantidad vocal breve confirmada en pronunciacion clasica; no equivale a cantidad silabica ni acredita nuevas flexiones."
+    },
+    {
+      "lang": "lat",
+      "lemma": "aula",
+      "course": "lat4",
+      "from": "āula, –æ",
+      "to": "aula, –æ",
+      "reference": "https://en.wiktionary.org/wiki/aula",
+      "note": "Convención de diptongos au/oe: no marcar un macrón en su primera vocal. Edición del enunciado, sin nuevas flexiones acreditadas."
+    },
+    {
+      "lang": "lat",
+      "lemma": "claudia",
+      "course": "lat4",
+      "from": "Clāudĭa, –æ",
+      "to": "Claudĭa, –æ",
+      "reference": "https://en.wiktionary.org/wiki/claudia",
+      "note": "Convención de diptongos au/oe: no marcar un macrón en su primera vocal. Edición del enunciado, sin nuevas flexiones acreditadas."
+    },
+    {
+      "lang": "lat",
+      "lemma": "nauta",
+      "course": "lat4",
+      "from": "nāuta, –æ",
+      "to": "nauta, –æ",
+      "reference": "https://en.wiktionary.org/wiki/nauta",
+      "note": "Convención de diptongos au/oe: no marcar un macrón en su primera vocal. Edición del enunciado, sin nuevas flexiones acreditadas."
+    },
+    {
+      "lang": "lat",
+      "lemma": "auxilium",
+      "course": "lat4",
+      "from": "āuxĭlĭŭm, –ī",
+      "to": "auxĭlĭŭm, –ī",
+      "reference": "https://en.wiktionary.org/wiki/auxilium",
+      "note": "Convención de diptongos au/oe: no marcar un macrón en su primera vocal. Edición del enunciado, sin nuevas flexiones acreditadas."
+    },
+    {
+      "lang": "lat",
+      "lemma": "audacia",
+      "course": "lat4",
+      "from": "āudācĭa, –æ",
+      "to": "audācĭa, –æ",
+      "reference": "https://en.wiktionary.org/wiki/audacia",
+      "note": "Convención de diptongos au/oe: no marcar un macrón en su primera vocal. Edición del enunciado, sin nuevas flexiones acreditadas."
+    },
+    {
+      "lang": "lat",
+      "lemma": "aurum",
+      "course": "lat4",
+      "from": "āurŭm, –ī",
+      "to": "aurŭm, –ī",
+      "reference": "https://en.wiktionary.org/wiki/aurum",
+      "note": "Convención de diptongos au/oe: no marcar un macrón en su primera vocal. Edición del enunciado, sin nuevas flexiones acreditadas."
+    },
+    {
+      "lang": "lat",
+      "lemma": "foedus",
+      "course": "lat4",
+      "from": "fōedus, –a, –um",
+      "to": "foedus, –a, –um",
+      "reference": "https://en.wiktionary.org/wiki/foedus",
+      "note": "Convención de diptongos au/oe: no marcar un macrón en su primera vocal. Edición del enunciado, sin nuevas flexiones acreditadas."
+    },
+    {
+      "lang": "lat",
+      "lemma": "audio",
+      "course": "lat4",
+      "from": "āudĭo (4ª)",
+      "to": "audĭo (4ª)",
+      "reference": "https://en.wiktionary.org/wiki/audio",
+      "note": "Convención de diptongos au/oe: no marcar un macrón en su primera vocal. Edición del enunciado, sin nuevas flexiones acreditadas."
+    },
+    {
+      "lang": "lat",
+      "lemma": "thesaurus",
+      "course": "lat4",
+      "from": "thesaurus, –ī",
+      "to": "thēsaurus, –ī",
+      "reference": "https://cld.bbaw.de/lemma/lat/thesaurus",
+      "note": "Convención de diptongos au/oe: no marcar un macrón en su primera vocal. Edición del enunciado, sin nuevas flexiones acreditadas."
+    },
+    {
+      "lang": "lat",
+      "lemma": "audax",
+      "course": "lat4",
+      "from": "āudāx, ācis",
+      "to": "audāx, ācis",
+      "reference": "https://en.wiktionary.org/wiki/audax",
+      "note": "Convención de diptongos au/oe: no marcar un macrón en su primera vocal. Edición del enunciado, sin nuevas flexiones acreditadas."
+    },
+    {
+      "lang": "lat",
+      "lemma": "proelium",
+      "course": "lat4",
+      "from": "prōelĭŭm, –ī",
+      "to": "proelĭŭm, –ī",
+      "reference": "https://en.wiktionary.org/wiki/proelium",
+      "note": "Convención de diptongos au/oe: no marcar un macrón en su primera vocal. Edición del enunciado, sin nuevas flexiones acreditadas."
     }
   ],
   "paradigms": [

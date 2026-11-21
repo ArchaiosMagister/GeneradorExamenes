@@ -139,4 +139,41 @@ assert(required.courses.latin4.UD1.includes('māgnus, –a, –um'),'Conservar m
 assert.equal(idx.counts.lat.contrastado,619);
 assert.equal(Object.values(required.courses.latin4).flat().length,541);
 
+// Corrección ortográfica de diptongos LAT4: 16 casos de once lemas.
+const diphthongs=[
+["aula","āula, –æ","aula, –æ","āula, –æ",["UD1"]],
+["claudia","Clāudĭa, –æ","Claudĭa, –æ","Clāudĭa, –æ",["UD1"]],
+["nauta","nāuta, –æ","nauta, –æ","nāuta, –æ",["UD1","UD6"]],
+["auxilium","āuxĭlĭŭm, –ī","auxĭlĭŭm, –ī","āuxĭlĭŭm, –ī",["UD2","UD7"]],
+["audacia","āudācĭa, –æ","audācĭa, –æ","āudācĭa, –æ",["UD3","UD8"]],
+["aurum","āurŭm, –ī","aurŭm, –ī","āurŭm, –ī",["UD3","UD8"]],
+["foedus","fōedus, –a, –um","foedus, –a, –um","fōedus, –a, –um",["UD3"]],
+["audio","āudĭo (4ª)","audĭo (4ª)","āudĭo (4ª)",["UD4"]],
+["thesaurus","thēsāurus, –ī","thēsaurus, –ī","thesaurus, –ī",["UD4"]],
+["audax","āudāx, ācis","audāx, ācis","āudāx, ācis",["UD8"]],
+["proelium","prōelĭŭm, –ī","proelĭŭm, –ī","prōelĭŭm, –ī",["UD7","UD9"]]
+];
+let nDiphthongs=0;const oldDiphthongSeeds=[];
+for(const [lemma,before,after,source,units] of diphthongs){
+ const o=over.entryCorrections.filter(x=>x.lang==='lat'&&x.course==='lat4'&&x.lemma===lemma);
+ assert.equal(o.length,1,'Override diptongo '+lemma);assert.equal(o[0].from,source);assert.equal(o[0].to,after);
+ assert.equal(idx.vocabulary.lat[lemma]?.lat4?.entry,after,'Indice diptongo '+lemma);
+ assert.equal(embedded.vocabulary.lat[lemma]?.lat4?.entry,after,'Offline diptongo '+lemma);
+ for(const unit of units){
+  assert(required.courses.latin4[unit].includes(after)&&!required.courses.latin4[unit].includes(before),'Exigible '+lemma+'/'+unit);
+  assert.equal(bank.filter(x=>x.course==='latin4'&&x.unit===unit&&x.entry===after).length,1,'Banco '+lemma+'/'+unit);
+  assert(!bank.some(x=>x.course==='latin4'&&x.unit===unit&&x.entry===before));
+  oldDiphthongSeeds.push({course:'latin4',unit,entry:before,origin:'listado docente exigible',meaning:'Glosa original'});
+  nDiphthongs++;
+ }
+}
+assert.equal(nDiphthongs,16);
+const untouched={course:'latin4',unit:'UD1',entry:'nāuta, –æ',origin:'manual',meaning:'No cambiar'};
+oldDiphthongSeeds.push(untouched);
+assert.equal(migrate(oldDiphthongSeeds),true);
+assert(oldDiphthongSeeds.slice(0,-1).every(x=>x.meaning==='Glosa original'));
+assert.equal(untouched.entry,'nāuta, –æ');
+assert.equal(migrate(oldDiphthongSeeds),false);
+assert.equal(idx.counts.lat.contrastado,619);
+
 console.log('LAT4: 9/9 grafías, 4 overrides, 541 exigibles, 619 formas acreditadas, migración y offline concordantes');

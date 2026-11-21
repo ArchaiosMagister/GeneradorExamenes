@@ -104,4 +104,12 @@ for(const unit of project.units){
 }
 assert.equal(correctedPolemioi,7);
 
+// Elisión ático clásica: apóstrofo y separación del término siguiente.
+for(const [unit,good,bad] of [
+ ['UD11','δ’ Ἕλληνες','δ’Ἕλληνες'],
+ ['UD12','οὐδ’ ἔλεξε','οὐδ’ἔλεξε']
+]){
+ const t=project.units.find(x=>x.title===unit)?.text;
+ assert(t?.includes(good),unit+' elision absent');assert(!t.includes(bad),unit+' elision not spaced');
+}
 console.log('TERCERA RONDA FILOLÓGICA: 14 UD, 471 entradas, 11 oraciones seleccionables y análisis coherentes');
