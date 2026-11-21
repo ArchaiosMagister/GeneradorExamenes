@@ -16,8 +16,10 @@ const held=triage.items.filter(x=>['ACENTO_INCORRECTO_EN_FUENTE',
 assert.equal(held.length,36); // 10 de 46 trasladadas a fuente 5.
 const schema='examina-academic-evidence/v1';
 for(const x of held){
- const row=bank.rows.grc.find(r=>r[0]===x.lemma&&r[1]===x.sourceForm&&r[2]===x.analysis&&r[3]===4);
- assert(row,'No existe la fila retenida: '+x.id);
+ const retained=bank.rows.grc.find(r=>r[0]===x.lemma&&r[1]===x.sourceForm&&r[2]===x.analysis&&r[3]===4);
+ const historicalQuarantine=x.lemma==='πρωτοσ'&&x.status==='ACENTO_INCORRECTO_EN_FUENTE';
+ assert.equal(Boolean(retained),!historicalQuarantine,'Ubicación incorrecta de expediente '+x.id);
+ const row=retained||[x.lemma,x.sourceForm,x.analysis,4];
  assert(api.evidenceProvisionalForbidden('gr1',row),'No bloqueada: '+x.id);
  assert.throws(()=>api.evidenceGrant('gr1',row,{}),/excluida/);
  const key=api.evidenceKey('gr1',row);
@@ -69,6 +71,8 @@ assert(corrections.some(x=>x.lang==='grc'&&x.lemma==='κεφαλη'&&
  x.from==='κεφαλῆ, –ῆς'&&x.to==='κεφαλή, –ῆς'));
 assert(read('index.html').includes('κεφαλή, –ῆς'));
 assert(read('offline.html').includes('κεφαλή, –ῆς'));
-assert.equal(bank.counts.grc.wikcionario,545);
+assert.equal(bank.counts.grc.wikcionario,521);
+assert.equal(bank.extensions.greek_nominal_candidates.quarantinedAccentForms,24);
+assert.equal(held.filter(x=>x.lemma==='πρωτοσ').length,24);
 assert.equal(bank.counts.grc.contrastado,478);
-console.log('Fase IV: 36 lecturas todavía en cuarentena, diez transferidas sin permisos heredados, importación no destructiva y κεφαλή corregida.');
+console.log('Fase IV: 12 exclusiones activas más 24 en expediente histórico, diez transferidas sin permisos heredados, importación no destructiva y κεφαλή corregida.');
