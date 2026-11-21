@@ -108,3 +108,14 @@ Revisión puntual de las catorce unidades, sin modificar el inventario de oracio
 - **UD5 (una aparición):** `Ἁσίας` → `Ἀσίας`. El topónimo `Ἀσία, –ας (ἡ)` lleva espíritu suave; el genitivo singular es `Ἀσίας`. Cotejo: LSJ, https://atlas.perseus.tufts.edu/dictionaries/entry/urn%3Acite2%3Ascaife-viewer%3Adictionaries.v1%3Alsj-n16188/.
 
 Se fijan estas tres sustituciones con aserciones en `scripts/test-greek-sentence-philology-20261121.cjs`, sin promocionar formas al índice, sin cambiar las unidades ni reescribir traducciones. **Pendiente:** comprobar la CI correspondiente al commit de esta quinta ronda. La PR permanece en borrador; sin autorización de fusión ni publicación.
+
+## Sexta ronda: cotejo de regímenes y formas de UD4–UD8
+
+Se han examinado individualmente las oraciones de UD4–UD8 del repertorio docente. Dos errores inequívocos de UD8 se han corregido sin alterar la cantidad de ejercicios:
+
+1. **`ἐν Ἀθηναῖς` → `ἐν Ἀθήναις`** en «ἐν Ἀθήναις οἱ ῥήτορες…». Dativo plural del topónimo `αἱ Ἀθῆναι`; coincide con la normalización efectuada anteriormente en UD4 y en las oraciones evaluables. Referencias: https://logeion.uchicago.edu/morpho/%E1%BC%88%CE%B8%E1%BF%86%CE%BD%CE%B1%CE%B9 y https://en.wiktionary.org/wiki/%E1%BC%88%CE%B8%E1%BF%86%CE%BD%CE%B1%CE%B9.
+2. **`θώρακων` → `θωράκων`** en la lista de formas de tercera declinación: genitivo plural de `θώραξ, θώρακος (ὁ)`. Referencias: https://greekdoc.github.io/lexicon/qw.html y el testimonio de Jenofonte recogido en https://pyli.greeklanguage.gr/index.php?catid=72&id=597&option=com_content&pageS=71&st=%CE%98%2A&tab=1&view=article.
+
+Ambas correcciones quedan cubiertas por `scripts/test-filologia-regimen-acento-20261121.cjs`. Los regímenes de `ἀκούω` + genitivo, `μετέχω` + genitivo, `ἐπιθυμέω` + genitivo, `κελεύω` + acusativo e infinitivo y `παρέχω` + acusativo/dativo se conservan; no procede imponer reescrituras automáticas. Quedan para estudio lexicográfico contextual los usos pedagógicamente poco naturales, como `πράττουσιν` con `ἀρετάς`, y ciertos pasivos de `βασιλεύω`; no se sustituyen sin una justificación sólida. El examen de UD4–UD8 no certifica todavía todos los paradigmas de esas unidades.
+
+La PR continúa en borrador, sin fusión ni despliegue. Las pruebas de la sexta ronda quedan pendientes de verificación en CI.
