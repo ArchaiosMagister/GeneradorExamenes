@@ -1,0 +1,35 @@
+name: Reconstruir tercera declinación en rama de auditoría (temporal)
+on:
+  push:
+    branches:
+      - audit/greek1-third-decl-gender-20261121
+permissions:
+  contents: write
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Reconstruir índice académico con correcciones editoriales
+        run: node scripts/build-lemma-index.mjs
+      - name: Reconstruir HTML autónomo
+        run: npm run offline:build
+      - name: Contrastar cinco fichas y las revisiones filológicas previas
+        run: |
+          node scripts/test-greek-third-decl-gender-five.cjs
+          node scripts/test-greek-pragma-third-decl.cjs
+          node scripts/test-greek-adjective-accent-vocative.cjs
+          node scripts/test-greek-reviewed-nominal-expansion.cjs
+      - name: Guardar solo el índice docente y la PWA en esta rama
+        run: |
+          if ! git diff --quiet -- data/lemmas/teacher-forms.json offline.html; then
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git add data/lemmas/teacher-forms.json offline.html
+            git commit -m 'build: sincronizar banco de tercera declinación y PWA'
+            git push
+          fi
