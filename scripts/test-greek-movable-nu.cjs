@@ -101,3 +101,5 @@ console.log('Griego I: '+(optional+2)+' notaciones de ν móvil (18 verbales y d
  covered+' formas explícitas con doble lectura cuando corresponda; no se evalúan grafías abreviadas.');
 
 // Reconstrucción temporal del paquete autónomo antes de la PR.
+
+// Nueva reconstrucción: verbos, tercera declinación y cambio de número.
