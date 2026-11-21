@@ -231,6 +231,8 @@ jobs:
         run: node scripts/test-greek-systematic-morph-syntax-20261121.cjs
       - name: Comprobar 26 relativos con grave contextual por oración
         run: node scripts/test-greek-relative-grave-20261121.cjs --offline
+      - name: Verificar concordancia de doce genitivos absolutos de Griego I
+        run: node scripts/test-greek-absolute-genitives-20261121.cjs --offline
       - name: Auditar régimen verbal, demonstrativos y concordancias restantes
         run: node scripts/test-filologia-regimen-acento-20261121.cjs --offline
       - name: Atestación aislada del dativo en -ματι sin promoción morfológica
