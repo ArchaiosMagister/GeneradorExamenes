@@ -94,18 +94,25 @@ La lectura de las **541 entradas latinas exigibles de 4.º** detectó `īmpĕro 
 
 El barrido por macrón delante de grupos consonánticos de Latín 4.º devuelve numerosos candidatos, pero **no es un detector de errores**: una vocal larga puede preceder dos consonantes y una breve también. Se exige contraste individual y distinción entre cantidad de vocal y sílaba. Por ejemplo, `līttĕra` merece cotejo adicional con Lewis–Short, que recoge `littĕra` y califica `lītĕra` de grafía menos recomendable (https://atlas.perseus.tufts.edu/dictionaries/entry/urn%3Acite2%3Ascaife-viewer%3Adictionary-entries.atlas_v1%3Alat.ls.perseus-eng2-n26829/). También deben estudiarse `āltus`, `gēmma`, `māgnus`, `lōngus` y `pūlchĕr` antes de modificar el listado. La reconstrucción de estas cinco apariciones de `impero/oppidum` se hará de forma aislada y sin despliegue.
 
-## Ronda de grupos consonánticos: cinco lemas y 16 apariciones
+## Ronda de grupos consonánticos: cuatro lemas y nueve apariciones
 
-Un segundo examen específico del repertorio exigible latino de 4.º, con cotejo de pronunciación clásica, permite sustituir macrones de vocales iniciales *breves* por breves explícitas. La sílaba inicial sigue siendo larga por posición, pues termina en consonante ante otra consonante. No se alteran otras cantidades del enunciado.
+Se han contrastado individualmente las cantidades vocálicas de las entradas exigibles de Latín de 4.º. Las siguientes **nueve apariciones** corresponden a cuatro lemas cuya vocal inicial es breve, aunque la sílaba sea larga por posición:
 
-| Lema en Latín 4.º | Corrección | UD | Apariciones | Evidencia |
+| Lema de 4.º | Lectura corregida | UD | Apariciones | Fuente |
 | --- | --- | --- | ---: | --- |
 | `āltus` | `ăltus` | 1, 3, 4, 7 | 4 | https://en.wiktionary.org/wiki/altus |
-| `māgnus` | `măgnus` | 1, 2, 3, 5, 6, 7, 9 | 7 | https://en.wiktionary.org/wiki/magnus |
 | `lōngus` | `lŏngus` | 1, 2 | 2 | https://en.wiktionary.org/wiki/longus |
 | `gēmma` | `gĕmma` | 1 | 1 | https://en.wiktionary.org/wiki/gemma |
-| `līttĕra` | `lĭttĕra` | 2, 3 | 2 | https://atlas.perseus.tufts.edu/dictionaries/entry/urn%3Acite2%3Ascaife-viewer%3Adictionary-entries.atlas_v1%3Alat.ls.perseus-eng2-n26829/ |
+| `līttĕra` | `lĭttĕra` | 2, 3 | 2 | https://en.wiktionary.org/wiki/littera |
 
-El script `scripts/apply-latin4-quantity-clusters-20261121.cjs` delimita los cambios al vocabulario exigible de 4.º y a su banco, conserva las 1106/541 apariciones por curso, incorpora cinco `entryCorrections` para la reconstrucción del índice y extiende las migraciones estrictamente a fichas sembradas. `scripts/test-filologia-latin4-quantity-clusters-20261121.cjs` exige las dieciséis coincidencias por UD y la concordancia entre `teacher-forms.json` y el contenido embebido en `offline.html`. La reconstrucción debe realizarse conjuntamente antes de considerar esta tanda incorporada; no se marca ningún paradigma nuevo como fuente 5.
+La aplicación conserva los **1106 registros de Latín I y 541 de Latín de 4.º**, mediante `scripts/apply-latin4-quantity-clusters-20261121.cjs`. Los cuatro overrides acreditados preservan las correcciones al reconstruir el índice desde la fuente académica fijada; las migraciones se limitan al vocabulario exigible sembrado y no alteran las glosas añadidas por el profesor. `scripts/test-filologia-latin4-quantity-clusters-20261121.cjs` exige las nueve coincidencias por UD, cuatro overrides, paridad web/offline y que ninguna de las 619 formas contrastadas previamente se promocione por estos cambios.
 
-**Límite metodológico:** no se igualan sistemáticamente cantidad vocálica y cantidad silábica. Quedan otras grafías de vocales ante grupos consonánticos por estudiar individualmente, sin sustituciones automáticas.
+### Caso expresamente suspendido: `māgnus`
+
+Una primera propuesta confundió la cantidad de la sílaba con una cantidad vocálica inequívoca y sustituyó `māgnus` por `măgnus`. **Se revierte esa sustitución** y se conserva la lectura curricular original `māgnus` en las siete apariciones de Latín de 4.º hasta resolver la discrepancia lexicográfica. No consta prueba suficiente para imponer una `ă` breve.
+
+- Allen y Greenough, *New Latin Grammar*, §10.d, presentan `māgnus` como ejemplo de vocal larga ante `-gn-`, con una advertencia explícita de que no siempre se conoce la cantidad: https://dcc.dickinson.edu/sv/grammar/latin/quantity-syllables.
+- Wiktionary, `magnus`, «Usage notes», documenta la disparidad entre las gramáticas y diccionarios que omiten el macrón y los que lo mantienen: https://en.wiktionary.org/wiki/magnus.
+- Las discusiones filológicas son reales y no meramente tipográficas: Carl Darling Buck, «The Quantity of Vowels Before gn», *The Classical Review* 15 (1901), 311–314, https://doi.org/10.1017/S0009840X00030808.
+
+En consecuencia, `magnus` queda **excluido de automatismos de cantidad** hasta que se adopte un criterio editorial. El índice no debe incorporar un `entryCorrection` que sustituya `māgnus` por `măgnus`. La prueba comprueba expresamente su conservación. La cantidad vocálica y el peso silábico se mantienen como categorías distintas.
