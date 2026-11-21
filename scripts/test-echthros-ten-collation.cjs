@@ -62,6 +62,7 @@ for(const [i,form,tags,amb] of expected){
 assert.equal(saved.size,10);
 assert.equal(surfaces.size,8);
 assert.equal(bank.vocabulary.grc.εχθροσ.gr1.entry,'ἐχθρός, –ά, –όν');
-assert.equal(bank.counts.grc.wikcionario,545);
+assert.equal(bank.counts.grc.wikcionario,521);
+assert.equal(bank.extensions.greek_nominal_candidates.quarantinedAccentForms,24);
 assert.equal(bank.counts.grc.contrastado,478);
 console.log('ἐχθρός: 10/10 cotejos morfológicos, ocho grafías, cinco lecturas con sincretismo; diez promociones documentadas; sin activar preguntas de respuesta única.');

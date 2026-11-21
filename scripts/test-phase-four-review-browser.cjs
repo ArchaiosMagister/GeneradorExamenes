@@ -25,8 +25,9 @@ async function run(browser){
    const data=await window.ExaminaOfflineLemmatizer.load();
    const cases=window.ExaminaTeacherReview.buildCases(data,'gr1');
    const items=cases.filter(x=>x.detail.includes('Registro grc-pending-'));
-   if(items.length!==54)throw Error('Cola griega inconsistente: '+items.length);
-   return items.find(x=>x.lemma==='πρωτοσ');
+   if(items.length!==30)throw Error('Cola griega inconsistente: '+items.length);
+   if(items.some(x=>x.lemma==='πρωτοσ'))throw Error('Las 24 grafías de πρῶτος salieron de cuarentena');
+   return items.find(x=>x.form.includes('παῖδι'));
   });
   assert(target&&target.form);
   await page.locator('#reviewPending').uncheck();
@@ -77,7 +78,7 @@ async function run(browser){
   assert(reloaded.alternatives.length>=2);
   assert.deepEqual(errors,[],'Errores JavaScript durante conciliación');
   assert.deepEqual(requests,[],'La cola docente offline no debe usar la red');
-  console.log('Cola docente Chromium: 54 tarjetas pendientes, catorce migradas, importar, conservar conflictos, elegir alternativa, exportar y persistir offline.');
+  console.log('Cola docente Chromium: 30 tarjetas pendientes, 24 en cuarentena histórica, catorce migradas, importar, conservar conflictos, elegir alternativa, exportar y persistir offline.');
  }finally{await page.close()}
 }
 module.exports=run;
