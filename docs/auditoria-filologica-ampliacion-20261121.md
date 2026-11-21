@@ -19,3 +19,5 @@ Se auditan las 14 unidades del fichero docente `data/vocabulary/greek1-units-cor
 ## Control de integración
 
 La prueba `scripts/test-filologia-latin-griego-20261121.cjs` comprueba el índice, el banco exigible, las fuentes, la versión autónoma y la ausencia de contaminación de claves por cirílico. Se ejecuta junto a las baterías Phase I y offline-check. La fusión y publicación siguen condicionadas a autorización posterior y a CI satisfactoria.
+
+La compilación reproducible del índice y del HTML autónomo se completó en GitHub Actions para esta rama; el flujo temporal se retiró de la PR. Las verificaciones generales son independientes de ese control.
