@@ -18,11 +18,8 @@ function fromSource(source,name,context={}){
  return vm.runInNewContext('('+functionSource(source,name)+')',context);
 }
 for(const [name,source] of [['web',web],['autónoma',offline]]){
- const obsolete=/"entry"\s*:\s*"ὀλιγός, –η, –ον"/u.exec(source);
- if(obsolete){
-  console.warn(name+': mención antigua adicional en '+source.slice(Math.max(0,obsolete.index-100),obsolete.index+115).replace(/\n/g,' '));
- }
- if(name==='web')assert(!obsolete,name+': entrada antigua de vocabulario');
+ assert(!/"entry"\s*:\s*"ὀλιγός, –η, –ον"/u.test(source),
+  name+': enunciado antiguo en bancos o índice académico');
  assert(source.includes('ὀλίγος, –η, –ον'),name+': falta el enunciado corregido');
  assert(source.includes("lemma:'ὀλίγος',feminine:'η',accent:'oligos'"),
   name+': falta el paradigma explícito');
@@ -76,8 +73,16 @@ for(const [name,source] of [['web',web],['autónoma',offline]]){
  assert.equal(rows[3].entry,'ὀλιγός, –η, –ον');
  assert.equal(migration(rows),false,name+': migración no idempotente');
 }
-const target=materials.required.filter(x=>x.unit==='UD5'&&/λιγ/.test(x.entry));
+const target=materials.required.filter(x=>x.unit==='UD5'&&x.entry.startsWith('ὀλίγ'));
 assert.equal(target.length,1,'UD5 debe conservar una entrada para ὀλίγος');
 assert.equal(target[0].entry,'ὀλίγος, –η, –ον');
 assert.equal(target[0].meaning,'poco/a');
+const index=JSON.parse(fs.readFileSync('data/lemmas/teacher-forms.json','utf8'));
+assert.equal(index.vocabulary.grc.ολιγοσ.gr1.entry,'ὀλίγος, –η, –ον',
+ 'El índice persistente ha reintroducido la errata de origen');
+const decisions=JSON.parse(fs.readFileSync('data/lemmas/verified-overrides.json','utf8'));
+const correction=decisions.entryCorrections.filter(x=>x.lang==='grc'&&x.lemma==='ολιγοσ'&&x.course==='gr1');
+assert.equal(correction.length,1,'Falta la corrección editorial reproducible');
+assert.equal(correction[0].from,'ὀλιγός, –η, –ον');
+assert.equal(correction[0].to,'ὀλίγος, –η, –ον');
 console.log('GRIEGO AUDIT OK: ὀλίγος (30 casillas áticas), πολύς (sin vocativos no acreditados), migración no destructiva y paridad web/PWA.');
