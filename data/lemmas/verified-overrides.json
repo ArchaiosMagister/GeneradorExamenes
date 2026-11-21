@@ -476,6 +476,78 @@
       "to": "lĭttĕra, –æ",
       "reference": "https://atlas.perseus.tufts.edu/dictionaries/entry/urn%3Acite2%3Ascaife-viewer%3Adictionary-entries.atlas_v1%3Alat.ls.perseus-eng2-n26829/",
       "note": "Breve inicial contrastada; no equivale a cantidad silábica ni certifica nuevas flexiones."
+    },
+    {
+      "lang": "lat",
+      "lemma": "pulcher",
+      "course": "lat4",
+      "from": "pūlchĕr, –chra, –chrum",
+      "to": "pŭlchĕr, –chra, –chrum",
+      "reference": "https://en.wiktionary.org/wiki/pulcher",
+      "note": "Cantidad de vocal breve contrastada; distinguir de sílaba larga por posición. No acredita paradigmas nuevos."
+    },
+    {
+      "lang": "lat",
+      "lemma": "puella",
+      "course": "lat4",
+      "from": "pŭēlla, –æ",
+      "to": "pŭĕlla, –æ",
+      "reference": "https://en.wiktionary.org/wiki/puella",
+      "note": "Cantidad de vocal breve contrastada; distinguir de sílaba larga por posición. No acredita paradigmas nuevos."
+    },
+    {
+      "lang": "lat",
+      "lemma": "albus",
+      "course": "lat4",
+      "from": "ālbus, –a, –um",
+      "to": "ălbus, –a, –um",
+      "reference": "https://en.wiktionary.org/wiki/albus",
+      "note": "Cantidad de vocal breve contrastada; distinguir de sílaba larga por posición. No acredita paradigmas nuevos."
+    },
+    {
+      "lang": "lat",
+      "lemma": "multus",
+      "course": "lat4",
+      "from": "mūltus, –a, –um",
+      "to": "mŭltus, –a, –um",
+      "reference": "https://en.wiktionary.org/wiki/multus",
+      "note": "Cantidad de vocal breve contrastada; distinguir de sílaba larga por posición. No acredita paradigmas nuevos."
+    },
+    {
+      "lang": "lat",
+      "lemma": "bellum",
+      "course": "lat4",
+      "from": "bēllŭm, –ī",
+      "to": "bĕllŭm, –ī",
+      "reference": "https://en.wiktionary.org/wiki/bellum",
+      "note": "Cantidad de vocal breve contrastada; distinguir de sílaba larga por posición. No acredita paradigmas nuevos."
+    },
+    {
+      "lang": "lat",
+      "lemma": "noster",
+      "course": "lat4",
+      "from": "nōstĕr, –tra, –trum",
+      "to": "nŏstĕr, –tra, –trum",
+      "reference": "https://en.wiktionary.org/wiki/noster",
+      "note": "Cantidad de vocal breve contrastada; distinguir de sílaba larga por posición. No acredita paradigmas nuevos."
+    },
+    {
+      "lang": "lat",
+      "lemma": "vinco",
+      "course": "lat4",
+      "from": "vīnco (3ª)",
+      "to": "vĭnco (3ª)",
+      "reference": "https://en.wiktionary.org/wiki/vinco",
+      "note": "Cantidad de vocal breve contrastada; distinguir de sílaba larga por posición. No acredita paradigmas nuevos."
+    },
+    {
+      "lang": "lat",
+      "lemma": "omnis",
+      "course": "lat4",
+      "from": "ōmnĭs, –e",
+      "to": "ŏmnĭs, –e",
+      "reference": "https://en.wiktionary.org/wiki/omnis",
+      "note": "Cantidad de vocal breve contrastada; distinguir de sílaba larga por posición. No acredita paradigmas nuevos."
     }
   ],
   "paradigms": [
