@@ -79,6 +79,19 @@ for(const [lemma,oldEntry,newEntry,gender,count] of expected){
    name+': ha reaparecido el nominativo sin acento de αἴξ');
  }
 }
+// Invariante docente global: TODOS los sustantivos verificados de tercera
+// declinación muestran artículo griego, no género latino ni inferencia.
+for(const [name,html] of [['web',fs.readFileSync('index.html','utf8')],
+                          ['offline',fs.readFileSync('offline.html','utf8')]]){
+ const nouns=assignment(html,'const greekExamReviewedNominalRows=')
+  .filter(row=>row[3]==='nouns'&&row[5]==='tercera');
+ assert(nouns.length>=15,name+': desaparecieron los quince lemas cotejados de tercera');
+ for(const row of nouns){
+  const expectedArticle={m:['(ὁ)'],f:['(ἡ)'],n:['(τό)','(τὸ)']}[row[4]];
+  assert(expectedArticle&&expectedArticle.some(ending=>row[1].endsWith(ending)),
+   name+'/'+row[0]+': género de tercera declinación sin artículo griego: '+row[1]);
+ }
+}
 const strateumaRequired=materials.required.filter(x=>x.unit==='UD9'&&canonicalHead(x.entry)==='στρατευμα');
 assert.equal(strateumaRequired.length,1);
 assert.equal(strateumaRequired[0].entry,'στράτευμα, –ατος (τό)');
