@@ -11,6 +11,11 @@ assert.equal(required.schema,1);
 const ud7=required.courses.latin1.UD7;
 const later=required.courses.latin1['UD11-12']||required.courses.latin1['UD11–12'];
 assert(Array.isArray(ud7)&&Array.isArray(later));
+assert.equal(ud7.length,112,'UD7 no puede perder ni añadir entradas exigibles');
+assert.equal(Object.values(required.courses.latin1).reduce((n,rows)=>n+rows.length,0),1106,
+ 'Latín I debe conservar las 1106 entradas, incluidas repeticiones legítimas');
+assert.equal(Object.values(required.courses.latin4).reduce((n,rows)=>n+rows.length,0),541,
+ 'El repertorio exigible de Latín 4.º no debe cambiar');
 assert.equal(ud7.filter(x=>x==='nix, nivis (f.)').length,1);
 assert.equal(ud7.filter(x=>x==='sol, solis (m.)').length,1);
 assert(!ud7.includes('nivis, –is (f.)')&&!ud7.includes('solis, –is (m.)'));
@@ -31,6 +36,8 @@ assert.equal(index.vocabulary.lat.sol?.lat1?.entry,'sol, solis (m.)');
 assert.deepEqual([...index.vocabulary.lat.sol.lat1.units].sort(),['UD 11–12','UD 7']);
 assert.equal(index.rows.lat.filter(x=>x[0]==='sol'&&x[3]===0).length,12);
 assert(index.rows.lat.some(x=>x[0]==='nix'&&x[1]==='nix'&&x[2]==='LEX;ENTRY'&&x[3]===3));
+assert(!index.rows.lat.some(x=>x[0]==='nix'&&x[3]===5),
+ 'Ninguna flexión de nix se debe certificar sin contraste independiente');
 assert(!index.rows.lat.some(x=>x[0]==='solis'||x[0]==='nivis'));
 const html=fs.readFileSync('index.html','utf8');
 for(const form of ['nix, nivis (f.)','sol, solis (m.)'])assert(html.includes(form),'Falta en la web: '+form);
