@@ -14,6 +14,7 @@ const latinCode=part('const latinPronounRows=','let culture=')+morphologyHelpers
  part('function mVerb(','function mTable(');
 const greekCode=morphologyHelpers+part('function examGreekVerbFormCandidates(','function examQuotaGreek(')+
  part('const greekModes=','// Vista del temario:')+
+ part('function greekVerbAnalysisCandidates(eligible){','function generateGreekMorphologyFixed(){')+
  part('function generateGreekMorphologyFixed(){','let greekExamState=null;')+
  part('function generateGreekExam(){','const legacyUpdateUnits=');
 
