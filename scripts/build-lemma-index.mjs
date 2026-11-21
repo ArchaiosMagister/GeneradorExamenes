@@ -174,6 +174,11 @@ async function main(){
   rows[lang].push([k,form,features,({unimorph:0,docente:1,modelo:2,lema:3,wikcionario:4,contrastado:5})[source]]);
   counts[lang][source]++;
  }
+ // El extracto griego fijado incluye once casillas de ὄνομα desalineadas:
+ // N;GEN;SG => "Singular", N;DAT;SG => "ὄνομα", etc.
+ // Las retiramos como bloque cerrado, sin reconstruir ni verificar un paradigma.
+ // Si cambia la fuente, se detiene la reconstrucción para nueva colación.
+ let quarantinedGreekOnomaRows=0;
  // Download all prefiltered teacher-vocabulary shards, keeping every attested
  // feature interpretation (including ambiguous ones) without guessing a lemma.
  for(const lang of ['lat','grc']){
@@ -190,6 +195,10 @@ async function main(){
     for(const row of shard){
      total++;
      if(!Array.isArray(row)||row.length<3)throw Error('Fila UniMorph incorrecta');
+     if(lang==='grc'&&norm(row[0])==='ονομα'&&/^N;/.test(row[2])){
+      quarantinedGreekOnomaRows++;
+      continue;
+     }
      add(lang,row[0],row[1],row[2],'unimorph');
     }
    }
@@ -197,6 +206,8 @@ async function main(){
   if(total!==expected||counts[lang].unimorph<expected*0.99)
    throw Error(lang+': filas inesperadas '+total+' de '+expected);
  }
+ if(quarantinedGreekOnomaRows!==11)
+  throw Error('La fuente de ὄνομα ha cambiado; revisar antes de continuar: '+quarantinedGreekOnomaRows);
  // Explicit teacher models also contribute forms when their lemma belongs to
  // the course vocabulary. Descriptions remain separate from UniMorph tags.
  for(const p of paradigms){
@@ -261,6 +272,7 @@ async function main(){
  const extensions={candidate_lemmas:0,candidate_rows:0,rejected_for_conflict:[],
   citation_only:{lat:0,grc:0},
   warning:'Generated forms are provisional lookup suggestions, NEVER exam solutions.'};
+ extensions.quarantinedGreekOnomaRows=quarantinedGreekOnomaRows;
  extensions.verifiedIndividualForms=overrides.singleForms.length;
  const verifiedCells=new Map();
  for(const [lemma,surface,features]of rows.lat){
