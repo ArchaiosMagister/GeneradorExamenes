@@ -96,4 +96,47 @@ assert(oldSeeds.every(x=>!continued.some(([k,old])=>x.entry===old)));
 assert.equal(migrate(oldSeeds),false,'Migración idempotente 25');
 assert.equal(idx.counts.lat.contrastado,619,'No promover flexiones por cambios de cantidad');
 
+// Nueva tanda de diez lemas: 17 apariciones. Sin validar flexiones por analogía.
+const newest=[
+ ['parvus','pārvus, –a, –um','părvus, –a, –um',['UD1','UD10']],
+ ['victoria','vīctōrĭa, –æ','vĭctōrĭa, –æ',['UD1','UD3','UD4']],
+ ['arma','ārma, –orum','ărma, –orum',['UD2']],
+ ['castra','cāstra, –orum','căstra, –orum',['UD2','UD3','UD10']],
+ ['porta','pōrta, –æ','pŏrta, –æ',['UD2']],
+ ['porto','pōrto (1ª)','pŏrto (1ª)',['UD2']],
+ ['fortis','fōrtĭs, –e','fŏrtĭs, –e',['UD6','UD7','UD9']],
+ ['serva','sērva, –æ','sĕrva, –æ',['UD4']],
+ ['servus','sērvus, –ī','sĕrvus, –ī',['UD4']],
+ ['incola','īncŏla, –æ','ĭncŏla, –æ',['UD2']]
+];
+let newestCount=0;
+const newestSeeds=[];
+for(const [lemma,oldEntry,newEntry,units] of newest){
+ const saved=over.entryCorrections.filter(r=>r.lang==='lat'&&r.course==='lat4'&&r.lemma===lemma);
+ assert.equal(saved.length,1,'Override nuevo '+lemma);
+ assert.equal(saved[0].from,oldEntry);assert.equal(saved[0].to,newEntry);
+ assert(/^https:\/\//.test(saved[0].reference));
+ assert.equal(idx.vocabulary.lat[lemma]?.lat4?.entry,newEntry,'Índice nuevo '+lemma);
+ assert.equal(embedded.vocabulary.lat[lemma]?.lat4?.entry,newEntry,'Offline nuevo '+lemma);
+ for(const unit of units){
+  assert.equal(required.courses.latin4[unit].filter(e=>e===newEntry).length,1,'Exigible nuevo '+lemma+'/'+unit);
+  assert(!required.courses.latin4[unit].includes(oldEntry));
+  assert.equal(bank.filter(e=>e.course==='latin4'&&e.unit===unit&&e.entry===newEntry).length,1,'Banco nuevo '+lemma+'/'+unit);
+  assert(!bank.some(e=>e.course==='latin4'&&e.unit===unit&&e.entry===oldEntry));
+  newestSeeds.push({course:'latin4',unit,entry:oldEntry,origin:'listado docente exigible',meaning:'Glosa sin modificar'});
+  newestCount++;
+ }
+}
+assert.equal(newestCount,17);
+newestSeeds.push({course:'latin4',unit:'UD1',entry:'pārvus, –a, –um',origin:'manual',meaning:'Manual intacto'});
+assert.equal(migrate(newestSeeds),true,'Migración 17 entradas');
+assert(newestSeeds.slice(0,-1).every(e=>e.meaning==='Glosa sin modificar'));
+assert.equal(newestSeeds.at(-1).entry,'pārvus, –a, –um');
+assert.equal(newestSeeds.at(-1).meaning,'Manual intacto');
+assert.equal(migrate(newestSeeds),false,'Migración 17 idempotente');
+assert(required.courses.latin4.UD1.includes('stēlla, –æ'),'No alterar stēlla: ē larga acreditada');
+assert(required.courses.latin4.UD1.includes('māgnus, –a, –um'),'Conservar magnus pendiente editorial');
+assert.equal(idx.counts.lat.contrastado,619);
+assert.equal(Object.values(required.courses.latin4).flat().length,541);
+
 console.log('LAT4: 9/9 grafías, 4 overrides, 541 exigibles, 619 formas acreditadas, migración y offline concordantes');
