@@ -61,4 +61,21 @@ const unit13=project.units.find(row=>row.title==='UD13').text;
 assert(unit13.includes('ζῷα:'),'UD13: listado nominal sin iota suscrita');
 assert(unit13.includes('τεθηρεύκασι ζῷα ἐν τῇ νήσῳ'),'UD13: oración sin iota suscrita');
 assert(!unit13.includes('ζῶα'),'UD13 conserva grafías sin iota de ζῷον');
+// Continuación: acentos graves ante palabra siguiente y οὐκ ante vocal suave.
+const greekContextualAccentFixes=[
+ ['UD3','ἡ φωνὴ τῆς Ἀθηνᾶς','ἡ φωνή τῆς Ἀθηνᾶς'],
+ ['UD5','οὐκ ἀεὶ δικαιός','οὐκ ἀεί δικαιός'],
+ ['UD5','οὐκ ἀεὶ οἱ ἄνθρωποί','οὐ ἀεί οἱ ἄνθρωποί'],
+ ['UD9','οἱ θεοὶ γιγνώσκουσι','οἱ θεοί γιγνώσκουσι'],
+ ['UD10','ἀγαθοὶ οὐκ εἰσίν','ἀγαθοί οὐκ εἰσίν'],
+ ['UD11','τῷ παιδὶ τὸν πλούτον','τῷ παιδί τὸν πλούτον'],
+ ['UD14','χρὴ τὰς δόξας','χρή τὰς δόξας'],
+ ['UD14','πολλοὶ ἄνθρωποι τὸν θάνατον','πολλοί ἄνθρωποι τὸν θάνατον']
+];
+for(const [unit,good,bad] of greekContextualAccentFixes){
+ const text=project.units.find(row=>row.title===unit)?.text;
+ assert(text&&text.includes(good),unit+': falta '+good);
+ assert(!text.includes(bad),unit+': persiste '+bad);
+}
+assert.equal(greekContextualAccentFixes.length,8);
 console.log('TERCERA RONDA FILOLÓGICA: 14 UD, 471 entradas, 11 oraciones seleccionables y análisis coherentes');
