@@ -93,3 +93,19 @@ La lectura de las **541 entradas latinas exigibles de 4.º** detectó `īmpĕro 
 ### Riesgo sistemático detectado, sin corrección automática
 
 El barrido por macrón delante de grupos consonánticos de Latín 4.º devuelve numerosos candidatos, pero **no es un detector de errores**: una vocal larga puede preceder dos consonantes y una breve también. Se exige contraste individual y distinción entre cantidad de vocal y sílaba. Por ejemplo, `līttĕra` merece cotejo adicional con Lewis–Short, que recoge `littĕra` y califica `lītĕra` de grafía menos recomendable (https://atlas.perseus.tufts.edu/dictionaries/entry/urn%3Acite2%3Ascaife-viewer%3Adictionary-entries.atlas_v1%3Alat.ls.perseus-eng2-n26829/). También deben estudiarse `āltus`, `gēmma`, `māgnus`, `lōngus` y `pūlchĕr` antes de modificar el listado. La reconstrucción de estas cinco apariciones de `impero/oppidum` se hará de forma aislada y sin despliegue.
+
+## Ronda de grupos consonánticos: cinco lemas y 16 apariciones
+
+Un segundo examen específico del repertorio exigible latino de 4.º, con cotejo de pronunciación clásica, permite sustituir macrones de vocales iniciales *breves* por breves explícitas. La sílaba inicial sigue siendo larga por posición, pues termina en consonante ante otra consonante. No se alteran otras cantidades del enunciado.
+
+| Lema en Latín 4.º | Corrección | UD | Apariciones | Evidencia |
+| --- | --- | --- | ---: | --- |
+| `āltus` | `ăltus` | 1, 3, 4, 7 | 4 | https://en.wiktionary.org/wiki/altus |
+| `māgnus` | `măgnus` | 1, 2, 3, 5, 6, 7, 9 | 7 | https://en.wiktionary.org/wiki/magnus |
+| `lōngus` | `lŏngus` | 1, 2 | 2 | https://en.wiktionary.org/wiki/longus |
+| `gēmma` | `gĕmma` | 1 | 1 | https://en.wiktionary.org/wiki/gemma |
+| `līttĕra` | `lĭttĕra` | 2, 3 | 2 | https://atlas.perseus.tufts.edu/dictionaries/entry/urn%3Acite2%3Ascaife-viewer%3Adictionary-entries.atlas_v1%3Alat.ls.perseus-eng2-n26829/ |
+
+El script `scripts/apply-latin4-quantity-clusters-20261121.cjs` delimita los cambios al vocabulario exigible de 4.º y a su banco, conserva las 1106/541 apariciones por curso, incorpora cinco `entryCorrections` para la reconstrucción del índice y extiende las migraciones estrictamente a fichas sembradas. `scripts/test-filologia-latin4-quantity-clusters-20261121.cjs` exige las dieciséis coincidencias por UD y la concordancia entre `teacher-forms.json` y el contenido embebido en `offline.html`. La reconstrucción debe realizarse conjuntamente antes de considerar esta tanda incorporada; no se marca ningún paradigma nuevo como fuente 5.
+
+**Límite metodológico:** no se igualan sistemáticamente cantidad vocálica y cantidad silábica. Quedan otras grafías de vocales ante grupos consonánticos por estudiar individualmente, sin sustituciones automáticas.
