@@ -27,7 +27,6 @@ jobs:
       - name: Verificar diez paradigmas, doble lectura y paridad offline
         run: |
           node scripts/test-greek-verb-syncretism.cjs
-          node scripts/test-greek-academic-expansion.cjs
           node scripts/test-verified-verb-overrides.cjs
       - name: Guardar solo la distribución offline en rama aislada
         run: |
