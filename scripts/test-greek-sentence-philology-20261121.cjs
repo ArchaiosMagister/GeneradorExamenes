@@ -19,6 +19,13 @@ const expected=[
 for(const [unit,token] of expected)assert(corpus.units.find(x=>x.title===unit)?.text.includes(token),unit+': '+token);
 for(const bad of ['ἐσῴσαν','ἐθαυμάσε','ἐφυλάξαν','ἐρίψαν','ἐγράψαν','ἐδιώξε','ἐγράψε','ἐσέβαλον','ἐτιμητο','ᾠκουν'])
  assert(!corpus.units.some(u=>u.text.includes(bad)),bad);
+// Quinta ronda: grafías lexicográficas comprobadas, sin añadir respuestas automáticas.
+const ud2=corpus.units.find(u=>u.title==='UD2').text;
+const ud5=corpus.units.find(u=>u.title==='UD5').text;
+assert(ud2.includes('ὁ ἰατρὸς ζῷον ἔχει.'));
+assert(ud2.includes('ὁ ἵππος ζῷον ἐστιν.'));
+assert(ud5.includes('ἐκ τῶν τῆς Ἀσίας χώρων.'));
+assert(!corpus.units.some(u=>u.text.includes('ζῳόν')||u.text.includes('Ἁσίας')));
 const anchor='const greekSentenceRows=[',a=web.indexOf(anchor),b=web.indexOf('];',a);
 assert(a>=0&&b>a,'No hay oraciones de Griego I en el generador');
 const rows=vm.runInNewContext('(['+web.slice(a+anchor.length,b)+'])');
