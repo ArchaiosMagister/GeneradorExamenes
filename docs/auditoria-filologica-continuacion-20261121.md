@@ -122,3 +122,35 @@ En consecuencia, `magnus` queda **excluido de automatismos de cantidad** hasta q
 El workflow aislado **44926622832** ha finalizado con éxito y ha regenerado `offline.html` en el commit `7391d4ab2615685babb07bdd2ee2691e2d143482`. Un cotejo posterior por lectura directa del blob de GitHub confirma igualdad estructural del índice `data/lemmas/teacher-forms.json` y su copia embebida, presencia de `māgnus` y ausencia de `măgnus`, sin modificar las 541 fichas exigibles de Latín de 4.º. Los fallos de CI inmediatamente anteriores correspondían a la copia autónoma desfasada, no a nuevos errores morfológicos.
 
 La integración completa de Phase I, formato Word, pruebas de exámenes reales y versión autónoma **debe repetirse sobre el commit final**. Los eventos `pull_request` iniciados por el bot de Actions después de reconstruir el archivo pueden aparecer como `action_required`: la comprobación definitiva requiere un commit normal del colaborador o autorización de GitHub Actions; no equivale a un fallo de la lógica de exámenes.
+
+## Ronda adicional: siete nominativos griegos y 25 cantidades latinas
+
+**Correcciones añadidas a la PR #205:** 32 apariciones (7 griegas, 25 latinas) mediante cambios acotados, no reemplazos masivos.
+
+### Griego I: nominativo plural de πολέμιος
+
+Los siete errores `πολεμίοι` / `πολεμίοι` se han corregido como `πολέμιοι` / `πολέμιοι`: UD6 (2), UD7 (2), UD11 (2) y UD12 (1). El acusativo `πολεμίους` y el genitivo `πολεμίων` se mantienen, por pertenecer a casos distintos y ser válidos. Se preservan 14 UD y 471 renglones; las 11 oraciones seleccionables no se modifican. Contraste: https://greekdoc.github.io/lexicon/pol.html y https://en.wiktionary.org/wiki/%CF%80%CE%BF%CE%BB%CE%AD%CE%BC%CE%B9%CE%BF%CF%82.
+
+### Latín de 4.º: vocal breve frente a sílaba larga por posición
+
+| Lema | Antes | Después | Apariciones curriculares |
+|---|---|---|---:|
+| pulcher | `pūlchĕr, –chra, –chrum` | `pŭlchĕr, –chra, –chrum` | 2 (UD1, 3) |
+| puella | `pŭēlla, –æ` | `pŭĕlla, –æ` | 4 (UD1, 2, 3, 8) |
+| albus | `ālbus, –a, –um` | `ălbus, –a, –um` | 1 (UD2) |
+| multus | `mūltus, –a, –um` | `mŭltus, –a, –um` | 4 (UD2, 4, 8, 9) |
+| bellum | `bēllŭm, –ī` | `bĕllŭm, –ī` | 4 (UD3, 4, 5, 7) |
+| noster | `nōstĕr, –tra, –trum` | `nŏstĕr, –tra, –trum` | 5 (UD3, 5, 6, 7, 8) |
+| vinco | `vīnco (3ª)` | `vĭnco (3ª)` | 1 (UD4) |
+| omnis | `ōmnĭs, –e` | `ŏmnĭs, –e` | 4 (UD7, 8, 9, 10) |
+
+Referencias individualizadas en `data/lemmas/verified-overrides.json`. Se conservan las 1106 entradas exigibles de Latín I y las 541 de 4.º, así como sus UD y glosas docentes. Se mantienen las decisiones sobre `māgnus` y otras cantidades dudosas. Las migraciones solo afectan las entradas con origen `listado docente exigible`; no sobrescriben ediciones manuales.
+
+### Pruebas y reconstrucción
+
+- Extendida `scripts/test-filologia-regimen-acento-20261121.cjs`: los siete nominativos válidos aparecen por UD y desaparecen los falsos.
+- Extendida `scripts/test-filologia-latin4-quantity-clusters-20261121.cjs`: comprueba 25 entradas del exigible y del banco, ocho overrides, índice y copia offline, migraciones idempotentes y conservación de las 619 lecturas latinas contrastadas.
+- GitHub Actions, ejecución aislada https://github.com/ArchaiosMagister/GeneradorExamenes/actions/runs/44928173882: **success**. Reconstruye `data/lemmas/teacher-forms.json` desde la fuente fijada, regenera `offline.html`, ejecuta las dos pruebas actualizadas y comprueba que solo cambian los artefactos reconstruidos. La rama incorpora el commit generado `53c9ff6fa9cca598767a12a1f11c6f65f8023979`.
+- El flujo temporal de reconstrucción se ha retirado tras finalizar. Las baterías generales deben evaluarse sobre el último commit de la PR.
+
+**Sin fusión ni publicación.** Ninguna de estas modificaciones otorga acreditación nueva de formas flexivas.
