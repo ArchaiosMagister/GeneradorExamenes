@@ -1,5 +1,5 @@
 # Conciliación ScholaClassica → GeneradorExamenes · adaptador de solo lectura
-Fecha: 14 de noviembre de 2026. **Estado: PR de preparación; ninguna forma académica importada ni publicada.**
+Fecha: 14 de noviembre de 2026. **La PR #120 está integrada. El cotejo real de los tres cursos se desarrolla en una rama de auditoría: ninguna forma académica importada ni autorizada automáticamente.**
 
 ## Contrato y ámbito
 - No se fusionan aplicaciones ni repositorios: GeneradorExamenes sigue siendo una PWA independiente.
@@ -37,3 +37,36 @@ El informe incluye todas las casillas cotejadas, rasgos comparados, discrepancia
 En la vista previa web y en el DOCX, la primera columna contiene únicamente la persona: 1.ª, 2.ª y 3.ª, con **aproximadamente un 6 % de anchura**, texto alineado a la derecha y el mismo reparto geométrico en Word. Se aplica a Latín I, Latín 4.º y Griego I. El enunciado latino queda en cursiva, pero las marcas metalingüísticas de conjugación (`1ª`–`4ª`, `mx.`, `irr.`) están en redonda, sin alterar las formas verbales.
 
 Las pruebas `scripts/test-latin4-conjugation-isolated-forms.cjs` y `scripts/test-schola-morphology-reconciliation.cjs` verifican HTML, Word, fidelidad Unicode y ausencia de promociones. La batería general reconstruye y compara `offline.html` antes de la publicación. **No fusionar ni publicar sin aprobación del docente.**
+
+## Conciliación real reproducible: Latín I, Latín de 4.º y Griego I
+
+El workflow `.github/workflows/schola-morphology-audit.yml` comprueba el banco **completo** de morfología de ScholaClassica (no la muestra sintética de las pruebas del adaptador). Se ejecuta solo con pull requests o autorización manual, sin despliegue, cambios de unidades ni escrituras en los bancos:
+
+1. Recupera ScholaClassica en el commit `8c4ede483593c890ac7b6fe62c2056e3e552cdcf` junto con sus tres fuentes académicas fijadas en `config/sources.lock.json`, y reconstruye su `paradigmas.json` mediante la compilación original.
+2. Ejecuta las pruebas del adaptador, coteja la exportación real con `data/lemmas/teacher-forms.json` y exige la identidad binaria de ambos bancos antes y después.
+3. Clasifica cada casilla por curso: coincidencia con fuente docente o contraste individual; coincidencia con fuente externa o candidata; discordancia de rasgos; análisis no comparable; forma ausente; lema no exigible; desinencia o variante compuesta.
+4. Genera `test-artifacts/conciliacion-schola-real.json` y `test-artifacts/conciliacion-schola-resumen.md` como artefactos de GitHub Actions y muestra un resumen en la ejecución. Los archivos de informe **no** se copian a la PWA ni se usan para sortear palabras.
+5. Mantiene intactas las 58 candidaturas griegas de fuente 4 y las decisiones docentes de cuarentena/exclusión; estas estadísticas no demuestran por sí solas validez filológica individual.
+
+Los resultados se analizan primero; no se cambia el motor de exámenes ni se fusiona la rama hasta la revisión. La ejecución queda vinculada tanto al commit Schola como al commit exacto del Generador, evitando comparaciones con la versión móvil/cacheada de cualquiera de las dos aplicaciones.
+
+## Cotejo filológico individual y corrección de las fuentes (15-XI-2026)
+
+El cotejo de 257 fichas de ScholaClassica detectó tres casillas discrepantes por dos causas académicas, no por el adaptador:
+- Vocativo masculino singular de `acer, acris, acre`: `acer`, no `acris` (Latín I y Latín 4.º).
+- Vocativo singular de `ἐλπίς, ἐλπίδος`: `ἐλπί`, no `ἐλπίς` (Griego I).
+
+Corrección de origen en [Appendix PR #10](https://github.com/ArchaiosMagister/Appendix-grammaticae/pull/10), propagación controlada en [ScholaClassica PR #87](https://github.com/ArchaiosMagister/ScholaClassica/pull/87). Ambas PR están en revisión; el Generador no importa estas casillas ni toma decisiones desde la gramática.
+
+Las cuatro candidaturas griegas de dativo singular que coincidían con ScholaClassica se cotejaron individualmente con una gramática de clase flexiva o paradigma específico y una fuente lexicográfica externa:
+
+| Identificador histórico | Lema | Grafía escolar | Análisis | UD exigible | Resultado |
+|---|---|---|---|---|---|
+| `grc-pending-201` | `κεφαλή` | `κεφαλῇ` | N;DAT;SG | UD 6–7 | Morfología confirmada |
+| `grc-pending-450` | `ῥήτωρ` | `ῥήτορι` | N;DAT;SG | UD8 | Morfología confirmada |
+| `grc-pending-451` | `ῥίς` | `ῥινί` | N;DAT;SG | UD8 | Morfología confirmada |
+| `grc-pending-462` | `στρατηγός` | `στρατηγῷ` | N;DAT;SG | UD5 | Morfología confirmada |
+
+**Evidencia individual:** `data/lemmas/cotejo-4-schola-20261115.json` y `scripts/test-cotejo-4-schola.cjs`. Conserva los enlaces, identificadores, unidades y formas originales con signos de cantidad; la ortografía escolar elimina solo la breve y el macrón editoriales. No se elimina acento, espíritu ni iota suscrita.
+
+**Separación obligatoria:** confirmar morfología académica no cambia automáticamente fuente 4 a 5, no habilita preguntas ni altera `teacher-forms.json`, `verified-overrides.json`, ScholaClassica, el servicio PWA o las decisiones docentes. La eventual incorporación requeriría una operación distinta y pruebas de construcción y edición de exámenes.

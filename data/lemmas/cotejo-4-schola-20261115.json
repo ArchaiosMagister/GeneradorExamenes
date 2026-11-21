@@ -1,0 +1,153 @@
+{
+  "schema": "examina-schola-individual-collation/v1",
+  "date": "2026-11-15",
+  "scope": "Griego I; dativo singular ático (cuatro candidaturas curriculares)",
+  "policy": {
+    "readOnly": true,
+    "academicAssessment": "morfología individual corroborada en dos fuentes; evidencia no equivale a habilitación en la PWA",
+    "modifyBank": false,
+    "changeSourceCode": false,
+    "examEligible": false,
+    "automaticPromotions": 0,
+    "retainOriginalHistoricalReview": true,
+    "noCurricularAdvances": true
+  },
+  "source": {
+    "scholaCommit": "8c4ede483593c890ac7b6fe62c2056e3e552cdcf",
+    "scholaclassicaAudit": "https://github.com/ArchaiosMagister/GeneradorExamenes/actions/runs/43644844054",
+    "generatorOrigin": "8b2ca3bc2900f2eb3f41ddc5146ee0f0a9b43ea6",
+    "originalReview": "data/lemmas/revision-559-griego-20261113.json",
+    "candidateBank": "data/lemmas/greek-nominal-candidates.json",
+    "examinedSample": "test-artifacts/conciliacion-schola-real.json (artefacto CI PR 121)"
+  },
+  "individualChecks": [
+    {
+      "id": "grc-pending-201",
+      "lemma": "κεφαλη",
+      "enunciation": "κεφαλή, –ῆς",
+      "sourceForm": "κεφᾰλῇ",
+      "schoolForm": "κεφαλῇ",
+      "analysis": "N;DAT;SG",
+      "course": "gr1",
+      "units": [
+        "UD 6–7"
+      ],
+      "scholaRecord": "griego-sustantivo-kephale",
+      "case": "dativo",
+      "number": "singular",
+      "evidence": [
+        {
+          "type": "lexicográfica; paradigma ático con cantidad",
+          "url": "https://es.wiktionary.org/wiki/κεφαλή",
+          "claim": "dativo singular κεφᾰλῇ"
+        },
+        {
+          "type": "gramática independiente de clase flexiva",
+          "url": "https://grammars.alpheios.net/smyth/xhtml/body.1_div1.2_div2.4.html",
+          "claim": "primera declinación femenina -η, dativo -ῃ (§§211–213)"
+        }
+      ],
+      "philology": "confirmada: primera declinación femenina, tema en -η, dativo singular -ῃ; ᾰ breve editorial se omite en ortografía escolar",
+      "status": "morfologia_individual_contrastada_no_autorizada",
+      "generatorSourceCode": 4,
+      "examEligible": false,
+      "automaticPromotion": false
+    },
+    {
+      "id": "grc-pending-450",
+      "lemma": "ρητωρ",
+      "enunciation": "ῥήτωρ, –ορος (ὁ)",
+      "sourceForm": "ῥήτορῐ",
+      "schoolForm": "ῥήτορι",
+      "analysis": "N;DAT;SG",
+      "course": "gr1",
+      "units": [
+        "UD 8"
+      ],
+      "scholaRecord": "griego-ud8-noun-119-0-0",
+      "case": "dativo",
+      "number": "singular",
+      "evidence": [
+        {
+          "type": "gramática independiente; paradigma específico",
+          "url": "https://grammars.alpheios.net/smyth/xhtml/body.1_div1.2_div2.4.html",
+          "claim": "Smyth §259: ῥήτορ-ι dativo singular de ῥήτωρ"
+        },
+        {
+          "type": "lexicografía; paradigma ático",
+          "url": "https://en.wiktionary.org/wiki/ῥήτωρ",
+          "claim": "dativo singular ῥήτορῐ"
+        }
+      ],
+      "philology": "confirmada: tema ῥητορ-, dativo singular -ι breve; acento conservado sobre η; macrón/breve editorial se excluye solo de la grafía escolar",
+      "status": "morfologia_individual_contrastada_no_autorizada",
+      "generatorSourceCode": 4,
+      "examEligible": false,
+      "automaticPromotion": false
+    },
+    {
+      "id": "grc-pending-451",
+      "lemma": "ρισ",
+      "enunciation": "ῥίς, ῥινός (ἡ)",
+      "sourceForm": "ῥῑνῐ́",
+      "schoolForm": "ῥινί",
+      "analysis": "N;DAT;SG",
+      "course": "gr1",
+      "units": [
+        "UD 8"
+      ],
+      "scholaRecord": "griego-ud8-noun-116-0-0",
+      "case": "dativo",
+      "number": "singular",
+      "evidence": [
+        {
+          "type": "gramática independiente; paradigma específico",
+          "url": "https://grammars.alpheios.net/smyth/xhtml/body.1_div1.2_div2.4.html",
+          "claim": "Smyth §259: ῥῑν-ί dativo singular de ῥῑ́ς"
+        },
+        {
+          "type": "lexicografía; paradigma ático",
+          "url": "https://en.wiktionary.org/wiki/ῥίς",
+          "claim": "dativo singular ῥῑνῐ́"
+        }
+      ],
+      "philology": "confirmada: tema nasal ῥῑν-, dativo singular ῥινί; espírtu áspero y agudo final obligatorios, macrón/breve solo editoriales",
+      "status": "morfologia_individual_contrastada_no_autorizada",
+      "generatorSourceCode": 4,
+      "examEligible": false,
+      "automaticPromotion": false
+    },
+    {
+      "id": "grc-pending-462",
+      "lemma": "στρατηγοσ",
+      "enunciation": "στρατηγός, –οῦ (ὁ)",
+      "sourceForm": "στρᾰτηγῷ",
+      "schoolForm": "στρατηγῷ",
+      "analysis": "N;DAT;SG",
+      "course": "gr1",
+      "units": [
+        "UD 5"
+      ],
+      "scholaRecord": "griego-sustantivo-strategos",
+      "case": "dativo",
+      "number": "singular",
+      "evidence": [
+        {
+          "type": "lexicografía; paradigma ático individual",
+          "url": "https://en.wiktionary.org/wiki/στρατηγός",
+          "claim": "dativo singular στρᾰτηγῷ"
+        },
+        {
+          "type": "gramática independiente de clase flexiva",
+          "url": "https://grammars.alpheios.net/smyth/xhtml/body.1_div1.2_div2.4.html",
+          "claim": "segunda declinación masculina, dativo singular -ῳ"
+        }
+      ],
+      "philology": "confirmada: segunda declinación masculina, dativo singular -ῳ con iota suscrita; α breve editorial no altera el acento escolar",
+      "status": "morfologia_individual_contrastada_no_autorizada",
+      "generatorSourceCode": 4,
+      "examEligible": false,
+      "automaticPromotion": false
+    }
+  ]
+}

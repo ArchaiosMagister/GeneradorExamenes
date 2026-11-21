@@ -68,10 +68,15 @@ function scholaFeatures(record,form){
  else if(/perfecto/u.test(lower))obj.tense='PRF';
  else if(/futuro/u.test(lower))obj.tense='FUT';
  else if(/presente/u.test(lower))obj.tense='PRS';
- if(/pasiv/u.test(lower))obj.voice='PASS';
+ // Una flexión pasiva deponente tiene semántica activa; UniMorph puede
+ // etiquetarla ACT. No se declara error ni identidad verificadora.
+ const context=String(record.id||'')+' '+String(record.evidence?.topic||'');
+ if(/deponent/iu.test(context))obj.voice='DEP';
+ // El presente medio-pasivo griego es morfológicamente sincrético.
+ else if(/medio[\s-]*pasiv|media[\s-]*pasiv/u.test(lower))obj.voice='MIDPASS';
+ else if(/pasiv/u.test(lower))obj.voice='PASS';
  else if(/activ/u.test(lower))obj.voice='ACT';
  else if(/medio/u.test(lower))obj.voice='MID';
- else if(/deponente/u.test(lower))obj.voice='DEP';
  if(/indicativ/u.test(lower))obj.mood='IND';
  return obj;
 }
@@ -81,13 +86,15 @@ function compare(a,b){
   if(!a[k]||!b[k])continue;
   // En deponentes, etiquetas de voz de distintas fuentes no bastan para
   // afirmar equivalencia de los análisis; se registra como indeterminado.
-  if(k==='voice'&&[a[k],b[k]].includes('DEP')&&a[k]!==b[k]){
+  if(k==='voice'&&a[k]!==b[k]&&
+   [a[k],b[k]].some(x=>x==='DEP'||x==='MIDPASS')){
    unresolved.push('voice');continue;
   }
   common.push(k);
   if(a[k]!==b[k])conflicts.push(k);
  }
- return {common,conflicts,unresolved,compatible:common.length>=2&&!conflicts.length};
+ return {common,conflicts,unresolved,
+  compatible:common.length>=2&&!conflicts.length&&!unresolved.length};
 }
 function getExamUnit(units){
  const ends=(units||[]).flatMap(x=>{

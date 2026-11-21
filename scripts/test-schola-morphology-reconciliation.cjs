@@ -4,7 +4,7 @@ const fs=require('node:fs');
 const os=require('node:os');
 const path=require('node:path');
 const {
- reconcile,keyForm,keyLemma,compare,getExamUnit,main
+ reconcile,keyForm,keyLemma,compare,scholaFeatures,getExamUnit,main
 }=require('./reconcile-schola-morphology.cjs');
 const generator=JSON.parse(fs.readFileSync(path.join(__dirname,'../data/lemmas/teacher-forms.json'),'utf8'));
 const schola={
@@ -43,6 +43,18 @@ assert.deepEqual(compare({kind:'N',case:'DAT',number:'SG'},
  {kind:'N',case:'GEN',number:'SG'}).conflicts,['case']);
 assert.deepEqual(compare({kind:'V',voice:'DEP',person:'2'},
  {kind:'V',voice:'ACT',person:'2'}).unresolved,['voice']);
+assert.equal(compare({kind:'V',voice:'DEP',person:'2'},
+ {kind:'V',voice:'ACT',person:'2'}).compatible,false,
+ 'La indeterminación de voz deponente no verifica la forma');
+assert.equal(compare({kind:'V',voice:'MIDPASS',person:'2'},
+ {kind:'V',voice:'MID',person:'2'}).compatible,false,
+ 'La voz medio-pasiva griega no equivale automáticamente a media');
+assert.equal(scholaFeatures({id:'latin-ud7-deponente-vereor',
+ language:'latin',kind:'verbo',evidence:{topic:'Verbos deponentes'}},
+ {analysis:'1.ª persona del presente de indicativo pasivo'}).voice,'DEP');
+assert.equal(scholaFeatures({id:'griego-ud6-lyo-medio',
+ language:'griego',kind:'verbo',evidence:{topic:'Presente medio-pasivo'}},
+ {analysis:'2.ª persona del presente medio-pasivo'}).voice,'MIDPASS');
 const base=JSON.stringify(generator);
 const result=reconcile(schola,generator,{scholaCommit:'a'.repeat(40)});
 assert.equal(JSON.stringify(generator),base,'El adaptador cambió el banco en memoria');
