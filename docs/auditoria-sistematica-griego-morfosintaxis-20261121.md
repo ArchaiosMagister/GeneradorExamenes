@@ -49,3 +49,7 @@ El workflow temporal de rama [#44947657465](https://github.com/ArchaiosMagister/
 
 ## Siguiente fase
 Ampliar la verificación *por forma evaluable* de cada unidad y cotejar construcciones sintácticas del conjunto de oraciones; evitar concluir «corpus completo certificado» por estas seis correcciones. No aplicar transformaciones automáticas de acentos ni equivalencias de lemas fuera de los contextos contrastados.
+
+## Nota de rectificación posterior (21/11/2026)
+
+La sustitución anterior `τῶν νέων` → `τῶν νεῶν`, justificada por el contexto náutico, dejó sin revisar el género del participio `ἀποπλευσάντων`. La auditoría siguiente corrigió exclusivamente su concordancia a **`ἀποπλευσασῶν τῶν νεῶν`** (femenino genitivo plural); véase `docs/auditoria-concordancia-genitivo-absoluto-griego1-20261121.md`. El pasaje antiguo de este informe se conserva como antecedente histórico de la decisión editorial, no como enunciado actualmente vigente.
