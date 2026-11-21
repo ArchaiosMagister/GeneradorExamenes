@@ -188,6 +188,15 @@
       "to": "invenio, inveni, inventum (4ª)",
       "reference": "https://en.wiktionary.org/wiki/invenio#Latin",
       "note": "Auditoría verbal 21/11/2026: corrección editorial y curricular; no acredita ni incorpora paradigmas generados por analogía."
+    },
+    {
+      "lang": "grc",
+      "lemma": "ολιγοσ",
+      "course": "gr1",
+      "from": "ὀλιγός, –η, –ον",
+      "to": "ὀλίγος, –η, –ον",
+      "reference": "https://dcc.dickinson.edu/greek-core/%E1%BD%80%CE%BB%CE%AF%CE%B3%CE%BF%CF%82-%E1%BD%80%CE%BB%CE%AF%CE%B3%CE%B7-%E1%BD%80%CE%BB%CE%AF%CE%B3%CE%BF%CE%BD",
+      "note": "Corrección de acentuación del enunciado exigible de UD5. No incorpora ni certifica nuevas flexiones."
     }
   ],
   "paradigms": [
