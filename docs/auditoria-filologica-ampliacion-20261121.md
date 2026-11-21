@@ -148,3 +148,22 @@ Ambos registros erróneos son actualmente formas de **cita léxica** (fuente 3),
 ### Reconstrucción temporal sin publicación
 
 Se añade `.github/workflows/filologia-onoma-sync-203.yml`, restringido exclusivamente a la **PR #203 en borrador y con rama del mismo repositorio**, para regenerar `data/lemmas/teacher-forms.json` y `offline.html`, comprobar paridad y pruebas de tercera declinación, y guardar únicamente esos dos archivos en la rama de revisión. No contiene paso de despliegue ni permite fusionar la PR. Este flujo debe retirarse de la rama una vez terminada y validada la sincronización.
+
+## Novena ronda: cierre de ὄνομα y corrección de nix/sol en UD7
+
+**Sincronización completada, PR #203 en borrador, sin publicar.** La reconstrucción en GitHub Actions (ejecución `44918516192`) ha regenerado **juntos** `data/lemmas/teacher-forms.json` y `offline.html` desde la fuente fijada y el banco de la rama. El flujo temporal pasó la prueba de las once exclusiones de `ὄνομα`, las 45 lecturas nominales verificadas, el índice web/offline y los controles específicos latinos. Se retiró `.github/workflows/filologia-onoma-sync-203.yml` después de esta ejecución.
+
+### Greek: ὄνομα
+- **Once lecturas de UniMorph fuente 0 fueron puestas en cuarentena** en `scripts/build-lemma-index.mjs` mediante cotejo exacto de forma y rasgos. No se promueven a respuestas evaluables y el constructor falla si cambia el origen sin revisión.
+- Índice tras regenerar: **2817 filas griegas**. `ὄνομα` se conserva como **LEX;ENTRY** (fuente 3), sin forma de caso certificada.
+- Se mantienen **15 lemas y 45 lecturas** nominales de tercera declinación previamente contrastados como fuente 5; test de invariantes: `scripts/test-greek-onoma-source0-audit-20261121.cjs`.
+
+### Latín I, UD7: nix y sol
+- Vocabulario exigible y banco web: **`nix, nivis (f.)`**, antes `nivis, –is (f.)`; **`sol, solis (m.)`**, antes `solis, –is (m.)`. La cantidad de entradas exigibles no cambia.
+- En `data/lemmas/latin-editorial-decisions.json` quedan registradas dos decisiones **sin acreditación de paradigmas**. El constructor migra `nivis` a `nix` y fusiona **únicamente** la antigua entrada `solis` de UD7 con `sol`, ya existente en UD11–12. Preserva ambas unidades y las **doce lecturas de fuente 0 de sol**; bloquea fusiones de otros lemas.
+- Resultado: **770 lemas latinos** en el índice, frente a 771 antes de eliminar la clave duplicada `solis`. Latín I contiene **663 lemas distintos en vez de 664**, sin pérdida de entradas exigibles; se fusionaron dos referencias al mismo sustantivo. `nix` tiene entrada léxica y puede recibir propuestas de fuente 2, pero **ninguna está certificada como fuente 5** sin contraste individual.
+- El índice latino regenerado tiene **14507 filas**, incluidas las propuestas no evaluables: el aumento respecto a la versión anterior procede de las propuestas de flexión de `nix`, no de nuevas respuestas oficiales.
+- Pruebas: `scripts/test-latin-ud7-nix-sol-20261121.cjs` y `scripts/test-lemma-index.mjs`. Comprueban coexistencia de ambas unidades, preservación de los doce registros de `sol`, ausencia de lemas duplicados y paridad de los bancos web/offline. En las CI ordinarias se incluyen en `phase-one-regression.yml` y `offline-check.yml`.
+
+### Validación
+La ejecución de sincronización completó satisfactoriamente sus pruebas filológicas y el guardado de ambos artefactos. El control general de CI de la rama debe evaluarse **independientemente** después del último cambio, sin confundir los fallos transitorios de commits anteriores (índice/autónomo desactualizados) con los resultados definitivos. No se autoriza automáticamente fusionar ni publicar.
