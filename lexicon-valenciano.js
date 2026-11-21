@@ -847,6 +847,7 @@
   "pirata": "pirata",
   "pitagórico/a": "pitagòric/pitagòrica",
   "placentero al oído": "agradable a l'orella",
+  "audición, recitación o espectáculo para escuchar": "audició, recitació o espectacle per a escoltar",
   "placer": "plaer",
   "plan": "pla",
   "plata": "plata",
