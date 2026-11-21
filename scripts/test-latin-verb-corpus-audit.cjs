@@ -128,4 +128,4 @@ assert.equal(migrate(saved),false,'La migración no es idempotente');
 console.log('Auditoría verbal estructural: '+checks.entries+' entradas calificadas y '+
  checks.lemmas.size+' parejas curso/lema, con comprobación de bancos, lista exigible, '+
  'índice, PWA, seis correcciones editoriales reproducibles, migración y paradigmas de muestra.');
-console.log('Pendiente de auditoría léxica separada: commito/committo (cambio de clave del lema).');
+console.log('La identidad de committo está cubierta por la auditoría de claves y su migración.');

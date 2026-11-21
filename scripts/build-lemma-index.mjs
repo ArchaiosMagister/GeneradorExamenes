@@ -93,6 +93,7 @@ async function main(){
     !Array.isArray(latinEditorial.decisions)||!latinEditorial.decisions.length)
   throw Error('Decisiones editoriales latinas inválidas');
  const latinEditorialLemmaRekeys=new Map();
+ let mergedLatinEditorialLemmas=0;
  for(const decision of latinEditorial.decisions){
   if(decision.type!=='entry'||decision.verifiedMorphology!==false||
      head(decision.fromEntry)!==decision.fromLemma||
@@ -101,17 +102,28 @@ async function main(){
    throw Error('Decisión latina mal formada: '+decision.id);
   const original=catalog.lat[decision.fromLemma],revised=catalog.lat[decision.toLemma];
   if(original?.lat1){
-   if(revised||original.lat1.entry!==decision.fromEntry||
+   // Solo autorizar la fusión explícita commito -> committo entre cursos disjuntos.
+   const joining=decision.mergeExistingCourse==='lat4';
+   if(joining&&(decision.fromLemma!=='commito'||decision.toLemma!=='committo'))
+    throw Error('Fusión no autorizada: '+decision.id);
+   if((revised&&!joining)||(!revised&&joining)||
+      (joining&&(original.lat4||!revised.lat4||revised.lat1))||
+      original.lat1.entry!==decision.fromEntry||
       JSON.stringify([...original.lat1.units].sort())!==JSON.stringify([...decision.units].sort()))
     throw Error('La ficha latina cambió inesperadamente: '+decision.id);
-   catalog.lat[decision.toLemma]={...original,lat1:{...original.lat1,entry:decision.toEntry}};
+   catalog.lat[decision.toLemma]={
+    ...(joining?revised:original),
+    lat1:{...original.lat1,entry:decision.toEntry}
+   };
    delete catalog.lat[decision.fromLemma];
+   if(joining)mergedLatinEditorialLemmas++;
   }else if(!revised?.lat1||revised.lat1.entry!==decision.toEntry){
    throw Error('No se puede reproducir la decisión latina: '+decision.id);
   }
   latinEditorialLemmaRekeys.set(decision.fromLemma,decision.toLemma);
  }
- for(const lang of ['lat','grc'])if(Object.keys(catalog[lang]).length!==manifest.languages[lang].vocabulary_lemmas)
+ for(const lang of ['lat','grc'])if(Object.keys(catalog[lang]).length!==manifest.languages[lang].vocabulary_lemmas-
+  (lang==='lat'?mergedLatinEditorialLemmas:0))
   throw Error('Inventario de lemas distinto del manifiesto: '+lang+' '+Object.keys(catalog[lang]).length);
  // Las correcciones filológicas aprobadas NO proceden del índice externo fijado.
  // Aplicarlas en cada compilación preserva las elecciones sin falsear UniMorph

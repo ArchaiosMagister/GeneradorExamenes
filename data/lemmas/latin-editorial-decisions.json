@@ -19,6 +19,23 @@
       "reason": "Normalización de la ficha de UD2, propagada a la aparición del mismo adjetivo en UD3",
       "approved": "2026-11-11",
       "verifiedMorphology": false
+    },
+    {
+      "id": "committo-lat1-unify",
+      "type": "entry",
+      "fromLemma": "commito",
+      "toLemma": "committo",
+      "fromEntry": "commito, commisi, commissum (3ª)",
+      "toEntry": "committo, commisi, commissum (3ª)",
+      "units": [
+        "UD 4"
+      ],
+      "preserveMeaning": true,
+      "mergeExistingCourse": "lat4",
+      "reference": "https://logeion.org/committo",
+      "reason": "Corregir grafía y fusionar el lema con Latín 4.º sin perder cursos, unidades, traducciones ni certificar formas por analogía",
+      "approved": "2026-11-21",
+      "verifiedMorphology": false
     }
   ],
   "textCorrections": [
