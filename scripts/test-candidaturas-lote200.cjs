@@ -12,8 +12,14 @@ assert.equal(ledger.rows.length,200);
 assert.equal(ledger.summary.latin,100);
 assert.equal(ledger.summary.greek,100);
 assert.equal(ledger.summary.promoted,200);
-assert.equal(bank.counts.lat.modelo,3244+4*18-18,
- 'Cuatro lemas recuperan 72 propuestas; se deduplican 18 de commito, sin certificar formas');
+// Nix, nivis genera once propuestas regulares de fuente 2 en UD7; no se
+// confunden con las cuatro series verbales recuperadas ni se acreditan.
+const nixModels=bank.rows.lat.filter(x=>x[0]==='nix'&&x[3]===2);
+assert.equal(nixModels.length,11,'Número inesperado de propuestas no evaluables de nix');
+assert(!bank.rows.lat.some(x=>x[0]==='nix'&&x[3]===5),
+ 'No convertir por analogía las flexiones de nix en formas contrastadas');
+assert.equal(bank.counts.lat.modelo,3244+4*18-18+nixModels.length,
+ 'Recuperar los cuatro verbos y unificar committo sin contar como acreditadas las propuestas de nix');
 for(const lemma of ['sepelio','solvo','vivo','invenio']){
  const provisional=bank.rows.lat.filter(x=>x[0]===lemma&&x[3]===2);
  assert.equal(provisional.length,18,'Solo 18 propuestas provisionales por verbo corregido: '+lemma);
