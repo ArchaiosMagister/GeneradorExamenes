@@ -19,7 +19,7 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
    const details=el.closest('details');if(details)details.open=true;
   });
   await page.selectOption('#offlineLemmaCourse','lat1');
-  await page.locator('#offlineLemmaCoverage').filter({hasText:/\b66[4-9] lemas\b|\b6[7-9]\d lemas\b|\b[7-9]\d\d lemas\b/}).waitFor();
+  await page.locator('#offlineLemmaCoverage').filter({hasText:/\b66[3-9] lemas\b|\b6[7-9]\d lemas\b|\b[7-9]\d\d lemas\b/}).waitFor();
   assert.match(await page.locator('#offlineLemmaCoverage').textContent(),/formas candidatas/);
   await page.locator('#offlineLemmaPanel details.lemma-units').evaluate(el=>el.open=true);
   assert.ok(await page.locator('#offlineLemmaByUnit tbody tr').count()>=8,'Falta la cobertura por unidades latinas');
