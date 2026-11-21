@@ -17,16 +17,16 @@ assert.equal(report.latin.entries.length,persisted.counts.lat.modelo,
  'La auditoría debe coincidir con las propuestas latinas reales del índice');
 assert.equal(report.greek.entries.length,persisted.counts.grc.wikcionario,
  'La auditoría debe coincidir con las propuestas griegas reales del índice');
-// Las correcciones de tres conjugaciones recuperan 18 candidaturas por lema;
-// siguen siendo fuente 2, NO forms contrastadas ni soluciones evaluables.
-for(const lemma of ['sepelio','solvo','vivo']){
+// Las tres correcciones anteriores y el enunciado completo de invenio recuperan
+// 18 candidaturas por lema; son fuente 2, NO formas contrastadas ni evaluables.
+for(const lemma of ['sepelio','solvo','vivo','invenio']){
  const added=report.latin.entries.filter(x=>x.lemma===lemma);
  assert.equal(added.length,18,'Propuestas regulares inesperadas para '+lemma);
  assert(added.every(x=>x.source==='MODELO_REGULAR'&&
   x.individualVerification===false&&x.eligibleForNewAutomaticGrading===false));
 }
-assert.equal(persisted.counts.lat.modelo,3244+3*18,
- 'Cambio de candidaturas ajeno a las tres conjugaciones corregidas');
+assert.equal(persisted.counts.lat.modelo,3244+4*18,
+ 'Cambio de candidaturas ajeno a los cuatro lemas con propuestas regulares recuperadas');
 assert.deepEqual(summary.latin,report.latin.summary);
 assert.deepEqual(summary.greek,report.greek.summary);
 assert.equal(summary.verifiedPromoted,0);
