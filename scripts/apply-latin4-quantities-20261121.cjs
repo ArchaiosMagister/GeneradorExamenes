@@ -56,10 +56,11 @@ for(const [unit,entry] of expectations){
   'Se ha perdido o duplicado '+unit+' / '+entry);
 }
 const htmlPath='index.html',originalHtml=read(htmlPath);
-const start=originalHtml.indexOf('let vocab=');
-const stop=originalHtml.indexOf(';\n',start);
-assert(start>0&&stop>start,'No se encuentra el banco docente de index.html');
+const start=originalHtml.indexOf('vocab.push(...[');
+const stop=originalHtml.indexOf(');\n',start);
+assert(start>0&&stop>start,'No se encuentra el banco independiente de Latín 4.º');
 const vocabPart=originalHtml.slice(start,stop);
+assert(vocabPart.includes('"course": "latin4"'),'La selección no corresponde a Latín 4.º');
 let updatedHtml=originalHtml.slice(0,start)+patchText(vocabPart,htmlPath)+originalHtml.slice(stop);
 const migrationMarker='/* Cantidades latinas PR205: solo fichas exigibles sembradas, nunca ediciones manuales. */';
 if(!updatedHtml.includes(migrationMarker)){
