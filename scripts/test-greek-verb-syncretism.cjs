@@ -12,9 +12,16 @@ const begin=html.indexOf('function greekVerbAnalysisCandidates(eligible){');
 const end=html.indexOf('function generateGreekMorphologyFixed(){',begin);
 assert(begin>0&&end>begin,'No se localiza la función compartida de lecturas verbales');
 const snippet=html.slice(begin,end);
+const helperBegin=html.indexOf('function greekWrittenVerbVariants(form){');
+const helperEnd=html.indexOf('function greekCorpus(){',helperBegin);
+assert(helperBegin>0&&helperEnd>helperBegin,'No se encontró el expansor griego de ν móvil');
+const helper=html.slice(helperBegin,helperEnd);
+assert(offline.includes(helper),'La PWA no contiene el expansor de ν móvil');
 assert(offline.includes(snippet),'La PWA no contiene el mismo motor de análisis griego');
-const generator=new Function('normLex',snippet+'return greekVerbAnalysisCandidates;')
+const sandbox=new Function('normLex',helper+snippet+
+ 'return {generator:greekVerbAnalysisCandidates,expand:greekWrittenVerbVariants};')
  (x=>String(x).toLocaleLowerCase('el').normalize('NFC'));
+const generator=sandbox.generator,expand=sandbox.expand;
 const m=html.match(/const greekExplicitVerbEvidence=(\{[^\n]+\});\n/);
 assert(m,'Faltan las diez series verbales griegas explícitas');
 const series=JSON.parse(m[1]);
@@ -27,7 +34,7 @@ for(const [id,record] of Object.entries(series)){
   table:{rows:[0,1,2].map(i=>[(i+1)+'ª',record.forms[i],record.forms[i+3]])}
  };
  const actual=generator([item]);
- const expectedForms=new Set(record.forms.filter(x=>x&&!/[()\s]/u.test(x)));
+ const expectedForms=new Set(record.forms.flatMap(expand));
  assert.equal(actual.length,expectedForms.size,
   id+': duplicados, lecturas perdidas o variantes editoriales sorteadas');
  assert.equal(new Set(actual.map(x=>x.prompt)).size,actual.length,id+': duplicación de forma escrita');
@@ -47,6 +54,7 @@ for(const [id,record] of Object.entries(series)){
  }
  count+=actual.length;
 }
+assert.equal(count,64,'Las seis notaciones opcionales aportan doce formas escritas verificables');
 for(const variant of ['ἔλυον','ἦλθον'])
  assert(html.includes(variant),'Falta el sincretismo académico '+variant);
 const calls=(html.match(/greekVerbAnalysisCandidates\(eligible\)/g)||[]).length;
