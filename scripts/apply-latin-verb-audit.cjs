@@ -79,3 +79,5 @@ console.log('Corregidos 7 registros de unidad, seis lemas/curso, dos bancos y mi
 console.log('Índice y PWA pendientes de reconstrucción por el workflow. Sin promoción de formas a fuente 5.');
 
 // Activación puntual del workflow de reconstrucción en rama aislada.
+
+// Reejecutar con normalización del marcador 'irr.'.
