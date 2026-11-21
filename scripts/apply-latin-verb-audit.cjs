@@ -77,3 +77,5 @@ save('required-latin-units.js',required);
 save(pathOverrides,JSON.stringify(json,null,2)+'\n');
 console.log('Corregidos 7 registros de unidad, seis lemas/curso, dos bancos y migración de fichas persistidas.');
 console.log('Índice y PWA pendientes de reconstrucción por el workflow. Sin promoción de formas a fuente 5.');
+
+// Activación puntual del workflow de reconstrucción en rama aislada.
