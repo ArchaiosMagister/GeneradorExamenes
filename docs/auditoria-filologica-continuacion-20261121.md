@@ -78,4 +78,4 @@ Se han buscado en todas las oraciones de las catorce unidades las apariciones de
 
 Se conserva `οὐχ ὁ` (UD10) porque `ὁ` lleva espíritu áspero; también los `οὐ` ante consonante y `οὐκ` ante vocal suave correctos. Se añaden estas dos aserciones a la prueba filológica. **Total de la presente PR: 18 sustituciones griegas localizadas (no 18 paradigmas ni 18 respuestas nuevas)**. Se conserva exactamente el inventario de 14 unidades y 471 registros.
 
-Referencia sobre negación: https://grammars.alpheios.net/smyth/xhtml/body.1_div1.4_div2.16.html (véase también cualquier gramática de griego antiguo en su apartado de οὐ/οὐκ/οὐχ).
+Referencia sobre negación: https://ccel.org/ccel/smyth/grammar/html/smyth_1e_uni.htm (Smyth §137, οὐκ ante espíritu suave y οὐχ ante áspero); https://dcc.dickinson.edu/grammar/age/no-and-not.
