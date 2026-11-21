@@ -24,6 +24,15 @@ assert.equal(evidence.unitCount,14);assert.equal(evidence.sourceLines,471);
 assert.equal(evidence.gradedSentenceCount,11);
 assert.equal(evidence.automaticGradingEnabled,false);assert.equal(evidence.morphologyPromotion,false);
 assert.equal(evidence.corrections.length,6);
+assert.equal(evidence.contextualHomographies.length,1);
+const homonym=evidence.contextualHomographies[0];
+assert.equal(homonym.form,'νέων');
+assert.deepEqual(homonym.units,[11]);
+assert.equal(homonym.indexLemma,'νεοσ');
+assert.equal(homonym.competingLemma,'ναυσ');
+assert.equal(homonym.expectedStatus,'review');
+assert(source.units[10].text.includes(homonym.context),
+ 'La frase de los jóvenes debe permanecer reconocible, sin sustituirla por naves');
 for(const fix of evidence.corrections){
  assert(/^https:\/\//.test(fix.reference));assert.notEqual(fix.old,fix.updated);
  if(fix.scope==='corpus'){
