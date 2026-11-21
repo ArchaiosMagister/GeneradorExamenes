@@ -31,3 +31,17 @@ Tras detectar que los dos significados nuevos no tenían correspondencia valenci
 Además de los diez fragmentos del repertorio docente, se examina `greekSentenceRows` y su filtro de exclusiones. Se corrigen localmente cinco filas seleccionables: nominativo plural `πολῖται`, dirección `πρὸς τὴν γῆν`, concordancia del sintagma `αἱ γυναῖκες αὐταὶ τὸν πόλεμον`, acusativo `τὴν αὐτῶν πόλιν` y acento grave en `οἱ σοφοὶ`. Se mantienen las traducciones, análisis, lemas y restricciones por UD. Las filas que estaban en cuarentena siguen sin evaluarse.
 
 La reconstrucción final que incluye las correcciones del corpus seleccionable también ha terminado satisfactoriamente, sin fusionar ni desplegar ninguna versión.
+
+## Segunda revisión: régimen, aoristos y acentuación
+
+Se revisan los **471 renglones** de las catorce unidades del repertorio docente: se aplican 27 sustituciones localizadas (28 apariciones, porque `ἐσῴσαν` figuraba dos veces). Se corrigen acentos de `νίκη`, `φιλόσοφος`, `παῖδές τινες` y `ἀγγελλόντων`, concordancia de `θεά` con Atenea, genitivo femenino de `Αἴγυπτος`, regímenes con `παρέχω` y el complemento `τῆς μάχης`, y formas de dativo y artículo.
+
+El núcleo de UD12 se coteja con los paradigmas de aoristo: `ἔσωσαν` (dos veces), `ἐθαύμασε`, `ἐφύλαξαν`, `ἔρριψαν`, `ἔγραψαν`, `ἐδίωξε`, `ἔγραψε` y `εἰσέβαλον`. Se adopta el aoristo ático habitual de `ῥίπτω`, sin negar otras variantes documentadas. UD14: `ᾤκουν`, `ἐτιμᾶτο`, `τίνα`, `τὴν`.
+
+En **el motor realmente evaluable**, se regularizan dos oraciones: `τόδε τὸ ζῷον φίλον ἡμῖν ἐστίν` (con actualización del análisis de sujeto y dativo) y `εἰς ... ἀγρὸν σὺν ἵπποις`. La nota filológica del repertorio original de 471 renglones no implica que este archivo sea fuente de las once oraciones elegibles: los dos corpus siguen aislados.
+
+Prueba de regresión reproducible: `scripts/test-greek-sentence-philology-20261121.cjs` en Phase I y offline-check (ES/VA y paquete autónomo). Se conservan número de filas, unidades, etiquetas y exclusiones curriculares, sin incorporar por analogía nuevos paradigmas.
+
+Referencias: [Smyth, acentos](https://grammars.alpheios.net/smyth/xhtml/body.1_div1.1_div2.7.html); [Smyth, aoristos](https://grammars.alpheios.net/smyth/xhtml/body.1_div1.2_div2.9.html); [Smyth, enclíticos](https://grammars.alpheios.net/smyth/xhtml/body.1_div1.1_div2.7.html); [Logeion σῴζω](https://www.logeion.org/%CF%83%E1%BF%B4%CE%B6%CF%89); [Open University, ῥίπτω](https://fass.open.ac.uk/sites/fass.open.ac.uk/files/files/classical-studies/Reading_Greek_Language_Reference_Book_May_2022.pdf); [Smyth, demostrativos](https://grammars.alpheios.net/smyth/xhtml/body.1_div1.2_div2.6.html); [pronombre ἡμῖν](https://pressbooks.pub/ancientgreek/chapter/25/).
+
+Se deja pendiente una oración de UD12 con `αὐλητρίς`, `εὐφραίνω` y `ἀκρόαμα` cuyo régimen exige una solución textual, sin reescribirla de manera automática.
