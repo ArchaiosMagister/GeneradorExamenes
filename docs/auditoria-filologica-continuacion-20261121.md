@@ -53,9 +53,9 @@ Las ocho sustituciones se incorporan a `scripts/test-filologia-regimen-acento-20
 
 **No automatizar globalmente**: las interrogativas `τί` y los grupos con enclíticos como `σοφοί εἰσιν`, `ἄνθρωποί τινες` o `ἀνδρεῖοί ἐστε` requieren tratamiento específico; no son equivalentes a una oxítona ante palabra independiente. Véase Smyth: https://grammars.alpheios.net/smyth/xhtml/body.1_div1.1_div2.7.html.
 
-## Latín 4.º: once apariciones con corrección pendiente de sincronización atómica
+## Latín 4.º: once apariciones sincronizadas en fuentes, índice y HTML autónomo
 
-Se inspeccionan las **541 entradas exigibles de diez unidades** y se identifican **11 apariciones** pertenecientes a cinco tipos de incidencia. No se modifica aquí el listado latino: el origen docente, el banco de examen, las decisiones editoriales persistentes, el índice de lemas y el `offline.html` tienen que cambiar conjuntamente en una reconstrucción reproducible, como en la PR #203.
+Se inspeccionan las **541 entradas exigibles de diez unidades** y se corrigen **11 apariciones** de cinco tipos. El listado exigible, el banco del examen, los overrides editoriales persistentes, el índice de lemas y `offline.html` se han reconstruido y cotejado en una única ejecución aislada de GitHub Actions (sin publicación).
 
 | Grafía actual | Unidades (apariciones) | Criterio de corrección | Evidencia |
 | --- | --- | --- | --- |
@@ -63,11 +63,11 @@ Se inspeccionan las **541 entradas exigibles de diez unidades** y se identifican
 | `īmpĕrātŏr` | UD5, UD6, UD7 (3) | La **i** inicial es breve; preferir `ĭmpĕrātŏr` si se conserva la marcación exhaustiva. | https://logeion.uchicago.edu/imperator; https://en.wiktionary.org/wiki/impero |
 | `cōllĭs` | UD5 (1) | La **o** es breve (`cŏllĭs`); la sílaba es larga por `ll`. | https://en.wiktionary.org/wiki/Viminalis_collis; https://dcc.dickinson.edu/sv/grammar/latin/quantity-syllables |
 | `ōppūgnātĭō` / `ōppūgnātĭō̆` | UD5, UD6 (2) | La **o** inicial es breve; **no** se cambia todavía la `ū`, por divergencia lexicográfica sobre su cantidad, ni la marca doble final sin criterio editorial. | https://en.wiktionary.org/wiki/oppugnatio; https://atlas.perseus.tufts.edu/dictionaries/entry/urn%3Acite2%3Ascaife-viewer%3Adictionary-entries.atlas_v1%3Alat.ls.perseus-eng2-n32826/ |
-| `mŭlĭĕr, –ris` | UD8 (1) | Enunciado del genitivo abreviado inconsistente con `mulieris`; debe armonizarse como `mŭlĭĕr, –eris` o citar `mŭlĭĕr, mŭlĭĕris`. | https://atlas.perseus.tufts.edu/dictionaries/entry/urn%3Acite2%3Ascaife-viewer%3Adictionary-entries.atlas_v1%3Alat.ls.perseus-eng2-n29835/ |
+| `mŭlĭĕr, –ris` | UD8 (1) | La abreviación `–ris` no es en sí incorrecta; se armoniza editorialmente como `mŭlĭĕr, –eris (f.)`, equivalente a `mulieris`. | https://atlas.perseus.tufts.edu/dictionaries/entry/urn%3Acite2%3Ascaife-viewer%3Adictionary-entries.atlas_v1%3Alat.ls.perseus-eng2-n29835/ |
 
 **Control de alcance:** los doble signos en `hŏmō̆`, `Cĭcĕrō̆`, `lĕgĭō̆` y `pā̆trĭa` se mantienen como casos de cantidad variable o política editorial pendiente, sin borrado indiscriminado. Tampoco se reescriben los genitivos abreviados de tercera declinación por analogía: las anteriores incidencias de `nix/sol` permanecen resueltas en la PR #203.
 
-**Siguiente cambio latino condicionado:** corregir los once registros de forma atómica, añadir decisiones persistentes con referencia, regenerar `teacher-forms.json` y `offline.html` juntos y exigir pruebas de paridad e integridad. No promocionar paradigmas por el mero cambio de cantidad de un lema.
+**Aplicación final:** `scripts/apply-latin4-quantities-20261121.cjs` aplica de forma idempotente las once modificaciones y añade cuatro overrides específicos. `scripts/build-lemma-index.mjs` y `npm run offline:build` regeneran conjuntamente los dos índices. La regresión `scripts/test-filologia-latin4-cantidades-ronda2-20261121.cjs`, integrada en Phase I y offline-check, asegura las once fichas por unidad, la migración local sin alterar entradas manuales, la conservación de 1106/541 exigibles y la paridad del índice embebido. La prueba aislada ha pasado y el commit 8cd73ebba27a0412514c91aafc67bf265e0c72e0 incluye los artefactos sincronizados. **Ningún paradigma nuevo se marca como verificado.** La CI general del commit final se valida aparte.
 
 ## Barrido adicional de negación οὐ / οὐκ / οὐχ
 
