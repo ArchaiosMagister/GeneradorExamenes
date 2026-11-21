@@ -36,6 +36,43 @@
       "reason": "Corregir grafía y fusionar el lema con Latín 4.º sin perder cursos, unidades, traducciones ni certificar formas por analogía",
       "approved": "2026-11-21",
       "verifiedMorphology": false
+    },
+    {
+      "id": "nivis-ud7-nix",
+      "type": "entry",
+      "fromLemma": "nivis",
+      "toLemma": "nix",
+      "fromEntry": "nivis, –is (f.)",
+      "toEntry": "nix, nivis (f.)",
+      "units": [
+        "UD 7"
+      ],
+      "preserveMeaning": true,
+      "reason": "Restituir nominativo y genitivo de nix; nivis es genitivo singular, no lema de cita",
+      "reference": "https://logeion.uchicago.edu/nix",
+      "approved": "2026-11-21",
+      "verifiedMorphology": false
+    },
+    {
+      "id": "solis-ud7-sol",
+      "type": "entry",
+      "fromLemma": "solis",
+      "toLemma": "sol",
+      "fromEntry": "solis, –is (m.)",
+      "toEntry": "sol, solis (m.)",
+      "units": [
+        "UD 7"
+      ],
+      "mergeExistingCourse": "lat1",
+      "existingEntry": "sol, solis (m.)",
+      "existingUnits": [
+        "UD 11–12"
+      ],
+      "preserveMeaning": true,
+      "reason": "Unificar solis erróneo de UD7 con sol ya existente en UD11–12, manteniendo ambas unidades y las formas previamente contrastadas",
+      "reference": "https://logeion.uchicago.edu/sol",
+      "approved": "2026-11-21",
+      "verifiedMorphology": false
     }
   ],
   "textCorrections": [
