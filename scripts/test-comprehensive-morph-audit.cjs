@@ -25,8 +25,15 @@ for(const lemma of ['sepelio','solvo','vivo','invenio']){
  assert(added.every(x=>x.source==='MODELO_REGULAR'&&
   x.individualVerification===false&&x.eligibleForNewAutomaticGrading===false));
 }
-assert.equal(persisted.counts.lat.modelo,3244+4*18-18,
- 'Cambio ajeno a cuatro lemas recuperados y a la fusión de 18 propuestas duplicadas');
+// La entrada docente corregida nix, nivis (UD7) ofrece once lecturas
+// provisionales de fuente 2. Deben auditarse, nunca promoverse solas.
+const nixProposals=report.latin.entries.filter(x=>x.lemma==='nix');
+assert.equal(nixProposals.length,11,
+ 'El lote histórico no explica las nuevas propuestas del nominativo nix');
+assert(nixProposals.every(x=>x.individualVerification===false&&
+ x.eligibleForNewAutomaticGrading===false));
+assert.equal(persisted.counts.lat.modelo,3244+4*18-18+nixProposals.length,
+ 'Cambio ajeno a las cuatro series recuperadas, committo y nix provisional');
 assert.deepEqual(summary.latin,report.latin.summary);
 assert.deepEqual(summary.greek,report.greek.summary);
 assert.equal(summary.verifiedPromoted,0);
