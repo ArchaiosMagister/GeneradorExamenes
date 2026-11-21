@@ -406,7 +406,7 @@ const perfectUd13=JSON.parse(fs.readFileSync(path.join(root,
  'data/vocabulary/greek1-perfect-pluperfect-audit-20261121.json'),'utf8'));
 assert.equal(perfectUd13.morphologyPromotion,false);
 const supersededForms=perfectUd13.corrections.map(x=>x.old.normalize('NFC'));
-const knownSuperseded=new Set(['Δημοσθήνης','θέᾳ',...supersededForms]
+const knownSuperseded=new Set(['Δημοσθήνης','θέᾳ','ἠρωτᾶντο',...supersededForms]
  .map(x=>x.normalize('NFC')));
 for(const old of supersededForms)
  assert(unknown.some(x=>x.form.normalize('NFC')===old),
