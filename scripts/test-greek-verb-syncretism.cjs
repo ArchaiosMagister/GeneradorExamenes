@@ -59,3 +59,5 @@ console.log('Griego I: '+count+' formas individuales no duplicadas en 10 series,
 // Reconstrucción de distribución offline en rama aislada, sin publicación.
 
 // Segunda ejecución: dependencias de navegador se validarán en la PR.
+
+// CI de PR #195: cotejar ambos modelos y el comportamiento offline final.
