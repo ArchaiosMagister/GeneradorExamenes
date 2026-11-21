@@ -29,7 +29,16 @@ for(const [name,html] of htmls){
   assert(end>begin,name+': asignación de datos incompleta '+marker);
   return JSON.parse(html.slice(begin,end));
  };
- const vocab=assignment('let vocab=');
+ // El banco general griego entra por vocab.push; let vocab contiene
+ // únicamente la lista inicial latina. Comprobar la fuente efectiva.
+ const vocab=[];
+ let seek=0,pos;
+ while((pos=html.indexOf('vocab.push(...[',seek))>=0){
+  const from=pos+'vocab.push(...'.length,end=html.indexOf(']);',from);
+  assert(end>from,name+': banco añadido incompleto');
+  vocab.push(...JSON.parse(html.slice(from,end+1)));
+  seek=end+3;
+ }
  const bank=vocab.filter(x=>x.course==='greek1'&&x.unit==='Banco general'&&
   x.entry.includes('γμα')&&x.meaning==='asunto');
  assert.equal(bank.length,1,name+': entrada general duplicada');
