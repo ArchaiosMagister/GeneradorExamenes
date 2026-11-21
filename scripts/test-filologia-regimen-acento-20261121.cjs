@@ -41,4 +41,87 @@ if(process.argv.includes('--offline')){
  for(const term of ['ἐν ταῖς Ἀθήναις οἱ πολῖται','ἡμῖν: dativo complemento del adjetivo φίλον','ἀγρὸν: dirección'])
   assert(offline.includes(term),'La versión offline conserva una versión previa: '+term);
 }
+// Continuación 21/11: seis correcciones sin ampliar el repertorio ni tocar el motor evaluable.
+const greekAccentFixes=[
+ ['UD5','ἀγαθὴν ψυχὴν','ἀγαθήν ψυχὴν'],
+ ['UD7','ὑμεῖς δ’ ἐμοῦ οὐκ ἀκούετε','ὑμεῖς δ’ ἑμοῦ οὐκ ἀκούετε'],
+ ['UD10','οἱ δὲ μένοντες','οἱ δε μένοντες'],
+ ['UD10','τῶν πτερῶν','τών πτερῶν'],
+ ['UD13','θνητῆς δὲ μητρὸς','θνητῆς δε μητρὸς'],
+ ['UD13','τῶν ἐχθρῶν κώμας','τῶν ἑχθρῶν κώμας']
+];
+for(const [unit,correct,incorrect] of greekAccentFixes){
+ const text=project.units.find(row=>row.title===unit)?.text;
+ assert(text&&text.includes(correct),unit+': falta '+correct);
+ assert(!text.includes(incorrect),unit+': persiste '+incorrect);
+}
+assert.equal(greekAccentFixes.length,6);
+// Dos superficies de ζῷον (UD13): el nominativo/acusativo neutro plural es ζῷα.
+const unit13=project.units.find(row=>row.title==='UD13').text;
+assert(unit13.includes('ζῷα:'),'UD13: listado nominal sin iota suscrita');
+assert(unit13.includes('τεθηρεύκασι ζῷα ἐν τῇ νήσῳ'),'UD13: oración sin iota suscrita');
+assert(!unit13.includes('ζῶα'),'UD13 conserva grafías sin iota de ζῷον');
+// Continuación: acentos graves ante palabra siguiente y οὐκ ante vocal suave.
+const greekContextualAccentFixes=[
+ ['UD3','ἡ φωνὴ τῆς Ἀθηνᾶς','ἡ φωνή τῆς Ἀθηνᾶς'],
+ ['UD5','οὐκ ἀεὶ δίκαιός','οὐκ ἀεί δικαιός'],
+ ['UD5','οὐκ ἀεὶ οἱ ἄνθρωποί','οὐ ἀεί οἱ ἄνθρωποί'],
+ ['UD9','οἱ θεοὶ γιγνώσκουσι','οἱ θεοί γιγνώσκουσι'],
+ ['UD10','ἀγαθοὶ οὐκ εἰσίν','ἀγαθοί οὐκ εἰσίν'],
+ ['UD11','τῷ παιδὶ τὸν πλούτον','τῷ παιδί τὸν πλούτον'],
+ ['UD14','χρὴ τὰς δόξας','χρή τὰς δόξας'],
+ ['UD14','πολλοὶ ἄνθρωποι τὸν θάνατον','πολλοί ἄνθρωποι τὸν θάνατον']
+];
+for(const [unit,good,bad] of greekContextualAccentFixes){
+ const text=project.units.find(row=>row.title===unit)?.text;
+ assert(text&&text.includes(good),unit+': falta '+good);
+ assert(!text.includes(bad),unit+': persiste '+bad);
+}
+assert.equal(greekContextualAccentFixes.length,8);
+const greekNegationCorrections=[
+ ['UD10','μάχεσθαι οὐκ ἐβούλοντο.','μάχεσθαι οὐ ἐβούλοντο.'],
+ ['UD12','οἱ Λακεδαιμόνιοι οὐκ ἔσωσαν','οἱ Λακεδαιμόνιοι οὐ ἔσωσαν']
+];
+for(const [unit,good,bad] of greekNegationCorrections){
+ const text=project.units.find(row=>row.title===unit)?.text;
+ assert(text&&text.includes(good),unit+': falta '+good);
+ assert(!text.includes(bad),unit+': persiste '+bad);
+}
+assert.equal(greekNegationCorrections.length,2);
+
+// Ronda complementaria: nominativo plural de πολέμιος, sin tocar otros casos.
+const polemioFixes={UD6:2,UD7:2,UD11:2,UD12:1};
+let correctedPolemioi=0;
+for(const [unit,number] of Object.entries(polemioFixes)){
+ const raw=project.units.find(row=>row.title===unit).text.normalize('NFC');
+ const correct=(raw.match(/πολέμιοι/g)||[]).length;
+ assert(correct>=number,unit+': faltan nominativos πολέμιοι ('+correct+'/'+number+')');
+ correctedPolemioi+=number;
+}
+for(const unit of project.units){
+ const raw=unit.text.normalize('NFC');
+ assert(!/(^|[^\p{L}])πολεμίοι($|[^\p{L}])/u.test(raw),unit.title+': nominativo plural mal acentuado');
+}
+assert.equal(correctedPolemioi,7);
+
+// Elisión ático clásica: apóstrofo y separación del término siguiente.
+for(const [unit,good,bad] of [
+ ['UD11','δ’ Ἕλληνες','δ’Ἕλληνες'],
+ ['UD12','οὐδ’ ἔλεξε','οὐδ’ἔλεξε']
+]){
+ const t=project.units.find(x=>x.title===unit)?.text;
+ assert(t?.includes(good),unit+' elision absent');assert(!t.includes(bad),unit+' elision not spaced');
+}
+// Smyth §187b: ἔστιν tras οὐκ, no ἐστιν ni proclítico οὔκ.
+const ud5neg=project.units.find(x=>x.title==='UD5').text.normalize('NFC');
+assert.equal(ud5neg.split('οὐκ ἔστιν').length-1,3,'Tres casos de negación + ἔστιν');
+assert(!ud5neg.includes('οὔκ ἐστιν'));
+assert(!ud5neg.includes('οὐκ ἐστιν'));
+
+// Smyth §§183c, 187b: acento léxico y ἐστιν enclítico en predicaciones no existenciales.
+for(const [ud,correct,incorrect] of [["UD5","ὁ ἄνθρωπος οὐκ ἀεὶ δίκαιός ἐστιν.","ὁ ἄνθρωπος οὐκ ἀεὶ δικαιός ἐστιν."],["UD5","ὁ ἄνθρωπός ἐστιν οὔτε ἰατρός οὔτε φιλόσοφος.","ὁ ἄνθρωπος ἔστιν οὔτε ἰατρός οὔτε φιλόσοφος."],["UD5","ὁ πόλεμος οὔτε καλὸς οὔτε δίκαιός ἐστιν.","ὁ πόλεμος οὔτε καλὸς οὔτε δίκαιος ἔστιν."],["UD8","διὰ τί ὁ πόλεμος κακός ἐστιν;","διὰ τί ὁ πόλεμος κακός ἔστιν;"]]){
+ const text=project.units.find(x=>x.title===ud).text;
+ assert(text.includes(correct),ud+': falta acentuación enclítica '+correct);
+ assert(!text.includes(incorrect),ud+': persiste acentuación errónea '+incorrect);
+}
 console.log('TERCERA RONDA FILOLÓGICA: 14 UD, 471 entradas, 11 oraciones seleccionables y análisis coherentes');

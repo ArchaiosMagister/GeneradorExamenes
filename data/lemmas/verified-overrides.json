@@ -386,6 +386,357 @@
       "to": "Āfrĭca, –æ",
       "reference": "https://es.pons.com/traducci%C3%B3n/lat%C3%ADn-alem%C3%A1n/Africa",
       "note": "Vocal inicial larga del topónimo; no se convierte en paradigma verificado."
+    },
+    {
+      "lang": "lat",
+      "lemma": "hostis",
+      "course": "lat4",
+      "from": "hōstĭs, –is (m.)",
+      "to": "hŏstĭs, –is (m.)",
+      "reference": "https://en.wiktionary.org/wiki/hostis",
+      "note": "O breve fonológica; sílaba hos- larga por posición ante -st-. No acredita flexiones nuevas."
+    },
+    {
+      "lang": "lat",
+      "lemma": "imperator",
+      "course": "lat4",
+      "from": "īmpĕrātŏr, –oris (m.)",
+      "to": "ĭmpĕrātŏr, –oris (m.)",
+      "reference": "https://en.wiktionary.org/wiki/imperator",
+      "note": "I inicial breve; sílaba im- larga por posición ante mp."
+    },
+    {
+      "lang": "lat",
+      "lemma": "collis",
+      "course": "lat4",
+      "from": "cōllĭs, –is (m.)",
+      "to": "cŏllĭs, –is (m.)",
+      "reference": "https://en.wiktionary.org/wiki/collis",
+      "note": "O breve fonológica; sílaba col- larga por ll."
+    },
+    {
+      "lang": "lat",
+      "lemma": "oppugnatio",
+      "course": "lat4",
+      "from": "ōppūgnātĭō, –onis (f.)",
+      "to": "ŏppūgnātĭō, –onis (f.)",
+      "reference": "https://logeion.uchicago.edu/oppugnatio",
+      "note": "Solo o inicial breve de ob-; conservar ū y notación de cantidad final variable."
+    },
+    {
+      "lang": "lat",
+      "course": "lat4",
+      "lemma": "impero",
+      "from": "īmpĕro (1ª)",
+      "to": "ĭmpĕro (1ª)",
+      "reference": "https://en.wiktionary.org/wiki/impero",
+      "note": "Vocal inicial i breve; la sílaba im- es larga por posición, no la vocal."
+    },
+    {
+      "lang": "lat",
+      "course": "lat4",
+      "lemma": "oppidum",
+      "from": "ōppĭdŭm, –ī",
+      "to": "ŏppĭdŭm, –ī",
+      "reference": "https://alatius.com/ls/index.php?l=oppidorum",
+      "note": "Primera o breve; la sílaba op- es larga por la geminada pp."
+    },
+    {
+      "lang": "lat",
+      "lemma": "altus",
+      "course": "lat4",
+      "from": "āltus, –a, –um",
+      "to": "ăltus, –a, –um",
+      "reference": "https://en.wiktionary.org/wiki/altus",
+      "note": "Breve inicial contrastada; no equivale a cantidad silábica ni certifica nuevas flexiones."
+    },
+    {
+      "lang": "lat",
+      "lemma": "longus",
+      "course": "lat4",
+      "from": "lōngus, –a, –um",
+      "to": "lŏngus, –a, –um",
+      "reference": "https://en.wiktionary.org/wiki/longus",
+      "note": "Breve inicial contrastada; no equivale a cantidad silábica ni certifica nuevas flexiones."
+    },
+    {
+      "lang": "lat",
+      "lemma": "gemma",
+      "course": "lat4",
+      "from": "gēmma, –æ",
+      "to": "gĕmma, –æ",
+      "reference": "https://en.wiktionary.org/wiki/gemma",
+      "note": "Breve inicial contrastada; no equivale a cantidad silábica ni certifica nuevas flexiones."
+    },
+    {
+      "lang": "lat",
+      "lemma": "littera",
+      "course": "lat4",
+      "from": "līttĕra, –æ",
+      "to": "lĭttĕra, –æ",
+      "reference": "https://atlas.perseus.tufts.edu/dictionaries/entry/urn%3Acite2%3Ascaife-viewer%3Adictionary-entries.atlas_v1%3Alat.ls.perseus-eng2-n26829/",
+      "note": "Breve inicial contrastada; no equivale a cantidad silábica ni certifica nuevas flexiones."
+    },
+    {
+      "lang": "lat",
+      "lemma": "pulcher",
+      "course": "lat4",
+      "from": "pūlchĕr, –chra, –chrum",
+      "to": "pŭlchĕr, –chra, –chrum",
+      "reference": "https://en.wiktionary.org/wiki/pulcher",
+      "note": "Cantidad de vocal breve contrastada; distinguir de sílaba larga por posición. No acredita paradigmas nuevos."
+    },
+    {
+      "lang": "lat",
+      "lemma": "puella",
+      "course": "lat4",
+      "from": "pŭēlla, –æ",
+      "to": "pŭĕlla, –æ",
+      "reference": "https://en.wiktionary.org/wiki/puella",
+      "note": "Cantidad de vocal breve contrastada; distinguir de sílaba larga por posición. No acredita paradigmas nuevos."
+    },
+    {
+      "lang": "lat",
+      "lemma": "albus",
+      "course": "lat4",
+      "from": "ālbus, –a, –um",
+      "to": "ălbus, –a, –um",
+      "reference": "https://en.wiktionary.org/wiki/albus",
+      "note": "Cantidad de vocal breve contrastada; distinguir de sílaba larga por posición. No acredita paradigmas nuevos."
+    },
+    {
+      "lang": "lat",
+      "lemma": "multus",
+      "course": "lat4",
+      "from": "mūltus, –a, –um",
+      "to": "mŭltus, –a, –um",
+      "reference": "https://en.wiktionary.org/wiki/multus",
+      "note": "Cantidad de vocal breve contrastada; distinguir de sílaba larga por posición. No acredita paradigmas nuevos."
+    },
+    {
+      "lang": "lat",
+      "lemma": "bellum",
+      "course": "lat4",
+      "from": "bēllŭm, –ī",
+      "to": "bĕllŭm, –ī",
+      "reference": "https://en.wiktionary.org/wiki/bellum",
+      "note": "Cantidad de vocal breve contrastada; distinguir de sílaba larga por posición. No acredita paradigmas nuevos."
+    },
+    {
+      "lang": "lat",
+      "lemma": "noster",
+      "course": "lat4",
+      "from": "nōstĕr, –tra, –trum",
+      "to": "nŏstĕr, –tra, –trum",
+      "reference": "https://en.wiktionary.org/wiki/noster",
+      "note": "Cantidad de vocal breve contrastada; distinguir de sílaba larga por posición. No acredita paradigmas nuevos."
+    },
+    {
+      "lang": "lat",
+      "lemma": "vinco",
+      "course": "lat4",
+      "from": "vīnco (3ª)",
+      "to": "vĭnco (3ª)",
+      "reference": "https://en.wiktionary.org/wiki/vinco",
+      "note": "Cantidad de vocal breve contrastada; distinguir de sílaba larga por posición. No acredita paradigmas nuevos."
+    },
+    {
+      "lang": "lat",
+      "lemma": "omnis",
+      "course": "lat4",
+      "from": "ōmnĭs, –e",
+      "to": "ŏmnĭs, –e",
+      "reference": "https://en.wiktionary.org/wiki/omnis",
+      "note": "Cantidad de vocal breve contrastada; distinguir de sílaba larga por posición. No acredita paradigmas nuevos."
+    },
+    {
+      "lang": "lat",
+      "course": "lat4",
+      "lemma": "parvus",
+      "from": "pārvus, –a, –um",
+      "to": "părvus, –a, –um",
+      "reference": "https://en.wiktionary.org/wiki/parvus",
+      "note": "Cantidad vocal breve confirmada en pronunciacion clasica; no equivale a cantidad silabica ni acredita nuevas flexiones."
+    },
+    {
+      "lang": "lat",
+      "course": "lat4",
+      "lemma": "victoria",
+      "from": "vīctōrĭa, –æ",
+      "to": "vĭctōrĭa, –æ",
+      "reference": "https://en.wiktionary.org/wiki/victoria",
+      "note": "Cantidad vocal breve confirmada en pronunciacion clasica; no equivale a cantidad silabica ni acredita nuevas flexiones."
+    },
+    {
+      "lang": "lat",
+      "course": "lat4",
+      "lemma": "arma",
+      "from": "ārma, –orum",
+      "to": "ărma, –orum",
+      "reference": "https://en.wiktionary.org/wiki/arma",
+      "note": "Cantidad vocal breve confirmada en pronunciacion clasica; no equivale a cantidad silabica ni acredita nuevas flexiones."
+    },
+    {
+      "lang": "lat",
+      "course": "lat4",
+      "lemma": "castra",
+      "from": "cāstra, –orum",
+      "to": "căstra, –orum",
+      "reference": "https://en.wiktionary.org/wiki/castra",
+      "note": "Cantidad vocal breve confirmada en pronunciacion clasica; no equivale a cantidad silabica ni acredita nuevas flexiones."
+    },
+    {
+      "lang": "lat",
+      "course": "lat4",
+      "lemma": "porta",
+      "from": "pōrta, –æ",
+      "to": "pŏrta, –æ",
+      "reference": "https://en.wiktionary.org/wiki/porta",
+      "note": "Cantidad vocal breve confirmada en pronunciacion clasica; no equivale a cantidad silabica ni acredita nuevas flexiones."
+    },
+    {
+      "lang": "lat",
+      "course": "lat4",
+      "lemma": "porto",
+      "from": "pōrto (1ª)",
+      "to": "pŏrto (1ª)",
+      "reference": "https://en.wiktionary.org/wiki/porto",
+      "note": "Cantidad vocal breve confirmada en pronunciacion clasica; no equivale a cantidad silabica ni acredita nuevas flexiones."
+    },
+    {
+      "lang": "lat",
+      "course": "lat4",
+      "lemma": "fortis",
+      "from": "fōrtĭs, –e",
+      "to": "fŏrtĭs, –e",
+      "reference": "https://en.wiktionary.org/wiki/fortis",
+      "note": "Cantidad vocal breve confirmada en pronunciacion clasica; no equivale a cantidad silabica ni acredita nuevas flexiones."
+    },
+    {
+      "lang": "lat",
+      "course": "lat4",
+      "lemma": "serva",
+      "from": "sērva, –æ",
+      "to": "sĕrva, –æ",
+      "reference": "https://en.wiktionary.org/wiki/serva",
+      "note": "Cantidad vocal breve confirmada en pronunciacion clasica; no equivale a cantidad silabica ni acredita nuevas flexiones."
+    },
+    {
+      "lang": "lat",
+      "course": "lat4",
+      "lemma": "servus",
+      "from": "sērvus, –ī",
+      "to": "sĕrvus, –ī",
+      "reference": "https://en.wiktionary.org/wiki/servus",
+      "note": "Cantidad vocal breve confirmada en pronunciacion clasica; no equivale a cantidad silabica ni acredita nuevas flexiones."
+    },
+    {
+      "lang": "lat",
+      "course": "lat4",
+      "lemma": "incola",
+      "from": "īncŏla, –æ",
+      "to": "ĭncŏla, –æ",
+      "reference": "https://en.wiktionary.org/wiki/incola",
+      "note": "Cantidad vocal breve confirmada en pronunciacion clasica; no equivale a cantidad silabica ni acredita nuevas flexiones."
+    },
+    {
+      "lang": "lat",
+      "lemma": "aula",
+      "course": "lat4",
+      "from": "āula, –æ",
+      "to": "aula, –æ",
+      "reference": "https://en.wiktionary.org/wiki/aula",
+      "note": "Convención de diptongos au/oe: no marcar un macrón en su primera vocal. Edición del enunciado, sin nuevas flexiones acreditadas."
+    },
+    {
+      "lang": "lat",
+      "lemma": "claudia",
+      "course": "lat4",
+      "from": "Clāudĭa, –æ",
+      "to": "Claudĭa, –æ",
+      "reference": "https://en.wiktionary.org/wiki/claudia",
+      "note": "Convención de diptongos au/oe: no marcar un macrón en su primera vocal. Edición del enunciado, sin nuevas flexiones acreditadas."
+    },
+    {
+      "lang": "lat",
+      "lemma": "nauta",
+      "course": "lat4",
+      "from": "nāuta, –æ",
+      "to": "nauta, –æ",
+      "reference": "https://en.wiktionary.org/wiki/nauta",
+      "note": "Convención de diptongos au/oe: no marcar un macrón en su primera vocal. Edición del enunciado, sin nuevas flexiones acreditadas."
+    },
+    {
+      "lang": "lat",
+      "lemma": "auxilium",
+      "course": "lat4",
+      "from": "āuxĭlĭŭm, –ī",
+      "to": "auxĭlĭŭm, –ī",
+      "reference": "https://en.wiktionary.org/wiki/auxilium",
+      "note": "Convención de diptongos au/oe: no marcar un macrón en su primera vocal. Edición del enunciado, sin nuevas flexiones acreditadas."
+    },
+    {
+      "lang": "lat",
+      "lemma": "audacia",
+      "course": "lat4",
+      "from": "āudācĭa, –æ",
+      "to": "audācĭa, –æ",
+      "reference": "https://en.wiktionary.org/wiki/audacia",
+      "note": "Convención de diptongos au/oe: no marcar un macrón en su primera vocal. Edición del enunciado, sin nuevas flexiones acreditadas."
+    },
+    {
+      "lang": "lat",
+      "lemma": "aurum",
+      "course": "lat4",
+      "from": "āurŭm, –ī",
+      "to": "aurŭm, –ī",
+      "reference": "https://en.wiktionary.org/wiki/aurum",
+      "note": "Convención de diptongos au/oe: no marcar un macrón en su primera vocal. Edición del enunciado, sin nuevas flexiones acreditadas."
+    },
+    {
+      "lang": "lat",
+      "lemma": "foedus",
+      "course": "lat4",
+      "from": "fōedus, –a, –um",
+      "to": "foedus, –a, –um",
+      "reference": "https://en.wiktionary.org/wiki/foedus",
+      "note": "Convención de diptongos au/oe: no marcar un macrón en su primera vocal. Edición del enunciado, sin nuevas flexiones acreditadas."
+    },
+    {
+      "lang": "lat",
+      "lemma": "audio",
+      "course": "lat4",
+      "from": "āudĭo (4ª)",
+      "to": "audĭo (4ª)",
+      "reference": "https://en.wiktionary.org/wiki/audio",
+      "note": "Convención de diptongos au/oe: no marcar un macrón en su primera vocal. Edición del enunciado, sin nuevas flexiones acreditadas."
+    },
+    {
+      "lang": "lat",
+      "lemma": "thesaurus",
+      "course": "lat4",
+      "from": "thesaurus, –ī",
+      "to": "thēsaurus, –ī",
+      "reference": "https://cld.bbaw.de/lemma/lat/thesaurus",
+      "note": "Convención de diptongos au/oe: no marcar un macrón en su primera vocal. Edición del enunciado, sin nuevas flexiones acreditadas."
+    },
+    {
+      "lang": "lat",
+      "lemma": "audax",
+      "course": "lat4",
+      "from": "āudāx, ācis",
+      "to": "audāx, ācis",
+      "reference": "https://en.wiktionary.org/wiki/audax",
+      "note": "Convención de diptongos au/oe: no marcar un macrón en su primera vocal. Edición del enunciado, sin nuevas flexiones acreditadas."
+    },
+    {
+      "lang": "lat",
+      "lemma": "proelium",
+      "course": "lat4",
+      "from": "prōelĭŭm, –ī",
+      "to": "proelĭŭm, –ī",
+      "reference": "https://en.wiktionary.org/wiki/proelium",
+      "note": "Convención de diptongos au/oe: no marcar un macrón en su primera vocal. Edición del enunciado, sin nuevas flexiones acreditadas."
     }
   ],
   "paradigms": [
