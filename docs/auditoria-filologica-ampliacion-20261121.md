@@ -93,3 +93,7 @@ Se rectifican únicamente dos casos cuyo valor vocálico está respaldado por di
 El macrón/breve doble de `homō̆`, `Cicerō̆`, `legiō̆`, `oppūgnātiō̆` y `pā̆tria` no se interpreta automáticamente como corrupción del dato: la final `-ō` admite acortamientos en tradiciones métricas; el caso `pā̆tria` presenta variantes. La revisión filológica posterior deberá distinguir cuidadosamente *cantidad vocálica usual, variación cuantitativa atestiguada y cantidad silábica por posición*, y decidir la política de presentación docente antes de normalizarla.
 
 La prueba `scripts/test-filologia-cantidad-latina-20261121.cjs` coteja las dos formas corregidas contra el listado exigible, el índice de lemas, la web y el paquete autónomo, verificando asimismo que no se modifiquen los 1647 registros ni aparezcan letras cirílicas nuevas.
+
+### Persistencia ante el índice externo fijo
+
+El constructor `scripts/build-lemma-index.mjs` lee un inventario de `VocabulaLatinaGraecaque` fijado a un commit inmutable. Por ello no basta con corregir `required-latin-units.js` e `index.html`: al reconstruir el índice docente reaparecían las grafías anteriores. Se documentan ahora las dos transformaciones `agricola` y `africa` en `data/lemmas/verified-overrides.json` como `entryCorrections`, de forma que el mismo generador produce el enunciado correcto en cada compilación. Este mecanismo modifica únicamente la descripción del lema, no su conjunto de formas ni su estatus de verificación.

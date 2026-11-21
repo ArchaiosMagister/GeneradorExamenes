@@ -368,6 +368,24 @@
       "to": "μικρός, –ά, –όν",
       "reference": "https://logeion.uchicago.edu/%CE%BC%CE%B9%CE%BA%CF%81%CF%8C%CF%82",
       "note": "Oxítono; se preservan lecturas individuales acreditadas."
+    },
+    {
+      "lang": "lat",
+      "lemma": "agricola",
+      "course": "lat4",
+      "from": "ā̆grĭcŏla, –æ",
+      "to": "ăgrĭcŏla, –æ",
+      "reference": "https://www.online-latin-dictionary.com/latin-english-dictionary.php?lemma=AGRICOLA100",
+      "note": "Vocal inicial breve según repertorio lexicográfico; corrección editorial del enunciado, no flexiones nuevas."
+    },
+    {
+      "lang": "lat",
+      "lemma": "africa",
+      "course": "lat4",
+      "from": "Ā̆frĭca, –æ",
+      "to": "Āfrĭca, –æ",
+      "reference": "https://es.pons.com/traducci%C3%B3n/lat%C3%ADn-alem%C3%A1n/Africa",
+      "note": "Vocal inicial larga del topónimo; no se convierte en paradigma verificado."
     }
   ],
   "paradigms": [
