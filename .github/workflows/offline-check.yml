@@ -71,6 +71,8 @@ jobs:
         run: node scripts/test-latin-verb-evidence.cjs
       - name: Impedir regresiones en los once enunciados verbales latinos y las listas exigibles
         run: node scripts/test-latin-verb-entry-integrity.cjs
+      - name: Auditar todas las entradas verbales latinas y la coherencia entre bancos, exigible, índice y PWA
+        run: node scripts/test-latin-verb-corpus-audit.cjs
       - name: Cotejar paradigmas individuales verificados con la fuente persistente
         run: node scripts/test-verified-verb-overrides.cjs
       - name: Garantizar coherencia de la evidencia en web y PWA guardada
