@@ -20,11 +20,12 @@ for(const lemma of ['sepelio','solvo','vivo','invenio']){
  assert(provisional.every(x=>x[2].startsWith('V;IND;ACT;')),
   'No introducir paradigmas pasivos inferidos para '+lemma);
 }
-assert.equal(bank.counts.grc.wikcionario,545);
+assert.equal(bank.counts.grc.wikcionario,521);
 assert.equal(bank.counts.lat.contrastado,619);
 assert.equal(bank.counts.grc.contrastado,478);
 assert.equal(bank.extensions.candidate_rows,bank.counts.lat.modelo,'Contador provisional incoherente');
-assert.equal(bank.extensions.greek_nominal_candidates.rows,545);
+assert.equal(bank.extensions.greek_nominal_candidates.rows,521);
+assert.equal(bank.extensions.greek_nominal_candidates.quarantinedAccentForms,24);
 assert.equal(source.singleForms.length,479);
 assert.equal(bank.extensions.verifiedIndividualForms,479);
 const norm=s=>String(s).normalize('NFD').replace(/\u0345/g,'ι')

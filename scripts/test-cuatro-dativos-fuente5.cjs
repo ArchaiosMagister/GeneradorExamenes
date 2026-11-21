@@ -26,13 +26,14 @@ assert.deepEqual(ledger.summary,{originalHistoricalEntries:559,priorPromotionsEc
 assert.equal(ledger.items.length,4);
 assert.equal(new Set(ledger.items.map(x=>x.id)).size,4);
 assert.equal(history.items.length,559,'No se reescribe la auditoría histórica');
-assert.equal(bank.counts.grc.wikcionario,545);
+assert.equal(bank.counts.grc.wikcionario,521);
 assert.equal(bank.counts.grc.contrastado,478);
-assert.equal(bank.rows.grc.filter(x=>x[3]===4).length,545);
+assert.equal(bank.rows.grc.filter(x=>x[3]===4).length,521);
 assert.equal(bank.rows.grc.filter(x=>x[3]===5).length,478);
 assert.equal(bank.extensions.greek_nominal_candidates.historicalRows,559);
 assert.equal(bank.extensions.greek_nominal_candidates.migratedIndividualSource5,14);
-assert.equal(bank.extensions.greek_nominal_candidates.rows,545);
+assert.equal(bank.extensions.greek_nominal_candidates.rows,521);
+assert.equal(bank.extensions.greek_nominal_candidates.quarantinedAccentForms,24);
 assert.equal(bank.extensions.verifiedIndividualForms,479);
 assert.equal(overrides.singleForms.length,479);
 assert.equal(decisions.decisions.length,3,'No modificar las decisiones docentes de adjetivos');
@@ -95,8 +96,10 @@ for(const [id,lemma,form,sourceForm,unit] of expected){
   'No debe habilitarse un permiso de candidato de fuente 4 para la ficha contrastada');
 }
 assert.equal(seen.size,4);
-assert(bank.rows.grc.some(x=>x[0]==='πρωτοσ'&&x[3]===4),
- 'Se perdió la cuarentena de πρῶτος');
+assert(!bank.rows.grc.some(x=>x[0]==='πρωτοσ'&&x[3]===4),
+ 'Las formas erróneas de πρῶτος salieron de la cuarentena histórica');
+assert.equal(history.items.filter(x=>x.lemma==='πρωτοσ'&&x.status==='ACENTO_INCORRECTO_EN_FUENTE').length,24,
+ 'No se conservan los 24 expedientes históricos de πρῶτος');
 for(const lemma of ['αθανατοσ','αισχροσ'])
  assert(!bank.rows.grc.some(r=>r[0]===lemma&&r[3]===5&&r[2].endsWith(';FEM')),
   'Propuestas femeninas docentes excluidas indebidamente autorizadas');
