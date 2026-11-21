@@ -1,3 +1,7 @@
+/* Listas docentes de vocabulario exigible, independientes del banco morfológico.
+ * No reconstruir a partir de vocab: las modificaciones del banco general no deben
+ * alterar silenciosamente los criterios de exigibilidad aprobados.
+ */
 window.ExaminaRequiredLatinUnits={
   "schema": 1,
   "source": {
