@@ -5,7 +5,7 @@ const source=JSON.parse(fs.readFileSync('data/vocabulary/greek1-units-corrected.
 const ledger=JSON.parse(fs.readFileSync('data/vocabulary/greek1-relative-grave-audit-20261121.json','utf8'));
 const verified=JSON.parse(fs.readFileSync('data/lemmas/teacher-forms.json','utf8'));
 assert.equal(source.course,'gr1');assert.equal(source.units.length,14);
-assert.equal(source.units.reduce((n,u)=>n+u.text.split('\\n').filter(Boolean).length,0),471);
+assert.equal(source.units.reduce((n,u)=>n+u.text.split('\n').filter(Boolean).length,0),471);
 assert.equal(ledger.schema,1);assert.equal(ledger.course,'gr1');assert.equal(ledger.unitCount,14);
 assert.equal(ledger.sourceLines,471);assert.equal(ledger.contextualCorrections,26);
 assert.equal(ledger.automaticGradingEnabled,false);assert.equal(ledger.morphologyPromotion,false);
@@ -22,7 +22,7 @@ for(const item of ledger.items){
  assert(item.before.includes(item.form+' '+item.nextWord),'Original no contextualizado: '+key);
  assert.equal(item.after,item.before.replace(item.form+' '+item.nextWord,item.updatedForm+' '+item.nextWord),
   'La sustitución debe ser exclusivamente contextual y diacrítica: '+key);
- const text=source.units[item.unit-1].text.split('\\n')[item.line-1];
+ const text=source.units[item.unit-1].text.split('\n')[item.line-1];
  assert.equal(text,item.after,'Texto docente desincronizado: '+key);
  assert.notEqual(text,item.before,'Grafía anterior reintroducida: '+key);
  distribution[item.unit]=(distribution[item.unit]||0)+1;
