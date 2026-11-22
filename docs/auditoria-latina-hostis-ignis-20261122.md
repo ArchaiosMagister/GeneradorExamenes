@@ -11,10 +11,10 @@ Orden: nominativo, vocativo, acusativo, genitivo, dativo, ablativo.
 
 | Número | hostis | ignis |
 | --- | --- | --- |
-| Singular | hostis, hostis, hostem, hostis, hosti, hoste | ignis, ignis, ignem, ignis, igni, igni |
+| Singular | hostis, hostis, hostem, hostis, hosti, hoste | ignis, ignis, ignem, ignis, igni, igne |
 | Plural | hostes, hostes, hostes, hostium, hostibus, hostibus | ignes, ignes, ignes, ignium, ignibus, ignibus |
 
-El índice conserva `hostīs` (acusativo plural); `ignīs` (acusativo plural) y `igne` (ablativo singular). Se prefiere `ignī` como ablativo singular en la tabla por su frecuencia clásica, sin negar la variante `igne`.
+El índice conserva `hostīs` e `ignīs` como acusativos plurales alternativos, y `ignī` como ablativo singular válido. Por criterio docente, **`igne` es el ablativo singular principal para todas nuestras tablas y ejercicios de morfología**; `ignī` permanece disponible en la lematización. Este orden didáctico no desautoriza la variante clásica.
 
 Fuentes: [Gaffiot, *hostis*](https://www.gaffiot.org/55298); [Lewis & Short, *ignis*](https://alatius.com/ls/index.php?l=ignis); [Logeion, *ignis*](https://logeion.org/ignis); datos históricos de la aplicación.
 

@@ -13,10 +13,10 @@ const specs={
   pl:['hostes','hostes','hostes','hostium','hostibus','hostibus'],
   entry:'hostis, –is (m.)',adjectives:'strenuus improbus perterritus',
   variants:[['hostis','ACC','PL']]},
- ignis:{sg:['ignis','ignis','ignem','ignis','igni','igni'],
+ ignis:{sg:['ignis','ignis','ignem','ignis','igni','igne'],
   pl:['ignes','ignes','ignes','ignium','ignibus','ignibus'],
   entry:'ignis, –is (m.)',adjectives:'magnus parvus',
-  variants:[['igne','ABL','SG'],['ignis','ACC','PL']]}
+  variants:[['igni','ABL','SG'],['ignis','ACC','PL']]}
 };
 for(const [lemma,s] of Object.entries(specs)){
  assert.equal(index.vocabulary.lat[lemma]?.lat1.entry,s.entry,'Vocabulario '+lemma);
