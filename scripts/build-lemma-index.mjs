@@ -247,7 +247,7 @@ async function main(){
       quarantinedOnomaCells.add(sig);
       continue;
      }
-     const key=row[0]+'|'+row[1]+'|'+row[2];
+     const key=head(row[0])+'|'+row[1]+'|'+row[2];
      const audited=lang==='lat'?quantityRows.get(key):undefined;
      if(audited){
       if(quantitySeen.has(key))throw Error('Fila de cantidad heredada duplicada: '+key);
