@@ -41,11 +41,12 @@ const expected=[singular,plural]; // NOM, VOC, ACC, GEN, DAT, ABL
      };
      set('course',course);set('model','tablas');set('lang',lang);
      document.querySelectorAll('.unit-choice').forEach(x=>x.checked=true);
-     const chosen=selectedUnits(),m=mNoun('vir, –i'),mors=mNoun('mors, mortis (f.)');
+     const chosen=selectedUnits(),m=mNoun('vir, –i'),mors=mNoun('mors, mortis (f.)'),
+      serpens=mNoun('serpens, serpentis (m.)'),pater=mNoun('pater, patris (m.)');
      const bank=latinSyntagmNouns(chosen).find(x=>mNormalize(x.p.lemma).toLowerCase()==='vir');
      const table=latinCompleteDeclensionItems(chosen)
       .find(x=>mNormalize(x.p.lemma).toLowerCase()==='vir');
-     return {m,mors,bank:bank?.p||null,table:table?{
+     return {m,mors,serpens,pater,bank:bank?.p||null,table:table?{
       noun:table.p,compound:table.compound?.forms||null,
       adjective:mNormalize(headLex(table.compound?.adjective?.entry||'')).toLowerCase(),
       title:table.compound?.title||''
@@ -57,6 +58,8 @@ const expected=[singular,plural]; // NOM, VOC, ACC, GEN, DAT, ABL
     const where=file+' '+course+' '+lang;
     assert(got.mors&&got.mors.kind==='3mf'&&got.mors.gender==='f',where+': mors tercera femenina');
     assert.deepEqual(got.mors.forms,morsExpected,where+': mors debe formar mortium, no *mortum');
+    assert.equal(got.serpens?.forms[1][3],'serpentium',where+': serpens no pierde su genitivo mixto');
+    assert.equal(got.pater?.forms[1][3],'patrum',where+': pater conserva el genitivo consonántico');
     assert(got.m&&got.bank&&got.table,where+': vir debe ser evaluable');
     for(const paradigm of [got.m,got.bank,got.table.noun]){
      assert.equal(paradigm.kind,'2er',where+': clase nominal');
