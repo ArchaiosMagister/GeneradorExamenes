@@ -1,5 +1,10 @@
 name: Reconstrucción temporal de deponentes UD9-10 (sin publicación)
 on:
+  pull_request:
+    branches:
+      - fix/latin-deponents-ud7-ud9-editorial-20261122
+    paths:
+      - '.github/workflows/rebuild-deponents-ud9-10-temporary.yml'
   push:
     branches:
       - fix/latin-deponents-ud9-ud10-present-20261122
@@ -15,6 +20,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           persist-credentials: true
+          ref: ${{ github.event.pull_request.head.ref || github.ref_name }}
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -42,4 +48,4 @@ jobs:
           rm .github/workflows/rebuild-deponents-ud9-10-temporary.yml
           git add data/lemmas/teacher-forms.json offline.html .github/workflows/rebuild-deponents-ud9-10-temporary.yml
           git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'build: reproducir indice y HTML autónomo con 24 presentes UD9-10'
-          git push origin "HEAD:refs/heads/${GITHUB_REF_NAME}"
+          git push origin "HEAD:refs/heads/${GITHUB_HEAD_REF:-$GITHUB_REF_NAME}"
