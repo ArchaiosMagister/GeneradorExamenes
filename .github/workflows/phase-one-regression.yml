@@ -44,6 +44,7 @@ on:
       - 'scripts/test-filologia-latin4-quantity-followup-20261121.cjs'
       - 'scripts/apply-latin4-quantity-clusters-20261121.cjs'
       - 'scripts/test-filologia-latin4-quantity-clusters-20261121.cjs'
+      - 'scripts/test-filologia-latin4-final-o-20261122.cjs'
       - 'scripts/apply-latin4-quantities-followup-20261121.cjs'
       - 'scripts/apply-latin4-quantities-20261121.cjs'
       - 'scripts/test-greek-all-unit-form-quotas.cjs'
@@ -163,6 +164,8 @@ jobs:
         run: node scripts/test-filologia-latin4-quantity-followup-20261121.cjs
       - name: Auditar altus, magnus, longus, gemma y littera (16 entradas)
         run: node scripts/test-filologia-latin4-quantity-clusters-20261121.cjs
+      - name: Revisar siete cantidades contradictorias de nominativos latinos en -ō
+        run: node scripts/test-filologia-latin4-final-o-20261122.cjs --offline
       - name: Exam UI redesign in iPad, forms, Word and vocabulary isolation
         run: node scripts/test-exam-ui-redesign.cjs
       - name: Verificar tema Examinator sin efectos sobre Word/PDF
