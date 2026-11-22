@@ -35,4 +35,31 @@ for(const name of ['loquor','sequor']){
  assert.equal(good.length,6);
  assert(good.every(r=>r[2].startsWith('V;IND;DEP;PRS;')),'Solo presentes acreditados: '+name);
 }
-console.log('PASS: 11 deponentes UD9–10; 6 sincretismos; fuentes 0/5 sin promoción automática.');
+
+const individuallyCotejados={
+ gratulor:['gratulor','gratularis','gratulatur','gratulamur','gratulamini','gratulantur'],
+ miror:['miror','miraris','miratur','miramur','miramini','mirantur'],
+ polliceor:['polliceor','polliceris','pollicetur','pollicemur','pollicemini','pollicentur'],
+ patior:['patior','pateris','patitur','patimur','patimini','patiuntur']
+};
+const alternate2sg={gratulor:'gratulare',miror:'mirare',polliceor:'pollicere',patior:'patere'};
+for(const [lemma,forms] of Object.entries(individuallyCotejados)){
+ const rows=corpus.rows.lat.filter(r=>r[0]===lemma&&r[3]===0);
+ const slots=['1;SG','2;SG','3;SG','1;PL','2;PL','3;PL'];
+ assert.equal(forms.length,6,lemma+' debe tener seis casillas principales');
+ for(let i=0;i<6;i++){
+  const tag='V;IND;ACT;PRS;'+slots[i];
+  assert.equal(rows.filter(r=>r[2]===tag&&normalize(r[1])===forms[i]).length,1,
+   lemma+' presente contrastado histórico '+tag+': '+forms[i]);
+  assert(!rows.some(r=>r[2]==='V;IND;ACT;FUT;'+slots[i]&&normalize(r[1])===forms[i]),
+   lemma+' presente principal colisiona con futuro: '+forms[i]);
+ }
+ const alt=alternate2sg[lemma];
+ assert.equal(rows.filter(r=>r[2]==='V;IND;ACT;PRS;2;SG'&&normalize(r[1])===alt).length,1,
+  lemma+' variante -re de segunda singular');
+ assert.equal(rows.filter(r=>r[2]==='V;IMP;ACT;PRS;2;SG'&&normalize(r[1])===alt).length,1,
+  lemma+' variante -re coincide con imperativo y no se pregunta aislada');
+ assert.equal(corpus.rows.lat.filter(r=>r[0]===lemma&&r[3]===5&&r[2].startsWith('V;IND;DEP;PRS')).length,0,
+  lemma+' aún no promovido: solo cotejo aislado');
+}
+console.log('PASS: 11 deponentes UD9–10, 24 presentes cotejados, 4 variantes -re/imperativo, 6 sincretismos, sin promoción automática.');
