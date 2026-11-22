@@ -19,7 +19,7 @@ Una sola comprobación (`latinSpecialVerbEligible`) controla las tres entradas a
 Las formas regulares no se restringen por su procedencia léxica: la decisión previa de practicar toda la conjugación regular ya estudiada sigue vigente. La existencia de un lema no acredita tiempos que aún no cuenten con formas contrastadas.
 
 ### Latín 4.º
-No se toman verbos irregulares o deponentes que solo existan en Latín I: cada verbo especial debe figurar en el vocabulario del propio curso y haber alcanzado su unidad. En las tablas de conjugación subsiste la prohibición de irregulares salvo `sum`. Los paradigmas regulares conservan los filtros anteriores.
+No se toman verbos irregulares o deponentes que solo existan en Latín I: cada verbo especial debe figurar en el vocabulario del propio curso y haber alcanzado su unidad. El cálculo consulta el índice de **todas** las unidades del lema, sin usar la lista deduplicada de pantalla (por ejemplo, *eo* está en UD4 y UD5 y debe habilitarse ya desde UD4). En las tablas de conjugación subsiste la prohibición de irregulares salvo `sum`. Los paradigmas regulares conservan los filtros anteriores.
 
 ## Sincretismos
 Se conservan las exclusiones para `loqueris`, `sequeris`, `proficisceris` y la deduplicación de análisis que no permiten respuesta única sin contexto. No se hace ninguna promoción de fuentes históricas ni se añade perfecto deponente por analogía.
