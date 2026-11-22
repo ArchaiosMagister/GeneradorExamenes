@@ -426,5 +426,83 @@
       "classification": "VARIANTE_HISTORICA_RESERVADA",
       "reference": "https://logeion.org/princeps"
     }
-  ]
+  ],
+  "philologicalEvidence": {
+    "schema": 1,
+    "updatedOn": "2026-11-22",
+    "sourceClass": "COTEJO_ANTIGUO_Y_MANUALES_FILOLÓGICOS_SIN_PROMOCIÓN",
+    "principle": "Cantidad vocálica distinta de cantidad silábica. Un signo dual heredado no prueba por sí solo una variante; una atestación de gramático no acredita todas las flexiones de un lema.",
+    "entries": [
+      {
+        "lemma": "alter",
+        "rows": 1,
+        "evidenceLevel": "ANTIGUA_DIRECTA_PARA_CANTIDAD_DEL_GENITIVO",
+        "ancientWitnesses": [
+          {
+            "author": "Prisciano",
+            "locus": "Institutiones grammaticae III 20,7-8",
+            "claim": "La penúltima de alterius se abrevia siempre según su regla; el testimonio es explícito, pero representa una doctrina gramatical antigua, no la distribución completa por autores.",
+            "uri": "https://www.stgallpriscian.ie/index.php?kP=20&kV=3"
+          }
+        ],
+        "comparativeReferences": [
+          "https://dcc.dickinson.edu/tr/grammar/latin/1st-and-2nd-declension-adjectives-genitive-%C4%ABus-dative-%C4%AB",
+          "https://proxybridge.pythonanywhere.com/cache/epub/44653/pg44653-images.html"
+        ],
+        "inference": "Existe apoyo explícito para alterĭus; el uso de alterīus está descrito por la tradición gramatical y métricas históricas. Mantener las dos cantidades documentadas en el registro original.",
+        "allowedIndexNormalization": false,
+        "sourcePromotion": false
+      },
+      {
+        "lemma": "nullus",
+        "rows": 1,
+        "evidenceLevel": "GRAMATICA_MODERNA_REGLA_GENERAL_SIN_COTEJO_PRIMARIO_DE_NŬLLIUS",
+        "ancientWitnesses": [],
+        "comparativeReferences": [
+          "https://dcc.dickinson.edu/sv/grammar/latin/general-rules-quantity",
+          "https://dcc.dickinson.edu/tr/grammar/latin/1st-and-2nd-declension-adjectives-genitive-%C4%ABus-dative-%C4%AB"
+        ],
+        "inference": "nūllīus, con ī larga, es la lectura escolar documentada; la posibilidad de abreviación en verso pertenece a una regla general y no demuestra por sí sola un verso concreto con nūllĭus. Mantener reserva para la lectura dual hasta cotejar un testimonio directo.",
+        "allowedIndexNormalization": false,
+        "sourcePromotion": false
+      },
+      {
+        "lemma": "custos",
+        "rows": 12,
+        "evidenceLevel": "CANTIDAD_OCULTA_SIN_TESTIMONIO_PRIMARIO_DECISIVO",
+        "ancientWitnesses": [],
+        "comparativeReferences": [
+          "https://dcc.dickinson.edu/latin-core/cvstos",
+          "https://latindictionary.co/academy/grammar/56",
+          "https://en.wiktionary.org/wiki/custos",
+          "https://de.wiktionary.org/wiki/custos",
+          "https://dcc.dickinson.edu/grammar/latin/quantity-syllables"
+        ],
+        "inference": "La primera sílaba es pesada por la secuencia -st-, cualquiera que sea la duración de la u. La escansión sola no permite elegir ŭ/ū. Allen y Greenough §56 imprimen cūstōs, pero Dickinson Core custōs y otras fuentes no coinciden: sin prueba epigráfica o tradición explícita, no normalizar.",
+        "allowedIndexNormalization": false,
+        "sourcePromotion": false
+      },
+      {
+        "lemma": "princeps",
+        "rows": 28,
+        "evidenceLevel": "ANTIGUA_DIRECTA_DE_CANTIDAD_SILABICA_SIN_CANTIDAD_VOCALICA",
+        "ancientWitnesses": [
+          {
+            "author": "Servio",
+            "locus": "Commentarius in Artem Donati 426.7, De accentibus",
+            "claim": "Califica princeps como largo por posición, lo cual no decide si la primera i es ī o ĭ.",
+            "uri": "https://latin.packhum.org/loc/2349/2/12"
+          }
+        ],
+        "comparativeReferences": [
+          "https://www.sciencedirect.com/org/science/article/pii/S2212588417000060",
+          "https://en.wiktionary.org/wiki/princeps",
+          "https://dcc.dickinson.edu/grammar/latin/quantity-syllables"
+        ],
+        "inference": "La breve se considera históricamente plausible según la discusión de Osthoff/Sihler y noticias de gramáticos; una lectura con ī también tiene tradición lexicográfica. No extraer un dictamen vocal de la silabación de Servio; registrar contexto cronológico antes de escoger.",
+        "allowedIndexNormalization": false,
+        "sourcePromotion": false
+      }
+    ]
+  }
 }
