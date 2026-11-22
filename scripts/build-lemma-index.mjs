@@ -203,12 +203,12 @@ async function main(){
   rows[lang].push([k,form,features,({unimorph:0,docente:1,modelo:2,lema:3,wikcionario:4,contrastado:5})[source]]);
   counts[lang][source]++;
  }
- // Cotejo individual del extracto heredado: cambiar solo las doce cantidades
- // de custos acreditadas; las demás variantes permanecen sin promoción.
+ // Cotejo individual del extracto heredado: conservar las 42 lecturas de fuente 0
+ // mientras se estudian cantidades métricas o discutidas, sin promoción.
  const quantityLedger=JSON.parse(await fs.readFile(
   path.join(root,'data/lemmas/latin-legacy-double-quantity-collation-20261122.json'),'utf8'));
  if(quantityLedger.schema!==1||quantityLedger.expected?.total!==42||
-    quantityLedger.expected.corrected!==12||quantityLedger.expected.retainedVariant!==30||
+    quantityLedger.expected.corrected!==0||quantityLedger.expected.retainedVariant!==42||
     quantityLedger.automaticGradingEnabled!==false||quantityLedger.morphologyPromotion!==false||
     quantityLedger.items?.length!==42)
   throw Error('Cotejo de cantidades heredadas inexistente o incompleto');
@@ -217,10 +217,7 @@ async function main(){
   const key=item.lemma+'|'+item.form+'|'+item.features;
   if(quantityRows.has(key)||item.source!==0||!item.reference?.startsWith('https://')||
      !['alter','custos','nullus','princeps'].includes(item.lemma)||
-     (item.lemma==='custos'&&
-      (item.classification!=='CORRECCION_CANTIDAD_ACREDITADA'||item.after!==item.form.replace('ū̆','ū')))||
-     (item.lemma!=='custos'&&
-      (item.after!==item.form||!item.classification.endsWith('_RESERVADA'))))
+     (item.after!==item.form||!item.classification.endsWith('_RESERVADA')))
    throw Error('Cantidad heredada inconsistente: '+key);
   quantityRows.set(key,item);
  }
