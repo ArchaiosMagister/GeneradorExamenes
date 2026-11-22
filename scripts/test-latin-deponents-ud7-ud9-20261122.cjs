@@ -44,7 +44,7 @@ for(const x of cases){
  assert.equal(corr.length,1,x.lemma+' corrección persistente única');
  assert.equal(corr[0].from,x.before);assert.equal(corr[0].to,x.after);
  assert.equal(corr[0].reference,x.source);
- const nVerified=x.lemma==='complector'?6:0;
+ const nVerified=['complector','patior'].includes(x.lemma)?6:0;
  assert.equal(overrides.paradigms.filter(y=>y.lang==='lat'&&y.lemma===x.lemma).length,nVerified?1:0,
   x.lemma+' solo bloques contrastados');
  assert.equal(corpus.rows.lat.filter(y=>y[0]===x.lemma&&y[3]===5).length,nVerified,
@@ -85,21 +85,21 @@ for(const [lemma,forms] of Object.entries(attested)){
  assert.equal(corpus.rows.lat.filter(x=>x[0]===lemma&&x[3]===5).length,6,
   lemma+' no autorizar más tiempos');
 }
-assert(!evidence.patior&&!evidence.orior,'Patior y orior sin aprobación automática de flexiones');
+assert(evidence.patior?.length===1&&!evidence.orior,'Patior presente acreditado; orior no promovido');
 assert.equal(corpus.vocabulary.lat.orior?.lat1?.entry,'orior, ortus sum (4ª)',
  'El lema orior conserva la clasificación escolar con variantes del presente');
-for(const lemma of ['patior','orior']){
+for(const lemma of ['orior']){
  assert(!overrides.paradigms.some(x=>x.lang==='lat'&&x.lemma===lemma),
   'No acreditar por analogía un verbo con formas mixtas: '+lemma);
  assert(corpus.rows.lat.some(x=>x[0]===lemma),'Ausente del índice: '+lemma);
  assert(corpus.rows.lat.filter(x=>x[0]===lemma).every(x=>x[3]===0),
-  'Patior y orior solo tienen fuente histórica: '+lemma);
+  'Orior solo tiene fuente histórica: '+lemma);
 }
 assert(html.includes("'complector|complecteris'"),
  'La segunda singular de complector también es futuro y debe bloquearse sin contexto');
 assert.equal(corpus.counts.lat.contrastado,667,'Fuente 5 latina suma 24 formas UD7 y 24 formas UD9-10');
 const iv=corpus.rows.lat.filter(x=>x[0]==='patior');
-assert(iv.length>0&&iv.every(x=>x[3]===0),'Patior: el índice solo conserva material histórico');
+assert.equal(iv.filter(x=>x[3]===5).length,6,'Patior: exactamente seis presentes de fuente 5');
 const m=html.slice(html.indexOf('function mVerb(raw){'),html.indexOf('// Corrections for conjugation:',html.indexOf('function mVerb(raw){')));
 const norm=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'')
  .replace(/[–−—]/g,'-').trim();
@@ -133,9 +133,9 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
        !mVerb('patior, passus sum (mx.)'),
       blocked:latinMorphologyVerbPool(['UD7']).every(x=>examKey(x.entry)!=='patior'),
       notPromoted:latinMorphologyVerbPool(['UD9–10']).every(x=>
-       !['patior','orior'].includes(examKey(x.entry)))&&
+       examKey(x.entry)!=='orior')&&
        latinExamFormCandidates(['UD9–10'],true)[2].every(x=>
-        !['patior','orior'].includes(examKey(x.entry))),
+        examKey(x.entry)!=='orior'),
       accredited:['complector','intueor','laetor','vereor'].every(lemma=>
        latinMorphologyVerbPool(['UD7']).some(x=>examKey(x.entry)===lemma&&x.sourceCode===5&&x.voice==='deponente')),
       tooEarly:latinMorphologyVerbPool(['UD6']).every(x=>
