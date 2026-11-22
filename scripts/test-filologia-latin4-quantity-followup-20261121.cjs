@@ -34,7 +34,7 @@ for(const [lemma,old,newForm] of [
  assert.equal(matched[0].from,old);assert.equal(matched[0].to,newForm);
  assert(/^https:\/\//.test(matched[0].reference));
 }
-assert.equal(index.counts.lat.contrastado,643,'Las correcciones no verifican paradigmas');
+assert.equal(index.counts.lat.contrastado,667,'Las correcciones no verifican paradigmas');
 const a=html.indexOf('function migrateSeededLatinVerbEntries(items){');
 const b=html.indexOf('if(migrateSeededLatinVerbEntries(examRequired))saveRequired();',a);
 assert(a>=0&&b>a);
