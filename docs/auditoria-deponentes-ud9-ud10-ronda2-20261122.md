@@ -26,15 +26,25 @@ Revisión directa de `data/lemmas/teacher-forms.json` de la rama #218; sus filas
 
 Se han comparado las seis personas del presente indicativo con tablas de conjugación y el índice histórico. Orden: 1ª/2ª/3ª sg.; 1ª/2ª/3ª pl. No se concede valor de fuente 5 por este inventario aislado.
 
-- `gratulor`: gratulor, gratularis, gratulatur; gratulamur, gratulamini, gratulantur. [Tabla](https://www.latindictionary.io/entry/gratulor-gratulari-gratulatus-sum).
-- `miror`: miror, miraris, miratur; miramur, miramini, mirantur. [Tabla](https://www.latindictionary.io/entry/miror-mirari-miratus-sum-27017).
+- `gratulor`: gratulor, gratularis, gratulatur; gratulamur, gratulamini, gratulantur. [Tabla](https://www.latindictionary.io/entry/gratulor-gratulari-gratulatus-sum) y [Latin is Simple](https://www.latin-is-simple.com/en/vocabulary/verb/4129/).
+- `miror`: miror, miraris, miratur; miramur, miramini, mirantur. [Tabla](https://www.latindictionary.io/entry/miror-mirari-miratus-sum) y [Cactus2000](https://latin.cactus2000.de/showverb.en.php?verb=mirari).
 - `nascor`: nascor, nasceris, nascitur; nascimur, nascimini, nascuntur. [Tabla](https://www.latindictionary.io/entry/nascor-nasci-natus-sum).
 - `obliviscor`: obliviscor, oblivisceris, obliviscitur; obliviscimur, obliviscimini, obliviscuntur. [Oxford/LatinDictionary](https://www.latindictionary.io/entry/obliviscor-oblivisci-oblitus-sum), [Cactus2000](https://latin.cactus2000.de/showverb.en.php?verb=oblivisci).
 - `orior`: orior, oreris (también oriris), oritur; orimur, orimini, oriuntur. Exige gestión de variantes y criterio escolar antes de habilitar. [Lewis & Short/Logeion](https://logeion.org/orior), [cotejo](https://www.latindictionary.io/entry/orior-oriri-ortus-sum).
-- `patior`: patior, pateris, patitur; patimur, patimini, patiuntur. Tercera mixta. [Tabla](https://www.latindictionary.io/entry/patior-pati-passus-sum), [Éduscol](https://odysseum.eduscol.education.fr/les-modeles-de-conjugaison).
-- `polliceor`: polliceor, polliceris, pollicetur; pollicemur, pollicemini, pollicentur. [Tabla](https://www.latindictionary.io/entry/polliceor-polliceri-pollicitus-sum).
+- `patior`: patior, pateris, patitur; patimur, patimini, patiuntur. Tercera mixta. [Tabla](https://www.latindictionary.io/entry/patior-pati-passus-sum), [paradigma completo](https://www.azimonti.com/philology/latin/resources/paradigms-regular-verbs/) y [Éduscol](https://odysseum.eduscol.education.fr/les-modeles-de-conjugaison).
+- `polliceor`: polliceor, polliceris, pollicetur; pollicemur, pollicemini, pollicentur. [Tabla](https://www.latindictionary.io/entry/polliceor-polliceri-pollicitus-sum) y [Cactus2000](https://latin.cactus2000.de/showverb.en.php?verb=polliceri).
 - `revertor`: revertor, reverteris, revertitur; revertimur, revertimini, revertuntur. **Este bloque de presente no autoriza ningún paradigma de perfecto**. [Tabla](https://www.latindictionary.io/entry/revertor-reverti-reversus-sum), [Lewis & Short](https://atlas.perseus.tufts.edu/dictionaries/entry/urn:cite2:scaife-viewer:dictionary-entries.atlas_v1:lat.ls.perseus-eng2-n41583/).
 - `utor`: utor, uteris, utitur; utimur, utimini, utuntur. [Tabla](https://www.latindictionary.io/entry/utor-uti-usus-sum).
+
+### Cotejo complementario de 24 casillas (gratulor, miror, polliceor, patior)
+
+Las **24 formas de presente**, seis por cada uno de estos cuatro lemas, han sido verificadas individualmente contra las tablas externas enlazadas, así como contra los registros históricos del índice académico de Latín I. Coinciden persona y número en las seis posiciones, normalizando únicamente las cantidades vocálicas. La segunda singular principal termina en `-ris` (`gratularis`, `miraris`, `polliceris`, `pateris`).
+
+**Variantes `-re` (no promovidas):** `gratulare`, `mirare`, `pollicere` y `patere` figuran como alternativas de segunda singular en las tablas y pueden coincidir con el imperativo de presente. No deben ofrecerse en análisis morfológico aislado que exija una única respuesta. Las cuatro formas principales en `-ris` no presentan esa ambigüedad con el imperativo.
+
+**Advertencia editorial de fuentes:** el antiguo servidor escolar `schule-bw.de` redirige actualmente y no constituye un enlace permanente operativo. Para `patior` se emplean en esta ronda las tablas enlazadas (especialmente Azimonti y Éduscol), no ese servidor.
+
+**Estado curricular:** no se han añadido filas de fuente 5 por esta verificación; los cuatro bloques siguen siendo candidatos contrastados para la siguiente PR de ampliación. Se comprobará también que ninguna forma aparezca antes de UD9–10, y que se preserven web/PWA y castellano/valenciano.
 
 Los seis presentes ya acreditados de `loquor` y `sequor` **no se duplican**. El participio acreditado de `miror` tampoco es prueba de su conjugación completa.
 
@@ -52,7 +62,7 @@ Lewis & Short distingue `reverto/revertor` y aporta numerosos perfectos **activo
 
 ## 5. Protección técnica y próximas fases
 
-El nuevo script de auditoría verifica (a) que los 11 lemas siguen en UD9–10; (b) procedencia y recuento exacto por lema; (c) que fuente 5 no aparece indebidamente en los ocho todavía no promovidos; (d) los seis sincretismos presente/futuro en fuente histórica. **Es prueba de integridad, no acreditación filológica suficiente de nuevas casillas**.
+El nuevo script de auditoría verifica (a) que los 11 lemas siguen en UD9–10; (b) procedencia y recuento exacto por lema; (c) que fuente 5 no aparece indebidamente en los ocho todavía no promovidos; (d) los seis sincretismos presente/futuro en fuente histórica; (e) las 24 formas principales de presente cotejadas para `gratulor`, `miror`, `polliceor` y `patior`, con sus etiquetas de persona y número; (f) la variante `-re` de segunda singular que coincide con el imperativo. **Es prueba de integridad, no acreditación filológica suficiente de nuevas casillas**.
 
 Orden recomendado para una futura PR de *ampliación*, tras decidir el tratamiento de sincretismos y probar ES/VA, web/PWA y documentos Word:
 1. `gratulor`, `miror` y `polliceor` (presentes sin sincretismo presente/futuro de 2ª sg.); luego `patior` con clasificación mixta.
