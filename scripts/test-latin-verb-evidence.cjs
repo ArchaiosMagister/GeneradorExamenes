@@ -43,7 +43,7 @@ for(const [lemma,series]of Object.entries(evidence)){
   });
  }
 }
-assert.equal(total,594,'Cantidad de fichas contrastadas registrada inesperada');
+assert.equal(total,618,'Cantidad de fichas contrastadas registrada inesperada');
 assert.deepEqual(evidence.eo.map(x=>x.tense),['presente','imperfecto','futuro','perfecto','pluscuamperfecto']);
 assert.deepEqual(evidence.redeo.map(x=>x.tense),['presente','imperfecto','futuro','perfecto','pluscuamperfecto']);
 assert.deepEqual(evidence.transeo.map(x=>x.tense),['presente','imperfecto','futuro','perfecto','pluscuamperfecto']);
@@ -86,4 +86,4 @@ assert(html.includes("const latinPersonalPresentPassiveLemmas=new Set([...latinP
  'Falta la excepción de facio y el inventario de pasivas personales');
 assert(html.includes("if(latinPersonalPresentPassiveLemmas.has(examKey(entry)))"),
  'La pasiva no está condicionada a la transitividad admitida');
-console.log('Latín I: 594 casillas explícitas, incluidas 24 de presente deponente UD7; sin paradigmas analógicos.');
+console.log('Latín I: 618 casillas explícitas, incluidas 24 de UD7 y 24 de UD9-10; sin paradigmas analógicos.');
