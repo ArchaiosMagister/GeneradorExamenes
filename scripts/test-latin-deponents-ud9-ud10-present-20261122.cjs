@@ -72,11 +72,13 @@ if(process.argv.includes('--source-only')){
      set('course','latin1');set('model','morf');set('lang',lang);
      const key=x=>examKey(x.entry);
      const before=latinMorphologyVerbPool(['UD7']);
+     const beforeForms=latinExamFormCandidates(['UD7'],true)[2];
+     const later=[...lemmas,'loquor','sequor'];
      const current=latinMorphologyVerbPool(['UD9–10']);
      const forms=latinExamFormCandidates(['UD9–10'],true)[2];
      const variants={gratulor:'gratulare',miror:'mirare',polliceor:'pollicere',patior:'patere'};
      return {
-      oldUnits:before.every(x=>!lemmas.includes(key(x))),
+      oldUnits:before.every(x=>!later.includes(key(x)))&&beforeForms.every(x=>!later.includes(key(x))),
       present:lemmas.every(lemma=>current.some(x=>key(x)===lemma&&x.sourceCode===5&&x.voice==='deponente')),
       forms:lemmas.every(lemma=>forms.some(x=>key(x)===lemma&&/deponente/.test(String(x.answer||'')))),
       variants:current.every(x=>!(variants[key(x)]&&normLex(x.form)===variants[key(x)]))&&
