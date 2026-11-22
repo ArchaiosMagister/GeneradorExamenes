@@ -27,3 +27,6 @@ No se modifican los demás temas en -i, los bancos griegos, la puntuación o la 
 
 ## Integridad de distribución
 La reconstrucción de `offline.html` se ha ejecutado mediante workflow específico de la rama y el workflow temporal ha sido retirado; queda exigida la comprobación completa de las cinco baterías en el último SHA.
+
+## Validación del criterio docente
+Se ha fijado `igne` como ablativo singular **principal** de `ignis` en el motor de tablas, los ejercicios de morfología y la prueba especializada; `ignī` queda atestiguado como alternativa válida en el índice histórico. La reconstrucción determinista de `offline.html` se efectuó en una acción temporal aislada, eliminada al terminar. La regresión final debe validarse sobre un commit del autor, con la copia autónoma ya sincronizada.
