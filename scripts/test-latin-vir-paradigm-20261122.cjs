@@ -14,7 +14,7 @@ assert.equal(wordIndex.vocabulary.lat.vir.lat1.entry,'vir, –i');
 assert.equal(wordIndex.vocabulary.lat.mors.lat1.entry,'mors, mortis (f.)');
 assert(wordIndex.rows.lat.some(row=>row[0]==='mors'&&
  row[2]==='N;GEN;PL'&&row[3]===0&&
- row[1].normalize('NFD').replace(/\\p{M}/gu,'')==='mortium'),
+ row[1].normalize('NFD').replace(/\p{M}/gu,'')==='mortium'),
  'El índice de referencia debe documentar el genitivo plural mortium');
 const morsExpected=[
  ['mors','mors','mortem','mortis','morti','morte'],
