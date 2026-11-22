@@ -70,9 +70,14 @@ const cases={
     },{course,lang,checks:cases[course]});
     for(let k=0;k<results.length;k++){
      const r=results[k],spec=cases[course][k],context=file+'/'+course+'/'+lang+'/'+r.unit;
-     for(const name of spec.yes||[])
-      for(const [i,pool] of r.pools.entries())
+     // Latín 4.º permite analizar verbos sin habilitar su conjugación
+     // tabular: basta con conservar la forma en alguna ruta ya admitida.
+     for(const name of spec.yes||[]){
+      if(course==='latin4')assert(r.pools.some(pool=>pool.includes(name)),
+       context+' desapareció '+name+' de todas las rutas');
+      else for(const [i,pool] of r.pools.entries())
        assert(pool.includes(name),context+' no incluye '+name+' en grupo '+i);
+     }
      for(const name of spec.no||[])
       for(const [i,pool] of r.pools.entries())
        assert(!pool.includes(name),context+' adelanta '+name+' en grupo '+i);
