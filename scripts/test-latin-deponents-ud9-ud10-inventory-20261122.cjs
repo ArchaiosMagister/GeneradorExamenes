@@ -6,7 +6,23 @@ const root=path.resolve(__dirname,'..');
 const corpus=JSON.parse(fs.readFileSync(path.join(root,'data/lemmas/teacher-forms.json'),'utf8'));
 const names=['gratulor','loquor','miror','nascor','obliviscor','orior','patior','polliceor','revertor','sequor','utor'];
 const historical={gratulor:53,loquor:53,miror:54,nascor:54,obliviscor:54,orior:54,patior:54,polliceor:53,revertor:54,sequor:53,utor:54};
-const verified={gratulor:0,loquor:6,miror:1,nascor:0,obliviscor:0,orior:0,patior:0,polliceor:0,revertor:0,sequor:6,utor:0};
+// Admite solo dos estados completos: inventario anterior a #220 o las 24 formas
+// de #220 ya acreditadas individualmente. Nunca acepta promociones parciales.
+const promotedForms={
+ gratulor:['gratulor','gratularis','gratulatur','gratulamur','gratulamini','gratulantur'],
+ miror:['miror','miraris','miratur','miramur','miramini','mirantur'],
+ polliceor:['polliceor','polliceris','pollicetur','pollicemur','pollicemini','pollicentur'],
+ patior:['patior','pateris','patitur','patimur','patimini','patiuntur']
+};
+const promotionCounts=Object.fromEntries(Object.keys(promotedForms).map(lemma=>[
+ lemma,corpus.rows.lat.filter(r=>r[0]===lemma&&r[3]===5&&r[2].startsWith('V;IND;DEP;PRS;')).length
+]));
+const promotionSizes=Object.values(promotionCounts);
+assert(promotionSizes.every(n=>n===0)||promotionSizes.every(n=>n===6),
+ 'Las 24 formas UD9–10 solo pueden incorporarse juntas y acreditadas');
+const promoted=promotionSizes.every(n=>n===6);
+const verified={gratulor:promoted?6:0,loquor:6,miror:promoted?7:1,nascor:0,obliviscor:0,orior:0,
+ patior:promoted?6:0,polliceor:promoted?6:0,revertor:0,sequor:6,utor:0};
 const collisions=['loquor','nascor','obliviscor','revertor','sequor','utor'];
 const normalize=s=>String(s).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
 for(const name of names){
@@ -23,11 +39,11 @@ for(const name of names){
  assert.equal(ambiguous,collisions.includes(name),name+' perdió/cambió el sincretismo histórico presente-futuro');
  // Un testimonio histórico con etiqueta ACT no cambia la voz escolar deponente.
 }
-for(const name of ['gratulor','obliviscor','revertor','orior','patior','polliceor','nascor','utor']){
+for(const name of ['obliviscor','revertor','orior','nascor','utor']){
  assert.equal(corpus.rows.lat.filter(r=>r[0]===name&&r[3]===5).length,0,
   'Promoción de paradigma requiere documentación individual: '+name);
 }
-const mirati=corpus.rows.lat.filter(r=>r[0]==='miror'&&r[3]===5);
+const mirati=corpus.rows.lat.filter(r=>r[0]==='miror'&&r[3]===5&&!r[2].startsWith('V;IND;DEP;PRS;'));
 assert.equal(mirati.length,1);
 assert.deepEqual(mirati[0],['miror','mirati','V;PTCP;ACT;PRF;NOM;PL;MASC',5]);
 for(const name of ['loquor','sequor']){
@@ -76,7 +92,25 @@ for(const [lemma,forms] of Object.entries(individuallyCotejados)){
   lemma+' variante -re de segunda singular');
  assert.equal(rows.filter(r=>r[2]==='V;IMP;ACT;PRS;2;SG'&&normalize(r[1])===alt).length,1,
   lemma+' variante -re coincide con imperativo y no se pregunta aislada');
- assert.equal(corpus.rows.lat.filter(r=>r[0]===lemma&&r[3]===5&&r[2].startsWith('V;IND;DEP;PRS')).length,0,
-  lemma+' aún no promovido: solo cotejo aislado');
+ const candidate=corpus.rows.lat.filter(r=>r[0]===lemma&&r[3]===5&&r[2].startsWith('V;IND;DEP;PRS;'));
+ assert.equal(candidate.length,promoted?6:0,lemma+' no admite promociones parciales');
+ if(promoted){
+  for(let i=0;i<6;i++){
+   const tag='V;IND;DEP;PRS;'+slots[i];
+   assert.equal(candidate.filter(r=>r[1]===forms[i]&&r[2]===tag).length,1,
+    lemma+' acreditación incorrecta en '+tag);
+  }
+ }
 }
-console.log('PASS: 11 deponentes UD9–10, 24 presentes cotejados, 11 variantes -re/imperativo, 6 sincretismos, sin promoción automática.');
+// La acreditación posterior está respaldada por las cuatro fichas persistentes,
+// no por recuentos ni por etiquetados heredados de fuente 0.
+const overrides=JSON.parse(fs.readFileSync(path.join(root,'data/lemmas/verified-overrides.json'),'utf8'));
+for(const [lemma,forms] of Object.entries(promotedForms)){
+ const matching=overrides.paradigms.filter(x=>x.lang==='lat'&&x.lemma===lemma);
+ assert.equal(matching.length,promoted?1:0,lemma+' fichero de acreditación inesperado');
+ if(promoted){
+  assert(/^https:\\/\\//.test(matching[0].reference),'Sin referencia del paradigma '+lemma);
+  assert.deepEqual(matching[0].blocks,[{tags:'V;IND;DEP;PRS',forms}],lemma+' bloques fuera de alcance');
+ }
+}
+console.log('PASS: 11 deponentes UD9–10, 24 presentes cotejados, 11 sincretismos -re/imperativo, 6 de presente/futuro; etapa '+(promoted?'acreditada':'histórica')+' íntegra.');
