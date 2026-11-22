@@ -7086,9 +7086,11 @@ const latinSyntagmSemanticPairs=Object.freeze({
  homo: 'bonus malus doctus fessus',
  hora: 'longus',
  hortus: 'magnus parvus densus',
+ hostis: 'strenuus improbus perterritus',
  imperator: 'magnus bonus malus strenuus',
  imperium: 'magnus longus',
  incendium: 'magnus longus',
+ ignis: 'magnus parvus',
  incola: 'bonus malus fessus',
  initium: 'bonus malus magnus',
  iter: 'longus magnus durus',
@@ -7928,6 +7930,12 @@ const LATIN_VERIFIED_NEUTER_I_STEMS=Object.freeze({
 // Paradigmas individuales masculinos/femeninos de tema en -i.
 // Las variantes históricas siguen en el índice; no se promocionan fuentes.
 const LATIN_VERIFIED_MF_I_STEMS=Object.freeze({
+ hostis:{genitives:['hostis','is'],genders:['m'],forms:[
+  ['hostis','hostis','hostem','hostis','hosti','hoste'],
+  ['hostes','hostes','hostes','hostium','hostibus','hostibus']]},
+ ignis:{genitives:['ignis','is'],genders:['m'],forms:[
+  ['ignis','ignis','ignem','ignis','igni','igni'],
+  ['ignes','ignes','ignes','ignium','ignibus','ignibus']]},
  civis:{genitives:['civis','is'],genders:['m','f'],forms:[
   ['civis','civis','civem','civis','civi','cive'],
   ['cives','cives','cives','civium','civibus','civibus']]},
@@ -7993,7 +8001,7 @@ function mNoun(raw){
  }
  else return null;
  // Unsupported exceptional paradigms, 3rd declension i-stems, 2nd declension -ius.
- const blocked=/^(domus|deus|filius|dea|filia|vis|bos|iuppiter|mare|animal|hostis|turris|ignis|nox|ars|pars|mons|dens|pons|gens|imber|securis|sitis|puppis|febris|senatus|manus|cornu|genu|res|dies)$/i;
+ const blocked=/^(domus|deus|filius|dea|filia|vis|bos|iuppiter|mare|animal|turris|nox|ars|pars|mons|dens|pons|gens|imber|securis|sitis|puppis|febris|senatus|manus|cornu|genu|res|dies)$/i;
  // Gaffiot: iter, itineris n. mantiene en los casos oblicuos el tema itiner-.
  // El patrón 3n obtiene las doce casillas de modo exacto; sigue bloqueado todo
  // el resto de los lemas excepcionales sin paradigma cotejado.
