@@ -40,7 +40,7 @@ assert.equal(teacher.vocabulary.lat.cicero.lat4.entry,'Cĭcĕrō, –onis (m.)')
 assert.equal(teacher.vocabulary.lat.oppugnatio.lat4.entry,'ŏppūgnātĭō, –onis (f.)');
 assert.equal(teacher.vocabulary.lat.homo.lat4.entry,'homo, hominis (m.)');
 assert.equal(teacher.vocabulary.lat.legio.lat4.entry,'legio, legiōnis (f.)');
-assert.equal(teacher.counts.lat.contrastado,619);
+assert.equal(teacher.counts.lat.contrastado,643);
 const m=html.indexOf('function migrateSeededLatinVerbEntries(items){');
 const z=html.indexOf('if(migrateSeededLatinVerbEntries(examRequired))saveRequired();',m);
 assert(m>=0&&z>m);

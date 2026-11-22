@@ -27,7 +27,7 @@ for(const lemma of ['sepelio','solvo','vivo','invenio']){
   'No introducir paradigmas pasivos inferidos para '+lemma);
 }
 assert.equal(bank.counts.grc.wikcionario,521);
-assert.equal(bank.counts.lat.contrastado,619);
+assert.equal(bank.counts.lat.contrastado,643,'24 nuevas casillas deponentes verificadas, sin ascensos automáticos');
 assert.equal(bank.counts.grc.contrastado,478);
 assert.equal(bank.extensions.candidate_rows,bank.counts.lat.modelo,'Contador provisional incoherente');
 assert.equal(bank.extensions.greek_nominal_candidates.rows,521);

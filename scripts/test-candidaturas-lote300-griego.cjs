@@ -18,7 +18,7 @@ assert.equal(bank.counts.grc.wikcionario,521);
 assert.equal(bank.counts.grc.contrastado,478);
 assert.equal(bank.counts.lat.modelo,bank.extensions.candidate_rows,
  'No se puede fijar el inventario latino de otra revisión en la prueba del lote griego');
-assert.equal(bank.counts.lat.contrastado,619);
+assert.equal(bank.counts.lat.contrastado,643,'24 nuevas casillas deponentes verificadas, sin ascensos automáticos');
 assert.equal(bank.extensions.greek_nominal_candidates.rows,521);
 assert.equal(bank.extensions.greek_nominal_candidates.quarantinedAccentForms,24);
 assert.equal(source.singleForms.length,479);

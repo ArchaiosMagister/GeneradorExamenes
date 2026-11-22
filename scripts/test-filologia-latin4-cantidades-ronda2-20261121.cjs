@@ -50,7 +50,7 @@ for(const [lemma,oldEntry,newEntry] of catalog){
  assert.equal(index.vocabulary.lat[lemma].lat4.entry,newEntry,lemma+': índice distinto');
 }
 assert.equal(index.vocabulary.lat.mulier.lat4.entry,'mŭlĭĕr, –eris (f.)');
-assert.equal(index.counts.lat.contrastado,619,
+assert.equal(index.counts.lat.contrastado,643,
  'Una corrección de cantidad no puede promover formas nuevas de evaluación');
 const begin=html.indexOf('function migrateSeededLatinVerbEntries(items){');
 const finish=html.indexOf('if(migrateSeededLatinVerbEntries(examRequired))saveRequired();',begin);

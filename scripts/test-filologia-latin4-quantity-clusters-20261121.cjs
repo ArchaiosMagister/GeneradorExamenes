@@ -38,7 +38,7 @@ for(const [lemma,before,after,units] of spec){
  assert.equal(embedded.vocabulary.lat[lemma].lat4.entry,after);
 }
 assert.equal(checked,9);
-assert.equal(idx.counts.lat.contrastado,619);
+assert.equal(idx.counts.lat.contrastado,643);
 assert.deepEqual(idx.rows.lat,embedded.rows.lat,'Índice offline distinto');
 const f=html.indexOf('function migrateSeededLatinVerbEntries(items){');
 const z=html.indexOf('if(migrateSeededLatinVerbEntries(examRequired))saveRequired();',f);
@@ -94,7 +94,7 @@ assert.equal(migrate(oldSeeds),true,'Migración de semillas 25');
 assert(oldSeeds.every(x=>x.meaning==='Glosa intacta'));
 assert(oldSeeds.every(x=>!continued.some(([k,old])=>x.entry===old)));
 assert.equal(migrate(oldSeeds),false,'Migración idempotente 25');
-assert.equal(idx.counts.lat.contrastado,619,'No promover flexiones por cambios de cantidad');
+assert.equal(idx.counts.lat.contrastado,643,'No promover flexiones por cambios de cantidad');
 
 // Nueva tanda de diez lemas: 17 apariciones. Sin validar flexiones por analogía.
 const newest=[
@@ -136,7 +136,7 @@ assert.equal(newestSeeds.at(-1).meaning,'Manual intacto');
 assert.equal(migrate(newestSeeds),false,'Migración 17 idempotente');
 assert(required.courses.latin4.UD1.includes('stēlla, –æ'),'No alterar stēlla: ē larga acreditada');
 assert(required.courses.latin4.UD1.includes('māgnus, –a, –um'),'Conservar magnus pendiente editorial');
-assert.equal(idx.counts.lat.contrastado,619);
+assert.equal(idx.counts.lat.contrastado,643);
 assert.equal(Object.values(required.courses.latin4).flat().length,541);
 
 // Corrección ortográfica de diptongos LAT4: 16 casos de once lemas.
@@ -174,7 +174,7 @@ assert.equal(migrate(oldDiphthongSeeds),true);
 assert(oldDiphthongSeeds.slice(0,-1).every(x=>x.meaning==='Glosa original'));
 assert.equal(untouched.entry,'nāuta, –æ');
 assert.equal(migrate(oldDiphthongSeeds),false);
-assert.equal(idx.counts.lat.contrastado,619);
+assert.equal(idx.counts.lat.contrastado,643);
 
 // Extensión de auditoría tras PR205: 14 lemas, 16 ubicaciones curriculares.
 const pendingQuantitySpec=[["silva","sīlva, –æ","sĭlva, –æ",["UD6","UD7"]],["umbra","ūmbra, –æ","ŭmbra, –æ",["UD3"]],["semper","sēmpĕr (adv.)","sĕmpĕr (adv.)",["UD3","UD4"]],["barbarus","bārbărus, –ī","bărbărus, –ī",["UD8"]],["fessus","fēssus, –a, –um","fĕssus, –a, –um",["UD3"]],["hispania","Hīspānĭa, –æ","Hĭspānĭa, –æ",["UD3"]],["gallus","Gāllus, –a, um","Găllus, –a, –um",["UD9"]],["germanus","Gērmānus, –a, –um","Gĕrmānus, –a, –um",["UD9"]],["immensus","īmmēnsus, –a, –um","ĭmmēnsus, –a, –um",["UD9"]],["imperium","īmpĕrĭŭm, –ī (n.)","ĭmpĕrĭŭm, –ī (n.)",["UD9"]],["invenio","īnvĕnĭo (4ª)","ĭnvĕnĭo (4ª)",["UD3"]],["argentum","ārgēntŭm, –ī","ărgĕntŭm, –ī",["UD3"]],["sacerdos","săcērdōs, –dotis (m.)","săcĕrdōs, –dotis (m.)",["UD7"]],["patria","pā̆trĭa, æ","pătrĭa, æ",["UD7"]]];
@@ -201,6 +201,6 @@ assert.equal(migrate(newSeeds),true);
 assert(newSeeds.slice(0,-1).every(x=>x.meaning==='Glosa intacta'));
 assert.equal(customNew.entry,'sīlva, –æ');
 assert.equal(migrate(newSeeds),false,'Idempotencia de migración');
-assert.equal(idx.counts.lat.contrastado,619);
+assert.equal(idx.counts.lat.contrastado,643);
 
-console.log('LAT4: 9/9 grafías, 4 overrides, 541 exigibles, 619 formas acreditadas, migración y offline concordantes');
+console.log('LAT4: 9/9 grafías, 4 overrides, 541 exigibles, 643 formas acreditadas, migración y offline concordantes');

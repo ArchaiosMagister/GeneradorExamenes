@@ -83,7 +83,9 @@ for(const [course,rows] of Object.entries(banks)){
     grade==='2ª'?(lemma.endsWith('eo')||lemma.endsWith('eor')):
     grade==='3ª'?((lemma.endsWith('o')&&!lemma.endsWith('io')&&!lemma.endsWith('eo'))||
       (lemma.endsWith('or')&&!lemma.endsWith('ior')&&!lemma.endsWith('eor'))):
-    (grade==='4ª'||grade==='mx.')?(lemma.endsWith('io')||grade==='4ª'&&lemma.endsWith('ior')):false;
+    grade==='4ª'?(lemma.endsWith('io')||lemma.endsWith('ior')):
+    grade==='mx.'?(lemma.endsWith('io')||
+      lemma.endsWith('ior')&&/,\s*[^,]+\s+sum\s*\(mx\.\)$/.test(entry.entry)):false;
    assert(good,'Conjugación incompatible con el presente: '+course+'/'+entry.unit+' '+entry.entry);
   }
   const k=course+':'+lemma;
@@ -95,7 +97,7 @@ for(const [course,rows] of Object.entries(banks)){
 }
 assert(checks.entries>400&&checks.lemmas.size>250,
  'La auditoría estructural no está cubriendo el repertorio real');
-assert.equal(corpus.counts.lat.contrastado,619,
+assert.equal(corpus.counts.lat.contrastado,643,
  'Una corrección editorial no convierte formas propuestas en contrastadas');
 const normalize=s=>norm(s).replace(/[–−—]/g,'-').trim();
 const a=html.indexOf('function mVerb(raw){'),b=html.indexOf('// Corrections for conjugation:',a);

@@ -142,6 +142,8 @@ jobs:
         run: npm run offline:build
       - name: Exigir que el HTML autónomo regenerado coincida con el archivo del repositorio
         run: git diff --exit-code -- offline.html
+      - name: Conservar dos correcciones filológicas deponentes en índices, banco y HTML autónomo
+        run: node scripts/test-latin-deponents-ud7-ud9-20261122.cjs --source-only
       - name: Probar lematización latina y griega sin red
         run: node scripts/test-lemma-index.mjs
       - name: Verificar las 17 decisiones griegas, banco, índice y HTML autónomo
@@ -180,6 +182,8 @@ jobs:
         run: node scripts/test-verb-curriculum-browser.cjs
       - name: No anticipar irregular, deponente ni semideponente en LAT1/LAT4
         run: node scripts/test-latin-verbal-curriculum-20261122.cjs
+      - name: Auditar deponentes complector y patior en web y autónoma ES/VA
+        run: node scripts/test-latin-deponents-ud7-ud9-20261122.cjs
       - name: Conservar matriz curricular para revisión filológica
         if: always()
         uses: actions/upload-artifact@v4

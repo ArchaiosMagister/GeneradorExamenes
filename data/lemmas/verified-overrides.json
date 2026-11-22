@@ -872,6 +872,24 @@
       "to": "Cĭcĕrō, –onis (m.)",
       "reference": "https://es.wiktionary.org/wiki/Cicero",
       "note": "Cantidad final larga -ō del nominativo; corrección solo de enunciado, sin añadir formas ni certificar paradigmas."
+    },
+    {
+      "lang": "lat",
+      "lemma": "complector",
+      "course": "lat1",
+      "from": "complector, complectus sum (3ª)",
+      "to": "complector, complexus sum (3ª)",
+      "reference": "https://fr.wikisource.org/wiki/Page%3AGaffiot_-_Dictionnaire_illustr%C3%A9_Latin-Fran%C3%A7ais.djvu/370",
+      "note": "Gaffiot y Lewis & Short: participio de perfecto complexus; enunciado escolar corregido sin acreditar otras formas por analogía."
+    },
+    {
+      "lang": "lat",
+      "lemma": "patior",
+      "course": "lat1",
+      "from": "patior, passus sum (4ª)",
+      "to": "patior, passus sum (mx.)",
+      "reference": "https://odysseum.eduscol.education.fr/les-modeles-de-conjugaison",
+      "note": "Deponente de tercera conjugación mixta: patior, pateris, pati, passus sum. Corrección de clase, sin añadir ni habilitar formas sin contraste individual."
     }
   ],
   "paradigms": [
@@ -2283,6 +2301,118 @@
             "discebamus",
             "discebatis",
             "discebant"
+          ]
+        }
+      ]
+    },
+    {
+      "lang": "lat",
+      "lemma": "complector",
+      "forms": [
+        "complector",
+        "complecteris",
+        "complectitur",
+        "complectimur",
+        "complectimini",
+        "complectuntur"
+      ],
+      "reference": "https://latin.cactus2000.de/showverb.en.php?verb=complecti",
+      "secondaryReference": "https://www.latindictionary.io/entry/complector-complecti-complexus-sum-11768",
+      "type": "Presente indicativo deponente, tercera conjugación; complecteris coincide con el futuro",
+      "blocks": [
+        {
+          "tags": "V;IND;DEP;PRS",
+          "forms": [
+            "complector",
+            "complecteris",
+            "complectitur",
+            "complectimur",
+            "complectimini",
+            "complectuntur"
+          ]
+        }
+      ]
+    },
+    {
+      "lang": "lat",
+      "lemma": "intueor",
+      "forms": [
+        "intueor",
+        "intueris",
+        "intuetur",
+        "intuemur",
+        "intuemini",
+        "intuentur"
+      ],
+      "reference": "https://www.latindictionary.io/entry/intueor-intueri-intuitus-sum",
+      "secondaryReference": "https://thrax.mpiwg-berlin.mpg.de/mpiwg-mpdl-cms-web/lt/GetDictionaryEntries?language=lat&outputFormat=html&outputType=dictFull&outputType=morphCompact&query=intuenti&queryDisplay=in%C2%ADtuenti",
+      "type": "Presente indicativo deponente, segunda conjugación; variante -re no promovida",
+      "blocks": [
+        {
+          "tags": "V;IND;DEP;PRS",
+          "forms": [
+            "intueor",
+            "intueris",
+            "intuetur",
+            "intuemur",
+            "intuemini",
+            "intuentur"
+          ]
+        }
+      ]
+    },
+    {
+      "lang": "lat",
+      "lemma": "laetor",
+      "forms": [
+        "laetor",
+        "laetaris",
+        "laetatur",
+        "laetamur",
+        "laetamini",
+        "laetantur"
+      ],
+      "reference": "https://latinando.it/coniugazione/laetor",
+      "secondaryReference": "https://www.latindictionary.io/entry/laetor-laetari-laetatus-sum",
+      "type": "Presente indicativo deponente, primera conjugación",
+      "blocks": [
+        {
+          "tags": "V;IND;DEP;PRS",
+          "forms": [
+            "laetor",
+            "laetaris",
+            "laetatur",
+            "laetamur",
+            "laetamini",
+            "laetantur"
+          ]
+        }
+      ]
+    },
+    {
+      "lang": "lat",
+      "lemma": "vereor",
+      "forms": [
+        "vereor",
+        "vereris",
+        "veretur",
+        "veremur",
+        "veremini",
+        "verentur"
+      ],
+      "reference": "https://latin.cactus2000.de/showverb.en.php?verb=vereri",
+      "secondaryReference": "https://www.latindictionary.io/entry/vereor-vereri-veritus-sum",
+      "type": "Presente indicativo deponente, segunda conjugación; variante -re no promovida",
+      "blocks": [
+        {
+          "tags": "V;IND;DEP;PRS",
+          "forms": [
+            "vereor",
+            "vereris",
+            "veretur",
+            "veremur",
+            "veremini",
+            "verentur"
           ]
         }
       ]
