@@ -5,7 +5,7 @@ const assert=require('node:assert/strict');
 const fs=require('node:fs');
 const path=require('node:path');
 const {pathToFileURL}=require('node:url');
-const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
+const sourceOnly=process.argv.includes('--source-only');
 const root=path.resolve(__dirname,'..');
 const index=JSON.parse(fs.readFileSync(path.join(root,'data/lemmas/teacher-forms.json'),'utf8'));
 const norm=s=>String(s).normalize('NFD').replace(/\p{M}/gu,'').toLowerCase();
@@ -33,6 +33,17 @@ for(const [lemma,f] of Object.entries(fixtures)){
  for(const [form,cas,num] of alternatives[lemma])
   assert(matches(form,cas,num),'Variante histórica desaparecida: '+lemma+' '+form);
 }
+if(sourceOnly){
+ for(const name of ['index.html','offline.html']){
+  const html=fs.readFileSync(path.join(root,name),'utf8');
+  assert(html.includes('LATIN_VERIFIED_MF_I_STEMS')&&html.includes('civium')&&
+   html.includes('navium')&&html.includes('urbium'),
+   name+' no incorpora los tres paradigmas morfológicos');
+ }
+ console.log('PASS: 36 casillas y variantes de fuente 0; HTML web/autónomo presentes (sin navegador)');
+ process.exit(0);
+}
+const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
 (async()=>{
  const browser=await chromium.launch({headless:true});
  try{
