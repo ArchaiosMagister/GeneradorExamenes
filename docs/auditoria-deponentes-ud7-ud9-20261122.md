@@ -42,3 +42,11 @@ La prioridad pendiente pasa a **imperfecto y futuro** de estos cuatro lemas, que
 - Sincretismos sin contexto: la exclusión de `proficisceris`, `loqueris`, `sequeris` y ahora `complecteris` sigue activa.
 - El género y el número del participio de perfecto deponente no se suponen sin contexto sintáctico; no se añade una tabla perifrástica automática.
 - Regenerar el índice desde sus fuentes con `build-lemma-index.mjs` debe preservar las dos enmiendas editoriales y sumar exactamente 24 registros a la fuente latina 5 (619 → 643), sin alterar los 570 registros anteriores ni otros lemas.
+
+## Segundo cotejo: UD9–10, `patior` y `orior`
+
+En `patior, passus sum` se conserva la clasificación escolar **tercera mixta** (`mx.`). El indicativo presente `patior, pateris, patitur, patimur, patimini, patiuntur` concuerda con el repertorio de [Wikcionario](https://es.wiktionary.org/wiki/patior) y el [cuadro de la conjugación mixta](https://www.schule-bw.de/faecher-und-schularten/sprachen-und-literatur/latein/sprache/konjugation-des-verbs/konjugationen/deponentien-gemischte-konjugation.html). No se han añadido sus seis casillas a fuente 5: permanecen en la fuente histórica hasta su admisión en una ampliación separada.
+
+`orior, ortus sum` conserva su enunciado escolar de **cuarta conjugación**, pero no se tratará como una cuarta regular en el generador. [Lewis & Short](https://atlas.perseus.tufts.edu/dictionaries/entry/urn%3Acite2%3Ascaife-viewer%3Adictionary-entries.atlas_v1%3Alat.ls.perseus-eng2-n33000/), [Logeion](https://logeion.org/orior) y el [cotejo de variantes](https://es.wiktionary.org/wiki/orior) permiten `oreris` junto a `oriris`, `oritur`, `orimur`, `orimini`, `oriuntur` y alternancias en el imperfecto de subjuntivo (`orerer/orirer`). La presencia de variantes es motivo para **no generar casillas por analogía ni adjudicar una lectura única a formas ambiguas**. Tampoco se han promovido registros del índice histórico.
+
+Las nuevas pruebas comprueban que ni `patior` ni `orior` se incorporan de forma automática a los ejercicios evaluables de UD9–10. El cotejo de los otros nueve lemas inicialmente registrados para esta unidad se mantiene pendiente; no se infiere su paradigma a partir del sufijo `-or`.
