@@ -2911,6 +2911,7 @@ const latinSyntagmSemanticPairs=Object.freeze({
  cervus: 'magnus parvus fessus',
  charta: 'albus longus',
  civitas: 'magnus parvus finitimus vicinus',
+ civis: 'bonus doctus fidus',
  clamor: 'magnus longus',
  cloaca: 'longus magnus',
  cognomen: 'clarus',
@@ -2987,6 +2988,7 @@ const latinSyntagmSemanticPairs=Object.freeze({
  munitio: 'magnus longus',
  murus: 'altus longus magnus',
  nauta: 'bonus strenuus fessus',
+ navis: 'magnus parvus longus',
  nomen: 'magnus clarus verus',
  numerus: 'magnus parvus',
  nuntius: 'fidus bonus fessus',
@@ -3059,6 +3061,7 @@ const latinSyntagmSemanticPairs=Object.freeze({
  tunica: 'albus longus',
  turba: 'magnus parvus perterritus',
  umbra: 'longus magnus densus',
+ urbs: 'magnus parvus vicinus',
  uxor: 'bonus doctus fessus',
  venator: 'strenuus fessus bonus',
  ventus: 'magnus',
@@ -3791,12 +3794,27 @@ const LATIN_VERIFIED_NEUTER_I_STEMS=Object.freeze({
   ['animalia','animalia','animalia','animalium','animalibus','animalibus']
  ]}
 });
+// Paradigmas individuales masculinos/femeninos de tema en -i.
+// Las variantes históricas siguen en el índice; no se promocionan fuentes.
+const LATIN_VERIFIED_MF_I_STEMS=Object.freeze({
+ civis:{genitives:['civis','is'],genders:['m','f'],forms:[
+  ['civis','civis','civem','civis','civi','cive'],
+  ['cives','cives','cives','civium','civibus','civibus']]},
+ navis:{genitives:['navis','is'],genders:['f'],forms:[
+  ['navis','navis','navem','navis','navi','navi'],
+  ['naves','naves','naves','navium','navibus','navibus']]},
+ urbs:{genitives:['urbis','is'],genders:['f'],forms:[
+  ['urbs','urbs','urbem','urbis','urbi','urbe'],
+  ['urbes','urbes','urbes','urbium','urbibus','urbibus']]}
+});
 function mNoun(raw){
  const s=mNormalize(raw).replace(/\s+/g,' '),parts=s.split(',').map(x=>x.trim());if(parts.length<2)return null;
  const nom=parts[0],tail=parts[1].split(/\s*\(/)[0].trim();
  const labelledGender=(s.match(/\(([mfn])\.?\)/i)||[])[1]?.toLowerCase();
  // Comprobación independiente del género declarado en los enunciados docentes.
- const gender=({ordo:'m',regio:'f',ver:'n'}[nom.toLowerCase()])||labelledGender;
+ const dualGender=/\((?:m\.\s*(?:o|y)\s*f\.|f\.\s*(?:o|y)\s*m\.)\)/i.test(s);
+ const gender=({ordo:'m',regio:'f',ver:'n'}[nom.toLowerCase()])||labelledGender||
+  (nom.toLowerCase()==='civis'&&dualGender?'m':undefined);
  if(!/^[A-Za-z]+$/.test(nom))return null;
  let gen=tail.startsWith('-')?tail.slice(1):tail;
  if(!/^[A-Za-z]+$/.test(gen))return null;
@@ -3807,6 +3825,15 @@ function mNoun(raw){
   return {lemma:nom,kind:'3n',gender:'n',
    forms:individualIStem.forms.map(number=>[...number]),
    source:'Paradigma individual de neutro en -i (Gaffiot/Collatinus)'};
+ }
+ const mfIStem=LATIN_VERIFIED_MF_I_STEMS[nom.toLowerCase()];
+ if(mfIStem){
+  // El enunciado masculino/femenino de civis usa concordancia masculina
+  // para las tablas, sin eliminar el femenino del análisis morfológico.
+  if(!mfIStem.genders.includes(gender)||!mfIStem.genitives.includes(gen))return null;
+  return {lemma:nom,kind:'3mf',gender,genders:[...mfIStem.genders],
+   forms:mfIStem.forms.map(number=>[...number]),
+   source:'Paradigma editorial individual (fuente 0; no promocionado)'};
  }
  let kind=null,stem=null;
  if(gen==='ae'&&nom.endsWith('a')){kind='1';stem=nom.slice(0,-1)}
@@ -3835,7 +3862,7 @@ function mNoun(raw){
  }
  else return null;
  // Unsupported exceptional paradigms, 3rd declension i-stems, 2nd declension -ius.
- const blocked=/^(domus|deus|filius|dea|filia|vis|bos|iuppiter|mare|animal|civis|urbs|hostis|navis|turris|ignis|nox|ars|pars|mons|dens|pons|gens|urbs|imber|securis|sitis|puppis|febris|senatus|manus|cornu|genu|res|dies)$/i;
+ const blocked=/^(domus|deus|filius|dea|filia|vis|bos|iuppiter|mare|animal|hostis|turris|ignis|nox|ars|pars|mons|dens|pons|gens|imber|securis|sitis|puppis|febris|senatus|manus|cornu|genu|res|dies)$/i;
  // Gaffiot: iter, itineris n. mantiene en los casos oblicuos el tema itiner-.
  // El patrón 3n obtiene las doce casillas de modo exacto; sigue bloqueado todo
  // el resto de los lemas excepcionales sin paradigma cotejado.
