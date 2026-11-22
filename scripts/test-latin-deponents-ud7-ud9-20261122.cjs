@@ -85,7 +85,16 @@ for(const [lemma,forms] of Object.entries(attested)){
  assert.equal(corpus.rows.lat.filter(x=>x[0]===lemma&&x[3]===5).length,6,
   lemma+' no autorizar más tiempos');
 }
-assert(!evidence.patior,'Patior sin aprobación de flexión adicional');
+assert(!evidence.patior&&!evidence.orior,'Patior y orior sin aprobación automática de flexiones');
+assert.equal(corpus.vocabulary.lat.orior?.lat1?.entry,'orior, ortus sum (4ª)',
+ 'El lema orior conserva la clasificación escolar con variantes del presente');
+for(const lemma of ['patior','orior']){
+ assert(!overrides.paradigms.some(x=>x.lang==='lat'&&x.lemma===lemma),
+  'No acreditar por analogía un verbo con formas mixtas: '+lemma);
+ assert(corpus.rows.lat.some(x=>x[0]===lemma),'Ausente del índice: '+lemma);
+ assert(corpus.rows.lat.filter(x=>x[0]===lemma).every(x=>x[3]===0),
+  'Patior y orior solo tienen fuente histórica: '+lemma);
+}
 assert(html.includes("'complector|complecteris'"),
  'La segunda singular de complector también es futuro y debe bloquearse sin contexto');
 assert.equal(corpus.counts.lat.contrastado,643,'Fuente 5 latina debe aumentar exactamente 24');
@@ -123,6 +132,10 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
       noAnalogy:!mVerb('complector, complexus sum (3ª)')&&
        !mVerb('patior, passus sum (mx.)'),
       blocked:latinMorphologyVerbPool(['UD7']).every(x=>examKey(x.entry)!=='patior'),
+      notPromoted:latinMorphologyVerbPool(['UD9–10']).every(x=>
+       !['patior','orior'].includes(examKey(x.entry)))&&
+       latinExamFormCandidates(['UD9–10'],true)[2].every(x=>
+        !['patior','orior'].includes(examKey(x.entry))),
       accredited:['complector','intueor','laetor','vereor'].every(lemma=>
        latinMorphologyVerbPool(['UD7']).some(x=>examKey(x.entry)===lemma&&x.sourceCode===5&&x.voice==='deponente')),
       tooEarly:latinMorphologyVerbPool(['UD6']).every(x=>
@@ -136,7 +149,7 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
     },lang);
     assert(result.texts.every(Boolean),file+'/'+lang+' exigibles');
     assert(result.currentVocab.every(Boolean),file+'/'+lang+' banco');
-    assert(result.noAnalogy&&result.blocked&&result.accredited&&result.tooEarly&&
+    assert(result.noAnalogy&&result.blocked&&result.notPromoted&&result.accredited&&result.tooEarly&&
      result.ambiguous&&result.visible,file+'/'+lang+' currículo, presencia y sincretismo');
    }
    assert.deepEqual(errors,[],file+' errores JS');
