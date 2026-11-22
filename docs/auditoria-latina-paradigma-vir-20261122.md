@@ -35,3 +35,23 @@ Se añaden tres combinaciones semánticas permitidas, sin sorteo indiscriminado:
 - `data/lemmas/teacher-forms.json`, `data/lemmas/verified-overrides.json`, bancos griegos y puntuaciones se conservan intactos.
 
 **Estado:** rama separada de `main`; solicitar autorización docente antes de fusionar y publicar.
+
+
+## Segunda incidencia confirmada: `mors, mortis`
+
+El sustantivo femenino de tercera `mors, mortis` (Latín I UD5) se aceptaba en `mNoun`, pero la generación indiferenciada de genitivo plural de los temas consonánticos producía por defecto `mortum`. El índice de lematización persistente registra `mortium` como `N;GEN;PL` (fuente 0), coincidente con la flexión escolar más extendida del tema mixto.
+
+Se fija únicamente la casilla `mors` + genitivo plural en `mortium`, conservando el resto de su matriz:
+
+| Caso | Singular | Plural |
+| --- | --- | --- |
+| Nominativo | mors | mortes |
+| Vocativo | mors | mortes |
+| Acusativo | mortem | mortes |
+| Genitivo | mortis | **mortium** |
+| Dativo | morti | mortibus |
+| Ablativo | morte | mortibus |
+
+El cotejo se apoya en [*The Latin Library*, tercera declinación, temas mixtos](https://www.thelatinlibrary.com/101/Declension3.pdf), [Dicolatin, tabla de *mors*](https://www.dicolatin.com/dico/table/0/MORS--TIS--f) y [morfología nominal de la Junta de Andalucía](https://edea.juntadeandalucia.es/bancorecursos/file/03b783f0-3665-4a8e-a52d-ae7e248fdd33/1/es-an_2018062412_9130532.zip/21_morfologa_nominal_la_3_declinacin.html?temp.hb=true&temp.hn=true). La forma `mortum` aparece en algunos repertorios como alternativa; no es preciso negarla para escoger la variante escolar regularizada que la propia fuente del proyecto ya contiene.
+
+La regresión también comprueba las doce formas de `mors` en web y autónoma, con las dos lenguas y los dos cursos. La excepción se aplica **solo a `mors`**: no se amplía por semejanza a otros temas de tercera sin cotejo.
