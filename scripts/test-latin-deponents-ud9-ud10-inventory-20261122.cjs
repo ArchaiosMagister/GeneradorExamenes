@@ -36,6 +36,23 @@ for(const name of ['loquor','sequor']){
  assert(good.every(r=>r[2].startsWith('V;IND;DEP;PRS;')),'Solo presentes acreditados: '+name);
 }
 
+
+// Las once variantes -re son sincréticas con el imperativo; seis también con el futuro.
+// Estas aserciones usan SOLO registros históricos (fuente 0), sin ampliar lo evaluable.
+const alternatePresentImperative={
+ gratulor:'gratulare',loquor:'loquere',miror:'mirare',nascor:'nascere',
+ obliviscor:'obliviscere',orior:'orere',patior:'patere',polliceor:'pollicere',
+ revertor:'revertere',sequor:'sequere',utor:'utere'
+};
+for(const [lemma,form] of Object.entries(alternatePresentImperative)){
+ const rows=corpus.rows.lat.filter(r=>r[0]===lemma&&r[3]===0);
+ for(const tag of ['V;IND;ACT;PRS;2;SG','V;IMP;ACT;PRS;2;SG']){
+  assert.equal(rows.filter(r=>r[2]===tag&&normalize(r[1])===form).length,1,
+   lemma+' sincretismo presente/imperativo: '+form+' ('+tag+')');
+ }
+ const future=rows.some(r=>r[2]==='V;IND;ACT;FUT;2;SG'&&normalize(r[1])===form);
+ assert.equal(future,collisions.includes(lemma),lemma+' variante -re debe coincidir con futuro solo en 3ª');
+}
 const individuallyCotejados={
  gratulor:['gratulor','gratularis','gratulatur','gratulamur','gratulamini','gratulantur'],
  miror:['miror','miraris','miratur','miramur','miramini','mirantur'],
@@ -62,4 +79,4 @@ for(const [lemma,forms] of Object.entries(individuallyCotejados)){
  assert.equal(corpus.rows.lat.filter(r=>r[0]===lemma&&r[3]===5&&r[2].startsWith('V;IND;DEP;PRS')).length,0,
   lemma+' aún no promovido: solo cotejo aislado');
 }
-console.log('PASS: 11 deponentes UD9–10, 24 presentes cotejados, 4 variantes -re/imperativo, 6 sincretismos, sin promoción automática.');
+console.log('PASS: 11 deponentes UD9–10, 24 presentes cotejados, 11 variantes -re/imperativo, 6 sincretismos, sin promoción automática.');
