@@ -22,7 +22,7 @@ const cases={
   {unit:'UD1',yes:['sum'],no:['eo','redeo','transeo','possum','conor','proficiscor']},
   {unit:'UD2',no:['eo','redeo','transeo','possum','conor','proficiscor']},
   {unit:'UD3',yes:['redeo','transeo'],no:['eo','possum','conor','proficiscor']},
-  {unit:'UD4',yes:['eo'],no:['possum','conor','proficiscor']},
+  {unit:'UD4',no:['possum','conor','proficiscor']},
   {unit:'UD8',no:['possum','conor','proficiscor']},
   {unit:'UD9',no:['possum','conor','proficiscor']},
   {unit:'UD10',yes:['possum','conor','proficiscor']}
@@ -65,7 +65,7 @@ const cases={
       const conjugation=course==='latin4'?latin4ConjugationPool(chosen)
        .map(x=>normalize(x.x.entry)):[];
       return {unit,pools:pool.map(x=>[...x]),regular,wrongVoice,ambiguous,
-       earlySpecial,conjugation};
+       earlySpecial,conjugation,eoGate:latinSpecialVerbFirstUnit('ĕo (irr.)',course)};
      });
     },{course,lang,checks:cases[course]});
     for(let k=0;k<results.length;k++){
@@ -86,6 +86,8 @@ const cases={
      assert.deepEqual(r.wrongVoice,[],context+' cambió voz de deponente');
      assert.deepEqual(r.ambiguous,[],context+' pregunta sin contexto ambiguo');
      assert.deepEqual(r.earlySpecial,[],context+' formas especiales anteriores a su unidad');
+     if(course==='latin4'&&r.unit==='UD4')
+      assert.equal(r.eoGate,4,context+' la puerta de eo debe abrirse en UD4');
      if(course==='latin4')assert(r.conjugation.every(x=>x==='sum'||!
       ['eo','redeo','transeo','possum','conor','proficiscor'].includes(x)),
       context+' conjugación irregular indebida en 4.º');
