@@ -109,7 +109,7 @@ for(const [lemma,forms] of Object.entries(promotedForms)){
  const matching=overrides.paradigms.filter(x=>x.lang==='lat'&&x.lemma===lemma);
  assert.equal(matching.length,promoted?1:0,lemma+' fichero de acreditación inesperado');
  if(promoted){
-  assert(/^https:\\/\\//.test(matching[0].reference),'Sin referencia del paradigma '+lemma);
+  assert(String(matching[0].reference).startsWith('https://'),'Sin referencia del paradigma '+lemma);
   assert.deepEqual(matching[0].blocks,[{tags:'V;IND;DEP;PRS',forms}],lemma+' bloques fuera de alcance');
  }
 }
