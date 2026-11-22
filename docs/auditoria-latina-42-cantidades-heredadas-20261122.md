@@ -27,3 +27,7 @@ Se mantiene la misma fuente y la misma información morfológica en 14.507 filas
 Se había propuesto cambiar doce registros de `cū̆st-` a `cūst-` con una fuente que trataba la `u` como larga, pero el nuevo cotejo cruzado reveló fuentes que describen pronunciación breve. **La corrección fue revertida en la rama de trabajo antes de publicar**. El expediente sigue siendo útil: identifica exactamente los 42 testimonios y la evidencia que falta para emitir un dictamen definitivo. No se eliminan registros ni se atribuye una certificación inexistente.
 
 **Estado:** PR #210 en borrador, sin fusión y sin publicación, sujeta a reconstrucción y CI completa en el SHA definitivo.
+
+## Reproducción autónoma tras la rectificación
+
+La reconstrucción aislada volvió a generar el índice desde el extracto fijado sin diferencias y creó la nueva copia `offline.html`. El [commit de sincronización `cc05dc2`](https://github.com/ArchaiosMagister/GeneradorExamenes/commit/cc05dc2685ded29b23c40209d29087446ce678af) elimina también el workflow temporal. No fusiona la PR ni despliega en producción. Se requiere CI completa del commit final posterior al expediente.
