@@ -1,0 +1,36 @@
+name: Sincronización temporal del HTML autónomo UD9-10 (sin publicación)
+on:
+  push:
+    branches: [fix/latin-deponents-ud9-ud10-present-20261122]
+    paths: ['.github/workflows/rebuild-offline-deponents-ud9-10-temporary.yml']
+permissions:
+  contents: write
+jobs:
+  regenerate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Comprobar índice de fuente 5 y reconstruir HTML autónomo
+        run: |
+          node -e "const c=require('./data/lemmas/teacher-forms.json');if(c.counts.lat.contrastado!==667||c.rows.lat.length!==14555)throw Error('Índice no acreditado');"
+          npm run offline:build
+          node scripts/test-latin-deponents-ud9-ud10-present-20261122.cjs --source-only
+          node scripts/test-latin-verb-evidence.cjs
+      - name: Autoretirar flujo temporal sin afectar main
+        run: |
+          git diff --name-only | tee /tmp/offline-changes
+          if grep -Ev '^offline.html$' /tmp/offline-changes; then
+            echo "Cambio inesperado en la regeneración"; exit 1
+          fi
+          test -s /tmp/offline-changes
+          rm .github/workflows/rebuild-offline-deponents-ud9-10-temporary.yml
+          git add offline.html .github/workflows/rebuild-offline-deponents-ud9-10-temporary.yml
+          git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'build: alinear versión autónoma con currículo deponentes UD7'
+          git push origin "HEAD:refs/heads/${GITHUB_REF_NAME}"
