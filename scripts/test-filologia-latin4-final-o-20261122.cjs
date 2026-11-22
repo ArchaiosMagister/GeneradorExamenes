@@ -30,6 +30,12 @@ for(const x of audit.items){
 }
 for(const [ud,entries] of Object.entries(required.courses.latin4))
  for(const e of entries)assert(!/[āēīōūȳăĕĭŏŭ][̆̄]/u.test(e),'Doble cantidad '+ud+' '+e);
+const overrides=JSON.parse(read('data/lemmas/verified-overrides.json'));
+const records=overrides.entryCorrections.filter(x=>x.lang==='lat'&&x.course==='lat4'&&x.lemma==='cicero');
+assert.equal(records.length,1,'Debe existir la corrección editorial reproducible');
+assert.equal(records[0].from,'Cĭcĕrō̆, –onis (m.)');
+assert.equal(records[0].to,'Cĭcĕrō, –onis (m.)');
+assert(/^https:\/\//.test(records[0].reference));
 assert.equal(teacher.vocabulary.lat.cicero.lat4.entry,'Cĭcĕrō, –onis (m.)');
 assert.equal(teacher.vocabulary.lat.oppugnatio.lat4.entry,'ŏppūgnātĭō, –onis (f.)');
 assert.equal(teacher.vocabulary.lat.homo.lat4.entry,'homo, hominis (m.)');

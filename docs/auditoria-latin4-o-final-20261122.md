@@ -17,3 +17,7 @@ El banco de `index.html` y las listas de `required-latin-units.js` contienen las
 La auditoría también encontró registros históricos del índice con marcas combinantes `ī̆` y `ū̆` (por ejemplo, `prī̆nceps` y `cū̆stōs`). Son filas heredadas que precisan cotejo individual; **no se modifican**, no se declaran verificadas y quedan en una cola filológica posterior.
 
 La regresión `scripts/test-filologia-latin4-final-o-20261122.cjs` verifica las siete apariciones, los 1647 exigibles, el banco, la migración y la paridad del índice en el archivo autónomo. La validación final exige el resultado success de Phase I y de la CI offline, y consentimiento docente para fusionar o publicar.
+
+## Reproducibilidad del índice académico
+
+La prueba GitHub Actions `verify-four-greek-datives` detectó que la primera versión modificaba directamente el enunciado de `Cicerō` en `teacher-forms.json`, pero el índice se reconstruye a partir de la revisión fijada de Vocabula y de `verified-overrides.json`. La corrección se ha trasladado también a **una regla editorial específica** de `verified-overrides.json` (sin añadir lecturas), conservando el índice versionado actual y exigiendo `git diff --exit-code` tras reconstruir. No se desactiva ninguna prueba ni se modifican los registros de morfología.
