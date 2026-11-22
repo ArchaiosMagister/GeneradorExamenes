@@ -24,3 +24,6 @@ Se incorporan únicamente dos lemas al mapa de paradigmas cerrados ya existente.
 La prueba `scripts/test-latin-hostis-ignis-20261122.cjs` coteja **24 casillas** y variantes del índice y, con Playwright, valida web/autónoma, Latín I/4.º, castellano/valenciano, generación de sintagmas, bloqueo curricular y rechazo de géneros y genitivos falsos. La comprobación autónoma ejecuta antes su modo sin navegador; Phase I ejecuta el cotejo completo.
 
 No se modifican los demás temas en -i, los bancos griegos, la puntuación o la lematización histórica. No publicar sin consentimiento y CI satisfactoria en el último commit.
+
+## Integridad de distribución
+La reconstrucción de `offline.html` se ha ejecutado mediante workflow específico de la rama y el workflow temporal ha sido retirado; queda exigida la comprobación completa de las cinco baterías en el último SHA.
