@@ -31,3 +31,20 @@ Se había propuesto cambiar doce registros de `cū̆st-` a `cūst-` con una fuen
 ## Reproducción autónoma tras la rectificación
 
 La reconstrucción aislada volvió a generar el índice desde el extracto fijado sin diferencias y creó la nueva copia `offline.html`. El [commit de sincronización `cc05dc2`](https://github.com/ArchaiosMagister/GeneradorExamenes/commit/cc05dc2685ded29b23c40209d29087446ce678af) elimina también el workflow temporal. No fusiona la PR ni despliega en producción. Se requiere CI completa del commit final posterior al expediente.
+
+
+## Segunda revisión de fuentes: evidencia antigua frente a la inferencia moderna
+
+**Prisciano, *Institutiones grammaticae* III, 20, 7–8**, conserva un testimonio directo para `alterĭus`: `semper corripit paenultimam`. La regla enuncia una cantidad breve según Prisciano; no demuestra que toda tradición poética desde época arcaica realizase siempre esa cantidad. [Transcripción de St Gall Priscian Glosses](https://www.stgallpriscian.ie/index.php?kP=20&kV=3). **Allen y Greenough §113** describen la `-īus` original y su abreviación frecuente para *alterius*; el testimonio de Prisciano y la regla escolar no son intercambiables.
+
+**Nullīus**: [Allen y Greenough §603](https://dcc.dickinson.edu/sv/grammar/latin/general-rules-quantity) imprime `nūllīus`, con `ī` larga, y advierte que la secuencia `-īus` puede abreviarse poéticamente. Esta regla general no sustituye un verso concreto cuya escansión demuestre `nūllĭus`. Se conserva el testimonio doble del extracto pero queda **pendiente una atestación primaria individual de la breve**. No se convierte la excepción general en hecho probado para *nullus*.
+
+**Custōs**: [Allen y Greenough §56](https://latindictionary.co/academy/grammar/56) imprime `cūstōs`, con `ū` larga; [Dickinson Latin Core](https://dcc.dickinson.edu/latin-core/cvstos) ofrece `custōs`, sin marcar la primera vocal, mientras que otras fuentes ofrecen transcripciones con `u` breve. La `u` precede al grupo consonántico `st`: **la sílaba resulta larga por posición y la métrica no resuelve la cantidad de la vocal**. [Allen y Greenough §§9–11](https://dcc.dickinson.edu/grammar/latin/quantity-syllables) advierten de esta cantidad oculta. No se localizó una inscripción con marca explícita o una regla de gramático antiguo que autorice decidir entre `cūst-` y `cŭst-`. Quedan en reserva las doce filas.
+
+**Princeps**: [Servio, *Commentarius in Artem Donati*, *De accentibus*, 426.7](https://latin.packhum.org/loc/2349/2/12) ejemplifica `princeps` entre las sílabas largas **por posición**, sin emitir una cantidad de la `i` como tal. El estudio [*Osthoff’s Law in Latin*](https://www.sciencedirect.com/org/science/article/pii/S2212588417000060) cita a Sihler para la variante breve y la comparación con formas romances, frente a la cantidad larga transmitida tradicionalmente. Es un argumento histórico de interés, pero no certifica por sí solo 28 flexiones como nuevas lecturas verificadas.
+
+### Dictamen editorial y alcance
+
+El resultado no cambia respecto a la segunda revisión del índice: **42 filas conservadas, 0 cantidades alteradas, 0 promociones a fuente 5**. Hay evidencia antigua positiva de la abreviación de *alterius*; en *princeps* la declaración antigua disponible es sobre la sílaba; y para la breve concreta de *nullius* y la cantidad de la *u* en *custos* no se ha documentado aún una fuente primaria decisiva. Es preferible preservar la trazabilidad antes que aplicar automáticamente cantidades por analogía, etimología hipotética o escansión que solo prueba duración silábica.
+
+El expediente `latin-legacy-double-quantity-collation-20261122.json` clasifica el nivel probatorio **por lema**, asociado a las 42 filas identificadas, pero sin fingir que una sola cita acredita todos sus análisis de caso, número y género. La regresión ahora también impide perder esa documentación o promover las lecturas sin validación.
