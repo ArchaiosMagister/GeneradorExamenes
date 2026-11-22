@@ -76,7 +76,7 @@ if(process.argv.includes('--source-only')){
      return {
       oldUnits:before.every(x=>!lemmas.includes(key(x))),
       present:lemmas.every(lemma=>current.some(x=>key(x)===lemma&&x.sourceCode===5&&x.voice==='deponente')),
-      forms:lemmas.every(lemma=>forms.some(x=>key(x)===lemma&&x.sourceCode===5)),
+      forms:lemmas.every(lemma=>forms.some(x=>key(x)===lemma&&/deponente/.test(String(x.answer||'')))),
       variants:current.every(x=>!(variants[key(x)]&&normLex(x.form)===variants[key(x)]))&&
        forms.every(x=>!(variants[key(x)]&&normLex(x.form)===variants[key(x)])),
       withheld:current.every(x=>!['revertor','orior','obliviscor'].includes(key(x)))&&
