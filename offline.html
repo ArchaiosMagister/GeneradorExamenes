@@ -6510,14 +6510,8 @@ function latinSpecialVerbFirstUnit(entry,course){
  const irregular=Object.hasOwn(LATIN1_IRREGULAR_FIRST_UNIT,lemma)||
   /\(irr\.\)/i.test(String(entry));
  if(!deponent&&!semideponent&&!irregular)return 1;
- if(course==='latin1'){
-  if(deponent){
-   const recorded=latinSharedBank.lookup(lemma,'latin1')?.units?.get('latin1');
-   const first=Math.min(Infinity,...[...(recorded||[])].map(unit=>examUnitNumber(unit)??Infinity));
-   return Math.max(7,first); // No adelantar deponentes que llegan en UD9–10 o UD11–12.
-  }
-  return semideponent?9:(LATIN1_IRREGULAR_FIRST_UNIT[lemma]??Infinity);
- }
+ if(course==='latin1')return deponent?7:semideponent?9:
+  (LATIN1_IRREGULAR_FIRST_UNIT[lemma]??Infinity);
  // En 4.º solo se evalúan verbos especiales que pertenezcan al curso:
  // un lema tomado del banco de Latín I no adelanta su enseñanza.
  // El vocabulario de pantalla deduplica lemas y puede ocultar su primera
