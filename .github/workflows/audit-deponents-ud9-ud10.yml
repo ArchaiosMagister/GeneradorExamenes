@@ -1,0 +1,21 @@
+name: Auditoría de deponentes UD9-UD10 (sin publicación)
+on:
+  pull_request:
+    paths:
+      - 'docs/auditoria-deponentes-ud9-ud10-ronda2-20261122.md'
+      - 'scripts/test-latin-deponents-ud9-ud10-inventory-20261122.cjs'
+      - 'data/lemmas/teacher-forms.json'
+      - '.github/workflows/audit-deponents-ud9-ud10.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Auditar inventario histórico, procedencia y sincretismos
+        run: node scripts/test-latin-deponents-ud9-ud10-inventory-20261122.cjs
