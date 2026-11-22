@@ -131,7 +131,8 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
        .map(t=>vocab.some(x=>x.entry===t)),
       noAnalogy:!mVerb('complector, complexus sum (3ª)')&&
        !mVerb('patior, passus sum (mx.)'),
-      blocked:latinMorphologyVerbPool(['UD7']).every(x=>examKey(x.entry)!=='patior'),
+      allowedAtSeven:latinMorphologyVerbPool(['UD7']).some(x=>examKey(x.entry)==='patior'&&
+       x.sourceCode===5&&x.voice==='deponente'),
       notPromoted:latinMorphologyVerbPool(['UD9–10']).every(x=>
        examKey(x.entry)!=='orior')&&
        latinExamFormCandidates(['UD9–10'],true)[2].every(x=>
@@ -149,7 +150,7 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
     },lang);
     assert(result.texts.every(Boolean),file+'/'+lang+' exigibles');
     assert(result.currentVocab.every(Boolean),file+'/'+lang+' banco');
-    assert(result.noAnalogy&&result.blocked&&result.notPromoted&&result.accredited&&result.tooEarly&&
+    assert(result.noAnalogy&&result.allowedAtSeven&&result.notPromoted&&result.accredited&&result.tooEarly&&
      result.ambiguous&&result.visible,file+'/'+lang+' currículo, presencia y sincretismo');
    }
    assert.deepEqual(errors,[],file+' errores JS');
