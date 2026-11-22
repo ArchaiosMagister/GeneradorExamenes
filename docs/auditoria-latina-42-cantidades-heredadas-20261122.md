@@ -18,7 +18,7 @@
 
 ## Criterio metodológico
 
-Los 42 registros son testimonios heredados de fuente 0, **no formas individualmente autorizadas para corregir exámenes**. El macrón más breve combinados no son una forma escolar recomendable de exhibir la cantidad, pero el registro de origen debe separarse de una futura representación docente. La evaluación automática no se modifica.
+Los 42 registros son testimonios heredados de fuente 0, **no formas individualmente autorizadas para corregir exámenes**. La combinación de macrón y breve **no constituye por sí sola un error**: Allen y Greenough (§§9–11, [*Quantity of Syllables*](https://dcc.dickinson.edu/grammar/latin/quantity-syllables)) reconoce expresamente las vocales con ambas marcas como notación de cantidad variable. Debe distinguirse esa convención de una contradicción accidental en entradas curriculares ya contrastadas. El registro de origen permanece separado de una futura representación docente. La evaluación automática no se modifica.
 
 Se mantiene la misma fuente y la misma información morfológica en 14.507 filas latinas y 2.817 griegas. La reconstrucción de `scripts/build-lemma-index.mjs` consulta las 42 claves del expediente y falla si falta o sobra alguna, sin cambiar las superficies mientras exista discusión. `scripts/test-filologia-latin-legacy-double-quantity-20261122.cjs` verifica los 42 registros, la ausencia de promociones a fuente 5 y la cobertura exacta de cuatro lemas. La batería está integrada en las CI de Phase I y versión autónoma.
 
