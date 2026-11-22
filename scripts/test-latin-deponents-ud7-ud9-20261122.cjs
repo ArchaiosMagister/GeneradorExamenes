@@ -1,6 +1,6 @@
 'use strict';
-// Filología editorial de deponentes: corrige solo enunciados, no crea paradigmas.
-// Fuente 0 = testimonio histórico, NO acreditación de formas evaluables.
+// Filología: dos correcciones editoriales y 24 casillas del presente contrastadas.
+// Fuente 0 = testimonio histórico, NO acreditación de otras formas evaluables.
 const assert=require('node:assert/strict');
 const fs=require('node:fs');
 const vm=require('node:vm');
@@ -44,10 +44,11 @@ for(const x of cases){
  assert.equal(corr.length,1,x.lemma+' corrección persistente única');
  assert.equal(corr[0].from,x.before);assert.equal(corr[0].to,x.after);
  assert.equal(corr[0].reference,x.source);
- assert.equal(overrides.paradigms.filter(y=>y.lang==='lat'&&y.lemma===x.lemma).length,0,
-  x.lemma+' no autorizar paradigma automáticamente');
- assert.equal(corpus.rows.lat.filter(y=>y[0]===x.lemma&&y[3]===5).length,0,
-  x.lemma+' no promover fuente 0 a fuente 5');
+ const nVerified=x.lemma==='complector'?6:0;
+ assert.equal(overrides.paradigms.filter(y=>y.lang==='lat'&&y.lemma===x.lemma).length,nVerified?1:0,
+  x.lemma+' solo bloques contrastados');
+ assert.equal(corpus.rows.lat.filter(y=>y[0]===x.lemma&&y[3]===5).length,nVerified,
+  x.lemma+' no promover formas no documentadas');
 }
 assert(corpus.rows.lat.some(x=>x[0]==='complector'&&x[1]==='complexus'&&x[3]===0),
  'Gaffiot complexus también aparece en registro histórico sin promoción');
@@ -59,8 +60,35 @@ assert(evidenceMatch,'Tabla de evidencia verbal alterada');
 const evidence=JSON.parse(evidenceMatch[1]);
 assert.equal(evidence.conor?.length,1,'No ampliar conor sin contraste');
 assert.equal(evidence.proficiscor?.length,3,'Conservar solo tres tiempos contrastados');
-for(const lemma of ['complector','intueor','laetor','vereor','patior'])
- assert(!evidence[lemma],'No habilitar nuevas flexiones por analogía: '+lemma);
+const attested={
+  complector:['complector','complecteris','complectitur','complectimur','complectimini','complectuntur'],
+  intueor:['intueor','intueris','intuetur','intuemur','intuemini','intuentur'],
+  laetor:['laetor','laetaris','laetatur','laetamur','laetamini','laetantur'],
+  vereor:['vereor','vereris','veretur','veremur','veremini','verentur']
+};
+for(const [lemma,forms] of Object.entries(attested)){
+ const record=overrides.paradigms.find(x=>x.lang==='lat'&&x.lemma===lemma);
+ assert(record&&/^https:\/\//.test(record.reference),lemma+' referencia externa');
+ assert.equal(record.blocks.length,1,lemma+' solo presente');
+ assert.equal(record.blocks[0].tags,'V;IND;DEP;PRS');
+ assert.deepEqual(record.blocks[0].forms,forms,lemma+' casillas de las dos fuentes');
+ assert.equal(evidence[lemma].length,1,lemma+' sin otros tiempos inventados');
+ assert.equal(evidence[lemma][0].sourceCode,5);
+ assert.equal(evidence[lemma][0].voice,'deponente');
+ assert.deepEqual(evidence[lemma][0].forms,forms);
+ for(const [i,form] of forms.entries()){
+  const person=(i%3)+1,num=i<3?'SG':'PL';
+  const tag='V;IND;DEP;PRS;'+person+';'+num;
+  assert.equal(corpus.rows.lat.filter(x=>x[0]===lemma&&x[1]===form&&x[2]===tag&&x[3]===5).length,1,
+   lemma+' fuente 5 '+form+' '+tag);
+ }
+ assert.equal(corpus.rows.lat.filter(x=>x[0]===lemma&&x[3]===5).length,6,
+  lemma+' no autorizar más tiempos');
+}
+assert(!evidence.patior,'Patior sin aprobación de flexión adicional');
+assert(html.includes("'complector|complecteris'"),
+ 'La segunda singular de complector también es futuro y debe bloquearse sin contexto');
+assert.equal(corpus.counts.lat.contrastado,643,'Fuente 5 latina debe aumentar exactamente 24');
 const iv=corpus.rows.lat.filter(x=>x[0]==='patior');
 assert(iv.length>0&&iv.every(x=>x[3]===0),'Patior: el índice solo conserva material histórico');
 const m=html.slice(html.indexOf('function mVerb(raw){'),html.indexOf('// Corrections for conjugation:',html.indexOf('function mVerb(raw){')));
@@ -70,7 +98,7 @@ const conjugate=new Function('mNormalize',m+'return mVerb;')(norm);
 assert.equal(conjugate(cases[0].after),null,'Complector no puede conjugarse como activo regular');
 assert.equal(conjugate(cases[1].after),null,'Patior no puede conjugarse como activo mixto');
 if(process.argv.includes('--source-only')){
- console.log('PASS: 2 enunciados, banco/esquema/índice/HTML web y autónomo, 6 lemas UD7 y cero promociones');
+ console.log('PASS: 2 enunciados, 24 casillas presentes contrastadas, 6 lemas UD7, sin otros tiempos');
  process.exit(0);
 }
 const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
@@ -95,16 +123,25 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
       noAnalogy:!mVerb('complector, complexus sum (3ª)')&&
        !mVerb('patior, passus sum (mx.)'),
       blocked:latinMorphologyVerbPool(['UD7']).every(x=>examKey(x.entry)!=='patior'),
+      accredited:['complector','intueor','laetor','vereor'].every(lemma=>
+       latinMorphologyVerbPool(['UD7']).some(x=>examKey(x.entry)===lemma&&x.sourceCode===5&&x.voice==='deponente')),
+      tooEarly:latinMorphologyVerbPool(['UD6']).every(x=>
+       !['complector','intueor','laetor','vereor'].includes(examKey(x.entry))),
+      ambiguous:latinMorphologyVerbPool(['UD7']).every(x=>
+       examKey(x.entry)!=='complector'||normLex(x.form)!=='complecteris')&&
+       latinExamFormCandidates(['UD7'],true)[2].every(x=>
+        examKey(x.entry)!=='complector'||normLex(x.form)!=='complecteris'),
       visible:!!document.getElementById('paper')
      };
     },lang);
     assert(result.texts.every(Boolean),file+'/'+lang+' exigibles');
     assert(result.currentVocab.every(Boolean),file+'/'+lang+' banco');
-    assert(result.noAnalogy&&result.blocked&&result.visible,file+'/'+lang+' no permitir analogía');
+    assert(result.noAnalogy&&result.blocked&&result.accredited&&result.tooEarly&&
+     result.ambiguous&&result.visible,file+'/'+lang+' currículo, presencia y sincretismo');
    }
    assert.deepEqual(errors,[],file+' errores JS');
    await page.close();
   }
-  console.log('PASS: 2 enunciados y currículo, 2 idiomas, web/autónoma; sin flexiones deponentes inventadas');
+  console.log('PASS: 24 formas documentadas, currículo y sincretismo, web/autónoma ES/VA');
  }finally{await browser.close();}
 })().catch(error=>{console.error(error);process.exitCode=1});
