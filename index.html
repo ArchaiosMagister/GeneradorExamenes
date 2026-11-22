@@ -3823,7 +3823,9 @@ function mNoun(raw){
  // A neuter with nominative -e, -al, -ar is usually an i-stem.
  if(kind==='3n'&&/(e|al|ar)$/.test(nom))return null;
  // Explicitly avoid 3rd declension monosyllabic i-stems unless separately verified.
- if(kind==='3mf'&&nom.length<=4&&/(rs|ns|nt)$/.test(nom))return null;
+ // Excepción individual: mors, mortis tiene el paradigma mixto verificado
+ // (genitivo plural mortium). Los otros monosílabos siguen bloqueados.
+ if(kind==='3mf'&&nom.length<=4&&/(rs|ns|nt)$/.test(nom)&&nom.toLowerCase()!=='mors')return null;
  let forms=M_END[kind].map((endings,n)=>endings.map((ending,i)=>{
    if(n===0&&i===0)return nom;
    if(n===0&&i===1&&(kind.startsWith('3')||kind==='2er'||kind==='2n'))return nom;
