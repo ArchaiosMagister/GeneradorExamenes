@@ -1,0 +1,36 @@
+name: Reproducir HTML autónomo de mors en PR 211 (sin desplegar)
+on:
+  push:
+    branches:
+      - fix/latin-paradigm-vir-20261122
+    paths:
+      - '.github/workflows/temporary-rebuild-mors-parent-20261122.yml'
+permissions:
+  contents: write
+jobs:
+  sync:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Checkout rama sin publicación
+        uses: actions/checkout@v4
+        with:
+          ref: fix/latin-paradigm-vir-20261122
+          fetch-depth: 1
+      - name: Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Regenerar y comprobar
+        run: |
+          node scripts/build-offline.mjs
+          git diff --check
+          node -e 'const s=require("fs").readFileSync("offline.html","utf8");if(!s.includes("nom.toLowerCase()!==\x27mors\x27"))process.exit(1)'
+      - name: Registrar HTML y eliminar flujo temporal
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add offline.html
+          git rm .github/workflows/temporary-rebuild-mors-parent-20261122.yml
+          git commit -m 'build(lat): sincronizar mors con copia autónoma'
+          git push origin HEAD:refs/heads/fix/latin-paradigm-vir-20261122
