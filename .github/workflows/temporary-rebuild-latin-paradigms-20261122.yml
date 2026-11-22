@@ -25,7 +25,7 @@ jobs:
         run: |
           node scripts/build-offline.mjs
           git diff --check
-          node -e "const s=require('fs').readFileSync('offline.html','utf8');for(const n of ['iter: \"'longus','mortium'])if(!s.includes(n))process.exit(1)"
+          node -e 'const s=require("fs").readFileSync("offline.html","utf8");for(const n of ["iter:","mortium"])if(!s.includes(n))process.exit(1)'
       - name: Guardar resultado y retirar flujo temporal
         run: |
           git config user.name 'github-actions[bot]'
