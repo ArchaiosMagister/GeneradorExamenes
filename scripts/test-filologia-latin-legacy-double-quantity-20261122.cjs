@@ -56,7 +56,15 @@ for(const evidence of audit.philologicalEvidence.entries){
 assert(audit.philologicalEvidence.entries.find(x=>x.lemma==='alter').ancientWitnesses.length===1);
 assert(audit.philologicalEvidence.entries.find(x=>x.lemma==='princeps').ancientWitnesses.length===1);
 assert(audit.philologicalEvidence.entries.find(x=>x.lemma==='custos').ancientWitnesses.length===0);
-assert(audit.philologicalEvidence.entries.find(x=>x.lemma==='nullus').ancientWitnesses.length===0);
+const nullusEvidence=audit.philologicalEvidence.entries.find(x=>x.lemma==='nullus');
+assert.equal(nullusEvidence.evidenceLevel,'TESTIMONIO_METRICO_PRIMARIO_DE_BREVE');
+assert.equal(nullusEvidence.ancientWitnesses.length,1);
+assert.equal(nullusEvidence.ancientWitnesses[0].author,'T. Lucretius Carus');
+assert.equal(nullusEvidence.ancientWitnesses[0].locus,'De rerum natura I 224');
+assert.equal(nullusEvidence.ancientWitnesses[0].quote,'nullius exitium patitur natura videri');
+assert(nullusEvidence.ancientWitnesses[0].quantity.includes('ĭ breve'));
+assert(nullusEvidence.ancientWitnesses[0].meter.includes('— ◡ ◡'));
+assert.equal(audit.items.find(x=>x.lemma==='nullus').after,'nūllī̆us');
 
 assert.equal(index.rows.lat.filter(r=>['alter','custos','nullus','princeps'].includes(r[0])&&
  /[īū]̆/u.test(r[1])&&r[3]===0).length,42);
