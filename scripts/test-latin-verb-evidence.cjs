@@ -12,7 +12,7 @@ const match=html.match(/const latinExplicitVerbEvidence=(\{[^\n]+\});\nfunction 
 assert(match,'Falta la tabla explícita de evidencia verbal');
 const evidence=JSON.parse(match[1]);
 assert.deepEqual(Object.keys(evidence).sort(),
- ['abeo','absum','accipio','amo','audeo','audio','capio','careo','confero','conor','disco','duco','eo','facio','ineo','loquor','moneo','nolo','pereo','possum','praesum','proficiscor','redeo','rego','sequor','sum','transeo']);
+ ['abeo','absum','accipio','amo','audeo','audio','capio','careo','complector','confero','conor','disco','duco','eo','facio','ineo','intueor','laetor','loquor','moneo','nolo','pereo','possum','praesum','proficiscor','redeo','rego','sequor','sum','transeo','vereor']);
 const overrides=JSON.parse(readFileSync(resolve(root,'data/lemmas/verified-overrides.json'),'utf8'));
 let total=0;
 for(const [lemma,series]of Object.entries(evidence)){
@@ -43,7 +43,7 @@ for(const [lemma,series]of Object.entries(evidence)){
   });
  }
 }
-assert.equal(total,570,'Cantidad de fichas contrastadas registrada inesperada');
+assert.equal(total,594,'Cantidad de fichas contrastadas registrada inesperada');
 assert.deepEqual(evidence.eo.map(x=>x.tense),['presente','imperfecto','futuro','perfecto','pluscuamperfecto']);
 assert.deepEqual(evidence.redeo.map(x=>x.tense),['presente','imperfecto','futuro','perfecto','pluscuamperfecto']);
 assert.deepEqual(evidence.transeo.map(x=>x.tense),['presente','imperfecto','futuro','perfecto','pluscuamperfecto']);
@@ -57,7 +57,7 @@ assert.equal(corpus.rows.lat.filter(row=>row[0]==='possum'&&row[3]===5).length,3
 assert.equal(corpus.rows.lat.filter(row=>row[0]==='confero'&&row[3]===5).length,30);
 assert(!evidence.fero,'No incorporar el lema fero: no consta en el vocabulario docente');
 assert(evidence.loquor[0].voice==='deponente'&&evidence.sequor[0].voice==='deponente');
-assert(html.includes("'proficiscor|proficisceris'"),'Sincretismo de segunda singular no protegido');
+assert(html.includes("'proficiscor|proficisceris'")&&html.includes("'complector|complecteris'"),'Sincretismo de segunda singular no protegido');
 
 const start=html.indexOf('function mVerb(raw){');
 const end=html.indexOf('// Corrections for conjugation:',start);
@@ -86,4 +86,4 @@ assert(html.includes("const latinPersonalPresentPassiveLemmas=new Set([...latinP
  'Falta la excepción de facio y el inventario de pasivas personales');
 assert(html.includes("if(latinPersonalPresentPassiveLemmas.has(examKey(entry)))"),
  'La pasiva no está condicionada a la transitividad admitida');
-console.log('Latín I: 222 fichas individuales o docentes: eo, redeo, transeo, proficiscor y paradigmas anteriores; irregularidades no inventadas.');
+console.log('Latín I: 594 casillas explícitas, incluidas 24 de presente deponente UD7; sin paradigmas analógicos.');
