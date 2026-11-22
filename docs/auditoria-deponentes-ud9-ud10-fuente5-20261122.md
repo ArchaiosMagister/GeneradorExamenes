@@ -23,7 +23,7 @@ Orden: primera, segunda, tercera persona singular; primera, segunda, tercera per
 
 ### Control curricular
 
-Las formas principales se admiten únicamente **desde UD9–10**. La regla previa `deponent?7` se ha refinado: para Latín I el umbral efectivo es `max(UD7, primera UD real del lema)`. Esto también protege de adelantos a `loquor` y `sequor`, ya acreditados con anterioridad pero introducidos en UD9–10. `moror`, introducido en UD6, mantiene el umbral de deponentes de UD7.
+**Las unidades léxicas UD9–10 no limitan las prácticas morfológicas de Latín I:** por decisión docente previa, la morfología utiliza el banco compartido completo y se limita según la gramática estudiada. Por tanto, las formas deponentes (incluidos `loquor`, `sequor` y los cuatro nuevos lemas) **son elegibles desde UD7**, pero nunca en UD6 ni antes. Se conserva la regla `deponent?7` y se comprueba expresamente tanto en `latinMorphologyVerbPool` como en `latinExamFormCandidates`. La unidad UD9–10 se conserva como procedencia léxica, no como bloqueo de análisis morfológico.
 
 ### Reconstrucción y comprobaciones
 
@@ -31,6 +31,6 @@ Las formas principales se admiten únicamente **desde UD9–10**. La regla previ
 - Total de filas latinas del índice: **14.531 → 14.555**.
 - Casillas verbales explícitas visibles del generador: **594 → 618**.
 - `data/lemmas/verified-overrides.json` sigue siendo el origen persistente, y `scripts/build-lemma-index.mjs` reconstruye `data/lemmas/teacher-forms.json`. `npm run offline:build` produce `offline.html` desde los bancos actualizados.
-- Los tests verifican la procedencia, las seis personas por lema, la conservación de `mirati`, la ausencia de otros tiempos, los sincretismos y el umbral curricular en web/autónoma ES/VA.
+- Los tests verifican la procedencia, las seis personas por lema, la conservación de `mirati`, la ausencia de otros tiempos, los sincretismos, el umbral gramatical UD7 y el banco compartido en web/autónoma ES/VA.
 
 **Estado editorial:** revisión experimental en borrador, sin autorización de fusionar ni publicar; la PR #218 es la dependencia previa y la auditoría #219 continúa independiente.
