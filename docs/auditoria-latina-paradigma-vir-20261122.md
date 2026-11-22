@@ -74,3 +74,10 @@ El vocabulario de Latín I (UD5) y Latín de 4.º (UD5) incluye `iter, itineris 
 Combinaciones semánticas añadidas: `iter longum`, `iter magnum`, `iter durum`. La prueba `test-latin-vir-paradigm-20261122.cjs` abarca ahora **36 casillas nominales** de `vir`, `mors` e `iter`, además de concordancia y controles diferenciales `serpentium / patrum`, en web y PWA, Latín I y 4.º, ES/VA.
 
 Los inventarios de sintagmas quedan en **191 sustantivos / 546 parejas**, con sus tres pruebas actualizadas. No se modifica el índice de lematización, los rasgos fuente 0, ni la acreditación automática de formas.
+
+
+## Reconciliación de la PWA y CI tras la ampliación
+
+La versión autónoma `offline.html` fue reconstruida de nuevo desde `index.html` mediante el workflow temporal aislado, con commit [`8cbeb12`](https://github.com/ArchaiosMagister/GeneradorExamenes/commit/8cbeb12e33dadcd8e490056b6dc3cbc8aa6db3be). El flujo temporal se eliminó en el mismo commit. La batería de regresión de sintagmas detectó un contador histórico de 189/540 al incorporar `vir`, corregido a 191/546 con `iter`. No se rebaja ningún criterio morfológico: siguen vigentes los vetos a `unus` y `nullus`, los pares aprobados y la concordancia de todas las casillas. La CI debe verificarse en el SHA final de esta PR.
+
+No se propone fusionar ni publicar con controles pendientes.
