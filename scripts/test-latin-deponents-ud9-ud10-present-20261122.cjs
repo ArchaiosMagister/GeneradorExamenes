@@ -32,10 +32,12 @@ for(const [lemma,forms] of Object.entries(expected)){
  assert.deepEqual(evidence[lemma],[{tense:'presente',voice:'deponente',forms,sourceCode:5}],'Evidencia visible: '+lemma);
  assert(corpus.vocabulary.lat[lemma].lat1.units.includes('UD 9–10'),'No adelantar en el índice curricular: '+lemma);
  const five=corpus.rows.lat.filter(x=>x[0]===lemma&&x[3]===5);
- assert.equal(five.length,6,'Fuente 5: seis casillas: '+lemma);
+ assert.equal(five.length,6+(lemma==='miror'?1:0),'Conservar participio de miror además de seis presentes: '+lemma);
+ const present=five.filter(x=>x[2].startsWith('V;IND;DEP;PRS;'));
+ assert.equal(present.length,6,'Fuente 5: seis presentes exactamente: '+lemma);
  for(let i=0;i<6;i++){
   const tag='V;IND;DEP;PRS;'+(i%3+1)+';'+(i<3?'SG':'PL');
-  assert.equal(five.filter(x=>x[1]===forms[i]&&x[2]===tag).length,1,lemma+' '+tag);
+  assert.equal(present.filter(x=>x[1]===forms[i]&&x[2]===tag).length,1,lemma+' '+tag);
  }
  assert(!five.some(x=>norm(x[1])===ambiguity[lemma]),'Excluida variante sincrética: '+lemma);
  const historical=corpus.rows.lat.filter(x=>x[0]===lemma&&x[3]===0);
