@@ -203,6 +203,27 @@ async function main(){
   rows[lang].push([k,form,features,({unimorph:0,docente:1,modelo:2,lema:3,wikcionario:4,contrastado:5})[source]]);
   counts[lang][source]++;
  }
+ // Cotejo individual del extracto heredado: cambiar solo las doce cantidades
+ // de custos acreditadas; las demás variantes permanecen sin promoción.
+ const quantityLedger=JSON.parse(await fs.readFile(
+  path.join(root,'data/lemmas/latin-legacy-double-quantity-collation-20261122.json'),'utf8'));
+ if(quantityLedger.schema!==1||quantityLedger.expected?.total!==42||
+    quantityLedger.expected.corrected!==12||quantityLedger.expected.retainedVariant!==30||
+    quantityLedger.automaticGradingEnabled!==false||quantityLedger.morphologyPromotion!==false||
+    quantityLedger.items?.length!==42)
+  throw Error('Cotejo de cantidades heredadas inexistente o incompleto');
+ const quantityRows=new Map(),quantitySeen=new Set();
+ for(const item of quantityLedger.items){
+  const key=item.lemma+'|'+item.form+'|'+item.features;
+  if(quantityRows.has(key)||item.source!==0||!item.reference?.startsWith('https://')||
+     !['alter','custos','nullus','princeps'].includes(item.lemma)||
+     (item.lemma==='custos'&&
+      (item.classification!=='CORRECCION_CANTIDAD_ACREDITADA'||item.after!==item.form.replace('ū̆','ū')))||
+     (item.lemma!=='custos'&&
+      (item.after!==item.form||!item.classification.endsWith('_RESERVADA'))))
+   throw Error('Cantidad heredada inconsistente: '+key);
+  quantityRows.set(key,item);
+ }
  // Download all prefiltered teacher-vocabulary shards, keeping every attested
  // feature interpretation (including ambiguous ones) without guessing a lemma.
  for(const lang of ['lat','grc']){
@@ -226,13 +247,20 @@ async function main(){
       quarantinedOnomaCells.add(sig);
       continue;
      }
-     add(lang,row[0],row[1],row[2],'unimorph');
+     const key=row[0]+'|'+row[1]+'|'+row[2];
+     const audited=lang==='lat'?quantityRows.get(key):undefined;
+     if(audited){
+      if(quantitySeen.has(key))throw Error('Fila de cantidad heredada duplicada: '+key);
+      quantitySeen.add(key);
+     }
+     add(lang,row[0],audited?audited.after:row[1],row[2],'unimorph');
     }
    }
   }
   if(total!==expected||counts[lang].unimorph<expected*0.99)
    throw Error(lang+': filas inesperadas '+total+' de '+expected);
  }
+ if(quantitySeen.size!==42)throw Error('No se cotejaron las 42 formas heredadas: '+quantitySeen.size);
  if(quarantinedOnomaCells.size!==badOnomaCells.size)
   throw Error('Han cambiado las 11 casillas de ὄνομα: cotejo individual obligatorio');
  // Explicit teacher models also contribute forms when their lemma belongs to
