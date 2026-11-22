@@ -30,3 +30,6 @@ La reconstrucción de `offline.html` se ha ejecutado mediante workflow específi
 
 ## Validación del criterio docente
 Se ha fijado `igne` como ablativo singular **principal** de `ignis` en el motor de tablas, los ejercicios de morfología y la prueba especializada; `ignī` queda atestiguado como alternativa válida en el índice histórico. La reconstrucción determinista de `offline.html` se efectuó en una acción temporal aislada, eliminada al terminar. La regresión final debe validarse sobre un commit del autor, con la copia autónoma ya sincronizada.
+
+### Alcance curricular de las formas aisladas
+La prueba de análisis morfológico exige `hostis` e `ignis` en Latín I, y `hostis` en Latín 4.º. `ignis` no pertenece a la lista léxica propia de Latín 4.º, por lo que no se exige su aparición como ejercicio aislado de dicho curso. **Sí se coteja su paradigma como tabla con las dos formas reconocidas de ablativo singular**, sin ampliar el vocabulario docente de 4.º.

@@ -74,15 +74,18 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
      set('model','morf');
      const formHeads=new Set(latinExamFormCandidates(units,true)[0]
       .map(x=>key(headLex(x.entry))));
+     // Solo exigir ejercicio aislado en la asignatura que contiene el lema:
+     // ignis es de Latín I, pero sus tablas pueden mostrarse en ambos cursos.
+     const required=course==='latin1'?['hostis','ignis']:['hostis'];
      return {out,invalid,before,
-      morph:['hostis','ignis'].map(x=>[x,formHeads.has(x)]),
+      morph:required.map(x=>[x,formHeads.has(x)]),
       irregular:latinCompleteAdjectives(units)
        .some(x=>['unus','nullus'].includes(key(headLex(x.x.entry))))};
     },{course,lang});
     const ctx=file+'/'+course+'/'+lang;
     assert(result.invalid.every(x=>x===null),ctx+' enunciado no admisible');
     assert.deepEqual(result.before,[],ctx+' adelantó tema en -i');
-    assert(result.morph.every(x=>x[1]),ctx+' formas aisladas omitidas');
+    assert(result.morph.every(x=>x[1]),ctx+' formas aisladas omitidas: '+JSON.stringify(result.morph));
     assert.equal(result.irregular,false,ctx+' reaparece unus/nullus');
     for(const [lemma,spec] of Object.entries(specs)){
      const r=result.out[lemma],forms=[spec.sg,spec.pl];
