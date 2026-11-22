@@ -28,3 +28,7 @@ La tabla generada conserva **14.507 filas latinas y 2.817 griegas**; siguen idé
 La regresión `scripts/test-filologia-latin-legacy-double-quantity-20261122.cjs` coteja las 42 lecturas, las doce sustituciones y las treinta reservas, prohíbe la promoción indebida a fuente 5 y comprueba los recuentos de referencia. Se ejecuta en los workflows de **Phase I** y **versión autónoma**.
 
 **Publicación:** trabajo agregado a la PR #210 en borrador. Sin fusión ni despliegue. El cierre queda condicionado a CI verde sobre el último commit y autorización docente expresa.
+
+## Reconstrucción autónoma controlada
+
+El workflow aislado reconstruyó el índice académico sin diferencias y regeneró `offline.html` desde `scripts/build-offline.mjs`. La reconstrucción quedó en el [commit `4ccf12c`](https://github.com/ArchaiosMagister/GeneradorExamenes/commit/4ccf12ccd609e1382a6737a282a83652afad3dec), que también eliminó su propio workflow temporal. Esta comprobación **no es un despliegue**. La CI regular debe comprobar el último commit posterior del expediente.
