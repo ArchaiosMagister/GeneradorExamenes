@@ -109,8 +109,9 @@ const mNormalizeLatin=entry=>String(entry||'').split(',')[0]
    assert.equal(check.nominative,expected,course+': falta la concordancia del gentilicio');
    assert.equal(check.general,false,'Romanus no debe entrar en el sorteo general');
   }
-  // Hostis es un tema en -i de tercera: el genitivo plural hostium
-  // no puede obtenerse del generador consonántico regular.
+  // Hostis es un tema en -i de tercera: hostium procede de su matriz
+  // individual acreditada. La antigua excepción de hostis Romanus
+  // se conserva, ahora compatible con las tablas generales verificadas.
   await select('latin1','tablas',4);
   const hostis=await page.evaluate(()=>{
    const item=latinCompleteDeclensionItems(['UD4'])
@@ -119,7 +120,7 @@ const mNormalizeLatin=entry=>String(entry||'').split(',')[0]
     inGeneral:!!mNoun('hostis, –is (m.)'),gender:item?.compound?.gender};
   });
   assert(hostis.found,'Latín I UD4: falta hostis Romanus aprobado');
-  assert.equal(hostis.inGeneral,false,'La excepción no altera la regla general');
+  assert.equal(hostis.inGeneral,true,'Hostis debe estar disponible también en el generador general contrastado');
   assert.equal(hostis.gender,'m','Género de hostis');
   assert.deepEqual(hostis.forms,[
    ['hostis Romanus','hostis Romane','hostem Romanum','hostis Romani',
