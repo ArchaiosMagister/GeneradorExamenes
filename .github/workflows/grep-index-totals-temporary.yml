@@ -1,0 +1,32 @@
+name: Temporal - inventariar totales antiguos del indice
+on:
+  push:
+    branches:
+      - fix/latin-deponents-ud7-ud9-editorial-20261122
+permissions:
+  contents: write
+jobs:
+  audit:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/latin-deponents-ud7-ud9-editorial-20261122
+          persist-credentials: true
+      - name: Inventariar totales anteriores 14507, 619, 570
+        shell: bash
+        run: |
+          echo '=== 14507 ==='
+          grep -Rn -E '(^|[^[:digit:]])14507([^[:digit:]]|$)' scripts/ .github/workflows/ || true
+          echo '=== 619 ==='
+          grep -Rn -E '(^|[^[:digit:]])619([^[:digit:]]|$)' scripts/ .github/workflows/ || true
+          echo '=== LATIN ROWS ==='
+          grep -Rn -E 'rows\.lat\.length|counts\.lat\.contrastado' scripts/ | head -100 || true
+      - name: Retirar el workflow efimero
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/workflows/grep-index-totals-temporary.yml
+          git commit -m "ci: retirar inventario temporal de totales"
+          git push origin HEAD:fix/latin-deponents-ud7-ud9-editorial-20261122
