@@ -35,6 +35,8 @@ for(const [lemma,forms] of Object.entries(expected)){
  assert.equal(five.length,6+(lemma==='miror'?1:0),'Conservar participio de miror además de seis presentes: '+lemma);
  const present=five.filter(x=>x[2].startsWith('V;IND;DEP;PRS;'));
  assert.equal(present.length,6,'Fuente 5: seis presentes exactamente: '+lemma);
+ if(lemma==='miror')assert.deepEqual(five.filter(x=>!x[2].startsWith('V;IND;DEP;PRS;')),
+  [['miror','mirati','V;PTCP;ACT;PRF;NOM;PL;MASC',5]],'Preservar fuente participial previa');
  for(let i=0;i<6;i++){
   const tag='V;IND;DEP;PRS;'+(i%3+1)+';'+(i<3?'SG':'PL');
   assert.equal(present.filter(x=>x[1]===forms[i]&&x[2]===tag).length,1,lemma+' '+tag);
