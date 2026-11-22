@@ -2890,6 +2890,7 @@ const latinSyntagmSemanticPairs=Object.freeze({
  amicus: 'bonus fidus verus doctus',
  ancilla: 'bonus fessus doctus fidus',
  animus: 'magnus bonus serenus',
+ animal: 'magnus parvus formosus',
  annus: 'longus bonus malus',
  anulus: 'magnus parvus albus',
  aratrum: 'magnus parvus',
@@ -2974,6 +2975,7 @@ const latinSyntagmSemanticPairs=Object.freeze({
  magister: 'bonus doctus severus',
  magistra: 'bonus doctus severus',
  mandatum: 'bonus malus occultus',
+ mare: 'magnus altus serenus',
  mater: 'bonus fessus doctus',
  mercator: 'bonus malus fidus',
  miles: 'strenuus fessus vulneratus',
@@ -3776,6 +3778,19 @@ const LATIN_THIRD_VERIFIED_GENITIVES=Object.freeze({
  oppugnatio:'oppugnationis',pater:'patris',uxor:'uxoris',
  virtus:'virtutis',ordo:'ordinis',serpens:'serpentis'
 });
+// Sustantivos neutros de tema en -i contrastados individualmente.
+// Las abreviaturas del genitivo figuran así en los vocabularios del curso;
+// no extrapolar este paradigma a otros neutros en -e/-al/-ar sin cotejo.
+const LATIN_VERIFIED_NEUTER_I_STEMS=Object.freeze({
+ mare:{genitives:['maris','is'],forms:[
+  ['mare','mare','mare','maris','mari','mari'],
+  ['maria','maria','maria','marium','maribus','maribus']
+ ]},
+ animal:{genitives:['animalis','alis'],forms:[
+  ['animal','animal','animal','animalis','animali','animali'],
+  ['animalia','animalia','animalia','animalium','animalibus','animalibus']
+ ]}
+});
 function mNoun(raw){
  const s=mNormalize(raw).replace(/\s+/g,' '),parts=s.split(',').map(x=>x.trim());if(parts.length<2)return null;
  const nom=parts[0],tail=parts[1].split(/\s*\(/)[0].trim();
@@ -3785,6 +3800,14 @@ function mNoun(raw){
  if(!/^[A-Za-z]+$/.test(nom))return null;
  let gen=tail.startsWith('-')?tail.slice(1):tail;
  if(!/^[A-Za-z]+$/.test(gen))return null;
+ const individualIStem=LATIN_VERIFIED_NEUTER_I_STEMS[nom.toLowerCase()];
+ if(individualIStem){
+  // No legitimar un género o un genitivo erróneos solo por coincidir el lema.
+  if(gender!=='n'||!individualIStem.genitives.includes(gen))return null;
+  return {lemma:nom,kind:'3n',gender:'n',
+   forms:individualIStem.forms.map(number=>[...number]),
+   source:'Paradigma individual de neutro en -i (Gaffiot/Collatinus)'};
+ }
  let kind=null,stem=null;
  if(gen==='ae'&&nom.endsWith('a')){kind='1';stem=nom.slice(0,-1)}
  else if(gen==='i'&&nom.endsWith('us')){kind='2m';stem=nom.slice(0,-2)}
