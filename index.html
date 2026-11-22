@@ -2383,9 +2383,11 @@ function latinSpecialVerbFirstUnit(entry,course){
   (LATIN1_IRREGULAR_FIRST_UNIT[lemma]??Infinity);
  // En 4.º solo se evalúan verbos especiales que pertenezcan al curso:
  // un lema tomado del banco de Latín I no adelanta su enseñanza.
- const ownUnit=Math.min(Infinity,...latinSharedBank.vocabulary(course,null)
-  .filter(x=>examKey(x.entry)===lemma)
-  .map(x=>examUnitNumber(x.unit)??Infinity));
+ // El vocabulario de pantalla deduplica lemas y puede ocultar su primera
+ // aparición; el índice compartido conserva todas las unidades originales.
+ const registered=latinSharedBank.lookup(lemma,course)?.units?.get(course);
+ const ownUnit=Math.min(Infinity,...[...(registered||[])]
+  .map(unit=>examUnitNumber(unit)??Infinity));
  return deponent?Math.max(7,ownUnit):
   semideponent?Math.max(9,ownUnit):ownUnit;
 }
