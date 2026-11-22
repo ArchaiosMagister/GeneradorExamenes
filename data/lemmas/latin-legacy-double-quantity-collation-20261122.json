@@ -34,7 +34,7 @@
       "https://www.sciencedirect.com/org/science/article/pii/S2212588417000060"
     ]
   },
-  "method": "Se preservan las 42 lecturas originales de fuente 0 como testimonio, sin promocionarlas a fuente 5. La mezcla de signos no acredita dos pronunciaciones sin cotejo. En custos, las fuentes consultadas discrepan: IPA [kʊs.toːs] frente a cūstōs; hasta hallar prueba primaria, no se normaliza.",
+  "method": "Colación individual de 42 lecturas de fuente 0, respetando la notación académica de cantidad variable (Allen y Greenough §9–11). Sin promoción a fuente 5. Una doble marca no implica corrupción; puede expresar alternancia real o incertidumbre documental. Para nullius, Lucr. DRN I 224 prueba ĭ breve poética. En custos el valor de u ante st no se deduce de la escansión y sigue en reserva.",
   "items": [
     {
       "lemma": "alter",
@@ -515,5 +515,12 @@
         "sourcePromotion": false
       }
     ]
+  },
+  "notationPolicy": {
+    "label": "MARCA_DE_CANTIDAD_VARIABLE_CONVENCIONAL_EN_GRAMATICAS",
+    "reference": "https://dcc.dickinson.edu/grammar/latin/quantity-syllables",
+    "source": "Allen y Greenough, New Latin Grammar, §9–11",
+    "finding": "La notación de vocal con macrón y breve superpuestos puede expresar cantidad larga o breve según el testimonio. No debe tratarse como error tipográfico por su apariencia gráfica.",
+    "rule": "La combinación de dos diacríticos exige evaluación filológica, no reemplazo automático. Mantener la grafía original y documentar lectura ordinaria, poética o discutida en metadatos."
   }
 }
