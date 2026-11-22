@@ -12,7 +12,7 @@ const match=html.match(/const latinExplicitVerbEvidence=(\{[^\n]+\});\nfunction 
 assert(match,'Falta la tabla explícita de evidencia verbal');
 const evidence=JSON.parse(match[1]);
 assert.deepEqual(Object.keys(evidence).sort(),
- ['abeo','absum','accipio','amo','audeo','audio','capio','careo','complector','confero','conor','disco','duco','eo','facio','ineo','intueor','laetor','loquor','moneo','nolo','pereo','possum','praesum','proficiscor','redeo','rego','sequor','sum','transeo','vereor']);
+ ["abeo","absum","accipio","amo","audeo","audio","capio","careo","complector","confero","conor","disco","duco","eo","facio","gratulor","ineo","intueor","laetor","loquor","miror","moneo","nolo","patior","pereo","polliceor","possum","praesum","proficiscor","redeo","rego","sequor","sum","transeo","vereor"]);
 const overrides=JSON.parse(readFileSync(resolve(root,'data/lemmas/verified-overrides.json'),'utf8'));
 let total=0;
 for(const [lemma,series]of Object.entries(evidence)){
