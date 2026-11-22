@@ -85,7 +85,7 @@ for(const [course,rows] of Object.entries(banks)){
       (lemma.endsWith('or')&&!lemma.endsWith('ior')&&!lemma.endsWith('eor'))):
     grade==='4ª'?(lemma.endsWith('io')||lemma.endsWith('ior')):
     grade==='mx.'?(lemma.endsWith('io')||
-      lemma.endsWith('ior')&&/,\\s*[^,]+\\s+sum\\s*\\(mx\\.\\)$/.test(entry.entry)):false;
+      lemma.endsWith('ior')&&/,\s*[^,]+\s+sum\s*\(mx\.\)$/.test(entry.entry)):false;
    assert(good,'Conjugación incompatible con el presente: '+course+'/'+entry.unit+' '+entry.entry);
   }
   const k=course+':'+lemma;
