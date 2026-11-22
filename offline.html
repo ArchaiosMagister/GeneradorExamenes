@@ -7957,8 +7957,10 @@ function mNoun(raw){
    if(n===0&&i===2&&kind==='3n')return nom;
    return stem+ending;
  }));
- // Genitivo plural escolar serpentium (no serpentum).
+ // Genitivos plurales escolares de temas mixtos, cotejados por lema.
+ // No extrapolar -ium a todas las consonánticas de tercera.
  if(nom.toLowerCase()==='serpens'&&kind==='3mf')forms[1][3]='serpentium';
+ if(nom.toLowerCase()==='mors'&&kind==='3mf')forms[1][3]='mortium';
  return {lemma:nom,kind,gender:gender||
   (kind==='2n'?'n':kind==='1'?'f':'m'),forms,
   source:'Regla interna con genitivos y excepciones verificados'};
