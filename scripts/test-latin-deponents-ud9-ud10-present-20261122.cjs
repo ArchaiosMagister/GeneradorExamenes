@@ -65,7 +65,7 @@ if(process.argv.includes('--source-only')){
    page.on('pageerror',e=>errors.push(e.message));
    await page.goto(pathToFileURL(path.join(root,file)).href,{waitUntil:'load'});
    for(const lang of ['es','va']){
-    const result=await page.evaluate((lang,lemmas)=>{
+    const result=await page.evaluate(({lang,lemmas})=>{
      const set=(id,val)=>{const el=document.getElementById(id);el.value=val;el.dispatchEvent(new Event('change',{bubbles:true}));};
      set('course','latin1');set('model','morf');set('lang',lang);
      const key=x=>examKey(x.entry);
@@ -84,7 +84,7 @@ if(process.argv.includes('--source-only')){
       noAnalogy:lemmas.every(lemma=>!mVerb(vocab.find(x=>examKey(x.entry)===lemma)?.entry)),
       visible:!!document.getElementById('paper')
      };
-    },lang,Object.keys(expected));
+    },{lang,lemmas:Object.keys(expected)});
     assert(Object.values(result).every(Boolean),file+'/'+lang+' '+JSON.stringify(result));
    }
    assert.deepEqual(errors,[],file+' errores JS');
