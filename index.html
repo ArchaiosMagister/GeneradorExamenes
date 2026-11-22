@@ -2958,6 +2958,7 @@ const latinSyntagmSemanticPairs=Object.freeze({
  incendium: 'magnus longus',
  incola: 'bonus malus fessus',
  initium: 'bonus malus magnus',
+ iter: 'longus magnus durus',
  insula: 'magnus parvus vicinus',
  ira: 'magnus longus',
  iudicium: 'iustus verus malus',
@@ -3811,7 +3812,10 @@ function mNoun(raw){
  }
  else return null;
  // Unsupported exceptional paradigms, 3rd declension i-stems, 2nd declension -ius.
- const blocked=/^(domus|deus|filius|dea|filia|vis|bos|iuppiter|iter|mare|animal|civis|urbs|hostis|navis|turris|ignis|nox|ars|pars|mons|dens|pons|gens|urbs|imber|securis|sitis|puppis|febris|senatus|manus|cornu|genu|res|dies)$/i;
+ const blocked=/^(domus|deus|filius|dea|filia|vis|bos|iuppiter|mare|animal|civis|urbs|hostis|navis|turris|ignis|nox|ars|pars|mons|dens|pons|gens|urbs|imber|securis|sitis|puppis|febris|senatus|manus|cornu|genu|res|dies)$/i;
+ // Gaffiot: iter, itineris n. mantiene en los casos oblicuos el tema itiner-.
+ // El patrón 3n obtiene las doce casillas de modo exacto; sigue bloqueado todo
+ // el resto de los lemas excepcionales sin paradigma cotejado.
  // Fourth/fifth declensions may have distinctive dative or variant forms: wait for external validation.
  if(blocked.test(nom)||kind==='4m'||kind==='4n'||kind==='5')return null;
  // 3rd declension nouns must include the complete genitive, not just -is.
