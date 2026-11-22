@@ -18,6 +18,7 @@ on:
       - 'scripts/test-phase-five.cjs'
       - 'scripts/test-phase-six.cjs'
       - 'scripts/test-greek-morph-regeneration.cjs'
+      - 'scripts/test-latin-vir-paradigm-20261122.cjs'
       - 'scripts/test-greek-verb-syncretism.cjs'
       - 'scripts/test-greek-movable-nu.cjs'
       - 'scripts/test-greek-movable-nu-browser.cjs'
@@ -101,6 +102,8 @@ jobs:
         run: node scripts/test-greek-etymology-distinct-roots.cjs
       - name: Sintagmas griegos, enunciados completos, clases 2-2 y pronombres desde UD7
         run: node scripts/test-syntagm-variation.cjs && node scripts/test-sintagmas-aprobados-169.cjs
+      - name: Cotejar paradigma de vir, viri en Latín I y 4.º, web y autónoma
+        run: node scripts/test-latin-vir-paradigm-20261122.cjs
       - name: Phase I synchronization regressions
         run: node scripts/test-phase-one.cjs
       - name: Verificar interfaz de guardar/exportar y PDF local sin publicar
