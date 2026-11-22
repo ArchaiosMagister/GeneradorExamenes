@@ -1,0 +1,46 @@
+name: Reproducir índice y offline tras reserva filológica (sin desplegar)
+on:
+  push:
+    branches:
+      - fix/latin4-o-final-cantidad-20261122
+    paths:
+      - '.github/workflows/temporary-rebuild-quantity-reserved-20261122.yml'
+permissions:
+  contents: write
+jobs:
+  reproducir:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Checkout rama de auditoría
+        uses: actions/checkout@v4
+        with:
+          ref: fix/latin4-o-final-cantidad-20261122
+          fetch-depth: 1
+      - name: Preparar Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Regenerar índice con veto de cambios no reproducibles
+        run: |
+          node scripts/build-lemma-index.mjs
+          git diff --exit-code -- data/lemmas/teacher-forms.json
+      - name: Validar 42 reservas y siete cantidades de 4.º
+        run: |
+          node scripts/test-filologia-latin-legacy-double-quantity-20261122.cjs
+          node scripts/test-filologia-latin4-final-o-20261122.cjs
+      - name: Reconstruir versión autónoma
+        run: node scripts/build-offline.mjs
+      - name: Cotejar paridad de lematización en autónoma
+        run: |
+          node scripts/test-cuatro-dativos-fuente5.cjs
+          node scripts/test-filologia-latin4-final-o-20261122.cjs --offline
+          node scripts/test-filologia-latin-legacy-double-quantity-20261122.cjs
+      - name: Guardar HTML regenerado y retirar flujo temporal
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add offline.html
+          git rm .github/workflows/temporary-rebuild-quantity-reserved-20261122.yml
+          git commit -m 'build: reconciliar offline con 42 cantidades en reserva'
+          git push origin HEAD:refs/heads/fix/latin4-o-final-cantidad-20261122
