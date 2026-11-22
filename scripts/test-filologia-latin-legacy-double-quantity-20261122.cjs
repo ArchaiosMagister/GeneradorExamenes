@@ -35,6 +35,29 @@ for(const a of audit.items){
   'Promoción indebida a fuente 5: '+id);
 }
 assert.deepEqual(grouped,{alter:1,custos:12,nullus:1,princeps:28});
+assert.equal(audit.philologicalEvidence?.schema,1);
+assert.equal(audit.philologicalEvidence.entries?.length,4);
+const documented=new Set();
+for(const evidence of audit.philologicalEvidence.entries){
+ assert(Object.hasOwn(grouped,evidence.lemma),'Lema de evidencia ajeno');
+ assert(!documented.has(evidence.lemma),'Cotejo bibliográfico repetido');
+ documented.add(evidence.lemma);
+ assert.equal(evidence.rows,grouped[evidence.lemma]);
+ assert.equal(evidence.allowedIndexNormalization,false);
+ assert.equal(evidence.sourcePromotion,false);
+ assert(evidence.evidenceLevel?.length>12);
+ assert(evidence.inference?.length>40);
+ assert(evidence.comparativeReferences?.length>=2);
+ for(const uri of evidence.comparativeReferences)assert(uri.startsWith('https://'));
+ for(const attestation of evidence.ancientWitnesses){
+  assert(attestation.author&&attestation.locus&&attestation.claim&&attestation.uri?.startsWith('https://'));
+ }
+}
+assert(audit.philologicalEvidence.entries.find(x=>x.lemma==='alter').ancientWitnesses.length===1);
+assert(audit.philologicalEvidence.entries.find(x=>x.lemma==='princeps').ancientWitnesses.length===1);
+assert(audit.philologicalEvidence.entries.find(x=>x.lemma==='custos').ancientWitnesses.length===0);
+assert(audit.philologicalEvidence.entries.find(x=>x.lemma==='nullus').ancientWitnesses.length===0);
+
 assert.equal(index.rows.lat.filter(r=>['alter','custos','nullus','princeps'].includes(r[0])&&
  /[īū]̆/u.test(r[1])&&r[3]===0).length,42);
 assert.equal(index.rows.lat.filter(r=>r[0]==='custos'&&r[3]===0).length,12);
