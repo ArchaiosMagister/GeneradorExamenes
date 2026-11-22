@@ -24,3 +24,6 @@ La nueva regresión `scripts/test-latin-mf-i-stems-20261122.cjs` comprueba 36 ca
 Autoridades: [Gaffiot, navis](https://www.gaffiot.org/67426), [Azimonti](https://www.azimonti.com/philology/latin/resources/paradigms-nouns/), [Larousse](https://www.larousse.fr/dictionnaires/memo/Les_d%C3%A9clinaisons/73), [Montpellier 3](https://sapn.univ-montp3.fr/public/Latin/Volume%202/unit%C3%A9s/U19/co/Imparisyllabiques_et_parisyllabiques.html).
 
 Se conserva el índice, las fuentes, puntuaciones, repertorios griegos y reglas generales de las demás declinaciones. No se genera por semejanza ninguna otra palabra.
+
+## Sincronización autónoma
+El workflow de reconstrucción aislado completó `npm run offline:build` sobre la rama y se eliminó a sí mismo después de versionar `offline.html`. La última validación deberá ejecutarse sobre el commit ordinario posterior y confirmar también `git diff --exit-code -- offline.html`.
