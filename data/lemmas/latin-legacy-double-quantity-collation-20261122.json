@@ -8,9 +8,10 @@
   "morphologyPromotion": false,
   "expected": {
     "total": 42,
-    "corrected": 12,
-    "retainedVariant": 30,
-    "sourceCode": 0
+    "corrected": 0,
+    "retainedVariant": 42,
+    "sourceCode": 0,
+    "reason": "La vocal inicial de custos sigue discutida: no unificar su cantidad por una única fuente secundaria."
   },
   "bibliography": {
     "alter": [
@@ -18,8 +19,10 @@
       "https://atlas.perseus.tufts.edu/dictionaries/entry/urn%3Acite2%3Ascaife-viewer%3Adictionary-entries.atlas_v1%3Alat.ls.perseus-eng2-n2015/"
     ],
     "custos": [
-      "https://www.lateinlex.de/?call=ShowArticle&id=1514&latein=custos",
-      "https://www.curriculumonline.ie/getmedia/40a3400a-8ab6-4345-8f01-9d65742c17e9/Latin-Indicative-Vocabulary-List.pdf"
+      "https://en.wiktionary.org/wiki/custos",
+      "https://es.wiktionary.org/wiki/custos",
+      "https://de.wiktionary.org/wiki/custos",
+      "https://dcc.dickinson.edu/latin-core/cvstos"
     ],
     "nullus": [
       "https://atlas.perseus.tufts.edu/dictionaries/entry/urn%3Acite2%3Ascaife-viewer%3Adictionary-entries.atlas_v1%3Alat.ls.perseus-eng2-n31390/",
@@ -31,7 +34,7 @@
       "https://www.sciencedirect.com/org/science/article/pii/S2212588417000060"
     ]
   },
-  "method": "La corrección ortográfica no verifica el paradigma ni eleva la fuente a 5. Los testimonios discutidos mantienen la lectura original hasta contar con evidencia de contexto o época.",
+  "method": "Se preservan las 42 lecturas originales de fuente 0 como testimonio, sin promocionarlas a fuente 5. La mezcla de signos no acredita dos pronunciaciones sin cotejo. En custos, las fuentes consultadas discrepan: IPA [kʊs.toːs] frente a cūstōs; hasta hallar prueba primaria, no se normaliza.",
   "items": [
     {
       "lemma": "alter",
@@ -47,108 +50,120 @@
       "form": "cū̆stōde",
       "features": "N;ABL;SG",
       "source": 0,
-      "after": "cūstōde",
-      "classification": "CORRECCION_CANTIDAD_ACREDITADA",
-      "reference": "https://www.lateinlex.de/?call=ShowArticle&id=1514&latein=custos"
+      "after": "cū̆stōde",
+      "classification": "CANTIDAD_DISPUTADA_RESERVADA",
+      "reference": "https://en.wiktionary.org/wiki/custos",
+      "note": "Cantidad inicial discutida; [kʊs.toːs] en inglés, cūstōs en alemán. No se adopta una lectura sin cotejo primario."
     },
     {
       "lemma": "custos",
       "form": "cū̆stōdem",
       "features": "N;ACC;SG",
       "source": 0,
-      "after": "cūstōdem",
-      "classification": "CORRECCION_CANTIDAD_ACREDITADA",
-      "reference": "https://www.lateinlex.de/?call=ShowArticle&id=1514&latein=custos"
+      "after": "cū̆stōdem",
+      "classification": "CANTIDAD_DISPUTADA_RESERVADA",
+      "reference": "https://en.wiktionary.org/wiki/custos",
+      "note": "Cantidad inicial discutida; [kʊs.toːs] en inglés, cūstōs en alemán. No se adopta una lectura sin cotejo primario."
     },
     {
       "lemma": "custos",
       "form": "cū̆stōdēs",
       "features": "N;ACC;PL",
       "source": 0,
-      "after": "cūstōdēs",
-      "classification": "CORRECCION_CANTIDAD_ACREDITADA",
-      "reference": "https://www.lateinlex.de/?call=ShowArticle&id=1514&latein=custos"
+      "after": "cū̆stōdēs",
+      "classification": "CANTIDAD_DISPUTADA_RESERVADA",
+      "reference": "https://en.wiktionary.org/wiki/custos",
+      "note": "Cantidad inicial discutida; [kʊs.toːs] en inglés, cūstōs en alemán. No se adopta una lectura sin cotejo primario."
     },
     {
       "lemma": "custos",
       "form": "cū̆stōdēs",
       "features": "N;NOM;PL",
       "source": 0,
-      "after": "cūstōdēs",
-      "classification": "CORRECCION_CANTIDAD_ACREDITADA",
-      "reference": "https://www.lateinlex.de/?call=ShowArticle&id=1514&latein=custos"
+      "after": "cū̆stōdēs",
+      "classification": "CANTIDAD_DISPUTADA_RESERVADA",
+      "reference": "https://en.wiktionary.org/wiki/custos",
+      "note": "Cantidad inicial discutida; [kʊs.toːs] en inglés, cūstōs en alemán. No se adopta una lectura sin cotejo primario."
     },
     {
       "lemma": "custos",
       "form": "cū̆stōdēs",
       "features": "N;VOC;PL",
       "source": 0,
-      "after": "cūstōdēs",
-      "classification": "CORRECCION_CANTIDAD_ACREDITADA",
-      "reference": "https://www.lateinlex.de/?call=ShowArticle&id=1514&latein=custos"
+      "after": "cū̆stōdēs",
+      "classification": "CANTIDAD_DISPUTADA_RESERVADA",
+      "reference": "https://en.wiktionary.org/wiki/custos",
+      "note": "Cantidad inicial discutida; [kʊs.toːs] en inglés, cūstōs en alemán. No se adopta una lectura sin cotejo primario."
     },
     {
       "lemma": "custos",
       "form": "cū̆stōdī",
       "features": "N;DAT;SG",
       "source": 0,
-      "after": "cūstōdī",
-      "classification": "CORRECCION_CANTIDAD_ACREDITADA",
-      "reference": "https://www.lateinlex.de/?call=ShowArticle&id=1514&latein=custos"
+      "after": "cū̆stōdī",
+      "classification": "CANTIDAD_DISPUTADA_RESERVADA",
+      "reference": "https://en.wiktionary.org/wiki/custos",
+      "note": "Cantidad inicial discutida; [kʊs.toːs] en inglés, cūstōs en alemán. No se adopta una lectura sin cotejo primario."
     },
     {
       "lemma": "custos",
       "form": "cū̆stōdibus",
       "features": "N;ABL;PL",
       "source": 0,
-      "after": "cūstōdibus",
-      "classification": "CORRECCION_CANTIDAD_ACREDITADA",
-      "reference": "https://www.lateinlex.de/?call=ShowArticle&id=1514&latein=custos"
+      "after": "cū̆stōdibus",
+      "classification": "CANTIDAD_DISPUTADA_RESERVADA",
+      "reference": "https://en.wiktionary.org/wiki/custos",
+      "note": "Cantidad inicial discutida; [kʊs.toːs] en inglés, cūstōs en alemán. No se adopta una lectura sin cotejo primario."
     },
     {
       "lemma": "custos",
       "form": "cū̆stōdibus",
       "features": "N;DAT;PL",
       "source": 0,
-      "after": "cūstōdibus",
-      "classification": "CORRECCION_CANTIDAD_ACREDITADA",
-      "reference": "https://www.lateinlex.de/?call=ShowArticle&id=1514&latein=custos"
+      "after": "cū̆stōdibus",
+      "classification": "CANTIDAD_DISPUTADA_RESERVADA",
+      "reference": "https://en.wiktionary.org/wiki/custos",
+      "note": "Cantidad inicial discutida; [kʊs.toːs] en inglés, cūstōs en alemán. No se adopta una lectura sin cotejo primario."
     },
     {
       "lemma": "custos",
       "form": "cū̆stōdis",
       "features": "N;GEN;SG",
       "source": 0,
-      "after": "cūstōdis",
-      "classification": "CORRECCION_CANTIDAD_ACREDITADA",
-      "reference": "https://www.lateinlex.de/?call=ShowArticle&id=1514&latein=custos"
+      "after": "cū̆stōdis",
+      "classification": "CANTIDAD_DISPUTADA_RESERVADA",
+      "reference": "https://en.wiktionary.org/wiki/custos",
+      "note": "Cantidad inicial discutida; [kʊs.toːs] en inglés, cūstōs en alemán. No se adopta una lectura sin cotejo primario."
     },
     {
       "lemma": "custos",
       "form": "cū̆stōdum",
       "features": "N;GEN;PL",
       "source": 0,
-      "after": "cūstōdum",
-      "classification": "CORRECCION_CANTIDAD_ACREDITADA",
-      "reference": "https://www.lateinlex.de/?call=ShowArticle&id=1514&latein=custos"
+      "after": "cū̆stōdum",
+      "classification": "CANTIDAD_DISPUTADA_RESERVADA",
+      "reference": "https://en.wiktionary.org/wiki/custos",
+      "note": "Cantidad inicial discutida; [kʊs.toːs] en inglés, cūstōs en alemán. No se adopta una lectura sin cotejo primario."
     },
     {
       "lemma": "custos",
       "form": "cū̆stōs",
       "features": "N;NOM;SG",
       "source": 0,
-      "after": "cūstōs",
-      "classification": "CORRECCION_CANTIDAD_ACREDITADA",
-      "reference": "https://www.lateinlex.de/?call=ShowArticle&id=1514&latein=custos"
+      "after": "cū̆stōs",
+      "classification": "CANTIDAD_DISPUTADA_RESERVADA",
+      "reference": "https://en.wiktionary.org/wiki/custos",
+      "note": "Cantidad inicial discutida; [kʊs.toːs] en inglés, cūstōs en alemán. No se adopta una lectura sin cotejo primario."
     },
     {
       "lemma": "custos",
       "form": "cū̆stōs",
       "features": "N;VOC;SG",
       "source": 0,
-      "after": "cūstōs",
-      "classification": "CORRECCION_CANTIDAD_ACREDITADA",
-      "reference": "https://www.lateinlex.de/?call=ShowArticle&id=1514&latein=custos"
+      "after": "cū̆stōs",
+      "classification": "CANTIDAD_DISPUTADA_RESERVADA",
+      "reference": "https://en.wiktionary.org/wiki/custos",
+      "note": "Cantidad inicial discutida; [kʊs.toːs] en inglés, cūstōs en alemán. No se adopta una lectura sin cotejo primario."
     },
     {
       "lemma": "nullus",
