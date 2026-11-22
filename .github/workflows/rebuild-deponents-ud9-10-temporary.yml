@@ -1,4 +1,5 @@
 name: Reconstrucción temporal de deponentes UD9-10 (sin publicación)
+# Repetición tras conservar mirati y corregir umbral curricular por lema
 on:
   pull_request:
     branches:
