@@ -872,6 +872,24 @@
       "to": "Cĭcĕrō, –onis (m.)",
       "reference": "https://es.wiktionary.org/wiki/Cicero",
       "note": "Cantidad final larga -ō del nominativo; corrección solo de enunciado, sin añadir formas ni certificar paradigmas."
+    },
+    {
+      "lang": "lat",
+      "lemma": "complector",
+      "course": "lat1",
+      "from": "complector, complectus sum (3ª)",
+      "to": "complector, complexus sum (3ª)",
+      "reference": "https://fr.wikisource.org/wiki/Page%3AGaffiot_-_Dictionnaire_illustr%C3%A9_Latin-Fran%C3%A7ais.djvu/370",
+      "note": "Gaffiot y Lewis & Short: participio de perfecto complexus; enunciado escolar corregido sin acreditar otras formas por analogía."
+    },
+    {
+      "lang": "lat",
+      "lemma": "patior",
+      "course": "lat1",
+      "from": "patior, passus sum (4ª)",
+      "to": "patior, passus sum (mx.)",
+      "reference": "https://odysseum.eduscol.education.fr/les-modeles-de-conjugaison",
+      "note": "Deponente de tercera conjugación mixta: patior, pateris, pati, passus sum. Corrección de clase, sin añadir ni habilitar formas sin contraste individual."
     }
   ],
   "paradigms": [
