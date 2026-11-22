@@ -6485,7 +6485,8 @@ function latinExplicitVerbRows(chosen){
  const labels=['1.ª persona singular','2.ª persona singular','3.ª persona singular',
   '1.ª persona plural','2.ª persona plural','3.ª persona plural'];
  return Object.entries(latinExplicitVerbEvidence).flatMap(([lemma,series])=>{
-  const entry=entries.get(lemma);if(!entry)return [];
+  const entry=entries.get(lemma);if(!entry||
+   !latinSpecialVerbEligible(entry,currentCourse(),max))return [];
   return series.filter(x=>x.tense==='presente'||x.tense==='imperfecto'&&max>=2||
    x.tense==='futuro'&&max>=7||['perfecto','pluscuamperfecto'].includes(x.tense)&&max>=4)
    .filter(x=>(x.voice!=='deponente'||max>=7)&&
@@ -6495,6 +6496,36 @@ function latinExplicitVerbRows(chosen){
    })));
  });
 }
+// En pruebas morfológicas se permite compartir léxico regular entre cursos,
+// pero nunca anticipar un paradigma irregular, deponente o semideponente.
+// Los umbrales de Latín I corresponden al primer tema en que se estudian.
+const LATIN1_IRREGULAR_FIRST_UNIT=Object.freeze({
+ sum:1,eo:2,pereo:4,confero:5,transeo:5,possum:8,redeo:8,
+ absum:9,praesum:9,abeo:11,ineo:11,nolo:11
+});
+function latinSpecialVerbFirstUnit(entry,course){
+ const lemma=examKey(entry),series=latinExplicitVerbEvidence[lemma]||[];
+ const deponent=series.some(x=>x.voice==='deponente');
+ const semideponent=series.some(x=>x.voice==='semideponente');
+ const irregular=Object.hasOwn(LATIN1_IRREGULAR_FIRST_UNIT,lemma)||
+  /\(irr\.\)/i.test(String(entry));
+ if(!deponent&&!semideponent&&!irregular)return 1;
+ if(course==='latin1')return deponent?7:semideponent?9:
+  (LATIN1_IRREGULAR_FIRST_UNIT[lemma]??Infinity);
+ // En 4.º solo se evalúan verbos especiales que pertenezcan al curso:
+ // un lema tomado del banco de Latín I no adelanta su enseñanza.
+ // El vocabulario de pantalla deduplica lemas y puede ocultar su primera
+ // aparición; el índice compartido conserva todas las unidades originales.
+ const registered=latinSharedBank.lookup(lemma,course)?.units?.get(course);
+ const ownUnit=Math.min(Infinity,...[...(registered||[])]
+  .map(unit=>examUnitNumber(unit)??Infinity));
+ return deponent?Math.max(7,ownUnit):
+  semideponent?Math.max(9,ownUnit):ownUnit;
+}
+function latinSpecialVerbEligible(entry,course,maxUnit){
+ return maxUnit>=latinSpecialVerbFirstUnit(entry,course);
+}
+
 // En un análisis sin contexto, estas formas de deponentes de tercera
 // conjugación son presente O futuro indicativo: excluirlas del sorteo aislado.
 const latinDeponentSyncretisms=new Set(['loquor|loqueris','sequor|sequeris','proficiscor|proficisceris']);
@@ -6509,6 +6540,7 @@ function latinMorphologyVerbPool(chosen){
   if(!Array.isArray(p.forms)||p.forms.length!==6)continue;
   if((p.evidenceVoice==='deponente'&&max<7)||(p.evidenceVoice==='semideponente'&&max<9))continue;
   const entry=x.entry,sourceEntry=p.sourceEntry||entry,paradigm=mVerb(sourceEntry);
+  if(!latinSpecialVerbEligible(entry,currentCourse(),max))continue;
   const explicitSeries=latinExplicitVerbEvidence[examKey(entry)]||[];
   const add=(forms,tense,voice)=>forms.forEach((form,i)=>{
    if(!form)return;
@@ -7409,7 +7441,8 @@ function latinExamFormCandidates(chosen,allForms=false){
   }
   else if(a&&x.latinMorphCategory==='adjectives'){if(permitted('adjectives')&&limit>=(currentCourse()==='latin4'?3:2))
    add(1,a.forms,a.labels,'adjectives',x.entry)}
-  else if(v&&x.latinMorphCategory==='verbs'){
+  else if(v&&x.latinMorphCategory==='verbs'&&
+   latinSpecialVerbEligible(x.entry,course,limit)){
    // Latín I: el presente de las conjugaciones regulares se estudia en UD1.
    // Latín 4.º conserva la selección verbal curricular existente.
    if(currentCourse()!=='latin4'||unitVerbs.has(examKey(x.entry))){
@@ -7419,7 +7452,8 @@ function latinExamFormCandidates(chosen,allForms=false){
   }
  }
  for(const {x,p} of latinSharedBank.paradigms(currentCourse(),chosen,'verb')){
-  if(isExcludedExamMorphLemma(x.entry,x.meaning))continue;
+  if(isExcludedExamMorphLemma(x.entry,x.meaning)||
+   !latinSpecialVerbEligible(x.entry,course,limit))continue;
   if(indexedVerbs.has(examKey(x.entry))||!Array.isArray(p.forms)||p.forms.length!==6)continue;
   add(2,p.forms,p.labels.map(label=>label+', presente de indicativo activo'),'verbs',x.entry,p.sourceEntry);
  }
