@@ -6,7 +6,7 @@
 | --- | ---: | --- | --- |
 | `alter` | 1 | `alterī̆us` | La breve del genitivo está documentada poéticamente; la larga es regular. Reservar como fenómeno métrico. |
 | `custos` | 12 | `cū̆st-` | Evidencia **discordante** en fuentes secundarias para la `u` inicial. **No** reducir a `cūst-` ni a `cŭst-` hasta nueva comprobación de fuente primaria. |
-| `nullus` | 1 | `nūllī̆us` | Genitivo en `-īus` con cantidad susceptible de abreviación poética; no uniformar en el índice histórico. |
+| `nullus` | 1 | `nūllī̆us` | **Breve poética ahora acreditada** por Lucrecio, *DRN* I 224, primer pie dactílico `nūl-lĭ-us`; no uniformar la lectura escolar larga ni el testimonio histórico. |
 | `princeps` | 28 | `prī̆nc-` | Las fuentes reflejan tanto la cantidad larga tradicional como indicios antiguos de breve; reservar las lecturas nominales y adjetivales. |
 | **Total** | **42** | | **42 reservados, sin cambio** |
 
@@ -37,7 +37,7 @@ La reconstrucción aislada volvió a generar el índice desde el extracto fijado
 
 **Prisciano, *Institutiones grammaticae* III, 20, 7–8**, conserva un testimonio directo para `alterĭus`: `semper corripit paenultimam`. La regla enuncia una cantidad breve según Prisciano; no demuestra que toda tradición poética desde época arcaica realizase siempre esa cantidad. [Transcripción de St Gall Priscian Glosses](https://www.stgallpriscian.ie/index.php?kP=20&kV=3). **Allen y Greenough §113** describen la `-īus` original y su abreviación frecuente para *alterius*; el testimonio de Prisciano y la regla escolar no son intercambiables.
 
-**Nullīus**: [Allen y Greenough §603](https://dcc.dickinson.edu/sv/grammar/latin/general-rules-quantity) imprime `nūllīus`, con `ī` larga, y advierte que la secuencia `-īus` puede abreviarse poéticamente. Esta regla general no sustituye un verso concreto cuya escansión demuestre `nūllĭus`. Se conserva el testimonio doble del extracto pero queda **pendiente una atestación primaria individual de la breve**. No se convierte la excepción general en hecho probado para *nullus*.
+**Nullīus / nullĭus**: [Allen y Greenough §603](https://dcc.dickinson.edu/grammar/latin/general-rules-quantity) describe la `ī` larga del genitivo como forma ordinaria. **La breve poética dispone ahora de testimonio individual**: Lucrecio, [*De rerum natura* I 224](https://scaife.perseus.org/reader/urn:cts:latinLit:phi0550.phi001.perseus-lat1:1.224/?right=perseus-lat1), `nullius exitium patitur natura videri`. La escansión del primer pie `nūl-lĭ-us` (— ◡ ◡) exige la `ĭ` breve. Este verso acredita la variante poética específica del lema sin validar el paradigma ni sustituir la cantidad ordinaria.
 
 **Custōs**: [Allen y Greenough §56](https://latindictionary.co/academy/grammar/56) imprime `cūstōs`, con `ū` larga; [Dickinson Latin Core](https://dcc.dickinson.edu/latin-core/cvstos) ofrece `custōs`, sin marcar la primera vocal, mientras que otras fuentes ofrecen transcripciones con `u` breve. La `u` precede al grupo consonántico `st`: **la sílaba resulta larga por posición y la métrica no resuelve la cantidad de la vocal**. [Allen y Greenough §§9–11](https://dcc.dickinson.edu/grammar/latin/quantity-syllables) advierten de esta cantidad oculta. No se localizó una inscripción con marca explícita o una regla de gramático antiguo que autorice decidir entre `cūst-` y `cŭst-`. Quedan en reserva las doce filas.
 
@@ -45,6 +45,10 @@ La reconstrucción aislada volvió a generar el índice desde el extracto fijado
 
 ### Dictamen editorial y alcance
 
-El resultado no cambia respecto a la segunda revisión del índice: **42 filas conservadas, 0 cantidades alteradas, 0 promociones a fuente 5**. Hay evidencia antigua positiva de la abreviación de *alterius*; en *princeps* la declaración antigua disponible es sobre la sílaba; y para la breve concreta de *nullius* y la cantidad de la *u* en *custos* no se ha documentado aún una fuente primaria decisiva. Es preferible preservar la trazabilidad antes que aplicar automáticamente cantidades por analogía, etimología hipotética o escansión que solo prueba duración silábica.
+El resultado no cambia respecto a la segunda revisión del índice: **42 filas conservadas, 0 cantidades alteradas, 0 promociones a fuente 5**. Hay evidencia antigua positiva de la abreviación de *alterius* y **Lucrecio I 224 acredita directamente la breve de *nullius***; en *princeps* la declaración antigua disponible es sobre la sílaba; para la cantidad de la *u* en *custos* no se ha documentado aún una fuente primaria decisiva. Es preferible preservar la trazabilidad antes que aplicar automáticamente cantidades por analogía, etimología hipotética o escansión que solo prueba duración silábica.
 
 El expediente `latin-legacy-double-quantity-collation-20261122.json` clasifica el nivel probatorio **por lema**, asociado a las 42 filas identificadas, pero sin fingir que una sola cita acredita todos sus análisis de caso, número y género. La regresión ahora también impide perder esa documentación o promover las lecturas sin validación.
+
+## Sexta fase: atestación métrica directa para `nullĭus`
+
+La localización de [Lucrecio, *De rerum natura* I 224](https://beta.perseus.tufts.edu/urn:cts:latinLit:phi0550.phi001.perseus-lat1/) permite refinar la clasificación: `nullius exitium patitur natura videri` se divide en hexámetro `nūl-lĭ-us | ex-ĭ-tĭ | um-pă-tĭ | tur-nā | tū-ră-vĭ | dē-rī`. El primer pie es inequívocamente dactílico (`— ◡ ◡`) y contiene `ĭ` breve. El verso acredita la lectura `nūllĭus` en ese contexto concreto, aunque la representación escolar habitual puede mantener `nūllīus` y el extracto histórico `nūllī̆us` conserva su doble indicación original. No se amplía esta atestación a *alter*, *custos*, *princeps* ni se altera la fuente 0.
