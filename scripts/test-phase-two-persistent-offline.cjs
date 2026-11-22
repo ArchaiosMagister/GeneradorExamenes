@@ -50,6 +50,11 @@ for(const [name,after] of [
  assert.deepEqual(explicit(offline,name,after),explicit(index,name,after),
   'El paradigma embebido está obsoleto: '+name);
 }
-assert(offline.includes("const latinDeponentSyncretisms=new Set(['loquor|loqueris','sequor|sequeris','proficiscor|proficisceris']);"),
- 'Las advertencias de sincretismo no llegaron a la PWA offline');
+const syncretism=/const latinDeponentSyncretisms=new Set\(\[([^\n]+?)\]\);/;
+const expectedSyncretisms=['loquor|loqueris','sequor|sequeris','proficiscor|proficisceris','complector|complecteris'];
+const webSyn=index.match(syncretism),offlineSyn=offline.match(syncretism);
+assert(webSyn&&offlineSyn,'Advertencias de sincretismo ausentes');
+assert.equal(webSyn[1],offlineSyn[1],'Las advertencias de sincretismo difieren entre web y PWA');
+for(const pair of expectedSyncretisms)
+ assert(webSyn[1].includes("'"+pair+"'"),'Sincretismo no protegido: '+pair);
 console.log('Fase II: fuentes, casillas individuales, contadores, modelos y versión offline coinciden.');
