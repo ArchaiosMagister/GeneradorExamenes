@@ -172,7 +172,8 @@
       "source": 0,
       "after": "nūllī̆us",
       "classification": "VARIANTE_METRICA_RESERVADA",
-      "reference": "https://atlas.perseus.tufts.edu/dictionaries/entry/urn%3Acite2%3Ascaife-viewer%3Adictionary-entries.atlas_v1%3Alat.ls.perseus-eng2-n31390/"
+      "reference": "https://scaife.perseus.org/reader/urn:cts:latinLit:phi0550.phi001.perseus-lat1:1.224/?right=perseus-lat1",
+      "note": "Lucr. DRN 1.224, nullius exitium patitur natura videri; el primer pie nūl-lĭ-us es un dáctilo — ˘ ˘; atestación individual de ĭ breve, sin promover el registro fuente 0."
     },
     {
       "lemma": "princeps",
@@ -431,7 +432,7 @@
     "schema": 1,
     "updatedOn": "2026-11-22",
     "sourceClass": "COTEJO_ANTIGUO_Y_MANUALES_FILOLÓGICOS_SIN_PROMOCIÓN",
-    "principle": "Cantidad vocálica distinta de cantidad silábica. Un signo dual heredado no prueba por sí solo una variante; una atestación de gramático no acredita todas las flexiones de un lema.",
+    "principle": "Cantidad vocálica distinta de cantidad silábica. Un signo dual heredado no prueba por sí solo una variante; una atestación de gramático no acredita todas las flexiones de un lema. El verso Lucr. 1.224 constituye una atestación directa de nūllĭus; no infiere cantidades en otros adjetivos.",
     "entries": [
       {
         "lemma": "alter",
@@ -456,13 +457,23 @@
       {
         "lemma": "nullus",
         "rows": 1,
-        "evidenceLevel": "GRAMATICA_MODERNA_REGLA_GENERAL_SIN_COTEJO_PRIMARIO_DE_NŬLLIUS",
-        "ancientWitnesses": [],
-        "comparativeReferences": [
-          "https://dcc.dickinson.edu/sv/grammar/latin/general-rules-quantity",
-          "https://dcc.dickinson.edu/tr/grammar/latin/1st-and-2nd-declension-adjectives-genitive-%C4%ABus-dative-%C4%AB"
+        "evidenceLevel": "TESTIMONIO_METRICO_PRIMARIO_DE_BREVE",
+        "ancientWitnesses": [
+          {
+            "author": "T. Lucretius Carus",
+            "locus": "De rerum natura I 224",
+            "quote": "nullius exitium patitur natura videri",
+            "quantity": "nūllĭus (ĭ breve)",
+            "meter": "Hexámetro dactílico; primer pie nūl-lĭ-us = larga, breve, breve (— ◡ ◡).",
+            "claim": "La posición de nullius al principio de un hexámetro impone una breve en la vocal i del genitivo, permitiendo un primer pie dactílico.",
+            "uri": "https://scaife.perseus.org/reader/urn:cts:latinLit:phi0550.phi001.perseus-lat1:1.224/?right=perseus-lat1"
+          }
         ],
-        "inference": "nūllīus, con ī larga, es la lectura escolar documentada; la posibilidad de abreviación en verso pertenece a una regla general y no demuestra por sí sola un verso concreto con nūllĭus. Mantener reserva para la lectura dual hasta cotejar un testimonio directo.",
+        "comparativeReferences": [
+          "https://beta.perseus.tufts.edu/urn:cts:latinLit:phi0550.phi001.perseus-lat1/",
+          "https://dcc.dickinson.edu/grammar/latin/1st-and-2nd-declension-adjectives-genitive-%C4%ABus-dative-%C4%AB"
+        ],
+        "inference": "La breve de nūllĭus no es ya una hipótesis basada en una regla general: Lucrecio I 224 aporta un dáctilo inicial que requiere la i breve. La cantidad larga nūllīus sigue siendo el paradigma escolar ordinario; se documenta la excepcionalidad poética sin alterar el registro heredado ni la calificación.",
         "allowedIndexNormalization": false,
         "sourcePromotion": false
       },
