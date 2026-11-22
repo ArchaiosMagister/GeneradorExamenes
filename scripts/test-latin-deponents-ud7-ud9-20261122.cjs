@@ -97,7 +97,7 @@ for(const lemma of ['patior','orior']){
 }
 assert(html.includes("'complector|complecteris'"),
  'La segunda singular de complector también es futuro y debe bloquearse sin contexto');
-assert.equal(corpus.counts.lat.contrastado,643,'Fuente 5 latina debe aumentar exactamente 24');
+assert.equal(corpus.counts.lat.contrastado,667,'Fuente 5 latina suma 24 formas UD7 y 24 formas UD9-10');
 const iv=corpus.rows.lat.filter(x=>x[0]==='patior');
 assert(iv.length>0&&iv.every(x=>x[3]===0),'Patior: el índice solo conserva material histórico');
 const m=html.slice(html.indexOf('function mVerb(raw){'),html.indexOf('// Corrections for conjugation:',html.indexOf('function mVerb(raw){')));
