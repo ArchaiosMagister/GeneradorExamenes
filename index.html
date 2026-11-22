@@ -197,10 +197,6 @@ button:disabled{opacity:.55;cursor:not-allowed}
 @media screen and (max-width:800px){body{overflow-x:hidden}.layout{padding-left:max(10px,env(safe-area-inset-left));padding-right:max(10px,env(safe-area-inset-right))}.panel,.paper{overflow-wrap:break-word}select,input,textarea{max-width:100%}input[type=file]{width:100%;font-size:16px}.quick-actions{position:static;max-width:100%}.paper .exam-sheet{overflow-wrap:break-word}.paper .exam-sheet .exam-question{margin-left:7pt}.paper .exam-sheet .exam-item{margin-left:8pt;padding-left:12pt;text-indent:-12pt}.paper .exam-header-line{font-size:9.5pt}}
 </style><style id="exam-sidebar-2026">
 /* Los modelos y asignaturas son elecciones visibles, no menús desplegables. */
-.sidebar-choices{display:grid;grid-template-columns:1fr;gap:6px;margin-top:7px}
-.sidebar-choice{display:block;text-align:left;width:100%;background:#f8fafc;color:#243952;border:1px solid #d5e0eb;border-radius:9px;padding:10px 12px;font-weight:600}
-.sidebar-choice[aria-pressed="true"]{background:var(--soft);color:var(--soft-ink);border:2px solid var(--accent);padding:9px 11px}
-.sidebar-choice:focus-visible{outline:3px solid var(--ring);outline-offset:2px}
 #course,#model{display:none!important}
 .exam-accordion{margin:12px 0}
 .exam-accordion>.field{margin:0 12px}
@@ -219,15 +215,10 @@ html[data-course="greek1"] .paper .exam-sheet *{font-style:normal!important}
 </style><style id="exam-controls-legible">
 /* Solo interfaz: botones claros y jerarquia visual, sin alterar examenes ni impresion. */
 #examLayout aside.panel button{min-height:44px;padding:11px 13px;border-radius:9px;font-size:14px;line-height:1.45;font-weight:700;letter-spacing:.005em}
-#examLayout aside.panel button:not(.secondary):not(.sidebar-choice){background:var(--accent);border:1px solid var(--accent);color:#fff}
-#examLayout aside.panel button:not(.secondary):not(.sidebar-choice):hover{background:var(--accent);color:#fff;filter:brightness(.88)}
+#examLayout aside.panel button:not(.secondary){background:var(--accent);border:1px solid var(--accent);color:#fff}
+#examLayout aside.panel button:not(.secondary):hover{background:var(--accent);color:#fff;filter:brightness(.88)}
 #examLayout aside.panel button.secondary{background:#f2f6fc;color:#18385c;border:1px solid #a8bed8}
 #examLayout aside.panel button.secondary:hover{background:#ddeaf8;color:#102a48;border-color:#6f95bf}
-#examLayout aside.panel button.sidebar-choice{display:flex;align-items:center;gap:8px;justify-content:flex-start;width:100%;text-align:left;background:#f6f9fd;color:#213b59;border:1px solid #b6c8df;box-shadow:none;font-weight:650}
-#examLayout aside.panel button.sidebar-choice:hover{background:#eaf2fb;color:#163452;border-color:#7299c3;filter:none}
-#examLayout aside.panel button.sidebar-choice[aria-pressed="true"]{background:var(--soft);color:var(--soft-ink);border:2px solid var(--accent);padding:10px 12px;box-shadow:inset 4px 0 0 var(--accent);font-weight:800}
-#examLayout aside.panel button.sidebar-choice[aria-pressed="true"]::after{content:"✓";margin-left:auto;flex:0 0 auto;font-size:16px;font-weight:800}
-#examLayout aside.panel button.sidebar-choice[aria-pressed="true"]:hover{background:var(--soft);color:var(--soft-ink);border-color:var(--accent)}
 #examLayout aside.panel .settings-group .buttons{gap:10px}
 #examLayout aside.panel button:focus-visible{outline:3px solid var(--focus-course,var(--accent));outline-offset:3px}
 :root[data-course] .vocab-tabbar button:not(.active){background:#f2f6fb;color:#1d3d5d;border:1px solid #a8bed8}
@@ -252,8 +243,6 @@ html[data-course="greek1"] .paper .exam-sheet *{font-style:normal!important}
 #examLayout aside.panel .settings-group-body .hint{font-size:12px;line-height:1.45;margin-block:6px}
 #examLayout aside.panel .settings-group-body h2{font-size:14px;line-height:1.35;margin:12px 0 7px}
 #examLayout aside.panel .settings-group-body .check{margin:7px 0}
-#examLayout aside.panel .sidebar-choices{gap:5px;margin-top:5px}
-#examLayout aside.panel button.sidebar-choice{padding-top:9px;padding-bottom:9px}
 #examLayout aside.panel .settings-group .buttons{gap:8px;margin-top:10px}
 #examLayout aside.panel .exam-accordion{margin:7px 0}
 #examLayout aside.panel .exam-accordion>summary{min-height:44px;padding:9px 35px 9px 11px;font-size:13px}
@@ -460,10 +449,9 @@ select option:disabled{color:var(--field-muted)}
  html[data-appearance="dark"] .unit-grid label:has(input:checked),html[data-appearance="oled"] .unit-grid label:has(input:checked){background:var(--appearance-subtle);border-color:var(--appearance-accent);color:var(--appearance-text)}
  html[data-appearance="dark"] :is(.menu-section>summary,.exam-accordion .menu-section>summary,#examLayout aside.panel .settings-group>summary,#examLayout aside.panel #examQuestionMenus>details.menu-section>summary),html[data-appearance="oled"] :is(.menu-section>summary,.exam-accordion .menu-section>summary,#examLayout aside.panel .settings-group>summary,#examLayout aside.panel #examQuestionMenus>details.menu-section>summary){background:var(--appearance-raised);color:var(--appearance-text);border-color:var(--appearance-border)}
  html[data-appearance="dark"] #examLayout aside.panel .settings-group>summary:hover,html[data-appearance="oled"] #examLayout aside.panel .settings-group>summary:hover{background:var(--appearance-subtle)}
- html[data-appearance="dark"] #examLayout aside.panel :is(button.secondary,button.sidebar-choice),html[data-appearance="oled"] #examLayout aside.panel :is(button.secondary,button.sidebar-choice),
+ html[data-appearance="dark"] #examLayout aside.panel button.secondary,html[data-appearance="oled"] #examLayout aside.panel button.secondary,
  html[data-appearance="dark"] :is(.vocab-manager button,.vocab-tabbar button:not(.active),.quick-actions button.secondary),html[data-appearance="oled"] :is(.vocab-manager button,.vocab-tabbar button:not(.active),.quick-actions button.secondary){background:var(--appearance-button);color:var(--appearance-text);border-color:var(--appearance-border)}
- html[data-appearance="dark"] #examLayout aside.panel :is(button.secondary,button.sidebar-choice):hover,html[data-appearance="oled"] #examLayout aside.panel :is(button.secondary,button.sidebar-choice):hover{background:var(--appearance-button-hover);color:var(--appearance-text)}
- html[data-appearance="dark"] #examLayout aside.panel button.sidebar-choice[aria-pressed="true"],html[data-appearance="oled"] #examLayout aside.panel button.sidebar-choice[aria-pressed="true"]{background:var(--appearance-subtle);color:var(--appearance-text);border-color:var(--appearance-accent)}
+ html[data-appearance="dark"] #examLayout aside.panel button.secondary:hover,html[data-appearance="oled"] #examLayout aside.panel button.secondary:hover{background:var(--appearance-button-hover);color:var(--appearance-text)}
  html[data-appearance="dark"] #examLayout aside.panel :is(#examSelectionSummary,#examQuestionMenus .lex-subparts,#examQuestionMenus [data-result-state]),html[data-appearance="oled"] #examLayout aside.panel :is(#examSelectionSummary,#examQuestionMenus .lex-subparts,#examQuestionMenus [data-result-state]){background:var(--appearance-raised);border-color:var(--appearance-border);color:var(--appearance-text)}
  html[data-appearance="dark"] #examLayout aside.panel :is(#examSelectionSummary .exam-summary-title,#examSelectionSummary .exam-summary-details,#examSelectionSummary .exam-summary-caption,#examQuestionMenus .exam-question-status,#examQuestionMenus .lex-subparts>label:first-child),html[data-appearance="oled"] #examLayout aside.panel :is(#examSelectionSummary .exam-summary-title,#examSelectionSummary .exam-summary-details,#examSelectionSummary .exam-summary-caption,#examQuestionMenus .exam-question-status,#examQuestionMenus .lex-subparts>label:first-child){color:var(--appearance-text)}
  html[data-appearance="dark"] #examLayout aside.panel #examQuestionMenus>details.menu-section>summary::before,html[data-appearance="oled"] #examLayout aside.panel #examQuestionMenus>details.menu-section>summary::before{background:var(--appearance-subtle);border-color:var(--appearance-border);color:var(--appearance-text)}
@@ -498,7 +486,6 @@ select option:disabled{color:var(--field-muted)}
  #examLayout aside.panel .exam-primary-picker{margin:9px 0;border:1px solid var(--line);border-radius:9px;background:var(--surface);overflow:hidden}
  #examLayout aside.panel .exam-primary-picker>h3{margin:0;padding:12px;font-weight:750;min-height:44px;color:var(--ink);background:var(--soft)}
  #examLayout aside.panel .exam-primary-picker>.field{padding:12px;margin:0}
- #examLayout aside.panel .exam-primary-picker .sidebar-choices{display:none!important}
  #examLayout aside.panel .exam-primary-picker #course,#examLayout aside.panel .exam-primary-picker #model{display:block!important;min-height:44px;width:100%}
  #examLayout aside.panel .exam-primary-picker>summary:focus-visible{outline:3px solid var(--ring);outline-offset:-3px}
 }
@@ -527,7 +514,6 @@ select option:disabled{color:var(--field-muted)}
 #examLayout aside.panel #primaryExamSettings{margin:6px 0 13px}
 #examLayout aside.panel #primaryExamSettings>h3{font-size:14px;padding:10px 12px}
 #examLayout aside.panel #primaryUnitsPicker{display:block}
-#examLayout aside.panel #primaryUnitsPicker>.sidebar-choices{display:none!important}
 #examLayout aside.panel .settings-group[hidden],#examLayout aside.panel .exam-accordion[hidden]{display:none!important}
 #examLayout aside.panel #examFormatSettings,
 #examLayout aside.panel #examQuestionSettings{margin:8px 0;border:1px solid var(--line);border-radius:9px;overflow:hidden}
@@ -6914,17 +6900,11 @@ loadTeacherLatinLexBanks();
  panel.append(host);
 })();
 
-/* Controles reusables: el <select> original sigue accesible al motor, mientras
-   las asignaturas y modelos se ven como opciones permanentes. */
+/* Configuración y editores de las preguntas del examen. */
 (function configureExamSidebar(){
  const panel=document.querySelector('#examLayout>.panel');
  if(!panel)return;
- const courseField=$('course').closest('.field'),modelField=$('model').closest('.field');
- const courseButtons=document.createElement('div'),modelButtons=document.createElement('div');
- courseButtons.className='sidebar-choices';modelButtons.className='sidebar-choices';
- courseButtons.setAttribute('role','group');courseButtons.setAttribute('aria-label','Asignatura');
- modelButtons.setAttribute('role','group');modelButtons.setAttribute('aria-label','Tipo de examen');
- courseField.append(courseButtons);modelField.append(modelButtons);
+ const modelField=$('model').closest('.field');
  const details=(id,title,open)=>{
   const node=document.createElement('details');node.id=id;node.className='menu-section exam-accordion';node.open=open;
   const summary=document.createElement('summary');summary.textContent=title;node.append(summary);return node;
@@ -6953,25 +6933,6 @@ loadTeacherLatinLexBanks();
   decl:'Declinación y concordancia',verb:'Formas verbales',forms:'Análisis morfológico de palabras sueltas',
   pronouns:'Análisis de pronombres',lex:'Léxico',culture:'Cultura',sent:'Oraciones y traducción',etymology:'Derivación etimológica'
  };
- const courseNames={'latin1':'Latín I','latin4':'Latín 4.º ESO','greek1':'Griego I'};
- const typeKeys=()=>currentCourse()==='latin4'?['tablas']:currentCourse()==='greek1'?['complete','morphology']:['tablas','morf','mixto'];
- function buttons(){
-  courseButtons.replaceChildren();modelButtons.replaceChildren();
-  for(const [value,label] of Object.entries(courseNames)){
-   const button=document.createElement('button');button.type='button';button.className='sidebar-choice';
-   button.textContent=label;button.setAttribute('aria-pressed',String($('course').value===value));
-   button.onclick=()=>{$('course').value=value;$('course').dispatchEvent(new Event('change',{bubbles:true}))};
-   courseButtons.append(button);
-  }
-  for(const value of typeKeys()){
-   const option=[...$('model').options].find(x=>x.value===value);if(!option)continue;
-   const button=document.createElement('button');button.type='button';button.className='sidebar-choice';
-   button.textContent=option.textContent.replace(/^[123]\s*·\s*/,'');
-   button.setAttribute('aria-pressed',String($('model').value===value));
-   button.onclick=()=>{$('model').value=value;$('model').dispatchEvent(new Event('change',{bubbles:true}))};
-   modelButtons.append(button);
-  }
- }
  function questionKeys(){
   const course=currentCourse();
   if(course==='latin4')return ['decl','verb','forms','lex','culture','sent'];
@@ -7202,13 +7163,13 @@ loadTeacherLatinLexBanks();
   prevGreekControls();distributeEditors();
  };
  document.addEventListener('examina-lex-ready',()=>questionMenus());
- for(const id of ['course','model','lang'])$(id).addEventListener('change',()=>{buttons();questionMenus()});
+ for(const id of ['course','model','lang'])$(id).addEventListener('change',questionMenus);
  document.addEventListener('change',event=>{
   if(event.target?.matches?.('#unitChoices .unit-choice, #cumulative'))questionMenus();
  });
  for(const id of ['allUnits','clearUnits'])$(id)?.addEventListener('click',()=>queueMicrotask(questionMenus));
- buttons();questionMenus();
- document.addEventListener('DOMContentLoaded',()=>{buttons();questionMenus()},{once:true});
+ questionMenus();
+ document.addEventListener('DOMContentLoaded',questionMenus,{once:true});
 })();
 /* Resumen de la seleccion visible, sin modificar la configuracion ni generar datos. */
 /* Resumen de selección cargado en exam-selection-summary.js */
@@ -7745,7 +7706,7 @@ body.exam-redesign #examLayout aside.panel #primaryModelPicker{display:block!imp
 body.exam-redesign #examLayout aside.panel #primaryCoursePicker #course,
 body.exam-redesign #examLayout aside.panel #primaryModelPicker #model{display:block!important;min-height:44px;width:100%}
 body.exam-redesign #exam-header-controls,body.exam-redesign .exam-coursebar,
-body.exam-redesign #examEditorPanel .sidebar-choices,body.exam-redesign #examFormatSettings,
+body.exam-redesign #examFormatSettings,
 body.exam-redesign #group-course,body.exam-redesign #group-content,body.exam-redesign #group-questions,
 body.exam-redesign #examEditorPanel>.settings-section-caption,
 body.exam-redesign #examEditorPanel .legacy-question-fields{display:none!important}
@@ -7816,7 +7777,6 @@ html[data-appearance="oled"] body.exam-redesign #exam-ui-shell :is(#exam-ui-core
 #vocabManager #vmUnitButtons button[aria-pressed="true"]{background:#1b4c80;color:#fff;border-color:#1b4c80}
 #examLayout aside.panel #exam-ui-meta>.field{padding:0;margin:0}
 #examLayout aside.panel #exam-ui-meta :is(#course,#model){min-height:36px}
-#examLayout aside.panel #exam-ui-meta .sidebar-choices{display:none!important}
 #examLayout aside.panel #primaryUnitsPicker{margin-top:0}
 #examScoring .exam-scoring-row,.exam-question-score-row{display:flex;align-items:center;flex-wrap:wrap;gap:8px}
 #examScoring .exam-scoring-row>span:first-child,.exam-question-score-row>span:first-child{flex:1 1 100px}

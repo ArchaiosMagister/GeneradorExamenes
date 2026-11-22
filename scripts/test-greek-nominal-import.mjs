@@ -1,17 +1,22 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
+import os from 'node:os';
 import {execFileSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
-const candidatePath=path.join(root,'data/lemmas/greek-nominal-candidates.json');
-const original=fs.readFileSync(candidatePath);
+const temp=fs.mkdtempSync(path.join(os.tmpdir(),'griego-nominales-'));
+const output=path.join(temp,'candidatos.json');
+let data;
 try{
-const testLog=execFileSync(process.execPath,[
- 'scripts/build-greek-nominal-candidates.mjs','tests/fixtures/greek-nominals-sample.jsonl'
-],{cwd:root,stdio:'pipe',timeout:25000});
-console.log(String(testLog));
-const data=JSON.parse(fs.readFileSync(path.join(root,'data/lemmas/greek-nominal-candidates.json'),'utf8'));
+ const testLog=execFileSync(process.execPath,[
+  'scripts/build-greek-nominal-candidates.mjs','tests/fixtures/greek-nominals-sample.jsonl',output
+ ],{cwd:root,stdio:'pipe',timeout:25000});
+ console.log(String(testLog));
+ data=JSON.parse(fs.readFileSync(output,'utf8'));
+}finally{
+ fs.rmSync(temp,{recursive:true,force:true});
+}
 assert.equal(data.schema,1);
 assert.equal(data.status,'WIKTIONARY_CANDIDATES_NOT_FOR_GRADING');
 assert.match(data.license,/CC BY-SA 4.0/);
@@ -31,8 +36,3 @@ assert.equal(data.stats.acceptedLemmas,2);
 assert.equal(data.stats.conflicts,0);
 assert.ok(data.stats.unsafeForms>=2,'Se deben rechazar variantes dialectales y duales');
 console.log('Importación griega: nominativo, genitivo, dativos, géneros, acentos, etiquetas y aislamiento de claves correctos.');
-
-}finally{
- // La muestra de ensayo no debe sobrescribir el catálogo persistente empleado por el índice offline.
- fs.writeFileSync(candidatePath,original);
-}

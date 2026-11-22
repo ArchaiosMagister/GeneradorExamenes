@@ -11,19 +11,19 @@ async function run(browser,file){
  page.on('pageerror',e=>errors.push(String(e)));
  try{
   await page.goto(pathToFileURL(path.resolve(file)).href,{waitUntil:'load'});
+  const settings=page.locator('#exam-ui-meta');
+  const course=settings.locator('#course'),model=settings.locator('#model');
+  assert(await course.isVisible()&&await model.isVisible(),file+': faltan los selectores del editor');
+  await course.selectOption('greek1');
+  assert.deepEqual(await model.locator('option').evaluateAll(options=>options.map(option=>option.value)),
+   ['complete','morphology'],file+': modelos visibles');
   const start=await page.evaluate(()=>{
-   const change=(id,value)=>{const el=$(id);el.value=value;el.dispatchEvent(new Event('change',{bubbles:true}))};
-   change('course','greek1');
-   const models=[...$('model').options].map(x=>x.value);
-   const sidebar=[...document.querySelectorAll('#examEditorPanel .sidebar-choice')]
-    .filter(x=>/Examen completo|Morfolog/.test(x.textContent)).map(x=>x.textContent);
    for(const el of document.querySelectorAll('#unitChoices .unit-choice'))
     el.checked=units[Number(el.value)]==='UD7';
    document.querySelector('#unitChoices .unit-choice:checked')?.dispatchEvent(new Event('change',{bubbles:true}));
    generate();
-   return {models,sidebar,control:$('greekSentenceTaskControl').hidden,task:$('greekSentenceTask').value};
+   return {control:$('greekSentenceTaskControl').hidden,task:$('greekSentenceTask').value};
   });
-  assert.deepEqual(start.models,['complete','morphology'],file+': se mantiene un tercer modelo');
   assert.equal(start.control,false,file+': falta selector de enunciado');
   assert.equal(start.task,'analyze',file+': selección inicial inesperada');
   await page.waitForFunction(()=>!!document.querySelector('.exam-question[data-greek-kind="sentences"] .exam-question-caption'));

@@ -11,7 +11,7 @@ import {Readable} from 'node:stream';
 import {fileURLToPath} from 'node:url';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const SOURCE='https://kaikki.org/dictionary/Ancient%20Greek/kaikki.org-dictionary-AncientGreek.jsonl';
-const target=path.join(root,'data/lemmas/greek-nominal-candidates.json');
+const target=path.resolve(root,process.argv[3]||'data/lemmas/greek-nominal-candidates.json');
 const fixture=process.argv[2];
 const norm=s=>String(s||'').toLowerCase().normalize('NFD')
  .replace(/\u0345/g,'ι').replace(/\p{M}/gu,'').replace(/ς/g,'σ').trim();

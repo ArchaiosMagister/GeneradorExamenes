@@ -262,6 +262,10 @@ const server=http.createServer(async(req,res)=>{
   assert(cache.entries.every(x=>x.stored),'Precache incompleta: '+JSON.stringify(cache.entries));
   assert.equal(cache.rootDuplicate,false,'El SW conserva una copia adicional de la portada en ./');
   const firstVersion=cache.keys.find(k=>k.startsWith('examina-pwa-'));
+  const otherPage=await context.newPage();
+  const missing=await otherPage.goto(origin+PREFIX+'ruta-inexistente.html');
+  assert.equal(missing.status(),404,'La PWA debe respetar el 404 de una ruta ajena');
+  await otherPage.close();
   assert(firstVersion?.includes('test-one'));
   // El documento es la misma aplicación en línea y sin conexión.
   // El rediseño usa los selectores únicos, sin botones duplicados en cabecera.

@@ -16,6 +16,7 @@ const CORE_FILES=[
 ];
 const scopedUrl=path=>new URL(path,self.registration.scope).href;
 const cacheable=new Set(CORE_FILES.map(scopedUrl));
+const pagePaths=new Set(['','index.html','offline.html']);
 self.addEventListener('install',event=>{
  event.waitUntil((async()=>{
   const cache=await caches.open(CACHE_NAME);
@@ -51,13 +52,13 @@ self.addEventListener('fetch',event=>{
  if(request.method!=='GET')return;
  const url=new URL(request.url),scope=new URL(self.registration.scope);
  if(url.origin!==scope.origin||!url.pathname.startsWith(scope.pathname))return;
- // Las vistas previas tienen su propio service worker y caché: nunca servirles index.html de main.
  const relativePath=url.pathname.slice(scope.pathname.length);
- if(/^pr-\d+(?:\/|$)/.test(relativePath))return;
  if(request.mode==='navigate'){
+  // Las vistas previas, los documentos y las rutas desconocidas siguen en red.
+  if(!pagePaths.has(relativePath))return;
   event.respondWith((async()=>{
    const cache=await caches.open(CACHE_NAME);
-   const page=url.pathname.endsWith('/offline.html')?'./offline.html':'./index.html';
+   const page=relativePath==='offline.html'?'./offline.html':'./index.html';
    return (await cache.match(scopedUrl(page)))||fetch(request);
   })());
   return;
