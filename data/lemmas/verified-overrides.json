@@ -863,6 +863,15 @@
       "to": "pătrĭa, æ",
       "reference": "https://en.wiktionary.org/wiki/patria",
       "note": "Cantidad vocálica breve acreditada en pronunciación clásica. No confundir vocal con sílaba larga por posición; sin nuevas flexiones."
+    },
+    {
+      "lang": "lat",
+      "lemma": "cicero",
+      "course": "lat4",
+      "from": "Cĭcĕrō̆, –onis (m.)",
+      "to": "Cĭcĕrō, –onis (m.)",
+      "reference": "https://es.wiktionary.org/wiki/Cicero",
+      "note": "Cantidad final larga -ō del nominativo; corrección solo de enunciado, sin añadir formas ni certificar paradigmas."
     }
   ],
   "paradigms": [

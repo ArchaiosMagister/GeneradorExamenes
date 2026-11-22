@@ -20,7 +20,7 @@ const variants=[
  ['UD7','īmpĕrātŏr, –oris','ĭmpĕrātŏr, –oris'],
  ['UD5','cōllĭs, –is (m.)','cŏllĭs, –is (m.)'],
  ['UD5','ōppūgnātĭō, –onis (f.)','ŏppūgnātĭō, –onis (f.)'],
- ['UD6','ōppūgnātĭō̆, –onis','ŏppūgnātĭō̆, –onis'],
+ ['UD6','ōppūgnātĭō̆, –onis','ŏppūgnātĭō, –onis'],
  ['UD8','mŭlĭĕr, –ris','mŭlĭĕr, –eris (f.)']
 ];
 const start=html.indexOf('vocab.push(...'),end=html.indexOf(');\n',start);

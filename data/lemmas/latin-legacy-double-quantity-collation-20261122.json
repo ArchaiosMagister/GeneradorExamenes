@@ -1,0 +1,526 @@
+{
+  "schema": 1,
+  "date": "2026-11-22",
+  "scope": "42 lecturas de fuente 0 con marcas duales de cantidad; cotejo individual",
+  "repository": "ArchaiosMagister/GeneradorExamenes",
+  "baseTeacherFormsSha": "31630d93e922dd439d22e1b7fa59433974ba9a28",
+  "automaticGradingEnabled": false,
+  "morphologyPromotion": false,
+  "expected": {
+    "total": 42,
+    "corrected": 0,
+    "retainedVariant": 42,
+    "sourceCode": 0,
+    "reason": "La vocal inicial de custos sigue discutida: no unificar su cantidad por una única fuente secundaria."
+  },
+  "bibliography": {
+    "alter": [
+      "https://dcc.dickinson.edu/grammar/latin/1st-and-2nd-declension-adjectives-genitive-%C4%ABus-dative-%C4%AB",
+      "https://atlas.perseus.tufts.edu/dictionaries/entry/urn%3Acite2%3Ascaife-viewer%3Adictionary-entries.atlas_v1%3Alat.ls.perseus-eng2-n2015/"
+    ],
+    "custos": [
+      "https://en.wiktionary.org/wiki/custos",
+      "https://es.wiktionary.org/wiki/custos",
+      "https://de.wiktionary.org/wiki/custos",
+      "https://dcc.dickinson.edu/latin-core/cvstos"
+    ],
+    "nullus": [
+      "https://atlas.perseus.tufts.edu/dictionaries/entry/urn%3Acite2%3Ascaife-viewer%3Adictionary-entries.atlas_v1%3Alat.ls.perseus-eng2-n31390/",
+      "https://dcc.dickinson.edu/grammar/latin/1st-and-2nd-declension-adjectives-genitive-%C4%ABus-dative-%C4%AB"
+    ],
+    "princeps": [
+      "https://logeion.org/princeps",
+      "https://latim.paginas.ufsc.br/files/2012/06/ALLEN-Vox-Latina-A-Guide-to-Pronunciation-of-Classical-Latin-Cambridge-1978.pdf",
+      "https://www.sciencedirect.com/org/science/article/pii/S2212588417000060"
+    ]
+  },
+  "method": "Colación individual de 42 lecturas de fuente 0, respetando la notación académica de cantidad variable (Allen y Greenough §9–11). Sin promoción a fuente 5. Una doble marca no implica corrupción; puede expresar alternancia real o incertidumbre documental. Para nullius, Lucr. DRN I 224 prueba ĭ breve poética. En custos el valor de u ante st no se deduce de la escansión y sigue en reserva.",
+  "items": [
+    {
+      "lemma": "alter",
+      "form": "alterī̆us",
+      "features": "ADJ;GEN;MASC+FEM+NEUT;SG",
+      "source": 0,
+      "after": "alterī̆us",
+      "classification": "VARIANTE_METRICA_RESERVADA",
+      "reference": "https://dcc.dickinson.edu/grammar/latin/1st-and-2nd-declension-adjectives-genitive-%C4%ABus-dative-%C4%AB"
+    },
+    {
+      "lemma": "custos",
+      "form": "cū̆stōde",
+      "features": "N;ABL;SG",
+      "source": 0,
+      "after": "cū̆stōde",
+      "classification": "CANTIDAD_DISPUTADA_RESERVADA",
+      "reference": "https://en.wiktionary.org/wiki/custos",
+      "note": "Cantidad inicial discutida; [kʊs.toːs] en inglés, cūstōs en alemán. No se adopta una lectura sin cotejo primario."
+    },
+    {
+      "lemma": "custos",
+      "form": "cū̆stōdem",
+      "features": "N;ACC;SG",
+      "source": 0,
+      "after": "cū̆stōdem",
+      "classification": "CANTIDAD_DISPUTADA_RESERVADA",
+      "reference": "https://en.wiktionary.org/wiki/custos",
+      "note": "Cantidad inicial discutida; [kʊs.toːs] en inglés, cūstōs en alemán. No se adopta una lectura sin cotejo primario."
+    },
+    {
+      "lemma": "custos",
+      "form": "cū̆stōdēs",
+      "features": "N;ACC;PL",
+      "source": 0,
+      "after": "cū̆stōdēs",
+      "classification": "CANTIDAD_DISPUTADA_RESERVADA",
+      "reference": "https://en.wiktionary.org/wiki/custos",
+      "note": "Cantidad inicial discutida; [kʊs.toːs] en inglés, cūstōs en alemán. No se adopta una lectura sin cotejo primario."
+    },
+    {
+      "lemma": "custos",
+      "form": "cū̆stōdēs",
+      "features": "N;NOM;PL",
+      "source": 0,
+      "after": "cū̆stōdēs",
+      "classification": "CANTIDAD_DISPUTADA_RESERVADA",
+      "reference": "https://en.wiktionary.org/wiki/custos",
+      "note": "Cantidad inicial discutida; [kʊs.toːs] en inglés, cūstōs en alemán. No se adopta una lectura sin cotejo primario."
+    },
+    {
+      "lemma": "custos",
+      "form": "cū̆stōdēs",
+      "features": "N;VOC;PL",
+      "source": 0,
+      "after": "cū̆stōdēs",
+      "classification": "CANTIDAD_DISPUTADA_RESERVADA",
+      "reference": "https://en.wiktionary.org/wiki/custos",
+      "note": "Cantidad inicial discutida; [kʊs.toːs] en inglés, cūstōs en alemán. No se adopta una lectura sin cotejo primario."
+    },
+    {
+      "lemma": "custos",
+      "form": "cū̆stōdī",
+      "features": "N;DAT;SG",
+      "source": 0,
+      "after": "cū̆stōdī",
+      "classification": "CANTIDAD_DISPUTADA_RESERVADA",
+      "reference": "https://en.wiktionary.org/wiki/custos",
+      "note": "Cantidad inicial discutida; [kʊs.toːs] en inglés, cūstōs en alemán. No se adopta una lectura sin cotejo primario."
+    },
+    {
+      "lemma": "custos",
+      "form": "cū̆stōdibus",
+      "features": "N;ABL;PL",
+      "source": 0,
+      "after": "cū̆stōdibus",
+      "classification": "CANTIDAD_DISPUTADA_RESERVADA",
+      "reference": "https://en.wiktionary.org/wiki/custos",
+      "note": "Cantidad inicial discutida; [kʊs.toːs] en inglés, cūstōs en alemán. No se adopta una lectura sin cotejo primario."
+    },
+    {
+      "lemma": "custos",
+      "form": "cū̆stōdibus",
+      "features": "N;DAT;PL",
+      "source": 0,
+      "after": "cū̆stōdibus",
+      "classification": "CANTIDAD_DISPUTADA_RESERVADA",
+      "reference": "https://en.wiktionary.org/wiki/custos",
+      "note": "Cantidad inicial discutida; [kʊs.toːs] en inglés, cūstōs en alemán. No se adopta una lectura sin cotejo primario."
+    },
+    {
+      "lemma": "custos",
+      "form": "cū̆stōdis",
+      "features": "N;GEN;SG",
+      "source": 0,
+      "after": "cū̆stōdis",
+      "classification": "CANTIDAD_DISPUTADA_RESERVADA",
+      "reference": "https://en.wiktionary.org/wiki/custos",
+      "note": "Cantidad inicial discutida; [kʊs.toːs] en inglés, cūstōs en alemán. No se adopta una lectura sin cotejo primario."
+    },
+    {
+      "lemma": "custos",
+      "form": "cū̆stōdum",
+      "features": "N;GEN;PL",
+      "source": 0,
+      "after": "cū̆stōdum",
+      "classification": "CANTIDAD_DISPUTADA_RESERVADA",
+      "reference": "https://en.wiktionary.org/wiki/custos",
+      "note": "Cantidad inicial discutida; [kʊs.toːs] en inglés, cūstōs en alemán. No se adopta una lectura sin cotejo primario."
+    },
+    {
+      "lemma": "custos",
+      "form": "cū̆stōs",
+      "features": "N;NOM;SG",
+      "source": 0,
+      "after": "cū̆stōs",
+      "classification": "CANTIDAD_DISPUTADA_RESERVADA",
+      "reference": "https://en.wiktionary.org/wiki/custos",
+      "note": "Cantidad inicial discutida; [kʊs.toːs] en inglés, cūstōs en alemán. No se adopta una lectura sin cotejo primario."
+    },
+    {
+      "lemma": "custos",
+      "form": "cū̆stōs",
+      "features": "N;VOC;SG",
+      "source": 0,
+      "after": "cū̆stōs",
+      "classification": "CANTIDAD_DISPUTADA_RESERVADA",
+      "reference": "https://en.wiktionary.org/wiki/custos",
+      "note": "Cantidad inicial discutida; [kʊs.toːs] en inglés, cūstōs en alemán. No se adopta una lectura sin cotejo primario."
+    },
+    {
+      "lemma": "nullus",
+      "form": "nūllī̆us",
+      "features": "ADJ;GEN;MASC+FEM+NEUT;SG",
+      "source": 0,
+      "after": "nūllī̆us",
+      "classification": "VARIANTE_METRICA_RESERVADA",
+      "reference": "https://scaife.perseus.org/reader/urn:cts:latinLit:phi0550.phi001.perseus-lat1:1.224/?right=perseus-lat1",
+      "note": "Lucr. DRN 1.224, nullius exitium patitur natura videri; el primer pie nūl-lĭ-us es un dáctilo — ˘ ˘; atestación individual de ĭ breve, sin promover el registro fuente 0."
+    },
+    {
+      "lemma": "princeps",
+      "form": "prī̆nceps",
+      "features": "ADJ;ACC;NEUT;SG",
+      "source": 0,
+      "after": "prī̆nceps",
+      "classification": "VARIANTE_HISTORICA_RESERVADA",
+      "reference": "https://logeion.org/princeps"
+    },
+    {
+      "lemma": "princeps",
+      "form": "prī̆nceps",
+      "features": "ADJ;NOM;MASC+FEM+NEUT;SG",
+      "source": 0,
+      "after": "prī̆nceps",
+      "classification": "VARIANTE_HISTORICA_RESERVADA",
+      "reference": "https://logeion.org/princeps"
+    },
+    {
+      "lemma": "princeps",
+      "form": "prī̆nceps",
+      "features": "ADJ;VOC;MASC+FEM+NEUT;SG",
+      "source": 0,
+      "after": "prī̆nceps",
+      "classification": "VARIANTE_HISTORICA_RESERVADA",
+      "reference": "https://logeion.org/princeps"
+    },
+    {
+      "lemma": "princeps",
+      "form": "prī̆nceps",
+      "features": "N;MASC+FEM;NOM;SG",
+      "source": 0,
+      "after": "prī̆nceps",
+      "classification": "VARIANTE_HISTORICA_RESERVADA",
+      "reference": "https://logeion.org/princeps"
+    },
+    {
+      "lemma": "princeps",
+      "form": "prī̆nceps",
+      "features": "N;MASC+FEM;VOC;SG",
+      "source": 0,
+      "after": "prī̆nceps",
+      "classification": "VARIANTE_HISTORICA_RESERVADA",
+      "reference": "https://logeion.org/princeps"
+    },
+    {
+      "lemma": "princeps",
+      "form": "prī̆ncipe",
+      "features": "N;MASC+FEM;ABL;SG",
+      "source": 0,
+      "after": "prī̆ncipe",
+      "classification": "VARIANTE_HISTORICA_RESERVADA",
+      "reference": "https://logeion.org/princeps"
+    },
+    {
+      "lemma": "princeps",
+      "form": "prī̆ncipem",
+      "features": "ADJ;ACC;MASC+FEM;SG",
+      "source": 0,
+      "after": "prī̆ncipem",
+      "classification": "VARIANTE_HISTORICA_RESERVADA",
+      "reference": "https://logeion.org/princeps"
+    },
+    {
+      "lemma": "princeps",
+      "form": "prī̆ncipem",
+      "features": "N;MASC+FEM;ACC;SG",
+      "source": 0,
+      "after": "prī̆ncipem",
+      "classification": "VARIANTE_HISTORICA_RESERVADA",
+      "reference": "https://logeion.org/princeps"
+    },
+    {
+      "lemma": "princeps",
+      "form": "prī̆ncipēs",
+      "features": "ADJ;ACC;MASC+FEM;PL",
+      "source": 0,
+      "after": "prī̆ncipēs",
+      "classification": "VARIANTE_HISTORICA_RESERVADA",
+      "reference": "https://logeion.org/princeps"
+    },
+    {
+      "lemma": "princeps",
+      "form": "prī̆ncipēs",
+      "features": "ADJ;NOM;MASC+FEM;PL",
+      "source": 0,
+      "after": "prī̆ncipēs",
+      "classification": "VARIANTE_HISTORICA_RESERVADA",
+      "reference": "https://logeion.org/princeps"
+    },
+    {
+      "lemma": "princeps",
+      "form": "prī̆ncipēs",
+      "features": "ADJ;VOC;MASC+FEM;PL",
+      "source": 0,
+      "after": "prī̆ncipēs",
+      "classification": "VARIANTE_HISTORICA_RESERVADA",
+      "reference": "https://logeion.org/princeps"
+    },
+    {
+      "lemma": "princeps",
+      "form": "prī̆ncipēs",
+      "features": "N;MASC+FEM;ACC;PL",
+      "source": 0,
+      "after": "prī̆ncipēs",
+      "classification": "VARIANTE_HISTORICA_RESERVADA",
+      "reference": "https://logeion.org/princeps"
+    },
+    {
+      "lemma": "princeps",
+      "form": "prī̆ncipēs",
+      "features": "N;MASC+FEM;NOM;PL",
+      "source": 0,
+      "after": "prī̆ncipēs",
+      "classification": "VARIANTE_HISTORICA_RESERVADA",
+      "reference": "https://logeion.org/princeps"
+    },
+    {
+      "lemma": "princeps",
+      "form": "prī̆ncipēs",
+      "features": "N;MASC+FEM;VOC;PL",
+      "source": 0,
+      "after": "prī̆ncipēs",
+      "classification": "VARIANTE_HISTORICA_RESERVADA",
+      "reference": "https://logeion.org/princeps"
+    },
+    {
+      "lemma": "princeps",
+      "form": "prī̆ncipī",
+      "features": "ADJ;ABL;MASC+FEM+NEUT;SG",
+      "source": 0,
+      "after": "prī̆ncipī",
+      "classification": "VARIANTE_HISTORICA_RESERVADA",
+      "reference": "https://logeion.org/princeps"
+    },
+    {
+      "lemma": "princeps",
+      "form": "prī̆ncipī",
+      "features": "ADJ;DAT;MASC+FEM+NEUT;SG",
+      "source": 0,
+      "after": "prī̆ncipī",
+      "classification": "VARIANTE_HISTORICA_RESERVADA",
+      "reference": "https://logeion.org/princeps"
+    },
+    {
+      "lemma": "princeps",
+      "form": "prī̆ncipī",
+      "features": "N;MASC+FEM;DAT;SG",
+      "source": 0,
+      "after": "prī̆ncipī",
+      "classification": "VARIANTE_HISTORICA_RESERVADA",
+      "reference": "https://logeion.org/princeps"
+    },
+    {
+      "lemma": "princeps",
+      "form": "prī̆ncipia",
+      "features": "ADJ;ACC;NEUT;PL",
+      "source": 0,
+      "after": "prī̆ncipia",
+      "classification": "VARIANTE_HISTORICA_RESERVADA",
+      "reference": "https://logeion.org/princeps"
+    },
+    {
+      "lemma": "princeps",
+      "form": "prī̆ncipia",
+      "features": "ADJ;NOM;NEUT;PL",
+      "source": 0,
+      "after": "prī̆ncipia",
+      "classification": "VARIANTE_HISTORICA_RESERVADA",
+      "reference": "https://logeion.org/princeps"
+    },
+    {
+      "lemma": "princeps",
+      "form": "prī̆ncipia",
+      "features": "ADJ;VOC;NEUT;PL",
+      "source": 0,
+      "after": "prī̆ncipia",
+      "classification": "VARIANTE_HISTORICA_RESERVADA",
+      "reference": "https://logeion.org/princeps"
+    },
+    {
+      "lemma": "princeps",
+      "form": "prī̆ncipibus",
+      "features": "ADJ;ABL;MASC+FEM+NEUT;PL",
+      "source": 0,
+      "after": "prī̆ncipibus",
+      "classification": "VARIANTE_HISTORICA_RESERVADA",
+      "reference": "https://logeion.org/princeps"
+    },
+    {
+      "lemma": "princeps",
+      "form": "prī̆ncipibus",
+      "features": "ADJ;DAT;MASC+FEM+NEUT;PL",
+      "source": 0,
+      "after": "prī̆ncipibus",
+      "classification": "VARIANTE_HISTORICA_RESERVADA",
+      "reference": "https://logeion.org/princeps"
+    },
+    {
+      "lemma": "princeps",
+      "form": "prī̆ncipibus",
+      "features": "N;MASC+FEM;ABL;PL",
+      "source": 0,
+      "after": "prī̆ncipibus",
+      "classification": "VARIANTE_HISTORICA_RESERVADA",
+      "reference": "https://logeion.org/princeps"
+    },
+    {
+      "lemma": "princeps",
+      "form": "prī̆ncipibus",
+      "features": "N;MASC+FEM;DAT;PL",
+      "source": 0,
+      "after": "prī̆ncipibus",
+      "classification": "VARIANTE_HISTORICA_RESERVADA",
+      "reference": "https://logeion.org/princeps"
+    },
+    {
+      "lemma": "princeps",
+      "form": "prī̆ncipis",
+      "features": "ADJ;GEN;MASC+FEM+NEUT;SG",
+      "source": 0,
+      "after": "prī̆ncipis",
+      "classification": "VARIANTE_HISTORICA_RESERVADA",
+      "reference": "https://logeion.org/princeps"
+    },
+    {
+      "lemma": "princeps",
+      "form": "prī̆ncipis",
+      "features": "N;MASC+FEM;GEN;SG",
+      "source": 0,
+      "after": "prī̆ncipis",
+      "classification": "VARIANTE_HISTORICA_RESERVADA",
+      "reference": "https://logeion.org/princeps"
+    },
+    {
+      "lemma": "princeps",
+      "form": "prī̆ncipium",
+      "features": "ADJ;GEN;MASC+FEM+NEUT;PL",
+      "source": 0,
+      "after": "prī̆ncipium",
+      "classification": "VARIANTE_HISTORICA_RESERVADA",
+      "reference": "https://logeion.org/princeps"
+    },
+    {
+      "lemma": "princeps",
+      "form": "prī̆ncipum",
+      "features": "N;MASC+FEM;GEN;PL",
+      "source": 0,
+      "after": "prī̆ncipum",
+      "classification": "VARIANTE_HISTORICA_RESERVADA",
+      "reference": "https://logeion.org/princeps"
+    }
+  ],
+  "philologicalEvidence": {
+    "schema": 1,
+    "updatedOn": "2026-11-22",
+    "sourceClass": "COTEJO_ANTIGUO_Y_MANUALES_FILOLÓGICOS_SIN_PROMOCIÓN",
+    "principle": "Cantidad vocálica distinta de cantidad silábica. Un signo dual heredado no prueba por sí solo una variante; una atestación de gramático no acredita todas las flexiones de un lema. El verso Lucr. 1.224 constituye una atestación directa de nūllĭus; no infiere cantidades en otros adjetivos.",
+    "entries": [
+      {
+        "lemma": "alter",
+        "rows": 1,
+        "evidenceLevel": "ANTIGUA_DIRECTA_PARA_CANTIDAD_DEL_GENITIVO",
+        "ancientWitnesses": [
+          {
+            "author": "Prisciano",
+            "locus": "Institutiones grammaticae III 20,7-8",
+            "claim": "La penúltima de alterius se abrevia siempre según su regla; el testimonio es explícito, pero representa una doctrina gramatical antigua, no la distribución completa por autores.",
+            "uri": "https://www.stgallpriscian.ie/index.php?kP=20&kV=3"
+          }
+        ],
+        "comparativeReferences": [
+          "https://dcc.dickinson.edu/tr/grammar/latin/1st-and-2nd-declension-adjectives-genitive-%C4%ABus-dative-%C4%AB",
+          "https://proxybridge.pythonanywhere.com/cache/epub/44653/pg44653-images.html"
+        ],
+        "inference": "Existe apoyo explícito para alterĭus; el uso de alterīus está descrito por la tradición gramatical y métricas históricas. Mantener las dos cantidades documentadas en el registro original.",
+        "allowedIndexNormalization": false,
+        "sourcePromotion": false
+      },
+      {
+        "lemma": "nullus",
+        "rows": 1,
+        "evidenceLevel": "TESTIMONIO_METRICO_PRIMARIO_DE_BREVE",
+        "ancientWitnesses": [
+          {
+            "author": "T. Lucretius Carus",
+            "locus": "De rerum natura I 224",
+            "quote": "nullius exitium patitur natura videri",
+            "quantity": "nūllĭus (ĭ breve)",
+            "meter": "Hexámetro dactílico; primer pie nūl-lĭ-us = larga, breve, breve (— ◡ ◡).",
+            "claim": "La posición de nullius al principio de un hexámetro impone una breve en la vocal i del genitivo, permitiendo un primer pie dactílico.",
+            "uri": "https://scaife.perseus.org/reader/urn:cts:latinLit:phi0550.phi001.perseus-lat1:1.224/?right=perseus-lat1"
+          }
+        ],
+        "comparativeReferences": [
+          "https://beta.perseus.tufts.edu/urn:cts:latinLit:phi0550.phi001.perseus-lat1/",
+          "https://dcc.dickinson.edu/grammar/latin/1st-and-2nd-declension-adjectives-genitive-%C4%ABus-dative-%C4%AB"
+        ],
+        "inference": "La breve de nūllĭus no es ya una hipótesis basada en una regla general: Lucrecio I 224 aporta un dáctilo inicial que requiere la i breve. La cantidad larga nūllīus sigue siendo el paradigma escolar ordinario; se documenta la excepcionalidad poética sin alterar el registro heredado ni la calificación.",
+        "allowedIndexNormalization": false,
+        "sourcePromotion": false
+      },
+      {
+        "lemma": "custos",
+        "rows": 12,
+        "evidenceLevel": "CANTIDAD_OCULTA_SIN_TESTIMONIO_PRIMARIO_DECISIVO",
+        "ancientWitnesses": [],
+        "comparativeReferences": [
+          "https://dcc.dickinson.edu/latin-core/cvstos",
+          "https://latindictionary.co/academy/grammar/56",
+          "https://en.wiktionary.org/wiki/custos",
+          "https://de.wiktionary.org/wiki/custos",
+          "https://dcc.dickinson.edu/grammar/latin/quantity-syllables"
+        ],
+        "inference": "La primera sílaba es pesada por la secuencia -st-, cualquiera que sea la duración de la u. La escansión sola no permite elegir ŭ/ū. Allen y Greenough §56 imprimen cūstōs, pero Dickinson Core custōs y otras fuentes no coinciden: sin prueba epigráfica o tradición explícita, no normalizar.",
+        "allowedIndexNormalization": false,
+        "sourcePromotion": false
+      },
+      {
+        "lemma": "princeps",
+        "rows": 28,
+        "evidenceLevel": "ANTIGUA_DIRECTA_DE_CANTIDAD_SILABICA_SIN_CANTIDAD_VOCALICA",
+        "ancientWitnesses": [
+          {
+            "author": "Servio",
+            "locus": "Commentarius in Artem Donati 426.7, De accentibus",
+            "claim": "Califica princeps como largo por posición, lo cual no decide si la primera i es ī o ĭ.",
+            "uri": "https://latin.packhum.org/loc/2349/2/12"
+          }
+        ],
+        "comparativeReferences": [
+          "https://www.sciencedirect.com/org/science/article/pii/S2212588417000060",
+          "https://en.wiktionary.org/wiki/princeps",
+          "https://dcc.dickinson.edu/grammar/latin/quantity-syllables"
+        ],
+        "inference": "La breve se considera históricamente plausible según la discusión de Osthoff/Sihler y noticias de gramáticos; una lectura con ī también tiene tradición lexicográfica. No extraer un dictamen vocal de la silabación de Servio; registrar contexto cronológico antes de escoger.",
+        "allowedIndexNormalization": false,
+        "sourcePromotion": false
+      }
+    ]
+  },
+  "notationPolicy": {
+    "label": "MARCA_DE_CANTIDAD_VARIABLE_CONVENCIONAL_EN_GRAMATICAS",
+    "reference": "https://dcc.dickinson.edu/grammar/latin/quantity-syllables",
+    "source": "Allen y Greenough, New Latin Grammar, §9–11",
+    "finding": "La notación de vocal con macrón y breve superpuestos puede expresar cantidad larga o breve según el testimonio. No debe tratarse como error tipográfico por su apariencia gráfica.",
+    "rule": "La combinación de dos diacríticos exige evaluación filológica, no reemplazo automático. Mantener la grafía original y documentar lectura ordinaria, poética o discutida en metadatos."
+  }
+}
