@@ -1,0 +1,415 @@
+{
+  "schema": 1,
+  "date": "2026-11-22",
+  "scope": "42 lecturas de fuente 0 con marcas duales de cantidad; cotejo individual",
+  "repository": "ArchaiosMagister/GeneradorExamenes",
+  "baseTeacherFormsSha": "31630d93e922dd439d22e1b7fa59433974ba9a28",
+  "automaticGradingEnabled": false,
+  "morphologyPromotion": false,
+  "expected": {
+    "total": 42,
+    "corrected": 12,
+    "retainedVariant": 30,
+    "sourceCode": 0
+  },
+  "bibliography": {
+    "alter": [
+      "https://dcc.dickinson.edu/grammar/latin/1st-and-2nd-declension-adjectives-genitive-%C4%ABus-dative-%C4%AB",
+      "https://atlas.perseus.tufts.edu/dictionaries/entry/urn%3Acite2%3Ascaife-viewer%3Adictionary-entries.atlas_v1%3Alat.ls.perseus-eng2-n2015/"
+    ],
+    "custos": [
+      "https://www.lateinlex.de/?call=ShowArticle&id=1514&latein=custos",
+      "https://www.curriculumonline.ie/getmedia/40a3400a-8ab6-4345-8f01-9d65742c17e9/Latin-Indicative-Vocabulary-List.pdf"
+    ],
+    "nullus": [
+      "https://atlas.perseus.tufts.edu/dictionaries/entry/urn%3Acite2%3Ascaife-viewer%3Adictionary-entries.atlas_v1%3Alat.ls.perseus-eng2-n31390/",
+      "https://dcc.dickinson.edu/grammar/latin/1st-and-2nd-declension-adjectives-genitive-%C4%ABus-dative-%C4%AB"
+    ],
+    "princeps": [
+      "https://logeion.org/princeps",
+      "https://latim.paginas.ufsc.br/files/2012/06/ALLEN-Vox-Latina-A-Guide-to-Pronunciation-of-Classical-Latin-Cambridge-1978.pdf",
+      "https://www.sciencedirect.com/org/science/article/pii/S2212588417000060"
+    ]
+  },
+  "method": "La corrección ortográfica no verifica el paradigma ni eleva la fuente a 5. Los testimonios discutidos mantienen la lectura original hasta contar con evidencia de contexto o época.",
+  "items": [
+    {
+      "lemma": "alter",
+      "form": "alterī̆us",
+      "features": "ADJ;GEN;MASC+FEM+NEUT;SG",
+      "source": 0,
+      "after": "alterī̆us",
+      "classification": "VARIANTE_METRICA_RESERVADA",
+      "reference": "https://dcc.dickinson.edu/grammar/latin/1st-and-2nd-declension-adjectives-genitive-%C4%ABus-dative-%C4%AB"
+    },
+    {
+      "lemma": "custos",
+      "form": "cū̆stōde",
+      "features": "N;ABL;SG",
+      "source": 0,
+      "after": "cūstōde",
+      "classification": "CORRECCION_CANTIDAD_ACREDITADA",
+      "reference": "https://www.lateinlex.de/?call=ShowArticle&id=1514&latein=custos"
+    },
+    {
+      "lemma": "custos",
+      "form": "cū̆stōdem",
+      "features": "N;ACC;SG",
+      "source": 0,
+      "after": "cūstōdem",
+      "classification": "CORRECCION_CANTIDAD_ACREDITADA",
+      "reference": "https://www.lateinlex.de/?call=ShowArticle&id=1514&latein=custos"
+    },
+    {
+      "lemma": "custos",
+      "form": "cū̆stōdēs",
+      "features": "N;ACC;PL",
+      "source": 0,
+      "after": "cūstōdēs",
+      "classification": "CORRECCION_CANTIDAD_ACREDITADA",
+      "reference": "https://www.lateinlex.de/?call=ShowArticle&id=1514&latein=custos"
+    },
+    {
+      "lemma": "custos",
+      "form": "cū̆stōdēs",
+      "features": "N;NOM;PL",
+      "source": 0,
+      "after": "cūstōdēs",
+      "classification": "CORRECCION_CANTIDAD_ACREDITADA",
+      "reference": "https://www.lateinlex.de/?call=ShowArticle&id=1514&latein=custos"
+    },
+    {
+      "lemma": "custos",
+      "form": "cū̆stōdēs",
+      "features": "N;VOC;PL",
+      "source": 0,
+      "after": "cūstōdēs",
+      "classification": "CORRECCION_CANTIDAD_ACREDITADA",
+      "reference": "https://www.lateinlex.de/?call=ShowArticle&id=1514&latein=custos"
+    },
+    {
+      "lemma": "custos",
+      "form": "cū̆stōdī",
+      "features": "N;DAT;SG",
+      "source": 0,
+      "after": "cūstōdī",
+      "classification": "CORRECCION_CANTIDAD_ACREDITADA",
+      "reference": "https://www.lateinlex.de/?call=ShowArticle&id=1514&latein=custos"
+    },
+    {
+      "lemma": "custos",
+      "form": "cū̆stōdibus",
+      "features": "N;ABL;PL",
+      "source": 0,
+      "after": "cūstōdibus",
+      "classification": "CORRECCION_CANTIDAD_ACREDITADA",
+      "reference": "https://www.lateinlex.de/?call=ShowArticle&id=1514&latein=custos"
+    },
+    {
+      "lemma": "custos",
+      "form": "cū̆stōdibus",
+      "features": "N;DAT;PL",
+      "source": 0,
+      "after": "cūstōdibus",
+      "classification": "CORRECCION_CANTIDAD_ACREDITADA",
+      "reference": "https://www.lateinlex.de/?call=ShowArticle&id=1514&latein=custos"
+    },
+    {
+      "lemma": "custos",
+      "form": "cū̆stōdis",
+      "features": "N;GEN;SG",
+      "source": 0,
+      "after": "cūstōdis",
+      "classification": "CORRECCION_CANTIDAD_ACREDITADA",
+      "reference": "https://www.lateinlex.de/?call=ShowArticle&id=1514&latein=custos"
+    },
+    {
+      "lemma": "custos",
+      "form": "cū̆stōdum",
+      "features": "N;GEN;PL",
+      "source": 0,
+      "after": "cūstōdum",
+      "classification": "CORRECCION_CANTIDAD_ACREDITADA",
+      "reference": "https://www.lateinlex.de/?call=ShowArticle&id=1514&latein=custos"
+    },
+    {
+      "lemma": "custos",
+      "form": "cū̆stōs",
+      "features": "N;NOM;SG",
+      "source": 0,
+      "after": "cūstōs",
+      "classification": "CORRECCION_CANTIDAD_ACREDITADA",
+      "reference": "https://www.lateinlex.de/?call=ShowArticle&id=1514&latein=custos"
+    },
+    {
+      "lemma": "custos",
+      "form": "cū̆stōs",
+      "features": "N;VOC;SG",
+      "source": 0,
+      "after": "cūstōs",
+      "classification": "CORRECCION_CANTIDAD_ACREDITADA",
+      "reference": "https://www.lateinlex.de/?call=ShowArticle&id=1514&latein=custos"
+    },
+    {
+      "lemma": "nullus",
+      "form": "nūllī̆us",
+      "features": "ADJ;GEN;MASC+FEM+NEUT;SG",
+      "source": 0,
+      "after": "nūllī̆us",
+      "classification": "VARIANTE_METRICA_RESERVADA",
+      "reference": "https://atlas.perseus.tufts.edu/dictionaries/entry/urn%3Acite2%3Ascaife-viewer%3Adictionary-entries.atlas_v1%3Alat.ls.perseus-eng2-n31390/"
+    },
+    {
+      "lemma": "princeps",
+      "form": "prī̆nceps",
+      "features": "ADJ;ACC;NEUT;SG",
+      "source": 0,
+      "after": "prī̆nceps",
+      "classification": "VARIANTE_HISTORICA_RESERVADA",
+      "reference": "https://logeion.org/princeps"
+    },
+    {
+      "lemma": "princeps",
+      "form": "prī̆nceps",
+      "features": "ADJ;NOM;MASC+FEM+NEUT;SG",
+      "source": 0,
+      "after": "prī̆nceps",
+      "classification": "VARIANTE_HISTORICA_RESERVADA",
+      "reference": "https://logeion.org/princeps"
+    },
+    {
+      "lemma": "princeps",
+      "form": "prī̆nceps",
+      "features": "ADJ;VOC;MASC+FEM+NEUT;SG",
+      "source": 0,
+      "after": "prī̆nceps",
+      "classification": "VARIANTE_HISTORICA_RESERVADA",
+      "reference": "https://logeion.org/princeps"
+    },
+    {
+      "lemma": "princeps",
+      "form": "prī̆nceps",
+      "features": "N;MASC+FEM;NOM;SG",
+      "source": 0,
+      "after": "prī̆nceps",
+      "classification": "VARIANTE_HISTORICA_RESERVADA",
+      "reference": "https://logeion.org/princeps"
+    },
+    {
+      "lemma": "princeps",
+      "form": "prī̆nceps",
+      "features": "N;MASC+FEM;VOC;SG",
+      "source": 0,
+      "after": "prī̆nceps",
+      "classification": "VARIANTE_HISTORICA_RESERVADA",
+      "reference": "https://logeion.org/princeps"
+    },
+    {
+      "lemma": "princeps",
+      "form": "prī̆ncipe",
+      "features": "N;MASC+FEM;ABL;SG",
+      "source": 0,
+      "after": "prī̆ncipe",
+      "classification": "VARIANTE_HISTORICA_RESERVADA",
+      "reference": "https://logeion.org/princeps"
+    },
+    {
+      "lemma": "princeps",
+      "form": "prī̆ncipem",
+      "features": "ADJ;ACC;MASC+FEM;SG",
+      "source": 0,
+      "after": "prī̆ncipem",
+      "classification": "VARIANTE_HISTORICA_RESERVADA",
+      "reference": "https://logeion.org/princeps"
+    },
+    {
+      "lemma": "princeps",
+      "form": "prī̆ncipem",
+      "features": "N;MASC+FEM;ACC;SG",
+      "source": 0,
+      "after": "prī̆ncipem",
+      "classification": "VARIANTE_HISTORICA_RESERVADA",
+      "reference": "https://logeion.org/princeps"
+    },
+    {
+      "lemma": "princeps",
+      "form": "prī̆ncipēs",
+      "features": "ADJ;ACC;MASC+FEM;PL",
+      "source": 0,
+      "after": "prī̆ncipēs",
+      "classification": "VARIANTE_HISTORICA_RESERVADA",
+      "reference": "https://logeion.org/princeps"
+    },
+    {
+      "lemma": "princeps",
+      "form": "prī̆ncipēs",
+      "features": "ADJ;NOM;MASC+FEM;PL",
+      "source": 0,
+      "after": "prī̆ncipēs",
+      "classification": "VARIANTE_HISTORICA_RESERVADA",
+      "reference": "https://logeion.org/princeps"
+    },
+    {
+      "lemma": "princeps",
+      "form": "prī̆ncipēs",
+      "features": "ADJ;VOC;MASC+FEM;PL",
+      "source": 0,
+      "after": "prī̆ncipēs",
+      "classification": "VARIANTE_HISTORICA_RESERVADA",
+      "reference": "https://logeion.org/princeps"
+    },
+    {
+      "lemma": "princeps",
+      "form": "prī̆ncipēs",
+      "features": "N;MASC+FEM;ACC;PL",
+      "source": 0,
+      "after": "prī̆ncipēs",
+      "classification": "VARIANTE_HISTORICA_RESERVADA",
+      "reference": "https://logeion.org/princeps"
+    },
+    {
+      "lemma": "princeps",
+      "form": "prī̆ncipēs",
+      "features": "N;MASC+FEM;NOM;PL",
+      "source": 0,
+      "after": "prī̆ncipēs",
+      "classification": "VARIANTE_HISTORICA_RESERVADA",
+      "reference": "https://logeion.org/princeps"
+    },
+    {
+      "lemma": "princeps",
+      "form": "prī̆ncipēs",
+      "features": "N;MASC+FEM;VOC;PL",
+      "source": 0,
+      "after": "prī̆ncipēs",
+      "classification": "VARIANTE_HISTORICA_RESERVADA",
+      "reference": "https://logeion.org/princeps"
+    },
+    {
+      "lemma": "princeps",
+      "form": "prī̆ncipī",
+      "features": "ADJ;ABL;MASC+FEM+NEUT;SG",
+      "source": 0,
+      "after": "prī̆ncipī",
+      "classification": "VARIANTE_HISTORICA_RESERVADA",
+      "reference": "https://logeion.org/princeps"
+    },
+    {
+      "lemma": "princeps",
+      "form": "prī̆ncipī",
+      "features": "ADJ;DAT;MASC+FEM+NEUT;SG",
+      "source": 0,
+      "after": "prī̆ncipī",
+      "classification": "VARIANTE_HISTORICA_RESERVADA",
+      "reference": "https://logeion.org/princeps"
+    },
+    {
+      "lemma": "princeps",
+      "form": "prī̆ncipī",
+      "features": "N;MASC+FEM;DAT;SG",
+      "source": 0,
+      "after": "prī̆ncipī",
+      "classification": "VARIANTE_HISTORICA_RESERVADA",
+      "reference": "https://logeion.org/princeps"
+    },
+    {
+      "lemma": "princeps",
+      "form": "prī̆ncipia",
+      "features": "ADJ;ACC;NEUT;PL",
+      "source": 0,
+      "after": "prī̆ncipia",
+      "classification": "VARIANTE_HISTORICA_RESERVADA",
+      "reference": "https://logeion.org/princeps"
+    },
+    {
+      "lemma": "princeps",
+      "form": "prī̆ncipia",
+      "features": "ADJ;NOM;NEUT;PL",
+      "source": 0,
+      "after": "prī̆ncipia",
+      "classification": "VARIANTE_HISTORICA_RESERVADA",
+      "reference": "https://logeion.org/princeps"
+    },
+    {
+      "lemma": "princeps",
+      "form": "prī̆ncipia",
+      "features": "ADJ;VOC;NEUT;PL",
+      "source": 0,
+      "after": "prī̆ncipia",
+      "classification": "VARIANTE_HISTORICA_RESERVADA",
+      "reference": "https://logeion.org/princeps"
+    },
+    {
+      "lemma": "princeps",
+      "form": "prī̆ncipibus",
+      "features": "ADJ;ABL;MASC+FEM+NEUT;PL",
+      "source": 0,
+      "after": "prī̆ncipibus",
+      "classification": "VARIANTE_HISTORICA_RESERVADA",
+      "reference": "https://logeion.org/princeps"
+    },
+    {
+      "lemma": "princeps",
+      "form": "prī̆ncipibus",
+      "features": "ADJ;DAT;MASC+FEM+NEUT;PL",
+      "source": 0,
+      "after": "prī̆ncipibus",
+      "classification": "VARIANTE_HISTORICA_RESERVADA",
+      "reference": "https://logeion.org/princeps"
+    },
+    {
+      "lemma": "princeps",
+      "form": "prī̆ncipibus",
+      "features": "N;MASC+FEM;ABL;PL",
+      "source": 0,
+      "after": "prī̆ncipibus",
+      "classification": "VARIANTE_HISTORICA_RESERVADA",
+      "reference": "https://logeion.org/princeps"
+    },
+    {
+      "lemma": "princeps",
+      "form": "prī̆ncipibus",
+      "features": "N;MASC+FEM;DAT;PL",
+      "source": 0,
+      "after": "prī̆ncipibus",
+      "classification": "VARIANTE_HISTORICA_RESERVADA",
+      "reference": "https://logeion.org/princeps"
+    },
+    {
+      "lemma": "princeps",
+      "form": "prī̆ncipis",
+      "features": "ADJ;GEN;MASC+FEM+NEUT;SG",
+      "source": 0,
+      "after": "prī̆ncipis",
+      "classification": "VARIANTE_HISTORICA_RESERVADA",
+      "reference": "https://logeion.org/princeps"
+    },
+    {
+      "lemma": "princeps",
+      "form": "prī̆ncipis",
+      "features": "N;MASC+FEM;GEN;SG",
+      "source": 0,
+      "after": "prī̆ncipis",
+      "classification": "VARIANTE_HISTORICA_RESERVADA",
+      "reference": "https://logeion.org/princeps"
+    },
+    {
+      "lemma": "princeps",
+      "form": "prī̆ncipium",
+      "features": "ADJ;GEN;MASC+FEM+NEUT;PL",
+      "source": 0,
+      "after": "prī̆ncipium",
+      "classification": "VARIANTE_HISTORICA_RESERVADA",
+      "reference": "https://logeion.org/princeps"
+    },
+    {
+      "lemma": "princeps",
+      "form": "prī̆ncipum",
+      "features": "N;MASC+FEM;GEN;PL",
+      "source": 0,
+      "after": "prī̆ncipum",
+      "classification": "VARIANTE_HISTORICA_RESERVADA",
+      "reference": "https://logeion.org/princeps"
+    }
+  ]
+}
