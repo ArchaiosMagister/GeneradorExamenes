@@ -6,6 +6,10 @@ const index=load('data/lemmas/teacher-forms.json');
 const builder=fs.readFileSync('scripts/build-lemma-index.mjs','utf8');
 assert.equal(audit.schema,1);
 assert.equal(audit.expected.total,42);
+assert.equal(audit.notationPolicy?.label,'MARCA_DE_CANTIDAD_VARIABLE_CONVENCIONAL_EN_GRAMATICAS');
+assert(audit.notationPolicy.reference?.startsWith('https://dcc.dickinson.edu/grammar/latin/quantity-syllables'));
+assert(audit.notationPolicy.rule?.includes('reemplazo automático'));
+
 assert.equal(audit.expected.corrected,0);
 assert.equal(audit.expected.retainedVariant,42);
 assert.equal(audit.automaticGradingEnabled,false);
