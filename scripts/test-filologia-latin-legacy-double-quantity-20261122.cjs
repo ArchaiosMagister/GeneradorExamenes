@@ -15,7 +15,7 @@ assert.equal(audit.expected.retainedVariant,42);
 assert.equal(audit.automaticGradingEnabled,false);
 assert.equal(audit.morphologyPromotion,false);
 assert.equal(audit.items.length,42);
-assert.equal(index.rows.lat.length,14531,'El índice añade exactamente las 24 casillas deponentes contrastadas');
+assert.equal(index.rows.lat.length,14555,'El índice añade exactamente las 48 casillas deponentes contrastadas');
 assert.equal(index.rows.grc.length,2817);
 assert(builder.includes('latin-legacy-double-quantity-collation-20261122.json'),
  'Reconstrucción no vinculada a la colación individual');
