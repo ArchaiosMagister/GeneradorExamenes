@@ -319,6 +319,8 @@ jobs:
         run: node scripts/test-latin-nominal-integrity.cjs
       - name: Cotejar paradigma de vir, viri en Latín I y 4.º, web y autónoma
         run: node scripts/test-latin-vir-paradigm-20261122.cjs
+      - name: Comprobar mare y animal como neutros de tema en -i, web y autónoma
+        run: node scripts/test-latin-neuter-i-stems-20261122.cjs
       - name: Verificar variedad y concordancia de sintagmas nominales grecolatinos
         run: node scripts/test-syntagm-variation.cjs
       - name: Verificar sintagmas aprobados (PR 169) y progresión gramatical
