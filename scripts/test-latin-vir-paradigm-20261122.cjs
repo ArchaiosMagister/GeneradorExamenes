@@ -11,6 +11,15 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
 const root=path.resolve(__dirname,'..');
 const wordIndex=JSON.parse(fs.readFileSync(path.join(root,'data/lemmas/teacher-forms.json'),'utf8'));
 assert.equal(wordIndex.vocabulary.lat.vir.lat1.entry,'vir, –i');
+assert.equal(wordIndex.vocabulary.lat.mors.lat1.entry,'mors, mortis (f.)');
+assert(wordIndex.rows.lat.some(row=>row[0]==='mors'&&
+ row[2]==='N;GEN;PL'&&row[3]===0&&
+ row[1].normalize('NFD').replace(/\\p{M}/gu,'')==='mortium'),
+ 'El índice de referencia debe documentar el genitivo plural mortium');
+const morsExpected=[
+ ['mors','mors','mortem','mortis','morti','morte'],
+ ['mortes','mortes','mortes','mortium','mortibus','mortibus']
+];
 const singular=['vir','vir','virum','viri','viro','viro'];
 const plural=['viri','viri','viros','virorum','viris','viris'];
 const expected=[singular,plural]; // NOM, VOC, ACC, GEN, DAT, ABL
@@ -32,11 +41,11 @@ const expected=[singular,plural]; // NOM, VOC, ACC, GEN, DAT, ABL
      };
      set('course',course);set('model','tablas');set('lang',lang);
      document.querySelectorAll('.unit-choice').forEach(x=>x.checked=true);
-     const chosen=selectedUnits(),m=mNoun('vir, –i');
+     const chosen=selectedUnits(),m=mNoun('vir, –i'),mors=mNoun('mors, mortis (f.)');
      const bank=latinSyntagmNouns(chosen).find(x=>mNormalize(x.p.lemma).toLowerCase()==='vir');
      const table=latinCompleteDeclensionItems(chosen)
       .find(x=>mNormalize(x.p.lemma).toLowerCase()==='vir');
-     return {m,bank:bank?.p||null,table:table?{
+     return {m,mors,bank:bank?.p||null,table:table?{
       noun:table.p,compound:table.compound?.forms||null,
       adjective:mNormalize(headLex(table.compound?.adjective?.entry||'')).toLowerCase(),
       title:table.compound?.title||''
@@ -46,6 +55,8 @@ const expected=[singular,plural]; // NOM, VOC, ACC, GEN, DAT, ABL
       ['unus','nullus'].includes(mNormalize(headLex(x.x.entry)).toLowerCase()))};
     },{course,lang});
     const where=file+' '+course+' '+lang;
+    assert(got.mors&&got.mors.kind==='3mf'&&got.mors.gender==='f',where+': mors tercera femenina');
+    assert.deepEqual(got.mors.forms,morsExpected,where+': mors debe formar mortium, no *mortum');
     assert(got.m&&got.bank&&got.table,where+': vir debe ser evaluable');
     for(const paradigm of [got.m,got.bank,got.table.noun]){
      assert.equal(paradigm.kind,'2er',where+': clase nominal');
@@ -67,6 +78,6 @@ const expected=[singular,plural]; // NOM, VOC, ACC, GEN, DAT, ABL
    assert.deepEqual(errors,[],file+': error JavaScript en la página');
    await page.close();
   }
-  console.log('OK: vir, viri: doce formas, género, concordancia y límites curriculares, web y offline, ES/VA');
+  console.log('OK: vir viri y mors mortis (mortium): 24 casillas, concordancia, web/offline y ES/VA');
  }finally{await browser.close();}
 })().catch(e=>{console.error(e);process.exitCode=1});
