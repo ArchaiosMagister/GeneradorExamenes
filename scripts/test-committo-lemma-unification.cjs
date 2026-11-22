@@ -43,7 +43,7 @@ assert(rowsCanonical.some(x=>x[1]==='committis'&&x[2]==='V;IND;ACT;PRS;2;SG'&&x[
 assert(rowsCanonical.some(x=>x[1]==='committunt'&&x[2]==='V;IND;ACT;PRS;3;PL'&&x[3]===2));
 assert(rowsCanonical.some(x=>x[1]==='committebam'&&x[2]==='V;IND;ACT;PST;IPFV;1;SG'&&x[3]===2));
 assert(!rowsCanonical.some(x=>/^commiteb|^commitis$|^commito$/.test(x[1])));
-assert.equal(corpus.counts.lat.contrastado,643,'Conservar los 24 deponentes nuevos sin acreditar automáticamente otras formas');
+assert.equal(corpus.counts.lat.contrastado,667,'Conservar los 48 presentes deponentes de UD7 y UD9-10 sin acreditar automáticamente otras formas');
 // La corrección de nix, nivis añade once formas regulares NO acreditadas
 // como propuestas de fuente 2; no son duplicaciones del verbo committo.
 const newNixProposals=corpus.rows.lat.filter(row=>row[0]==='nix'&&row[3]===2);

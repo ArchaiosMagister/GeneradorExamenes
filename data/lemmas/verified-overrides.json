@@ -2416,6 +2416,118 @@
           ]
         }
       ]
+    },
+    {
+      "lang": "lat",
+      "lemma": "gratulor",
+      "forms": [
+        "gratulor",
+        "gratularis",
+        "gratulatur",
+        "gratulamur",
+        "gratulamini",
+        "gratulantur"
+      ],
+      "reference": "https://www.latindictionary.io/entry/gratulor-gratulari-gratulatus-sum",
+      "secondaryReference": "https://www.latin-is-simple.com/en/vocabulary/verb/4129/",
+      "type": "Presente indicativo deponente de primera conjugación; variante gratulare no promovida por coincidir con imperativo.",
+      "blocks": [
+        {
+          "tags": "V;IND;DEP;PRS",
+          "forms": [
+            "gratulor",
+            "gratularis",
+            "gratulatur",
+            "gratulamur",
+            "gratulamini",
+            "gratulantur"
+          ]
+        }
+      ]
+    },
+    {
+      "lang": "lat",
+      "lemma": "miror",
+      "forms": [
+        "miror",
+        "miraris",
+        "miratur",
+        "miramur",
+        "miramini",
+        "mirantur"
+      ],
+      "reference": "https://www.latindictionary.io/entry/miror-mirari-miratus-sum-27017",
+      "secondaryReference": "https://latinando.it/coniugazione/miror",
+      "type": "Presente indicativo deponente de primera conjugación; variante mirare no promovida por coincidir con imperativo.",
+      "blocks": [
+        {
+          "tags": "V;IND;DEP;PRS",
+          "forms": [
+            "miror",
+            "miraris",
+            "miratur",
+            "miramur",
+            "miramini",
+            "mirantur"
+          ]
+        }
+      ]
+    },
+    {
+      "lang": "lat",
+      "lemma": "polliceor",
+      "forms": [
+        "polliceor",
+        "polliceris",
+        "pollicetur",
+        "pollicemur",
+        "pollicemini",
+        "pollicentur"
+      ],
+      "reference": "https://www.latindictionary.io/entry/polliceor-polliceri-pollicitus-sum",
+      "secondaryReference": "https://en.wiktionary.org/wiki/polliceor",
+      "type": "Presente indicativo deponente de segunda conjugación; variante pollicere no promovida por coincidir con imperativo.",
+      "blocks": [
+        {
+          "tags": "V;IND;DEP;PRS",
+          "forms": [
+            "polliceor",
+            "polliceris",
+            "pollicetur",
+            "pollicemur",
+            "pollicemini",
+            "pollicentur"
+          ]
+        }
+      ]
+    },
+    {
+      "lang": "lat",
+      "lemma": "patior",
+      "forms": [
+        "patior",
+        "pateris",
+        "patitur",
+        "patimur",
+        "patimini",
+        "patiuntur"
+      ],
+      "reference": "https://www.schule-bw.de/faecher-und-schularten/sprachen-und-literatur/latein/sprache/konjugation-des-verbs/konjugationen/deponentien-gemischte-konjugation.html",
+      "secondaryReference": "https://www.latindictionary.io/entry/patior-pati-passus-sum",
+      "type": "Presente indicativo deponente de tercera mixta (-io); variante patere no promovida por coincidir con imperativo; no ampliar imperfecto ni perfecto.",
+      "blocks": [
+        {
+          "tags": "V;IND;DEP;PRS",
+          "forms": [
+            "patior",
+            "pateris",
+            "patitur",
+            "patimur",
+            "patimini",
+            "patiuntur"
+          ]
+        }
+      ]
     }
   ],
   "sourceCode": 5,

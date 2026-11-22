@@ -12,7 +12,7 @@ const match=html.match(/const latinExplicitVerbEvidence=(\{[^\n]+\});\nfunction 
 assert(match,'Falta la tabla explícita de evidencia verbal');
 const evidence=JSON.parse(match[1]);
 assert.deepEqual(Object.keys(evidence).sort(),
- ['abeo','absum','accipio','amo','audeo','audio','capio','careo','complector','confero','conor','disco','duco','eo','facio','ineo','intueor','laetor','loquor','moneo','nolo','pereo','possum','praesum','proficiscor','redeo','rego','sequor','sum','transeo','vereor']);
+ ["abeo","absum","accipio","amo","audeo","audio","capio","careo","complector","confero","conor","disco","duco","eo","facio","gratulor","ineo","intueor","laetor","loquor","miror","moneo","nolo","patior","pereo","polliceor","possum","praesum","proficiscor","redeo","rego","sequor","sum","transeo","vereor"]);
 const overrides=JSON.parse(readFileSync(resolve(root,'data/lemmas/verified-overrides.json'),'utf8'));
 let total=0;
 for(const [lemma,series]of Object.entries(evidence)){
@@ -43,7 +43,7 @@ for(const [lemma,series]of Object.entries(evidence)){
   });
  }
 }
-assert.equal(total,594,'Cantidad de fichas contrastadas registrada inesperada');
+assert.equal(total,618,'Cantidad de fichas contrastadas registrada inesperada');
 assert.deepEqual(evidence.eo.map(x=>x.tense),['presente','imperfecto','futuro','perfecto','pluscuamperfecto']);
 assert.deepEqual(evidence.redeo.map(x=>x.tense),['presente','imperfecto','futuro','perfecto','pluscuamperfecto']);
 assert.deepEqual(evidence.transeo.map(x=>x.tense),['presente','imperfecto','futuro','perfecto','pluscuamperfecto']);
@@ -86,4 +86,4 @@ assert(html.includes("const latinPersonalPresentPassiveLemmas=new Set([...latinP
  'Falta la excepción de facio y el inventario de pasivas personales');
 assert(html.includes("if(latinPersonalPresentPassiveLemmas.has(examKey(entry)))"),
  'La pasiva no está condicionada a la transitividad admitida');
-console.log('Latín I: 594 casillas explícitas, incluidas 24 de presente deponente UD7; sin paradigmas analógicos.');
+console.log('Latín I: 618 casillas explícitas, incluidas 24 de UD7 y 24 de UD9-10; sin paradigmas analógicos.');

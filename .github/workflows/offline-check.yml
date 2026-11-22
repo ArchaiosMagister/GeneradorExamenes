@@ -144,6 +144,10 @@ jobs:
         run: git diff --exit-code -- offline.html
       - name: Conservar dos correcciones filológicas deponentes en índices, banco y HTML autónomo
         run: node scripts/test-latin-deponents-ud7-ud9-20261122.cjs --source-only
+      - name: Acreditar 24 presentes de UD9-10 y conservar exclusiones
+        run: node scripts/test-latin-deponents-ud9-ud10-present-20261122.cjs --source-only
+      - name: Revalidar inventario histórico UD9-10 ya integrado con las 24 acreditaciones
+        run: node scripts/test-latin-deponents-ud9-ud10-inventory-20261122.cjs
       - name: Probar lematización latina y griega sin red
         run: node scripts/test-lemma-index.mjs
       - name: Verificar las 17 decisiones griegas, banco, índice y HTML autónomo
@@ -184,6 +188,8 @@ jobs:
         run: node scripts/test-latin-verbal-curriculum-20261122.cjs
       - name: Auditar deponentes complector y patior en web y autónoma ES/VA
         run: node scripts/test-latin-deponents-ud7-ud9-20261122.cjs
+      - name: Probar cuatro presentes deponentes UD9-10 en web/autónoma ES/VA
+        run: node scripts/test-latin-deponents-ud9-ud10-present-20261122.cjs
       - name: Conservar matriz curricular para revisión filológica
         if: always()
         uses: actions/upload-artifact@v4
