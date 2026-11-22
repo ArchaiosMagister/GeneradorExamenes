@@ -1,0 +1,71 @@
+{
+  "schema": 1,
+  "course": "lat4",
+  "total": 7,
+  "distinctLemmas": 4,
+  "automaticGradingEnabled": false,
+  "morphologyPromotion": false,
+  "sourceRowsUnchanged": true,
+  "units": 10,
+  "entriesLatin4": 541,
+  "entriesLatin1": 1106,
+  "items": [
+    {
+      "lemma": "homo",
+      "unit": "UD6",
+      "from": "hŏmō̆, hominis (m.)",
+      "to": "hŏmō, hominis (m.)",
+      "reference": "https://dcc.dickinson.edu/latin-core/homo",
+      "reason": "Eliminación de breve combinante sobre la vocal larga -ō del nominativo."
+    },
+    {
+      "lemma": "homo",
+      "unit": "UD7",
+      "from": "hŏmō̆, –minis",
+      "to": "hŏmō, –minis",
+      "reference": "https://dcc.dickinson.edu/latin-core/homo",
+      "reason": "Eliminación de breve combinante sobre la vocal larga -ō del nominativo."
+    },
+    {
+      "lemma": "homo",
+      "unit": "UD9",
+      "from": "hŏmō̆, hominis (m.)",
+      "to": "hŏmō, hominis (m.)",
+      "reference": "https://dcc.dickinson.edu/latin-core/homo",
+      "reason": "Eliminación de breve combinante sobre la vocal larga -ō del nominativo."
+    },
+    {
+      "lemma": "oppugnatio",
+      "unit": "UD6",
+      "from": "ŏppūgnātĭō̆, –onis",
+      "to": "ŏppūgnātĭō, –onis",
+      "reference": "https://www.set-u.org/library/perseus-lewis-elementary/pages/57",
+      "reason": "Eliminación de breve combinante sobre la vocal larga -ō del nominativo."
+    },
+    {
+      "lemma": "cicero",
+      "unit": "UD7",
+      "from": "Cĭcĕrō̆, –onis (m.)",
+      "to": "Cĭcĕrō, –onis (m.)",
+      "reference": "https://es.wiktionary.org/wiki/Cicero",
+      "reason": "Eliminación de breve combinante sobre la vocal larga -ō del nominativo."
+    },
+    {
+      "lemma": "legio",
+      "unit": "UD7",
+      "from": "lĕgĭō̆, –onis (f.)",
+      "to": "lĕgĭō, –onis (f.)",
+      "reference": "https://www.lateinlex.de/?call=ShowArticle&id=2112&latein=legio",
+      "reason": "Eliminación de breve combinante sobre la vocal larga -ō del nominativo."
+    },
+    {
+      "lemma": "legio",
+      "unit": "UD10",
+      "from": "lĕgĭō̆, –onis",
+      "to": "lĕgĭō, –onis",
+      "reference": "https://www.lateinlex.de/?call=ShowArticle&id=2112&latein=legio",
+      "reason": "Eliminación de breve combinante sobre la vocal larga -ō del nominativo."
+    }
+  ],
+  "quarantine": "Los registros con ī̆ y ū̆ del índice heredado (fuente 0) quedan pendientes de análisis individual."
+}

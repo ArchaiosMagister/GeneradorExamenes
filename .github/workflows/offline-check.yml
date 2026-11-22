@@ -134,6 +134,10 @@ jobs:
       # resolver la procedencia/licencias de los datos morfológicos.
       - name: Validar banco ampliable de evolución fonética y programa de Latín I
         run: node scripts/test-criterios-foneticos.mjs && node scripts/test-fonetica.mjs && node scripts/test-lat1-fonetica.mjs
+      - name: Cotejar civis, navis y urbs (36 casillas y variantes)
+        run: node scripts/test-latin-mf-i-stems-20261122.cjs --source-only
+      - name: Cotejar fuente 0 de hostis e ignis antes de reconstruir
+        run: node scripts/test-latin-hostis-ignis-20261122.cjs --source-only
       - name: Regenerar archivo autónomo
         run: npm run offline:build
       - name: Exigir que el HTML autónomo regenerado coincida con el archivo del repositorio
@@ -249,6 +253,10 @@ jobs:
         run: node scripts/test-filologia-latin4-quantity-followup-20261121.cjs
       - name: Auditar altus, magnus, longus, gemma y littera (16 entradas)
         run: node scripts/test-filologia-latin4-quantity-clusters-20261121.cjs
+      - name: Revisar siete cantidades contradictorias de nominativos latinos en -ō
+        run: node scripts/test-filologia-latin4-final-o-20261122.cjs --offline
+      - name: Cotejar 42 cantidades heredadas y proteger 12 correcciones de custos
+        run: node scripts/test-filologia-latin-legacy-double-quantity-20261122.cjs
       - name: Evitar notaciones abreviadas del ν móvil en las formas evaluables
         run: node scripts/test-greek-movable-nu.cjs
       - name: Auditar las 100 formas más frecuentes de Griego I
@@ -317,6 +325,10 @@ jobs:
         run: node scripts/test-latin-third-declension-forms.cjs
       - name: Auditar todas las formas latinas, selecciones y progresión de unidades
         run: node scripts/test-latin-nominal-integrity.cjs
+      - name: Cotejar paradigma de vir, viri en Latín I y 4.º, web y autónoma
+        run: node scripts/test-latin-vir-paradigm-20261122.cjs
+      - name: Comprobar mare y animal como neutros de tema en -i, web y autónoma
+        run: node scripts/test-latin-neuter-i-stems-20261122.cjs
       - name: Verificar variedad y concordancia de sintagmas nominales grecolatinos
         run: node scripts/test-syntagm-variation.cjs
       - name: Verificar sintagmas aprobados (PR 169) y progresión gramatical

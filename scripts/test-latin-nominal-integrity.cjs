@@ -33,8 +33,16 @@ for(const row of index.rows.lat){
  rowsByLemma.get(lemma).push({form,tags:tags.split(';')});
 }
 const cases=['NOM','VOC','ACC','GEN','DAT','ABL'];
-const unknownReferences=new Set(['pugna','postulatum']);
+const unknownReferences=new Set(['pugna','postulatum','mare']);
+// mare carece de filas morfológicas en teacher-forms.json: no fingir fuente 0/5.
+// Las doce casillas se contrastan con una matriz editorial independiente:
+// https://www.azimonti.com/philology/latin/resources/paradigms-nouns/
+// https://www.nationalarchives.gov.uk/latin/stage-1-latin/resources/stage-1-latin-grammar-resource/nouns/
 const independentlyVerified={
+ mare:[
+  ['mare','mare','mare','maris','mari','mari'],
+  ['maria','maria','maria','marium','maribus','maribus']
+ ],
  pugna:[
   ['pugna','pugna','pugnam','pugnae','pugnae','pugna'],
   ['pugnae','pugnae','pugnas','pugnarum','pugnis','pugnis']
@@ -130,8 +138,8 @@ const checks=[];
      };
     },{course,lang,removed});
     const context=file+'/'+course+'/'+lang;
-    assert.equal(result.semanticNouns,189,context+' cantidad de lemas semánticos');
-    assert.equal(result.semanticCombinations,540,context+' combinaciones no previstas');
+    assert.equal(result.semanticNouns,198,context+' cantidad de lemas semánticos');
+    assert.equal(result.semanticCombinations,566,context+' combinaciones no previstas');
     assert.deepEqual(result.missingPairs,[],context+' siete pares excluidos reaparecen');
     assert(result.semantic.pecunia.split(' ').includes('magnus'),context+' pecunia magna');
     assert(result.semantic.ludus.split(' ').includes('publicus'),context+' ludi publici');

@@ -31,7 +31,7 @@ async function check(page,course,lang,unit){
   const normal=x=>mNormalize(headLex(x)).toLowerCase();
   if(active&&adjs.some(a=>a==='unus'||a==='nullus'))issues.push('adjetivo irregular permitido');
   const exists=Object.entries(latinSyntagmSemanticPairs);
-  if(exists.length!==189||exists.reduce((sum,[,adjs])=>sum+adjs.split(' ').length,0)!==540)
+  if(exists.length!==198||exists.reduce((sum,[,adjs])=>sum+adjs.split(' ').length,0)!==566)
    issues.push('repertorio semántico inesperado: '+exists.length+' sustantivos');
   for(const [noun,removed] of [
    ['ferrum','durus clarus'],['littera','parvus clarus'],
@@ -134,6 +134,6 @@ async function check(page,course,lang,unit){
     'No se utiliza «silva densa» junto a otras alternativas: '+JSON.stringify(varied));
    await ctx.close();
   }
-  console.log('PASS: 56 contextos latinos, 189 lemas revisados, singular/plural, variación y veto permanente unus/nullus.');
+  console.log('PASS: 56 contextos latinos, 198 lemas revisados, singular/plural, variación y veto permanente unus/nullus.');
  }finally{await browser.close()}
 })().catch(error=>{console.error(error);process.exitCode=1});

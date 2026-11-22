@@ -1,0 +1,54 @@
+# Auditoría filológica de 42 cantidades heredadas (22/11/2026)
+
+**Objeto:** 42 registros de fuente 0 del índice `data/lemmas/teacher-forms.json`, con macrón y breve combinados sobre una sola vocal. **Resultado de revisión cruzada:** 42 testimonios inventariados y reservados, **0 correcciones de cantidad confirmadas**, **0 promociones a fuente 5**. Se conservan rasgos morfológicos y trazabilidad de la fuente. La referencia `data/lemmas/latin-legacy-double-quantity-collation-20261122.json` enumera individualmente las 42 filas y sus etiquetas.
+
+| Lema | Registros | Lectura heredada | Dictamen |
+| --- | ---: | --- | --- |
+| `alter` | 1 | `alterī̆us` | La breve del genitivo está documentada poéticamente; la larga es regular. Reservar como fenómeno métrico. |
+| `custos` | 12 | `cū̆st-` | Evidencia **discordante** en fuentes secundarias para la `u` inicial. **No** reducir a `cūst-` ni a `cŭst-` hasta nueva comprobación de fuente primaria. |
+| `nullus` | 1 | `nūllī̆us` | **Breve poética ahora acreditada** por Lucrecio, *DRN* I 224, primer pie dactílico `nūl-lĭ-us`; no uniformar la lectura escolar larga ni el testimonio histórico. |
+| `princeps` | 28 | `prī̆nc-` | Las fuentes reflejan tanto la cantidad larga tradicional como indicios antiguos de breve; reservar las lecturas nominales y adjetivales. |
+| **Total** | **42** | | **42 reservados, sin cambio** |
+
+## Referencias y criterio
+
+- *alter, nullus*: [Allen y Greenough §113](https://dcc.dickinson.edu/grammar/latin/1st-and-2nd-declension-adjectives-genitive-%C4%ABus-dative-%C4%AB), sobre la larga del genitivo y sus abreviaciones en verso; [Lewis y Short, *alter*](https://www.alatius.com/ls/index.php?met=up&ord=alteras), con ejemplos de métrica.
+- *custōs*: [Wiktionary inglés](https://en.wiktionary.org/wiki/custos) representa el latín clásico `[ˈkʊs.toːs]`, que indica vocal inicial breve; [Wikcionario español](https://es.wiktionary.org/wiki/custos) da `/ˈku.stoːs/` (u no larga). En cambio, el [Wiktionary alemán](https://de.wiktionary.org/wiki/custos) ofrece sistemáticamente `cūstōs, cūstōdis`. [Dickinson College Commentaries](https://dcc.dickinson.edu/latin-core/cvstos) escribe `custōs` sin marcar larga la `u`. **Dadas estas discrepancias, la normalización a `cūst-` que se ensayó inicialmente en esta PR fue retirada**. Una entrada sin macrón no demuestra por sí sola brevedad, por lo que tampoco se impone `cŭst-` desde ese dato aislado. Se buscará una autoridad prosódica o evidencia contextual primaria antes de corregir.
+- *princeps*: [Dickinson College Commentaries](https://dcc.dickinson.edu/sv/grammar/latin/3rd-declension-mute-stems-m-f) presenta `prīnceps`; el estudio [*Osthoff’s Law in Latin*](https://www.sciencedirect.com/org/science/article/pii/S2212588417000060) explica el testimonio de gramáticos romanos para la breve y la grafía italiana arcaica `prence`; [Wiktionary](https://en.wiktionary.org/wiki/princeps) resume el debate de cantidad vocálica.
+
+## Criterio metodológico
+
+Los 42 registros son testimonios heredados de fuente 0, **no formas individualmente autorizadas para corregir exámenes**. La combinación de macrón y breve **no constituye por sí sola un error**: Allen y Greenough (§§9–11, [*Quantity of Syllables*](https://dcc.dickinson.edu/grammar/latin/quantity-syllables)) reconoce expresamente las vocales con ambas marcas como notación de cantidad variable. Debe distinguirse esa convención de una contradicción accidental en entradas curriculares ya contrastadas. El registro de origen permanece separado de una futura representación docente. La evaluación automática no se modifica.
+
+Se mantiene la misma fuente y la misma información morfológica en 14.507 filas latinas y 2.817 griegas. La reconstrucción de `scripts/build-lemma-index.mjs` consulta las 42 claves del expediente y falla si falta o sobra alguna, sin cambiar las superficies mientras exista discusión. `scripts/test-filologia-latin-legacy-double-quantity-20261122.cjs` verifica los 42 registros, la ausencia de promociones a fuente 5 y la cobertura exacta de cuatro lemas. La batería está integrada en las CI de Phase I y versión autónoma.
+
+## Historial de la rectificación
+
+Se había propuesto cambiar doce registros de `cū̆st-` a `cūst-` con una fuente que trataba la `u` como larga, pero el nuevo cotejo cruzado reveló fuentes que describen pronunciación breve. **La corrección fue revertida en la rama de trabajo antes de publicar**. El expediente sigue siendo útil: identifica exactamente los 42 testimonios y la evidencia que falta para emitir un dictamen definitivo. No se eliminan registros ni se atribuye una certificación inexistente.
+
+**Estado:** PR #210 en borrador, sin fusión y sin publicación, sujeta a reconstrucción y CI completa en el SHA definitivo.
+
+## Reproducción autónoma tras la rectificación
+
+La reconstrucción aislada volvió a generar el índice desde el extracto fijado sin diferencias y creó la nueva copia `offline.html`. El [commit de sincronización `cc05dc2`](https://github.com/ArchaiosMagister/GeneradorExamenes/commit/cc05dc2685ded29b23c40209d29087446ce678af) elimina también el workflow temporal. No fusiona la PR ni despliega en producción. Se requiere CI completa del commit final posterior al expediente.
+
+
+## Segunda revisión de fuentes: evidencia antigua frente a la inferencia moderna
+
+**Prisciano, *Institutiones grammaticae* III, 20, 7–8**, conserva un testimonio directo para `alterĭus`: `semper corripit paenultimam`. La regla enuncia una cantidad breve según Prisciano; no demuestra que toda tradición poética desde época arcaica realizase siempre esa cantidad. [Transcripción de St Gall Priscian Glosses](https://www.stgallpriscian.ie/index.php?kP=20&kV=3). **Allen y Greenough §113** describen la `-īus` original y su abreviación frecuente para *alterius*; el testimonio de Prisciano y la regla escolar no son intercambiables.
+
+**Nullīus / nullĭus**: [Allen y Greenough §603](https://dcc.dickinson.edu/grammar/latin/general-rules-quantity) describe la `ī` larga del genitivo como forma ordinaria. **La breve poética dispone ahora de testimonio individual**: Lucrecio, [*De rerum natura* I 224](https://scaife.perseus.org/reader/urn:cts:latinLit:phi0550.phi001.perseus-lat1:1.224/?right=perseus-lat1), `nullius exitium patitur natura videri`. La escansión del primer pie `nūl-lĭ-us` (— ◡ ◡) exige la `ĭ` breve. Este verso acredita la variante poética específica del lema sin validar el paradigma ni sustituir la cantidad ordinaria.
+
+**Custōs**: [Allen y Greenough §56](https://latindictionary.co/academy/grammar/56) imprime `cūstōs`, con `ū` larga; [Dickinson Latin Core](https://dcc.dickinson.edu/latin-core/cvstos) ofrece `custōs`, sin marcar la primera vocal, mientras que otras fuentes ofrecen transcripciones con `u` breve. La `u` precede al grupo consonántico `st`: **la sílaba resulta larga por posición y la métrica no resuelve la cantidad de la vocal**. [Allen y Greenough §§9–11](https://dcc.dickinson.edu/grammar/latin/quantity-syllables) advierten de esta cantidad oculta. No se localizó una inscripción con marca explícita o una regla de gramático antiguo que autorice decidir entre `cūst-` y `cŭst-`. Quedan en reserva las doce filas.
+
+**Princeps**: [Servio, *Commentarius in Artem Donati*, *De accentibus*, 426.7](https://latin.packhum.org/loc/2349/2/12) ejemplifica `princeps` entre las sílabas largas **por posición**, sin emitir una cantidad de la `i` como tal. El estudio [*Osthoff’s Law in Latin*](https://www.sciencedirect.com/org/science/article/pii/S2212588417000060) cita a Sihler para la variante breve y la comparación con formas romances, frente a la cantidad larga transmitida tradicionalmente. Es un argumento histórico de interés, pero no certifica por sí solo 28 flexiones como nuevas lecturas verificadas.
+
+### Dictamen editorial y alcance
+
+El resultado no cambia respecto a la segunda revisión del índice: **42 filas conservadas, 0 cantidades alteradas, 0 promociones a fuente 5**. Hay evidencia antigua positiva de la abreviación de *alterius* y **Lucrecio I 224 acredita directamente la breve de *nullius***; en *princeps* la declaración antigua disponible es sobre la sílaba; para la cantidad de la *u* en *custos* no se ha documentado aún una fuente primaria decisiva. Es preferible preservar la trazabilidad antes que aplicar automáticamente cantidades por analogía, etimología hipotética o escansión que solo prueba duración silábica.
+
+El expediente `latin-legacy-double-quantity-collation-20261122.json` clasifica el nivel probatorio **por lema**, asociado a las 42 filas identificadas, pero sin fingir que una sola cita acredita todos sus análisis de caso, número y género. La regresión ahora también impide perder esa documentación o promover las lecturas sin validación.
+
+## Sexta fase: atestación métrica directa para `nullĭus`
+
+La localización de [Lucrecio, *De rerum natura* I 224](https://beta.perseus.tufts.edu/urn:cts:latinLit:phi0550.phi001.perseus-lat1/) permite refinar la clasificación: `nullius exitium patitur natura videri` se divide en hexámetro `nūl-lĭ-us | ex-ĭ-tĭ | um-pă-tĭ | tur-nā | tū-ră-vĭ | dē-rī`. El primer pie es inequívocamente dactílico (`— ◡ ◡`) y contiene `ĭ` breve. El verso acredita la lectura `nūllĭus` en ese contexto concreto, aunque la representación escolar habitual puede mantener `nūllīus` y el extracto histórico `nūllī̆us` conserva su doble indicación original. No se amplía esta atestación a *alter*, *custos*, *princeps* ni se altera la fuente 0.
