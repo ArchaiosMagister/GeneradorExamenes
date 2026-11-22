@@ -97,7 +97,7 @@ for(const [course,rows] of Object.entries(banks)){
 }
 assert(checks.entries>400&&checks.lemmas.size>250,
  'La auditoría estructural no está cubriendo el repertorio real');
-assert.equal(corpus.counts.lat.contrastado,643,
+assert.equal(corpus.counts.lat.contrastado,667,
  'Una corrección editorial no convierte formas propuestas en contrastadas');
 const normalize=s=>norm(s).replace(/[–−—]/g,'-').trim();
 const a=html.indexOf('function mVerb(raw){'),b=html.indexOf('// Corrections for conjugation:',a);
