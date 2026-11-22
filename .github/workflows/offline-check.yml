@@ -251,6 +251,8 @@ jobs:
         run: node scripts/test-filologia-latin4-quantity-clusters-20261121.cjs
       - name: Revisar siete cantidades contradictorias de nominativos latinos en -ō
         run: node scripts/test-filologia-latin4-final-o-20261122.cjs --offline
+      - name: Cotejar 42 cantidades heredadas y proteger 12 correcciones de custos
+        run: node scripts/test-filologia-latin-legacy-double-quantity-20261122.cjs
       - name: Evitar notaciones abreviadas del ν móvil en las formas evaluables
         run: node scripts/test-greek-movable-nu.cjs
       - name: Auditar las 100 formas más frecuentes de Griego I
