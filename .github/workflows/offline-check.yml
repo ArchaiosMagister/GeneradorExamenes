@@ -136,6 +136,8 @@ jobs:
         run: node scripts/test-criterios-foneticos.mjs && node scripts/test-fonetica.mjs && node scripts/test-lat1-fonetica.mjs
       - name: Cotejar civis, navis y urbs (36 casillas y variantes)
         run: node scripts/test-latin-mf-i-stems-20261122.cjs --source-only
+      - name: Cotejar fuente 0 de hostis e ignis antes de reconstruir
+        run: node scripts/test-latin-hostis-ignis-20261122.cjs --source-only
       - name: Regenerar archivo autónomo
         run: npm run offline:build
       - name: Exigir que el HTML autónomo regenerado coincida con el archivo del repositorio

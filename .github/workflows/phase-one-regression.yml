@@ -21,6 +21,7 @@ on:
       - 'scripts/test-latin-vir-paradigm-20261122.cjs'
       - 'scripts/test-latin-neuter-i-stems-20261122.cjs'
       - 'scripts/test-latin-mf-i-stems-20261122.cjs'
+      - 'scripts/test-latin-hostis-ignis-20261122.cjs'
       - 'scripts/test-greek-verb-syncretism.cjs'
       - 'scripts/test-greek-movable-nu.cjs'
       - 'scripts/test-greek-movable-nu-browser.cjs'
@@ -110,6 +111,8 @@ jobs:
         run: node scripts/test-latin-neuter-i-stems-20261122.cjs
       - name: Cotejar civis, navis y urbs (36 casillas y variantes)
         run: node scripts/test-latin-mf-i-stems-20261122.cjs
+      - name: Cotejar paradigmas hostis e ignis (24 casillas)
+        run: node scripts/test-latin-hostis-ignis-20261122.cjs
       - name: Phase I synchronization regressions
         run: node scripts/test-phase-one.cjs
       - name: Verificar interfaz de guardar/exportar y PDF local sin publicar
