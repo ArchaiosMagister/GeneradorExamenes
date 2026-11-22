@@ -12,6 +12,7 @@ const root=path.resolve(__dirname,'..');
 const wordIndex=JSON.parse(fs.readFileSync(path.join(root,'data/lemmas/teacher-forms.json'),'utf8'));
 assert.equal(wordIndex.vocabulary.lat.vir.lat1.entry,'vir, –i');
 assert.equal(wordIndex.vocabulary.lat.mors.lat1.entry,'mors, mortis (f.)');
+for(const c of ['lat1','lat4'])assert.equal(wordIndex.vocabulary.lat.iter[c].entry,'iter, itineris (n.)');
 assert(wordIndex.rows.lat.some(row=>row[0]==='mors'&&
  row[2]==='N;GEN;PL'&&row[3]===0&&
  row[1].normalize('NFD').replace(/\p{M}/gu,'')==='mortium'),
@@ -19,6 +20,10 @@ assert(wordIndex.rows.lat.some(row=>row[0]==='mors'&&
 const morsExpected=[
  ['mors','mors','mortem','mortis','morti','morte'],
  ['mortes','mortes','mortes','mortium','mortibus','mortibus']
+];
+const iterExpected=[
+ ['iter','iter','iter','itineris','itineri','itinere'],
+ ['itinera','itinera','itinera','itinerum','itineribus','itineribus']
 ];
 const singular=['vir','vir','virum','viri','viro','viro'];
 const plural=['viri','viri','viros','virorum','viris','viris'];
@@ -42,11 +47,17 @@ const expected=[singular,plural]; // NOM, VOC, ACC, GEN, DAT, ABL
      set('course',course);set('model','tablas');set('lang',lang);
      document.querySelectorAll('.unit-choice').forEach(x=>x.checked=true);
      const chosen=selectedUnits(),m=mNoun('vir, –i'),mors=mNoun('mors, mortis (f.)'),
+      iter=mNoun('iter, itineris (n.)'),
       serpens=mNoun('serpens, serpentis (m.)'),pater=mNoun('pater, patris (m.)');
      const bank=latinSyntagmNouns(chosen).find(x=>mNormalize(x.p.lemma).toLowerCase()==='vir');
      const table=latinCompleteDeclensionItems(chosen)
       .find(x=>mNormalize(x.p.lemma).toLowerCase()==='vir');
-     return {m,mors,serpens,pater,bank:bank?.p||null,table:table?{
+     const journey=latinCompleteDeclensionItems(chosen)
+      .find(x=>mNormalize(x.p.lemma).toLowerCase()==='iter');
+     return {m,mors,iter,journey:journey?{
+      noun:journey.p,compound:journey.compound?.forms||null,
+      adjective:mNormalize(headLex(journey.compound?.adjective?.entry||'')).toLowerCase()
+     }:null,serpens,pater,bank:bank?.p||null,table:table?{
       noun:table.p,compound:table.compound?.forms||null,
       adjective:mNormalize(headLex(table.compound?.adjective?.entry||'')).toLowerCase(),
       title:table.compound?.title||''
@@ -58,6 +69,13 @@ const expected=[singular,plural]; // NOM, VOC, ACC, GEN, DAT, ABL
     const where=file+' '+course+' '+lang;
     assert(got.mors&&got.mors.kind==='3mf'&&got.mors.gender==='f',where+': mors tercera femenina');
     assert.deepEqual(got.mors.forms,morsExpected,where+': mors debe formar mortium, no *mortum');
+    assert(got.iter&&got.iter.kind==='3n'&&got.iter.gender==='n',where+': iter neutro de tercera');
+    assert.deepEqual(got.iter.forms,iterExpected,where+': paradigma irregular de iter');
+    assert(got.journey,where+': iter debe entrar en las tablas latinas');
+    assert.deepEqual(got.journey.noun.forms,iterExpected,where+': iter en el banco');
+    assert(['longus','magnus','durus'].includes(got.journey.adjective),where+': iter con adjetivo natural');
+    for(let n=0;n<2;n++)for(let k=0;k<6;k++)
+     assert(got.journey.compound[n][k].split(' ')[0]===iterExpected[n][k],where+': forma iter '+n+'/'+k);
     assert.equal(got.serpens?.forms[1][3],'serpentium',where+': serpens no pierde su genitivo mixto');
     assert.equal(got.pater?.forms[1][3],'patrum',where+': pater conserva el genitivo consonántico');
     assert(got.m&&got.bank&&got.table,where+': vir debe ser evaluable');
@@ -81,6 +99,6 @@ const expected=[singular,plural]; // NOM, VOC, ACC, GEN, DAT, ABL
    assert.deepEqual(errors,[],file+': error JavaScript en la página');
    await page.close();
   }
-  console.log('OK: vir viri y mors mortis (mortium): 24 casillas, concordancia, web/offline y ES/VA');
+  console.log('OK: 36 casillas de vir, mors e iter; concordancia, web/offline y ES/VA');
  }finally{await browser.close();}
 })().catch(e=>{console.error(e);process.exitCode=1});
