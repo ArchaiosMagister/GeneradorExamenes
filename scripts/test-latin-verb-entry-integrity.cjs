@@ -75,7 +75,7 @@ assert.equal(mVerb('occido, occidi, occisum (3ª)').supine,'occisum');
 assert.equal(mVerb('deligo, delegi, delectum (3ª)').supine,'delectum');
 assert.equal(mVerb('appropinquo, appropinquavi, appropinquatum (1ª)').supine,'appropinquatum');
 // Garantizar que no se etiqueta como contrastada una derivación regular.
-assert.equal(index.counts.lat.contrastado,619,'No promover formas derivadas a fuente contrastada');
+assert.equal(index.counts.lat.contrastado,643,'Solo 24 casillas deponentes nuevas acreditadas; no promover otras formas derivadas');
 // La forma victi pertenece al paradigma documentado de vinco, NO a una
 // pasiva personal inexistente de vivo, aunque vivo tenga el supino victum.
 const lexCtx={window:{},document:{readyState:'loading',addEventListener(){}}};
