@@ -81,3 +81,14 @@ Los inventarios de sintagmas quedan en **191 sustantivos / 546 parejas**, con su
 La versión autónoma `offline.html` fue reconstruida de nuevo desde `index.html` mediante el workflow temporal aislado, con commit [`8cbeb12`](https://github.com/ArchaiosMagister/GeneradorExamenes/commit/8cbeb12e33dadcd8e490056b6dc3cbc8aa6db3be). El flujo temporal se eliminó en el mismo commit. La batería de regresión de sintagmas detectó un contador histórico de 189/540 al incorporar `vir`, corregido a 191/546 con `iter`. No se rebaja ningún criterio morfológico: siguen vigentes los vetos a `unus` y `nullus`, los pares aprobados y la concordancia de todas las casillas. La CI debe verificarse en el SHA final de esta PR.
 
 No se propone fusionar ni publicar con controles pendientes.
+
+
+## Incidencia de integración detectada por CI: protección de monosílabos
+
+Al añadir el contraste de *mors* la prueba de Chromium señaló que `mNoun('mors, mortis (f.)')` todavía devolvía `null`. La causa era una exclusión preventiva para lemas de cuatro letras o menos terminados en `-rs/-ns/-nt`, añadida para no declinar automáticamente temas en `-i` cuyo genitivo plural no se hubiese cotejado.
+
+Se ha introducido **solo** la excepción `mors` en ese filtro: los demás lemas siguen protegidos. La casilla `mortium` es ahora alcanzable desde el generador real y queda contrastada por `scripts/test-latin-vir-paradigm-20261122.cjs` en web/PWA y ES/VA.
+
+La copia autónoma se regeneró sobre esta corrección y el workflow temporal se eliminó en el mismo commit [`7bf4cc3`](https://github.com/ArchaiosMagister/GeneradorExamenes/commit/7bf4cc3237d6b14d96b70e93bfa576463cfc60d1). Las ejecuciones de bot en GitHub Actions pueden marcarse como `action_required`; **no equivalen a `success`**, de modo que el expediente actualizado activa una nueva CI normal sobre el commit definitivo.
+
+El siguiente lote, `mare`/`animal`, está en la **PR #212 dependiente**, no se integra ni despliega mientras #211 no haya superado sus controles.
