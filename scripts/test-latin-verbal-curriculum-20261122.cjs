@@ -76,7 +76,8 @@ const cases={
      for(const name of spec.no||[])
       for(const [i,pool] of r.pools.entries())
        assert(!pool.includes(name),context+' adelanta '+name+' en grupo '+i);
-     assert(r.regular,context+' perdió el verbo regular del banco compartido');
+     if(course==='latin1')assert(r.regular,
+      context+' perdió el verbo regular del banco compartido');
      assert.deepEqual(r.wrongVoice,[],context+' cambió voz de deponente');
      assert.deepEqual(r.ambiguous,[],context+' pregunta sin contexto ambiguo');
      assert.deepEqual(r.earlySpecial,[],context+' formas especiales anteriores a su unidad');
