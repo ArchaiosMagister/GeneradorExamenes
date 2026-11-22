@@ -2304,6 +2304,114 @@
           ]
         }
       ]
+    },
+    {
+      "lemma": "complector",
+      "forms": [
+        "complector",
+        "complecteris",
+        "complectitur",
+        "complectimur",
+        "complectimini",
+        "complectuntur"
+      ],
+      "reference": "https://latin.cactus2000.de/showverb.en.php?verb=complecti",
+      "secondaryReference": "https://www.latindictionary.io/entry/complector-complecti-complexus-sum-11768",
+      "type": "Presente indicativo deponente, tercera conjugación; complecteris coincide con el futuro",
+      "blocks": [
+        {
+          "tags": "V;IND;DEP;PRS",
+          "forms": [
+            "complector",
+            "complecteris",
+            "complectitur",
+            "complectimur",
+            "complectimini",
+            "complectuntur"
+          ]
+        }
+      ]
+    },
+    {
+      "lemma": "intueor",
+      "forms": [
+        "intueor",
+        "intueris",
+        "intuetur",
+        "intuemur",
+        "intuemini",
+        "intuentur"
+      ],
+      "reference": "https://www.latindictionary.io/entry/intueor-intueri-intuitus-sum",
+      "secondaryReference": "https://thrax.mpiwg-berlin.mpg.de/mpiwg-mpdl-cms-web/lt/GetDictionaryEntries?language=lat&outputFormat=html&outputType=dictFull&outputType=morphCompact&query=intuenti&queryDisplay=in%C2%ADtuenti",
+      "type": "Presente indicativo deponente, segunda conjugación; variante -re no promovida",
+      "blocks": [
+        {
+          "tags": "V;IND;DEP;PRS",
+          "forms": [
+            "intueor",
+            "intueris",
+            "intuetur",
+            "intuemur",
+            "intuemini",
+            "intuentur"
+          ]
+        }
+      ]
+    },
+    {
+      "lemma": "laetor",
+      "forms": [
+        "laetor",
+        "laetaris",
+        "laetatur",
+        "laetamur",
+        "laetamini",
+        "laetantur"
+      ],
+      "reference": "https://latinando.it/coniugazione/laetor",
+      "secondaryReference": "https://www.latindictionary.io/entry/laetor-laetari-laetatus-sum",
+      "type": "Presente indicativo deponente, primera conjugación",
+      "blocks": [
+        {
+          "tags": "V;IND;DEP;PRS",
+          "forms": [
+            "laetor",
+            "laetaris",
+            "laetatur",
+            "laetamur",
+            "laetamini",
+            "laetantur"
+          ]
+        }
+      ]
+    },
+    {
+      "lemma": "vereor",
+      "forms": [
+        "vereor",
+        "vereris",
+        "veretur",
+        "veremur",
+        "veremini",
+        "verentur"
+      ],
+      "reference": "https://latin.cactus2000.de/showverb.en.php?verb=vereri",
+      "secondaryReference": "https://www.latindictionary.io/entry/vereor-vereri-veritus-sum",
+      "type": "Presente indicativo deponente, segunda conjugación; variante -re no promovida",
+      "blocks": [
+        {
+          "tags": "V;IND;DEP;PRS",
+          "forms": [
+            "vereor",
+            "vereris",
+            "veretur",
+            "veremur",
+            "veremini",
+            "verentur"
+          ]
+        }
+      ]
     }
   ],
   "sourceCode": 5,
