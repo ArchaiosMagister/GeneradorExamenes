@@ -34,11 +34,75 @@ async function configure(page,course,model,text){
   await page.goto(pathToFileURL(path.resolve(__dirname,'../offline.html')).href);
   await page.waitForFunction(()=>!!document.getElementById('examPreviewActions')&&!!window.ExaminaOfflineLemmatizer.currentData());
   const initialNetwork=seen.length;
-  if(!live)await page.evaluate(()=>{
-   window.queryExamReader=async reader=>reader==='Collatinus'?
-    [{lemme:'lupus',school:{entry:'lupus, –i',category:'noun',complete:true},trad:'lobo',lang:'es'}]:
-    [{lemme:'κροκόδειλος, -ου (ὁ)',trad:'cocodrilo',lang:'es'}];
-  });
+
+  if(live){
+   const results=await page.evaluate(async()=>{
+    const phrases=[['Puella','laeta','est'],['Panem','est'],['Est']];
+    const answers=await queryExamReader('Collatinus',phrases.map(words=>({
+     words,index:words.length-1,plainClause:true
+    })));
+    const greek=await queryExamReader('Eulexis',[{words:['τίς'],index:0}]);
+    return {latin:answers.map(answer=>answer.readings.find(row=>row.lid===answer.preferred)?.lemme||null),
+     greek:greek[0].readings.some(row=>row.exact&&row.lemme.startsWith('τίς'))};
+   });
+   assert.deepEqual(results.latin.map(word=>word?.normalize('NFD').replace(/\p{M}/gu,'').split(',')[0]||null),
+    ['sum','edo',null]);
+   assert(results.greek,'Eulexis debe devolver la lectura literal del interrogativo');
+  }else{
+   await configure(page,'latin1','mixto','Puella laeta est.\nPanem est.\nEst.');
+   await page.evaluate(()=>{
+    window.contextQueries=0;
+    window.queryExamReader=async (reader,jobs)=>{
+     window.contextQueries++;
+     return jobs.map(({words})=>({preferred:words.includes('laeta')?1:words.includes('Panem')?2:null,
+      readings:[{lid:1,lemme:'sum'},{lid:2,lemme:'edō'}]}));
+    };
+   });
+   const glossary=page.locator('#examSentenceGlossary');
+   const trigger=glossary.getByRole('button',{name:'Proponer lecturas con Collatinus'});
+   const dialog=page.locator('#examContextGlossDialog');
+   await trigger.click();
+   await dialog.getByRole('status').filter({hasText:'2 propuestas'}).waitFor();
+   assert.equal(await glossary.locator('.exam-gloss-selected').count(),0);
+   for(const [context,prefix] of [['Puella laeta est','sum'],['Panem est','edō']]){
+    const selected=dialog.locator('label').filter({hasText:context}).locator(':checked');
+    assert.match(await selected.textContent(),new RegExp('^'+prefix,'iu'));
+   }
+   await dialog.getByRole('button',{name:'Cerrar'}).click();
+   await trigger.click();
+   await dialog.getByRole('status').filter({hasText:'2 propuestas'}).waitFor();
+   assert.equal(await page.evaluate(()=>window.contextQueries),1,'Reabrir debe reutilizar el análisis');
+   await dialog.getByRole('button',{name:'Aplicar lecturas seleccionadas'}).click();
+   assert.equal(await glossary.locator('.exam-gloss-selected .exam-review-line').count(),2);
+   assert.equal(await glossary.locator('.exam-gloss-lemma').count(),1,'Est sin contexto debe quedar pendiente');
+   await page.evaluate(()=>{
+    const candidate={entry:'τίς, τί',lemma:'τίς'};
+    const row={candidates:[candidate,{entry:'τις, τι',lemma:'τις'}]};
+    const proposal=preferredExamReading(row,{readings:[{lemme:'τίς',exact:true},{lemme:'τις',exact:false}]},true);
+    if(proposal!==candidate)throw Error('La consulta griega perdió los diacríticos');
+    if(preferredExamReading(row,{readings:[{lemme:'τίς',exact:true},{lemme:'τις',exact:true}]},true))
+     throw Error('Se ha ocultado una ambigüedad griega');
+   });
+  }
+  if(!live){
+   await configure(page,'greek1','complete','δια.');
+   await page.evaluate(()=>{
+    window.ExaminaEulexisLocal.load=async()=>({rows:[
+     {form:'δια',lemma:'διά'},{form:'δια',lemma:'Ζεύς'}
+    ]});
+    window.queryExamReader=async()=>{throw Error('La copia instalada debe evitar la red')};
+   });
+   await page.getByRole('button',{name:'Proponer lecturas con Eulexis'}).click();
+   const dialog=page.locator('#examContextGlossDialog');
+   await dialog.getByRole('status').filter({hasText:'0 propuestas'}).waitFor();
+   assert(await dialog.getByRole('button',{name:'Aplicar lecturas seleccionadas'}).isDisabled());
+   await dialog.getByRole('button',{name:'Cerrar'}).click();
+   await page.evaluate(()=>{
+    window.queryExamReader=async reader=>reader==='Collatinus'?
+     [{lemme:'lupus',school:{entry:'lupus, –i',category:'noun',complete:true},trad:'lobo',lang:'es'}]:
+     [{lemme:'κροκόδειλος, -ου (ὁ)',trad:'cocodrilo',lang:'es'}];
+   });
+  }
 
   for(const [course,model,text,word,reader,choice,translation] of [
    ['latin1','mixto','Puella lupum videt.','lupum','Collatinus',/l[uŭū]pus/i,'lobo'],
@@ -50,7 +114,7 @@ async function configure(page,course,model,text){
    assert.equal(await glossary.getByRole('button',{name:/Consultar Puella/}).count(),0);
    const before=await glossary.locator('.gloss-item').filter({hasText:translation}).count();
    assert.equal(before,0);
-   if(course==='latin1')assert.equal(seen.length,initialNetwork,'El arranque y el análisis local no consultan en línea');
+   if(course==='latin1'&&!live)assert.equal(seen.length,initialNetwork,'El arranque y el análisis local no consultan en línea');
    assert.equal(await lookup.count(),1,`${reader}: falta consulta para ${word} ·
     ${await glossary.count()?await glossary.textContent():'No se generó glosario'}`);
    await lookup.click();
@@ -126,11 +190,12 @@ async function configure(page,course,model,text){
     bonus:'bonus, bona, bonum',ille:'ille, illa, illud (pron.)',
     felix:'felix, felix, felix',fortis:'fortis, fortis, forte'
    }))assert(sample[word].includes(citation),word+': '+sample[word].join(' | '));
-   const downloads=seen.slice(initialNetwork).map(value=>new URL(value));
+   const downloads=seen.slice(initialNetwork).map(value=>new URL(value))
+    .filter(url=>url.origin!==new URL(page.url()).origin);
    assert(downloads.some(url=>url.pathname.endsWith('/latin.js')));
    assert(downloads.some(url=>url.pathname.endsWith('/greek.js')));
    assert(downloads.every(url=>url.hostname==='raw.githubusercontent.com'&&!url.search&&
-    /\/(?:latin\.js|greek\.js|modeles\.txt|lexique\.txt|extra\.json|regimen\.txt|morph\.json|[fl]\/\d+\.txt)$/.test(url.pathname)));
+    /\/(?:latin\.js|greek\.js|modeles\.txt|lexique\.txt|extra\.json|regimen\.txt|tags\.txt|morph\.json|[fl]\/\d+\.txt)$/.test(url.pathname)));
   }else assert.equal(seen.length,initialNetwork);
   console.log('Consultas externas: propuesta explícita, borradores y exportación sin perder separación.');
  }finally{await browser.close()}

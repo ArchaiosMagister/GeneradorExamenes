@@ -1460,7 +1460,7 @@ function collatinusSchoolCitation(core,lemma){
 function createExamReaderFrame(name,source){
  function start(name,{base,file,integrity},schoolCitation){
   async function read(path,integrity){
-   const response=await fetch(base+path,{credentials:'omit',integrity});
+   const response=await fetch(base+path,{credentials:'omit',integrity,cache:'force-cache'});
    if(!response.ok)throw Error();
    return response.text();
   }
@@ -1476,14 +1476,59 @@ function createExamReaderFrame(name,source){
    core.load(models,lexicon,JSON.parse(extra),regimen);
    return core;
   }
-  let engine;
+  let engine,tags;
+  function contextualLatin(core,words,index,results,plainClause){
+   const plain=word=>word.normalize('NFD').replace(/\p{M}/gu,'').toLowerCase();
+   const est=plain(words[index])==='est';
+   // El etiquetador puede dar la misma etiqueta a sum y edo. Para est
+   // solo se preseleccionan construcciones escolares con indicios de caso.
+   if(est&&results.length>1){
+    if(!plainClause||index!==words.length-1||words.length<2||words.length>3)return null;
+    const nominal=(word,pos,positive,allowed)=> {
+     const analyses=[...(core.lemmatiseTout(word)||[])];
+     return analyses.length>0&&analyses.every(([lemma,forms])=>lemma.pos===pos&&
+      forms.some(form=>positive.test(core.morphosEn[form.morpho-1]||''))&&
+      forms.every(form=>allowed.test(core.morphosEn[form.morpho-1]||'')));
+    };
+    const subject=word=>nominal(word,'n',/nominative singular/i,/(?:nominative|vocative|ablative) singular/i);
+    const previous=words[index-1];
+    const head=index===2&&subject(words[0])&&
+     [...(core.lemmatiseTout(previous)||[])].some(([lemma,forms])=>lemma.pos.includes('a')&&
+      forms.some(form=>/nominative singular/i.test(core.morphosEn[form.morpho-1]||'')))?'sum':
+     (index===1||subject(words[0]))&&nominal(previous,'n',/accusative singular/i,/accusative singular/i)?'edo':'';
+    return results.find(item=>head&&plain(item.lemme.split(',')[0].trim())===head)?.lid??null;
+   }
+   const reading=core.contexte(words,index);
+   if(!reading?.lid)return null;
+   const compatible=results.filter(item=>item.formes.some(form=>form.t?.split(',').includes(reading.tag)));
+   return compatible.length===1&&compatible[0].lid===reading.lid?reading.lid:null;
+  }
+  const allowed=name==='Eulexis'?/^[\p{Script=Greek}\p{M}’']{1,64}$/u:/^[\p{Script=Latin}\p{M}]{1,64}$/u;
   addEventListener('message',async event=>{
    if(event.source!==parent||event.data?.type!=='examina-reader-query')return;
-   const {id,word}=event.data;
-   const allowed=name==='Eulexis'?/^[\p{Script=Greek}\p{M}’']{1,64}$/u:/^[\p{Script=Latin}\p{M}]{1,64}$/u;
-   if(typeof word!=='string'||!allowed.test(word))return;
+   const {id,word,jobs}=event.data;
+   const batch=Array.isArray(jobs);
+   const validWord=value=>typeof value==='string'&&allowed.test(value);
+   if(batch?jobs.length>80||jobs.some(job=>!Array.isArray(job.words)||job.words.length>60||
+    !Number.isInteger(job.index)||!validWord(job.words[job.index])||!job.words.every(validWord)):
+    !validWord(word))return;
    try{
     const core=await (engine??=load());
+    if(batch){
+     if(name==='Collatinus')await (tags??=read('data/tags.txt').then(value=>core.loadTags(value)));
+     const analyses=new Map(),answers=[];
+     for(const {words,index,plainClause} of jobs){
+      const token=words[index];
+      if(!analyses.has(token))analyses.set(token,await core.analyse(token));
+      const readings=analyses.get(token);
+      const preferred=name==='Collatinus'?contextualLatin(core,words,index,readings,plainClause):null;
+      answers.push({preferred,readings:readings.map(result=>({
+       lid:result.lid,lemme:result.lemme,exact:result.exact
+      }))});
+     }
+     parent.postMessage({type:'examina-reader-result',id,results:answers},'*');
+     return;
+    }
     const latinLemmas=name==='Collatinus'?new Map([...core.lemmatiseTout(word).keys()].map(lemma=>[lemma.uid,lemma])):null;
     const results=(await core.analyse(word)).map(result=>({
      lemme:name==='Eulexis'?result.lemme+result.indMorph:result.lemme,
@@ -1508,7 +1553,7 @@ function createExamReaderFrame(name,source){
 }
 const examReaderFrames=new Map();
 let examReaderRequest=0;
-function queryExamReader(name,word){
+function queryExamReader(name,request){
  if(!examReaderFrames.has(name)){
   const frame=createExamReaderFrame(name,examReaderSources[name]);
   const ready=new Promise(resolve=>frame.addEventListener('load',resolve,{once:true}));
@@ -1532,7 +1577,7 @@ function queryExamReader(name,word){
   const timeout=setTimeout(()=>finish(),25000);
   window.addEventListener('message',receive);
   ready.then(()=>{
-   if(frame.isConnected)frame.contentWindow.postMessage({type:'examina-reader-query',id,word},'*');
+   if(frame.isConnected)frame.contentWindow.postMessage({type:'examina-reader-query',id,...(typeof request==='string'?{word:request}:{jobs:request})},'*');
   });
  });
 }
@@ -1679,6 +1724,123 @@ async function openExternalGlossLookup(identity){
    'No s’ha pogut carregar '+reader+'. Comprova la connexió i torna-ho a provar.');
  }
 }
+// Las propuestas se conservan durante la sesión, indexadas por contexto y posición.
+const examContextReadings=new Map();
+function examReaderJob(row,greek){
+ const matches=[...String(row.context||'').matchAll(greek?
+  /[\p{Script=Greek}\p{M}]+[’']?/gu:/[\p{Script=Latin}\p{M}]+/gu)];
+ const index=matches.findIndex(match=>match.index===row.offset&&match[0]===row.form);
+ if(index<0||matches.length>60||matches.some(match=>match[0].length>64))return null;
+ return {words:matches.map(match=>match[0]),index,
+  plainClause:!greek&&/^[\p{Script=Latin}\p{M}\s]+$/u.test(row.context)};
+}
+function preferredExamReading(row,result,greek){
+ if(!result?.readings?.length||row.warning)return null;
+ const key=entry=>greek?headLex(entry).replace(/\s+\+\s+(?:genitivo|acusativo|dativo).*$/u,'')
+  .toLowerCase().normalize('NFC'):
+  examKey(entry).replace(/v/g,'u');
+ const eligible=result.readings.filter(reading=>!greek||reading.exact);
+ const best=result.preferred==null?eligible:eligible.filter(reading=>reading.lid===result.preferred);
+ const heads=new Set(best.map(reading=>key(reading.lemme)));
+ if(heads.size!==1)return null;
+ const matches=row.candidates.filter(candidate=>heads.has(key(candidate.entry)));
+ return matches.length===1?matches[0]:null;
+}
+async function openContextGlossLookup(){
+ if($('examContextGlossDialog'))return;
+ const course=currentCourse(),greek=course==='greek1',reader=examReader(course);
+ const lang=$('lang').value,t=(es,va)=>lang==='va'?va:es;
+ const pending=[...$('paper').querySelectorAll('.exam-gloss-lemma')].flatMap(select=>{
+  const identity=select.dataset.identity,row=examGlossCandidates.get(identity);
+  if(!row)return [];
+  return [{identity,row,job:examReaderJob(row,greek)}];
+ });
+ if(!pending.length)return;
+ const dialog=document.createElement('dialog');
+ dialog.id='examContextGlossDialog';
+ dialog.className='no-print';
+ dialog.setAttribute('aria-labelledby','examContextGlossTitle');
+ dialog.innerHTML='<h2 id="examContextGlossTitle">'+reader+'</h2><p role="status"></p><form>'+
+  '<div class="exam-context-readings"></div><div class="buttons">'+
+  '<button type="submit" disabled>'+t('Aplicar lecturas seleccionadas','Aplica les lectures seleccionades')+
+  '</button><button type="button" class="secondary">'+t('Cerrar','Tanca')+'</button></div></form>';
+ const status=dialog.querySelector('[role=status]'),form=dialog.querySelector('form');
+ status.textContent=t('Consultando ','Consultant ')+reader+'…';
+ dialog.querySelector('[type=button]').onclick=()=>dialog.close();
+ dialog.addEventListener('close',()=>dialog.remove(),{once:true});
+ document.body.append(dialog);dialog.showModal();
+ const jobs=new Map();
+ for(const {job} of pending)if(job){
+  const key=reader+JSON.stringify(job);
+  if(!examContextReadings.has(key))jobs.set(key,job);
+ }
+ try{
+  const entries=[...jobs];
+  const data=window.ExaminaOfflineLemmatizer.currentData();
+  const installed=greek&&entries.length&&data?
+   await window.ExaminaEulexisLocal?.load(data).catch(()=>null):null;
+  if(installed){
+   const exact=v=>v.toLowerCase().normalize('NFC');
+   const forms=new Map(entries.map(([,job])=>[exact(job.words[job.index]),[]]));
+   for(const row of installed.rows){
+    forms.get(exact(row.form))?.push({lemme:row.lemma,exact:true});
+   }
+   for(const [key,job] of entries)examContextReadings.set(key,{
+    readings:forms.get(exact(job.words[job.index]))
+   });
+  }
+  for(let start=0;!installed&&start<entries.length&&dialog.open;start+=80){
+   const batch=entries.slice(start,start+80);
+   const results=await queryExamReader(reader,batch.map(([,job])=>job));
+   if(results.length!==batch.length)throw Error('Respuesta incompleta');
+   batch.forEach(([key],i)=>examContextReadings.set(key,results[i]));
+  }
+  if(!dialog.open)return;
+  const fields=dialog.querySelector('.exam-context-readings');
+  let proposed=0;
+  const selections=pending.map(({identity,row,job})=>{
+   const result=job&&examContextReadings.get(reader+JSON.stringify(job));
+   const candidate=preferredExamReading(row,result,greek);
+   const label=document.createElement('label'),select=document.createElement('select');
+   label.textContent=row.form+' · '+row.context;
+   select.append(new Option(t('Dejar pendiente','Deixa pendent'),''));
+   row.candidates.forEach((choice,i)=>{
+    const preferred=choice===candidate;
+    const gloss=localizedGloss(choice).value;
+    select.append(new Option(choice.entry+(gloss?' — '+gloss:'')+
+     (preferred?' · '+reader:''),i,false,preferred));
+   });
+   if(candidate)proposed++;
+   label.append(select);fields.append(label);
+   return {identity,row,select};
+  });
+  while(examContextReadings.size>400)examContextReadings.delete(examContextReadings.keys().next().value);
+  status.textContent=proposed+' '+t('propuestas marcadas. Revisa las lecturas antes de aplicarlas.',
+   'propostes marcades. Revisa les lectures abans d’aplicar-les.');
+  const submit=form.querySelector('[type=submit]');
+  const update=()=>{submit.disabled=!selections.some(({select})=>select.value!=='')};
+  form.addEventListener('change',update);update();
+  form.onsubmit=event=>{
+   event.preventDefault();
+   if(course!==currentCourse()||lang!==$('lang').value)return dialog.close();
+   refreshSentenceGlossary();
+   const current=new Set([...$('paper').querySelectorAll('.exam-gloss-lemma')].map(node=>node.dataset.identity));
+   for(const {identity,row,select} of selections){
+    if(!current.has(identity)||select.value==='')continue;
+    const candidate=row.candidates[Number(select.value)];
+    const latest=examGlossCandidates.get(identity)?.candidates.find(c=>
+     c.lemma===candidate.lemma&&c.entry===candidate.entry&&
+     c.meaning===candidate.meaning&&c.meaning_va===candidate.meaning_va);
+    if(latest)examGlossDecisions[identity]={lemma:latest.lemma,entry:latest.entry,
+     meaning:latest.meaning||'',meaning_va:latest.meaning_va||''};
+   }
+   saveExamGlossDecisions();dialog.close();refreshSentenceGlossary();
+  };
+ }catch{
+  if(dialog.open)status.textContent=t('No se pudo cargar '+reader+'. Puedes seguir eligiendo desde el glosario.',
+   'No s’ha pogut carregar '+reader+'. Pots continuar triant des del glossari.');
+ }
+}
 // Resolver las ambigüedades en la propia vista previa actualiza el Word,
 // pero nunca altera el banco acreditado ni regenera las preguntas.
 $('paper').addEventListener('change',event=>{
@@ -1694,6 +1856,7 @@ $('paper').addEventListener('change',event=>{
  refreshSentenceGlossary();
 });
 $('paper').addEventListener('click',event=>{
+ if(event.target.closest('.exam-reader-context')){openContextGlossLookup();return}
  const lookup=event.target.closest('.exam-reader-lookup');
  if(lookup){openExternalGlossLookup(lookup.dataset.identity);return}
  const button=event.target.closest('.exam-gloss-reset');
@@ -1995,7 +2158,9 @@ function buildFinalLexicon(chosen,sentences){
  if(pendingChoices.size){
   const va=$('lang').value==='va';
   out+='<div class="notice no-print exam-gloss-review"><strong>'+
-   (va?'Tria el lema de cada forma ambigua:':'Elige el lema de cada forma ambigua:')+'</strong>';
+   (va?'Tria el lema de cada forma ambigua:':'Elige el lema de cada forma ambigua:')+'</strong>'+
+   ' <button type="button" class="secondary exam-reader-context">'+
+   (va?'Proposa lectures amb ':'Proponer lecturas con ')+examReader(course)+'</button>';
   for(const [identity,row] of pendingChoices){
    out+='<label class="exam-gloss-review-choice exam-review-line"><span class="exam-review-form"><i>'+esc(row.form)+'</i></span>'+
     (row.context?'<span class="exam-review-context">'+esc(row.context)+'</span>':'')+
@@ -7803,12 +7968,14 @@ html[data-appearance="oled"] body.exam-redesign #exam-ui-shell :is(#exam-ui-core
 .exam-score-stepper{display:inline-flex;align-items:center;gap:4px}
 #examLayout .exam-score-stepper input{width:3.6rem;text-align:right}
 #examLayout .exam-score-stepper button{margin:0;padding:0;min-width:44px;min-height:44px}
-#examExternalGlossDialog{width:min(32rem,calc(100% - 24px));max-height:90vh;border:1px solid var(--line);
+:is(#examExternalGlossDialog,#examContextGlossDialog){width:min(32rem,calc(100% - 24px));max-height:90vh;border:1px solid var(--line);
  border-radius:12px;background:var(--surface);color:var(--ink);padding:20px}
-#examExternalGlossDialog::backdrop{background:#0008}
-#examExternalGlossDialog h2{margin-top:0}
+:is(#examExternalGlossDialog,#examContextGlossDialog)::backdrop{background:#0008}
+:is(#examExternalGlossDialog,#examContextGlossDialog) h2{margin-top:0}
+.exam-context-readings label{display:grid;gap:4px;margin-block:10px;overflow-wrap:anywhere}
+.exam-context-readings select{width:100%}
 #examExternalGlossDialog label:not(:first-child){margin-top:10px}
-@media print{#examExternalGlossDialog{display:none!important}}
+@media print{:is(#examExternalGlossDialog,#examContextGlossDialog){display:none!important}}
 </style>
 <script id="examina-exam-redesign-js">
 (function(){

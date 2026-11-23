@@ -45,6 +45,10 @@ El **nombre del modelo** (completo, morfología o traducción) no sustituye el t
 
 **Vocabulario de las oraciones:** el glosario se actualiza al escribir una oración en la vista previa o en el campo del apartado Oraciones. Por defecto incluye los enunciados de los lemas identificados, excepto las preposiciones, con traducción únicamente para el vocabulario ajeno a la lista exigible acumulada. El profesor puede revisar los términos no identificados, importar su vocabulario y modificar el glosario. No se asignan lemas o traducciones ficticios.
 
+En **Revisión del vocabulario**, pulsa **Proponer lecturas con Collatinus** en latín o **Proponer lecturas con Eulexis** en griego. Collatinus usa su etiquetador contextual y la forma de cada aparición. Eulexis contrasta forma y diacríticos. Ambos proponen fichas del glosario para confirmar individualmente o en lote. Seleccionar **Dejar pendiente** conserva la duda. Tras confirmar se aplican las glosas docentes y las reglas de vocabulario exigible que correspondan.
+
+La consulta reutiliza los análisis durante la sesión. Los lectores se ejecutan en el navegador. Collatinus descarga el léxico y sus tablas de etiquetas al solicitarlos por primera vez. En griego se usa el índice personal de Eulexis si está instalado. En su ausencia, se cargan los fragmentos léxicos pertinentes del lector. El texto completo de las oraciones permanece en el navegador.
+
 **Bancos pendientes:** no existe todavía un corpus cerrado de preguntas de cultura de Latín 4.º ESO. En su lugar se presenta una advertencia, sin inventar preguntas. El apartado de oraciones empieza con huecos numerados. Escribe una oración por línea en el campo de texto o edita su hueco en la vista previa. Los pronombres de Latín I usan una selección de formas explícitas, limitada al temario de cada unidad. Los bancos Morpheus y AGLDT todavía no están integrados.
 
 ## Lematización offline latina y griega
