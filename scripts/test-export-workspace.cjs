@@ -78,6 +78,27 @@ async function main(){
    });
    assert(compact.every(row=>Math.max(...row)-Math.min(...row)<2),filename+': configuración con filas desaprovechadas');
    await page.locator('#examPreviewTab').click();
+   // Zoom de pantalla aislado de la edición, del PDF y de la impresión.
+   const originalContent=await page.locator('#paper').innerHTML();
+   assert.equal(await page.locator('#examZoomValue').innerText(),'100%',filename+': zoom inicial');
+   await page.locator('#examZoomIn').click();
+   assert.equal(await page.locator('#examZoomValue').innerText(),'110%',filename+': aumento de zoom');
+   assert(Math.abs(Number(await page.locator('#paper .exam-sheet').first().evaluate(node=>getComputedStyle(node).zoom))-1.1)<0.001,
+    filename+': no aumentó la escala visual');
+   assert.equal(await page.locator('#paper').innerHTML(),originalContent,filename+': el zoom modificó el contenido');
+   const exportIsolation=await page.evaluate(()=>{
+    const clone=window.ExaminaPdfExport.prepareDocument();
+    return {buttons:!!clone.querySelector('#examPreviewZoom'),style:!!clone.querySelector('.exam-sheet')?.style.zoom,id:clone.id};
+   });
+   assert.equal(exportIsolation.buttons,false,filename+': controles de zoom presentes en PDF');
+   assert.equal(exportIsolation.style,false,filename+': zoom aplicado al PDF');
+   assert.notEqual(exportIsolation.id,'paper',filename+': el PDF conserva selector visual');
+   await page.emulateMedia({media:'print'});
+   assert(Math.abs(Number(await page.locator('#paper .exam-sheet').first().evaluate(node=>getComputedStyle(node).zoom))-1)<0.001,
+    filename+': zoom aplicado al documento impreso');
+   await page.emulateMedia({media:'screen'});
+   await page.locator('#examZoomOut').click();
+   assert.equal(await page.locator('#examZoomValue').innerText(),'100%',filename+': reducción de zoom');
    assert.equal(await page.locator('#exportShortcut,#exportWorkspace,#exam-ui-actions,#exam-ui-advanced,#courseStatus').count(),0);
    const proof=await page.evaluate(()=>{
     const form=document.getElementById('paper');

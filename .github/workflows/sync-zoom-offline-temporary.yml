@@ -1,0 +1,50 @@
+name: Temporal - regenerar offline y etiquetar 1.0.0
+on:
+  push:
+    branches: [feat/preview-zoom-controls]
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  finalize:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Regenerar el archivo autónomo a partir del código
+        run: |
+          set -euo pipefail
+          node scripts/build-offline.mjs
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add offline.html
+          if ! git diff --cached --quiet; then
+            git commit -m "build: sincronizar offline.html con zoom de vista previa"
+            git push origin "HEAD:${GITHUB_REF_NAME}"
+          fi
+      - name: Etiquetar el commit estable y publicado
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EXPECTED_SHA: c109b65c5de821a5d71420e4792265cf8138ed16
+        run: |
+          set -euo pipefail
+          actual_sha="$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/main" --jq .object.sha)"
+          test "$actual_sha" = "$EXPECTED_SHA"
+          ci="$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/45202562077")"
+          jq -e --arg sha "$EXPECTED_SHA" 'select(.head_sha == $sha and .conclusion == "success" and .status == "completed" and .head_branch == "main")' <<<"$ci" >/dev/null
+          deploy="$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/45211063221")"
+          jq -e --arg sha "$EXPECTED_SHA" 'select(.head_sha == $sha and .conclusion == "success" and .name == "Publicar artefacto validado")' <<<"$deploy" >/dev/null
+          if git ls-remote --exit-code --tags origin "refs/tags/v1.0.0" >/dev/null; then
+            git fetch origin "refs/tags/v1.0.0:refs/tags/v1.0.0"
+            test "$(git rev-list -n 1 v1.0.0)" = "$EXPECTED_SHA"
+          else
+            git tag -a v1.0.0 "$EXPECTED_SHA" -m "GeneradorExamenes 1.0.0 — CI y artefacto publicados"
+            git push origin refs/tags/v1.0.0
+          fi
