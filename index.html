@@ -1522,9 +1522,18 @@ function createExamReaderFrame(name,source){
       if(!analyses.has(token))analyses.set(token,await core.analyse(token));
       const readings=analyses.get(token);
       const preferred=name==='Collatinus'?contextualLatin(core,words,index,readings,plainClause):null;
+      const ranked=preferred??(name==='Collatinus'&&readings.length>1?
+       core.contexte(words,index)?.lid:null)??readings[0]?.lid;
+      const winner=readings.find(item=>item.lid===ranked)||readings[0];
+      let school=null;
+      if(name==='Collatinus'&&winner){
+       const lemma=[...(core.lemmatiseTout(token)?.keys()||[])].find(item=>item.uid===winner.lid);
+       if(lemma)school=schoolCitation(core,lemma);
+      }
       answers.push({preferred,readings:readings.map(result=>({
        lid:result.lid,lemme:result.lemme,exact:result.exact
-      }))});
+      })),winner:winner&&{lemme:winner.lemme,citation:school?.entry||
+       winner.lemme+(name==='Eulexis'?winner.indMorph||'':''),lang:winner.lang,trad:winner.trad}});
      }
      parent.postMessage({type:'examina-reader-result',id,results:answers},'*');
      return;
@@ -1729,7 +1738,8 @@ const examContextReadings=new Map();
 function examReaderJob(row,greek){
  const matches=[...String(row.context||'').matchAll(greek?
   /[\p{Script=Greek}\p{M}]+[’']?/gu:/[\p{Script=Latin}\p{M}]+/gu)];
- const index=matches.findIndex(match=>match.index===row.offset&&match[0]===row.form);
+ const index=matches.findIndex(match=>match.index===row.offset&&(match[0]===row.form||
+  greek&&match[0].replace(/[’']$/u,'')===row.form));
  if(index<0||matches.length>60||matches.some(match=>match[0].length>64))return null;
  return {words:matches.map(match=>match[0]),index,
   plainClause:!greek&&/^[\p{Script=Latin}\p{M}\s]+$/u.test(row.context)};
@@ -1746,12 +1756,36 @@ function preferredExamReading(row,result,greek){
  const matches=row.candidates.filter(candidate=>heads.has(key(candidate.entry)));
  return matches.length===1?matches[0]:null;
 }
-async function openContextGlossLookup(){
+function automaticExamGlossChoice(row,result,course,bank){
+ const greek=course==='greek1';
+ const local=result?.readings||[];
+ const reading=result?.winner||(new Set(local.map(item=>item.lemme)).size===1?local[0]:null);
+ if(!reading||row.warning)return null;
+ const key=entry=>greek?headLex(entry).split(/\s+\+\s+(?:genitivo|acusativo|dativo)/u)[0]
+  .toLowerCase().normalize('NFC'):examKey(entry).replace(/v/g,'u');
+ const lemma=key(reading.lemme);
+ const inRow=row.candidates.filter(candidate=>key(candidate.entry)===lemma);
+ const teacher=inRow[0]||bank.find(candidate=>key(candidate.entry)===lemma);
+ const entry=teacher?.entry||(greek?greekEulexisCitation(reading.citation):reading.citation);
+ if(!entry)return null;
+ const supplied=reading.lang==='es'?String(reading.trad||''):'';
+ const choice={source:examReader(course).toLowerCase(),automatic:true,entry,
+  meaning:teacher?teacher.meaning||'':supplied.length<=500?supplied:'',
+  meaning_va:teacher?.meaning_va||''};
+ return validExternalGloss(choice)?choice:null;
+}
+function currentExamGlossTargets(automatic){
+ return new Set([...$('paper').querySelectorAll(automatic?
+  '.exam-gloss-lemma,.exam-gloss-unknown .exam-reader-lookup':'.exam-gloss-lemma')]
+  .map(node=>node.dataset.identity));
+}
+async function openContextGlossLookup(automatic=false){
  if($('examContextGlossDialog'))return;
+ if(automatic)refreshSentenceGlossary();
  const course=currentCourse(),greek=course==='greek1',reader=examReader(course);
  const lang=$('lang').value,t=(es,va)=>lang==='va'?va:es;
- const pending=[...$('paper').querySelectorAll('.exam-gloss-lemma')].flatMap(select=>{
-  const identity=select.dataset.identity,row=examGlossCandidates.get(identity);
+ const pending=[...currentExamGlossTargets(automatic)].flatMap(identity=>{
+  const row=examGlossCandidates.get(identity);
   if(!row)return [];
   return [{identity,row,job:examReaderJob(row,greek)}];
  });
@@ -1769,10 +1803,12 @@ async function openContextGlossLookup(){
  dialog.querySelector('[type=button]').onclick=()=>dialog.close();
  dialog.addEventListener('close',()=>dialog.remove(),{once:true});
  document.body.append(dialog);dialog.showModal();
+ if(automatic)form.querySelector('[type=submit]').hidden=true;
+ const hasRanking=result=>!!result?.winner||new Set(result?.readings?.map(item=>item.lemme)).size===1;
  const jobs=new Map();
  for(const {job} of pending)if(job){
   const key=reader+JSON.stringify(job);
-  if(!examContextReadings.has(key))jobs.set(key,job);
+  if(!examContextReadings.has(key)||(automatic&&!hasRanking(examContextReadings.get(key))))jobs.set(key,job);
  }
  try{
   const entries=[...jobs];
@@ -1789,13 +1825,39 @@ async function openContextGlossLookup(){
     readings:forms.get(exact(job.words[job.index]))
    });
   }
-  for(let start=0;!installed&&start<entries.length&&dialog.open;start+=80){
-   const batch=entries.slice(start,start+80);
-   const results=await queryExamReader(reader,batch.map(([,job])=>job));
-   if(results.length!==batch.length)throw Error('Respuesta incompleta');
-   batch.forEach(([key],i)=>examContextReadings.set(key,results[i]));
+  let incomplete=false;
+  const remote=installed?(automatic?entries.filter(([key])=>!hasRanking(examContextReadings.get(key))):[]):entries;
+  for(let start=0;start<remote.length&&dialog.open;start+=80){
+   const batch=remote.slice(start,start+80);
+   try{
+    const results=await queryExamReader(reader,batch.map(([,job])=>job));
+    if(results.length!==batch.length)throw Error('Respuesta incompleta');
+    batch.forEach(([key],i)=>examContextReadings.set(key,results[i]));
+   }catch(error){
+    if(!automatic)throw error;
+    incomplete=true;break;
+   }
   }
   if(!dialog.open)return;
+  if(automatic){
+   if(course!==currentCourse()||lang!==$('lang').value)return dialog.close();
+   refreshSentenceGlossary();
+   const current=currentExamGlossTargets(true);
+   const bank=greek?vocab.filter(row=>courseOf(row)===course):latinSentenceGlossaryBank(course);
+   let applied=0,left=0;
+   for(const {identity,job} of pending){
+    if(!current.has(identity)||examGlossDecisions[identity])continue;
+    const result=job&&examContextReadings.get(reader+JSON.stringify(job));
+    const row=examGlossCandidates.get(identity);
+    const choice=row&&automaticExamGlossChoice(row,result,course,bank);
+    if(choice){examGlossDecisions[identity]=choice;applied++}else left++;
+   }
+   while(examContextReadings.size>400)examContextReadings.delete(examContextReadings.keys().next().value);
+   saveExamGlossDecisions();refreshSentenceGlossary();
+   status.textContent=applied+t(' lecturas aplicadas · ',' lectures aplicades · ')+
+    left+t(' pendientes.',' pendents.')+(incomplete?t(' Parte del léxico no estaba disponible.',' Una part del lèxic no estava disponible.'):'');
+   return;
+  }
   const fields=dialog.querySelector('.exam-context-readings');
   let proposed=0;
   const selections=pending.map(({identity,row,job})=>{
@@ -1856,6 +1918,7 @@ $('paper').addEventListener('change',event=>{
  refreshSentenceGlossary();
 });
 $('paper').addEventListener('click',event=>{
+ if(event.target.closest('.exam-reader-auto')){openContextGlossLookup(true);return}
  if(event.target.closest('.exam-reader-context')){openContextGlossLookup();return}
  const lookup=event.target.closest('.exam-reader-lookup');
  if(lookup){openExternalGlossLookup(lookup.dataset.identity);return}
@@ -1972,7 +2035,7 @@ function analyzeExamVocabulary(text,course,bank,phraseChoices=[]){
   const selected=examGlossDecisions[examGlossIdentity(course,row.identity||row.form)];
   if(!selected)return row;
   if(selected.source===examReader(course).toLowerCase()&&validExternalGloss(selected))return {
-   ...row,source:selected.source,entry:selected.entry,lemma:examKey(selected.entry),
+   ...row,source:selected.source,automatic:selected.automatic===true,entry:selected.entry,lemma:examKey(selected.entry),
    meaning:selected.meaning,meaning_va:selected.meaning_va,status:'manual'
   };
   const sameLemma=row.candidates?.filter(c=>c.lemma===selected.lemma)||[];
@@ -2121,6 +2184,8 @@ function buildFinalLexicon(chosen,sentences){
  if(needsReview)out+='<section class="exam-gloss-review-workspace no-print" aria-label="'+
   ($('lang').value==='va'?'Revisió del vocabulari':'Revisión del vocabulario')+'">'+
   '<h4 class="exam-review-title">'+($('lang').value==='va'?'Revisió del vocabulari':'Revisión del vocabulario')+'</h4>';
+ if(pendingChoices.size||unknownRows.length)out+='<button type="button" class="secondary exam-reader-auto">'+
+  ($('lang').value==='va'?'Completa el glossari amb ':'Completar glosario con ')+examReader(course)+'</button>';
  if(pending.length)out+='<div class="notice no-print exam-gloss-pending"><strong>'+
   ($('lang').value==='va'?'Traduccions pendents de revisar:':'Traducciones pendientes de revisar:')+'</strong>'+
   '<p class="exam-review-help">'+($('lang').value==='va'?'Es mostren els enunciats sense inventar significats.':
@@ -2178,6 +2243,7 @@ function buildFinalLexicon(chosen,sentences){
   out+='<div class="notice no-print exam-gloss-selected"><strong>'+
    ($('lang').value==='va'?'Lectures triades:':'Lecturas elegidas:')+'</strong>'+
    selectedChoices.map(row=>'<div class="exam-review-line"><span><i>'+esc(row.form)+'</i> → '+esc(row.entry)+'</span>'+
+    (row.automatic?' · '+examReader(course)+($('lang').value==='va'?' (automàtic)':' (automático)'):'')+
     ' <button type="button" class="secondary exam-gloss-reset" data-identity="'+
     esc(examGlossIdentity(course,row.identity||row.form))+'">'+($('lang').value==='va'?'Canviar':'Cambiar')+
     '</button></div>').join('')+'</div>';
@@ -4398,7 +4464,7 @@ function restoreDraft(d){
   if(d.externalGloss&&typeof d.externalGloss==='object'){
    for(const [identity,choice] of Object.entries(d.externalGloss)){
     if(identity.startsWith(d.course+'|')&&identity.length<=2200&&validExternalGloss(choice))
-     examGlossDecisions[identity]={source:choice.source,entry:choice.entry,meaning:choice.meaning,meaning_va:choice.meaning_va};
+     examGlossDecisions[identity]={source:choice.source,entry:choice.entry,meaning:choice.meaning,meaning_va:choice.meaning_va,automatic:choice.automatic===true};
    }
    saveExamGlossDecisions();
   }

@@ -4,8 +4,8 @@ const path=require('node:path');
 const {pathToFileURL}=require('node:url');
 const {chromium,webkit}=require('playwright');
 
-async function configure(page,course,model,text){
- await page.evaluate(({course,model,text})=>{
+async function configure(page,course,model,text,count){
+ await page.evaluate(({course,model,text,count})=>{
   for(const [id,value] of [['course',course],['model',model],['lang','es']]){
    const control=document.getElementById(id);
    control.value=value;control.dispatchEvent(new Event('change',{bubbles:true}));
@@ -15,11 +15,12 @@ async function configure(page,course,model,text){
   for(const checkbox of unitsControls)checkbox.checked=units[Number(checkbox.value)]===unit;
   unitsControls.find(checkbox=>checkbox.checked)?.dispatchEvent(new Event('change',{bubbles:true}));
   examQuestionChoiceState[course+'/'+model+'/sent']=true;
+  if(count)document.getElementById('count-sent').value=String(count);
   const editor=document.getElementById('newSentences');
   editor.value=text;
   editor.dispatchEvent(new Event('input',{bubbles:true}));
   generate();
- },{course,model,text});
+ },{course,model,text,count});
 }
 
 (async()=>{
@@ -190,6 +191,32 @@ async function configure(page,course,model,text){
     bonus:'bonus, bona, bonum',ille:'ille, illa, illud (pron.)',
     felix:'felix, felix, felix',fortis:'fortis, fortis, forte'
    }))assert(sample[word].includes(citation),word+': '+sample[word].join(' | '));
+   for(const [course,model,text,reader,citation] of [
+    ['latin1','mixto','Puella laeta est.\nPanem est.\nPuella lupum videt.','Collatinus',/l[uŭū]pus/i],
+    ['greek1','complete','κροκόδειλον βλέπει.','Eulexis',/κροκ[όο]δειλος/i]
+   ]){
+    await configure(page,course,model,text,text.split('\n').length);
+    const applied=await page.evaluate(()=>{examGlossDecisions={};refreshSentenceGlossary();
+     return currentExamGlossTargets(true).size});
+    assert(applied>0);
+    await page.getByRole('button',{name:'Completar glosario con '+reader}).click();
+    const dialog=page.locator('#examContextGlossDialog');
+    const status=dialog.getByRole('status').filter({hasText:/lecturas aplicadas|No se pudo cargar/});
+    await status.waitFor({timeout:35000});
+    assert.match(await status.textContent(),new RegExp('^'+applied+' lecturas aplicadas'));
+    await dialog.getByRole('button',{name:'Cerrar'}).click();
+    const glossary=page.locator('#examSentenceGlossary');
+    assert.match(await glossary.locator('.gloss-item').allTextContents().then(rows=>rows.join(' ')),citation);
+    assert(await glossary.locator('.exam-gloss-selected .exam-review-line').filter({hasText:'(automático)'}).count()>0);
+    if(course==='latin1'){
+     const readings=await page.evaluate(()=>Object.entries(examGlossDecisions)
+      .filter(([identity])=>identity.includes(',"est",'))
+      .map(([identity,choice])=>[identity,examKey(choice.entry)]));
+     assert(readings.some(([identity,lemma])=>identity.includes('Puella laeta est')&&lemma==='sum'));
+     assert(readings.some(([identity,lemma])=>identity.includes('Panem est')&&lemma==='edo'));
+    }
+    assert.equal(await page.locator('#newSentences').inputValue(),text);
+   }
    const downloads=seen.slice(initialNetwork).map(value=>new URL(value))
     .filter(url=>url.origin!==new URL(page.url()).origin);
    assert(downloads.some(url=>url.pathname.endsWith('/latin.js')));
