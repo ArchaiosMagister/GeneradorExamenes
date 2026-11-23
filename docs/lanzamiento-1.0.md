@@ -6,7 +6,7 @@ La candidatura incluye Latín de 4.º de ESO, Latín I y Griego I en castellano 
 
 - Generación de los modelos de los tres cursos con selección de unidades, edición y baremos por modelo. El banco de Cultura de Latín de 4.º incluye 73 preguntas en ocho unidades y dos idiomas.
 - Glosarios consultables con el índice del temario y con Collatinus o Eulexis a petición. Los relativos de Griego I distinguen el grave contextual de las grafías del artículo y de `εἰμί`. El completado automático conserva las decisiones manuales y deja las ambigüedades abiertas.
-- Descargas Word y PDF, solvencia de los baremos, guardado de borradores, copia unificada JSON y funcionamiento desde la PWA o desde `offline.html`.
+- Descargas Word y PDF, nombres de casos y rótulos verbales en valenciano, control de los baremos, guardado de borradores, copia unificada JSON y funcionamiento desde la PWA o desde `offline.html`.
 - Publicación manual del paquete comprobado por la CI obligatoria para el SHA autorizado.
 
 ## Comprobación reproducible

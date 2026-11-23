@@ -293,7 +293,11 @@ async function main(){
       control:!!copy.querySelector('#answerkey,.no-print,[data-exam-subscore]')};
     },{course,model,lang});
     assert(content.questions>0&&!content.control,filename+': contenido evaluable del PDF '+code);
-    if(course==='greek1')assert(content.text.includes('ὁ γέρων τὴν ἐπιστολὴν γράφει.'));
+    if(course==='greek1'){
+     assert(content.text.includes('ὁ γέρων τὴν ἐπιστολὴν γράφει.'));
+     assert(content.text.includes('Nominatiu')&&!content.text.includes('Nominativo'),
+      filename+': los casos del PDF de Griego I deben estar en valenciano');
+    }
     const pendingDownload=page.waitForEvent('download',{timeout:120000});
     await page.locator('#pdfDownload').click();
     const sample=await pendingDownload;

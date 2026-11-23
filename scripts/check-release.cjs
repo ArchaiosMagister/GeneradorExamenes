@@ -126,7 +126,12 @@ switch(suite){
 
 const directory=path.join(root,'test-artifacts','ci',shardArg?suite+'-'+shard:suite);
 fs.mkdirSync(directory,{recursive:true});
-const commit=execFileSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8'}).trim();
+// GitHub monta el checkout con el propietario del runner dentro del contenedor.
+const commit=execFileSync('git',['-c','safe.directory='+root,'rev-parse','HEAD'],{
+ cwd:root,encoding:'utf8'
+}).trim();
+if(process.env.GITHUB_SHA&&process.env.GITHUB_SHA!==commit)
+ throw Error('El checkout de CI no coincide con GITHUB_SHA');
 const results=[];
 for(const [name,...args] of checks){
  const file=fs.openSync(path.join(directory,name+'.log'),'w');
