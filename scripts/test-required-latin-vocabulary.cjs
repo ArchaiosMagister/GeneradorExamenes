@@ -52,7 +52,7 @@ assert(html.includes('latinRequiredStart'),'Falta umbral de bloque exigible');
 assert(read('sw.js').includes('required-latin-units.js'),'La PWA debe funcionar sin red');
 assert(read('scripts/build-offline.mjs').includes("const requiredLatinExternal"),
  'El HTML único debe llevar las listas docentes');
-assert(read('.github/workflows/publish-online.yml').includes('required-latin-units.js'),
+assert(read('scripts/pack-site.sh').includes('required-latin-units.js'),
  'GitHub Pages debe publicar el recurso');
 
 // Probar realmente la lematización, con enunciados originales de los bancos.

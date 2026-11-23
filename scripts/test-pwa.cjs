@@ -4,9 +4,12 @@ const assert=require('node:assert/strict');
 const fs=require('node:fs/promises');
 const path=require('node:path');
 const http=require('node:http');
+const os=require('node:os');
+const {execFileSync}=require('node:child_process');
 const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
 const ROOT=path.resolve(__dirname,'..');
 const PREFIX='/GeneradorExamenes/';
+let site,tempSite;
 let release='test-one';
 const types={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8',
  '.json':'application/json; charset=utf-8','.webmanifest':'application/manifest+json; charset=utf-8',
@@ -15,23 +18,29 @@ const server=http.createServer(async(req,res)=>{
  const url=new URL(req.url,'http://localhost');
  if(!url.pathname.startsWith(PREFIX)){res.writeHead(404).end();return}
  const partial=url.pathname.slice(PREFIX.length)||'index.html';
- const filepath=path.resolve(ROOT,partial);
- if(!filepath.startsWith(ROOT+path.sep)){res.writeHead(403).end();return}
+ const filepath=path.resolve(site,partial);
+ if(!filepath.startsWith(site+path.sep)){res.writeHead(403).end();return}
  try{
   let body=await fs.readFile(filepath);
-  if(partial==='sw.js')body=Buffer.from(body.toString().replace('__PWA_BUILD_VERSION__',release));
+  if(partial==='sw.js')body=Buffer.from(body.toString().replace(/(CACHE_NAME=CACHE_PREFIX\+')[^']+(?=')/, '$1'+release));
   res.writeHead(200,{'content-type':types[path.extname(partial)]||'application/octet-stream',
    'cache-control':'no-store'});res.end(body);
  }catch{res.writeHead(404).end()}
 });
 (async()=>{
- const pngs=await Promise.all([192,512].map(size=>fs.readFile(path.join(ROOT,'icons','icon-'+size+'.png'))));
+ if(process.env.CI_SITE_DIR)site=path.resolve(process.env.CI_SITE_DIR);
+ else{
+  tempSite=await fs.mkdtemp(path.join(os.tmpdir(),'examina-pwa-'));
+  site=path.join(tempSite,'site');
+  execFileSync('bash',[path.join(__dirname,'pack-site.sh'),site,release],{cwd:ROOT});
+ }
+ const pngs=await Promise.all([192,512].map(size=>fs.readFile(path.join(site,'icons','icon-'+size+'.png'))));
  for(let i=0;i<pngs.length;i++){
   const png=pngs[i],size=i?512:192;
   assert.equal(png.subarray(0,8).toString('hex'),'89504e470d0a1a0a','Icono PNG inválido');
   assert.equal(png.readUInt32BE(16),size,'Dimensión incorrecta en icono PWA');
  }
- const manifest=JSON.parse(await fs.readFile(path.join(ROOT,'manifest.webmanifest'),'utf8'));
+ const manifest=JSON.parse(await fs.readFile(path.join(site,'manifest.webmanifest'),'utf8'));
  assert.equal(manifest.scope,'./');assert.equal(manifest.start_url,'./');
  assert.equal(manifest.icons.length,3);
  assert(manifest.icons.some(icon=>icon.src==='./icons/icon-512.png'&&icon.purpose==='any'),
@@ -40,20 +49,19 @@ const server=http.createServer(async(req,res)=>{
    'Falta icono adaptable para Android');
  const extraIcons=[['icon-maskable-512.png',512],['apple-touch-icon-180.png',180],['favicon-48.png',48]];
  for(const [name,size] of extraIcons){
-  const png=await fs.readFile(path.join(ROOT,'icons',name));
+  const png=await fs.readFile(path.join(site,'icons',name));
   assert.equal(png.subarray(0,8).toString('hex'),'89504e470d0a1a0a','Icono adicional PNG inválido: '+name);
   assert.equal(png.readUInt32BE(16),size,'Dimensión incorrecta: '+name);
   assert.equal(png.readUInt32BE(20),size,'Dimensión incorrecta: '+name);
  }
- const html=await fs.readFile(path.join(ROOT,'index.html'),'utf8');
+ const html=await fs.readFile(path.join(site,'index.html'),'utf8');
  assert(html.includes('rel="apple-touch-icon" href="./icons/apple-touch-icon-180.png"'),
    'iPhone y iPad no tienen icono específico');
- const deployment=await fs.readFile(path.join(ROOT,'.github/workflows/publish-online.yml'),'utf8');
- assert(deployment.includes('exam-selection-summary.js'),
-  'GitHub Pages debe incluir el módulo extraído antes de publicar');
- for(const module of ['greek-choice-number.js','greek-choice-retroversion.js','greek-choice-etymology.js','greek-choice-groups.js'])
-  assert(deployment.includes(module),'Falta el motor griego en el paquete publicable: '+module);
- const sw=await fs.readFile(path.join(ROOT,'sw.js'),'utf8');
+ for(const module of ['exam-selection-summary.js','greek-choice-number.js','greek-choice-retroversion.js',
+  'greek-choice-etymology.js','greek-choice-groups.js']){
+  assert((await fs.stat(path.join(site,module))).size>0,'Falta en el paquete publicable: '+module);
+ }
+ const sw=await fs.readFile(path.join(site,'sw.js'),'utf8');
  assert(sw.includes("cache:'no-cache'")&&!sw.includes("cache:'reload'"),
   'La nueva versión debe revalidar assets, no forzar su retransmisión incondicional');
  assert(sw.includes('const batchSize=6')&&sw.includes('cache.addAll(CORE_FILES.slice('),
@@ -405,4 +413,7 @@ const server=http.createServer(async(req,res)=>{
   console.log('OK PWA: instalación, 9 recursos precargados, latín/griego sin Internet, borradores y actualización voluntaria.');
   await context.close();
  }finally{await browser.close()}
-})().finally(()=>server.close()).catch(err=>{console.error(err);process.exitCode=1});
+})().finally(async()=>{
+ server.close();
+ if(tempSite)await fs.rm(tempSite,{recursive:true,force:true});
+}).catch(err=>{console.error(err);process.exitCode=1});

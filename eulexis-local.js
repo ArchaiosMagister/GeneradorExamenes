@@ -81,7 +81,7 @@ function extractor(data,morphologies){
    if(key==='θεα'&&g.toLocaleLowerCase('el')!=='θεά')continue;
    const n=parseInt(id,36);
    if(!Number.isSafeInteger(n))continue;
-   ids.set(n,{lemma:g,key});matched++;
+   ids.set(n,g);matched++;
   }
  }
  function forms(text){
@@ -97,9 +97,9 @@ function extractor(data,morphologies){
     if(!lemma||typeof morph!=='string')continue;
     const analysis=describe(morph);
     if(!analysis)continue;
-    const sig=norm(form)+'|'+lemma.key+'|'+analysis;
+    const sig=JSON.stringify([form,lemma,analysis]);
     if(seen.has(sig))continue;
-    seen.add(sig);rows.push([form,lemma.lemma,analysis]);
+    seen.add(sig);rows.push([form,lemma,analysis]);
     if(rows.length>250000)throw Error('Índice de Eulexis inesperadamente grande');
    }
   }
@@ -183,7 +183,11 @@ async function install(data,onProgress,opts={}){
  if(installing)return installing;
  installing=(async()=>{
   const key=fingerprint(data);
-  if(!opts.force){const prior=await load(data).catch(()=>null);if(prior)return prior}
+  if(!opts.force){
+   const prior=await localGet().catch(()=>null);
+   if(prior?.schema===1&&prior.revision===REVISION&&prior.fingerprint===key&&
+      prior.preserveSpelling===true&&Array.isArray(prior.rows))return convert(prior);
+  }
   const get=opts.fetchText||requestText;
   onProgress?.('Leyendo las etiquetas morfológicas…');
   const morphologies=JSON.parse(await get('data/morph.json'));
@@ -195,7 +199,7 @@ async function install(data,onProgress,opts={}){
   const result=x.result();
   if(result.count===0||result.matched===0)throw Error('Eulexis no aportó análisis del temario');
   onProgress?.('Guardando '+result.count+' análisis en este dispositivo…');
-  await localPut({schema:1,revision:REVISION,fingerprint:key,rows:result.rows});
+  await localPut({schema:1,revision:REVISION,fingerprint:key,preserveSpelling:true,rows:result.rows});
   return convert({revision:REVISION,rows:result.rows});
  })().finally(()=>{installing=null});
  return installing;

@@ -1,33 +1,31 @@
 # Ampliación de lematización mediante Collatinus y Eulexis
 
-## Objetivo
+## Consulta integrada
 
-El generador de vocabulario mantiene como fuente **preferente** el banco docente
-(forma de cita, enunciado, traducción castellana y valenciana). Para reconocer
-flexiones que ese banco no registra, existe una **ampliación experimental**
-con sistemas utilizados en `lector-latino` y `lector-griego`.
-**La compilación y publicación estables no ejecutan esa ampliación**, a la
-espera de comprobar las condiciones de redistribución de cada fuente.
-Los motores originales **no se distribuyen con el cliente**. El análisis
-automático de las oraciones usa el índice local `data/lemmas/teacher-forms.json`.
+El generador consulta el banco docente y el índice local al editar oraciones. El
+usuario puede consultar una palabra en el lector, pedir propuestas para varias
+apariciones o completar las lecturas que el lector resuelve. El texto se procesa
+en el navegador y los recursos se descargan desde revisiones fijas de los lectores.
 
-### Procedencia reproducible
+| Idioma | Lector que se carga a petición | Revisión fijada |
+| --- | --- | --- |
+| Latín | Collatinus mediante `genuensis/lector-latino` | `6e3a05c55dfd0514d1bd507a246172f103b49e92` |
+| Griego | Eulexis mediante `genuensis/lector-griego` | `e3ca505b0e028af68a800673f5dc4565b0b05104` |
 
-| Idioma | Motor de consulta en compilación | Revisión fijada | Código de fuente |
-| --- | --- | --- | --- |
-| Latín | Collatinus 11 mediante `genuensis/lector-latino` | `6e3a05c55dfd0514d1bd507a246172f103b49e92` | 6 |
-| Griego | Eulexis (datos Diogenes/Perseus), mediante `genuensis/lector-griego` | `e3ca505b0e028af68a800673f5dc4565b0b05104` | 7 |
+La consulta de una palabra muestra las opciones del lector y permite corregir el
+enunciado y la glosa antes de guardarlos. Al completar en lote, Collatinus contrasta
+el contexto y Eulexis exige una coincidencia gráfica inequívoca. Una lectura como
+`est` aislada conserva las alternativas de `sum` y `edō`. Las decisiones previas
+se conservan y el botón **Cambiar** permite reabrir la revisión.
 
-El script de ampliación obtiene los ficheros por HTTPS mediante `git fetch`
-de la revisión indicada.
-No se utilizan APIs de lematización de terceros cuando el profesor pega un texto.
+El índice del temario está incluido en `offline.html`. Las consultas externas
+requieren acceso a sus datos. Si el docente instala su propio índice Eulexis, las
+propuestas contextuales en griego pueden consultarlo localmente. Si faltan datos, las lecturas sin resolver quedan pendientes.
 
-El índice resultante es un extracto de **formas de los lemas del temario**.
-No pretende ser un léxico exhaustivo de cualquier obra latina o griega.
-Los formatos propios de los lectores no se trasladan a la salida del usuario:
-el Word y los proyectos JSON siguen teniendo los enunciados y las glosas
-del banco docente, con ortografía filológica, cursivas, comillas e idioma
-elegido por el profesor.
+La herramienta de mantenimiento que contrasta o extrae datos externos con
+`git fetch` es independiente. La distribución estable incluye los bancos
+versionados del generador. Los lectores externos se cargan a petición y el
+extracto personal de Eulexis no se empaqueta ni se sube como artefacto.
 
 ## Verificación y ambigüedades
 
@@ -39,8 +37,7 @@ elegido por el profesor.
 
 Tener una forma de Collatinus o Eulexis indica que la fuente propone ese
 análisis; **no constituye revisión filológica del paradigma completo**.
-Las homografías entre lemas distintos no se resuelven por frecuencia, sino que
-se muestran al profesor. Las invariables como `ab` y `et` tienen un léxico
+Las homografías entre lemas distintos quedan disponibles en la revisión. El completado automático solo aplica una lectura inequívoca o respaldada por contexto. Las invariables como `ab` y `et` tienen un léxico
 nuclear explícito de gramática escolar cuando faltan en el banco docente;
 los significados no se inventan a partir de las formas flexionadas.
 

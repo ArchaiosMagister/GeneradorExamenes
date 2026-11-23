@@ -57,7 +57,7 @@ async function main(){
      const display=esMorph(raw);
      const analysis=(display.morpho||raw)+(display.dial?' · '+display.dial:'');
      if(!analysis||analysis.length>250)continue;
-     const key=[norm(form),norm(lemma),analysis].join('|');
+     const key=JSON.stringify([form.normalize('NFC'),lemma.normalize('NFC'),analysis]);
      if(seen.has(key))continue;
      seen.add(key);out.push({form,lemma,analysis});
     }

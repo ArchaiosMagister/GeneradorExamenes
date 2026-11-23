@@ -44,10 +44,13 @@ async function configure(page,course,model,text,count){
     })));
     const greek=await queryExamReader('Eulexis',[{words:['τίς'],index:0}]);
     return {latin:answers.map(answer=>answer.readings.find(row=>row.lid===answer.preferred)?.lemme||null),
+     automatic:answers.map(answer=>answer.winner?.lemme||null),
      greek:greek[0].readings.some(row=>row.exact&&row.lemme.startsWith('τίς'))};
    });
    assert.deepEqual(results.latin.map(word=>word?.normalize('NFD').replace(/\p{M}/gu,'').split(',')[0]||null),
     ['sum','edo',null]);
+   assert.deepEqual(results.automatic.map(word=>word?.normalize('NFD').replace(/\p{M}/gu,'').split(',')[0]||null),
+    ['sum','edo',null],'La frecuencia no debe decidir entre sum y edo sin contexto');
    assert(results.greek,'Eulexis debe devolver la lectura literal del interrogativo');
   }else{
    await configure(page,'latin1','mixto','Puella laeta est.\nPanem est.\nEst.');
@@ -76,13 +79,27 @@ async function configure(page,course,model,text,count){
    await dialog.getByRole('button',{name:'Aplicar lecturas seleccionadas'}).click();
    assert.equal(await glossary.locator('.exam-gloss-selected .exam-review-line').count(),2);
    assert.equal(await glossary.locator('.exam-gloss-lemma').count(),1,'Est sin contexto debe quedar pendiente');
+   const targets=await page.evaluate(()=>currentExamGlossTargets(true).size);
+   assert(targets>0,'El est ambiguo debe estar disponible para revisión');
+   await glossary.getByRole('button',{name:'Completar glosario con Collatinus'}).click();
+   await dialog.getByRole('status').filter({hasText:'0 lecturas aplicadas · '+targets+' pendientes'}).waitFor();
+   await dialog.getByRole('button',{name:'Cerrar'}).click();
+   assert.equal(await glossary.locator('.exam-gloss-selected .exam-review-line').count(),2,
+    'Completar automáticamente debe conservar ambas decisiones manuales');
+   assert.equal(await glossary.locator('.exam-gloss-lemma').count(),1,
+    'El primer candidato sin evidencia contextual debe seguir pendiente');
+
    await page.evaluate(()=>{
     const candidate={entry:'τίς, τί',lemma:'τίς'};
     const row={candidates:[candidate,{entry:'τις, τι',lemma:'τις'}]};
     const proposal=preferredExamReading(row,{readings:[{lemme:'τίς',exact:true},{lemme:'τις',exact:false}]},true);
     if(proposal!==candidate)throw Error('La consulta griega perdió los diacríticos');
-    if(preferredExamReading(row,{readings:[{lemme:'τίς',exact:true},{lemme:'τις',exact:true}]},true))
+    const disputed={readings:[{lid:1,lemme:'τίς',exact:true},{lid:2,lemme:'τίς',exact:true}]};
+    if(preferredExamReading(row,{readings:[{lemme:'τίς',exact:true},{lemme:'τις',exact:true}]},true)||
+       automaticExamGlossChoice(row,disputed,'greek1',[]))
      throw Error('Se ha ocultado una ambigüedad griega');
+    if(automaticExamGlossChoice(row,{readings:[{lemme:'τις',exact:false}]},'greek1',[]))
+     throw Error('Se ha ignorado el acento de una forma griega');
    });
   }
   if(!live){
@@ -192,7 +209,7 @@ async function configure(page,course,model,text,count){
     felix:'felix, felix, felix',fortis:'fortis, fortis, forte'
    }))assert(sample[word].includes(citation),word+': '+sample[word].join(' | '));
    for(const [course,model,text,reader,citation] of [
-    ['latin1','mixto','Puella laeta est.\nPanem est.\nPuella lupum videt.','Collatinus',/l[uŭū]pus/i],
+    ['latin1','mixto','Puella laeta est.\nPanem est.\nEst.\nPuella lupum videt.','Collatinus',/l[uŭū]pus/i],
     ['greek1','complete','κροκόδειλον βλέπει.','Eulexis',/κροκ[όο]δειλος/i]
    ]){
     await configure(page,course,model,text,text.split('\n').length);
@@ -203,7 +220,10 @@ async function configure(page,course,model,text,count){
     const dialog=page.locator('#examContextGlossDialog');
     const status=dialog.getByRole('status').filter({hasText:/lecturas aplicadas|No se pudo cargar/});
     await status.waitFor({timeout:35000});
-    assert.match(await status.textContent(),new RegExp('^'+applied+' lecturas aplicadas'));
+    const totals=/^(\d+) lecturas aplicadas · (\d+) pendientes/.exec(await status.textContent());
+    assert(totals&&Number(totals[1])>0,'La consulta real no aplicó ninguna lectura');
+    assert.equal(Number(totals[1])+Number(totals[2]),applied,
+     'El resumen debe incluir todas las apariciones pendientes iniciales');
     await dialog.getByRole('button',{name:'Cerrar'}).click();
     const glossary=page.locator('#examSentenceGlossary');
     assert.match(await glossary.locator('.gloss-item').allTextContents().then(rows=>rows.join(' ')),citation);
@@ -214,6 +234,7 @@ async function configure(page,course,model,text,count){
       .map(([identity,choice])=>[identity,examKey(choice.entry)]));
      assert(readings.some(([identity,lemma])=>identity.includes('Puella laeta est')&&lemma==='sum'));
      assert(readings.some(([identity,lemma])=>identity.includes('Panem est')&&lemma==='edo'));
+     assert.equal(readings.length,2,'Est aislado debe seguir sin elección automática');
     }
     assert.equal(await page.locator('#newSentences').inputValue(),text);
    }

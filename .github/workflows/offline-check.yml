@@ -1,355 +1,133 @@
-name: Comprobar versión autónoma
+name: CI obligatoria
 
 on:
   pull_request:
-    paths:
-      - 'greek-choice-*.js'
-      - 'index.html'
-      - 'exam-scoring.js'
-      - 'unified-backup.js'
-      - 'culture-lat4.js'
-      - 'lexicon-valenciano.js'
-      - 'required-latin-units.js'
-      - 'vocabulary-generator.js'
-      - 'vocabulary-quality.js'
-      - 'offline.html'
-      - 'offline-lemmas.js'
-      - 'verification-review.js'
-      - 'greek-review.js'
-      - 'eulexis-local.js'
-      - 'data/lemmas/**'
-      - 'data/unimorph/**'
-      - 'data/fonetica/**'
-      - 'data/fonetica/**'
-      - 'scripts/**'
-      - 'pwa.js'
-      - 'sw.js'
-      - 'manifest.webmanifest'
-      - 'icons/**'
-      - 'package.json'
-      - '.github/workflows/offline-check.yml'
   push:
     branches: [main]
-    paths:
-      - 'index.html'
-      - 'exam-scoring.js'
-      - 'unified-backup.js'
-      - 'culture-lat4.js'
-      - 'vocabulary-generator.js'
-      - 'offline.html'
-      - 'data/lemmas/**'
-      - 'data/unimorph/**'
-      - 'scripts/**'
-      - 'pwa.js'
-      - 'sw.js'
-      - 'manifest.webmanifest'
-      - 'icons/**'
-      - 'package.json'
-      - '.github/workflows/offline-check.yml'
+  workflow_dispatch:
 
 permissions:
   contents: read
 
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  offline:
+  reproducibility:
+    name: Índice y distribución reproducibles
     runs-on: ubuntu-24.04
-    timeout-minutes: 15
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Comprobar prefijos y evolución fonética por UD de Latín 4.º
-        run: node scripts/test-lat4-lexico.cjs
-      - name: Validar preguntas docentes de cultura LAT4
-        run: node scripts/test-cultura-lat4.cjs
-      - name: Probar modelos regulares sin incorporación a los exámenes
-        run: node scripts/test-regular-latin.mjs
-      - name: Verificar adaptador ScholaClassica de solo lectura y bloqueo de promociones
-        run: node scripts/test-schola-morphology-reconciliation.cjs
-      - name: Verificar evidencia persistente y conjugación mixta de Latín I
-        run: node scripts/test-latin-verb-evidence.cjs
-      - name: Impedir regresiones en los once enunciados verbales latinos y las listas exigibles
-        run: node scripts/test-latin-verb-entry-integrity.cjs
-      - name: Auditar todas las entradas verbales latinas y la coherencia entre bancos, exigible, índice y PWA
-        run: node scripts/test-latin-verb-corpus-audit.cjs
-      - name: Verificar identidad de committo, migración exigible y PWA
-        run: node scripts/test-committo-lemma-unification.cjs
-      - name: Cotejar paradigmas individuales verificados con la fuente persistente
-        run: node scripts/test-verified-verb-overrides.cjs
-      - name: Garantizar coherencia de la evidencia en web y PWA guardada
-        run: node scripts/test-phase-two-persistent-offline.cjs
-      - name: Registrar incidencias de verbos irregulares y deponentes sin certificar paradigmas
-        run: node scripts/audit-verbs-evidence.cjs
-      - name: Auditar cobertura de tiempos y voces por lema individual
-        run: node scripts/audit-verb-coverage.cjs
-      - name: Guardar lagunas filológicas por lema para decisión docente
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: fase-ii-cobertura-verbal-por-lema
-          path: test-artifacts/fase-ii-cobertura-verbal-por-lema.json
-          if-no-files-found: ignore
-      - name: Conservar cola filológica de verbos para decisiones docentes
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: fase-ii-irregulares-deponentes
-          path: test-artifacts/fase-ii-revision-irregulares-deponentes.json
-          if-no-files-found: ignore
-      - name: Probar nominales griegos con corpus sintético etiquetado
-        run: node scripts/test-greek-nominal-import.mjs
-      - name: Validar catálogo griego provisional persistente sin acceso de red
-        run: node scripts/test-greek-nominal-persistent.cjs
-      - name: Auditar exhaustivamente las candidaturas todavía pendientes sin promoverlas
-        run: node scripts/test-comprehensive-morph-audit.cjs
-      - name: Comprobar el lote anterior de cien formas ya incorporadas
-        run: node scripts/test-candidaturas-lote100.cjs
-      - name: Verificar las cien latinas y cien griegas del nuevo lote en el banco y la PWA
-        run: node scripts/test-candidaturas-lote200.cjs
-      - name: Verificar trescientos análisis griegos, politonía y formas excluidas
-        run: node scripts/test-candidaturas-lote300-griego.cjs
-      - name: Validar las 31 lecturas documentales y evitar promociones automáticas
-        run: node scripts/test-individual-evidence-ledger.cjs
-      - name: Controlar tres adjetivos, 11 exclusiones y 10 verificaciones femeninas de ἐχθρός
-        run: node scripts/test-greek-adjective-decisions.cjs
-      - name: Cotejar las diez fichas femeninas de ἐχθρός y sus sincretismos
-        run: node scripts/test-echthros-ten-collation.cjs
-      - name: Conservar las 559 fichas históricas tras catorce migraciones individuales
-        run: node scripts/test-revision-559-griego.cjs
-      - name: Comprobar los cuatro dativos de fuente 5, sus unidades, historial y PWA
-        run: node scripts/test-cuatro-dativos-fuente5.cjs
-      - name: Conservar auditoría individualizada de fichas latinas y griegas
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: revision-filologica-integral-candidatos
-          path: test-artifacts/auditoria-integral-*.json
-          if-no-files-found: ignore
-      - name: Comprobar índice bilingüe persistente sin reconstrucciones externas
-        run: node scripts/test-lemma-index.mjs
-      - name: Probar cinco decisiones docentes y variantes sin modificar las claves de examen
-        run: node scripts/test-filological-variant-decisions.cjs
-      # La ampliación externa se mantiene en la PR experimental hasta
-      # resolver la procedencia/licencias de los datos morfológicos.
-      - name: Validar banco ampliable de evolución fonética y programa de Latín I
-        run: node scripts/test-criterios-foneticos.mjs && node scripts/test-fonetica.mjs && node scripts/test-lat1-fonetica.mjs
-      - name: Cotejar civis, navis y urbs (36 casillas y variantes)
-        run: node scripts/test-latin-mf-i-stems-20261122.cjs --source-only
-      - name: Cotejar fuente 0 de hostis e ignis antes de reconstruir
-        run: node scripts/test-latin-hostis-ignis-20261122.cjs --source-only
-      - name: Regenerar archivo autónomo
-        run: npm run offline:build
-      - name: Exigir que el HTML autónomo regenerado coincida con el archivo del repositorio
-        run: git diff --exit-code -- offline.html
-      - name: Conservar dos correcciones filológicas deponentes en índices, banco y HTML autónomo
-        run: node scripts/test-latin-deponents-ud7-ud9-20261122.cjs --source-only
-      - name: Acreditar 24 presentes de UD9-10 y conservar exclusiones
-        run: node scripts/test-latin-deponents-ud9-ud10-present-20261122.cjs --source-only
-      - name: Revalidar inventario histórico UD9-10 ya integrado con las 24 acreditaciones
-        run: node scripts/test-latin-deponents-ud9-ud10-inventory-20261122.cjs
-      - name: Probar lematización latina y griega sin red
-        run: node scripts/test-lemma-index.mjs
-      - name: Verificar las 17 decisiones griegas, banco, índice y HTML autónomo
-        run: node scripts/test-greek-editorial.cjs
-      - name: Auditar incidencias morfológicas y decisiones
-        run: node scripts/test-teacher-review.mjs
-      - name: Validar evidencia y autorizaciones docentes por forma
-        run: node scripts/test-academic-evidence.cjs
-      - name: Probar la cola griega y el adaptador de importación Eulexis
-        run: node scripts/test-greek-review.mjs
-      - name: Probar conversión y extracción Eulexis sin corpus de terceros
-        run: node scripts/test-eulexis-local.cjs
-      - name: Contrastar extractor Eulexis de forma temporal (no publicar corpus)
-        if: github.event_name == 'pull_request'
+      - name: Reconstruir y comparar binariamente
         run: |
-          node scripts/export-eulexis-review.mjs
-          node scripts/audit-greek-eulexis-queue.mjs
-          node -e "const f=require('./private/eulexis-review.json'); if(f.schema!=='examina-eulexis-review/v1'||!f.rows?.length)process.exit(1); console.log('Extracto Eulexis comprobado:',f.rows.length,'análisis')"
-          rm -rf private
-      - name: Verificar HTML autónomo
-        run: npm run offline:test
-      - name: Comprobar estructura de exámenes
-        run: node scripts/test-exam-models.cjs
-      - name: Preparar Chromium para pruebas visuales
+          node scripts/build-lemma-index.mjs
+          git diff --exit-code -- data/lemmas/teacher-forms.json
+          node scripts/build-offline.mjs
+          git diff --exit-code -- offline.html
+      - name: Empaquetar una sola vez el sitio que se probará
         run: |
-          npm install --no-save --ignore-scripts playwright@1.56.1
-          # El runner de Ubuntu ya incluye las bibliotecas para Chromium.
-          npx playwright install chromium
-      - name: Comprobar interfaz de preguntas, UD, alcance del glosario y Eulexis contextual
-        run: node scripts/test-auditoria-ui.cjs
-      - name: Verificar autorizaciones académicas y bloqueo DOCX en Chromium sin conexión
-        run: node scripts/test-academic-evidence-browser.cjs
-      - name: Verificar exportación definitiva sin romper descargas de borradores
-        run: node scripts/test-final-export-preflight.cjs
-      - name: Auditar cada unidad y exportar inventario morfológico grecolatino
-        run: node scripts/test-verb-curriculum-browser.cjs
-      - name: No anticipar irregular, deponente ni semideponente en LAT1/LAT4
-        run: node scripts/test-latin-verbal-curriculum-20261122.cjs
-      - name: Auditar deponentes complector y patior en web y autónoma ES/VA
-        run: node scripts/test-latin-deponents-ud7-ud9-20261122.cjs
-      - name: Probar cuatro presentes deponentes UD9-10 en web/autónoma ES/VA
-        run: node scripts/test-latin-deponents-ud9-ud10-present-20261122.cjs
-      - name: Conservar matriz curricular para revisión filológica
+          set -euo pipefail
+          bash scripts/pack-site.sh _site "$GITHUB_SHA"
+          mkdir validated
+          tar -C _site -cf validated/site.tar .
+          printf '%s\n' "$GITHUB_SHA" > validated/commit.txt
+          (cd validated && sha256sum site.tar > SHA256SUMS)
+      - uses: actions/upload-artifact@v4
+        with:
+          name: site-ci-${{ github.sha }}
+          path: validated/
+          overwrite: true
+          if-no-files-found: error
+          retention-days: 90
+
+  sources:
+    name: Filología, bancos, persistencia y pruebas sin navegador
+    needs: reproducibility
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Clasificación curricular UniMorph
+        run: python3 -m unittest discover -s tests
+      - name: Ejecutar batería sin navegador
+        run: node scripts/check-release.cjs sources
+      - name: Guardar resultados e inventarios
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: fase-ii-inventario-morfologico
-          path: test-artifacts/fase-ii-inventario-morfologico.json
-          if-no-files-found: ignore
-      - name: Validar glosas en castellano y valenciano
-        run: node scripts/test-valenciano.cjs
-      - name: Auditar cobertura y pendientes del vocabulario por unidad
-        run: node scripts/test-vocabulary-quality.cjs
-      - name: Probar generador de vocabulario por unidades y Word
-        run: npm run vocabulary:test
-      - name: Priorizar 50 incidencias reales del lematizador
-        run: node scripts/audit-top-50-lemmas.cjs --check
-      - name: Revisar otro lote de 100 fichas reales del lematizador
-        run: node scripts/audit-next-100-lemmas.cjs --check
-      - name: Auditar lematización de oraciones y decisiones guardadas
-        run: node scripts/audit-sentence-lemmas.cjs
-      - name: Probar lemas ambiguos y formato del glosario de oraciones
-        run: node scripts/test-exam-glossary.cjs
-      - name: Probar consultas externas del glosario sin conexión
-        run: node scripts/test-exam-external-gloss.cjs
-      - name: Auditar las 612 formas pendientes aportadas para Latín I
-        run: node scripts/audit-latin1-generated.cjs --minimum=429
-      - name: Revisar individualmente las 183 pendientes de Latín I
-        run: node scripts/audit-latin1-rest-183.cjs
-      - name: Verificar contraste de botones de unidades y Limpiar todo
-        run: node scripts/test-vg-unit-controls.cjs
-      - name: Comprobar 15 correcciones de grafía en el corpus de regresión
-        run: node scripts/test-greek-audit-fixture.cjs
-      - name: Auditar sincretismos de formas verbales griegas y paridad offline
-        run: node scripts/test-greek-verb-syncretism.cjs
-      - name: Verificar ὀλίγος, πολύς y su persistencia web/PWA
-        run: node scripts/test-greek-adjective-accent-vocative.cjs
-      - name: Verificar πρᾶγμα y enunciados de tercera declinación en web/PWA
-        run: node scripts/test-greek-pragma-third-decl.cjs
-      - name: Verificar otros cinco sustantivos de tercera y sus artículos
-        run: node scripts/test-greek-third-decl-gender-five.cjs
-      - name: Verificar Ἑλλάς, πατήρ y otros enunciados UD8 en web/PWA
-        run: node scripts/test-greek-ud8-lexical-accents.cjs
-      - name: Comprobar seis grafías exigibles y διά en Griego I (web/PWA)
-        run: node scripts/test-greek-lexical-filology-20261121.cjs
-      - name: Griego I lemas generales, acentos y catálogo provisional
-        run: node scripts/test-greek-lexical-followup-20261121.cjs
-      - name: Auditar cantidades filologicas y vocabulario grecolatino
-        run: node scripts/test-filologia-latin-griego-20261121.cjs --offline
-      - name: Segunda ronda filológica de oraciones, acentos y aoristos
-        run: node scripts/test-greek-sentence-philology-20261121.cjs --offline
-      - name: Comprobar tres aoristos con evidencias y cero promociones morfológicas
-        run: node scripts/test-greek-aorist-attestation-20261121.cjs
-      - name: Auditar perfectos y pluscuamperfectos de UD13 sin promoción automática
-        run: node scripts/test-greek-perfect-pluperfect-ud13-20261121.cjs
-      - name: Ejecutar realmente regresión sistemática de 14 unidades griegas
-        run: node scripts/test-greek-systematic-morph-syntax-20261121.cjs
-      - name: Comprobar 26 relativos con grave contextual por oración
-        run: node scripts/test-greek-relative-grave-20261121.cjs --offline
-      - name: Verificar concordancia de doce genitivos absolutos de Griego I
-        run: node scripts/test-greek-absolute-genitives-20261121.cjs --offline
-      - name: Auditar régimen verbal, demonstrativos y concordancias restantes
-        run: node scripts/test-filologia-regimen-acento-20261121.cjs --offline
-      - name: Atestación aislada del dativo en -ματι sin promoción morfológica
-        run: node scripts/test-greek-noun-case-attestation-20261121.cjs
-      - name: Auditar ὄνομα y bloquear promoción de las once casillas corruptas
-        run: node scripts/test-greek-onoma-source0-audit-20261121.cjs
-      - name: Proteger el lema nix y la fusión de sol en UD7/UD11–12
-        run: node scripts/test-latin-ud7-nix-sol-20261121.cjs
-      - name: Revisar cantidad vocálica latina sin cancelar variantes métricas
-        run: node scripts/test-filologia-cantidad-latina-20261121.cjs --offline
-      - name: Auditar once cantidades/enunciados de Latín 4.º, migración y PWA
-        run: node scripts/test-filologia-latin4-cantidades-ronda2-20261121.cjs
-      - name: Auditar cantidad vocal inicial de impero y oppidum en Latín 4.º
-        run: node scripts/test-filologia-latin4-quantity-followup-20261121.cjs
-      - name: Auditar altus, magnus, longus, gemma y littera (16 entradas)
-        run: node scripts/test-filologia-latin4-quantity-clusters-20261121.cjs
-      - name: Revisar siete cantidades contradictorias de nominativos latinos en -ō
-        run: node scripts/test-filologia-latin4-final-o-20261122.cjs --offline
-      - name: Cotejar 42 cantidades heredadas y proteger 12 correcciones de custos
-        run: node scripts/test-filologia-latin-legacy-double-quantity-20261122.cjs
-      - name: Evitar notaciones abreviadas del ν móvil en las formas evaluables
-        run: node scripts/test-greek-movable-nu.cjs
-      - name: Auditar las 100 formas más frecuentes de Griego I
-        run: node scripts/audit-greek-frequent-100.cjs
-      - name: Verificar las 15 correcciones persistentes de Griego I
-        run: node scripts/test-greek-source-corrections.cjs
-      - name: Auditar todas las formas poco frecuentes de Griego I
-        run: node scripts/audit-greek-all-units.cjs --require-clean
-      - name: Guardar Word de diez frases para comprobación visual
+          name: informe-fuentes-${{ github.run_attempt }}
+          path: test-artifacts/
+          retention-days: 30
+
+  chromium:
+    name: Chromium y exámenes reales (${{ matrix.shard }}/4)
+    needs: reproducibility
+    runs-on: ubuntu-24.04
+    container: mcr.microsoft.com/playwright:v1.56.1-noble
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3, 4]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-save --ignore-scripts playwright@1.56.1
+      - run: node scripts/check-release.cjs chromium ${{ matrix.shard }}
+      - name: Guardar resultados y muestras
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: vocabulario-diez-frases-word
-          path: test-artifacts/vocabulario-latin-10-frases.docx
-          if-no-files-found: ignore
-      - name: Verificar revisión léxica y género griego de Eulexis
-        run: node scripts/test-lex-review-eulexis.cjs
-      - name: Comprobar menús léxicos, modificación preverbial y Word
-        run: node scripts/test-lex-menu-sync.cjs
-      - name: Verificar editores bidireccionales en todas las materias, modelos y Word
-        run: node scripts/test-bidirectional-editors.cjs
-      - name: Comprobar que cada palabra se regenera sin alterar las demás
-        run: node scripts/test-single-word-regeneration.cjs
-      - name: Fase III - conservar el borrador al regenerar un apartado léxico
-        run: node scripts/test-lex-part-regeneration.cjs
-      - name: Fase III - regeneración aislada de preguntas latinas y sus soluciones
-        run: node scripts/test-question-part-regeneration.cjs
-      - name: Fase III - regeneración aislada de preguntas de Griego I
-        run: node scripts/test-greek-question-regeneration.cjs
-      - name: Fase III - preservar huecos y puntuación por curso y modelo
-        run: node scripts/test-sentence-points-and-drafts.cjs
-      - name: Fase III - normas fonéticas acumulativas sin regenerar el examen
-        run: node scripts/test-phonetic-filter-isolation.cjs
-      - name: Fase III - regeneración aislada de morfología latina y griega
-        run: node scripts/test-morph-question-isolation.cjs
-      - name: Fase III - auditar conjuntamente ediciones, regeneración, borradores y Word
-        run: node scripts/test-phase-three-integration.cjs
-      - name: Probar las vistas previas de todos los modelos
-        run: node scripts/test-preview.cjs
-      - name: Fase V - interfaces adaptables, navegación, Word y OLED
-        run: node scripts/test-phase-five.cjs
-      - name: Fase VI - diez puntos exactos sin redistribución y DOCX real
-        run: node scripts/test-phase-six.cjs
-      - name: Fase VI - desglose de subpreguntas en menús, vista previa y Word
-        run: node scripts/test-subquestion-scoring.cjs
-      - name: Guardar Word con puntuaciones de examen para inspección
+          name: informe-chromium-${{ matrix.shard }}-${{ github.run_attempt }}
+          path: test-artifacts/
+          retention-days: 30
+
+  compatibility:
+    name: WebKit, perfiles táctiles y PDF multipágina
+    needs: reproducibility
+    runs-on: ubuntu-24.04
+    container: mcr.microsoft.com/playwright:v1.56.1-noble
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-save --ignore-scripts playwright@1.56.1
+      - uses: actions/download-artifact@v4
+        with:
+          name: site-ci-${{ github.sha }}
+          path: validated
+      - name: Probar la distribución empaquetada y WebKit
+        shell: bash
+        run: |
+          set -euo pipefail
+          (cd validated && sha256sum --strict --check SHA256SUMS)
+          mkdir _site
+          tar -xf validated/site.tar -C _site
+          CI_SITE_DIR="$PWD/_site" node scripts/check-release.cjs compatibility
+      - name: Guardar resultados de compatibilidad
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: examen-puntuaciones-latin1-word
-          path: test-artifacts/examen-puntuaciones-latin1.docx
-          if-no-files-found: ignore
-      - name: Validar valenciano en pantalla y Word para los tres cursos
-        run: node scripts/test-valenciano-browser.cjs
-      - name: Comprobar formato de cultura y enunciados en puntos Word, borradores, ES/VA y PWA
-        run: node scripts/test-question-visual-layout.cjs
-      - name: Comprobar espacios individuales por pregunta y Word en ES/VA y PWA
-        run: node scripts/test-per-question-visual-format.cjs
-      - name: Verificar traduïx y el enunciado valenciano de oraciones de Latín 4.º en Word y PWA
-        run: node scripts/test-valencian-imperative.cjs
-      - name: Verificar correcciones docentes de Latín I y 4.º, editores y vocabulario exigible
-        run: node scripts/test-correcciones-latin.cjs
-      - name: Verificar concordancia de tablas y umbrales de unidad
-        run: node scripts/test-nominal-agreement.cjs
-      - name: Verificar doce formas, genitivos abreviados y excepciones de tercera declinación
-        run: node scripts/test-latin-third-declension-forms.cjs
-      - name: Auditar todas las formas latinas, selecciones y progresión de unidades
-        run: node scripts/test-latin-nominal-integrity.cjs
-      - name: Cotejar paradigma de vir, viri en Latín I y 4.º, web y autónoma
-        run: node scripts/test-latin-vir-paradigm-20261122.cjs
-      - name: Comprobar mare y animal como neutros de tema en -i, web y autónoma
-        run: node scripts/test-latin-neuter-i-stems-20261122.cjs
-      - name: Verificar variedad y concordancia de sintagmas nominales grecolatinos
-        run: node scripts/test-syntagm-variation.cjs
-      - name: Verificar sintagmas aprobados (PR 169) y progresión gramatical
-        run: node scripts/test-sintagmas-aprobados-169.cjs
-      - name: Probar PWA sin red y actualizaciones controladas
-        run: npm run pwa:test
-      - name: Probar en Chromium el lematizador sin conexión
-        run: node scripts/test-lemma-browser.cjs
-      - name: Probar en Chromium las tarjetas griegas y la importación local
-        run: node scripts/test-greek-review-browser.cjs
-      - name: Probar instalación y persistencia de Eulexis en Chromium
-        run: node scripts/test-eulexis-browser.cjs
+          name: informe-compatibilidad-${{ github.run_attempt }}
+          path: test-artifacts/
+          retention-days: 30

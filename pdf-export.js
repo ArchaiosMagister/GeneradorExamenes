@@ -94,7 +94,7 @@
    const total=Math.ceil(Math.max(stage.scrollHeight,stage.getBoundingClientRect().height));
    const blocks=[...stage.querySelectorAll(
     '.exam-header,.exam-question,.exam-paradigm,.exam-pronouns,.exam-gloss-title,'+
-    '.gloss-item,.task>li,.exam-item,table tr'
+    '.gloss-item,p,li,table tr'
    )].map(el=>{
     const rect=el.getBoundingClientRect();
     return {start:rect.top-top,end:rect.bottom-top,height:rect.height};
@@ -104,10 +104,11 @@
     .filter(y=>y>0).sort((a,b)=>a-b);
    const cuts=[0];
    let start=0;
-   while(total-start>maxHeight+1){
+   while(start<total){
     let end=start+maxHeight;
-    const nextForced=forced.find(y=>y>start+24&&y<end);
+    const nextForced=forced.find(y=>y>start+24&&y<end&&y<total);
     if(nextForced!==undefined)end=nextForced;
+    else if(total-start<=maxHeight+1)break;
     else{
      // No cortar una tabla, un enunciado o una línea cuando caben
      // íntegramente en la siguiente página.

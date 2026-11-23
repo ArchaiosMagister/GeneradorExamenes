@@ -1,105 +1,91 @@
-name: Publicar webapp online
+name: Publicar artefacto validado
 
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
+    inputs:
+      commit:
+        description: SHA completo de main autorizado para publicar
+        required: true
+        type: string
+      ci_run:
+        description: ID de la ejecución satisfactoria de CI obligatoria para ese SHA
+        required: true
+        type: string
 
 permissions:
-  contents: read
   actions: read
-  pages: write
-  id-token: write
+  contents: read
 
-# No reconstruir la PR 29: su generador de vocabulario ya está consolidado
-# en main. Una única versión evita código y cachés de una vista obsoleta.
 concurrency:
   group: github-pages
   cancel-in-progress: false
 
 jobs:
+  verify:
+    name: Comprobar procedencia y preparar el artefacto
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Exigir CI satisfactoria del mismo SHA de main
+        id: ci
+        env:
+          GH_TOKEN: ${{ github.token }}
+          COMMIT: ${{ inputs.commit }}
+          CI_RUN: ${{ inputs.ci_run }}
+        run: |
+          set -euo pipefail
+          [[ "$COMMIT" =~ ^[a-f0-9]{40}$ && "$CI_RUN" =~ ^[1-9][0-9]*$ ]]
+          test "$COMMIT" = "$GITHUB_SHA"
+          ci=$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$CI_RUN")
+          jq -er --arg sha "$COMMIT" --arg repo "$GITHUB_REPOSITORY" '
+            select(.path == ".github/workflows/offline-check.yml"
+              and .head_branch == "main" and .head_sha == $sha
+              and .head_repository.full_name == $repo
+              and (.event == "push" or .event == "workflow_dispatch")
+              and .status == "completed" and .conclusion == "success")
+            | .id' <<< "$ci"
+          echo "artifact=site-ci-$COMMIT" >> "$GITHUB_OUTPUT"
+      - uses: actions/download-artifact@v4
+        with:
+          name: ${{ steps.ci.outputs.artifact }}
+          run-id: ${{ inputs.ci_run }}
+          github-token: ${{ github.token }}
+          path: validated
+      - name: Validar el paquete recibido
+        working-directory: validated
+        run: |
+          set -euo pipefail
+          test "$(cat commit.txt)" = "$GITHUB_SHA"
+          sha256sum --strict --check SHA256SUMS
+          mkdir ../_site
+          tar -xf site.tar -C ../_site
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          name: github-pages-${{ github.run_attempt }}
+          path: _site
+
   publish:
-    runs-on: ubuntu-latest
+    name: Desplegar en GitHub Pages
+    needs: verify
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Obtener versión estable
-        uses: actions/checkout@v4
-        with:
-          persist-credentials: false
-      - name: Preparar Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-      - name: Bloquear publicación si se revierten decisiones fonéticas docentes
-        run: |
-          node scripts/test-criterios-foneticos.mjs
-          node scripts/test-fonetica.mjs
-          node scripts/test-lat1-fonetica.mjs
-      - name: Reconstruir el índice desde el extracto griego versionado
-        run: |
-          node scripts/build-lemma-index.mjs
-          git diff --exit-code -- data/lemmas/teacher-forms.json
-          node scripts/test-revision-559-griego.cjs
-          node scripts/test-echthros-ten-collation.cjs
-      - name: Construir y validar versión autónoma
-        run: |
-          npm run offline:build
-          git diff --exit-code -- offline.html
-          npm run offline:test
-          node scripts/test-lemma-index.mjs
-          node scripts/test-vocabulary-quality.cjs
-      - name: Preparar publicación de main
-        shell: bash
-        run: |
-          set -euo pipefail
-          mkdir -p _site
-          cp index.html offline.html _site/
-          for asset in greek-choice-number.js greek-choice-retroversion.js greek-choice-etymology.js greek-choice-groups.js offline-lemmas.js verification-review.js greek-review.js eulexis-local.js culture-lat4.js lexicon-valenciano.js required-latin-units.js vocabulary-quality.js vocabulary-generator.js exam-scoring.js unified-backup.js exam-selection-summary.js pwa.js pdf-export.js export-workspace.js manifest.webmanifest; do
-            test -f "$asset"
-            cp "$asset" _site/
-          done
-          cp -R icons data vendor _site/
-          if [[ -d THIRD_PARTY_LICENSES ]]; then cp -R THIRD_PARTY_LICENSES _site/; fi
-          if [[ -f docs/lematizacion-lectores.md ]]; then
-            mkdir -p _site/docs
-            cp docs/lematizacion-lectores.md _site/docs/
-          fi
-          sed "s/__PWA_BUILD_VERSION__/${{ github.sha }}/g" sw.js > _site/sw.js
-          test -s _site/index.html
-          test -s _site/offline.html
-          test -s _site/data/lemmas/teacher-forms.json
-          test -s _site/sw.js
-          test -s _site/icons/icon-512.png
-          touch _site/.nojekyll
-      - name: Configurar GitHub Pages
-        uses: actions/configure-pages@v5
-      - name: Preparar archivos de Pages
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: _site
-      - name: Esperar a que GitHub indexe exactamente un artefacto de Pages
-        shell: bash
+      - name: Verificar que main sigue en el commit autorizado
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          for intento in $(seq 1 20); do
-            encontrados=$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}/artifacts?per_page=100" \
-              --jq '[.artifacts[] | select(.name == "github-pages")] | length')
-            if [[ "$encontrados" == "1" ]]; then
-              echo "Un único artefacto de GitHub Pages disponible"
-              exit 0
-            fi
-            if [[ "$encontrados" != "0" ]]; then
-              echo "Error: ${encontrados} artefactos con el mismo nombre en este intento"
-              exit 1
-            fi
-            sleep 3
-          done
-          echo "Error: GitHub no ha indexado el artefacto de Pages"
-          exit 1
-      - name: Publicar en GitHub Pages
+          test "$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/main" --jq .object.sha)" = "$GITHUB_SHA"
+      - name: Publicar el artefacto verificado
         id: deployment
         uses: actions/deploy-pages@v4
+        with:
+          artifact_name: github-pages-${{ github.run_attempt }}

@@ -1291,6 +1291,20 @@
   "Elementos por pregunta": "Elements per pregunta",
   "Oraciones": "Oracions",
   "Declinación": "Declinació",
+  "Nominativo": "Nominatiu",
+  "Vocativo": "Vocatiu",
+  "Acusativo": "Acusatiu",
+  "Genitivo": "Genitiu",
+  "Dativo": "Datiu",
+  "Ablativo": "Ablatiu",
+  "(presente de indicativo medio (deponente))": "(present d’indicatiu mitjà (deponent))",
+  "(aoristo segundo de indicativo activo)": "(aorist segon d’indicatiu actiu)",
+  "(futuro de indicativo medio (deponente))": "(futur d’indicatiu mitjà (deponent))",
+  "(imperfecto de indicativo activo)": "(imperfet d’indicatiu actiu)",
+  "(futuro de indicativo activo)": "(futur d’indicatiu actiu)",
+  "(aoristo sigmático de indicativo activo)": "(aorist sigmàtic d’indicatiu actiu)",
+  "(perfecto de indicativo activo)": "(perfet d’indicatiu actiu)",
+  "(pluscuamperfecto de indicativo activo)": "(plusquamperfet d’indicatiu actiu)",
   "Conjugación": "Conjugació",
   "Verbos": "Verbs",
   "Pronombres": "Pronoms",
@@ -1363,6 +1377,47 @@
   "No se asignan puntos.": "No s’assignen punts.",
   "Sin formas verificadas": "Sense formes verificades"
 };
+ // Rótulos del solucionario generado. Los lemas y las glosas se conservan.
+ const MORPHOLOGY_VA={
+  'presente':'present','imperfecto':'imperfet','perfecto':'perfet','pluscuamperfecto':'plusquamperfet',
+  'futuro':'futur','aoristo segundo':'aorist segon','aoristo sigmático':'aorist sigmàtic','aoristo':'aorist',
+  'de indicativo':'d’indicatiu','indicativo':'indicatiu','subjuntivo':'subjuntiu',
+  'optativo':'optatiu','imperativo':'imperatiu','infinitivo':'infinitiu',
+  'voz':'veu','activo':'actiu','activa':'activa','pasivo':'passiu','pasiva':'passiva',
+  'de indicativo medio':'d’indicatiu mitjà','participio de presente medio':'participi de present mitjà',
+  'voz media':'veu mitjana','medio-pasivo':'mediopassiu','deponente':'deponent',
+  'semideponente':'semideponent','participio':'participi','gerundio':'gerundi','supino':'supí',
+  'nominativo':'nominatiu','vocativo':'vocatiu','acusativo':'acusatiu','genitivo':'genitiu',
+  'dativo':'datiu','ablativo':'ablatiu','masculino':'masculí','femenino':'femení','neutro':'neutre',
+  'primera':'primera','segunda':'segona','tercera':'tercera','cuarta':'quarta','quinta':'quinta',
+  'sustantivo de la':'substantiu de la','sustantivo':'substantiu','adjetivo':'adjectiu',
+  'declinación':'declinació','clase':'classe','artículo':'article','pronombre':'pronom',
+  'interrogativo':'interrogatiu','relativo':'relatiu','demostrativo':'demostratiu',
+  'posesivo':'possessiu','indefinido':'indefinit','anafórico':'anafòric','intensivo':'intensiu',
+  'fórico':'fòric','sin género':'sense gènere','lejanía':'llunyania','proximidad':'proximitat',
+  'según el contexto':'segons el context','sin distinción de género':'sense distinció de gènere'
+ };
+ const morphologyPattern=new RegExp('(?<![\\p{L}\\p{M}])(?:'+Object.keys(MORPHOLOGY_VA)
+  .sort((a,b)=>b.length-a.length).join('|')+')(?![\\p{L}\\p{M}])','giu');
+ function morphologySolution(element){
+  const key=element?.closest('#answerkey');
+  if(!key)return false;
+  if(element.closest('li[data-morph-kind="verb"],li[data-morph-kind="forms"],li[data-morph-kind="pronouns"],'+
+    'li[data-exam-kind="forms"],li[data-exam-kind="pronouns"]'))return true;
+  const paragraph=element.closest('p');
+  if(paragraph?.parentElement!==key)return false;
+  let section=paragraph.previousElementSibling;
+  while(section&&!section.matches('h3'))section=section.previousElementSibling;
+  return ['declension','conjugation','forms','pronouns'].includes(section?.dataset.greekKind);
+ }
+ function translateMorphology(text){
+  const separator=text.indexOf(' — ');
+  const offset=separator<0?0:separator+3;
+  return text.slice(0,offset)+text.slice(offset).replace(morphologyPattern,term=>{
+   const match=MORPHOLOGY_VA[term.toLowerCase()];
+   return term[0]===term[0].toUpperCase()?match[0].toUpperCase()+match.slice(1):match;
+  });
+ }
  const nodeBase=new WeakMap();
  function translateDom(root,language){
   if(!root||!root.ownerDocument||!root.ownerDocument.createTreeWalker)return;
@@ -1384,6 +1439,8 @@
     }
     if(replacement===plain)replacement=null;
    }
+   if(!replacement&&language==='va'&&morphologySolution(node.parentElement))
+    replacement=translateMorphology(plain);
    if(language==='va'&&replacement)node.nodeValue=original.replace(plain,replacement);
    else if(language!=='va')node.nodeValue=original;
    cached.last=node.nodeValue;

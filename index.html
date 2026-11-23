@@ -1522,9 +1522,9 @@ function createExamReaderFrame(name,source){
       if(!analyses.has(token))analyses.set(token,await core.analyse(token));
       const readings=analyses.get(token);
       const preferred=name==='Collatinus'?contextualLatin(core,words,index,readings,plainClause):null;
-      const ranked=preferred??(name==='Collatinus'&&readings.length>1?
-       core.contexte(words,index)?.lid:null)??readings[0]?.lid;
-      const winner=readings.find(item=>item.lid===ranked)||readings[0];
+      const eligible=name==='Eulexis'?readings.filter(item=>item.exact):readings;
+      const winner=preferred!=null?eligible.find(item=>item.lid===preferred):
+       eligible.length===1?eligible[0]:null;
       let school=null;
       if(name==='Collatinus'&&winner){
        const lemma=[...(core.lemmatiseTout(token)?.keys()||[])].find(item=>item.uid===winner.lid);
@@ -1758,13 +1758,16 @@ function preferredExamReading(row,result,greek){
 }
 function automaticExamGlossChoice(row,result,course,bank){
  const greek=course==='greek1';
- const local=result?.readings||[];
- const reading=result?.winner||(new Set(local.map(item=>item.lemme)).size===1?local[0]:null);
+ const local=(result?.readings||[]).filter(item=>!greek||item.exact);
+ const reading=result?.winner||(local.length===1?local[0]:null);
  if(!reading||row.warning)return null;
  const key=entry=>greek?headLex(entry).split(/\s+\+\s+(?:genitivo|acusativo|dativo)/u)[0]
   .toLowerCase().normalize('NFC'):examKey(entry).replace(/v/g,'u');
  const lemma=key(reading.lemme);
  const inRow=row.candidates.filter(candidate=>key(candidate.entry)===lemma);
+ // Un mismo enunciado breve del lector puede corresponder a varias
+ // fichas docentes (por ejemplo un adjetivo y un sustantivo).
+ if(inRow.length>1)return null;
  const teacher=inRow[0]||bank.find(candidate=>key(candidate.entry)===lemma);
  const entry=teacher?.entry||(greek?greekEulexisCitation(reading.citation):reading.citation);
  if(!entry)return null;
@@ -1804,7 +1807,8 @@ async function openContextGlossLookup(automatic=false){
  dialog.addEventListener('close',()=>dialog.remove(),{once:true});
  document.body.append(dialog);dialog.showModal();
  if(automatic)form.querySelector('[type=submit]').hidden=true;
- const hasRanking=result=>!!result?.winner||new Set(result?.readings?.map(item=>item.lemme)).size===1;
+ const hasRanking=result=>!!result?.winner||
+  result?.readings?.filter(item=>!greek||item.exact).length===1;
  const jobs=new Map();
  for(const {job} of pending)if(job){
   const key=reader+JSON.stringify(job);
@@ -1819,7 +1823,9 @@ async function openContextGlossLookup(automatic=false){
    const exact=v=>v.toLowerCase().normalize('NFC');
    const forms=new Map(entries.map(([,job])=>[exact(job.words[job.index]),[]]));
    for(const row of installed.rows){
-    forms.get(exact(row.form))?.push({lemme:row.lemma,exact:true});
+    const readings=forms.get(exact(row.form));
+    if(readings&&!readings.some(item=>item.lemme===row.lemma))
+     readings.push({lemme:row.lemma,exact:true});
    }
    for(const [key,job] of entries)examContextReadings.set(key,{
     readings:forms.get(exact(job.words[job.index]))

@@ -32,4 +32,5 @@ assert.equal(stats.pending,0);
 assert.equal(stats.unknown,0);
 assert.equal(stats.review,0);
 assert.equal(stats.documented,stats.allDistinct);
+console.log('GREEK_FULL_AUDIT '+JSON.stringify(stats));
 console.log('TRES AORISTOS DOCUMENTADOS SOLO PARA AUDITORÍA; SIN NUEVAS RESPUESTAS EVALUABLES');

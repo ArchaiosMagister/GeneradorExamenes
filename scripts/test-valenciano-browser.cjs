@@ -24,8 +24,19 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
      document.getElementById('generate').click();
      const paper=document.getElementById('paper');
      results[code]={header:paper.textContent.includes('1r trimestre'),language:document.documentElement.lang,
-      noGrade:!/(?:Nota sobre|Nota:)/.test(paper.textContent)};
+      noGrade:!/(?:Nota sobre|Nota:)/.test(paper.textContent),
+      cases:[...paper.querySelectorAll('.exam-nouns th')].map(cell=>cell.textContent.trim()),
+      solution:paper.querySelector('#answerkey')?.textContent||'',
+      solutionWord:wordBlock(paper.querySelector('#answerkey'))};
     }
+    const sample=document.createElement('div');
+    sample.innerHTML=greekVerbTable(greekVerifiedCorpus.filter(item=>item.id==='ev-βουλομαι'));
+    const verb=sample.querySelector('.exam-paradigm-indicator');
+    const before=verb?.textContent;
+    dict.translateDom(sample,'va');
+    const verbVa=verb?.textContent,verbWord=wordBlock(sample.firstElementChild);
+    dict.translateDom(sample,'es');
+    const indicator={before,verbVa,verbWord,after:verb?.textContent};
     const independent=words.formatVocabularyEntry({entry:'πόλις, –εως',meaning:'ciudad'},
       'complete','gr1','va');
     const project={count:1,course:'lat1',lang:'va',units:[{
@@ -44,7 +55,7 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
       malista:words.formatVocabularyEntry({entry:'μάλιστα (adv.)',meaning:'muy'},'complete','gr1','va'),
       athenaios:words.formatVocabularyEntry({entry:'Ἀθηναῖος, –α, –ον',meaning:'ateniense'},'complete','gr1','va')
     };
-    return {results,independent,wordVa:valencianWord.includes('xiqueta'),
+    return {results,indicator,independent,wordVa:valencianWord.includes('xiqueta'),
      wordEs:spanishWord.includes('niña'),
      paulusVa:valencianWord.includes('Paulus, –i</w:t>')&&valencianWord.includes('‘Paulus’'),
      imponoVa:valencianWord.includes('imposar')&&valencianWord.includes('posar damunt'),
@@ -56,7 +67,17 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
     assert(record.header,file+': ordinal de trimestre incorrecto en '+course);
     assert.equal(record.language,'ca-valencia',file+': idioma HTML incorrecto en '+course);
     assert(record.noGrade,file+': se imprime una Nota en '+course);
+    assert(!/nominativo|acusativo|de indicativo/i.test(record.solution),
+     file+': nomenclatura del solucionario en castellano en '+course);
+    assert(/nominatiu|acusatiu|d’indicatiu/i.test(record.solutionWord),
+     file+': falta la nomenclatura valenciana en el Word de soluciones de '+course);
    }
+   assert(report.results.greek1.cases.includes('Nominatiu')&&report.results.greek1.cases.includes('Datiu'),
+    file+': las tablas de Griego I deben localizar los nombres de los casos');
+   assert.equal(report.indicator.verbVa,'(present d’indicatiu mitjà (deponent))');
+   assert(report.indicator.verbWord.includes(report.indicator.verbVa));
+   assert.equal(report.indicator.before,'(presente de indicativo medio (deponente))');
+   assert.equal(report.indicator.after,report.indicator.before);
    assert.match(report.independent,/ciutat/,file+': exportación de vocabulario griego sin valenciano');
    assert(report.wordVa&&report.wordEs,file+': la exportación Word no respeta el idioma');
    assert(report.paulusVa&&report.imponoVa&&report.imponoEs,

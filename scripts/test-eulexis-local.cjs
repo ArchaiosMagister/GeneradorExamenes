@@ -22,11 +22,13 @@ const data={schema:1,vocabulary:{grc:{
 }}};
 const x=E.extractor(data,['nom sg masc','gen sg masc','nom sg fem']);
 x.lemmas('a\tlo/gos\tix\nb\tqe/a\tix\nc\tqea/\tix\nd\tqe/os\tix\nf\tu(/mnos\tix');
-x.forms('lo/gos\ta.0\na)/gnwstos\tf.0\nlo/gou\ta.1\nqe/a\tb.2\nqea/\tc.2\nqeou=\td.1\nlo/gos\ta.0');
+x.forms('lo/gos\ta.0\na)/gnwstos\tf.0\nlo/gou\ta.1\nlogo\\s\ta.0\nqe/a\tb.2\nqea/\tc.2\nqeou=\td.1\nlo/gos\ta.0');
 const output=x.result();
 assert.equal(output.matched,3,'No debe aceptarse la entrada θέα (vista)');
-assert.equal(output.count,4,'Se eliminan duplicados, palabras ajenas y la flexión de θέα');
+assert.equal(output.count,5,'Se eliminan duplicados, palabras ajenas y la flexión de θέα');
 assert.ok(output.rows.some(x=>x[0]==='λόγος'&&x[1]==='λόγος'));
+assert.ok(output.rows.some(x=>x[0]==='λογὸς'&&x[1]==='λόγος'),
+ 'La consulta exacta debe conservar la grafía alternativa aunque el análisis coincida');
 assert.ok(output.rows.some(x=>x[0]==='θεά'&&x[1]==='θεά'));
 assert.ok(!output.rows.some(x=>x[0]==='θέα'),'No atribuir a la diosa la flexión de vista');
 assert.ok(!output.rows.some(x=>x[1].includes('ὕμνος')));
