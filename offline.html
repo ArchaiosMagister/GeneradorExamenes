@@ -5653,9 +5653,9 @@ function createExamReaderFrame(name,source){
       if(!analyses.has(token))analyses.set(token,await core.analyse(token));
       const readings=analyses.get(token);
       const preferred=name==='Collatinus'?contextualLatin(core,words,index,readings,plainClause):null;
-      const ranked=preferred??(name==='Collatinus'&&readings.length>1?
-       core.contexte(words,index)?.lid:null)??readings[0]?.lid;
-      const winner=readings.find(item=>item.lid===ranked)||readings[0];
+      const eligible=name==='Eulexis'?readings.filter(item=>item.exact):readings;
+      const winner=preferred!=null?eligible.find(item=>item.lid===preferred):
+       eligible.length===1?eligible[0]:null;
       let school=null;
       if(name==='Collatinus'&&winner){
        const lemma=[...(core.lemmatiseTout(token)?.keys()||[])].find(item=>item.uid===winner.lid);
@@ -5889,13 +5889,16 @@ function preferredExamReading(row,result,greek){
 }
 function automaticExamGlossChoice(row,result,course,bank){
  const greek=course==='greek1';
- const local=result?.readings||[];
- const reading=result?.winner||(new Set(local.map(item=>item.lemme)).size===1?local[0]:null);
+ const local=(result?.readings||[]).filter(item=>!greek||item.exact);
+ const reading=result?.winner||(local.length===1?local[0]:null);
  if(!reading||row.warning)return null;
  const key=entry=>greek?headLex(entry).split(/\s+\+\s+(?:genitivo|acusativo|dativo)/u)[0]
   .toLowerCase().normalize('NFC'):examKey(entry).replace(/v/g,'u');
  const lemma=key(reading.lemme);
  const inRow=row.candidates.filter(candidate=>key(candidate.entry)===lemma);
+ // Un mismo enunciado breve del lector puede corresponder a varias
+ // fichas docentes (por ejemplo un adjetivo y un sustantivo).
+ if(inRow.length>1)return null;
  const teacher=inRow[0]||bank.find(candidate=>key(candidate.entry)===lemma);
  const entry=teacher?.entry||(greek?greekEulexisCitation(reading.citation):reading.citation);
  if(!entry)return null;
@@ -5935,7 +5938,8 @@ async function openContextGlossLookup(automatic=false){
  dialog.addEventListener('close',()=>dialog.remove(),{once:true});
  document.body.append(dialog);dialog.showModal();
  if(automatic)form.querySelector('[type=submit]').hidden=true;
- const hasRanking=result=>!!result?.winner||new Set(result?.readings?.map(item=>item.lemme)).size===1;
+ const hasRanking=result=>!!result?.winner||
+  result?.readings?.filter(item=>!greek||item.exact).length===1;
  const jobs=new Map();
  for(const {job} of pending)if(job){
   const key=reader+JSON.stringify(job);
@@ -5950,7 +5954,9 @@ async function openContextGlossLookup(automatic=false){
    const exact=v=>v.toLowerCase().normalize('NFC');
    const forms=new Map(entries.map(([,job])=>[exact(job.words[job.index]),[]]));
    for(const row of installed.rows){
-    forms.get(exact(row.form))?.push({lemme:row.lemma,exact:true});
+    const readings=forms.get(exact(row.form));
+    if(readings&&!readings.some(item=>item.lemme===row.lemma))
+     readings.push({lemme:row.lemma,exact:true});
    }
    for(const [key,job] of entries)examContextReadings.set(key,{
     readings:forms.get(exact(job.words[job.index]))
@@ -13256,7 +13262,7 @@ function extractor(data,morphologies){
    if(key==='θεα'&&g.toLocaleLowerCase('el')!=='θεά')continue;
    const n=parseInt(id,36);
    if(!Number.isSafeInteger(n))continue;
-   ids.set(n,{lemma:g,key});matched++;
+   ids.set(n,g);matched++;
   }
  }
  function forms(text){
@@ -13272,9 +13278,9 @@ function extractor(data,morphologies){
     if(!lemma||typeof morph!=='string')continue;
     const analysis=describe(morph);
     if(!analysis)continue;
-    const sig=norm(form)+'|'+lemma.key+'|'+analysis;
+    const sig=JSON.stringify([form,lemma,analysis]);
     if(seen.has(sig))continue;
-    seen.add(sig);rows.push([form,lemma.lemma,analysis]);
+    seen.add(sig);rows.push([form,lemma,analysis]);
     if(rows.length>250000)throw Error('Índice de Eulexis inesperadamente grande');
    }
   }
@@ -13358,7 +13364,11 @@ async function install(data,onProgress,opts={}){
  if(installing)return installing;
  installing=(async()=>{
   const key=fingerprint(data);
-  if(!opts.force){const prior=await load(data).catch(()=>null);if(prior)return prior}
+  if(!opts.force){
+   const prior=await localGet().catch(()=>null);
+   if(prior?.schema===1&&prior.revision===REVISION&&prior.fingerprint===key&&
+      prior.preserveSpelling===true&&Array.isArray(prior.rows))return convert(prior);
+  }
   const get=opts.fetchText||requestText;
   onProgress?.('Leyendo las etiquetas morfológicas…');
   const morphologies=JSON.parse(await get('data/morph.json'));
@@ -13370,7 +13380,7 @@ async function install(data,onProgress,opts={}){
   const result=x.result();
   if(result.count===0||result.matched===0)throw Error('Eulexis no aportó análisis del temario');
   onProgress?.('Guardando '+result.count+' análisis en este dispositivo…');
-  await localPut({schema:1,revision:REVISION,fingerprint:key,rows:result.rows});
+  await localPut({schema:1,revision:REVISION,fingerprint:key,preserveSpelling:true,rows:result.rows});
   return convert({revision:REVISION,rows:result.rows});
  })().finally(()=>{installing=null});
  return installing;
@@ -21075,7 +21085,7 @@ html[data-appearance="oled"] body.exam-redesign #exam-ui-shell :is(#exam-ui-core
    const total=Math.ceil(Math.max(stage.scrollHeight,stage.getBoundingClientRect().height));
    const blocks=[...stage.querySelectorAll(
     '.exam-header,.exam-question,.exam-paradigm,.exam-pronouns,.exam-gloss-title,'+
-    '.gloss-item,.task>li,.exam-item,table tr'
+    '.gloss-item,p,li,table tr'
    )].map(el=>{
     const rect=el.getBoundingClientRect();
     return {start:rect.top-top,end:rect.bottom-top,height:rect.height};
@@ -21085,10 +21095,11 @@ html[data-appearance="oled"] body.exam-redesign #exam-ui-shell :is(#exam-ui-core
     .filter(y=>y>0).sort((a,b)=>a-b);
    const cuts=[0];
    let start=0;
-   while(total-start>maxHeight+1){
+   while(start<total){
     let end=start+maxHeight;
-    const nextForced=forced.find(y=>y>start+24&&y<end);
+    const nextForced=forced.find(y=>y>start+24&&y<end&&y<total);
     if(nextForced!==undefined)end=nextForced;
+    else if(total-start<=maxHeight+1)break;
     else{
      // No cortar una tabla, un enunciado o una línea cuando caben
      // íntegramente en la siguiente página.

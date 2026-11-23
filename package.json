@@ -1,7 +1,7 @@
 {
   "name": "generador-examenes-latin-griego",
   "private": true,
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Webapp autónoma para generar exámenes de Latín y Griego, utilizable sin conexión",
   "scripts": {
     "offline:build": "node scripts/build-offline.mjs",

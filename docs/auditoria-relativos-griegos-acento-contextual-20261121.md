@@ -45,3 +45,26 @@ Referencias: [Smyth §154](https://ccel.org/s/smyth/grammar/html/smyth_1f_uni.ht
 **La evidencia es ortográfica contextual; no supone una certificación de todos los paradigmas ni de todas las construcciones sintácticas.**
 
 **Decisión editorial:** mantener la PR en borrador y la versión principal intacta hasta superar las cinco baterías de CI y recibir consentimiento docente para fusionar/publicar.
+
+## Revalidación de la candidatura 1.0
+
+El commit `3033605d8fa063d52753fb934960600b9322d38b` dio prioridad a las grafías
+documentadas y equiparó el grave al agudo. La auditoría anterior confundía las
+colisiones en la clave de búsqueda con ambigüedades de la grafía politónica.
+La regresión conserva los 15 testigos históricos intactos, coteja cada oración
+y verifica que el glosario local reconoce `οἳ`, `ὃν` y `ἣν` como relativos en el
+temario. `οἱ`, `ὤν` y `ἦν` siguen reconociéndose con sus grafías propias. Al
+escribir `οι`, `ον` o `ην` aparecen los dos candidatos de cada clave y la lectura
+queda en revisión. Se comprueba asimismo `νέων` frente a `νεῶν`, una distinción
+entre el genitivo de `νέος` y el de `ναῦς`.
+
+El reconocimiento se circunscribe a los lemas del banco escolar. El
+[LSJ](https://logeion.uchicago.edu/%E1%BD%85%CF%82) recoge también la entrada
+posesiva homógrafa `ὅς, ἥ, ὅν` en el repertorio histórico. Ninguna de las quince
+oraciones exige esa lectura. Las consultas externas conservan los análisis
+ofrecidos por el lector y el completado automático deja sin decidir las
+coincidencias gráficas múltiples. Los testimonios siguen sin acreditar otras
+casillas del paradigma ni añadir filas de fuente 5 al índice.
+
+[Smyth, §154, acento contextual](https://grammars.alpheios.net/smyth/xhtml/body.1_div1.1_div2.7.html).
+[Smyth, §§332 y 338, artículo y relativo](https://grammars.alpheios.net/smyth/xhtml/body.1_div1.2_div2.6.html).

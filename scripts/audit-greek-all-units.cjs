@@ -66,9 +66,8 @@ for(const item of nounCaseEvidence.items){
  editorialByForm.set(item.form,{...item,kind:'noun-case'});
 }
 assert.equal(new Set(nounCaseEvidence.items.map(x=>x.form)).size,2,'Colaciones nominales duplicadas');
-// La lectura de νέων en UD11 es contextual: el motor conserva DOS candidatos
-// distintos por normalizar el acento de νέων (jóvenes) y νεῶν (naves).
-// Resolverla en este informe no altera el índice ni la calificación automática.
+// La colación de UD11 registra los candidatos históricos de la búsqueda sin
+// diacríticos. El agudo de νέων y el circunflejo de νεῶν distinguen sus lecturas.
 const systematic=JSON.parse(load('data/vocabulary/greek1-systematic-morph-syntax-audit-20261121.json'));
 assert.equal(systematic.course,'gr1');
 assert.equal(systematic.automaticGradingEnabled,false);
@@ -88,7 +87,7 @@ for(const item of systematic.contextualHomographies){
  assert(origin.split(item.context).length===2,'Cambió el contexto único de νέων en UD11');
  editorialByForm.set(item.form,{...item,kind:'contextual-homography'});
 }
-// Tres superficies de relativos son homógrafas para el lematizador.
+// Tres relativos compartían clave con otros lemas al quitar los diacríticos.
 // Cada ocurrencia se coteja por oración íntegra y por posición de UD.
 // Solo el informe de auditoría las considera resueltas en este contexto.
 const relativeContext=JSON.parse(load('data/vocabulary/greek1-relative-contextual-attestations-20261121.json'));
@@ -131,6 +130,35 @@ for(const entry of relativeContext.items){
 }
 for(const [form,expected] of allowedRelativeForms)
  assert.equal(relativeByForm.get(form)?.length,expected.count,'Falta cotejo de alguna aparición '+form);
+
+// Comprobar la grafía normalizada, el contraste politónico y la búsqueda
+// sin diacríticos por separado. El registro histórico sigue siendo válido.
+const spellingChecks=[
+ ['ὃν','ον','οσ','ὤν','ειμι'],
+ ['ἣν','ην','οσ','ἦν','ειμι'],
+ ['οἳ','οι','οσ','οἱ','ο'],
+ ['νέων','νεων','νεοσ','νεῶν','ναυσ']
+];
+const onlyLemma=(row,lemma)=>{
+ assert.equal(row.status,'documented','Grafía politónica: '+row.form);
+ assert.deepEqual(Array.from(row.candidates,c=>c.lemma),[lemma],'Lectura incorrecta: '+row.form);
+};
+for(const [form,bare,lemma,contrast,alternative] of spellingChecks){
+ const expected=[alternative,lemma].sort();
+ for(const contextual of [false,true]){
+  const [matched,plain,other]=api.analyze(data,[form,bare,contrast].join(' . '),
+   'gr1',greekBank,{contextual});
+  onlyLemma(matched,lemma);
+  onlyLemma(other,alternative);
+  assert.equal(plain.status,'review','Búsqueda sin diacríticos: '+plain.form);
+  assert.deepEqual(Array.from(plain.candidates,c=>c.lemma).sort(),expected,
+   'Se ha perdido un candidato de la búsqueda: '+plain.form);
+ }
+}
+const relativeSpellings=new Set(['ὅν','ὃν','ἥν','ἣν','οἵ','οἳ']);
+assert(!data.rows.grc.some(([,surface,,source])=>
+ source===5&&relativeSpellings.has(surface.normalize('NFC'))),
+ 'Se ha incorporado una acreditación de fuente 5 ajena al cotejo de relativos');
 
 // ἀποπλευσασῶν no se reconoce de forma automática en el índice actual;
 // la lectura se acredita únicamente en el contexto exacto de UD10:39.
@@ -204,9 +232,7 @@ for(const u of project.units){
   let status=found.status;
   if(relativeItems){
    assert(!citation,'Cotejos superpuestos en una superficie: '+form);
-   assert.equal(found.status,'review','Cambió el estado de la ambigüedad: '+form);
-   assert.deepEqual([...found.candidates.map(c=>c.lemma)].sort(),
-    [...allowedRelativeForms.get(form).lemmas].sort(),'Candidatos modificados: '+form);
+   onlyLemma(found,'οσ');
    assert(found.candidates.some(c=>c.lemma==='οσ'&&c.entry==='ὅς, ἥ, ὅ (pron. rel.)'),
     'El lematizador no presenta el pronombre relativo: '+form);
    assert.equal(slot.count,relativeItems.filter(x=>x.unit===unit).length,
@@ -223,10 +249,8 @@ for(const u of project.units){
     assert.equal(slot.count,citation.occurrences,'Cambió el número de participios: '+form);
     assert(slot.lines.includes(citation.context),'Cambió el contexto de la nave');
    }else if(citation.kind==='contextual-homography'){
-    assert.equal(found.status,'review','Cambió el diagnóstico de la homografía '+form);
+    onlyLemma(found,citation.indexLemma);
     assert.equal(slot.count,citation.occurrences,'Cambió el número de apariciones de '+form);
-    assert.deepEqual([...found.candidates.map(c=>c.lemma)].sort(),[...citation.expectedCandidateLemmas].sort(),
-     'Se modificaron los dos lemas de la homografía contextual '+form);
     assert(found.candidates.some(c=>c.lemma===citation.indexLemma&&c.entry===citation.entry),
      'El contexto de UD11 dejó de proponer el lema de jóvenes');
    }else if(citation.kind==='noun-case'){

@@ -1,14 +1,12 @@
 # Generador de exámenes de Latín y Griego
 
-Prototipo experimental de un generador de exámenes para **Latín de 4.º de ESO, Latín I y Griego I**.
+Generador de exámenes para **Latín de 4.º de ESO, Latín I y Griego I**, con edición, solucionarios, exportación y trabajo sin conexión.
 
 ## Probar la versión online
 
-La aplicación web utiliza `index.html` de la rama `main`. El enlace de GitHub Pages es
-[abrir el generador online](https://archaiosmagister.github.io/GeneradorExamenes/).
-Los cambios se publican mediante GitHub Pages; comprueba que el último despliegue
-haya terminado correctamente en **Actions → pages build and deployment**.
-La versión `offline.html` es una descarga alternativa, no la interfaz predeterminada.
+La aplicación está disponible en [GitHub Pages](https://archaiosmagister.github.io/GeneradorExamenes/).
+La publicación requiere una ejecución satisfactoria de la CI obligatoria para el commit autorizado de `main`.
+El archivo `offline.html` ofrece una distribución de un solo fichero.
 
 ## Webapp instalable y uso sin conexión (PWA)
 
@@ -20,7 +18,7 @@ La versión web **puede funcionar sin Internet después de una primera visita co
 4. Cuando se publique una actualización, aparecerá **«Preparar actualización»**. Puedes mantener el examen abierto sin perder las modificaciones. Para cargar el código nuevo, guarda o exporta primero el borrador y pulsa **«Recargar versión nueva»**.
 5. Usa **Copia de datos** y **Exportar examen** para guardar archivos JSON separados. La caché PWA **no sustituye a una copia de seguridad**: si borras los datos del sitio o cambias de dispositivo/navegador, podrías perder borradores y contenido añadido. Puedes solicitar **Proteger almacenamiento** cuando el navegador ofrezca esa función, sin garantía de concesión.
 
-**Nota:** la primera carga necesita conexión y que el navegador admita service workers (habitualmente HTTPS, o localhost durante desarrollo). Al abrir `offline.html` desde el disco mediante `file://` no se instala ningún service worker, porque ese archivo continúa siendo completamente autónomo por sí solo. Si el navegador bloquea el almacenamiento del sitio, utiliza `offline.html` y exporta tus datos regularmente.
+**Nota:** la primera carga necesita conexión y que el navegador admita service workers (habitualmente HTTPS, o localhost durante desarrollo). Al abrir `offline.html` desde el disco mediante `file://` se cargan los recursos integrados en el archivo. La gestión de caché mediante service worker pertenece a la PWA. Si el navegador bloquea el almacenamiento del sitio, utiliza `offline.html` y exporta tus datos regularmente.
 
 La actualización del service worker se versiona con el SHA del despliegue en GitHub Pages; los recursos se guardan de forma conjunta para evitar versiones mezcladas. No se envían borradores ni vocabulario del usuario a un servidor: permanecen en el almacenamiento local del navegador.
 
@@ -47,19 +45,24 @@ El **nombre del modelo** (completo, morfología o traducción) no sustituye el t
 
 En **Revisión del vocabulario**, pulsa **Proponer lecturas con Collatinus** en latín o **Proponer lecturas con Eulexis** en griego. Collatinus usa su etiquetador contextual y la forma de cada aparición. Eulexis contrasta forma y diacríticos. Ambos proponen fichas del glosario para confirmar individualmente o en lote. Seleccionar **Dejar pendiente** conserva la duda. Tras confirmar se aplican las glosas docentes y las reglas de vocabulario exigible que correspondan.
 
-Cuando termines de editar las oraciones, **Completar glosario con Collatinus / Eulexis** aplica la lectura mejor situada para cada aparición pendiente, incluidas las palabras que el banco no reconoció. Collatinus usa contexto y frecuencia. Eulexis ordena por coincidencia gráfica y frecuencia. Las elecciones automáticas se pueden revisar con **Cambiar**. Se mantienen las decisiones manuales y el texto original de las oraciones.
+Cuando termines de editar las oraciones, **Completar glosario con Collatinus / Eulexis** aplica las lecturas que puede identificar para cada aparición pendiente, incluidas palabras ajenas al banco. Collatinus propone una lectura única o respaldada por el contexto. Eulexis requiere una coincidencia gráfica inequívoca. Las ambigüedades restantes se pueden revisar individualmente. Las elecciones automáticas se pueden revisar con **Cambiar**. Se mantienen las decisiones manuales y el texto original de las oraciones.
 
 La consulta reutiliza los análisis durante la sesión. Los lectores se ejecutan en el navegador. Collatinus descarga el léxico y sus tablas de etiquetas al solicitarlos por primera vez. En griego se usa el índice personal de Eulexis si está instalado. En su ausencia, se cargan los fragmentos léxicos pertinentes del lector. El texto completo de las oraciones permanece en el navegador.
 
-**Bancos pendientes:** no existe todavía un corpus cerrado de preguntas de cultura de Latín 4.º ESO. En su lugar se presenta una advertencia, sin inventar preguntas. El apartado de oraciones empieza con huecos numerados. Escribe una oración por línea en el campo de texto o edita su hueco en la vista previa. Los pronombres de Latín I usan una selección de formas explícitas, limitada al temario de cada unidad. Los bancos Morpheus y AGLDT todavía no están integrados.
+**Cultura de Latín 4.º de ESO:** 73 preguntas docentes en ocho unidades, con enunciados en castellano y valenciano. El sorteo respeta las unidades elegidas y el modelo completo adapta la puntuación cuando no corresponde incluir Cultura. El apartado de oraciones empieza con huecos numerados. Escribe una oración por línea en el campo de texto o edita su hueco en la vista previa. Los pronombres de Latín I usan una selección de formas explícitas, limitada al temario de cada unidad. Los bancos Morpheus y AGLDT todavía no están integrados.
 
 ## Lematización offline latina y griega
 
-La edición autónoma incorpora un **lematizador de consulta** para los lemas del vocabulario docente, alimentado por UniMorph y modelos explícitos de las dos lenguas. En «Laboratorio y consulta morfológica» permite buscar una forma o ver las flexiones registradas de un lema, incluso sin Internet. Conserva **todos los análisis posibles** en las coincidencias ambiguas y muestra las etiquetas originales.
+La edición autónoma incorpora un **lematizador de consulta** para los lemas del vocabulario docente, alimentado por UniMorph y modelos explícitos de las dos lenguas. En «Laboratorio y consulta morfológica» permite buscar una forma o ver las flexiones registradas de un lema, incluso sin Internet. Conserva todos los análisis registrados para la clave de búsqueda y muestra sus etiquetas originales. En griego muestra primero las coincidencias con los diacríticos escritos.
 
 El índice se genera desde una instantánea fijada de `VocabulaLatinaGraecaque` y se incluye dentro de `offline.html`; no afecta automáticamente a la selección de respuestas de los exámenes.
 
-La consulta diferencia ahora las **formas documentadas**, las **propuestas de flexión regular latina aún sin verificar** y las **formas de cita del vocabulario** que no disponen de paradigma. Las propuestas nunca alimentan los solucionarios ni la identificación del vocabulario final. Consulta [las fuentes, licencias y limitaciones](docs/lematizacion-offline.md).
+La **consulta** muestra las formas de cita, los registros documentados y las candidaturas. La
+**generación evaluable** utiliza los bancos y reglas curriculares del curso. Las propuestas que
+admiten autorización docente requieren una decisión explícita para cada análisis y conservan
+su procedencia. Una lectura contextual del glosario tampoco habilita formas para el sorteo.
+Consulta [el control de evidencia](docs/control-evidencia-academica.md) y
+[las fuentes del índice](docs/lematizacion-offline.md).
 
 ## Versión autónoma para usar sin Internet
 
@@ -67,37 +70,35 @@ La consulta diferencia ahora las **formas documentadas**, las **propuestas de fl
 
 1. Descarga `offline.html` cuando tengas conexión. Guárdalo, por ejemplo, en Documentos.
 2. Desconecta Internet y abre ese mismo archivo.
-3. Selecciona el curso, las unidades y el modelo; genera e imprime o descarga el examen en Word.
+3. Selecciona el curso, las unidades y el modelo; genera e imprime o descarga el examen en Word o PDF.
 4. Utiliza las opciones de **exportar datos/borradores a JSON** para guardar copias de seguridad: el almacenamiento del navegador en páginas `file://` puede variar según navegador, carpeta u ordenador.
 
 `offline.html` incluye toda la interfaz, el vocabulario y los paradigmas escolares de los tres cursos. Incluye también **16.988 formas latinas de UniMorph para consulta morfológica**, procedentes del archivo local `data/unimorph/lat-v.json`. Esas formas no se incorporan automáticamente a preguntas con soluciones sin la validación necesaria. El banco griego sigue siendo el ya incorporado en la webapp: **Morpheus y AGLDT aún no están integrados**.
 
-`index.html` continúa siendo la interfaz de la web publicada. Puede utilizar archivos locales adicionales si el servidor los ofrece; `offline.html` es la versión empaquetada en un solo archivo y sin consultas de red al abrirse desde el disco.
+`index.html` continúa siendo la interfaz de la web publicada. Puede utilizar archivos locales adicionales si el servidor los ofrece; `offline.html` es la versión empaquetada en un solo archivo y arranca desde el disco sin conexiones externas. Las consultas opcionales solicitadas a los lectores pueden necesitar Internet.
 
 ### Mantenimiento y comprobación
 
 Para recrear `offline.html` desde el código del proyecto, ejecuta `npm run offline:build`. Para comprobar que el archivo distribuido corresponde al código y a los datos locales, ejecuta `npm run offline:test` (requiere Node.js; **el usuario final no necesita Node.js**); las pruebas se ejecutan también en Chromium desde GitHub Actions.
 
-## Funcionalidad actual (prototipo v21)
+## Edición, puntuación y exportación
 
-- Cursos separados: Latín 4.º ESO, Latín I y Griego I.
-- Tres modelos para Latín I y Griego I (completo, morfología, traducción); Latín 4.º de ESO solo presenta el modelo completo.
-- Selección de trimestre, unidades y vocabulario acumulativo.
-- Interfaz en castellano y valenciano.
-- Bancos de vocabulario y oraciones; edición e importación.
-- Gestor del vocabulario exigible por curso y unidad.
-- Regla para el vocabulario final: enunciado de cada lema utilizado, traducción solo si no pertenece al vocabulario exigible acumulado.
-- Cultura restringida a Latín 4.º ESO (pendiente de recibir los temas cerrados).
-- Guardado y recuperación local de borradores, deshacer la última generación y exportación/importación de borradores JSON.
-- Exportación experimental a Word (.docx), con plantilla de Palatino Linotype 10,5 pt, enunciados en cursiva y vocabulario final en dos columnas.
+- Se pueden elegir unidades aisladas o combinadas, de forma acumulativa o por selección explícita.
+- La vista previa y los controles permiten editar enunciados, oraciones y otros elementos. Guarda un borrador antes de regenerar un examen completo.
+- El control de exportación definitiva comprueba el total de 10 puntos en los exámenes completos. Las pruebas parciales de morfología conservan su baremo independiente.
+- Word (.docx) permite descargar la hoja del alumnado y un documento con soluciones. La opción PDF exporta la hoja del alumnado. Los nombres se forman a partir del curso, las unidades elegidas, el tipo de documento y el idioma.
+- Las decisiones y los exámenes se guardan localmente. Usa la copia unificada JSON para trasladarlos entre navegadores o dispositivos.
 
-## Limitaciones y trabajo pendiente
+## Límites de cobertura
 
-**No se debe considerar una herramienta de evaluación validada todavía.** El motor morfológico es parcial; no están integrados Collatinus, Morpheus ni Eulexis, y la generación de formas del griego ático politónico sigue pendiente. Hay que comprobar manualmente las formas, el vocabulario final y la maquetación de los documentos Word.
+La cantidad de formas disponibles depende de la unidad, las cuotas y las exclusiones docentes.
+Una combinación con un banco insuficiente puede generar un aviso. Los modelos de examen
+incluyen huecos para que el docente añada sus propias oraciones.
 
-## Privacidad y funcionamiento local
-
-El prototipo no requiere servidor de aplicaciones ni llamadas a servicios externos para generar los exámenes. Los datos de usuario se almacenan localmente cuando el navegador lo permite. Se recomienda exportar copias de seguridad JSON periódicas.
+La consulta local se basa en el temario y puede dejar formas sin identificar. Las glosas
+externas pueden requerir revisión y traducción. Los lectores descargan recursos léxicos
+cuando se solicita su uso. El análisis del texto se realiza en el navegador.
+Consulta [cómo funcionan los lectores](docs/lematizacion-lectores.md).
 
 ## Licencias y fuentes
 
@@ -108,8 +109,8 @@ El vocabulario incluido procede de materiales docentes aportados al proyecto. An
 - `index.html`: única fuente de la interfaz pública de GitHub Pages. No precisa servidor de aplicaciones para generar exámenes.
 - `offline.html`: versión de un solo archivo para abrir desde el navegador sin conexión, generada a partir de `index.html` y los bancos locales; no es un programa nativo.
 - `data/`: corpus y recursos del generador; `scripts/`: construcción del HTML autónomo y pruebas. No se usan Tauri, Rust ni un empaquetador nativo.
-- `npm run offline:build`: reconstruye el archivo autónomo; `npm run offline:test`: verifica su reproducibilidad, integridad y sintaxis; `node scripts/test-exam-models.cjs`: comprueba las siete modalidades; `npm run preview:test`: comprueba en Chromium ambos HTML, formato, impresión y DOCX (requiere Playwright y Chromium).
-- GitHub Actions ejecuta las comprobaciones automáticas en las solicitudes de cambios y después de actualizar `main`. La publicación se efectúa mediante el flujo de GitHub Pages.
+- `npm run offline:build`: reconstruye el archivo autónomo; `npm run offline:test`: verifica su reproducibilidad, integridad y sintaxis; `node scripts/test-exam-models.cjs`: comprueba los modelos vigentes y las rutas de migración; `npm run preview:test`: comprueba en Chromium ambos HTML, formato, impresión y DOCX (requiere Playwright y Chromium).
+- [Validación y publicación](docs/lanzamiento-1.0.md). GitHub Actions ejecuta las comprobaciones obligatorias en las PR y en `main`. La publicación manual utiliza el artefacto de esa misma ejecución.
 
 La compatibilidad con Safari/WebKit, las descargas DOCX, la impresión, los borradores y `file://` son **funciones necesarias de la webapp**; se mantienen aunque inicialmente se probaran en un contexto de escritorio.
 

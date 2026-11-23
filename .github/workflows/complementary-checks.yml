@@ -1,0 +1,30 @@
+name: Comprobaciones complementarias (sin despliegue)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  readers:
+    name: Lectores externos reales y extractor local
+    runs-on: ubuntu-24.04
+    container: mcr.microsoft.com/playwright:v1.56.1-noble
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-save --ignore-scripts playwright@1.56.1
+      - name: Collatinus y Eulexis contra los recursos fijados
+        run: EXAM_LIVE_READERS=1 node scripts/test-exam-external-gloss.cjs
+      - name: Contrastar el extractor Eulexis sin distribuir su resultado
+        if: always()
+        run: |
+          node scripts/export-eulexis-review.mjs
+          node scripts/audit-greek-eulexis-queue.mjs
+          node -e "const f=require('./private/eulexis-review.json'); if(f.schema!=='examina-eulexis-review/v1'||!f.rows?.length)process.exit(1); console.log('Extracto Eulexis comprobado:',f.rows.length,'análisis')"

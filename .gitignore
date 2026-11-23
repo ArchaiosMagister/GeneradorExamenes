@@ -4,3 +4,6 @@ node_modules/
 
 # Índices Eulexis locales: no redistribuir datos de licencia incierta.
 /private/
+
+/test-artifacts/
+/test-results/

@@ -6,6 +6,8 @@ const path=require('node:path');
 const http=require('node:http');
 const {chromium,webkit}=require('playwright');
 const root=path.resolve(__dirname,'..');
+const artifacts=path.join(root,'test-artifacts','pdf');
+const engineName=process.env.PDF_TEST_BROWSER==='webkit'?'webkit':'chromium';
 const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8',
  '.json':'application/json; charset=utf-8'};
 const server=http.createServer((req,res)=>{
@@ -20,7 +22,8 @@ const server=http.createServer((req,res)=>{
 });
 async function main(){
  await new Promise(ok=>server.listen(0,'127.0.0.1',ok));
- const engine=process.env.PDF_TEST_BROWSER==='webkit'?webkit:chromium;
+ fs.mkdirSync(artifacts,{recursive:true});
+ const engine=engineName==='webkit'?webkit:chromium;
  const browser=await engine.launch({headless:true});
  try{
   for(const filename of ['index.html','offline.html']){
@@ -205,7 +208,11 @@ async function main(){
    const text=bytes.toString('latin1');
    const pages=(text.match(/\/Type\s*\/Page\b/g)||[]).length;
    assert(pages>=1,filename+': faltan páginas PDF');
+   fs.writeFileSync(path.join(artifacts,engineName+'-'+filename+'-va.pdf'),bytes);
 
+   await page.evaluate(()=>{
+    $('lang').value='es';$('lang').dispatchEvent(new Event('change',{bubbles:true}));
+   });
    // Regresión: un examen que ocupa varias hojas debe descargarse ENTERO.
    // El fallo histórico pasaba inadvertido porque sólo se comprobaba >=1 pág.
    // Se amplía la hoja únicamente en este navegador de pruebas, sin bancos.
@@ -237,7 +244,17 @@ async function main(){
    assert(multiImages>=multiPages,
     filename+': faltan imágenes de contenido de páginas posteriores ('+
     multiImages+'/'+multiPages+')');
-   assert.equal(multi.suggestedFilename(),'ficha repaso ud1 lat1 val.pdf');
+   assert.equal(multi.suggestedFilename(),'ficha repaso ud1 lat1.pdf');
+   fs.writeFileSync(path.join(artifacts,engineName+'-'+filename+'-es-multipagina.pdf'),multiBytes);
+   // Un salto antes de la última línea debe mantenerse aunque ya quepa.
+   await page.locator('#pdfPaginationRegression p').last().evaluate(el=>el.classList.add('exam-page-break'));
+   const explicitDownload=page.waitForEvent('download',{timeout:120000});
+   await page.locator('#pdfDownload').click();
+   const explicit=await explicitDownload;
+   const explicitBytes=fs.readFileSync(await explicit.path());
+   const explicitPages=(explicitBytes.toString('latin1').match(/\/Type\s*\/Page\b/g)||[]).length;
+   assert.equal(explicitPages,multiPages+1,filename+': se perdió el salto de página final');
+   fs.writeFileSync(path.join(artifacts,engineName+'-'+filename+'-es-salto-final.pdf'),explicitBytes);
    const multiStatus=await page.locator('#examinaPdfStatus').textContent();
    assert(!/no se pudo|no s’ha pogut|bloquead/i.test(multiStatus),
     filename+': exportación larga: '+multiStatus);
@@ -254,6 +271,38 @@ async function main(){
    const desktopPreview=await page.locator('#paper').boundingBox();
    assert(desktopActions&&desktopPreview&&desktopActions.y+desktopActions.height<=desktopPreview.y,
     filename+': la barra de escritorio se solapa con el papel al desplazar');
+   for(const [course,model,lang,code] of [
+    ['latin4','tablas','es','lat4'],
+    ['greek1','complete','va','gr1']
+   ]){
+    const content=await page.evaluate(({course,model,lang})=>{
+     for(const [id,value] of [['course',course],['model',model],['lang',lang],['sheetType','exam']]){
+      const field=$(id);field.value=value;field.dispatchEvent(new Event('change',{bubbles:true}));
+     }
+     document.querySelectorAll('#unitChoices .unit-choice').forEach(box=>{
+      box.checked=units[Number(box.value)]==='UD7';
+     });
+     if(course==='greek1'){
+      $('newSentences').value='ὁ γέρων τὴν ἐπιστολὴν γράφει.';
+      $('newSentences').dispatchEvent(new Event('input',{bubbles:true}));
+     }
+     generate();
+     $('examFinalMode').checked=true;
+     const copy=ExaminaPdfExport.prepareDocument();
+     return {questions:copy.querySelectorAll('.exam-question').length,text:copy.textContent,
+      control:!!copy.querySelector('#answerkey,.no-print,[data-exam-subscore]')};
+    },{course,model,lang});
+    assert(content.questions>0&&!content.control,filename+': contenido evaluable del PDF '+code);
+    if(course==='greek1')assert(content.text.includes('ὁ γέρων τὴν ἐπιστολὴν γράφει.'));
+    const pendingDownload=page.waitForEvent('download',{timeout:120000});
+    await page.locator('#pdfDownload').click();
+    const sample=await pendingDownload;
+    assert.equal(sample.suggestedFilename(),'ex ud7 '+code+(lang==='va'?' val':'')+'.pdf');
+    const sampleBytes=fs.readFileSync(await sample.path());
+    assert.equal(sampleBytes.subarray(0,5).toString('ascii'),'%PDF-');
+    assert(sampleBytes.length>10000,filename+': PDF incompleto '+code);
+    fs.writeFileSync(path.join(artifacts,engineName+'-'+filename+'-'+code+'-'+lang+'.pdf'),sampleBytes);
+   }
    assert.deepEqual(errors,[],filename+': errores JavaScript');
    await page.close();
   }
