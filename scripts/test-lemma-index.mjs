@@ -134,6 +134,12 @@ const standaloneGreek={schema:1,vocabulary:{grc:{'δελτα':{gr1:{entry:'δέ�
 assert.equal(uniqueLemmaFromData(standaloneGreek,'gr1','δέλτῳ'),null,
  'Una candidata griega no se puede usar como solución ni para el glosario de examen');
 
+const spellingVariants={schema:1,vocabulary:{grc:{'τισ':{gr1:{entry:'τις, τι'}}},lat:{}},
+ rows:{grc:[['τισ','τινός','PRO;GEN;SG',1],['τισ','τινὸς','PRO;GEN;SG',1]],lat:[]}};
+const exactLookup=query(spellingVariants,{course:'gr1',text:'Τινὸς'});
+assert.deepEqual(Array.from(exactLookup.items,x=>x.surface),['τινὸς','τινός'],
+ 'La consulta mantiene variantes gráficas y destaca primero la coincidencia literal.');
+
 const disallowed=query(data,{course:'gr1',mode:'lemma',text:'amo'});
 assert.equal(disallowed.total,0,'No debe mezclar cursos');
 assert.equal(query(data,{course:'lat1',text:'palabra-inventada'}).total,0);

@@ -7,9 +7,12 @@
 const ASSET='data/lemmas/teacher-forms.json';
 const names={lat1:'Latín I',lat4:'Latín 4.º ESO',gr1:'Griego I'};
 const langOf=course=>course==='gr1'?'grc':'lat';
-function normalize(value){
+function writtenForm(value){
  return String(value||'').trim().replace(/^[.,;:!?¿¡“”"'«»·()]+|[.,;:!?¿¡“”"'«»·()]+$/g,'')
-  .toLowerCase().normalize('NFD').replace(/\u0345/g,'ι')
+  .toLowerCase().normalize('NFC');
+}
+function normalize(value){
+ return writtenForm(value).normalize('NFD').replace(/\u0345/g,'ι')
   .replace(/\p{M}/gu,'').replace(/æ/g,'ae').replace(/œ/g,'oe')
   .replace(/ς/g,'σ').trim();
 }
@@ -74,7 +77,7 @@ function indexes(data){
 }
 function query(data,{course='lat1',mode='form',text='',max=100}={}){
  if(!names[course])throw Error('Curso desconocido');
- const lang=langOf(course),key=normalize(text);
+ const lang=langOf(course),key=normalize(text),written=writtenForm(text);
  if(!key||/\s/.test(key))return {total:0,items:[],invalid:!!key};
  const index=indexes(data);
  const candidates=(mode==='lemma'?index.lemmas[lang]:index.forms[lang]).get(key)||[];
@@ -82,11 +85,12 @@ function query(data,{course='lat1',mode='form',text='',max=100}={}){
  // Retain every distinct attested analysis, including homographs.
  const seen=new Set(),items=[];
  for(const item of matching){
-  const id=[item.lemma,normalize(item.surface),item.tags,item.source].join('|');
+  const id=[item.lemma,writtenForm(item.surface),item.tags,item.source].join('|');
   if(seen.has(id))continue;
   seen.add(id);items.push(item);
  }
- items.sort((a,b)=>a.lemma.localeCompare(b.lemma,'es')||
+ const exact=item=>mode!=='lemma'&&writtenForm(item.surface)===written;
+ items.sort((a,b)=>Number(exact(b))-Number(exact(a))||a.lemma.localeCompare(b.lemma,'es')||
   a.surface.localeCompare(b.surface,'es')||a.tags.localeCompare(b.tags));
  return {total:items.length,items:items.slice(0,max),invalid:false};
 }

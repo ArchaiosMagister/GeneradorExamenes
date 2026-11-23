@@ -217,9 +217,21 @@ const mNormalizeLatin=entry=>String(entry||'').split(',')[0]
   const number=await page.evaluate(()=>ExaminaGreekNumber.candidates());
   assert(number.some(x=>x.prompt==='ὁ αὐτὸς ἄνθρωπος'&&x.answer==='οἱ αὐτοὶ ἄνθρωποι'));
   assert(number.some(x=>x.prompt==='τὰ αὐτὰ δῶρα'&&x.answer==='τὸ αὐτὸ δῶρον'));
+  const polis=()=>page.evaluate(()=>{
+   const noun=greekVerifiedCorpus.find(x=>x.id==='n-πολις');
+   if(!noun||!greekMorphologyEligible(noun,greekLimit()))return null;
+   const modifier=greekAvailableSyntagmAdjectives(greekLimit()).find(x=>x.lemma==='καλός');
+   return greekCompleteNominalGroup(noun,true,modifier)?.rows.map(row=>row[1]);
+  });
+  assert.equal(await polis(),null,'El tema en -ι no entra antes de UD8');
   await greek(8);
-  assert(await page.evaluate(()=>!greekVerifiedCorpus.some(x=>x.id==='n-πολισ')),
-   'UD8: πόλις no se promueve sin el paradigma completo');
+  assert.deepEqual(await polis(),[
+   ['ἡ καλὴ πόλις','αἱ καλαὶ πόλεις'],
+   ['καλὴ πόλι','καλαὶ πόλεις'],
+   ['τὴν καλὴν πόλιν','τὰς καλὰς πόλεις'],
+   ['τῆς καλῆς πόλεως','τῶν καλῶν πόλεων'],
+   ['τῇ καλῇ πόλει','ταῖς καλαῖς πόλεσι(ν)']
+  ],'Paradigma ático de πόλις y concordancia femenina');
   assert.deepEqual(exceptions,[],'Excepciones de navegador');
   console.log('PR169 SINTAGMAS OK:',JSON.stringify(evidence));
  }finally{await browser.close()}

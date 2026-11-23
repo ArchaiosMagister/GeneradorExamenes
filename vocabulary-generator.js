@@ -5,6 +5,15 @@ const linguistic=()=>window.ExaminaOfflineLemmatizer;
 const key=s=>linguistic().normalize(s);
 const latinKey=s=>key(s).replace(/v/g,'u'); // u/v gráficas, sin cambiar los enunciados.
 const head=s=>String(s).split(',')[0].replace(/\s*\([^)]*\).*/,'').trim();
+const greekSpelling=value=>value.toLowerCase().normalize('NFC');
+// El grave contextual equivale al agudo final. Se conservan espíritu,
+// circunflejo e iota suscrita para distinguir lecturas homógrafas.
+const greekAccentKey=value=>greekSpelling(value).normalize('NFD')
+ .replace(/\u0300/g,'\u0301').normalize('NFC');
+const unitRange=value=>{
+ const range=/^UD\s*(\d+)(?:\s*[–—-]\s*(?:UD\s*)?(\d+))?(?:$|\s|[:.])/iu.exec(value||'');
+ return range?[Number(range[1]),Number(range[2]||range[1])]:null;
+};
 
 /* Los enunciados docentes de 1.ª pueden abreviar DOS temas regulares,
  * p. ej. «trānsportō, –āvī, –ātum (1ª)». Reconstruirlos SOLO cuando
@@ -754,23 +763,25 @@ function latinExpandedForms(bank){
  */
 function greekReferenceForms(bank){
  const map=new Map();
- const add=(form,record)=>{
+ const add=(form,record,hasSpelling=true)=>{
   const k=key(form);
   if(!k)return;
   if(!map.has(k))map.set(k,[]);
   const slot=map.get(k),id=record.lemma+'|'+record.entry+'|'+record.meaning;
-  const exact=form.normalize('NFC'),prior=slot.find(c=>c.lemma+'|'+c.entry+'|'+c.meaning===id);
-  if(prior)prior.exactForms.add(exact);
-  else slot.push({...record,exactForms:new Set([exact])});
+  const exact=greekSpelling(form),prior=slot.find(c=>c.lemma+'|'+c.entry+'|'+c.meaning===id);
+  if(prior){if(hasSpelling)prior.exactForms.add(exact)}
+  else slot.push({...record,exactForms:new Set(hasSpelling?[exact]:[])});
  };
- const endings=(stem,list,row)=>{for(const ending of list)add(stem+key(ending),row)};
+ // El paradigma por terminaciones orienta la búsqueda sin acreditar la acentuación.
+ const endings=(stem,list,row)=>{for(const ending of list)add(stem+key(ending),row,false)};
  for(const source of bank){
   if(!source?.entry||!source?.meaning)continue;
-  const entry=source.entry,alternatives=head(entry).split(/\s+o\s+/i).map(key).filter(Boolean);
-  for(const lemma of alternatives){
+  const entry=source.entry,alternatives=head(entry).split(/\s+o\s+/i).filter(Boolean);
+  for(const citation of alternatives){
+  const lemma=key(citation);
   const record={lemma,entry,meaning:source.meaning,attested:true,origin:'banco docente / paradigma regular'};
   // La forma de cita del propio banco es una identificación segura.
-  add(lemma,record);
+  add(citation,record);
   const parts=entry.split(',').slice(1).map(s=>key(s.replace(/[–−—-]/g,'').replace(/\([^)]*\)/g,'')));
   const part=(word)=>parts.some(p=>p===word),stem=lemma;
   if(lemma.endsWith('οσ')&&(part('ου')||part('ον'))){
@@ -1254,8 +1265,15 @@ const greekSpellingNotes={
 };
 const vocabularyIndexCache=new WeakMap(),greekReferenceCache=new WeakMap();
 const documentedSources=new Set([0,1,5,6,7]);
-function analyze(data,text,course,bank,{contextual=false}={}){
+function analyze(data,text,course,bank,{contextual=false,unit=''}={}){
  const lang=course==='gr1'?'grc':'lat';
+ const catalog=data.vocabulary?.[lang]||{};
+ const scope=unitRange(unit);
+ const unitPriority=row=>{
+  const range=scope&&unitRange(row.unit);
+  if(!range||range[0]>scope[0]||range[1]<scope[1])return 0;
+  return range[0]===scope[0]&&range[1]===scope[1]?2:1;
+ };
  let byCourse=vocabularyIndexCache.get(data);
  if(!byCourse){byCourse=new Map();vocabularyIndexCache.set(data,byCourse)}
  const indexKey=contextual?course+'-contextual':course;
@@ -1263,7 +1281,7 @@ function analyze(data,text,course,bank,{contextual=false}={}){
  if(!index){
   index=new Map();
   for(const [lemma,surface,tags,source] of data.rows[lang]){
-   const indexedEntry=data.vocabulary[lang][lemma]?.[course];
+   const indexedEntry=catalog[lemma]?.[course];
    if(!indexedEntry&&(!contextual||!documentedSources.has(source)))continue;
    const k=lang==='lat'?latinKey(surface):key(surface);if(!index.has(k))index.set(k,new Map());
    const candidates=index.get(k),old=candidates.get(lemma);
@@ -1271,7 +1289,7 @@ function analyze(data,text,course,bank,{contextual=false}={}){
     invariableEntry(indexedEntry?.entry);
    const attested=documentedSources.has(source)||lexicalInvariable;
    const exactForms=old?.exactForms||new Set(),morphTags=old?.morphTags||new Set();
-   if(lang==='grc'&&attested)exactForms.add(surface.normalize('NFC'));
+   if(lang==='grc'&&attested)exactForms.add(greekSpelling(surface));
    if(attested)morphTags.add(tags);
    candidates.set(lemma,{lemma,attested:attested||!!old?.attested,exactForms,morphTags});
   }
@@ -1331,7 +1349,7 @@ function analyze(data,text,course,bank,{contextual=false}={}){
  }
  return [...tokens.values()].map(({normal,form,context,identity,offset,precededBy})=>{
   const indexedCandidates=[...(index.get(normal)?.values()||[])].flatMap(c=>{
-   const original=data.vocabulary[lang][c.lemma]?.[course];
+   const original=catalog[c.lemma]?.[course];
    const matches=[...new Set([...(original?bankIndex.get('E'+normalizeCourse(original.entry))||[]:[]),
     ...(bankIndex.get('H'+normalizeCourse(c.lemma))||[])])];
    // Repetir una misma palabra en distintas UD con glosas ligeramente
@@ -1383,7 +1401,7 @@ function analyze(data,text,course,bank,{contextual=false}={}){
    const base=normal.slice(0,-3);
    const explicit=(latinExpandedForms(bank).get(base)||[]);
    const indexed=[...(index.get(base)?.values()||[])].map(x=>{
-    const teacher=data.vocabulary.lat[x.lemma]?.[course];
+    const teacher=catalog[x.lemma]?.[course];
     if(!teacher)return null;
     const found=(bankIndex.get('H'+latinKey(x.lemma))||[])[0]||teacher;
     return {...x,entry:found.entry,meaning:found.meaning||'',meaning_va:found.meaning_va||''};
@@ -1394,33 +1412,39 @@ function analyze(data,text,course,bank,{contextual=false}={}){
   const supplement=greek?.get(normal)||[];
   // La normalización ayuda a encontrar formas; la grafía exacta con
   // diacríticos decide el lema cuando hay coincidencia documentada.
-  const exactGreek=supplement.filter(x=>x.exactForms?.has(form.normalize('NFC')));
-  const exactIndexed=lang==='grc'?indexedCandidates.filter(x=>x.exactForms?.has(form.normalize('NFC'))):[];
+  const written=lang==='grc'?greekSpelling(form):'';
+  const greekCandidates=lang==='grc'?[...indexedCandidates,...supplement]:[];
+  const exactGreek=greekCandidates.filter(x=>x.exactForms?.has(written));
+  const accentKey=lang==='grc'?greekAccentKey(written):written;
+  const contextualAccents=exactGreek.length||accentKey===written?[]:
+   greekCandidates.filter(x=>x.exactForms?.has(accentKey));
   const regularLemmas=new Set(regular.map(candidate=>candidate.lemma));
-  let all=exactGreek.length?exactGreek:
-   [...(exactIndexed.length?exactIndexed:indexedCandidates).filter(x=>
+  let all=exactGreek.length?exactGreek:contextualAccents.length?contextualAccents:
+   [...indexedCandidates.filter(x=>
     !(supplement.length&&!x.attested&&!x.meaning)&&
     !(regularLemmas.has(x.lemma)&&!x.attested)),
     ...supplement,...directInvariable,...curated,...regular,...enclitic];
   if(contextual){
    for(const row of bankIndex.get('H'+normal)||[]){
-    if(lang==='grc'&&head(row.entry).normalize('NFC')!==form.normalize('NFC'))continue;
+    if(lang==='grc'&&greekSpelling(head(row.entry))!==written)continue;
     all.push({...row,lemma:normal,attested:false,lexicalCitation:true,origin:'forma de cita del banco docente'});
    }
   }
   // El banco de Latín 4.º puede no incluir el sustantivo plural bona.
   // La ficha del índice conserva la alternativa léxica sin tomar una glosa de otro curso.
   if(contextual&&lang==='lat'&&normal==='bona'&&!all.some(row=>row.lemma==='bona')){
-   const noun=data.vocabulary.lat.bona?.lat1;
+   const noun=catalog.bona?.lat1;
    if(noun)all.push({lemma:'bona',entry:noun.entry,meaning:'',attested:false,
     origin:'sustantivo plural registrado en el índice léxico'});
   }
   // §201 de Allen y Greenough: ēst es variante de edit, de edō.
   // Sin cantidad explícita, la grafía est admite también sum.
   if(contextual&&lang==='lat'&&normal==='est'){
-   if(form.normalize('NFC').toLowerCase()==='ēst')
+   const quantity=form.normalize('NFC').toLowerCase();
+   if(quantity==='ēst')
     all=all.filter(candidate=>latinKey(candidate.lemma)!=='sum');
-   all.push({lemma:'edo',entry:'edō, edere, ēdī, ēsum',meaning:'comer',
+   if(quantity==='ĕst')all=all.filter(candidate=>latinKey(candidate.lemma)!=='edo');
+   else all.push({lemma:'edo',entry:'edō, edere, ēdī, ēsum',meaning:'comer',
     attested:true,origin:'Allen y Greenough, §201'});
   }
   // El superlativo adverbial y el vocativo pueden tener la misma grafía.
@@ -1448,7 +1472,7 @@ function analyze(data,text,course,bank,{contextual=false}={}){
    const lemmaId=lang==='lat'?latinKey(candidate.lemma):'';
    const id=lang==='lat'?lemmaId+(latinMultiClass.has(lemmaId)?
     '|'+classifyVocabularyEntry(candidate.entry,course):''):
-    candidate.lemma+'|'+candidate.entry+'|'+candidate.meaning;
+    JSON.stringify([key(candidate.lemma),candidate.entry.normalize('NFC')]);
    const previous=compact.get(id);
    const score=x=>(x.attested?100:0)+(x.meaning?3:0)+
     (x.entry.split(',').length*5)+(/\([^)]*\)/.test(x.entry)?4:0)+
@@ -1459,13 +1483,13 @@ function analyze(data,text,course,bank,{contextual=false}={}){
   // Distinguir artículos de relativos de idéntica grafía sin acentos.
   if(lang==='grc'&&['ο','η','το'].includes(normal)){
    const accents={ο:['ὁ'],η:['ἡ'],το:['τὸ','τό']};
-   if(!accents[normal].includes(form.normalize('NFC')))
+   if(!accents[normal].includes(written))
     candidates=candidates.filter(x=>!x.entry.startsWith('ὁ, ἡ, τό'));
   }
   // Preposiciones y adverbios con grafía acentuada inequívoca:
   // al suprimir diacríticos, εἰς/εἷς y ἐν/ἕν no deben confundirse.
   if(lang==='grc'){
-   const spelled=form.normalize('NFC');
+   const spelled=written;
    const fixed={
     'εἰς':'εἰς','ἐν':'ἐν','ἐκ':'ἐκ','οὐ':'οὐ','οὐκ':'οὐ','ἀπὸ':'ἀπό',
     'διὰ':'διά','σὺν':'σύν','ἄνευ':'ἄνευ','περὶ':'περί'
@@ -1489,20 +1513,19 @@ function analyze(data,text,course,bank,{contextual=false}={}){
   }
   // 'ἀλλὰ' (conjunción) frente a 'ἄλλα' (neutro plural) son
   // grafías diferentes a pesar de la normalización sin acentos.
-  if(lang==='grc'&&normal==='ο'&&form.normalize('NFC')==='ὁ')
+  if(lang==='grc'&&normal==='ο'&&written==='ὁ')
    candidates=candidates.filter(x=>x.entry.startsWith('ὁ, ἡ, τό'));
-  if(lang==='grc'&&normal==='η'&&form.normalize('NFC')==='ἡ')
+  if(lang==='grc'&&normal==='η'&&written==='ἡ')
    candidates=candidates.filter(x=>x.entry.startsWith('ὁ, ἡ, τό'));
   // El plural del artículo (οἱ, αἱ) no debe confundirse con el relativo
   // (οἵ, αἵ): la acentuación del original conserva esa distinción.
   if(lang==='grc'&&(['οι','αι'].includes(normal))){
-   const written=form.normalize('NFC');
    if(['οἱ','αἱ'].includes(written))candidates=candidates.filter(x=>x.entry.startsWith('ὁ, ἡ, τό'));
    else if(['οἵ','αἵ'].includes(written))candidates=candidates.filter(x=>!x.entry.startsWith('ὁ, ἡ, τό'));
   }
   if(lang==='grc'&&normal==='αλλα'){
-   if(/ἀλλ[άὰ]/u.test(form))candidates=candidates.filter(x=>x.lemma==='αλλα');
-   else if(/ἄλλα/u.test(form))candidates=candidates.filter(x=>x.lemma!=='αλλα');
+   if(/ἀλλ[άὰ]/u.test(written))candidates=candidates.filter(x=>x.lemma==='αλλα');
+   else if(/ἄλλα/u.test(written))candidates=candidates.filter(x=>x.lemma!=='αλλα');
   }
   // Una preposición que rige exclusivamente ablativo permite descartar
   // un homógrafo verbal incompatible si TODOS los usos del texto comparten
@@ -1529,7 +1552,12 @@ function analyze(data,text,course,bank,{contextual=false}={}){
      classifyVocabularyEntry(row.entry,course)===category)
      .sort((a,b)=>(b.entry.split(',').length-a.entry.split(',').length)*100+
       (b.entry.length-a.entry.length))[0]:null;
-    const teacher=local||exact.find(row=>row.entry===candidate.entry)||matching[0];
+    const unitTeacher=scope?matching.filter(row=>unitPriority(row)&&
+     (!target||!row.course||row.course===target)&&
+     classifyVocabularyEntry(row.entry,course)===category)
+     .sort((a,b)=>unitPriority(b)-unitPriority(a)||
+      Number(b.entry===candidate.entry)-Number(a.entry===candidate.entry))[0]:null;
+    const teacher=unitTeacher||local||exact.find(row=>row.entry===candidate.entry)||matching[0];
     const lexical=teacher?{...candidate,entry:teacher.entry,meaning:teacher.meaning||'',meaning_va:teacher.meaning_va||''}:candidate;
     const id=JSON.stringify([lexical.lemma,lexical.entry,lexical.meaning]);
     if(!preferred.has(id)||lexical.attested)preferred.set(id,lexical);
@@ -1538,7 +1566,7 @@ function analyze(data,text,course,bank,{contextual=false}={}){
   }
   const resolved=candidates.length===1&&candidates[0].attested;
   const spellingHint=lang==='grc'?Object.entries(greekSpellingNotes)
-   .find(([sample])=>sample.normalize('NFC')===form.normalize('NFC'))?.[1]:
+   .find(([sample])=>greekSpelling(sample)===written)?.[1]:
    lang==='lat'?latinSpellingNotes[normal]:undefined;
   // Señalar erratas y abreviaturas sin modificar el original ni simular
   // una flexión contrastada. Distinguir sugerencia de evidencia.
@@ -1913,14 +1941,14 @@ function vocabularyRequiresReview(row){
   '<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>'+
   titleParagraph+body+'<w:sectPr>'+layout+'</w:sectPr></w:body></w:document>';
 }
-const analysisVersion=6; // Reanalizar con nuevas formas contrastadas, conservando ediciones y decisiones docentes.
+const analysisVersion=7; // Reanalizar con nuevas formas contrastadas, conservando ediciones y decisiones docentes.
 function needsAnalysis(unit,course){
  return !!unit.text?.trim()&&(unit.analysisVersion!==analysisVersion||
-  unit.analyzedCourse!==course||unit.analyzedText!==unit.text);
+  unit.analyzedCourse!==course||unit.analyzedText!==unit.text||unit.analyzedUnit!==unit.title);
 }
 function bankSignature(bank){
  let hash=2166136261;
- const content=JSON.stringify(bank.map(({entry,meaning,meaning_va})=>[entry,meaning,meaning_va]));
+ const content=JSON.stringify(bank.map(({entry,meaning,meaning_va,unit})=>[entry,meaning,meaning_va,unit]));
  for(let i=0;i<content.length;i++)hash=Math.imul(hash^content.charCodeAt(i),16777619);
  return (hash>>>0).toString(16);
 }
@@ -1928,29 +1956,12 @@ function reviewedRows(unit,course,data,bank){
  const decisions=unit.decisions?.[course]||[];
  const byIdentity=new Map(decisions.map(row=>[row.identity,row]));
  const legacy=new Map(decisions.filter(row=>!row.identity).map(row=>[row.form,row]));
- return analyze(data,unit.text,course,bank,{contextual:true}).map(row=>{
+ return analyze(data,unit.text,course,bank,{contextual:true,unit:unit.title}).map(row=>{
   const decision=byIdentity.get(row.identity)||legacy.get(row.form);
   return decision?{...row,...decision,identity:row.identity,form:row.form}:row;
  });
 }
-function applyLatinEditorialProjectCorrections(project){
- const sources=[];
- if(project?.course==='lat1'&&Array.isArray(project.units))sources.push(project.units);
- if(Array.isArray(project?.workspaces?.lat1?.units))
-  sources.push(project.workspaces.lat1.units);
- for(const units of new Set(sources)){
-  for(const u of units){
-   if(!/^UD\s*10$/iu.test(u.title)||typeof u.text!=='string')continue;
-   const revised='Pecunia carere nonnullis philosophis placebat.';
-   for(const prior of ['Pecunia carere nonulli philosophi placebat.',
-    'Pecunia carere nonnulli philosophi placebat.']){
-    if(u.text.includes(prior))u.text=u.text.replaceAll(prior,revised);
-   }
-  }
- }
-}
 function migrateProject(project){
- applyLatinEditorialProjectCorrections(project);
  for(const unit of project.units){
   const source=unit.decisions,decisions={};
   for(const course of ['lat1','lat4','gr1']){
@@ -2098,7 +2109,7 @@ function init(){
    const dot=document.createElement('span');dot.className='vg-unit-dot';dot.setAttribute('aria-hidden','true');
    const label=document.createElement('span');label.textContent=u.title||'UD'+(i+1);
    button.append(dot,label);
-   button.onclick=()=>{selected=i;render()};
+   button.onclick=()=>{selected=i;render();host.children[i]?.focus({preventScroll:true})};
    host.append(button);
   });
  }
@@ -2309,9 +2320,9 @@ function init(){
  };
  for(const [id,field] of [['vgTitle','title'],['vgText','text'],['vgMode','mode']])$(id).oninput=()=>{
   unit()[field]=$(id).value;
-  if(field==='text'){
-   $('vgResults').replaceChildren();
-   status('Texto modificado. El próximo análisis recuperará las decisiones de los contextos conservados.');
+  if(field==='text'||field==='title'){
+   renderReview();
+   status('Unidad modificada. El próximo análisis recuperará las decisiones de los contextos conservados.');
   }
   save();if(field==='mode')render();else renderUnitButtons();
  };
@@ -2327,7 +2338,7 @@ function init(){
    const updates=units.filter(u=>u.text.trim()&&(stale(u)||u.analyzedBank!==signature))
     .map(u=>({u,rows:reviewedRows(u,project.course,data,bank)}));
    for(const {u,rows} of updates)Object.assign(u,{rows,analyzed:true,analysisVersion,
-    analyzedText:u.text,analyzedCourse:project.course,analyzedBank:signature});
+    analyzedText:u.text,analyzedCourse:project.course,analyzedUnit:u.title,analyzedBank:signature});
    save();render();
    const pending=units.filter(u=>u.text.trim()).flatMap(u=>u.rows)
     .filter(r=>vocabularyRequiresReview(r)&&r.status!=='omitted').length;

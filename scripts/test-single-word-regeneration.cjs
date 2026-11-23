@@ -136,6 +136,7 @@ async function runPage(browser,filename){
  await page.waitForFunction(()=>!!window.ExaminaTeacherLexBankReady,null,{timeout:15000}).catch(()=>{});
  const cases=[
   ['latin1','tablas','UD7',['decl','verb','forms']],
+  ['latin1','morf','UD1',['decl']],
   ['latin1','morf','UD7',['decl','verb','forms']],
   ['latin1','mixto','UD7',['forms']],
   ['latin4','tablas','UD7',['decl','verb','forms']],

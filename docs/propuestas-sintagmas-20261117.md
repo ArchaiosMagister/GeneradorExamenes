@@ -139,3 +139,12 @@ El docente **aprueba LI-01–LI-06, L4-01–L4-06 y GR-01–GR-16**. GR-17 queda
 - **Seguridad:** un sustantivo con paradigma incompleto, excepcional no verificado o una clase todavía no estudiada no se incorpora aunque su escritura parezca regular.
 
 Se comprueba mediante las pruebas de cobertura por UD gramatical, incluidas las condiciones de que *templum magnum* se genere en Latín 4.º UD3 **sin estar en su vocabulario** y que un adjetivo griego de primera clase continúe autorizado en UD5 aunque su etiqueta léxica sea una UD posterior.
+
+## Cotejo de GR-17 · 23/11/2026
+
+El cuadro ático de *πόλις, –εως (ἡ)* coincide en sus diez casillas con el
+índice docente y con Smyth (§§ 268, 270–272). Se habilita desde UD8, que
+introduce la tercera declinación. El dativo plural admite *πόλεσι* y
+*πόλεσιν*. El vocativo singular es *πόλι* y se presenta sin artículo.
+La ficha figura en el repertorio de paradigmas de declinación y no se
+añade al listado exigible. [Smyth, Greek Grammar](https://grammars.alpheios.net/smyth/xhtml/body.1_div1.2_div2.4.html)

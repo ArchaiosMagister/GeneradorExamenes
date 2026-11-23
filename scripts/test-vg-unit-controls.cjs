@@ -58,6 +58,18 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
   await page.fill('#vgText','Servus currit');
   await page.locator('#vgUnitButtons .vg-unit-button').first().click();
 
+  await page.click('#vgAnalyzeAll');
+  await page.waitForFunction(()=>document.getElementById('vgResults').childElementCount>0);
+  const layout=()=>page.evaluate(()=>{
+   const editor=document.getElementById('vgText').getBoundingClientRect();
+   const review=document.getElementById('vgResults').getBoundingClientRect();
+   return {sideBySide:review.left>=editor.right,overflow:document.documentElement.scrollWidth>innerWidth+1};
+  });
+  assert.deepEqual(await layout(),{sideBySide:true,overflow:false});
+  await page.setViewportSize({width:390,height:844});
+  assert.deepEqual(await layout(),{sideBySide:false,overflow:false});
+  await page.setViewportSize({width:1150,height:880});
+
   const colors={};
   for(const mode of ['light','dark','oled'])colors[mode]=await assertColors(mode);
   assert.deepEqual(errors,[],'Errores JS durante las comprobaciones de modo claro y oscuro');

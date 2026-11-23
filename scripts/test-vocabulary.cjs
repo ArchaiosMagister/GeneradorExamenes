@@ -26,29 +26,41 @@ assert(!latinSource.includes('"entry": "tenerus, –a, –um"'));
 assert.equal(data.vocabulary.lat.tener.lat1.entry,'tener, tenera, tenerum');
 assert.equal(data.vocabulary.lat.tenerus,undefined);
 const vocabSource=fs.readFileSync(path.join(root,'vocabulary-generator.js'),'utf8');
-const migrationStart=vocabSource.indexOf('function applyLatinEditorialProjectCorrections(project){');
-const migrationEnd=vocabSource.indexOf('function migrateProject(project){',migrationStart);
-assert(migrationStart>0&&migrationEnd>migrationStart,'Falta migración de la UD10');
-const correctText=new Function('project',vocabSource.slice(migrationStart,migrationEnd)+
- '\napplyLatinEditorialProjectCorrections(project);');
+const migrationStart=vocabSource.indexOf('function migrateProject(project){');
+const migrationEnd=vocabSource.indexOf('window.ExaminaVocabulary=',migrationStart);
+assert(migrationStart>0&&migrationEnd>migrationStart);
+const migrate=new Function('project',vocabSource.slice(migrationStart,migrationEnd)+
+ '\nreturn migrateProject(project);');
 const oldText='Pecunia carere nonnulli philosophi placebat.';
-const revisedText='Pecunia carere nonnullis philosophis placebat.';
-const testProject={course:'lat1',units:[
- {title:'UD2',text:'Magister teneros pueros docebat.',rows:[]},
- {title:'UD10',text:'Puer amat. '+oldText+' Puella laborat.',rows:[]},
- {title:'UD11',text:oldText,rows:[]}
-]};
-correctText(testProject);
-assert.equal(testProject.units[0].text,'Magister teneros pueros docebat.');
-assert.equal(testProject.units[1].text,'Puer amat. '+revisedText+' Puella laborat.');
-assert.equal(testProject.units[2].text,oldText,'No modificar oraciones de otras unidades');
-correctText(testProject);
-assert.equal(testProject.units[1].text,'Puer amat. '+revisedText+' Puella laborat.',
- 'La migración es idempotente');
-const greekProject={course:'gr1',units:[{title:'UD10',text:oldText,rows:[]}]};
-correctText(greekProject);
-assert.equal(greekProject.units[0].text,oldText,'No cambiar textos griegos');
+const testProject={course:'lat1',units:[{title:'UD10',text:oldText,rows:[]}]};
+assert.equal(migrate(testProject).units[0].text,oldText,
+ 'La migración de proyectos debe respetar el texto escrito o importado');
 const bank=[{entry:'amo, amavi, amatum (1ª)',meaning:'MI TRADUCCIÓN'}];
+// La misma palabra puede tener una acepción docente distinta en otra unidad.
+const scopedBank=[
+ {...bank[0],unit:'UD1'},
+ {...bank[0],unit:'UD3–4',meaning:'Glosa del bloque'},
+ {...bank[0],unit:'UD4',meaning:'Glosa de UD4',meaning_va:'Glossa pròpia'}
+];
+const scoped=(unit,course='lat1')=>api.analyze(data,'amant',course,scopedBank,{contextual:true,unit})[0];
+assert.equal(scoped('UD3 · Lectura').meaning,'Glosa del bloque');
+assert.equal(scoped('UD4').meaning,'Glosa de UD4');
+assert.equal(scoped('UD4').meaning_va,'Glossa pròpia');
+const empty={rows:{lat:[],grc:[]}};
+assert.doesNotThrow(()=>api.analyze(empty,'bona','lat4',[],{contextual:true}));
+const latinQuantities=api.analyze(data,'ĕst. ēst. est.','lat1',[],{contextual:true});
+assert.deepEqual(Array.from(latinQuantities,r=>r.lemma),['sum','edo','']);
+const exactGreekIndex={rows:{grc:[['ἔρχομαι','φέρε','V;IMP',0]]},
+ vocabulary:{grc:{'ἔρχομαι':{gr1:{entry:'ἔρχομαι'}}}}};
+const competing=api.analyze(exactGreekIndex,'Φέρε','gr1',[{entry:'φέρε',meaning:'glosa de prueba'}],
+ {contextual:true})[0];
+assert.equal(competing.status,'review','Una coincidencia exacta del banco no debe ocultar la del índice');
+assert.equal(competing.candidates.length,2);
+const greekAcutes={rows:{grc:[['βαρύς','βαρύ','ADJ;NOM',0],['βαρύω','βάρυ','V;IMP',0]]},
+ vocabulary:{grc:{'βαρύς':{gr1:{entry:'βαρύς'}},'βαρύω':{gr1:{entry:'βαρύω'}}}}};
+assert.equal(api.analyze(greekAcutes,'βαρὺ','gr1',[])[0].lemma,'βαρύς');
+assert.equal(api.analyze(data,'Ὁ','gr1',[])[0].status,'documented',
+ 'La capitalización inicial no altera el análisis de un artículo');
 const rows=api.analyze(data,'Amo amo amamus xyzxyz','lat1',bank);
 assert.equal(rows.length,3);assert.equal(rows.find(r=>r.form==='xyzxyz').status,'unknown');
 assert.equal(rows.find(r=>r.form==='amamus').meaning,'MI TRADUCCIÓN');
