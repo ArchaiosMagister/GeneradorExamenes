@@ -21284,6 +21284,12 @@ html[data-appearance="oled"] body.exam-redesign #exam-ui-shell :is(#exam-ui-core
    '#examPreviewActions{display:flex;flex-wrap:wrap;gap:8px;align-items:center;min-width:0}',
    '#examPreviewActions button{min-height:44px;margin:0;padding:6px 10px}',
    '#paper #answerkey{display:none!important}',
+   '@media screen{#examLayout #paper .exam-sheet{zoom:var(--examina-preview-zoom,1)}#examLayout #paper{overflow-x:auto}}',
+   '#examPreviewActions #examPreviewZoom{display:flex;align-items:center;justify-content:flex-end;gap:6px;flex:0 0 auto;grid-column:1/-1;width:100%;margin-left:auto;min-width:0;font:650 13px/1.3 system-ui,sans-serif;color:var(--ink,#253750)}',
+   '#examPreviewActions #examPreviewZoom button{flex:0 0 44px;inline-size:44px;min-inline-size:44px;max-inline-size:44px;min-height:44px;padding:5px;text-align:center;font-size:19px;background:var(--secondary-bg);border:1px solid var(--secondary-border);color:var(--secondary-ink)}',
+   '#examPreviewActions #examPreviewZoom button:disabled{opacity:.48;cursor:not-allowed}',
+   '#examPreviewActions #examZoomValue{min-width:45px;text-align:center;font-variant-numeric:tabular-nums;white-space:nowrap}',
+   '#examPreviewActions #examPreviewZoom button:focus-visible{outline:2px solid var(--focus-course,#315c93);outline-offset:2px}',
    '#examLayout #docx{background:#19599e;color:#fff}',
    '#examLayout :is(#pdfDownload,#print){background:#a3222b;color:#fff}',
    '#examPreviewActions [role="status"]{width:100%;margin:0}',
@@ -21332,6 +21338,10 @@ html[data-appearance="oled"] body.exam-redesign #exam-ui-shell :is(#exam-ui-core
      :tr(active.dataset.labelEs,active.dataset.labelVa);
   }
   el('examPreviewActions')?.setAttribute('aria-label',tr('Acciones de la vista previa','Accions de la vista prèvia'));
+  el('examPreviewZoom')?.setAttribute('aria-label',tr('Zoom de la vista previa','Zoom de la vista prèvia'));
+  text(el('examZoomLabel'),tr('Zoom','Zoom'));
+  el('examZoomOut')?.setAttribute('aria-label',tr('Reducir zoom','Reduir el zoom'));
+  el('examZoomIn')?.setAttribute('aria-label',tr('Ampliar zoom','Augmentar el zoom'));
   text(el('academicNav'),tr('Herramientas académicas','Eines acadèmiques'));
   text(el('academicWorkspaceTitle'),tr('Herramientas académicas','Eines acadèmiques'));
   text(el('academicWorkspaceIntro'),tr('Consulta formas y paradigmas, revisa incidencias y gestiona autorizaciones docentes. No son pasos necesarios para crear un examen habitual.','Consulta formes i paradigmes, revisa incidències i gestiona autoritzacions docents. No són passos necessaris per a crear un examen habitual.'));
@@ -21358,7 +21368,39 @@ html[data-appearance="oled"] body.exam-redesign #exam-ui-shell :is(#exam-ui-core
   const status=doc.createElement('p');status.id='examinaPdfStatus';status.setAttribute('role','status');
   const validation=doc.createElement('p');validation.id='exportValidationStatus';validation.setAttribute('role','status');
   const draftStatus=el('draftStatus');draftStatus.textContent='';
-  toolbar.append(el('saveDraft'),el('restoreDraft'),el('docx'),pdf,el('print'),draftStatus,status,validation);
+  // Zoom de lectura exclusivo de la vista previa: nunca modifica los datos del examen.
+  const zoom=doc.createElement('div');zoom.id='examPreviewZoom';zoom.className='exam-preview-zoom';
+  zoom.setAttribute('role','group');
+  const zoomLabel=doc.createElement('span');zoomLabel.id='examZoomLabel';
+  const zoomOut=doc.createElement('button');zoomOut.id='examZoomOut';zoomOut.type='button';
+  zoomOut.className='secondary';zoomOut.textContent='−';
+  const zoomValue=doc.createElement('output');zoomValue.id='examZoomValue';
+  zoomValue.setAttribute('for','examZoomOut examZoomIn');
+  zoomValue.setAttribute('aria-live','polite');
+  const zoomIn=doc.createElement('button');zoomIn.id='examZoomIn';zoomIn.type='button';
+  zoomIn.className='secondary';zoomIn.textContent='+';
+  zoom.append(zoomLabel,zoomOut,zoomValue,zoomIn);
+  const zoomStorageKey='examina_preview_zoom_v1';
+  let zoomPercent=100;
+  try{
+   const stored=Number(root.localStorage.getItem(zoomStorageKey));
+   if(Number.isInteger(stored)&&stored>=50&&stored<=200&&stored%10===0)zoomPercent=stored;
+  }catch(_error){/* El zoom funciona incluso sin almacenamiento local. */}
+  const applyZoom=()=>{
+   el('paper').style.setProperty('--examina-preview-zoom',String(zoomPercent/100));
+   zoomValue.textContent=zoomPercent+'%';
+   zoomOut.disabled=zoomPercent<=50;
+   zoomIn.disabled=zoomPercent>=200;
+  };
+  const changeZoom=delta=>{
+   zoomPercent=Math.max(50,Math.min(200,zoomPercent+delta));
+   applyZoom();
+   try{root.localStorage.setItem(zoomStorageKey,String(zoomPercent))}catch(_error){}
+  };
+  zoomOut.addEventListener('click',()=>changeZoom(-10));
+  zoomIn.addEventListener('click',()=>changeZoom(10));
+  applyZoom();
+  toolbar.append(el('saveDraft'),el('restoreDraft'),el('docx'),pdf,el('print'),zoom,draftStatus,status,validation);
   el('paper').before(toolbar);
   new ResizeObserver(()=>{
    if(toolbar.offsetHeight>0)el('examLayout').style.setProperty('--preview-actions-height',toolbar.offsetHeight+'px');
