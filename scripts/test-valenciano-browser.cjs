@@ -25,7 +25,9 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
      const paper=document.getElementById('paper');
      results[code]={header:paper.textContent.includes('1r trimestre'),language:document.documentElement.lang,
       noGrade:!/(?:Nota sobre|Nota:)/.test(paper.textContent),
-      cases:[...paper.querySelectorAll('.exam-nouns th')].map(cell=>cell.textContent.trim())};
+      cases:[...paper.querySelectorAll('.exam-nouns th')].map(cell=>cell.textContent.trim()),
+      solution:paper.querySelector('#answerkey')?.textContent||'',
+      solutionWord:wordBlock(paper.querySelector('#answerkey'))};
     }
     const sample=document.createElement('div');
     sample.innerHTML=greekVerbTable(greekVerifiedCorpus.filter(item=>item.id==='ev-βουλομαι'));
@@ -65,6 +67,10 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
     assert(record.header,file+': ordinal de trimestre incorrecto en '+course);
     assert.equal(record.language,'ca-valencia',file+': idioma HTML incorrecto en '+course);
     assert(record.noGrade,file+': se imprime una Nota en '+course);
+    assert(!/nominativo|acusativo|de indicativo/i.test(record.solution),
+     file+': nomenclatura del solucionario en castellano en '+course);
+    assert(/nominatiu|acusatiu|d’indicatiu/i.test(record.solutionWord),
+     file+': falta la nomenclatura valenciana en el Word de soluciones de '+course);
    }
    assert(report.results.greek1.cases.includes('Nominatiu')&&report.results.greek1.cases.includes('Datiu'),
     file+': las tablas de Griego I deben localizar los nombres de los casos');

@@ -117,6 +117,7 @@ jobs:
           name: site-ci-${{ github.sha }}
           path: validated
       - name: Probar la distribución empaquetada y WebKit
+        shell: bash
         run: |
           set -euo pipefail
           (cd validated && sha256sum --strict --check SHA256SUMS)
