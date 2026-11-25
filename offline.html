@@ -324,6 +324,7 @@ html[data-course="greek1"] .paper .exam-sheet *{font-style:normal!important}
 .paper .reference-morph-exam .reference-morph-table th,.paper .reference-morph-exam .reference-morph-table td{border:.5pt solid #444;height:24pt;padding:2pt 4pt;font-weight:normal}
 .paper .reference-morph-exam .reference-morph-table thead th{font-weight:normal;text-align:center}
 .paper .reference-morph-exam .reference-verb-table thead th{font-weight:bold}
+.paper [data-third-declension-table] tbody td:first-child{text-align:left}
 .paper .reference-morph-exam .reference-analysis-item{margin-bottom:14pt}
 .paper .reference-morph-exam .reference-answer-line{display:block;min-height:10pt}
 .paper .reference-morph-exam .exam-grade{text-align:center;margin:18pt 0}
@@ -7015,7 +7016,8 @@ function generateLatinMorphologyReference(){
  const words=stickyExamRows('forms',()=>examQuotaPick(latinExamFormCandidates(chosen),cfg.words,()=>latinExamForms(chosen,cfg.words)));
  const question=(kind,index,heading)=>'<p class="exam-question" data-morph-kind="'+kind+'"><span class="exam-q-number">'+index+'.</span> '+esc(heading)+'</p>';
  let n=0;
- const first=examQuestionEnabled('decl')?question('decl',++n,morphSyntagmHeading(cfg,va)+' (1 p.).')+morphSyntagmRows(cfg):'';
+ const third=examQuestionEnabled('decl')?latinThirdDeclensionMarkup(chosen):{task:'',key:''};
+ const first=examQuestionEnabled('decl')?question('decl',++n,morphSyntagmHeading(cfg,va)+' (1 p.).')+morphSyntagmRows(cfg)+third.task:'';
  const second=examQuestionEnabled('verb')?question('verb',++n,t('Analiza morfológicamente las siguientes formas verbales (1 p.).','Analitza morfològicament les formes verbals següents (1 p.).'))+
   '<table class="exam-paradigm reference-morph-table reference-verb-table" data-col-widths="42,20,19,19">'+
   '<thead><tr><th>'+t('Forma verbal','Forma verbal')+'</th><th>'+t('Persona y número','Persona i nombre')+'</th><th>'+t('Tiempo','Temps')+'</th><th>'+t('Voz','Veu')+'</th></tr></thead>'+
@@ -7040,7 +7042,7 @@ function generateLatinMorphologyReference(){
  const notice=problems.length?'<p class="hint">Material morfológico disponible insuficiente ('+esc(problems.join('; '))+'). No se han añadido soluciones hipotéticas.</p>':'';
  const total=[first,second,pronSection,last].filter(Boolean).length;
  const solution='<div id="answerkey" class="solutions"><h2>'+esc(tr('key'))+'</h2><ol>'+
-  (first?'<li data-morph-kind="decl">Sintagmas editables: no se generan soluciones automáticas sin concordancia verificada.</li>':'')+
+  (first?'<li data-morph-kind="decl">Sintagmas editables: no se generan soluciones automáticas sin concordancia verificada.'+third.key+'</li>':'')+
   (second?'<li data-morph-kind="verb">'+verbItems.map(x=>'<p>'+esc(x.form+' — '+x.person+', '+x.tense+', voz '+x.voice+'; '+x.entry)+'</p>').join('')+'</li>':'')+
   (pronSection?'<li data-morph-kind="pronouns">'+pronItems.map(x=>'<p>'+esc(x.form+' — '+x.type+', '+x.case+', '+x.gender+', '+x.number)+'</p>').join('')+'</li>':'')+
   (last?'<li data-morph-kind="forms">'+words.map(x=>'<p>'+esc(x.form+' — '+x.answer)+'</p>').join('')+'</li>':'')+'</ol></div>';
@@ -7633,6 +7635,183 @@ function latinExamConjugationTable(items,solutions=false){
 }
 // Formas de adjetivos de tercera documentadas en data/lemmas/teacher-forms.json.
 const latinThirdAdjectiveRows={"fortis":{"forte":["ACC;NEUT;SG","NOM;NEUT;SG","VOC;NEUT;SG"],"fortem":["ACC;MASC+FEM;SG"],"fortēs":["ACC;MASC+FEM;PL","NOM;MASC+FEM;PL","VOC;MASC+FEM;PL"],"fortī":["ABL;MASC+FEM+NEUT;SG","DAT;MASC+FEM+NEUT;SG"],"fortia":["ACC;NEUT;PL","NOM;NEUT;PL","VOC;NEUT;PL"]},"acer":{"ācer":["NOM;MASC;SG","VOC;MASC;SG"],"ācre":["ACC;NEUT;SG","NOM;NEUT;SG","VOC;NEUT;SG"],"ācrem":["ACC;MASC+FEM;SG"],"ācrēs":["ACC;MASC+FEM;PL","NOM;MASC+FEM;PL","VOC;MASC+FEM;PL"],"ācrī":["ABL;MASC+FEM+NEUT;SG","DAT;MASC+FEM+NEUT;SG"]},"felix":{"fēlīcem":["ACC;MASC+FEM;SG"],"fēlīcēs":["ACC;MASC+FEM;PL","NOM;MASC+FEM;PL","VOC;MASC+FEM;PL"],"fēlīcī":["ABL;MASC+FEM+NEUT;SG","DAT;MASC+FEM+NEUT;SG"],"fēlīcia":["ACC;NEUT;PL","NOM;NEUT;PL","VOC;NEUT;PL"],"fēlīcibus":["ABL;MASC+FEM+NEUT;PL","DAT;MASC+FEM+NEUT;PL"]},"omnis":{"omne":["ACC;NEUT;SG","NOM;NEUT;SG","VOC;NEUT;SG"],"omnem":["ACC;MASC+FEM;SG"],"omnēs":["ACC;MASC+FEM;PL","NOM;MASC+FEM;PL","VOC;MASC+FEM;PL"],"omnī":["ABL;MASC+FEM+NEUT;SG","DAT;MASC+FEM+NEUT;SG"],"omnia":["ACC;NEUT;PL","NOM;NEUT;PL","VOC;NEUT;PL"]},"brevis":{"breve":["ACC;NEUT;SG","NOM;NEUT;SG","VOC;NEUT;SG"],"brevem":["ACC;MASC+FEM;SG"],"brevēs":["ACC;MASC+FEM;PL","NOM;MASC+FEM;PL","VOC;MASC+FEM;PL"],"brevī":["ABL;MASC+FEM+NEUT;SG","DAT;MASC+FEM+NEUT;SG"],"brevia":["ACC;NEUT;PL","NOM;NEUT;PL","VOC;NEUT;PL"]},"prudens":{"prūdēns":["ACC;NEUT;SG","NOM;MASC+FEM+NEUT;SG","VOC;MASC+FEM+NEUT;SG"],"prūdentem":["ACC;MASC+FEM;SG"],"prūdentēs":["ACC;MASC+FEM;PL","NOM;MASC+FEM;PL","VOC;MASC+FEM;PL"],"prūdentī":["ABL;MASC+FEM+NEUT;SG","DAT;MASC+FEM+NEUT;SG"],"prūdentia":["ACC;NEUT;PL","NOM;NEUT;PL","VOC;NEUT;PL"]},"ingens":{"ingēns":["ACC;NEUT;SG","NOM;MASC+FEM+NEUT;SG","VOC;MASC+FEM+NEUT;SG"],"ingentem":["ACC;MASC+FEM;SG"],"ingentēs":["ACC;MASC+FEM;PL","NOM;MASC+FEM;PL","VOC;MASC+FEM;PL"],"ingentī":["ABL;MASC+FEM+NEUT;SG","DAT;MASC+FEM+NEUT;SG"],"ingentia":["ACC;NEUT;PL","NOM;NEUT;PL","VOC;NEUT;PL"]}};
+const latinThirdDeclensionDefaults={enabled:false,adjectives:false,count:10};
+let latinThirdDeclensionSettings={...latinThirdDeclensionDefaults};
+function latinThirdDeclensionAvailable(chosen=selectedUnits()){
+ return currentCourse()==='latin1'&&$('model').value==='morf'&&latinFocusUnit(chosen)>=4;
+}
+// Los lemas regulares cotejados y los temas en -i con paradigma individual
+// permiten preguntar cualquiera de sus casillas sin introducir formas dudosas.
+const latinThirdDeclensionRegularNouns=new Set([
+ 'rex','consul','crimen','dux','frater','homo','miles','senator','tempus','corpus',
+ 'iter','nomen','opus','pax','scelus','eques','ius'
+]);
+const latinThirdDeclensionCases=[
+ ['NOM','Nominativo','Nominatiu',0],['ACC','Acusativo','Acusatiu',2],
+ ['GEN','Genitivo','Genitiu',3],['DAT','Dativo','Datiu',4],['ABL','Ablativo','Ablatiu',5]
+];
+const latinThirdDeclensionGenders={MASC:['masculino','masculí'],FEM:['femenino','femení'],NEUT:['neutro','neutre']};
+function latinThirdDeclensionPool(chosen){
+ const nouns=latinSyntagmNouns(chosen).flatMap(({x,p})=>{
+  const lemma=examKey(x.entry);
+  if(!['3mf','3n'].includes(p.kind)||!(
+   latinThirdDeclensionRegularNouns.has(lemma)||Object.hasOwn(LATIN_THIRD_VERIFIED_GENITIVES,lemma)||
+   Object.hasOwn(LATIN_VERIFIED_NEUTER_I_STEMS,lemma)||Object.hasOwn(LATIN_VERIFIED_MF_I_STEMS,lemma)))return [];
+  return [{lemma,entry:latinDisplayEnunciation(x.entry).replace(/\s*\([^)]*\)\s*$/u,''),
+   gender:p.genders?.length===2?'mf':p.gender,
+   forms:latinThirdDeclensionCases.flatMap(([code,,,index])=>
+    p.forms.map((row,number)=>({code,number,gender:'',answer:latinExamSurface(row[index],x.entry)})))}];
+ });
+ if(latinFocusUnit(chosen)<5||!latinThirdDeclensionSettings.adjectives)return nouns;
+ const adjectives=new Map();
+ for(const {entry} of latinSyntagmSources()){
+  const lemma=examKey(entry);
+  if(adjectives.has(lemma)||!Object.hasOwn(latinThirdAdjectiveRows,lemma))continue;
+  // Los homógrafos nominales no sirven de enunciado para un adjetivo.
+  if(mNoun(entry)||!entry.includes(','))continue;
+  const forms=new Map();
+  for(const [form,tags] of Object.entries(latinThirdAdjectiveRows[lemma])){
+   for(const tag of tags){
+    const [code,genders,number]=tag.split(';');
+    if(!latinThirdDeclensionCases.some(([caseCode])=>caseCode===code))continue;
+    for(const gender of genders.split('+')){
+     const id=[code,number,gender].join('/');
+     if(!forms.has(id))forms.set(id,{code,number:Number(number==='PL'),gender,answers:[]});
+     forms.get(id).answers.push(form);
+    }
+   }
+  }
+  adjectives.set(lemma,{lemma,entry:latinDisplayEnunciation(entry),
+   forms:[...forms.values()].map(({answers,...request})=>({...request,answer:answers.join(' / ')}))});
+ }
+ return [...nouns,...adjectives.values()];
+}
+function latinThirdDeclensionRows(chosen){
+ return stickyExamRows('latin-third-declension',()=>{
+  const pool=latinThirdDeclensionPool(chosen);
+  const count=latinThirdDeclensionSettings.count;
+  const adjectivePool=pool.filter(word=>!word.gender);
+  const adjectiveCount=Math.min(Math.max(1,Math.floor(count/4)),adjectivePool.length-1);
+  const requestKey=({code,number,gender})=>[code,number,gender].join('/');
+  const support=new Map();
+  for(const word of adjectivePool)for(const form of word.forms){
+   const key=requestKey(form);
+   support.set(key,(support.get(key)||0)+1);
+  }
+  // Cada petición de adjetivo debe tener repuesto aunque cambien otras filas.
+  const adjectiveChoices=adjectivePool.map(word=>({word,
+   forms:word.forms.filter(form=>support.get(requestKey(form))>adjectiveCount)
+  })).filter(item=>item.forms.length);
+  const adjectives=sample(adjectiveChoices,Math.max(0,adjectiveCount));
+  const nouns=sample(pool.filter(word=>word.gender),count-adjectives.length);
+  const requests=sample(latinThirdDeclensionCases.flatMap(([code])=>
+   [0,1].map(number=>({code,number}))),10);
+  return sample([
+   ...nouns.map((word,i)=>{
+    const {code,number}=requests[i%requests.length];
+    return {...word.forms.find(form=>form.code===code&&form.number===number),word};
+   }),
+   ...adjectives.map(({word,forms})=>({...sample(forms,1)[0],word}))
+  ],nouns.length+adjectives.length);
+ });
+}
+function latinThirdDeclensionRowMarkup(item,index,va){
+ const {word,code,number,gender,answer}=item;
+ const caseName=latinThirdDeclensionCases.find(([id])=>id===code)[va?2:1];
+ const nounGender=word.gender==='mf'?'m. o f.':word.gender+'.';
+ const label=caseName+' '+M_NUMS[number].toLowerCase()+
+  (gender?' '+latinThirdDeclensionGenders[gender][Number(va)]:'');
+ const prompt=esc(label)+' de <i>'+esc(word.entry)+'</i>'+(gender?'':' ('+esc(nounGender)+')');
+ return {
+  task:'<tr data-third-declension-slot="'+index+'" data-lemma="'+esc(word.lemma)+'" data-case="'+code+
+   '" data-number="'+number+'" data-gender="'+gender+'"><td>'+prompt+'</td><td></td></tr>',
+  key:'<li data-third-declension-answer="'+index+'">'+prompt+' — <i>'+esc(answer)+'</i></li>'
+ };
+}
+function latinThirdDeclensionMarkup(chosen){
+ if(!latinThirdDeclensionSettings.enabled||!latinThirdDeclensionAvailable(chosen))return {task:'',key:''};
+ const va=$('lang').value==='va';
+ const rows=latinThirdDeclensionRows(chosen).map((item,index)=>latinThirdDeclensionRowMarkup(item,index,va));
+ if(!rows.length)return {task:'',key:''};
+ return {
+  task:'<div data-third-declension-table><p><i>'+
+   (va?'Completa la taula amb la forma que es demana.':'Completa la tabla con la forma que se pide.')+
+   '</i></p><table class="exam-paradigm reference-morph-table" data-col-widths="66,34"><thead><tr><th scope="col">'+
+   (va?'Forma demanada':'Forma solicitada')+'</th><th scope="col">'+(va?'Resposta':'Respuesta')+
+   '</th></tr></thead><tbody>'+rows.map(row=>row.task).join('')+'</tbody></table></div>',
+  key:'<ol data-third-declension-key>'+rows.map(row=>row.key).join('')+'</ol>'
+ };
+}
+function latinThirdDeclensionMatch(form,{case:code,number,gender}){
+ return form.code===code&&String(form.number)===number&&form.gender===gender;
+}
+function latinThirdDeclensionRemember(){
+ const pool=latinThirdDeclensionPool(selectedUnits());
+ const selection=[...$('paper').querySelectorAll('tr[data-third-declension-slot]')].map(row=>{
+  const word=pool.find(item=>item.lemma===row.dataset.lemma&&Boolean(item.gender)===!row.dataset.gender);
+  const form=word?.forms.find(item=>latinThirdDeclensionMatch(item,row.dataset));
+  return form?{...form,word}:null;
+ });
+ const key=examCacheSignature('latin-third-declension');
+ if(selection.length&&selection.every(Boolean))examSelectionCache.set(key,selection);
+ else examSelectionCache.delete(key);
+}
+function refreshLatinThirdDeclensionTable(){
+ const paper=$('paper');
+ const heading=paper.querySelector('[data-morph-kind="decl"].exam-question');
+ const answer=paper.querySelector('#answerkey li[data-morph-kind="decl"]');
+ if(heading&&answer){
+  paper.querySelector('[data-third-declension-table]')?.remove();
+  answer.querySelector('[data-third-declension-key]')?.remove();
+  const {task,key}=latinThirdDeclensionMarkup(selectedUnits());
+  examLatinQuestionNodes(heading).at(-1).insertAdjacentHTML('afterend',task);
+  answer.insertAdjacentHTML('beforeend',key);
+ }
+ refreshLatinThirdDeclensionButtons();
+ window.examinaLastLatinPreview=paper.innerHTML;
+}
+function refreshLatinThirdDeclensionButtons(focusIndex){
+ const host=$('latinThirdDeclensionRows');
+ if(!host)return;
+ host.replaceChildren();
+ const paper=$('paper'),chosen=selectedUnits(),va=$('lang').value==='va';
+ $('latinThirdDeclensionEnabled').checked=latinThirdDeclensionSettings.enabled;
+ $('latinThirdDeclensionCount').value=latinThirdDeclensionSettings.count;
+ $('latinThirdDeclensionAdjectives').checked=latinThirdDeclensionSettings.adjectives;
+ $('latinThirdDeclensionOptions').hidden=!latinThirdDeclensionSettings.enabled;
+ const rows=[...paper.querySelectorAll('tr[data-third-declension-slot]')];
+ if(!rows.length)return;
+ const pool=latinThirdDeclensionPool(chosen);
+ const used=new Set(rows.map(row=>row.dataset.lemma));
+ for(const row of rows){
+  const {thirdDeclensionSlot:index,gender}=row.dataset;
+  if(!/^\d{1,2}$/.test(index)||!row.cells.length)continue;
+  const choices=pool.filter(word=>!used.has(word.lemma)&&Boolean(word.gender)===!gender)
+   .map(word=>({word,form:word.forms.find(form=>latinThirdDeclensionMatch(form,row.dataset))}))
+   .filter(item=>item.form);
+  const control=document.createElement('div');control.className='exam-word-editor';
+  const prompt=document.createElement('span');
+  prompt.textContent=(Number(index)+1)+'. '+row.cells[0].textContent;
+  const button=document.createElement('button');
+  button.type='button';button.className='secondary exam-regenerate-word';
+  button.textContent=va?'Una altra':'Otra';
+  button.setAttribute('aria-label',(va?'Regenera la fila ':'Regenerar fila ')+(Number(index)+1));
+  button.dataset.regenerateThirdDeclension=index;
+  const answer=paper.querySelector('[data-third-declension-answer="'+index+'"]');
+  button.disabled=!choices.length||!answer;
+  button.onclick=()=>{
+   const {word,form}=sample(choices,1)[0];
+   const markup=latinThirdDeclensionRowMarkup({...form,word},index,va);
+   row.outerHTML=markup.task;
+   answer.outerHTML=markup.key;
+   latinThirdDeclensionRemember();
+   window.examinaLastLatinPreview=paper.innerHTML;
+   refreshLatinThirdDeclensionButtons(index);
+  };
+  control.append(prompt,button);host.append(control);
+  if(index===focusIndex)button.focus();
+ }
+}
 function latinFormPriorities(chosen){
  const unit=latinFocusUnit(chosen);
  return {
@@ -8142,6 +8321,7 @@ function wordExamParagraph(el){
 }
 function wordExamTable(table){
  const rows=[...table.rows],paradigm=table.classList.contains('exam-paradigm'),verb=table.classList.contains('exam-verbs');
+ const firstCellAlign=table.closest('[data-third-declension-table]')?'left':'right';
  const raw=(table.dataset.colWidths||'').split(',').map(Number);
  const count=Math.max(...rows.map(r=>[...r.cells].reduce((n,c)=>n+(+c.colSpan||1),0)));
  const widths=raw.length===count&&raw.every(n=>Number.isFinite(n)&&n>0)?raw.map(n=>Math.round(n*8788/raw.reduce((a,b)=>a+b,0))):Array(count).fill(Math.floor(8788/count));
@@ -8151,7 +8331,7 @@ function wordExamTable(table){
   const head=row.parentElement.tagName==='THEAD';let col=0;
   out+='<w:tr><w:trPr><w:cantSplit/><w:trHeight w:val="'+(verb?'452':'482')+'" w:hRule="atLeast"/>'+(head?'<w:tblHeader/>':'')+'</w:trPr>';
   for(const cell of row.cells){const span=+cell.colSpan||1,w=widths.slice(col,col+span).reduce((a,b)=>a+b,0),corner=cell.classList.contains('exam-corner');
-   const align=paradigm?(col===0&&!head?'right':'center'):'left';
+   const align=paradigm?(col===0&&!head?firstCellAlign:'center'):'left';
    out+='<w:tc><w:tcPr><w:tcW w:w="'+w+'" w:type="dxa"/>'+(span>1?'<w:gridSpan w:val="'+span+'"/>':'')+'<w:tcBorders>'+['top','left','bottom','right'].map(side=>'<w:'+side+' w:val="'+(corner?'nil':'single')+'" w:sz="4" w:color="808080"/>').join('')+'</w:tcBorders><w:vAlign w:val="center"/></w:tcPr><w:p><w:pPr><w:jc w:val="'+align+'"/><w:spacing w:before="0" w:after="0" w:line="280" w:lineRule="auto"/>'+(ri<rows.length-1?'<w:keepNext/>':'')+'</w:pPr>'+[...cell.childNodes].map(n=>wordInline(n)).join('')+'</w:p></w:tc>';col+=span;
   }out+='</w:tr>';
  });return out+'</w:tbl>';
@@ -8594,6 +8774,7 @@ function snapshotExam(){
  return {
  schema:'examina-exam-draft',version:1,course:currentCourse(),model:$('model').value,
  language:$('lang').value,created:new Date().toISOString(),title:$('name').value,
+ ...(currentCourse()==='latin1'&&$('model').value==='morf'?{latinThirdDeclension:{...latinThirdDeclensionSettings}}:{}),
  sheetType:$('sheetType')?.value==='review'?'review':'exam',
  ...(currentCourse()==='greek1'&&$('model').value==='complete'?{greekSentenceTask:$('greekSentenceTask')?.value==='translate'?'translate':'analyze'}:{}),
  visualFormat:window.ExaminaVisualFormat?.snapshot?.()||{questionBeforePt:examQuestionBeforePt(),cultureGapPt:examCultureGapPt()},
@@ -8647,6 +8828,13 @@ function restoreDraft(d){
  if(Number.isInteger(d.sentenceCount)&&d.sentenceCount>=1&&d.sentenceCount<=15)
   $('count-sent').value=String(d.sentenceCount);
  $('paper').innerHTML=cleanDraftHtml(d.html);
+ if(d.course==='latin1'&&targetModel==='morf'){
+  const saved=d.latinThirdDeclension;
+  latinThirdDeclensionSettings={...latinThirdDeclensionDefaults,
+   enabled:saved?.enabled===true,adjectives:saved?.adjectives===true};
+  if(Number.isInteger(saved?.count)&&saved.count>=1&&saved.count<=20)latinThirdDeclensionSettings.count=saved.count;
+  if(latinThirdDeclensionAvailable()&&latinThirdDeclensionSettings.enabled)latinThirdDeclensionRemember();
+ }
  if(d.visualFormat)window.ExaminaVisualFormat?.restore?.(d.visualFormat);
  else applyExamVisualFormat(); // Borradores antiguos: conservar preferencias actuales.
  if(typeof d.title==='string')$('name').value=d.title;
@@ -10563,6 +10751,8 @@ function examQuotaGreek(pool,count,previousIds=[]){
 function examCacheSignature(kind){
  if(kind==='culture')return JSON.stringify([kind,selectedUnits(false),$('cultureType')?.value||'all']);
  const unitsKey=[...document.querySelectorAll('.unit-choice:checked')].map(x=>x.value).join(',');
+ if(kind==='latin-third-declension')return JSON.stringify([kind,unitsKey,$('cumulative').checked,
+  latinThirdDeclensionSettings.count,latinThirdDeclensionSettings.adjectives]);
  const morph=['morf','morphology'].includes($('model').value);
  const countId=kind==='decl'?(morph?'morphDecline':'count-decl'):
   kind==='verb'?(morph?'morphVerbs':'count-verb'):
@@ -10664,6 +10854,8 @@ function renderOnlyRegeneratedExamWord(kind,index,render){
    if(oldAnswer&&newAnswer)oldAnswer.replaceWith(newAnswer.cloneNode(true));
   }else{
    const key=newKey.cloneNode(true);
+   const thirdDeclension=oldKey.querySelector('[data-third-declension-key]');
+   if(thirdDeclension)key.querySelector('[data-third-declension-key]')?.replaceWith(thirdDeclension);
    if(oldKey.classList.contains('show'))key.classList.add('show');
    const warning=oldKey.querySelector('[data-manual-warning]');
    if(warning&&!key.querySelector('[data-manual-warning]'))key.prepend(warning.cloneNode(true));
@@ -10887,7 +11079,7 @@ function renderOnlyRegeneratedMorphQuestion(kind,render){
  if(!original||!oldHeading||!oldKey)return false;
  const previous=examLatinQuestionNodes(oldHeading);
  const count=section=>{
-  const selector={decl:'[data-syntagm-slot]',verb:'.reference-verb-table tbody tr',
+  const selector={decl:'[data-syntagm-slot],tr[data-third-declension-slot]',verb:'.reference-verb-table tbody tr',
    pronouns:'.exam-pronouns tbody tr',forms:'[data-analysis-slot]'}[kind];
   return section.reduce((n,node)=>n+(node.matches(selector)?1:0)+node.querySelectorAll(selector).length,0);
  };
@@ -10918,6 +11110,9 @@ function regenerateExamQuestion(kind){
  }
  const key=examCacheSignature(kind),previous=examSelectionCache.get(key);
  examSelectionCache.delete(key);
+ const thirdKey=kind==='decl'&&latinThirdDeclensionAvailable()?examCacheSignature('latin-third-declension'):null;
+ const previousThird=examSelectionCache.get(thirdKey);
+ if(thirdKey)examSelectionCache.delete(thirdKey);
  if(currentCourse()==='greek1'&&$('model').value==='morphology'&&
   Array.isArray(previous)&&previous.length&&['decl','verb','forms','pronouns'].includes(kind)){
   const identity=x=>kind==='decl'?String(x?.title||''):
@@ -10947,6 +11142,7 @@ function regenerateExamQuestion(kind){
    return;
   }
   if(previous!==undefined)examSelectionCache.set(key,previous);
+  if(previousThird!==undefined)examSelectionCache.set(thirdKey,previousThird);
   if(field)field.value=originalText;
   return;
  }
@@ -11517,6 +11713,28 @@ loadTeacherLatinLexBanks();
   }
  }
  const quotaMemory={nouns:0,adjectives:0,verbs:0,pronouns:0};
+ function thirdDeclensionConfig(box){
+  const va=$('lang').value==='va',field=document.createElement('div');
+  field.innerHTML='<label class="check"><input id="latinThirdDeclensionEnabled" type="checkbox"> '+
+   (va?'Afegir una taula de tercera declinació':'Añadir tabla de tercera declinación')+'</label>'+
+   '<div id="latinThirdDeclensionOptions"><label>'+(va?'Files de la taula':'Filas de la tabla')+
+   ' <input id="latinThirdDeclensionCount" type="number" min="1" max="20" step="1"></label>'+
+   '<label class="check"><input id="latinThirdDeclensionAdjectives" type="checkbox"> '+
+   (va?'Incloure adjectius de tercera declinació':'Incluir adjetivos de tercera declinación')+
+   '</label><div id="latinThirdDeclensionRows"></div></div>';
+  box.append(field);
+  const adjectives=field.querySelector('#latinThirdDeclensionAdjectives');
+  adjectives.disabled=latinFocusUnit(selectedUnits())<5;
+  adjectives.closest('label').hidden=adjectives.disabled;
+  field.addEventListener('change',event=>{
+   const control=event.target;
+   if(control.id==='latinThirdDeclensionEnabled')latinThirdDeclensionSettings.enabled=control.checked;
+   if(control.id==='latinThirdDeclensionAdjectives')latinThirdDeclensionSettings.adjectives=control.checked;
+   if(control.id==='latinThirdDeclensionCount'&&control.checkValidity()&&Number.isInteger(control.valueAsNumber))
+    latinThirdDeclensionSettings.count=control.valueAsNumber;
+   refreshLatinThirdDeclensionTable();
+  });
+ }
  let lexMenuCourse=null;
  function questionMenus(){
   const open=new Set([...questionHost.querySelectorAll('details[data-question][open]')].map(panel=>panel.dataset.question));
@@ -11563,6 +11781,7 @@ loadTeacherLatinLexBanks();
     button.onclick=()=>regenerateExamQuestion(kind);body.append(button);
    }
    const editor=document.createElement('div');editor.className='question-editor';editor.dataset.editorFor=kind;body.append(editor);
+   if(kind==='decl'&&latinThirdDeclensionAvailable())thirdDeclensionConfig(body);
    questionHost.append(detail);
    if(kind==='sent')detail.append(glossarySettings);
   }
@@ -11599,7 +11818,7 @@ loadTeacherLatinLexBanks();
   }
  }
  const prevRefresh=refreshManualMorphWords;
- refreshManualMorphWords=function(...args){prevRefresh(...args);distributeEditors()};
+ refreshManualMorphWords=function(...args){prevRefresh(...args);distributeEditors();refreshLatinThirdDeclensionButtons()};
  const prevGreekControls=greekExamControls;
  greekExamControls=function(){
   // Solo el examen completo crea controles de selección adicionales.
