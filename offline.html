@@ -5103,6 +5103,73 @@ function linkExamWordEditor(target,input,mode='plain'){
  target.dataset.examEditorLink=id;input.dataset.examEditorLink=id;
  examEditorLinks.set(target,{input,mode});
 }
+// Resolver la entrada léxica de las formas manuales sin volver a sortear el examen.
+let manualMorphLookup=new Map();
+function manualMorphFormKey(value,greek){
+ const text=String(value||'').trim().replace(/\s+/gu,' ').toLowerCase();
+ return greek?text.normalize('NFC'):mNormalize(text).toLowerCase();
+}
+function manualMorphEnunciations(kind){
+ const greek=currentCourse()==='greek1';
+ const signature=JSON.stringify([currentCourse(),$('model').value,selectedUnits(),kind,
+  ...['n','adj','pro'].map(c=>$('morphCategory-'+c)?.checked)]);
+ if(manualMorphLookup.has(signature))return manualMorphLookup.get(signature);
+ const index=new Map(),chosen=selectedUnits();
+ const add=(form,html)=>{
+  const key=manualMorphFormKey(form,greek);
+  if(!key)return;
+  if(!index.has(key))index.set(key,new Set());
+  index.get(key).add(html);
+ };
+ if(greek){
+  const pool=$('model').value==='morphology'?greekMorphologyReplacementPool(kind):greekChoicePool('forms');
+  for(const item of pool){
+   const lemma=kind==='verb'?item.lemma:
+    (item.lemmas||[]).filter(x=>typeof x==='string'&&x.trim())
+     .map(x=>greekNominalEnunciation({...item,lemmas:[x]})).join(' / ');
+   add(item.prompt,lemma?' ('+esc(lemma)+')':'');
+  }
+ }else{
+  const pool=kind==='verb'?latinMorphologyVerbPool(chosen).map(x=>({...x,category:'verbs'})):
+   latinExamFormCandidates(chosen,true).flat().concat(latinMorphologyVerbPool(chosen).map(x=>({...x,category:'verbs'})));
+  for(const item of pool)add(latinExamSurface(item.form,item.entry),latinMorphologyEnunciationHtml(item,chosen));
+ }
+ manualMorphLookup.set(signature,index);
+ return index;
+}
+function syncManualMorphEnunciation(target){
+ const kind=target.matches('.reference-verb-table tbody td:first-child > i:first-child')?'verb':
+  target.matches('[data-analysis-slot] > i:first-of-type,[data-greek-form-surface]')?'forms':null;
+ if(!kind||!target.closest('#paper')||target.closest('#answerkey'))return;
+ const greek=currentCourse()==='greek1',value=target.textContent;
+ const key=manualMorphFormKey(value,greek);
+ const choices=key?[...(manualMorphEnunciations(kind).get(key)||[])].filter(Boolean):[];
+ // No conservar el lema anterior si la forma es desconocida. Si hay varios
+ // lemas documentados, mostrarlos todos en vez de elegir uno arbitrariamente.
+ const html=choices.length===1?choices[0]:choices.length?
+  ' ('+choices.map(x=>x.trim().replace(/^\(|\)$/g,'')).join(' / ')+')':'';
+ let span=target.nextElementSibling;
+ if(!span?.matches('[data-manual-morph-enunciation],.exam-form-enunciation')){
+  span=document.createElement('span');
+  span.className='exam-form-enunciation';
+  span.dataset.manualMorphEnunciation='true';
+  if(target.matches('[data-greek-form-surface]'))span.contentEditable='false';
+  // Compatibilidad con borradores que imprimen el enunciado como texto
+  // y cursivas hermanas, antes de los dos puntos o de la línea de respuesta.
+  let next=target.nextSibling;
+  while(next){
+   if(next.nodeType===1&&next.matches('.reference-answer-line'))break;
+   if(next.nodeType===3&&kind==='forms'&&next.textContent.includes(':')){
+    next.textContent=next.textContent.slice(next.textContent.lastIndexOf(':'));
+    break;
+   }
+   const following=next.nextSibling;
+   next.remove();next=following;
+  }
+  target.after(span);
+ }
+ span.innerHTML=html;
+}
 function warnExamManualSolution(){
  const key=$('paper').querySelector('#answerkey');
  if(!key||key.querySelector('[data-manual-warning]'))return;
@@ -5134,6 +5201,7 @@ $('paper').addEventListener('input',event=>{
  if(!active&&event.target===paper)active=locate(window.getSelection()?.anchorNode);
  if(!active)return;
  active.input.value=examEditorPreviewValue(active.target,active.mode);
+ syncManualMorphEnunciation(active.target);
  if(active.target.closest('[data-syntagm-slot]'))syncMorphSyntagmTextarea();
  warnExamManualSolution();
 });
@@ -5148,6 +5216,7 @@ function refreshManualMorphWords(forceGreekDraft=false){
  const host=$('manualMorphWords');
  if(!host)return;
  examEditorLinks=new WeakMap(); // IDs persist to prevent stale menu-field collisions.
+ manualMorphLookup.clear();
  host.replaceChildren();
  // Griego completo mantiene su editor especializado en generación normal.
  // Solo la restauración fuerza enlaces genéricos al HTML conservado.
@@ -5198,6 +5267,7 @@ function refreshManualMorphWords(forceGreekDraft=false){
     if(marker)el.replaceChildren(marker,' '+input.value+':');
     else el.textContent=prefix+input.value+':';
    }else el.textContent=input.value+(mode==='colon'?':':'');
+   syncManualMorphEnunciation(el);
    if(el.closest('[data-syntagm-slot]'))syncMorphSyntagmTextarea();
    warnExamManualSolution();
   });
@@ -9964,6 +10034,7 @@ function greekExamControls(){
  const host=$('manualMorphWords');
  if(!host||currentCourse()!=='greek1'||$('model').value!=='complete'||!greekExamState)return;
  examEditorLinks=new WeakMap(); // IDs persist to prevent stale menu-field collisions.
+ manualMorphLookup.clear();
  host.replaceChildren();
  // El editor especializado de Griego completo debe conservar también el
  // enlace bidireccional entre el título del Word y su campo de menú.
@@ -10033,6 +10104,7 @@ function greekExamControls(){
      if(marker)target.replaceChildren(marker,' '+value+':');
      else target.textContent=prefix+value+':';
     }else target.textContent=value;
+    syncManualMorphEnunciation(target);
     warnExamManualSolution();
    });
    edit.append(input);word.append(edit);
