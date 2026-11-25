@@ -45,6 +45,7 @@ const browserTests=[
  'test-latin-passive-phrases.cjs',
  'test-latin-semantic-syntagms.cjs',
  'test-latin-third-declension-forms.cjs',
+ 'test-latin-third-declension-table.cjs',
  'test-latin-verbal-curriculum-20261122.cjs',
  'test-latin-vir-paradigm-20261122.cjs',
  'test-latin4-conjugation-isolated-forms.cjs',
@@ -118,7 +119,7 @@ switch(suite){
   break;
  case 'compatibility':
   checks=[['test-pwa.cjs'],['test-device-compat.cjs'],['test-export-workspace.cjs'],
-   ['test-exam-external-gloss.cjs']];
+   ['test-exam-external-gloss.cjs'],['test-latin-third-declension-table.cjs']];
   break;
  default:
   throw Error('Uso: node scripts/check-release.cjs sources | chromium <1–4> | compatibility');
