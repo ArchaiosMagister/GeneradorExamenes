@@ -1446,5 +1446,5 @@
    cached.last=node.nodeValue;
   }
  }
- global.ExaminaValencianGloss={lookup,forEntry,quoteGloss,translateDom,count:Object.keys(translations).length};
+ global.ExaminaValencianGloss={lookup,forEntry,quoteGloss,translateDom,translateMorphology,count:Object.keys(translations).length};
 })(window);
