@@ -129,8 +129,8 @@ async function checkLex(page,course='latin1'){
  return checked;
 }
 async function checkLatinManualEnunciations(page,course){
- await configure(page,course,'morf','UD7');
- for(const kind of ['verb','forms']){
+ await configure(page,course,course==='latin4'?'tablas':'morf','UD7');
+ for(const kind of course==='latin4'?['forms']:['verb','forms']){
   const panel=page.locator('#examQuestionMenus [data-question="'+kind+'"]');
   await panel.evaluate(el=>el.open=true);
   const input=panel.locator('.question-editor input[data-exam-editor-link]').first();
