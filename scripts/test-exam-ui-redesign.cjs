@@ -76,13 +76,22 @@ async function pick(page,course,model,unit){
    });
    assert(greek.wordCount>0&&greek.sameWords,file+': campos editoriales extra o ausentes en Griego');
    assert(greek.enunciations>0&&greek.distinctEnunciations,file+': enunciación convertida en campo editable');
-   const before=await page.locator('#paper .exam-form-enunciation').first().textContent();
    await page.locator('#examQuestionMenus [data-question="forms"]').evaluate(el=>el.open=true);
-   await page.locator('#examQuestionMenus [data-question="forms"] .question-editor input[type="text"]').first().fill('ἀγαθῶν');
-   const after=await page.locator('#paper .exam-form-enunciation').first().textContent();
-   assert.equal(before,after,file+': la enunciación de vista previa cambió por editar la forma');
-   assert.equal(await page.locator('#paper [data-greek-form-surface]').first().textContent(),'ἀγαθῶν',
-    file+': no se sincronizó edición con vista previa');
+   const input=page.locator('#examQuestionMenus [data-question="forms"] .question-editor input[data-exam-editor-link]').first();
+   const id=await input.getAttribute('data-exam-editor-link');
+   const target=page.locator('#paper [data-greek-form-surface][data-exam-editor-link="'+id+'"]');
+   const candidate=await page.evaluate(()=>{
+    const pool=greekChoicePool('forms');
+    const item=pool.find(x=>x.prompt==='ἀγαθῶν'&&x.lemmas?.length)||
+     pool.find(x=>x.lemmas?.length&&x.prompt!==document.querySelector('#paper [data-greek-form-surface]').textContent);
+    if(!item)throw Error('Sin forma griega documentada');
+    return item.prompt;
+   });
+   await input.fill(candidate);
+   assert.equal(await target.textContent(),candidate,file+': no se sincronizó edición con vista previa');
+   assert((await target.locator('xpath=following-sibling::*[1]').textContent()).trim(),file+': falta enunciado documentado');
+   await input.fill('μορφή_άγνωστη_123');
+   assert.equal(await target.locator('xpath=following-sibling::*[1]').textContent(),'',file+': conserva el lema anterior de una forma desconocida');
    await pick(page,'greek1','morphology','UD10');
    await page.locator('#examQuestionMenus [data-question="forms"]').evaluate(el=>el.open=true);
    assert.equal(await page.locator('#examQuestionMenus [data-question="decl"] .exam-ui-extra select').count(),1);
