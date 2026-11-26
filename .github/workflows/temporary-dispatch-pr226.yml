@@ -1,0 +1,56 @@
+name: Solicitud puntual de publicación PR 226
+on:
+  push:
+    branches: [release/dispatch-pr226-d965fd9]
+    paths: ['.github/workflows/temporary-dispatch-pr226.yml']
+permissions:
+  actions: write
+  contents: read
+  statuses: write
+jobs:
+  dispatch:
+    if: github.repository == 'ArchaiosMagister/GeneradorExamenes'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      GH_TOKEN: ${{ github.token }}
+      COMMIT: d965fd9eebdfa6d25a1ebb6dced44fc74749be7b
+    steps:
+      - name: Solicitar despliegue oficial del commit autorizado
+        shell: bash
+        run: |
+          set -euo pipefail
+          status() {
+            gh api --method POST "repos/$GITHUB_REPOSITORY/statuses/$GITHUB_SHA" -f state="$1" -f context='publication/pr226' -f description="$2" -f target_url="$3" >/dev/null
+          }
+          runner="https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+          trap 'status failure "No se pudo completar la solicitud; revisar logs" "$runner"' ERR
+          status pending "Comprobando CI de main" "$runner"
+          test "$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/main" --jq .object.sha)" = "$COMMIT"
+          ci=""
+          for ((i=0;i<100;i++)); do
+            test "$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/main" --jq .object.sha)" = "$COMMIT"
+            runs=$(gh api "repos/$GITHUB_REPOSITORY/actions/workflows/offline-check.yml/runs?branch=main&head_sha=$COMMIT&per_page=30")
+            ci=$(jq -r --arg sha "$COMMIT" --arg repo "$GITHUB_REPOSITORY" '[.workflow_runs[] | select(.path==".github/workflows/offline-check.yml" and .head_branch=="main" and .head_sha==$sha and .head_repository.full_name==$repo and (.event=="push" or .event=="workflow_dispatch") and .status=="completed" and .conclusion=="success")][0].id // empty' <<< "$runs")
+            if [[ -n "$ci" ]]; then break; fi
+            if jq -e '[.workflow_runs[] | select(.status!="completed")] | length==0' <<< "$runs" >/dev/null && jq -e '.workflow_runs | length>0' <<< "$runs" >/dev/null; then
+              echo "La CI de main no ha sido satisfactoria"; exit 1
+            fi
+            sleep 20
+          done
+          [[ "$ci" =~ ^[0-9]+$ ]]
+          echo "CI validada: $ci"
+          existing=$(gh api "repos/$GITHUB_REPOSITORY/actions/workflows/publish-online.yml/runs?branch=main&head_sha=$COMMIT&per_page=30" --jq '[.workflow_runs[] | select(.status!="completed" or .conclusion=="success")][0].id // empty')
+          if [[ -z "$existing" ]]; then
+            test "$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/main" --jq .object.sha)" = "$COMMIT"
+            gh workflow run publish-online.yml --repo "$GITHUB_REPOSITORY" --ref main -f commit="$COMMIT" -f ci_run="$ci"
+          fi
+          for ((i=0;i<20;i++)); do
+            deployment=$(gh api "repos/$GITHUB_REPOSITORY/actions/workflows/publish-online.yml/runs?branch=main&head_sha=$COMMIT&per_page=30" --jq '.workflow_runs[0].id // empty')
+            if [[ -n "$deployment" ]]; then
+              status success "Despliegue oficial solicitado (CI $ci)" "https://github.com/$GITHUB_REPOSITORY/actions/runs/$deployment"
+              exit 0
+            fi
+            sleep 5
+          done
+          status success "Solicitud oficial enviada (CI $ci)" "https://github.com/$GITHUB_REPOSITORY/actions/workflows/publish-online.yml"
