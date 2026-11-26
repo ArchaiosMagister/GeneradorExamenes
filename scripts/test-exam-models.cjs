@@ -75,7 +75,10 @@ function latinSuite(){
   paradigms:()=>[{x:vb,p:sandbox.verb(vb)}],
   sentences:()=>Array.from({length:9},(_,i)=>({text:'Puella amat '+i+'.',sol:'La niña ama '+i+'.'}))
  };
- vm.createContext(sandbox);vm.runInContext(latinCode,sandbox,{filename:'latin-exams.js'});
+ vm.createContext(sandbox);
+ const cultureCode=fs.readFileSync(path.join(__dirname,'..','culture-lat4.js'),'utf8');
+ vm.runInContext(cultureCode,sandbox,{filename:'culture-lat4.js'});
+ vm.runInContext(latinCode,sandbox,{filename:'latin-exams.js'});
  const run=()=>{vm.runInContext('generate()',sandbox);return state.paper.innerHTML.split('<div id="answerkey"')[0]};
  let output=run();
  assert.equal((output.match(/class="exam-question"/g)||[]).length,5,'Latín I completo: cinco preguntas');
