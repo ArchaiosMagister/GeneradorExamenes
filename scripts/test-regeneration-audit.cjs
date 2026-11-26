@@ -125,6 +125,20 @@ async function run(page,filename){
   results.greekRegeneration=forms()[0]!==oldGreek&&forms()[0].dataset.corpusId!==ids[0]&&
    forms()[1]===otherGreek&&otherGreek.querySelector('[data-greek-form-surface]').textContent==='λόγους';
   select('greek1','morphology','UD7');
+  const morphForms=()=>[...exercise().querySelectorAll('[data-analysis-slot][data-corpus-id]')];
+  const morphIds=morphForms().map(node=>node.dataset.corpusId);
+  const syntagm=exercise().querySelector('[data-syntagm-slot="1"] > i');
+  edit(syntagm,'Sintagma revisado por el docente');
+  const morphDraft=JSON.parse(JSON.stringify(window.ExaminaUnifiedCurrentExam()));
+  select('latin4','tablas','UD1');
+  $('morphSyntagms').value='';
+  window.ExaminaUnifiedRestoreDraft(morphDraft);
+  results.greekMorphDraft=JSON.stringify(examSelectionCache.get(examCacheSignature('forms'))?.map(row=>row.id))===JSON.stringify(morphIds);
+  results.syntagmEditor=$('morphSyntagms').value.includes('Sintagma revisado por el docente');
+  const oldMorph=morphForms()[0],otherMorph=morphForms()[1];
+  regenerateExamWord('forms',0);
+  results.greekMorphRegeneration=morphForms()[0]!==oldMorph&&morphForms()[0].dataset.corpusId!==morphIds[0]&&
+   morphForms()[1]===otherMorph;
   for(const category of ['n','adj','pro'])$('morphCategory-'+category).checked=false;
   results.greekCategories=greekMorphologyReplacementPool('forms')
    .filter(row=>examGreekWordClass(row)!=='verbs')
@@ -144,7 +158,11 @@ async function run(page,filename){
    page.on('pageerror',error=>errors.push(error.message));
    try{
     const results=await run(page,filename);
-    assert.deepEqual(results,{answer:true,edited:true,draft:true,draftRegeneration:true,missingSlot:true,whole:true,greekDraft:true,greekRegeneration:true,latinDraft:true,latinRegeneration:true,greekCategories:[]},filename);
+    assert.deepEqual(results,{
+     answer:true,edited:true,draft:true,draftRegeneration:true,missingSlot:true,whole:true,
+     greekDraft:true,greekRegeneration:true,latinDraft:true,latinRegeneration:true,greekCategories:[],
+     greekMorphDraft:true,syntagmEditor:true,greekMorphRegeneration:true
+    },filename);
     assert.deepEqual(errors,[],filename);
    }finally{await page.close()}
   }

@@ -9043,6 +9043,7 @@ function restoreDraft(d){
   restoreLatinLexSelection();
   restoreLatinAnalysisSelection();
  }
+ if(['morf','morphology'].includes($('model').value))restoreMorphologyDraftSelection();
  if(d.course==='latin1'&&targetModel==='morf'){
   const saved=d.latinThirdDeclension;
   latinThirdDeclensionSettings={...latinThirdDeclensionDefaults,
@@ -11231,6 +11232,40 @@ function restoreLatinAnalysisSelection(){
   return {form,answer:'',category:categories.size===1?matches[0].category:null};
  });
  examSelectionCache.set(examCacheSignature('forms'),rows);
+}
+function restoreMorphologyDraftSelection(){
+ const paper=$('paper'),greek=currentCourse()==='greek1';
+ const titles=Array.from(paper.querySelectorAll('[data-syntagm-slot] > i'),node=>node.textContent.trim());
+ const syntagms=$('morphSyntagms');
+ if(syntagms)syntagms.value=titles.join('\n');
+ if(titles.length>=2&&titles.length<=12){
+  $('morphOffer').value=String(titles.length);
+  const pool=greek?greekMorphSyntagmPool():latinMorphSyntagmPool(selectedUnits());
+  const byTitle=new Map(pool.map(item=>[item.title,item]));
+  examSelectionCache.set(examCacheSignature('decl'),titles.map(title=>byTitle.get(title)||{title}));
+ }else examSelectionCache.delete(examCacheSignature('decl'));
+ if(!greek)return;
+ const sections={forms:'[data-analysis-slot]',verb:'.reference-verb-table tbody tr',
+  pronouns:'.exam-pronouns tbody tr'};
+ const limit=greekLimit(),eligible=greekMorphologyCorpus(limit);
+ for(const [kind,selector] of Object.entries(sections)){
+  const slots=[...paper.querySelectorAll(selector)];
+  if(!slots.length||slots.length>30){
+   examSelectionCache.delete(examCacheSignature(kind));
+   continue;
+  }
+  if(kind==='forms'&&!examMorphQuotasActive())$('morphWords').value=String(slots.length);
+  if(kind==='verb')$('morphVerbs').value=String(slots.length);
+  const pool=greekMorphologyReplacementPool(kind,limit,eligible);
+  const ids=new Map(pool.map(item=>[item.id,item]));
+  const rows=slots.map(slot=>{
+   const prompt=slot.querySelector('i')?.textContent.trim()||'';
+   if(slot.dataset.corpusId&&ids.has(slot.dataset.corpusId))return ids.get(slot.dataset.corpusId);
+   const matches=pool.filter(item=>manualMorphFormKey(item.prompt,true)===manualMorphFormKey(prompt,true));
+   return matches.length===1?matches[0]:{prompt,answer:'',lemma:''};
+  });
+  examSelectionCache.set(examCacheSignature(kind),rows);
+ }
 }
 function regenerateExamWord(kind,index){
  if(!['decl','verb','forms','pronouns','etymology'].includes(kind)||!Number.isInteger(index)||index<0)return;
