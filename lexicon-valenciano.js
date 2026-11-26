@@ -1185,9 +1185,9 @@
   if(fixed)return {value:fixed,ready:true,source:'criterio-docente'};
   const result=lookup(item?.meaning);return {...result,source:result.ready?'diccionario-valenciano':'pendiente'};
  }
- function quoteGloss(raw){
-  // Un único vocablo recibe comillas simples; una locución,
-  // comillas dobles. Las glosas con alternativas se comillan por separado.
+ function quoteGloss(raw,source){
+  // Si se conoce la cita latina, el tipo de comillas depende del original.
+  // Las glosas con alternativas se comillan por separado.
   const cleaned=String(raw||'').trim().replace(/[‘’“”'"]/gu,'');
   const chunks=[];let depth=0,begin=0;
   for(let i=0;i<cleaned.length;i++){
@@ -1204,7 +1204,7 @@
    if(!text)return '';
    const m=text.match(/^(.*?)(\s+\([^()]*\))$/u);
    const lemma=(m?m[1]:text).trim(),note=m?m[2]:'';
-   const quote=/\s|…/u.test(lemma)?'“':'‘',close=quote==='“'?'”':'’';
+   const quote=/\s|…/u.test(source||lemma)?'“':'‘',close=quote==='“'?'”':'’';
    return quote+lemma+close+note+separator+(separator?' ':'');
   }).join('').trim();
  }
@@ -1243,6 +1243,7 @@
   "Enunciado verbal": "Enunciat verbal",
   "Analizar y revisar vocabulario": "Analitzar i revisar vocabulari",
   "Incluir las lecturas posibles en Word, marcadas para revisión": "Incloure les lectures possibles en Word, marcades per a revisió",
+  "Completar vocabulario con Collatinus": "Completa el vocabulari amb Collatinus",
   "Exportar a Word": "Exportar a Word",
   "Diagnóstico del banco docente": "Diagnòstic del banc docent",
   "Cobertura y revisión por unidades": "Cobertura i revisió per unitats",

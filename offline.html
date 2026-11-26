@@ -730,7 +730,7 @@ body:has(.vocab-manager.active) .exam-coursebar{display:none}
 <label>Título de la unidad<input id="vgTitle"></label><label>Texto de la unidad<textarea id="vgText" rows="8"></textarea></label>
 <label>Enunciado verbal<select id="vgMode"><option value="complete">Completo (según el banco, sin añadir temas ausentes)</option><option value="simple">Simple (forma de cita + conjugación latina disponible)</option></select></label>
 <label class="check"><input type="checkbox" id="vgWordAlternatives"> Incluir las lecturas posibles en Word, marcadas para revisión</label><label class="check"><input type="checkbox" id="vgGroupTypes"> Agrupar el vocabulario de cada unidad en cuatro categorías en Word</label>
-<div class="buttons"><button id="vgAnalyzeAll" type="button">Analizar y revisar vocabulario</button><button id="vgWord" type="button">Exportar a Word</button></div>
+<div class="buttons"><button id="vgAnalyzeAll" type="button">Analizar y revisar vocabulario</button><button id="vgCollatinus" class="secondary" type="button" hidden>Completar vocabulario con Collatinus</button><button id="vgWord" type="button">Exportar a Word</button></div>
 <div class="buttons" role="group" aria-label="Copias del proyecto"><button id="vgBackup" type="button" class="secondary">Guardar copia JSON</button><button id="vgRestore" type="button" class="secondary">Recuperar copia JSON</button><input id="vgImport" type="file" accept=".json,application/json" hidden><button id="vgClearAll" type="button" class="vg-danger" title="Vaciar todas las unidades del proyecto">Limpiar todo</button></div>
 <p id="vgStatus" role="status" aria-live="polite">Los textos y correcciones se guardan en este navegador. Reducir el número de unidades las oculta sin borrarlas. Editar el texto requiere volver a analizar esa unidad.</p><details id="vgEulexisPanel" class="vg-eulexis-panel"><summary>Griego I · Sugerencias de Eulexis en el vocabulario</summary><p class="vm-help">Instalación opcional de una fuente externa en este dispositivo. Descarga los datos del proyecto original una sola vez (aproximadamente 30 MB) y conserva únicamente las propuestas aplicables al banco de Griego I. No convierte las flexiones en verificadas.</p><div class="buttons"><button type="button" id="vgEulexisInstall">Instalar o actualizar Eulexis</button><button type="button" id="vgEulexisRemove" class="secondary">Borrar índice local</button></div><p class="vm-help" id="vgEulexisStatus" role="status" aria-live="polite">Comprobando Eulexis local…</p><p class="vm-help">Fuente: <a href="https://github.com/genuensis/lector-griego" target="_blank" rel="noopener noreferrer">lector-griego / Eulexis</a>. Las propuestas se revisan junto al contexto real de tus unidades y solo se aceptan manualmente.</p></details></div><div id="vgResults" aria-label="Revisión de vocabulario"></div></div>
 <details id="vgQualityPanel"><summary><strong>Diagnóstico del banco docente</strong></summary><h3>Cobertura y revisión por unidades</h3><p class="vm-help">«Documentada» indica al menos una forma contrastada: no equivale a paradigma completo. Las candidatas no pasan a verificadas automáticamente.</p><button type="button" id="vgQualityRefresh" class="secondary">Actualizar auditoría</button> <button type="button" id="vgQualityExport" class="secondary">Exportar informe JSON</button> <button type="button" id="vgReviewExport" class="secondary">Exportar pendientes JSON</button><p id="vgQualityTotals" class="vm-help" role="status" aria-live="polite">Pulsa «Actualizar auditoría» para consultar el banco.</p><div class="vm-scroll"><table class="vm-table"><thead><tr><th>Unidad</th><th>Fichas</th><th>Con forma contrastada</th><th>Solo candidatas</th><th>Sin flexión contrastada</th><th>Glosas pendientes (ES / VA)</th></tr></thead><tbody id="vgQualityRows"></tbody></table></div><label for="vgReviewUnit">Pendientes de revisión por unidad<select id="vgReviewUnit"><option value="">Todas las unidades</option></select></label><p id="vgQualityQueueSummary" class="vm-help"></p><div id="vgQualityQueue"></div></details></section>
@@ -1779,7 +1779,35 @@ UD1;mc;¿Qué lengua se hablaba en Roma?;B;Griego|Latín|Etrusco"></textarea><bu
     "answer_va": "Vertader.",
     "source": "Temario docente de Cultura LAT4, UD8"
   }
-];})(window);
+];
+function importError(item){
+ const filled=value=>typeof value==='string'&&!!value.trim();
+ if(item?.course!=='latin4'||!Array.isArray(item.units)||!item.units.length||!item.units.every(filled))
+  return 'Indica al menos una unidad válida de Latín 4.º.';
+ if(!['short','essay','tf','mc'].includes(item.type))return 'Tipo de pregunta desconocido.';
+ if(!filled(item.question)||!filled(item.answer))return 'Faltan el enunciado o la respuesta.';
+ if(item.type==='tf'&&!/^(?:[vf]|verdadero|falso|cierto|vertader|fals)(?:[.!,:;](?:\s+.*)?|\s*)$/iu.test(item.answer.trim()))
+  return 'La respuesta debe indicar verdadero o falso.';
+ if(item.type==='mc'){
+  if(!Array.isArray(item.options)||item.options.length<2||item.options.length>26||!item.options.every(filled))
+   return 'Incluye entre 2 y 26 opciones sin huecos.';
+  const key=item.answer.trim().toUpperCase();
+  if(!/^[A-Z]$/.test(key)||key.charCodeAt(0)-65>=item.options.length)
+   return 'La clave debe ser la letra de una de las opciones.';
+ }
+ return '';
+}
+g.ExaminaCultureImportError=importError;
+g.ExaminaCultureBackupError=items=>{
+ if(items===undefined)return '';
+ if(!Array.isArray(items))return 'Formato incorrecto del banco de cultura.';
+ for(const [i,item] of items.entries()){
+  const error=importError(item);
+  if(error)return 'Pregunta de cultura '+(i+1)+': '+error;
+ }
+ return '';
+};
+})(window);
 </script><script>/* Capa de glosas en valenciano. Nunca modifica ni suplanta el léxico docente castellano.
  * Solo las equivalencias explícitas se consideran publicables; lo desconocido queda pendiente.
  */
@@ -2967,9 +2995,9 @@ UD1;mc;¿Qué lengua se hablaba en Roma?;B;Griego|Latín|Etrusco"></textarea><bu
   if(fixed)return {value:fixed,ready:true,source:'criterio-docente'};
   const result=lookup(item?.meaning);return {...result,source:result.ready?'diccionario-valenciano':'pendiente'};
  }
- function quoteGloss(raw){
-  // Un único vocablo recibe comillas simples; una locución,
-  // comillas dobles. Las glosas con alternativas se comillan por separado.
+ function quoteGloss(raw,source){
+  // Si se conoce la cita latina, el tipo de comillas depende del original.
+  // Las glosas con alternativas se comillan por separado.
   const cleaned=String(raw||'').trim().replace(/[‘’“”'"]/gu,'');
   const chunks=[];let depth=0,begin=0;
   for(let i=0;i<cleaned.length;i++){
@@ -2986,7 +3014,7 @@ UD1;mc;¿Qué lengua se hablaba en Roma?;B;Griego|Latín|Etrusco"></textarea><bu
    if(!text)return '';
    const m=text.match(/^(.*?)(\s+\([^()]*\))$/u);
    const lemma=(m?m[1]:text).trim(),note=m?m[2]:'';
-   const quote=/\s|…/u.test(lemma)?'“':'‘',close=quote==='“'?'”':'’';
+   const quote=/\s|…/u.test(source||lemma)?'“':'‘',close=quote==='“'?'”':'’';
    return quote+lemma+close+note+separator+(separator?' ':'');
   }).join('').trim();
  }
@@ -3025,6 +3053,7 @@ UD1;mc;¿Qué lengua se hablaba en Roma?;B;Griego|Latín|Etrusco"></textarea><bu
   "Enunciado verbal": "Enunciat verbal",
   "Analizar y revisar vocabulario": "Analitzar i revisar vocabulari",
   "Incluir las lecturas posibles en Word, marcadas para revisión": "Incloure les lectures possibles en Word, marcades per a revisió",
+  "Completar vocabulario con Collatinus": "Completa el vocabulari amb Collatinus",
   "Exportar a Word": "Exportar a Word",
   "Diagnóstico del banco docente": "Diagnòstic del banc docent",
   "Cobertura y revisión por unidades": "Cobertura i revisió per unitats",
@@ -5558,8 +5587,12 @@ function isRequired(entry,chosen){
 // Reconocimiento del vocabulario final: formas documentadas por el enunciado del banco.
 // Las coincidencias múltiples entre lemas distintos siguen requiriendo revisión.
 function lexPos(entry){let m=String(entry).match(/\((adv\.?|conj\.?|adverbio|conjunción)\)/i);if(!m)return '';return /^adv/i.test(m[1])?'adv.':'conj.'}
-function localizedGloss(item){return window.ExaminaValencianGloss?.forEntry(item,$('lang').value)||{value:String(item?.meaning||''),ready:!!String(item?.meaning||'').trim()}}
-function quoteGloss(text){const central=window.ExaminaValencianGloss?.quoteGloss(text);if(central)return central;const value=String(text).trim().replace(/^[\u0027\u2018\u2019"“”]+|[\u0027\u2018\u2019"“”]+$/g,'');return /[\s,;:]/u.test(value)?'“'+value+'”':'‘'+value+'’'}
+function localizedGloss(item){
+ const course=({latin1:'lat1',latin4:'lat4',greek1:'gr1'})[currentCourse()];
+ const lang=$('lang').value;
+ return window.ExaminaVocabulary?.localizedVocabularyGloss(item,course,lang)||
+  window.ExaminaValencianGloss.forEntry(item,lang);
+}
 function glossType(entry){
  const course=currentCourse();
  const classifier=window.ExaminaVocabulary?.classifyVocabularyEntry;
@@ -6036,6 +6069,11 @@ function automaticExamGlossChoice(row,result,course,bank){
   meaning_va:teacher?.meaning_va||''};
  return validExternalGloss(choice)?choice:null;
 }
+window.ExaminaCollatinus={
+ job:row=>examReaderJob(row,false),
+ query:jobs=>queryExamReader('Collatinus',jobs),
+ choice:automaticExamGlossChoice
+};
 function currentExamGlossTargets(automatic){
  return new Set([...$('paper').querySelectorAll(automatic?
   '.exam-gloss-lemma,.exam-gloss-unknown .exam-reader-lookup':'.exam-gloss-lemma')]
@@ -6440,7 +6478,7 @@ function buildFinalLexicon(chosen,sentences){
  const pending=rows.filter(x=>!(isRequired(x.entry,chosen)&&hideRequired)&&missingTranslation(x));
  let out=rows.length?'<p class="exam-gloss-title"><strong>'+($('lang').value==='va'?'Vocabulari':'Vocabulario')+'</strong></p><div class="final-gloss">'+rows.map(x=>{
   const entry=x.entry,localized=localizedGloss(x),verified=!missingTranslation(x);
-  const gloss=!verified||(isRequired(entry,chosen)&&hideRequired)?'':': '+esc(quoteGloss(localized.value));
+  const gloss=!verified||(isRequired(entry,chosen)&&hideRequired)?'':': '+esc(window.ExaminaVocabulary.quoteVocabularyGloss(localized.value,entry,greek?'gr1':'lat1'));
   const visible=x.source==='collatinus'?externalCitationForExam(entry,course,chosen):
    greek&&x.source==='eulexis'?greekEulexisCitation(entry):latinExamGlossEntry(entry,course,chosen);
   return '<div class="gloss-item">'+(greek?esc(visible):latinGlossCitation(visible))+gloss+'</div>';
@@ -8133,7 +8171,7 @@ function generate(){
  }
  if(course==='latin4'&&!translation&&examQuestionEnabled('culture')){
   const marked=selectedUnits(false),kind=$('cultureType')?.value||'all';
-  const pool=culture.filter(x=>x.course==='latin4'&&x.units?.some(u=>marked.includes(u))&&(kind==='all'||kind===x.type)&&x.question&&x.answer);
+  const pool=culture.filter(x=>x.course==='latin4'&&x.units?.some(u=>marked.includes(u))&&(kind==='all'||kind===x.type)&&!window.ExaminaCultureImportError(x));
   const picked=stickyExamRows('culture',()=>latinPrioritySample(pool,4,examUnitPriority(marked,item=>item.units)));
   const question=x=>va&&x.question_va?x.question_va:x.question;
   const html=picked.length?'<ol class="task exam-culture-items" type="a">'+picked.map(x=>{
@@ -8166,10 +8204,55 @@ const initialCulture=culture.slice();
 vocab.push(...[{"course": "latin4", "unit": "UD1", "entry": "Æmĭlĭa, –æ", "meaning": "Emilia"}, {"course": "latin4", "unit": "UD1", "entry": "ăgrĭcŏla, –æ", "meaning": "agricultor"}, {"course": "latin4", "unit": "UD1", "entry": "ăltus, –a, –um", "meaning": "alto"}, {"course": "latin4", "unit": "UD1", "entry": "ămo", "meaning": "amar"}, {"course": "latin4", "unit": "UD1", "entry": "ăqua, –æ", "meaning": "agua"}, {"course": "latin4", "unit": "UD1", "entry": "aula, –æ", "meaning": "aula"}, {"course": "latin4", "unit": "UD1", "entry": "Claudĭa, –æ", "meaning": "Claudia"}, {"course": "latin4", "unit": "UD1", "entry": "cōpĭa, –æ", "meaning": "abundancia’ (pl.: ‘tropas’)"}, {"course": "latin4", "unit": "UD1", "entry": "dō", "meaning": "dar, donar"}, {"course": "latin4", "unit": "UD1", "entry": "fīlĭa, –æ", "meaning": "hija"}, {"course": "latin4", "unit": "UD1", "entry": "gĕmma, –æ", "meaning": "gema, piedra preciosa"}, {"course": "latin4", "unit": "UD1", "entry": "hăbĕo", "meaning": "tener"}, {"course": "latin4", "unit": "UD1", "entry": "Iūlĭa, –æ", "meaning": "Julia"}, {"course": "latin4", "unit": "UD1", "entry": "lŏngus, –a, –um", "meaning": "largo/a"}, {"course": "latin4", "unit": "UD1", "entry": "māgnus, –a, –um", "meaning": "grande"}, {"course": "latin4", "unit": "UD1", "entry": "mōnstro", "meaning": "indicar, señalar"}, {"course": "latin4", "unit": "UD1", "entry": "nauta, –æ", "meaning": "marinero"}, {"course": "latin4", "unit": "UD1", "entry": "părvus, –a, –um", "meaning": "pequeño/a"}, {"course": "latin4", "unit": "UD1", "entry": "pĕcūnĭa, –æ", "meaning": "riqueza, fortuna"}, {"course": "latin4", "unit": "UD1", "entry": "pŭĕlla, –æ", "meaning": "niña"}, {"course": "latin4", "unit": "UD1", "entry": "pŭlchĕr, –chra, –chrum", "meaning": "bello, hermoso"}, {"course": "latin4", "unit": "UD1", "entry": "Rōma, –æ", "meaning": "Roma"}, {"course": "latin4", "unit": "UD1", "entry": "spēro", "meaning": "esperar"}, {"course": "latin4", "unit": "UD1", "entry": "stēlla, –æ", "meaning": "astro, estrella"}, {"course": "latin4", "unit": "UD1", "entry": "sŭm", "meaning": "ser, estar, haber"}, {"course": "latin4", "unit": "UD1", "entry": "tăbŭla, –æ", "meaning": "mesa"}, {"course": "latin4", "unit": "UD1", "entry": "vĭa, –æ", "meaning": "calle’, ‘camino"}, {"course": "latin4", "unit": "UD1", "entry": "vĭctōrĭa, –æ", "meaning": "victoria"}, {"course": "latin4", "unit": "UD1", "entry": "vŏco", "meaning": "llamar"}, {"course": "latin4", "unit": "UD2", "entry": "ādvērsārĭus, –ī", "meaning": "adversario, rival"}, {"course": "latin4", "unit": "UD2", "entry": "ædĭfĭco (1ª)", "meaning": "construir"}, {"course": "latin4", "unit": "UD2", "entry": "Ālba Longa, –æ", "meaning": "Alba Longa"}, {"course": "latin4", "unit": "UD2", "entry": "ălbus, –a, –um", "meaning": "blanco/a"}, {"course": "latin4", "unit": "UD2", "entry": "ămīcus, –ī", "meaning": "amigo"}, {"course": "latin4", "unit": "UD2", "entry": "ărma, –orum", "meaning": "armas"}, {"course": "latin4", "unit": "UD2", "entry": "auxĭlĭŭm, –ī", "meaning": "ayuda, auxilio"}, {"course": "latin4", "unit": "UD2", "entry": "căpĭo (mx.)", "meaning": "coger"}, {"course": "latin4", "unit": "UD2", "entry": "căstra, –orum", "meaning": "campamento"}, {"course": "latin4", "unit": "UD2", "entry": "cūra, –æ", "meaning": "cuidado, preocupación"}, {"course": "latin4", "unit": "UD2", "entry": "dĕus, –ī", "meaning": "dios"}, {"course": "latin4", "unit": "UD2", "entry": "dīlĭgēntĭa, –æ", "meaning": "atención, cuidado, esmero"}, {"course": "latin4", "unit": "UD2", "entry": "dō (1ª)", "meaning": "dar, donar"}, {"course": "latin4", "unit": "UD2", "entry": "dŏmĭna, –æ", "meaning": "matriarca, dueña, señora"}, {"course": "latin4", "unit": "UD2", "entry": "dŏmĭnus, –ī", "meaning": "señor, dueño"}, {"course": "latin4", "unit": "UD2", "entry": "ĕpīstŭla, –æ", "meaning": "carta"}, {"course": "latin4", "unit": "UD2", "entry": "făcĭlĕ (adv.)", "meaning": "fácilmente"}, {"course": "latin4", "unit": "UD2", "entry": "fēmĭna, –æ", "meaning": "mujer"}, {"course": "latin4", "unit": "UD2", "entry": "fīlĭus, –ī", "meaning": "hijo"}, {"course": "latin4", "unit": "UD2", "entry": "hăbĕo (2ª)", "meaning": "tener"}, {"course": "latin4", "unit": "UD2", "entry": "ĭncŏla, –æ", "meaning": "habitante, vecino"}, {"course": "latin4", "unit": "UD2", "entry": "lĕgo (3ª)", "meaning": "leer"}, {"course": "latin4", "unit": "UD2", "entry": "lĭbĕr, –bri", "meaning": "libro"}, {"course": "latin4", "unit": "UD2", "entry": "lĭttĕra, –æ", "meaning": "letra’, ‘carta’ (pl.)"}, {"course": "latin4", "unit": "UD2", "entry": "lŏngus, –a, –um", "meaning": "largo/a"}, {"course": "latin4", "unit": "UD2", "entry": "măgĭs (adv.)", "meaning": "más"}, {"course": "latin4", "unit": "UD2", "entry": "māgnus, –a, –um", "meaning": "grande"}, {"course": "latin4", "unit": "UD2", "entry": "mānĕ (adv.)", "meaning": "por la mañana"}, {"course": "latin4", "unit": "UD2", "entry": "mŭltus, –a, –um", "meaning": "mucho/a"}, {"course": "latin4", "unit": "UD2", "entry": "mūrus, –ī", "meaning": "muro"}, {"course": "latin4", "unit": "UD2", "entry": "nōn (adv.)", "meaning": "no"}, {"course": "latin4", "unit": "UD2", "entry": "nŭmĕrus, –ī", "meaning": "número"}, {"course": "latin4", "unit": "UD2", "entry": "ŏppĭdŭm, –ī", "meaning": "ciudad"}, {"course": "latin4", "unit": "UD2", "entry": "păro (1ª)", "meaning": "preparar"}, {"course": "latin4", "unit": "UD2", "entry": "pătĭēntĭa, –æ", "meaning": "paciencia, constancia"}, {"course": "latin4", "unit": "UD2", "entry": "pŏpŭlus, –ī", "meaning": "pueblo"}, {"course": "latin4", "unit": "UD2", "entry": "pŏrta, –æ", "meaning": "puerta"}, {"course": "latin4", "unit": "UD2", "entry": "pŏrto (1ª)", "meaning": "llevar"}, {"course": "latin4", "unit": "UD2", "entry": "pŭĕlla, –æ", "meaning": "niña"}, {"course": "latin4", "unit": "UD2", "entry": "pŭĕr, –ī", "meaning": "niño"}, {"course": "latin4", "unit": "UD2", "entry": "pūgno (1ª)", "meaning": "combatir"}, {"course": "latin4", "unit": "UD2", "entry": "Rōmānus, –a, –um", "meaning": "romano/a"}, {"course": "latin4", "unit": "UD2", "entry": "sŭus, –a, –um", "meaning": "su’, ‘suyo/a"}, {"course": "latin4", "unit": "UD2", "entry": "vĭr, –ī", "meaning": "hombre"}, {"course": "latin4", "unit": "UD3", "entry": "ādvērsārĭus, –ī", "meaning": "adversario, rival"}, {"course": "latin4", "unit": "UD3", "entry": "Āfrĭca, –æ", "meaning": "África"}, {"course": "latin4", "unit": "UD3", "entry": "ăltus, –a, –um", "meaning": "alto/a"}, {"course": "latin4", "unit": "UD3", "entry": "āmbŭlo (1ª)", "meaning": "caminar"}, {"course": "latin4", "unit": "UD3", "entry": "ămīcus, –ī", "meaning": "amigo"}, {"course": "latin4", "unit": "UD3", "entry": "ămo (1ª)", "meaning": "amar"}, {"course": "latin4", "unit": "UD3", "entry": "ănĭmus, –ī", "meaning": "corazón, espíritu"}, {"course": "latin4", "unit": "UD3", "entry": "ărgĕntŭm, –ī", "meaning": "plata"}, {"course": "latin4", "unit": "UD3", "entry": "audācĭa, –æ", "meaning": "audacia, osadía"}, {"course": "latin4", "unit": "UD3", "entry": "aurŭm, –ī", "meaning": "oro"}, {"course": "latin4", "unit": "UD3", "entry": "bĕllŭm, –ī", "meaning": "guerra"}, {"course": "latin4", "unit": "UD3", "entry": "bŏnus, –a, –um", "meaning": "bueno/a"}, {"course": "latin4", "unit": "UD3", "entry": "căstra, –orum", "meaning": "campamento"}, {"course": "latin4", "unit": "UD3", "entry": "cĕlĕrĭtĕr", "meaning": "rápidamente"}, {"course": "latin4", "unit": "UD3", "entry": "cōpĭa, –æ", "meaning": "abundancia"}, {"course": "latin4", "unit": "UD3", "entry": "disco (3ª)", "meaning": "aprender"}, {"course": "latin4", "unit": "UD3", "entry": "dō (1ª)", "meaning": "dar, donar"}, {"course": "latin4", "unit": "UD3", "entry": "dūco (3ª)", "meaning": "conducir"}, {"course": "latin4", "unit": "UD3", "entry": "ēxpūgno (1ª)", "meaning": "expugnar, tomar por asalto"}, {"course": "latin4", "unit": "UD3", "entry": "fĕssus, –a, –um", "meaning": "cansado/a"}, {"course": "latin4", "unit": "UD3", "entry": "fīlĭus, –ī", "meaning": "hijo"}, {"course": "latin4", "unit": "UD3", "entry": "foedus, –a, –um", "meaning": "feo/a"}, {"course": "latin4", "unit": "UD3", "entry": "hăbĕo (2ª)", "meaning": "tener"}, {"course": "latin4", "unit": "UD3", "entry": "Hānnĭbăl, –alis", "meaning": "Haníbal"}, {"course": "latin4", "unit": "UD3", "entry": "Hĭspānĭa, –æ", "meaning": "Hispania"}, {"course": "latin4", "unit": "UD3", "entry": "ĭbĭ (adv.)", "meaning": "allí"}, {"course": "latin4", "unit": "UD3", "entry": "impĭger, –gra, –grum", "meaning": "trabajador/a"}, {"course": "latin4", "unit": "UD3", "entry": "ĭnĭmīcus, –a, –um", "meaning": "enemigo/a"}, {"course": "latin4", "unit": "UD3", "entry": "ĭnvĕnĭo (4ª)", "meaning": "encontrar, descubrir"}, {"course": "latin4", "unit": "UD3", "entry": "Ītălĭa, –æ", "meaning": "Italia"}, {"course": "latin4", "unit": "UD3", "entry": "Iūlĭus, –ī", "meaning": "Julio"}, {"course": "latin4", "unit": "UD3", "entry": "lĭbĕr, –bri", "meaning": "libro"}, {"course": "latin4", "unit": "UD3", "entry": "lĭttĕra, –æ", "meaning": "letra; (en pl.) carta"}, {"course": "latin4", "unit": "UD3", "entry": "lūdo (3ª)", "meaning": "jugar"}, {"course": "latin4", "unit": "UD3", "entry": "măgīstĕr, –tri", "meaning": "maestro"}, {"course": "latin4", "unit": "UD3", "entry": "māgnus, –a, –um", "meaning": "grande"}, {"course": "latin4", "unit": "UD3", "entry": "mūrus, –ī", "meaning": "muro"}, {"course": "latin4", "unit": "UD3", "entry": "nōn (adv.)", "meaning": "no"}, {"course": "latin4", "unit": "UD3", "entry": "nŏstĕr, –tra, –trum", "meaning": "nuestro/a"}, {"course": "latin4", "unit": "UD3", "entry": "ōbtĭnĕo (2ª)", "meaning": "obtener, ocupar"}, {"course": "latin4", "unit": "UD3", "entry": "pŏpŭlus, –ī", "meaning": "pueblo"}, {"course": "latin4", "unit": "UD3", "entry": "pŭĕlla, –æ", "meaning": "niña"}, {"course": "latin4", "unit": "UD3", "entry": "pŭĕr, –ī", "meaning": "niño"}, {"course": "latin4", "unit": "UD3", "entry": "pūgna, –æ", "meaning": "batalla"}, {"course": "latin4", "unit": "UD3", "entry": "pūgno (1ª)", "meaning": "combatir"}, {"course": "latin4", "unit": "UD3", "entry": "pŭlchĕr, –chra, –chrum", "meaning": "bonito/a"}, {"course": "latin4", "unit": "UD3", "entry": "quĭēsco (3ª)", "meaning": "descansar"}, {"course": "latin4", "unit": "UD3", "entry": "rĕdĕo (irr.)", "meaning": "volver, regresar"}, {"course": "latin4", "unit": "UD3", "entry": "Rōma, –æ", "meaning": "Roma"}, {"course": "latin4", "unit": "UD3", "entry": "Rōmānus, –a, –um", "meaning": "romano/a"}, {"course": "latin4", "unit": "UD3", "entry": "rŏsa, –æ", "meaning": "rosa"}, {"course": "latin4", "unit": "UD3", "entry": "Săgūntum, –ī", "meaning": "Sagunto"}, {"course": "latin4", "unit": "UD3", "entry": "sĕd (conj.)", "meaning": "pero, sino"}, {"course": "latin4", "unit": "UD3", "entry": "sĕmpĕr (adv.)", "meaning": "siempre"}, {"course": "latin4", "unit": "UD3", "entry": "strēnuus, –a, –um", "meaning": "fuerte"}, {"course": "latin4", "unit": "UD3", "entry": "sŭm (irr.)", "meaning": "ser, estar, haber"}, {"course": "latin4", "unit": "UD3", "entry": "thesaurus, –ī", "meaning": "tesoro, depósito, almacén"}, {"course": "latin4", "unit": "UD3", "entry": "trānsĕo (irr.)", "meaning": "pasar, atravesar"}, {"course": "latin4", "unit": "UD3", "entry": "ŭmbra, –æ", "meaning": "sombra"}, {"course": "latin4", "unit": "UD3", "entry": "vĭctōrĭa, –æ", "meaning": "victoria"}, {"course": "latin4", "unit": "UD4", "entry": "ac (conj.)", "meaning": "y"}, {"course": "latin4", "unit": "UD4", "entry": "ādvērsārĭus, –ī", "meaning": "adversario"}, {"course": "latin4", "unit": "UD4", "entry": "ăgĕr, –gri", "meaning": "tierra’, ‘territorio’, ‘campo"}, {"course": "latin4", "unit": "UD4", "entry": "ăltus, –a, –um", "meaning": "alto/a"}, {"course": "latin4", "unit": "UD4", "entry": "ămīcĭtĭa, –æ", "meaning": "amistad"}, {"course": "latin4", "unit": "UD4", "entry": "ămīcus, –ī", "meaning": "amigo"}, {"course": "latin4", "unit": "UD4", "entry": "ăqua, –æ", "meaning": "agua"}, {"course": "latin4", "unit": "UD4", "entry": "Ăthēnæ, –arum", "meaning": "Atenas"}, {"course": "latin4", "unit": "UD4", "entry": "ātquĕ (conj.)", "meaning": "y"}, {"course": "latin4", "unit": "UD4", "entry": "audĭo (4ª)", "meaning": "escuchar"}, {"course": "latin4", "unit": "UD4", "entry": "bĕllŭm, –ī", "meaning": "guerra"}, {"course": "latin4", "unit": "UD4", "entry": "bŏnus, –a, –um", "meaning": "bueno/a"}, {"course": "latin4", "unit": "UD4", "entry": "cŏlo (3ª)", "meaning": "honrar’, ‘cultivar"}, {"course": "latin4", "unit": "UD4", "entry": "cōncōrdĭa, –æ", "meaning": "concordia"}, {"course": "latin4", "unit": "UD4", "entry": "dēbĕo (2ª)", "meaning": "deber"}, {"course": "latin4", "unit": "UD4", "entry": "dēlĭgo (3ª)", "meaning": "elegir"}, {"course": "latin4", "unit": "UD4", "entry": "dīscĭpŭla, –æ", "meaning": "alumna"}, {"course": "latin4", "unit": "UD4", "entry": "dŏmĭna, –æ", "meaning": "dueña’, ‘señora"}, {"course": "latin4", "unit": "UD4", "entry": "dŭm (conj.)", "meaning": "mientras"}, {"course": "latin4", "unit": "UD4", "entry": "ĕo (irr.)", "meaning": "ir"}, {"course": "latin4", "unit": "UD4", "entry": "fēmĭna, –æ", "meaning": "mujer"}, {"course": "latin4", "unit": "UD4", "entry": "lūdo (3ª)", "meaning": "jugar"}, {"course": "latin4", "unit": "UD4", "entry": "lūdus, –ī", "meaning": "juego’, ‘escuela"}, {"course": "latin4", "unit": "UD4", "entry": "măgīstĕr, –tri", "meaning": "maestro"}, {"course": "latin4", "unit": "UD4", "entry": "mălĕdĭcus, –a, –um", "meaning": "malvado/a"}, {"course": "latin4", "unit": "UD4", "entry": "mălus, –a, –um", "meaning": "malo"}, {"course": "latin4", "unit": "UD4", "entry": "mănĕo (2ª)", "meaning": "permanecer’, ‘quedarse"}, {"course": "latin4", "unit": "UD4", "entry": "mĭsĕr, –a, –um", "meaning": "desdichado’, ‘mísero"}, {"course": "latin4", "unit": "UD4", "entry": "mĭsĕrĭa, –æ", "meaning": "miseria’, ‘desgracia"}, {"course": "latin4", "unit": "UD4", "entry": "mŏvĕo (2ª)", "meaning": "mover"}, {"course": "latin4", "unit": "UD4", "entry": "mŭltus, –a, –um", "meaning": "mucho/a"}, {"course": "latin4", "unit": "UD4", "entry": "mūrus, –ī", "meaning": "muro"}, {"course": "latin4", "unit": "UD4", "entry": "nĕquĕ (conj.)", "meaning": "ni’, ‘y no"}, {"course": "latin4", "unit": "UD4", "entry": "nōn (adv.)", "meaning": "no"}, {"course": "latin4", "unit": "UD4", "entry": "odium, –ī", "meaning": "odio’, ‘aversión"}, {"course": "latin4", "unit": "UD4", "entry": "oppidum, –ī", "meaning": "ciudad"}, {"course": "latin4", "unit": "UD4", "entry": "pervenio (4ª)", "meaning": "llegar"}, {"course": "latin4", "unit": "UD4", "entry": "piger, –gra, –grum", "meaning": "perezoso/a"}, {"course": "latin4", "unit": "UD4", "entry": "pŭĕr, –ī", "meaning": "niño"}, {"course": "latin4", "unit": "UD4", "entry": "pūgnō (1ª)", "meaning": "combatir"}, {"course": "latin4", "unit": "UD4", "entry": "quĭă (conj.)", "meaning": "porque"}, {"course": "latin4", "unit": "UD4", "entry": "răpĭo (mx.)", "meaning": "arrastrar"}, {"course": "latin4", "unit": "UD4", "entry": "rāptum, –ī", "meaning": "rapto"}, {"course": "latin4", "unit": "UD4", "entry": "rīvus, –ī", "meaning": "riachuelo’, ‘arroyo"}, {"course": "latin4", "unit": "UD4", "entry": "Rōmānus, –a, –um", "meaning": "romano/a"}, {"course": "latin4", "unit": "UD4", "entry": "Săbīnus, –a, –um", "meaning": "sabino/a"}, {"course": "latin4", "unit": "UD4", "entry": "sĕmpĕr (adv.)", "meaning": "siempre"}, {"course": "latin4", "unit": "UD4", "entry": "sĕrva, –æ", "meaning": "esclava"}, {"course": "latin4", "unit": "UD4", "entry": "sĕrvus, –ī", "meaning": "esclavo"}, {"course": "latin4", "unit": "UD4", "entry": "Spārtānus, –a, –um", "meaning": "espartano/a"}, {"course": "latin4", "unit": "UD4", "entry": "spēro (1ª)", "meaning": "esperar"}, {"course": "latin4", "unit": "UD4", "entry": "sŭm (irr.)", "meaning": "ser’, ‘estar’, ‘haber"}, {"course": "latin4", "unit": "UD4", "entry": "sūpprĭmo (3ª)", "meaning": "contener’, ‘detener’, ‘suprimir"}, {"course": "latin4", "unit": "UD4", "entry": "Tărēntum, –ī", "meaning": "Tarento"}, {"course": "latin4", "unit": "UD4", "entry": "thĕātrŭm, –ī", "meaning": "teatro"}, {"course": "latin4", "unit": "UD4", "entry": "thēsaurus, –ī", "meaning": "tesoro’, ‘depósito’, ‘almacén"}, {"course": "latin4", "unit": "UD4", "entry": "trānspōrto (1ª)", "meaning": "transportar"}, {"course": "latin4", "unit": "UD4", "entry": "vāsto (1ª)", "meaning": "devastar"}, {"course": "latin4", "unit": "UD4", "entry": "vērus, –a, –um", "meaning": "verdadero/a"}, {"course": "latin4", "unit": "UD4", "entry": "vĭa, –æ", "meaning": "camino’, ‘calle"}, {"course": "latin4", "unit": "UD4", "entry": "vĭctōrĭa, –æ", "meaning": "victoria"}, {"course": "latin4", "unit": "UD4", "entry": "vīcus, –ī", "meaning": "aldea"}, {"course": "latin4", "unit": "UD4", "entry": "vĭdĕo (2ª)", "meaning": "ver"}, {"course": "latin4", "unit": "UD4", "entry": "vĭnco (3ª)", "meaning": "vencer"}, {"course": "latin4", "unit": "UD4", "entry": "vĭr, –ī", "meaning": "hombre’, ‘marido"}, {"course": "latin4", "unit": "UD4", "entry": "vīta, –æ", "meaning": "vida"}, {"course": "latin4", "unit": "UD4", "entry": "vivo (3ª)", "meaning": "vivir"}, {"course": "latin4", "unit": "UD4", "entry": "vŏlo (irr.)", "meaning": "querer"}, {"course": "latin4", "unit": "UD5", "entry": "bĕllŭm, –ī", "meaning": "guerra"}, {"course": "latin4", "unit": "UD5", "entry": "Cæsăr, –aris (m.)", "meaning": "César"}, {"course": "latin4", "unit": "UD5", "entry": "cīvĭs, –is (m. o f.)", "meaning": "ciudadano/a"}, {"course": "latin4", "unit": "UD5", "entry": "cŏllĭs, –is (m.)", "meaning": "colina"}, {"course": "latin4", "unit": "UD5", "entry": "Cŏlossēus, –ī", "meaning": "el Coliseo"}, {"course": "latin4", "unit": "UD5", "entry": "cōnsŭl, cōnsŭlis (m.)", "meaning": "cónsul"}, {"course": "latin4", "unit": "UD5", "entry": "cūrro (3ª)", "meaning": "correr"}, {"course": "latin4", "unit": "UD5", "entry": "dō (1ª)", "meaning": "dar, donar"}, {"course": "latin4", "unit": "UD5", "entry": "dūco (3ª)", "meaning": "llevar"}, {"course": "latin4", "unit": "UD5", "entry": "dūx, ducis (m.)", "meaning": "general"}, {"course": "latin4", "unit": "UD5", "entry": "ĕo (irr.)", "meaning": "ir"}, {"course": "latin4", "unit": "UD5", "entry": "ĕquĕs, equitis (m.)", "meaning": "caballero, jinete"}, {"course": "latin4", "unit": "UD5", "entry": "glădĭātŏr, –oris (m.)", "meaning": "gladiador"}, {"course": "latin4", "unit": "UD5", "entry": "hăbĭto (1ª)", "meaning": "habitar, vivir"}, {"course": "latin4", "unit": "UD5", "entry": "homo, hominis (m.)", "meaning": "hombre"}, {"course": "latin4", "unit": "UD5", "entry": "hŏstĭs, –is (m.)", "meaning": "enemigo"}, {"course": "latin4", "unit": "UD5", "entry": "ĭmpĕrātŏr, –oris (m.)", "meaning": "general; emperador"}, {"course": "latin4", "unit": "UD5", "entry": "ĭmpĕro (1ª)", "meaning": "mandar, ordenar"}, {"course": "latin4", "unit": "UD5", "entry": "Ītălĭa, –æ", "meaning": "Italia"}, {"course": "latin4", "unit": "UD5", "entry": "iter, itineris (n.)", "meaning": "camino’, ‘viaje"}, {"course": "latin4", "unit": "UD5", "entry": "Iūppĭtĕr, Iouis (m.)", "meaning": "Júpiter"}, {"course": "latin4", "unit": "UD5", "entry": "iŭvo (1ª)", "meaning": "ayudar"}, {"course": "latin4", "unit": "UD5", "entry": "labor, –oris (m.)", "meaning": "trabajo"}, {"course": "latin4", "unit": "UD5", "entry": "lēgātus, –ī", "meaning": "legado, embajador"}, {"course": "latin4", "unit": "UD5", "entry": "legio, legiōnis (f.)", "meaning": "legión"}, {"course": "latin4", "unit": "UD5", "entry": "littera, –æ", "meaning": "letra’, ‘carta’ (pl.)"}, {"course": "latin4", "unit": "UD5", "entry": "māgnus, –a, –um", "meaning": "grande"}, {"course": "latin4", "unit": "UD5", "entry": "mare, –is (n.)", "meaning": "mar"}, {"course": "latin4", "unit": "UD5", "entry": "Mediterraneus, –a, –um", "meaning": "Mediterráneo"}, {"course": "latin4", "unit": "UD5", "entry": "mīlĕs, mīlitis (m.)", "meaning": "soldado"}, {"course": "latin4", "unit": "UD5", "entry": "mons, montis (m.)", "meaning": "monte"}, {"course": "latin4", "unit": "UD5", "entry": "moveo (2ª)", "meaning": "mover"}, {"course": "latin4", "unit": "UD5", "entry": "multus, –a, –um", "meaning": "mucho/a"}, {"course": "latin4", "unit": "UD5", "entry": "nauta, –æ", "meaning": "marinero"}, {"course": "latin4", "unit": "UD5", "entry": "nŏstĕr, –tra, –trum", "meaning": "nuestro/a"}, {"course": "latin4", "unit": "UD5", "entry": "ŏppĭdŭm, –ī", "meaning": "ciudad"}, {"course": "latin4", "unit": "UD5", "entry": "ŏppūgnātĭō, –onis (f.)", "meaning": "ataque"}, {"course": "latin4", "unit": "UD5", "entry": "pătĕr, –tris (m.)", "meaning": "padre"}, {"course": "latin4", "unit": "UD5", "entry": "rĕgĭō, –onis (f.)", "meaning": "región"}, {"course": "latin4", "unit": "UD5", "entry": "resisto (3ª)", "meaning": "resistir"}, {"course": "latin4", "unit": "UD5", "entry": "Rōmānus, –a, –um", "meaning": "romano/a"}, {"course": "latin4", "unit": "UD5", "entry": "rus, ruris (n.)", "meaning": "campo"}, {"course": "latin4", "unit": "UD5", "entry": "sacer, sacra, sacrum", "meaning": "sagrado/a"}, {"course": "latin4", "unit": "UD5", "entry": "Sātūrnus, –ī", "meaning": "Saturno"}, {"course": "latin4", "unit": "UD5", "entry": "scūtŭm, –ī", "meaning": "escudo"}, {"course": "latin4", "unit": "UD5", "entry": "strēnŭus, –a, –um", "meaning": "fuerte"}, {"course": "latin4", "unit": "UD5", "entry": "tŏlĕro (1ª)", "meaning": "soportar"}, {"course": "latin4", "unit": "UD5", "entry": "trānspōrto (1ª)", "meaning": "transportar"}, {"course": "latin4", "unit": "UD5", "entry": "ūrbs, urbis (f.)", "meaning": "ciudad"}, {"course": "latin4", "unit": "UD5", "entry": "vāsto (1ª)", "meaning": "devastar"}, {"course": "latin4", "unit": "UD5", "entry": "via, –æ", "meaning": "camino"}, {"course": "latin4", "unit": "UD6", "entry": "Ăchīllēs, –is (m.)", "meaning": "Aquiles"}, {"course": "latin4", "unit": "UD6", "entry": "ādvērsus (prep. + ac.)", "meaning": "contra"}, {"course": "latin4", "unit": "UD6", "entry": "ædēs, –is (f.)", "meaning": "templo"}, {"course": "latin4", "unit": "UD6", "entry": "ānŭlus, –ī", "meaning": "anillo"}, {"course": "latin4", "unit": "UD6", "entry": "ārs, artis (f.)", "meaning": "arte"}, {"course": "latin4", "unit": "UD6", "entry": "bĕnĕ (adv.)", "meaning": "bien"}, {"course": "latin4", "unit": "UD6", "entry": "cĕlĕr, –eris, –ere", "meaning": "rápido’, ‘veloz"}, {"course": "latin4", "unit": "UD6", "entry": "clārus, –a, –um", "meaning": "brillante’, ‘célebre"}, {"course": "latin4", "unit": "UD6", "entry": "cōnsŭl, –is", "meaning": "cónsul"}, {"course": "latin4", "unit": "UD6", "entry": "dēnsus, –a, –um", "meaning": "espeso’, ‘denso"}, {"course": "latin4", "unit": "UD6", "entry": "dūx, ducis (m.)", "meaning": "general"}, {"course": "latin4", "unit": "UD6", "entry": "ĕmō, ēmī, ēmptum (3ª)", "meaning": "comprar"}, {"course": "latin4", "unit": "UD6", "entry": "făcĭō, fēcī, factum (mx.)", "meaning": "hacer"}, {"course": "latin4", "unit": "UD6", "entry": "fŏrtĭs, –e", "meaning": "fuerte"}, {"course": "latin4", "unit": "UD6", "entry": "Græcĭa, –æ", "meaning": "Grecia"}, {"course": "latin4", "unit": "UD6", "entry": "Græcus, –a, –um", "meaning": "griego/a"}, {"course": "latin4", "unit": "UD6", "entry": "hŏmō, hominis (m.)", "meaning": "hombre"}, {"course": "latin4", "unit": "UD6", "entry": "ĭmpĕrātŏr, –oris (m.)", "meaning": "líder’, ‘emperador"}, {"course": "latin4", "unit": "UD6", "entry": "ĭtĕr, itineris (n.)", "meaning": "camino"}, {"course": "latin4", "unit": "UD6", "entry": "lăbŏr, –oris (m.)", "meaning": "fatiga’, ‘trabajo"}, {"course": "latin4", "unit": "UD6", "entry": "lībĕrō, –āvī, –ātum (1ª)", "meaning": "liberar"}, {"course": "latin4", "unit": "UD6", "entry": "māgnus, –a, –um", "meaning": "grande"}, {"course": "latin4", "unit": "UD6", "entry": "Mārcus, –ī", "meaning": "Marco"}, {"course": "latin4", "unit": "UD6", "entry": "mărĕ, –is", "meaning": "mar"}, {"course": "latin4", "unit": "UD6", "entry": "Mediterraneus, –a, –um", "meaning": "Mediterráneo"}, {"course": "latin4", "unit": "UD6", "entry": "mĕtus, –us", "meaning": "miedo’, ‘temor"}, {"course": "latin4", "unit": "UD6", "entry": "mīlĕs, –itis (m.)", "meaning": "soldado"}, {"course": "latin4", "unit": "UD6", "entry": "nauta, –æ", "meaning": "marinero"}, {"course": "latin4", "unit": "UD6", "entry": "nāvĭgō, –āvī, –ātum (1ª)", "meaning": "navegar"}, {"course": "latin4", "unit": "UD6", "entry": "nemo, neminis", "meaning": "nadie"}, {"course": "latin4", "unit": "UD6", "entry": "nōmĭnō, –āvī, –ātum (1ª)", "meaning": "nombrar’, ‘denominar"}, {"course": "latin4", "unit": "UD6", "entry": "nōn (adv.)", "meaning": "no"}, {"course": "latin4", "unit": "UD6", "entry": "nŏstĕr, –tra, –trum", "meaning": "nuestro/a"}, {"course": "latin4", "unit": "UD6", "entry": "ŏppūgnātĭō, –onis", "meaning": "ataque’, ‘asalto’, ‘asedio"}, {"course": "latin4", "unit": "UD6", "entry": "phĭlŏsŏphĭa, –æ", "meaning": "filosofía"}, {"course": "latin4", "unit": "UD6", "entry": "pŏpŭlus, –ī", "meaning": "pueblo"}, {"course": "latin4", "unit": "UD6", "entry": "rĕgō, rēxī, rēctum (3ª)", "meaning": "dirigir’, ‘gobernar"}, {"course": "latin4", "unit": "UD6", "entry": "rĕsistō, restĭtī – (3ª)", "meaning": "resistir"}, {"course": "latin4", "unit": "UD6", "entry": "rĕtĭnĕō, retĭnŭī, retentum (2ª)", "meaning": "retener, mantener"}, {"course": "latin4", "unit": "UD6", "entry": "rēx, regis (m.)", "meaning": "rey"}, {"course": "latin4", "unit": "UD6", "entry": "Rōmānus, –a, –um", "meaning": "romano"}, {"course": "latin4", "unit": "UD6", "entry": "scūtŭm, –ī", "meaning": "escudo"}, {"course": "latin4", "unit": "UD6", "entry": "sĕcūndus, –a, –um", "meaning": "favorable"}, {"course": "latin4", "unit": "UD6", "entry": "sĕd (conj.)", "meaning": "pero’, ‘sino"}, {"course": "latin4", "unit": "UD6", "entry": "sĭlva, –æ", "meaning": "bosque"}, {"course": "latin4", "unit": "UD6", "entry": "sum, fŭī – (irr.)", "meaning": "ser, estar, haber"}, {"course": "latin4", "unit": "UD6", "entry": "trānsportō, –āvī, –ātum (1ª)", "meaning": "transportar"}, {"course": "latin4", "unit": "UD6", "entry": "ūxŏr, –oris (f.)", "meaning": "esposa’, ‘mujer"}, {"course": "latin4", "unit": "UD6", "entry": "vĕnĭō, vēnī, ventum (4ª)", "meaning": "venir"}, {"course": "latin4", "unit": "UD6", "entry": "Vĕnŭs, –neris (f.)", "meaning": "Venus"}, {"course": "latin4", "unit": "UD6", "entry": "vĕtŭs, veteris", "meaning": "viejo"}, {"course": "latin4", "unit": "UD6", "entry": "vĭdĕō, vīdī, vīsum (2ª)", "meaning": "ver"}, {"course": "latin4", "unit": "UD6", "entry": "vĭr, –ī", "meaning": "hombre"}, {"course": "latin4", "unit": "UD6", "entry": "vīrtūs, –utis (f.)", "meaning": "coraje’, ‘honestidad"}, {"course": "latin4", "unit": "UD7", "entry": "ācĕr, –cris, –cre", "meaning": "duro/a"}, {"course": "latin4", "unit": "UD7", "entry": "Ăchīllēs, –is (m.)", "meaning": "Aquiles"}, {"course": "latin4", "unit": "UD7", "entry": "ăgĭto, ăgĭtavi, ăgĭtatum (1ª)", "meaning": "llevar"}, {"course": "latin4", "unit": "UD7", "entry": "ăltus, –a, –um", "meaning": "alto/a"}, {"course": "latin4", "unit": "UD7", "entry": "āpprĕhēndo, āpprĕhēndī, āpprĕhēnsum (3ª)", "meaning": "aprehender"}, {"course": "latin4", "unit": "UD7", "entry": "ārbŏr, –oris (f.)", "meaning": "árbol"}, {"course": "latin4", "unit": "UD7", "entry": "Athēna, –æ", "meaning": "Atenea"}, {"course": "latin4", "unit": "UD7", "entry": "auxĭlĭŭm, –ī", "meaning": "ayuda, auxilio"}, {"course": "latin4", "unit": "UD7", "entry": "bĕllŭm, –ī", "meaning": "guerra"}, {"course": "latin4", "unit": "UD7", "entry": "brĕvĭs, –e", "meaning": "breve, corto"}, {"course": "latin4", "unit": "UD7", "entry": "Cæsăr, –aris (m.)", "meaning": "César"}, {"course": "latin4", "unit": "UD7", "entry": "căpĭō, cēpī, captum (mx.)", "meaning": "coger, tomar, capturar"}, {"course": "latin4", "unit": "UD7", "entry": "Cătĭlīna, –æ (m.)", "meaning": "Catilina"}, {"course": "latin4", "unit": "UD7", "entry": "cĕlĕbĕr, –bris, –bre", "meaning": "famoso, ilustre"}, {"course": "latin4", "unit": "UD7", "entry": "cĕlĕr, –ĕris, –ĕre", "meaning": "rápido, veloz"}, {"course": "latin4", "unit": "UD7", "entry": "Cĭcĕrō, –onis (m.)", "meaning": "Cicerón"}, {"course": "latin4", "unit": "UD7", "entry": "cīvĭtās, –atis (f.)", "meaning": "ciudad, estado"}, {"course": "latin4", "unit": "UD7", "entry": "collŏcō, collocāvī, collocātum (1ª)", "meaning": "colocar"}, {"course": "latin4", "unit": "UD7", "entry": "committō, commīsī, commissum (3ª)", "meaning": "emprender"}, {"course": "latin4", "unit": "UD7", "entry": "cōpĭa, –æ", "meaning": "abundancia’ (s.), ‘tropas’ (pl.)"}, {"course": "latin4", "unit": "UD7", "entry": "cūstōs, –odis (m.)", "meaning": "guardián"}, {"course": "latin4", "unit": "UD7", "entry": "dĕa, –æ", "meaning": "diosa"}, {"course": "latin4", "unit": "UD7", "entry": "dēlĕō, dēlēvī, dēlētum (2ª)", "meaning": "destruir"}, {"course": "latin4", "unit": "UD7", "entry": "dīvĕs, –itis", "meaning": "rico/a"}, {"course": "latin4", "unit": "UD7", "entry": "dūrus, a, um", "meaning": "duro/a"}, {"course": "latin4", "unit": "UD7", "entry": "fŏrtĭs, –e", "meaning": "fuerte"}, {"course": "latin4", "unit": "UD7", "entry": "hăbĕō, hăbŭī, hăbĭtum (2ª)", "meaning": "tener"}, {"course": "latin4", "unit": "UD7", "entry": "Hædŭi, –orum", "meaning": "eduos"}, {"course": "latin4", "unit": "UD7", "entry": "hībērna, –orum", "meaning": "campamento de invierno"}, {"course": "latin4", "unit": "UD7", "entry": "hŏmō, –minis", "meaning": "hombre"}, {"course": "latin4", "unit": "UD7", "entry": "hŏstĭs, –is", "meaning": "enemigo"}, {"course": "latin4", "unit": "UD7", "entry": "ĭmpĕrātŏr, –oris", "meaning": "general; emperador"}, {"course": "latin4", "unit": "UD7", "entry": "īncēndĭŭm, –ī", "meaning": "incendio"}, {"course": "latin4", "unit": "UD7", "entry": "iŭvĕnĭs, –is", "meaning": "joven"}, {"course": "latin4", "unit": "UD7", "entry": "laudō, laudāvī, laudātum (1ª)", "meaning": "alabar, loar"}, {"course": "latin4", "unit": "UD7", "entry": "lĕgĭō, –onis (f.)", "meaning": "legión"}, {"course": "latin4", "unit": "UD7", "entry": "lĕgō, lēgī, lēctum (3ª)", "meaning": "leer"}, {"course": "latin4", "unit": "UD7", "entry": "lēx, legis (f.)", "meaning": "ley"}, {"course": "latin4", "unit": "UD7", "entry": "măgīstrātus, –us", "meaning": "magistrado"}, {"course": "latin4", "unit": "UD7", "entry": "māgnus, –a, –um", "meaning": "grande"}, {"course": "latin4", "unit": "UD7", "entry": "mīlĕs, –itis (m.)", "meaning": "soldado"}, {"course": "latin4", "unit": "UD7", "entry": "mŭlĭĕr, –eris (f.)", "meaning": "mujer"}, {"course": "latin4", "unit": "UD7", "entry": "nĕcō, nĕcāvī, nĕcātum (1ª)", "meaning": "matar"}, {"course": "latin4", "unit": "UD7", "entry": "nōn (adv.)", "meaning": "no"}, {"course": "latin4", "unit": "UD7", "entry": "nŏstĕr, –tra, –trum", "meaning": "nuestro/a"}, {"course": "latin4", "unit": "UD7", "entry": "ŏmnĭs, –e", "meaning": "todo"}, {"course": "latin4", "unit": "UD7", "entry": "ŏppĭdŭm, –ī", "meaning": "ciudad"}, {"course": "latin4", "unit": "UD7", "entry": "pārs, partis (f.)", "meaning": "parte"}, {"course": "latin4", "unit": "UD7", "entry": "pătrĭa, æ", "meaning": "patria"}, {"course": "latin4", "unit": "UD7", "entry": "pŏēta, –æ (m.)", "meaning": "poeta"}, {"course": "latin4", "unit": "UD7", "entry": "prāvus, –a, –um", "meaning": "perverso/a"}, {"course": "latin4", "unit": "UD7", "entry": "proelĭŭm, –ī", "meaning": "combate"}, {"course": "latin4", "unit": "UD7", "entry": "pugnō, pugnāvī, pugnātum (1ª)", "meaning": "combatir, luchar"}, {"course": "latin4", "unit": "UD7", "entry": "quĭă (conj.)", "meaning": "porque"}, {"course": "latin4", "unit": "UD7", "entry": "rĕlinquō, rĕlīquī, rĕlictum (3ª)", "meaning": "dejar, abandonar"}, {"course": "latin4", "unit": "UD7", "entry": "rēx, regis (m.)", "meaning": "rey"}, {"course": "latin4", "unit": "UD7", "entry": "rŏgō, rŏgāvī, rŏgātum (1ª)", "meaning": "preguntar, pedir"}, {"course": "latin4", "unit": "UD7", "entry": "săcĕrdōs, –dotis (m.)", "meaning": "sacerdote"}, {"course": "latin4", "unit": "UD7", "entry": "sĕnātus, –us", "meaning": "senado"}, {"course": "latin4", "unit": "UD7", "entry": "sĭlva, –æ", "meaning": "bosque"}, {"course": "latin4", "unit": "UD7", "entry": "Spārtānus, –a, –um", "meaning": "espartano/a"}, {"course": "latin4", "unit": "UD7", "entry": "sum, fŭī – (irr)", "meaning": "ser, estar, haber"}, {"course": "latin4", "unit": "UD7", "entry": "sūpplĭcĭtĕr (adv.)", "meaning": "humildemente"}, {"course": "latin4", "unit": "UD7", "entry": "tēmpŭs, – ŏris (n.)", "meaning": "tiempo"}, {"course": "latin4", "unit": "UD7", "entry": "vĕnĭo, vēni, ventum (4ª)", "meaning": "venir"}, {"course": "latin4", "unit": "UD7", "entry": "vēntus, –ī", "meaning": "viento"}, {"course": "latin4", "unit": "UD7", "entry": "vĕtŭs, –eris", "meaning": "viejo/a"}, {"course": "latin4", "unit": "UD7", "entry": "vĭr, –ī", "meaning": "hombre"}, {"course": "latin4", "unit": "UD7", "entry": "vīs (irr.)", "meaning": "fuerza"}, {"course": "latin4", "unit": "UD7", "entry": "Xērxēs, –is", "meaning": "Jerjes"}, {"course": "latin4", "unit": "UD8", "entry": "ac (conj.)", "meaning": "y"}, {"course": "latin4", "unit": "UD8", "entry": "advĕnĭō, advēnī, adventum (4ª)", "meaning": "llegar"}, {"course": "latin4", "unit": "UD8", "entry": "adventŭs, –ūs", "meaning": "llegada"}, {"course": "latin4", "unit": "UD8", "entry": "ādvērsus (prep. + ac.)", "meaning": "contra"}, {"course": "latin4", "unit": "UD8", "entry": "ăgō, ēgī, āctum (3ª)", "meaning": "hacer’, ‘conducir"}, {"course": "latin4", "unit": "UD8", "entry": "ămīcus, –ī", "meaning": "amigo"}, {"course": "latin4", "unit": "UD8", "entry": "ămō, ămāvī, ămātum (1ª)", "meaning": "amar"}, {"course": "latin4", "unit": "UD8", "entry": "ārdŭus, a, um", "meaning": "arduo/a"}, {"course": "latin4", "unit": "UD8", "entry": "audācĭa, –æ", "meaning": "audacia, osadía"}, {"course": "latin4", "unit": "UD8", "entry": "audāx, ācis", "meaning": "audaz, osado"}, {"course": "latin4", "unit": "UD8", "entry": "audĭō, audīvī, audītum (4ª)", "meaning": "escuchar"}, {"course": "latin4", "unit": "UD8", "entry": "aurŭm, –ī", "meaning": "oro"}, {"course": "latin4", "unit": "UD8", "entry": "ăvĭs, –is (f.)", "meaning": "ave"}, {"course": "latin4", "unit": "UD8", "entry": "bărbărus, –ī", "meaning": "bárbaro"}, {"course": "latin4", "unit": "UD8", "entry": "brĕvĭs, –e", "meaning": "breve, corto"}, {"course": "latin4", "unit": "UD8", "entry": "Cæsăr, –aris (m.)", "meaning": "César"}, {"course": "latin4", "unit": "UD8", "entry": "cāntus, –ūs", "meaning": "canto"}, {"course": "latin4", "unit": "UD8", "entry": "căpĭō, cēpī, captum (mx.)", "meaning": "coger, tomar, capturar"}, {"course": "latin4", "unit": "UD8", "entry": "Carthāgĭnĭēnsis, –e", "meaning": "cartaginés"}, {"course": "latin4", "unit": "UD8", "entry": "Cătĭlīna, –æ", "meaning": "Catilina"}, {"course": "latin4", "unit": "UD8", "entry": "cĕlĕrĭtĕr", "meaning": "rápidamente"}, {"course": "latin4", "unit": "UD8", "entry": "cōnsŭl, cōnsŭlis (m.)", "meaning": "cónsul"}, {"course": "latin4", "unit": "UD8", "entry": "currō, cŭcurrī, cursum (3ª)", "meaning": "correr"}, {"course": "latin4", "unit": "UD8", "entry": "dĕus, –ī", "meaning": "dios"}, {"course": "latin4", "unit": "UD8", "entry": "dēxtĕr, –tra, –trum", "meaning": "derecho/a"}, {"course": "latin4", "unit": "UD8", "entry": "dĭes, –ei (m. y f.)", "meaning": "día"}, {"course": "latin4", "unit": "UD8", "entry": "dīvĕs, –itis", "meaning": "rico/a"}, {"course": "latin4", "unit": "UD8", "entry": "dūx, ducis (m.)", "meaning": "general"}, {"course": "latin4", "unit": "UD8", "entry": "ĕpīstŭla, –æ", "meaning": "carta"}, {"course": "latin4", "unit": "UD8", "entry": "ĕquĭtātŭs, –ūs", "meaning": "caballería"}, {"course": "latin4", "unit": "UD8", "entry": "exercĭtŭs, –ūs", "meaning": "ejército"}, {"course": "latin4", "unit": "UD8", "entry": "făcĭō, fēcī, factum (mx.)", "meaning": "hacer"}, {"course": "latin4", "unit": "UD8", "entry": "făvĕō, fāvī, fautum (2ª)", "meaning": "favorecer"}, {"course": "latin4", "unit": "UD8", "entry": "fēmĭna, –æ", "meaning": "mujer"}, {"course": "latin4", "unit": "UD8", "entry": "flūmĕn, –ĭnis (n.)", "meaning": "río"}, {"course": "latin4", "unit": "UD8", "entry": "grātus, –a, –um", "meaning": "grato/a"}, {"course": "latin4", "unit": "UD8", "entry": "hăbĕō, hăbŭī, hăbĭtum (2ª)", "meaning": "tener"}, {"course": "latin4", "unit": "UD8", "entry": "hōra, –æ", "meaning": "hora"}, {"course": "latin4", "unit": "UD8", "entry": "hortus, –ī", "meaning": "jardín, huerto"}, {"course": "latin4", "unit": "UD8", "entry": "hŏstĭs, –is (m.)", "meaning": "enemigo"}, {"course": "latin4", "unit": "UD8", "entry": "impĕtŭs, –ūs", "meaning": "embestida"}, {"course": "latin4", "unit": "UD8", "entry": "iŭbĕō, iussī, iussum", "meaning": "ordenar"}, {"course": "latin4", "unit": "UD8", "entry": "iussŭs, –ūs", "meaning": "orden, mandato"}, {"course": "latin4", "unit": "UD8", "entry": "lătŭs, lătĕris (n.)", "meaning": "costado, flanco"}, {"course": "latin4", "unit": "UD8", "entry": "legio, legiōnis (f.)", "meaning": "legión"}, {"course": "latin4", "unit": "UD8", "entry": "lŏcus, –ī (n. en pl.)", "meaning": "lugar"}, {"course": "latin4", "unit": "UD8", "entry": "măgīstrātus, –us", "meaning": "magistrado"}, {"course": "latin4", "unit": "UD8", "entry": "mātĕr, –tris (f.)", "meaning": "madre"}, {"course": "latin4", "unit": "UD8", "entry": "mercātŏr, –ōris (m.)", "meaning": "mercader, comerciante"}, {"course": "latin4", "unit": "UD8", "entry": "Mercŭrĭus, –ī", "meaning": "Mercurio"}, {"course": "latin4", "unit": "UD8", "entry": "mŭlĭĕr, –eris (f.)", "meaning": "mujer"}, {"course": "latin4", "unit": "UD8", "entry": "mŭltus, –a, –um", "meaning": "mucho/a"}, {"course": "latin4", "unit": "UD8", "entry": "nĕcessārĭus, –a, –um", "meaning": "necesario/a"}, {"course": "latin4", "unit": "UD8", "entry": "nōmĕn, –mĭnis (n.)", "meaning": "nombre"}, {"course": "latin4", "unit": "UD8", "entry": "nōn (adv.)", "meaning": "no"}, {"course": "latin4", "unit": "UD8", "entry": "nŏstĕr, –tra, –trum", "meaning": "nuestro/a"}, {"course": "latin4", "unit": "UD8", "entry": "nūntĭus, –ī", "meaning": "mensajero"}, {"course": "latin4", "unit": "UD8", "entry": "ŏmnĭs, –e", "meaning": "todo"}, {"course": "latin4", "unit": "UD8", "entry": "ŏppĭdŭm, –ī", "meaning": "ciudad"}, {"course": "latin4", "unit": "UD8", "entry": "oppugnō, oppugnāvī, oppugnātum (1ª)", "meaning": "asediar, sitiar"}, {"course": "latin4", "unit": "UD8", "entry": "pĕdĭtātŭs, –ūs", "meaning": "infantería"}, {"course": "latin4", "unit": "UD8", "entry": "prūdēns, –ntis", "meaning": "previsor/a"}, {"course": "latin4", "unit": "UD8", "entry": "pūblĭcus, –a, –um", "meaning": "público/a"}, {"course": "latin4", "unit": "UD8", "entry": "pŭĕlla, –æ", "meaning": "niña"}, {"course": "latin4", "unit": "UD8", "entry": "pŭĕr, –ī", "meaning": "niño"}, {"course": "latin4", "unit": "UD8", "entry": "pūgna, –æ", "meaning": "batalla"}, {"course": "latin4", "unit": "UD8", "entry": "pugnō, pugnāvī, pugnātum (1ª)", "meaning": "combatir, luchar"}, {"course": "latin4", "unit": "UD8", "entry": "rēs, rĕī", "meaning": "cosa, suceso, circunstancia, asunto"}, {"course": "latin4", "unit": "UD8", "entry": "rĕsistō, restĭtī – (3ª)", "meaning": "resistir"}, {"course": "latin4", "unit": "UD8", "entry": "rīpa, –æ", "meaning": "ribera; costa"}, {"course": "latin4", "unit": "UD8", "entry": "sĕd (conj.)", "meaning": "pero’, ‘sino"}, {"course": "latin4", "unit": "UD8", "entry": "spēs, ei", "meaning": "esperanza"}, {"course": "latin4", "unit": "UD8", "entry": "sum, fŭī – (irr.)", "meaning": "ser, estar, haber"}, {"course": "latin4", "unit": "UD8", "entry": "tămen (adv.)", "meaning": "sin embargo"}, {"course": "latin4", "unit": "UD8", "entry": "tēmpŭs, – ŏris (n.)", "meaning": "tiempo"}, {"course": "latin4", "unit": "UD8", "entry": "terrĕō, terrŭī, terrĭtum (2ª)", "meaning": "asustar"}, {"course": "latin4", "unit": "UD8", "entry": "trīstis, –e", "meaning": "triste"}, {"course": "latin4", "unit": "UD8", "entry": "vĭdĕō, vīdī, vīsum (2ª)", "meaning": "ver"}, {"course": "latin4", "unit": "UD8", "entry": "vĭr, –ī", "meaning": "hombre"}, {"course": "latin4", "unit": "UD9", "entry": "ăgō, ēgī, āctum (3ª)", "meaning": "hacer’, ‘conducir"}, {"course": "latin4", "unit": "UD9", "entry": "appellō, appellāvī, appellātum (1ª)", "meaning": "llamar"}, {"course": "latin4", "unit": "UD9", "entry": "căpĭō, cēpī, captum (mx.)", "meaning": "coger, tomar, capturar"}, {"course": "latin4", "unit": "UD9", "entry": "Cătĭlīna, –æ (m.)", "meaning": "Catilina"}, {"course": "latin4", "unit": "UD9", "entry": "fŏrtĭs, –e", "meaning": "fuerte"}, {"course": "latin4", "unit": "UD9", "entry": "hăbĕō, hăbŭī, hăbĭtum (2ª)", "meaning": "tener"}, {"course": "latin4", "unit": "UD9", "entry": "hŏmō, hominis (m.)", "meaning": "hombre"}, {"course": "latin4", "unit": "UD9", "entry": "Ītălĭa, –æ", "meaning": "Italia"}, {"course": "latin4", "unit": "UD9", "entry": "iŭvĕnĭs, –is", "meaning": "joven"}, {"course": "latin4", "unit": "UD9", "entry": "lĭbĕr, –bri", "meaning": "libro"}, {"course": "latin4", "unit": "UD9", "entry": "māgnus, –a, –um", "meaning": "grande"}, {"course": "latin4", "unit": "UD9", "entry": "mīlĕs, mīlitis (m.)", "meaning": "soldado"}, {"course": "latin4", "unit": "UD9", "entry": "mŭltus, –a, –um", "meaning": "mucho/a"}, {"course": "latin4", "unit": "UD9", "entry": "nōn (adv.)", "meaning": "no"}, {"course": "latin4", "unit": "UD9", "entry": "ŏmnĭs, –e", "meaning": "todo"}, {"course": "latin4", "unit": "UD9", "entry": "prāvus, –a, –um", "meaning": "perverso/a"}, {"course": "latin4", "unit": "UD9", "entry": "proelĭŭm, –ī", "meaning": "combate"}, {"course": "latin4", "unit": "UD9", "entry": "pūblĭcus, –a, –um", "meaning": "público/a"}, {"course": "latin4", "unit": "UD9", "entry": "pŭĕr, –ī", "meaning": "niño"}, {"course": "latin4", "unit": "UD9", "entry": "rĕlinquō, rĕlīquī, rĕlictum (3ª)", "meaning": "dejar, abandonar"}, {"course": "latin4", "unit": "UD9", "entry": "rēs, rĕī", "meaning": "suceso, circunstancia, asunto"}, {"course": "latin4", "unit": "UD9", "entry": "rēx, regis (m.)", "meaning": "rey"}, {"course": "latin4", "unit": "UD9", "entry": "spēs, ei", "meaning": "esperanza"}, {"course": "latin4", "unit": "UD9", "entry": "sum, fŭī – (irr.)", "meaning": "ser, estar, haber"}, {"course": "latin4", "unit": "UD9", "entry": "vāstō, vāstāvī, vāstātum (1ª)", "meaning": "devastar"}, {"course": "latin4", "unit": "UD9", "entry": "vĕnĭō, vēnī, ventum (4ª)", "meaning": "venir"}, {"course": "latin4", "unit": "UD9", "entry": "vīvō, vīxī, vīctum (3ª)", "meaning": "vivir"}, {"course": "latin4", "unit": "UD9", "entry": "cīvĭtās, –ātis (f.)", "meaning": "ciudad"}, {"course": "latin4", "unit": "UD9", "entry": "condō, condĭdī, condĭtum (3ª)", "meaning": "fundar"}, {"course": "latin4", "unit": "UD9", "entry": "Găllus, –a, –um", "meaning": "galo/a"}, {"course": "latin4", "unit": "UD9", "entry": "Gĕrmānus, –a, –um", "meaning": "germano/a", "meaning_va": "germànic/germànica"}, {"course": "latin4", "unit": "UD9", "entry": "ĭmmēnsus, –a, –um", "meaning": "inmenso, vasto"}, {"course": "latin4", "unit": "UD9", "entry": "ĭmpĕrĭŭm, –ī (n.)", "meaning": "mando, poder"}, {"course": "latin4", "unit": "UD9", "entry": "lăbōrō, lăbōrāvī, lăbōrātum (1ª)", "meaning": "trabajar"}, {"course": "latin4", "unit": "UD9", "entry": "mĕus, –a, –um", "meaning": "mío/a"}, {"course": "latin4", "unit": "UD9", "entry": "Nŭma, –æ (m.)", "meaning": "Numa"}, {"course": "latin4", "unit": "UD9", "entry": "pīrāta, –æ (m.)", "meaning": "pirata"}, {"course": "latin4", "unit": "UD9", "entry": "præmĭŭm, –ī", "meaning": "recompensa"}, {"course": "latin4", "unit": "UD9", "entry": "prīmus, –a, –um", "meaning": "el primero/a"}, {"course": "latin4", "unit": "UD9", "entry": "prōmittō, prōmīsī, prōmissum (3ª)", "meaning": "prometer"}, {"course": "latin4", "unit": "UD9", "entry": "rĕvertor, rĕversus sum (3ª)", "meaning": "volver"}, {"course": "latin4", "unit": "UD9", "entry": "Rōmŭlus, –ī", "meaning": "Rómulo"}, {"course": "latin4", "unit": "UD9", "entry": "ŭbīquĕ (adv.)", "meaning": "por todas partes"}, {"course": "latin4", "unit": "UD9", "entry": "vēstīgĭŭm, –ī", "meaning": "huella"}, {"course": "latin4", "unit": "UD10", "entry": "admīror, admīrātus sum (1ª)", "meaning": "admirar"}, {"course": "latin4", "unit": "UD10", "entry": "ăvĭs, –is (f.)", "meaning": "ave"}, {"course": "latin4", "unit": "UD10", "entry": "cănĭs, –is (m.)", "meaning": "perro"}, {"course": "latin4", "unit": "UD10", "entry": "căstra, –orum", "meaning": "campamento"}, {"course": "latin4", "unit": "UD10", "entry": "cōnor, cōnātus sum (1ª)", "meaning": "esforzarse"}, {"course": "latin4", "unit": "UD10", "entry": "cōnsŭl, cōnsŭlis (m.)", "meaning": "cónsul"}, {"course": "latin4", "unit": "UD10", "entry": "dĭes, –ei (m. y f.)", "meaning": "día"}, {"course": "latin4", "unit": "UD10", "entry": "dūcō, dūxī, ductum (3ª)", "meaning": "conducir"}, {"course": "latin4", "unit": "UD10", "entry": "dūx, ducis (m.)", "meaning": "general"}, {"course": "latin4", "unit": "UD10", "entry": "ĕō, īvī o ĭī, ĭtum (irr.)", "meaning": "ir"}, {"course": "latin4", "unit": "UD10", "entry": "ĕquĭtātŭs, –ūs", "meaning": "caballería"}, {"course": "latin4", "unit": "UD10", "entry": "exercĭtŭs, –ūs", "meaning": "ejército"}, {"course": "latin4", "unit": "UD10", "entry": "făcĭō, fēcī, factum (mx.)", "meaning": "hacer"}, {"course": "latin4", "unit": "UD10", "entry": "fēlīx, –īcis", "meaning": "feliz"}, {"course": "latin4", "unit": "UD10", "entry": "grex, grĕgis (m.)", "meaning": "rebaño"}, {"course": "latin4", "unit": "UD10", "entry": "hŏstĭs, –is (m.)", "meaning": "enemigo"}, {"course": "latin4", "unit": "UD10", "entry": "Ītălĭa, æ", "meaning": "Italia"}, {"course": "latin4", "unit": "UD10", "entry": "Iūlĭa, –æ", "meaning": "Julia"}, {"course": "latin4", "unit": "UD10", "entry": "lavor, lavatus sum (1ª)", "meaning": "lavarse"}, {"course": "latin4", "unit": "UD10", "entry": "lĕgĭō, –onis", "meaning": "legión"}, {"course": "latin4", "unit": "UD10", "entry": "lūdus, –ī", "meaning": "juego’, ‘escuela"}, {"course": "latin4", "unit": "UD10", "entry": "mīlĕs, mīlitis (m.)", "meaning": "soldado"}, {"course": "latin4", "unit": "UD10", "entry": "Myro, –ōnis (m.)", "meaning": "Mirón"}, {"course": "latin4", "unit": "UD10", "entry": "nōn (adv.)", "meaning": "no"}, {"course": "latin4", "unit": "UD10", "entry": "nūllŭs, –a, –um", "meaning": "ninguno/a"}, {"course": "latin4", "unit": "UD10", "entry": "ŏmnĭs, –e", "meaning": "todo"}, {"course": "latin4", "unit": "UD10", "entry": "ŏvĭs, –is (f.)", "meaning": "oveja"}, {"course": "latin4", "unit": "UD10", "entry": "părvus, –a, –um", "meaning": "pequeño/a"}, {"course": "latin4", "unit": "UD10", "entry": "persĕquor, persĕcūtus sum (3ª)", "meaning": "perseguir"}, {"course": "latin4", "unit": "UD10", "entry": "pollĭcĕor, pollĭcĭtus sum (2ª)", "meaning": "prometer"}, {"course": "latin4", "unit": "UD10", "entry": "possum, pŏtŭī – (irr.)", "meaning": "poder"}, {"course": "latin4", "unit": "UD10", "entry": "prŏfĭcīscor, prŏfectus sum (3ª)", "meaning": "partir"}, {"course": "latin4", "unit": "UD10", "entry": "pŭĕr, –ī", "meaning": "niño"}, {"course": "latin4", "unit": "UD10", "entry": "rīvus, –ī", "meaning": "riachuelo’, ‘arroyo"}, {"course": "latin4", "unit": "UD10", "entry": "schŏla, –æ", "meaning": "escuela"}, {"course": "latin4", "unit": "UD10", "entry": "sĕd (conj.)", "meaning": "pero, sino"}, {"course": "latin4", "unit": "UD10", "entry": "sīgnŭm, –ī", "meaning": "estatua"}, {"course": "latin4", "unit": "UD10", "entry": "stĭlus, –ī", "meaning": "estilo, punzón para escribir"}, {"course": "latin4", "unit": "UD10", "entry": "trēs, trĭa", "meaning": "tres"}, {"course": "latin4", "unit": "UD10", "entry": "ūtor, ūsus sum (3ª)", "meaning": "utilizar"}, {"course": "latin4", "unit": "UD10", "entry": "vĭdĕō, vīdī, vīsum (2ª)", "meaning": "ver"}, {"course": "latin4", "unit": "UD10", "entry": "vŏlō, vŏlŭī – (irr.)", "meaning": "querer"}]);
 vocab.push(...[{"course":"greek1","unit":"Banco general","entry":"ἀγαθός, –η, –ον","meaning":"bueno/a"},{"course":"greek1","unit":"Banco general","entry":"ἄγαλμα, –ατος (τό)","meaning":"estatua"},{"course":"greek1","unit":"Banco general","entry":"Ἀγαμέμνων, –ονος (ὁ)","meaning":"Agamenón"},{"course":"greek1","unit":"Banco general","entry":"ἀγορά, –ας","meaning":"plaza"},{"course":"greek1","unit":"Banco general","entry":"ἀδελφός, –ου","meaning":"hermano"},{"course":"greek1","unit":"Banco general","entry":"ἀδικία, –ας","meaning":"injusticia"},{"course":"greek1","unit":"Banco general","entry":"ἄδικος, –ον","meaning":"injusto/a"},{"course":"greek1","unit":"Banco general","entry":"ἀθάνατος, –ον","meaning":"inmortal"},{"course":"greek1","unit":"Banco general","entry":"Ἀθηνᾶ, –ᾶς","meaning":"Atenea"},{"course":"greek1","unit":"Banco general","entry":"Ἀθῆναι, –ῶν","meaning":"Atenas' (sólo pl.)"},{"course":"greek1","unit":"Banco general","entry":"Ἀθηναῖος, –α, –ον","meaning":"ateniense","meaning_va":"atenenc/atenenca"},{"course":"greek1","unit":"Banco general","entry":"Αἰγίνα, –ης","meaning":"Egina"},{"course":"greek1","unit":"Banco general","entry":"αἰθήρ, αἰθέρος (ὁ/ἡ)","meaning":"cielo"},{"course":"greek1","unit":"Banco general","entry":"αἷμα, αἵματος (τό)","meaning":"sangre"},{"course":"greek1","unit":"Banco general","entry":"αἴξ, αἰγός (ἡ)","meaning":"cabra"},{"course":"greek1","unit":"Banco general","entry":"αἰσχρός, –ον","meaning":"vergonzoso/a"},{"course":"greek1","unit":"Banco general","entry":"ἀκόλουθος, –ου","meaning":"seguidor"},{"course":"greek1","unit":"Banco general","entry":"ἀκρόαμα, –ματος (τό)","meaning":"audición, recitación o espectáculo para escuchar"},{"course":"greek1","unit":"Banco general","entry":"Ἀκροπόλις, –εως (ἡ)","meaning":"Acrópolis"},{"course":"greek1","unit":"Banco general","entry":"ἀλήθεια, –ας","meaning":"verdad"},{"course":"greek1","unit":"Banco general","entry":"Ἀλκιβιάδης, –ου","meaning":"Alcibíades"},{"course":"greek1","unit":"Banco general","entry":"ἄλλος, –η, –ο","meaning":"otro/a"},{"course":"greek1","unit":"Banco general","entry":"ἀνήρ, ἀνδρός (ὁ)","meaning":"hombre"},{"course":"greek1","unit":"Banco general","entry":"ἄνθρωπος, –ου","meaning":"hombre"},{"course":"greek1","unit":"Banco general","entry":"ἄντρον, –ου","meaning":"gruta’, ‘cueva"},{"course":"greek1","unit":"Banco general","entry":"Ἄραψ, Ἄραβος (ὁ o ἡ)","meaning":"árabe"},{"course":"greek1","unit":"Banco general","entry":"ἀρετή, –ης","meaning":"virtud"},{"course":"greek1","unit":"Banco general","entry":"ἀριθμός, –ου","meaning":"cantidad’, ‘número"},{"course":"greek1","unit":"Banco general","entry":"ἁρμονία, –ας","meaning":"harmonía"},{"course":"greek1","unit":"Banco general","entry":"ἀρχή, –ῆς","meaning":"gobierno’, ‘origen"},{"course":"greek1","unit":"Banco general","entry":"ἄρχων, –οντος (ὁ)","meaning":"líder"},{"course":"greek1","unit":"Banco general","entry":"ἀσπίς, –ίδος (ἡ)","meaning":"escudo"},{"course":"greek1","unit":"Banco general","entry":"Ἀττική, –ης","meaning":"Ática"},{"course":"greek1","unit":"Banco general","entry":"αὐλητρίς, –ίδος (ἡ)","meaning":"flautista"},{"course":"greek1","unit":"Banco general","entry":"αὐτόνομος, –ον","meaning":"autónomo"},{"course":"greek1","unit":"Banco general","entry":"Ἀχαῖος, –α, –ον","meaning":"aqueo"},{"course":"greek1","unit":"Banco general","entry":"βάρβαρος, –ον","meaning":"bárbaro"},{"course":"greek1","unit":"Banco general","entry":"βασίλειον, –ου (τό)","meaning":"palacio real"},{"course":"greek1","unit":"Banco general","entry":"βασιλεύς, –έως (ὁ)","meaning":"rey"},{"course":"greek1","unit":"Banco general","entry":"βιβλίον, –ου","meaning":"libro"},{"course":"greek1","unit":"Banco general","entry":"βίος, –ου","meaning":"vida"},{"course":"greek1","unit":"Banco general","entry":"γένος, –εος (τὸ)","meaning":"linaje’, ‘tipo"},{"course":"greek1","unit":"Banco general","entry":"γέρων, –οντος (ὁ)","meaning":"anciano"},{"course":"greek1","unit":"Banco general","entry":"γεωργός, –ου","meaning":"campesino"},{"course":"greek1","unit":"Banco general","entry":"γή, –ης","meaning":"tierra"},{"course":"greek1","unit":"Banco general","entry":"γίγας, –αντος (ὁ)","meaning":"gigante"},{"course":"greek1","unit":"Banco general","entry":"γλαῦξ, γλαυκός (ἡ)","meaning":"lechuza"},{"course":"greek1","unit":"Banco general","entry":"γυνή, γυναικός (ἡ)","meaning":"mujer"},{"course":"greek1","unit":"Banco general","entry":"Δαρεῖος, –ου","meaning":"Darío"},{"course":"greek1","unit":"Banco general","entry":"δεῖπνον, –ου (τό)","meaning":"cena"},{"course":"greek1","unit":"Banco general","entry":"δέρμα, –ματος (τό)","meaning":"piel"},{"course":"greek1","unit":"Banco general","entry":"δεσπότης, –ου","meaning":"amo, señor"},{"course":"greek1","unit":"Banco general","entry":"δημοκρατία, –ας","meaning":"democracia"},{"course":"greek1","unit":"Banco general","entry":"δῆμος, –ου","meaning":"pueblo"},{"course":"greek1","unit":"Banco general","entry":"Δημοσθένης, Δημοσθένους (ὁ)","meaning":"Demóstenes"},{"course":"greek1","unit":"Banco general","entry":"διδάσκαλος, –ου","meaning":"profesor"},{"course":"greek1","unit":"Banco general","entry":"δίκαιος, –α, –ον","meaning":"justo/a"},{"course":"greek1","unit":"Banco general","entry":"δίκη, –ης","meaning":"justicia"},{"course":"greek1","unit":"Banco general","entry":"δόξα, –ης","meaning":"opinión’, ‘fama"},{"course":"greek1","unit":"Banco general","entry":"δουλεία, –ας","meaning":"esclavitud"},{"course":"greek1","unit":"Banco general","entry":"δοῦλος, –ου","meaning":"esclavo"},{"course":"greek1","unit":"Banco general","entry":"δύναμις, –εως (ἡ)","meaning":"poder’, ‘fuerza"},{"course":"greek1","unit":"Banco general","entry":"δώδεκα (num. indecl.)","meaning":"doce"},{"course":"greek1","unit":"Banco general","entry":"δῶρον, –ου","meaning":"regalo"},{"course":"greek1","unit":"Banco general","entry":"εἰκών, –όνος (ἡ)","meaning":"imagen"},{"course":"greek1","unit":"Banco general","entry":"εἰρήνη, –ης","meaning":"paz"},{"course":"greek1","unit":"Banco general","entry":"ἐκκλησία, –ας (ἡ)","meaning":"asamblea"},{"course":"greek1","unit":"Banco general","entry":"ἐλευθερία, –ας","meaning":"libertad"},{"course":"greek1","unit":"Banco general","entry":"ἐλέφας, –αντος (ὁ)","meaning":"marfil’, ‘elefante"},{"course":"greek1","unit":"Banco general","entry":"Ἑλλάς, Ἑλλάδος (ἡ)","meaning":"Grecia"},{"course":"greek1","unit":"Banco general","entry":"Ἕλλην, Ἕλληνος (ὁ o ἡ)","meaning":"griego/a"},{"course":"greek1","unit":"Banco general","entry":"Ἑλληνικός, –η, ον","meaning":"griego/a"},{"course":"greek1","unit":"Banco general","entry":"ἐλπίς, ἐλπίδος (ἡ)","meaning":"esperanza"},{"course":"greek1","unit":"Banco general","entry":"ἔνδοξος, –ον","meaning":"famoso"},{"course":"greek1","unit":"Banco general","entry":"ἐπιστολή, –ης","meaning":"carta"},{"course":"greek1","unit":"Banco general","entry":"ἔργον, –ου","meaning":"acción’, ‘trabajo’, ‘obra"},{"course":"greek1","unit":"Banco general","entry":"εὐδαιμονία, –ας","meaning":"felicidad"},{"course":"greek1","unit":"Banco general","entry":"Εὐρώπη, –ης","meaning":"Europa"},{"course":"greek1","unit":"Banco general","entry":"εὐτυχία","meaning":"buena suerte"},{"course":"greek1","unit":"Banco general","entry":"ἐχθρός, –ά, –όν","meaning":"enemigo/a"},{"course":"greek1","unit":"Banco general","entry":"Ζεὺς, Διός (ὁ)","meaning":"Zeus"},{"course":"greek1","unit":"Banco general","entry":"ζῷον, –ου","meaning":"animal"},{"course":"greek1","unit":"Banco general","entry":"ἡγεμών, –όνος (ὁ)","meaning":"soberano"},{"course":"greek1","unit":"Banco general","entry":"ἡδονή, –ης","meaning":"placer"},{"course":"greek1","unit":"Banco general","entry":"ἥλιος, –ου","meaning":"sol"},{"course":"greek1","unit":"Banco general","entry":"ἡμέρα, –ας","meaning":"día"},{"course":"greek1","unit":"Banco general","entry":"ἡμετέρος, –α, –ον","meaning":"nuestro/a"},{"course":"greek1","unit":"Banco general","entry":"θάλαττα, –ης","meaning":"mar"},{"course":"greek1","unit":"Banco general","entry":"θάνατος, –ου","meaning":"muerte"},{"course":"greek1","unit":"Banco general","entry":"θεά, –ᾶς (ἡ)","meaning":"diosa"},{"course":"greek1","unit":"Banco general","entry":"θεός, –οῦ (ὁ)","meaning":"dios"},{"course":"greek1","unit":"Banco general","entry":"θεράπων, –οντος (ὁ)","meaning":"servidor"},{"course":"greek1","unit":"Banco general","entry":"Θηβαῖος, –α, –ον","meaning":"tebano/a"},{"course":"greek1","unit":"Banco general","entry":"θήρ, θηρός (ὁ o ἡ)","meaning":"fiera"},{"course":"greek1","unit":"Banco general","entry":"θνητός, –ον","meaning":"mortal"},{"course":"greek1","unit":"Banco general","entry":"θώραξ, –ακος (ὁ)","meaning":"coraza"},{"course":"greek1","unit":"Banco general","entry":"ἰατρός, –ου","meaning":"médico"},{"course":"greek1","unit":"Banco general","entry":"Ἱέραξ, –ακος (ὁ)","meaning":"Hiérax","meaning_va":"Hiérax"},{"course":"greek1","unit":"Banco general","entry":"ἱερεύς, –εως (ὁ)","meaning":"sacerdote"},{"course":"greek1","unit":"Banco general","entry":"ἱερόν, –ου","meaning":"templo"},{"course":"greek1","unit":"Banco general","entry":"Ἴκαρος, –ου","meaning":"Ícaro"},{"course":"greek1","unit":"Banco general","entry":"Ἴλιον, –ου","meaning":"Troya"},{"course":"greek1","unit":"Banco general","entry":"ἱππεύς, –έως (ὁ)","meaning":"caballero"},{"course":"greek1","unit":"Banco general","entry":"ἵππος, –ου","meaning":"caballo"},{"course":"greek1","unit":"Banco general","entry":"κακός, –η, –ον","meaning":"malo/a"},{"course":"greek1","unit":"Banco general","entry":"καλός, –η, –ον","meaning":"bonito/a"},{"course":"greek1","unit":"Banco general","entry":"κένος, –η, ον","meaning":"vacío/a"},{"course":"greek1","unit":"Banco general","entry":"κεφαλή, –ῆς","meaning":"cabeza"},{"course":"greek1","unit":"Banco general","entry":"κηρός, –ου","meaning":"cera"},{"course":"greek1","unit":"Banco general","entry":"κῆρυξ, –υκος (ὁ)","meaning":"mensajero"},{"course":"greek1","unit":"Banco general","entry":"κιθαριστής, –ου","meaning":"citarista"},{"course":"greek1","unit":"Banco general","entry":"κίνδυνος, –ου","meaning":"peligro"},{"course":"greek1","unit":"Banco general","entry":"κοινός, –η, –ον","meaning":"común"},{"course":"greek1","unit":"Banco general","entry":"κόσμος, –ου","meaning":"orden’, ‘belleza"},{"course":"greek1","unit":"Banco general","entry":"Κρήτη, –ης","meaning":"Creta"},{"course":"greek1","unit":"Banco general","entry":"κύριος, –ου","meaning":"señor’, ‘soberano"},{"course":"greek1","unit":"Banco general","entry":"κώμη, –ης","meaning":"aldea"},{"course":"greek1","unit":"Banco general","entry":"Λακεδαιμονίος, –α, –ον","meaning":"espartano/a"},{"course":"greek1","unit":"Banco general","entry":"λειμών, –ῶνος (ὁ)","meaning":"prado"},{"course":"greek1","unit":"Banco general","entry":"λέων, λεόντος (ὁ)","meaning":"león"},{"course":"greek1","unit":"Banco general","entry":"λίθος, –ου","meaning":"piedra"},{"course":"greek1","unit":"Banco general","entry":"λιμήν, ένος (ὁ)","meaning":"puerto"},{"course":"greek1","unit":"Banco general","entry":"λόγος, –ου","meaning":"palabra"},{"course":"greek1","unit":"Banco general","entry":"Λύσανδρος, –ου","meaning":"Lisandro"},{"course":"greek1","unit":"Banco general","entry":"μαθητής, –ου","meaning":"alumno"},{"course":"greek1","unit":"Banco general","entry":"Μαραθών, –ῶνος (ὁ)","meaning":"Maratón"},{"course":"greek1","unit":"Banco general","entry":"μάχη, –ης","meaning":"batalla"},{"course":"greek1","unit":"Banco general","entry":"Μέγαρα, –ων","meaning":"Mégara"},{"course":"greek1","unit":"Banco general","entry":"μέγας, μεγάλη, μέγα","meaning":"grande"},{"course":"greek1","unit":"Banco general","entry":"Μενέλαος, –ου","meaning":"Menelao' (rey espartano)"},{"course":"greek1","unit":"Banco general","entry":"μήν, μηνός (ὁ)","meaning":"mes’, ‘luna"},{"course":"greek1","unit":"Banco general","entry":"μήτηρ, μητρός (ἡ)","meaning":"madre"},{"course":"greek1","unit":"Banco general","entry":"μικρός, –ά, –όν","meaning":"pequeño/a"},{"course":"greek1","unit":"Banco general","entry":"μόνος, –η, –ον","meaning":"único/a"},{"course":"greek1","unit":"Banco general","entry":"μῦθος, –ου","meaning":"mito"},{"course":"greek1","unit":"Banco general","entry":"ναῦς, νεώς (ἡ)","meaning":"nave"},{"course":"greek1","unit":"Banco general","entry":"ναύτης, –ου","meaning":"marinero"},{"course":"greek1","unit":"Banco general","entry":"νεανίας, –ου","meaning":"joven"},{"course":"greek1","unit":"Banco general","entry":"νεκρός, –οῦ (ὁ)","meaning":"cadáver"},{"course":"greek1","unit":"Banco general","entry":"νέος, –α, –ον","meaning":"nuevo/a’, ‘joven"},{"course":"greek1","unit":"Banco general","entry":"νήσος, –ου (ἡ)","meaning":"isla"},{"course":"greek1","unit":"Banco general","entry":"νίκη, –ης","meaning":"victoria"},{"course":"greek1","unit":"Banco general","entry":"νόμος, –ου","meaning":"ley"},{"course":"greek1","unit":"Banco general","entry":"νόσος, –ου","meaning":"enfermedad"},{"course":"greek1","unit":"Banco general","entry":"νύξ, νυκτός (ἡ)","meaning":"noche"},{"course":"greek1","unit":"Banco general","entry":"ξένος, –ου","meaning":"extranjero"},{"course":"greek1","unit":"Banco general","entry":"ξύλον, –ου","meaning":"madera"},{"course":"greek1","unit":"Banco general","entry":"ὄγκος, –ου","meaning":"montón"},{"course":"greek1","unit":"Banco general","entry":"ὁδός, –ου (ἡ)","meaning":"camino"},{"course":"greek1","unit":"Banco general","entry":"οἰκέτης, –ου","meaning":"habitante"},{"course":"greek1","unit":"Banco general","entry":"οἰκία, –ας","meaning":"casa"},{"course":"greek1","unit":"Banco general","entry":"ὀλίγος, –η, –ον","meaning":"poco/a"},{"course":"greek1","unit":"Banco general","entry":"ὅλος, –η, –ον","meaning":"completo/a’, ‘todo/a"},{"course":"greek1","unit":"Banco general","entry":"Ὅμηρος, –ου","meaning":"Homero"},{"course":"greek1","unit":"Banco general","entry":"ὄνομα, –ματος (τό)","meaning":"nombre"},{"course":"greek1","unit":"Banco general","entry":"ὄνυξ, –υχος (ὁ)","meaning":"uña"},{"course":"greek1","unit":"Banco general","entry":"ὁπλίτης, –ου","meaning":"hoplita"},{"course":"greek1","unit":"Banco general","entry":"ὅπλον, –ου","meaning":"arma"},{"course":"greek1","unit":"Banco general","entry":"ὀργίλος, –η, –ον","meaning":"enfadado/a"},{"course":"greek1","unit":"Banco general","entry":"ὀρθός, –η, ον","meaning":"recto/a"},{"course":"greek1","unit":"Banco general","entry":"οὐδεῖς, οὐδεμία, οὐδέν","meaning":"nadie, ‘nada"},{"course":"greek1","unit":"Banco general","entry":"οὐράνος, –ου","meaning":"cielo"},{"course":"greek1","unit":"Banco general","entry":"παιδεία, –ας","meaning":"educación"},{"course":"greek1","unit":"Banco general","entry":"παῖς, παιδός (ὁ o ἡ)","meaning":"niño/a"},{"course":"greek1","unit":"Banco general","entry":"Πανταλέων, –οντος (ὁ)","meaning":"Pantaleón"},{"course":"greek1","unit":"Banco general","entry":"παροιμία, –ας","meaning":"proverbio"},{"course":"greek1","unit":"Banco general","entry":"πᾶς, πᾶσα, πᾶν","meaning":"todo/a"},{"course":"greek1","unit":"Banco general","entry":"πατήρ, πατρός (ὁ)","meaning":"padre"},{"course":"greek1","unit":"Banco general","entry":"πατρίς, πατρίδος (ἡ)","meaning":"patria"},{"course":"greek1","unit":"Banco general","entry":"πεδίον, –ου","meaning":"llanura"},{"course":"greek1","unit":"Banco general","entry":"πέλαγος, –εος (τό)","meaning":"mar"},{"course":"greek1","unit":"Banco general","entry":"πένης, –ητος (ὁ)","meaning":"pobre"},{"course":"greek1","unit":"Banco general","entry":"πενία, –ας","meaning":"pobreza"},{"course":"greek1","unit":"Banco general","entry":"πέρδιξ, ικος (ὁ o ἡ)","meaning":"perdiz"},{"course":"greek1","unit":"Banco general","entry":"Περικλῆς, –έους (ὁ)","meaning":"Pericles"},{"course":"greek1","unit":"Banco general","entry":"Περσαί, –ων","meaning":"persa"},{"course":"greek1","unit":"Banco general","entry":"πέτρα, –ας","meaning":"piedra"},{"course":"greek1","unit":"Banco general","entry":"πλοῦτος, –ου","meaning":"riqueza"},{"course":"greek1","unit":"Banco general","entry":"ποιητής, –ου","meaning":"poeta"},{"course":"greek1","unit":"Banco general","entry":"ποιμήν, –ένος (ὁ)","meaning":"pastor"},{"course":"greek1","unit":"Banco general","entry":"πολεμίος, –ου","meaning":"enemigo"},{"course":"greek1","unit":"Banco general","entry":"πόλεμος, –ου","meaning":"guerra"},{"course":"greek1","unit":"Banco general","entry":"πόλις, –εως (ἡ)","meaning":"ciudad"},{"course":"greek1","unit":"Banco general","entry":"πολιτεία, –ας","meaning":"ciudadanía’, ‘política"},{"course":"greek1","unit":"Banco general","entry":"πολίτης, –ου","meaning":"ciudadano"},{"course":"greek1","unit":"Banco general","entry":"πολιτικός, –η, ον","meaning":"político/a"},{"course":"greek1","unit":"Banco general","entry":"πολύς, πολλή, πολύ","meaning":"mucho/a"},{"course":"greek1","unit":"Banco general","entry":"πονηρός, –α, –ον","meaning":"desdichado/a, pobre, malo, perverso","meaning_va":"desgraciat/ada, pobre, dolent/a, pervers/a"},{"course":"greek1","unit":"Banco general","entry":"ποταμός, –ου","meaning":"río"},{"course":"greek1","unit":"Banco general","entry":"πρᾶγμα, πράγματος (τό)","meaning":"asunto"},{"course":"greek1","unit":"Banco general","entry":"πρόβατον, –ου (τό)","meaning":"animal’ (pl. ‘ganado’)"},{"course":"greek1","unit":"Banco general","entry":"προσέρχομαι","meaning":"acercarse"},{"course":"greek1","unit":"Banco general","entry":"Προταγόρας, –ου","meaning":"Protágoras"},{"course":"greek1","unit":"Banco general","entry":"πρῶτος, –η, –ον","meaning":"primero/a"},{"course":"greek1","unit":"Banco general","entry":"πτερόν, –ου","meaning":"ala"},{"course":"greek1","unit":"Banco general","entry":"Πυθαγορείος, –α, ον","meaning":"pitagórico/a"},{"course":"greek1","unit":"Banco general","entry":"ῥήτωρ, –ορος (ὁ)","meaning":"orador"},{"course":"greek1","unit":"Banco general","entry":"ῥίς, ῥινός (ἡ)","meaning":"nariz"},{"course":"greek1","unit":"Banco general","entry":"σάρξ, σάρκος (ἡ)","meaning":"carne"},{"course":"greek1","unit":"Banco general","entry":"Σόλων, Σολόνος (ὁ)","meaning":"Solón"},{"course":"greek1","unit":"Banco general","entry":"σοφία, –ας","meaning":"sabiduría"},{"course":"greek1","unit":"Banco general","entry":"σοφίστης, –ου","meaning":"sofista"},{"course":"greek1","unit":"Banco general","entry":"σοφός, –οῦ (ὁ)","meaning":"sabio","meaning_va":"savi"},{"course":"greek1","unit":"Banco general","entry":"Σπάρτη, –ης","meaning":"Esparta"},{"course":"greek1","unit":"Banco general","entry":"σπονδή, –ης","meaning":"libación"},{"course":"greek1","unit":"Banco general","entry":"στράτευμα, –ατος (τό)","meaning":"ejército"},{"course":"greek1","unit":"Banco general","entry":"στρατηγός, –ου","meaning":"estratego","meaning_va":"estrateg (general)"},{"course":"greek1","unit":"Banco general","entry":"στρατιώτης, –ου","meaning":"soldado"},{"course":"greek1","unit":"Banco general","entry":"στρατόπεδον, –ου","meaning":"campamento"},{"course":"greek1","unit":"Banco general","entry":"σύμμαχος, –ον","meaning":"aliado/a"},{"course":"greek1","unit":"Banco general","entry":"Σωκράτης, Σωκράτους (ὁ)","meaning":"Sócrates"},{"course":"greek1","unit":"Banco general","entry":"σῶμα, –ματος (τό)","meaning":"cuerpo"},{"course":"greek1","unit":"Banco general","entry":"τείχος, –εος (τό)","meaning":"muralla"},{"course":"greek1","unit":"Banco general","entry":"τελευτή, –ης","meaning":"final"},{"course":"greek1","unit":"Banco general","entry":"τέχνη, –ης","meaning":"arte’, ‘técnica"},{"course":"greek1","unit":"Banco general","entry":"τόπος, –ου","meaning":"lugar"},{"course":"greek1","unit":"Banco general","entry":"τριήρης, –ους (ἡ)","meaning":"trirreme"},{"course":"greek1","unit":"Banco general","entry":"τυραννίς, –ίδος (ἡ)","meaning":"tiranía"},{"course":"greek1","unit":"Banco general","entry":"τύραννος, –ου","meaning":"tirano"},{"course":"greek1","unit":"Banco general","entry":"τύχη, –ης","meaning":"suerte"},{"course":"greek1","unit":"Banco general","entry":"ὕδωρ, ὕδατος (τό)","meaning":"agua"},{"course":"greek1","unit":"Banco general","entry":"υἱός, –οῦ (ὁ)","meaning":"hijo"},{"course":"greek1","unit":"Banco general","entry":"φάλαγξ, φάλαγγος (ἡ)","meaning":"falange"},{"course":"greek1","unit":"Banco general","entry":"φιλία, –ας","meaning":"amistad"},{"course":"greek1","unit":"Banco general","entry":"Φίλιππος, –ου","meaning":"Filipo"},{"course":"greek1","unit":"Banco general","entry":"φίλος, –ου","meaning":"amigo"},{"course":"greek1","unit":"Banco general","entry":"φιλόσοφος, –ου","meaning":"filósofo"},{"course":"greek1","unit":"Banco general","entry":"φλέψ, φλεβός (ἡ)","meaning":"vena"},{"course":"greek1","unit":"Banco general","entry":"φόβος, –ου","meaning":"miedo"},{"course":"greek1","unit":"Banco general","entry":"φρόνησις, –εως (ἡ)","meaning":"inteligencia"},{"course":"greek1","unit":"Banco general","entry":"φύλαξ, –ακος (ὁ o ἡ)","meaning":"guardián/a"},{"course":"greek1","unit":"Banco general","entry":"φύσις, –εως (ἡ)","meaning":"naturaleza"},{"course":"greek1","unit":"Banco general","entry":"φωνή, −ης","meaning":"sonido’, ‘voz"},{"course":"greek1","unit":"Banco general","entry":"χειμών, χειμῶνος (ὁ)","meaning":"invierno"},{"course":"greek1","unit":"Banco general","entry":"χιών, χιόνος (ἡ)","meaning":"nieve"},{"course":"greek1","unit":"Banco general","entry":"χρῆμα, –ατος (τὸ)","meaning":"cosa’ (sing.), ‘riqueza’ (pl.)"},{"course":"greek1","unit":"Banco general","entry":"χρόνος, –ου","meaning":"tiempo"},{"course":"greek1","unit":"Banco general","entry":"χρύσος, –ου","meaning":"oro"},{"course":"greek1","unit":"Banco general","entry":"χώρα, –ας","meaning":"región"},{"course":"greek1","unit":"Banco general","entry":"ψυχή, –ης","meaning":"alma"},{"course":"greek1","unit":"Banco general","entry":"ὤνιος, –η, –ον","meaning":"en venta’ (n. pl.: ‘bienes’)"},{"course":"greek1","unit":"Banco general","entry":"ἀγαπάω","meaning":"amar"},{"course":"greek1","unit":"Banco general","entry":"ἀγγέλλω","meaning":"anunciar"},{"course":"greek1","unit":"Banco general","entry":"ἄγω","meaning":"conducir"},{"course":"greek1","unit":"Banco general","entry":"ἀδικέω","meaning":"ser injusto"},{"course":"greek1","unit":"Banco general","entry":"αἰτέω","meaning":"pedir, solicitar","meaning_va":"demanar, sol·licitar"},{"course":"greek1","unit":"Banco general","entry":"ἀκούω","meaning":"escuchar’ (+ gen. CRV)"},{"course":"greek1","unit":"Banco general","entry":"ἀναγιγνώσκω","meaning":"leer"},{"course":"greek1","unit":"Banco general","entry":"ἀνακράζω","meaning":"gritar"},{"course":"greek1","unit":"Banco general","entry":"ἀποθνῄσκω","meaning":"morir"},{"course":"greek1","unit":"Banco general","entry":"ἀποκτείνω","meaning":"matar"},{"course":"greek1","unit":"Banco general","entry":"ἀποπλέω","meaning":"zarpar"},{"course":"greek1","unit":"Banco general","entry":"ἁρπάζω","meaning":"raptar’, ‘arrebatar"},{"course":"greek1","unit":"Banco general","entry":"ἄρχω","meaning":"gobernar’ (+ gen. CRV)"},{"course":"greek1","unit":"Banco general","entry":"ἀσκέω","meaning":"dar forma"},{"course":"greek1","unit":"Banco general","entry":"αὐλέω","meaning":"tocar la flauta"},{"course":"greek1","unit":"Banco general","entry":"ἀφικνέομαι","meaning":"llegar"},{"course":"greek1","unit":"Banco general","entry":"βάλλω","meaning":"lanzar"},{"course":"greek1","unit":"Banco general","entry":"βασιλεύω","meaning":"reinar’ (+ gen. CRV)"},{"course":"greek1","unit":"Banco general","entry":"βούλομαι","meaning":"querer"},{"course":"greek1","unit":"Banco general","entry":"γίγνομαι","meaning":"llegar a ser’ (copulativo)"},{"course":"greek1","unit":"Banco general","entry":"γιγνώσκω","meaning":"conocer"},{"course":"greek1","unit":"Banco general","entry":"γράφω","meaning":"escribir"},{"course":"greek1","unit":"Banco general","entry":"δεῖ (impers.)","meaning":"es necesario"},{"course":"greek1","unit":"Banco general","entry":"διάγω","meaning":"pasar"},{"course":"greek1","unit":"Banco general","entry":"διαφέρω","meaning":"diferir de"},{"course":"greek1","unit":"Banco general","entry":"διαφθείρω","meaning":"destruir’, ‘matar"},{"course":"greek1","unit":"Banco general","entry":"διδάσκω","meaning":"enseñar"},{"course":"greek1","unit":"Banco general","entry":"διώκω","meaning":"perseguir"},{"course":"greek1","unit":"Banco general","entry":"δοκέω","meaning":"parecer"},{"course":"greek1","unit":"Banco general","entry":"δουλεύω","meaning":"ser esclavo"},{"course":"greek1","unit":"Banco general","entry":"δύναμαι","meaning":"poder"},{"course":"greek1","unit":"Banco general","entry":"ἐθέλω","meaning":"querer"},{"course":"greek1","unit":"Banco general","entry":"εἰμί","meaning":"ser’, ‘estar’, ‘haber"},{"course":"greek1","unit":"Banco general","entry":"εἰσβάλλω","meaning":"lanzar’, ‘atacar"},{"course":"greek1","unit":"Banco general","entry":"εἰσφέρω","meaning":"introducir"},{"course":"greek1","unit":"Banco general","entry":"ἐπιθυμέω","meaning":"desear’ (+ gen. CRV)"},{"course":"greek1","unit":"Banco general","entry":"ἐπιμελέομαι","meaning":"encargarse de"},{"course":"greek1","unit":"Banco general","entry":"ἔρχομαι","meaning":"ir"},{"course":"greek1","unit":"Banco general","entry":"ἐρωτάω","meaning":"preguntar"},{"course":"greek1","unit":"Banco general","entry":"εὐδαιμονέω","meaning":"ser feliz"},{"course":"greek1","unit":"Banco general","entry":"εὑρίσκω","meaning":"encontrar"},{"course":"greek1","unit":"Banco general","entry":"εὐφραίνω","meaning":"alegrarse de’ (+ gen. CRV)"},{"course":"greek1","unit":"Banco general","entry":"ἔχω","meaning":"tener"},{"course":"greek1","unit":"Banco general","entry":"ζάω","meaning":"vivir"},{"course":"greek1","unit":"Banco general","entry":"ζητέω","meaning":"buscar"},{"course":"greek1","unit":"Banco general","entry":"ἡγέομαι","meaning":"liderar’, ‘pensar"},{"course":"greek1","unit":"Banco general","entry":"ἥκω","meaning":"llegar"},{"course":"greek1","unit":"Banco general","entry":"θαυμάζω","meaning":"admirar"},{"course":"greek1","unit":"Banco general","entry":"θεραπεύω","meaning":"curar’, ‘venerar"},{"course":"greek1","unit":"Banco general","entry":"θύω","meaning":"hacer sacrificios’ (+ dat. CI)"},{"course":"greek1","unit":"Banco general","entry":"ἱδρύω","meaning":"construir"},{"course":"greek1","unit":"Banco general","entry":"καλέω","meaning":"llamar","meaning_va":"cridar, anomenar"},{"course":"greek1","unit":"Banco general","entry":"καταλείπω","meaning":"abandonar"},{"course":"greek1","unit":"Banco general","entry":"καταφρονέω","meaning":"despreciar"},{"course":"greek1","unit":"Banco general","entry":"κατέχω","meaning":"retener"},{"course":"greek1","unit":"Banco general","entry":"κελεύω","meaning":"ordenar"},{"course":"greek1","unit":"Banco general","entry":"κιθαρίζω","meaning":"tocar la cítara"},{"course":"greek1","unit":"Banco general","entry":"κομίζω","meaning":"llevarse"},{"course":"greek1","unit":"Banco general","entry":"κυβερνάω","meaning":"dirigir’, ‘gobernar"},{"course":"greek1","unit":"Banco general","entry":"λαμβάνω","meaning":"coger, tomar"},{"course":"greek1","unit":"Banco general","entry":"λέγω","meaning":"decir’, ‘hablar"},{"course":"greek1","unit":"Banco general","entry":"λείπω","meaning":"dejar"},{"course":"greek1","unit":"Banco general","entry":"λύω","meaning":"liberar"},{"course":"greek1","unit":"Banco general","entry":"μανθάνω","meaning":"estudiar"},{"course":"greek1","unit":"Banco general","entry":"μάχομαι","meaning":"luchar"},{"course":"greek1","unit":"Banco general","entry":"μένω","meaning":"esperar"},{"course":"greek1","unit":"Banco general","entry":"μετέχω","meaning":"participar en’ (+ gen. CRV)"},{"course":"greek1","unit":"Banco general","entry":"νικάω","meaning":"vencer"},{"course":"greek1","unit":"Banco general","entry":"νομίζω","meaning":"pensar’, ‘considerar"},{"course":"greek1","unit":"Banco general","entry":"οἰκέω","meaning":"habitar"},{"course":"greek1","unit":"Banco general","entry":"ὁράω","meaning":"ver"},{"course":"greek1","unit":"Banco general","entry":"ὁρμάομαι","meaning":"atacar"},{"course":"greek1","unit":"Banco general","entry":"παιδεύω","meaning":"educar"},{"course":"greek1","unit":"Banco general","entry":"παραλαμβάνω","meaning":"recibir"},{"course":"greek1","unit":"Banco general","entry":"παρέχω","meaning":"proporcionar’, ‘dar"},{"course":"greek1","unit":"Banco general","entry":"πάσχω","meaning":"sufrir"},{"course":"greek1","unit":"Banco general","entry":"πείθω","meaning":"convencer"},{"course":"greek1","unit":"Banco general","entry":"πέμπω","meaning":"enviar"},{"course":"greek1","unit":"Banco general","entry":"πλέω","meaning":"navegar"},{"course":"greek1","unit":"Banco general","entry":"πλουτέω","meaning":"ser rico"},{"course":"greek1","unit":"Banco general","entry":"ποιέω","meaning":"hacer"},{"course":"greek1","unit":"Banco general","entry":"πράττω o πράσσω","meaning":"hacer"},{"course":"greek1","unit":"Banco general","entry":"προσβάλλω","meaning":"atacar"},{"course":"greek1","unit":"Banco general","entry":"πιστεύω","meaning":"confiar en’ (+ dat. CRV)"},{"course":"greek1","unit":"Banco general","entry":"ῥίπτω","meaning":"lanzar"},{"course":"greek1","unit":"Banco general","entry":"σκοπέω","meaning":"observar"},{"course":"greek1","unit":"Banco general","entry":"στέργω","meaning":"amar"},{"course":"greek1","unit":"Banco general","entry":"στρατεύω","meaning":"dirigir al ejército"},{"course":"greek1","unit":"Banco general","entry":"σῴζω","meaning":"salvar"},{"course":"greek1","unit":"Banco general","entry":"τελευτάω","meaning":"acabar’, ‘morir"},{"course":"greek1","unit":"Banco general","entry":"τέμνω","meaning":"cortar"},{"course":"greek1","unit":"Banco general","entry":"τέρπω","meaning":"alegrar’, ‘satisfacer"},{"course":"greek1","unit":"Banco general","entry":"τήκω","meaning":"fundirse"},{"course":"greek1","unit":"Banco general","entry":"τιμάω","meaning":"honrar"},{"course":"greek1","unit":"Banco general","entry":"τρέχω","meaning":"correr"},{"course":"greek1","unit":"Banco general","entry":"φαίνω","meaning":"aparecer’, ‘iluminar"},{"course":"greek1","unit":"Banco general","entry":"φέρω","meaning":"llevar"},{"course":"greek1","unit":"Banco general","entry":"φεύγω","meaning":"rechazar’, ‘huir"},{"course":"greek1","unit":"Banco general","entry":"φθείρω","meaning":"matar’, ‘destruir"},{"course":"greek1","unit":"Banco general","entry":"φιλέω","meaning":"amar"},{"course":"greek1","unit":"Banco general","entry":"φοβέω","meaning":"asustar"},{"course":"greek1","unit":"Banco general","entry":"φονεύω","meaning":"matar"},{"course":"greek1","unit":"Banco general","entry":"φρονέω","meaning":"pensar"},{"course":"greek1","unit":"Banco general","entry":"φρόνιμος, –ον","meaning":"inteligente"},{"course":"greek1","unit":"Banco general","entry":"φυλάσσω o φυλάττω","meaning":"proteger"},{"course":"greek1","unit":"Banco general","entry":"φύω","meaning":"engendrar"},{"course":"greek1","unit":"Banco general","entry":"χρή (impers.)","meaning":"es necesario"},{"course":"greek1","unit":"Banco general","entry":"ἀδίκως (adv.)","meaning":"injustamente"},{"course":"greek1","unit":"Banco general","entry":"ἀεί (adv.)","meaning":"siempre"},{"course":"greek1","unit":"Banco general","entry":"ἆρα (adv.)","meaning":"acaso"},{"course":"greek1","unit":"Banco general","entry":"ἀσκέπτως (adv.)","meaning":"temerariamente"},{"course":"greek1","unit":"Banco general","entry":"ἔτι (adv.)","meaning":"aún, todavía"},{"course":"greek1","unit":"Banco general","entry":"εὖ (adv.)","meaning":"bien"},{"course":"greek1","unit":"Banco general","entry":"μᾶλα (adv.)","meaning":"muy"},{"course":"greek1","unit":"Banco general","entry":"μάλιστα (adv.)","meaning":"muy","meaning_va":"moltíssim, especialment"},{"course":"greek1","unit":"Banco general","entry":"μᾶλλον (adv.)","meaning":"más"},{"course":"greek1","unit":"Banco general","entry":"μή (adv.)","meaning":"no"},{"course":"greek1","unit":"Banco general","entry":"μόνον (adv.)","meaning":"sólo"},{"course":"greek1","unit":"Banco general","entry":"νῦν (adv.)","meaning":"ahora"},{"course":"greek1","unit":"Banco general","entry":"οὐ, οὐκ, οὐχ (adv.)","meaning":"no"},{"course":"greek1","unit":"Banco general","entry":"οὔποτε (adv.)","meaning":"nunca"},{"course":"greek1","unit":"Banco general","entry":"οὕτω (adv.)","meaning":"así"},{"course":"greek1","unit":"Banco general","entry":"ποῖ (adv.)","meaning":"a dónde"},{"course":"greek1","unit":"Banco general","entry":"πολλάκις (adv.)","meaning":"muchas veces"},{"course":"greek1","unit":"Banco general","entry":"ποῦ (adv.)","meaning":"dónde"},{"course":"greek1","unit":"Banco general","entry":"πρῶτον (adv.)","meaning":"en primer lugar"},{"course":"greek1","unit":"Banco general","entry":"πῶς (adv.)","meaning":"cómo"},{"course":"greek1","unit":"Banco general","entry":"ταχέως (adv.)","meaning":"rápidamente"},{"course":"greek1","unit":"Banco general","entry":"τότε (adv.)","meaning":"entonces"},{"course":"greek1","unit":"Banco general","entry":"ἀλλά (conj.)","meaning":"pero’, ‘sino"},{"course":"greek1","unit":"Banco general","entry":"γάρ (part.)","meaning":"pues"},{"course":"greek1","unit":"Banco general","entry":"ἐπεί (conj.)","meaning":"cuando"},{"course":"greek1","unit":"Banco general","entry":"ἤ (conj.)","meaning":"o"},{"course":"greek1","unit":"Banco general","entry":"καί","meaning":"y"},{"course":"greek1","unit":"Banco general","entry":"μέν… δέ (part.)","meaning":"por un lado… por otro"},{"course":"greek1","unit":"Banco general","entry":"οὐ μόνον ἀλλὰ καὶ","meaning":"no sólo, sino también"},{"course":"greek1","unit":"Banco general","entry":"οὐδέ (conj.)","meaning":"y no"},{"course":"greek1","unit":"Banco general","entry":"οὖν (part.)","meaning":"así pues"},{"course":"greek1","unit":"Banco general","entry":"οὔτε… οὔτε (conj.)","meaning":"ni… ni"},{"course":"greek1","unit":"Banco general","entry":"ἀμφί + genitivo | acusativo | dativo","meaning":"a ambos lados, alrededor de"},{"course":"greek1","unit":"Banco general","entry":"ἀνά + acusativo","meaning":"hacia (arriba)"},{"course":"greek1","unit":"Banco general","entry":"ἄνευ + genitivo","meaning":"sin"},{"course":"greek1","unit":"Banco general","entry":"ἀντί + genitivo","meaning":"en vez de"},{"course":"greek1","unit":"Banco general","entry":"ἀπό + genitivo","meaning":"de, desde"},{"course":"greek1","unit":"Banco general","entry":"διά + genitivo | acusativo","meaning":"gen.: a través de, por medio de | ac.: por, a causa de"},{"course":"greek1","unit":"Banco general","entry":"εἰς + acusativo","meaning":"a, hacia"},{"course":"greek1","unit":"Banco general","entry":"ἐκ/ἐξ + genitivo","meaning":"de, desde"},{"course":"greek1","unit":"Banco general","entry":"ἐν + dativo","meaning":"en"},{"course":"greek1","unit":"Banco general","entry":"ἐπί + genitivo | acusativo | dativo","meaning":"a, hacia, contra"},{"course":"greek1","unit":"Banco general","entry":"κατά + genitivo | acusativo","meaning":"bajo, hacia abajo, por"},{"course":"greek1","unit":"Banco general","entry":"μετά + genitivo | acusativo","meaning":"entre, con’ (+gen.), ‘después de’ (+ac.)"},{"course":"greek1","unit":"Banco general","entry":"παρά + genitivo | acusativo | dativo","meaning":"junto a, a lado de, en, a lo largo de"},{"course":"greek1","unit":"Banco general","entry":"περί + genitivo | acusativo | dativo","meaning":"alrededor de, sobre"},{"course":"greek1","unit":"Banco general","entry":"πρό + genitivo","meaning":"delante de"},{"course":"greek1","unit":"Banco general","entry":"πρός + genitivo | acusativo | dativo","meaning":"a, hacia, junto a"},{"course":"greek1","unit":"Banco general","entry":"σύν + dativo","meaning":"con"},{"course":"greek1","unit":"Banco general","entry":"ὑπέρ + genitivo | acusativo","meaning":"sobre, más allá de, por"},{"course":"greek1","unit":"Banco general","entry":"ὑπό + genitivo | acusativo | dativo","meaning":"debajo de, por"}]);
 const initialVocab=vocab.slice(),initialSentences=sentences.slice();
-function saveLocal(){try{localStorage.setItem('examina_extra',JSON.stringify({vocab:vocab.slice(initialVocab.length),sentences:sentences.slice(initialSentences.length),culture:culture.slice(initialCulture.length)}));$('dataStatus').textContent='Datos guardados en este navegador.'}catch(e){$('dataStatus').textContent='No se pudo guardar; exporta una copia JSON.'}}
-function updateUnits(){const checked=new Set(selectedUnits(false));units=[...new Set((currentCourse()==='greek1'?vocab.filter(x=>courseOf(x)==='greek1'&&x.unit!=='UD0').map(v=>v.unit):latinSharedBank.units(currentCourse())).concat(culture.filter(x=>x.course==='latin4'&&currentCourse()==='latin4').flatMap(x=>x.units)))].sort((a,b)=>{let aa=+(a.match(/\d+/)||[0])[0],bb=+(b.match(/\d+/)||[0])[0];return aa-bb});$('unitChoices').innerHTML=units.map((u,i)=>`<label><input type="checkbox" class="unit-choice" value="${i}" ${checked.has(u)?'checked':''}>${esc(u)}</label>`).join('');document.querySelectorAll('.unit-choice').forEach(e=>e.onchange=generate)}
-function importLines(text,kind){let added=0;for(const line of text.split(/\r?\n/)){if(!line.trim())continue;const c=line.split(';').map(s=>s.trim());if(kind==='v'){if(c.length<3||!c[0]||!c[1]||!c[2])continue;if(!vocab.some(x=>courseOf(x)===currentCourse()&&x.unit===c[0]&&x.entry===c[1])){vocab.push({course:currentCourse(),unit:c[0],entry:c[1],meaning:c.slice(2).join(';')});added++}}else{const units=(c[2]?c[2].split(',').map(s=>s.trim()).filter(Boolean):selectedUnits());if(!c[0]||!units.length)continue;if(!sentences.some(x=>courseOf(x)===currentCourse()&&x.text===c[0])){sentences.push({course:currentCourse(),text:c[0],sol:c[1]||'[TRADUCCIÓN PENDIENTE]',units,teacherProvided:true});added++}}}saveLocal();updateUnits();if(kind!=='v'){examSelectionCache.clear();if(typeof greekExamState!=='undefined')greekExamState=null}generate();$('dataStatus').textContent=added+' entradas importadas.'}
-$('importCulture').onclick=()=>{if(currentCourse()!=='latin4')return;let added=0,errors=0;for(const line of $('newCulture').value.split(/\r?\n/)){if(!line.trim())continue;const c=line.split(';').map(v=>v.trim());if(c.length<4||!['short','essay','tf','mc'].includes(c[1])||!c[0]||!c[2]||!c[3]){errors++;continue}let options=c[4]?c[4].split('|').map(x=>x.trim()).filter(Boolean):[];if(c[1]==='mc'&&options.length<2){errors++;continue}let item={course:'latin4',units:c[0].split(',').map(x=>x.trim()),type:c[1],question:c[2],answer:c[3],options};if(!culture.some(x=>x.course==='latin4'&&x.question===item.question)){culture.push(item);added++}}saveLocal();$('cultureStatus').textContent=added+' preguntas importadas; '+errors+' líneas omitidas.';generate()};
+const localTeacherData=()=>({vocab:vocab.slice(initialVocab.length),
+ sentences:sentences.slice(initialSentences.length),culture:culture.slice(initialCulture.length)});
+const localSaveError='No se pudo guardar en este navegador. Puedes descargar una copia de los cambios.';
+function saveLocal(){
+ try{localStorage.setItem('examina_extra',JSON.stringify(localTeacherData()));return true}
+ catch{return false}
+}
+function updateUnits(){const checked=new Set(selectedUnits(false));units=[...new Set((currentCourse()==='greek1'?vocab.filter(x=>courseOf(x)==='greek1'&&x.unit!=='UD0').map(v=>v.unit):latinSharedBank.units(currentCourse())).concat(culture.filter(x=>currentCourse()==='latin4'&&!window.ExaminaCultureImportError(x)).flatMap(x=>x.units)))].sort((a,b)=>{let aa=+(a.match(/\d+/)||[0])[0],bb=+(b.match(/\d+/)||[0])[0];return aa-bb});$('unitChoices').innerHTML=units.map((u,i)=>`<label><input type="checkbox" class="unit-choice" value="${i}" ${checked.has(u)?'checked':''}>${esc(u)}</label>`).join('');document.querySelectorAll('.unit-choice').forEach(e=>e.onchange=generate)}
+function importLines(text,kind){
+ let added=0;
+ for(const line of text.split(/\r?\n/)){
+  if(!line.trim())continue;
+  const fields=line.split(';').map(value=>value.trim()),[first,second,third]=fields;
+  if(kind==='v'){
+   if(!first||!second||!third||vocab.some(x=>courseOf(x)===currentCourse()&&x.unit===first&&x.entry===second))continue;
+   vocab.push({course:currentCourse(),unit:first,entry:second,meaning:fields.slice(2).join(';')});
+  }else{
+   const units=third?third.split(',').map(value=>value.trim()).filter(Boolean):selectedUnits();
+   if(!first||!units.length||sentences.some(x=>courseOf(x)===currentCourse()&&x.text===first))continue;
+   sentences.push({course:currentCourse(),text:first,sol:second||'[TRADUCCIÓN PENDIENTE]',units,teacherProvided:true});
+  }
+  added++;
+ }
+ const saved=saveLocal();
+ updateUnits();
+ if(kind!=='v'){examSelectionCache.clear();if(typeof greekExamState!=='undefined')greekExamState=null}
+ generate();
+ $('dataStatus').textContent=saved?added+' entradas importadas.':localSaveError;
+}
+$('importCulture').onclick=()=>{
+ if(currentCourse()!=='latin4')return;
+ let added=0;
+ const errors=[];
+ $('newCulture').value.split(/\r?\n/).forEach((line,index)=>{
+  if(!line.trim())return;
+  const [unitList,type,question,answer,alternatives='']=line.split(';').map(value=>value.trim());
+  const item={course:'latin4',units:unitList.split(',').map(value=>value.trim()),type,question,
+   answer:type==='mc'?answer?.toUpperCase():answer,
+   options:alternatives?alternatives.split('|').map(value=>value.trim()):[]};
+  const error=window.ExaminaCultureImportError(item);
+  if(error){errors.push('Línea '+(index+1)+': '+error);return}
+  if(culture.some(x=>x.course==='latin4'&&x.question===question))return;
+  culture.push(item);added++;
+ });
+ const saved=saveLocal();
+ const summary=saved?added+' preguntas importadas.':localSaveError;
+ $('cultureStatus').textContent=[summary,...errors].join(' ');
+ if(added){examSelectionCache.clear();generate()}
+};
 $('importVocab').onclick=()=>importLines($('newvocab').value,'v');
 function downloadBlob(name,blob){
  const url=URL.createObjectURL(blob),link=document.createElement('a');
@@ -8179,9 +8262,62 @@ function downloadBlob(name,blob){
  try{link.click()}catch(err){window.location.href=url}
  setTimeout(()=>{link.remove();URL.revokeObjectURL(url)},120000);
 }
-$('exportData').onclick=()=>downloadBlob('examina_copia_datos.json',new Blob([JSON.stringify({version:9,examRequired,vocab:vocab.slice(initialVocab.length),sentences:sentences.slice(initialSentences.length),culture:culture.slice(initialCulture.length)},null,2)],{type:'application/json'}));
-$('importData').onclick=()=>$('restoreFile').click();$('restoreFile').onchange=async()=>{try{let d=JSON.parse(await $('restoreFile').files[0].text());if(!Array.isArray(d.vocab)||!Array.isArray(d.sentences))throw Error('Formato incorrecto');vocab=initialVocab.concat(d.vocab.filter(x=>x.unit&&x.entry&&x.meaning));sentences=initialSentences.concat(d.sentences.filter(x=>x.text&&x.sol));culture=initialCulture.concat((Array.isArray(d.culture)?d.culture:[]).filter(x=>x.course==='latin4'&&Array.isArray(x.units)&&x.question&&x.answer));if(Array.isArray(d.examRequired)){examRequired=d.examRequired.filter(x=>x.course&&x.unit&&x.key);saveRequired()}saveLocal();updateUnits();generate()}catch(e){alert('No se pudo importar: '+e.message)}};
-try{const d=JSON.parse(localStorage.getItem('examina_extra')||'null');if(d){if(Array.isArray(d.vocab))vocab.push(...d.vocab);if(Array.isArray(d.sentences))sentences.push(...d.sentences);if(Array.isArray(d.culture))culture.push(...d.culture.filter(x=>x.course==='latin4'&&Array.isArray(x.units)&&x.question&&x.answer));updateUnits()}}catch(e){}
+$('exportData').onclick=()=>downloadBlob('examina_copia_datos.json',
+ new Blob([JSON.stringify({version:9,examRequired,...localTeacherData()},null,2)],{type:'application/json'}));
+$('importData').onclick=()=>$('restoreFile').click();
+$('restoreFile').onchange=async()=>{
+ const input=$('restoreFile'),file=input.files[0];
+ if(!file)return;
+ try{
+  const data=JSON.parse(await file.text());
+  if(!Array.isArray(data?.vocab)||!Array.isArray(data.sentences))throw Error('Formato incorrecto');
+  const cultureError=window.ExaminaCultureBackupError(data.culture);
+  if(cultureError)throw Error(cultureError);
+  const filled=value=>typeof value==='string'&&!!value.trim();
+  const validCourse=item=>item&&['latin1','latin4','greek1'].includes(courseOf(item));
+  if(!data.vocab.every(item=>validCourse(item)&&[item.unit,item.entry,item.meaning].every(filled))||
+    !data.sentences.every(item=>validCourse(item)&&[item.text,item.sol].every(filled)&&
+     (item.units===undefined||(Array.isArray(item.units)&&item.units.every(filled)))))
+   throw Error('Hay entradas de vocabulario u oraciones con datos no válidos.');
+  const restored={vocab:data.vocab,sentences:data.sentences,culture:data.culture||[]};
+  const required=data.examRequired??null;
+  if(required!==null&&(!Array.isArray(required)||
+    !required.every(item=>validCourse(item)&&[item.course,item.unit,item.key,item.entry].every(filled))))
+   throw Error('El vocabulario exigible de la copia no es válido.');
+  const previous=localStorage.getItem('examina_extra');
+  localStorage.setItem('examina_extra',JSON.stringify(restored));
+  try{
+   if(required)localStorage.setItem('examina_required_v9',JSON.stringify(required));
+  }catch(error){
+   try{
+    if(previous===null)localStorage.removeItem('examina_extra');
+    else localStorage.setItem('examina_extra',previous);
+   }catch{throw Error('Falló el guardado y no se pudo recuperar el estado anterior.')}
+   throw error;
+  }
+  vocab=initialVocab.concat(restored.vocab);
+  sentences=initialSentences.concat(restored.sentences);
+  culture=initialCulture.concat(restored.culture);
+  if(required){examRequired=required;updateRequiredStatus()}
+  examSelectionCache.clear();greekExamState=null;
+  updateUnits();generate();
+  $('dataStatus').textContent='Datos restaurados en este navegador.';
+ }catch(e){$('dataStatus').textContent='No se pudo importar: '+e.message}
+ finally{input.value=''}
+};
+try{
+ const data=JSON.parse(localStorage.getItem('examina_extra')||'null');
+ if(data){
+  if(Array.isArray(data.vocab))vocab.push(...data.vocab);
+  if(Array.isArray(data.sentences))sentences.push(...data.sentences);
+  if(Array.isArray(data.culture)){
+   culture.push(...data.culture.filter(item=>item&&Array.isArray(item.units)));
+   if(data.culture.some(window.ExaminaCultureImportError))
+    $('cultureStatus').textContent='Hay preguntas guardadas con datos inválidos. Se han excluido del sorteo.';
+  }
+  updateUnits();
+ }
+}catch{}
 
 function refreshCourse(){
  const c=currentCourse(),isLatin4=c==='latin4',isGreek=c==='greek1';
@@ -12024,31 +12160,46 @@ function db(){
 }
 const req=r=>new Promise((ok,no)=>{r.onsuccess=()=>ok(r.result);r.onerror=()=>no(r.error)});
 function transaction(d,stores,mode){return d.transaction(stores,mode)}
-async function clearLanguage(language){
- const d=await db(),t=transaction(d,['forms','metadata'],'readwrite'),store=t.objectStore('forms');
- const range=IDBKeyRange.bound(language+'|',language+'|\uffff');
- await new Promise((ok,no)=>{const c=store.openCursor(range);c.onsuccess=()=>{const cur=c.result;if(cur){cur.delete();cur.continue()}else ok()};c.onerror=()=>no(c.error)});
-}
 async function importText(language,text,onProgress){
- const d=await db();await clearLanguage(language);
- const lines=text.split(/\r?\n/),chunkSize=1500;let count=0,bad=0;
- for(let i=0;i<lines.length;i+=chunkSize){
-  const t=transaction(d,['forms'],'readwrite'),store=t.objectStore('forms');
-  for(const line of lines.slice(i,i+chunkSize)){
-   if(!line.trim()||line.startsWith('#'))continue;
-   const parts=line.split('\t');if(parts.length<3){bad++;continue}
-   const lemma=parts[0].trim(),surface=parts[1].trim(),features=parts.slice(2).join('\t').trim();
-   if(!lemma||!surface||!features){bad++;continue}
-   const id=language+'|'+norm(surface)+'|'+norm(lemma)+'|'+features;
-   store.put({id,language,form:language+'|'+norm(surface),lemma:language+'|'+norm(lemma),headword:lemma,surface,features});
-   count++;
+ if(!['lat','grc'].includes(language))throw Error('Idioma UniMorph no válido');
+ const d=await db(),lines=text.split(/\r?\n/),chunkSize=1500;
+ const t=transaction(d,['forms','metadata'],'readwrite'),store=t.objectStore('forms');
+ return new Promise((resolve,reject)=>{
+  let count=0,bad=0,next=0,failure;
+  t.oncomplete=()=>resolve({count,bad});
+  t.onabort=()=>reject(failure||t.error||Error('Importación interrumpida'));
+  function writeBatch(){
+   try{
+    const end=Math.min(next+chunkSize,lines.length);
+    let lastRequest;
+    for(;next<end;next++){
+     const line=lines[next];
+     if(!line.trim()||line.startsWith('#'))continue;
+     const [rawLemma,rawSurface,...fields]=line.split('\t');
+     const lemma=rawLemma.trim(),surface=rawSurface?.trim(),features=fields.join('\t').trim();
+     if(!lemma||!surface||!features){bad++;continue}
+     const form=language+'|'+norm(surface),lemmaKey=language+'|'+norm(lemma);
+     const id=form+'|'+norm(lemma)+'|'+features;
+     lastRequest=store.put({id,language,form,lemma:lemmaKey,headword:lemma,surface,features});
+     count++;
+    }
+    if(next===lines.length){
+     if(!count)throw Error('El archivo no contiene registros UniMorph válidos');
+     onProgress?.(count,lines.length);
+     t.objectStore('metadata').put({language,count,bad,imported:new Date().toISOString(),source:'UniMorph '+language});
+    }else{
+     // Encadenar solicitudes de la misma transacción mantiene el índice anterior si algo falla.
+     const checkpoint=lastRequest||store.get(language+'|');
+     checkpoint.onsuccess=()=>{
+      try{onProgress?.(count,lines.length)}catch(error){failure=error;t.abort();return}
+      writeBatch();
+     };
+    }
+   }catch(error){failure=error;t.abort()}
   }
-  await new Promise((ok,no)=>{t.oncomplete=ok;t.onerror=()=>no(t.error);t.onabort=()=>no(t.error)});
-  onProgress?.(count,lines.length);
-  await new Promise(ok=>setTimeout(ok,0));
- }
- const t=transaction(d,['metadata'],'readwrite');t.objectStore('metadata').put({language,count,bad,imported:new Date().toISOString(),source:'UniMorph '+language});
- return {count,bad};
+  const range=IDBKeyRange.bound(language+'|',language+'|\uffff');
+  store.delete(range).onsuccess=writeBatch;
+ });
 }
 const builtInMorph={
  lat:[["puella","puella","N;NOM;SG;FEM"],["puella","puellam","N;ACC;SG;FEM"],["puella","puellae","N;GEN;SG;FEM"],["puella","puellae","N;DAT;SG;FEM"],["puella","puellā","N;ABL;SG;FEM"],["puella","puellae","N;NOM;PL;FEM"],["puella","puellās","N;ACC;PL;FEM"],["puella","puellārum","N;GEN;PL;FEM"],["puella","puellīs","N;DAT;PL;FEM"],["puella","puellīs","N;ABL;PL;FEM"]],
@@ -14669,6 +14820,7 @@ function latinExpandedForms(bank){
   ['moror, moratus sum (1ª)','detenerse, demorarse','detindre’s, demorar-se'],
   ['fugio, fugi, fugitum (mx.)','huir','fugir'],
   ['modus, –i','modo, manera','manera'],
+  ['schola, –æ','escuela','escola'],
   ['viso, visi, visum (3ª)','visitar, ir a ver','visitar, anar a veure'],
   ['testis, testis (m./f.)','testigo','testimoni'],
   ['turtur, turturis (m.)','tórtola','tórtora'],
@@ -15977,9 +16129,6 @@ function displayEntry(entry,mode){
  const m=entry.match(/\((?:[1-4]ª|mx\.|irr\.)\)/);
  return m?head(entry)+' '+m[0]:entry;
 }
-// Formato filológico de la exportación, sin alterar la base ni el JSON.
-// Traducción de un único lema griego: comillas simples. Locuciones con
-// varias palabras griegas (μέν… δέ): comillas dobles.
 // Clasificación compartida por el glosario del examen y el vocabulario por UD.
 // Es independiente del sorteo o certificación de paradigmas.
 function classifyVocabularyEntry(item,course='lat1'){
@@ -16094,18 +16243,34 @@ function formatVocabularyEntry(row,mode,course,language='es'){
    if(type)entry+=' ('+type+')';
   }
  }
- const localized=window.ExaminaValencianGloss?.forEntry(row,language);
- const translated=localized?localized.value:row.meaning;
- if(!translated)return entry;
- const meaning=String(translated).trim().replace(/^[‘’'"]+|[‘’'"]+$/g,'');
- const pieces=meaning.split(/[’']\s*,\s*[‘']/).map(x=>x.trim()).filter(Boolean);
- const lemmaPart=head(entry);
- const phrase=(/\s|…/u.test(lemmaPart)&&!/\s+o\s+/i.test(lemmaPart)) &&
-  !/^(?:ὁ,\s*ἡ|οὐ,\s*οὐκ)/u.test(entry);
- const quote=phrase?'"':"'";
- const quoted=window.ExaminaValencianGloss?.quoteGloss(meaning)||
-  (phrase?quote+pieces.join(', ')+quote:pieces.map(x=>"'"+x+"'").join(', '));
- return entry+': '+quoted;
+ const {value}=localizedVocabularyGloss(row,course,language);
+ return value?entry+': '+quoteVocabularyGloss(value,entry,course):entry;
+}
+function localizedVocabularyGloss(row,course,language){
+ let meaning=String(row.meaning||'');
+ if(course!=='gr1'&&classifyVocabularyEntry(row,course)==='adjectives'){
+  // Solo abreviar equivalentes españoles aislados con flexión regular -o/-a.
+  meaning=meaning.replace(/(^|[,;]\s*|[‘“'"])([\p{L}]+o)(?=[’”'"]?(?:\s*[,;]|\s+\(|\s*$))/gu,'$1$2/a');
+ }
+ return window.ExaminaValencianGloss?.forEntry({...row,meaning},language)||
+  {value:meaning,ready:!!meaning.trim()};
+}
+function quoteVocabularyGloss(meaning,entry,course){
+ const source=course==='gr1'?'':head(entry);
+ const quoted=window.ExaminaValencianGloss?.quoteGloss(meaning,source);
+ if(quoted)return quoted;
+ const pieces=String(meaning).trim().replace(/^[‘’'"]+|[‘’'"]+$/g,'')
+  .split(/[’']\s*,\s*[‘']/);
+ return /\s|…/u.test(source||head(entry))?'"'+pieces.join(', ')+'"':
+  pieces.map(piece=>"'"+piece+"'").join(', ');
+}
+function pendingVocabularyTranslation(row,course,language){
+ if(row.status!=='manual'||row.source!=='collatinus')return false;
+ const gloss=localizedVocabularyGloss(row,course,language);
+ return !gloss.ready||/^\[TRADUCCI(?:[ÓO]N PENDIENTE|Ó PENDENT)/iu.test(gloss.value.trim());
+}
+function vocabularyTranslationNotice(language){
+ return language==='va'?'Traducció pendent':'Traducción pendiente';
 }
 function vocabularyRequiresReview(row){
   return !['manual','documented'].includes(row.status);
@@ -16135,9 +16300,13 @@ function vocabularyRequiresReview(row){
  const title='Vocabulario por unidades de '+(titleNames[project.course]||project.course||'la asignatura');
  const titleParagraph=paragraph(run(title,{bold:true,smallCaps:true,size:28}),{title:true});
  const isLatin=project.course!=='gr1';
+ const language=project.lang||'es';
+ const translationPending=row=>pendingVocabularyTranslation(row,project.course,language);
+ const needsReview=row=>vocabularyRequiresReview(row)||translationPending(row);
  const line=(row,unit)=>{
-  const pending=vocabularyRequiresReview(row);
-  const formatted=formatVocabularyEntry(row,unit.mode,project.course,project.lang||'es')+
+  const needsTranslation=translationPending(row),pending=needsReview(row);
+  const formatted=(needsTranslation?displayEntry(row.entry,unit.mode)+' ['+vocabularyTranslationNotice(language)+']':
+   formatVocabularyEntry(row,unit.mode,project.course,language))+
    (pending&&row.alternative?' ['+row.form+(row.context?' · '+row.context:'')+']':
     pending&&row.context?' ['+row.context+']':'');
   if(!isLatin)return paragraph(run((pending?'* ':'')+formatted));
@@ -16165,8 +16334,8 @@ function vocabularyRequiresReview(row){
  const units=project.units.slice(0,project.count);
  const body=units.map(u=>{
   const all=entries(typeof u.text==='string'&&!u.text.trim()?[]:u.rows||[]);
-  const pending=all.filter(vocabularyRequiresReview).flatMap(row=>{
-   if(project.wordAlternatives!==true)return [row];
+  const pending=all.filter(needsReview).flatMap(row=>{
+   if(translationPending(row)||project.wordAlternatives!==true)return [row];
    const readings=new Map();
    for(const candidate of [...(row.candidates||[]),...externalCandidates(row)]){
     if(!candidate.entry)continue;
@@ -16177,7 +16346,7 @@ function vocabularyRequiresReview(row){
    return [...readings.values()].map(({entry,lemma,meaning,meaning_va})=>
     ({...row,entry,lemma,meaning:meaning||'',meaning_va,alternative:true}));
   });
-  const safe=all.filter(r=>!vocabularyRequiresReview(r));
+  const safe=all.filter(r=>!needsReview(r));
   const groupedLines=rows=>project.groupTypes===true?
    vocabularyGroups(rows,project.course,project.lang||'es').map(group=>
     p(group.label,true)+group.rows.map(r=>line(r,u)).join('')).join(''):
@@ -16189,7 +16358,7 @@ function vocabularyRequiresReview(row){
   '<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>'+
   titleParagraph+body+'<w:sectPr>'+layout+'</w:sectPr></w:body></w:document>';
 }
-const analysisVersion=7; // Reanalizar con nuevas formas contrastadas, conservando ediciones y decisiones docentes.
+const analysisVersion=8; // Reanalizar con nuevas formas contrastadas, conservando ediciones y decisiones docentes.
 function needsAnalysis(unit,course){
  return !!unit.text?.trim()&&(unit.analysisVersion!==analysisVersion||
   unit.analyzedCourse!==course||unit.analyzedText!==unit.text||unit.analyzedUnit!==unit.title);
@@ -16209,6 +16378,25 @@ function reviewedRows(unit,course,data,bank){
   return decision?{...row,...decision,identity:row.identity,form:row.form}:row;
  });
 }
+function validateProject(project){
+ const record=value=>value!==null&&typeof value==='object'&&!Array.isArray(value);
+ const courses=['lat1','lat4','gr1'];
+ const optionalStrings=(row,fields)=>fields.every(field=>row[field]===undefined||typeof row[field]==='string');
+ const isDecision=row=>record(row)&&typeof row.form==='string'&&typeof row.entry==='string'&&
+  typeof row.meaning==='string'&&optionalStrings(row,['identity','lemma','meaning_va','source'])&&
+  ['manual','omitted'].includes(row.status);
+ const isRow=row=>record(row)&&typeof row.form==='string'&&typeof row.entry==='string'&&typeof row.meaning==='string'&&
+  optionalStrings(row,['identity','lemma','meaning_va','source','context','warning'])&&
+  ['manual','omitted','documented','review','unknown'].includes(row.status)&&
+  Array.isArray(row.candidates)&&row.candidates.every(candidate=>record(candidate)&&typeof candidate.entry==='string'&&
+   optionalStrings(candidate,['lemma','meaning','meaning_va']));
+ return record(project)&&Number.isInteger(project.count)&&project.count>=1&&project.count<=100&&
+  courses.includes(project.course)&&Array.isArray(project.units)&&project.units.length<=100&&
+  project.units.every(unit=>record(unit)&&typeof unit.title==='string'&&typeof unit.text==='string'&&
+   ['simple','complete'].includes(unit.mode)&&Array.isArray(unit.rows)&&unit.rows.every(isRow)&&
+   (unit.decisions===undefined||(record(unit.decisions)&&Object.entries(unit.decisions).every(([course,rows])=>
+    courses.includes(course)&&Array.isArray(rows)&&rows.every(isDecision)))));
+}
 function migrateProject(project){
  for(const unit of project.units){
   const source=unit.decisions,decisions={};
@@ -16217,24 +16405,47 @@ function migrateProject(project){
    const rows=Array.isArray(source?.[course])?source[course]:legacy?unit.rows||[]:[];
    decisions[course]=rows.filter(row=>row&&['manual','omitted'].includes(row.status)&&
     typeof row.form==='string'&&typeof row.entry==='string'&&typeof row.meaning==='string')
-    .map(({identity,form,status,entry,lemma,meaning,meaning_va,eulexisUnverified})=>
-     ({identity,form,status,entry,lemma,meaning,meaning_va,eulexisUnverified}));
+    .map(({identity,form,status,entry,lemma,meaning,meaning_va,eulexisUnverified,source})=>
+     ({identity,form,status,entry,lemma,meaning,meaning_va,eulexisUnverified,source}));
   }
   unit.decisions=decisions;
  }
  return project;
 }
-window.ExaminaVocabulary={analyze,passivePhrases,entries,displayEntry,formatVocabularyEntry,documentXml,classifyVocabularyEntry,vocabularyGroups};
+window.ExaminaVocabulary={validateProject,analyze,passivePhrases,entries,displayEntry,formatVocabularyEntry,localizedVocabularyGloss,quoteVocabularyGloss,documentXml,classifyVocabularyEntry,vocabularyGroups};
 function init(){
  const $=id=>document.getElementById(id),storage='examina_vocabulary_project_v1';
  let project={count:1,course:'lat1',lang:'es',units:[]},selected=0;
- try{const saved=JSON.parse(localStorage.getItem(storage));if(saved?.units&&Number.isInteger(saved.count)&&saved.count>=1&&saved.count<=100&&['lat1','lat4','gr1'].includes(saved.course))project=saved}catch{}
+ let loadError=false;
+ try{
+  const raw=localStorage.getItem(storage);
+  if(raw!==null){
+   const saved=JSON.parse(raw);
+   if(!validateProject(saved))throw Error('Proyecto de vocabulario no válido');
+   project=saved;
+  }
+ }catch{loadError=true}
  if(!['es','va'].includes(project.lang))project.lang='es';
  const unit=()=>{while(project.units.length<project.count)project.units.push({title:'UD'+(project.units.length+1),text:'',mode:'complete',rows:[],analyzed:false});return project.units[selected]};
  migrateProject(project);
  const stale=u=>needsAnalysis(u,project.course);
  const status=s=>{$('vgStatus').textContent=s};
- const save=()=>{try{localStorage.setItem(storage,JSON.stringify(project))}catch{status('No se pudo guardar en este navegador. Exporta una copia JSON.')}};
+ const damagedProject='El proyecto guardado no es válido. Recupera una copia JSON para reemplazarlo.';
+ let saveWarning=loadError?damagedProject:'';
+ const save=()=>{
+  try{
+   if(loadError)throw Error(damagedProject);
+   localStorage.setItem(storage,JSON.stringify(project));
+   saveWarning='';
+   return true;
+  }catch{
+   saveWarning=loadError?damagedProject:'No se pudo guardar en este navegador. Exporta una copia JSON.';
+   status(saveWarning);
+   return false;
+  }
+ };
+ const translationPending=row=>pendingVocabularyTranslation(row,project.course,project.lang);
+ const needsReview=row=>vocabularyRequiresReview(row)||translationPending(row);
 
 
  // Eulexis es opcional y local. Una sugerencia nunca valida una flexión.
@@ -16367,6 +16578,7 @@ function init(){
   $('vgGroupTypes').checked=project.groupTypes===true;
   renderUnitButtons();
   if($('vgEulexisPanel'))$('vgEulexisPanel').hidden=project.course!=='gr1';
+  $('vgCollatinus').hidden=project.course==='gr1';
   $('vgUnit').replaceChildren(...project.units.slice(0,project.count).map((u,i)=>new Option(u.title,i,false,i===selected)));
   $('vgTitle').value=unit().title;$('vgText').value=unit().text;$('vgMode').value=unit().mode;
   renderReview();
@@ -16375,17 +16587,18 @@ function init(){
  function decide(u,row,choice,decisionStatus){
   u.decisions||={};
   const decisions=u.decisions[project.course]||[];
-  const {entry,meaning,meaning_va,lemma,eulexisUnverified}=choice;
+  const {entry,meaning,meaning_va,lemma,eulexisUnverified,source}=choice;
   const decision={identity:row.identity,form:row.form,entry,meaning,meaning_va,lemma,
-   eulexisUnverified,status:decisionStatus};
+   eulexisUnverified,source,status:decisionStatus};
   u.decisions[project.course]=decisions.filter(d=>d.identity!==row.identity);
   u.decisions[project.course].push(decision);
   Object.assign(row,decision);
  }
  function record(u,row,choice,decisionStatus){
   decide(u,row,choice,decisionStatus);
-  save();render();
-  status(row.form+' · '+(decisionStatus==='omitted'?'Omitida del Word.':'Aceptada para Word.'));
+  const saved=save();render();
+  if(saved)status(row.form+' · '+(decisionStatus==='omitted'?'Omitida del Word.':
+   translationPending(row)?vocabularyTranslationNotice(project.lang)+'.':'Aceptada para Word.'));
  }
  function renderReview(){
   const target=$('vgResults');target.replaceChildren();
@@ -16411,15 +16624,15 @@ function init(){
    batch.append(button('Aceptar propuestas seleccionadas',()=>{
     let accepted=0;
     safe.forEach(({unit,row},i)=>{if(checks[i].checked){decide(unit,row,row.candidates[0],'manual');accepted++}});
-    save();render();status(accepted+' propuestas aceptadas para Word.');
+    const saved=save();render();if(saved)status(accepted+' propuestas aceptadas para Word.');
    }));
    target.append(batch);
   }
-  const pending=rows.filter(r=>vocabularyRequiresReview(r)&&r.status!=='omitted');
-  const resolved=rows.filter(r=>!vocabularyRequiresReview(r)||r.status==='omitted');
+  const pending=rows.filter(r=>needsReview(r)&&r.status!=='omitted');
+  const resolved=rows.filter(r=>!needsReview(r)||r.status==='omitted');
   const unitsWithPending=project.units.slice(0,project.count).flatMap((item,i)=>{
    if(i===selected||!item.text.trim()||stale(item))return [];
-   const count=item.rows.filter(r=>vocabularyRequiresReview(r)&&r.status!=='omitted').length;
+   const count=item.rows.filter(r=>needsReview(r)&&r.status!=='omitted').length;
    return count?[button(item.title+' · '+count+' pendientes',()=>{selected=i;render()})]:[];
   });
   if(unitsWithPending.length){
@@ -16473,7 +16686,9 @@ function init(){
   const highlight=document.createElement('mark');highlight.textContent=text.slice(start,end);
   context.append(text.slice(0,start),highlight,text.slice(end));
   context.className='vg-eulexis-context';card.append(heading,context);
-  if(vocabularyRequiresReview(row)&&row.status!=='omitted'){
+  if(translationPending(row)){
+   card.append(paragraph(row.entry+' · '+vocabularyTranslationNotice(project.lang)));
+  }else if(vocabularyRequiresReview(row)&&row.status!=='omitted'){
    card.append(paragraph(row.warning||(row.candidates.length>1?'Pendiente: varias lecturas posibles.':'Pendiente de revisión.')));
   }
   const external=externalCandidates(row).slice(0,16);
@@ -16562,7 +16777,7 @@ function init(){
   $('vgQualityRows').replaceChildren();$('vgQualityQueue').replaceChildren();
   $('vgQualityQueueSummary').textContent='';
   $('vgReviewUnit').replaceChildren(new Option('Todas las unidades',''));
-  save();render();status('Banco cambiado. Analiza el vocabulario para actualizar las lecturas.');
+  const saved=save();render();if(saved)status('Banco cambiado. Analiza el vocabulario para actualizar las lecturas.');
   if($('vgQualityPanel').open)refreshQuality();
   if(project.course==='gr1')prepareEulexis().catch(error=>eulexisStatus(error.message));
  };
@@ -16574,8 +16789,41 @@ function init(){
   }
   save();if(field==='mode')render();else renderUnitButtons();
  };
- async function analyzeUnits(){
-  const controls=['vgAnalyzeAll','vgWord','vgClearAll','vgImport','vgRestore','vgCourse','vgText','vgCount'].map($);
+ async function completeWithCollatinus(units,course,bank){
+  const reader=window.ExaminaCollatinus;
+  const pending=units.flatMap(u=>u.rows.filter(row=>u.text.trim()&&vocabularyRequiresReview(row)&&
+   row.status!=='omitted').map(row=>({u,row,job:reader.job(row)})));
+  const jobs=new Map();
+  for(const target of pending){
+   if(!target.job)continue;
+   const key=JSON.stringify(target.job);
+   if(!jobs.has(key))jobs.set(key,{job:target.job,targets:[]});
+   jobs.get(key).targets.push(target);
+  }
+  const batches=[...jobs.values()];
+  let applied=0,unavailable=false;
+  for(let start=0;start<batches.length;start+=80){
+   const batch=batches.slice(start,start+80);
+   let answers;
+   try{
+    answers=await reader.query(batch.map(item=>item.job));
+    if(answers.length!==batch.length)throw Error('Respuesta incompleta');
+   }catch{unavailable=true;break}
+   batch.forEach(({targets},i)=>{
+    for(const {u,row} of targets){
+     if(stale(u)||!u.rows.includes(row)||!vocabularyRequiresReview(row)||row.status==='omitted')continue;
+     const choice=reader.choice(row,answers[i],course,bank);
+     if(!choice)continue;
+     decide(u,row,{...choice,lemma:latinKey(head(choice.entry))},'manual');
+     applied++;
+    }
+   });
+   save();
+  }
+  return {applied,unavailable};
+ }
+ async function analyzeUnits(collatinus=false){
+  const controls=['vgCollatinus','vgAnalyzeAll','vgWord','vgClearAll','vgImport','vgRestore','vgCourse','vgText','vgCount'].map($);
   controls.forEach(control=>control.disabled=true);status('Analizando…');
   try{
    const data=await linguistic().load();
@@ -16587,15 +16835,25 @@ function init(){
     .map(u=>({u,rows:reviewedRows(u,project.course,data,bank)}));
    for(const {u,rows} of updates)Object.assign(u,{rows,analyzed:true,analysisVersion,
     analyzedText:u.text,analyzedCourse:project.course,analyzedUnit:u.title,analyzedBank:signature});
-   save();render();
+   const saved=save();render();
+   if(collatinus)status(project.lang==='va'?'Consultant Collatinus…':'Consultando Collatinus…');
+   const result=collatinus?await completeWithCollatinus(units,course,bank):null;
+   if(result){render();if(!save())return true}
+   else if(!saved)return true;
    const pending=units.filter(u=>u.text.trim()).flatMap(u=>u.rows)
-    .filter(r=>vocabularyRequiresReview(r)&&r.status!=='omitted').length;
-   status(updates.length+' unidades actualizadas · '+pending+' formas pendientes en el proyecto.');
+    .filter(r=>needsReview(r)&&r.status!=='omitted').length;
+   if(result){
+    const va=project.lang==='va';
+    status(result.applied+(va?' lectures aplicades · ':' lecturas aplicadas · ')+pending+
+     (va?' pendents.':' pendientes.')+(result.unavailable?(va?
+      ' No s’ha pogut completar la consulta a Collatinus.':' No se pudo completar la consulta a Collatinus.'):''));
+   }else status(updates.length+' unidades actualizadas · '+pending+' formas pendientes en el proyecto.');
    return true;
   }catch(e){status('No se pudo analizar: '+e.message);return false}
   finally{controls.forEach(control=>control.disabled=false)}
  }
  $('vgAnalyzeAll').onclick=()=>analyzeUnits();
+ $('vgCollatinus').onclick=()=>analyzeUnits(true);
  $('vgBackup').onclick=()=>downloadBlob('vocabulario-unidades.json',new Blob([JSON.stringify(project,null,2)],{type:'application/json'}));
  $('vgClearAll').onclick=()=>{
   // Solo se vacía ESTE proyecto local; no modificar el banco de vocabulario
@@ -16616,8 +16874,8 @@ function init(){
   project={count:1,course:project.course,lang:project.lang,
    units:[{title:'UD1',text:'',mode:'complete',rows:[],analyzed:false}]};
   selected=0;
-  save();render();
-  status(project.lang==='va'?'Projecte net. Pots començar amb la UD1 o recuperar una còpia JSON.':
+  const saved=save();render();
+  if(saved)status(project.lang==='va'?'Projecte net. Pots començar amb la UD1 o recuperar una còpia JSON.':
    'Proyecto limpiado. Puedes empezar por la UD1 o recuperar una copia JSON.');
  };
  $('vgWord').onclick=async()=>{
@@ -16629,15 +16887,33 @@ function init(){
     ['_rels/.rels','<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>'],
     ['word/document.xml',xml]
    ]));
-   const pending=project.units.slice(0,project.count).some(u=>u.text.trim()&&u.rows.some(r=>r.status!=='omitted'&&vocabularyRequiresReview(r)));
-  status('Word generado con '+project.count+' unidades.'+(pending?' Las formas pendientes aparecen marcadas con *.':''));
+   const pending=project.units.slice(0,project.count).some(u=>u.text.trim()&&u.rows.some(r=>r.status!=='omitted'&&needsReview(r)));
+   status('Word generado con '+project.count+' unidades.'+
+    (pending?' Las formas pendientes aparecen marcadas con *.':'')+(saveWarning?' '+saveWarning:''));
   }catch(e){status('No se ha exportado el Word: '+e.message)}
  };
  $('vgRestore').onclick=()=>$('vgImport').click();
- $('vgImport').onchange=async e=>{if(!e.target.files.length)return;try{const p=JSON.parse(await e.target.files[0].text());if(!Number.isInteger(p.count)||p.count<1||p.count>100||!['lat1','lat4','gr1'].includes(p.course)||!Array.isArray(p.units)||p.units.length<p.count||!p.units.every(u=>typeof u.title==='string'&&typeof u.text==='string'&&['simple','complete'].includes(u.mode)&&Array.isArray(u.rows)&&u.rows.every(r=>typeof r.entry==='string'&&typeof r.meaning==='string'&&typeof r.form==='string'&&Array.isArray(r.candidates))))throw Error('Formato incorrecto');project=migrateProject(p);qualitySnapshot=null;project.lang=['es','va'].includes(p.lang)?p.lang:'es';selected=0;render();save();const pending=project.units.slice(0,project.count).filter(stale).length;status('Proyecto importado: '+project.count+' unidades y textos conservados. '+pending+' por analizar. Puedes pulsar «Analizar y revisar vocabulario» o «Exportar Word» (analizará las pendientes).')}catch(e){status('No se pudo importar: '+e.message)}finally{e.target.value=''}};
+ $('vgImport').onchange=async event=>{
+  const input=event.target,file=input.files[0];
+  if(!file)return;
+  try{
+   const incoming=JSON.parse(await file.text());
+   if(!validateProject(incoming))throw Error('Formato incorrecto');
+   const restored=migrateProject(incoming);
+   restored.lang=['es','va'].includes(restored.lang)?restored.lang:'es';
+   localStorage.setItem(storage,JSON.stringify(restored));
+   project=restored;loadError=false;saveWarning='';qualitySnapshot=null;selected=0;
+   render();
+   const pending=project.units.slice(0,project.count).filter(stale).length;
+   status('Proyecto importado: '+project.count+' unidades y textos conservados. '+pending+
+    ' por analizar. Puedes pulsar «Analizar y revisar vocabulario» o «Exportar Word» (analizará las pendientes).');
+  }catch(error){status('No se pudo importar: '+error.message)}
+  finally{input.value=''}
+ };
  $('vgShow').onclick=()=>{$('examLayout').hidden=true;$('examLayout').style.display='none';$('vocabManager').classList.remove('active');$('vocabularyGenerator').classList.add('active');for(const id of ['vmShowExam','vmShowList'])$(id).classList.remove('active');$('vgShow').classList.add('active');render();if($('vgQualityPanel').open)refreshQuality()};
  for(const id of ['vmShowExam','vmShowList'])$(id).addEventListener('click',()=>{$('vocabularyGenerator').classList.remove('active');$('vgShow').classList.remove('active')});
  render();
+ if(loadError)status(damagedProject);
  if(project.course==='gr1')prepareEulexis().catch(error=>eulexisStatus('No se pudo abrir Eulexis: '+error.message));
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
@@ -20687,13 +20963,15 @@ Object.assign(adjectives,additionalAdjectives);
 (function(root){
  'use strict';
  const SCHEMA='examina-unified-backup/v1', ARCHIVE='examina_unified_archive_v1';
+ const SCORES='examina_question_points_v1', AUTO_SCORES='examina_question_points_auto_v1';
  const GROUPS={
   'examina_draft_v14':'draft','examina_previous_v14':'draft',
   'examina_exam_sentences_v1':'map','examina_exam_gloss_choices_v1':'map',
+  'examina_exam_passive_choices_v1':'map','examina_exam_visual_format_v1':'data',
   'examina-morph-review-v1':'map','examina-greek-discrepancy-v1':'map',
   'examina-academic-evidence-v1':'evidence',
   'examina_latin1_phonetic_rules_v1':'rules',
-  'examina_question_points_v1':'map',
+  [SCORES]:'map',[AUTO_SCORES]:'autoScores',
   'examina_required_v9':'required','examina_extra':'data',
   'examina_lexical_banks_v1':'data','examina_vocabulary_project_v1':'data'
  };
@@ -20720,9 +20998,14 @@ Object.assign(adjectives,additionalAdjectives);
   if((kind==='map'||kind==='data'||kind==='evidence')&&!record(value))throw Error('Datos no válidos: '+key);
   if(kind==='rules'&&(!Array.isArray(value)||value.length>30||!value.every(x=>typeof x==='string'&&/^N\d{2}$/.test(x))))throw Error('Normas fonéticas no válidas');
   if((kind==='map'||kind==='evidence')&&Object.keys(value).some(k=>unsafe(k)))throw Error('Identificador inseguro: '+key);
-  if(key==='examina_vocabulary_project_v1'&&(!Array.isArray(value.units)||
-    !Number.isInteger(value.count)||value.count<1||value.count>100))
+  if(kind==='autoScores'&&(!Array.isArray(value)||!value.every(id=>typeof id==='string'&&!unsafe(id))))
+   throw Error('Marcas de puntuación automática no válidas');
+  if(key==='examina_vocabulary_project_v1'&&!root.ExaminaVocabulary?.validateProject(value))
    throw Error('Proyecto de vocabulario no válido');
+  if(key==='examina_extra'&&own(value,'culture')){
+   const error=root.ExaminaCultureBackupError(value.culture);
+   if(error)throw Error(error);
+  }
  }
  function readArchive(strict=false){
   const raw=storage().getItem(ARCHIVE);
@@ -20817,6 +21100,7 @@ Object.assign(adjectives,additionalAdjectives);
   const changes=Object.create(null),addArchive=[];
   const stats={newKeys:0,newItems:0,identical:0,conflicts:0,archived:0,awaitingEvidence:0};
   for(const [key,incoming] of Object.entries(data.entries)){
+   if(key===AUTO_SCORES)continue;
    // Las autorizaciones importadas requieren contraste con el banco vigente.
    if(GROUPS[key]==='evidence'){
     addArchive.push({key,value:incoming});stats.awaitingEvidence+=Object.keys(incoming).length;
@@ -20845,6 +21129,27 @@ Object.assign(adjectives,additionalAdjectives);
     if(merged.conflict){addArchive.push({key,value:merged.conflict});stats.conflicts+=merged.conflicts}
    }else{addArchive.push({key,value:incoming});stats.conflicts++}
   }
+  if(own(data.entries,AUTO_SCORES)&&own(changes,SCORES)){
+   // Solo las puntuaciones incorporadas por esta copia heredan sus marcas.
+   // Una marca importada nunca convierte una puntuación local manual en automática.
+   const read=key=>{
+    try{const value=JSON.parse(storage().getItem(key));validateItem(key,value);return value}
+    catch{return null}
+   };
+   const currentScores=read(SCORES)||{},currentFlags=read(AUTO_SCORES);
+   const flags=new Set(currentFlags||[]);
+   const incomingFlags=new Set(data.entries[AUTO_SCORES]);
+   for(const key of Object.keys(changes[SCORES])){
+    if(own(currentScores,key))continue;
+    if(incomingFlags.has(key))flags.add(key);
+    else flags.delete(key);
+   }
+   const restoredFlags=[...flags];
+   if(json(currentFlags)!==json(restoredFlags)){
+    changes[AUTO_SCORES]=restoredFlags;
+    if(storage().getItem(AUTO_SCORES)===null)stats.newKeys++;
+   }
+  }
   if(data.liveDraft)addArchive.push({key:'liveDraft',value:data.liveDraft});
   for(const item of data.archive)addArchive.push({key:item.key,value:item.value});
   const existing=readArchive(true),all=existing.slice();
@@ -20862,13 +21167,17 @@ Object.assign(adjectives,additionalAdjectives);
  function applyImport(data){
   const plan=prepareImport(data),keys=Object.keys(plan.changes);
   const before=keys.map(key=>[key,storage().getItem(key)]);
+  let written=0;
   try{
-   for(const key of keys)storage().setItem(key,json(plan.changes[key]));
+   for(const key of keys){storage().setItem(key,json(plan.changes[key]));written++}
   }catch(error){
-   for(const [key,value] of before.reverse()){
-    try{if(value===null)storage().removeItem(key);else storage().setItem(key,value)}catch{}
+   let restored=true;
+   for(const [key,value] of before.slice(0,written).reverse()){
+    try{if(value===null)storage().removeItem(key);else storage().setItem(key,value)}
+    catch{restored=false}
    }
-   throw Error('Espacio insuficiente o escritura rechazada. Se ha intentado revertir la importación: '+error.message);
+   const result=restored?'Se pudo revertir la importación.':'No se pudo revertir toda la importación.';
+   throw Error('Espacio insuficiente o escritura rechazada. '+result+' '+error.message);
   }
   return plan.stats;
  }

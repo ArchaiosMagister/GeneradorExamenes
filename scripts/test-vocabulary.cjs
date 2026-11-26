@@ -454,6 +454,83 @@ console.log('Vocabulario: prioridad docente, deduplicación por UD, ambigüedad,
  try{
  const page=await browser.newPage({acceptDownloads:true});const errors=[];page.on('pageerror',e=>errors.push(e.message));
  await page.goto('file://'+root+'/offline.html');await page.click('#vgShow');
+ const importChecks=await page.evaluate(async()=>{
+  const morphology=window.ExaminaMorphology;
+  await morphology.importText('lat','lemmaoriginal\tformaoriginal\tN;NOM;SG');
+  await morphology.importText('grc','λόγος\tλόγος\tN;NOM;SG');
+  const rejected=[];
+  for(const [data,progress] of [
+   ['línea inválida'],
+   [Array(1501).fill('lemmanovum\tformanovam\tN;ACC;SG').join('\n'),
+    () => {throw Error('Interrupción simulada después de un lote')}]
+  ]){
+   try{await morphology.importText('lat',data,progress)}
+   catch(error){rejected.push(error.message)}
+  }
+  const original=(await morphology.lookup('lat','formaoriginal')).some(row=>row.headword==='lemmaoriginal');
+  const partial=(await morphology.lookup('lat','formanovam')).some(row=>row.headword==='lemmanovum');
+  const metadata=(await morphology.stats()).find(item=>item.language==='lat').count;
+  await morphology.importText('lat','lemmanovum\tformanovam\tN;ACC;SG');
+  const replaced=(await morphology.lookup('lat','formanovam')).some(row=>row.headword==='lemmanovum');
+  const removed=!(await morphology.lookup('lat','formaoriginal')).some(row=>row.headword==='lemmaoriginal');
+  const greek=(await morphology.stats()).find(item=>item.language==='grc').count;
+  const save=Storage.prototype.setItem,key='examina_extra',before=localStorage.getItem(key);
+  Storage.prototype.setItem=function(name,value){
+   if(name===key)throw new DOMException('Cuota simulada','QuotaExceededError');
+   return save.call(this,name,value);
+  };
+  let quota;
+  try{
+   importLines('UD1;testvacuum, –i;Glosa de prueba','v');
+   quota={message:document.getElementById('dataStatus').textContent,persisted:localStorage.getItem(key)!==before};
+  }finally{
+   Storage.prototype.setItem=save;
+   vocab=vocab.filter(row=>row.entry!=='testvacuum, –i');
+  }
+  const selector=document.getElementById('course');
+  selector.value='latin4';selector.dispatchEvent(new Event('change',{bubbles:true}));
+  document.getElementById('newCulture').value='UD1;mc;Clave inválida;D;Primera|Segunda';
+  document.getElementById('importCulture').click();
+  const cultureStatus=document.getElementById('cultureStatus').textContent;
+  const cultureStored=culture.some(row=>row.question==='Clave inválida');
+  selector.value='latin1';selector.dispatchEvent(new Event('change',{bubbles:true}));
+  return {rejected,original,partial,metadata,replaced,removed,greek,quota,cultureStatus,cultureStored};
+ });
+ assert.equal(importChecks.rejected.length,2);
+ assert.equal(importChecks.original,true);
+ assert.equal(importChecks.partial,false);
+ assert.equal(importChecks.metadata,1);
+ assert.equal(importChecks.replaced,true);
+ assert.equal(importChecks.removed,true);
+ assert.equal(importChecks.greek,1,'Una importación latina conserva las formas griegas');
+ assert.equal(importChecks.quota.persisted,false);
+ assert.match(importChecks.quota.message,/No se pudo guardar/);
+ assert.equal(importChecks.cultureStored,false);
+ assert.match(importChecks.cultureStatus,/Línea 1: La clave/);
+ const legacyCopy=await page.evaluate(()=>({
+  vocab:[{course:'latin1',unit:'UD1',entry:'testrestore, –i',meaning:'Glosa de prueba'}],
+  sentences:[],culture:[],examRequired
+ }));
+ const extraBefore=await page.evaluate(()=>localStorage.getItem('examina_extra'));
+ const restoreSetter=await page.evaluateHandle(()=>{
+  const original=Storage.prototype.setItem;
+  Storage.prototype.setItem=function(key,value){
+   if(key==='examina_required_v9')throw new DOMException('Cuota simulada','QuotaExceededError');
+   return original.call(this,key,value);
+  };
+  return ()=>{Storage.prototype.setItem=original};
+ });
+ try{
+  await page.locator('#restoreFile').setInputFiles({
+   name:'copia-datos.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(legacyCopy))
+  });
+  await page.waitForFunction(()=>document.getElementById('dataStatus').textContent.includes('Cuota simulada'));
+  assert.deepEqual(await page.evaluate(()=>({
+   storage:localStorage.getItem('examina_extra'),applied:vocab.some(row=>row.entry==='testrestore, –i')
+  })),{storage:extraBefore,applied:false});
+ }finally{await restoreSetter.evaluate(restore=>restore())}
+
+
  await page.click('#vgQualityPanel summary');
  await page.click('#vgQualityRefresh');
  await page.waitForFunction(()=>document.getElementById('vgQualityTotals').textContent.includes('Fichas:'));
@@ -469,6 +546,72 @@ console.log('Vocabulario: prioridad docente, deduplicación por UD, ambigüedad,
  assert.equal(await analyzeAll.innerText(),'Analizar y revisar vocabulario');
  assert.equal(await page.locator('#vgAnalyze').count(),0);
  assert.equal(await analyzeAll.evaluate(el=>getComputedStyle(el).fontWeight),'800');
+
+ // Mismo lector y criterio contextual que el glosario del examen.
+ await page.fill('#vgText','Gallia. In schola. Romanus. Psittacum. Xyzabc. Xyzxyz.');
+ const quoteCases=await page.evaluate(()=>{
+  const format=(entry,meaning,language='es')=>window.ExaminaVocabulary.formatVocabularyEntry(
+   {entry,meaning},'complete','lat1',language);
+  return [
+   format('Gallia, –æ','la Galia'),format('Gallia, –æ','la Galia','va'),
+   format('non modo … sed etiam','no solo… sino también'),
+   format('Romanus, Romana, Romanum','romano, latino'),
+   format('Romanus, –a, –um','romano/a'),
+   format('Romanus, –a, –um','romano','va'),
+   format('avus, –i','abuelo')
+  ];
+ });
+ assert.deepEqual(quoteCases,[
+  'Gallia, –æ: ‘la Galia’','Gallia, –æ: ‘la Gàl·lia’',
+  'non modo … sed etiam: “no solo… sino también”',
+  'Romanus, Romana, Romanum: ‘romano/a’, ‘latino/a’',
+  'Romanus, –a, –um: ‘romano/a’','Romanus, –a, –um: ‘romà/romana’','avus, –i: ‘abuelo’'
+ ]);
+ const restoreReader=await page.evaluateHandle(()=>{
+  const original=queryExamReader;
+  window.queryExamReader=async (reader,jobs)=>{
+   if(reader!=='Collatinus')throw Error('Lector inesperado');
+   window.vocabQueriedForms=jobs.map(job=>job.words[job.index]);
+   return window.vocabQueriedForms.map(form=>{
+    if(form==='Psittacum')return {winner:{lemme:'psittacus',citation:'psittacus, –i',
+     lang:'es',trad:'loro'}};
+    if(form==='Xyzabc')return {winner:{lemme:'testlemma',citation:'testlemma, –æ',
+     lang:'fr',trad:'école'}};
+    return {readings:[{lid:1,lemme:'uno'},{lid:2,lemme:'duo'}]};
+   });
+  };
+  return ()=>{window.queryExamReader=original};
+ });
+ await page.click('#vgCollatinus');
+ await page.waitForFunction(()=>document.getElementById('vgStatus').textContent.includes('2 lecturas aplicadas'));
+ assert.deepEqual(await page.evaluate(()=>window.vocabQueriedForms),['Psittacum','Xyzabc','Xyzxyz']);
+ await restoreReader.evaluate(restore=>restore());
+ const saved=await page.evaluate(()=>JSON.parse(localStorage.getItem('examina_vocabulary_project_v1')).units[0]);
+ assert.equal(saved.rows.find(row=>row.form==='schola').entry,'schola, –æ');
+ assert.equal(saved.rows.find(row=>row.form==='schola').status,'documented');
+ assert.equal(saved.rows.find(row=>row.form==='Xyzxyz').status,'unknown');
+ assert.equal(saved.decisions.lat1.find(row=>row.form==='Psittacum').meaning,'loro');
+ assert.equal(saved.decisions.lat1.find(row=>row.form==='Xyzabc').source,'collatinus');
+ await page.reload();await page.click('#vgShow');
+ const missingTranslation=page.locator('#vgResults section').filter({hasText:'testlemma, –æ · Traducción pendiente'});
+ await missingTranslation.waitFor();
+ const wordPending=await page.evaluate(()=>{
+  const project=JSON.parse(localStorage.getItem('examina_vocabulary_project_v1'));
+  return window.ExaminaVocabulary.documentXml({...project,wordAlternatives:true});
+ });
+ assert.match(wordPending,/testlemma, –æ<\/w:t>[\s\S]*?\[Traducción pendiente\]/);
+ await missingTranslation.getByRole('button',{name:'Editar',exact:true}).click();
+ await missingTranslation.getByLabel('Traducción',{exact:true}).fill('escuela');
+ await missingTranslation.getByRole('button',{name:'Guardar corrección'}).click();
+ assert.equal(await missingTranslation.count(),0);
+ const beforeBadImport=await page.evaluate(()=>localStorage.getItem('examina_vocabulary_project_v1'));
+ await page.locator('#vgImport').setInputFiles({
+  name:'invalido.json',mimeType:'application/json',
+  buffer:Buffer.from(JSON.stringify({count:1,course:'lat1',units:[null]}))
+ });
+ await page.waitForFunction(()=>document.getElementById('vgStatus').textContent.includes('Formato incorrecto'));
+ assert.equal(await page.evaluate(()=>localStorage.getItem('examina_vocabulary_project_v1')),beforeBadImport);
+
 
  // Prueba real de interfaz: diez frases escolares, incluida la preposición «ab».
  const latinCorpus=JSON.parse(fs.readFileSync(path.join(root,'tests/latin-vocabulary-sentences.json'),'utf8')).sentences;

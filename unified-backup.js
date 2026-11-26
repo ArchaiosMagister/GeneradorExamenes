@@ -2,13 +2,15 @@
 (function(root){
  'use strict';
  const SCHEMA='examina-unified-backup/v1', ARCHIVE='examina_unified_archive_v1';
+ const SCORES='examina_question_points_v1', AUTO_SCORES='examina_question_points_auto_v1';
  const GROUPS={
   'examina_draft_v14':'draft','examina_previous_v14':'draft',
   'examina_exam_sentences_v1':'map','examina_exam_gloss_choices_v1':'map',
+  'examina_exam_passive_choices_v1':'map','examina_exam_visual_format_v1':'data',
   'examina-morph-review-v1':'map','examina-greek-discrepancy-v1':'map',
   'examina-academic-evidence-v1':'evidence',
   'examina_latin1_phonetic_rules_v1':'rules',
-  'examina_question_points_v1':'map',
+  [SCORES]:'map',[AUTO_SCORES]:'autoScores',
   'examina_required_v9':'required','examina_extra':'data',
   'examina_lexical_banks_v1':'data','examina_vocabulary_project_v1':'data'
  };
@@ -35,9 +37,14 @@
   if((kind==='map'||kind==='data'||kind==='evidence')&&!record(value))throw Error('Datos no válidos: '+key);
   if(kind==='rules'&&(!Array.isArray(value)||value.length>30||!value.every(x=>typeof x==='string'&&/^N\d{2}$/.test(x))))throw Error('Normas fonéticas no válidas');
   if((kind==='map'||kind==='evidence')&&Object.keys(value).some(k=>unsafe(k)))throw Error('Identificador inseguro: '+key);
-  if(key==='examina_vocabulary_project_v1'&&(!Array.isArray(value.units)||
-    !Number.isInteger(value.count)||value.count<1||value.count>100))
+  if(kind==='autoScores'&&(!Array.isArray(value)||!value.every(id=>typeof id==='string'&&!unsafe(id))))
+   throw Error('Marcas de puntuación automática no válidas');
+  if(key==='examina_vocabulary_project_v1'&&!root.ExaminaVocabulary?.validateProject(value))
    throw Error('Proyecto de vocabulario no válido');
+  if(key==='examina_extra'&&own(value,'culture')){
+   const error=root.ExaminaCultureBackupError(value.culture);
+   if(error)throw Error(error);
+  }
  }
  function readArchive(strict=false){
   const raw=storage().getItem(ARCHIVE);
@@ -132,6 +139,7 @@
   const changes=Object.create(null),addArchive=[];
   const stats={newKeys:0,newItems:0,identical:0,conflicts:0,archived:0,awaitingEvidence:0};
   for(const [key,incoming] of Object.entries(data.entries)){
+   if(key===AUTO_SCORES)continue;
    // Las autorizaciones importadas requieren contraste con el banco vigente.
    if(GROUPS[key]==='evidence'){
     addArchive.push({key,value:incoming});stats.awaitingEvidence+=Object.keys(incoming).length;
@@ -160,6 +168,27 @@
     if(merged.conflict){addArchive.push({key,value:merged.conflict});stats.conflicts+=merged.conflicts}
    }else{addArchive.push({key,value:incoming});stats.conflicts++}
   }
+  if(own(data.entries,AUTO_SCORES)&&own(changes,SCORES)){
+   // Solo las puntuaciones incorporadas por esta copia heredan sus marcas.
+   // Una marca importada nunca convierte una puntuación local manual en automática.
+   const read=key=>{
+    try{const value=JSON.parse(storage().getItem(key));validateItem(key,value);return value}
+    catch{return null}
+   };
+   const currentScores=read(SCORES)||{},currentFlags=read(AUTO_SCORES);
+   const flags=new Set(currentFlags||[]);
+   const incomingFlags=new Set(data.entries[AUTO_SCORES]);
+   for(const key of Object.keys(changes[SCORES])){
+    if(own(currentScores,key))continue;
+    if(incomingFlags.has(key))flags.add(key);
+    else flags.delete(key);
+   }
+   const restoredFlags=[...flags];
+   if(json(currentFlags)!==json(restoredFlags)){
+    changes[AUTO_SCORES]=restoredFlags;
+    if(storage().getItem(AUTO_SCORES)===null)stats.newKeys++;
+   }
+  }
   if(data.liveDraft)addArchive.push({key:'liveDraft',value:data.liveDraft});
   for(const item of data.archive)addArchive.push({key:item.key,value:item.value});
   const existing=readArchive(true),all=existing.slice();
@@ -177,13 +206,17 @@
  function applyImport(data){
   const plan=prepareImport(data),keys=Object.keys(plan.changes);
   const before=keys.map(key=>[key,storage().getItem(key)]);
+  let written=0;
   try{
-   for(const key of keys)storage().setItem(key,json(plan.changes[key]));
+   for(const key of keys){storage().setItem(key,json(plan.changes[key]));written++}
   }catch(error){
-   for(const [key,value] of before.reverse()){
-    try{if(value===null)storage().removeItem(key);else storage().setItem(key,value)}catch{}
+   let restored=true;
+   for(const [key,value] of before.slice(0,written).reverse()){
+    try{if(value===null)storage().removeItem(key);else storage().setItem(key,value)}
+    catch{restored=false}
    }
-   throw Error('Espacio insuficiente o escritura rechazada. Se ha intentado revertir la importación: '+error.message);
+   const result=restored?'Se pudo revertir la importación.':'No se pudo revertir toda la importación.';
+   throw Error('Espacio insuficiente o escritura rechazada. '+result+' '+error.message);
   }
   return plan.stats;
  }
