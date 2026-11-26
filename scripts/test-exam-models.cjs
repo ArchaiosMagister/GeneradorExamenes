@@ -13,10 +13,12 @@ const latinCode=part('const latinPronounRows=','let culture=')+morphologyHelpers
  part('function generateLatinMorphologyReference(){','/* El título refleja las unidades')+
  part('function mVerb(','function mTable(');
 const greekCode=morphologyHelpers+part('function greekWrittenFormVariants(form){','function greekCorpus(){')+
- part('function examGreekVerbFormCandidates(','function examQuotaGreek(')+
+ part('function examGreekWordClass(','function examQuotaGreek(')+
  part('const greekModes=','// Vista del temario:')+
  part('function greekVerbAnalysisCandidates(eligible){','function generateGreekMorphologyFixed(){')+
  part('function generateGreekMorphologyFixed(){','let greekExamState=null;')+
+ part('function greekMorphologyCorpus(','function regenerateLatinMorphologyVerb(')+
+ part('function greekCompleteCounts(){','function greekSelectionSignature(')+
  part('function generateGreekExam(){','const legacyUpdateUnits=');
 
 const sentenceList=vm.runInNewContext(part('function sentenceList(','function sentenceGlossary(')+
@@ -258,6 +260,7 @@ function greekSuite(){
   examMorphQuotaCount:()=>0,
   examMorphQuotaValues:()=>[0,0,0,0],
   normLex:x=>String(x||'').normalize('NFC').toLocaleLowerCase(),
+  greekCurricularSample:(pool,count)=>pool.slice(0,count),
   examQuotaGreek:(pool,count)=>pool.slice(0,count)
  };
  vm.createContext(sandbox);vm.runInContext(greekCode,sandbox,{filename:'greek-exams.js'});

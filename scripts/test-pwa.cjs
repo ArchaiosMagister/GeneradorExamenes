@@ -282,7 +282,15 @@ const server=http.createServer(async(req,res)=>{
   await page.locator('#model').selectOption('tablas');
   assert.deepEqual(await page.evaluate(()=>[document.getElementById('course').value,document.getElementById('model').value]),['latin1','tablas'],
    'Los selectores únicos no sincronizan asignatura y modelo');
-  await page.evaluate(()=>{generate();document.getElementById('saveDraft').click()});
+  await page.evaluate(()=>{
+   document.querySelectorAll('#unitChoices .unit-choice').forEach(input=>{
+    input.checked=units[Number(input.value)]==='UD7';
+   });
+   generate();
+   const answer=document.querySelector('#paper #answerkey [data-exam-kind="forms"] ol > li:nth-child(2)');
+   answer.textContent='Solución revisada antes de desconectar';
+   document.getElementById('saveDraft').click();
+  });
   const storedDraft=await page.evaluate(()=>Object.keys(localStorage)
    .find(key=>key.toLowerCase().includes('draft')||key.toLowerCase().includes('borrador')));
   assert(storedDraft,'El borrador no se ha guardado en el navegador');
@@ -303,6 +311,15 @@ const server=http.createServer(async(req,res)=>{
   await page.evaluate(()=>document.getElementById('restoreDraft').click());
   assert(await page.locator('#paper .exam-sheet').count()>0,
    'No se recupera el examen guardado sin red');
+  const regeneratedOffline=await page.evaluate(()=>{
+   const first=document.querySelector('#paper [data-analysis-slot="0"]');
+   const answer=document.querySelector('#paper #answerkey [data-exam-kind="forms"] ol > li:nth-child(2)');
+   const before=first.querySelector('i').textContent;
+   regenerateExamWord('forms',0);
+   const next=document.querySelector('#paper [data-analysis-slot="0"] > i');
+   return next.textContent!==before&&answer.isConnected&&answer.textContent==='Solución revisada antes de desconectar';
+  });
+  assert(regeneratedOffline,'La PWA debe regenerar una forma de un borrador sin borrar las respuestas editadas');
   await page.waitForFunction(()=>!!window.ExaminaOfflineLemmatizer.currentData());
   const offlineGloss=await page.evaluate(()=>{
    const bank=latinSharedBank.vocabulary('latin1');

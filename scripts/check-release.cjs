@@ -67,6 +67,7 @@ const browserTests=[
  'test-preview.cjs',
  'test-question-part-regeneration.cjs',
  'test-question-visual-layout.cjs',
+ 'test-regeneration-audit.cjs',
  'test-real-exam-audit.cjs',
  'test-sentence-points-and-drafts.cjs',
  'test-single-word-regeneration.cjs',
