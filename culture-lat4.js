@@ -1029,4 +1029,32 @@
     "answer_va": "Vertader.",
     "source": "Temario docente de Cultura LAT4, UD8"
   }
-];})(window);
+];
+function importError(item){
+ const filled=value=>typeof value==='string'&&!!value.trim();
+ if(item?.course!=='latin4'||!Array.isArray(item.units)||!item.units.length||!item.units.every(filled))
+  return 'Indica al menos una unidad válida de Latín 4.º.';
+ if(!['short','essay','tf','mc'].includes(item.type))return 'Tipo de pregunta desconocido.';
+ if(!filled(item.question)||!filled(item.answer))return 'Faltan el enunciado o la respuesta.';
+ if(item.type==='tf'&&!/^(?:[vf]|verdadero|falso|cierto|vertader|fals)(?:[.!,:;](?:\s+.*)?|\s*)$/iu.test(item.answer.trim()))
+  return 'La respuesta debe indicar verdadero o falso.';
+ if(item.type==='mc'){
+  if(!Array.isArray(item.options)||item.options.length<2||item.options.length>26||!item.options.every(filled))
+   return 'Incluye entre 2 y 26 opciones sin huecos.';
+  const key=item.answer.trim().toUpperCase();
+  if(!/^[A-Z]$/.test(key)||key.charCodeAt(0)-65>=item.options.length)
+   return 'La clave debe ser la letra de una de las opciones.';
+ }
+ return '';
+}
+g.ExaminaCultureImportError=importError;
+g.ExaminaCultureBackupError=items=>{
+ if(items===undefined)return '';
+ if(!Array.isArray(items))return 'Formato incorrecto del banco de cultura.';
+ for(const [i,item] of items.entries()){
+  const error=importError(item);
+  if(error)return 'Pregunta de cultura '+(i+1)+': '+error;
+ }
+ return '';
+};
+})(window);

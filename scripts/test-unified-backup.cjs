@@ -2,7 +2,7 @@
 const assert=require('node:assert/strict');
 const fs=require('node:fs');
 const vm=require('node:vm');
-const code=fs.readFileSync(require('node:path').join(__dirname,'../unified-backup.js'),'utf8');
+const path=require('node:path');
 const validDraft=(html='<div>Examen editado</div>')=>({
  schema:'examina-exam-draft',version:1,course:'latin1',model:'morf',html,created:'2026-11-13T00:00:00.000Z'
 });
@@ -18,7 +18,10 @@ function create(initial={}){
  const win={localStorage,ExaminaUnifiedCurrentExam:()=>validDraft('<p>Trabajo todavía no guardado</p>'),
   document:{readyState:'loading',addEventListener(){}}
  };
- vm.runInNewContext(code,{window:win,Blob,URL,setTimeout,Date,console},{filename:'unified-backup.js'});
+ const context=vm.createContext({window:win,document:win.document,Blob,URL,setTimeout,Date,console});
+ for(const filename of ['culture-lat4.js','offline-lemmas.js','vocabulary-generator.js','unified-backup.js']){
+  vm.runInContext(fs.readFileSync(path.join(__dirname,'..',filename),'utf8'),context,{filename});
+ }
  return {api:win.ExaminaUnifiedBackup,values,storage:localStorage,fail:key=>{failAt=key}};
 }
 const bundle=(entries,extra={})=>({schema,version:1,created:'2026-11-13T00:00:00Z',
@@ -96,6 +99,33 @@ const bundle=(entries,extra={})=>({schema,version:1,created:'2026-11-13T00:00:00
  ];
  for(const value of malformed)assert.throws(()=>bad.api.prepareImport(value));
  assert.equal(bad.values.size,0,'La validación no debe tocar el almacenamiento');
+}
+{
+ const key='examina_vocabulary_project_v1';
+ const valid={count:1,course:'lat1',units:[{title:'UD1',text:'Rosa.',mode:'complete',rows:[]}]};
+ const state=create({[key]:valid});
+ for(const unit of [null,{...valid.units[0],rows:[null]},{...valid.units[0],decisions:{lat1:[null]}}]){
+  assert.throws(()=>state.api.applyImport(bundle({[key]:{...valid,units:[unit]}})),/Proyecto de vocabulario/);
+ }
+ assert.deepEqual(JSON.parse(state.storage.getItem(key)),valid);
+ const culture={course:'latin4',units:['UD1'],type:'mc',question:'Pregunta',answer:'D',options:['Una','Dos']};
+ assert.throws(()=>state.api.applyImport(bundle({examina_extra:{culture:[culture]}})),/la letra/);
+ assert.equal(state.storage.getItem('examina_extra'),null);
+}
+{
+ const scores='examina_question_points_v1',auto='examina_question_points_auto_v1';
+ const passive='examina_exam_passive_choices_v1',format='examina_exam_visual_format_v1';
+ const original={ [scores]:{existing:100,incoming:200},[auto]:['existing','incoming'],
+  [passive]:{choice:{mode:'separate'}},[format]:{questionBeforePt:16} };
+ const backup=create(original).api.makeBackup();
+ const fresh=create();
+ fresh.api.applyImport(backup);
+ for(const key of Object.keys(original))assert.deepEqual(JSON.parse(fresh.storage.getItem(key)),original[key]);
+ const local=create({[scores]:{existing:100,local:300},[auto]:['local']});
+ local.api.applyImport(backup);
+ local.api.applyImport(backup);
+ assert.deepEqual(JSON.parse(local.storage.getItem(auto)),['local','incoming'],
+  'Una puntuación ya existente conserva su origen manual');
 }
 {
  const state=create({'examina-morph-review-v1':{a:{decision:'excluir'}}});

@@ -23,6 +23,7 @@ Hay desajustes entre ambas instantáneas: no se encuentra correspondencia exacta
 - Se procesan todas las palabras del texto, sin inventar análisis fuera de los recursos locales. No se segmentan enclíticos ni se resuelven automáticamente elisiones y expresiones de varias palabras.
 - Se deduplican entradas dentro de cada unidad, con orden alfabético normalizado. Una palabra reaparece en todas las unidades que la contienen.
 - Si el título identifica una UD (por ejemplo, «UD4» o «UD4 · Lecturas»), se prioriza su ficha docente. Una ficha de esa UD prevalece sobre una ficha de un bloque que la contiene. El banco de la asignatura sirve de respaldo para las palabras restantes.
+- En Latín I y Latín 4.º ESO, «Completar vocabulario con Collatinus» consulta con conexión las formas pendientes de las unidades activas. Aplica el mismo criterio contextual que el glosario del examen y conserva las lecturas ambiguas para revisión.
 - Los pendientes aparecen con asterisco; el Word los reúne bajo «Pendientes de revisión». Se puede seleccionar un candidato o editar enunciado y traducción manualmente.
 - Reanalizar sustituye los resultados y correcciones de esa unidad. Cambiar el banco invalida resultados de todas las unidades; editar un texto invalida los de esa unidad.
 - El modo completo conserva el enunciado disponible. No añade perfecto, supino ni conjugación ausentes. El simple abrevia únicamente verbos latinos con etiqueta explícita de conjugación o irregularidad; el griego conserva su enunciado.
@@ -36,4 +37,4 @@ Pruebas: `npm run vocabulary:test` (motor y navegador), `npm run offline:test`, 
 
 
 ## Enriquecimiento de lematización (PR de mejora)
-El índice puede ampliarse durante la compilación con las formas de Collatinus 11 (latín) y Eulexis (griego), filtradas por los lemas docentes. Para reproducir la actualización, ejecutar `node scripts/build-lemma-index.mjs` y `node scripts/enrich-from-readers.mjs`, con conexión de red únicamente durante la compilación. En la web publicada se usa el índice ya generado: no se consulta ningún servidor al analizar las palabras. Las fuentes quedan registradas por fila y no se confunden con validación docente. Véase `docs/lematizacion-lectores.md`.
+El índice puede ampliarse durante la compilación con las formas de Collatinus 11 (latín) y Eulexis (griego), filtradas por los lemas docentes. Para reproducir la actualización, ejecutar `node scripts/build-lemma-index.mjs` y `node scripts/enrich-from-readers.mjs`, con conexión de red únicamente durante la compilación. El análisis ordinario usa el índice ya generado y funciona sin conexión. Las fuentes quedan registradas por fila y no se confunden con validación docente. Véase `docs/lematizacion-lectores.md`.
