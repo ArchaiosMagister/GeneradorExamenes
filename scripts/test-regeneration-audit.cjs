@@ -143,6 +143,49 @@ async function run(page,filename){
   results.greekCategories=greekMorphologyReplacementPool('forms')
    .filter(row=>examGreekWordClass(row)!=='verbs')
    .slice(0,4).map(row=>[row.prompt,row.category,row.answer]);
+  select('greek1','complete','UD7');
+  $('quota-verbs').value='2';
+  $('quota-verbs').dispatchEvent(new Event('change',{bubbles:true}));
+  const quotaIds=forms().map(node=>node.dataset.corpusId);
+  const quotaDraft=JSON.parse(JSON.stringify(window.ExaminaUnifiedCurrentExam()));
+  $('quota-verbs').value='0';
+  $('quota-verbs').dispatchEvent(new Event('change',{bubbles:true}));
+  window.ExaminaUnifiedRestoreDraft(quotaDraft);
+  results.quotaDraft=quotaIds.length===2&&$('quota-verbs').value==='2'&&
+   JSON.stringify(greekExamState?.ids.forms)===JSON.stringify(quotaIds);
+  $('quota-verbs').value='0';
+  $('quota-verbs').dispatchEvent(new Event('change',{bubbles:true}));
+
+  select('latin1','tablas','UD7');
+  const tableIds=new Map(['decl','verb'].map(kind=>[kind,
+   examSelectionCache.get(examCacheSignature(kind)).map(item=>item.x.entry)]));
+  const tableDraft=JSON.parse(JSON.stringify(window.ExaminaUnifiedCurrentExam()));
+  // Los borradores anteriores carecen de identidad explícita en la cabecera.
+  tableDraft.html=tableDraft.html.replace(/ data-latin-entry="[^"]*"/g,'');
+  $('count-decl').value='1';
+  $('count-verb').value='1';
+  examSelectionCache.clear();
+  window.ExaminaUnifiedRestoreDraft(tableDraft);
+  for(const [kind,expected] of tableIds){
+   const rows=examSelectionCache.get(examCacheSignature(kind));
+   const first=examRegenerationSlot(exercise(),kind,0),second=examRegenerationSlot(exercise(),kind,1);
+   const aligned=expected.length===2&&JSON.stringify(rows?.map(item=>item.x.entry))===JSON.stringify(expected);
+   regenerateExamWord(kind,0);
+   results[kind+'Draft']=aligned&&examRegenerationSlot(exercise(),kind,0)!==first&&
+    examRegenerationSlot(exercise(),kind,1)===second&&
+    examSelectionCache.get(examCacheSignature(kind))?.[1]?.x.entry===expected[1];
+  }
+  select('latin1','tablas','UD9–10');
+  $('lex-parity').value='even';
+  $('lex-parity').dispatchEvent(new Event('change',{bubbles:true}));
+  const filteredDraft=JSON.parse(JSON.stringify(window.ExaminaUnifiedCurrentExam()));
+  $('lex-parity').value='odd';
+  $('lex-parity').dispatchEvent(new Event('change',{bubbles:true}));
+  window.ExaminaUnifiedRestoreDraft(filteredDraft);
+  regenerateLatinLexWord('latinisms',0);
+  const latinisms=examSelectionCache.get(examCacheSignature('lex-latinisms'));
+  results.lexFilterDraft=$('lex-parity').value==='even'&&latinisms?.length===4&&
+   latinisms.every(row=>Number(row.number)%2===0);
   return results;
  });
 }
@@ -161,7 +204,7 @@ async function run(page,filename){
     assert.deepEqual(results,{
      answer:true,edited:true,draft:true,draftRegeneration:true,missingSlot:true,whole:true,
      greekDraft:true,greekRegeneration:true,latinDraft:true,latinRegeneration:true,greekCategories:[],
-     greekMorphDraft:true,syntagmEditor:true,greekMorphRegeneration:true
+     greekMorphDraft:true,syntagmEditor:true,greekMorphRegeneration:true,quotaDraft:true,declDraft:true,verbDraft:true,lexFilterDraft:true
     },filename);
     assert.deepEqual(errors,[],filename);
    }finally{await page.close()}
