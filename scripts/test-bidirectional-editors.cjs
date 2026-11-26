@@ -128,6 +128,48 @@ async function checkLex(page,course='latin1'){
  }
  return checked;
 }
+async function checkLatinManualEnunciations(page,course){
+ await configure(page,course,course==='latin4'?'tablas':'morf','UD7');
+ for(const kind of course==='latin4'?['forms']:['verb','forms']){
+  const panel=page.locator('#examQuestionMenus [data-question="'+kind+'"]');
+  await panel.evaluate(el=>el.open=true);
+  const input=panel.locator('.question-editor input[data-exam-editor-link]').first();
+  const id=await input.getAttribute('data-exam-editor-link');
+  const target=page.locator('#paper [data-exam-editor-link="'+id+'"]');
+  const candidate=await page.evaluate(({id,kind})=>{
+   const target=document.querySelector('#paper [data-exam-editor-link="'+id+'"]');
+   const chosen=selectedUnits(),verbs=latinMorphologyVerbPool(chosen).map(x=>({...x,category:'verbs'}));
+   const pool=kind==='verb'?verbs:latinExamFormCandidates(chosen,true).flat().concat(verbs);
+   const key=form=>mNormalize(form).toLowerCase().replace(/\s+/g,' ');
+   const byForm=new Map();
+   for(const item of pool){
+    const form=latinExamSurface(item.form,item.entry);
+    const html=latinMorphologyEnunciationHtml(item,chosen);
+    if(!byForm.has(key(form)))byForm.set(key(form),{form,html:new Set()});
+    byForm.get(key(form)).html.add(html);
+   }
+   const selected=[...byForm.values()].find(x=>x.html.size===1&&[...x.html][0]&&
+    key(x.form)!==key(target.textContent)&&!target.parentElement.textContent.includes(x.form));
+   if(!selected)throw Error('Sin candidato inequívoco '+kind);
+   const div=document.createElement('div');div.innerHTML=[...selected.html][0];
+   return {form:selected.form,expected:div.textContent};
+  },{id,kind});
+  await input.fill(candidate.form);
+  assert.equal(await target.textContent(),candidate.form,course+'/'+kind+': forma manual');
+  const lemma=target.locator('xpath=following-sibling::*[1]');
+  assert.equal(await lemma.textContent(),candidate.expected,course+'/'+kind+': enunciado manual');
+  await input.fill('forma_desconocida_123');
+  assert.equal(await lemma.textContent(),'',course+'/'+kind+': lema obsoleto');
+  await target.evaluate((node,value)=>{
+   node.textContent=value;
+   node.dispatchEvent(new InputEvent('input',{bubbles:true}));
+  },candidate.form);
+  assert.equal(await input.inputValue(),candidate.form);
+  assert.equal(await lemma.textContent(),candidate.expected,course+'/'+kind+': enunciado desde vista previa');
+  if(kind==='forms')assert((await target.evaluate(node=>node.parentElement.textContent)).includes(':'),
+   course+': edición eliminó los dos puntos');
+ }
+}
 async function checkFile(browser,filename){
  const context=await browser.newContext({viewport:{width:1400,height:960},acceptDownloads:true});
  const page=await context.newPage(),errors=[];
@@ -152,6 +194,8 @@ async function checkFile(browser,filename){
   }
  }
  assert(checked>=18,filename+': cobertura insuficiente de editores: '+checked);
+ await checkLatinManualEnunciations(page,'latin1');
+ await checkLatinManualEnunciations(page,'latin4');
  // Las tablas de pronombres usan diez filas cuando hay repertorio suficiente.
  await configure(page,'latin1','morf','UD7');
  const latinPronouns=await page.locator('#paper .exam-pronouns tbody tr').count();
@@ -160,7 +204,7 @@ async function checkFile(browser,filename){
  const greekPronouns=await page.locator('#paper .exam-pronouns tbody tr').count();
  assert.equal(greekPronouns,10,filename+': Griego I morfología no presenta diez pronombres');
  // En el examen completo el enunciado se imprime después de la palabra,
- // pero el control de menú enlaza SOLAMENTE con la forma, nunca con el lema.
+ // y el editor recalcula la entrada léxica sin incluirla en el campo de forma.
  await configure(page,'greek1','complete','UD12');
  const greekFull=await page.evaluate(()=>{
   examQuestionChoiceState['greek1/complete/pronouns']=true;
@@ -179,7 +223,7 @@ async function checkFile(browser,filename){
   greekFull.targets===greekFull.totalForms,
   filename+': enunciados griegos ausentes o forma editable sin destino único: '+JSON.stringify(greekFull));
  const formRow=page.locator('#paper .exam-form:has(.exam-form-enunciation)').first();
- const lemmaBefore=await formRow.locator('.exam-form-enunciation').textContent();
+ assert((await formRow.locator('.exam-form-enunciation').textContent()).trim());
  const formSurface=formRow.locator('[data-greek-form-surface]');
  const formLink=await formSurface.getAttribute('data-exam-editor-link');
  assert(formLink,filename+': la forma griega no está enlazada con el menú');
@@ -188,16 +232,16 @@ async function checkFile(browser,filename){
  await formInput.fill('δοκιμαστική_μορφή');
  assert.equal(await formSurface.textContent(),'δοκιμαστική_μορφή',
   filename+': editar campo griego no cambia la forma');
- assert.equal(await formRow.locator('.exam-form-enunciation').textContent(),lemmaBefore,
-  filename+': editar forma griega modifica también su enunciado');
+ assert.equal(await formRow.locator('.exam-form-enunciation').textContent(),'',
+  filename+': la forma griega desconocida conserva un lema obsoleto');
  await formSurface.evaluate(node=>{
   node.textContent='ἄλλη_μορφή';
   node.dispatchEvent(new InputEvent('input',{bubbles:true}));
  });
  assert.equal(await formInput.inputValue(),'ἄλλη_μορφή',
   filename+': editar la forma griega en Word/HTML no actualiza el campo');
- assert.equal(await formRow.locator('.exam-form-enunciation').textContent(),lemmaBefore,
-  filename+': el enunciado cambió al editar desde la vista previa');
+ assert.equal(await formRow.locator('.exam-form-enunciation').textContent(),'',
+  filename+': la edición desconocida desde vista conserva un lema obsoleto');
  // Latín I: vocabulario léxico y sus cuatro campos bidireccionales.
  await configure(page,'latin1','tablas','UD9–10');
  const checkedLex=await checkLex(page);
