@@ -57,8 +57,13 @@ for(const [id,record] of Object.entries(series)){
 assert.equal(count,64,'Las seis notaciones opcionales aportan doce formas escritas verificables');
 for(const variant of ['ἔλυον','ἦλθον'])
  assert(html.includes(variant),'Falta el sincretismo académico '+variant);
-const calls=(html.match(/greekVerbAnalysisCandidates\(eligible\)/g)||[]).length;
-assert.equal(calls,3,'La función debe usarse en inicialización, regeneración y declaración');
+const generation=html.slice(end,html.indexOf('let greekExamState',end));
+assert.match(generation,/greekMorphologyReplacementPool\('verb',limit,eligible\)/,
+ 'El sorteo inicial debe consultar el mismo banco de sustituciones verbales');
+const pool=html.slice(html.indexOf('function greekMorphologyReplacementPool('),
+ html.indexOf('function regenerateLatinMorphologyVerb('));
+assert.match(pool,/if\(kind==='verb'\)return greekVerbAnalysisCandidates\(eligible\)/,
+ 'El banco compartido debe conservar las lecturas verbales sincréticas');
 assert(!html.includes("syncretic:x.verbTense==='aoristo segundo'"),
  'No mantener el viejo filtro que excluía ἦλθον sin explicar sus lecturas');
 console.log('Griego I: '+count+' formas individuales no duplicadas en 10 series, '+

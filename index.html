@@ -4822,6 +4822,10 @@ function restoreDraft(d){
  if(Number.isInteger(d.sentenceCount)&&d.sentenceCount>=1&&d.sentenceCount<=15)
   $('count-sent').value=String(d.sentenceCount);
  $('paper').innerHTML=cleanDraftHtml(d.html);
+ if(d.course!=='greek1'){
+  restoreLatinLexSelection();
+  restoreLatinAnalysisSelection();
+ }
  if(d.course==='latin1'&&targetModel==='morf'){
   const saved=d.latinThirdDeclension;
   latinThirdDeclensionSettings={...latinThirdDeclensionDefaults,
@@ -4848,7 +4852,8 @@ function restoreDraft(d){
  $('paper').setAttribute('contenteditable','true');$('paper').setAttribute('spellcheck','false');
  // Los WeakMap de edición no sobreviven a innerHTML: regenerar enlaces
  // de edición, pero no las preguntas ni sus valores.
- refreshManualMorphWords(true);
+ if(d.course==='greek1'&&targetModel==='complete'&&restoreGreekCompleteSelection())greekExamControls();
+ else refreshManualMorphWords(true);
  window.ExaminaGreekChoiceGroups?.restore?.(d);
  if(d.scores){
   // Los borradores anteriores mantienen intactos los puntos editados aunque
@@ -5792,19 +5797,11 @@ function generateGreekMorphologyFixed(){
  const marked=greekMarkedUnits(),limit=greekLimit(),cfg=morphConfig(),va=$('lang').value==='va';
  if(examMorphQuotasActive())cfg.words=examMorphQuotaCount();
  const t=(es,vl)=>va?vl:es;
- const eligible=greekVerifiedCorpus.filter(x=>x.verified&&greekMorphologyEligible(x,limit)&&
-  !(x.kind==='declension'&&(x.lemmas||[]).some(isProperNounLemma))&&
-  !(x.kind==='forms'&&(x.lemmas||[]).some(lemma=>isExcludedExamMorphLemma(lemma))));
- const verbs=stickyExamRows('verb',()=>greekCurricularSample(greekVerbAnalysisCandidates(eligible),cfg.verbs));
- const pronPool=examQuestionEnabled('pronouns')?eligible.filter(x=>x.kind==='pronouns'):[];
+ const eligible=greekMorphologyCorpus(limit);
+ const verbs=stickyExamRows('verb',()=>greekCurricularSample(greekMorphologyReplacementPool('verb',limit,eligible),cfg.verbs));
+ const pronPool=examQuestionEnabled('pronouns')?greekMorphologyReplacementPool('pronouns',limit,eligible):[];
  const pronouns=stickyExamRows('pronouns',()=>sample(pronPool,Math.min(10,pronPool.length)));
- const categories={n:$('morphCategory-n')?.checked!==false,adj:$('morphCategory-adj')?.checked!==false,pro:$('morphCategory-pro')?.checked!==false};
- const words=stickyExamRows('forms',()=>examQuotaGreek(eligible.concat(examAuthorizedProposals('greek1',limit)).concat(examGreekVerbFormCandidates(eligible,limit)).filter(x=>x.kind==='forms'&&!x.prompt.includes(' ')&&(
-  ((x.category==='pronouns'||/pronombre|demostrativo|anafórico|personal|interrogativo/i.test(x.answer))&&categories.pro)||
-  ((x.category==='adjectives'||/adjetivo/i.test(x.answer))&&categories.adj)||
-  ((x.category==='nouns'||/declinación|sustantivo|artículo/i.test(x.answer))&&categories.n)||
-  (x.category==='verbs'||/verbo|persona|indicativo|deponente|infinitivo|participio|aoristo|imperativo|voz media/i.test(x.answer))
-  )),cfg.words));
+ const words=stickyExamRows('forms',()=>examQuotaGreek(greekMorphologyReplacementPool('forms',limit,eligible),cfg.words));
  const question=(kind,n,txt)=>'<p class="exam-question" data-morph-kind="'+kind+'"><span class="exam-q-number">'+n+'.</span> '+esc(txt)+'</p>';
  let n=0;
  const first=examQuestionEnabled('decl')?question('decl',++n,morphSyntagmHeading(cfg,va)+' (1 p.).')+morphSyntagmRows(cfg,true):'';
@@ -5844,8 +5841,40 @@ function greekChoicePool(kind){
   (kind!=='forms'||(!x.prompt.includes(' ')&&!(x.lemmas||[]).some(lemma=>isExcludedExamMorphLemma(lemma)))));
  return kind==='forms'?curated.concat(examAuthorizedProposals('greek1',greekLimit()).filter(x=>x.kind==='forms'&&!x.prompt.includes(' '))).concat(examMorphQuotaValues()[2]>0?examGreekVerbFormCandidates(greekVerifiedCorpus,greekLimit()):[]):curated;
 }
+function greekCompleteCounts(){
+ return {declension:Math.min(2,countFor('decl')),conjugation:Math.min(4,countFor('verb')),
+  forms:examMorphQuotasActive()?examMorphQuotaCount():countFor('greek-forms'),pronouns:10,
+  etymology:countFor('lex'),sentences:countFor('sent')};
+}
+function greekSelectionSignature(chosen,counts){
+ return JSON.stringify([chosen.map(examUnitNumber),$('model').value,counts,examMorphQuotaValues()]);
+}
+function restoreGreekCompleteSelection(){
+ const sheet=$('paper').querySelector('.exam-sheet');
+ const selectors={declension:'table.exam-nouns',conjugation:'.exam-verbs thead th',
+  forms:'.exam-form',pronouns:'.exam-pronouns tbody tr',etymology:'.exam-etymology > span'};
+ const ids={sentences:[]},adjectiveChoices={};
+ for(const [kind,selector] of Object.entries(selectors)){
+  const eligible=new Map(greekChoicePool(kind).map(item=>[item.id,item]));
+  const nodes=[...sheet?.querySelectorAll(selector)||[]].filter(node=>!node.closest('#answerkey'));
+  ids[kind]=[...new Set(nodes.map(node=>node.dataset.corpusId).filter(id=>eligible.has(id)))];
+  if(kind==='declension'&&greekLimit()>=5&&ids[kind].length){
+   const modifiers=greekAvailableSyntagmModifiers(greekLimit());
+   for(const node of nodes){
+    const id=node.dataset.corpusId,noun=eligible.get(id);
+    if(!noun)continue;
+    const title=node.querySelector('thead th[colspan] > i')?.textContent.trim();
+    const modifier=modifiers.find(item=>greekCompleteNominalGroup(noun,false,item,modifiers)?.enunciation===title);
+    if(modifier)adjectiveChoices[id]=modifier.lemma;
+   }
+  }
+ }
+ const restored=Object.values(ids).some(group=>group.length);
+ greekExamState=restored?{signature:greekSelectionSignature(greekMarkedUnits(),greekCompleteCounts()),ids,adjectiveChoices}:null;
+ return restored;
+}
 function greekSelectedItems(pool,chosen,counts){
- const signature=JSON.stringify([chosen.map(examUnitNumber),$('model').value,counts,examMorphQuotaValues()]);
+ const signature=greekSelectionSignature(chosen,counts);
  if(!greekExamState||greekExamState.signature!==signature){
   const initial=greekSelect(pool,chosen.map(examUnitNumber),counts),ids={};
   for(const kind of greekKinds)ids[kind]=initial.items.filter(x=>x.kind===kind).map(x=>x.id);
@@ -6055,7 +6084,7 @@ function generateGreekExam(){
   (x.kind!=='forms'||(!x.prompt.includes(' ')&&!(x.lemmas||[]).some(lemma=>isExcludedExamMorphLemma(lemma)))))
   .concat(enabled.includes('forms')?examAuthorizedProposals('greek1',max).filter(x=>x.kind==='forms'&&!x.prompt.includes(' ')):[])
   .concat(enabled.includes('forms')&&examMorphQuotaValues()[2]>0?examGreekVerbFormCandidates(greekVerifiedCorpus,max):[]);
- const counts={declension:Math.min(2,countFor('decl')),conjugation:Math.min(4,countFor('verb')),forms:examMorphQuotasActive()?examMorphQuotaCount():countFor('greek-forms'),pronouns:10,etymology:countFor('lex'),sentences:countFor('sent')};
+ const counts=greekCompleteCounts();
  const result=greekSelectedItems(pool,chosen,counts),sections=[],answers=[];
 
  let total=0,index=0;
@@ -6552,6 +6581,7 @@ async function loadTeacherLatinLexBanks(){
   syncExamModelControls();
   document.dispatchEvent(new Event('examina-lex-ready'));
   if(safePreview||!$('paper').innerHTML.trim())generate();
+  else if(currentCourse()!=='greek1')restoreLatinLexSelection();
  }
 }
 
@@ -6798,14 +6828,15 @@ function examRegenerationSlot(sheet,kind,index){
  }
  return null;
 }
+function replaceExamAnswer(previous,updated,selector,index){
+ const oldEntry=previous?.querySelectorAll(selector)[index];
+ const newEntry=updated?.querySelectorAll(selector)[index];
+ if(oldEntry&&newEntry)oldEntry.replaceWith(newEntry.cloneNode(true));
+}
 function renderOnlyRegeneratedExamWord(kind,index,render){
  const paper=$('paper'),original=paper.querySelector('.exam-sheet');
  const previous=examRegenerationSlot(original,kind,index);
- if(!original||!previous){
-  // No reconstruir todo el examen si falta una sola casilla de Griego.
-  if(currentCourse()==='greek1')return false;
-  render();return false;
- }
+ if(!previous)return false;
  const oldKey=original.querySelector('#answerkey');
  render();
  const fresh=paper.querySelector('.exam-sheet');
@@ -6850,13 +6881,24 @@ function renderOnlyRegeneratedExamWord(kind,index,render){
    const oldAnswer=oldPart?.children[index],newAnswer=newPart?.children[index];
    if(oldAnswer&&newAnswer)oldAnswer.replaceWith(newAnswer.cloneNode(true));
   }else{
-   const key=newKey.cloneNode(true);
-   const thirdDeclension=oldKey.querySelector('[data-third-declension-key]');
-   if(thirdDeclension)key.querySelector('[data-third-declension-key]')?.replaceWith(thirdDeclension);
-   if(oldKey.classList.contains('show'))key.classList.add('show');
-   const warning=oldKey.querySelector('[data-manual-warning]');
-   if(warning&&!key.querySelector('[data-manual-warning]'))key.prepend(warning.cloneNode(true));
-   oldKey.replaceWith(key);
+   const answerScope=':scope > ol > li';
+   const morph=$('model').value==='morf';
+   const selector=answerScope+'[data-'+(morph?'morph':'exam')+'-kind="'+kind+'"]';
+   const oldPart=oldKey.querySelector(selector),newPart=newKey.querySelector(selector);
+   if(kind==='forms'){
+    const entries=morph?':scope > p':':scope > ol > li';
+    replaceExamAnswer(oldPart,newPart,entries,index);
+   }else if(kind==='decl'&&!morph){
+    replaceExamAnswer(oldPart,newPart,':scope > .exam-nouns',index);
+   }else if(kind==='verb'&&!morph){
+    // Una conjugación ocupa una cabecera y dos celdas por persona.
+    replaceExamAnswer(oldPart,newPart,'.exam-verbs thead tr:first-child th[colspan]',index);
+    const oldRows=oldPart?.querySelectorAll('.exam-verbs tbody tr')||[];
+    Array.from(oldRows).forEach((row,position)=>{
+     const newRow=newPart?.querySelectorAll('.exam-verbs tbody tr')[position];
+     for(let col=index*2;col<index*2+2;col++)replaceExamAnswer(row,newRow,':scope > td',col);
+    });
+   }
   }
  }
  paper.replaceChildren(original);
@@ -6870,23 +6912,25 @@ function renderOnlyRegeneratedExamWord(kind,index,render){
 // Regeneración de una sola palabra, sin descartar las otras del apartado.
 // Mantiene las restricciones de la unidad y las lecturas verificadas del banco.
 // Regeneración griega: mismos filtros curriculares y autorizaciones que el sorteo inicial.
-function greekMorphologyReplacementPool(kind){
- const limit=greekLimit();
- const eligible=greekVerifiedCorpus.filter(x=>x.verified&&greekMorphologyEligible(x,limit)&&
+function greekMorphologyCorpus(limit){
+ return greekVerifiedCorpus.filter(x=>x.verified&&greekMorphologyEligible(x,limit)&&
   !(x.kind==='declension'&&(x.lemmas||[]).some(isProperNounLemma))&&
   !(x.kind==='forms'&&(x.lemmas||[]).some(lemma=>isExcludedExamMorphLemma(lemma))));
+}
+function greekMorphologyReplacementPool(kind,limit=greekLimit(),eligible=greekMorphologyCorpus(limit)){
  if(kind==='pronouns')return eligible.filter(x=>x.kind==='pronouns');
  if(kind==='verb')return greekVerbAnalysisCandidates(eligible);
  if(kind==='forms'){
-  const categories={n:$('morphCategory-n')?.checked!==false,adj:$('morphCategory-adj')?.checked!==false,
-   pro:$('morphCategory-pro')?.checked!==false};
-  return eligible.concat(examAuthorizedProposals('greek1',limit)).concat(examGreekVerbFormCandidates(eligible,limit)).filter(x=>x.kind==='forms'&&
-   !x.prompt.includes(' ')&&(
-    ((x.category==='pronouns'||/pronombre|demostrativo|anafórico|personal|interrogativo/i.test(x.answer))&&categories.pro)||
-    ((x.category==='adjectives'||/adjetivo/i.test(x.answer))&&categories.adj)||
-    ((x.category==='nouns'||/declinación|sustantivo|artículo/i.test(x.answer))&&categories.n)||
-    (x.category==='verbs'||/verbo|persona|indicativo|deponente|infinitivo|participio|aoristo|imperativo|voz media/i.test(x.answer))
-   ));
+  const nouns=$('morphCategory-n')?.checked!==false;
+  const categories={nouns,adjectives:$('morphCategory-adj')?.checked!==false,
+   pronouns:$('morphCategory-pro')?.checked!==false,verbs:true};
+  return eligible.concat(examAuthorizedProposals('greek1',limit),examGreekVerbFormCandidates(eligible,limit))
+   .filter(item=>{
+    if(item.kind!=='forms'||item.prompt.includes(' '))return false;
+    const category=examGreekWordClass(item);
+    // El artículo comparte el control de declinación y no consume cuota nominal.
+    return category?categories[category]:nouns&&/artículo|articulo/i.test(item.answer);
+   });
  }
  return kind==='decl'?greekMorphSyntagmPool():[];
 }
@@ -6940,6 +6984,37 @@ function regenerateLatinMorphologyVerb(index){
  else examSelectionCache.delete(cacheKey);
  refreshManualMorphWords();
 }
+function visibleExamForms(){
+ const surfaces=$('paper').querySelectorAll('[data-analysis-slot] > i:first-of-type,.exam-form [data-greek-form-surface]');
+ return new Set(Array.from(surfaces,node=>normLex(node.textContent)));
+}
+function restoreLatinAnalysisSelection(){
+ const paper=$('paper'),morph=$('model').value==='morf';
+ const slots=[...paper.querySelectorAll('[data-analysis-slot] > i:first-of-type')];
+ const key=examCacheSignature('forms');
+ if(!slots.length||slots.length>30){examSelectionCache.delete(key);return}
+ if(!examMorphQuotasActive())$(morph?'morphWords':'count-forms').value=String(slots.length);
+ const answerSelector=morph?'li[data-morph-kind="forms"] > p':'li[data-exam-kind="forms"] > ol > li';
+ const answers=[...paper.querySelectorAll('#answerkey '+answerSelector)].map(node=>node.textContent);
+ const pool=latinExamFormCandidates(selectedUnits(),true).flat();
+ const exact=new Map();
+ const gloss=window.ExaminaValencianGloss;
+ for(const item of pool){
+  const solution=item.form+' — '+item.answer;
+  exact.set(solution,item);
+  if($('lang').value==='va'&&gloss?.translateMorphology)exact.set(gloss.translateMorphology(solution),item);
+ }
+ const rows=slots.map((slot,i)=>{
+  const form=slot.textContent.trim(),normalized=normLex(form);
+  const documented=exact.get(answers[i]);
+  if(documented)return documented;
+  const matches=pool.filter(item=>normLex(item.form)===normalized);
+  if(matches.length===1)return matches[0];
+  const categories=new Set(matches.map(item=>item.category));
+  return {form,answer:'',category:categories.size===1?matches[0].category:null};
+ });
+ examSelectionCache.set(examCacheSignature('forms'),rows);
+}
 function regenerateExamWord(kind,index){
  if(!['decl','verb','forms','pronouns','etymology'].includes(kind)||!Number.isInteger(index)||index<0)return;
  const greek=currentCourse()==='greek1',morph=['morf','morphology'].includes($('model').value);
@@ -6954,12 +7029,15 @@ function regenerateExamWord(kind,index){
   const preserveQuota=gkind==='forms'&&examMorphQuotasActive();
   const otherItems=pool.filter(x=>used.has(x.id));
   const identity=item=>gkind==='conjugation'?headLex(item.lemmas[0]):item.prompt;
-  const usedPrompts=new Set(otherItems.map(identity));
+  const identityKey=item=>normLex(identity(item));
+  const visible=gkind==='forms'?visibleExamForms():new Set();
+  const usedPrompts=new Set(otherItems.map(identityKey));
   const candidates=pool.filter(x=>!used.has(x.id)&&x.id!==ids[index]&&
-   (!previous||identity(x)!==identity(previous))&&
+   (!previous||identityKey(x)!==identityKey(previous))&&
    (!preserveQuota||examGreekWordClass(x)===examGreekWordClass(previous)));
-  const distinct=candidates.filter(x=>!usedPrompts.has(identity(x)));
-  const eligible=distinct.length?distinct:candidates;
+  const distinct=candidates.filter(x=>!usedPrompts.has(identityKey(x)));
+  const eligible=gkind==='forms'?distinct.filter(x=>!visible.has(identityKey(x))):
+   distinct.length?distinct:candidates;
   const alternatives=gkind==='forms'?
    greekAdjectiveReplacementChoices(previous,otherItems,eligible):eligible;
   // Regeneración individual sin sesgo a la última UD: todo el repertorio
@@ -7001,45 +7079,22 @@ function regenerateExamWord(kind,index){
  }
  const cacheKey=examCacheSignature(kind),current=examSelectionCache.get(cacheKey);
  if(!Array.isArray(current)||index>=current.length)return;
- const chosen=selectedUnits(),limit=greek?greekLimit():Math.max(0,...chosen.map(examUnitNumber).filter(Number.isInteger));
- let candidates=[];
- if(kind==='decl'){
-  if(greek&&morph)candidates=greekMorphologyReplacementPool('decl');
-  else if(greek){
-   const adjectives=greekAvailableSyntagmModifiers(limit);
-   const nouns=greekVerifiedCorpus.filter(x=>x.verified&&x.kind==='declension'&&
-    x.minUnit<=limit&&greekSyntagmNounGenders[x.id.slice(2)]&&
-    !(x.lemmas||[]).some(isProperNounLemma));
-   candidates=nouns.flatMap(noun=>adjectives.map(adj=>greekCompleteNominalGroup(noun,true,adj))).filter(Boolean);
-  }else if(morph)candidates=latinMorphSyntagmPool(chosen);
-  else candidates=latinCompleteDeclensionItems(chosen);
- }else if(kind==='verb'){
-  if(greek&&morph)candidates=greekMorphologyReplacementPool('verb');
-  else if(greek){
-   candidates=greekVerifiedCorpus.filter(x=>x.verified&&x.kind==='conjugation'&&
-    greekMorphologyEligible(x,limit)&&x.table).flatMap(x=>x.table.rows.flatMap((row,i)=>
-    [row[1],row[2]].map((form,j)=>({
-     prompt:form,answer:(i+1)+'ª persona '+(j===0?'singular':'plural')+' del presente de indicativo activo',
-     lemma:x.lemmas[0],person:(i+1)+'ª '+(j===0?'singular':'plural')
-    })).filter(item=>item.prompt)));
-  }else candidates=latin4ConjugationPool(chosen);
- }else if(kind==='forms'){
-  if(greek&&morph)candidates=greekMorphologyReplacementPool('forms');
-  else if(greek)candidates=greekVerifiedCorpus.filter(x=>x.verified&&x.kind==='forms'&&
-   greekMorphologyEligible(x,limit)&&!x.prompt.includes(' ')&&
-   !(x.lemmas||[]).some(lemma=>isExcludedExamMorphLemma(lemma)));
-  else candidates=latinExamFormCandidates(chosen,true).flat();
- }else if(kind==='pronouns'&&greek&&morph){
-  candidates=greekMorphologyReplacementPool('pronouns');
- }
+ const chosen=selectedUnits();
+ const latinPools={
+  decl:()=>morph?latinMorphSyntagmPool(chosen):latinCompleteDeclensionItems(chosen),
+  verb:()=>latin4ConjugationPool(chosen),
+  forms:()=>latinExamFormCandidates(chosen,true).flat()
+ };
+ const candidates=greek?greekMorphologyReplacementPool(kind):latinPools[kind]();
  const identity=item=>kind==='forms'||(greek&&morph&&kind==='verb')?
   normLex(item?.prompt||item?.form||''):
   String(item?.id||item?.title||item?.x?.entry||item?.prompt||item?.form||'');
  const previous=current[index],used=new Set(current.filter((_,i)=>i!==index).map(identity));
  const visibleTitle=morph&&kind==='decl'?
   examRegenerationSlot($('paper').querySelector('.exam-sheet'),kind,index)?.querySelector('i')?.textContent.trim():null;
+ const visible=kind==='forms'?visibleExamForms():new Set();
  let alternatives=candidates.filter(item=>identity(item)!==identity(previous)&&
-  identity(item)!==visibleTitle&&!used.has(identity(item)));
+  identity(item)!==visibleTitle&&!used.has(identity(item))&&!visible.has(identity(item)));
  if(kind==='forms'&&examMorphQuotasActive()){
   const category=greek?examGreekWordClass:item=>item.category;
   alternatives=alternatives.filter(x=>category(x)===category(previous));
@@ -7305,7 +7360,7 @@ function latinLexPool(course,kind,chosen){
 function latinLexExpectedCount(kind){return kind==='preverbs'?2:4}
 function latinLexLower(value){return String(value||'').toLocaleLowerCase('es')}
 function latinLexDisplayPrompt(kind,row){return latinLexLower(kind==='prefixes'&&$('lang').value==='va'&&row.prompt_va?row.prompt_va:row.prompt)}
-function latinLexTermKey(x){return normLex(latinLexLower(x.prompt))}
+function latinLexTermKey(row,kind){return normLex(latinLexDisplayPrompt(kind,row))}
 function latinLexPriorities(course,kind,chosen){
  const unit=examFocusUnit(chosen),at=program=>program?.units.find(row=>row.unit===unit);
  if(kind==='phonetics'){
@@ -7326,7 +7381,7 @@ function latinLexPriorities(course,kind,chosen){
 function latinLexRandomFour(kind,pool,course=currentCourse(),recentKeys=[],priorities=[]){
  const unique=[],seen=new Set();
  for(const x of sample(pool,pool.length)){
-  const key=latinLexTermKey(x);
+  const key=latinLexTermKey(x,kind);
   if(!key||seen.has(key))continue;
   seen.add(key);unique.push(x);
  }
@@ -7335,7 +7390,7 @@ function latinLexRandomFour(kind,pool,course=currentCourse(),recentKeys=[],prior
  if(kind!=='phonetics')return latinPrioritySample(unique,4,priorities);
  // Si el repertorio lo permite, no se repiten las últimas cuatro tandas.
  const recent=new Set(recentKeys);
- const fresh=unique.filter(x=>!recent.has(latinLexTermKey(x)));
+ const fresh=unique.filter(x=>!recent.has(latinLexTermKey(x,kind)));
  const remaining=fresh.length>=4?fresh:unique;
  const priority=latinPrioritySample(remaining,1,priorities,item=>item,false);
  const picked=priority.slice(),covered=new Set(priority.flatMap(row=>row.normas||[]));
@@ -7363,18 +7418,18 @@ function latinLexManualVerb(i,available){
  const hit=hits.length===1?hits[0]:null;
  return hit?{...hit,prompt:latinLexLower(value)}:{prompt:latinLexLower(value),answer:'',reviewRequired:true};
 }
+function rememberLatinPhoneticSelection(key,history,rows){
+ phoneticRecentSelections.set(key,[...history,rows.map(row=>latinLexTermKey(row,'phonetics'))].slice(-4));
+ if(phoneticRecentSelections.size>32)
+  phoneticRecentSelections.delete(phoneticRecentSelections.keys().next().value);
+}
 function latinLexChosenRows(course,kind,chosen){
  const rows=stickyExamRows('lex-'+kind,()=>{
   const key=kind==='phonetics'?examCacheSignature('lex-phonetics'):null;
   const history=key?(phoneticRecentSelections.get(key)||[]):[];
   const selected=latinLexRandomFour(kind,latinLexPool(course,kind,chosen),course,
    history.flat(),latinLexPriorities(course,kind,chosen));
-  if(key&&selected.length===4){
-   phoneticRecentSelections.set(key,[...history,selected.map(latinLexTermKey)].slice(-4));
-   // Limitar memoria si se cambian muchas veces unidades y normas.
-   if(phoneticRecentSelections.size>32)
-    phoneticRecentSelections.delete(phoneticRecentSelections.keys().next().value);
-  }
+  if(key&&selected.length===4)rememberLatinPhoneticSelection(key,history,selected);
   if(kind==='preverbs'&&course==='latin1'){
    const result=selected.slice();
    for(let i=0;i<2;i++){const manual=latinLexManualVerb(i,latinLexPool('latin1','preverbs',chosen));if(manual)result[i]=manual}
@@ -7400,8 +7455,32 @@ function latinLexStatus(kind,rows,message=''){
    input.value=rows[i]?latinLexDisplayPrompt(kind,rows[i]):'';
  }
 }
-// La selección del ejercicio es la fuente de verdad; el editor y la vista previa
-// solo cambian la posición solicitada, sin invalidar otros apartados.
+// El borrador conserva los índices de los estímulos aunque se ordenen al imprimir.
+function restoreLatinLexSelection(){
+ const course=currentCourse(),chosen=selectedUnits();
+ for(const kind of latinLexModules[course]||[]){
+  const key=examCacheSignature('lex-'+kind);
+  const slots=$('paper').querySelectorAll('[data-lex-slot^="'+kind+':"]');
+  const count=latinLexExpectedCount(kind);
+  const entries=new Map(Array.from(slots,slot=>[
+   slot.dataset.lexSlot,slot.querySelector('i')?.textContent.trim()??slot.textContent.trim()
+  ]));
+  const prompts=Array.from({length:count},(_,i)=>entries.get(kind+':'+i));
+  if(entries.size!==count||prompts.includes(undefined)){
+   examSelectionCache.delete(key);
+   latinLexStatus(kind,[]);
+   continue;
+  }
+  const pool=latinLexPool(course,kind,chosen);
+  const rows=prompts.map(prompt=>{
+   const matches=pool.filter(row=>latinLexDisplayPrompt(kind,row)===latinLexLower(prompt));
+   return matches.length===1?matches[0]:{prompt,answer:'',reviewRequired:true};
+  });
+  examSelectionCache.set(key,rows);
+  latinLexStatus(kind,rows);
+ }
+}
+// El editor y la vista previa solo cambian la posición solicitada.
 // Prefijos y latinismos tienen la misma edición individual que fonética:
 // la forma cambia en su posición, sin invalidar el resto del examen.
 function setLatinLexWord(kind,index,value,fromPreview=false){
@@ -7487,39 +7566,54 @@ function regenerateLatinLexPart(kind){
  if(!examSelectedLexParts(course).includes(kind))return false;
  const key=examCacheSignature('lex-'+kind);
  const current=examSelectionCache.get(key);
+ const count=latinLexExpectedCount(kind),identity=row=>latinLexTermKey(row,kind);
+ const visible=new Set(Array.from($('paper').querySelectorAll('[data-lex-slot^="'+kind+':"] i'),
+  node=>normLex(node.textContent)));
+ if(!visible.size)return false;
  const eligible=latinLexPool(course,kind,chosen);
- if(new Set(eligible.map(latinLexTermKey)).size<latinLexExpectedCount(kind)){
-  latinLexStatus(kind,Array.isArray(current)?current:[],'No hay suficientes formas compatibles para regenerar.');
+ if(new Set(eligible.map(identity)).size<count){
+  latinLexStatus(kind,current||[],'No hay suficientes formas compatibles para regenerar.');
   return false;
  }
- const previousInputs=kind==='preverbs'?[0,1].map(i=>$('lex-verb-'+i)?.value||''):[];
- if(kind==='preverbs')for(let i=0;i<2;i++){const input=$('lex-verb-'+i);if(input)input.value=''}
- examSelectionCache.delete(key);
- if(renderOnlyRegeneratedLatinLexPart(kind,generate))return true;
- // Fallo de encaje: restaurar también la selección y los editores originales.
+ const fresh=eligible.filter(row=>!visible.has(identity(row)));
+ if(!fresh.length){
+  latinLexStatus(kind,current||[],'No hay otras formas compatibles.');
+  return false;
+ }
+ const pool=new Set(fresh.map(identity)).size>=count?fresh:eligible;
+ const history=kind==='phonetics'?(phoneticRecentSelections.get(key)||[]):[];
+ const rows=latinLexRandomFour(kind,pool,course,history.flat(),latinLexPriorities(course,kind,chosen));
+ if(rows.every(row=>visible.has(identity(row))))rows[rows.length-1]=sample(fresh,1)[0];
+ examSelectionCache.set(key,rows);
+ if(renderOnlyRegeneratedLatinLexPart(kind,generate)){
+  if(kind==='phonetics')rememberLatinPhoneticSelection(key,history,rows);
+  return true;
+ }
  if(Array.isArray(current))examSelectionCache.set(key,current);
  else examSelectionCache.delete(key);
- if(kind==='preverbs')for(let i=0;i<2;i++){const input=$('lex-verb-'+i);if(input)input.value=previousInputs[i]}
  if(Array.isArray(current))latinLexStatus(kind,current);
  return false;
 }
 function regenerateLatinLexWord(kind,index){
- if(index<0||index>=latinLexExpectedCount(kind))return;
+ if(!Number.isInteger(index)||index<0||index>=latinLexExpectedCount(kind))return;
+ if(!examRegenerationSlot($('paper').querySelector('.exam-sheet'),'lex-'+kind,index))return;
  const course=currentCourse(),chosen=selectedUnits(),oldKey=examCacheSignature('lex-'+kind);
  const previous=examSelectionCache.get(oldKey);
  if(!Array.isArray(previous)||previous.length!==latinLexExpectedCount(kind))return;
- const used=new Set(previous.filter((_,i)=>i!==index).map(latinLexTermKey));
- const candidates=latinLexPool(course,kind,chosen).filter(x=>
-  !used.has(latinLexTermKey(x))&&latinLexTermKey(x)!==latinLexTermKey(previous[index]));
+ const used=new Set(previous.map(row=>latinLexTermKey(row,kind)));
+ const candidates=latinLexPool(course,kind,chosen).filter(row=>!used.has(latinLexTermKey(row,kind)));
  const next=sample(candidates,1)[0];
  if(!next){latinLexStatus(kind,previous,'No hay otra forma compatible.');return}
  const rows=previous.slice();rows[index]=next;
  examSelectionCache.set(oldKey,rows);
- if(kind==='preverbs'){
-  const input=$('lex-verb-'+index);
-  if(input)input.value=latinLexDisplayPrompt(kind,next);
+ const input=kind==='preverbs'?$('lex-verb-'+index):null;
+ const oldValue=input?.value;
+ if(input)input.value=latinLexDisplayPrompt(kind,next);
+ if(!renderOnlyRegeneratedExamWord('lex-'+kind,index,generate)){
+  examSelectionCache.set(oldKey,previous);
+  if(input)input.value=oldValue;
+  latinLexStatus(kind,previous);
  }
- renderOnlyRegeneratedExamWord('lex-'+kind,index,generate);
 }
 function buildLatinLexQuestion(course,chosen){
  const html=[],parts=examSelectedLexParts(course),va=$('lang').value==='va',italic=(x,kind,index)=>
@@ -7538,7 +7632,7 @@ function buildLatinLexQuestion(course,chosen){
   if(rows.length!==latinLexExpectedCount(kind)){
    const msg=kind==='phonetics'&&course==='latin1'&&!latin1PhoneticAllowed(chosen).size?
     'Selecciona las normas fonéticas explicadas para generar cuatro formas.':
-    'Solo hay '+new Set(available.map(latinLexTermKey)).size+' formas compatibles para '+latinLexTitles[kind]+'. Se necesitan '+latinLexExpectedCount(kind)+'.';
+    'Solo hay '+new Set(available.map(row=>latinLexTermKey(row,kind))).size+' formas compatibles para '+latinLexTitles[kind]+'. Se necesitan '+latinLexExpectedCount(kind)+'.';
    latinLexStatus(kind,[],msg);
    html.push('<p class="small no-print">'+esc(msg)+'</p>');continue;
   }
