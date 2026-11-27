@@ -10455,7 +10455,15 @@ function greekExamControls(){
   const add=document.createElement('button');add.type='button';add.className='secondary';add.textContent='Añadir al apartado';
   add.disabled=!select.options.length;add.addEventListener('click',()=>greekAddChoice(kind,select.value));actions.append(add);
   const regen=document.createElement('button');regen.type='button';regen.className='secondary';regen.textContent='Regenerar '+label.toLowerCase();
-  regen.disabled=!pool.length;regen.addEventListener('click',()=>greekRegenerate(kind));actions.append(regen);row.append(actions);
+  const alternatives=pool.filter(item=>!selected.includes(item.id));
+  const enoughAlternatives=kind==='forms'&&examMorphQuotasActive()?
+   ['nouns','adjectives','verbs','pronouns'].every(category=>
+    alternatives.filter(item=>examGreekWordClass(item)===category).length>=
+    selected.filter(id=>examGreekWordClass(pool.find(item=>item.id===id))===category).length):
+   alternatives.length>=selected.length;
+  regen.disabled=!selected.length||!enoughAlternatives;
+  if(regen.disabled)regen.title='No hay suficientes alternativas para regenerar este apartado.';
+  regen.addEventListener('click',()=>greekRegenerate(kind));actions.append(regen);row.append(actions);
   for(const [index,id] of selected.entries()){const item=pool.find(x=>x.id===id);if(!item)continue;
    const word=document.createElement('div');word.className='exam-word-editor';
    const edit=document.createElement('label');edit.textContent=label+' '+(index+1);
@@ -10603,9 +10611,26 @@ applySentenceGap();
 function resizeOnlyGreekGroupedAnalysis(){
  const paper=$('paper'),original=paper.querySelector('.exam-sheet');
  if(!original)return false;
+ // La cuota de análisis cambia la firma de selección griega. Un sorteo
+ // temporal reconstruiría también los identificadores de las otras preguntas,
+ // aunque sus nodos visibles se conserven al restaurar el documento.
+ const previousIds=greekExamState?.ids&&Object.fromEntries(
+  Object.entries(greekExamState.ids).map(([kind,ids])=>[kind,[...ids]]));
+ const previousAdjectives=greekExamState?.adjectiveChoices&&
+  {...greekExamState.adjectiveChoices};
  generate();
  const fresh=paper.querySelector('.exam-sheet');
- if(!fresh)return true;
+ if(!fresh){
+  paper.replaceChildren(original);
+  return true;
+ }
+ if(previousIds&&greekExamState){
+  for(const [kind,ids] of Object.entries(previousIds))
+   if(kind!=='forms')greekExamState.ids[kind]=ids;
+  if(previousAdjectives)greekExamState.adjectiveChoices=previousAdjectives;
+  if(window.greekLastExam)window.greekLastExam.ids=greekKinds.flatMap(
+   kind=>greekExamState.ids[kind]||[]);
+ }
  const query=kind=>':scope > .greek-choice-option[data-greek-option="'+kind+'"]';
  const oldForm=original.querySelector(query('forms'));
  const newForm=fresh.querySelector(query('forms'));
