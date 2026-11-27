@@ -7482,6 +7482,8 @@ function renderOnlyRegeneratedMorphQuestion(kind,render){
  return true;
 }
 function regenerateExamQuestion(kind){
+ // Un control omitido, obsoleto o no disponible nunca debe regenerar el examen.
+ if(!examQuestionEnabled(kind))return false;
  if(latin4NominalKinds.includes(kind))return refreshLatin4NominalQuestion(kind,true);
  // El léxico está dividido en subpreguntas independientes. No borrar el
  // documento al pulsar «regenerar esta pregunta»: conservar los demás bloques.
@@ -7494,6 +7496,14 @@ function regenerateExamQuestion(kind){
  const thirdKey=kind==='decl'&&latinThirdDeclensionAvailable()?examCacheSignature('latin-third-declension'):null;
  const previousThird=examSelectionCache.get(thirdKey);
  if(thirdKey)examSelectionCache.delete(thirdKey);
+ const restoreSelection=()=>{
+  if(previous!==undefined)examSelectionCache.set(key,previous);
+  else examSelectionCache.delete(key);
+  if(thirdKey){
+   if(previousThird!==undefined)examSelectionCache.set(thirdKey,previousThird);
+   else examSelectionCache.delete(thirdKey);
+  }
+ };
  if(currentCourse()==='greek1'&&$('model').value==='morphology'&&
   Array.isArray(previous)&&previous.length&&['decl','verb','forms','pronouns'].includes(kind)){
   const identity=x=>kind==='decl'?String(x?.title||''):
@@ -7522,8 +7532,7 @@ function regenerateExamQuestion(kind){
     .map(node=>node.textContent.trim()).join('\n');
    return;
   }
-  if(previous!==undefined)examSelectionCache.set(key,previous);
-  if(previousThird!==undefined)examSelectionCache.set(thirdKey,previousThird);
+  restoreSelection();
   if(field)field.value=originalText;
   return;
  }
@@ -7531,14 +7540,18 @@ function regenerateExamQuestion(kind){
    ['decl','verb','forms','pronouns','culture'].includes(kind)){
   if(renderOnlyRegeneratedLatinQuestion(kind,generate))return;
   // Sin una pregunta nueva suficiente, no destruir el borrador ni su sorteo.
-  if(previous!==undefined)examSelectionCache.set(key,previous);
-  return;
+  restoreSelection();
+  return false;
  }
  if(currentCourse()==='greek1'&&$('model').value!=='morphology'){
   const greekKind={decl:'declension',verb:'conjugation',forms:'forms',pronouns:'pronouns',etymology:'etymology',sent:'sentences'}[kind];
-  if(greekKind&&typeof greekExamState!=='undefined'&&greekExamState){greekRegenerate(greekKind);return}
+  if(greekKind&&typeof greekExamState!=='undefined'&&greekExamState){
+   if(greekRegenerate(greekKind))return true;
+  }
  }
- generate();
+ // No existe una ruta aislada válida: conservar el sorteo anterior.
+ restoreSelection();
+ return false;
 }
 function examSelectedLexParts(course){
  return (latinLexModules[course]||[]).filter(kind=>latinLexPartEnabled[course+'/'+kind]!==false);
