@@ -255,6 +255,8 @@ async function word(page,file,course,model,unit,lang,cumulative=true){
  assert(exported.name.endsWith('.docx'),where+' nombre Word inválido');
  assert(xml.includes('<w:document')&&xml.includes('<w:body>')&&xml.includes('<w:sectPr>'),where+' XML Word incompleto');
  assert(styles.includes('Palatino'),where+' estilo Word cambiado');
+ assert(!/Solucionario orientativo|Solucionari orientatiu/.test(xml),
+  where+' el Word del alumnado contiene el solucionario');
  assert(xml.includes((lang==='va'?'Data: ':'Fecha: ')),where+' etiqueta Fecha/Data ausente del Word');
  assert(xml.includes('p.).'),where+' puntuación de pregunta ausente del Word');
  if(selected.tableCount)assert(xml.includes('<w:tbl>'),where+' desaparecieron tablas en Word');
