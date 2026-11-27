@@ -59,7 +59,7 @@ function latinSuite(){
   sentenceList,sentenceGlossary,sentenceLines:()=>[],
   refreshManualMorphWords:()=>{},generateGreekExam:()=>{},syncLatin1PhoneticRuleControls:()=>{},
   morphConfig:()=>({offer:3,decline:2,verbs:2,words:5}),
-  examQuestionEnabled:kind=>kind!=='pronouns'||state.model.value==='morf',
+  examQuestionEnabled:kind=>!kind.startsWith('latin4-nominal-')&&(kind!=='pronouns'||state.model.value==='morf'),
   examAuthorizedProposals:()=>[],examAcademicAttrs:()=>'',
   stickyExamRows:(_kind,create)=>create(),
   examQuotaPick:(_groups,_n,defaultPick)=>defaultPick(),

@@ -76,7 +76,8 @@
    return raw.map(x=>x.base==='greek-competence'?300:
     x.base==='greek-plurilingual'?100:x.base==='sent'?600:0);
   }
-  const other=raw.filter(x=>x.base!=='sent'&&!(latinLex&&x.base==='lex'));
+  const supplementary=base=>base.startsWith('latin4-nominal-');
+  const other=raw.filter(x=>x.base!=='sent'&&!(latinLex&&x.base==='lex')&&!supplementary(x.base));
   let ordinal=0;
   // Los valores automáticos son puntos enteros, no céntimos repartidos:
   // 3 p. entre 2 preguntas => 2 p. y 1 p. (nunca 1,50 p.).
@@ -84,6 +85,7 @@
   const wholePoints=Math.floor(available/100);
   return raw.map(x=>{
    if(morph())return 100;
+   if(supplementary(x.base))return 0;
    if(x.base==='sent')return sentence;
    if(latinLex&&x.base==='lex')return 200;
    const n=ordinal++,quantity=other.length;
@@ -158,6 +160,7 @@
    pronouns:'table.exam-pronouns tbody tr',
    forms:'[data-analysis-slot],.exam-form',
    culture:'ol.task>li',
+   'latin4-nominal-table':'[data-third-declension-slot]',
    etymology:'.exam-etymology>span',
    sent:'.exam-sentences [data-sentence-slot]'
   };

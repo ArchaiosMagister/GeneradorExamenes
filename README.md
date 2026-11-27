@@ -51,6 +51,8 @@ La consulta reutiliza los análisis durante la sesión. Los lectores se ejecutan
 
 **Cultura de Latín 4.º de ESO:** 73 preguntas docentes en ocho unidades, con enunciados en castellano y valenciano. El sorteo respeta las unidades elegidas y el modelo completo adapta la puntuación cuando no corresponde incluir Cultura. El apartado de oraciones empieza con huecos numerados. Escribe una oración por línea en el campo de texto o edita su hueco en la vista previa. Los pronombres de Latín I usan una selección de formas explícitas, limitada al temario de cada unidad. Los bancos Morpheus y AGLDT todavía no están integrados.
 
+**En Latín 4.º de ESO**, el menú «Preguntas y cantidades» permite incluir «Declinación y género» desde UD1 y «Temas de tercera declinación» y «Tabla de tercera declinación» desde UD5. En la tabla se pueden incluir adjetivos desde UD6, de acuerdo con las fichas de cada unidad. Las tres preguntas se activan por separado y tienen puntuación inicial de 0 puntos, editable en el menú de puntuación.
+
 ## Lematización offline latina y griega
 
 La edición autónoma incorpora un **lematizador de consulta** para los lemas del vocabulario docente, alimentado por UniMorph y modelos explícitos de las dos lenguas. En «Laboratorio y consulta morfológica» permite buscar una forma o ver las flexiones registradas de un lema, incluso sin Internet. Conserva todos los análisis registrados para la clave de búsqueda y muestra sus etiquetas originales. En griego muestra primero las coincidencias con los diacríticos escritos.

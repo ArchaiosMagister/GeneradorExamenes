@@ -50,6 +50,7 @@ const browserTests=[
  'test-latin-verb-row-regeneration.cjs',
  'test-latin-vir-paradigm-20261122.cjs',
  'test-latin4-conjugation-isolated-forms.cjs',
+ 'test-latin4-nominal-options.cjs',
  'test-lemma-browser.cjs',
  'test-lemma-review-theme.cjs',
  'test-lex-menu-sync.cjs',
@@ -122,7 +123,7 @@ switch(suite){
  case 'compatibility':
   checks=[['test-pwa.cjs'],['test-device-compat.cjs'],['test-export-workspace.cjs'],
    ['test-exam-external-gloss.cjs'],['test-latin-third-declension-table.cjs'],
-   ['test-latin-verb-row-regeneration.cjs']];
+   ['test-latin-verb-row-regeneration.cjs'],['test-latin4-nominal-options.cjs']];
   break;
  default:
   throw Error('Uso: node scripts/check-release.cjs sources | chromium <1–4> | compatibility');
