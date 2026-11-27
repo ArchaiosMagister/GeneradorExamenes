@@ -47,7 +47,7 @@ async function auditLatin(page,file){
   const paper=$('paper'),original=paper.querySelector('.exam-sheet');
   const header=original.querySelector('.exam-header');
   const sentences=original.querySelector('.exam-sentences');
-  const key=original.querySelector('#answerkey');
+  const key=document.querySelector('#examinaInternalAnswers #answerkey');
   const forms=original.querySelector('.exam-question[data-exam-kind="forms"]');
   const prefix=original.querySelector('.lex-subquestion[data-lex-kind="prefixes"]');
   const phonetic=original.querySelector('.lex-subquestion[data-lex-kind="phonetics"]');
@@ -62,7 +62,7 @@ async function auditLatin(page,file){
   const afterForms=paper.querySelector('.exam-sheet');
   const changeForms=afterForms.querySelector('.exam-question[data-exam-kind="forms"]')!==forms;
   const unchangedAfterForms=afterForms===original&&afterForms.querySelector('.exam-header')===header&&
-   afterForms.querySelector('.exam-sentences')===sentences&&afterForms.querySelector('#answerkey')===key;
+   afterForms.querySelector('.exam-sentences')===sentences&&document.querySelector('#examinaInternalAnswers #answerkey')===key;
   const prefixOk=regenerateLatinLexPart('prefixes');
   const afterLex=paper.querySelector('.exam-sheet');
   const lexicalStable=afterLex===original&&afterLex.contains(slot)&&afterLex.contains(other)&&
@@ -78,7 +78,7 @@ async function auditLatin(page,file){
   if(!control)throw Error('No hay norma fonética compatible para la auditoría conjunta');
   control.checked=false;control.dispatchEvent(new Event('change',{bubbles:true}));
   const afterFilter=paper.querySelector('.exam-sheet');
-  const filterStable=afterFilter===original&&afterFilter.contains(slot)&&afterFilter.contains(key)&&
+  const filterStable=afterFilter===original&&afterFilter.contains(slot)&&document.querySelector('#examinaInternalAnswers #answerkey')===key&&
    afterFilter.querySelector('.lex-subquestion[data-lex-kind="phonetics"]')!==phonetic;
   const textPreserved=header.textContent.includes('AUDITORIA-DOCENTE')&&
    other.textContent.includes('AUDITORIA-VERBOS')&&
@@ -123,7 +123,7 @@ async function auditGreek(page,file){
  await select(page,'greek1','complete','UD12');
  const r=await page.evaluate(()=>{
   const paper=$('paper'),original=paper.querySelector('.exam-sheet');
-  const key=original.querySelector('#answerkey');
+  const key=document.querySelector('#examinaInternalAnswers #answerkey');
   const header=original.querySelector('.exam-header');
   const sentences=original.querySelector('.exam-sentences');
   const other=original.querySelector('.greek-choice-option[data-greek-option="forms"]');
@@ -137,7 +137,7 @@ async function auditGreek(page,file){
   const success=greekRegenerate('etymology');
   const after=paper.querySelector('.exam-sheet');
   const values=[...after.querySelectorAll('[data-sentence-slot]')].map(x=>x.textContent);
-  return {success,sameRoot:after===original,sameKey:after.querySelector('#answerkey')===key,
+  return {success,sameRoot:after===original,sameKey:document.querySelector('#examinaInternalAnswers #answerkey')===key,
    sameHeader:after.querySelector('.exam-header')===header,
    sameSentences:after.querySelector('.exam-sentences')===sentences,
    sameOther:after.contains(other),sameSentence:after.contains(sentence),

@@ -67,14 +67,14 @@ async function checkOne(page,name){
  const result=await page.evaluate(()=>{
   const paper=document.getElementById('paper');
   const other=paper.querySelector('[data-analysis-slot="1"] > i:first-of-type');
-  const otherAnswer=paper.querySelector('#answerkey > ol > li[data-morph-kind="forms"] > p:nth-child(2)');
+  const otherAnswer=document.querySelector('#examinaInternalAnswers #answerkey > ol > li[data-morph-kind="forms"] > p:nth-child(2)');
   other.textContent='ἀμετάβλητον';
   otherAnswer.textContent='Respuesta docente conservada';
   const original=paper.querySelector('[data-analysis-slot="0"]').dataset.corpusId;
   document.querySelector('[data-question="forms"] button[data-regenerate-kind="forms"][data-regenerate-index="0"]').click();
   const next=paper.querySelector('[data-analysis-slot="0"]').dataset.corpusId;
   const retained=paper.querySelector('[data-analysis-slot="1"] > i:first-of-type').textContent;
-  const retainedAnswer=paper.querySelector('#answerkey > ol > li[data-morph-kind="forms"] > p:nth-child(2)').textContent;
+  const retainedAnswer=document.querySelector('#examinaInternalAnswers #answerkey > ol > li[data-morph-kind="forms"] > p:nth-child(2)').textContent;
   const pronounBefore=paper.querySelector('.exam-pronouns tbody tr').dataset.corpusId;
   document.querySelector('[data-question="pronouns"] button[data-regenerate-kind="pronouns"][data-regenerate-index="0"]').click();
   const pronounAfter=paper.querySelector('.exam-pronouns tbody tr').dataset.corpusId;
@@ -84,7 +84,7 @@ async function checkOne(page,name){
   return {
    original,next,retained,retainedAnswer,pronounBefore,pronounAfter,verbBefore,verbAfter,
    retainedAfterWhole:paper.querySelector('[data-analysis-slot="1"] > i:first-of-type').textContent,
-   otherAnswerAfterWhole:paper.querySelector('#answerkey > ol > li[data-morph-kind="forms"] > p:nth-child(2)').textContent,
+   otherAnswerAfterWhole:document.querySelector('#examinaInternalAnswers #answerkey > ol > li[data-morph-kind="forms"] > p:nth-child(2)').textContent,
    separateEditorExists:!!document.querySelector('[data-question="forms"] [data-regenerate-kind="forms"]'),
    noPrintControls:paper.querySelectorAll('.exam-regenerate-word,[data-regenerate-question]').length===0
   };

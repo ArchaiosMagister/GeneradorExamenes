@@ -10,7 +10,7 @@ function part(start,end){
 }
 const morphologyHelpers=part('/* Editable syntagm slots;','function generateLatinMorphologyReference(){');
 const latinCode=part('const latinPronounRows=','let culture=')+morphologyHelpers+
- part('function generateLatinMorphologyReference(){','/* El título refleja las unidades')+
+ part('function generateLatinMorphologyReference(){','/* El título refleja las unidades').replace('function generateLatinMorphologyReference(', 'function generateLatinMorphologyReference(')+
  part('function mVerb(','function mTable(');
 const greekCode=morphologyHelpers+part('function greekWrittenFormVariants(form){','function greekCorpus(){')+
  part('function examGreekWordClass(','function examQuotaGreek(')+
@@ -19,7 +19,7 @@ const greekCode=morphologyHelpers+part('function greekWrittenFormVariants(form){
  part('function generateGreekMorphologyFixed(){','let greekExamState=null;')+
  part('function greekMorphologyCorpus(','function regenerateLatinMorphologyVerb(')+
  part('function greekCompleteCounts(){','function greekSelectionSignature(')+
- part('function generateGreekExam(){','const legacyUpdateUnits=');
+ part('function generateGreekExamCore(){','const legacyUpdateUnits=').replace('function generateGreekExamCore(', 'function generateGreekExam(');
 
 const sentenceList=vm.runInNewContext(part('function sentenceList(','function sentenceGlossary(')+
  'sentenceList',{$:()=>({value:'es'}),esc:String});
@@ -33,6 +33,7 @@ function latinSuite(){
   'count-decl':{value:2},'count-verb':{value:2},'count-forms':{value:6},'count-sent':{value:5}};
  const scope={course:'latin1',units:['UD3']};
  const sandbox={
+  withInternalAnswers:operation=>operation(),publicExamHtml:()=>state.paper.innerHTML,
   $:id=>state[id]||(state[id]={value:'',checked:true}),
   currentCourse:()=>scope.course,selectedUnits:()=>scope.units,
   sample:(a,n)=>a.slice(0,n),countFor:id=>Number(state['count-'+id]?.value)||5,
@@ -231,6 +232,7 @@ function greekSuite(){
  ];
  const scope={limit:7};
  const sandbox={
+  withInternalAnswers:operation=>operation(),publicExamHtml:()=>state.paper.innerHTML,
   $:id=>state[id]||(state[id]={checked:true,value:''}),
   sample:(a,n)=>a.slice(0,n),countFor:id=>Number(state['count-'+id]?.value)||5,
   sentenceList,sentenceGlossary,sentenceLines:()=>[],

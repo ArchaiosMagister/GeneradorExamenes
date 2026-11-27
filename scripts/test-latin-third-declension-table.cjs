@@ -8,7 +8,7 @@ const engine=process.env.EXAM_TEST_BROWSER==='webkit'?webkit:chromium;
 const files=['index.html','offline.html'];
 const table='#paper [data-third-declension-table]';
 const rows=table+' tbody tr';
-const answers='#paper [data-third-declension-answer]';
+const answers='#examinaInternalAnswers [data-third-declension-answer]';
 const button='[data-regenerate-third-declension="0"]';
 
 async function change(page,id,value){
@@ -50,7 +50,7 @@ async function check(browser,file){
    window.preservedNodes=[
     $('paper').querySelector('[data-syntagm-slot] > i'),
     $('paper').querySelector('.reference-verb-table tbody td:last-child'),
-    $('paper').querySelector('#answerkey li[data-morph-kind="verb"] p')
+    document.querySelector('#examinaInternalAnswers #answerkey li[data-morph-kind="verb"] p')
    ];
    window.preservedNodes.forEach((node,i)=>node.textContent='Edición docente '+i);
   });
@@ -113,12 +113,11 @@ async function check(browser,file){
     finally{downloadBlob=previous}
     return blob.text();
    };
-   const student=await readWord('docx'),teacher=await readWord('docxAnswers');
+   const student=await readWord('docx');
    const printed=window.ExaminaPdfExport.prepareDocument();
    return {
     student:/<w:tbl>.*Forma demanada.*Resposta.*<\/w:tbl>/s.test(student)&&!student.includes('Solucionari orientatiu'),
-    teacher:teacher.includes('Solucionari orientatiu')&&teacher.includes(' — '),
-    wordNoControl:![student,teacher].some(xml=>xml.includes('Regenera la fila')),
+    wordNoControl:!student.includes('Regenera la fila'),
     pdf:printed.querySelectorAll('[data-third-declension-table] tbody tr').length===20&&
      !printed.querySelector('#answerkey,[data-regenerate-third-declension]')
    };

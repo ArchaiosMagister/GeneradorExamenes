@@ -33,7 +33,7 @@ async function testKind(page,kind){
   const selector=grouped?'.greek-choice-option[data-greek-option="'+kind+'"]':
    '.exam-question[data-greek-kind="'+kind+'"]';
   const heading=root?.querySelector(selector);
-  const key=root?.querySelector('#answerkey');
+  const key=document.querySelector('#examinaInternalAnswers #answerkey');
   const answer=key?.querySelector('h3[data-greek-kind="'+kind+'"]');
   const ids=greekExamState?.ids[kind]||[],pool=greekChoicePool(kind);
   if(!heading||!answer||!ids.length)return {skip:true,kind,ids:ids.length,headings:[...root.querySelectorAll('[data-greek-kind]')].map(x=>x.dataset.greekKind)};
@@ -54,19 +54,19 @@ async function testKind(page,kind){
   return {
    result,kind,sameRoot:after===root,
    newHeading:after.querySelector(selector)!==heading,
-   newAnswer:after.querySelector('#answerkey h3[data-greek-kind="'+kind+'"]')!==answer,
+   newAnswer:document.querySelector('#examinaInternalAnswers #answerkey h3[data-greek-kind="'+kind+'"]')!==answer,
    changedIds:JSON.stringify(ids)!==JSON.stringify(newIds),
    sameOther:!other||other===after.querySelector(grouped?
     '.greek-choice-option[data-greek-option="'+other.dataset.greekOption+'"]':
     '.exam-question[data-greek-kind="'+other.dataset.greekKind+'"]'),
-   sameOtherAnswer:!otherAnswer||after.querySelector('#answerkey').contains(otherAnswer),
+   sameOtherAnswer:!otherAnswer||document.querySelector('#examinaInternalAnswers #answerkey').contains(otherAnswer),
    sameHeader:!header||header===after.querySelector('.exam-header'),
-   sameKey:key===after.querySelector('#answerkey'),
+   sameKey:key===document.querySelector('#examinaInternalAnswers #answerkey'),
    sameSentence:!sentence||sentence===after.querySelector('[data-sentence-slot="0"]'),
    sameGlossary:!glossary||after.contains(glossary),
    markerHeader:!header||after.textContent.includes('MARCA-DOCENTE-CABECERA'),
    markerOther:!other||after.textContent.includes('MARCA-DOCENTE-PREGUNTA'),
-   markerAnswer:!otherAnswer||after.textContent.includes('MARCA-DOCENTE-CLAVE'),
+   markerAnswer:!otherAnswer||document.querySelector('#examinaInternalAnswers #answerkey').textContent.includes('MARCA-DOCENTE-CLAVE'),
    markerSentence:!sentence||after.textContent.includes('Oratio magistri in textu.'),
    sameIds:Object.entries(untouchedIds).every(([k,v])=>JSON.stringify(greekExamState.ids[k])===v),
    count:ids.length,nextCount:newIds.length

@@ -35,7 +35,8 @@ async function main(){
     const exam=document.getElementById('exam-ui-shell');
     const editor=document.getElementById('examEditorPanel');
     return {
-     one:[...['docx','docxAnswers','print','pdfDownload','saveDraft','downloadDraft','examinaBackupExport']].every(id=>document.querySelectorAll('#'+id).length===1),
+     one:[...['docx','print','pdfDownload','saveDraft','downloadDraft','examinaBackupExport']].every(id=>document.querySelectorAll('#'+id).length===1)&&
+      !document.querySelector('#docxAnswers,#quickWordAnswers,#solutions'),
      exportPlace:!!document.querySelector('#examPreviewActions #docx')&&!!document.querySelector('#examPreviewActions #saveDraft')&&!!exam.querySelector('#examinaBackupExport'),
      oldOut:!editor.contains(document.getElementById('group-morph'))&&!editor.contains(document.getElementById('offlineLemmaPanel')),
      academic:['group-morph','offlineLemmaPanel','morphTeacherReview','academicEvidenceReview','greekDiscrepancyReview','group-import'].every(id=>document.querySelector('#academicWorkspace #'+id)),
@@ -48,6 +49,15 @@ async function main(){
    assert.equal(await page.locator('#exam-ui-shell > #group-drafts #loadDraft').count(),1);
    assert.equal(await page.locator('#exam-ui-shell > #examinaUnifiedBackup #examinaBackupExport').count(),1);
    assert(Object.values(structure).every(Boolean),filename+': estructura: '+JSON.stringify(structure));
+   await page.locator('#saveDraft').click();
+   assert.equal(await page.locator('#saveDraft').getAttribute('data-save-state'),'saved',
+    filename+': no se guardó el borrador de control');
+   await page.evaluate(async()=>{
+    withInternalAnswers(()=>{});
+    await new Promise(resolve=>queueMicrotask(resolve));
+   });
+   assert.equal(await page.locator('#saveDraft').getAttribute('data-save-state'),'saved',
+    filename+': consultar análisis internos ensució el borrador');
    if(filename==='index.html')assert.equal(await page.locator('script[src*="html2pdf.bundle.min.js"]').count(),0,
     'El motor PDF se descarga al abrir la webapp');
    // La consulta académica no ejecuta generación ni mueve las preguntas.
@@ -86,18 +96,18 @@ async function main(){
      same:form.outerHTML.includes('exam-sheet'),
      noSolutions:!key.querySelector('#answerkey'),
      noControl:!key.querySelector('.no-print'),
-     originalIntact:!!form.querySelector('#answerkey'),
+     keyIsolated:!!document.querySelector('#examinaInternalAnswers #answerkey')&&!form.querySelector('#answerkey'),
      status:!!document.getElementById('examinaPdfStatus')
     };
    });
    assert(Object.values(proof).every(Boolean),filename+': PDF expone controles o cambia el original: '+JSON.stringify(proof));
    // Contrato de nombres: selección explícita, sin expandir por "acumulativo".
    const cases=[
-    {course:'latin1',type:'exam',lang:'es',units:['UD1'],word:'ex ud1 lat1.docx',pdf:'ex ud1 lat1.pdf',solutions:'ex ud1 lat1 sol.docx'},
-    {course:'latin4',type:'review',lang:'va',units:['UD2','UD4'],word:'ficha repaso ud2-ud4 lat4 val.docx',pdf:'ficha repaso ud2-ud4 lat4 val.pdf',solutions:'ficha repaso ud2-ud4 lat4 sol val.docx'},
-    {course:'greek1',type:'exam',lang:'va',units:['UD3','UD10'],word:'ex ud3-ud10 gr1 val.docx',pdf:'ex ud3-ud10 gr1 val.pdf',solutions:'ex ud3-ud10 gr1 sol val.docx'},
-    {course:'latin1',type:'review',lang:'es',units:['UD7'],word:'ficha repaso ud7 lat1.docx',pdf:'ficha repaso ud7 lat1.pdf',solutions:'ficha repaso ud7 lat1 sol.docx'},
-    {course:'latin4',type:'exam',lang:'es',units:[],word:'ex ud-sin-seleccionar lat4.docx',pdf:'ex ud-sin-seleccionar lat4.pdf',solutions:'ex ud-sin-seleccionar lat4 sol.docx'}
+    {course:'latin1',type:'exam',lang:'es',units:['UD1'],word:'ex ud1 lat1.docx',pdf:'ex ud1 lat1.pdf'},
+    {course:'latin4',type:'review',lang:'va',units:['UD2','UD4'],word:'ficha repaso ud2-ud4 lat4 val.docx',pdf:'ficha repaso ud2-ud4 lat4 val.pdf'},
+    {course:'greek1',type:'exam',lang:'va',units:['UD3','UD10'],word:'ex ud3-ud10 gr1 val.docx',pdf:'ex ud3-ud10 gr1 val.pdf'},
+    {course:'latin1',type:'review',lang:'es',units:['UD7'],word:'ficha repaso ud7 lat1.docx',pdf:'ficha repaso ud7 lat1.pdf'},
+    {course:'latin4',type:'exam',lang:'es',units:[],word:'ex ud-sin-seleccionar lat4.docx',pdf:'ex ud-sin-seleccionar lat4.pdf'}
    ];
    for(const c of cases){
     const found=await page.evaluate(({course,type,lang,units:chosen})=>{
@@ -114,12 +124,11 @@ async function main(){
      });
      return {
       selected:found,word:window.ExaminaExportFilename('docx'),
-      pdf:window.ExaminaExportFilename('pdf'),
-      solutions:window.ExaminaExportFilename('docx',true)
+      pdf:window.ExaminaExportFilename('pdf')
      };
     },c);
     assert.deepEqual(found.selected,c.units,filename+': unidades marcadas '+c.course);
-    for(const field of ['word','pdf','solutions'])
+    for(const field of ['word','pdf'])
      assert.equal(found[field],c[field],filename+': nombre '+field+' para '+c.course+' '+c.lang);
    }
    // Verificar que el Word real usa el mismo nombre y distingue soluciones.
@@ -143,7 +152,7 @@ async function main(){
      if(review)review.evidenceMayExport=()=>true;
      if(scoring)scoring.canExport=()=>true;
      downloadBlob=(name,blob)=>records.push({name,bytes:blob.size});
-     document.getElementById('docx').click();exportWord(true);
+     document.getElementById('docx').click();
     }finally{
      downloadBlob=original;
      if(review)review.evidenceMayExport=oldReview;
@@ -152,8 +161,8 @@ async function main(){
     return records;
    });
    assert.deepEqual(wordFiles.map(x=>x.name),
-    ['ficha repaso ud1 lat1 val.docx','ficha repaso ud1 lat1 sol val.docx'],
-    filename+': nombres reales de Word y solucionario');
+    ['ficha repaso ud1 lat1 val.docx'],
+    filename+': nombre real de Word del alumnado');
    assert(wordFiles.every(x=>x.bytes>3500),filename+': Word vacío');
    // El motor PDF recibe centímetros convertidos a mm: arriba/derecha/abajo
    // 25 mm, izquierda 30 mm. El contenido A4 se limita a 155 mm de ancho.

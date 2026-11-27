@@ -5,7 +5,7 @@ const vm=require('node:vm');
 
 for(const filename of ['index.html','offline.html']){
  const html=fs.readFileSync(path.join(__dirname,'..',filename),'utf8');
- const start=html.indexOf('function regenerateExamQuestion(kind){');
+ const start=html.indexOf('function regenerateExamQuestionCore(kind){');
  const end=html.indexOf('function examSelectedLexParts(course){',start);
  assert(start>=0&&end>start,filename+': falta el controlador de regeneración');
  const source=html.slice(start,end);
@@ -24,7 +24,7 @@ for(const filename of ['index.html','offline.html']){
    renderOnlyRegeneratedMorphQuestion:()=>{calls.isolated++;return success},
   };
   vm.createContext(sandbox);
-  vm.runInContext(source+';regenerateExamQuestion('+JSON.stringify(kind)+')',sandbox);
+  vm.runInContext(source+';regenerateExamQuestionCore('+JSON.stringify(kind)+')',sandbox);
   assert.equal(calls.global,0,filename+': se regeneró globalmente '+course+'/'+model+'/'+kind);
   assert.equal(cache.get('other'),other,filename+': cambió una pregunta ajena');
   if(!success)assert.equal(cache.get(kind),previous,filename+': se perdió el sorteo previo');

@@ -406,7 +406,7 @@ async function latinLexSpacing(page,file){
      ?'<strong>Vocabulari</strong>':'<strong>Vocabulario</strong>';
     const list=document.createElement('div');list.className='final-gloss';
     list.innerHTML='<div class="gloss-item">puella, –ae: niña</div>';
-    sheet.querySelector('#answerkey').before(title,list);
+    sheet.querySelector('[data-answer-anchor]').before(title,list);
     applyExamVisualFormat();
    });
   }

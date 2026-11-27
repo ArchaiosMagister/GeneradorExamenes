@@ -53,7 +53,7 @@ async function run(page,filename){
   }finally{Math.random=random}
   if(!edited)throw Error('La prueba necesita una forma alternativa');
   edit(other.querySelector('i'),edited);
-  const key=sheet.querySelector('#answerkey');
+  const key=document.querySelector('#examinaInternalAnswers #answerkey');
   const otherAnswer=key.querySelector('[data-exam-kind="forms"] ol > li:nth-child(2)');
   edit(otherAnswer,'Respuesta revisada de la segunda palabra');
   const foreignAnswer=key.querySelector('[data-exam-kind="decl"]');
@@ -64,7 +64,7 @@ async function run(page,filename){
    Math.random=()=>0;
    regenerateExamWord('forms',0);
   }finally{Math.random=random}
-  results.answer=sheet.querySelector('#answerkey')===key&&key.contains(otherAnswer)&&key.contains(foreignAnswer)&&
+  results.answer=document.querySelector('#examinaInternalAnswers #answerkey')===key&&key.contains(otherAnswer)&&key.contains(foreignAnswer)&&
    key.textContent.includes('Respuesta revisada de la segunda palabra')&&
    key.textContent.includes('Solución de declinación revisada')&&
    key.querySelector('[data-exam-kind="forms"] ol > li:first-child').textContent.startsWith(slot(0).querySelector('i').textContent+' — ');
@@ -80,7 +80,7 @@ async function run(page,filename){
   regenerateExamWord('forms',0);
   results.latinRegeneration=restoredLatin===exercise()&&examRegenerationSlot(restoredLatin,'forms',0)!==oldLatin&&
    examRegenerationSlot(restoredLatin,'forms',1).querySelector('i').textContent===edited&&
-   restoredLatin.querySelector('#answerkey').textContent.includes('Respuesta revisada de la segunda palabra');
+   document.querySelector('#examinaInternalAnswers #answerkey').textContent.includes('Respuesta revisada de la segunda palabra');
 
   select('latin1','tablas','UD9–10');
   const kind='prefixes';
@@ -92,9 +92,9 @@ async function run(page,filename){
    Math.random=()=>0;
    regenerateExamQuestion('lex');
    const first=words();
-   const rootBefore=exercise(),keyBefore=rootBefore.querySelector('#answerkey');
+   const rootBefore=exercise(),keyBefore=document.querySelector('#examinaInternalAnswers #answerkey');
    regenerateExamQuestion('lex');
-   results.whole=first!==words()&&exercise()===rootBefore&&keyBefore===rootBefore.querySelector('#answerkey');
+   results.whole=first!==words()&&exercise()===rootBefore&&keyBefore===document.querySelector('#examinaInternalAnswers #answerkey');
   }finally{Math.random=random}
   const current=exercise().querySelector(selector);
   edit(current,'docente-personalizado');

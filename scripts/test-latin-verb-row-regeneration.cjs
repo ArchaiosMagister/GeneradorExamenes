@@ -25,7 +25,7 @@ async function check(browser,file){
    };
    const atButton=i=>document.querySelector('[data-regenerate-kind="verb"][data-regenerate-index="'+i+'"]');
    const tableRows=()=>[...$('paper').querySelectorAll('.reference-verb-table tbody tr')];
-   const answers=()=>[...$('paper').querySelectorAll('#answerkey [data-morph-kind="verb"] > p')];
+   const answers=()=>[...document.querySelectorAll('#examinaInternalAnswers #answerkey [data-morph-kind="verb"] > p')];
    const surface=row=>row.cells[0].querySelector('i').textContent;
    const key=()=>examCacheSignature('verb');
    const stages=['UD4',...checks.map(input=>units[+input.value]).filter(x=>x!=='UD4')];

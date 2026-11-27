@@ -89,6 +89,10 @@ async function configure(page,course,model,unit,lang,cumulative=true){
   generate();
   window.ExaminaScoring?.sync?.();
   const paper=document.getElementById('paper'),engine=window.ExaminaScoring;
+  if(paper.querySelector('#answerkey')||!document.querySelector('#examinaInternalAnswers #answerkey'))
+   throw Error('Los análisis internos aparecen en la vista previa o faltan');
+  if(document.querySelector('#solutions,#docxAnswers,#quickWordAnswers'))
+   throw Error('Permanece accesible un control de solucionario');
   const qs=[...paper.querySelectorAll('.exam-question')];
   const rows=engine?.rows()||[];
   const total=engine?.total()??null;
@@ -126,7 +130,8 @@ async function configure(page,course,model,unit,lang,cumulative=true){
   const morph=['morf','morphology'].includes(model);
   const put=(kind,rows,key,requested)=>{
    const distinct=new Set(rows.map(key).filter(Boolean)).size;
-   poolCapacity[kind]={distinct,requested,spare:distinct-requested};
+   poolCapacity[kind]={distinct,requested,spare:distinct-requested,
+    repeatAllowed:kind==='pronouns'};
   };
   const cfg=morph?morphConfig():null;
   if(course==='greek1'){
@@ -179,11 +184,15 @@ function inspect(row,file){
  report.cases.push({file,...row});
  for(const [kind,pool] of Object.entries(row.poolCapacity||{})){
   if(kind==='formCategories')continue;
+  if(pool.repeatAllowed)continue;
   if(pool.requested>0&&pool.distinct<pool.requested)
    issue('revisión',where,'Banco '+kind+': '+pool.distinct+' términos para '+pool.requested+' casillas');
   else if(pool.requested>0&&pool.spare===0)
    issue('revisión',where,'Banco '+kind+': no quedan términos alternativos al completar las casillas');
  }
+ if(row.course==='greek1'&&row.unit==='UD2'&&row.model==='complete'&&
+    (row.poolCapacity?.verb?.distinct||0)<4)
+  issue('bloqueante',where,'Los verbos regulares verificados de presente UD2 no completan la conjugación');
  const selected=Array.isArray(row.unit)?row.unit:[row.unit];
  if(JSON.stringify(row.selectedRaw)!==JSON.stringify(selected))
   issue('bloqueante',where,'El selector no mantiene las unidades marcadas');
@@ -222,8 +231,8 @@ function inspect(row,file){
    issue('bloqueante',where,'Código de cultura ajeno a '+row.unit);
  }
  if(row.course==='latin1'&&row.questions.some(q=>q.kind==='pronouns')&&
-  selected.some(unit=>Number((unit.match(/\d+/)||[0])[0])>=6)&&row.pronounRows!==10)
-  issue('revisión',where,'Esperados 10 pronombres; generados '+row.pronounRows);
+  selected.some(unit=>Number((unit.match(/\d+/)||[0])[0])>=3)&&row.pronounRows!==10)
+  issue('bloqueante',where,'Esperados 10 pronombres (se permite repetir); generados '+row.pronounRows);
  if(row.lexLetters?.length&&row.lexLetters.join('|')!==row.lexLetters.map((_,i)=>String.fromCharCode(97+i)+'.').join('|'))
   issue('bloqueante',where,'Letras de alternativas léxicas no consecutivas: '+JSON.stringify(row.lexLetters));
  if(row.course==='latin1'&&row.model!=='morf'&&row.unit==='UD1'&&row.lexParts!==3)

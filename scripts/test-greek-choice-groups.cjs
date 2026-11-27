@@ -30,7 +30,7 @@ const query=page=>page.evaluate(()=>({
  }));
 async function run(page,file){
  for(const model of ['complete']){
-  await select(page,'greek1',model,'UD2');
+  await select(page,'greek1',model,'UD1');
   let x=await query(page);
   const exhausted=await page.evaluate(()=>{
    const row=[...document.querySelectorAll('.greek-question-options')]
@@ -42,6 +42,16 @@ async function run(page,file){
   });
   assert.equal(exhausted.disabled,true,file+'/'+model+': regeneración sin alternativas habilitada: '+JSON.stringify(exhausted));
   assert.match(exhausted.title,/alternativas/,file+'/'+model+': falta explicación del agotamiento');
+  await select(page,'greek1',model,'UD2');
+  x=await query(page);
+  const regular=await page.evaluate(()=>({
+   pool:greekChoicePool('conjugation').length,
+   selected:greekExamState.ids.conjugation.length,
+   disabled:[...document.querySelectorAll('.greek-question-options button')]
+    .find(node=>node.textContent==='Regenerar conjugación')?.disabled
+  }));
+  assert(regular.pool>regular.selected&&!regular.disabled,
+   file+'/'+model+': los paradigmas regulares de UD2 no ofrecen alternativas: '+JSON.stringify(regular));
   assert(!x.options.includes('change-number'),file+'/'+model+': artículo antes de UD3');
   assert(!x.options.includes('retroversion'),file+'/'+model+': retroversión nominal antes de UD3');
   await select(page,'greek1',model,'UD3');
