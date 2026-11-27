@@ -8526,14 +8526,17 @@ function wordPara(node,style='',number=''){
 }
 function wordTable(table){
  if(table.classList.contains('exam-paradigm')||table.classList.contains('exam-pronouns'))return wordExamTable(table);
- const rows=[...table.querySelectorAll('tr')];
+ const rows=[...table.rows];
  if(!rows.length)return '';
- const cols=Math.max(...rows.map(r=>r.children.length),1),w=Math.floor(8788/cols);
+ const spanOf=cell=>Math.max(1,Number(cell.colSpan)||1);
+ const cols=Math.max(1,...rows.map(row=>[...row.cells].reduce((n,cell)=>n+spanOf(cell),0)));
+ const widths=Array(cols).fill(Math.floor(8788/cols));
+ widths[cols-1]+=8788-widths.reduce((n,w)=>n+w,0);
  let out='<w:tbl><w:tblPr><w:tblW w:w="8788" w:type="dxa"/><w:tblBorders>'+
  ['top','left','bottom','right','insideH','insideV'].map(x=>`<w:${x} w:val="single" w:sz="4" w:color="AAB4C0"/>`).join('')+
- '</w:tblBorders><w:tblCellMar><w:top w:w="75" w:type="dxa"/><w:bottom w:w="75" w:type="dxa"/><w:left w:w="100" w:type="dxa"/><w:right w:w="100" w:type="dxa"/></w:tblCellMar></w:tblPr>';
- for(const row of rows){out+='<w:tr>';
- for(const cell of row.children){const span=Math.max(1,+(cell.getAttribute('colspan')||1));out+=`<w:tc><w:tcPr><w:tcW w:w="${w*span}" w:type="dxa"/>${span>1?`<w:gridSpan w:val="${span}"/>`:''}${cell.tagName==='TH'?'<w:shd w:fill="E9EEF4"/>':''}</w:tcPr>`;
+ '</w:tblBorders><w:tblCellMar><w:top w:w="75" w:type="dxa"/><w:bottom w:w="75" w:type="dxa"/><w:left w:w="100" w:type="dxa"/><w:right w:w="100" w:type="dxa"/></w:tblCellMar></w:tblPr><w:tblGrid>'+widths.map(w=>'<w:gridCol w:w="'+w+'"/>').join('')+'</w:tblGrid>';
+ for(const row of rows){out+='<w:tr>';let col=0;
+ for(const cell of row.cells){const span=spanOf(cell),w=widths.slice(col,col+span).reduce((n,x)=>n+x,0);col+=span;out+=`<w:tc><w:tcPr><w:tcW w:w="${w}" w:type="dxa"/>${span>1?`<w:gridSpan w:val="${span}"/>`:''}${cell.tagName==='TH'?'<w:shd w:fill="E9EEF4"/>':''}</w:tcPr>`;
  const kids=[...cell.children].filter(e=>['P','DIV','UL','OL'].includes(e.tagName));
  out+=kids.length?kids.map(e=>wordBlock(e)).join(''):wordPara(cell);
  out+='</w:tc>';}out+='</w:tr>';
