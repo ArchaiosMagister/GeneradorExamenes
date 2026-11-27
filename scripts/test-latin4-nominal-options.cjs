@@ -125,6 +125,7 @@ async function check(browser,file){
   const after=await prompts(stem);
   assert.equal(new Set(after).size,6);
   assert(after.some(prompt=>!before.includes(prompt)));
+  await assertIndent();
   assert(await page.evaluate(()=>window.preservedLatin4.every(node=>node.isConnected)));
   const originalTable=await rows();
   await page.locator(menu(table)+' [data-regenerate-question]').evaluate(button=>button.click());
@@ -152,6 +153,7 @@ async function check(browser,file){
   await page.evaluate(draft=>{examSelectionCache.clear();window.ExaminaUnifiedRestoreDraft(draft)},draft);
   assert(await page.locator(menu(table)+' .exam-question-toggle').isChecked());
   assert.deepEqual(await rows(),savedRows);
+  await assertIndent();
   const exported=await page.evaluate(async()=>{
    const read=async id=>{
     const previous=downloadBlob;
