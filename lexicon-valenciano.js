@@ -1317,8 +1317,6 @@
   "Exportar borrador (.json)": "Exportar esborrany (.json)",
   "Importar borrador (.json)": "Importar esborrany (.json)",
   "Imprimir / PDF": "Imprimir / PDF",
-  "Mostrar soluciones": "Mostrar solucions",
-  "Ocultar soluciones": "Ocultar solucions",
   "Deshacer última generación": "Desfer l’última generació",
   "Importar oraciones": "Importar oracions",
   "Importar léxico": "Importar lèxic",

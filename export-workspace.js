@@ -352,7 +352,14 @@
   }
   review.addEventListener('toggle',syncReview);
   new root.MutationObserver(records=>{
-   if(records.some(record=>!record.target?.closest?.('.exam-gloss-review-workspace')))markDirty();
+   const changesPreview=record=>{
+    if(record.target?.closest?.('.exam-gloss-review-workspace,#answerkey'))return false;
+    if(record.type!=='childList')return true;
+    const nodes=[...record.addedNodes,...record.removedNodes];
+    return !nodes.length||nodes.some(node=>node.nodeType!==1||
+     (node.id!=='answerkey'&&!node.matches?.('[data-answer-anchor]')));
+   };
+   if(records.some(changesPreview))markDirty();
    syncReview();
   }).observe(paper,{subtree:true,childList:true,characterData:true});
   syncReview();
