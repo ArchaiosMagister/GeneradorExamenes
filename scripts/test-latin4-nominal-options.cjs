@@ -63,7 +63,7 @@ async function check(browser,file){
   assert.deepEqual(await prompts(stem),['mare, −is','onus, oneris','plebs, plebis','mens, mentis','mulier, mulieris','civis, −is']);
   // Compare the same alphabetic list hierarchy in the preview, native print
   // and the detached PDF document (with the user-defined indentation shift).
-  const checkIndent=async()=>page.evaluate(({decl,stem,table})=>{
+  const checkIndent=async(shift)=>page.evaluate(({decl,stem,table,shift})=>{
    const signature=(root,selector)=>{
     const list=root.querySelector(selector),li=list.querySelector('li'),word=li.querySelector('i');
     const ls=getComputedStyle(list),is=getComputedStyle(li);
@@ -75,7 +75,7 @@ async function check(browser,file){
    const lists=[forms,...[decl,stem].map(kind=>'[data-latin4-nominal-body="'+kind+'"] > ol.task')];
    const paper=$('paper'),previous=paper.style.getPropertyValue('--exam-indent-shift');
    try{
-    paper.style.setProperty('--exam-indent-shift','9pt');
+    paper.style.setProperty('--exam-indent-shift',shift+'pt');
     const preview=lists.map(selector=>signature(paper,selector));
     const stage=window.ExaminaPdfExport.prepareDocument();
     stage.style.position='absolute';stage.style.left='-10000px';
@@ -89,9 +89,9 @@ async function check(browser,file){
      word:lists.map(selector=>wordIndent(paper.querySelector(selector))),
      wordKeys:['forms',decl,stem,table].map(kind=>wordIndent(solutions(kind)))};
    }finally{paper.style.setProperty('--exam-indent-shift',previous)}
-  },{decl,stem,table});
-  const assertIndent=async()=>{
-   const result=await checkIndent();
+  },{decl,stem,table,shift});
+  const assertIndent=async(shift=9)=>{
+   const result=await checkIndent(shift);
    for(const [reference,...others] of [result.preview,result.pdf,result.word])
     for(const item of others)assert.deepEqual(item,reference);
    assert(result.word[0]?.includes('w:left="'));
@@ -99,6 +99,7 @@ async function check(browser,file){
    for(const [reference,...others] of [result.keys,result.wordKeys])
     for(const item of others)assert.deepEqual(item,reference);
   };
+  await assertIndent(0);
   await assertIndent();
   await page.setViewportSize({width:390,height:844});
   await assertIndent();
