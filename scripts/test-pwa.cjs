@@ -287,7 +287,7 @@ const server=http.createServer(async(req,res)=>{
     input.checked=units[Number(input.value)]==='UD7';
    });
    generate();
-   const answer=document.querySelector('#paper #answerkey [data-exam-kind="forms"] ol > li:nth-child(2)');
+   const answer=document.querySelector('#examinaInternalAnswers #answerkey [data-exam-kind="forms"] ol > li:nth-child(2)');
    answer.textContent='Solución revisada antes de desconectar';
    document.getElementById('saveDraft').click();
   });
@@ -313,7 +313,7 @@ const server=http.createServer(async(req,res)=>{
    'No se recupera el examen guardado sin red');
   const regeneratedOffline=await page.evaluate(()=>{
    const first=document.querySelector('#paper [data-analysis-slot="0"]');
-   const answer=document.querySelector('#paper #answerkey [data-exam-kind="forms"] ol > li:nth-child(2)');
+   const answer=document.querySelector('#examinaInternalAnswers #answerkey [data-exam-kind="forms"] ol > li:nth-child(2)');
    const before=first.querySelector('i').textContent;
    regenerateExamWord('forms',0);
    const next=document.querySelector('#paper [data-analysis-slot="0"] > i');

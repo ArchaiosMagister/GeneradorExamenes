@@ -269,7 +269,7 @@
    delete q.dataset.examKind; // Conservar la identidad griega y sus ajustes de espaciado.
    frag.append(...sentences);
   }
-  const anchor=sheet.querySelector(':scope > #examSentenceGlossary')||sheet.querySelector(':scope > #answerkey');
+  const anchor=sheet.querySelector(':scope > #examSentenceGlossary')||sheet.querySelector(':scope > #answerkey,:scope > [data-answer-anchor]');
   if(anchor)sheet.insertBefore(frag,anchor);else sheet.append(frag);
   decorateItems(sheet);
   refreshNumberGlossary(sheet);
@@ -278,7 +278,7 @@
   // sobre los títulos definitivos 1, 2 y 3 evita perder espaciados al cambiar
   // unidad, regenerar un apartado o recuperar un borrador.
   applyExamVisualFormat();
-  window.greekLastPreview=$('paper').innerHTML;
+  window.greekLastPreview=publicExamHtml();
   if(window.greekLastExam)window.greekLastExam.grouped=true;
  }
  // Las tres actividades nuevas se exportan también en la clave Word.
@@ -325,13 +325,16 @@
  window.ExaminaFlushSentenceGlossary=refreshSentenceGlossary;
  const previousGenerate=generateGreekExam;
  generateGreekExam=function(){
-  previousGenerate();
-  if(onlyGreek())regroup();
+  return withInternalAnswers(()=>{
+   previousGenerate();
+   if(onlyGreek())regroup();
+  });
  };
  // Regeneración completa de una alternativa antigua, preservando las
  // correcciones de todas las demás, la cabecera y las oraciones.
  const previousRegenerate=greekRegenerate;
  greekRegenerate=function(kind){
+  return withInternalAnswers(()=>{
   if(!onlyGreek())return previousRegenerate(kind);
   if(!['declension','forms','conjugation','etymology'].includes(kind))return false;
   const ids=greekExamState?.ids?.[kind],oldSheet=$('paper').querySelector('.exam-sheet');
@@ -376,10 +379,12 @@
   }
   $('paper').replaceChildren(oldSheet);
   if($('model').value==='complete')greekExamControls();else refreshManualMorphWords();
-  window.greekLastPreview=$('paper').innerHTML;refreshCustomRows();
+  window.greekLastPreview=publicExamHtml();refreshCustomRows();
   return true;
+  });
  };
  function replaceGenerated(kind,index=null,regenerate=true){
+  return withInternalAnswers(()=>{
   if(!onlyGreek())return false;
   const api=kind==='change-number'?APIs.number():kind==='retroversion'?APIs.retro():APIs.roots();
   const oldSheet=$('paper').querySelector('.exam-sheet');if(!api||!oldSheet)return false;
@@ -408,8 +413,9 @@
   if(kind==='change-number')refreshNumberGlossary(oldSheet);
   $('paper').replaceChildren(oldSheet);
   if($('model').value==='complete')greekExamControls();else refreshManualMorphWords();
-  window.greekLastPreview=$('paper').innerHTML;refreshCustomRows();
+  window.greekLastPreview=publicExamHtml();refreshCustomRows();
   return true;
+  });
  }
  const menuLabels={
   decl:'1.a · Declina',forms:'1.b · Análisis morfológico',
@@ -493,8 +499,7 @@
      if(target){
       if(config.kind==='roots')target.innerHTML=editedRoots(APIs.roots().current(),input.value);
       else{const letter=target.querySelector('.exam-letter');target.replaceChildren(letter,' '+input.value)}
-      window.greekLastPreview=$('paper').innerHTML;
-      if(typeof warnExamManualSolution==='function')warnExamManualSolution();
+      window.greekLastPreview=publicExamHtml();
      }
     });
     label.append(input);row.append(label);editor.append(row);

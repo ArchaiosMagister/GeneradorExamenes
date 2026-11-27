@@ -28,7 +28,7 @@ async function check(page,kind){
  const r=await page.evaluate(kind=>{
   const paper=$('paper'),root=paper.querySelector('.exam-sheet.reference-morph-exam');
   const heading=root?.querySelector('.exam-question[data-morph-kind="'+kind+'"]');
-  const key=root?.querySelector('#answerkey'),solution=key?.querySelector('ol>li[data-morph-kind="'+kind+'"]');
+  const key=document.querySelector('#examinaInternalAnswers #answerkey'),solution=key?.querySelector('ol>li[data-morph-kind="'+kind+'"]');
   if(!heading||!solution)return {skip:true,kind};
   const other=root.querySelector('.exam-question[data-morph-kind]:not([data-morph-kind="'+kind+'"])');
   const otherKey=key.querySelector('ol>li[data-morph-kind]:not([data-morph-kind="'+kind+'"])');
@@ -43,17 +43,17 @@ async function check(page,kind){
   regenerateExamQuestion(kind);
   const after=paper.querySelector('.exam-sheet');
   const newHeading=after.querySelector('.exam-question[data-morph-kind="'+kind+'"]');
-  const newSolution=after.querySelector('#answerkey ol>li[data-morph-kind="'+kind+'"]');
+  const newSolution=document.querySelector('#examinaInternalAnswers #answerkey ol>li[data-morph-kind="'+kind+'"]');
   const afterLabels=[...after.querySelectorAll('[data-syntagm-slot]>i')].map(x=>x.textContent.trim());
   return {
    kind,root:root===after,
    newHeading:newHeading!==heading,newSolution:newSolution!==solution,
-   other:!other||after.contains(other),otherKey:!otherKey||after.querySelector('#answerkey').contains(otherKey),
+   other:!other||after.contains(other),otherKey:!otherKey||document.querySelector('#examinaInternalAnswers #answerkey').contains(otherKey),
    header:!header||header===after.querySelector('.exam-header'),
-   sameKey:key===after.querySelector('#answerkey'),
+   sameKey:key===document.querySelector('#examinaInternalAnswers #answerkey'),
    marks:after.textContent.includes('DOCENTE-CABECERA-MORF')&&
     after.textContent.includes('DOCENTE-OTRA-PREGUNTA-MORF')&&
-    after.textContent.includes('DOCENTE-OTRA-CLAVE-MORF'),
+    document.querySelector('#examinaInternalAnswers #answerkey').textContent.includes('DOCENTE-OTRA-CLAVE-MORF'),
    otherCaches:otherCaches.every(([k,v])=>JSON.stringify(examSelectionCache.get(k))===v),
    unchangedOtherSyntagms:kind==='decl'||JSON.stringify(afterLabels)===JSON.stringify(beforeLabels),
    declEditor:kind!=='decl'||$('morphSyntagms').value===afterLabels.join('\n'),

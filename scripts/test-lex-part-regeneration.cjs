@@ -41,7 +41,7 @@ async function run(browser,filename){
    const otherPart=root.querySelector('.lex-subquestion:not([data-lex-kind="'+kind+'"])');
    const header=root.querySelector('.exam-header');
    const sentence=root.querySelector('[data-sentence-slot="0"]');
-   const key=root.querySelector('#answerkey');
+   const key=document.querySelector('#examinaInternalAnswers #answerkey');
    const cacheKey=examCacheSignature('lex-'+kind);
    const previous=examSelectionCache.get(cacheKey);
    const otherCaches=[...examSelectionCache].filter(([k])=>k!==cacheKey)
@@ -59,10 +59,10 @@ async function run(browser,filename){
     sameOther:otherPart===after?.querySelector('.lex-subquestion:not([data-lex-kind="'+kind+'"])'),
     sameHeader:header===after?.querySelector('.exam-header'),
     sameSentence:sentence===after?.querySelector('[data-sentence-slot="0"]'),
-    sameSolutions:key===after?.querySelector('#answerkey'),
+    sameSolutions:key===document.querySelector('#examinaInternalAnswers #answerkey'),
     teacherHeading:after?.textContent.includes('MARCA-FASE-III'),
     teacherSentence:after?.textContent.includes('Oratio magistri manet.'),
-    teacherAnswer:after?.textContent.includes('SOLUCION-DOCENTE'),
+    teacherAnswer:key?.textContent.includes('SOLUCION-DOCENTE'),
     sameOtherCaches:otherCaches.every(([k,v])=>JSON.stringify(examSelectionCache.get(k))===v),
     countBefore:previous?.length,countAfter:current?.length
    };
@@ -77,12 +77,12 @@ async function run(browser,filename){
  // La acción general de léxico debe seguir respetando el resto del examen.
  const all=await page.evaluate(()=>{
   const paper=$('paper'),root=paper.querySelector('.exam-sheet');
-  const header=root.querySelector('.exam-header'),key=root.querySelector('#answerkey');
+  const header=root.querySelector('.exam-header'),key=document.querySelector('#examinaInternalAnswers #answerkey');
   const sentence=root.querySelector('[data-sentence-slot="0"]');
   regenerateExamQuestion('lex');
   const after=paper.querySelector('.exam-sheet');
   return {sameRoot:after===root,sameHeader:after.querySelector('.exam-header')===header,
-   sameKey:after.querySelector('#answerkey')===key,
+   sameKey:document.querySelector('#examinaInternalAnswers #answerkey')===key,
    sameSentence:after.querySelector('[data-sentence-slot="0"]')===sentence};
  });
  assert.deepEqual(all,{sameRoot:true,sameHeader:true,sameKey:true,sameSentence:true},

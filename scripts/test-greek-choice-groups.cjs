@@ -30,8 +30,28 @@ const query=page=>page.evaluate(()=>({
  }));
 async function run(page,file){
  for(const model of ['complete']){
-  await select(page,'greek1',model,'UD2');
+  await select(page,'greek1',model,'UD1');
   let x=await query(page);
+  const exhausted=await page.evaluate(()=>{
+   const row=[...document.querySelectorAll('.greek-question-options')]
+    .find(node=>node.querySelector('strong')?.textContent==='Conjugación');
+   const button=[...row?.querySelectorAll('button')||[]]
+    .find(node=>node.textContent==='Regenerar conjugación');
+   return {pool:greekChoicePool('conjugation').length,
+    selected:greekExamState.ids.conjugation.length,disabled:button?.disabled,title:button?.title};
+  });
+  assert.equal(exhausted.disabled,true,file+'/'+model+': regeneración sin alternativas habilitada: '+JSON.stringify(exhausted));
+  assert.match(exhausted.title,/alternativas/,file+'/'+model+': falta explicación del agotamiento');
+  await select(page,'greek1',model,'UD2');
+  x=await query(page);
+  const regular=await page.evaluate(()=>({
+   pool:greekChoicePool('conjugation').length,
+   selected:greekExamState.ids.conjugation.length,
+   disabled:[...document.querySelectorAll('.greek-question-options button')]
+    .find(node=>node.textContent==='Regenerar conjugación')?.disabled
+  }));
+  assert(regular.pool>regular.selected&&!regular.disabled,
+   file+'/'+model+': los paradigmas regulares de UD2 no ofrecen alternativas: '+JSON.stringify(regular));
   assert(!x.options.includes('change-number'),file+'/'+model+': artículo antes de UD3');
   assert(!x.options.includes('retroversion'),file+'/'+model+': retroversión nominal antes de UD3');
   await select(page,'greek1',model,'UD3');
@@ -50,6 +70,9 @@ async function run(page,file){
   assert.equal(Number(st.total),1000,file+'/'+model+': la puntuación no suma diez puntos: '+JSON.stringify(st));
   await select(page,'greek1',model,'UD5');
   x=await query(page);
+  const available=await page.evaluate(()=>[...document.querySelectorAll('.greek-question-options button')]
+   .find(node=>node.textContent==='Regenerar conjugación')?.disabled);
+  assert.equal(available,false,file+'/'+model+': regeneración con alternativas deshabilitada');
   assert.match(x.choose,/Elige tres de estas cinco preguntas/);
   const b=await page.evaluate(()=>({
    adjectives:ExaminaGreekNumber.candidates().filter(x=>x.id.includes(':adj:')).length,
@@ -61,6 +84,32 @@ async function run(page,file){
   await select(page,'greek1',model,'UD7');
   const pron=await page.evaluate(()=>ExaminaGreekNumber.candidates().filter(x=>x.id.includes(':autos:')).length);
   assert(pron>0,file+'/'+model+': no se usan pronombres de UD7');
+  const isolatedQuota=await page.evaluate(()=>{
+   const sheet=$('paper').querySelector('.exam-sheet');
+   const header=sheet.querySelector('.exam-header');
+   const other=sheet.querySelector('[data-greek-option="conjugation"]');
+   const before=Object.fromEntries(Object.entries(greekExamState.ids)
+    .filter(([kind])=>kind!=='forms').map(([kind,ids])=>[kind,[...ids]]));
+   header.append(' CUOTA-AISLADA');
+   for(const value of ['1','0']){
+    $('quota-verbs').value=value;
+    $('quota-verbs').dispatchEvent(new Event('change',{bubbles:true}));
+    const after=Object.fromEntries(Object.entries(greekExamState.ids)
+     .filter(([kind])=>kind!=='forms').map(([kind,ids])=>[kind,ids]));
+    if(JSON.stringify(after)!==JSON.stringify(before))return {stable:false,value,before,after};
+    if(sheet!==$('paper').querySelector('.exam-sheet')||
+       header!==sheet.querySelector('.exam-header')||
+       other!==sheet.querySelector('[data-greek-option="conjugation"]'))
+     return {stable:false,value,reason:'DOM reemplazado'};
+    if(!sheet.textContent.includes('CUOTA-AISLADA'))
+     return {stable:false,value,reason:'edición perdida'};
+    if(JSON.stringify(window.greekLastExam.ids)!==JSON.stringify(
+     greekKinds.flatMap(kind=>greekExamState.ids[kind]||[])))
+     return {stable:false,value,reason:'metadatos incoherentes'};
+   }
+   return {stable:true};
+  });
+  assert.equal(isolatedQuota.stable,true,file+'/'+model+': cuota alteró otras preguntas: '+JSON.stringify(isolatedQuota));
   // El inspector abre Configuración por defecto: ir a Preguntas antes de editar.
   await page.locator('#examPanelShortcuts button').nth(1).click();
   await page.locator('[data-greek-custom="number"] > summary').click();

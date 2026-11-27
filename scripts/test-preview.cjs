@@ -42,7 +42,7 @@ async function checkCulture(page,filename){
    const heading=[...$('paper').querySelectorAll('.exam-question')].find(node=>/Cultura cl[áà]ss?ica/.test(node.textContent));
    const preview=heading?.nextElementSibling;
    return {ids:picked.map(row=>row.id),effective:selectedUnits(),questions:preview?.textContent||'',
-    key:$('paper').querySelector('#answerkey').textContent};
+    key:document.querySelector('#examinaInternalAnswers #answerkey').textContent};
   };
   const accumulated=select(['UD3'],true);
   updateUnits();
@@ -72,13 +72,13 @@ async function checkCulture(page,filename){
   let blob;
   try{
    downloadBlob=(_name,output)=>{blob=output};
-   $('docxAnswers').click();
+   $('docx').click();
   }finally{downloadBlob=previous}
   return Array.from(new Uint8Array(await blob.arrayBuffer()));
  });
  const word=readStoredZipEntry(Buffer.from(xml),'word/document.xml');
  assert(word.includes('<w:t xml:space="preserve">Data: </w:t>'),filename+': falta Data: en el Word valenciano');
- assert(word.includes('Tarquini el Superb')&&word.includes('últim rei de Roma? — C'),filename+': cultura valenciana incompleta en Word');
+ assert(!word.includes('últim rei de Roma? — C'),filename+': el Word del alumnado contiene la respuesta');
 }
 
 async function checkFile(browser,filename){
@@ -547,13 +547,20 @@ async function checkFile(browser,filename){
   assert.equal(await page.locator('#examQuestionMenus [data-question="culture"]').count()>0,course==='latin4',
    filename+': sección de cultura incoherente');
   assert((await page.locator('#paper .exam-header').textContent()).includes('trimestre'),filename+': encabezado sin trimestre');
+  const headerWord=await page.evaluate(()=>({
+   title:document.querySelector('#paper .exam-header-line:first-child span:first-child')?.textContent||'',
+   xml:wordExamHeader(document.querySelector('#paper .exam-header'))
+  }));
+  if(headerWord.title.length>32)
+   assert(!headerWord.xml.includes('<w:tab/>')&&headerWord.xml.includes(headerWord.title),
+    filename+': cabecera Word larga expuesta a recorte por tabulación');
   const listXml=await page.evaluate(()=>{const ol=document.createElement('ol');ol.type='a';ol.innerHTML='<li>Primera línea y continuación</li>';return wordBlock(ol)});
   assert(listXml.includes('w:left="'+(course==='greek1'?'720':'1080')+'" w:hanging="360"')&&listXml.includes('<w:tab/>'),filename+': lista Word sin sangría y tabulación');
 
   // Comprueba el Blob DOCX construido al pulsar los botones de exportación.
   // La captura evita el bloqueo de descargas en navegadores headless bajo file://
   // sin eludir el exportador real de la aplicación.
-  for(const answers of [false,true]){
+  for(const answers of [false]){
    const caseLabel=filename+' '+course+'/'+model+' '+(answers?'solucionario':'alumnado');
    console.log('Comprobando DOCX:',caseLabel);
    const exported=await page.evaluate(async answers=>{
@@ -561,7 +568,7 @@ async function checkFile(browser,filename){
     let blob,name;
     try{
      downloadBlob=(filename,output)=>{name=filename;blob=output};
-     document.getElementById(answers?'docxAnswers':'docx').click();
+     document.getElementById('docx').click();
     }finally{downloadBlob=previous}
     if(!blob)throw new Error('El botón no generó ningún documento Word');
     return {filename:name,bytes:Array.from(new Uint8Array(await blob.arrayBuffer()))};
@@ -630,7 +637,7 @@ async function checkFile(browser,filename){
    await input.fill('FORMA_DE_PRUEBA');
    assert((await page.locator('#paper').textContent()).includes('FORMA_DE_PRUEBA'),filename+' '+course+'/'+model+': la edición no actualiza la vista previa');
    if(tableEdit)assert(await page.locator('#paper .exam-paradigm thead tr:first-child th[colspan] i, #paper .morph-syntagm-item i').filter({hasText:'FORMA_DE_PRUEBA'}).count()>0,filename+': editar título elimina cursiva');
-   assert.equal(await page.locator('#paper #answerkey [data-manual-warning]').count(),1,filename+' '+course+'/'+model+': falta advertencia de solucionario');
+   assert.equal(await page.locator('#paper #answerkey').count(),0,filename+' '+course+'/'+model+': respuestas en vista previa');
   }
  }
  await page.locator('#examPanelShortcuts>button[data-target="exam-ui-core"]').click();

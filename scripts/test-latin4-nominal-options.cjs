@@ -54,7 +54,7 @@ async function check(browser,file){
    sentence.textContent='Oratio magistri.';
    window.preservedLatin4=[
     sentence,paper.querySelector('[data-exam-kind="forms"].exam-question'),
-    paper.querySelector('#answerkey > ol > li[data-exam-kind="forms"]')
+    document.querySelector('#examinaInternalAnswers #answerkey > ol > li[data-exam-kind="forms"]')
    ];
    window.originalLatin4Scores=[...paper.querySelectorAll('.exam-question-points')].map(node=>node.textContent);
   });
@@ -82,12 +82,8 @@ async function check(browser,file){
     document.body.append(stage);
     let pdf;
     try{pdf=lists.map(selector=>signature(stage,selector))}finally{stage.remove()}
-    const solutions=kind=>paper.querySelector('#answerkey > ol > li[data-exam-kind="'+kind+'"] > ol');
-    const keyIndent=list=>[getComputedStyle(list).marginLeft,getComputedStyle(list).paddingLeft];
     const wordIndent=list=>wordBlock(list).match(/<w:(?:ind|numPr)(?:[ >])[\s\S]*?(?:\/>|<\/w:numPr>)/)?.[0];
-    return {preview,pdf,keys:['forms',decl,stem,table].map(kind=>keyIndent(solutions(kind))),
-     word:lists.map(selector=>wordIndent(paper.querySelector(selector))),
-     wordKeys:['forms',decl,stem,table].map(kind=>wordIndent(solutions(kind)))};
+    return {preview,pdf,word:lists.map(selector=>wordIndent(paper.querySelector(selector)))};
    }finally{paper.style.setProperty('--exam-indent-shift',previous)}
   },{decl,stem,table,shift});
   const assertIndent=async(shift=9)=>{
@@ -95,9 +91,6 @@ async function check(browser,file){
    for(const [reference,...others] of [result.preview,result.pdf,result.word])
     for(const item of others)assert.deepEqual(item,reference);
    assert(result.word[0]?.includes('w:left="'));
-   assert(result.wordKeys[0]?.includes('w:numPr'));
-   for(const [reference,...others] of [result.keys,result.wordKeys])
-    for(const item of others)assert.deepEqual(item,reference);
   };
   await assertIndent(0);
   await assertIndent();
@@ -163,11 +156,10 @@ async function check(browser,file){
     finally{downloadBlob=previous}
     return blob.text();
    };
-   const student=await read('docx'),teacher=await read('docxAnswers');
+   const student=await read('docx');
    const pdf=window.ExaminaPdfExport.prepareDocument();
    return {
     student:student.includes('declinació')&&student.includes('Forma demanada')&&!student.includes('Solucionari orientatiu'),
-    teacher:teacher.includes('Solucionari orientatiu')&&teacher.includes('tema en consonant'),
     pdf:pdf.querySelectorAll('[data-latin4-nominal-body]').length===3&&!pdf.querySelector('#answerkey')
    };
   });

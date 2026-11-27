@@ -1,6 +1,6 @@
 # Generador de exámenes de Latín y Griego
 
-Generador de exámenes para **Latín de 4.º de ESO, Latín I y Griego I**, con edición, solucionarios, exportación y trabajo sin conexión.
+Generador de exámenes para **Latín de 4.º de ESO, Latín I y Griego I**, con edición, exportación y trabajo sin conexión.
 
 ## Probar la versión online
 
@@ -75,7 +75,7 @@ Consulta [el control de evidencia](docs/control-evidencia-academica.md) y
 3. Selecciona el curso, las unidades y el modelo; genera e imprime o descarga el examen en Word o PDF.
 4. Utiliza las opciones de **exportar datos/borradores a JSON** para guardar copias de seguridad: el almacenamiento del navegador en páginas `file://` puede variar según navegador, carpeta u ordenador.
 
-`offline.html` incluye toda la interfaz, el vocabulario y los paradigmas escolares de los tres cursos. Incluye también **16.988 formas latinas de UniMorph para consulta morfológica**, procedentes del archivo local `data/unimorph/lat-v.json`. Esas formas no se incorporan automáticamente a preguntas con soluciones sin la validación necesaria. El banco griego sigue siendo el ya incorporado en la webapp: **Morpheus y AGLDT aún no están integrados**.
+`offline.html` incluye toda la interfaz, el vocabulario y los paradigmas escolares de los tres cursos. Incluye también **16.988 formas latinas de UniMorph para consulta morfológica**, procedentes del archivo local `data/unimorph/lat-v.json`. Esas formas no se incorporan automáticamente a preguntas evaluables sin la validación necesaria. El banco griego sigue siendo el ya incorporado en la webapp: **Morpheus y AGLDT aún no están integrados**.
 
 `index.html` continúa siendo la interfaz de la web publicada. Puede utilizar archivos locales adicionales si el servidor los ofrece; `offline.html` es la versión empaquetada en un solo archivo y arranca desde el disco sin conexiones externas. Las consultas opcionales solicitadas a los lectores pueden necesitar Internet.
 
@@ -88,7 +88,7 @@ Para recrear `offline.html` desde el código del proyecto, ejecuta `npm run offl
 - Se pueden elegir unidades aisladas o combinadas, de forma acumulativa o por selección explícita.
 - La vista previa y los controles permiten editar enunciados, oraciones y otros elementos. Guarda un borrador antes de regenerar un examen completo.
 - El control de exportación definitiva comprueba el total de 10 puntos en los exámenes completos. Las pruebas parciales de morfología conservan su baremo independiente.
-- Word (.docx) permite descargar la hoja del alumnado y un documento con soluciones. La opción PDF exporta la hoja del alumnado. Los nombres se forman a partir del curso, las unidades elegidas, el tipo de documento y el idioma.
+- Word (.docx) y PDF permiten descargar exclusivamente la hoja del alumnado. Los nombres se forman a partir del curso, las unidades elegidas, el tipo de documento y el idioma.
 - Las decisiones y los exámenes se guardan localmente. Usa la copia unificada JSON para trasladarlos entre navegadores o dispositivos.
 
 ## Límites de cobertura
@@ -123,7 +123,7 @@ La compatibilidad con Safari/WebKit, las descargas DOCX, la impresión, los borr
 - Corregida la cursiva de las instrucciones en la vista previa y en Word.
 - Ajustado el plazo de liberación de los archivos descargables para reducir fallos en WebKit.
 - Añadida una comprobación automática de sintaxis JavaScript y controles esenciales para detectar errores en la webapp.
-- Probados en Chromium: carga de modelos, guardado/recuperación/deshacer borradores, exportación JSON y DOCX con y sin soluciones. El DOCX se ha renderizado para inspección visual.
+- Probados en Chromium: carga de modelos, guardado/recuperación/deshacer borradores, exportación JSON y DOCX. El DOCX se ha renderizado para inspección visual.
 
 ### Revisión de interfaz v16
 
@@ -143,7 +143,7 @@ La compatibilidad con Safari/WebKit, las descargas DOCX, la impresión, los borr
 ### Motor inicial de morfología griega (v18)
 
 - Griego I vuelve a permitir seleccionar los bloques **Declinación y concordancia** y **Formas verbales**.
-- Se han incorporado tablas áticas explícitas de **10 sustantivos** (casos, singular y plural) y **3 verbos** (presente de indicativo activo, seis personas), con soluciones.
+- Se han incorporado tablas áticas explícitas de **10 sustantivos** (casos, singular y plural) y **3 verbos** (presente de indicativo activo, seis personas), con paradigmas contrastados.
 - Solo se generan formas de lemas expresamente cubiertos por las tablas. Si las unidades seleccionadas no contienen entradas cubiertas, se muestra un aviso en lugar de inventar formas.
 - **Limitación importante:** esto no constituye un motor morfológico general. Siguen pendientes artículo, adjetivos, tercera declinación, verbos contractos, irregularidades y validación didáctica completa contra los materiales de clase.
 

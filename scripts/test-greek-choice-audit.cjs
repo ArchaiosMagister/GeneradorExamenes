@@ -89,9 +89,9 @@ async function select(page,model,unit,lang='es'){
    await page.evaluate(()=>{ExaminaGreekNumber.setCount(4);ExaminaGreekRetroversion.setCount(4);generate()});
    const stem=file.replace('.html','')+'-'+model+'-'+lang;
    const answers=await page.evaluate(()=>[...document.querySelectorAll('[data-greek-extra-answer] p')].map(x=>x.textContent));
-   for(const solutions of [false,true]){
+   for(const solutions of [false]){
     const bytes=Buffer.from(await page.evaluate(async solutions=>{
-     const old=downloadBlob;let blob;try{downloadBlob=(_n,b)=>blob=b;exportWord(solutions)}finally{downloadBlob=old}
+     const old=downloadBlob;let blob;try{downloadBlob=(_n,b)=>blob=b;exportWord()}finally{downloadBlob=old}
      if(!blob)throw Error('Word bloqueado');return [...new Uint8Array(await blob.arrayBuffer())];
     },solutions));
     const xml=entry(bytes,'word/document.xml');

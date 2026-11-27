@@ -32,7 +32,7 @@ async function run(browser,filename){
   const other=root.querySelector('.lex-subquestion:not([data-lex-kind="phonetics"])');
   const header=root.querySelector('.exam-header');
   const sentence=root.querySelector('[data-sentence-slot="0"]');
-  const key=root.querySelector('#answerkey');
+  const key=document.querySelector('#examinaInternalAnswers #answerkey');
   if(!part||!other||!header||!key)throw Error('No se encuentra el examen latino con apartado fonético');
   const controls=[...document.querySelectorAll('[data-lat1-phonetic-norms] input[data-phonetic-code]')]
    .filter(x=>!x.disabled&&x.checked);
@@ -56,11 +56,11 @@ async function run(browser,filename){
   const newRows=examSelectionCache.get(examCacheSignature('lex-phonetics'));
   const stable={
    root:current===root,newPart:now!==part,other:other===current.querySelector('.lex-subquestion:not([data-lex-kind="phonetics"])'),
-   header:header===current.querySelector('.exam-header'),key:key===current.querySelector('#answerkey'),
+   header:header===current.querySelector('.exam-header'),key:key===document.querySelector('#examinaInternalAnswers #answerkey'),
    sentence:!sentence||sentence===current.querySelector('[data-sentence-slot="0"]'),
    headerText:current.textContent.includes('CAMBIO-DOCENTE-CABECERA'),
    otherText:current.textContent.includes('CAMBIO-DOCENTE-LEXICO'),
-   keyText:current.textContent.includes('CAMBIO-DOCENTE-CLAVE'),
+   keyText:key.textContent.includes('CAMBIO-DOCENTE-CLAVE'),
    sentenceText:!sentence||current.textContent.includes('Sententia magistri.'),
    othersCache:otherCaches.every(([k,v])=>JSON.stringify(examSelectionCache.get(k))===v),
    count:newRows?.length,
