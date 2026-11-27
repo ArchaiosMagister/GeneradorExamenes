@@ -61,6 +61,51 @@ async function check(browser,file){
   for(const kind of kinds)await toggle(kind,true);
   assert.deepEqual(await prompts(decl),['hostis, −is','tabula, −æ','oppidum, −i','puer, −i','flumen, fluminis','aula, −æ']);
   assert.deepEqual(await prompts(stem),['mare, −is','onus, oneris','plebs, plebis','mens, mentis','mulier, mulieris','civis, −is']);
+  // Compare the same alphabetic list hierarchy in the preview, native print
+  // and the detached PDF document (with the user-defined indentation shift).
+  const checkIndent=async()=>page.evaluate(({stem,table})=>{
+   const signature=(root,selector)=>{
+    const list=root.querySelector(selector),li=list.querySelector('li'),word=li.querySelector('i');
+    const ls=getComputedStyle(list),is=getComputedStyle(li);
+    const sheet=list.closest('.exam-sheet');
+    return [ls.marginLeft,ls.paddingLeft,is.marginLeft,is.paddingLeft,is.textIndent,
+     Math.round(word.getBoundingClientRect().left-sheet.getBoundingClientRect().left)];
+   };
+   const forms='p.exam-question[data-exam-kind="forms"] + ol.task';
+   const nominal='[data-latin4-nominal-body="'+stem+'"] > ol.task';
+   const paper=$('paper'),previous=paper.style.getPropertyValue('--exam-indent-shift');
+   try{
+    paper.style.setProperty('--exam-indent-shift','9pt');
+    const preview=[signature(paper,forms),signature(paper,nominal)];
+    const stage=window.ExaminaPdfExport.prepareDocument();
+    stage.style.position='absolute';stage.style.left='-10000px';
+    document.body.append(stage);
+    let pdf;
+    try{pdf=[signature(stage,forms),signature(stage,nominal)]}finally{stage.remove()}
+    const solutions=kind=>paper.querySelector('#answerkey > ol > li[data-exam-kind="'+kind+'"] > ol');
+    const keyIndent=list=>[getComputedStyle(list).marginLeft,getComputedStyle(list).paddingLeft];
+    const wordIndent=list=>wordBlock(list).match(/<w:(?:ind|numPr)(?:[ >])[\s\S]*?(?:\/>|<\/w:numPr>)/)?.[0];
+    return {preview,pdf,keys:['forms',stem,table].map(kind=>keyIndent(solutions(kind))),
+     word:[wordIndent(paper.querySelector(forms)),wordIndent(paper.querySelector(nominal))],
+     wordKeys:['forms',stem,table].map(kind=>wordIndent(solutions(kind)))};
+   }finally{paper.style.setProperty('--exam-indent-shift',previous)}
+  },{stem,table});
+  const assertIndent=async()=>{
+   const result=await checkIndent();
+   for(const [a,b] of [result.preview,result.pdf,result.word])assert.deepEqual(a,b);
+   assert(result.word[0]?.includes('w:left="'));
+   assert(result.wordKeys[0]?.includes('w:numPr'));
+   for(const [a,b,c] of [result.keys,result.wordKeys]){
+    assert.deepEqual(a,b);assert.deepEqual(a,c);
+   }
+  };
+  await assertIndent();
+  await page.setViewportSize({width:390,height:844});
+  await assertIndent();
+  await page.setViewportSize({width:1200,height:950});
+  await page.emulateMedia({media:'print'});
+  await assertIndent();
+  await page.emulateMedia({media:'screen'});
   const stemKeys=await page.locator(key(stem)+' ol li').allTextContents();
   assert.deepEqual(stemKeys.map(answer=>answer.includes('tema en −i')),[true,false,false,true,false,true]);
   assert.match(stemKeys[2],/plēbēs de 5\.ª/);
