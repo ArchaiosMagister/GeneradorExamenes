@@ -119,7 +119,54 @@ async function configure(page,course,model,unit,lang,cumulative=true){
   const code={latin1:'lat1',latin4:'lat4',greek1:'gr1'}[course];
   const evidence=window.ExaminaTeacherReview.evidenceCheckExam(paper,code);
   const authorized=paper.querySelectorAll('[data-academic-key]').length;
-  return {course,model,unit,lang,cumulative,evidence,authorized,selectedRaw:selectedUnits(false),effective:selectedUnits(),questions,questionCount:qs.length,
+  // Inventario de términos distintos realmente elegibles. No se amplían bancos
+  // ni se fuerzan cuotas imposibles: las insuficiencias se notifican para revisión.
+  const poolCapacity={};
+  const chosenUnits=selectedUnits();
+  const morph=['morf','morphology'].includes(model);
+  const put=(kind,rows,key,requested)=>{
+   const distinct=new Set(rows.map(key).filter(Boolean)).size;
+   poolCapacity[kind]={distinct,requested,spare:distinct-requested};
+  };
+  const cfg=morph?morphConfig():null;
+  if(course==='greek1'){
+   const mapping={decl:'declension',verb:'conjugation',forms:'forms',pronouns:'pronouns'};
+   const counts=morph?null:greekCompleteCounts();
+   for(const [kind,corpusKind] of Object.entries(mapping)){
+    if(!examQuestionEnabled(kind))continue;
+    const pool=morph?greekMorphologyReplacementPool(kind):greekChoicePool(corpusKind);
+    const requested=morph?({decl:cfg.offer,verb:cfg.verbs,forms:cfg.words,pronouns:10})[kind]:counts[corpusKind];
+    put(kind,pool,x=>kind==='decl'&&morph?x.title:kind==='verb'&&morph?
+     normLex(x.prompt)+'|'+normLex(x.lemma):kind==='forms'||kind==='pronouns'?normLex(x.prompt):x.id,requested);
+    if(kind==='forms'){
+     const quotas=Object.fromEntries(['nouns','adjectives','verbs','pronouns'].map((category,i)=>[
+      category,{distinct:new Set(pool.filter(x=>examGreekWordClass(x)===category).map(x=>normLex(x.prompt)).filter(Boolean)).size,
+       requested:examMorphQuotaValues()[i]}]));
+     poolCapacity.formCategories=quotas;
+    }
+   }
+  }else{
+   if(examQuestionEnabled('decl'))put('decl',morph?latinMorphSyntagmPool(chosenUnits):latinCompleteDeclensionItems(chosenUnits),
+    x=>morph?x.title:examKey(x.x.entry),morph?cfg.offer:Math.min(3,countFor('decl')));
+   if(examQuestionEnabled('verb'))put('verb',morph?latinMorphologyVerbPool(chosenUnits):latin4ConjugationPool(chosenUnits),
+    x=>morph?normLex(x.form)+'|'+examKey(x.entry):examKey(x.x.entry),morph?cfg.verbs:Math.min(3,countFor('verb')));
+   if(examQuestionEnabled('forms')){
+    const groups=latinExamFormCandidates(chosenUnits,true);
+    put('forms',groups.flat(),x=>normLex(x.form),morph?cfg.words:countFor('forms'));
+    poolCapacity.formCategories=Object.fromEntries(['nouns','adjectives','verbs','pronouns'].map((category,i)=>[
+     category,{distinct:new Set(groups[i].map(x=>normLex(x.form)).filter(Boolean)).size,requested:examMorphQuotaValues()[i]}]));
+   }
+   if(examQuestionEnabled('pronouns'))put('pronouns',latinExamPronouns(chosenUnits),x=>normLex(x.form),10);
+   if(course==='latin4'){
+    for(const kind of ['latin4-nominal-decl','latin4-nominal-stem'])
+     if(examQuestionAvailable(kind))put(kind,latin4NominalPromptPool(kind,chosenUnits),x=>examKey(x[0]),6);
+    if(examQuestionAvailable('latin4-nominal-table')){
+     const pool=latinThirdDeclensionPool(chosenUnits);
+     put('latin4-nominal-table',pool,x=>x.lemma,latin4ThirdSettings.count);
+    }
+   }
+  }
+  return {course,model,unit,lang,cumulative,evidence,authorized,poolCapacity,selectedRaw:selectedUnits(false),effective:selectedUnits(),questions,questionCount:qs.length,
    scoreRows:rows.length,scoreDetails:rows.map(x=>({kind:x.key.split('/').pop().replace(/#\\d+$/,''),points:x.points})),
    total,definitive:{ok:definitive.ok,mode:definitive.mode,total:definitive.total,normalized:definitive.normalized},
    draft:{ok:draft.ok,mode:draft.mode},detailErrors:engine.detailErrors?.()||[],
@@ -130,6 +177,13 @@ async function configure(page,course,model,unit,lang,cumulative=true){
 function inspect(row,file){
  const where=file+' '+row.course+'/'+row.model+'/'+row.unit+'/'+row.lang+(row.cumulative?'/acumulativo':'/solo-UD');
  report.cases.push({file,...row});
+ for(const [kind,pool] of Object.entries(row.poolCapacity||{})){
+  if(kind==='formCategories')continue;
+  if(pool.requested>0&&pool.distinct<pool.requested)
+   issue('revisión',where,'Banco '+kind+': '+pool.distinct+' términos para '+pool.requested+' casillas');
+  else if(pool.requested>0&&pool.spare===0)
+   issue('revisión',where,'Banco '+kind+': no quedan términos alternativos al completar las casillas');
+ }
  const selected=Array.isArray(row.unit)?row.unit:[row.unit];
  if(JSON.stringify(row.selectedRaw)!==JSON.stringify(selected))
   issue('bloqueante',where,'El selector no mantiene las unidades marcadas');
