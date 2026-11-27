@@ -26,14 +26,14 @@ function extract(html,a,b){
 const results=[];
 for(const filename of ['index.html','offline.html']){
  const html=read(filename);
- const normalization=html.match(/const normLex=x=>[^\n]+;/);
+ const normalization=html.match(/const normLex=x=>([^;\n]+);/);
  assert(normalization,'Falta normalizador léxico');
  const source=[
- normalization[0],
  extract(html,'function parseTeacherPhonetics(','const LATIN_LEX_STORAGE='),
  extract(html,'function latin1PhoneticMaxUnit(','function syncLatin1PhoneticRuleControls('),
  extract(html,'function examLexFilter(','function latinLexPriorities(')
  ].join('\n');
+ const normLex=vm.runInNewContext('x=>'+normalization[1]);
  const report=vm.runInNewContext(source+`
  const phoneticRules=Array.from({length:20},(_,i)=>({id:'N'+String(i+1).padStart(2,'0')}));
  const latin4LexCurriculum=p4,latin1PreverbCurriculum=pv;
@@ -70,7 +70,7 @@ for(const filename of ['index.html','offline.html']){
   groups.push({prefix,lang,distinct:new Set(rows.map(x=>latinLexTermKey(x,'prefixes')).filter(Boolean)).size});
  }
  ({inventory,groups});
- `,assets);
+ `,{...assets,normLex});
  for(const {course,unit,lang,pools} of report.inventory)for(const [kind,{distinct,requested}] of Object.entries(pools)){
   const label=[filename,course,unit,lang,kind].join('/');
   if(requested===0)assert.equal(distinct,0,label+': contenido adelantado');
