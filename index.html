@@ -9900,7 +9900,10 @@ html[data-appearance="oled"] body.exam-redesign #exam-ui-shell :is(#exam-ui-core
 /* Modelo docente: numeración, subapartados y viñetas con sangría escalonada. */
 .paper .exam-sheet > p.exam-question{margin-left:calc(18pt + var(--exam-indent-shift,0pt))!important;padding-left:18pt!important;text-indent:-18pt!important}
 .paper[data-format-course="greek1"] .exam-sheet > p.exam-question{margin-left:var(--exam-indent-shift,0pt)!important}
-.paper .exam-sheet > ol.task[type="a"],.paper .exam-sheet > ol.task[type="A"]{margin-left:calc(36pt + var(--exam-indent-shift,0pt))!important;padding-left:18pt!important}
+.paper .exam-sheet > ol.task[type="a"],.paper .exam-sheet > ol.task[type="A"],
+.paper .exam-sheet > [data-latin4-nominal-body="latin4-nominal-stem"] > ol.task[type="a"]{margin-left:calc(36pt + var(--exam-indent-shift,0pt))!important;padding-left:18pt!important}
+/* Esta lista ya tiene marcador alfabético: no aplicar la sangría francesa de los párrafos exam-item. */
+.paper .exam-sheet > [data-latin4-nominal-body="latin4-nominal-stem"] > ol.task > li{margin-left:0;padding-left:0;text-indent:0}
 .paper[data-format-course="greek1"] .exam-sheet > ol.task[type="a"],.paper[data-format-course="greek1"] .exam-sheet > ol.task[type="A"]{margin-left:calc(18pt + var(--exam-indent-shift,0pt))!important}
 .paper .exam-sheet > p.exam-item{margin-left:calc(36pt + var(--exam-indent-shift,0pt))!important}
 .paper[data-format-course="greek1"] .exam-sheet > p.exam-item,.paper[data-format-course="greek1"] .greek-choice-option > p.greek-choice-subquestion{margin-left:calc(18pt + var(--exam-indent-shift,0pt))!important}
